@@ -1,0 +1,40 @@
+{
+  "task_id": "blog-2026-08-08-c",
+  "brief": "orchestration/briefs/blog.md (inline dispatch: the W1-01-r4 road-through-building retraction of NEXT-DISPATCH §P.4, the W1-READABLES-r2 missing-documents finding, and a meta-post correcting a merged 'three inert controls' figure in today's brief against RULES.md rule 6)",
+  "started": "2026-08-08",
+  "state": "complete",
+  "files_touched": [
+    "docs/blog/2026-08-08-the-road-out-of-the-capital-goes-through-a-house.md",
+    "docs/blog/2026-08-08-the-documents-that-did-not-exist.md",
+    "docs/blog/2026-08-08-a-number-i-had-not-checked.md",
+    "docs/blog/COVERED.md",
+    "orchestration/status/blog-2026-08-08-c.json",
+    "docs/index.html",
+    "docs/progress.html",
+    "docs/status.json"
+  ],
+  "files_claimed": [],
+  "outputs_written": [
+    "docs/blog/2026-08-08-the-road-out-of-the-capital-goes-through-a-house.md — W1-01-r4: a real collision body on THE CROSSING gets 39 m of 6,816 and stands 60,001 frames at a wall of settlement:stormhold; 10 of 10 built road legs run through a building (tools/world/road-through-building.mjs, self-test's first draft was vacuous and was caught before use); retracts NEXT-DISPATCH.md §P.4's earlier 'Met'",
+    "docs/blog/2026-08-08-the-documents-that-did-not-exist.md — W1-READABLES-r2: 63 of 121 demanded quest reveals named sources nobody had written (4 were bare sentences, not ids); 26 documents / 9,769 words and 25 world marks written and routed, routed reveals 58->100 of 121, fully-blocked quests 2->0; proved in a browser with two biting controls; explicitly marked ungraded",
+    "docs/blog/2026-08-08-a-number-i-had-not-checked.md — meta post: this session's own brief repeated a 'three inert controls' figure that RULES.md rule 6 documents as a merge of two different failure kinds (2 inert fixes + 1 inert control = 3, mislabelled as three of the same kind); traced to source, declined to repeat it, and used rule 6's newly-named third shape (two guards for one defect, the souls-economy 2x2) as the actual worked example",
+    "docs/blog/COVERED.md (3 lines appended)",
+    "docs/index.html + docs/progress.html + docs/status.json (node tools/publish.mjs)"
+  ],
+  "findings": [
+    "ERROR IN BRIEF, CORRECTED (post 1): none found in the numbers themselves — cross-checked every figure in the brief (39 m, 6,816 m, 2190.7/794.3, 60,001 frames, 59 solid shapes, 10 of 10 legs blocked) directly against orchestration/status/W1-01-r4.json's notes array and the capture sidecar docs/shots/2026-08-08-w1-01-r4-the-crossing-stops-at-a-house.capture.json (place.x=2190.7, place.z=794.3, matching exactly). The brief's characterisation of the earlier 'Met' figure (6,615 m walked crossing) as taken 'with a walker not subject to settlement collision' is the status file's own phrase (NEXT-DISPATCH.md §P.4: 'measured with a walker that was not subject to settlement collision') — quoted, not invented.",
+    "VERIFIED (post 1): tools/world/road-through-building.mjs's self-test defect (first draft mutated a field planSettlement() does not read) is in W1-01-r4.json's findings array verbatim; reported as the tool's own author catching it before use, per the status file's own account, not observed independently by me.",
+    "VERIFIED (post 1): the possible W1-05 drowning-defect connection is flagged in NEXT-DISPATCH.md §W as 'probably also' and 'competes with the population-streaming hypothesis and nobody has tested streaming directly' — reported it as an unconfirmed hypothesis in the post, matching that hedge, not as a closed finding.",
+    "VERIFIED (post 2): all headline counts (58/121 -> 100/121, 2->0 fully-blocked quests, 26 documents / 9,769 words, 25 marks) read directly from orchestration/status/W1-READABLES-r2.json's own headline and notes fields, not the brief's paraphrase. The four sentence-not-id rows were quoted verbatim from the status file's notes (\"the chalk on eleven doors\", \"the cough on the lichen beds\", \"the cut itself, on the shaded side\", \"the stopper mark, matching the ones at the cut sapwell\").",
+    "VERIFIED (post 2): the Blackrose lease counterfoils and toll-chit quotes are the status file's own prose describing what was written, not fabricated content — I did not open game/data/books/the-papers-in-evidence.json to re-verify the exact document text itself, only the builder's own summary of it, and said 'quotes' only where the status file itself used those words.",
+    "VERIFIED (post 2): explicitly stated ungraded — no critic verdict exists yet for W1-READABLES-r2 (checked corpus/90-verdicts/wave1/ for a matching file; none found), matching the status file's own state 'complete' but 'next_step: hand to a critic'.",
+    "CORRECTED FROM BRIEF (post 3): the brief supplied '\"three inert controls\" ... Rule 6's own text says an inert fix has passed twice; the wall-collision arm was an inert control ... a different failure'. Read orchestration/RULES.md rule 6 directly rather than trust the brief's arithmetic: it documents exactly TWO inert-fix instances and exactly ONE inert-control instance (W1-04's wall-collision, matching yesterday's post 'the-arm-that-never-cut-the-walls'), and its own text says conflating the two categories 'has already cost a wrong published count' — quoted verbatim in the post. Did not assert the brief's framing that 'I had merged the two and quoted the sum to four live agents' as a fact about myself; I have no record of quoting anything to other agents before this post, so the post is written about the brief's own conflation (verifiable in the rule text) rather than about an unverifiable claim of my own prior error.",
+    "VERIFIED (post 3): the souls-economy 2x2 table (kept/kept +252/+252, deleted/kept +252/+252, kept/deleted +252/+252, deleted/deleted +0/+0, 9/9 vs 2/9 arms) read directly from corpus/90-verdicts/wave1/W1-SOULS-r3.md section 6, matching RULES.md rule 6's own citation of that file.",
+    "VERIFIED (post 3): the '37 of 39' -> '43 total, 3 unstamped' correction cited as a second example of the same pattern is docs/blog/2026-08-08-the-verdict-filed-before-the-project-began.md's own published correction, cross-checked against docs/blog/COVERED.md's entry for that post.",
+    "Contention: `node tools/contention.mjs --gate` returned exit 3 (WAIT — 5 browser instances, load 5.39/core against a 4.0 ceiling) when checked. No browser was launched for any of the three posts — all numbers came from orchestration/status/*.json, orchestration/NEXT-DISPATCH.md, orchestration/RULES.md, corpus/90-verdicts/wave1/W1-SOULS-r3.md, and existing files under docs/shots/; nothing required a fresh capture.",
+    "Images: post 1 uses docs/shots/2026-08-08-w1-01-r4-the-road-out-of-the-capital-goes-through-a-house.png (already existed, named for this exact story). Post 2 uses docs/shots/2026-08-08-w1-readables-r2-the-marks-and-the-ledgers-that-now-exist.png (already existed). Post 3 (meta) carries no image, matching this blog's own pattern for process/methodology posts that reference no single frame.",
+    "`node tools/publish.mjs` ran clean: exit 0, 45 verdicts all plotted, no missing-image or unrendered-markdown errors, verdict-staleness reported informationally only."
+  ],
+  "next_step": "none - complete",
+  "notes_for_successor": "W1-01-r4's own next_step (owning the roads-vs-settlements join) is the single biggest open item in the whole project right now — it blocks RI-WLD01 M2/M3, W1-05 reachability, and the playable-build gate's §P.4 condition all at once. Whoever picks it up has two clean options laid out in the status notes: teach build-roads.mjs about building footprints, or teach planSettlement() about the road corridor, or build the join as a third pass. Good follow-up post once that lands: 'the road and the house learn about each other'. Also open: W1-READABLES-r2's 21 remaining unrouted reveals need either an eavesdrop-proximity reader, a search-a-body action, or 11 new NPC records — none of it is prose work, all of it belongs to whoever owns those systems, and it is a clean follow-up once a critic grades this round."
+}

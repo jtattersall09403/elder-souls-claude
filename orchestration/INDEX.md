@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `69e6ffa`: 573 tools, 153 reference
-items, 42 pieces in flight.
+so it cannot drift. Generated at `64dd5f9`: 577 tools, 153 reference
+items, 43 pieces in flight.
 
-Its purpose is to stop 42+ concurrent agents each paying separately to discover the
+Its purpose is to stop 43+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -217,12 +217,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/economy/critic-souls-r3.mjs` — THE W1-SOULS ROUND-3 CRITIC'S OWN INSTRUMENT.
 - `tools/economy/w1-souls-ledger-chart.mjs` — THE PICTURE FOR W1-SOULS-LEDGER: two ledgers for one number, and the day they spent 53% apart.
 
-### `tools/experience/` — 15
+### `tools/experience/` — 17
 
 - `tools/experience/aftermath-diff.mjs` — RI-EXP05 "Comparison method" Step 7.
 - `tools/experience/beat-diff.mjs` — RI-EXP01 steps 3 and 5: diff an observed beat log against the beat sheet.
 - `tools/experience/beat-extract.mjs` — RI-EXP01 step 2: scan a session trace for the beat signatures.
 - `tools/experience/beats-from-md.mjs` — RI-EXP01 §D (prose) -> RI-EXP01.beats.json (machine-readable).
+- `tools/experience/breakage-probe.mjs` — RI-EXP06 Steps 1 and 2: the register, run, and diffed against its own past.
 - `tools/experience/ending-diff.mjs` — RI-EXP05 "Comparison method" Step 3, executed as far as this build allows.
 - `tools/experience/ending-specificity.mjs` — RI-EXP05 "Comparison method" Step 4.
 - `tools/experience/isolation-check.mjs` — RI-EXP01 step 0 / RI-EXP02: did the driving agent stay in its box?
@@ -231,11 +232,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/lib/sabotage.mjs` — THE SABOTAGE CONTROL, AS A FACILITY ANY PIECE CAN USE.
 - `tools/experience/log-lint.mjs` — PLAYTHROUGH-CRITIC §5.4: the play log must be neutral in register.
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
+- `tools/experience/probes-from-md.mjs` — RI-EXP06 Step 0: "the register is data".
 - `tools/experience/sabotage-cases.mjs` — THE THREE REAL FAILURES, REPLAYED THROUGH THE FACILITY.
 - `tools/experience/sabotage.mjs` — THE SABOTAGE CONTROL, as a command any piece can run.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 199
+### `tools/harness/` — 200
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -403,6 +405,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-apm3.mjs` — RI-MAG01 AP-M3, "the homing orb", made reproducible.
 - `tools/harness/w1-14-r3-census.mjs` — RI-MAG06 M7 (`DISTINCT-VERBS`) and M8 (the arena audit), re-run.
 - `tools/harness/w1-14-r3-dials.mjs` — THE THREE DIALS.
+- `tools/harness/w1-14-r3-shot.mjs` — one picture of the thing this round fixed.
 - `tools/harness/w1-14-r3-skill.mjs` — GAP-W1-magic-skill-frozen, measured under RI-MAG06 §E.
 - `tools/harness/w1-14-r3-summon.mjs` — CONSUMPTION (RI-MTH07 §B) for the summon magnitude dial, and AR-1.
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
@@ -532,7 +535,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-faction-gate-bypass.mjs` — CRITIC-WRITTEN (W1-FACTIONS r1), declared under method_deviations.
 - `tools/quests/critic-faction-r2.mjs` — the round-2 critic's own instrument for W1-FACTIONS.
 - `tools/quests/critic-giver-presence.mjs` — written for the W1-19 round-2 VERDICT.
-- `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G.
+- `tools/quests/critic-glyph-audit.mjs` — W1-READABLES r2 critic, attack G: the shared 5x5 chart font.
 - `tools/quests/document-route-world.mjs` — THE WORLD-SIDE HALF OF THE DOCUMENT CHANNEL.
 - `tools/quests/encounter-seam-probe.mjs` — does a quest resolution change what the world spawns?
 - `tools/quests/faction-probe.mjs` — the CONSUMPTION probe for the faction questlines (RI-MTH07, ARBITRATION §3).
@@ -567,6 +570,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ### `tools/refs/` — 1
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
+
+### `tools/stealth/` — 1
+
+- `tools/stealth/critic-w1-15-r3.mjs` — critic-w1-15-r3 — the W1-15 round-3 critic's own instrument.
 
 ### `tools/uesp/` — 8
 
@@ -882,9 +889,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `arbiter-dlg-s37` | starting | read RULES.md, INDEX.md, ARBITRATION.md, W1-17-r1.md, converse.js | `orchestration/status/arbiter-dlg-s37.json` |
+| `W1-23-r4` | building | baseline taken; find the roster generator | `orchestration/status/W1-23-r4.json` |
 | `W1-25` | building | RI-EXP06 (probes-from-md + breakage-probe + pbrule-audit + durability compare), then RI-EX | `corpus/95-experience/RI-CMP01.cells.json` `orchestration/status/W1-25.json` `reports/composition/w1/stage1.md` `reports/experience/w1/sabotage.json` `reports/experience/w1/sabotage.md` `tools/composition/cells-from-md.mjs` |
 | `critic-w1-17` | done | Round 2 builder: (1) decide first whether infoFor() implements RI-DLG01 §A's first-match-w | `orchestration/status/critic-w1-17.json` `corpus/90-verdicts/wave1/W1-17-r1.md` `corpus/90-verdicts/wave1/W1-17-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-r1/` `tools/dialogue/critic-field-census.mjs` `tools/dialogue/critic-semantics.mjs` |
-| `W1-23-r4` | ? |  | — |
 | `W1-ROAD-JOIN` | ? | probe the settlement geometry, then implement the thread in build-roads.mjs | `orchestration/status/W1-ROAD-JOIN.json` `reports/w1-road-join/baseline.json` |
 | `critic-w1-23-r3` | ? | none — round 3 complete. Verdict FAIL 4/10 (min-over-axes, gate 7.0). Biggest gap GAP-W1-l | `orchestration/status/critic-w1-23-r3.json` `tools/lore/critic-w1-23-r3-reach.mjs` `corpus/90-verdicts/wave1/W1-23-r3.md` `corpus/90-verdicts/wave1/W1-23-r3.json` `reports/blog-feed.jsonl` |
 | `critic-w1-15-r3` | running | read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G | `orchestration/status/critic-w1-15-r3.json` |
