@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f862df5`: 766 tools, 153 reference
-items, 73 pieces in flight.
+so it cannot drift. Generated at `3d4c88d`: 766 tools, 153 reference
+items, 78 pieces in flight.
 
-Its purpose is to stop 73+ concurrent agents each paying separately to discover the
+Its purpose is to stop 78+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1102,9 +1102,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-20` | running | run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms | — |
+| `P10-loader-retry` | starting | read loadData in game/src/engine.js and the boot notice in game/index.html | — |
+| `judge-prose-r4-m5` | researching | Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal. | `orchestration/status/judge-prose-r4-m5.json` |
+| `critic-w1-23-r5` | starting | read RULES, CLAUDE.md, W1-23-r4 status, RI-LOR03/04/06, verdict schema, then reproduce | `orchestration/status/critic-w1-23-r5.json` |
+| `critic-w1-attr-scale` | running | read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure | — |
+| `W1-TOUCH-r2` | starting | read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source | — |
 | `PLAYABILITY` | measuring | finish the live run at five shapes with --play and a 600 s cap; run --self-test and publis | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` `game/index.html` |
 | `plan-w1-hud-toast` | running | read game/src/ui/hud.js, W1-20 probe/verdict, reference items; write plan | — |
-| `critic-w1-20` | running | read RULES/INDEX/ARBITRATION/PLAN/items/status/report | — |
 | `critic-w1-touch` | done | none — verdict written and committed. Round 2 inherits three written-but-unrun legs: criti | `corpus/90-verdicts/wave1/W1-TOUCH-r1.md` `corpus/90-verdicts/wave1/W1-TOUCH-r1.json` `orchestration/status/critic-w1-touch.json` `tools/touch/critic-fight.mjs` `tools/touch/critic-fight-diag.mjs` `tools/touch/critic-title-probe.mjs` |
 | `W1-28` | partial | a critic with fresh context. The 60-minute run was still in flight at hand-off (reports/w1 | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |

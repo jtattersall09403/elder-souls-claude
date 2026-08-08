@@ -1,0 +1,15 @@
+{
+  "task_id": "P10-loader-retry",
+  "role": "builder — the data loader has no retry; a 503 on any of ~700 files kills boot and is reported as 'A file the game needs is missing'",
+  "state": "starting",
+  "commit_at_start": "",
+  "next_step": "read loadData in game/src/engine.js and the boot notice in game/index.html",
+  "files_touched": [],
+  "files_claimed": [
+    "game/src/engine.js",
+    "game/index.html",
+    "tools/playability/loader-retry-fixture.mjs",
+    "orchestration/status/P10-loader-retry.json"
+  ],
+  "notes": []
+}

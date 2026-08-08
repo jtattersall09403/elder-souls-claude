@@ -1,0 +1,26 @@
+{
+  "task_id": "critic-w1-20",
+  "role": "critic",
+  "piece": "W1-20",
+  "round": 1,
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "next_step": "run critic instrument 1 (play/deep_kin/consumption/walk), then worktree arms",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-20-r1.md",
+    "corpus/90-verdicts/wave1/W1-20-r1.json",
+    "orchestration/status/critic-w1-20.json",
+    "tools/quests/critic-w1-20-",
+    "docs/shots/"
+  ],
+  "redundant_with": [],
+  "notes": "fresh-context critic; attacks A-G per dispatch",
+  "commit_at_start": "f862df5",
+  "findings_so_far": [
+    "HEADLINE REPRODUCES at f862df5: builder's probe re-run cold gives 8 ladders, 7 joinable end to end, 7 refusals spoken and whole. Exit 0.",
+    "deep_kin is NOT an inert duplicate id: faction-gates.json gives it its own 8-rank ladder with DIFFERENT rank names (Stranger/Guest/Known/Kin-Named/Deep Kin/Elder Kin...) from the_xul_aneekh (Unnamed/Taken/Bound/Debtor/Keeper/Gem-Cutter...), and the shipped quest book pays deep_kin 226 positive reputation across 9 quests - twice its own rank-7 requirement of 112. To be verified in the running world.",
+    "RI-QST01 mean-quests-per-rank over 8 ranks: assize/wet_ledger/xul_aneekh 2.25 (pass); rootkeepers 0.38, dockhands 0.50, drowned_court 0.25, ixtu_vakh 0.25, deep_kin 0.13 (hard fail). Four lines have 6-7 EMPTY rank bands.",
+    "the_dockhands has 4 category=faction quests and deceit==null on all of them - RI-QST01 hard fail 'any faction line where every quest is honest'."
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "task_id": "judge-prose-r4-m5",
+  "brief": "Fresh blind judge on reports/packs/prose-tics-r4/ (15 trials). Dispatched as a fresh judge; on arrival I found the pack has ALREADY been judged twice (status judge-prose-r4.json, state=done) and that the mandatory RI-MTH03 M5 second pass is recorded as OWED AND NOT RUN. I run M5.",
+  "state": "researching",
+  "role": "blind judge, third pass, M5 harsher-lens",
+  "redundant_with": ["judge-prose-r4", "judge-prose-packs", "W1-PROSE-R2", "W1-PROSE-TICS"],
+  "contamination_control_declared_before_reading_any_trial": [
+    "HARD BAN: I will not open any t*/answer.md. The predecessor status file's summary block (read while orienting) states the FIRST judge picked reference on 15/15. Therefore every existing answer.md PICK line is a direct answer key. Reading one would void this pass.",
+    "HARD BAN: I will not open reports/packs/prose-tics-r4.reveal/ until all 15 of my rows are on disk.",
+    "HARD BAN: I will not open reports/packs/prose-tics-r4-judgement.md (the second judge's running record) until after reveal.",
+    "HARD BAN: I will not read past the summary preview of orchestration/status/judge-prose-r4.json, and not corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md, until after reveal.",
+    "I will not open t*/pack.json (carries a_words/b_words) until after my 15 rows are written.",
+    "I read ONLY t*/A.txt, t*/B.txt and t01-books/PROMPT.md before answering.",
+    "KNOWN RESIDUAL CONTAMINATION, declared up front: I know from the status summary that judge 1 scored 15/15 on provenance and judge 2 scored 15/15 on provenance. That is a base-rate prior that the reference side IS distinguishable. It does not tell me WHICH side in any single trial. It does mean my own accuracy cannot be read as an independent replication of 'is this pack decidable' - only as an independent replication of WHICH side is which.",
+    "I write my answers to JUDGEMENT-judge-prose-r4-m5.md, NOT into the existing answer.md files, so the pre-existing record stays byte-untouched."
+  ],
+  "outputs_written": [],
+  "files_touched": ["orchestration/status/judge-prose-r4-m5.json"],
+  "files_claimed": [
+    "reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "next_step": "Read PROMPT.md, then read A/B for t01..t15 and write one row each before any reveal."
+}

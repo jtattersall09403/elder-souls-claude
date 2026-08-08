@@ -165,8 +165,18 @@ export class SoulsAI {
     // `boss: true` leashed at 32 m like a levy. The order below is the fix, and it is stated in
     // ai.json §leash._tier_resolution as well as here because a resolution order that lives
     // only in code is a resolution order nobody can audit.
-    this.leashTier = stat.boss ? 'boss'
-      : (stat.tier && this.cfg.leash.hard_m[stat.tier] !== undefined ? stat.tier : A.leash_tier);
+    // THE MORE SPECIFIC TIER WINS, and `trash` is never specific. The first version of this read
+    // `boss -> statblock tier -> archetype`, which looked right and was wrong: every trash-tier
+    // statblock declares `tier: "trash"`, which IS a row here, so it shadowed the archetype's
+    // tier and `drowned_lesser` — an AMBUSHER whose whole identity is a 20 m leash — leashed at
+    // 32 m like everything else. My own consumption census found it: `leash.hard_m.ambusher`
+    // came back with no reader on a fixture built to exercise exactly that leaf.
+    const fromStat = stat.boss ? 'boss'
+      : (stat.tier && this.cfg.leash.hard_m[stat.tier] !== undefined ? stat.tier : null);
+    const fromArch = this.cfg.leash.hard_m[A.leash_tier] !== undefined ? A.leash_tier : null;
+    this.leashTier = (fromStat && fromStat !== 'trash') ? fromStat
+      : (fromArch && fromArch !== 'trash') ? fromArch
+        : (fromStat || fromArch || 'trash');
     this.leashHard = this.cfg.leash.hard_m[this.leashTier] ?? this.cfg.leash.hard_m.trash;
 
     this.state = 'IDLE';

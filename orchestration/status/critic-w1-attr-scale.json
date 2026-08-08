@@ -1,0 +1,17 @@
+{
+  "task_id": "critic-w1-attr-scale",
+  "role": "critic",
+  "brief": "CRITIC with fresh context for W1-ATTR-SCALE. Re-measure, delete-the-fix, break the checks, and attack the Morrowind/Souls seam: are attributes read by anything OUTSIDE combat?",
+  "started": "2026-08-08",
+  "state": "running",
+  "redundant_with": ["W1-ATTR-SCALE"],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.md",
+    "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+    "orchestration/status/critic-w1-attr-scale.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [],
+  "findings": [],
+  "next_step": "read RULES (done), ARBITRATION, corpus reference items, verdict schema; then re-measure"
+}

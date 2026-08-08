@@ -1,0 +1,233 @@
+{
+  "tool": "attr-scale-consumption",
+  "mode": "before",
+  "at": "2026-08-08T11:24:49.796Z",
+  "trials": [
+    {
+      "name": "the sheet under test",
+      "attributes": {
+        "strength": 6,
+        "endurance": 12,
+        "agility": 13,
+        "speed": 11,
+        "vigour": 6,
+        "willpower": 10,
+        "intellect": 15,
+        "hist-bond": 14,
+        "personality": 14,
+        "luck": 11
+      },
+      "skills": {
+        "blades": 15,
+        "axes-maces": 5,
+        "polearms": 5,
+        "greatweapons": 5,
+        "marksman": 5,
+        "claw-fang": 5,
+        "shieldcraft": 5,
+        "sorcery": 5,
+        "root-speech": 10,
+        "warding": 5,
+        "veiling": 5,
+        "alchemy": 15,
+        "athletics": 15,
+        "acrobatics": 5,
+        "survival": 20,
+        "sneak": 20,
+        "security": 25,
+        "mercantile": 25,
+        "speechcraft": 25
+      }
+    },
+    {
+      "name": "dead skill key: Q-LILM-01 res_rootkeepers requires root_speech 45",
+      "declared": {
+        "skills": {
+          "root-speech": 45
+        },
+        "knowledge": [
+          "book_the_rootless_egg"
+        ],
+        "requires_knowing": [
+          "rev_four",
+          "rev_keeper"
+        ],
+        "method": "lore_knowledge",
+        "journal_index": 92,
+        "violence_required": false
+      },
+      "at_skill_5": {
+        "available": false,
+        "why": [
+          "root-speech 5/45",
+          "you have not learned book_the_rootless_egg",
+          "you do not know rev_four",
+          "you do not know rev_keeper"
+        ]
+      },
+      "at_real_key_100": {
+        "available": false,
+        "why": [
+          "you have not learned book_the_rootless_egg",
+          "you do not know rev_four",
+          "you do not know rev_keeper"
+        ]
+      },
+      "at_misspelt_key_100": {
+        "available": false,
+        "why": [
+          "you have not learned book_the_rootless_egg",
+          "you do not know rev_four",
+          "you do not know rev_keeper"
+        ]
+      }
+    },
+    {
+      "name": "NULL CONTROL: Q-DEEP-01 res_broker speechcraft 45 (correctly spelt)",
+      "declared": {
+        "skills": {
+          "speechcraft": 45,
+          "root-speech": 30
+        },
+        "knowledge": [
+          "book_the_sap_and_the_knife"
+        ],
+        "requires_knowing": [
+          "rev_knife",
+          "rev_hulei"
+        ],
+        "method": "persuade",
+        "journal_index": 94,
+        "violence_required": false
+      },
+      "at_5": {
+        "available": false,
+        "why": [
+          "speechcraft 5/45",
+          "you have not learned book_the_sap_and_the_knife",
+          "you do not know rev_knife",
+          "you do not know rev_hulei"
+        ]
+      },
+      "at_100": {
+        "available": false,
+        "why": [
+          "you have not learned book_the_sap_and_the_knife",
+          "you do not know rev_knife",
+          "you do not know rev_hulei"
+        ]
+      }
+    },
+    {
+      "name": "off-scale attribute: Q-BLAK-01 res_hold requires personality 45",
+      "declared": {
+        "attributes": {
+          "personality": 16
+        },
+        "requires_knowing": [
+          "rev_destinations",
+          "rev_meno"
+        ],
+        "method": "intimidate",
+        "journal_index": 94,
+        "violence_required": false
+      },
+      "at_10": {
+        "available": false,
+        "why": [
+          "personality 10/16",
+          "you do not know rev_destinations",
+          "you do not know rev_meno"
+        ]
+      },
+      "at_measured_ceiling_31": {
+        "available": false,
+        "why": [
+          "you do not know rev_destinations",
+          "you do not know rev_meno"
+        ]
+      },
+      "at_the_demand_45": {
+        "available": false,
+        "why": [
+          "you do not know rev_destinations",
+          "you do not know rev_meno"
+        ]
+      }
+    },
+    {
+      "name": "the bought attribute stream: does anything award souls?",
+      "before": {
+        "souls": 0
+      },
+      "level_before": 1,
+      "souls_to_next": 418,
+      "kills": [
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        },
+        {
+          "error": "killEntity('undefined'): no such body"
+        }
+      ],
+      "player_pos": null,
+      "entities_seen": 42,
+      "level_after": 1,
+      "after": {
+        "souls": 0
+      }
+    }
+  ],
+  "couplings": {},
+  "verdicts": [
+    {
+      "name": "A1 the dead key refuses at the maximum a player can reach",
+      "pass": false,
+      "detail": "you have not learned book_the_rootless_egg | you do not know rev_four | you do not know rev_keeper"
+    },
+    {
+      "name": "A2 the gate is unmoved between root-speech 5 and root-speech 100 (coupling = 0)",
+      "pass": false,
+      "detail": "root-speech 5/45|you have not learned book_the_rootless_egg|you do not know rev_four|you do not know rev_keeper  ==  you have not learned book_the_rootless_egg|you do not know rev_four|you do not know rev_keeper"
+    },
+    {
+      "name": "A3 setting the MISSPELT key itself opens it — the lookup is the mechanism, not the difficulty",
+      "pass": true,
+      "detail": "you have not learned book_the_rootless_egg | you do not know rev_four | you do not know rev_keeper"
+    },
+    {
+      "name": "CONTROL a correctly-spelt floor DOES respond to the same poke (coupling != 0)",
+      "pass": true,
+      "detail": "speechcraft 5/45|you have not learned book_the_sap_and_the_knife|you do not know rev_knife|you do not know rev_hulei  ->  you have not learned book_the_sap_and_the_knife|you do not know rev_knife|you do not know rev_hulei"
+    },
+    {
+      "name": "B1 personality at the measured ceiling of the best of 240 sheets still refuses",
+      "pass": false,
+      "detail": "you do not know rev_destinations | you do not know rev_meno"
+    },
+    {
+      "name": "B2 the gate DOES move when the attribute does — so it is a scale bug, not a dead gate",
+      "pass": true,
+      "detail": "personality 10/16|you do not know rev_destinations|you do not know rev_meno  ->  you do not know rev_destinations|you do not know rev_meno"
+    },
+    {
+      "name": "B3 it opens only at a value no character can hold",
+      "pass": true,
+      "detail": "you do not know rev_destinations | you do not know rev_meno"
+    },
+    {
+      "name": "C the bought stream has no source: killing everything in the world awards no souls",
+      "pass": true,
+      "detail": "souls 0 -> 0 over 5 kill(s) of 42 entities; the next level costs 418 and the player is level 1"
+    }
+  ]
+}

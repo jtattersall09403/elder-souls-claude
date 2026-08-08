@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-TOUCH-r2",
+  "role": "builder",
+  "item": "RI-JRN04 §G / RI-JRN01 O17 — touch input, round 2",
+  "verdict_under_repair": "corpus/90-verdicts/wave1/W1-TOUCH-r1.md (FAIL 6/10, binding axis: coverage of RI-JRN04 §G)",
+  "state": "starting",
+  "started_at": "2026-08-08",
+  "work_list": [
+    {"id": "A", "from": "§4", "what": "why does the fixed-step rate collapse at the handheld profile? measure, change one thing, measure again", "state": "todo"},
+    {"id": "B", "from": "§3", "what": "T5 hold gate: frames vs wall-clock. read ARBITRATION.md ruling first", "state": "todo"},
+    {"id": "C", "from": "§5", "what": "ui/system.js:647 and touch-overlay.js:101 'by construction' — measure or delete", "state": "todo"},
+    {"id": "D", "from": "§6", "what": "run --leg menu, --leg insets, --leg portrait; report even if bad", "state": "todo"},
+    {"id": "E", "from": "§2", "what": "roll unreliable while stick held — may be downstream of A", "state": "todo"}
+  ],
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/W1-TOUCH-r2.json",
+    "tools/touch/",
+    "reports/w1-touch-r2/"
+  ],
+  "redundant_with": [],
+  "next_step": "read ARBITRATION.md, W1-TOUCH.json, critic-w1-touch.json, then the touch/step source",
+  "notes": []
+}

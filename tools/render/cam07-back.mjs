@@ -125,18 +125,25 @@ async function main() {
     report.rig = player.rig;
 
     // The player's world position and facing, read off the camera frame / rig rather than guessed.
+    // THE RIG'S PIVOT IS THE PLAYER ANCHOR, and round 1 of this file did not find it. It looked for
+    // `f.anchor` / `f.player` / `f.target`, got null, and FELL BACK TO THE WORLD ORIGIN — while the
+    // player stood at [2766.5, 4.23, 5011]. Two "player closeups" were captured 2.7 km from the
+    // player and the tool reported them as captured. A silent fallback to a plausible default is
+    // how a capture of nothing gets filed as a capture of something; there is no fallback now, and
+    // an absent pivot throws.
     const anchor = await page.evaluate(() => {
       const H = window.__HARNESS;
       const f = H.getCameraFrame();
-      // getCameraFrame carries the anchor the rig is following; fall back to the camera pivot.
-      const p = (f && (f.anchor || f.player || f.target)) || null;
-      const yaw = (f && (f.player_yaw !== undefined ? f.player_yaw : f.yaw)) || 0;
-      return { pos: p, yaw, raw: f };
+      const c = f && f.camera;
+      return { pos: c && c.pivot, yaw_deg: c && c.yaw_deg, arm_m: c && c.arm_len_m, raw: f };
     });
     report.anchor = anchor;
+    if (!Array.isArray(anchor.pos) || anchor.pos.length !== 3 || !anchor.pos.every(Number.isFinite)) {
+      throw new Error(`cam07-back: getCameraFrame().camera.pivot is ${JSON.stringify(anchor.pos)}. Without the player anchor these captures would be of empty terrain, and round 1 of this file filed exactly that as a player closeup. Refusing rather than defaulting.`);
+    }
 
-    const P = Array.isArray(anchor.pos) ? anchor.pos : (anchor.pos && anchor.pos.pos) || [0, 0, 0];
-    const yaw = Number(anchor.yaw) || 0;
+    const P = anchor.pos;
+    const yaw = ((Number(anchor.yaw_deg) || 0) * Math.PI) / 180;
     const look = [P[0], P[1] + CHEST, P[2]];
     const pitch = (PITCH_DEG * Math.PI) / 180;
     const horiz = ARM * Math.cos(pitch);
@@ -153,25 +160,43 @@ async function main() {
     report.viewpoints = VIEWPOINTS.map((v) => ({ id: v.id, camera: { pos: v.eye, look: v.look, fov: v.fov } }));
 
     // ---- M0: the posed-camera projection is not blind -----------------------------------------
-    const project = async (v) => page.evaluate(([pos, look, fov, head]) => {
+    //
+    // THE TEST POINT MUST BE OFF THE CAMERA AXIS, and the first draft of this check was not.
+    // Round 1 of this file projected `look + 0.5y` — a point on the vertical axis THROUGH the look
+    // target — from both poses, and got [0, 0.4376] and [1.5e-16, 0.4376]. Of course it did: an
+    // on-axis point projects to frame centre from every camera aimed at it, so the probe could not
+    // have failed whatever the camera did, and its `ndc_differs: true` was floating-point residue
+    // being read as a signal. That is precisely the shape this whole piece exists to catch, found
+    // in my own instrument by running it. The point is now offset in X — the player's left
+    // shoulder — which must project to OPPOSITE sides of the frame from behind and from in front.
+    const OFFAXIS = [look[0] + 0.30, look[1] + 0.35, look[2]];
+    const project = async (v) => page.evaluate(([pos, look, fov, pt]) => {
       const H = window.__HARNESS;
       H.camera({ pos, look, fov });
       H.renderFrame();
-      const ndc = H.projectPoint(head[0], head[1], head[2]);
-      const st = H.camera({});
-      return { ndc, yaw: st && st.yaw, pitch: st && st.pitch, pos: st && st.pos };
-    }, [v.eye, v.look, v.fov, [look[0], look[1] + 0.5, look[2]]]);
+      const ndc = H.projectPoint(pt[0], pt[1], pt[2]);
+      const f = H.getCameraFrame();
+      return { ndc, yaw_deg: f && f.camera && f.camera.yaw_deg, pitch_deg: f && f.camera && f.camera.pitch_deg, pos: f && f.camera && f.camera.pos };
+    }, [v.eye, v.look, v.fov, OFFAXIS]);
 
     const pBack = await project(VIEWPOINTS[0]);
     const pFront = await project(VIEWPOINTS[1]);
+    const nx = (p) => (p && p.ndc && Array.isArray(p.ndc.ndc) ? p.ndc.ndc[0] : (p && p.ndc && p.ndc.x));
+    const xBack = nx(pBack), xFront = nx(pFront);
     report.M0 = {
-      what: 'a posed camera writes its own yaw, so projectPoint answers about the camera that was placed',
+      what: 'a posed camera writes its own yaw, so projectPoint answers about the camera that was actually placed',
+      test_point: OFFAXIS,
+      test_point_note: 'OFF the camera axis on purpose: an on-axis point projects identically from both poses and makes this probe unfalsifiable.',
       back: pBack, front: pFront,
-      yaw_differs: pBack.yaw !== pFront.yaw,
-      ndc_differs: JSON.stringify(pBack.ndc) !== JSON.stringify(pFront.ndc),
+      yaw_differs: pBack.yaw_deg !== pFront.yaw_deg,
+      ndc_x_back: xBack, ndc_x_front: xFront,
+      // The real discriminator: from behind and from in front, the same shoulder is on opposite
+      // sides of the frame. A tolerance of 0.02 NDC keeps floating-point residue out.
+      ndc_x_flips_side: Number.isFinite(xBack) && Number.isFinite(xFront)
+        && Math.abs(xBack) > 0.02 && Math.abs(xFront) > 0.02 && (xBack > 0) !== (xFront > 0),
     };
-    report.M0.pass = !!(report.M0.yaw_differs && report.M0.ndc_differs);
-    log(`M0 posed-camera projection: yaw ${pBack.yaw} -> ${pFront.yaw}, ndc differs ${report.M0.ndc_differs}`);
+    report.M0.pass = !!report.M0.ndc_x_flips_side;
+    log(`M0 posed-camera projection: yaw ${pBack.yaw_deg} -> ${pFront.yaw_deg}, ndc.x ${xBack} -> ${xFront}, flips side ${report.M0.ndc_x_flips_side}`);
 
     // ---- capture both viewpoints ---------------------------------------------------------------
     const shot = async (v, { hidePlayer = false } = {}) => {
@@ -283,23 +308,35 @@ async function main() {
       factors: [{ id: 'player', what: 'remove the player body from the frame' }],
       read: async ({ subject, t, broken, degenerate }) => {
         const away = degenerate || subject === 'no-player' || broken.includes('player');
-        const r = await page.evaluate(([away, steps, home], ) => {
+        const r = await page.evaluate(([away, steps, home]) => {
           const H = window.__HARNESS;
           if (away) H.teleport(9000, 9000, { safe: false });
           if (steps > 0) H.stepFrames(steps);
           H.renderFrame();
-          const sig = H.getDrawnSignature();
-          // Silhouette-breaking elements on the BACK, as the scene graph can see them: the
-          // distinct named child meshes of the player's own group. This build's makeActor()
-          // assembles a rigid group of primitives, so this is a count of those.
           const g = H.getDrawnGeometry ? H.getDrawnGeometry() : null;
-          const n = g && g.player && Array.isArray(g.player.parts) ? g.player.parts.length : null;
+          const actors = (g && Array.isArray(g.actors)) ? g.actors : [];
+          const me = actors.find((a) => a.id === 'player') || actors[0] || null;
+          // §B3 asks for silhouette-breaking elements ON THE BACK at the rig distance: hood,
+          // pauldron, scabbard, quiver, cloak fastening, tail root, belt hang. What this surface
+          // can enumerate is bone ORIGINS and a weapon origin. There is no attachment list and no
+          // per-part mesh list, so the count §B3 names IS NOT DERIVABLE from it — and inventing a
+          // proxy (bone count, mesh count) would be answering a different question with a number
+          // that looks like the right one.
+          const surface = me ? {
+            has_bones: !!me.bones, bone_count: me.bones ? Object.keys(me.bones).length : 0,
+            has_weapon_origin: me.weapon_origin !== undefined,
+            has_part_list: Array.isArray(me.parts),
+            keys: Object.keys(me),
+          } : null;
           if (away) H.teleport(home[0], home[1], { safe: false });
-          return { parts: n, meshes: sig.meshes };
+          return { surface, actors: actors.length, answerable: !!(surface && surface.has_part_list) };
         }, [away, t, [P[0], P[2]]]);
-        // Absent a per-actor part list, the honest reading is the count the scene graph exposes.
-        const v = r.parts !== null ? r.parts : (away ? 0 : null);
-        return { value: v, support: r.meshes || 0 };
+        report.B3_surface = r.surface;
+        // NOT ANSWERABLE. Reported as an absence, with support 0, so the reading returns
+        // NOTHING_READ rather than a number nobody can defend. RULES.md rule 24: never stub a
+        // tool to pass; report the absence.
+        if (!r.answerable) return { value: null, support: 0 };
+        return { value: null, support: 0 };
       },
     }));
 
