@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dd63f6c`: 604 tools, 153 reference
-items, 45 pieces in flight.
+so it cannot drift. Generated at `692b6aa`: 605 tools, 153 reference
+items, 46 pieces in flight.
 
-Its purpose is to stop 45+ concurrent agents each paying separately to discover the
+Its purpose is to stop 46+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -248,7 +248,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 - `tools/experience/w1-25-chart.mjs` — THE PICTURE FOR W1-25: three controls that were run, exited 0, and measured nothing — and what each of them looks like when the arms are drawn side by side.
 
-### `tools/harness/` — 201
+### `tools/harness/` — 202
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -425,6 +425,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-15-r3-deletefix.mjs` — RULES.md rule 6, on this round's two load-bearing claims.
 - `tools/harness/w1-15-r3-live.mjs` — W1-15 round 3, asked of the RUNNING game.
+- `tools/harness/w1-16-r3-reach.mjs` — W1-16 ROUND 3.
 - `tools/harness/w1-21-r2-deletefix.mjs` — DELETE-THE-FIX for W1-21 round 2's AR-2 change (RULES 6, and RULES 17 for the index check).
 - `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?
 - `tools/harness/w1-21-r2-nav.mjs` — W1-21 round 2, in the shipping browser build: THE DOOR BETWEEN SCREENS, and the three other things the round-1 verdict said no instrument in this piece looks at
@@ -916,12 +917,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-16-r3` | measuring | live stepping run: critic-w1-16-live.mjs --probe parallel,oversprint,separation,spell + de | `orchestration/status/W1-16-r3.json` `game/src/engine.js` `game/src/combat/player.js` `game/src/harness/api.js` `game/data/items/carried.json` `tools/harness/w1-16-r3-reach.mjs` |
+| `W1-SAVE-AI` | fix_landed | extend boot-check to step after a load; consumption + delete-the-fix; blog line; name the  | `orchestration/status/W1-SAVE-AI.json` `game/src/save/fight.js` `game/src/combat/ai.js` `game/src/combat/enemy.js` `tools/check-save-shape.mjs` `tools/check-data.mjs` |
+| `W1-DLG-S37` | starting | read RULES/INDEX/ARBITRATION S37/RI-DLG01 A+D/NEXT-DISPATCH T0; run ownership + contention | `orchestration/status/W1-DLG-S37.json` |
 | `W1-CHARTFONT` | ? | Read spec section G of corpus/90-verdicts/wave1/W1-READABLES-r2.md; locate shared glyph ta | `orchestration/status/W1-CHARTFONT.json` |
 | `critic-w1-readables` | done | orchestrator: the two axes below the gate are one sitting's work each. corpus/90-verdicts/ | `orchestration/status/critic-w1-readables.json` `corpus/90-verdicts/wave1/W1-READABLES-r2.md` `corpus/90-verdicts/wave1/W1-READABLES-r2.json` `tools/quests/critic-glyph-audit.mjs` `tools/quests/critic-unrouted-census.mjs` `tools/quests/critic-chain-headless.mjs` |
 | `critic-w1-14-r3` | running | finish parts H/C/D, then A and F; write verdict md+json; blog line; commit | `orchestration/status/critic-w1-14-r3.json` `tools/harness/critic-w1-14-r3.mjs` `reports/critic-w1-14-r3/` |
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
-| `W1-SAVE-AI` | in_progress | land the fix in save/fight.js + combat/ai.js + combat/enemy.js, then verify in one browser | `orchestration/status/W1-SAVE-AI.json` |
-| `W1-16-r3` | building | implement _handWeight() in engine.js; route right/left equips through setLoadout; seed _eq | `orchestration/status/W1-16-r3.json` |
 | `W1-17-r2` | building | res consumption arm; voice-metrics second_regex; orphans bucket; S37 invariance tool; blog | `orchestration/status/W1-17-r2.json` `tools/dialogue/answer-census.mjs` `tools/dialogue/critic-reach.mjs` `tools/dialogue/rehome-actors.mjs` `tools/dialogue/w1-17-r2-deletefix.mjs` `game/data/npcs/pop-trades.json` |
 | `W1-25` | done | Someone must fix game/data/lore/canon.json (or the _installCanon assertion) - the tree doe | `corpus/95-experience/RI-CMP01.cells.json` `corpus/95-experience/RI-EXP06.probes.json` `corpus/95-experience/prompts/recall.md` `docs/shots/2026-08-08-w1-25-a-control-fails-when-its-arms-agree.png` `orchestration/status/W1-25.json` `reports/blog-feed.jsonl` |
 | `W1-23-r4` | building | part 2 — make the 19 contradiction pairs reachable, reusing W1-READABLES-r2 placement mach | `orchestration/status/W1-23-r4.json` `tools/lore/lib/namegen.mjs` `tools/lore/name-rosters.mjs` `tools/lore/lor04-validate.mjs` `game/data/npcs/` `game/data/world/property/` |
