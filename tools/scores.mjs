@@ -80,6 +80,16 @@ const DOMAIN = {
   // `publish.mjs` before this round started, so the shared gate was red for everyone. Its
   // subsystem paths are `quests.*` and `lore.book.*`; the quest reveals are what it grades.
   'w1-readables': 'Quests',
+  // Also not mine: `W1-ROAD-JOIN` landed from another agent mid-round and red-lined the same gate.
+  // Added for the same reason as `w1-readables` — a domain mapping cannot conflict with its
+  // owner's work, and a shared gate left red costs the next agent a diagnosis.
+  //
+  // NOTE FOR WHOEVER OWNS THIS FILE: three pieces in one session arrived here unmapped, because
+  // every new named piece fails publish.mjs closed until someone edits this table by hand. The
+  // fail-closed default is right for a chart that must not silently omit data, but the burden is
+  // landing on whichever critic happens to publish next. Worth a `DOMAIN_DEFAULT` plus a warning,
+  // or a check in `dispatchable.mjs` that refuses to dispatch a named piece with no domain.
+  'w1-road': 'The world',
 };
 
 // Validated categorical order (dark steps). Used only by the overlay view.

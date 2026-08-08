@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "piece_id": "w1-map-r2",
-  "piece_title": "The discovery map — round 2, and a re-take of four findings whose evidence was undermined",
+  "piece_title": "The discovery map — round 2: four findings re-taken, and re-scored against S38 which landed mid-round",
   "subsystem_paths": [
     "world.map.legibility",
     "journal.navigation.nomarkers",
@@ -20,12 +20,12 @@
   "build": {
     "commit_sha": "f291b01",
     "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "commit_note": "Every number is a claim about f291b01 (rule 12). HEAD moved to 8b1295b while this verdict was being written; no map file changed in that range.",
+    "commit_note": "Every number is a claim about f291b01 plus the UNCOMMITTED ARBITRATION S38 ruling and tools/map/arbiter-map-s38.mjs, which landed in the working tree during this run (rule 12). HEAD moved to 8b1295b while this verdict was being written; no map file changed in that range.",
     "harness_commands": [
       {
         "command": "node tools/harness/critic-map-r2.mjs",
         "exit_code": 0,
-        "result": "26/40 — 13 findings"
+        "result": "26/41 — the findings, including A13 (S38 clause (d))"
       },
       {
         "command": "node tools/harness/critic-map-r2.mjs --break all",
@@ -51,6 +51,16 @@
         "command": "node tools/boot-check.mjs",
         "exit_code": 0,
         "result": "PASS"
+      },
+      {
+        "command": "node tools/map/arbiter-map-s38.mjs",
+        "exit_code": 0,
+        "result": "6/6 — the S38 gate, verified independently rather than inherited"
+      },
+      {
+        "command": "node tools/map/arbiter-map-s38.mjs --control=pre-s38",
+        "exit_code": 1,
+        "result": "red 4 of 6 against the historical loader — the gate's control bites"
       }
     ],
     "depends_on": [
@@ -83,15 +93,15 @@
       "path": "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
       "side": "morrowind",
       "kind": "structure",
-      "native_scale": "0-10 band; 10 = every marker convention structurally impossible on every surface, adversarially, and S35's permitted affordances all present",
+      "native_scale": "0-10 band; 10 = every marker convention structurally impossible on every surface, adversarially, and S35-as-amended-by-S38's four hard fails all held",
       "native_score": 10,
       "native_max": 10,
-      "native_verdict": "Morrowind ships a map and ships no quest markers; RI-UIX02 is the enforcement item and ARBITRATION S35 (the owner's overrule of S30) is the specification it now enforces for this screen",
-      "score_0_10": 3,
+      "native_verdict": "Morrowind ships a map and ships no quest markers; RI-UIX02 is the enforcement item, ARBITRATION S35 is the specification, and S38 amends S35 in place to bind the DERIVATION rather than the authenticity of a save file",
+      "score_0_10": 4,
       "measured": "full",
-      "justification": "Judged against ARBITRATION S35, which RI-UIX02 enforces. The permitted list is fully built and the forbidden list is structurally refused on the honest path: no markers, no routes, no numerals, no travel, no 'show on map' from the journal, a square only after standing, a name only from pois.json, and undiscovered genuinely unrendered (the draw loop skips it; a fresh map paints 0 of 42,846 cells). What fails is the clause 'any square for a place the player has not personally stood in': a forged footprint puts all 42 places and 100% of the province on the map, and it now does so through the player-facing sealed save file.",
-      "why_not_ten": "Two reachable violations. (1) The map is a pure function of one save field the attacker controls, and the container's sha-256 is an integrity check the game's own writer will recompute for a forger. (2) sim.discovery is a writable slot the quest machine holds, and window.__ENGINE reaches it outside any capability prohibition.",
-      "path_to_ten": "Freeze the slot (one line), publish the footprint audit restore() already computes, and corroborate `stood` against a record written by a different system (engine.js travel.visited).",
+      "justification": "Judged against ARBITRATION S35 AS AMENDED BY S38, which landed in the working tree during this run. The permitted list is fully built and the forbidden list is structurally refused: no markers, no routes, no numerals, no travel, no 'show on map' from the journal, a square only after standing, a name only from pois.json, and undiscovered genuinely unrendered (the draw loop skips it; a fresh map paints 0 of 42,846 cells). S38's clauses (a) and (b) hold well — RESTORE_READS is ['stood'] and the arbiter's gate is 6/6 exhaustive over all 42,846 generators, which I re-ran rather than inherited, with its --control=pre-s38 going red 4 of 6. What fails is (c) and (d): sim.discovery is a writable slot the quest machine holds and window.__ENGINE reaches, so the drawn map can stop being a function of the footprint without any claim to have stood anywhere; and the seven-field load audit is computed and never published, so on the forgery that writes no claims the two fields S38-4 reads are both zero while missing_cells is 42,846 and nothing can see it.",
+      "why_not_ten": "Two clauses of S38 fail. (c): sim.discovery is writable and configurable, questEngine.sim === sim, and window.__ENGINE reaches the same slot outside every capability prohibition — 3 and 2 squares rendered respectively, from a model the game never built. (d): the itemisation exists on Discovery.lastRestore and dies there; no published surface carries it, and S38-4 cannot see the gap because it only ever forges the claim fields.",
+      "path_to_ten": "Freeze the slot (one line) and publish the audit restore() already computes. Then extend S38-4 with an arm that forges `stood` with cells:\"\" and places:[] and requires a moved audit field to be readable from the published surface.",
       "ten_by_wave": 2,
       "checks": [
         {
@@ -168,9 +178,9 @@
         },
         {
           "id": "A9",
-          "result": "fail",
+          "result": "pass",
           "value": "124,898 sealed bytes accepted through importSave() -> place_count 42/42, revealed 42846/42846, 42 squares drawn",
-          "threshold": "no square for a place the player has not personally stood in, adversarially",
+          "threshold": "WITHDRAWN AS A FINDING. ARBITRATION S38 landed during this run and rules that S35's clause binds the map's DERIVATION and the game's authoring surface, not the authenticity of a save file, and that 'a critic may not fail a build for a forged footprint'. Recorded as a MEASUREMENT: the forgery reaches the map through the player-facing sealed container, and the game's own writer will seal it, which is evidence FOR S38's reasoning that there is no authenticity boundary here to defend.",
           "evidence": [
             "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json",
             "docs/shots/2026-08-08-critic-map-r2-forged.png"
@@ -178,18 +188,18 @@
         },
         {
           "id": "A10",
-          "result": "fail",
+          "result": "pass",
           "value": "after import, 2 hostiles spawned and 180 fixed steps ran with 0 faults; the map still held 42/42 places and 42846/42846 cells",
-          "threshold": "the forgery does not survive a real stepping session — i.e. it is not an artefact of a load that died",
+          "threshold": "WITHDRAWN AS A FINDING. ARBITRATION S38 landed during this run and rules that S35's clause binds the map's DERIVATION and the game's authoring surface, not the authenticity of a save file, and that 'a critic may not fail a build for a forged footprint'. Recorded as a MEASUREMENT: the forgery reaches the map through the player-facing sealed container, and the game's own writer will seal it, which is evidence FOR S38's reasoning that there is no authenticity boundary here to defend.",
           "evidence": [
             "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
           ]
         },
         {
           "id": "A12b",
-          "result": "fail",
+          "result": "pass",
           "value": "a forged blob resealed by the game's own exportSave() is ACCEPTED; only bytes edited after sealing are refused (A12a)",
-          "threshold": "the field the map trusts is guarded by a check the forger cannot recompute",
+          "threshold": "WITHDRAWN AS A FINDING. ARBITRATION S38 landed during this run and rules that S35's clause binds the map's DERIVATION and the game's authoring surface, not the authenticity of a save file, and that 'a critic may not fail a build for a forged footprint'. Recorded as a MEASUREMENT: the forgery reaches the map through the player-facing sealed container, and the game's own writer will seal it, which is evidence FOR S38's reasoning that there is no authenticity boundary here to defend.",
           "evidence": [
             "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
           ]
@@ -226,6 +236,24 @@
           "result": "pass",
           "value": "13 attempts on the model's own surface, 0 succeeded, requested place absent, place list unchanged",
           "threshold": "no method ON the model accepts a place",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+          ]
+        },
+        {
+          "id": "S38-gate",
+          "result": "pass",
+          "value": "node tools/map/arbiter-map-s38.mjs 6/6: 42846/42846 generators, 0 unjustified squares, 0 out-of-sightline cells; --control=pre-s38 exits 1, red 4 of 6",
+          "threshold": "S38 (a) one non-derived field and (b) the drawn map a pure function of it — re-run by me rather than inherited",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log"
+          ]
+        },
+        {
+          "id": "A13",
+          "result": "fail",
+          "value": "on a forged footprint with cells:\"\" and places:[] the audit holds {dropped:[], phantom_cells:0, missing_cells:42846, claimed_places:0, derived_places:42, stood_cells:42846, legacy:false}. Moved: missing_cells, stood_cells, derived_places. Published by mapState()/getUIState(): NONE. The two fields S38-4 reads (dropped, phantom_cells) are BOTH SILENT on this save.",
+          "threshold": "S38 clause (d): a discrepancy between the blob's claims and the derivation is ITEMISED, not swallowed — and reachable",
           "evidence": [
             "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
           ]
@@ -385,6 +413,12 @@
       "camera_pose": "map screen open, world view; body at the default start, Western Rootlands, immediately after importSave() of the sealed forgery; third-person rig, world paused by the menu",
       "resolution": "1920x1080",
       "device_pixel_ratio": 1
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log",
+      "kind": "log",
+      "produced_by": "node tools/map/arbiter-map-s38.mjs",
+      "note": "The S38 gate re-run by me rather than inherited from the arbiter: 6/6, exhaustive over all 42,846 of 42,846 generators, 0 unjustified squares, 0 out-of-sightline cells, furthest reveal 450 m against the data file's own 450 m cap. `--control=pre-s38` exits 1 (red 4 of 6) against the historical loader, so the gate's control bites. This is the evidence that S38 clauses (a) and (b) hold, and the baseline against which A13 shows clause (d) does not."
     }
   ],
   "blind_comparisons": [],
@@ -449,10 +483,10 @@
     }
   },
   "score": {
-    "overall_0_10": 3.0,
+    "overall_0_10": 4.0,
     "pass_threshold": 7,
     "aggregation": "min",
-    "band_label": "A good screen with one field it must not trust and one slot nobody froze",
+    "band_label": "Sound derivation, an unpublished audit, and a slot nobody froze",
     "confidence": "high",
     "axes": [
       {
@@ -461,64 +495,80 @@
         "round_1_score": 9
       },
       {
-        "axis": "S35 'no square for a place not personally stood in', adversarially",
-        "score": 3,
-        "round_1_score": 5
+        "axis": "S38 (a)+(b): one non-derived save field, and the drawn map a pure function of it",
+        "score": 9,
+        "round_1_score": null,
+        "note": "new axis — S38 landed mid-round and replaces round 1's 'no square for a place not personally stood in, adversarially' (5). Verified by re-running the arbiter's gate, not inherited."
+      },
+      {
+        "axis": "S38 (c): nothing anywhere may name or install a place on the map",
+        "score": 5,
+        "round_1_score": 6
+      },
+      {
+        "axis": "S38 (d): a claim/derivation discrepancy is itemised, not swallowed",
+        "score": 4,
+        "round_1_score": null,
+        "note": "new axis"
       },
       {
         "axis": "instrument adequacy — can the build detect its own violation",
-        "score": 3,
-        "round_1_score": 4
-      },
-      {
-        "axis": "API closure (no API by which a quest could touch the map)",
         "score": 5,
-        "round_1_score": 6
+        "round_1_score": 4
       },
       {
         "axis": "CONSUMPTION (RI-MTH07)",
         "score": 4,
         "round_1_score": 4
       }
+    ],
+    "withdrawn_axes": [
+      {
+        "axis": "S35 'no square for a place not personally stood in', adversarially",
+        "round_1_score": 5,
+        "why_withdrawn": "ARBITRATION S38 landed in the working tree during this round and rules the question out of scope: 'a critic may not fail a build for a forged footprint'. I pressed the attack harder than round 1 did and then declined to score it. My sharpest evidence (A12b: the game's own writer will seal a forged blob on request) supports the ruling rather than undermining it — it shows there is no authenticity boundary to defend, only the appearance of one, which is S38's argument reached from the other direction."
+      }
     ]
   },
   "status": "FAIL",
   "status_reasons": [
-    "below_threshold: 3.0 (min over axes) against the wave-1 gate of 7.0",
-    "S35's clause 'any square for a place the player has not personally stood in' fails: 42 of 42 places and 100% of the province from a forged footprint, delivered this round through the PLAYER-FACING sealed save file and durable across 180 stepped frames with hostiles present",
-    "no published number distinguishes a forged map from an honest one; map-probe is 32/32 with its forgery check GREEN on the same tree",
-    "sim.discovery is a writable slot reachable from the quest machine AND from window.__ENGINE, which capability prohibitions do not cover",
+    "below_threshold: 4.0 (min over axes) against the wave-1 gate of 7.0",
+    "S38 clause (c): sim.discovery is a writable, configurable slot that the quest machine holds AND that window.__ENGINE reaches outside every capability prohibition — 3 and 2 squares drawn from a model the game never built, with no claim to have stood anywhere. S38's own gate audits the model's members, not the slot the model sits in.",
+    "S38 clause (d): the seven-field load audit restore() computes is never published. On the forgery that writes no claims, `dropped` and `phantom_cells` — the two fields S38-4 reads — are both ZERO while `missing_cells` is 42,846, and no published surface carries any of it.",
+    "instrument: map-probe is 32/32 with L3 ('a FORGED save ... is refused') GREEN, because it forges world.discovery.places, the field RESTORE_READS was narrowed to exclude. S38 names its replacement (S38-3); it has not landed.",
     "CONSUMPTION (RI-MTH07): zero world-side consumers; the world hash is identical with the model destroyed",
-    "NOT a reason: C2, D1, D2 and D3 all reproduce as PASSES in both arms — the re-take clears them"
+    "NOT a reason: C2, D1, D2 and D3 all reproduce as PASSES in both arms — the re-take clears them",
+    "NOT a reason: the forged save. S38 rules it out of scope and the axis is withdrawn rather than scored."
   ],
   "biggest_gap": {
-    "gap_id": "GAP-W1-map-trusts-one-field-the-player-writes",
+    "gap_id": "GAP-W1-map-the-audit-is-computed-and-never-published",
     "subsystem_path": "platform.save.persistence",
-    "what": "The map is a pure function of one save field, `world.discovery.stood`, and that field is under the attacker's control. Forging it puts all 42 places and 100% of the province on the screen for a body that has walked nowhere — and this round shows it works through the ordinary save-file route: the game's own exportSave() seals the forged blob and importSave() accepts 124,898 bytes of it. Every compliance number the build reports about the map is derived from the model being audited, so places_drawn == places_discovered reads green on that same screen, and map-probe's own forgery check L3 passes because it forges `world.discovery.places`, the field RESTORE_READS was narrowed to EXCLUDE.",
-    "why_it_matters": "S35 makes 'any square for a place the player has not personally stood in' a hard fail, and 'undiscovered is unrendered' a hard fail. The forged frame violates both. Worse for the project than the hole itself: the build cannot detect its own violation, and it reports that it is compliant while doing it — which is the exact failure the W1-21 round-1 verdict recorded and which discovery.js's own header (lines 20-27) quotes back at the reader as something the rewrite fixed. It did not. A11 is that sentence still true, two rounds later.",
+    "what": "Discovery.restore() computes a seven-field audit of the loaded footprint against the blob's own claims — dropped, phantom_cells, missing_cells, claimed_places, derived_places, stood_cells, legacy — and every published surface throws it away: save/state.js:676 keeps only .dropped and mapState() publishes only dropped_on_load. ARBITRATION S38 clause (d) makes 'a discrepancy between the blob's claims and the derivation is ITEMISED, not swallowed' a hard fail, and the S38 gate's own assertion for it (S38-4) cannot see this gap, because S38-4 forges the CLAIM FIELDS — an all-ones raster and all 42 names — and so always produces an itemisation to read. The forgery a forger would actually write supplies no claims at all: with cells:\"\" and places:[] the two fields S38-4 reads are both ZERO on a save that fills the entire province, while missing_cells reads 42,846 and derived_places reads 42.",
+    "why_it_matters": "S38 deliberately gave up tamper-resistance and kept, in exchange, the promise that a save whose claims disagree with its own derivation is itemised rather than swallowed. That promise is currently unkeepable by any instrument: the signal exists for one function call and then goes out of scope. It is also round 1's remedy 1, unactioned, and it is the difference between a build that can report on its own loads and one that cannot. The second-order cost is worse: the new gate reads green on the clause, so the gap is now covered by a passing check.",
     "evidence": [
       "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json",
-      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log",
-      "docs/shots/2026-08-08-critic-map-r2-forged.png"
+      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/arbiter-map-s38-gate.log",
+      "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log"
     ],
     "severity": "blocking",
     "remedy": {
-      "action": "Three changes, none large. (1) PUBLISH THE AUDIT THAT ALREADY EXISTS: Discovery.restore() computes stood_cells, phantom_cells, missing_cells and legacy into lastRestore, and save/state.js:676 keeps only .dropped — carry the whole record onto sim and surface it through mapState() and getUIState().map. (2) POINT THE FORGERY CHECK AT THE FIELD THAT IS READ: replace map-probe L3's forgery of world.discovery.places with a forgery of world.discovery.stood in the wire format (tools/harness/critic-map-r2.mjs forgeTrail() is 9 lines and can be lifted), and give it a --break forge self-test so it is proven able to go red. (3) CORROBORATE THE FOOTPRINT AGAINST A DIFFERENT SYSTEM'S RECORD: engine.js already maintains travel.visited, 25 m bins of the legs actually stood in; checking `stood` against it is not a fixed point on one field, which is precisely what reducing two fields to one failed to achieve.",
+      "action": "(1) PUBLISH THE AUDIT: carry the whole lastRestore record onto sim in save/state.js (which currently keeps only .dropped at :676) and surface it through Engine.mapState() and UISystem.state()'s `map` block, alongside the existing dropped_on_load. (2) EXTEND S38-4 TO THE SILENT FORGERY: add an arm to tools/map/arbiter-map-s38.mjs that forges `stood` with cells:\"\" and places:[] and requires at least one moved audit field to be readable from the published surface — as it stands, clause (d)'s gate passes on the one save shape a forger would write. (3) REPLACE map-probe L3, which forges world.discovery.places and is green; S38 already names S38-3 as its replacement. (4) FREEZE THE SLOT: Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}) after construction — one line, and it closes clause (c) as well.",
       "targets": [
-        "game/src/sim/discovery.js",
         "game/src/save/state.js",
         "game/src/harness/api.js",
         "game/src/ui/system.js",
+        "game/src/engine.js",
+        "tools/map/arbiter-map-s38.mjs",
         "tools/harness/map-probe.mjs"
       ],
-      "acceptance": "node tools/harness/critic-map-r2.mjs reports A5 and A11 green: mapState() and getUIState().map carry phantom_cells / stood_cells / missing_cells / legacy, and on the whole-province forgery at least one published number differs from the honest case. AND node tools/harness/map-probe.mjs --break forge prints SELF-TEST OK, having reddened L3 by forging world.discovery.stood. A1/A2/A3/A9 remain findings until remedy 3 lands; the acceptance for those is that a forged `stood` unsupported by travel.visited yields place_count <= the honest walk's.",
-      "ref_item": "S35",
-      "estimated_size": "M"
+      "acceptance": "node tools/harness/critic-map-r2.mjs reports A5 and A13 green: on a forged footprint with cells:\"\" and places:[], at least one of missing_cells / stood_cells / derived_places is readable through mapState() or getUIState().map. AND node tools/map/arbiter-map-s38.mjs still reports 6/6 with the new silent-forgery arm included, and --control=pre-s38 still exits 1. AND node tools/harness/critic-map-r2.mjs reports Q1/Q2/Q3 green: the descriptor for sim.discovery is writable:false configurable:false and a substitution attempt through questEngine.sim or window.__ENGINE draws 0 squares.",
+      "ref_item": "RI-UIX02",
+      "estimated_size": "S"
     }
   },
   "secondary_observations": [
     {
-      "what": "FREEZE THE SLOT — one line, and it closes three findings. sim.discovery is assigned plainly at engine.js:435, so the descriptor is writable and configurable. Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}) after construction closes Q1, Q2 and Q3 together. Named in the round-1 verdict as 'secondary, cheap, and should not wait for a round'; it waited.",
+      "what": "FREEZE THE SLOT — one line, and it closes an S38 clause. sim.discovery is assigned plainly at engine.js:435, so the descriptor is writable and configurable. Object.defineProperty(sim, 'discovery', {value: d, writable: false, configurable: false}) closes Q1, Q2 and Q3 together. Named in the round-1 verdict as 'secondary, cheap, and should not wait for a round'; it waited. It matters more under S38 than it did before, because S38 keeps 'the map cannot be made to show you anywhere by anything except a claim to have stood there' as the stronger checkable property — and this route shows squares with no claim to have stood anywhere at all.",
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
@@ -533,52 +583,38 @@
       "subsystem_path": "world.map.legibility"
     },
     {
-      "what": "THE SAVE CONTAINER'S SEAL IS AN INTEGRITY CHECK, NOT AN AUTHENTICITY CHECK, and nothing says so where it is read. game/src/save/exchange.js computes an unkeyed sha-256 over the canonicalised body. Editing sealed bytes is refused; resealing a forged blob with the game's own writer is accepted. This is fine for detecting a truncated file and useless against a forger. It matters here specifically because the map chose to trust exactly one field, so the container is the only thing between an attacker and 42 phantom squares.",
+      "what": "THE SAVE CONTAINER'S SEAL IS AN INTEGRITY CHECK, NOT AN AUTHENTICITY CHECK, and nothing says so where it is read. game/src/save/exchange.js computes an unkeyed sha-256 over the canonicalised body: editing sealed bytes is refused, resealing a forged blob with the game's own writer is accepted. Under S38 this is CORRECT and not a defect — S38 rules that the game cannot authenticate the primitive and must not pretend to. It is recorded here only as a one-line comment worth adding, because two rounds of critics have now spent effort discovering it, and because 'the seal does not match' reads to a newcomer like a forgery defence.",
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
       "subsystem_path": "platform.save.persistence"
     },
     {
-      "what": "TWO DOCUMENTS IN THE TREE STATE OPPOSITE SECURITY PROPERTIES, unchanged since round 1 flagged it. game/src/sim/discovery.js lines 46-50 claim both hard fails 'fail closed against a blob whose every field is under the attacker's control, because the map is a pure function of ONE field'. tools/harness/w1-21-r2-forge.mjs R8 records the opposite and calls it a LIMIT. R8 is right; A9 is the screenshot. The header is the one the next author will read.",
+      "what": "TWO DOCUMENTS IN THE TREE STATE OPPOSITE SECURITY PROPERTIES, unchanged since round 1 flagged it, and S38 has now settled which is right. game/src/sim/discovery.js lines 46-50 claim both hard fails 'fail closed against a blob whose every field is under the attacker's control, because the map is a pure function of ONE field'. tools/harness/w1-21-r2-forge.mjs R8 records the opposite and calls it a LIMIT. R8 is right, S38 says so at length, and the header is the one the next author will read.",
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
       "subsystem_path": "platform.save.persistence"
     },
     {
-      "what": "THE BRIEF'S PREMISE IS OVERSTATED AND THE RECORD SHOULD SAY SO. The dispatch describes W1-MAP-r1 C2/D1/D2/D3 as 'presented as four map failures on a walk whose steps never ran'. They were presented as PASSES: W1-MAP-r1.md §1's table lists all four as passing, and §9 records that they first appeared as failures, that critic-w1-map-stepcheck.mjs reproduced the throw with sim.discovery removed entirely, and that preconditions C0/D0 were added so a walk that did not step could not be filed as a map defect. W1-SAVE-AI.json:91 states it correctly ('the critic caught the misattribution, but C2/D1/D2/D3 are worth re-taking'). No false finding was ever published. The re-take was still worth doing and all four survive; the credit belongs to the round-1 preconditions.",
+      "what": "THE BRIEF'S PREMISE IS OVERSTATED AND THE RECORD SHOULD SAY SO. The dispatch describes W1-MAP-r1 C2/D1/D2/D3 as 'presented as four map failures on a walk whose steps never ran'. They were presented as PASSES: W1-MAP-r1.md §1's table lists all four as passing, and §9 records that they first appeared as failures, that critic-w1-map-stepcheck.mjs reproduced the throw with sim.discovery removed entirely, and that preconditions C0/D0 were added so a walk that did not step could not be filed as a map defect. W1-SAVE-AI.json:91 states it correctly. No false finding was ever published. The re-take was still worth doing and all four survive; the credit belongs to the round-1 preconditions.",
       "evidence": [
         "corpus/90-verdicts/wave1/W1-MAP-r1.md",
         "orchestration/status/W1-SAVE-AI.json",
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
       "subsystem_path": "world.map.legibility"
+    },
+    {
+      "what": "I MISSED S38 ON MY FIRST PASS AND IT CHANGED THE SCORE. I grepped ARBITRATION.md for 'S35' and read that row; S38 is the row immediately below it and it amends S35 in place. I found it only when `node tools/ownership.mjs --staged` named an arbiter's staged screenshot. RULES 18 says read the file, and a grep is not reading the file. Nothing measured is affected — the attack was designed and run before the ruling was found — but an entire axis was re-cut afterwards, and a critic who had filed on the first draft would have failed a build for a property a landed ruling says is out of scope.",
+      "evidence": [
+        "corpus/00-doctrine/ARBITRATION.md",
+        "orchestration/status/arbiter-map-s38.json"
+      ],
+      "subsystem_path": "platform.save.persistence"
     }
   ],
   "gap_closure": [
-    {
-      "gap_id": "GAP-W1-map-trusts-one-field-the-player-writes",
-      "status": "open",
-      "measured_value": "42 of 42 places, 42846 of 42846 cells, 42 squares drawn — via loadState() AND via the sealed player-facing importSave() route (124,898 bytes accepted), durable across 180 stepped frames with hostiles present",
-      "acceptance_restated": "Round 1's remedy: publish the footprint audit, point map-probe L3 at `stood`, corroborate against travel.visited. None of the three has landed at f291b01; save/state.js:676 still keeps only .dropped and map-probe.mjs:440 still forges world.discovery.places.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json",
-        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/map-probe-32of32-at-f291b01.log"
-      ],
-      "closed_by_builder_of_fix": false,
-      "note": "Re-measured independently and found WIDER than round 1 recorded, not merely unclosed."
-    },
-    {
-      "gap_id": "GAP-W1-map-writable-discovery-slot",
-      "status": "open",
-      "measured_value": "writable:true configurable:true; 3 squares via questEngine.sim, 2 squares via window.__ENGINE; getCapabilityReport() does not mention __ENGINE",
-      "acceptance_restated": "Round 1: Object.defineProperty(sim, 'discovery', {writable: false, configurable: false}). Not done. The window.__ENGINE route is new evidence this round.",
-      "evidence": [
-        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
-      ],
-      "closed_by_builder_of_fix": false
-    },
     {
       "gap_id": "GAP-W1-map-c2-d1-d2-d3-measured-on-a-dead-walk",
       "status": "closed",
@@ -588,7 +624,29 @@
         "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
       ],
       "closed_by_builder_of_fix": false,
-      "note": "Closed in the map's favour. The round-1 verdict had already reached the same conclusion by a different route and did not file the failures; this confirms it against a running world rather than against a stepcheck."
+      "note": "Closed in the map's favour. The round-1 verdict had already reached the same conclusion by a different route and did not file the failures; this confirms it against a running world."
+    },
+    {
+      "gap_id": "GAP-W1-map-trusts-one-field-the-player-writes",
+      "status": "superseded",
+      "measured_value": "42 of 42 places, 42846 of 42846 cells, via loadState() AND via the player-facing sealed importSave() route (124,898 bytes accepted), durable across 180 stepped frames with hostiles present.",
+      "acceptance_restated": "SUPERSEDED BY ARBITRATION S38, which landed in the working tree during this round: S35's clause binds the map's derivation and the game's authoring surface, not the authenticity of a save file, and 'a critic may not fail a build for a forged footprint'. The measurement stands; it is no longer a gap.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json",
+        "docs/shots/2026-08-08-critic-map-r2-forged.png"
+      ],
+      "closed_by_builder_of_fix": false,
+      "note": "Recorded rather than dropped, because the evidence is useful to S38 rather than against it: the game's own exportSave() will seal a forged blob on request, which is why there was never an authenticity boundary here to defend."
+    },
+    {
+      "gap_id": "GAP-W1-map-writable-discovery-slot",
+      "status": "open",
+      "measured_value": "writable:true configurable:true; 3 squares via questEngine.sim, 2 squares via window.__ENGINE; getCapabilityReport() does not mention __ENGINE",
+      "acceptance_restated": "Round 1: Object.defineProperty(sim, 'discovery', {writable: false, configurable: false}). Not done. The window.__ENGINE route is new evidence this round, and S38's gate does not cover either route because S38-5 audits the model's members rather than the slot the model sits in.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-MAP-r2/critic-map-r2.json"
+      ],
+      "closed_by_builder_of_fix": false
     }
   ],
   "corpus_extended": [
@@ -601,8 +659,8 @@
         "platform.save.persistence"
       ],
       "reason": "corpus_hole",
-      "what": "S35 forbids 'any square for a place the player has not personally stood in' but says nothing about WHO WRITES the record of where you stood. The whole of this verdict's distance from the gate is that clause meeting a save file the player owns. A ruling is needed on whether an S35 hard fail is a property of the honest path or of every path including a forged save — the builder's w1-21-r2-forge.mjs R8 argues the former in good faith, and both readings are defensible from the text.",
-      "proposed_clause": "Name the standard: an S35 map clause is a property of the RUNNING MAP, and a save the player can edit is an input like any other. If that is too strong, say instead that the map must REPORT a footprint it cannot corroborate, which is achievable today from the audit restore() already computes."
+      "what": "S38 clause (d) — 'a discrepancy between the blob's claims and the derivation is itemised, not swallowed' — has a gate (S38-4) that can only ever meet the forgery which WRITES claims. The forgery that writes none produces zero in both fields S38-4 reads, on a save that fills the whole province. The clause needs the reachability half stated: an itemisation nothing can read is not an itemisation.",
+      "proposed_clause": "Amend S38(d) to: 'a discrepancy between the blob's claims and the derivation is itemised AND the itemisation is published on a surface a probe can read, including the case where the blob makes no claims at all — in which case the derivation's own totals (stood_cells, derived_places, missing_cells) are the itemisation.'"
     }
   ],
   "method_deviations": [
@@ -622,14 +680,7 @@
       "affects_scores": false
     }
   ],
-  "arbitration_questions": [
-    {
-      "question": "Is an S35 hard fail a property of the honest path, or of every path including a save file the player has edited?",
-      "souls_side": "Not a Souls/Morrowind axis. The Souls-side habit in this project is that a structural guarantee must hold against a hostile input or it is a convention, and every other capability prohibition here is enforced structurally rather than by trusting a caller.",
-      "morrowind_side": "Morrowind's own map is trivially editable in a save editor and nobody calls that a design failure; the builder's R8 makes exactly this argument and discloses it rather than hiding it. Under that reading the map is compliant and the finding belongs to the save layer.",
-      "proposed_seam_id": "S35b"
-    }
-  ],
+  "arbitration_questions": [],
   "source_reads": [
     {
       "path": "game/src/sim/discovery.js",
@@ -660,7 +711,7 @@
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "blind_done_where_required is TRUE vacuously: no reference item in scope specifies a blind comparison, and rule 25 forbids me judging a pack I built. FOUR OF MY OWN CHECKS WERE WRONG AND WERE REPAIRED BEFORE FILING, two of which would have been false findings about the build: (1) E3 read placeCount 0 -> 1 after the 'being told' attempts, which was my baseline taken before the first step — the default start position is inside LILMOTH's own pad, so the following steps recorded ground the body was already on; (2) E5 asserted the hover name must be 'Thorn', but the naming element names places[placeIdx], the first place FOUND, i.e. Lilmoth from the spawn; (3) Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600, 5200) to demonstrate that surplus arguments are ignored, and observe() records the cell the body is in; (4) A12 originally PASSED by matching the substring 'signature' in the save manifest — regionSignature/focusSignature, nothing to do with saves — an inert check that passed for the wrong reason, replaced by the executed arms A12a/A12b. All four are documented in the tools' own comments. The instrument has been shown able to fail three ways plus a control that runs in every mode: --break unrendered reddens U1/U2/U3, --break standing reddens R-D1 in both arms, --break consumer turns G2 GREEN (opposite polarity, because an assertion whose pass condition is 'nothing happened' is worthless until it has been seen to notice something happening), and P3 breaks a live AI back into a plain object and requires the step-fault detector to fire, which it does with the original message."
+    "self_audit_note": "blind_done_where_required is TRUE vacuously: no reference item in scope specifies a blind comparison, and rule 25 forbids me judging a pack I built. FOUR OF MY OWN CHECKS WERE WRONG AND WERE REPAIRED BEFORE FILING, two of which would have been false findings about the build: (1) E3 read placeCount 0 -> 1 after the 'being told' attempts, which was my baseline taken before the first step — the default start position is inside LILMOTH's own pad, so the following steps recorded ground the body was already on; (2) E5 asserted the hover name must be 'Thorn', but the naming element names places[placeIdx], the first place FOUND, i.e. Lilmoth from the spawn; (3) Q4 saw the place list move because tryPlaceMapMarker ends by calling d.observe(4600, 5200) to demonstrate that surplus arguments are ignored, and observe() records the cell the body is in; (4) A12 originally PASSED by matching the substring 'signature' in the save manifest — regionSignature/focusSignature, nothing to do with saves — an inert check that passed for the wrong reason, replaced by the executed arms A12a/A12b. All four are documented in the tools' own comments. The instrument has been shown able to fail three ways plus a control that runs in every mode: --break unrendered reddens U1/U2/U3, --break standing reddens R-D1 in both arms, --break consumer turns G2 GREEN (opposite polarity, because an assertion whose pass condition is 'nothing happened' is worthless until it has been seen to notice something happening), and P3 breaks a live AI back into a plain object and requires the step-fault detector to fire, which it does with the original message. AND ONE PROCEDURAL FAILURE OF MY OWN, recorded rather than smoothed over: I missed ARBITRATION S38 on my first pass because I grepped for S35 instead of reading the section, and S38 amends S35 in place. The scoring was re-cut against it before filing and the forged-save axis was withdrawn; had I filed the first draft I would have failed this build for a property a landed ruling puts out of scope. I also re-ran the S38 gate and its control rather than inheriting the arbiter's numbers."
   },
-  "notes": "ORDERING. I read RULES.md, INDEX.md, ARBITRATION S35, W1-MAP-r1.md and the two status files as the dispatch required, so this is not a blind round and I do not claim it is. Everything after that was measured before it was diagnosed: the forgery was delivered before the source was read for the reason it worked, the pixel numbers were taken before the draw loop was read, and the quest tree was grepped before anything was executed against it. CONTENTION: `node tools/contention.mjs --gate` returned GO before every browser run except the screenshot pass (exit 3, declared in method_deviations); one browser per tool run, kept for the whole run, and my own rather than tools/capture/ because every measurement steps the simulation (rule 20). No timing figure appears anywhere in this verdict — every number is a count, a boolean or a pixel colour. NO FILE UNDER game/ WAS EDITED. WHAT I DID NOT DO: travel.visited's coverage is still not isolated (the same gap round 1 declared), the forgery was not tested against a cold browser reload, and the local view's own pixels were not audited — §5's numbers are the world view. FINALLY, AND IT SHOULD NOT BE LOST IN A 3.0: the screen S35 asked for exists and is good. Undiscovered is genuinely unrendered, a square appears only after you have stood somewhere, the name is the place's own name, and there is no marker, route, numeral or travel affordance anywhere on it. The whole distance from the gate is one save field the loader trusts and one object slot nobody froze."
+  "notes": "ORDERING. I read RULES.md, INDEX.md, ARBITRATION S35, W1-MAP-r1.md and the two status files as the dispatch required, so this is not a blind round and I do not claim it is. Everything after that was measured before it was diagnosed. THE ONE THING I GOT WRONG PROCEDURALLY: I grepped ARBITRATION.md for S35 rather than reading the section, and so missed S38 — the row immediately below it, which amends S35 in place and rules the forged-save question out of scope. I found it only when ownership.mjs --staged named an arbiter's screenshot, by which point the attack was designed, run and written up. I have honoured the ruling, withdrawn that axis rather than arguing with it, verified its gate by re-running it (6/6, control exit 1) rather than inheriting the numbers, and recorded my own miss as a secondary observation. What survives the ruling is S38's clause (d), which its own gate cannot see. CONTENTION: `node tools/contention.mjs --gate` returned GO before every browser run except the screenshot pass and the final A13 re-run (exit 3 both times, declared in method_deviations); one browser per tool run, kept for the whole run, and my own rather than tools/capture/ because every measurement steps the simulation (rule 20). No timing figure appears anywhere in this verdict. NO FILE UNDER game/ WAS EDITED. WHAT I DID NOT DO: travel.visited's coverage is still not isolated (S38 makes it optional rather than required); the forgery was not tested against a cold browser reload; the local view's own pixels were not audited; and I ran arbiter-map-s38.mjs's gate and control but not its --self-test. FINALLY, AND IT SHOULD NOT BE LOST IN A 4.0: the screen S35 asked for exists and is good. Undiscovered is genuinely unrendered, a square appears only after you have stood somewhere, the name is the place's own name, there is no marker, route, numeral or travel affordance anywhere on it, and S38's exhaustive sweep shows the derivation is sound over every possible save. The distance from the gate is an audit nobody publishes and a slot nobody froze."
 }
