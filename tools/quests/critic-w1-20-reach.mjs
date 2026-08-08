@@ -59,10 +59,14 @@ const OUT = args.out ? String(args.out) : path.join(ROOT, 'reports', 'critic-w1-
 // Two lines on purpose. `the_wet_ledger` is a line W1-FACTIONS carried and is the only faction
 // besides the Court with any `faction_interior` in the world; `the_rootkeepers` is one of the
 // four W1-20 authored, to see whether a NEW line reaches as far as an old one.
+// Zone ids are read from `game/data/world/property/*.json` NODE-SIDE and handed in, because the
+// harness has no zone-listing verb. The census is part of the finding: only two of the eight
+// laddered factions own a `faction_interior` anywhere in the populated world, so for the other
+// six there is no R3 consumer to demonstrate and this tool says so rather than scoring a zero.
 const LINES = [
-  { faction: 'the_wet_ledger', standing: 'wet-ledger', npc: 'harbourmaster-sedh', zone_faction: 'wet-ledger' },
-  { faction: 'the_rootkeepers', standing: 'rootkeepers', npc: 'rootkeeper-jeen', zone_faction: 'rootkeepers' },
-  { faction: 'the_drowned_court', standing: 'drowned-court', npc: 'undertaker-vaskh', zone_faction: 'drowned-court' },
+  { faction: 'the_wet_ledger', standing: 'wet-ledger', npc: 'harbourmaster-sedh', zone: 'lilmoth.factor0.r0' },
+  { faction: 'the_drowned_court', standing: 'drowned-court', npc: 'undertaker-vaskh', zone: 'lilmoth.priest6.r0' },
+  { faction: 'the_rootkeepers', standing: 'rootkeepers', npc: 'rootkeeper-jeen', zone: null },
 ];
 
 const game = await launchGame(args, { usage: USAGE });
@@ -70,83 +74,98 @@ const { page } = game;
 
 const report = await page.evaluate(async ({ LINES }) => {
   const H = window.__HARNESS;
-  const out = { lines: [], zone_census: null, notes: [] };
-
-  // Every `faction_interior` zone in the populated world, by faction. R3 can only be demonstrated
-  // where such a zone exists, and a line with none has no R3 consumer to demonstrate.
-  function zoneCensus() {
-    const by = {};
-    let zones = [];
-    try { zones = H.zoneList ? H.zoneList() : []; } catch { zones = []; }
-    for (const z of zones) {
-      if (z && z.class === 'faction_interior') (by[z.faction] = by[z.faction] || []).push(z.id);
-    }
-    return by;
-  }
+  const out = { lines: [], notes: [] };
 
   for (const L of LINES) {
     H.reset({ state: 'default' });
     H.setRenderRate(0);
     H.setCharacter({ race: 'saxhleel', upbringing: 'interior', class: 'root-speaker', birthsign: 'raj-xul' });
-    if (!out.zone_census) out.zone_census = zoneCensus();
 
     // Membership first. Every consumer here requires `member === true` — `factionTerm` skips a
     // row that is not a membership by design ("reputation is not allegiance"), and
     // `syncFactionStandings` skips it too. Without this the whole sweep would read zero at every
-    // rank and look like a dead model when it is an unjoined one.
+    // rank and look like a dead model when it is merely an unjoined one.
     H.setFactionStanding(L.faction, { member: true, reputation: 0, rank: 0 });
 
     const rows = [];
-    let lastViewRank = null;
     for (const rank of [0, 1, 2, 3, 4, 5, 6, 7]) {
+      // TWO PERTURBATION CHANNELS, because the build has two rank registers and they are fed by
+      // different writers. Poking one and reading a consumer of the other is how you conclude a
+      // live consumer is dead.
+      //   A. the quest-side row -> `_questFactionsView()` Math.max's it against the derived
+      //      ladder -> `_questPlayerView()` -> `disposition.js factionTerm()`.  (R1, R5)
+      //   B. `sim.stealth.p.standings` -> `theft.js` and `justice.js`.           (R2, R3, R4)
+      // `Engine.syncFactionStandings()` rewrites B from the DERIVED ladder every step, so B is
+      // poked directly and the world is deliberately not stepped between poke and read.
       H.setFactionStanding(L.faction, { member: true, rank });
-      H.syncFactionStandings();
+      H.setFactionStandings({ [L.standing]: rank });
 
-      // DID THE PERTURBATION TAKE? `_questFactionsView` is a Math.max against the derived ladder,
-      // so a poke below the derived rank changes nothing and every consumer will correctly report
-      // no change. Reading that as "the consumer is dead" is the inert-control failure. This row
-      // is only scored if the view's rank is the rank we asked for.
-      const view = H.questFactionsView ? H.questFactionsView() : null;
-      const viewRank = view && view[L.faction] ? Number(view[L.faction].rank) : null;
-      const standings = H.getFactionStandings ? H.getFactionStandings() : null;
-      const standingRank = standings ? Number(standings[L.standing] || 0) : null;
+      const row = { rank };
 
-      const row = { rank, view_rank: viewRank, standing_rank: standingRank,
-        perturbation_took: viewRank === rank || (rank === 0 && viewRank === 0) };
+      // DID EACH PERTURBATION TAKE? Read both registers back before touching a consumer. A row
+      // where the poke did not move the register is excluded from scoring rather than counted as
+      // a consumer that ignored the rank — that conflation is what made the round-1 critic's own
+      // L4 an inert control (it poked the stored rank to 1 while the derived ladder already
+      // returned 1, so `Math.max` produced the same number and every consumer correctly reported
+      // no change).
+      const standings = H.setFactionStandings({});
+      row.standing_readback = standings ? Number(standings[L.standing] || 0) : null;
+      row.channel_b_took = row.standing_readback === rank;
 
-      // R1 — dialogue.
+      // R1 — dialogue / who greets you.
       try {
         const d = H.explainDisposition(L.npc);
         row.disposition = d ? d.value : null;
         row.faction_term = d && d.movable ? (d.movable.find((m) => m[0] === 'faction') || [null, null])[1] : null;
-      } catch (e) { row.disposition_error = String(e).slice(0, 120); }
+        row.disposition_modelled = d ? !!d.modelled : null;
+      } catch (e) { row.disposition_error = String(e).slice(0, 140); }
+      // Channel A took iff the term it feeds actually differs from rank 0's. Established after
+      // the sweep, not asserted here.
 
-      // R3 — trespass, on a real zone of this faction if the world has one.
-      const zones = (out.zone_census || {})[L.zone_faction] || [];
-      row.zone_tested = zones[0] || null;
-      if (zones[0]) {
-        try { const t = H.trespassCheck(zones[0], {}); row.trespassing = t ? t.trespassing : null; }
-        catch (e) { row.trespass_error = String(e).slice(0, 120); }
+      // R3 — where you may walk. Only where the world has a hall for this faction.
+      row.zone_tested = L.zone;
+      if (L.zone) {
+        try { const t = H.trespassCheck(L.zone, {}); row.trespassing = t ? t.trespassing : null; row.trespass_why = t ? (t.why || null) : null; }
+        catch (e) { row.trespass_error = String(e).slice(0, 140); }
       }
 
-      // R4 — the arrest topic that invokes a faction.
+      // R2 — what counts as stealing. An object owned by this faction, if the hall has one.
+      if (L.zone) {
+        try {
+          const objs = H.listOwnedObjects(L.zone) || [];
+          row.owned_objects = objs.length;
+          const o = objs[0];
+          if (o) { const th = H.theftCheck ? H.theftCheck(o.id) : null; row.theft = th ? th.theft : null; row.theft_scope = th ? th.scope : null; row.theft_why = th ? th.why : null; }
+        } catch (e) { row.theft_error = String(e).slice(0, 140); }
+      }
+
+      // R4 — how you get out of an arrest. NOTE: `Engine.arrestTopics()` takes `factionRank` as
+      // an ARGUMENT and never reads the standings register, so this is the rank being handed in
+      // by the caller rather than the rank being read from the world. Reported as such.
       try {
-        const a = H.arrestTopics({ bounty: 400, gold: 100, factionRank: standingRank || 0, factionHasStanding: true, factionInvocationsLeft: 1, speechcraft: 30, guardDisposition: 40 });
-        row.arrest_topics = Array.isArray(a) ? a.map((x) => (typeof x === 'string' ? x : x && x.id)) : a;
-      } catch (e) { row.arrest_error = String(e).slice(0, 120); }
+        const a = H.arrestTopics({ bounty: 400, gold: 100, factionRank: rank, factionHasStanding: true, factionInvocationsLeft: 1, speechcraft: 30, guardDisposition: 40 });
+        const list = Array.isArray(a) ? a : (a && a.topics) || [];
+        row.arrest_topics = list.map((x) => (typeof x === 'string' ? x : (x && (x.id || x.answer || x.key)))).filter(Boolean);
+      } catch (e) { row.arrest_error = String(e).slice(0, 140); }
 
-      // R5 — prices.
-      try { const p = H.getPriceQuote({ npc: L.npc, base: 100 }); row.price = p && (p.price ?? p.quoted ?? null); row.price_full = p; }
-      catch (e) { row.price_error = String(e).slice(0, 120); }
+      // R5 — prices. `priceQuote` takes a disposition; it does not read a rank. Fed the SAME
+      // disposition the dialogue system just computed, so that if rank reaches disposition it
+      // reaches the quote too — which is the most generous reading available to the build.
+      try {
+        const p = H.getPriceQuote({ base_price: 100, disposition: row.disposition });
+        row.price = p ? (p.buy ?? p.buy_price ?? p.price ?? null) : null;
+        row.price_keys = p ? Object.keys(p) : null;
+      } catch (e) { row.price_error = String(e).slice(0, 140); }
 
-      // R2/C1 — the guard's law factor, the one consumer the round did demonstrate. Kept so this
-      // instrument has a POSITIVE control: if this does not move either, the harness is the fault
-      // and not the model.
-      try { const g = H.getGuardTerms('saxhleel'); row.warbrood_shift = g && (g.warbrood_disposition_shift ?? g.warbroodDispositionShift ?? null); row.imperial_law = g && (g.imperial_law ?? g.lawFactor ?? null); }
-      catch (e) { row.guard_error = String(e).slice(0, 120); }
+      // C1 — the guard's law factor, the one consumer the round DID demonstrate. Kept as a
+      // POSITIVE CONTROL: if this does not move either, the fault is my harness driving and not
+      // the build's model, and no other row here may be read as a finding.
+      try {
+        const g = H.getGuardTerms('saxhleel');
+        row.warbrood_shift = g ? (g.warbrood_disposition_shift ?? g.warbroodDispositionShift ?? null) : null;
+      } catch (e) { row.guard_error = String(e).slice(0, 140); }
 
       rows.push(row);
-      lastViewRank = viewRank;
     }
     out.lines.push({ ...L, rows });
   }

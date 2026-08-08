@@ -1,5 +1,78 @@
 # Next dispatches, in priority order
 
+## BLIND-PACK-GATE. Orchestrator ruling: no judge is dispatched to an ungated pack. Three prose packs closed.
+
+**Reversible. The evidence that would overturn any of it is named at the end of each ruling.**
+
+W1-PROSE-TICS r4's judge found the pack decidable **15/15 by counting `[NAME-n]` redaction tokens**
+— one shell command, no reading. That is round 1's failure (decidable by counting *Vvardenfell*,
+17/17) reappearing **inside the machinery built to fix it**: the mask verified what it *contained*
+and leaked through how many tokens it *added*. Full account and numbers:
+`reports/packs/prose-tics-r4/JUDGEMENT-judge-prose-r4-m5.md`.
+
+**Ruling 1 — the leak is closed by RE-NAMING, not by balancing, budgeting or collapsing the token.**
+`tools/blind/mask-text.mjs`. Proper nouns are replaced with invented names of matched shape drawn
+from one generator shared by both sides, consistent within a passage and independent between
+passages. No marker exists to count. *Cost accepted:* **the artifact is altered, not merely
+redacted** — naming craft becomes unjudgeable and a joke that turns on a name is defused. *Rejected,
+with reasons in the tool header:* padding the thinner side with decoy tokens (equalises the
+statistic by falsifying the artifact); a fixed mask budget (destroys referent information above the
+budget); a single undifferentiated `[NAME]` (loses referent identity **and does not close the
+count**). *Overturned by:* a measured channel that renaming opens and redaction did not.
+
+**Ruling 2 — the gate is fail-closed and runs BEFORE the judge.** `tools/blind/leakcheck.mjs
+--pack <dir>`, now RI-MTH03 **M1a**, worth 3 points and a hard fail if skipped. ~40 mechanical
+discriminators, every one printed with its score every run **including the ones at chance** — a
+battery that only reports hits is a rubber stamp. Run over r4 it reproduces the judge's 15/15 and
+finds **eleven more channels nobody tested**, ten of them the same marker seen sideways: the
+brackets (`paren_density` 15/15), the capitals (`uppercase_ratio`/`allcaps_words` 14/15), the digits
+in `-12` (`digit_ratio` 14/15), the token's length (`chars`/`mean_line_len` 15/15). Note what did
+**not** fire: `words` 6/11 — r4's word-count matching worked — and 26 of 40 rules at chance.
+
+**Ruling 3 — the chance baseline is 1-in-8, not 1-in-270.** One author per side, so 15 trials carry
+about 3 trials of information (one per register). Every pack README, PROMPT and verdict now states
+it. Any existing sentence quoting 2⁻¹⁵ for a prose pack is wrong and should be corrected where it
+is found.
+
+**Ruling 4 — r2, r3 and r4 are CLOSED as superseded, not awaiting a judge.** Each carries a
+`SUPERSEDED.md`. r2 is the pre-masking pack (17/17 by counting setting nouns) asking the provenance
+question under which picking ours is correct by construction; r3 grades ~380 dialogue lines
+rewritten before it was built; r4 is decidable and contains its own plaintext answer key in fifteen
+files. **Do not spend a judge on any of them** — a file-state reading correctly reports r2 and r3 as
+unanswered, and unanswered is not owed.
+
+**Which r4 scores survive.** `PROV:` — none; three judges scored 15/15 and so does a five-character
+shell rule. `QUAL:` — survives only as **non-blind** expert preference (14/15 and 15/15 preferring
+ours) and must be re-taken on r5, per RI-MTH03's own "below 75% the blind result is inadmissible and
+the item falls back to non-blind scoring". The **M5 findings survive in full** and are the useful
+output: nine of our fifteen passages share one narrator's idiolect, and our corpus has no bad
+writers in it — no propagandist, no incompetent, no bore — which a shipped RPG corpus needs.
+
+### What is dispatchable now
+
+**A fresh judge for `reports/packs/prose-tics-r5/`** — 15 trials, gated (0 leaks), answers go in
+`reports/packs/prose-tics-r5.answers/<agent-id>/`, two axes (`PROV:` and `QUAL:`). Hand over the
+pack directory and nothing else. **Not the builder of the prose, and not me** — I built this pack
+and rule 25 forbids judging one you built.
+
+**Read to the judge's brief before dispatch:** the gate passed but **seven held-out channels sit in
+the WATCH band** (`sd_sentence_words` 13/15, `apostrophe_density` 13/15, `contraction_density`
+13/15, `sentences`/`mean_sentence_words`/`mean_word_len`/`long_word_ratio` 12/15). None survives
+correction for the size of the battery, and I am not claiming they are leaks. But seven is more than
+the ~2 expected by chance, they are all *style* statistics, and the honest reading is RI-MTH03 "How
+we lose" #4: **our prose has a measurably different sentence-length distribution, word length and
+contraction rate from shipped Morrowind text.** That is a legitimate finding about our writing, and
+it is also a channel a determined judge could ride. It is recorded rather than waived. *Overturned
+by:* a judge who reports using sentence rhythm rather than craft to decide trials — in which case
+the register must be rebuilt with rhythm added to the paired statistics, at the further cost of
+selection bias.
+
+**Still owed and NOT retired by the gate: RI-MTH03 M6**, a fresh agent asked "without judging
+quality, can you tell which came from a different pipeline?" A gate tests only the channels somebody
+thought of, and **both of this item's leaks were found by a judge, not by a builder.**
+
+---
+
 ## GATE-BLAST-RADIUS. Orchestrator ruling: fail-closed gates split by actor count, not by content — FIXED, one arm; two named, not built
 
 Rule 13, second offence. A builder hit **fourteen consecutive `git commit --only` refusals** over

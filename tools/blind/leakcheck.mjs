@@ -656,8 +656,9 @@ export function report(result, { waivers = new Map(), quiet = false } = {}) {
   say(`  Reported at chance (this line is the point — a battery that only prints hits is a rubber stamp):`);
   say('  ' + (chance.map((r) => `${r.id} ${r.best}/${r.decided}`).join(', ') || '(none)'));
   say('');
-  say(`  The battery is deliberately over-sensitive: with ${STATS.length} rules and ${n} trials some`);
-  say('  false alarms are expected. A flagged rule is a thing to fix or to waive IN WRITING, not a proof.');
+  say(`  LEAK survives Bonferroni over ${STATS.length} rules (p*K <= 0.05); WATCH clears uncorrected 0.05.`);
+  say('  A WATCH IS NOT A PASS — it is the band where this many trials cannot tell a channel from luck.');
+  say('  Measured false-alarm rate on 60 synthetic null packs is printed by --self-test.');
   return { text: out.join('\n'), leaks, waived, watch, chance };
 }
 

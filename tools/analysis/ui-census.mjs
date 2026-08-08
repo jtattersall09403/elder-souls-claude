@@ -30,28 +30,84 @@
 // cannot fail buys a false pass.
 import fs from 'node:fs';
 import path from 'node:path';
+import { PNG } from 'pngjs';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, log, RUNS_DIR, ensureDir, writeJson } from '../lib/cli.mjs';
 import { grader, line, sampleTable, exitCode } from '../lib/graded.mjs';
+import { buildToastCorpus, pickA2Sample } from './hud-toast-corpus.mjs';
 
 const USAGE = `
 ui-census.mjs — RI-UIX01 §C element census and §D1 stamina same-frame truth.
+                W1-HUD-TOAST-A's A1/A2a/A2b (--hud-toast) — the toast's own fit.
 
 USAGE
   node tools/analysis/ui-census.mjs [--state <name>] [--frames 1800] [--width 1920 --height 1080]
                                     [--run <dir>] [--out <dir>] [--json] [--self-test] [--curve]
+                                    [--hud-toast] [--hud-toast-limit N]
 
   --state    named state to load (default: arena_duel — a fight, so the HUD is in combat)
   --frames   trace length for §D1 (default 1800, which is the item's own figure)
   --run      re-read a capture this tool wrote instead of launching a browser
   --curve    additionally check the displayed souls-to-next against RI-PRG01's curve (L3)
-  --self-test  prove the §D1 detector can go red
+  --self-test  prove the §D1 detector can go red; with --hud-toast, ALSO prove A1's own
+               overflow arithmetic goes red on a synthetic out-of-rect entry (no browser needed
+               for that half — see selfTestA1() below)
+  --hud-toast        W1-HUD-TOAST-A: A1 over the full enumerated toast corpus, A2a/A2b over the
+                     8-string sample (tools/analysis/hud-toast-corpus.mjs). Needs its own browser
+                     pass — run standalone, not combined with the §C/§D1 census above, because A1
+                     alone is ~4 harness round-trips per corpus string.
+  --hud-toast-limit  cap the corpus for a faster run; omit for the full population (rule 26: the
+                     fraction actually run is published as a fraction, never a bare count)
 
 EXIT 0 all checks pass · 1 one or more fail · 2 could not measure
 `;
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
+
+// ---- W1-HUD-TOAST-A: A1's overflow arithmetic, as a PURE FUNCTION -----------------------------
+//
+// Kept separate from the browser-driving flow below so it is unit-testable with synthetic
+// entries and a synthetic rect, no game and no browser required — RULES rule 4's "self-test that
+// goes red on purpose" run cheaply, the way `impossibility-screen.mjs`'s static half does.
+//
+// A1 (plan §1, folded from BLOCKING-3): `overflow_px = max(0, x1-(rect.x+rect.w)) + max(0, rect.x-x0)`
+// horizontally, the same clause vertically against rect.y/rect.h, over the WORST entry owned by
+// the element (the register may hold one entry per row). `x0` is the entry's own `x` (already the
+// run's left edge — the register records vector entries as left-aligned by construction, and this
+// population pre-centres before calling `drawText`). Acceptance is `<= 1.0px`, not exact-zero,
+// because the register rounds `x`/`w` to the integer px against a rect stored at 2dp.
+export function computeA1(entries, rect) {
+  if (!entries || !entries.length) return { overflow_px: null, worst: null, measured: false };
+  let worstOverflow = -Infinity, worst = null;
+  for (const e of entries) {
+    const x0 = e.x, x1 = e.x + e.w;
+    const overX = Math.max(0, x1 - (rect[0] + rect[2])) + Math.max(0, rect[0] - x0);
+    const y0 = e.y - (e.px || 16) * 1.2, y1 = e.y + (e.px || 16) * 0.5;
+    const overY = Math.max(0, y1 - (rect[1] + rect[3])) + Math.max(0, rect[1] - y0);
+    const overflow = overX + overY;
+    if (overflow > worstOverflow) { worstOverflow = overflow; worst = { entry: e, overflow_px: +overflow.toFixed(2), over_x: +overX.toFixed(2), over_y: +overY.toFixed(2) }; }
+  }
+  return { overflow_px: +worstOverflow.toFixed(2), worst, measured: true };
+}
+
+/** `--self-test` for A1 alone: no browser, no game. Two synthetic cases, both must be exact. */
+function selfTestA1() {
+  const rect = [100, 100, 200, 50];              // x, y, w, h
+  const inside = [{ x: 110, y: 130, w: 50, px: 16 }];
+  const outsideRight = [{ x: 250, y: 130, w: 80, px: 16 }];   // x+w = 330, rect ends at 300 -> 30px over
+  const r1 = computeA1(inside, rect);
+  const r2 = computeA1(outsideRight, rect);
+  const r3 = computeA1([], rect);
+  const pass = r1.overflow_px === 0 && r2.overflow_px === 30 && r3.measured === false;
+  log(`  self-test A1: inside=${r1.overflow_px} (want 0), outside=${r2.overflow_px} (want 30), empty.measured=${r3.measured} (want false) -> ${pass ? 'PASS' : 'FAIL'}`);
+  return pass;
+}
+
+if (args['hud-toast'] && args['self-test']) {
+  const ok = selfTestA1();
+  process.exit(ok ? 0 : 1);
+}
 
 const KNOWN = new Set(['health_bar', 'stamina_bar', 'focus_bar', 'heal_charges', 'quick_slots',
   'buildup_meter', 'lockon_reticle', 'boss_bar', 'equip_load', 'interact_prompt', 'toast',

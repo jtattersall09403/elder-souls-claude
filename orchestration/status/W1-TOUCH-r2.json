@@ -86,18 +86,19 @@
     "tools/touch/touch-run.mjs"
   ],
   "files_claimed": [
-    "orchestration/status/W1-TOUCH-r2.json",
-    "tools/touch/",
-    "reports/w1-touch-r2/",
-    "game/src/input/hold-gate.js",
-    "game/src/input/touch.js",
-    "game/src/input/real.js",
+    "game/data/input/profiles.json",
+    "game/src/combat/player.js",
+    "game/src/engine.js",
     "game/src/input/gamepad.js",
+    "game/src/input/hold-gate.js",
+    "game/src/input/real.js",
+    "game/src/input/touch.js",
+    "game/src/sim/stealth/pickpocket.js",
     "game/src/ui/system.js",
     "game/src/ui/touch-overlay.js",
-    "game/src/combat/player.js",
-    "game/src/sim/stealth/pickpocket.js",
-    "game/data/input/profiles.json"
+    "orchestration/status/W1-TOUCH-r2.json",
+    "reports/w1-touch-r2/",
+    "tools/touch/"
   ],
   "redundant_with": [],
   "next_step": "--leg control (delete-the-fix), --leg boundary, then --serve-patched regression, then item C (by-construction comments), then D (menu/insets/portrait legs).",
@@ -110,5 +111,6 @@
   "must_not_touch": [
     "tools/input/arbiter-clock-s39.mjs (S39-falsifier)",
     "game/src/core/loop.js MAX_CATCHUP (RI-PLT01)"
-  ]
+  ],
+  "engine_js_note": "One line at engine.js:483 \u2014 `this.real.modeOf = () => this.loop.mode`. Declared per RULES 16; nothing else in that file is touched."
 }

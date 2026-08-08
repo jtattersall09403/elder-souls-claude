@@ -256,8 +256,12 @@ function rafShim() {
 }
 
 async function openPage(browser, server, periodMs, { phone = false } = {}) {
+  // dpr 1, not the reference phone's 3. With the render off, device pixel ratio buys nothing and
+  // costs nine times the framebuffer; the first attempt at this run died silently on a box at
+  // load 24. What must be a phone is `hasTouch`/`isMobile`, because that is what puts the touch
+  // overlay on screen at all.
   const ctx = phone
-    ? await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 3, hasTouch: true, isMobile: true, reducedMotion: 'reduce' })
+    ? await browser.newContext({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 1, hasTouch: true, isMobile: true, reducedMotion: 'reduce' })
     : await browser.newContext({ viewport: { width: 960, height: 540 }, reducedMotion: 'reduce' });
   const page = await ctx.newPage();
   const errs = [];

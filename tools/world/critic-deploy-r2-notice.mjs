@@ -106,6 +106,13 @@ if (has('--notice')) {
     const badAt = trace.find((s) => /bn-bad/.test(s.cls));
     const goneAt = trace.find((s) => s.cls === 'gone');
     const finalRow = trace[trace.length - 1];
+    const shot = at('--shot', null);
+    if (shot) {
+      const p = path.join(REPO_ROOT, shot.replace(/\.png$/, '') + (keepCeiling ? '-as-shipped' : '-ceiling-deleted') + '.png');
+      fs.mkdirSync(path.dirname(p), { recursive: true });
+      await page.screenshot({ path: p });
+      say(`                    picture: ${path.relative(REPO_ROOT, p)}`);
+    }
     rows.push({ keepCeiling, badMs: badAt ? badAt.t - t0 : null, goneMs: goneAt ? goneAt.t - t0 : null,
                 finalCls: finalRow.cls, finalText: finalRow.text,
                 diagnosisText: badAt ? badAt.text : '' });

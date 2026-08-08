@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-08T12:29:02Z
+Generated: 2026-08-08T12:37:32Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -345,8 +345,8 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
-| `process.critic.discipline` | The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md) | neutral | [RI-LOR06](../../corpus/60-lore/RI-LOR06-contradiction-discipline.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md)<br>[RI-MTH05](../../corpus/80-methods/RI-MTH05-corpus-coherence.md)<br>[RI-MTH06](../../corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md)<br>[RI-MTH07](../../corpus/80-methods/RI-MTH07-world-coupling.md) | `critic.coherence` | in-item procedure (kind: structure); corpus/80-methods/canon-check.py<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs<br>in-item M1–M8 (8 checks)<br>in-item M1–M9 (9 checks); tools/corpus-index.mjs<br>in-item procedure (kind: structure); tools/corpus-index.mjs<br>in-item procedure (kind: structure) |
-| `process.verdict.format` | The verdict format and its validation (VERDICT-SCHEMA.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md)<br>[RI-MTH05](../../corpus/80-methods/RI-MTH05-corpus-coherence.md)<br>[RI-MTH06](../../corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md)<br>[RI-MTH07](../../corpus/80-methods/RI-MTH07-world-coupling.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs<br>in-item M1–M8 (8 checks)<br>in-item M1–M9 (9 checks); tools/corpus-index.mjs<br>in-item procedure (kind: structure); tools/corpus-index.mjs<br>in-item procedure (kind: structure) |
+| `process.critic.discipline` | The critic process itself: evidence, blindness, anti-softness (CRITIC-DOCTRINE.md) | neutral | [RI-LOR06](../../corpus/60-lore/RI-LOR06-contradiction-discipline.md)<br>[RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md)<br>[RI-MTH05](../../corpus/80-methods/RI-MTH05-corpus-coherence.md)<br>[RI-MTH06](../../corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md)<br>[RI-MTH07](../../corpus/80-methods/RI-MTH07-world-coupling.md) | `critic.coherence` | in-item procedure (kind: structure); corpus/80-methods/canon-check.py<br>in-item M1–M6 (6 checks); tools/blind/make-pair.mjs, tools/blind/leakcheck.mjs<br>in-item M1–M8 (8 checks)<br>in-item M1–M9 (9 checks); tools/corpus-index.mjs<br>in-item procedure (kind: structure); tools/corpus-index.mjs<br>in-item procedure (kind: structure) |
+| `process.verdict.format` | The verdict format and its validation (VERDICT-SCHEMA.md) | neutral | [RI-MTH03](../../corpus/80-methods/RI-MTH03-blind-comparison-protocol.md)<br>[RI-MTH04](../../corpus/80-methods/RI-MTH04-measurement-integrity.md)<br>[RI-MTH05](../../corpus/80-methods/RI-MTH05-corpus-coherence.md)<br>[RI-MTH06](../../corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md)<br>[RI-MTH07](../../corpus/80-methods/RI-MTH07-world-coupling.md) | `critic.coherence` | in-item M1–M6 (6 checks); tools/blind/make-pair.mjs, tools/blind/leakcheck.mjs<br>in-item M1–M8 (8 checks)<br>in-item M1–M9 (9 checks); tools/corpus-index.mjs<br>in-item procedure (kind: structure); tools/corpus-index.mjs<br>in-item procedure (kind: structure) |
 
 ### `magic.*`
 

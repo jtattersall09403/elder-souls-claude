@@ -42,59 +42,64 @@ const R = [];
 const say = (s) => process.stdout.write(s + '\n');
 const A = (id, name, got, pass, target) => { R.push({ id, name, got: String(got), target, pass }); say(`${pass ? 'PASS' : 'FAIL'}  ${id.padEnd(9)} ${name}\n            got     ${got}\n            target  ${target}`); };
 
-const OUT = await h.page.evaluate(async () => {
+const N_RENDER = Number(args['renders'] || 60);
+const OUT = { frametime: [] };
+
+// The arms are driven one `page.evaluate` at a time so node can print progress between them: the
+// first version of this file did all five inside one call, produced nothing for 900 s on a box at
+// 7.5 per core, and was killed by its own timeout with no partial result. A long measurement that
+// cannot say where it is is a measurement you cannot budget.
+await h.page.evaluate(() => {
+  const H = window.__HARNESS;
+  H.setSeed(1337); H.loadState('default');
+  const E = window.__ENGINE;
+  // Stash the room's declared lamps once, so every arm starts from the same list.
+  const REC = E.settlements.interior('thorn-hall');
+  window.__CRIT = { REC, declared: REC.lights.map((L) => ({ ...L, pos: L.pos.slice() })) };
+});
+OUT.webgl = await h.page.evaluate(() => {
+  const gl = window.__ENGINE.renderer && window.__ENGINE.renderer.renderer;
+  if (!gl) return { context: 'none' };
+  try { const g = gl.getContext(); const d = g.getExtension('WEBGL_debug_renderer_info'); return { context: 'live', renderer_info: d ? String(g.getParameter(d.UNMASKED_RENDERER_WEBGL)) : 'unavailable' }; } catch (e) { return { context: 'live', renderer_info: 'unavailable' }; }
+});
+say(`  webgl: ${OUT.webgl.renderer_info || OUT.webgl.context}\n`);
+
+// Interleaved A-B-A-C-A so a box that gets busier mid-run is visible rather than attributed.
+for (const [label, kind] of [['cap5_as_LIT_CAP_shipped', 5], ['all14_as_this_round_ships', 0], ['cap5_repeat', 5], ['CONTROL_40_lamps', 40], ['all14_repeat', 0]]) {
+  const t0 = Date.now();
+  const row = await h.page.evaluate(async ({ label, kind, n }) => {
+    const E = window.__ENGINE, C = window.__CRIT;
+    const r4 = (v) => Math.round(v * 1e4) / 1e4;
+    // Deduped the way both readers do it, so "5 lamps" means five POINT LIGHTS and not five rows.
+    const seen = new Set(), uniq = [];
+    for (const L of C.declared) { const p = L.pos, k = `${Math.round(p[0] * 10)},${Math.round(p[1] * 10)},${Math.round(p[2] * 10)}`; if (seen.has(k)) continue; seen.add(k); uniq.push(L); }
+    let rows = uniq;
+    if (kind === 5) rows = uniq.slice(0, 5);
+    if (kind === 40) { rows = []; for (let i = 0; i < 40; i++) { const s = uniq[i % uniq.length]; rows.push({ ...s, pos: [s.pos[0] + (i % 7) * 0.31, s.pos[1], s.pos[2] + Math.floor(i / 7) * 0.29] }); } }
+    C.REC.lights = rows;
+    // The room is drawn through the SHIPPED path, so what is timed is the renderer the player
+    // runs. The only thing varied is the length of the record's `lights[]` — exactly what
+    // `LIT_CAP` used to bound.
+    E.enterInterior('thorn-hall');
+    E.stepFrames(2);
+    const s = E.renderer.interiorSummary || {};
+    for (let i = 0; i < 10; i++) E.renderer.render(E.sim);        // shader compile is not frame time
+    const samples = [];
+    for (let i = 0; i < n; i++) { const a = performance.now(); E.renderer.render(E.sim); samples.push(performance.now() - a); }
+    samples.sort((a, b) => a - b);
+    return { arm: label, point_lights: s.lights_lit === undefined ? null : s.lights_lit,
+      median_ms: r4(samples[Math.floor(samples.length / 2)]), mean_ms: r4(samples.reduce((a, b) => a + b, 0) / samples.length),
+      p95_ms: r4(samples[Math.floor(samples.length * 0.95)]), n: samples.length };
+  }, { label, kind, n: N_RENDER });
+  OUT.frametime.push(row);
+  say(`  ${row.arm.padEnd(28)} ${String(row.point_lights).padStart(3)} lights   median ${String(row.median_ms).padStart(8)} ms   mean ${String(row.mean_ms).padStart(8)} ms   (${((Date.now() - t0) / 1000).toFixed(0)} s)`);
+}
+await h.page.evaluate(() => { const C = window.__CRIT; C.REC.lights = C.declared; window.__ENGINE.enterInterior('thorn-hall'); window.__ENGINE.stepFrames(2); });
+
+Object.assign(OUT, await h.page.evaluate(async () => {
   const H = window.__HARNESS, E = window.__ENGINE;
   const O = {};
   const r4 = (v) => Math.round(v * 1e4) / 1e4;
-  H.setSeed(1337);
-  H.loadState('default');
-
-  // ---- A. THE FRAME-TIME NUMBER -------------------------------------------------------------
-  // The room is drawn through the SHIPPED path (`setInteriorRecord` -> `buildInterior`), so what
-  // is timed is the renderer the player runs, not a fixture. The only thing varied is the length
-  // of the record's `lights[]`, which is exactly what `LIT_CAP` used to bound.
-  const REC = E.settlements.interior('thorn-hall');
-  const declared = REC.lights.map((L) => ({ ...L, pos: L.pos.slice() }));
-  // Deduped, the way both readers do it, so "5 lamps" means five POINT LIGHTS and not five rows.
-  const dedupe = (rows) => {
-    const seen = new Set(), out = [];
-    for (const L of rows) { const p = L.pos, k = `${Math.round(p[0] * 10)},${Math.round(p[1] * 10)},${Math.round(p[2] * 10)}`; if (seen.has(k)) continue; seen.add(k); out.push(L); }
-    return out;
-  };
-  const uniq = dedupe(declared);
-  // A 40-lamp arm: the deduped list, jittered onto fresh decimetre keys so the dedupe keeps them.
-  const many = [];
-  for (let i = 0; i < 40; i++) { const s = uniq[i % uniq.length]; many.push({ ...s, pos: [s.pos[0] + (i % 7) * 0.31, s.pos[1], s.pos[2] + Math.floor(i / 7) * 0.29] }); }
-
-  const gl = E.renderer && E.renderer.renderer ? E.renderer.renderer : null;
-  O.webgl = gl ? { context: 'live', renderer_info: (() => { try { const g = gl.getContext(); const d = g.getExtension('WEBGL_debug_renderer_info'); return d ? String(g.getParameter(d.UNMASKED_RENDERER_WEBGL)) : 'unavailable'; } catch (e) { return 'unavailable'; } })() } : { context: 'none' };
-
-  const timeArm = (rows, label) => {
-    REC.lights = rows;
-    E.enterInterior('thorn-hall');
-    E.stepFrames(2);
-    const summary = E.renderer.interiorSummary || {};
-    // Warm-up: shader compile and the first upload are not frame time.
-    for (let i = 0; i < 30; i++) E.renderer.render(E.sim);
-    const samples = [];
-    for (let i = 0; i < 200; i++) { const t0 = performance.now(); E.renderer.render(E.sim); samples.push(performance.now() - t0); }
-    samples.sort((a, b) => a - b);
-    const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
-    return { arm: label, point_lights: summary.lights_lit === undefined ? null : summary.lights_lit,
-      lamps_built: summary.lamps_built === undefined ? null : summary.lamps_built,
-      median_ms: r4(samples[Math.floor(samples.length / 2)]), mean_ms: r4(mean),
-      p95_ms: r4(samples[Math.floor(samples.length * 0.95)]), n: samples.length };
-  };
-
-  O.frametime = [];
-  // Interleaved A-B-A-C-A so a box that gets busier mid-run is visible rather than attributed.
-  O.frametime.push(timeArm(uniq.slice(0, 5), 'cap5_as_LIT_CAP_shipped'));
-  O.frametime.push(timeArm(uniq, 'all14_as_this_round_ships'));
-  O.frametime.push(timeArm(uniq.slice(0, 5), 'cap5_repeat'));
-  O.frametime.push(timeArm(many, 'CONTROL_40_lamps'));
-  O.frametime.push(timeArm(uniq, 'all14_repeat'));
-  REC.lights = declared;                       // put the record back
-  E.enterInterior('thorn-hall'); E.stepFrames(2);
 
   // ---- B. THE THIRD SITE, LIVE ---------------------------------------------------------------
   H.setRenderRate(0);
@@ -123,7 +128,7 @@ const OUT = await h.page.evaluate(async () => {
     };
   }
   return O;
-});
+}));
 
 say('\nA. THE FRAME-TIME NUMBER — thorn-hall, the worst room in the corpus\n');
 say('  arm                          point lights   median ms   mean ms   p95 ms');
