@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-ROAD-JOIN",
+  "title": "Join road generation and settlement planting so roads do not terminate in walls",
+  "status": "started",
+  "started_at": "2026-08-08T02:08:46Z",
+  "updated_at": "2026-08-08T02:08:46Z",
+  "owner": "builder",
+  "summary": "Roads (tools/world/build-roads.mjs) and settlements (planSettlement) are generated independently; nothing joins them. 10/10 built legs blocked per tools/world/road-through-building.mjs. THE CROSSING stops a body at 39 m against a stormhold wall.",
+  "phase": "reading rules/index/dispatch",
+  "files_claimed": [],
+  "files_touched": [],
+  "acceptance": {
+    "1_road_through_building_zero_of_ten": "pending",
+    "2_body_walks_THE_CROSSING": "pending",
+    "3_delete_the_fix_control": "pending",
+    "4_consumption_RI_MTH07": "pending",
+    "5_leg_length_table": "pending"
+  },
+  "notes": []
+}

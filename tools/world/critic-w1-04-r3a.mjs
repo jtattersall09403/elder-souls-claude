@@ -228,16 +228,20 @@ try {
       // S2d — against that floor, are two DIFFERENT rooms distinguishable, and are two
       // byte-identical records distinguishable? Both under the same protocol as n2.
       const pairShot = async (id) => {
-        if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); }
-        H.enterInterior(id); H.stepFrames(2);
-        const s = await shoot();
-        return { id, ...s, graph: C.graph(), room: H.getDrawnInterior().interior_id };
+        try {
+          if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(1); }
+          const r = H.enterInterior(id);
+          if (!r || !r.entered) return { id, error: 'not entered' };
+          H.stepFrames(2);
+          const s = await shoot();
+          return { id, ...s, graph: C.graph(), room: H.getDrawnInterior().interior_id };
+        } catch (e) { return { id, error: String(e && e.message ? e.message : e).slice(0, 160) }; }
       };
       const pairs = {};
-      // Two records round 2's own offline arm calls byte-identical.
-      pairs.identical_records = [await pairShot('helstrom-smithy'), await pairShot('helstrom-scriptorium')];
-      // Two rooms that are obviously different things.
-      pairs.different_records = [await pairShot('blackrose-gaol'), await pairShot('thorn-hall')];
+      // Four records that are content-identical: same bounds, same props, same lights.
+      pairs.identical_records = [await pairShot('helstrom-smithy'), await pairShot('helstrom-scriptorium'), await pairShot('helstrom-apothecary')];
+      // Rooms that are obviously different things.
+      pairs.different_records = [await pairShot('blackrose-prison'), await pairShot('thorn-hall'), await pairShot('helstrom-undertemple')];
 
       if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(2); }
       return {
@@ -249,9 +253,12 @@ try {
         n2_reentered_same_room: { shots: n2.length, distinct: distinct(n2), hashes: n2.map((x) => x.h) },
         pairs,
         reading: {
-          noise_floor_is_total: distinct(n0) === n0.length || distinct(n1) === n1.length || distinct(n2) === n2.length,
-          identical_records_same_graph: pairs.identical_records[0].graph.meshes === pairs.identical_records[1].graph.meshes,
-          identical_records_same_picture: pairs.identical_records[0].h === pairs.identical_records[1].h,
+          n0_all_distinct: distinct(n0) === n0.length,
+          n1_all_distinct: distinct(n1) === n1.length,
+          n2_all_distinct: distinct(n2) === n2.length,
+          identical_records_same_graph: pairs.identical_records.every((p) => p.graph && p.graph.meshes === pairs.identical_records[0].graph.meshes),
+          identical_records_same_picture: new Set(pairs.identical_records.filter((p) => p.h).map((p) => p.h)).size === 1,
+          different_records_differ_in_graph: new Set(pairs.different_records.filter((p) => p.graph).map((p) => p.graph.meshes)).size > 1,
         },
       };
     });
@@ -541,6 +548,64 @@ try {
     };
     save();
     log(`S6 pictures written: ${Object.values(files).flat().filter(Boolean).length}`);
+  }
+
+  // =====================================================================================
+  // S7 — THE ROUND-2 VERDICT'S OWN ACCEPTANCE FOR ROUND 3, WHICH ROUND 3 DID NOT RUN:
+  // "A pixel sweep of one fixed camera pose at all eight town centres returns 8 distinct
+  //  images, and the control arm returns 1."  Measured against its own noise floor: each
+  // town is shot TWICE in the live arm, so "distinct" can be read against repeat variation
+  // rather than assumed to be zero.
+  // =====================================================================================
+  if (want('S7')) {
+    R.sections.S7 = await page.evaluate(async () => {
+      const H = window.__HARNESS, C = window.__C;
+      const TOWNS = {
+        archon: [3785, 3.42, 3823.5], blackrose: [1905.5, 2.68, 4450], gideon: [439, 2.72, 2913.5],
+        helstrom: [2262.5, 27.22, 2773.5], lilmoth: [2766.5, 2.77, 5027.5], soulrest: [610.5, 7.91, 4877],
+        stormhold: [2171.5, 141.12, 761], thorn: [3820, 13.31, 859],
+      };
+      if (H.whereAmI().interior) { H.exitInterior(); H.stepFrames(2); }
+      H.setTimeOfDay(12); if (H.setWeather) H.setWeather('clear');
+      // ONE POSE, relative to each town centre — the same offset everywhere, so the only thing
+      // that changes between two frames is the town.
+      const OFF = [70, 22, 70];
+      const shotAt = async (c) => {
+        H.teleport(c[0], c[2]); H.stepFrames(24);
+        H.camera({ pos: [c[0] + OFF[0], c[1] + OFF[1], c[2] + OFF[2]], look: [c[0], c[1] + 5, c[2]], fov: 60 });
+        H.renderFrame();
+        const u = await H.screenshot();
+        return { h: C.hash(u), bytes: u.length, buildings: H.getDrawnSettlements().buildings };
+      };
+      const arm = async (label, on) => {
+        H.__w1_04_drawBuildings(on);
+        const rows = {};
+        for (const [sid, c] of Object.entries(TOWNS)) rows[sid] = await shotAt(c);
+        return { label, rows, distinct_images: new Set(Object.values(rows).map((r) => r.h)).size, towns: Object.keys(rows).length };
+      };
+      const live = await arm('buildings drawn', true);
+      // The noise floor: the SAME eight poses again, nothing changed.
+      const repeat = await arm('buildings drawn (repeat)', true);
+      const control = await arm('draw call cut', false);
+      H.__w1_04_drawBuildings(true); H.stepFrames(8);
+      const stable = Object.keys(live.rows).filter((k) => live.rows[k].h === repeat.rows[k].h).length;
+      return {
+        side: 'HARNESS',
+        live: { distinct: live.distinct_images, buildings: Object.fromEntries(Object.entries(live.rows).map(([k, v]) => [k, v.buildings])) },
+        repeat_of_live: { distinct: repeat.distinct_images, towns_byte_identical_to_first_pass: stable },
+        control: { distinct: control.distinct_images, buildings: Object.fromEntries(Object.entries(control.rows).map(([k, v]) => [k, v.buildings])) },
+        rows: { live: live.rows, repeat: repeat.rows, control: control.rows },
+        verdicts: {
+          live_returns_8: live.distinct_images === 8,
+          control_returns_1: control.distinct_images === 1,
+          arms_differ: control.distinct_images < live.distinct_images,
+          repeatable: stable === 8,
+        },
+      };
+    });
+    const s = R.sections.S7;
+    log(`S7 town sweep: live ${s.live.distinct}/8 distinct, repeat-stable ${s.repeat_of_live.towns_byte_identical_to_first_pass}/8, control ${s.control.distinct}`);
+    save();
   }
 
   R.finished_at = new Date().toISOString();

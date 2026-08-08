@@ -1,0 +1,217 @@
+{
+  "schema": "elder-souls/dialogue-graph-metrics@1",
+  "generated_by": "tools/dialogue/build-graph.mjs",
+  "nodes": 468,
+  "edges": 1603,
+  "roots": 9,
+  "root_ids_missing": [],
+  "mean_out_degree_nonleaf": 3.9096,
+  "leaf_fraction": 0.2201,
+  "reachable_only_via_another_topic": 0.9808,
+  "max_depth": 7,
+  "median_depth": 2,
+  "unreachable_from_greeting": [
+    "the-hatch-name-list",
+    "the-lukiul",
+    "the-outlander-question",
+    "warden-eshi",
+    "the-one-path",
+    "the-blight-storms",
+    "the-ash-cough",
+    "the-xul-teekh",
+    "the-soul-trade",
+    "the-writ-of-passage",
+    "the-hatching-pool",
+    "your-egg-year",
+    "the-old-tongue",
+    "what-the-warmbloods-ask",
+    "your-clutch-mark",
+    "the-river-bands",
+    "what-the-towns-say-about-us",
+    "the-third-person",
+    "the-wine",
+    "your-people-here",
+    "the-word-they-use",
+    "citizenship",
+    "home-leave",
+    "warmblood",
+    "why-anyone-comes-here",
+    "boots",
+    "the-lukiul-problem",
+    "the-shadowscale-list",
+    "what-we-do-with-the-writs",
+    "the-price-of-a-name",
+    "the-mud-season",
+    "bridge-duty",
+    "your-accent",
+    "what-they-take-off-you",
+    "tidewrack",
+    "the-market",
+    "the-draught",
+    "my-kingdom",
+    "the-marsh",
+    "the-tolls",
+    "the-ninth-column",
+    "the-bond-berth",
+    "the-man-off-the-quay",
+    "the-count-of-forty",
+    "what-people-say-happened",
+    "the-three-previous-severances",
+    "the-clause",
+    "the-eleven-wells",
+    "the-leave-book",
+    "the-compact",
+    "the-cohorts-stormhold-does-not-have",
+    "the-hold",
+    "your-hatch-name",
+    "the-writ",
+    "my-work",
+    "the-list",
+    "lukiul",
+    "dying-far-from-the-tree",
+    "the-duskfall-count",
+    "what-the-bone-holds"
+  ],
+  "orphans": [],
+  "orphans_npc_advertised": [
+    "what-the-warmbloods-ask",
+    "the-river-bands",
+    "the-wine",
+    "why-anyone-comes-here",
+    "the-market",
+    "the-draught",
+    "my-kingdom",
+    "the-marsh",
+    "the-count-of-forty",
+    "what-people-say-happened",
+    "the-three-previous-severances",
+    "the-clause",
+    "the-eleven-wells",
+    "the-leave-book",
+    "the-compact",
+    "the-cohorts-stormhold-does-not-have",
+    "the-hold",
+    "the-writ",
+    "my-work",
+    "lukiul",
+    "dying-far-from-the-tree",
+    "the-duskfall-count",
+    "what-the-bone-holds"
+  ],
+  "unreachable_infos": 3,
+  "convergence": 0.6218,
+  "quest_topic_fraction": 0.0427,
+  "quest_topics": [
+    "the-dead-pay",
+    "the-heirs-clause",
+    "the-unfinished-survey",
+    "the-man-in-the-water",
+    "the-unlisted-well",
+    "the-under-drain",
+    "the-thinning",
+    "the-cleared-ground",
+    "the-lung-wage",
+    "the-petition",
+    "the-thorn-charter",
+    "the-listening-at-soulrest",
+    "the-removed-name",
+    "the-chain-on-the-wall",
+    "the-allowance",
+    "the-three-things-i-checked-myself",
+    "why-it-is-filling-now",
+    "how-the-count-opens",
+    "whose-count-are-you",
+    "what-does-the-marsh-owe-you"
+  ],
+  "menu_quest_fraction": 0.2,
+  "menu_quests": [
+    "the-unfinished-survey",
+    "the-under-drain",
+    "the-thinning",
+    "the-lung-wage"
+  ],
+  "topics_with_settlement_local_answer": 189,
+  "infos_total": 1283,
+  "mean_infos_per_topic": 2.741,
+  "per_settlement": {
+    "lilmoth": {
+      "answerable": 405,
+      "with_local_answer": 34
+    },
+    "stormhold": {
+      "answerable": 400,
+      "with_local_answer": 22
+    },
+    "helstrom": {
+      "answerable": 397,
+      "with_local_answer": 33
+    },
+    "thorn": {
+      "answerable": 394,
+      "with_local_answer": 21
+    },
+    "soulrest": {
+      "answerable": 398,
+      "with_local_answer": 16
+    },
+    "gideon": {
+      "answerable": 404,
+      "with_local_answer": 53
+    },
+    "archon": {
+      "answerable": 400,
+      "with_local_answer": 19
+    },
+    "blackrose": {
+      "answerable": 398,
+      "with_local_answer": 23
+    },
+    "tidewrack": {
+      "answerable": 390,
+      "with_local_answer": 0
+    }
+  },
+  "errors": [],
+  "unreachable_info_detail": [
+    {
+      "topic": "the-witness",
+      "earlier": 0,
+      "shadowed": 3,
+      "earlier_filter": {
+        "a": "clerk",
+        "cell": "gideon"
+      },
+      "shadowed_filter": {
+        "a": "clerk",
+        "cell": "gideon",
+        "d": 20
+      }
+    },
+    {
+      "topic": "reading-the-count",
+      "earlier": 2,
+      "shadowed": 3,
+      "earlier_filter": {
+        "a": "archivist"
+      },
+      "shadowed_filter": {
+        "a": "archivist",
+        "d": 20
+      }
+    },
+    {
+      "topic": "the-cutters-terms",
+      "earlier": 0,
+      "shadowed": 3,
+      "earlier_filter": {
+        "a": "sapcutter"
+      },
+      "shadowed_filter": {
+        "a": "sapcutter",
+        "d": 20
+      }
+    }
+  ]
+}
+
+FAIL: 0 dangling edges, 0 orphans, 3 unreachable INFOs  (+23 reachable only because a speaker advertises them)

@@ -1,0 +1,80 @@
+critic-semantics — RI-DLG01 §A first-match-wins vs the shipped scoring reader
+mode: shipped
+space: 347 speakers x 4 players x 468 topics
+
+A. resolutions (a candidate set was non-empty)      75948
+   decided by a TIE, i.e. by authored order          0  (0.00%)
+   distinct topics that ever tie                     0
+
+B. answers where the two rules DISAGREE              52  (0.07%)
+
+C. infos in the corpus                               1280
+   never spoken by ANY speaker to ANY player
+     under the SHIPPED scoring reader                163
+     under RI-DLG01 §A first-match-wins              163
+
+  reading-the-count  (archivist notary-sedda-vell, saxhleel-marsh-d70)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist notary-sedda-vell, dunmer-town-d40)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist notary-sedda-vell, imperial-legion-d20)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist notary-sedda-vell, naga-coast-d55)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist ledgerer-hosk-vei, saxhleel-marsh-d70)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist ledgerer-hosk-vei, dunmer-town-d40)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist ledgerer-hosk-vei, imperial-legion-d20)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  reading-the-count  (archivist ledgerer-hosk-vei, naga-coast-d55)
+    scored : They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the objec
+    ordered: Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make hi
+  the-witness  (clerk gideon-court-factor, saxhleel-marsh-d70)
+    scored : She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he 
+    ordered: She gave a statement and she gave it twice, and both times it was the same words in the same order. The court 
+  the-witness  (clerk gideon-court-factor, dunmer-town-d40)
+    scored : She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he 
+    ordered: She gave a statement and she gave it twice, and both times it was the same words in the same order. The court 
+  the-witness  (clerk gideon-court-factor, imperial-legion-d20)
+    scored : She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he 
+    ordered: She gave a statement and she gave it twice, and both times it was the same words in the same order. The court 
+  the-witness  (clerk gideon-court-factor, naga-coast-d55)
+    scored : She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he 
+    ordered: She gave a statement and she gave it twice, and both times it was the same words in the same order. The court 
+
+  first 25 infos no one in the province can ever hear (shipped reader):
+    duties#1
+    background#1
+    specific-place#4
+    specific-place#6
+    someone-in-particular#1
+    someone-in-particular#5
+    services#4
+    my-trade#1
+    little-advice#0
+    little-advice#2
+    little-secret#0
+    little-secret#1
+    little-secret#2
+    little-secret#3
+    little-secret#4
+    little-secret#5
+    the-charter#1
+    the-chapel-of-akatosh#3
+    lilmoth#2
+    lilmoth#5
+    stormhold#2
+    stormhold#4
+    stormhold#5
+    blackrose#2
+    thorn#3
+
+FAIL: the corpus is read by a rule RI-DLG01 §A does not specify, and the two rules give different answers.

@@ -29,8 +29,23 @@ right now). Between these two you should not need to go looking for anything.
    name the world-side consumer and demonstrate it by perturbing the model and watching an entity
    change behaviour. **Sixteen subsystems have shipped a correct, instrumented model that nothing
    in the running world reads.**
-6. **Delete-the-fix.** Remove your own change on a copy and confirm the old number returns. Then
-   check the two arms actually differ — an "inert fix" has passed here twice.
+6. **Delete-the-fix, and then check your control is not itself inert.** Remove your own change on a
+   copy, confirm the old number returns, and confirm the two arms genuinely differ. There are two
+   distinct failures here and conflating them has already cost a wrong published count:
+
+   - **An inert fix** — the change does nothing and the measurement passes anyway, because
+     something else was carrying the number. That has passed here **twice**.
+   - **An inert control** — the *teardown* does nothing, so both arms are the positive arm. W1-04's
+     wall-collision control nulled `engine._townCell` one line before calling a function whose
+     off-branch reads `if (this._townCell && …)`, so all fifteen walks came back byte-identical and
+     the control looked like a clean negative result. **When you write a teardown, break the thing
+     under test and confirm the control arm goes red** — a control you have never seen fail is not
+     evidence, it is a second copy of the experiment.
+
+   A third shape exists and is not either of these: **two guards for one defect**, where deleting
+   either alone changes nothing and only deleting both moves the number. Honest reporting of it
+   looks exactly like an inert fix, so say which you have when you report it (see
+   `corpus/90-verdicts/wave1/W1-SOULS-r3.md`, run as a 2×2).
 7. **Audit the running world after a load, not the bytes.** A field written and never read back
    re-serialises to exactly what was saved and passes forever.
 8. **A still target hides every steering defect.** If what you measure responds to motion, the

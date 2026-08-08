@@ -1,0 +1,81 @@
+critic-figures — signposting and rhetorical figure across the whole dialogue tree
+mode: shipped
+corpus: 1519 entries, 48954 words
+
+1. SIGNPOSTING — echo_direction (a line closing on an imperative that reuses its own word)
+   per 10k words. Morrowind reference in check-prose.mjs: 1.08. Tree-wide claim: 2.7.
+
+   file                              entries  words   dir/10k   ech_q/10k  ech_st/10k
+   topics/07-root-coverage.json          86    1594    12.55       6.27       0.00
+   topics/40-race-gated.json            116    2100     4.76       0.00      19.05
+   topics/main-quest-argument.json       36    3652     2.74       0.00       0.00
+   topics/50-mainline.json              128    4031     2.48       7.44      27.29
+   topics/10-global.json                151    4843     2.06       2.06      10.32
+   topics/00-roots.json                  53    1758     0.00       5.69      17.06
+   topics/05-asking-around.json          63    3038     0.00      13.17       9.87
+   topics/06-opening-roots.json          18     688     0.00       0.00       0.00
+   topics/20-tier-a.json                 70    2095     0.00       4.77      28.64
+   topics/21-tier-b.json                 46    1439     0.00       0.00      20.85
+   topics/22-tier-c.json                 32    1000     0.00       0.00      20.00
+   topics/30-texture.json                77    2232     0.00       0.00      13.44
+   topics/45-speaker-coverage.json       56    1706     0.00      11.72      23.45
+   topics/50-factions.json              106    3444     0.00       2.90       5.81
+   topics/55-utility.json               102    2949     0.00       0.00      23.74
+   topics/56-writ-house-open.json        24     983     0.00       0.00      10.17
+   topics/60-roads.json                  24     853     0.00       0.00      23.45
+   topics/70-disputes.json               22     921     0.00      10.86      21.72
+   topics/75-tribes.json                 70    2780     0.00       0.00       7.19
+   rumours.json                         239    6848     0.00      10.22       7.30
+   ALL                                 1519   48954     1.23       4.49      13.28
+
+   worst offending lines (echo_direction):
+     topics/07-root-coverage.json [(anyone)]
+       "The hall is at the end of the boards. Do not leave the boards to get there."
+     topics/07-root-coverage.json [(anyone)]
+       "There is a salt factor who will not see you and a bone-setter who will. Go to the bone-setter."
+     topics/10-global.json [sapcutter]
+       "Sap weighs heavy wet. The Ledger buys wet and sells dry. Friend, the difference is a cart in ten, and it isn't weighed twice. Don't say that in a Ledger room."
+     topics/40-race-gated.json [fisher]
+       "We don't go past the second bend. None go past the second bend. Don't you go either!"
+     topics/50-mainline.json [mudborn]
+       "Ask about the ink. I'll say no more than that in this room. Ask elsewhere about the ink."
+     topics/main-quest-argument.json [rootkeeper]
+       "Say it again. — Ashul-Tei sent that. I have never met her and she is the first person in four hundred years to ask me anything that was not about the machine, and I am going to need a moment"
+     (6 in total)
+
+2. THE AUTHOR'S HAND — the same figure in every mouth
+   terminal_question: the line ends by turning and asking the player something.
+   antithesis: the "it is not X, it is Y" corrective.
+
+   archetype / actor       entries   term-Q%   antith/10k
+   rootkeeper                  183       1.1        33.72
+   magister                     23      13.0         0.00
+   sapcutter                   116      43.1         4.12
+   mudborn                     112       2.7         4.90
+   legionary                   118      16.9         3.94
+   archivist                   124       0.8        11.72
+   (all other actors)          604      15.6         7.75
+   rumours (overheard)         239      10.9         4.38
+
+   the same figure, per FILE — the number that says whose hand it is:
+   file                              entries   term-Q%   antith/10k
+   topics/05-asking-around.json           63      20.6        16.46
+   topics/20-tier-a.json                  70      20.0        19.09
+   topics/21-tier-b.json                  46      17.4         6.95
+   topics/30-texture.json                 77      16.9        26.88
+   topics/06-opening-roots.json           18      16.7        14.53
+   topics/45-speaker-coverage.json        56      16.1        17.58
+   topics/22-tier-c.json                  32      15.6        30.00
+   topics/10-global.json                 151      14.6        18.58
+   topics/75-tribes.json                  70      14.3        10.79
+   topics/50-mainline.json               128      14.1         7.44
+   topics/07-root-coverage.json           86      14.0         6.27
+   topics/55-utility.json                102      13.7         3.39
+   topics/70-disputes.json                22      13.6         0.00
+   topics/56-writ-house-open.json         24      12.5        10.17
+   topics/50-factions.json               106      12.3         5.81
+   rumours.json                          239      10.9         4.38
+   topics/40-race-gated.json             116       9.5         0.00
+   topics/00-roots.json                   53       3.8        28.44
+   topics/60-roads.json                   24       0.0         0.00
+   topics/main-quest-argument.json        36       0.0        19.17

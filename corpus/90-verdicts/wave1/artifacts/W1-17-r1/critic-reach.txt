@@ -1,0 +1,569 @@
+critic-reach — every info in the province, against the reader that actually runs
+mode: shipped
+player space: 10 races x 4 upbringings x 15 dispositions x 9 knowledge sets = 5400
+speakers: 347   topics: 468   infos: 1280
+
+INFOS NO PLAYER CAN EVER HEAR FROM ANY SPEAKER:  133  (10.4%)
+build-graph.mjs reports:                          3
+shadow-audit.mjs audits:                          3 (exactly the 3 the lint nominated)
+
+by cause:
+    40  no such actor in the roster
+    10  no archivist stands in gideon
+     7  no mudborn stands in lilmoth
+     7  no archivist stands in stormhold
+     6  no sapcutter stands in archon
+     6  no mudborn stands in archon
+     5  no sapcutter stands in stormhold
+     5  no archivist stands in thorn
+     5  no sapcutter stands in thorn
+     5  no sapcutter stands in helstrom
+     4  no mudborn stands in stormhold
+     3  no archivist stands in lilmoth
+     3  no mudborn stands in blackrose
+     3  no sapcutter stands in soulrest
+     3  always outscored — a higher-scoring info is admissible to every player this one is
+     3  no mudborn stands in gideon
+     3  no sapcutter stands in gideon
+     3  no archivist stands in archon
+     3  no rootkeeper stands in rootlands
+     2  no archivist stands in helstrom
+     2  no mudborn stands in helstrom
+     2  no fisher stands in archon
+     2  no fisher stands in thorn
+     1  no clerk stands in blackrose
+
+  duties#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If you are asking what I do here, provincial, the answer is that I hold an estate that the Empire sa…"
+  background#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If you mean where I am from, provincial, the answer is a place that no longer sends me anything. If …"
+  specific-place#4
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Gideon is surveyed, which makes it the only settlement in the province I can describe without apolog…"
+  specific-place#6
+      filter {"a":"sapcutter","cell":"archon"}
+      cause  no sapcutter stands in archon
+      text   "Archon is the dye yards and the tide steps. Friend, follow your nose to the first one.…"
+  someone-in-particular#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If the person is worth knowing, provincial, I already correspond with them. If they are not, I would…"
+  someone-in-particular#5
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "The chapel keeps a roll of the tithed and the Office keeps a roll of the taxed, and the interesting …"
+  services#4
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Gideon has an inn, a chapel, a timber factor, a smith who is better than the town deserves, and a Pr…"
+  my-trade#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Administration, of an estate whose legality is a matter of opinion. If you want the opinion, provinc…"
+  little-advice#0
+      filter {"a":"mudborn","cell":"archon","d":10}
+      cause  no mudborn stands in archon
+      text   "Do not put your hands in the dye vats even to point at something, dry-one, because the colour does n…"
+  little-advice#2
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Should you wish to survive the interior, provincial, do not accept water. Everything else you will w…"
+  little-secret#3
+      filter {"a":"magister","d":80}
+      cause  no such actor in the roster: magister
+      text   "Since you have been useful: the treaty has a clause about heirs. It has not been read in ninety year…"
+  the-charter#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Paper. Presumably you've seen paper before. Whose charter are you asking about?…"
+  the-chapel-of-akatosh#3
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "A proper chapel, stone, with a bell that was carried here in pieces, and a priest who has been quiet…"
+  lilmoth#2
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "It is the only town in the province where a person can sleep dry for nothing, dry-one, because there…"
+  lilmoth#5
+      filter {"a":"archivist","cell":"lilmoth"}
+      cause  no archivist stands in lilmoth
+      text   "The colonial city was built on made ground and the ground has been unmaking itself for two centuries…"
+  stormhold#2
+      filter {"a":"mudborn","cell":"stormhold","d":10}
+      cause  no mudborn stands in stormhold
+      text   "It is a good town to beg in and a bad town to sleep in, dry-one, because the streets are dry and ful…"
+  stormhold#4
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "Stormhold is the only settlement in Argonia laid out to an Imperial plan and completed to it, and th…"
+  stormhold#5
+      filter {"a":"sapcutter","cell":"stormhold"}
+      cause  no sapcutter stands in stormhold
+      text   "Gate fee, market fee, weigh fee. Friend, Stormhold charges for air. How long are you in for?…"
+  blackrose#2
+      filter {"a":"mudborn","cell":"blackrose","d":10}
+      cause  no mudborn stands in blackrose
+      text   "Half the people here have kin inside and the other half turn the key on them, dry-one, and they all …"
+  thorn#3
+      filter {"a":"archivist","cell":"thorn"}
+      cause  no archivist stands in thorn
+      text   "The charter of Thorn is an authentic Imperial instrument granting a hereditary title over a jurisdic…"
+  thorn#4
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "Thornwood town. Straight grain. Good money. Friend, the king takes a tenth and gives it back at the …"
+  soulrest#4
+      filter {"a":"sapcutter","cell":"soulrest"}
+      cause  no sapcutter stands in soulrest
+      text   "Salt, bone, nothing. Friend, this one comes twice a year out of habit. What brings you?…"
+  hist-sap#2
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "You are asking whether it can be shipped. It has been, at scale, for two centuries. The price reflec…"
+  house-dres#3
+      filter {"a":"magister"}
+      cause  no such actor in the roster: magister
+      text   "Six estates, four factors, one magister and a treaty that says none of it is ours. We remain because…"
+  the-drowned-road#3
+      filter {"a":"vakh-speaker","forb":{"race":["dunmer","imperial","nord","breton","redguard","khajiit","orsimer","bosmer"]}}
+      cause  no such actor in the roster: vakh-speaker
+      text   "It is walkable at the low tide of the third day and it does not want warmbloods on it.…"
+  the-arnesian-war#2
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "A rebellion, provincial. It was suppressed. Everything continued much as before, with a treaty laid …"
+  ancus-varo#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Were Varo a worse man he would be a richer one, and were he a better one he would have reported the …"
+  the-provincial-office#0
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "The Office. Yes. If you have a grievance, provincial, they'll record it beautifully. But they will n…"
+  the-blackwater-treaty#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "The treaty is why my estate is not an estate. Should you find that funny, provincial, you would be i…"
+  the-heirs-clause#0
+      filter {"a":"magister","d":70}
+      cause  no such actor in the roster: magister
+      text   "Clause eleven. If a chartered holding has no heir the holding reverts, not to the Empire, but to the…"
+  the-slavers-road#0
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "A road. If you're hoping I'll apologise for a road, provincial, you have misjudged the conversation.…"
+  magister-varo-dren#0
+      filter {"a":"magister","d":30}
+      cause  no such actor in the roster: magister
+      text   "I am he, if you were hoping for someone else. Were there a better magister available the House would…"
+  the-xanmeers#3
+      filter {"a":"notary"}
+      cause  no such actor in the roster: notary
+      text   "Solid, all the way through. The survey measured eleven of them with one rod and found no chamber in …"
+  the-deep-marshes#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Were the interior worth holding, provincial, it would have been held. It is not held. The Empire has…"
+  the-blackwood-company#0
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Useful, if you are content to pay for enthusiasm rather than competence. The House retains them and …"
+  the-blackwood-company#4
+      filter {"a":"mercenary"}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "They hire and they pay and they do not ask twice.…"
+  the-tithe-roll#0
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "The chapel's roll of the tithed. In Gideon that is very nearly the roll of the respectable. Two name…"
+  the-needle-forest#1
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "Thornwood. Straight grain. Dunmer buy it for bows. Friend, the Empire buys it for spears.…"
+  the-dye-yards#0
+      filter {"a":"mudborn","cell":"archon","d":10}
+      cause  no mudborn stands in archon
+      text   "The vats take a season off your hands and ten years off your lungs, dry-one. The yard pays a wage th…"
+  the-dye-yards#1
+      filter {"a":"sapcutter","cell":"archon"}
+      cause  no sapcutter stands in archon
+      text   "Tide-lichen, boiled. Comes out imperial purple. Friend, the Empire pays for the colour of its own go…"
+  the-low-city#0
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "They call it the low city because it is low and they call the boards above it the high city as a jok…"
+  the-harbour-chain#1
+      filter {"a":"archivist","cell":"lilmoth"}
+      cause  no archivist stands in lilmoth
+      text   "A harbour chain is a statement about who may leave, not who may enter, and the fact that this one is…"
+  the-made-ground#0
+      filter {"a":"archivist","cell":"lilmoth"}
+      cause  no archivist stands in lilmoth
+      text   "Rubble, ballast and the demolished first city, tipped into the shallows and built on. It was an enti…"
+  the-swimmers#1
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "They go down at the turn, and they come up grey, and they don't talk for a day after, dry-one. And o…"
+  hides-his-foot#0
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "He is the oldest of the swimmers and he has been going down since before the fever, dry-one. If you …"
+  the-lamp-tax#0
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "They tax the lamps and half the walks are dark now, dry-one, and the ones that are dark are the ones…"
+  the-fish-market#0
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "When it closes there is a half hour when the boxes are turned out and there is no minding who is sta…"
+  the-weigh-house#0
+      filter {"a":"sapcutter","cell":"stormhold"}
+      cause  no sapcutter stands in stormhold
+      text   "Every cart, every load, one drake a stone. Friend, the scales are the Ledger's and the fee is the Em…"
+  the-weigh-house#1
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "The arrangement is unusual and has never been examined: the Empire levies the duty, the Ledger owns …"
+  the-night-watch#0
+      filter {"a":"mudborn","cell":"stormhold","d":10}
+      cause  no mudborn stands in stormhold
+      text   "They'll move you on four times a night without ever once being cruel about it, dry-one. And by the f…"
+  the-drains#0
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "Cut into the salt rock by the original engineers and still functioning. No other Imperial infrastruc…"
+  the-under-drain#0
+      filter {"a":"mudborn","cell":"stormhold","d":55}
+      cause  no mudborn stands in stormhold
+      text   "There's a grating on the north drain that's been unbolted and bolted again, dry-one. I know it has, …"
+  the-border-road#1
+      filter {"a":"sapcutter","cell":"stormhold"}
+      cause  no sapcutter stands in stormhold
+      text   "Good stone. Bad company. Friend, this one goes in daylight only. Are you going north?…"
+  the-salt-market#0
+      filter {"a":"sapcutter","cell":"stormhold"}
+      cause  no sapcutter stands in stormhold
+      text   "Salt, hide, dried fish, iron. No sap. Friend, no sap in this town at all. Have you seen any north of…"
+  the-salt-market#1
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "The absence of sap in the Stormhold market is a recent development and is not explained by supply, s…"
+  okan-shei#0
+      filter {"a":"sapcutter","cell":"stormhold","d":20}
+      cause  no sapcutter stands in stormhold
+      text   "The Ledger's man at the weigh house. Polite. Very polite. Friend, that isn't a compliment.…"
+  okan-shei#1
+      filter {"a":"mudborn","cell":"stormhold","d":10}
+      cause  no mudborn stands in stormhold
+      text   "He's given me coin twice, and both times he asked me afterwards what I'd seen that week, dry-one. An…"
+  helstrom#1
+      filter {"a":"sapcutter","cell":"helstrom","d":20}
+      cause  no sapcutter stands in helstrom
+      text   "No cart goes in. Everything is carried. Friend, this one has never been past the second root. Have y…"
+  helstrom#2
+      filter {"a":"magister","cell":"helstrom","d":20}
+      cause  no such actor in the roster: magister
+      text   "Were the House permitted a factor in Helstrom, provincial, it would have one. It is not permitted. I…"
+  helstrom#3
+      filter {"a":"archivist","cell":"helstrom"}
+      cause  no archivist stands in helstrom
+      text   "No Imperial survey of Helstrom has ever been completed. The three attempts are catalogued as abandon…"
+  the-root-halls#1
+      filter {"a":"archivist","cell":"helstrom"}
+      cause  no archivist stands in helstrom
+      text   "Chambers formed by root growth, occupied without modification, and allocated by a process no Imperia…"
+  naheesh-tul#1
+      filter {"a":"sapcutter","cell":"helstrom"}
+      cause  no sapcutter stands in helstrom
+      text   "The old one. Sees all comers. Sells nothing. Friend, go with clean hands. Do you know what you'll as…"
+  the-carriers#0
+      filter {"a":"mudborn","cell":"helstrom","d":10}
+      cause  no mudborn stands in helstrom
+      text   "It's the one trade here a stranger can get, dry-one, and it will break your back in four years. For …"
+  the-carriers#1
+      filter {"a":"sapcutter","cell":"helstrom"}
+      cause  no sapcutter stands in helstrom
+      text   "No wheels past the gate. They carry it all on the back. Friend, they charge by the root, not the mil…"
+  wades-deep#0
+      filter {"a":"sapcutter","cell":"helstrom","d":20}
+      cause  no sapcutter stands in helstrom
+      text   "Carrier. Twenty years on the roots. Knows every hall. Friend, buy the first drink.…"
+  wades-deep#1
+      filter {"a":"mudborn","cell":"helstrom","d":10}
+      cause  no mudborn stands in helstrom
+      text   "He carried for the keepers before he carried for the Ledger, dry-one, and there aren't many who've d…"
+  gideon#1
+      filter {"a":"mudborn","cell":"gideon","d":10}
+      cause  no mudborn stands in gideon
+      text   "They're kind here in the way that people are kind when they have enough, dry-one. It's real kindness…"
+  gideon#2
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Gideon is what the Empire believed the whole province would become: a grid of tilled fields, a timbe…"
+  gideon#4
+      filter {"a":"sapcutter","cell":"gideon"}
+      cause  no sapcutter stands in gideon
+      text   "Good road, good coin, dull town. Friend, this one sells everything here and drinks somewhere else. W…"
+  the-timber-yards#0
+      filter {"a":"sapcutter","cell":"gideon"}
+      cause  no sapcutter stands in gideon
+      text   "Blackwood hardwood. Cut, floated, sold. Friend, the Empire buys it all. Do you want a yard name?…"
+  the-river-floats#0
+      filter {"a":"sapcutter","cell":"gideon"}
+      cause  no sapcutter stands in gideon
+      text   "Logs down the river in a raft. Two men ride it. Friend, one of them usually gets off. Don't take tha…"
+  the-field-grid#0
+      filter {"a":"mudborn","cell":"gideon","d":10}
+      cause  no mudborn stands in gideon
+      text   "There is work in the fields at the cut and at the sowing and none in between, dry-one, so the town i…"
+  the-field-grid#1
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Surveyed in square plots on the Cyrodiilic pattern. It works here and it works nowhere else in the p…"
+  the-cleared-ground#0
+      filter {"a":"archivist","cell":"gideon","d":50}
+      cause  no archivist stands in gideon
+      text   "The plot register begins in the year the settlement was chartered, and the first thirty sheets are a…"
+  brother-teleno#0
+      filter {"a":"mudborn","cell":"gideon","d":10}
+      cause  no mudborn stands in gideon
+      text   "He'll feed you without making you sit through anything first, dry-one. It sounds like a small thing.…"
+  brother-teleno#1
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "The chapel priest, twenty-two years in post. He is the only Imperial cleric in the province whose pa…"
+  the-office-annexe#0
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Two rooms, four clerks, and the provincial copy of every instrument in force in Argonia, including o…"
+  archon#1
+      filter {"a":"mudborn","cell":"archon","d":10}
+      cause  no mudborn stands in archon
+      text   "It is the easiest town in the province to get work in and the hardest to leave with a body that stil…"
+  archon#2
+      filter {"a":"sapcutter","cell":"archon"}
+      cause  no sapcutter stands in archon
+      text   "Dye town. Everything smells. Everything sells. Friend, the coast is red four months a year and so ar…"
+  archon#3
+      filter {"a":"archivist","cell":"archon"}
+      cause  no archivist stands in archon
+      text   "Archon exists because a lichen that grows on a hundred miles of rock can be boiled into a purple the…"
+  the-tide-lichen#0
+      filter {"a":"sapcutter","cell":"archon"}
+      cause  no sapcutter stands in archon
+      text   "Scraped off the rock at low water. Four months. Friend, then eight months of nothing. Were you think…"
+  the-tide-lichen#1
+      filter {"a":"archivist","cell":"archon"}
+      cause  no archivist stands in archon
+      text   "The organism is a lichen only by courtesy; the surveys that classified it did so on colour, and the …"
+  the-purple-law#0
+      filter {"a":"archivist","cell":"archon"}
+      cause  no archivist stands in archon
+      text   "Imperial purple may be worn by four categories of person and the enforcement of that restriction is …"
+  the-vat-cough#0
+      filter {"a":"mudborn","cell":"archon","d":10}
+      cause  no mudborn stands in archon
+      text   "It starts in the third season and it doesn't stop, dry-one. The yard masters call it the wet chest a…"
+  the-lung-wage#0
+      filter {"a":"mudborn","cell":"archon","d":55}
+      cause  no mudborn stands in archon
+      text   "There is a book in the yard office with every man who has taken the lung wage in it, dry-one, and it…"
+  the-yard-office#0
+      filter {"a":"sapcutter","cell":"archon","d":20}
+      cause  no sapcutter stands in archon
+      text   "Above the third vat. One door. One clerk. Friend, he sleeps in there. Do you want him woken?…"
+  an-deesei#0
+      filter {"a":"sapcutter","cell":"archon","d":20}
+      cause  no sapcutter stands in archon
+      text   "Yard clerk. Keeps every book. Hates the yard. Friend, this one has never seen her buy anything.…"
+  an-deesei#1
+      filter {"a":"mudborn","cell":"archon","d":15}
+      cause  no mudborn stands in archon
+      text   "She came for one season twenty years ago, dry-one, and she has the cough now herself, and she still …"
+  the-warden#0
+      filter {"a":"mudborn","cell":"blackrose","d":10}
+      cause  no mudborn stands in blackrose
+      text   "He walks the town on the first of the month with no guard at all, dry-one, and they all nod, and I h…"
+  the-rose-yard#0
+      filter {"a":"mudborn","cell":"blackrose","d":10}
+      cause  no mudborn stands in blackrose
+      text   "It is the only green thing in the town and it is inside the wall, dry-one, and they let the long-sen…"
+  the-rotted-hall#0
+      filter {"a":"archivist","cell":"thorn"}
+      cause  no archivist stands in thorn
+      text   "The roof leaks over the throne and not over the hearth. I am assured this was a decision rather than…"
+  hlaalu-teeth#1
+      filter {"a":"archivist","cell":"thorn"}
+      cause  no archivist stands in thorn
+      text   "The king, and the title is not a courtesy: the instrument is in the annexe at Gideon and it is valid…"
+  hlaalu-teeth#2
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "The old king. Talks about ancestors. Friend, let him. He pays after. Have you an hour?…"
+  the-drowning-at-the-ford#0
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If a column had been lost at that ford, provincial, House Dres would have a record of it. House Dres…"
+  the-drowning-at-the-ford#1
+      filter {"a":"archivist","cell":"thorn"}
+      cause  no archivist stands in thorn
+      text   "The king's ancestors are said to have drowned a Dres column at the ford in the Arnesian War, and the…"
+  the-tenth#0
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "A tenth of every cut. Straight to the hall. And out again at midwinter, friend, all of it.…"
+  the-one-path#0
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "One way through the needles. No map has it. Friend, the warden has it in her feet. Do you want her f…"
+  the-thorn-charter#0
+      filter {"a":"archivist","cell":"thorn","d":55}
+      cause  no archivist stands in thorn
+      text   "The instrument names a successor procedure and the king has no heir. The clause that would then gove…"
+  the-thorn-charter#1
+      filter {"a":"magister","d":40}
+      cause  no such actor in the roster: magister
+      text   "Should the old man die without an heir, provincial, there will be a very interesting afternoon in th…"
+  the-salt-pans#1
+      filter {"a":"sapcutter","cell":"soulrest"}
+      cause  no sapcutter stands in soulrest
+      text   "Cut squares in the flat. Sun does the rest. Friend, it's the only wage here. Are you looking for one…"
+  the-bone-diggers#1
+      filter {"a":"sapcutter","cell":"soulrest","d":20}
+      cause  no sapcutter stands in soulrest
+      text   "They dig the old ground for bone and it sells. Friend, don't ask whose. And don't buy any!…"
+  the-dunmer-question#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If you are asking whether I am safe here, provincial, the answer is that I have been safe here for t…"
+  the-bell-that-rings#0
+      filter {"a":"mudborn","cell":"lilmoth","d":15}
+      cause  no mudborn stands in lilmoth
+      text   "The chapel down there still has its bell, and it goes at the spring tide, dry-one. The Cohort says i…"
+  the-tribunal-question#0
+      filter {"a":"magister","d":25}
+      cause  no such actor in the roster: magister
+      text   "You are asking whether the living gods of Morrowind are worshipped in this province. They are worshi…"
+  the-quiet-route#0
+      filter {"a":"smuggler","forb":{"race":["imperial"]}}
+      cause  no such actor in the roster: smuggler
+      text   "Up the second channel, past the drowned stones, and you never saw me.…"
+  the-water-call#1
+      filter {"a":"fisher","cell":"archon"}
+      cause  no fisher stands in archon
+      text   "You see that hull out on the bar? A ship puts in for water. They fill four barrels, they lie at anch…"
+  the-archon-question#1
+      filter {"a":"fisher","cell":"archon"}
+      cause  no fisher stands in archon
+      text   "Ask a captain here what he thinks of the question and he'll ask you what you think of your teeth. Th…"
+  the-bond-berth#0
+      filter {"a":"dockhand","cell":"gideon"}
+      cause  no such actor in the roster: dockhand
+      text   "A salt-wife bond passes to the wife when the man drowns. The Ledger calls that compassion. It's a be…"
+  the-man-off-the-quay#1
+      filter {"a":"dockhand","cell":"gideon"}
+      cause  no such actor in the roster: dockhand
+      text   "His room is still paid for. Four seasons! If they'd done what you think they did, why would they sti…"
+  the-second-refusal#1
+      filter {"a":"harbourmistress","cell":"gideon"}
+      cause  no such actor in the roster: harbourmistress
+      text   "A chair falls vacant three ways and only one of them needs a knife. The other two are in the article…"
+  the-room-with-no-case#0
+      filter {"a":"notary","cell":"gideon"}
+      cause  no such actor in the roster: notary
+      text   "On the half-landing, grey door, same grey as the wall. Two chairs in it and years of wear on the flo…"
+  the-room-with-no-case#1
+      filter {"a":"scribe","cell":"gideon"}
+      cause  no such actor in the roster: scribe
+      text   "It is a store. It has been a store since before I came. Nothing has ever been stored in it.…"
+  the-removal-that-is-not-one#0
+      filter {"a":"notary","cell":"gideon"}
+      cause  no such actor in the roster: notary
+      text   "No one in this province can remove a prefect. That is true and it is not the sentence you want. A pr…"
+  the-removal-that-is-not-one#1
+      filter {"a":"scribe","cell":"gideon"}
+      cause  no such actor in the roster: scribe
+      text   "The commission is in the box marked for the last Legate's attention. That box has not been opened si…"
+  the-sound-below#0
+      filter {"a":"rootkeeper","cell":"rootlands"}
+      cause  no rootkeeper stands in rootlands
+      text   "Between the tides, at the eastern well, there is a knocking in the ground that was not there two sea…"
+  the-sound-below#1
+      filter {"a":"walker","cell":"rootlands"}
+      cause  no such actor in the roster: walker
+      text   "It keeps time. I have counted it against a glass twice and it does not drift.…"
+  the-drowned-post#0
+      filter {"a":"walker","cell":"rootlands"}
+      cause  no such actor in the roster: walker
+      text   "At the sluice crossing there is a post with marks on the far side, and the far side is under water e…"
+  the-drowned-post#1
+      filter {"a":"rootkeeper","cell":"rootlands"}
+      cause  no rootkeeper stands in rootlands
+      text   "Someone cuts them. I know who, and I am not going to say. She has never asked anyone to look, and th…"
+  the-fourth-silence#0
+      filter {"a":"rootkeeper","cell":"rootlands"}
+      cause  no rootkeeper stands in rootlands
+      text   "A speaker falls silent when four fourth-days pass and no hollow puts a question to them. Not a vote.…"
+  the-fourth-silence#1
+      filter {"a":"walker","cell":"rootlands"}
+      cause  no such actor in the roster: walker
+      text   "Three have gone by. And every hollow is waiting for a different hollow to speak first.…"
+  the-witness#1
+      filter {"a":"notary","cell":"gideon"}
+      cause  no such actor in the roster: notary
+      text   "They have asked her many times what she saw. What she is afraid of is a question the court has not p…"
+  reading-the-count#4
+      filter {"a":"notary"}
+      cause  no such actor in the roster: notary
+      text   "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the cou…"
+  the-steward-of-the-count#5
+      filter {"a":"rootkeeper"}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "I am the Steward of the Count. I wrote the letter you are carrying and I am glad it was read, and be…"
+  the-opening-of-the-count#5
+      filter {"a":"rootkeeper"}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "Three accounts and they disagree, and mine is the oldest and that is the only thing to recommend it.…"
+  the-four-hundred-and-eleven#1
+      filter {"a":"clerk","cell":"blackrose"}
+      cause  no clerk stands in blackrose
+      text   "Four hundred and eleven is the difference between the men the lease register sent out and the men an…"
+  the-old-quarter#1
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "There is no record of the quarter being condemned and none of it being opened again. The wall went u…"
+  the-sap-house#0
+      filter {"a":"sapcutter","cell":"helstrom"}
+      cause  no sapcutter stands in helstrom
+      text   "The house on the eastern track, where the cut goes to be boiled down. Neeth has the room over it. Sh…"
+  the-drowned-wreck#0
+      filter {"a":"fisher","cell":"thorn"}
+      cause  no fisher stands in thorn
+      text   "The Saltgirl went down on the bar mouth and she's nine metres under at low water. Ineel's man went w…"
+  the-causeway#0
+      filter {"a":"fisher","cell":"thorn"}
+      cause  no fisher stands in thorn
+      text   "The old causeway to Salt Hills has been under water since the year the tide came up and stayed. You …"
+  the-quiet-floor#0
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "The floor above the archive is boards over a drum of empty air, so a man walking it at night is hear…"
+  the-hollowed-scribe#0
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "Hulen's assistant can still write. He can no longer read. Something took the part of him that knew w…"
+  the-hold#0
+      filter {"a":"dockhand","d":20}
+      cause  no such actor in the roster: dockhand
+      text   "The hold of a writ barge. It is not a prison, they will tell you, because a prison would want a char…"
+  my-work#0
+      filter {"a":"notary","d":25}
+      cause  no such actor in the roster: notary
+      text   "Tuleeh-Ma keeps the Tidewrack intake. Cleanest hand in the province, and the only one who files the …"
+
+FAIL: authored dialogue exists that no character can reach.

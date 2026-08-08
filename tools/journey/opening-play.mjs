@@ -159,11 +159,39 @@ try {
     return { from: f0, to: f, advanced: f - f0, ms: Date.now() - t0 };
   }
 
-  // Frame rate as a player experiences it, stated with its load (rule 26).
-  const fpsProbe = await advance(120, 20000);
-  out.conditions.fps_measured = fpsProbe.ms > 0 ? Number((fpsProbe.advanced / (fpsProbe.ms / 1000)).toFixed(2)) : null;
-  out.conditions.fps_note = 'rAF-driven play mode, headless SwiftShader, under the stated load. An upper bound on badness, not a machine spec.';
-  say(`  [fps] ${out.conditions.fps_measured} fps at ${WIDTH}x${HEIGHT}, loadavg ${JSON.stringify(out.conditions.loadavg_at_start)}`);
+  /** Sim frames per second as the rAF loop actually delivers them, under a stated load. */
+  async function fps(label, capMs = 20000) {
+    const f0 = await frame(); const t0 = Date.now();
+    await h.page.waitForTimeout(capMs);
+    const f1 = await frame(); const ms = Date.now() - t0;
+    const v = Number(((f1 - f0) / (ms / 1000)).toFixed(2));
+    out.conditions[`fps_${label}`] = { sim_fps: v, frames: f1 - f0, ms, loadavg: loadavg() };
+    say(`  [fps ${label}] ${v} sim fps at ${WIDTH}x${HEIGHT}, loadavg ${JSON.stringify(loadavg())}`);
+    return v;
+  }
+  out.conditions.fps_note = 'rAF-driven play mode, headless SwiftShader, under the stated load, on a box shared with other agents\' browsers. An upper bound on badness, not a machine spec.';
+  await fps('at_title', 12000);
+
+  /**
+   * A frame of the run. Rule 27 wants a picture; `ARBITRATION` S34(b) forbids a PLACED capture
+   * as evidence of arrival, and nothing here is placed — the body walked to where it stands, so
+   * these are admissible as evidence of arrival by construction. A screenshot on a 1 fps box is
+   * slow and must not be allowed to kill the run, so a failure is recorded, not thrown.
+   */
+  async function shot(name) {
+    if (RED) return null;
+    const p = path.join(shotsDir, `2026-08-08-w1-26-r2-${name}.png`);
+    try {
+      await h.page.screenshot({ path: p, timeout: 120000, animations: 'disabled' });
+      out.shots.push(path.relative(REPO_ROOT, p));
+      say(`  [shot] ${path.relative(REPO_ROOT, p)}`);
+      return p;
+    } catch (e) {
+      out.shots.push({ wanted: path.relative(REPO_ROOT, p), failed: String(e && e.message || e).split('\n')[0] });
+      say(`  [shot] FAILED ${name}: ${String(e && e.message || e).split('\n')[0]}`);
+      return null;
+    }
+  }
 
   const allText = [];
   const harvest = async (m, beat) => {
@@ -173,10 +201,11 @@ try {
   };
 
   // ---- P2 — a title surface is drawn ------------------------------------------------------
-  let m = await mark();
-  await h.page.evaluate(() => window.__HARNESS.renderFrame && window.__HARNESS.renderFrame());
-  await advance(6, 15000);
-  const titleText = await harvest(m, 'title');
+  // Read the register from index 0, not from a watermark: the title is painted during boot, so
+  // anything taken `since` a mark set afterwards is empty and would read as "nothing was drawn".
+  // (That is a real trap — this probe reported "0 of 5 rows" on its first run for exactly it.)
+  let m = 0;
+  const titleText = await harvest(0, 'title');
   const t0 = await h.page.evaluate(() => window.__HARNESS.getTitleState());
   out.checks.title_state = t0;
   const titleStrings = [...new Set(allText.filter((e) => e.beat === 'title').map((e) => e.text))];
@@ -187,11 +216,7 @@ try {
   } else {
     fail('P2', `title drew ${rowsDrawn.length} of ${t0.options.length} rows`, { drawn: titleStrings, rows: t0.options.map((o) => o.label) });
   }
-  if (!RED) {
-    const p = path.join(shotsDir, '2026-08-08-w1-26-r2-01-title-first-launch.png');
-    await h.page.screenshot({ path: p });
-    out.shots.push(path.relative(REPO_ROOT, p));
-  }
+  await shot('01-title-first-launch');
 
   // ---- P3 — the title is navigable and committable by key alone ---------------------------
   const selBefore = t0.selected_id;
@@ -239,11 +264,8 @@ try {
   } else {
     fail('P4', 'no world, or nobody in it', world);
   }
-  if (!RED) {
-    const p = path.join(shotsDir, '2026-08-08-w1-26-r2-02-hold-first-frame.png');
-    await h.page.screenshot({ path: p });
-    out.shots.push(path.relative(REPO_ROOT, p));
-  }
+  await shot('02-hold-first-frame');
+  await fps('in_world', 12000);
 
   // ---- P6 (taken first — it is a property of the frame the world opens on) ----------------
   const censusAtOpen = await h.page.evaluate(() => {
@@ -331,11 +353,7 @@ try {
   } else {
     fail('P7', `interact beside the speaker did not open the scene (node ${censusAfterReach.node}, dist ${approach ? approach.final_dist : 'n/a'} m)`, { ...censusAfterReach, approach });
   }
-  if (!RED) {
-    const p = path.join(shotsDir, '2026-08-08-w1-26-r2-03-first-exchange.png');
-    await h.page.screenshot({ path: p });
-    out.shots.push(path.relative(REPO_ROOT, p));
-  }
+  await shot('03-first-exchange');
 
   // ---- P8 — an answer can be given by key alone -------------------------------------------
   const before = await h.page.evaluate(() => {

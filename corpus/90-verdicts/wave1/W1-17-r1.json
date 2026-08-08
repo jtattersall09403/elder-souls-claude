@@ -1,0 +1,864 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-17",
+ "piece_title": "Dialogue — topic graph, rumours, voice and consumption — round 1",
+ "subsystem_paths": [
+  "dialogue.topics.graph",
+  "dialogue.topics.discovery",
+  "dialogue.topics.filtering",
+  "dialogue.rumour.distribution",
+  "dialogue.voice.register",
+  "dialogue.npc.identity",
+  "dialogue.lore.vector",
+  "dialogue.density.wordcount"
+ ],
+ "wave": 1,
+ "round": 1,
+ "critic": {
+  "run_id": "crit-w1-17-r1-3c19",
+  "role": "critic.dialogue",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-08T01:30:00Z",
+  "finished_at": "2026-08-08T02:20:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "instrument_independence": "Every headline number came from four instruments this critic wrote from the reference items: tools/dialogue/critic-field-census.mjs, critic-semantics.mjs, critic-reach.mjs and critic-figures.mjs. Each has a --break arm that was run. The builder's own tools were re-run for reproduction only (build-graph.mjs, voice-metrics.mjs, consume.mjs, shadow-audit.mjs) and no claim rests on them alone."
+ },
+ "build": {
+  "commit_sha": "6c979e3",
+  "branch": "main",
+  "boot": "NOT RUN. This critic changed no engine file and owed no boot-check; node tools/contention.mjs --gate returned exit 3 (5 browser instances, load 4.80 per core) and no browser was launched for any measurement here. Every number is offline and text-derived.",
+  "harness_commands": [
+   {
+    "command": "node tools/contention.mjs --gate",
+    "seed": "n/a",
+    "exit_code": 3
+   },
+   {
+    "command": "node tools/dialogue/critic-field-census.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/critic-field-census.mjs --break",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/critic-semantics.mjs",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/critic-semantics.mjs --break",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/critic-reach.mjs --all",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/critic-reach.mjs --break",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/critic-figures.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/critic-figures.mjs --break",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/build-graph.mjs",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/voice-metrics.mjs",
+    "seed": "n/a",
+    "exit_code": 1
+   },
+   {
+    "command": "node tools/dialogue/voice-metrics.mjs --calibrate",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/consume.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/dialogue/shadow-audit.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   },
+   {
+    "command": "node tools/check-dialogue-topics.mjs",
+    "seed": "n/a",
+    "exit_code": 0
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "fidelity_refs": [],
+  "art_refs": [],
+  "note": "Dialogue is text. No screenshot was taken and none is owed; the illustrative image for this round is the builder's own offline-drawn graph picture. ARBITRATION §4 does not engage."
+ },
+ "reference_items": [
+  {
+   "id": "RI-DLG01",
+   "path": "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "side": "morrowind",
+   "kind": "graph",
+   "measured": "partial",
+   "native_scale": "count of passing §D rows out of 13, gated — any orphan, any unreachable INFO, any hard-floor breach or menu_quest_fraction > 0.30 fails the item outright regardless of count. Ladder anchors: 8/13 -> 4, 10/13 -> 6, 12/13 -> 8.",
+   "native_score": "11 of 13 §D rows pass (median depth 2 vs >=3 MISSES; orphans 23 vs 0 MISSES) — but the item's gate fires twice: 23 orphans on the item's own definition, and 133 unreachable INFOs measured against the reader that runs. Item verdict is an automatic FAIL with no score.",
+   "native_verdict": "we lose on the gate, not on the shape. The graph's topology is Morrowind-shaped by every structural row; its INFO reachability is not.",
+   "score_0_10": 5,
+   "checks": [
+    {
+     "id": "D-nodes",
+     "result": "pass",
+     "detail": "468 topic nodes against a >=400 target, 250 floor."
+    },
+    {
+     "id": "D-roots",
+     "result": "pass",
+     "detail": "9 roots, target 7-10. root_ids_missing is empty."
+    },
+    {
+     "id": "D-answerable-per-settlement",
+     "result": "pass",
+     "detail": "390-405 topics answerable per settlement against a >=55 target."
+    },
+    {
+     "id": "D-settlement-local",
+     "result": "pass",
+     "detail": "189 topics carry a settlement-local answer against a >=30 target."
+    },
+    {
+     "id": "D-out-degree",
+     "result": "pass",
+     "detail": "mean out-degree (non-leaf) 3.91 against >=2.0."
+    },
+    {
+     "id": "D-leaf-fraction",
+     "result": "pass",
+     "detail": "0.2201 against a <=0.50 target."
+    },
+    {
+     "id": "D-reachable-only-via-another-topic",
+     "result": "pass",
+     "detail": "0.9808 on the AddTopic graph, against >=0.90. QUALIFIED: measured through the shipped reader, which offers npc.topics without gating on player.topics_known, it is 0.731 — 126 of 468 topics are obtainable without ever having learned the word."
+    },
+    {
+     "id": "D-max-depth",
+     "result": "pass",
+     "detail": "7 against >=6."
+    },
+    {
+     "id": "D-median-depth",
+     "result": "fail",
+     "detail": "2 against a >=3 target. build-graph.mjs does not gate on this row; the builder recorded the miss."
+    },
+    {
+     "id": "D-orphans",
+     "result": "fail",
+     "detail": "23. build-graph.mjs reports orphans: 0 and files these separately as orphans_npc_advertised. RI-DLG01 §D's definition excludes only roots and journal-added topics; npc.topics is neither, so on the item's own terms these are orphans and the row is an automatic fail. The disclosure was prominent and the detector is the builder's own work."
+    },
+    {
+     "id": "D-unreachable-infos",
+     "result": "fail",
+     "detail": "133 of 1,280 (10.4%), against a reported 3. Measured by tools/dialogue/critic-reach.mjs over 347 speakers x a 5,400-player space using the shipped scoring reader. Causes: 40 written for actors no NPC is, 90 gated to an (actor, town) pair no such actor stands in, 3 always outscored."
+    },
+    {
+     "id": "D-convergence",
+     "result": "pass",
+     "detail": "0.6218 against >=0.20."
+    },
+    {
+     "id": "D-quest-topic-fraction",
+     "result": "pass",
+     "detail": "0.0427 against <=0.15."
+    },
+    {
+     "id": "step3-menu-quest-fraction",
+     "result": "pass",
+     "detail": "0.20 against a 0.30 AR-2 fail bar. Not a quest menu."
+    },
+    {
+     "id": "step4-lint-semantics",
+     "result": "fail",
+     "detail": "RI-DLG01 §A mandates first-match-wins; converse.js infoFor() scores specificity (line 284) and takes the strict maximum. Measured over 75,948 resolutions: 0 decided by a tie, so authored order decides nothing; the two rules disagree on 52 answers. The §D step-4 superset lint is neither sound nor complete against the reader that runs."
+    },
+    {
+     "id": "step5-combat-lockout",
+     "result": "not_run",
+     "detail": "Steps 5b (runtime) and 5c (trace) need a stepping browser; contention was at ceiling and no browser was launched. Step 5a static: Conversation has no combat-state path and no voice records carry edges. Recorded as not run, not as passed."
+    },
+    {
+     "id": "step6-blind-topology-pairing",
+     "result": "not_run",
+     "detail": "Requires rendering two unlabeled Graphviz PNGs and a judge. No browser, no second judge available in this run."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/build-graph.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-reach.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-semantics.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/reach.json"
+   ]
+  },
+  {
+   "id": "RI-DLG03",
+   "path": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+   "side": "morrowind",
+   "kind": "number",
+   "measured": "full",
+   "native_scale": "§C tier counts per settlement plus diegetic lint and cross-town Jaccard",
+   "native_score": "tier targets met in all nine settlements; the act gate is genuinely live and reproduces under an independent perturbation",
+   "native_verdict": "we win",
+   "score_0_10": 8,
+   "checks": [
+    {
+     "id": "rumour-count",
+     "result": "pass",
+     "detail": "239 rumours, up from 83. Every settlement over its tier target."
+    },
+    {
+     "id": "act-gate-consumed",
+     "result": "pass",
+     "detail": "Independently perturbed: stripping every knows gate from rumours.json flattens Lilmoth to 36 across all five act states; with the gates live it moves. Every settlement moves (thorn 13->17, helstrom 25->31, tidewrack 6->8). A caller passing no knows still gets 24, so backward compatibility holds as claimed."
+    },
+    {
+     "id": "act-gate-published-sequence",
+     "result": "fail",
+     "detail": "The published sequence 24 -> 26 -> 28 -> 29 -> 32 does not reproduce from the four flags it names. With exactly act_one_closed, act_two_opened, act_three_opened, act_five_closed it is 24 -> 26 -> 28 -> 28 -> 30 (one lilmoth rumour requires act_two_opened and forbids act_three_opened, so act three is net zero). Folding in act_two_closed and act_three_closed gives 24 -> 26 -> 29 -> 30 -> 32. RULES 12: the measurement omits two flags it depended on."
+    },
+    {
+     "id": "diegetic-lint",
+     "result": "pass",
+     "detail": "No quest/objective/marker/coords tokens. Read ~60 rumours across Lilmoth and Thorn; they name people, contradict each other and report the player's own deeds."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-figures.txt",
+    "corpus/90-verdicts/wave1/W1-17-r1.md"
+   ],
+   "justification": "Independently reproduced, not accepted from the builder. Perturbing rumours.json — stripping every requires.knows / knows_all / forbids.knows gate — flattens Lilmoth to 36 rumours across all five act states, while the shipped file moves 24 -> 30 and every one of the nine settlements moves (thorn 13->17, helstrom 25->31, tidewrack 6->8). A caller passing no `knows` still gets 24, so the change is backward-compatible as claimed. The prose was read, not measured: ~60 rumours across Lilmoth and Thorn, which name people, contradict each other and report the player own deeds. Docked from 9 only because the published act sequence does not reproduce from the four flags it names. Artifacts: corpus/90-verdicts/wave1/W1-17-r1.md §E1 and §A."
+  },
+  {
+   "id": "RI-DLG06",
+   "path": "corpus/40-dialogue/RI-DLG06-voice-differentiation.md",
+   "side": "morrowind",
+   "kind": "number",
+   "measured": "partial",
+   "native_scale": "six archetypes against five band rows each, plus six binding separation requirements",
+   "native_score": "voice-metrics.mjs exits 1 with 12 requirements missed. Independently: at least one of those (the legionary grammar tic) is a false failure caused by the instrument, and one archetype (magister) has no speaker in the world at all.",
+   "native_verdict": "we lose, and the instrument is part of why",
+   "score_0_10": 5,
+   "checks": [
+    {
+     "id": "calibration-not-fitted",
+     "result": "pass",
+     "detail": "3 of 5 §A reference speakers reproduce within 0.15 w/sent; Ajira misses by 0.78 and Nileno by 0.63 and the tool prints '<-- disagrees' next to both and passes anyway. A tool fitted to its reference points would hit all five. The apparently suspicious 'Aryon 10.40 vs 10.40' is an artifact of the item quoting one decimal. STTR is correctly standardised over 500-token windows, which kills the obvious alternative explanation for the five STTR misses."
+    },
+    {
+     "id": "instrument-reads-its-own-spec",
+     "result": "fail",
+     "detail": "speakers.json names voice-metrics.mjs as separation_requirements.checked_by. Occurrence counts in the 240-line tool: second_regex 0, lexicon 0, lexicon_min_markers 0, lexicon_min_lift 0, friend_per_1k_max 0, centroid/variance 0. Five declared fields are never read and two of §B's six binding separation requirements (the >=5-markers-at->=5x-lift lexicon rule and the >=2 named-NPC type-breakers rule) are not implemented."
+    },
+    {
+     "id": "legionary-grammar-tic",
+     "result": "fail",
+     "detail": "REPORTED AS A CORPUS FAILURE, IS AN INSTRUMENT FAILURE. voice-metrics reports 0.00/1k. Measured with both declared regexes and per-sentence anchoring the legionary tic fires at 5.12/1k against a 1.0 minimum (regex1 0.39 + second_regex 4.73). The second_regex is writ|papers|contraband|muster|patrol|fine|bounty|arrest|manifest|curfew, which is exactly the legionary's subject matter, and the checker never looks at it. Same cause understates magister (1.48 reported vs 16.30) and archivist (3.32 vs 26.17)."
+    },
+    {
+     "id": "mudborn-grammar-tic",
+     "result": "fail",
+     "detail": "GENUINE. 0.24/1k against 1.0, with no second_regex to rescue it. Reading the mudborn lines confirms the deference is carried by the address form 'dry-one' (19.14/1k, passes) and by hedged clause-stacking the authored regex does not describe. A spec defect rather than a prose defect, but real either way."
+    },
+    {
+     "id": "separation-sapcutter-legionary",
+     "result": "fail",
+     "detail": "THE METRIC IS MEASURING THE WRONG FEATURE. dw/sent 0.23, d<=6w 10.5pp, dSTTR 0.036 — statistically identical. To the ear they are nothing alike: 'Friend, this one was taught the depth and this one was taught the season' against 'Do not draw in the street. Do not argue with a writ.' Both terse; one servile (third-person self-reference 24.05/1k, 'friend' 42.40/1k), one imperative ('citizen' 9.45/1k). §B's separation rule offers only two length measures and one diversity measure and no measure of MOOD, while the corpus already holds the discriminating evidence in the address and grammar_tic blocks."
+    },
+    {
+     "id": "separation-mudborn-archivist",
+     "result": "fail",
+     "detail": "GENUINE. dw/sent 1.47. Distinguishable by address form and subject, but both build long qualified periods around a hedge and the sentence architecture really is the same shape."
+    },
+    {
+     "id": "separation-rootkeeper-mudborn",
+     "result": "fail",
+     "detail": "GENUINE. dw/sent 1.55, both at 16-17 w/sent with 20-22% short sentences. The rootkeeper's impersonal passive is a strong marker but the rhythm is shared, and §B's spread requirement is about rhythm."
+    },
+    {
+     "id": "global-spread",
+     "result": "pass",
+     "detail": "11.72 on w/sent against a >=8.0 minimum; Morrowind's is 11.9."
+    },
+    {
+     "id": "archetype-has-a-speaker",
+     "result": "fail",
+     "detail": "magister — §B row 2, the Telvanni-analogue — is authored on 23 infos and NO NPC in the 347-person roster carries actor 'magister'. Its register is measured, its bands are set, and not one line can reach a player. A topic 'magister-varo-dren' answers 'I am he' and Varo Dren is not in the roster at all."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/voice-metrics.txt",
+    "corpus/90-verdicts/wave1/W1-17-r1.md"
+   ]
+  },
+  {
+   "id": "RI-DLG09",
+   "path": "corpus/40-dialogue/RI-DLG09-the-parley.md",
+   "side": "souls",
+   "kind": "number",
+   "measured": "unmeasurable",
+   "native_scale": "frame conformance of the parley interaction",
+   "native_score": "not addressed this round, declared by the builder",
+   "native_verdict": "unresolved conflict, recorded as a cross-piece debt",
+   "score_0_10": 0,
+   "checks": [
+    {
+     "id": "parley-frames",
+     "result": "fail",
+     "detail": "game/data/combat/parley.json is total_f 78 and stamina 0 against RI-DLG09's 102 f@60, stamina 20 applied on f13, arm 1-12 free-cancel and 5 routes K>F>R>G>D. Confirmed unchanged. W1-09 owns the file and RI-DLG09 owns the number; the builder declared this plainly and did not touch it. Scored 0 fail-closed and recorded as a debt, NOT charged against W1-17's overall."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md"
+   ]
+  },
+  {
+   "id": "RI-MTH07",
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "side": "neutral",
+   "kind": "structure",
+   "measured": "full",
+   "native_scale": "every model shipped must name a world-side consumer and demonstrate it by perturbation",
+   "native_score": "nine of eleven authored fields have a demonstrated consumer; two do not",
+   "native_verdict": "partial",
+   "score_0_10": 6,
+   "checks": [
+    {
+     "id": "positive-controls",
+     "result": "pass",
+     "detail": "Paired control over the full 75,972-answer census: perturbing x moves 75,948 answers, to moves 47,273, cf/pos moves 2,196. The census is capable of registering a change."
+    },
+    {
+     "id": "res-has-no-reader",
+     "result": "fail",
+     "detail": "13 infos carry res: {journal: [q-id, 10]} — Morrowind's RESULT SCRIPT, which RI-DLG01 §A pairs with AddTopic as the single most important structural fact in the file. Perturbing all 13 changes 0 of 75,972 answers. infoFor() does not carry res out of the reader at all (dropped at the return literal). Thirteen topics authored to open a journal entry when asked about cannot. A twentieth authored-model-with-no-reader, in W1-17's own data."
+    },
+    {
+     "id": "f-has-no-reader",
+     "result": "fail",
+     "detail": "4 infos carry f (Morrowind filter field 4, Faction). Perturbing all 4 changes 0 answers; infoAllowed() has no faction branch."
+    },
+    {
+     "id": "consume-arms",
+     "result": "pass",
+     "detail": "8 arms, all pass, exit 0, re-run independently. They import the shipped buildTopicIndex/infoFor/learnTopics rather than re-implementing, per RULES 10."
+    },
+    {
+     "id": "consume-coverage",
+     "result": "fail",
+     "detail": "No arm for res, none for f, none for rumours.json at all — the round's largest authored artifact and its best consumption story are absent from its consumption tool. consume.mjs also has no --break flag (0 occurrences in source)."
+    },
+    {
+     "id": "rumourbook-consumed",
+     "result": "pass",
+     "detail": "Independently reproduced by perturbation rather than by reading the diff. This was a real nineteenth dead model caught before it shipped and is the strongest single thing in the round."
+    },
+    {
+     "id": "census-fixtures-are-impossible-characters",
+     "result": "fail",
+     "detail": "answer-census.mjs PLAYERS — imported by shadow-audit.mjs and by consume.mjs's P() — uses upbringings marsh/town/legion/coast. The canonical roster is interior/lukiul/foreign-born/blackrose and character/reaction.js raceTerm() THROWS on all four census values. Consequences: the 3 requires.upbringing infos can never fire in any of the three tools, six of the ten authored races are never tested, and no census player exceeds disposition 70 so the seven d:80 infos are invisible to the instruments that certify the corpus."
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/consume.txt",
+    "corpus/90-verdicts/wave1/W1-17-r1.md"
+   ]
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-DLG01",
+   "status": "not_possible",
+   "not_possible_reason": "RI-DLG01 declares blind_pair: yes and its step 6 requires two unlabeled Graphviz renders shown to a judge. Rendering needs a browser (contention exit 3, none launched) and the protocol needs a second judge, which this run did not have. Recorded as not done rather than waved through."
+  },
+  {
+   "ref_item": "RI-DLG07",
+   "status": "not_possible",
+   "not_possible_reason": "RULES 25 — the blind comparison pack for dialogue is not this critic's to judge in the same run in which it read the builder's own account and every authored line."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1-no-morrowind-mechanic-in-the-fight",
+     "result": "pass",
+     "detail": "Nothing in this piece touches the fight. No dice, no to-hit, no level scaling, no mid-fight pause. The disposition reads this piece feeds are all out-of-fight.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-17-r1/consume.txt"
+     ]
+    },
+    {
+     "id": "A1-combat-lockout-S13",
+     "result": "not_applicable",
+     "detail": "Seam S13's runtime check (RI-DLG01 step 5b/5c) needs a stepping browser and was NOT RUN. Statically, Conversation carries no combat-state path and no voice-typed record in this corpus carries edges. Recorded as not run rather than as a pass; a round-2 critic with a browser owes this.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/W1-17-r1.md"
+     ]
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A2-no-objective-markers-in-prose",
+     "result": "pass",
+     "detail": "echo_direction measured tree-wide at 1.23 per 10k words against check-prose.mjs's own Morrowind reference of 1.08 — six lines in 48,954 words of authored dialogue. The brief expected a tree-wide 2.7 and it does not reproduce at this commit. The two genuine offenders are mild and belong to other rounds.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-figures.txt"
+     ]
+    },
+    {
+     "id": "A2-not-minimal-dialogue",
+     "result": "pass",
+     "detail": "1,283 infos across 468 topics, 48,954 authored words, menu_quest_fraction 0.20 against a 0.30 fail bar. Dialogue is unambiguously the primary lore vector here.",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-17-r1/build-graph.txt"
+     ]
+    }
+   ]
+  },
+  "ar3": {
+   "status": "pass",
+   "seam_sterile": false,
+   "detail": "Three demonstrated crossings, each by perturbation rather than by assertion. (1) infoAllowed() reads requires.knows / knows_all / forbids.knows against the flag set Engine._talkPlayer() rebuilds from sim.quest.flags, so quest state opens and closes dialogue. (2) RumourBook.for() reads the same flags, so what a town gossips about changes with what the player has done — stripping the gates flattens Lilmoth to 36 across every act. (3) The d gate reads the live derived disposition, which RI-DLG04 couples to race and faction standing, so who you are changes which answer you get."
+  },
+  "consumption": {
+   "status": "partial",
+   "detail": "Consumers named and demonstrated for x, a, cell, d, requires.race/upbringing/knows/knows_all, forbids.*, to, cf/pos and the rumour knowledge gates. res (13 infos, Morrowind's result script) and f (4 infos, filter field 4) have NO consumer, proven by perturbation against positive controls that move 75,948 and 47,273 answers. Under RI-MTH07 those two models are unmeasurable => 0."
+  }
+ },
+ "world_coupling": [
+  {
+   "model": "info.x / a / cell / d / requires / forbids",
+   "consumer": "character/converse.js infoFor() + infoAllowed() -> Conversation.say() -> Engine.conversationSay() (engine.js:2555)",
+   "coupling": 1,
+   "evidence": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/consume.txt"
+  },
+  {
+   "model": "info.to (Morrowind AddTopic)",
+   "consumer": "Engine.conversationSay() -> learnTopics(sim.quest.topicsKnown) (topic-supply.js:225)",
+   "coupling": 1,
+   "evidence": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/consume.txt"
+  },
+  {
+   "model": "rumours.json knowledge gates (requires.knows / knows_all / forbids.knows)",
+   "consumer": "RumourBook.for() (topic-supply.js:140) <- Engine._talkPlayer() -> engine.js rumourFor()",
+   "coupling": 1,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#E1"
+  },
+  {
+   "model": "info.cf / info.pos (W1-23 dispute side)",
+   "consumer": "infoFor() canon.allows() (converse.js:241)",
+   "coupling": 1,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#E1"
+  },
+  {
+   "model": "info.res (Morrowind RESULT SCRIPT, 13 infos)",
+   "consumer": "NONE",
+   "coupling": 0,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#E2"
+  },
+  {
+   "model": "info.f (Morrowind filter field 4, Faction, 4 infos)",
+   "consumer": "NONE",
+   "coupling": 0,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#E2"
+  },
+  {
+   "model": "speakers.json grammar_tic.second_regex / lexicon / lexicon_min_lift / friend_per_1k_max",
+   "consumer": "NONE — voice-metrics.mjs is named as checked_by and reads none of them",
+   "coupling": 0,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#F2"
+  },
+  {
+   "model": "topics/thorn.json rows (4 infos, topic/text/links schema)",
+   "consumer": "NONE — buildTopicIndex() skips them and build-graph.mjs was changed to skip them too",
+   "coupling": 0,
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#C5"
+  }
+ ],
+ "score": {
+  "overall_0_10": 5,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "Excellent writing, imperfectly joined to the world — the prose axis is the strongest in this project and a tenth of it cannot be heard",
+  "confidence": "high",
+  "note": "Min over six axes: prose-as-written 8, signposting/AR-2 8, honesty 7, CONSUMPTION 6, topic graph 5, voice instrument 5. A reader who takes 5.0 as 'mediocre' will be wrong about the round in both directions. The writing is genuinely excellent and I failed to break it with two purpose-built instruments; the failures are all in the join between the writing and the reader, and every one of them is cheap to fix. RI-DLG09 is scored 0 in its own row and deliberately EXCLUDED from this minimum: W1-09 owns the file and the builder declared the conflict rather than papering it."
+ },
+ "status": "FAIL",
+ "biggest_gap": {
+  "gap_id": "GAP-W1-17-an-archetype-with-no-mouth",
+  "subsystem_path": "dialogue.npc.identity",
+  "severity": "blocking",
+  "what": "Forty infos are written for `a` values no NPC record carries, including all 23 `magister` lines — an entire RI-DLG06 §B archetype (row 2, the Telvanni-analogue), whose register voice-metrics.mjs measures and whose bands speakers.json sets. infoFor() matches info.a === npc.actor exactly, so none of it reaches a player. A further 90 infos are gated to an (actor, town) pair no such actor stands in. Total: 133 of 1,280 infos (10.4%) that no character in a 5,400-strong player space can hear from any of 347 speakers, against a reported 3. The nine near-misses are the worst: notary-sedda-vell exists and is tagged actor 'archivist'; harbourmistress-tesh exists and is tagged 'clerk'; eleven scribes exist and are tagged 'clerk'. A topic `magister-varo-dren` answers 'I am he' and Varo Dren is not in the roster at all.",
+  "why_it_matters": "This project's own rule is that from the player's chair a model with no consumer and a missing model are the same thing. Ten percent of the best writing in the build does not exist, and it is the ten percent the voice system is scored on. The reason it survived a full round is that the two instruments that should have caught it cannot: build-graph.mjs's unreachable-INFO lint implements RI-DLG01 §A's first-match-wins rule while converse.js infoFor() scores specificity instead (0 ties in 75,948 resolutions, so authored order decides nothing), and shadow-audit.mjs audits only the three records that lint nominated.",
+  "remedy": {
+   "action": "(1) Add an NPC record for the House Dres magister the corpus already names, or an actor_aliases table mapping magister->dres-factor, notary->archivist, scribe/harbourmistress->clerk; nine of the forty are people who already exist under a different actor tag. (2) Add a CHECK, not a constructor assert (RULES 14): every info.a must appear in game/data/npcs/**, and every (a, cell) pair must have at least one speaker; exit non-zero. (3) Promote tools/dialogue/critic-reach.mjs or an equivalent to the gate in place of the superset lint, because the superset lint tests a rule the engine does not implement. (4) DECIDE FIRST, because everything above depends on it: either implement first-match-wins in infoFor() as RI-DLG01 §A requires, or amend RI-DLG01 §A to specify the scoring rule and rewrite the §D step-4 lint to match.",
+   "acceptance": "node tools/dialogue/critic-reach.mjs reports <= 3 unreachable infos with the 'no such actor in the roster' bucket at 0, and node tools/dialogue/voice-metrics.mjs reports a non-zero entry count for all six archetypes from speakers who exist in game/data/npcs/**.",
+   "targets": [
+    "game/data/npcs/",
+    "game/data/dialogue/topics/",
+    "tools/dialogue/build-graph.mjs",
+    "tools/dialogue/voice-metrics.mjs",
+    "game/src/character/converse.js",
+    "corpus/40-dialogue/RI-DLG01-topic-graph.md"
+   ]
+  },
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-reach.txt",
+   "corpus/90-verdicts/wave1/artifacts/W1-17-r1/reach.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-semantics.txt"
+  ]
+ },
+ "other_gaps": [
+  {
+   "gap_id": "GAP-W1-17-lint-and-engine-implement-different-rules",
+   "subsystem_path": "dialogue.topics.filtering",
+   "severity": "blocking",
+   "what": "RI-DLG01 §A mandates first-match-wins in authored order and says the engine 'does not score specificity'. converse.js:284 computes score = 8*actorMatch + 2*cell + 4*requires + dScore + 0.5*forbids and keeps the strict maximum. Measured: 0 of 75,948 resolutions are decided by a tie, and the two rules disagree on 52 answers. Three of the round's claims fall out of this: the unreachable-INFO lint tests the wrong rule; order-infos.mjs --write was arithmetically incapable of changing anything, so answer-census.mjs --diff's '0 of 75,151 answers changed' was forced before it ran and is not evidence of care; and shadow-audit.mjs can only ever confirm what the lint already nominated.",
+   "acceptance": "Either infoFor() takes the first admissible info in authored order, or RI-DLG01 §A is amended and the §D step-4 lint is rewritten to the scoring rule. tools/dialogue/critic-semantics.mjs then reports 0 divergences.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-semantics.txt"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-result-script-has-no-reader",
+   "subsystem_path": "dialogue.topics.discovery",
+   "severity": "major",
+   "what": "13 infos carry res: {journal: [q-id, 10]} — Morrowind's result script, which RI-DLG01 §A pairs with AddTopic as the single most important structural fact in the item. infoFor() does not carry res out of the reader, so perturbing all 13 changes 0 of 75,972 answers while positive controls move 75,948 and 47,273. Thirteen topics authored to open a journal entry when asked about cannot. consume.mjs has no arm for it. info.f (filter field 4, Faction, 4 infos) is the same.",
+   "acceptance": "infoFor() returns res, Engine.conversationSay() applies it through the journal, and a consume.mjs arm shows a named person's journal move when one res is perturbed. Perturbing res then changes a non-zero number of observable outcomes.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md#E2"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-voice-metrics-does-not-read-its-own-spec",
+   "subsystem_path": "dialogue.voice.register",
+   "severity": "major",
+   "what": "speakers.json names voice-metrics.mjs as separation_requirements.checked_by. The tool contains 0 occurrences of second_regex, lexicon, lexicon_min_markers, lexicon_min_lift, friend_per_1k_max and centroid/variance. Five declared fields unread; two of RI-DLG06 §B's six binding separation requirements unimplemented. The consequence is a FALSE HEADLINE FAILURE: the legionary grammar tic is reported at 0.00/1k and measures 5.12/1k against a 1.0 minimum once second_regex is evaluated and the anchored regex is applied per sentence rather than per entry. The same cause understates magister (1.48 vs 16.30) and archivist (3.32 vs 26.17). Only mudborn's tic genuinely fails.",
+   "acceptance": "voice-metrics.mjs evaluates second_regex, applies ^-anchored patterns per sentence, implements the lexicon lift rule and the >=2 named-NPC type-breaker rule, and re-reports the miss list. Expected: 12 misses drops by at least the legionary tic.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/voice-metrics.txt",
+    "corpus/90-verdicts/wave1/W1-17-r1.md#F2"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-separation-rule-has-no-mood-axis",
+   "subsystem_path": "dialogue.voice.register",
+   "severity": "minor",
+   "what": "RI-DLG06 §B's pairwise separation offers only |dw/sent| >= 2.0, |d<=6w| >= 15pp or |dSTTR| >= 0.06 — two length measures and one diversity measure, and no measure of MOOD. sapcutter and legionary are statistically identical on all three and are obviously different to the ear (servile third-person self-reference at 24.05/1k against imperative-plus-'citizen'). The corpus already holds the discriminating evidence in each archetype's address and grammar_tic blocks and the separation test does not consult them. The other two flagged pairs (mudborn/archivist, rootkeeper/mudborn) are genuine misses on the ear as well as the metric.",
+   "acceptance": "The separation rule admits a fourth axis — grammar-tic rate ratio or address-form separation — and sapcutter/legionary passes on it while mudborn/archivist and rootkeeper/mudborn still fail. Filed against the reference item, not against the builder.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md#F3"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-census-fixtures-are-impossible-characters",
+   "subsystem_path": "dialogue.topics.filtering",
+   "severity": "major",
+   "what": "answer-census.mjs PLAYERS uses upbringings marsh/town/legion/coast; the canonical roster is interior/lukiul/foreign-born/blackrose and character/reaction.js raceTerm() throws on all four census values. shadow-audit.mjs and consume.mjs both import or copy these fixtures. The 3 requires.upbringing infos can never fire in any of the three tools, six of ten authored races are untested, and no census player exceeds disposition 70 so the seven d:80 infos are invisible to the instruments that certify the corpus.",
+   "acceptance": "PLAYERS is rebuilt from game/data/progression/race-reactions.json's roster and spans the authored d values including 80. answer-census.mjs's answer count changes when it is.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md#E3"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-thorn-json-prose-deleted-from-the-count",
+   "subsystem_path": "dialogue.topics.graph",
+   "severity": "minor",
+   "what": "topics/thorn.json carries four records on a topic/text/links schema instead of id/infos. The round filed this as its 'second tool defect' and fixed it by making build-graph.mjs skip them, so 'the two loaders now agree' — they agree to ignore live prose ('Walk the boards, not the ground. The ground here has opinions.'). Its links point at my-kingdom and the-marsh, BOTH of which are on the orphans_npc_advertised list: the file contains the prose edges that would have made them reachable.",
+   "acceptance": "buildTopicIndex() reads the second schema (or thorn.json is migrated), the four infos become reachable, and orphans_npc_advertised drops by at least 2.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md#C5"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-median-depth-is-2",
+   "subsystem_path": "dialogue.topics.graph",
+   "severity": "minor",
+   "what": "RI-DLG01 §D targets median depth from greeting >= 3; measured 2. build-graph.mjs does not gate on this row, so the miss is reported in the JSON and not in the exit code. The builder recorded it.",
+   "acceptance": "median_depth >= 3 and build-graph.mjs exits non-zero when it is not.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-r1/build-graph.txt"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-17-discovery-is-not-gated-on-what-the-player-knows",
+   "subsystem_path": "dialogue.topics.discovery",
+   "severity": "major",
+   "what": "topicsFor() offers every subject on npc.topics without intersecting it against player.topics_known; only the nine roots are gated on what the player holds. A cold player with topics_known = [] is offered a mean of 1.66 topics per person, and 126 of 468 topics (26.9%) are obtainable province-wide without ever having learned the word. So build-graph.mjs's reachable_only_via_another_topic: 0.9808 is a property of the diagram; through the reader that runs it is 0.731. This is not the star graph RI-DLG01 warns about — 1.66 advertised subjects per person is nothing like 'every NPC lists everything' — but the 98.1% figure should not stand unqualified, and it is the mechanism behind orphans_npc_advertised.",
+   "acceptance": "Either topicsFor() intersects npc.topics with player.topics_known (Morrowind's actual rule), or build-graph.mjs publishes the through-the-reader figure alongside the diagram figure.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-17-r1.md#C4"
+   ]
+  }
+ ],
+ "cross_piece_debts": [
+  {
+   "debt": "RI-DLG09 parley conformance — game/data/combat/parley.json is 78 f@60 / stamina 0 / 4 grounds against RI-DLG09's 102 f@60 / arm 1-12 free-cancel / stamina 20 on f13 / 5 routes K>F>R>G>D",
+   "owners": [
+    "W1-09",
+    "W1-17"
+   ],
+   "scored": "0 fail-closed in its own reference-item row; deliberately EXCLUDED from this verdict's min-over-axes",
+   "note": "Confirmed unchanged at this commit. The builder declared the conflict rather than resolving it against a file it does not own, which is the right call under RULES 16. An arbiter should rule which piece moves the number."
+  },
+  {
+   "debt": "RI-DLG01 step 5b/5c — the runtime combat-lockout probe (seam S13)",
+   "owners": [
+    "W1-17",
+    "any critic with a browser"
+   ],
+   "scored": "not run, not scored either way",
+   "note": "Contention was at ceiling and this critic launched no browser. A round-2 critic owes this; it is the one AR-1 check on this piece that cannot be done offline."
+  },
+  {
+   "debt": "RI-DLG01 step 6 and RI-DLG07 — the blind topology pairing and the blind comparison pack",
+   "owners": [
+    "a critic who has not read the builder's account"
+   ],
+   "scored": "not possible",
+   "note": "RULES 25. This critic read every authored line and the builder's own status file; it is not the right judge for either blind."
+  }
+ ],
+ "corpus_extended": [
+  {
+   "path": "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "what": "§A mandates first-match-wins and §D step 4's lint is written for it; the shipped reader scores specificity instead and the item has no language for that case. The item should either hold the line or adopt the scoring rule explicitly and republish step 4. It should also say whether a topic advertised by an NPC's own record — a fourth entry point the item's step-2 orphan definition does not contemplate alongside root and journal-added — counts as an orphan. This verdict rules that it does, on the item's plain words.",
+   "evidence": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-semantics.txt"
+  },
+  {
+   "path": "corpus/40-dialogue/RI-DLG06-voice-differentiation.md",
+   "what": "§B's pairwise separation rule has no mood axis, and a fifth shape of failure is missing from the item entirely: THE ARCHETYPE WITH NO SPEAKER. An archetype can meet every band, pass every tic and separate from all five others while no NPC in the world carries its actor tag. §B should require that each archetype's line corpus be reachable from at least one shipped speaker before any of its bands are scored.",
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#F3"
+  },
+  {
+   "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "what": "A fifth shape of the failure: THE INSTRUMENT THAT DOES NOT READ ITS OWN SPEC. voice-metrics.mjs is named by speakers.json as its checker and ignores five of the fields that file declares for it, turning a passing archetype into a reported failure. RI-MTH07 asks whether the world reads the model; it does not ask whether the CHECKER reads the model, and a checker with unread spec fields produces false failures that a builder will then try to fix in the prose.",
+   "evidence": "corpus/90-verdicts/wave1/W1-17-r1.md#F2"
+  }
+ ],
+ "regression_check": {
+  "verdict": "CLEAN — no previously-passing dialogue measurement has regressed, and one reported regression is smaller than declared",
+  "rows": [
+   {
+    "what": "check-prose.mjs tree-wide regressions",
+    "round_1": "63, none in game/data/dialogue/**",
+    "round_2": "unchanged at this commit; the two files this round authored do not appear in the list",
+    "result": "clean"
+   },
+   {
+    "what": "check-dialogue-topics.mjs warnings",
+    "round_1": "19",
+    "round_2": "30 (the status file says 32 in one finding and 30 in another; 30 is correct)",
+    "result": "declared regression, smaller than stated"
+   },
+   {
+    "what": "the 17 new warnings are the documented cell ladder",
+    "round_1": "n/a",
+    "round_2": "18 of 19 same-actor collisions add a cell the other lacks. The exception is soulrest/rootkeeper, where both carry cell 'soulrest' and the new info is d:30 against d:20 — a disposition ladder, not a cell one.",
+    "result": "substantially confirmed; no shared gate was weakened"
+   },
+   {
+    "what": "consume.mjs arms",
+    "round_1": "n/a (new)",
+    "round_2": "8 arms, all pass, exit 0, independently re-run",
+    "result": "clean"
+   },
+   {
+    "what": "shadow-audit.mjs",
+    "round_1": "n/a (new)",
+    "round_2": "0 of 3 genuinely unreachable — but its scope is the 3 the lint nominated, not the corpus",
+    "result": "true as stated, narrower than it reads"
+   }
+  ]
+ },
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is false and deliberately so: RI-DLG01 step 5b/5c (runtime combat lockout) and step 6 (blind topology pairing) both need a browser, contention.mjs --gate returned exit 3, and this critic launched none. Both are recorded as NOT RUN rather than as passes, and step 5 is filed as a cross-piece debt. blind_done_where_required is false for the same reason plus RULES 25 — this critic read every authored line and the builder's own status file before any comparison, so it is not the right judge for RI-DLG07's blind pack. Two findings the brief pointed me at did NOT reproduce and are reported as failures to find rather than manufactured: the tree-wide echo_direction signposting problem (measured 1.23/10k against a 1.08 Morrowind reference — the tree is at parity), and the hypothesis that the new file pushes one authorial figure into six archetypes' mouths (refuted by my own instrument at the per-actor level: rootkeeper 0/10 in-file against 1% elsewhere). Both refutations are credit to the builder and are stated at the same weight as the failures. The 133-unreachable figure is measured over a constructed 5,400-player space whose domains are read out of the corpus; it is an upper bound on reachability, so a line it calls dead is dead, but a line it calls live may still be unreachable for a reason outside race/upbringing/knows/disposition/actor/cell."
+ },
+ "source_reads": [
+  {
+   "path": "game/src/character/converse.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/quest/topic-supply.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/character/reaction.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/dialogue/build-graph.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/dialogue/voice-metrics.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/dialogue/consume.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/dialogue/answer-census.mjs",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "tools/check-prose.mjs",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/data/dialogue/topics/05-asking-around.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "game/data/dialogue/topics/thorn.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "game/data/dialogue/rumours.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "game/data/dialogue/speakers.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "corpus/40-dialogue/RI-DLG06-voice-differentiation.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "corpus/00-doctrine/ARBITRATION.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "orchestration/status/W1-17.json",
+   "purpose": "quote-written-content"
+  }
+ ],
+ "gap_closure": [],
+ "artifacts": [
+  {
+   "path": "corpus/90-verdicts/wave1/W1-17-r1.md",
+   "kind": "report",
+   "produced_by": "this critic",
+   "note": "the verdict prose, with every quoted line of dialogue"
+  },
+  {
+   "path": "tools/dialogue/critic-field-census.mjs",
+   "kind": "report",
+   "produced_by": "node tools/dialogue/critic-field-census.mjs",
+   "note": "independent filter-field census; --break re-spells requires.race as `r` and the census sees it, exit 1"
+  },
+  {
+   "path": "tools/dialogue/critic-semantics.mjs",
+   "kind": "report",
+   "produced_by": "node tools/dialogue/critic-semantics.mjs",
+   "note": "RI-DLG01 §A first-match-wins vs the shipped scoring reader; --break compares the shipped rule to itself and gets 0 divergence"
+  },
+  {
+   "path": "tools/dialogue/critic-reach.mjs",
+   "kind": "report",
+   "produced_by": "node tools/dialogue/critic-reach.mjs --all",
+   "note": "can any player, anywhere, hear this line? 347 speakers x 5,400 players; --break forces every player gate true and the 'always outscored' bucket goes 3 -> 96"
+  },
+  {
+   "path": "tools/dialogue/critic-figures.mjs",
+   "kind": "report",
+   "produced_by": "node tools/dialogue/critic-figures.mjs",
+   "note": "tree-wide signposting and rhetorical figure; --break separates a 100%-figure corpus from a 0%-figure one"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-field-census.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/critic-field-census.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-semantics.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/critic-semantics.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-reach.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/critic-reach.mjs --all"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-reach-break.txt",
+   "kind": "negative-evidence",
+   "produced_by": "node tools/dialogue/critic-reach.mjs --break"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/reach.json",
+   "kind": "trace",
+   "produced_by": "node tools/dialogue/critic-reach.mjs",
+   "note": "all 133 unreachable infos with filter, cause and text"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/critic-figures.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/critic-figures.mjs"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/build-graph.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/build-graph.mjs",
+   "note": "the builder's own tool, re-run for reproduction"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/voice-metrics.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/voice-metrics.mjs",
+   "note": "the builder's own tool, re-run for reproduction"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/W1-17-r1/consume.txt",
+   "kind": "log",
+   "produced_by": "node tools/dialogue/consume.mjs",
+   "note": "the builder's own tool, re-run for reproduction"
+  }
+ ]
+}

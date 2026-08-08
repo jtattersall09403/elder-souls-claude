@@ -1,0 +1,48 @@
+# critic-field-census over /home/user/elder-souls-claude/game/data/dialogue/topics
+# 21 files, 578 topic records, 1280 infos, 4 non-topic rows skipped
+# mode: shipped
+
+  1280 x
+  1233 a
+   919 to
+   359 cell
+   324 d
+   148 requires
+   138 requires.race
+    55 cf
+    55 pos
+    42 forbids
+    40 forbids.race
+    13 q
+    13 res
+     7 requires.knows
+     4 f
+     3 requires.upbringing
+     2 requires.knows_all
+     2 forbids.knows
+
+    53 00-roots.json
+    63 05-asking-around.json
+    18 06-opening-roots.json
+    86 07-root-coverage.json
+   151 10-global.json
+    70 20-tier-a.json
+    46 21-tier-b.json
+    32 22-tier-c.json
+    77 30-texture.json
+   116 40-race-gated.json
+    56 45-speaker-coverage.json
+   106 50-factions.json
+   128 50-mainline.json
+   102 55-utility.json
+    24 56-writ-house-open.json
+    24 60-roads.json
+    22 70-disputes.json
+    70 75-tribes.json
+    36 main-quest-argument.json
+     0 thorn.json
+     0 writ-house.json
+
+VERDICT  r=0  requires.race=138  forbids.race=40
+CONFIRMED — the CS column name `r` is authored nowhere; every race gate in the
+province is spelt requires.race / forbids.race. A lint reading only `r` is blind to all of them.

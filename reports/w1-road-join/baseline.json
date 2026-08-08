@@ -1,0 +1,314 @@
+{
+ "schema": "w1-01/road-through-building@1",
+ "measured_at": "2026-08-08T02:10:01.260Z",
+ "git": {
+  "commit": "3463e06d66ba4c6d1829931d8a4367571de6f587",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true
+ },
+ "method": "every named route resampled at 1 m; insideBuilding() over all 8 settlement plans (render/exterior.js planSettlement), offline, no engine",
+ "settlements": [
+  {
+   "id": "stormhold",
+   "buildings": 33
+  },
+  {
+   "id": "thorn",
+   "buildings": 15
+  },
+  {
+   "id": "gideon",
+   "buildings": 22
+  },
+  {
+   "id": "helstrom",
+   "buildings": 40
+  },
+  {
+   "id": "archon",
+   "buildings": 22
+  },
+  {
+   "id": "blackrose",
+   "buildings": 22
+  },
+  {
+   "id": "soulrest",
+   "buildings": 15
+  },
+  {
+   "id": "lilmoth",
+   "buildings": 33
+  }
+ ],
+ "routes": [
+  {
+   "route": "crossing",
+   "route_m": 6816,
+   "sampled_m": 7025,
+   "blocked_blocks": [
+    {
+     "town": "stormhold",
+     "building": "stormhold-scribe",
+     "from_m": 43,
+     "to_m": 53,
+     "samples": 11,
+     "at": [
+      2192.5,
+      796.2
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-struct-the-sap-gutters",
+     "from_m": 2897,
+     "to_m": 2901,
+     "samples": 5,
+     "at": [
+      2313.8,
+      2729.3
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-house-2",
+     "from_m": 2982,
+     "to_m": 2987,
+     "samples": 6,
+     "at": [
+      2249.6,
+      2778.9
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-house-3",
+     "from_m": 2999,
+     "to_m": 3008,
+     "samples": 10,
+     "at": [
+      2234.9,
+      2785.2
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-east-block",
+     "from_m": 5481,
+     "to_m": 5490,
+     "samples": 10,
+     "at": [
+      1912.2,
+      4432.7
+     ]
+    },
+    {
+     "town": "lilmoth",
+     "building": "lilmoth-plague-stair",
+     "from_m": 6988,
+     "to_m": 6992,
+     "samples": 5,
+     "at": [
+      2739.9,
+      5001.9
+     ]
+    }
+   ],
+   "first_block_m": 43
+  },
+  {
+   "route": "long_way",
+   "route_m": 9367.3,
+   "sampled_m": 9643,
+   "blocked_blocks": [
+    {
+     "town": "thorn",
+     "building": "thorn-hall",
+     "from_m": 0,
+     "to_m": 7,
+     "samples": 8,
+     "at": [
+      3820,
+      859
+     ]
+    },
+    {
+     "town": "thorn",
+     "building": "thorn-north-lean",
+     "from_m": 13,
+     "to_m": 21,
+     "samples": 9,
+     "at": [
+      3807.5,
+      862.3
+     ]
+    },
+    {
+     "town": "stormhold",
+     "building": "stormhold-scribe",
+     "from_m": 2328,
+     "to_m": 2338,
+     "samples": 11,
+     "at": [
+      2192.5,
+      796.2
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-struct-the-sap-gutters",
+     "from_m": 5182,
+     "to_m": 5186,
+     "samples": 5,
+     "at": [
+      2313.8,
+      2729.3
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-house-2",
+     "from_m": 5267,
+     "to_m": 5272,
+     "samples": 6,
+     "at": [
+      2249.6,
+      2778.9
+     ]
+    },
+    {
+     "town": "helstrom",
+     "building": "helstrom-house-3",
+     "from_m": 5284,
+     "to_m": 5293,
+     "samples": 10,
+     "at": [
+      2234.9,
+      2785.2
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-east-block",
+     "from_m": 7766,
+     "to_m": 7775,
+     "samples": 10,
+     "at": [
+      1912.2,
+      4432.7
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-rootpost",
+     "from_m": 7803,
+     "to_m": 7805,
+     "samples": 3,
+     "at": [
+      1888.5,
+      4453.9
+     ]
+    },
+    {
+     "town": "blackrose",
+     "building": "blackrose-pawn",
+     "from_m": 7821,
+     "to_m": 7821,
+     "samples": 1,
+     "at": [
+      1871.9,
+      4457.3
+     ]
+    },
+    {
+     "town": "soulrest",
+     "building": "soulrest-grey-hist",
+     "from_m": 9624,
+     "to_m": 9633,
+     "samples": 10,
+     "at": [
+      629.1,
+      4873
+     ]
+    }
+   ],
+   "first_block_m": 0
+  }
+ ],
+ "legs": [
+  {
+   "leg": "stormhold-thorn",
+   "buildings": [
+    "thorn-north-lean",
+    "thorn-hall"
+   ]
+  },
+  {
+   "leg": "stormhold-helstrom",
+   "buildings": [
+    "stormhold-scribe",
+    "helstrom-struct-the-sap-gutters"
+   ]
+  },
+  {
+   "leg": "helstrom-archon",
+   "buildings": [
+    "helstrom-warders",
+    "helstrom-archive",
+    "helstrom-inn-egg"
+   ]
+  },
+  {
+   "leg": "helstrom-blackrose",
+   "buildings": [
+    "helstrom-house-2",
+    "helstrom-house-3",
+    "blackrose-east-block"
+   ]
+  },
+  {
+   "leg": "helstrom-gideon",
+   "buildings": [
+    "helstrom-house-6"
+   ]
+  },
+  {
+   "leg": "gideon-soulrest",
+   "buildings": [
+    "gideon-smithy",
+    "gideon-grange",
+    "soulrest-boneyard"
+   ]
+  },
+  {
+   "leg": "soulrest-blackrose",
+   "buildings": [
+    "soulrest-grey-hist",
+    "blackrose-pawn",
+    "blackrose-rootpost"
+   ]
+  },
+  {
+   "leg": "blackrose-lilmoth",
+   "buildings": [
+    "lilmoth-plague-stair"
+   ]
+  },
+  {
+   "leg": "archon-thorn",
+   "buildings": [
+    "thorn-inn",
+    "thorn-hall"
+   ]
+  },
+  {
+   "leg": "lilmoth-archon",
+   "buildings": [
+    "lilmoth-scribe",
+    "lilmoth-pawn"
+   ]
+  }
+ ],
+ "offences": 16,
+ "pass": false
+}

@@ -1,0 +1,30 @@
+RI-DLG06 §B — our six archetypes against their bands
+archetype    entries  words   w/sent (band)     <=6w (band)      >20w (band)     w/entry (band)   STTR
+rootkeeper      183   9193   17.61 [16-19]   20.69 [0-10]   31.23 [25-100]   50.23 [20-30]  0.392   MISS: <=6w,w/entry,STTR
+magister         23    675   10.55 [10-13]   31.25 [20-30]    7.81 [0-6]   29.35 [25-35]  0.406   MISS: <=6w,>20w,STTR
+sapcutter       118   2453    6.12 [7-9]   62.34 [35-45]    1.50 [0-2]   20.79 [15-25]  0.459   MISS: w/sent,<=6w
+mudborn         113   4128   16.06 [12-15]   21.79 [0-10]   24.12 [12-20]   36.53 [25-40]  0.435   MISS: w/sent,<=6w,>20w,STTR
+legionary       118   2539    5.89 [7-9]   72.85 [45-100]    2.09 [0-4]   21.52 [18-26]  0.495   MISS: w/sent,STTR
+archivist       124   5120   17.53 [16-19]    9.93 [0-8]   28.77 [28-100]   41.29 [45-65]  0.481   MISS: <=6w,w/entry,STTR
+
+grammar tic (RI-DLG06 §B, one regexable syntactic marker per archetype)
+  ok   rootkeeper   5.44/1k (min 1)  impersonal passive + legal imperative with an object
+  ok   magister     1.48/1k (min 1)  subordinate clause opening; conditional mood; never explains
+  ok   sapcutter    24.05/1k (min 2.5)  third-person self-reference
+  MISS mudborn      0.24/1k (min 1)  conditional pleading and gratitude formula; the sentence runs on rather than stopping
+  MISS legionary    0.00/1k (min 1)  imperative mood, procedural legal noun as the object
+  ok   archivist    3.32/1k (min 1)  nominalisation and qualification
+
+address form (>= 1.0/1k for the owner, <= 0.3/1k in at least four of the other five)
+  ok   "supplicant" — 6.53/1k for rootkeeper, quiet in 5 of 5 others
+  MISS "provincial" — 23.70/1k for magister, quiet in 3 of 5 others
+  ok   "friend" — 42.40/1k for sapcutter, quiet in 5 of 5 others
+  ok   "dry-one" — 19.14/1k for mudborn, quiet in 4 of 5 others
+  ok   "citizen" — 9.45/1k for legionary, quiet in 5 of 5 others
+
+ok   global spread on w/sent: 11.72 (min 8; Morrowind's is 11.9)
+  MISS rootkeeper vs mudborn: Δw/sent 1.55, Δ<=6w 1.1pp, ΔSTTR 0.043
+  MISS sapcutter vs legionary: Δw/sent 0.23, Δ<=6w 10.5pp, ΔSTTR 0.036
+  MISS mudborn vs archivist: Δw/sent 1.47, Δ<=6w 11.9pp, ΔSTTR 0.046
+
+12 requirement(s) missed

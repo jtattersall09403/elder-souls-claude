@@ -19,9 +19,20 @@ known to be broken, and what is simply not built yet — and tell them.
    project. This is the binding one.
 3. **The controls are drawn.** W1-08/W1-29 found them "correctly laid out and drawn nowhere". A
    player who cannot see the controls has not been given a game.
-4. **You can walk between regions and the ground is there.** Met — the province streams from the
-   fixed step, a walked crossing is 6,615 m with zero samples missing ground. Residual: a 133.8 ms
-   worst frame.
+4. **You can walk between regions and the ground is there.** ~~Met~~ **NOT MET — retracted.** The
+   streaming half is real (6,615 m walked with zero samples missing ground, a 133.8 ms worst frame
+   as the residual). But W1-01 r4 put a *body* on THE CROSSING — Stormhold to Lilmoth, 6,816 m,
+   declared ~57 min on foot — and it gets **39 m**, then stands at (2190.7, 794.3) for 60,001
+   frames on flat dry FIRM ground with 59 solid shapes of `settlement:stormhold` in front of it.
+   It is stopped at a wall: the leg runs through `stormhold-scribe`'s footprint from 43 m to 53 m.
+
+   `build-roads.mjs` routes over terrain. `planSettlement()` plants houses on the same ground
+   afterwards. **Neither generator has ever been shown the other's output and nothing performs the
+   join.** `tools/world/road-through-building.mjs` reports 6 blocks on THE CROSSING, 10 on THE LONG
+   WAY, and **10 of 10 built legs blocked**. Dispatched as §W below.
+
+   The earlier "met" was measured with a walker that was not subject to settlement collision, which
+   is why streaming looked sufficient. A crossing nobody has walked as a body is not a crossing.
 5. **A fight is survivable and a level is spendable.** The hearth opens; **souls have no source**,
    so the loop does not close yet. Dispatched.
 6. **An unassisted play session by a fresh critic** — start to a first quest to a first fight to a
@@ -54,6 +65,53 @@ zero samples with no ground. Delete-the-fix returns 0 tiles built and ring 0/25.
 `updateSkin` calibration. A hitch of eight frames during a swing is a Souls-side failure, so the
 critic has been asked whether that boundary is fair or a handoff of the actual defect.
 
+
+## V. Handed up, not taken: a full crossing now buys level 3, where the cache said 5
+
+The souls-ledger reconciliation found two files holding a soul total for the same 267 road bodies,
+differing by **+53.0%**, with no code, check or tool that had ever compared them. The statblocks are
+the truth and it proved it three ways rather than assuming: `SoulsSystem.step()` pays from
+`Engine.data.enemies` and never opens `population-posts.json`; the cache has exactly one runtime
+reader in all of `game/src`, inside a `report()` whose own comment says *"What a probe reads. Never
+used by the simulation"*; and the cache is simply the older document, written before the seven
+statblocks were re-anchored.
+
+So `report.souls` is 16,335 → **10,679** and `crossing.level_if_fully_cleared` is **5 → 3**.
+
+**That last number is a design question and the builder correctly declined to answer it.** 3 is what
+the shipped statblocks and curve have paid since `e97347f`; 5 was only ever the cache saying so.
+Nothing was re-tuned to produce it. If the crossing should buy level 5, the lever is RI-PRG06 or the
+population density — **not** the reconciliation, and not a value edited to make a headline agree with
+a stale file. Left for the souls piece's round 4 and its critic.
+
+**Two stale totals are now named by number** in `orchestration/INDEX.md` under *"Numbers you must not
+read off a status file"*: **16,335** and **21,664**. The orchestrator handed both to agents as fact,
+twice, having read them off a status file. `node tools/check-souls-world.mjs --totals` prints the
+current one and exits 1 if it is stale; it is wired into `check-data.mjs`, which the pre-commit hook
+already runs.
+
+## W. The road goes through the house — dispatched
+
+Two generators, one piece of ground, no join. `tools/world/build-roads.mjs` lays roads over terrain;
+`planSettlement()` puts buildings down afterwards; nothing ever compares them. **10 of 10 built legs
+are blocked**, so the province is not crossable on foot by anything with a collision body, and §P.4
+above is retracted because of it.
+
+The check exists and is red: `node tools/world/road-through-building.mjs`. Its `--self-test` moves
+one building 1 km and requires flag / clear / everything-else-identical — the first draft of that
+self-test was vacuous (it mutated a field `planSettlement` does not read) and its author caught it
+before using it, which is the only reason the number is trustworthy.
+
+**This is probably also W1-05's drowning defect.** With walls in, `soulrest-blackrose` stops after
+11.6 m and 18.7 m of a 1,808 m leg, both on dry ground at full HP, ten metres from
+`soulrest-grey-hist` — the body never reaches water at all. With walls out it runs 6,458 m off-road
+and ends in 18 m of sea. Depth, tide and current were correctly exonerated; a wall pushing the body
+off the road competes with the population-streaming hypothesis and nobody has tested streaming
+directly.
+
+**Not to be re-derived:** the deck clamp is exonerated, and properly — the parapet negative control
+matched at 900 frames gives clamp on 0/28, clamp off 28/28, worst offset 48.03 m, 22 falls. A null
+result from disabling something is worthless unless the disable is known to bite; this one bites.
 
 ## Q. Two defects found by W1-16 r2 that invalidate OTHER pieces' numbers — read before you re-measure
 

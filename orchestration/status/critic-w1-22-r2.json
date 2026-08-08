@@ -5,12 +5,15 @@
   "round": 3,
   "state": "running",
   "started_at": "2026-08-07",
-  "next_step": "SUCCESSOR-2: onsets re-measure at HEAD running in background; then run critic-w1-22-r2-bands + critic-w1-22-r2-probe; then build spectrum-matched-neighbour blind pack (day/night is degenerate -- predecessor R5 says 9/13 regions bit-identical across tod, verify) and hand to a FRESH judge (rule 25); then verdict.",
+  "next_step": "SUCCESSOR-2: probe running; then build reports/packs/w1-22-r3-hard and spawn a FRESH judge (rule 25); then verdict + blog + commit.",
   "files_touched": [
     "orchestration/status/critic-w1-22-r2.json",
     "reports/w1-22-critic/r2/",
+    "reports/w1-22-critic/r2/bands.json",
+    "reports/w1-22-critic/r2/onsets-at-HEAD.json",
     "tools/analysis/critic-w1-22-r2-determinism.mjs",
     "tools/audio/critic-w1-22-r2-bands.mjs",
+    "tools/audio/critic-w1-22-r2-pack.mjs",
     "tools/audio/critic-w1-22-r2-probe.mjs"
   ],
   "files_claimed": [
@@ -33,11 +36,17 @@
     "SUCCESSOR-2 / IN-BAND-THEN-BURIED IS NOT FIXED, it is fixed AT THE MEDIAN. `event_gain_db` is one trim PER LAYER; `synth.gain_db` varies PER EVENT (-5..-13). A per-layer trim cannot unbury an event quieter than its layer-mates. Measured: 11 of 33 bed/layer pairs pass O3's median while containing an out-of-band event; between-event spread within a layer is median 10.82 dB over 11 multi-event layers, worst 17.48 dB. blackwood/distant_axe -- one of the three sounds the bed's OWN `brief` advertises -- renders at -18.8 dB rel bed, 12.8 dB below SectionA's L3 floor. Also well/stone_shift -16.3, dungeon/block_settle -11.1, western-rootlands/reed_snap -9.8.",
     "SUCCESSOR-2 / DECLARED CHAIN vs RENDER: level_db + synth.gain_db + event_gain_db predicts the rendered rel_db with median error -1.09 dB but p90 |err| 14.96 dB and max 20.78 dB. The piece's own diagnosis ('loudness is not the sum of the numbers you typed') still holds after the fix, for individual events.",
     "SUCCESSOR-2 / DETECTOR REFUSAL LOCATED: ambience-onsets.mjs:416 guards every subtraction with `if (!muteWorks.ok || muteWorks.muted !== 0) ... 'Refusing to report.' exit(2)`. It checks that the MUTED arm fired nothing; it NEVER checks that the UNMUTED arm fired anything. The shipped fixture is blackwood/4 s/8 kHz and the stored report records full:0, muted:0, ok:true -- BOTH ARMS EMPTY, because 4 s is shorter than the shortest L3 interval band (blackwood L3 interval_s [8,24]). The refusal is real code on a reachable branch but is unreachable for the reason it exists. Browser falsification pending in tools/audio/critic-w1-22-r2-probe.mjs P1.",
-    "SUCCESSOR-2 / AMENDMENT B VERIFIED INDEPENDENTLY off the 13 shipped bed `key` fields: 7 distinct triples, 10 of 13 regions sharing one. Amendment B holds and RI-AUD03 SectionC's 'no duplicate triples except one group of four' is false. This is load-bearing for the pack design."
+    "SUCCESSOR-2 / AMENDMENT B VERIFIED INDEPENDENTLY off the 13 shipped bed `key` fields: 7 distinct triples, 10 of 13 regions sharing one. Amendment B holds and RI-AUD03 SectionC's 'no duplicate triples except one group of four' is false. This is load-bearing for the pack design.",
+    "SUCCESSOR-2 / RE-MEASURED AT HEAD 5d88b7e, 180 s x 40 bed-tod rows, own tool tools/audio/critic-w1-22-r2-bands.mjs over a fresh ambience-onsets run: 54 of 413 measured events sit OUTSIDE RI-AUD03 SectionA's band with the tool's own +/-2 dB tolerance -- 33 BURIED, 21 SHOUTING. Gate O3 reports pass with zero failures on the same render. Falsification arms behave: --sabotage widen (spread x3) 182/413 outside; --sabotage centre (every event collapsed onto its layer median, the shape O3 CAN see) 0/413 outside and B1 goes GREEN. So B1's red is exactly the information O3's median discards.",
+    "SUCCESSOR-2 / DELETE-THE-FIX DETERMINISM COUNT: the brief's '8 of 20 beds, not 2' is CORRECT. reports/w1-22/ambience-determinism-sab-flatmix.json D1 lists 8 failing beds (crimson-coast, deep-marshes, eastern-rootlands, street, well, stone-forest, valus-ridge, western-rootlands) of 20 measured. Note D1's `pass: true` in that file is NOT a green build -- under --sabotage flatmix the pass predicate is `d1.length > 0`, i.e. the falsifier is required to fire, and it did. But that bar would be met by ONE bed; the count 8 is reported, not gated.",
+    "SUCCESSOR-2 / IEEE-754 ROOT CAUSE HOLDS AND IS THE BEST EVIDENCE IN THE PIECE. D0_platform_control drives BARE browser audio nodes with no project code: summing 4 and 8 oscillators onto ONE node is non-identical run-to-run (max_abs 3.0e-8 / 4.5e-8, 12901 and 18219 nonzero samples of 32000); the same oscillators summed two at a time down a chain are bit-identical at every arity 1,2,3,4,8. It reproduces identically in the clean and the sabotage arm, which is what a platform property should do.",
+    "SUCCESSOR-2 / BLIND PACK: the r2 pack at reports/w1-22-critic/r2/pack IS NOT FIT TO BE JUDGED. Three mechanical tells, found by auditing it before spending a judge (the discipline the sibling r4-prose voiding established): (1) SERIALISED LENGTH -- |len(A)-len(B)| median 46 bytes on SAME vs 86 on DIFFERENT; a single threshold on byte count alone recovers 0.769 of the key against a 0.500 chance baseline. (2) TIME OF DAY IS THE CLASS -- all 13 SAME trials are (day,day) or (day,night), 8 of 13 DIFFERENT are (night,night), and NO DIFFERENT trial mixes the two, so 'the sides differ in time of day' implies SAME with certainty. (3) SIDES NEVER SWAPPED -- A is always capture-seed index 0 and in all 13 DIFFERENT trials the alphabetically earlier region. Rebuilt as tools/audio/critic-w1-22-r2-pack.mjs -> reports/packs/w1-22-r3-hard with fixed-width serialisation, independent per-side tod draws, coin-flip side swap, DIFFERENT pairs drawn from AMENDMENT B's four duplicate triples, and a leak audit that moves the pack to .rejected and exits non-zero if any of six mechanical features beats 0.70.",
+    "SUCCESSOR-2 / INCIDENTAL DEFECT, NOT THIS PIECE'S: the default player race is `argonian`, which is not a key in game/data/progression/race-reactions.json's law_factor (that table calls it `saxhleel`). thresholds() therefore THROWS inside the fixed step as soon as a guard is stepped, killing any stepping probe that spawns one. setCharacter({race:'imperial'}) does not reach the field the crime path reads."
   ],
   "notes": [
     "Contention: loadavg 13-19 on 4 cores, 18-30 headless_shell, throughout. Every figure is a byte comparison, a digest, a level or a count. No wall-clock figure quoted.",
-    "HEAD moved during the run: 107c1b3 -> fc5e13a -> a3af8c2 -> 444d43d (neighbours committing)."
+    "HEAD moved during the run: 107c1b3 -> fc5e13a -> a3af8c2 -> 444d43d (neighbours committing).",
+    "CONTENTION: ran the consumption probe with tools/contention.mjs --gate at exit 3 (4 browser instances, load ~4-5.7 per core). Declared per rule 21. One browser at a time throughout; never two of mine concurrently. Every figure in this verdict is a byte comparison, a digest, a level, a count or an accuracy -- no wall-clock figure is quoted."
   ],
   "successor_generation": 2,
   "resumed_at": "2026-08-08"

@@ -190,8 +190,21 @@ try {
     }
     // Drive the world. The player moves; a guard is present; perception is live.
     try { H.setPlayerMotion('walk'); } catch { /* not fatal */ }
+    // The default player race is `argonian`, which is not a key in
+    // game/data/progression/race-reactions.json's `law_factor` (that table calls it `saxhleel`),
+    // so `thresholds()` THROWS inside the fixed step the moment a guard is stepped. That is a
+    // real defect in the tree and it is not this piece's; it is worked around here rather than
+    // hidden, because a guard is what makes the perception path live.
+    // NO GUARD IS SPAWNED, and that is forced rather than chosen. The default player race is
+    // `argonian`, which is not a key in game/data/progression/race-reactions.json's `law_factor`
+    // (that table calls it `saxhleel`), so `thresholds()` THROWS inside the fixed step the moment
+    // a guard is stepped — `setCharacter({race:'imperial'})` does not reach the field the crime
+    // path reads. That is a real defect in the tree and it is not this piece's. The scenario is
+    // therefore the WALKING PLAYER alone: motion, perception and the stealth step are all live,
+    // which is what a consumer of the bed would have to show up in, but there is no second entity.
+    // Reported here rather than quietly dropped, per rule 26.
     let guardId = null;
-    try { const g = H.spawnGuard({}); guardId = (g && (g.id || g.entity)) || null; } catch { /* ok */ }
+    applied.no_guard_because = 'thresholds: unknown race "argonian" throws in the fixed step';
     const samples = [];
     const N = 6, per = Math.max(1, Math.floor(600 / N));
     for (let i = 0; i < N; i++) {
@@ -219,8 +232,10 @@ try {
   const nullArm = await scenario('null');
   const ambArm = await scenario('ambience');
   // Reload the page between the destructive arms so the control starts from clean data.
-  await page.reload({ waitUntil: 'load' });
-  await page.waitForFunction(() => !!(window.__HARNESS && window.__ENGINE), null, { timeout: 60000 });
+  // A full `load` reload times out on a box at 4+ per core; `domcontentloaded` plus an explicit
+  // wait for the two globals is the same guarantee without waiting on subresources.
+  await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
+  await page.waitForFunction(() => !!(window.__HARNESS && window.__ENGINE), null, { timeout: 180000 });
   const nullArm2 = await scenario('null');
   const ctlArm = await scenario('control');
 

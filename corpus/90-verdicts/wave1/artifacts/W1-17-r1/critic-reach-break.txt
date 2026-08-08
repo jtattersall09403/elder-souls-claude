@@ -1,0 +1,160 @@
+critic-reach — every info in the province, against the reader that actually runs
+mode: BREAK (all player gates forced true)
+player space: 10 races x 4 upbringings x 15 dispositions x 9 knowledge sets = 5400
+speakers: 347   topics: 468   infos: 1280
+
+INFOS NO PLAYER CAN EVER HEAR FROM ANY SPEAKER:  226  (17.7%)
+build-graph.mjs reports:                          3
+shadow-audit.mjs audits:                          3 (exactly the 3 the lint nominated)
+
+by cause:
+    96  always outscored — a higher-scoring info is admissible to every player this one is
+    40  no such actor in the roster
+    10  no archivist stands in gideon
+     7  no mudborn stands in lilmoth
+     7  no archivist stands in stormhold
+     6  no sapcutter stands in archon
+     6  no mudborn stands in archon
+     5  no sapcutter stands in stormhold
+     5  no archivist stands in thorn
+     5  no sapcutter stands in thorn
+     5  no sapcutter stands in helstrom
+     4  no mudborn stands in stormhold
+     3  no archivist stands in lilmoth
+     3  no mudborn stands in blackrose
+     3  no sapcutter stands in soulrest
+     3  no mudborn stands in gideon
+     3  no sapcutter stands in gideon
+     3  no archivist stands in archon
+     3  no rootkeeper stands in rootlands
+     2  no archivist stands in helstrom
+     2  no mudborn stands in helstrom
+     2  no fisher stands in archon
+     2  no fisher stands in thorn
+     1  no clerk stands in blackrose
+
+  duties#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If you are asking what I do here, provincial, the answer is that I hold an estate that the Empire sa…"
+  background#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If you mean where I am from, provincial, the answer is a place that no longer sends me anything. If …"
+  specific-place#4
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Gideon is surveyed, which makes it the only settlement in the province I can describe without apolog…"
+  specific-place#6
+      filter {"a":"sapcutter","cell":"archon"}
+      cause  no sapcutter stands in archon
+      text   "Archon is the dye yards and the tide steps. Friend, follow your nose to the first one.…"
+  someone-in-particular#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "If the person is worth knowing, provincial, I already correspond with them. If they are not, I would…"
+  someone-in-particular#5
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "The chapel keeps a roll of the tithed and the Office keeps a roll of the taxed, and the interesting …"
+  services#4
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "Gideon has an inn, a chapel, a timber factor, a smith who is better than the town deserves, and a Pr…"
+  my-trade#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Administration, of an estate whose legality is a matter of opinion. If you want the opinion, provinc…"
+  little-advice#0
+      filter {"a":"mudborn","cell":"archon","d":10}
+      cause  no mudborn stands in archon
+      text   "Do not put your hands in the dye vats even to point at something, dry-one, because the colour does n…"
+  little-advice#2
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Should you wish to survive the interior, provincial, do not accept water. Everything else you will w…"
+  little-secret#3
+      filter {"a":"magister","d":80}
+      cause  no such actor in the roster: magister
+      text   "Since you have been useful: the treaty has a clause about heirs. It has not been read in ninety year…"
+  little-secret#6
+      filter {"a":"sapcutter"}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "A secret? Friend, this one sells those. Come back when we are better acquainted.…"
+  the-charter#1
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "Paper. Presumably you've seen paper before. Whose charter are you asking about?…"
+  the-chapel-of-akatosh#3
+      filter {"a":"archivist","cell":"gideon"}
+      cause  no archivist stands in gideon
+      text   "A proper chapel, stone, with a bell that was carried here in pieces, and a priest who has been quiet…"
+  lilmoth#2
+      filter {"a":"mudborn","cell":"lilmoth","d":10}
+      cause  no mudborn stands in lilmoth
+      text   "It is the only town in the province where a person can sleep dry for nothing, dry-one, because there…"
+  lilmoth#5
+      filter {"a":"archivist","cell":"lilmoth"}
+      cause  no archivist stands in lilmoth
+      text   "The colonial city was built on made ground and the ground has been unmaking itself for two centuries…"
+  stormhold#2
+      filter {"a":"mudborn","cell":"stormhold","d":10}
+      cause  no mudborn stands in stormhold
+      text   "It is a good town to beg in and a bad town to sleep in, dry-one, because the streets are dry and ful…"
+  stormhold#4
+      filter {"a":"archivist","cell":"stormhold"}
+      cause  no archivist stands in stormhold
+      text   "Stormhold is the only settlement in Argonia laid out to an Imperial plan and completed to it, and th…"
+  stormhold#5
+      filter {"a":"sapcutter","cell":"stormhold"}
+      cause  no sapcutter stands in stormhold
+      text   "Gate fee, market fee, weigh fee. Friend, Stormhold charges for air. How long are you in for?…"
+  blackrose#2
+      filter {"a":"mudborn","cell":"blackrose","d":10}
+      cause  no mudborn stands in blackrose
+      text   "Half the people here have kin inside and the other half turn the key on them, dry-one, and they all …"
+  thorn#3
+      filter {"a":"archivist","cell":"thorn"}
+      cause  no archivist stands in thorn
+      text   "The charter of Thorn is an authentic Imperial instrument granting a hereditary title over a jurisdic…"
+  thorn#4
+      filter {"a":"sapcutter","cell":"thorn"}
+      cause  no sapcutter stands in thorn
+      text   "Thornwood town. Straight grain. Good money. Friend, the king takes a tenth and gives it back at the …"
+  soulrest#1
+      filter {"a":"rootkeeper","cell":"soulrest","d":20}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "The well stopped in my mother's time and the tending did not, supplicant. There is no need to look f…"
+  soulrest#4
+      filter {"a":"sapcutter","cell":"soulrest"}
+      cause  no sapcutter stands in soulrest
+      text   "Salt, bone, nothing. Friend, this one comes twice a year out of habit. What brings you?…"
+  the-drowned-court#5
+      filter {"a":"mudborn"}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "Eleven sextons, four undersextons and a mandate to read the dead. It isn't a faith and has never cla…"
+  the-hatch-name-list#3
+      filter {"a":"rootkeeper","forb":{"race":["imperial"]}}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "Fourteen names of people the Office has and the village wants back. You will not be told them if you…"
+  hist-sap#2
+      filter {"a":"magister","d":20}
+      cause  no such actor in the roster: magister
+      text   "You are asking whether it can be shipped. It has been, at scale, for two centuries. The price reflec…"
+  the-writ-house#2
+      filter {"a":"villager","req":{"race":["dunmer","imperial","nord","breton","redguard","khajiit","orsimer","bosmer"]}}
+      cause  always outscored — a higher-scoring info is admissible to every player this one is
+      text   "They will spell it wrong and you will answer to the wrong one for a year.…"
+  house-dres#3
+      filter {"a":"magister"}
+      cause  no such actor in the roster: magister
+      text   "Six estates, four factors, one magister and a treaty that says none of it is ours. We remain because…"
+  the-drowned-road#3
+      filter {"a":"vakh-speaker","forb":{"race":["dunmer","imperial","nord","breton","redguard","khajiit","orsimer","bosmer"]}}
+      cause  no such actor in the roster: vakh-speaker
+      text   "It is walkable at the low tide of the third day and it does not want warmbloods on it.…"
+  … 196 more (--all)
+
+BREAK ARM: player gates disabled.
+  "always outscored" bucket: 96  (shipped arm: 3)
+  OK — 93 infos are reachable ONLY because a player-side gate can close above them.

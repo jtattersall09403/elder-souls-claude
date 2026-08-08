@@ -1,0 +1,20 @@
+{
+  "task_id": "critic-w1-15-r3",
+  "role": "critic",
+  "piece": "W1-15 round 3 — stealth, crime and justice",
+  "state": "running",
+  "started_at": "2026-08-08T00:00:00Z",
+  "next_step": "read RULES/INDEX/ARBITRATION/spec/builder-status; then offline probes A-G",
+  "contention_gate": "exit 3 at start; offline work first",
+  "files_touched": ["orchestration/status/critic-w1-15-r3.json"],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-15-r3.md",
+    "corpus/90-verdicts/wave1/W1-15-r3.json",
+    "orchestration/status/critic-w1-15-r3.json",
+    "tools/stealth/critic-",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-15-r3"],
+  "notes": []
+}
