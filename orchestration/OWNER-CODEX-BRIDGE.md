@@ -35,6 +35,22 @@ makes later work shallower. Commit one owner-reviewable batch. The next phase be
 canonical branch after the owner publishes that PR. Plan criticism is offline where possible;
 browser/build evidence stays in the build loop unless plan validity genuinely requires it.
 
+## Temporary no-blog/no-illustration rule
+
+For the entire owner-driven Codex bridge phase, suspend the routine progress-blog requirement in
+`AGENT-PROTOCOL.md` for Codex tasks. **Do not create an owner-facing blog entry, explanatory
+illustration, or progress screenshot merely because a Plan, Critique, Remediate, Build or Critic
+task completed.** In particular, do not append routine progress lines to `reports/blog-feed.jsonl`,
+do not create `docs/shots/*` illustrations for task summaries, and do not regenerate/publish docs
+solely to surface routine task progress.
+
+This is a reporting exception only. It does **not** weaken evidence requirements: if a governing
+reference item, comparison method, verdict schema, blind pack, build/critic protocol, or genuine
+measurement requires an image or other artifact, produce that evidence in the repository's normal
+evidence location. Likewise, do not delete or rewrite existing blog/history artifacts. Dedicated
+blogging may resume when normal Claude orchestration resumes or when the owner explicitly asks for
+it.
+
 At the end of every Plan, Critique, or Remediate task, run or derive the canonical Wave 1 plan-state
 inventory from current task HEAD and include a short **Plan-state summary** in both the task's final
 response and its PR description. Report counts for `needs-current-state-plan`, `awaiting-criticism`,
