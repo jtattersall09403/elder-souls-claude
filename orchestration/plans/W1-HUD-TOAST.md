@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-recriticism
+Plan-State: awaiting-remediation
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -1186,3 +1186,27 @@ piece to B2 plus B1b's report-only census. Thus every possible missing-value cou
 Piece A's landed code, acceptance, and null remain untouched. Piece B's four B2 fixtures and its
 4/4 pass requirement also remain untouched. The plan is **awaiting fresh re-criticism**; this
 remediation does not make either piece build-ready by self-judgement.
+
+
+---
+
+## Fresh plan re-critique 3 — 2026-08-09
+
+**Verdict: BLOCKING.** The preceding remediation makes missing-`E_tool` results deterministic, but
+the operative B1′ classifier is still not total. Its outcome table covers a moving yardstick
+(`ΔE ≠ 0`), an inert observation (`ΔE == 0`, `ΔO == 0`), and an independently failing control
+(`ΔE == 0`, `ΔO ≠ 0`, green→red). It assigns no outcome when `E` stays fixed and `O` changes but
+the clean/perturbed verdict **does not** flip—for example, a real change below the declared margin
+or in the wrong direction. Yet B1′ requires all 14 members to be classified into only
+`{INDEPENDENT, COUPLED, INERT, ERROR}`. Such a row has readable `E_tool`, so it is neither a
+missing-value `ERROR` nor part of the 7-member overturn count; the builder cannot determine whether
+14/14 passed without inventing a fifth meaning.
+
+**One actionable biggest gap:** make B1′ exhaustive before dispatch. Add an explicit non-passing
+classification for `ΔE == 0`, `ΔO ≠ 0`, verdict unchanged (split it into `UNDERPOWERED` and
+`WRONG_DIRECTION` if the frozen tool contract distinguishes them), include that outcome in B1′'s
+allowed row vocabulary, and state whether any such row fails B1′ without contributing to the
+missing-`E_tool` overturn threshold. Preserve the zero-`ERROR` rule, Piece A, and all B2 fixtures.
+
+**Recommendation:** remediate only the B1′ outcome table and aggregate predicate, then request
+fresh re-criticism. Do not redispatch or rewrite Piece A.
