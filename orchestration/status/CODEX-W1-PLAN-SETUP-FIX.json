@@ -1,0 +1,28 @@
+{
+  "task_id": "CODEX-W1-PLAN-SETUP-FIX",
+  "state": "complete",
+  "summary": "Canonical Wave 1 continuation-plan selection now reconciles round/critic/remediation histories using repository anchors while preserving distinct pieces; current doctrine no longer requires invented plan weaknesses or critic gaps. No planning or game-code work was performed.",
+  "files_touched": [
+    "orchestration/status/CODEX-W1-PLAN-SETUP-FIX.json",
+    "tools/dispatchable.mjs",
+    "orchestration/PLAN-LOOP.md",
+    "corpus/00-doctrine/README.md",
+    "orchestration/COST.md",
+    "tools/cost-report.mjs"
+  ],
+  "files_claimed": [
+    "tools/dispatchable.mjs",
+    "orchestration/PLAN-LOOP.md",
+    "orchestration/status/CODEX-W1-PLAN-SETUP-FIX.json"
+  ],
+  "next_step": "Owner review and merge; only then may a separate task begin Wave 1 planning.",
+  "checks": [
+    "node tools/dispatchable.mjs --self-test",
+    "canonical --wave1-plans output assertions for W1-04, W1-17-act5-argument, W1-HUD-TOAST, W1-SOULS and W1-SOULS-LEDGER",
+    "node tools/verdict-validate.mjs --self-test",
+    "node tools/gap-ledger.mjs --self-test",
+    "npm run gate:strict",
+    "git diff --check"
+  ],
+  "audit": "Focused current-authoritative scan found and corrected the README, PLAN-LOOP, COST doctrine and generated cost-report wording. Existing prompt/schema/validator/gap-ledger/bridge/TICK doctrine already permits evidence-earned no-gap PASS and unbounded fresh criticism. Historical plans, verdicts, reports and statuses were not rewritten."
+}

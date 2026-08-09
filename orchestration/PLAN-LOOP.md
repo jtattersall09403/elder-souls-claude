@@ -130,9 +130,10 @@ agent was dispatched, offline reading alone established:
 
 **And the shape to keep.** The plan agent wrote down what it was **least sure of** and named the
 critic's strongest move against its own document. That is not modesty, it is the cheapest possible
-way to spend the critic's exchange — the critic starts at the weakest joint instead of finding it.
-Every plan should end with that section, and a plan that claims no weak joint has failed the same
-way a critic that finds no gap has failed.
+way to spend the critic's exchange: identify genuine uncertainty, assumptions and likely attack
+surfaces so the critic can start there. Every plan should end with that examination. If rigorous
+examination against the governing bar finds no material weak joint, say so with the evidence; do
+not invent a weakness any more than a critic should invent a gap.
 
 None of this replaces anything. One builder, one separate critic with fresh context, delete-the-fix,
 the CONSUMPTION check, the self-test that goes red on purpose — all unchanged. This adds a cheap

@@ -575,7 +575,7 @@ ${ledger.series.slice().reverse().map(p => `<tr><td>${esc(when(p.t) || p.t)}</td
   // --- every change, including the reversed ones.
   const stateCls = s => s === 'kept' ? 'ok' : s === 'reversed' ? 'bad' : s === 'trial' ? 'warn' : 'dimtext';
   const changes = `<div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">${ledger.changes.length}</span></h3>
-<div class="cost-note">A ledger showing only what worked is the same failure as a critic who finds no gaps. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
+<div class="cost-note">A ledger showing only what worked hides negative evidence and cannot support a causal cost claim. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
 <div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
 ${ledger.changes.length ? ledger.changes.map(c => `<tr>
   <td><b>${esc(c.id)}</b> ${esc(c.title)}<div class="rem">${esc(when(c.landed) || '')}${c.commit ? ` &middot; <code>${esc(c.commit.slice(0, 7))}</code>` : ''}</div></td>
