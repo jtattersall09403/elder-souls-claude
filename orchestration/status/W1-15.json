@@ -1,6 +1,6 @@
 {
   "task_id": "W1-15",
-  "brief": "wave-1 piece W1-15 — Stealth, theft, crime and justice",
+  "brief": "wave-1 piece W1-15 \u2014 Stealth, theft, crime and justice",
   "started": "wave-1",
   "state": "complete",
   "outputs_written": [
@@ -53,27 +53,28 @@
     "live_assertions": "29/29",
     "ownership": "1878/1878 objects carry an owner key; 292 distinct owners; 0% single-owner interiors",
     "locks": "235 authored; chi-square 226.1 on 35 df rejects uniform; 0 RNG draws across a live interaction",
-    "worked_rows": "five RI-STL01 §2 rows within 0.68% of the item's own times",
+    "worked_rows": "five RI-STL01 \u00a72 rows within 0.68% of the item's own times",
     "ar3": "Imperial bounty 3000 g -> Deep-Kin regard +12 -> a Dunmer at disposition 6 reads 18 vs a threshold of 15 -> a war-brood camp that was hostile is not"
   },
   "findings": [
-    "DEFECT (filed, AMENDMENT-W1-15-01 §1): RI-STL01 §2 states V = clamp(L^0.7 ...) and publishes five worked rows that L^0.7 cannot produce. Rows 2 and 3 are 2.0x wrong; row 4 is annotated '(clamped)' and at gamma 0.7 its raw value 0.0733 never reaches the 0.05 floor. gamma = 1.36 reproduces all five within 0.5%. Shipped as DATA (detection.json visibility.light_exponent) with the arithmetic and a how_to_disagree field.",
-    "DEFECT (filed, §2): RI-CRM02 §8 asserts max 2 simultaneous sanctioning authorities; §4's exclusivity table permits three (Warrant + Ledger + ku-vastei). Found by exhaustive search over the join graph, not by reading. Closed with one further exclusion whose in-fiction reason falls out of the two institutions' own products.",
-    "DEFECT (filed, §3): RI-STL02 §6 declares fenceGreed in [0.85, 1.10] while method 9 asserts a best multiplier in [0.58, 0.62]; 0.35 x 1.71 x 1.10 = 0.658 is outside it. Shipped roster tops at greed 1.02.",
-    "S21 APPLIED, NOT AMENDED: RI-STL02 §5 says pickpocketing has no roll; ARBITRATION §2 S21 (intent audit 02, ND-01) says it keeps one and names RI-STL02 as the item to reconcile. ARBITRATION §5 rung 2 > rung 3, so the die is built — geometry stays deterministic, exactly one draw on the completion frame.",
-    "CALIBRATION TRAP AVOIDED: the first pickpocket notice formula used a subtractive Sneak term and collapsed to its 2% floor by Sneak 45 — it passes every assertion and makes S21 decorative. The shipped multiplicative form stays live from 4.1% to 85%.",
+    "DEFECT (filed, AMENDMENT-W1-15-01 \u00a71): RI-STL01 \u00a72 states V = clamp(L^0.7 ...) and publishes five worked rows that L^0.7 cannot produce. Rows 2 and 3 are 2.0x wrong; row 4 is annotated '(clamped)' and at gamma 0.7 its raw value 0.0733 never reaches the 0.05 floor. gamma = 1.36 reproduces all five within 0.5%. Shipped as DATA (detection.json visibility.light_exponent) with the arithmetic and a how_to_disagree field.",
+    "DEFECT (filed, \u00a72): RI-CRM02 \u00a78 asserts max 2 simultaneous sanctioning authorities; \u00a74's exclusivity table permits three (Warrant + Ledger + ku-vastei). Found by exhaustive search over the join graph, not by reading. Closed with one further exclusion whose in-fiction reason falls out of the two institutions' own products.",
+    "DEFECT (filed, \u00a73): RI-STL02 \u00a76 declares fenceGreed in [0.85, 1.10] while method 9 asserts a best multiplier in [0.58, 0.62]; 0.35 x 1.71 x 1.10 = 0.658 is outside it. Shipped roster tops at greed 1.02.",
+    "S21 APPLIED, NOT AMENDED: RI-STL02 \u00a75 says pickpocketing has no roll; ARBITRATION \u00a72 S21 (intent audit 02, ND-01) says it keeps one and names RI-STL02 as the item to reconcile. ARBITRATION \u00a75 rung 2 > rung 3, so the die is built \u2014 geometry stays deterministic, exactly one draw on the completion frame.",
+    "CALIBRATION TRAP AVOIDED: the first pickpocket notice formula used a subtractive Sneak term and collapsed to its 2% floor by Sneak 45 \u2014 it passes every assertion and makes S21 decorative. The shipped multiplicative form stays live from 4.1% to 85%.",
     "NOT MINE, FLAGGED: W1-14 bound `spell_cycle` to KeyR, which is already `heavy`'s primary binding. buildControlMap() is last-write-wins, so the heavy attack currently has no keyboard binding on the desktop path. auditBindings() does not check duplicate controls, which is why it still returns [].",
     "TOOLING: a live Playwright page.evaluate that reseeded the engine and replayed the ward-collar 8-40 times in one call hung the bridge reproducibly and I could not diagnose it in budget. The 100-seed determinism sweep runs headless in stl-probe.mjs instead; the live probe proves the wiring. Stated in the source and the report rather than hidden.",
-    "W1-07's hostile_below_disposition in character/encounter.js is the AR-3 hook — do not build a parallel one. W1-09's backstab in combat/resolve.js is the opener target — routing to it is what keeps OPENER-PURITY true."
+    "W1-07's hostile_below_disposition in character/encounter.js is the AR-3 hook \u2014 do not build a parallel one. W1-09's backstab in combat/resolve.js is the opener target \u2014 routing to it is what keeps OPENER-PURITY true."
   ],
   "not_measured": [
-    "RI-STL01 §9's bypass census (REGION-BYPASS, R5-BYPASS, DUNGEON-ROUTE, CAVE-CROUCH, BOSS-BYPASS) needs encounter placement across the province and the 8 Souls-loop dungeons, owned by W1-02/04/05/12 and not yet built. Score it unmeasurable => 0 under HARNESS.md §5; do not take the builder's word.",
+    "RI-STL01 \u00a79's bypass census (REGION-BYPASS, R5-BYPASS, DUNGEON-ROUTE, CAVE-CROUCH, BOSS-BYPASS) needs encounter placement across the province and the 8 Souls-loop dungeons, owned by W1-02/04/05/12 and not yet built. Score it unmeasurable => 0 under HARNESS.md \u00a75; do not take the builder's word.",
     "SNEAK-QUESTS (>= 22 quests with a method:'sneak' resolution) needs the quest engine, W1-18.",
     "Tier-1 and tier-2 lock world counts are short of locks.json's ~410/~230 because 233 interiors exist rather than 819; the design-load-bearing tiers (120/48/11) land exactly."
   ],
-  "next_step": "none — piece complete. A critic should start with `node tools/harness/stl-live.mjs`, then stl-probe.mjs, then crime-audit.mjs.",
-  "notes_for_successor": "If the light exponent amendment is rejected, set game/data/stealth/detection.json visibility.light_exponent back to 0.7 and expect stl-probe.mjs STL01-M2 to fail on rows 2, 3 and 4 — nothing else changes, because no code hardcodes it. If S21's pickpocket ruling is reversed, delete the single rng.next() call in sim/stealth/system.js completePickpocket(); every other assertion in the piece is unaffected.",
-  "plan_state": "awaiting-remediation",
-  "next_plan_step": "Arbiter must rule AMENDMENT-W1-15-01 and QST05 metadata scope before plan remediation.",
-  "plan_review_20260809": "ESCALATED"
+  "next_step": "Fresh independent reviewer-editor must re-criticise orchestration/plans/W1-15.md at canonical HEAD; do not build before that review.",
+  "notes_for_successor": "If the light exponent amendment is rejected, set game/data/stealth/detection.json visibility.light_exponent back to 0.7 and expect stl-probe.mjs STL01-M2 to fail on rows 2, 3 and 4 \u2014 nothing else changes, because no code hardcodes it. If S21's pickpocket ruling is reversed, delete the single rng.next() call in sim/stealth/system.js completePickpocket(); every other assertion in the piece is unaffected.",
+  "plan_state": "awaiting-recriticism",
+  "next_plan_step": "Fresh independent reviewer-editor must re-criticise orchestration/plans/W1-15.md at canonical HEAD; do not build before that review.",
+  "plan_review_20260809": "ARBITRATION RESOLVED \u2014 MATERIAL EDIT; NOT APPROVED",
+  "plan_review_outcome": "Authoritative arbitration applied directly; material edit requires fresh re-criticism and is not self-approved."
 }
