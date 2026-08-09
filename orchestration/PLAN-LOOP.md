@@ -3,10 +3,15 @@
 **Owner's proposal, adopted with three changes.** Every piece now runs two loops, not one:
 
 ```
-  plan  ⇄  plan critic        cheap, text/offline where possible, repeat until satisfied
-    ↓
-  build ⇄  build critic       expensive: browsers, hours, 200–450k tokens a side
+  plan → fresh reviewer-editor ⇄ fresh reviewer-editor   cheap, text/offline where possible
+    ↓                         repeat until satisfied
+  build ⇄ build critic       expensive: browsers, hours, 200–450k tokens a side
 ```
+
+A reviewer-editor both falsifies and, when the repair is ordinary and clear, edits. Independence is
+preserved by a simple rule: **an agent may approve the plan version it received, or materially edit
+it, but never both.** Any material edit leaves the plan `awaiting-recriticism`; a different fresh
+reviewer-editor must approve that version.
 
 ## Why — the numbers, not the theory
 
@@ -14,9 +19,9 @@ Pieces here run **4 to 6 rounds**: W1-04 reached round 6, W1-14 round 5, W1-13 a
 A build round costs roughly **250–450k tokens on each side** and 40–90 minutes of the box's only
 scarce resource, a browser. A plan exchange costs **20–40k and no browser at all.**
 
-And the failures are the shape a plan critic catches. Every one of these is real, from one day:
+And the failures are the shape a plan reviewer catches. Every one of these is real, from one day:
 
-| what failed | could a plan critic have caught it? |
+| what failed | could a plan reviewer have caught it? |
 |---|---|
 | The magic census varied **one dial of three** — duration pinned at 20, area at 0, for four rounds | Yes. *"The item names three dials. Which does your method vary?"* |
 | Every magic fixture used a **still target**, so a bolt that could not hit a walking body survived two rounds | Yes. Rule 8 is one sentence: *"does your fixture move?"* |
@@ -39,15 +44,29 @@ the plan says so and specifies only legitimate verification/closure; it does not
 Until a canonical plan is satisfied, prior build activity never exempts a relevant piece from the
 plan gate. `node tools/dispatchable.mjs --wave1-plans` reports the canonical state signals.
 
-## The three operating rules
+The governing bar is not whatever the plan author happened to quote. Derive it from the piece's
+canonical owned paths/decomposition and authoritative `judges:` metadata, then read the referenced
+items' native predicates, thresholds, populations, comparison methods, hard fails and applicable
+later rulings/amendments. The plan summarises the bar; it does not define it.
 
-**1. Repeat until satisfied; do not count rounds.** A fresh independent task criticises each
-canonical plan. BLOCKING findings return it to remediation, then another fresh critic. There is no
-arbitrary ceiling. CARRIED is only for a non-blocking empirical risk that genuinely cannot be
-resolved in this phase; it must be visible in the build brief and cannot bypass a pre-build
-requirement. Successive rounds with no substantive progress, repeated disagreement about the same
-bar, an invalid instrument, or a seam/ruling ambiguity go to the existing arbiter/ruling mechanism
-rather than automatic acceptance.
+## The operating rules
+
+**1. Repeat fresh reviewer-editor rounds until satisfied; do not count rounds.** A fresh independent
+task reviews each canonical plan against the governing bar and the cost-effective-plan gate below.
+If it finds no material defect and makes no material edit, it may mark `satisfied`. If it finds an
+ordinary defect whose safe repair is clear, it edits the plan in the same task and leaves it
+`awaiting-recriticism`; a different fresh reviewer-editor judges that version. A reviewer-editor
+must never approve its own material edit. CARRIED is only for a non-blocking empirical risk that
+genuinely cannot be resolved in this phase; it must be visible in the build brief and cannot bypass
+a pre-build requirement.
+
+`awaiting-remediation` remains a valid state for already-recorded criticism and for a blocker that
+cannot safely be edited in the reviewing task. In particular, the current 2026-08-09 Wave-1 batch
+already has a completed criticism round: remediate those recorded findings first, move them to
+`awaiting-recriticism`, and only then begin repeated fresh reviewer-editor rounds. Successive rounds
+with no substantive progress, repeated disagreement about the same bar, an invalid instrument, or
+a seam/ruling/authority ambiguity go to the existing arbiter/ruling mechanism rather than automatic
+acceptance or a convenient local interpretation.
 
 **2. The plan's deliverable is not the steps. It is the acceptance, the units and the null.**
 Two rounds were lost this week to *definition* disputes rather than build errors — a prop count
@@ -62,13 +81,34 @@ luma where its item specifies ΔE. A plan is not approved until it states:
 - **which existing instrument is being reused**, by path. Rule 10: two implementations of one system
   is how this build had a good detection model and a broken one at once.
 
-**3. Model choice is evidence, not a judgement call.** Sonnet is *proven* here — Sonnet blog
+**3. The plan must be cost-effective as well as bar-sufficient.** Build-ready means a clear,
+deliverable, materially cost-effective route from current HEAD to the **same** governing bar. The
+bar is never lowered to save tokens. Prefer the minimum sufficient work/evidence set that can prove
+the governing predicates: preserve valid current behaviour/evidence, reuse authoritative tools,
+fail cheaply before paying for browser/blind/runtime work, bound populations and stopping
+conditions, order high-information gates early, and keep optional polish/speculative refactors off
+the critical path unless the bar actually requires them.
+
+A reviewer-editor asks both:
+
+1. *Could a competent builder execute this plan exactly as written, get every planned check green,
+   and still fail any governing reference-item predicate?* If yes, it is not satisfactory.
+2. *Is there a materially cheaper or simpler credible route from current HEAD to the exact same bar
+   because the plan duplicates established work/evidence, over-tests, over-builds, uses unnecessarily
+   expensive instruments/passes, repeats corpus/browser work, or lacks useful stop/order constraints?*
+   If yes and the waste is material, it is not satisfactory.
+
+Do not invent micro-optimisations and do not trade away verification quality. Exact token forecasts
+are not required where they would be guesswork; reason from concrete cost drivers and the measured
+cost evidence in `COST.md` and this file.
+
+**4. Model choice is evidence, not a judgement call.** Sonnet is *proven* here — Sonnet blog
 writers have caught four errors in the orchestrator's own briefs, including a fabricated figure and
 a claim that contradicted its own source. Haiku is unproven and no build should be its first job.
 
 | the work | model |
 |---|---|
-| Designing a measurement, ruling on a seam, writing graded prose, any critic | **Opus** |
+| Designing a measurement, ruling on a seam, writing graded prose, any critic/reviewer | **Opus** |
 | A build with a landed plan, an existing instrument, and a machine-checkable acceptance | **Sonnet** |
 | One mechanical job, trialled and measured before it is trusted | Haiku, not yet |
 
@@ -87,26 +127,35 @@ a bolt using pure pursuit. **A plan must never become a commitment device.** So:
 - `orchestration/plans/<piece>.md` — the plan. The build brief **points at it** rather than
   restating it (rule 18, which the orchestrator has broken four times).
 - The plan carries a `Plan-State:` marker using one of the states below, BLOCKING items resolved,
-  CARRIED risks listed, the acceptance table, the null control, and the critic's recommendation.
+  CARRIED risks listed, the acceptance table, the null control, and the latest reviewer outcome.
 - Status files mirror `"plan_state"` so dispatch remains machine-readable. Canonical states are
   `awaiting-criticism`, `awaiting-remediation`, `awaiting-recriticism`, and `satisfied`. Absence of
-  a canonical plan means `needs-current-state-plan`; `satisfied` means build-ready. Build status
-  remains in the existing status/verdict/gap system (`build-awaiting-criticism`,
+  a canonical plan means `needs-current-state-plan`; `satisfied` means build-ready.
+- `awaiting-criticism` means a new plan has not yet received an independent reviewer-editor.
+  `awaiting-remediation` means recorded criticism still needs a dedicated remediation/ruling step.
+  `awaiting-recriticism` means the plan was materially edited and must be judged by a different fresh
+  reviewer-editor before it can become satisfied.
+- Build status remains in the existing status/verdict/gap system (`build-awaiting-criticism`,
   `build-blocked`, or `build-satisfied`) rather than a second ledger.
 - `node tools/dispatchable.mjs --wave1-plans` reports plan state before any builder category.
 
 ## What it is expected to save, stated as an estimate
 
-Plan + critic ≈ **60–100k tokens, no browser**. A build round ≈ **600k and a browser**. If the loop
+Plan + review ≈ **60–100k tokens, no browser**. A build round ≈ **600k and a browser**. If the loop
 removes **one** round per piece it repays roughly sixfold; the 4-to-6-round pieces suggest it removes
 more than one. Speed: it adds ~15 minutes in series and removes 40–90 minute rounds — and because
 planning needs no browser, **a whole wave can plan in parallel while builds queue on the box.**
 
+Combining ordinary criticism and remediation in one reviewer-editor round removes another source of
+waste: the agent that just paid to reconstruct the bar and understand the defect should normally make
+the obvious safe plan edit while that context is live. The independence guard is on approval, not on
+editing: the edited version still requires a different fresh reviewer-editor.
+
 ### The first measured run — the estimate above was wrong, and low
 
 **W1-HUD-TOAST, the first piece to use this loop.** The plan half alone cost **131k tokens, 40 tool
-calls, 10 minutes, no browser** — more than the 60–100k this document estimated for *plan and critic
-together*. Assume a full exchange is **200–260k**, not 100k. That is still roughly a quarter of a
+calls, 10 minutes, no browser** — more than the 60–100k this document estimated for *plan and critic*
+together. Assume a full exchange is **200–260k**, not 100k. That is still roughly a quarter of a
 build round and it still needs no browser, so the case holds; but the number in the paragraph above
 was written before anything had run and it should be read as what it was.
 
@@ -129,12 +178,12 @@ agent was dispatched, offline reading alone established:
   would have found this in round 2; the plan found it in round 0.
 
 **And the shape to keep.** The plan agent wrote down what it was **least sure of** and named the
-critic's strongest move against its own document. That is not modesty, it is the cheapest possible
-way to spend the critic's exchange: identify genuine uncertainty, assumptions and likely attack
-surfaces so the critic can start there. Every plan should end with that examination. If rigorous
+reviewer's strongest move against its own document. That is not modesty, it is the cheapest possible
+way to spend the next exchange: identify genuine uncertainty, assumptions and likely attack surfaces
+so the reviewer can start there. Every plan should end with that examination. If rigorous
 examination against the governing bar finds no material weak joint, say so with the evidence; do
-not invent a weakness any more than a critic should invent a gap.
+not invent a weakness any more than a reviewer should invent a gap.
 
-None of this replaces anything. One builder, one separate critic with fresh context, delete-the-fix,
-the CONSUMPTION check, the self-test that goes red on purpose — all unchanged. This adds a cheap
-argument in front of an expensive one.
+None of this replaces the build-side independence controls. One builder, one separate build critic
+with fresh context, delete-the-fix, the CONSUMPTION check, the self-test that goes red on purpose —
+all unchanged. This adds a cheap argument in front of an expensive one.
