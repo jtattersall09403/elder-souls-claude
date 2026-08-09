@@ -104,5 +104,21 @@
     ],
     "escalation": "none",
     "next_owner_action": "Dispatch a different fresh independent W1-09 plan reviewer-editor; do not dispatch a builder."
+  },
+  "plan_review_2026_08_09_predicate_classification": {
+    "outcome": "MATERIAL EDIT",
+    "plan_state": "awaiting-recriticism",
+    "findings": [
+      "S40/RI-CMB09 remains canonical and internally consistent throughout every operative clause and fixture.",
+      "The received read-based applicability test could classify away a row that scores, exercises, depends on, or consumes a W1-09 producer/model/consumer indirectly through a sibling fixture or aggregate.",
+      "The mechanism lacked an explicit authoritative meaning for not applicable and contradicted digest-qualified reuse by later requiring an identical commit."
+    ],
+    "edits": [
+      "Added an exhaustive fail-closed three-state classification with authoritative ownership and producer-to-consumer dependency traces for every native row.",
+      "Kept complete native populations and hard fails wherever any row exercises a W1-09 input, and made missing sibling inputs reject dependent aggregates rather than renormalise green.",
+      "Reconciled sibling reuse around commit ancestry plus unchanged implementation/data/fixture/instrument digests rather than wasteful HEAD-identical remeasurement."
+    ],
+    "escalation": "none",
+    "next_owner_action": "Dispatch a different fresh independent W1-09 plan reviewer-editor; do not dispatch a builder."
   }
 }
