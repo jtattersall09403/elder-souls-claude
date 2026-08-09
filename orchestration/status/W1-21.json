@@ -3,6 +3,7 @@
   "title": "The interface: HUD, menus, journal and inventory",
   "brief": "docs/PLAN.md \u00a73 W1-21; corpus/86-ui/RI-UIX01..06",
   "started": "wave-1",
+  "plan_state": "awaiting-criticism",
   "state": "complete",
   "round": 1,
   "outputs_expected": [
@@ -68,7 +69,7 @@
     "RI-UIX06 FIDELITY (tools/metrics/ui-metrics.mjs, 1280x720 and 1920x1080, DPR 1 and 2): FD1 stem 0.8 device px; FD2 stem 1.468 device px at DPR 2 \u2014 the check the item says the whole thing turns on, and the one an upscaled canvas fails; FD4 0 clipped/overflowing elements at all four configurations; FD5 panel screen-fraction drift 0.00%; FD7 7.32 effective bits, overdraw 1.016x. FD3 and FD6 were failing on my own measurement code and on a 1-px type size; both fixed, rerun in flight at hand-off.",
     "B4 MISS FOUND AND FIXED: the screen body face was 17 px in 1080p units \u2014 17 px at 1080p (under B4's 18 px floor) and 0.0157 of screen height at 720p (under the 1.6% floor). It missed BOTH legs by a hair, in the direction nobody looks. game/src/ui/type.js BODY now holds the three body sizes in one place: screen 19, book 26, label 15."
   ],
-  "next_step": "hand-off: (1) ui-metrics rerun after the BODY=19 and edge-normal fringe fixes was in flight; (2) ui-forbidden.mjs has never been run against this build; (3) marker-diff K3/K4 run in flight; (4) RI-UIX06's ART side (\u00a7G Bootstrap test, six fresh judges) and RI-UIX04 JU12's blind pair are CRITIC work and were not run by the builder.",
+  "next_step": "Dispatch a fresh independent plan critic for orchestration/plans/W1-21.md.",
   "notes_for_successor": "The one thing that must not regress: UISurface.el() is the ONLY drawing entry point and it clips the callback to the rect it declared, so the census and the pixels cannot disagree. If someone adds a raw ctx accessor, RI-UIX02 K2 stops meaning anything. Screens are pure functions of a model assembled in UISystem._*Model(); the engine's _uiCtx() is the only place that reads the simulation.",
   "measured": {
     "RI-UIX01 (ui-census, arena_duel in combat, 1920x1080, 600 frames)": "11/11",
