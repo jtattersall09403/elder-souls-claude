@@ -1,10 +1,10 @@
 {
-  "plan_state": "awaiting-recriticism",
+  "plan_state": "satisfied",
   "task_id": "W1-22",
   "brief": "docs/PLAN.md \u00a73 W1-22 (audio bed)",
   "started": "wave-1",
   "state": "complete",
-  "latest_plan_review": "Fresh reviewer-editor materially corrected settlement/interior determinism coverage and M20 canonical-clip reuse on 2026-08-09; awaiting a different fresh re-critic.",
+  "latest_plan_review": "A different fresh independent reviewer-editor found the received W1-22 plan bar-sufficient and cost-effective on 2026-08-09; SATISFIED and build-ready.",
   "declared_paths": [
     "audio.ambience.region"
   ],
@@ -80,7 +80,7 @@
   ],
   "next_step": "none \u2014 piece complete, handed to a critic",
   "notes_for_successor": "COMPLETE. Everything in the previous handoff note was already done; I re-ran the headline, fixed one bed and added two instruments.\n\nWHAT A CRITIC SHOULD DO FIRST: re-run `node tools/analysis/ambience-render.mjs --seconds 20` unchanged. It is ~10 min on a quiet box, needs one browser, and it is the whole claim. Then re-run it with the beds sabotaged \u2014 the tool's own G5 control does this automatically.\n\nTHE THING I COULD NOT ROOT-CAUSE (SUCCESSOR-8, and the most interesting open question in this piece): bed_gain_db does not behave as a scalar. A -2.06 dB trim moved loudness -1.42 LU, peak -0.92 dB, and shifted the spectral centroid \u2014 under a pure output gain all three must move by exactly -2.06 and the centroid cannot move at all. I ruled out a compressor/waveshaper (the bus is a plain gain), a clamp in dbToGain, PCM transport normalisation, an RNG reseed (the seed is bed.id only), and a neighbour's edit to synth.js. It matters because `--calibrate` computes trim = target - measured as a ONE-SHOT linear correction, so it under-corrects; it should be iterated to convergence. valus-ridge exposed it because it is the only tonal L1 with defined notes.\n\nSTILL NOT DONE, and deliberately: interior beds (RI-AUD03 R4). Interiors go SILENT and say so via getAmbienceState().suppressed rather than playing the exterior bed low-passed, which R4 forbids. B1/B2/B3 (the blind listening tests) are a critic's to run, not a builder's \u2014 and note the real weakness I found in the item's own method: with L3 at 8-40 s and L4 at 45-180 s, a 20 s clip contains 0 or 1 signature one-shots, so B1/B2 will in practice be decided almost entirely by L1 and L2. Lengthen the clip or seed the capture so the signature event is present.\n\nNEVER QUOTE separation_proxy AS B2. It is a machine proxy over 24-band spectra; B2 is 78 fresh judges answering SAME/DIFFERENT.",
-  "next_plan_step": "A different fresh reviewer-editor must re-criticise the cost/deliverability-edited plan; do not dispatch a builder.",
+  "next_plan_step": "Dispatch the next build-ready work; W1-22 may now be consumed by a fresh builder under the normal builder/critic separation.",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The plan substitutes selected signature-bearing seeds and an unratified amendment for RI-AUD03\u2019s fixed seed-1337 comparison and canonical B5 capture.",
@@ -104,5 +104,11 @@
     "plan_state": "awaiting-recriticism",
     "summary": "S41 and the full audio bar remain intact. The plan now avoids rerunning non-audio sibling positive methods outside the RI-WLD04/08 score-8 bands, reuses eligible canonical centroid audio in M20, and bounds shared-path settlement/interior determinism sampling after exhaustive census.",
     "next_owner_action": "Dispatch a different fresh independent W1-22 plan reviewer-editor; do not dispatch a builder and do not treat this editor as approval."
+  },
+  "plan_review_editor_2026_08_09_independent2": {
+    "outcome": "SATISFIED",
+    "plan_state": "satisfied",
+    "summary": "Independent falsification found S41 exact, exhaustive determinism for every counted settlement/interior bed, legitimate pre-normalisation canonical-centroid M20 reuse without population loss, complete native/aggregation/CONSUMPTION controls, and no material cost waste.",
+    "next_owner_action": "W1-22 is build-ready; dispatch the next build-ready work under normal fresh-builder/fresh-critic separation."
   }
 }
