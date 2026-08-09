@@ -1,0 +1,35 @@
+{
+  "task_id": "codex-critic-w1-04-w1-23-w1-15",
+  "status": "done",
+  "plan_state": "awaiting-remediation",
+  "pieces": [
+    "W1-04",
+    "W1-23",
+    "W1-15"
+  ],
+  "completed_pieces": [
+    "W1-04",
+    "W1-23",
+    "W1-15"
+  ],
+  "deferred_pieces": [],
+  "files_touched": [
+    "orchestration/status/codex-critic-w1-04-w1-23-w1-15.json",
+    "orchestration/plans/W1-04.md",
+    "orchestration/status/W1-04.json",
+    "orchestration/plans/W1-23.md",
+    "orchestration/status/W1-23.json",
+    "orchestration/plans/W1-15.md",
+    "orchestration/status/W1-15.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-04.md",
+    "orchestration/plans/W1-23.md",
+    "orchestration/plans/W1-15.md",
+    "orchestration/status/W1-04.json",
+    "orchestration/status/W1-23.json",
+    "orchestration/status/W1-15.json",
+    "orchestration/status/codex-critic-w1-04-w1-23-w1-15.json"
+  ],
+  "next_step": "Owner should remediate the three blocking plan critiques."
+}
