@@ -21,6 +21,28 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const STATUS = join(ROOT, 'orchestration', 'status');
 const VERDICTS = join(ROOT, 'corpus', '90-verdicts');
+const PLANS = join(ROOT, 'orchestration', 'plans');
+
+const PLAN_STATES = new Set(['awaiting-criticism', 'awaiting-remediation', 'awaiting-recriticism', 'satisfied']);
+function canonicalPlanState(id, status = {}) {
+  const explicit = String(status.plan_state || '').toLowerCase();
+  if (PLAN_STATES.has(explicit)) return explicit;
+  const candidates = existsSync(PLANS) ? readdirSync(PLANS).filter(f => f.toLowerCase() === `${id}.md`.toLowerCase()) : [];
+  if (!candidates.length) return 'needs-current-state-plan';
+  const body = readFileSync(join(PLANS, candidates[0]), 'utf8');
+  const marker = body.match(/^\s*(?:\*\*)?Plan-State:(?:\*\*)?\s*`?([a-z-]+)/im)?.[1]?.toLowerCase();
+  return PLAN_STATES.has(marker) ? marker : 'awaiting-criticism';
+}
+
+function planDispatchLabel(state) {
+  return ({
+    'needs-current-state-plan': 'needs current-state plan',
+    'awaiting-criticism': 'plan awaiting criticism',
+    'awaiting-remediation': 'plan has blocking criticism; awaiting remediation',
+    'awaiting-recriticism': 'plan awaiting fresh re-criticism',
+    satisfied: 'plan SATISFIED / build-ready',
+  })[state];
+}
 
 /** Every verdict on disk, by the piece key it judges, so "finished but unjudged" is answerable. */
 function judgedPieces() {
@@ -58,13 +80,14 @@ if (existsSync(STATUS)) {
     const key = (id.toLowerCase().match(/^(w\d+-[a-z0-9]+)/) || [, id.toLowerCase()])[1];
     // A critic, a judge or a fix task is not a *piece*; nothing dispatches a critic against one.
     const isCritic = /(^|-)(critic|judge)(-|$)/.test(id.toLowerCase()) || /-fix$/.test(id.toLowerCase());
+    const planState = /^w1-/i.test(id) && !isCritic ? canonicalPlanState(id, j) : null;
     rows.push({
       id, state, file: `orchestration/status/${f}`,
       next: String(j.next_step || '').slice(0, 80),
       complete: /complete/i.test(state),
       blocked: /blocked/i.test(state),
       hasVerdict: judged.has(key),
-      isCritic,
+      isCritic, planState,
     });
   }
 }
@@ -78,6 +101,29 @@ function classify(r) {
 }
 
 const target = process.argv[2];
+if (process.argv.includes('--self-test')) {
+  const expected = {
+    'needs-current-state-plan': 'needs current-state plan',
+    'awaiting-remediation': 'plan has blocking criticism; awaiting remediation',
+    'awaiting-recriticism': 'plan awaiting fresh re-criticism',
+    satisfied: 'plan SATISFIED / build-ready',
+  };
+  for (const [state, label] of Object.entries(expected)) {
+    if (planDispatchLabel(state) !== label) throw new Error(`plan state ${state} did not classify`);
+  }
+  console.log('dispatchable self-test: continuation-plan, remediation, re-criticism and build-ready states PASS; no round counter exists.');
+  process.exit(0);
+}
+if (process.argv.includes('--wave1-plans')) {
+  const wave = rows.filter(r => r.planState);
+  for (const state of ['needs-current-state-plan', 'awaiting-criticism', 'awaiting-remediation', 'awaiting-recriticism', 'satisfied']) {
+    const found = wave.filter(r => r.planState === state);
+    if (!found.length) continue;
+    console.log(`\n${planDispatchLabel(state)}  (${found.length})`);
+    for (const r of found.sort((a,b) => a.id.localeCompare(b.id))) console.log(`  ${r.id.padEnd(28)} ${r.file}`);
+  }
+  process.exit(0);
+}
 if (target) {
   const r = rows.find(x => x.id.toLowerCase() === target.toLowerCase());
   if (!r) { console.log(`dispatchable: no status file for "${target}" — nothing has claimed it, so dispatching is fine.`); process.exit(0); }

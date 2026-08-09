@@ -118,7 +118,8 @@ Its two hard-won constraints, so a successor does not rediscover them:
 ## 2d. Every piece plans before it builds
 
 `orchestration/PLAN-LOOP.md` is the protocol and the evidence behind it. In short: a **plan agent**
-and a **plan critic** argue in text — no browser, bounded at two exchanges — before any build agent
+and a **plan critic** argue in text/offline where possible — repeating with fresh critics until
+SATISFIED, with stalled disputes escalated rather than auto-accepted — before any build agent
 is dispatched. The plan critic marks each item BLOCKING or CARRIED; blocking is resolved, carried
 becomes a declared risk in the build brief.
 

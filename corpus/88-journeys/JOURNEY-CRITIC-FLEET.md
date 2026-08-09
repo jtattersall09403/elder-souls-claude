@@ -84,8 +84,9 @@ Beyond `VERDICT-SCHEMA.md`'s requirements, every journey verdict carries:
 | `seam_crossings` | Per AR-3: which subsystem boundaries this journey actually crossed, and at least one interaction that crossed one. A journey that crosses no seam is a contradiction in terms and must be reported |
 | `biggest_gap` | Exactly one, per `CRITIC-DOCTRINE.md` §2.2, with a buildable remedy |
 
-**Rule F4 — every critic must find a gap.** `ARBITRATION.md` §3 and `CRITIC-DOCTRINE.md` §2.1
-already make "no gap found" a void verdict. Restated here because journeys are the easiest place
+**Rule F4 — every critic must try to falsify the journey.** `ARBITRATION.md` §3 and
+`CRITIC-DOCTRINE.md` §2.1 permit no-gap PASS only after the bar and adversarial methods are evidenced.
+Restated here because journeys are the easiest place
 to write a satisfied verdict: they are long, they involve many passing subsystems, and a critic
 that watched a whole quest complete feels good about it. Before claiming the gap is small, the
 critic must have run all five escalation steps of §2.1 **and recorded an artifact from each**.

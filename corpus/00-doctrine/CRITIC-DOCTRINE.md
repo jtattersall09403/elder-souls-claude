@@ -5,7 +5,7 @@
 
 A critic is not a reviewer. A reviewer says what they think. A critic **runs the thing,
 captures artifacts, compares them to a written bar, and produces a signed verdict with a
-score and one named gap.** If you cannot produce artifacts, you cannot produce a verdict.
+score and, when unsatisfied, one named gap.** If you cannot produce artifacts, you cannot produce a verdict.
 
 ---
 
@@ -23,7 +23,8 @@ For one **piece** (one subsystem path, one wave), you must:
 6. Do the **blind comparisons** for every item with `blind_pair: yes` (§5).
 7. Run **AR-1** and **AR-2** (§4). Either one failing fails the piece outright.
 8. Score each item on **its own stated scale**, and map to the shared 0–10 per `SCORING.md`.
-9. Name **exactly one** single biggest gap, with a concrete buildable remedy (§3).
+9. If unsatisfied, name **exactly one** single biggest gap with a concrete buildable remedy (§3).
+   If satisfied, explicitly report that no qualifying gap was demonstrated.
 10. Emit the verdict JSON per `VERDICT-SCHEMA.md` to
     `corpus/90-verdicts/<wave>/<piece-id>.json`, plus the artifacts it references.
 
@@ -76,14 +77,10 @@ the resolution/duration. A screenshot with no camera pose is an anecdote.
 Critics drift soft. They are trained to be helpful, they see effort, and they grade the
 attempt. This section exists to make that impossible.
 
-### 2.1 The no-gap-found rule (mandatory)
+### 2.1 Evidence-based satisfaction (mandatory)
 
-> **A critic that reports "no gap found" has failed its own job and its verdict is void.**
-> (ARBITRATION.md §3.)
-
-There is always a gap. If you cannot see one, you have not looked hard enough or you have
-not looked at the right thing. Escalation ladder, in order, before you are allowed to
-claim the work is close to the bar:
+The critic is rewarded for neither faults nor passes. It must genuinely attempt falsification.
+Use this escalation ladder, in order, before concluding that no qualifying gap is demonstrated:
 
 1. **Zoom in.** Take the measurement at 4× the resolution you took it at. Frame-by-frame
    instead of per-second. Per-NPC instead of per-town. Per-pixel instead of per-screenshot.
@@ -98,12 +95,13 @@ claim the work is close to the bar:
 5. **Ask what a player notices in the first minute**, then ask what they notice in the
    tenth hour. The tenth-hour failure is almost always there and almost always unmeasured.
 
-Only after all five, and with artifacts from each, may you write "the gap is small" — and
-you must still name one.
+Only after every applicable step, with artifacts, may a verdict be PASS with no `biggest_gap`.
+That means every governing acceptance is met and no material deficiency was demonstrated. A
+failure still names one gap. Do not invent work when the bar is met.
 
-### 2.2 Exactly one gap
+### 2.2 Exactly one gap when unsatisfied
 
-Name **exactly one** `biggest_gap`. Not three, not a list. The discipline of choosing one
+An unsatisfied verdict names **exactly one** `biggest_gap`. Not three, not a list. The discipline of choosing one
 is the point: it forces you to rank, and ranking is judgement. Additional observations go
 in `secondary_observations` and are explicitly **not** fed to the next builder as work.
 
@@ -176,8 +174,8 @@ Every verdict carries a `self_audit` object with these booleans, each answered h
 - `judged_output_not_source`
 - `ran_every_assigned_method`
 - `blind_done_where_required`
-- `named_exactly_one_gap`
-- `remedy_is_buildable`
+- `named_exactly_one_gap` (true for a satisfied no-gap PASS because the conditional rule was obeyed)
+- `remedy_is_buildable` (true for a satisfied no-gap PASS because no remedy is required)
 - `no_banned_reasoning_used`
 - `escalation_ladder_used_if_gap_seemed_small`
 

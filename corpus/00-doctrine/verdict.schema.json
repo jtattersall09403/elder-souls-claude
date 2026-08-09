@@ -17,7 +17,6 @@
     "arbitration",
     "score",
     "status",
-    "biggest_gap",
     "corpus_extended",
     "self_audit"
   ],
@@ -635,7 +634,7 @@
         "PROVISIONAL",
         "RECUSED"
       ],
-      "description": "PASS requires: ar1 pass, ar2 pass, zero hard_fails, every assigned item measured or fail-closed at 0, overall >= pass_threshold, and a buildable remedy. VOID = no artifacts / source-only claims / bifurcation violation / no gap named."
+      "description": "PASS requires the governing evidence gates and may omit biggest_gap when no qualifying gap is demonstrated. FAIL requires one actionable biggest_gap. Historical schema-version-1 verdicts with a gap remain valid."
     },
     "status_reasons": {
       "type": "array",
@@ -655,7 +654,7 @@
         "evidence",
         "remedy"
       ],
-      "description": "EXACTLY ONE. A verdict without this is VOID (ARBITRATION.md \u00a73).",
+      "description": "Exactly one when the verdict is unsatisfied/FAIL; omitted for an evidence-earned no-gap PASS.",
       "properties": {
         "gap_id": {
           "type": "string",
@@ -952,10 +951,12 @@
           "type": "boolean"
         },
         "named_exactly_one_gap": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when the conditional rule was followed: exactly one gap on FAIL, or none on a satisfied PASS."
         },
         "remedy_is_buildable": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "True when a failing verdict has a buildable remedy, or when a satisfied PASS correctly requires no remedy."
         },
         "no_banned_reasoning_used": {
           "type": "boolean"
@@ -1040,6 +1041,23 @@
     }
   },
   "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "FAIL"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "biggest_gap"
+        ]
+      }
+    },
     {
       "if": {
         "properties": {

@@ -488,7 +488,7 @@ export function renderCost(load) {
       label: 'G2 &mdash; critic find-rate',
       value: g.g2 ? n1(g.g2.find) : DASH,
       sub: g.g2
-        ? `baseline ${n1(g.g2.findBase)} findings per critic${findZero ? '<br><b>ZERO &mdash; a critic that cannot find a gap has failed (rule 23). This is the shape a context-cutting change produces.</b>' : ''}` +
+        ? `baseline ${n1(g.g2.findBase)} findings per critic${findZero ? '<br><b>ZERO findings &mdash; audit evidence rigour and outcome mix; do not assume either softness or satisfaction.</b>' : ''}` +
           `${g.g2.regrade ? `<br>G2b re-grade on <code>${esc(g.g2.regrade.piece || '?')}</code>: ${n1(g.g2.regrade.recovered)} of ${n1(g.g2.regrade.known)} known findings recovered` : '<br>G2b controlled re-grade: not run yet'}`
         : 'not in the ledger',
       status: findZero ? 'bad' : g.g2?.status,

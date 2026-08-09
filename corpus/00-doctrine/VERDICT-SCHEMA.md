@@ -17,7 +17,8 @@ field, because a project-wide progress page will consume every verdict in
 
 Three consumers:
 
-1. **The next builder** reads `biggest_gap` and nothing else is required of it.
+1. **The next builder** reads `biggest_gap` from an unsatisfied verdict; a no-gap PASS creates no
+   invented builder work.
 2. **The next critic** reads `gap_closure`, `reference_items[].checks`, and the artifacts,
    to re-measure.
 3. **The aggregator / progress page** reads the flat status fields across all verdicts and
@@ -82,7 +83,7 @@ If you find yourself writing a fact only in prose, there is a field for it — u
 | `score.overall_0_10`, `score.pass_threshold`, `score.aggregation`, `score.weights`, `score.band_label`, `score.confidence` | Use `aggregation: "min"` when the items are gates rather than dimensions. |
 | `status` | `PASS` / `FAIL` / `VOID` / `PROVISIONAL` / `RECUSED`. |
 | `status_reasons[]` | Machine-readable codes: `ar1_fail`, `ar2_fail`, `hard_fail:RI-AI01/M7`, `no_artifacts`, `blind_pick_ours_not_rerun`, `unjustified_high_score`, `bifurcation_violation`, `below_threshold`, `missing_assigned_item:RI-…`. Aggregators group on these. |
-| `biggest_gap` | **Exactly one.** `gap_id`, `subsystem_path`, `what`, `why_it_matters`, `evidence[]`, `severity`, and `remedy { action, targets[], acceptance, ref_item, estimated_size }`. Absent ⇒ VOID. |
+| `biggest_gap` | **Exactly one on FAIL; omitted on a no-gap PASS.** Includes `gap_id`, `subsystem_path`, `what`, `why_it_matters`, `evidence[]`, `severity`, and a measurable remedy. |
 | `secondary_observations[]` | Explicitly **not** work for the next builder. |
 | `gap_closure[]` | Re-measurement of earlier gaps: `gap_id`, `status`, `evidence`, `measured_value`, `closed_by_builder_of_fix` (if `true`, the closure is invalid). |
 | `corpus_extended[]` | New/corrected reference items with `reason` ∈ corpus_hole / method_gap / harness_gap / sharper_discriminator / provenance_correction, and `index_regenerated`. |
@@ -99,7 +100,7 @@ Evaluate in this order and stop at the first hit.
 1. critic.conflict_of_interest == true                          -> RECUSED
 2. artifacts empty
    OR any cited evidence path missing
-   OR biggest_gap absent
+   OR (status is unsatisfied and biggest_gap is absent)
    OR bifurcation violated (cross-axis citation)
    OR a score depends on source with no output artifact          -> VOID
 3. any reference_items[].hard_fails non-empty
@@ -113,7 +114,8 @@ Evaluate in this order and stop at the first hit.
 6. otherwise                                                     -> PASS
 ```
 
-`PASS` never means finished. A PASS **always** carries a named gap.
+`PASS` means the governing bar was satisfied by the required evidence. It may carry a demonstrated
+non-blocking gap, but a genuine no-gap PASS omits `biggest_gap`; PASS is not a claim of perfection.
 
 ---
 

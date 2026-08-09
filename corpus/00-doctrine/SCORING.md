@@ -465,7 +465,8 @@ means re-run the flagged critics, not celebrate:
 
 ## 5. The gap ledger
 
-Every verdict names exactly one gap. The ledger is where those gaps live between waves.
+Every unsatisfied verdict names exactly one gap. An evidence-earned PASS may name none; the ledger
+opens no synthetic entry for it. The ledger is where demonstrated gaps live between waves.
 
 **Files**
 - `corpus/90-verdicts/GAP-LEDGER.json` — **canonical, machine-readable.** Generated.

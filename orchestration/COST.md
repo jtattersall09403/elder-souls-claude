@@ -149,8 +149,10 @@ programme producing knowledge and producing anecdotes.
 > efficiency of your team as you go — that's the idea."*
 
 Each efficiency change is a **piece**, and it runs `PLAN-LOOP.md` exactly as a game piece does:
-plan → plan critic (BLOCKING/CARRIED, bounded at two exchanges, no browser) → build → build critic
-with fresh context. No agent grades its own saving. **A critic that cannot find a gap has failed**
+plan → fresh plan critic → remediation and fresh re-criticism until SATISFIED → build → fresh build
+critic, repeating remediation/criticism until the governing bar is satisfied. No agent grades its
+own saving. Critics attempt falsification and may PASS without inventing a gap when evidence meets
+the written bar
 applies here too, and it is more important here than anywhere, because a change that quietly costs
 quality shows up as a cost saving on every dashboard.
 
@@ -454,7 +456,7 @@ transcript does not carry. Renderer: `tools/cost-report.mjs`; worked example wit
     // across 16 domains, ~4 per domain, moving by whole points between rounds. A windowed mean
     // verdict score CANNOT detect the harm this guard exists to detect, so it is published with its
     // `power` and its `n` and must never be drawn as proof. The alarm that IS structural is
-    // critic_find_rate = 0 (rule 23: a critic that cannot find a gap has failed) — the exact shape
+    // Track critic outcomes without treating fault-finding as success: evidence-earned passes are valid.
     // a context-cutting change produces.
     // G2b — the controlled re-grade that GATES LANDING a change: a fresh critic re-grades an
     // already-verdicted piece under the new regime, blind, and its recovery of the known finding

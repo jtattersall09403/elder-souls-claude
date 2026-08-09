@@ -4,10 +4,10 @@
 > Canonical data: `corpus/90-verdicts/GAP-LEDGER.json`. Source: every verdict's
 > `biggest_gap` (opens) and `gap_closure[]` (closes). Rules: `SCORING.md` §5.
 
-Generated: 2026-08-08T12:59:04Z · verdicts read: 76 · waves: 1, 
+Generated: 2026-08-09T14:02:40Z · verdicts read: 76 · waves: 1
 
 **The three rules that matter**
-1. Every verdict opens exactly one gap. A verdict with no gap is void.
+1. Every unsatisfied verdict opens exactly one gap. An evidence-earned PASS may open none.
 2. A gap is closed only by a **later wave's critic**, re-measuring the gap's own
    `acceptance` condition — **never** by the agent that built the fix.
 3. Every open gap on a subsystem path is handed to that path's next builder **up
@@ -160,16 +160,16 @@ Generated: 2026-08-08T12:59:04Z · verdicts read: 76 · waves: 1,
 
 ## Warnings
 
-- corpus/90-verdicts/wave1/W1-DEPLOY-r1.json: verdict has no biggest_gap — VOID per ARBITRATION.md §3 ("a critic that reports no gap found has failed its own job").
+- corpus/90-verdicts/wave1/W1-DEPLOY-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.
 - undefined: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
-- corpus/90-verdicts/wave1/W1-TOUCH-r1.json: verdict has no biggest_gap — VOID per ARBITRATION.md §3 ("a critic that reports no gap found has failed its own job").
+- corpus/90-verdicts/wave1/W1-TOUCH-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.
 - GAP-W1-the-door-puts-you-inside-the-building: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
 - corpus/90-verdicts/wave1/W1-13-r2.json: duplicate gap_id undefined (already opened by corpus/90-verdicts/wave1/W1-MAP-r1.json).
-- corpus/90-verdicts/wave1/W1-14-r4.json: verdict has no biggest_gap — VOID per ARBITRATION.md §3 ("a critic that reports no gap found has failed its own job").
+- corpus/90-verdicts/wave1/W1-14-r4.json: unsatisfied verdict has no biggest_gap; validator should reject it.
 - GAP-W1-quest-givers-not-in-the-world: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
 - AUDB2-F1: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
 - GAP-FCT-03: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
-- corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: verdict has no biggest_gap — VOID per ARBITRATION.md §3 ("a critic that reports no gap found has failed its own job").
+- corpus/90-verdicts/wave1/W1-FACTIONS-r1.json: unsatisfied verdict has no biggest_gap; validator should reject it.
 - GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
 - GAP-PROSE-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
 - GAP-PACK-01: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).
