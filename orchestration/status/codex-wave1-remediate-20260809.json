@@ -2,25 +2,24 @@
   "task_id": "codex-wave1-remediate-20260809",
   "status": "complete",
   "plan_state": "complete",
-  "summary": "Resolved the sole current Wave 1 blocking plan critique by giving every B1 prime missing-E_tool count one deterministic outcome, without changing game code, Piece A, or B2.",
   "files_touched": [
     "orchestration/status/codex-wave1-remediate-20260809.json",
     "orchestration/plans/W1-HUD-TOAST.md",
     "orchestration/status/W1-HUD-TOAST-A.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/2026-08-09-wave1-hud-toast-b1-error-remediation.svg"
+    "docs/shots/2026-08-09-wave1-hud-toast-plan-remediation-3.svg"
   ],
   "files_claimed": [
-    "orchestration/status/codex-wave1-remediate-20260809.json",
     "orchestration/plans/W1-HUD-TOAST.md",
     "orchestration/status/W1-HUD-TOAST-A.json",
     "reports/blog-feed.jsonl",
-    "docs/shots/2026-08-09-wave1-hud-toast-b1-error-remediation.svg"
+    "docs/shots/2026-08-09-wave1-hud-toast-plan-remediation-3.svg"
   ],
-  "next_step": "Owner command: Critique the current Wave 1 plans.",
-  "results": {
-    "W1-HUD-TOAST": "remediated / awaiting-recriticism"
-  },
+  "redundant_with": [
+    "codex-wave1-recritique-3-20260809"
+  ],
+  "phase": "plan-remediation",
+  "summary": "Remediated the sole blocking Wave 1 plan critique by making B1 prime exhaustive and requiring all 14 graded controls to demonstrate independence.",
   "plan_state_summary": {
     "needs-current-state-plan": 61,
     "awaiting-criticism": 0,
@@ -30,5 +29,7 @@
     "current_batch_action": [
       "W1-HUD-TOAST"
     ]
-  }
+  },
+  "browser": "not launched; plan remediation was offline",
+  "next_step": "Owner command: Critique the current Wave 1 plans."
 }

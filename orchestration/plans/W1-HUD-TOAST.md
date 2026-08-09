@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-remediation
+Plan-State: awaiting-recriticism
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -153,11 +153,13 @@ does not invent a value in either case.
 | `ΔE ≠ 0` | **COUPLED** — the yardstick moved with the thing under test. The defect. |
 | `ΔE == 0`, `ΔO == 0` | **INERT** — rule 6's known shape; hand to `sabotage.mjs` |
 | `ΔE == 0`, `ΔO ≠ 0`, verdict flips green→red | **INDEPENDENT** — pass |
+| `ΔE == 0`, `ΔO ≠ 0`, verdict unchanged | **NON_DECISIVE** — the observation moved without crossing the frozen bar; non-passing, whether the movement was below margin or in the wrong direction |
+| `ΔE == 0`, `ΔO ≠ 0`, any verdict transition other than green→red | **WRONG_DIRECTION** — the perturbation improved or otherwise invalidated the control; non-passing |
 | missing `E_tool` in `P_E` | **ERROR / overturn-count member** — never OPAQUE, never pass |
 
 | id | predicate | acceptance | units |
 |---|---|---|---|
-| **B1′** | every member of `P_E` classified into {INDEPENDENT, COUPLED, INERT, ERROR}, with `E_tool` and `E_verdict` printed per graded row | **PASS only at 14/14 classified with zero `ERROR` rows; OPAQUE unavailable. 1–6 missing `E_tool` rows are a reported non-passing partial result; 7–14 fire the S-PLAN-HUD-B3 overturn and make B1′ ungradeable.** | tools |
+| **B1′** | every member of `P_E` classified into {INDEPENDENT, COUPLED, INERT, NON_DECISIVE, WRONG_DIRECTION, ERROR}, with `E_tool` and `E_verdict` printed per graded row | **PASS only at 14/14 `INDEPENDENT`.** Any `COUPLED`, `INERT`, `NON_DECISIVE`, or `WRONG_DIRECTION` row is a classified, actionable failure and does **not** contribute to the missing-`E_tool` overturn count. OPAQUE is unavailable. 1–6 `ERROR` rows are a reported non-passing partial result; 7–14 `ERROR` rows fire the S-PLAN-HUD-B3 overturn and make B1′ ungradeable. | tools |
 | **B1b** | wide `P_report` census | report **109 denominator, 95 without external E, and exact path list**; never graded | tools |
 | **B2** | separately denominated shape recall against the four executable fixtures below, each run clean and re-seeded on a scratch worktree | **4 of 4 flagged as the named coupled/inert-control shape** | fixtures |
 | **B3** | **false-positive discipline** against two known-good controls: W1-20's post-fix rect-derived `fits` (`ui/system.js:1157-1170`) and `tools/dialogue/w1-17-r2-deletefix.mjs` (a 2×2 whose control was watched going red) | **0 of 2 flagged** | instances |
@@ -1210,3 +1212,19 @@ missing-`E_tool` overturn threshold. Preserve the zero-`ERROR` rule, Piece A, an
 
 **Recommendation:** remediate only the B1′ outcome table and aggregate predicate, then request
 fresh re-criticism. Do not redispatch or rewrite Piece A.
+
+---
+
+## Fresh plan re-critique 3 remediation — 2026-08-09
+
+The operative B1′ classifier is now total. With a readable `E_tool`, every row is classified by
+the ordered outcome table: a moving expected side is `COUPLED`; a fixed expected side and unchanged
+observation is `INERT`; a changed observation that flips green→red is `INDEPENDENT`; an unchanged
+verdict is `NON_DECISIVE`; and every other verdict transition is `WRONG_DIRECTION`. The last two
+classes are explicit non-passing results and do not enter the missing-value overturn threshold.
+
+B1′ now passes only when all **14/14** rows are `INDEPENDENT`. Thus classification completeness can
+no longer launder a detected coupled, inert, underpowered, or wrong-direction control into a pass.
+The prior zero-`ERROR` rule remains: 1–6 `ERROR` rows are a non-passing partial result, while 7–14
+alone trigger the S-PLAN-HUD-B3 ungradeable reduction. Piece A and all four B2 fixtures are
+unchanged. The plan is **awaiting fresh re-criticism**, not self-certified as build-ready.
