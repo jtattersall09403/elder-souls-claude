@@ -4,7 +4,7 @@
   "brief": "docs/PLAN.md \u00a73 W1-02",
   "started": "wave-1 round-1 (2026-08-07)",
   "state": "complete",
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
   "paths": [
     "world.region.identity",
     "world.region.transition",
@@ -148,5 +148,10 @@
       "Architecture acceptance misstates 70/100 and leaves M81-M84 conditional."
     ],
     "next_step": "Remediate orchestration/plans/W1-02.md, restore every native predicate and control, then mark awaiting-recriticism."
+  },
+  "plan_remediation_2026_08_09": {
+    "state": "complete",
+    "summary": "Restored RI-WLD12 native M64/M66/M67/M70 predicates and RI-WLD14 full scoring/M78-M84 completeness.",
+    "next_step": "Fresh independent plan re-criticism."
   }
 }

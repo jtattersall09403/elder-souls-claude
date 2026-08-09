@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-remediation
+Plan-State: awaiting-recriticism
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -126,43 +126,55 @@ number the code under test chose is the defect this piece is about.
 
 ### Piece B — the coupled-yardstick sweep (`W1-INSTRUMENT-COUPLING`)
 
-Population **P**, enumerated and committed as a list, never a wildcard: every `.mjs` under
-`tools/` that both emits a pass/fail (or a non-zero exit on a threshold) **and** declares a
-perturbation. Today's upper bounds at `6bb9003`: **118** files mention `--self-test`, **137**
-mention a break/teardown/delete-the-fix, and the harness carries **30 `__break*` verbs**. The
-union is under ~200; the builder publishes the exact number.
+The graded population is **`P_E`**, frozen to the following 14 tools enumerated by
+S-PLAN-HUD-B3: `tools/analysis/ui-forbidden.mjs`, `tools/experience/critic-w1-25.mjs`,
+`tools/harness/critic-w1-16-live.mjs`, `tools/harness/critic-w1-16-r3-live.mjs`,
+`tools/harness/prg-encumbrance.mjs`, `tools/journey/input-checks.mjs`,
+`tools/journey/opening-play.mjs`, `tools/lore/canon-census.mjs`,
+`tools/lore/critic-w1-23-r1.mjs`, `tools/lore/critic-w1-23-r3-reach.mjs`,
+`tools/metrics/ui-metrics.mjs`, `tools/world/critic-road-join-ingame.mjs`,
+`tools/world/road-through-building.mjs`, and `tools/world/w1-04-r3-exterior.mjs`.
+The wider pinned census **`P_report`** is the 109 existing project tools cited by Wave-1 verdict
+documents and declaring a perturbation at `9063779`; it is report-only. Publish the committed
+109-path enumeration, the **95/109 (87.2%)** without a verdict-quoted external `E`, and any current
+staleness, but never grade this population and never call `OPAQUE` a pass.
 
-Per member, the **yardstick-drift test (YD)** — fire the tool's own declared perturbation, and
-read, from the tool's own artifact, the observed value `O` and the expected/threshold value `E`
-of each graded row:
+Per `P_E` member, the **yardstick-drift test (YD)** fires the declared perturbation and prints, per
+graded row: observed `O`; the tool artifact's own expected side `E_tool`; the frozen value quoted by
+the verdict `E_verdict`; and clean/perturbed verdicts. If **7 or more of 14** lack a readable
+`E_tool`, the explicit S-PLAN-HUD-B3 overturn condition fires: B1′ is ungradeable, is reported as
+such, and the piece reduces to B2 plus the report-only census. The builder does not invent a value.
 
 | outcome | meaning |
 |---|---|
 | `ΔE ≠ 0` | **COUPLED** — the yardstick moved with the thing under test. The defect. |
 | `ΔE == 0`, `ΔO == 0` | **INERT** — rule 6's known shape; hand to `sabotage.mjs` |
 | `ΔE == 0`, `ΔO ≠ 0`, verdict flips green→red | **INDEPENDENT** — pass |
-| tool publishes no `E` | **OPAQUE** — reported, **never scored as a pass** |
+| missing `E_tool` in `P_E` | **ERROR / overturn-count member** — never OPAQUE, never pass |
 
 | id | predicate | acceptance | units |
 |---|---|---|---|
-| **B1** | every member of P classified into {INDEPENDENT, COUPLED, INERT, OPAQUE, ERROR} | **100%** of a committed enumeration | tools |
-| **B2** | **recall** against the four known historical positives, re-seeded on scratch worktrees | **4 of 4 flagged COUPLED** | instances |
+| **B1′** | every member of `P_E` classified into {INDEPENDENT, COUPLED, INERT, ERROR}, with `E_tool` and `E_verdict` printed per graded row | **14/14 classified; OPAQUE unavailable; fewer than 7 missing `E_tool`** | tools |
+| **B1b** | wide `P_report` census | report **109 denominator, 95 without external E, and exact path list**; never graded | tools |
+| **B2** | separately denominated shape recall against the four executable fixtures below, each run clean and re-seeded on a scratch worktree | **4 of 4 flagged as the named coupled/inert-control shape** | fixtures |
 | **B3** | **false-positive discipline** against two known-good controls: W1-20's post-fix rect-derived `fits` (`ui/system.js:1157-1170`) and `tools/dialogue/w1-17-r2-deletefix.mjs` (a 2×2 whose control was watched going red) | **0 of 2 flagged** | instances |
 | **B4** | `coupled_open == 0` at close — every COUPLED is either fixed or written into the gap ledger against the piece that owns it | 0 | tools |
 
-**B2 is the acceptance, not B1's headline.** A sweep that flags 60 tools and misses the four known
-ones has failed, and a large flag count will otherwise read as diligence. The four:
+**B2 is the acceptance, not B1′'s headline.** These are deliberate shape-recognition fixtures,
+separately denominated because three are not members of `P_E`; scope is explicit rather than
+silently widening the graded population:
 
-1. **W1-20's own** — `fits` judged against `maxW` inside hud.js. Re-seedable by moving the
-   derivation back out of `ui/system.js`.
-2. **The compliance report whose two numbers both came from one forged save.**
-3. **The control arm that ran the positive arm on both sides** — W1-04 `__w1_04_townSolids`,
-   `e37d327`, fifteen byte-identical walks (rule 6's own worked example).
-4. **The sabotage facility whose verdict turned on an optional integer** — W1-25 r1,
-   `GAP-W1-25-the-control-facility-has-an-optional-control`.
+| fixture | executable member and frozen expected side | exact re-seed mutation | observed side and required classification |
+|---|---|---|---|
+| W1-20 coupled `fits` | `tools/quests/faction-joining-probe.mjs` with `reports/w1-20/instrument-test.json`; expected fit derives from the toast rect, independently of the wrapper budget | on a scratch tree, restore the pre-fix `hud.js` single centred run and derive the probe's expected width from the same `maxW` supplied to wrapping | break the wrapper while moving `maxW`; both observed fit and expected fit move together and remain green → **COUPLED** |
+| forged-map compliance | `tools/harness/critic-w1-map-r1.mjs` (the W1-MAP-r1 A1–A4 fixture); frozen expectation is zero squares for places never personally stood in | forge the one restore-consumed discovery footprint to cover all cells/42 sites, as the verdict's A fixture does | `places_drawn == places_discovered == 42` makes the self-report green although the independent expected count is 0 → **COUPLED** |
+| W1-04 inert town-solids control | `tools/world/w1-04-r3-collision.mjs` §0 recreation at `e37d327`; expected off support is 0 town solids and the observed walk must differ | recreate the pre-fix verb by nulling `_townCell` before `_settleSettlementSolids(false)`, exactly as the tool's §0 arm documents | on/off walks are byte-identical because both execute walls-on; support does not change → **INERT CONTROL** |
+| W1-25 optional-support facility | `tools/experience/critic-w1-25.mjs --a --b`; frozen expected classifications are A1/A3 ERROR or NO_MEASUREMENT, A4 NO_MEASUREMENT, B-COLLIDE-1 MASKED, B-COLLIDE-4 throw | on a scratch tree restore optional/unvalidated `support`, the pre-fix margin-before-masked ordering, and absent `support_note` validation in `tools/experience/lib/sabotage.mjs` | verdict changes with caller-chosen/omitted support rather than the arms; required classification **COUPLED** |
 
-If the sweep gets 3 of 4, that is published as 3 of 4 with the missed shape named. It is a
-result, not a failure (rule 26).
+Fixture setup must assert the named clean-tree baseline first and print mutation-applied evidence
+(source hash plus the exact changed lines) before scoring the seeded arm. A fixture that cannot be
+reseeded is `ERROR` and fails B2; it is not silently replaced after results are seen. **3/4 is an
+honestly reported failed result**, with the missed fixture named; only 4/4 passes.
 
 ---
 
@@ -180,8 +192,9 @@ appears, nothing else in Piece A may be reported.**
 commits; their coupling is already on the record and is independent of anything this piece writes.
 *Must come out:* the seeded arm and the clean arm differ **in exactly the seeded rows**, printed
 per row, not as a count.
-*Inert would look like:* identical classification on seeded and clean trees, or `OPAQUE` on all
-four — a sweep that cannot read `E` cannot disagree, and it will exit 0 while doing it.
+*Inert would look like:* identical classification on seeded and clean trees, a mutation whose
+source hash did not change, or an unreadable expected side — a sweep that cannot read both `E`s
+cannot disagree and must exit non-zero rather than manufacture `OPAQUE`.
 
 **Neither null reads anything the fix touches.** A's extents come from the pen advance in
 `glyphs.drawText` and from the framebuffer; B's come from commits that predate this piece. This is
@@ -231,9 +244,12 @@ and `hud.boss` **only if the census shows a string over budget** — and say so 
 the wrap and asserts red. 5. The null worktree. 6. Rule 27: one blog line, and the shot is the
 same sentence unwrapped and wrapped side by side.
 
-**B.** 1. Enumerate and commit P. 2. `COUPLED_YARDSTICK` into `sabotage.mjs`. 3. Static screen,
-fenced so it can never publish "clean". 4. Dynamic YD over the shortlist plus all 30 `__break*`
-verbs (those have a perturbation by construction). 5. B2 and B3. 6. Fix or ledger every COUPLED.
+**B.** 1. Commit the frozen 14-member `P_E` and 109-member `P_report` enumerations; report current
+staleness without changing denominators after seeing outcomes. 2. Measure readable `E_tool` for all
+14 and apply the ≥7 overturn rule before grading. 3. Add `COUPLED_YARDSTICK` to `sabotage.mjs` and
+run YD over `P_E`, printing `O`, `E_tool` and `E_verdict` per row. 4. Run the wide static screen over
+`P_report`, fenced so it can never publish "clean" and never graded. 5. Re-seed the four B2 fixtures
+exactly as specified and run B3. 6. Fix or ledger every COUPLED; report 3/4 as a B2 failure.
 
 ---
 
