@@ -92,5 +92,5 @@
   ],
   "next_step": "none — piece complete. Open items are other pieces: (a) check-quests red from W1-FACTIONS uncommitted Q-LEDG-09..17; (b) 9 NPC topic ids with no body, on mainline.json and writ-house.json; (c) VP04-settlement-street points at the world origin; (d) interiors 115 of the wave-3 floor of 250.",
   "notes_for_successor": "The settlement-field defect handed to me is closed: data clean (336/336 resolve), class checked in tools/check-data.mjs (falsifiable — reintroducing `rootlands` exits 1), consumption proved 5/5 against the real RumourBook/RoadBook. Do NOT sweep `tidewrack` into that defect: it has no settlement record but it does have a rumour bucket, so its three people can answer for where they are, and it correctly has no road out (it is the opening prison barge). Do NOT touch the 16 null-settlement NPCs: null is supported and both consumers fall back to where the player is standing; a junk string is what defeats that fallback.",
-  "plan_state": "awaiting-remediation"
+  "plan_state": "awaiting-recriticism"
 }
