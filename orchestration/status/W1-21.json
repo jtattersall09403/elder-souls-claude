@@ -69,7 +69,7 @@
     "RI-UIX06 FIDELITY (tools/metrics/ui-metrics.mjs, 1280x720 and 1920x1080, DPR 1 and 2): FD1 stem 0.8 device px; FD2 stem 1.468 device px at DPR 2 — the check the item says the whole thing turns on, and the one an upscaled canvas fails; FD4 0 clipped/overflowing elements at all four configurations; FD5 panel screen-fraction drift 0.00%; FD7 7.32 effective bits, overdraw 1.016x. FD3 and FD6 were failing on my own measurement code and on a 1-px type size; both fixed, rerun in flight at hand-off.",
     "B4 MISS FOUND AND FIXED: the screen body face was 17 px in 1080p units — 17 px at 1080p (under B4's 18 px floor) and 0.0157 of screen height at 720p (under the 1.6% floor). It missed BOTH legs by a hair, in the direction nobody looks. game/src/ui/type.js BODY now holds the three body sizes in one place: screen 19, book 26, label 15."
   ],
-  "next_step": "Fresh independent reviewer-editor re-criticises the materially remediated orchestration/plans/W1-21.md plan.",
+  "next_step": "Fresh independent reviewer-editor re-criticises the materially edited orchestration/plans/W1-21.md plan.",
   "notes_for_successor": "The one thing that must not regress: UISurface.el() is the ONLY drawing entry point and it clips the callback to the rect it declared, so the census and the pixels cannot disagree. If someone adds a raw ctx accessor, RI-UIX02 K2 stops meaning anything. Screens are pure functions of a model assembled in UISystem._*Model(); the engine's _uiCtx() is the only place that reads the simulation.",
   "measured": {
     "RI-UIX01 (ui-census, arena_duel in combat, 1920x1080, 600 frames)": "11/11",
