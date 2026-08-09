@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-remediation
+Plan-State: awaiting-recriticism
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -180,13 +180,23 @@ honestly reported failed result**, with the missed fixture named; only 4/4 passe
 
 ## 2. The null control — the arm that must come out worse
 
-**Piece A.** A scratch worktree at HEAD with hud.js's E11 block reverted to the **pre-W1-20 single
-centred run**. Same A1/A2, same corpus.
-*Must come out:* `overflow_px > 0` on **≥58 of the 75** censused strings, and `escaped_px > 0` on
-the widest sample — a 676 px run centred on a 400 px panel loses ~138 px off each end.
-*Inert would look like:* `overflow_px == 0` in the unwrapped arm on any string measuring >400 px,
-or `escaped_px == 0` with `changed_px_inside_rect == 0` (the diff never saw the text). **If either
-appears, nothing else in Piece A may be reported.**
+**Piece A.** In a scratch worktree at HEAD, revert hud.js's E11 block to the **pre-W1-20 single
+centred run** and run A1/A2a/A2b over the committed 395-string corpus. Do not restore the obsolete
+75-string census and do not use toast-vs-null: the element clip makes escaped ink outside the rect
+impossible in both arms.
+
+*Must come out:* A1 reports `overflow_px > 1.0 px` for at least one committed over-budget string,
+and A2a reports `cut_px > 0` for the widest reference-rendered sample while its clip-free reference
+has `ink_px > 0`. The fixed arm must meet A1/A2a's §1 acceptances on the same population.
+
+A2b remains a residue check, not the decisive null: compare two strings with the **same row count**
+so their rect and seeded deckle are identical, require `changed_px_inside_rect > 0`, and then require
+`escaped_px == 0`. Its purpose is to prove that the same-sized pair was actually differenced while
+no ink escaped; clipping means `escaped_px` is not expected to worsen in the reverted arm.
+
+*Inert would look like:* the revert's source hash does not change; A1 remains within 1 px for every
+known over-budget string; A2a remains `cut_px == 0`; or either A2 reference paints/differences no
+ink. Any of those invalidates the Piece A result. `escaped_px == 0` alone does not.
 
 **Piece B.** The four re-seeded historical positives on scratch worktrees. They are real, dated
 commits; their coupling is already on the record and is independent of anything this piece writes.
@@ -207,7 +217,7 @@ stated explicitly because the defect under repair *is* a null computed from the 
 | path | role |
 |---|---|
 | `game/src/render/text-register.js` | the drawn-string extents (`x`, `w`, per surface). Extend its record with the owning element id; do **not** write a second register. Its `clipped` flag is canvas-clip only — that is why it said `clipped:false` on a run that left its panel. |
-| `game/src/ui/system.js` `getUIState()` | the declared rects, and the existing `toast.fits`/`overflow_px` block (lines 1154–1170). **Generalise that one block** to every text-bearing element. No per-element special case. |
+| `game/src/ui/system.js` `getUIState()` | supplies declared rects only. Preserve its existing toast block; do not make this general accessor clear or interpret the per-frame text register. |
 | `game/src/ui/type.js` `wrap()` / `ellipsise()` / `normalise()` | already exist. Replace hud.js's inline greedy wrap with them. |
 | `tools/analysis/ui-census.mjs` | the existing browser-driving UI instrument, already carrying a `--self-test` that goes red on purpose. A1/A2a/A2b go **here**. Do not write `toast-fit.mjs`. |
 | `game/src/harness/api.js` `__HARNESS.drawOnMenus()` (`:939-949`) | **added by BLOCKING-6.** The clip-free reference draw A2a needs. Extend the signature additively — `drawOnMenus(text, { x, y, face, size, color } = {})`, defaulting to today's five values (`20,120`, face `bone`, size 16, `#fff`) so the three existing callers (`w1-08-r2-probe.mjs`, `w1-26-opening.mjs`, `w1-26-r2-scene.mjs`) are untouched. A third owner declared against W1-21/W1-26. |
@@ -240,8 +250,12 @@ shortlist, so they should not queue behind each other.
 `factionRefusal`, the M-K20 positive control) and every text-bearing HUD element; commit the
 corpus with its size. 2. Swap the inline wrap for `type.wrap()` + `ellipsise()`; wrap `hud.prompt`
 and `hud.boss` **only if the census shows a string over budget** — and say so if it does not.
-3. Generalise the `getUIState()` fit block. 4. A1 + A2 into `ui-census.mjs`; `--self-test` breaks
-the wrap and asserts red. 5. The null worktree. 6. Rule 27: one blog line, and the shot is the
+3. Use the landed owning-element protocol: `surface.js` scopes `ctx.__esOwnerId` around each
+element draw, `text-register.js` records that owner, and `ui-census.mjs` performs
+`renderedTextClear` → forced rebuild via `uiToast()` → owner-filtered `getRenderedText()`; do not
+generalise or make `getUIState()` destructive. 4. A1 + A2 into `ui-census.mjs`; `--self-test` breaks
+the wrap and asserts red. 5. Run the §2 null worktree against the committed 395-string corpus. 6.
+Rule 27: one blog line, and the shot is the
 same sentence unwrapped and wrapped side by side.
 
 **B.** 1. Commit the frozen 14-member `P_E` and 109-member `P_report` enumerations; report current
