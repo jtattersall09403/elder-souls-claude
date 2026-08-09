@@ -32,6 +32,14 @@ makes later work shallower. Commit one owner-reviewable batch. The next phase be
 canonical branch after the owner publishes that PR. Plan criticism is offline where possible;
 browser/build evidence stays in the build loop unless plan validity genuinely requires it.
 
+At the end of every Plan, Critique, or Remediate task, run or derive the canonical Wave 1 plan-state
+inventory from current task HEAD and include a short **Plan-state summary** in both the task's final
+response and its PR description. Report counts for `needs-current-state-plan`, `awaiting-criticism`,
+`awaiting-remediation`, `awaiting-recriticism`, and `satisfied`, plus the names of any pieces still
+requiring action in the current batch. State the owner's next short command explicitly. If every
+plan in the current batch is `satisfied`, say so plainly and state that the owner may move on to
+`Plan the next Wave 1 batch.` Do not make the owner maintain a separate tracking list.
+
 Fresh critics may read prior critique/remediation evidence to verify closure but may not adopt the
 author's reasoning as their own. Repeat remediation and fresh criticism without a round ceiling.
 Escalate stalled repeats, disputed bars, invalid instruments and seams through the existing ruling
