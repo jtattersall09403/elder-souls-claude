@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-recriticism
+Plan-State: awaiting-remediation
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -1147,3 +1147,25 @@ not redispatch it while repairing this plan text.
 
 **Recommendation:** remediate those two stale operative instructions only, then request fresh
 re-criticism. Piece B needs no further substantive rewrite from this pass.
+
+---
+
+## Fresh plan re-critique 2 — 2026-08-09
+
+**Verdict: BLOCKING.** The Piece A remediation closes the prior finding: its null now worsens A1
+and A2a over the committed corpus, treats A2b as a guarded residue check, and uses the landed
+owning-element register protocol. The Piece B fixture contract also remains executable. The
+operative B1′ acceptance, however, gives `ERROR` two contradictory meanings and therefore does
+not determine whether the piece passed.
+
+**One actionable biggest gap:** make missing `E_tool` semantics consistent across Piece B §1. The
+classification table says a missing `E_tool` is `ERROR` and **“never pass”**, but B1′ accepts
+14/14 classifications with **fewer than 7** missing values. As written, a run with six `ERROR`
+rows simultaneously satisfies the aggregate acceptance and contains six rows forbidden from
+passing. Choose one deterministic contract: either require zero `ERROR` rows for B1′ to pass, or
+state explicitly that 1–6 errors make B1′ a reported, non-passing partial result while the
+S-PLAN-HUD-B3 reduction fires at 7. Preserve Piece A's landed code and the four B2 fixtures; only
+the B1′ error/overturn wording needs remediation before another fresh re-critique.
+
+**Recommendation:** remediate the B1′ aggregate predicate and its adjacent missing-`E_tool` text,
+then request fresh re-criticism. Do not redispatch or rewrite Piece A.
