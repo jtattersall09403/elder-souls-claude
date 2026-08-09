@@ -1,0 +1,47 @@
+{
+  "task_id": "codex-wave1-plan-bundle-12-01-24-07-28-20260809",
+  "status": "complete",
+  "phase": "planning",
+  "summary": "Completed rigorous current-state continuation plans sequentially for W1-12, W1-01, W1-24, W1-07, and W1-28; all five await independent plan criticism.",
+  "files_touched": [
+    "orchestration/plans/W1-12.md",
+    "orchestration/status/W1-12.json",
+    "orchestration/plans/W1-01.md",
+    "orchestration/status/W1-01.json",
+    "orchestration/plans/W1-24.md",
+    "orchestration/status/W1-24.json",
+    "orchestration/plans/W1-07.md",
+    "orchestration/status/W1-07.json",
+    "orchestration/plans/W1-28.md",
+    "orchestration/status/W1-28.json",
+    "orchestration/status/codex-wave1-plan-bundle-12-01-24-07-28-20260809.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-12.md",
+    "orchestration/status/W1-12.json",
+    "orchestration/plans/W1-01.md",
+    "orchestration/status/W1-01.json",
+    "orchestration/plans/W1-24.md",
+    "orchestration/status/W1-24.json",
+    "orchestration/plans/W1-07.md",
+    "orchestration/status/W1-07.json",
+    "orchestration/plans/W1-28.md",
+    "orchestration/status/W1-28.json",
+    "orchestration/status/codex-wave1-plan-bundle-12-01-24-07-28-20260809.json"
+  ],
+  "checks": [
+    "node tools/ownership.mjs --conflicts",
+    "node tools/dispatchable.mjs --wave1-plans",
+    "node tools/verdict-validate.mjs --all",
+    "node tools/corpus-index.mjs",
+    "plan marker/status consistency check"
+  ],
+  "findings": [
+    "W1-12 current hard fail is RI-AI01 M3 on the stationary fixture, not the moving-fixture headline.",
+    "W1-01 lacks a complete current-HEAD 117-frame M17 pack; prior ordered/stale packs are not admissible.",
+    "W1-24 protocol instruments exist but RI-CAM07 completion and an M5 framing amendment remain.",
+    "W1-07 computes named classes but clips the exact naming line from the rendered node.",
+    "W1-28 has only a partial hour and its live combat input trace is blind."
+  ],
+  "next_step": "Owner command: Critique the current Wave 1 plans"
+}
