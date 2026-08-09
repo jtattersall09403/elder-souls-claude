@@ -2,7 +2,7 @@
   "task_id": "W1-10",
   "brief": "wave-1 piece W1-10 — Weapon movesets",
   "started": "wave-1",
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
   "state": "complete",
   "headline_numbers": {
     "D_min": 1.624,
@@ -51,6 +51,7 @@
     "The generator must NOT read its own previous output. An earlier version fed measured fingerprint standard deviations back into the deviation budget; it had a 2-cycle and six weapon files alternated forever, so `--check` reported drift on every run. The sds are now pinned in classes.json and fp-sd.json is written as a report only."
   ],
   "ar3_seam": "The material system. A lore fact (root-golems are stone, the Hist-bonded are plant) is a combat answer: a slashing weapon does x0.45 to stone and DEFLECTS off it (zero damage, +16 f@60 recovery, spark decal), a smash weapon does x1.35 and never bounces, and MCE/GHM bypass deflection entirely. Inside the fight it is Souls-legal (geometry decides the hit, the multiplier is applied after, no dice); outside it, learning which material a thing is made of is a rumour or a book, and the answer is a purchase from a merchant. seam_sterile: false.",
-  "next_step": "Remediate the blocking independent plan critique in orchestration/plans/W1-10.md, then request fresh re-criticism.",
-  "notes_for_successor": "Regenerate, never hand-edit the 87 files: `node tools/weapons/build-movesets.mjs` (idempotent; `--check` must report zero drift). The three authored sources are classes.json (transcribed corpus tables, do not re-derive), pose-library.json (the pose grammar) and roster.json (direction and rank of each weapon's deviation; the generator sets magnitude). tools/weapons/measure.mjs recomputes all seven headline numbers from the shipped data plus the real rig and is the file to diff against if a critic gets different numbers. The three knobs that move the fingerprint results are classes.json deviation_budget / deviation_budget_signature / lineage_arc_scale and the per-class ha_extra ladder in tools/weapons/grammar.mjs; changing any of them requires re-running the measure to check SEP and W_med are still in band."
+  "next_step": "Fresh independent reviewer-editor re-criticises the materially remediated orchestration/plans/W1-10.md plan.",
+  "notes_for_successor": "Regenerate, never hand-edit the 87 files: `node tools/weapons/build-movesets.mjs` (idempotent; `--check` must report zero drift). The three authored sources are classes.json (transcribed corpus tables, do not re-derive), pose-library.json (the pose grammar) and roster.json (direction and rank of each weapon's deviation; the generator sets magnitude). tools/weapons/measure.mjs recomputes all seven headline numbers from the shipped data plus the real rig and is the file to diff against if a critic gets different numbers. The three knobs that move the fingerprint results are classes.json deviation_budget / deviation_budget_signature / lineage_arc_scale and the per-class ha_extra ladder in tools/weapons/grammar.mjs; changing any of them requires re-running the measure to check SEP and W_med are still in band.",
+  "plan_remediation_2026_08_09": "Recorded blocking criticism remediated in the canonical plan; no game implementation performed."
 }
