@@ -20,7 +20,7 @@
   "plan": [
     "1. corpus/80-methods/cc-scan.mjs - the RI-VIS01 tool the item names as owed and which does not exist (rule 24). Structural declaration validation + CC-1..CC-7 lint.",
     "2. tools/render/visual-reading.mjs - render.process.measurement. A reading carries surface class, unit, band-unit conformance, a mechanism null (via tools/experience/lib/sabotage.mjs), a CLOCK control, and a DEGENERATE-SUBJECT control.",
-    "3. RI-CAM07: the back-capture path (player_back_closeup / player_front_closeup viewpoints, HARNESS §6 append-only).",
+    "3. RI-CAM07: the back-capture path (player_back_closeup / player_front_closeup viewpoints, HARNESS \u00a76 append-only).",
     "4. Apply the protocol to >= 3 published visual claims and report which survive."
   ],
   "next_step": "finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then blog line + shot + commit",
@@ -40,16 +40,17 @@
   ],
   "notes": [],
   "done": [
-    "corpus/80-methods/cc-scan.mjs — RI-VIS01 bifurcation protocol. 8 structural checks + CC-1..CC-7 tripwire. Self-test: 14 cases, 9 self-defects, 0 inert.",
+    "corpus/80-methods/cc-scan.mjs \u2014 RI-VIS01 bifurcation protocol. 8 structural checks + CC-1..CC-7 tripwire. Self-test: 14 cases, 9 self-defects, 0 inert.",
     "The falsifier caught my own S8 being redundant with S3; rewritten to test what S3 cannot see.",
-    "Run over the corpus: 0 of 70 wave-1 verdicts carry a VIS DECLARATION block; 15 make visual claims without one and are void under RI-VIS01 §B.",
-    "First corpus run returned 55 CLEAN over files never examined — a pass over an empty sample set. Fixed to NOT_APPLICABLE (graded.mjs law).",
-    "tools/render/visual-reading.mjs — render.process.measurement. Five mandatory questions; reuses sabotage.mjs for the mechanism null. Self-test: 11 readings, 7 self-defects, 0 inert.",
+    "Run over the corpus: 0 of 70 wave-1 verdicts carry a VIS DECLARATION block; 15 make visual claims without one and are void under RI-VIS01 \u00a7B.",
+    "First corpus run returned 55 CLEAN over files never examined \u2014 a pass over an empty sample set. Fixed to NOT_APPLICABLE (graded.mjs law).",
+    "tools/render/visual-reading.mjs \u2014 render.process.measurement. Five mandatory questions; reuses sabotage.mjs for the mechanism null. Self-test: 11 readings, 7 self-defects, 0 inert.",
     "DEGENERATE_NOT_GRADEABLE added from a real result: FD6 returns {worst:0} over zero edge pixels, and EMPTY is not a demonstrated red.",
-    "tools/render/w1-24-audit.mjs — the protocol run against four published claims (A/B/C live, D offline).",
-    "tools/render/cam07-back.mjs — RI-CAM07 M1 back/front capture path, the build instruction nobody had carried out.",
-    "reports/w1-24-survey.md — the written survey."
+    "tools/render/w1-24-audit.mjs \u2014 the protocol run against four published claims (A/B/C live, D offline).",
+    "tools/render/cam07-back.mjs \u2014 RI-CAM07 M1 back/front capture path, the build instruction nobody had carried out.",
+    "reports/w1-24-survey.md \u2014 the written survey."
   ],
-  "plan_state": "awaiting-recriticism",
-  "planning_next_step": "A different fresh independent reviewer-editor must re-criticise the materially edited orchestration/plans/W1-24.md; the current editor cannot mark it satisfied."
+  "plan_state": "awaiting-remediation",
+  "planning_next_step": "Dispatch an arbiter/amendment task for the three authority/instrument seams recorded in the canonical plan, then remediate and send to a fresh reviewer-editor.",
+  "plan_review_20260809_fresh": "ESCALATED"
 }
