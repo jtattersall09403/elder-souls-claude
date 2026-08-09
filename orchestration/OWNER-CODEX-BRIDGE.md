@@ -106,6 +106,38 @@ expensive operations (agent passes, browser work, blind judging, corpus breadth,
 duplicate implementation, large sweeps) and the repository's actual cost evidence in
 `COST.md`/`PLAN-LOOP.md`.
 
+## Build/test loop during and after this bridge
+
+Do **not** apply the plan reviewer-editor role collapse to production game-code criticism. Keep the
+build loop role-separated:
+
+```
+  builder → fresh independent build critic
+                 ├─ PASS → build-satisfied
+                 └─ FAIL → executable remediation specification → fresh builder → fresh critic
+```
+
+A build critic must not edit the production game/content change it is judging or subsequently grade
+its own repair. It may create or repair critic-side measurement tooling when the governing method
+requires that, subject to the normal tool-loop and independence rules. An agent that built a blind
+pack still does not judge it.
+
+On FAIL, the critic must leave the next builder a **minimal executable remediation specification** in
+the normal verdict/status/build handoff. Point at the satisfied plan, governing item, evidence and
+instrument instead of restating them. The handoff identifies the single biggest actionable gap, what
+must be preserved, the narrow implementation delta/seam, the cheapest valid order of checks,
+existing instruments/fixtures to reuse, exact acceptance/population/hard fails/controls, and clear
+stop/escalation conditions.
+
+The remediation route itself must be materially cost-effective without lowering the bar: avoid
+unnecessary broad refactors, duplicate tooling/evidence, repeated full-corpus/browser runs, redundant
+captures, gratuitous sweeps and optional polish. Use cheap/static/headless gates before expensive
+browser/blind/runtime work where valid, and reuse still-valid evidence. The fresh builder consumes the
+satisfied plan plus the latest critic delta rather than reconstructing the whole historical narrative.
+
+This build-side rule is intended to persist when the temporary Codex bridge is removed; the durable
+version lives in `PLAN-LOOP.md`. The bridge repeats it here so interim Codex tasks behave consistently.
+
 ## Temporary no-blog/no-illustration rule
 
 For the entire owner-driven Codex bridge phase, suspend the routine progress-blog requirement in
