@@ -101,13 +101,15 @@ Exemplar build: `RI-CMB07`'s — Endurance 20, **120 stamina**, `LIGHT` tier, ba
 |---|---|---:|
 | Roll cadence, chained back to back | 52 f | **0.867 s** |
 | Rolls per second | 60/52 | **1.15** |
-| Regen recovered between chained rolls | 52 f elapsed < 42 f delay re-armed every 52 f → delay never expires | **0** |
-| Rolls before the bar denies you | ⌊120 / 22⌋ | **5** |
-| Time from full bar to input denial | 5 × 52 f | **260 f = 4.33 s** |
-| Stamina at denial | 120 − 110 | **10** |
+| Regen recovered between chained rolls | spend on `f0`; no regen `f0+1..f0+42`; regen on `f0+43..f0+51` before the next start | **9 f × 0.75 = 6.75** |
+| Rolls before the bar denies you | seven starts at `f0 + {0,52,104,156,208,260,312}` | **7** |
+| Time from full bar to input denial | next actionable press is `f0+364`; canonical fixture has `f0=2` | **frame 366 = 6.10 s from frame 0; 364 f = 6.067 s from first start** |
+| Stamina at denial | seventh spend leaves 6.5; nine regen frames precede denial | **13.25** |
 | Vulnerable fraction while chaining | 26 of 52 | **50%** |
 | Longest continuous vulnerable run | recovery 22 + next startup 4 | **26 f = 433 ms** |
 | Time from denial to the next legal roll | 42 f delay + 12/0.75 | **58 f = 0.97 s** |
+
+**Exact delay semantics (S40):** a spend on frame `f0` re-arms an inclusive 42-frame suspension over `f0+1..f0+42`; regeneration first changes the bar on `f0+43`. The spend that begins the next roll is evaluated after the nine regeneration frames through `f0+51`. Frame numbers above use the canonical M4 fixture origin (first start on frame 2); tools must also report the origin-relative offset so a different boot frame cannot masquerade as different arithmetic.
 
 Two consequences, and both are measurable bars:
 
@@ -208,8 +210,8 @@ strings.
 - Compute hits taken / enemy attack attempts. **FAIL** if `< 0.35`.
 - Count `input_dropped_no_stamina` events. **FAIL** if `< 4`.
 - Count `exhausted_enter` events. **FAIL** if `0`.
-- Recompute §3's table from the trace. **FAIL** if measured cadence, rolls-to-empty, or
-  time-to-denial differ from §3 by > 1 frame / > 1 roll.
+- Recompute §3's table from the trace. **FAIL** unless cadence is 52 f@60, each completed interval has exactly nine regeneration frames / 6.75 stamina, seven rolls succeed, and the canonical `f0=2` fixture first denies on frame 366 (also report the origin-relative 364 f offset). Stamina at that denial is exactly 13.25; stamina tolerance is ±0.
+- Run a zero-regeneration null prediction/control. It must produce the rejected five-roll/frame-260 signature and must fail the canonical assertions; a control that can also pass is invalid.
 - **FAIL** if any escalating anti-spam penalty is detectable (i-frames, recovery or cost changing
   with consecutive-roll count) — that is a defect, not a feature.
 
