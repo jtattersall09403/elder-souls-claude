@@ -1,0 +1,53 @@
+{
+  "task_id": "critique-w1-17-06-03-26-codex-20260809",
+  "role": "plan-critic",
+  "state": "complete",
+  "started": "2026-08-09",
+  "commit_at_reading": "32c83e41",
+  "pieces": ["W1-17", "W1-06", "W1-03", "W1-26"],
+  "completed_pieces": ["W1-17", "W1-06", "W1-03", "W1-26"],
+  "deferred_pieces": [],
+  "files_touched": [
+    "orchestration/status/critique-w1-17-06-03-26-codex-20260809.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-17.md",
+    "orchestration/status/W1-17.json",
+    "orchestration/plans/W1-06.md",
+    "orchestration/status/W1-06.json",
+    "orchestration/plans/W1-03.md",
+    "orchestration/status/W1-03.json",
+    "orchestration/plans/W1-26.md",
+    "orchestration/status/W1-26.json"
+  ],
+  "redundant_with": ["plan-w1-17-06-03-26-codex-20260809"],
+  "next_step": "Owner command: Remediate the current Wave 1 plan critiques.",
+  "findings": {
+    "W1-17": "BLOCKING: RI-DLG07 requires critic assembly and a fresh context-free judge, but the plan assigns all nineteen native instruments to the builder and permits inadmissible self-administered evidence to make A9 green.",
+    "W1-06": "BLOCKING: the plan directs the builder to run visual comparisons and does not assign the governing critic-side/fresh/blind methods to eligible independent actors, so context-contaminated self-judgement can make C6/C7 green.",
+    "W1-03": "BLOCKING: W2 weakens RI-WLD10's any-non-tidal-amplitude automatic fail into a >0.02 m allowance, so a consumed 0.01–0.02 m global tide can pass every planned check while violating the exact-five governing predicate.",
+    "W1-26": "BLOCKING: O1/O2/O7 accept native 70 as Wave 7 although the governing items classify those bands as below-bar/ladder 6; all three planned headline checks can be green below the governing Wave gate."
+  },
+  "verdict": "BLOCKING / awaiting-remediation for W1-17, W1-06, W1-03 and W1-26",
+  "files_touched": [
+    "orchestration/plans/W1-17.md",
+    "orchestration/status/W1-17.json",
+    "orchestration/plans/W1-06.md",
+    "orchestration/status/W1-06.json",
+    "orchestration/plans/W1-03.md",
+    "orchestration/status/W1-03.json",
+    "orchestration/plans/W1-26.md",
+    "orchestration/status/W1-26.json",
+    "orchestration/status/critique-w1-17-06-03-26-codex-20260809.json"
+  ],
+  "files_claimed": [],
+  "deferred_pieces": [],
+  "plan_state_summary": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 25,
+    "awaiting-remediation": 5,
+    "awaiting-recriticism": 0,
+    "satisfied": 1,
+    "current_batch_requiring_action": ["W1-17", "W1-06", "W1-03", "W1-26"]
+  }
+}
