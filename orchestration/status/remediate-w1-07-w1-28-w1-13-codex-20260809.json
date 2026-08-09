@@ -1,0 +1,43 @@
+{
+  "task_id": "remediate-w1-07-w1-28-w1-13-codex-20260809",
+  "status": "complete",
+  "plan_state": "awaiting-recriticism",
+  "files_claimed": [
+    "orchestration/plans/W1-07.md",
+    "orchestration/plans/W1-28.md",
+    "orchestration/plans/W1-13.md",
+    "orchestration/status/W1-07.json",
+    "orchestration/status/W1-28.json",
+    "orchestration/status/W1-13.json",
+    "orchestration/status/remediate-w1-07-w1-28-w1-13-codex-20260809.json"
+  ],
+  "files_touched": [
+    "orchestration/plans/W1-07.md",
+    "orchestration/plans/W1-28.md",
+    "orchestration/plans/W1-13.md",
+    "orchestration/status/W1-07.json",
+    "orchestration/status/W1-28.json",
+    "orchestration/status/W1-13.json",
+    "orchestration/status/remediate-w1-07-w1-28-w1-13-codex-20260809.json"
+  ],
+  "next_step": "Request fresh independent re-criticism for W1-07, W1-28, and W1-13.",
+  "completed_pieces": [
+    "W1-07",
+    "W1-28",
+    "W1-13"
+  ],
+  "deferred_pieces": [],
+  "escalated_pieces": [],
+  "canonical_plan_state_counts": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 22,
+    "awaiting-recriticism": 3,
+    "satisfied": 6
+  },
+  "current_batch_requiring_action": [
+    "W1-07",
+    "W1-13",
+    "W1-28"
+  ]
+}
