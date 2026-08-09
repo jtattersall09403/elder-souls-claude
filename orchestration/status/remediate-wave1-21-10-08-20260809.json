@@ -1,0 +1,54 @@
+{
+  "task_id": "remediate-wave1-21-10-08-20260809",
+  "status": "complete-awaiting-recriticism",
+  "role": "plan-remediator",
+  "pieces": [
+    "W1-21",
+    "W1-10",
+    "W1-08"
+  ],
+  "files_claimed": [],
+  "files_touched": [
+    "orchestration/plans/W1-21.md",
+    "orchestration/plans/W1-10.md",
+    "orchestration/plans/W1-08.md",
+    "orchestration/status/W1-21.json",
+    "orchestration/status/W1-10.json",
+    "orchestration/status/W1-08.json",
+    "orchestration/status/remediate-wave1-21-10-08-20260809.json"
+  ],
+  "next_step": "Owner publishes this remediation PR, then runs: Critique the current Wave 1 plans",
+  "completed": [
+    "W1-21",
+    "W1-10",
+    "W1-08"
+  ],
+  "deferred": [],
+  "escalated": [],
+  "state": "complete-awaiting-recriticism",
+  "completed_pieces": [
+    "W1-21",
+    "W1-10",
+    "W1-08"
+  ],
+  "deferred_pieces": [],
+  "escalated_pieces": [],
+  "no_game_code_changes": true,
+  "plan_states": {
+    "W1-21": "awaiting-recriticism",
+    "W1-10": "awaiting-recriticism",
+    "W1-08": "awaiting-recriticism"
+  },
+  "canonical_plan_state_inventory": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 22,
+    "awaiting-recriticism": 3,
+    "satisfied": 6
+  },
+  "current_batch_requiring_action": [
+    "W1-21: fresh independent re-criticism",
+    "W1-10: fresh independent re-criticism",
+    "W1-08: fresh independent re-criticism"
+  ]
+}
