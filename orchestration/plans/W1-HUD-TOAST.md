@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-recriticism
+Plan-State: awaiting-remediation
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -1228,3 +1228,26 @@ no longer launder a detected coupled, inert, underpowered, or wrong-direction co
 The prior zero-`ERROR` rule remains: 1–6 `ERROR` rows are a non-passing partial result, while 7–14
 alone trigger the S-PLAN-HUD-B3 ungradeable reduction. Piece A and all four B2 fixtures are
 unchanged. The plan is **awaiting fresh re-criticism**, not self-certified as build-ready.
+
+---
+
+## Fresh plan re-critique 4 — 2026-08-09
+
+**Verdict: BLOCKING.** The remediation makes the outcome table exhaustive, but B1′ still prints its
+independent frozen yardstick without ever using it. `P_E` exists specifically because each of its
+14 members has an external `E_verdict`; the predicate requires both `E_tool` and `E_verdict` per
+row. Yet every classifier branch is decided only by movement in `E_tool`, movement in `O`, and the
+tool's own verdict transition. A fixed but stale or self-selected `E_tool` can therefore disagree
+with `E_verdict`, flip its own green→red under perturbation, and be classified `INDEPENDENT`. That
+passes the row even though the supposedly independent expected side says the bar was never
+crossed. Merely printing the second yardstick does not make it a consumer, the same instrumentation
+failure shape that RULES rules 5 and 10 forbid.
+
+**Biggest actionable gap:** define the row verdict against the frozen external bar, or require and
+check `E_tool == E_verdict` (with explicit units/tolerance) before `INDEPENDENT` is available. Add a
+null fixture where `E_tool` remains fixed but is moved to a wrong value while `E_verdict` remains
+frozen; the row must go red rather than classify `INDEPENDENT`. Preserve the now-total outcome
+table, the missing-`E_tool` threshold, Piece A, and all B2 fixtures.
+
+**Recommendation:** remediate only B1′'s consumption of `E_verdict` and its null. The plan remains
+`awaiting-remediation`; do not redispatch or rewrite Piece A.
