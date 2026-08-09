@@ -59,7 +59,7 @@
   "notes_for_successor": "OPEN GAPS, in the order I would close them: (1) enemy casting -- needs W1-12's controller; the data is ready (game/data/combat/enemies/cst_sap_speaker.json). (2) spell VFX -- vfx.json carries the binding palette and briefs; nothing renders. (3) RI-MAG04 M4's live two-pass traversal check -- needs the exterior collision mesh (W1-01..W1-05). (4) 9 of 11 breakage-register probes unrun -- each needs another piece's system. (5) The birthsign Focus-absorption conflict needs a RULING from RI-CHR03/RI-MAG01, not a builder. TWO CORPUS DEFECTS FOUND: RI-MAG02 §G's recall table (6/26/57/77) does not reproduce from RI-MAG02 §D's own formula (6/22/53/77) at two of four points; and RI-MAG02's '~28,000 g across 60 purchasable spells at tier mix 26/18/10/5/1' is impossible (cheapest such shelf 69,246 g) -- AM-W1-14-01 filed in spells.json. GOTCHA: queueInputs event frames are RELATIVE to the frame queueInputs was called on.",
   "plan_state": "awaiting-recriticism",
   "canonical_plan": "orchestration/plans/W1-14.md",
-  "plan_review_outcome": "Material review edit: narrowed closure authority to path-selected RI-MAG01–06 and RI-TRV02 while retaining MAG03 skill and MAG04 quest gates; fresh reviewer required.",
-  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; MAG06 now uses its native bounded population.",
-  "plan_reviewer_editor_outcome": "MATERIAL_EDIT: replaced avoidable non-native MAG06 Cartesian sweep with complete native M1-M8 population."
+  "plan_review_outcome": "Material review edit: added a binding seven-item native decision manifest without restoring the non-native MAG06 Cartesian sweep; fresh reviewer required.",
+  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; do not build.",
+  "plan_reviewer_editor_outcome": "MATERIAL_EDIT: preserved every MAG/TRV native population, aggregation, hard fail and Wave-1 gate."
 }
