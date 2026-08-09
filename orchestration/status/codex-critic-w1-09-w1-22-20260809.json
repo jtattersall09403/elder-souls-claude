@@ -1,0 +1,31 @@
+{
+  "task_id": "codex-critic-w1-09-w1-22-20260809",
+  "brief": "Independently critique current-state Wave 1 plans W1-09 and W1-22",
+  "started": "2026-08-09",
+  "state": "complete",
+  "outputs_expected": [
+    "orchestration/plans/W1-09.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/status/W1-09.json",
+    "orchestration/status/W1-22.json"
+  ],
+  "outputs_written": [
+    "orchestration/plans/W1-09.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/status/W1-09.json",
+    "orchestration/status/W1-22.json"
+  ],
+  "findings": [
+    "W1-09 BLOCKING: unratified AMENDMENT-W1-09-01 conflicts with canonical RI-CMB09 roll-spam arithmetic; authority must be resolved before build.",
+    "W1-22 BLOCKING: favorable seed preselection substitutes for RI-AUD03 fixed seed 1337, and proposed AMENDMENT-W1-22-01 is incorrectly treated as governing."
+  ],
+  "next_step": "Remediate W1-09 and W1-22 independently, then submit both for fresh re-criticism.",
+  "files_touched": [
+    "orchestration/status/codex-critic-w1-09-w1-22-20260809.json",
+    "orchestration/plans/W1-09.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/status/W1-09.json",
+    "orchestration/status/W1-22.json"
+  ],
+  "files_claimed": []
+}
