@@ -63,5 +63,7 @@
     "RI-CHR01 §6.1's grep-for-\"class\" prohibition is now a false-positive generator (road class, water class, hazard class). The audit asserts GATE semantics — a class key inside requires/forbids/conditions/gate, or requires_class/class_min — and prints the naive count with its per-file breakdown."
   ],
   "next_step": "none — piece complete. A successor should re-run `node tools/analysis/creation-audit.mjs` and `node tools/analysis/ar3-encounter-test.mjs` before changing anything under game/data/progression/**.",
-  "notes_for_successor": "The arithmetic modules are pure and total on purpose: the audit tool IMPORTS game/src/character/*.js rather than reimplementing, so a critic measures the shipped composition. Do not fork them. KNOWN-GAPS.json is the only place an assertion may be excused, and an excuse that stops being true fails the run as STALE. Largest unbuilt dependency: RI-CHR02 method 5's dialogue volume (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by W1-11..13 and keys off playerRaceClass()."
+  "notes_for_successor": "The arithmetic modules are pure and total on purpose: the audit tool IMPORTS game/src/character/*.js rather than reimplementing, so a critic measures the shipped composition. Do not fork them. KNOWN-GAPS.json is the only place an assertion may be excused, and an excuse that stops being true fails the run as STALE. Largest unbuilt dependency: RI-CHR02 method 5's dialogue volume (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by W1-11..13 and keys off playerRaceClass().",
+  "plan_state": "awaiting-criticism",
+  "planning_next_step": "Dispatch a fresh independent plan critic for orchestration/plans/W1-07.md."
 }
