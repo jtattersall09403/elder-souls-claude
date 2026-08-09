@@ -102,5 +102,7 @@
     "W1-23-r4"
   ],
   "overlap_note": "tools/world/build-property.mjs is declared by W1-15 (locks/trespass) and read by W1-23-r4 (the rename criterion). My change is four lines, purely additive, at the write site only, and touches neither the lock banding W1-15 works on nor the GIVEN/EPITHET arrays W1-23-r4 reads out at run time. Declared rather than left to read as a collision (RULES 16). Reversible by deleting the guard block.",
-  "reports_not_versioned": "reports/w1-27/coherence.json and loot-consumption.json are written but NOT committed: reports/.gitignore excludes every .json that is reproducible by re-running the tool that made it, and both are (`w1-27-coherence.mjs --json`, `w1-27-loot-consumption.mjs --out`). reports/w1-27/RULING.md is versioned, which is the same file's rule. Regenerate before running w1-27-chart.mjs."
+  "reports_not_versioned": "reports/w1-27/coherence.json and loot-consumption.json are written but NOT committed: reports/.gitignore excludes every .json that is reproducible by re-running the tool that made it, and both are (`w1-27-coherence.mjs --json`, `w1-27-loot-consumption.mjs --out`). reports/w1-27/RULING.md is versioned, which is the same file's rule. Regenerate before running w1-27-chart.mjs.",
+  "plan_state": "awaiting-criticism",
+  "canonical_plan": "orchestration/plans/W1-27.md"
 }
