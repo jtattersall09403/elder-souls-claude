@@ -79,7 +79,7 @@
   ],
   "next_step": "none \u2014 piece complete, handed to a critic",
   "notes_for_successor": "COMPLETE. Everything in the previous handoff note was already done; I re-ran the headline, fixed one bed and added two instruments.\n\nWHAT A CRITIC SHOULD DO FIRST: re-run `node tools/analysis/ambience-render.mjs --seconds 20` unchanged. It is ~10 min on a quiet box, needs one browser, and it is the whole claim. Then re-run it with the beds sabotaged \u2014 the tool's own G5 control does this automatically.\n\nTHE THING I COULD NOT ROOT-CAUSE (SUCCESSOR-8, and the most interesting open question in this piece): bed_gain_db does not behave as a scalar. A -2.06 dB trim moved loudness -1.42 LU, peak -0.92 dB, and shifted the spectral centroid \u2014 under a pure output gain all three must move by exactly -2.06 and the centroid cannot move at all. I ruled out a compressor/waveshaper (the bus is a plain gain), a clamp in dbToGain, PCM transport normalisation, an RNG reseed (the seed is bed.id only), and a neighbour's edit to synth.js. It matters because `--calibrate` computes trim = target - measured as a ONE-SHOT linear correction, so it under-corrects; it should be iterated to convergence. valus-ridge exposed it because it is the only tonal L1 with defined notes.\n\nSTILL NOT DONE, and deliberately: interior beds (RI-AUD03 R4). Interiors go SILENT and say so via getAmbienceState().suppressed rather than playing the exterior bed low-passed, which R4 forbids. B1/B2/B3 (the blind listening tests) are a critic's to run, not a builder's \u2014 and note the real weakness I found in the item's own method: with L3 at 8-40 s and L4 at 45-180 s, a 20 s clip contains 0 or 1 signature one-shots, so B1/B2 will in practice be decided almost entirely by L1 and L2. Lengthen the clip or seed the capture so the signature event is present.\n\nNEVER QUOTE separation_proxy AS B2. It is a machine proxy over 24-band spectra; B2 is 78 fresh judges answering SAME/DIFFERENT.",
-  "next_plan_step": "Fresh independent reviewer-editor must re-criticise the S41-resolved plan; do not approve this materially edited version.",
+  "next_plan_step": "A different fresh reviewer-editor must re-criticise the cost/deliverability-edited plan; do not dispatch a builder.",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The plan substitutes selected signature-bearing seeds and an unratified amendment for RI-AUD03\u2019s fixed seed-1337 comparison and canonical B5 capture.",
@@ -97,5 +97,11 @@
     "plan_state": "awaiting-recriticism",
     "summary": "S41 is now consistent throughout, but the complete-plan review found and repaired an impossible B2 recording-independence rule, wasteful noncanonical M20 panels, an incomplete RI-MTH07 coupling bar, and acceptance that allowed RI-AUD03 or audio-side RI-WLD08 predicates to fail.",
     "next_owner_action": "Dispatch a fresh independent W1-22 plan re-critic against the edited canonical plan; do not dispatch a builder and do not treat this editor as approval."
+  },
+  "plan_review_editor_2026_08_09_fresh": {
+    "outcome": "MATERIALLY_EDITED",
+    "plan_state": "awaiting-recriticism",
+    "summary": "S41 and the full audio bar remain intact. The plan now avoids rerunning non-audio sibling positive methods outside the RI-WLD04/08 score-8 bands, reuses eligible canonical centroid audio in M20, and bounds shared-path settlement/interior determinism sampling after exhaustive census.",
+    "next_owner_action": "Dispatch a different fresh independent W1-22 plan reviewer-editor; do not dispatch a builder and do not treat this editor as approval."
   }
 }
