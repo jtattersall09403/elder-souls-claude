@@ -65,7 +65,7 @@
   ],
   "next_step": "none - complete. Critic should start at reports/w1-09/W1-09-REPORT.md.",
   "notes_for_successor": "CombatSystem (game/src/combat/system.js) is the authority; sim.player/sim.entities are a VIEW refreshed by game/src/sim/combat-bridge.js mirror(). Data files transcribe the corpus and the code never holds a second copy of a number. Probe: node tools/harness/cmb-probe.mjs --probe <roll|iframe|frames|commit|stamina|block|geometry|lockon|parley|all>. Exemplar: node tools/harness/cmb-exemplar.mjs. ALWAYS run node tools/analysis/data-index.mjs first - other wave-1 builders are adding data files concurrently and a stale index breaks boot. Known open: substep count vs measured tip speed (report \u00a79); exemplar authoring quality (12/24 rows in band); RI-CMB07 M2 Mode-B needs W1-12 AI.",
-  "next_plan_step": "Fresh independent reviewer-editor must re-criticise the S40-resolved plan; do not approve this materially edited version.",
+  "next_plan_step": "A different fresh independent reviewer-editor must re-criticise the materially edited W1-09 plan; do not dispatch a builder.",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The plan treats an unratified RI-CMB09 arithmetic proposal as governing even though the canonical item still prints a contradictory native roll-spam table.",
@@ -77,5 +77,17 @@
     "plan_state": "awaiting-recriticism",
     "summary": "52 f@60 cadence; inclusive 42 f delay; nine regen frames/6.75 stamina; seven rolls; denial at f0+364 (canonical frame 366).",
     "next_owner_action": "Dispatch a fresh independent plan re-critic; do not dispatch a builder yet."
+  },
+  "plan_review_2026_08_09_s40_full": {
+    "outcome": "MATERIAL EDIT",
+    "plan_state": "awaiting-recriticism",
+    "material_defects_resolved": [
+      "Removed the stale operative S40 authority-resolution gate.",
+      "Made RI-CMB09 M1-M8, recovery-tail, S40 arithmetic, RP1/RP2, denial, exhaustion, enemy symmetry, rendered blind, null and CONSUMPTION predicates explicit.",
+      "Corrected RI-CMB07 to the amended 29-row denominator, falsification triple, automatic fails, corpus/seam debts and not-possible blind protocol.",
+      "Replaced blanket reruns with predicate-level digest-qualified reuse, bounded cheap-first execution and a consolidated evidence pack."
+    ],
+    "escalation": "none",
+    "next_owner_action": "Dispatch a different fresh independent W1-09 plan reviewer-editor; do not dispatch a builder."
   }
 }
