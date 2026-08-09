@@ -1,0 +1,38 @@
+{
+  "task_id": "W1-03-W1-26-W1-27-remediation-20260809",
+  "status": "complete",
+  "summary": "Resolved every recorded blocker for W1-03, W1-26, and W1-27 against the authoritative native predicates; all three plans now await fresh re-criticism.",
+  "plan_state": "awaiting-recriticism",
+  "files_touched": [
+    "orchestration/plans/W1-03.md",
+    "orchestration/plans/W1-26.md",
+    "orchestration/plans/W1-27.md",
+    "orchestration/status/W1-03.json",
+    "orchestration/status/W1-26.json",
+    "orchestration/status/W1-27.json",
+    "orchestration/status/W1-03-W1-26-W1-27-remediation-20260809.json"
+  ],
+  "files_claimed": [],
+  "completed": [
+    "W1-03 \u2014 exact-five/zero non-tidal tide automatic-fail restored, with 0.01 m red seed and early static gate.",
+    "W1-26 \u2014 item-native numerators, denominators, ladder results and hard-fail overrides restored.",
+    "W1-27 \u2014 RI-WLD02 M7 native POI population, sample, clauses, threshold and sabotage restored; unnecessary loot proxy work removed from required closure."
+  ],
+  "deferred": [
+    "W1-27 placed-takeable repetition investigation remains diagnostic unless an authoritative governing predicate is cited."
+  ],
+  "escalated": [],
+  "next_step": "Owner command: Critique the current Wave 1 plans.",
+  "canonical_plan_state_summary": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 22,
+    "awaiting-recriticism": 3,
+    "satisfied": 6,
+    "current_batch_requiring_action": [
+      "W1-03",
+      "W1-26",
+      "W1-27"
+    ]
+  }
+}
