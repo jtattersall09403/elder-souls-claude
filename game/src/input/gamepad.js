@@ -88,7 +88,7 @@ export class GamepadRouter {
     this.calibrationResult = null;
     this.sessionProfiles = new Map();  // L5: id -> {profileName, calibration}
     this.chargeIntent = 0;
-    this.invertPitch = false;     // §C: pitch inversion is a setting, default non-inverted
+    this.invertPitch = this.analog.right_stick.invert_pitch_default === true;
     this.uiMode = false;          // a cursor-driven surface is open; the D-pad walks the list
     this.log = [];                // A-JRN7 side-channel; NOT the consumer of anything
     this.onConnect = null;
