@@ -49,7 +49,7 @@
     "hud-toast-corpus.mjs's population (395 strings) is NOT the plan's 75 -- re-derived independently per rule 18 rather than trust the prior recipe, enumerating every (faction,rank,term) combination with a template rather than only realistic rank-appropriate refusals. A wider, more literal reading of 'every uiToast() caller'; both numbers are reported rather than forcing a match.",
     "other_populations (prompt/boss/slot-label) in hud-toast-corpus.mjs walks game/data/world + npcs for prop/NPC 'name' fields as a proxy for _interactPrompt()'s reachable population -- not a literal simulation walk. slot-label's 70/119 'over budget' figure is measured against the RAW name width, not the ALREADY-TRUNCATED (char-slice(0,8)+ellipsis) text hud.js's quickslot code actually draws -- it does NOT describe a live defect and must not be read as one."
   ],
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The operative Piece B acceptance still contradicts the later S-PLAN-HUD-B3 ruling and cannot be dispatched deterministically.",
@@ -80,5 +80,14 @@
     "verdict": "BLOCKING",
     "biggest_gap": "B1 prime simultaneously accepts up to six missing E_tool ERROR rows and declares every such row never passing, so its aggregate pass result is indeterminate.",
     "next_step": "Remediate only the B1 prime ERROR and overturn semantics, preserve Piece A and B2, then request fresh re-criticism."
+  },
+  "plan_recritique_2_remediation_2026_08_09": {
+    "state": "complete",
+    "summary": "Made B1 prime deterministic: zero ERROR rows are required to pass, 1-6 missing E_tool rows are a reported non-passing partial result, and 7-14 trigger the existing ungradeable reduction.",
+    "preserved": [
+      "Piece A landed code and acceptance",
+      "Piece B B2 fixtures and 4/4 semantics"
+    ],
+    "next_step": "Fresh independent plan re-criticism."
   }
 }
