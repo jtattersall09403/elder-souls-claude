@@ -46,11 +46,11 @@
     "viewpoints.json anchors needed: vista_primary, swamp_canopy, settlement_primary_street, interior_firelit, water_shallows, npc_showcase, material_showcase, dungeon_primary, arena_flat.",
     "corpus/50-world/regions.json holds 13 real regions - transcribe, do not invent."
   ],
-  "next_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan for W1-00.",
+  "next_step": "A different fresh reviewer-editor must re-criticise the r6 material expansion of the W1-00 RI-MTH07 census and consumer/control contract.",
   "notes_for_successor": "Evidence lives in reports/runs/{DETERMINISM,API-PROBE,SAVE-AUDIT,INPUT-PROBE,SHOTS} and reports/platform/TIER-S. Known open items: (1) RI-MTH02 R5 fails on two enemy fields that are warm-up-dependent by construction - amendment AM-W1-00-01 filed, NOT applied; (2) alloc/step is measured with performance.memory, which is coarse - a CDP Runtime.getHeapUsage probe (A-JRN9) is the stronger instrument and belongs to the runner; (3) pointer-lock checks M-K8..M-K11 need a real user gesture and a menu surface (W1-21); (4) enemy AI is deliberately absent - inf_trash declares ai='hold_ground' and never attacks, so cmb-duel-infantry's punish statistics are structurally 0.",
   "plan_state": "awaiting-recriticism",
   "canonical_plan": "orchestration/plans/W1-00.md",
-  "plan_review_outcome": "Material review edit: completed RI-MTH07 native five-axis harness/model census and reuse boundary; fresh reviewer required.",
-  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; do not build.",
+  "plan_review_outcome": "Material r6 reviewer edit: expanded RI-MTH07 from exported harness models to every relevant shipped or harness-derived model and tightened actual-consumer and non-inert world-delta requirements.",
+  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited r6 plan; do not build.",
   "plan_reviewer_editor_outcome": "MATERIAL_EDIT: completed RI-MTH07 hand-feed, trace-only and partial-world VERIFY acceptance."
 }
