@@ -70,6 +70,6 @@
   ],
   "next_step": "complete",
   "notes_for_successor": "Build order: build-landmask -> build-regions -> build-terrain -> build-water-hazards -> build-roads -> build-pois. All idempotent; every game/data/world/*.json except landmask.json is generated from them. Measure with tools/world/{scale-audit,region-axes,crossing,province-shots}.mjs and corpus/80-methods/m-wld1{0,1}-*.mjs. The one open target is M36-ROAD-RELIEF at 26.7% vs 30%. Band DENIAL (no sprint/roll above W2), the water stamina drain, the breath clock and MIRED are W1-03 (world.water.marsh) and are declared missing, not faked.",
-  "plan_state": "awaiting-remediation",
-  "planning_next_step": "Remediate the blocking findings in orchestration/plans/W1-01.md, then mark awaiting-recriticism."
+  "plan_state": "awaiting-recriticism",
+  "planning_next_step": "A fresh independent reviewer-editor must re-criticise orchestration/plans/W1-01.md; this remediator cannot mark it satisfied."
 }
