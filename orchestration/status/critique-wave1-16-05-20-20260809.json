@@ -1,0 +1,40 @@
+{
+  "task_id": "critique-wave1-16-05-20-20260809",
+  "status": "complete",
+  "phase": "complete",
+  "pieces": [
+    "W1-16",
+    "W1-05",
+    "W1-20"
+  ],
+  "completed_pieces": [
+    "W1-16",
+    "W1-05",
+    "W1-20"
+  ],
+  "deferred_pieces": [],
+  "files_touched": [
+    "orchestration/status/critique-wave1-16-05-20-20260809.json",
+    "orchestration/plans/W1-16.md",
+    "orchestration/status/W1-16.json",
+    "orchestration/plans/W1-05.md",
+    "orchestration/status/W1-05.json",
+    "orchestration/plans/W1-20.md",
+    "orchestration/status/W1-20.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Owner may move on to `Plan the next Wave 1 batch.`",
+  "result": {
+    "W1-16": "SATISFIED",
+    "W1-05": "SATISFIED",
+    "W1-20": "SATISFIED"
+  },
+  "plan_state_summary": {
+    "needs-current-state-plan": 0,
+    "awaiting-criticism": 26,
+    "awaiting-remediation": 1,
+    "awaiting-recriticism": 0,
+    "satisfied": 4,
+    "current_batch_requiring_action": []
+  }
+}
