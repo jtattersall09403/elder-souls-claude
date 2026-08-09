@@ -73,5 +73,7 @@
   ],
   "next_step": "none — piece complete. A critic should start with `node tools/harness/stl-live.mjs`, then stl-probe.mjs, then crime-audit.mjs.",
   "notes_for_successor": "If the light exponent amendment is rejected, set game/data/stealth/detection.json visibility.light_exponent back to 0.7 and expect stl-probe.mjs STL01-M2 to fail on rows 2, 3 and 4 — nothing else changes, because no code hardcodes it. If S21's pickpocket ruling is reversed, delete the single rng.next() call in sim/stealth/system.js completePickpocket(); every other assertion in the piece is unaffected.",
-  "plan_state": "awaiting-recriticism"
+  "plan_state": "awaiting-remediation",
+  "next_plan_step": "Arbiter must rule AMENDMENT-W1-15-01 and QST05 metadata scope before plan remediation.",
+  "plan_review_20260809": "ESCALATED"
 }

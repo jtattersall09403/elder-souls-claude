@@ -56,5 +56,7 @@
   ],
   "next_step": "none for the builder.",
   "notes_for_successor": "The four things left, in order of value:\n(1) WIRE tools/lore/canon-census.mjs INTO check-content.mjs once the wave's library work has landed. Without a gate the registry falls behind the shipped tree within MINUTES - it did so during this run.\n(2) Ten stale cross-references remain: ten `contradicts[].cf` fields in books name a registry FACT rather than the DISPUTE that now registers them (CF-042->CF-D007, CF-062->CF-D008, CF-060/C001->CF-D010, CF-C007->CF-D009). Registration is by coverage so these are warnings, not failures. Not fixed because those files were being written by another agent throughout.\n(3) game/data/books/manifest.json DOES NOT EXIST and RI-LOR06 comparison method 1 invokes canon-check.py --books-manifest against it. Phantom path inside a gate.\n(4) Faction ids are spelled two ways on NPC records (drowned-court/the_drowned_court etc). world/canon.js#fold() normalises; other pieces matching on faction exactly are seeing a fraction of the population silently.\nDO NOT register more disputes for volume. 21 is comfortably past RI-LOR06's bar of 8 and its 'How we lose' #8 is about a registry full of things a player cannot perceive. The next registration should come from a book pair that actually landed, the way CF-D021 did.",
-  "plan_state": "awaiting-recriticism"
+  "plan_state": "awaiting-recriticism",
+  "next_plan_step": "Fresh reviewer-editor must recriticise the materially expanded nine-judge applicability contract.",
+  "plan_review_20260809": "MATERIALLY_EDITED"
 }
