@@ -137,33 +137,39 @@ change under judgement remains for a fresh builder. Blind packs remain independe
 agent that built the pack does not judge it.
 
 On FAIL, the critic's deliverable is not merely a diagnosis. It must leave the next builder a
-**minimal executable remediation specification** anchored to authoritative artifacts. Record it in
-the verdict/status/build handoff used by the existing workflow, and point at the satisfied plan,
-governing item, evidence and instrument rather than restating large source material. It should state:
+**minimal executable remediation specification covering every material actionable gap it found**,
+anchored to authoritative artifacts. Record it in the verdict/status/build handoff used by the
+existing workflow, and point at the satisfied plan, governing items, evidence and instruments rather
+than restating large source material. It should state:
 
-- the single actionable biggest gap and the exact governing predicate it misses;
+- **all material actionable gaps found in that critic round**, each tied to the exact governing
+  predicate it misses; designate one as `biggest_gap` only where the verdict schema requires that
+  ranking field — the schema's single biggest-gap field must never suppress other known blockers;
 - what current behaviour/evidence is already good and must be preserved;
-- the narrow implementation delta or subsystem seam that needs changing, without prescribing a
+- the narrow implementation delta or subsystem seam needed for each gap, without prescribing a
   speculative rewrite when multiple implementations could satisfy the bar;
-- the cheapest valid order of work: cheap/static/headless gates first, then only the browser,
-  blind-judge or runtime evidence genuinely required;
+- the cheapest valid order of work across the gaps: shared/cheap/static/headless gates first, then
+  only the browser, blind-judge or runtime evidence genuinely required;
 - authoritative instruments/fixtures to reuse by path, including required red/null/delete-the-fix
   and CONSUMPTION evidence;
-- exact acceptance, units, population/denominator, hard fails and stop conditions;
+- exact acceptance, units, population/denominator, hard fails and stop conditions for every gap;
 - any dependency, ruling or seam that must be resolved before expensive work proceeds.
 
-The critic must optimise the **remediation route** for material cost and deliverability while keeping
-the governing bar fixed. Do not prescribe duplicate implementation, unnecessary full-corpus reruns,
-redundant captures, repeated browser launches, gratuitous exhaustive sweeps, optional polish or broad
-refactors that do not contribute to closing the failed predicate. Reuse still-valid evidence and
-existing instruments where legitimate. If a cheap gate proves the proposed branch cannot work, stop
-there rather than paying for downstream browser/blind work.
+The critic must optimise the **whole remediation route** for material cost and deliverability while
+keeping the governing bar fixed. It should exploit shared fixes/evidence across gaps where legitimate
+and order the work so one cheap gate can invalidate or narrow downstream work. Do not prescribe
+duplicate implementation, unnecessary full-corpus reruns, redundant captures, repeated browser
+launches, gratuitous exhaustive sweeps, optional polish or broad refactors that do not contribute to
+closing a failed predicate. Reuse still-valid evidence and existing instruments where legitimate. If
+a cheap gate proves a proposed branch cannot work, stop that branch rather than paying for downstream
+browser/blind work.
 
-A failing critic still records one actionable biggest gap, as required by the verdict schema. The
-executable remediation specification expands that gap into a low-reconstruction handoff; it does not
-create a second list of competing priorities. The next fresh builder consumes the satisfied plan plus
-the latest critic delta, not the entire historical narrative unless a referenced authority requires
-it.
+A failing critic still records one `biggest_gap` when required by the verdict schema, but that is a
+**ranking/summary field, not a one-gap work limit**. The executable remediation specification must
+carry every material actionable gap discovered in the round so the next builder can fix them in one
+coherent, cost-effective pass instead of paying for serial rediscovery across critic rounds. The next
+fresh builder consumes the satisfied plan plus this latest complete critic delta, not the entire
+historical narrative unless a referenced authority requires it.
 
 This separation deliberately spends a little more context than a critic editing game code itself in
 exchange for independent measurement, clean delete-the-fix provenance and uncontaminated blind
@@ -226,14 +232,14 @@ agent was dispatched, offline reading alone established:
 
 - The repair the piece was dispatched for **had already landed**. A build agent would have spent its
   first hour discovering that. This is exactly the waste rule 3z was written for, caught a layer
-  earlier and for a tenth of the cost.
+earlier and for a tenth of the cost.
 - The defect was **not** the faction-quest edge case it was dispatched as: **58 of 75 strings (77%)**
-  on that toast channel overflow the 400 px panel, widest 1013.5 px. The brief's framing was wrong
-  and the plan corrected it before anyone paid to build against it.
+on that toast channel overflow the 400 px panel, widest 1013.5 px. The brief's framing was wrong
+and the plan corrected it before anyone paid to build against it.
 - The landed fix is a **second implementation** — `ui/type.js` already exports `wrap()`,
-  `ellipsise()` and `normalise()`, and `hud.js` imports `measure`/`drawText` from that same file
-  before re-implementing greedy wrapping inline. Rule 10 violated *inside the fix*. A build critic
-  would have found this in round 2; the plan found it in round 0.
+`ellipsise()` and `normalise()`, and `hud.js` imports `measure`/`drawText` from that same file
+before re-implementing greedy wrapping inline. Rule 10 violated *inside the fix*. A build critic
+would have found this in round 2; the plan found it in round 0.
 
 **And the shape to keep.** The plan agent wrote down what it was **least sure of** and named the
 reviewer's strongest move against its own document. That is not modesty, it is the cheapest possible
