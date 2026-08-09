@@ -24,7 +24,9 @@ const VERDICTS = join(ROOT, 'corpus', '90-verdicts');
 const PLANS = join(ROOT, 'orchestration', 'plans');
 
 const PLAN_STATES = new Set(['awaiting-criticism', 'awaiting-remediation', 'awaiting-recriticism', 'satisfied']);
-function canonicalPlanState(id, status = {}) {
+function canonicalPlanState(id, statuses = []) {
+  const status = [...statuses].sort((a, b) => roundOf(b.id) - roundOf(a.id))
+    .find(r => PLAN_STATES.has(String(r.status.plan_state || '').toLowerCase()))?.status || {};
   const explicit = String(status.plan_state || '').toLowerCase();
   if (PLAN_STATES.has(explicit)) return explicit;
   const candidates = existsSync(PLANS) ? readdirSync(PLANS).filter(f => f.toLowerCase() === `${id}.md`.toLowerCase()) : [];
@@ -32,6 +34,46 @@ function canonicalPlanState(id, status = {}) {
   const body = readFileSync(join(PLANS, candidates[0]), 'utf8');
   const marker = body.match(/^\s*(?:\*\*)?Plan-State:(?:\*\*)?\s*`?([a-z-]+)/im)?.[1]?.toLowerCase();
   return PLAN_STATES.has(marker) ? marker : 'awaiting-criticism';
+}
+
+const roundOf = id => Number(String(id).match(/-r(\d+)(?:-|$)/i)?.[1] || 0);
+const withoutRound = id => String(id).replace(/-r\d+(?:-.*)?$/i, '');
+const withoutWorkflowRole = id => String(id)
+  .replace(/-(?:critic|judge|fix\d*|instrument)(?:-r\d+)?$/i, '')
+  .replace(/-r\d+-(?:critic|judge|fix\d*|instrument)$/i, '');
+
+/**
+ * Resolve a historical task id to a logical continuation-planning unit.  A round marker is
+ * workflow lineage only when repository evidence supplies a matching piece anchor.  This avoids
+ * turning W1-04-r2/r3 into pieces while preserving names such as W1-PROSE-R2 when no W1-PROSE
+ * piece exists.  A sole longer anchor handles histories whose first task had a descriptive name
+ * (W1-17-act5-argument) and later rounds shortened it (W1-17-act5-r2).
+ */
+function canonicalPieceId(id, anchors, planAnchors = []) {
+  const plannedParent = planAnchors
+    .filter(x => id.toLowerCase() === x.toLowerCase() || id.toLowerCase().startsWith(`${x.toLowerCase()}-`))
+    .sort((a, b) => b.length - a.length)[0];
+  if (plannedParent) return plannedParent;
+  const roleless = withoutWorkflowRole(id);
+  const stem = withoutRound(roleless);
+  const exact = anchors.find(x => x.toLowerCase() === stem.toLowerCase());
+  if (exact) return exact;
+  const descendants = anchors.filter(x => x.toLowerCase().startsWith(`${stem.toLowerCase()}-`));
+  return descendants.length === 1 ? descendants[0] : id;
+}
+
+function canonicalPlanUnits(sourceRows, anchors, planAnchors = []) {
+  const units = new Map();
+  for (const row of sourceRows) {
+    const id = canonicalPieceId(row.id, anchors, planAnchors);
+    const key = id.toLowerCase();
+    if (!units.has(key)) units.set(key, { id, history: [] });
+    units.get(key).history.push(row);
+  }
+  return [...units.values()].map(unit => ({
+    ...unit,
+    planState: canonicalPlanState(unit.id, unit.history),
+  }));
 }
 
 function planDispatchLabel(state) {
@@ -80,14 +122,13 @@ if (existsSync(STATUS)) {
     const key = (id.toLowerCase().match(/^(w\d+-[a-z0-9]+)/) || [, id.toLowerCase()])[1];
     // A critic, a judge or a fix task is not a *piece*; nothing dispatches a critic against one.
     const isCritic = /(^|-)(critic|judge)(-|$)/.test(id.toLowerCase()) || /-fix$/.test(id.toLowerCase());
-    const planState = /^w1-/i.test(id) && !isCritic ? canonicalPlanState(id, j) : null;
     rows.push({
       id, state, file: `orchestration/status/${f}`,
       next: String(j.next_step || '').slice(0, 80),
       complete: /complete/i.test(state),
       blocked: /blocked/i.test(state),
       hasVerdict: judged.has(key),
-      isCritic, planState,
+      isCritic, status: j,
     });
   }
 }
@@ -111,16 +152,47 @@ if (process.argv.includes('--self-test')) {
   for (const [state, label] of Object.entries(expected)) {
     if (planDispatchLabel(state) !== label) throw new Error(`plan state ${state} did not classify`);
   }
-  console.log('dispatchable self-test: continuation-plan, remediation, re-criticism and build-ready states PASS; no round counter exists.');
+  const fixture = [
+    { id: 'W1-04', status: {} },
+    { id: 'W1-04-r2', status: { plan_state: 'awaiting-remediation' } },
+    { id: 'W1-04-r3', status: { plan_state: 'awaiting-recriticism' } },
+    { id: 'W1-SOULS', status: {} },
+    { id: 'W1-SOULS-LEDGER', status: { plan_state: 'satisfied' } },
+    { id: 'W1-PROSE-R2', status: {} },
+  ];
+  const units = canonicalPlanUnits(fixture, fixture.map(r => r.id).filter(id => withoutRound(id) === id));
+  const w104 = units.find(u => u.id === 'W1-04');
+  if (!w104 || w104.history.length !== 3 || w104.planState !== 'awaiting-recriticism') {
+    throw new Error('successive W1-04 rounds did not reconcile to the latest canonical state');
+  }
+  if (!units.some(u => u.id === 'W1-SOULS') || !units.some(u => u.id === 'W1-SOULS-LEDGER')) {
+    throw new Error('distinct SOULS and SOULS-LEDGER work was incorrectly collapsed');
+  }
+  if (!units.some(u => u.id === 'W1-PROSE-R2')) throw new Error('unanchored R2 piece was blindly stripped');
+  console.log('dispatchable self-test: canonical multi-round state and distinct-piece preservation PASS; no round counter exists.');
   process.exit(0);
 }
 if (process.argv.includes('--wave1-plans')) {
-  const wave = rows.filter(r => r.planState);
+  const waveRows = rows.filter(r => /^w1-/i.test(r.id));
+  const statusAnchors = waveRows.map(r => withoutWorkflowRole(r.id)).filter(id => withoutRound(id) === id);
+  const verdictAnchors = [...judged].map(id => withoutRound(id));
+  const planAnchors = existsSync(PLANS)
+    ? readdirSync(PLANS).filter(f => /^w1-.*\.md$/i.test(f)).map(f => basename(f, '.md'))
+    : [];
+  const byLower = new Map();
+  for (const id of [...statusAnchors, ...verdictAnchors, ...planAnchors]) {
+    if (!byLower.has(id.toLowerCase())) byLower.set(id.toLowerCase(), id);
+  }
+  const wave = canonicalPlanUnits(waveRows, [...byLower.values()], planAnchors);
   for (const state of ['needs-current-state-plan', 'awaiting-criticism', 'awaiting-remediation', 'awaiting-recriticism', 'satisfied']) {
     const found = wave.filter(r => r.planState === state);
     if (!found.length) continue;
     console.log(`\n${planDispatchLabel(state)}  (${found.length})`);
-    for (const r of found.sort((a,b) => a.id.localeCompare(b.id))) console.log(`  ${r.id.padEnd(28)} ${r.file}`);
+    for (const r of found.sort((a,b) => a.id.localeCompare(b.id))) {
+      const files = r.history.map(h => h.file).sort();
+      console.log(`  ${r.id.padEnd(28)} ${files.length} status${files.length === 1 ? '' : 'es'}; reconstruct full history + current HEAD`);
+      console.log(`    ${files.join(', ')}`);
+    }
   }
   process.exit(0);
 }

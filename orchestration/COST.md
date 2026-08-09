@@ -510,7 +510,8 @@ misreading the programme exists to prevent:
   verdict scores and critic find-rate, and the count of the five non-negotiables. **A cost figure
   published without its guards is not a result.**
 - **Every change with its before/after and whether it was kept or reversed** — including the
-  reversed ones. A ledger showing only what worked is the same failure as a critic who finds no gaps.
+  reversed ones. A ledger showing only what worked hides negative evidence and cannot support a
+  causal cost claim.
 
 - **Spend to date, and the current burn rate, at the top.** Owner: *"must have frequent updates on
   the progress viz so that I always know **at any point** how much the project is costing."* C/H is

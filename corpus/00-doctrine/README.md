@@ -48,7 +48,8 @@ subsystems.json                            GAP-LEDGER.json  ◄──── verd
 
 1. **Judge output, not source.** A config value is not a measurement.
 2. **No artifacts, no verdict.** Every claim cites a file that exists.
-3. **A critic that finds no gap has failed.** Exactly one gap, with a buildable remedy.
+3. **A critic tries to falsify, then reports the evidence.** An unsatisfied verdict names exactly
+   one gap with a buildable remedy; an evidence-earned PASS invents none.
 4. **Declare the visual axis before citing anything.** Fidelity is judged against modern
    references; art direction against Morrowind. Crossing the line voids the verdict.
 5. **A gap is closed by a later critic, never by whoever built the fix.**
