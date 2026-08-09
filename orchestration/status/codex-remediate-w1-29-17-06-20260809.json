@@ -1,0 +1,57 @@
+{
+  "task_id": "codex-remediate-w1-29-17-06-20260809",
+  "state": "complete",
+  "plan_state": "not-applicable",
+  "pieces": [
+    "W1-29",
+    "W1-17",
+    "W1-06"
+  ],
+  "completed_pieces": [
+    "W1-29",
+    "W1-17",
+    "W1-06"
+  ],
+  "deferred_pieces": [],
+  "escalated_pieces": [],
+  "files_claimed": [],
+  "files_touched": [
+    "orchestration/plans/W1-29.md",
+    "orchestration/status/W1-29.json",
+    "orchestration/plans/W1-17.md",
+    "orchestration/status/W1-17.json",
+    "orchestration/plans/W1-06.md",
+    "orchestration/status/W1-06.json",
+    "orchestration/status/codex-remediate-w1-29-17-06-20260809.json"
+  ],
+  "next_step": "Owner command: Critique the current Wave 1 plans. A different fresh reviewer-editor must review W1-29, W1-17 and W1-06.",
+  "redundant_with": [
+    "W1-29",
+    "W1-17",
+    "W1-06",
+    "critic-w1-plans-13-21-10-08-29-20260809",
+    "critique-w1-17-06-03-26-codex-20260809"
+  ],
+  "plan_state_summary": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 22,
+    "awaiting-recriticism": 3,
+    "satisfied": 6,
+    "current_batch_requiring_action": [
+      "W1-29",
+      "W1-17",
+      "W1-06"
+    ]
+  },
+  "summary": "Remediated the recorded BLOCKING findings for all three named plans against exact governing methods; all materially edited plans await fresh re-criticism.",
+  "remediation_outcome": {
+    "completed": [
+      "W1-29 exhaustive RI-JRN04 consumption contract",
+      "W1-17 RI-DLG07 independent critic/fresh-judge handoff",
+      "W1-06 governing critic/fresh/blind actor assignments"
+    ],
+    "deferred": [],
+    "escalated": []
+  }
+}
