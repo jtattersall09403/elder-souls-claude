@@ -54,7 +54,7 @@
     "SHARED TREE: tools/journey/journey-run.mjs landed from the tool builder at 07:09 and needed three declared fixes to run at all — --entry/--url passthrough, waiting for ready() after the shim reload (every --gamepad run aborted at exit 12), and its `import { installShim }` became a SyntaxError when a later shim round removed that export, taking all nine journeys down.",
     "NOT CLOSED: four authored strings (two rebinding refusals, the rotate line, six calibration prompts) and the whole touch overlay are computed and exposed but NOT DRAWN — RI-JRN03 CONSUMPTION §4's 'orphan text'. game/src/render/ui.js is where they must land. Also M-K21/M-K22 (inscription census, prompt purity) need RI-JRN01 O12's inscription entities; the naive passes are isolation-enforced and belong to a fresh agent; H8 thermal is Tier-H."
   ],
-  "next_step": "Fresh independent reviewer-editor re-criticises the materially remediated orchestration/plans/W1-08.md plan.",
+  "next_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan.",
   "notes_for_successor": "The report is reports/W1-08-W1-29-INPUT.md. Do NOT combine --group values in one run: the groups share one page and the touch sweep's `interact` presses open a conversation that consumes movement for everything after it. The one thing left to build is the DRAWING: the touch overlay and four authored strings exist and are measured through their models but no renderer draws them (game/src/render/ui.js). Two corpus conflicts need arbitration: RI-JRN04 §D vs RI-CAM02 §A on the stick deadzones, and RI-JRN03 M-K24 vs RI-CMB09 §1 on what `droppedInputs` may count. Both are argued in §6 and §5 of the report.",
   "check_counts": {
     "repo-touch": {
@@ -94,5 +94,6 @@
       "unmeasurable": 0
     }
   },
-  "plan_remediation_2026_08_09": "Recorded blocking criticism remediated in the canonical plan; no game implementation performed."
+  "plan_remediation_2026_08_09": "Recorded blocking criticism remediated in the canonical plan; no game implementation performed.",
+  "plan_review_editor_2026_08_09": "Material false-green repair; awaiting fresh re-criticism."
 }
