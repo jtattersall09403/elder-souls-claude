@@ -72,5 +72,6 @@
     "Tier-1 and tier-2 lock world counts are short of locks.json's ~410/~230 because 233 interiors exist rather than 819; the design-load-bearing tiers (120/48/11) land exactly."
   ],
   "next_step": "none — piece complete. A critic should start with `node tools/harness/stl-live.mjs`, then stl-probe.mjs, then crime-audit.mjs.",
-  "notes_for_successor": "If the light exponent amendment is rejected, set game/data/stealth/detection.json visibility.light_exponent back to 0.7 and expect stl-probe.mjs STL01-M2 to fail on rows 2, 3 and 4 — nothing else changes, because no code hardcodes it. If S21's pickpocket ruling is reversed, delete the single rng.next() call in sim/stealth/system.js completePickpocket(); every other assertion in the piece is unaffected."
+  "notes_for_successor": "If the light exponent amendment is rejected, set game/data/stealth/detection.json visibility.light_exponent back to 0.7 and expect stl-probe.mjs STL01-M2 to fail on rows 2, 3 and 4 — nothing else changes, because no code hardcodes it. If S21's pickpocket ruling is reversed, delete the single rng.next() call in sim/stealth/system.js completePickpocket(); every other assertion in the piece is unaffected.",
+  "plan_state": "awaiting-criticism"
 }
