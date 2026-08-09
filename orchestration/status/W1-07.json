@@ -1,6 +1,6 @@
 {
   "task_id": "W1-07",
-  "brief": "wave-1 piece W1-07 — Character creation (diegetic census office, 10 attrs / 19 skills, 10 races, birthsigns, custom class builder, 12x10 reaction matrix)",
+  "brief": "wave-1 piece W1-07 \u2014 Character creation (diegetic census office, 10 attrs / 19 skills, 10 races, birthsigns, custom class builder, 12x10 reaction matrix)",
   "started": "wave-1",
   "state": "complete",
   "judged_by": [
@@ -56,14 +56,14 @@
   },
   "findings": [
     "AMENDMENT-W1-07-01 (applied): the Imperial race row summed to 11; PER +4 -> +5.",
-    "AMENDMENT-W1-07-02 (applied): RG-COURT was +2/+2 against the item's own prose and method 2; RI-CHR02 §4a row C is 24 not 28; §4a's aggregate Saxhleel-Dunmer 15.3 is not in the matrix (recomputed 11.75, sum 141/12) so method 3's >=12 is restated at RI-DLG04's >=8; RI-CHR01 §6.4's 105 is 80 by its own parenthesis.",
+    "AMENDMENT-W1-07-02 (applied): RG-COURT was +2/+2 against the item's own prose and method 2; RI-CHR02 \u00a74a row C is 24 not 28; \u00a74a's aggregate Saxhleel-Dunmer 15.3 is not in the matrix (recomputed 11.75, sum 141/12) so method 3's >=12 is restated at RI-DLG04's >=8; RI-CHR01 \u00a76.4's 105 is 80 by its own parenthesis.",
     "Corpus gap kept, not papered over: RI-PRG03 ships Polearms and no race or named class raises it. Reachable via custom + questionnaire; declared as GAP-W1-07-polearms.",
-    "The questionnaire and custom routes were producing class_family 'custom' — a seventh family that put every custom start OUTSIDE RI-CHR01 §5's 540 grid. sheet.familyOfSkills() now classifies a five-skill shape into one of the six by overlap with the named roster.",
+    "The questionnaire and custom routes were producing class_family 'custom' \u2014 a seventh family that put every custom start OUTSIDE RI-CHR01 \u00a75's 540 grid. sheet.familyOfSkills() now classifies a five-skill shape into one of the six by overlap with the named roster.",
     "reachableClasses() was O(4^10 x sort19); it is now a five-slot insertion plus a bitmask class table, 284 ms for 1,048,576 routes.",
-    "RI-CHR01 §6.1's grep-for-\"class\" prohibition is now a false-positive generator (road class, water class, hazard class). The audit asserts GATE semantics — a class key inside requires/forbids/conditions/gate, or requires_class/class_min — and prints the naive count with its per-file breakdown."
+    "RI-CHR01 \u00a76.1's grep-for-\"class\" prohibition is now a false-positive generator (road class, water class, hazard class). The audit asserts GATE semantics \u2014 a class key inside requires/forbids/conditions/gate, or requires_class/class_min \u2014 and prints the naive count with its per-file breakdown."
   ],
-  "next_step": "none — piece complete. A successor should re-run `node tools/analysis/creation-audit.mjs` and `node tools/analysis/ar3-encounter-test.mjs` before changing anything under game/data/progression/**.",
+  "next_step": "none \u2014 piece complete. A successor should re-run `node tools/analysis/creation-audit.mjs` and `node tools/analysis/ar3-encounter-test.mjs` before changing anything under game/data/progression/**.",
   "notes_for_successor": "The arithmetic modules are pure and total on purpose: the audit tool IMPORTS game/src/character/*.js rather than reimplementing, so a critic measures the shipped composition. Do not fork them. KNOWN-GAPS.json is the only place an assertion may be excused, and an excuse that stops being true fails the run as STALE. Largest unbuilt dependency: RI-CHR02 method 5's dialogue volume (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by W1-11..13 and keys off playerRaceClass().",
   "plan_state": "awaiting-recriticism",
-  "planning_next_step": "Fresh independent reviewer-editor must re-criticise the materially remediated orchestration/plans/W1-07.md; this remediation does not approve it."
+  "planning_next_step": "A different fresh independent reviewer-editor must re-criticise the materially edited orchestration/plans/W1-07.md; the current editor cannot mark it satisfied."
 }
