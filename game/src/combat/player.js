@@ -1156,7 +1156,9 @@ export class PlayerController {
 
   _stickBearing(input, ctx) {
     if (Math.hypot(input.moveX, input.moveY) < 1e-6) return null;
-    return norm360(ctx.cameraYawDeg + Math.atan2(input.moveX, input.moveY) * DEG);
+    // Match locomotion to the rendered camera: positive stick X is visually right, which is
+    // the negative lateral axis of a camera looking forward from behind the player.
+    return norm360(ctx.cameraYawDeg + Math.atan2(-input.moveX, input.moveY) * DEG);
   }
 
   _softLockTarget(ctx) {
