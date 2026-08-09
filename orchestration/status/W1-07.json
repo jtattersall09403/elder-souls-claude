@@ -64,6 +64,6 @@
   ],
   "next_step": "none — piece complete. A successor should re-run `node tools/analysis/creation-audit.mjs` and `node tools/analysis/ar3-encounter-test.mjs` before changing anything under game/data/progression/**.",
   "notes_for_successor": "The arithmetic modules are pure and total on purpose: the audit tool IMPORTS game/src/character/*.js rather than reimplementing, so a critic measures the shipped composition. Do not fork them. KNOWN-GAPS.json is the only place an assertion may be excused, and an excuse that stops being true fails the run as STALE. Largest unbuilt dependency: RI-CHR02 method 5's dialogue volume (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by W1-11..13 and keys off playerRaceClass().",
-  "plan_state": "awaiting-remediation",
-  "planning_next_step": "Remediate the blocking findings in orchestration/plans/W1-07.md, then mark awaiting-recriticism."
+  "plan_state": "awaiting-recriticism",
+  "planning_next_step": "Fresh independent reviewer-editor must re-criticise the materially remediated orchestration/plans/W1-07.md; this remediation does not approve it."
 }
