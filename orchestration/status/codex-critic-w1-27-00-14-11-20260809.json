@@ -1,0 +1,31 @@
+{
+  "task_id": "codex-critic-w1-27-00-14-11-20260809",
+  "status": "complete",
+  "plan_state": "awaiting-remediation",
+  "pieces": [
+    "W1-27",
+    "W1-00",
+    "W1-14",
+    "W1-11"
+  ],
+  "files_touched": [
+    "orchestration/status/codex-critic-w1-27-00-14-11-20260809.json",
+    "orchestration/plans/W1-27.md",
+    "orchestration/status/W1-27.json",
+    "orchestration/plans/W1-00.md",
+    "orchestration/status/W1-00.json",
+    "orchestration/plans/W1-14.md",
+    "orchestration/status/W1-14.json",
+    "orchestration/plans/W1-11.md",
+    "orchestration/status/W1-11.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Owner publishes this PR, then runs: Remediate the current Wave 1 plan critiques",
+  "completed_pieces": [
+    "W1-27",
+    "W1-00",
+    "W1-14",
+    "W1-11"
+  ],
+  "deferred_pieces": []
+}

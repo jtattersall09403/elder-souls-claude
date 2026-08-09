@@ -85,6 +85,6 @@
   ],
   "next_step": "Done. NOT DONE and handed over: weapon.feel.mass \u2014 see the three MASS findings. Root cause is game/src/combat/swing.js:497 calibrateYawGain solving only the active-window arc; the fix is a weapon-declaration change touching up to 1,150 clips and should not land unreviewed.",
   "notes_for_successor": "audio.combat.impact is DONE and confirmed in the browser at 78aebc7: attached, calibrated, panned, and every detector has been seen going red. Two sabotage switches ship for that purpose: setAudioTriggerSource('anim') and setAudioPanSource('attacker'); both are reported in audioStats() so a build cannot run either quietly. THE OPEN ITEM IS weapon.feel.mass, and it is well-diagnosed but deliberately unfixed: 43.4% of 606 clips exceed the RI-WPN05 \u00a7E tip-speed ceiling and 91 exceed \u00a7E.2's 1.00 m/frame HARD FAIL, because calibrateYawGain's objective (swing.js#measureActiveArc) is the arc over the ACTIVE WINDOW ALONE and contains no tip-speed, continuity or recovery term. The whip is the proof it cannot be tuned away: 305 deg over 11 active f@60 on a 3.114 m blade needs >= 38 active frames to stay inside the medium tier's 26 m/s band, so the arc, the active window or the tier has to move. Reproduce with `node tools/weapons/motion-census.mjs out.json` and the per-frame dump described in the MASS findings.",
-  "plan_state": "awaiting-criticism",
+  "plan_state": "awaiting-remediation",
   "canonical_plan": "orchestration/plans/W1-11.md"
 }
