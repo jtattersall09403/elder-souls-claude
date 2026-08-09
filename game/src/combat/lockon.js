@@ -69,7 +69,8 @@ export class LockOn {
     if (!targetBody) {
       // no lock: camera-relative, character turns to the direction of travel
       if (mag < 1e-6) return { dirDeg: player.yaw, backstep: true, facingDeg: player.yaw, speedMult: 1.0 };
-      const dir = norm360(cameraYawDeg + Math.atan2(stickX, stickY) * 180 / Math.PI);
+      // Screen-right is the negative lateral axis of the behind-the-player render camera.
+      const dir = norm360(cameraYawDeg + Math.atan2(-stickX, stickY) * 180 / Math.PI);
       return { dirDeg: dir, backstep: false, facingDeg: dir, speedMult: 1.0 };
     }
     const toTarget = bearingDeg(targetBody.pos[0] - player.pos[0], targetBody.pos[2] - player.pos[2]);
@@ -78,7 +79,7 @@ export class LockOn {
       return { dirDeg: norm360(toTarget + 180), backstep: true, facingDeg: toTarget, speedMult: 1.0 };
     }
     // TARGET-RELATIVE: forward is the vector to the target, right is that rotated +90.
-    let rel = Math.atan2(stickX, stickY) * 180 / Math.PI;
+    let rel = Math.atan2(-stickX, stickY) * 180 / Math.PI;
     if (quantise) {
       const bin = this.C.directional.quantise_bins_deg;
       rel = Math.round(rel / bin) * bin;

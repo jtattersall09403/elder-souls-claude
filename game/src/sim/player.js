@@ -163,7 +163,10 @@ export function stepPlayer(sim, input, moves, bus) {
       // RI-CAM02: camera-relative, using the camera forward PROJECTED onto the ground plane.
       const cy = sim.camera.yaw / DEG;
       const fwdX = Math.sin(cy), fwdZ = Math.cos(cy);
-      const rgtX = Math.cos(cy), rgtZ = -Math.sin(cy);
+      // The render camera looks from behind the pivot. In that view its screen-right axis is
+      // the negative of the rig basis' lateral axis, so positive input must use this sign or
+      // A/D (and the touch stick) appear horizontally mirrored to the player.
+      const rgtX = -Math.cos(cy), rgtZ = Math.sin(cy);
       dir[0] = rgtX * mx + fwdX * my;
       dir[1] = rgtZ * mx + fwdZ * my;
       const dl = Math.sqrt(dir[0] * dir[0] + dir[1] * dir[1]) || 1;
