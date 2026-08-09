@@ -202,6 +202,16 @@ right now). Between these two you should not need to go looking for anything.
     failing verdict names one actionable biggest gap. A rigorous PASS may name no qualifying gap;
     it is earned only after the applicable adversarial methods and controls fail to demonstrate a
     material deficiency. Neither finding faults nor passing work is rewarded.
+
+    **A failing build critic does not become the builder.** Do not repair production game/content
+    code you are judging or later grade your own repair. Instead, leave the fresh builder a minimal
+    executable remediation specification tied to the biggest gap: point at the satisfied plan,
+    governing item, evidence and authoritative instrument; state what must be preserved, the narrow
+    implementation delta/seam, cheapest valid check order, exact acceptance/population/hard fails,
+    required controls/CONSUMPTION, and stop/escalation conditions. Optimise this handoff for material
+    cost and deliverability without lowering the bar: reuse valid evidence/tools, put cheap/static/
+    headless gates before expensive browser/blind work, and do not prescribe duplicate tooling,
+    broad speculative refactors, redundant captures/sweeps or optional polish. See `PLAN-LOOP.md`.
 24. **If a method names a tool that does not exist, build it** — and make it able to fail. Never
     stub a tool to pass; if the system it measures does not exist, it reports that absence and
     exits non-zero. See `orchestration/TOOL-LOOP.md`.
