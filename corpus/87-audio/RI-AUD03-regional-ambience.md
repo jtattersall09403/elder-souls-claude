@@ -211,11 +211,26 @@ set can score well on individual description and still be pairwise indistinguish
    (`null` permitted and counted as declared), L1 asset id unique across regions, L3 interval
    inside 8–40 s, L4 interval inside 45–180 s.
 
-7. **B5 — bed level.** Integrated LUFS over each clip, must be −28 to −24 (Stone Wastes
-   exempt at −34 ± 2).
+7. **B5 — scored ambience level (S41).** Score the **pre-normalisation version of the exact
+   clip from step 1**: seed 1337, listener at the authoritative region centroid, clear weather,
+   13:00, 240 f@60 settle, ambience-bus frames 240–1440. The live capture graph is unchanged:
+   L1–L4 and every R7 emitter audible at that centroid participate. Freeze all thirteen centroid
+   coordinates and graph membership in the manifest before rendering; neither listener position nor
+   emitter inclusion may be selected from results. Integrated LUFS must be −28 to −24 (Stone Wastes
+   exempt at −34 ± 2). The −23 LUFS normalisation in step 2 is only for B1–B3 and is never B5 input.
+
+   **Crest status (S41):** absolute crest >20 dB and synthesized-bed crest lift ≥3 dB are
+   corroborating diagnostics only, not hard/graded requirements and not replacements for B1/B2 or
+   the L3/L4 per-event level bands. Report them if useful; never count them in the native score.
 
 8. **B6 — positional emitters.** For each of the three R7 emitters, walk a 200 m transect past
    it and assert `audioLog.pan` and gain vary monotonically with bearing and distance.
+
+**B5 discriminating controls (S41).** Re-render the frozen centroid graph with R7 muted: at least one
+centroid where an R7 source is in range must change in PCM and LUFS, or the control is invalid. A
+bed-only render and any alternate-listener render are diagnostics and must be labelled non-scoring;
+the scorer must reject either if supplied as B5 input. This prevents both the excluded-emitter and
+favourable-listener interpretations from passing the same gate.
 
 ## Scoring
 
@@ -225,7 +240,7 @@ set can score well on individual description and still be pairwise indistinguish
 | B2 | Pairwise separation | ≥ **0.80** of 78 pairs answered DIFFERENT | < 0.50 (regions are one sound) |
 | B3 | Generic rate (Q5 = yes) | ≤ **0.25** | ≥ 0.75 |
 | B4 | Layer census | 13/13 regions, all four layers declared, 13 unique L1s | any two regions sharing an L1 asset |
-| B5 | Bed level | 13/13 in band | any region > −18 LUFS-I (ambience has eaten RI-AUD01's headroom) |
+| B5 | Frozen centroid/full-graph ambience level | 13/13 in band | any region > −18 LUFS-I (ambience has eaten RI-AUD01's headroom) |
 | B6 | Positional emitters | 3/3 | none implemented |
 
 Native scale **checks passed / 6**. 6/6 → meets the bar (ceiling 8). 4–5 → below bar, remedy
