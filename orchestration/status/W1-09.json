@@ -65,6 +65,8 @@
   ],
   "next_step": "none - complete. Critic should start at reports/w1-09/W1-09-REPORT.md.",
   "notes_for_successor": "CombatSystem (game/src/combat/system.js) is the authority; sim.player/sim.entities are a VIEW refreshed by game/src/sim/combat-bridge.js mirror(). Data files transcribe the corpus and the code never holds a second copy of a number. Probe: node tools/harness/cmb-probe.mjs --probe <roll|iframe|frames|commit|stamina|block|geometry|lockon|parley|all>. Exemplar: node tools/harness/cmb-exemplar.mjs. ALWAYS run node tools/analysis/data-index.mjs first - other wave-1 builders are adding data files concurrently and a stale index breaks boot. Known open: substep count vs measured tip speed (report §9); exemplar authoring quality (12/24 rows in band); RI-CMB07 M2 Mode-B needs W1-12 AI.",
+  "plan_state": "awaiting-remediation",
+  "next_plan_step": "Canonical arbitration must correct RI-CMB09 roll-spam arithmetic; then pin the ruling values/control in the plan and send it to fresh re-criticism.",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The plan treats an unratified RI-CMB09 arithmetic proposal as governing even though the canonical item still prints a contradictory native roll-spam table.",

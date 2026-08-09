@@ -103,7 +103,8 @@
     "CONSUMPTION (RI-MTH07): I ship two models, corpus/95-experience/RI-CMP01.cells.json and RI-EXP06.probes.json. Both are INSTRUMENT data, not world models, and NOTHING IN THE RUNNING GAME READS EITHER. Their consumers are tools (matrix-probe.mjs, breakage-probe.mjs) and both are demonstrated by perturbation in the self-tests. I did not ship a world-side model, so the world-side consumption demonstration does not apply - stated here rather than papered over."
   ],
   "contention_note": "Ran tools/contention.mjs --gate before every browser attempt. It refused four times (5-6.3 load per core against a 4.0 ceiling); I did the offline work and came back. It opened twice and I used one browser each time, kept for the whole run.",
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
+  "next_plan_step": "Fresh reviewer-editor must independently re-criticise the remediated RI-EXP02 acceptance contract.",
   "canonical_plan": "orchestration/plans/W1-25.md",
   "plan_critique": "BLOCKING (2026-08-09): RI-EXP02 acceptance uses the 1.5/hour hard-fail boundary instead of the 4.0/hour meets-bar threshold and omits unpredicted_count/blank_hours."
 }
