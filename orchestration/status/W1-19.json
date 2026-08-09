@@ -58,5 +58,7 @@
     "OPEN and NOT closable by this piece: RI-EXP05 LH11 (ending_specific_facts) and LH12 npc_reaction_delta both need window.__HARNESS.askTopic(npc, topic) -> response_id, which W1-17 owns, plus tools/experience/session-run.mjs and a resolver shared with RI-EXP02. Both are reported as unmeasurable and neither is scored as zero-that-passes."
   ],
   "next_step": "verify boot smoke after changes, run check-content, re-run census, write reports",
-  "notes_for_successor": "The mainline is complete and completable; what is thin is DEPTH. The Act V conversation declares 12 topics in Q-MAIN-26 notes but game/data/dialogue/topics/main-quest-argument.json does NOT exist - RI-EXP05 LH6 needs 12 topics with 4 knowledge-gated and that file is the next thing to write. The aftermath quest Q-MAIN-32 promises nine disagreeing accounts and has one. The eleven intake keepers on the counting floor are one collective id. Do not regenerate any mainline-*.json: they are hand-authored and tools/check-content.mjs guards them."
+  "notes_for_successor": "The mainline is complete and completable; what is thin is DEPTH. The Act V conversation declares 12 topics in Q-MAIN-26 notes but game/data/dialogue/topics/main-quest-argument.json does NOT exist - RI-EXP05 LH6 needs 12 topics with 4 knowledge-gated and that file is the next thing to write. The aftermath quest Q-MAIN-32 promises nine disagreeing accounts and has one. The eleven intake keepers on the counting floor are one collective id. Do not regenerate any mainline-*.json: they are hand-authored and tools/check-content.mjs guards them.",
+  "plan_state": "awaiting-criticism",
+  "canonical_plan": "orchestration/plans/W1-19.md"
 }
