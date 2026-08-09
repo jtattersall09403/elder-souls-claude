@@ -1,0 +1,32 @@
+{
+  "task_id": "codex-remediate-w1-09-w1-22-w1-25-20260809",
+  "status": "complete",
+  "plan_state": "mixed",
+  "files_touched": [
+    "orchestration/plans/W1-09.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/plans/W1-25.md",
+    "orchestration/status/W1-09.json",
+    "orchestration/status/W1-22.json",
+    "orchestration/status/W1-25.json",
+    "orchestration/status/codex-remediate-w1-09-w1-22-w1-25-20260809.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-09.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/plans/W1-25.md",
+    "orchestration/status/W1-09.json",
+    "orchestration/status/W1-22.json",
+    "orchestration/status/W1-25.json",
+    "orchestration/status/codex-remediate-w1-09-w1-22-w1-25-20260809.json"
+  ],
+  "completed": [
+    "W1-25"
+  ],
+  "deferred": [],
+  "escalated": [
+    "W1-09: RI-CMB09 roll-spam arithmetic requires canonical ruling/correction.",
+    "W1-22: RI-AUD03 B5 listener/R7 capture and crest authority require canonical ruling."
+  ],
+  "next_step": "Obtain the two canonical rulings; then finish W1-09/W1-22 remediation. Send W1-25 to a fresh reviewer-editor."
+}
