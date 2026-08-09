@@ -112,6 +112,64 @@ a claim that contradicted its own source. Haiku is unproven and no build should 
 | A build with a landed plan, an existing instrument, and a machine-checkable acceptance | **Sonnet** |
 | One mechanical job, trialled and measured before it is trusted | Haiku, not yet |
 
+## Build loop: independent critic, executable remediation
+
+The plan-side reviewer-editor pattern does **not** extend to production game-code criticism. Once
+building begins, keep implementation and judgement separate:
+
+```
+  builder
+     ↓
+  fresh independent build critic
+     ├─ PASS → build-satisfied
+     └─ FAIL → executable remediation specification
+                    ↓
+              fresh builder
+                    ↓
+              fresh build critic
+                    ↺ until PASS
+```
+
+A build critic must not repair production game code, tune the implementation to its own probe, or
+turn itself into the next builder. It may create or repair critic-side measurement tooling when the
+method requires that, subject to the normal tool-loop and independence rules, but the game/content
+change under judgement remains for a fresh builder. Blind packs remain independently judged: an
+agent that built the pack does not judge it.
+
+On FAIL, the critic's deliverable is not merely a diagnosis. It must leave the next builder a
+**minimal executable remediation specification** anchored to authoritative artifacts. Record it in
+the verdict/status/build handoff used by the existing workflow, and point at the satisfied plan,
+governing item, evidence and instrument rather than restating large source material. It should state:
+
+- the single actionable biggest gap and the exact governing predicate it misses;
+- what current behaviour/evidence is already good and must be preserved;
+- the narrow implementation delta or subsystem seam that needs changing, without prescribing a
+  speculative rewrite when multiple implementations could satisfy the bar;
+- the cheapest valid order of work: cheap/static/headless gates first, then only the browser,
+  blind-judge or runtime evidence genuinely required;
+- authoritative instruments/fixtures to reuse by path, including required red/null/delete-the-fix
+  and CONSUMPTION evidence;
+- exact acceptance, units, population/denominator, hard fails and stop conditions;
+- any dependency, ruling or seam that must be resolved before expensive work proceeds.
+
+The critic must optimise the **remediation route** for material cost and deliverability while keeping
+the governing bar fixed. Do not prescribe duplicate implementation, unnecessary full-corpus reruns,
+redundant captures, repeated browser launches, gratuitous exhaustive sweeps, optional polish or broad
+refactors that do not contribute to closing the failed predicate. Reuse still-valid evidence and
+existing instruments where legitimate. If a cheap gate proves the proposed branch cannot work, stop
+there rather than paying for downstream browser/blind work.
+
+A failing critic still records one actionable biggest gap, as required by the verdict schema. The
+executable remediation specification expands that gap into a low-reconstruction handoff; it does not
+create a second list of competing priorities. The next fresh builder consumes the satisfied plan plus
+the latest critic delta, not the entire historical narrative unless a referenced authority requires
+it.
+
+This separation deliberately spends a little more context than a critic editing game code itself in
+exchange for independent measurement, clean delete-the-fix provenance and uncontaminated blind
+judgement. Recover that cost through precise handoff, evidence reuse, cheap-first sequencing and
+single-browser/capture-pool discipline rather than by collapsing builder and critic roles.
+
 ## The risk this creates, and the guard
 
 Several of the best findings this week were discoverable **only by building**: the ground plane
