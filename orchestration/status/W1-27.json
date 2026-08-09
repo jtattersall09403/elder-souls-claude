@@ -2,8 +2,8 @@
   "task_id": "W1-27",
   "state": "done",
   "role": "builder",
-  "piece": "W1-27 \u2014 density, loot and the coherence pass",
-  "commit_stamp": "see reports/w1-27/coherence.json .commit \u2014 every number below is a claim about that commit (RULES 12)",
+  "piece": "W1-27 — density, loot and the coherence pass",
+  "commit_stamp": "see reports/w1-27/coherence.json .commit — every number below is a claim about that commit (RULES 12)",
   "paths": [
     "world.density.handplacement",
     "world.loot.placement",
@@ -31,10 +31,10 @@
     "RI-WLD05",
     "RI-WLD09"
   ],
-  "headline": "1,827 of 1,950 placed takeable objects (93.7%) come out of a ten-entry palette indexed by a hash of the shelf. Runtime loot rolls: 0. The rule is broken at build time, not at play time, and the outcome on the shelf is the same \u2014 15 object names appear more than 40 times, hackle-lo leaf bundle 54 times. Ruled in reports/w1-27/RULING.md R1, reversible.",
+  "headline": "1,827 of 1,950 placed takeable objects (93.7%) come out of a ten-entry palette indexed by a hash of the shelf. Runtime loot rolls: 0. The rule is broken at build time, not at play time, and the outcome on the shelf is the same — 15 object names appear more than 40 times, hackle-lo leaf bundle 54 times. Ruled in reports/w1-27/RULING.md R1, reversible.",
   "checks": {
-    "instrument": "tools/coherence/w1-27-coherence.mjs \u2014 ten checks, one per path, offline; --json writes reports/w1-27/coherence.json; --self-test runs 16 arms",
-    "self_test": "16/16 arms behaved, no inert controls. Five checks were RED on the shipped tree, so their teardown is a REPAIR expecting green plus a repair-and-break expecting red \u2014 breaking an already-red check leaves both arms agreeing, which is RULES 6's inert control, and the first version of this self-test had it on three of them. The detector also flagged N1 the moment this piece fixed it, and caught an off-by-one in my own D1 arm (157+119 = 276 passes the floor) and a guard-detection regex a header comment could satisfy.",
+    "instrument": "tools/coherence/w1-27-coherence.mjs — ten checks, one per path, offline; --json writes reports/w1-27/coherence.json; --self-test runs 16 arms",
+    "self_test": "16/16 arms behaved, no inert controls. Five checks were RED on the shipped tree, so their teardown is a REPAIR expecting green plus a repair-and-break expecting red — breaking an already-red check leaves both arms agreeing, which is RULES 6's inert control, and the first version of this self-test had it on three of them. The detector also flagged N1 the moment this piece fixed it, and caught an off-by-one in my own D1 arm (157+119 = 276 passes the floor) and a guard-detection regex a header comment could satisfy.",
     "red_at_handoff": [
       "L1 world.loot.placement",
       "D1 world.density.handplacement",
@@ -51,22 +51,22 @@
     ]
   },
   "findings": [
-    "L1 / world.loot.placement \u2014 1,950 placed takeable objects; 1,827 palette-assembled (tools/world/build-property.mjs PALETTE l.38-49, indexed l.152-154), 83 hand-placed unique, 40 identical well buckets. 153 distinct names; 15 of them appear >40 times, which is RI-WLD02 M7's own anti-scatter threshold.",
-    "L1 CONSUMPTION (RI-MTH07) \u2014 tools/coherence/w1-27-loot-consumption.mjs, one browser, stepping. Four consumers move between arms: reachable / inventory / stolen registry / survives save-reset-load. Emptying all 1,950 zone contents on the running engine takes all four away. So the loot count is about a game, not a file.",
-    "D1 / world.density.handplacement \u2014 157 named locations (115 interiors + 42 exterior POIs) against RI-WLD02's A+B fail floor of 276 and target of 460. pois.json carries declared_incomplete naming dungeon entrances, named caves, signposts and stations as missing, and owns them to W1-02/W1-04/W1-05. Regions `hive` and `valus-ridge` hold zero POIs. Everything present IS hand-placed \u2014 the density defect is absence, not generation.",
-    "N1 / coherence.naming \u2014 CLOSED. build-property.mjs still held the pre-fix GIVEN/EPITHET stock and rewrote game/data/world/property/*.json with no flag. Proved on a scratch tree: one unguarded run writes 45 distinct people (down from 280) at 80.0% hyphenated-English, including `Sedura Rope-Maker` (Dunmer honorific as an Argonian given name \u2014 the verdict's own example), and deletes build-unique-property.mjs's 83 unique objects. Nothing automated runs it, so this was one afternoon away from erasing two rounds silently. Guard landed; N1 green.",
-    "LR1 / coherence.lore \u2014 28 authored contradictions over 69 positions, 28 fully voiced, 0 malformed. None flagged: the authored/incoherent line is RI-LOR06's OWN error list (disputed:true AND >=2 positions AND every position has non-empty held_by AND >=1 voiced_by), not my taste. The shipped copy and corpus/60-lore/data/canon-facts.json agree row for row. One real defect: CF-D011 cites book:the-drowned-ford and no such book exists among the 162 shipped \u2014 RI-LOR06's `--books-manifest` clause, which nothing runs.",
-    "T1 / coherence.tone.crossregion \u2014 13 declared regions; `hive` carries neither a POI nor a populated post, so it has no tone to judge. `valus-ridge` is populated on one axis only.",
-    "F1 / coherence.faction.crossref \u2014 green. All 4 factions owning property or a zone resolve against the 12-faction roster in game/data/dialogue/faction-reactions.json.",
-    "X1 / coherence.difficulty.continuity \u2014 green. 5 tiers over 144 posts, 0 tier steps paying fewer souls than the tier below. This is the weakest honest statement of continuity: it says the curve points the same way twice, not that it is good.",
-    "P1 / coherence.progression.pacing \u2014 green, delegated to tools/check-souls-world.mjs --totals (the owning instrument). 10,679 souls over 267 bodies; crossing 1,404 -> level 3; the cache agrees with the statblocks. Not re-derived (RULES 18).",
-    "E1 / coherence.economy.balance \u2014 green. The brief asked me to find the fourth mirror; it is already found and named \u2014 W1-14 round 5, save/state.js's bare restore \u2014 and goldMirrors() (game/src/harness/api.js:1736) is the read-only surface built for it. All 4 purses are written by _setGold. Cited, not re-measured.",
-    "S1 / coherence.systems.composition \u2014 corpus gate PASSES (RI-MTH05 M1). 8 of 63 scored wave-1 verdicts reach the pass threshold of 6; median 4. The gate's exit code conflates a real defect with corpus/00-doctrine/INDEX.md being stale, so S1 parses the verdict line instead \u2014 my own new tool made the index stale and the first run of this check reported `corpus gate FAILS` because of it."
+    "L1 / world.loot.placement — 1,950 placed takeable objects; 1,827 palette-assembled (tools/world/build-property.mjs PALETTE l.38-49, indexed l.152-154), 83 hand-placed unique, 40 identical well buckets. 153 distinct names; 15 of them appear >40 times, which is RI-WLD02 M7's own anti-scatter threshold.",
+    "L1 CONSUMPTION (RI-MTH07) — tools/coherence/w1-27-loot-consumption.mjs, one browser, stepping. Four consumers move between arms: reachable / inventory / stolen registry / survives save-reset-load. Emptying all 1,950 zone contents on the running engine takes all four away. So the loot count is about a game, not a file.",
+    "D1 / world.density.handplacement — 157 named locations (115 interiors + 42 exterior POIs) against RI-WLD02's A+B fail floor of 276 and target of 460. pois.json carries declared_incomplete naming dungeon entrances, named caves, signposts and stations as missing, and owns them to W1-02/W1-04/W1-05. Regions `hive` and `valus-ridge` hold zero POIs. Everything present IS hand-placed — the density defect is absence, not generation.",
+    "N1 / coherence.naming — CLOSED. build-property.mjs still held the pre-fix GIVEN/EPITHET stock and rewrote game/data/world/property/*.json with no flag. Proved on a scratch tree: one unguarded run writes 45 distinct people (down from 280) at 80.0% hyphenated-English, including `Sedura Rope-Maker` (Dunmer honorific as an Argonian given name — the verdict's own example), and deletes build-unique-property.mjs's 83 unique objects. Nothing automated runs it, so this was one afternoon away from erasing two rounds silently. Guard landed; N1 green.",
+    "LR1 / coherence.lore — 28 authored contradictions over 69 positions, 28 fully voiced, 0 malformed. None flagged: the authored/incoherent line is RI-LOR06's OWN error list (disputed:true AND >=2 positions AND every position has non-empty held_by AND >=1 voiced_by), not my taste. The shipped copy and corpus/60-lore/data/canon-facts.json agree row for row. One real defect: CF-D011 cites book:the-drowned-ford and no such book exists among the 162 shipped — RI-LOR06's `--books-manifest` clause, which nothing runs.",
+    "T1 / coherence.tone.crossregion — 13 declared regions; `hive` carries neither a POI nor a populated post, so it has no tone to judge. `valus-ridge` is populated on one axis only.",
+    "F1 / coherence.faction.crossref — green. All 4 factions owning property or a zone resolve against the 12-faction roster in game/data/dialogue/faction-reactions.json.",
+    "X1 / coherence.difficulty.continuity — green. 5 tiers over 144 posts, 0 tier steps paying fewer souls than the tier below. This is the weakest honest statement of continuity: it says the curve points the same way twice, not that it is good.",
+    "P1 / coherence.progression.pacing — green, delegated to tools/check-souls-world.mjs --totals (the owning instrument). 10,679 souls over 267 bodies; crossing 1,404 -> level 3; the cache agrees with the statblocks. Not re-derived (RULES 18).",
+    "E1 / coherence.economy.balance — green. The brief asked me to find the fourth mirror; it is already found and named — W1-14 round 5, save/state.js's bare restore — and goldMirrors() (game/src/harness/api.js:1736) is the read-only surface built for it. All 4 purses are written by _setGold. Cited, not re-measured.",
+    "S1 / coherence.systems.composition — corpus gate PASSES (RI-MTH05 M1). 8 of 63 scored wave-1 verdicts reach the pass threshold of 6; median 4. The gate's exit code conflates a real defect with corpus/00-doctrine/INDEX.md being stale, so S1 parses the verdict line instead — my own new tool made the index stale and the first run of this check reported `corpus gate FAILS` because of it."
   ],
-  "delete_the_fix": "N1 is the only fix this piece landed, and its arms CHANGED when it landed \u2014 which the inert-control detector caught. Before the guard, the arm was a repair (red -> green). After it, both arms and the baseline were green and N1 had never been seen to move: an inert control created by its own fix. The arms are now `delete-the-guard` (strip the guard block back out on a copy -> the old red returns) and `delete-the-guard-and-empty-the-stock` (green by the other route, so the guard is not carrying the number alone). Running that first arm also exposed a second defect: N1's guard test was a bare /--write/ over the whole file, which the header comment satisfied. It is now the guarding expression, checked in the text BEFORE the write. The hazard itself was demonstrated positively by running the UNGUARDED generator against a scratch ROOT in the scratchpad \u2014 never the shipped tree \u2014 and reading the names it wrote. git diff on game/data/world/property/ is empty.",
+  "delete_the_fix": "N1 is the only fix this piece landed, and its arms CHANGED when it landed — which the inert-control detector caught. Before the guard, the arm was a repair (red -> green). After it, both arms and the baseline were green and N1 had never been seen to move: an inert control created by its own fix. The arms are now `delete-the-guard` (strip the guard block back out on a copy -> the old red returns) and `delete-the-guard-and-empty-the-stock` (green by the other route, so the guard is not carrying the number alone). Running that first arm also exposed a second defect: N1's guard test was a bare /--write/ over the whole file, which the header comment satisfied. It is now the guarding expression, checked in the text BEFORE the write. The hazard itself was demonstrated positively by running the UNGUARDED generator against a scratch ROOT in the scratchpad — never the shipped tree — and reading the names it wrote. git diff on game/data/world/property/ is empty.",
   "mistakes_i_made_and_caught": [
     "RULES 11, committed by the tool written to check for it: the consumption probe guessed `crime.stolen` / `stolenRegistry` / `stolen_items` for the stolen registry. The key is `stolen_registry` (CrimeWorld.toJSON()). C3 and C4 read as DEAD CONSUMERS on the first run. Fixed by looking the field up; all four then moved.",
-    "LR1's first criterion required a written `in_world_source` and flagged two GOOD disputes \u2014 CF-D028 is held in speech and never written down. Replaced with RI-LOR06's own error list before anything was published. This is exactly the failure the brief warned about and the tool committed it before the report did.",
+    "LR1's first criterion required a written `in_world_source` and flagged two GOOD disputes — CF-D028 is held in speech and never written down. Replaced with RI-LOR06's own error list before anything was published. This is exactly the failure the brief warned about and the tool committed it before the report did.",
     "The self-test's first version broke three already-red checks and called both arms a result. That is RULES 6's inert control. Rewritten so a red check is torn down by REPAIRING it.",
     "A D1 teardown arm asserted red at exactly the floor (157+119 = 276, which passes). The self-test caught my own off-by-one."
   ],
@@ -75,11 +75,11 @@
     "I did not fix D1. The missing POIs are declared_incomplete and OWNED by W1-02 / W1-04 / W1-05 in pois.json itself; authoring 400 POIs into another piece's file would be the collision rule 16 exists to prevent.",
     "I did not write the missing book:the-drowned-ford (LR1). One line, but game/data/books is not mine and W1-LIBRARY is live.",
     "I did not measure RI-WLD02's M6 scripted walk, M8 sightlines or M9 cross-country transects. D1 fails on the static count before a walk is worth taking, and a TTNIT figure over 42 POIs would be a number with no meaning. Said plainly rather than reported thin.",
-    "I did not score the thirteen items. RULES 22 \u2014 a builder does not grade itself. No verdict file was written.",
+    "I did not score the thirteen items. RULES 22 — a builder does not grade itself. No verdict file was written.",
     "RI-AI07, RI-CMP01, RI-DLG08, RI-LOR05, RI-PRG04, RI-PRG08, RI-QST08, RI-WLD05 and RI-WLD09 were read for what they bind, but this piece produced no new measurement against them beyond the ten checks. A critic should treat those legs as unmeasured by W1-27, not as passed."
   ],
   "for_the_critic": [
-    "The one number to attack first is L1's 1,827. Its filter is two clauses (palette name AND positional instance id AND not unique) and its teardown is `strip-then-replant-one`. If you think household crockery is not loot, say so \u2014 R1 names that as the evidence that overturns it.",
+    "The one number to attack first is L1's 1,827. Its filter is two clauses (palette name AND positional instance id AND not unique) and its teardown is `strip-then-replant-one`. If you think household crockery is not loot, say so — R1 names that as the evidence that overturns it.",
     "P1, E1 and S1 shell out to or cite other people's instruments on purpose. If you want them broken, break them there; a second copy of a check is RI-MTH05 C4's defect.",
     "The consumption probe is the part that would embarrass this piece if it were wrong, because it is the only claim here that needed the world to run."
   ],
@@ -103,11 +103,12 @@
   ],
   "overlap_note": "tools/world/build-property.mjs is declared by W1-15 (locks/trespass) and read by W1-23-r4 (the rename criterion). My change is four lines, purely additive, at the write site only, and touches neither the lock banding W1-15 works on nor the GIVEN/EPITHET arrays W1-23-r4 reads out at run time. Declared rather than left to read as a collision (RULES 16). Reversible by deleting the guard block.",
   "reports_not_versioned": "reports/w1-27/coherence.json and loot-consumption.json are written but NOT committed: reports/.gitignore excludes every .json that is reproducible by re-running the tool that made it, and both are (`w1-27-coherence.mjs --json`, `w1-27-loot-consumption.mjs --out`). reports/w1-27/RULING.md is versioned, which is the same file's rule. Regenerate before running w1-27-chart.mjs.",
-  "plan_state": "awaiting-recriticism",
+  "plan_state": "satisfied",
   "canonical_plan": "orchestration/plans/W1-27.md",
   "plan_path": "orchestration/plans/W1-27.md",
   "plan_remediation": "Recorded RI-WLD02 M7 blocker resolved: native seeded 60-POI sample, both clauses, >5/60 fail, full denominator and a red sabotage replace the non-governing loot-name proxy; awaiting fresh re-criticism.",
-  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; RI-LOR08 is now governing.",
-  "plan_reviewer_editor_outcome": "MATERIAL_EDIT: added omitted RI-LOR08 governing bar as the fourteenth item.",
-  "next_plan_action": "Fresh independent reviewer-editor must review the materially edited canonical plan; do not build or self-approve."
+  "next_plan_step": "The plan is satisfied and may proceed to build-side work from canonical HEAD.",
+  "plan_reviewer_editor_outcome": "SATISFIED: RI-LOR08 and all fourteen native decisions are complete and cost-effective.",
+  "next_plan_action": "Proceed only from the satisfied canonical plan and the latest independent build-critic delta.",
+  "plan_review_outcome": "SATISFIED: fresh independent review found no material defect and made no material plan edit."
 }

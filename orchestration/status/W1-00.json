@@ -50,7 +50,7 @@
   "notes_for_successor": "Evidence lives in reports/runs/{DETERMINISM,API-PROBE,SAVE-AUDIT,INPUT-PROBE,SHOTS} and reports/platform/TIER-S. Known open items: (1) RI-MTH02 R5 fails on two enemy fields that are warm-up-dependent by construction - amendment AM-W1-00-01 filed, NOT applied; (2) alloc/step is measured with performance.memory, which is coarse - a CDP Runtime.getHeapUsage probe (A-JRN9) is the stronger instrument and belongs to the runner; (3) pointer-lock checks M-K8..M-K11 need a real user gesture and a menu surface (W1-21); (4) enemy AI is deliberately absent - inf_trash declares ai='hold_ground' and never attacks, so cmb-duel-infantry's punish statistics are structurally 0.",
   "plan_state": "awaiting-recriticism",
   "canonical_plan": "orchestration/plans/W1-00.md",
-  "plan_review_outcome": "Material review edit: removed a duplicate RI-JRN03 naive/discoverability pass outside W1-00 pipeline ownership while retaining real pipeline/browser gates; fresh reviewer required.",
-  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; RI-MTH07 is now governing.",
-  "plan_reviewer_editor_outcome": "MATERIAL_EDIT: added omitted RI-MTH07 governing bar and CONSUMPTION acceptance."
+  "plan_review_outcome": "Material review edit: completed RI-MTH07 native five-axis harness/model census and reuse boundary; fresh reviewer required.",
+  "next_plan_step": "A different fresh reviewer-editor must re-criticise the materially edited canonical plan; do not build.",
+  "plan_reviewer_editor_outcome": "MATERIAL_EDIT: completed RI-MTH07 hand-feed, trace-only and partial-world VERIFY acceptance."
 }
