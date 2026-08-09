@@ -476,8 +476,8 @@
     "DOCTRINE, checked rather than assumed. S23 already rules this seam and I did not re-litigate it: RI-CMB01 owns everything the tier does inside the fight (boundaries, i-frames, distance, recovery), RI-PRG07 owns encumbrance outside it and may keep finer granularity provided it has no in-fight effect. Both halves are now implemented on that split and both are measured above. Levelling stayed Souls-shaped (souls buy levels at a hearth; gold is money and is not on that path). Encumbrance is Morrowind-shaped outside the fight (a continuous ratio over the whole pack, feeding speed, sprint and travel time) and Souls-shaped inside it (four discrete tiers over WORN weight only, feeding i-frames, recovery, roll stamina and regen), and the AR-1 guard between them is tested.",
     "AR-3, seam crossing: this piece is NOT sterile. Two interactions cross the boundary in both directions. Outward: what you pick up in the Morrowind half decides how many frames you are invulnerable for in the Souls half \u2014 armour weight to equip ratio to roll tier to i-frame window. Inward: nothing you carry may touch the fight, and the AR-1 guard that enforces it is measured, not asserted. The travel coupling is a third: a Morrowind logistics decision (how much loot to haul) is paid for in world time on a Morrowind fast-travel network that S7 explicitly protects."
   ],
-  "plan_state": "awaiting-criticism",
+  "plan_state": "satisfied",
   "canonical_plan": "orchestration/plans/W1-16.md",
   "planning_head": "1c4c487d",
-  "planning_note": "Current-state continuation plan authored under the owner-Codex bridge; implementation state/history above is retained, and the plan awaits independent criticism."
+  "planning_note": "Independent current-state plan critique on 2026-08-09 found no blocking pre-build gap; continuation plan is satisfied and ready for builder dispatch."
 }
