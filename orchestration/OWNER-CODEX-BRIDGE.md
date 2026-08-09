@@ -1,9 +1,12 @@
 # Temporary owner-driven Codex bridge
 
-**Temporary capacity exception, not doctrine:** owner-reviewed Codex Cloud batches may use 1–4
-useful agents/tasks instead of the normal 12-agent throughput floor. Quality, independence,
-evidence and acceptance bars do not change. Claude Code may ignore/remove this bridge when normal
-high-parallelism orchestration resumes.
+**Temporary capacity exception, not doctrine:** owner-reviewed Codex Cloud **planning** tasks may run
+at whatever useful concurrency the owner can sustain, with no fixed planning-task cap, provided each
+task owns a distinct logical piece, writes only piece-specific planning/status artifacts, and avoids
+shared generated/publishing files while the parallel flight is in progress. Critique, remediation
+and any task that must touch shared state should remain conservatively batched unless ownership is
+explicitly disjoint. Quality, independence, evidence and acceptance bars do not change. Claude Code
+may ignore/remove this bridge when normal high-parallelism orchestration resumes.
 
 ## Bootstrap and select
 
