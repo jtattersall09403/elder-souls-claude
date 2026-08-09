@@ -7,7 +7,11 @@
   "plan": "orchestration/plans/W1-HUD-TOAST.md",
   "plan_status": "orchestration/status/plan-w1-hud-toast.json",
   "dispatch_condition": "BLOCKING-1, -3, -6 folded into the plan text, then build. Piece B not touched.",
-  "redundant_with": ["W1-21", "W1-26", "critic-w1-20"],
+  "redundant_with": [
+    "W1-21",
+    "W1-26",
+    "critic-w1-20"
+  ],
   "files_claimed": [
     "game/src/ui/hud.js",
     "game/src/render/text-register.js",
@@ -44,5 +48,17 @@
     "A2a's full-frame pixel diff (no rect-band restriction) relies on the two screenshots being IDENTICAL except for the intentional drawOnMenus overlay -- true only if no other frame-dependent draw happens between them (no stepFrames, same sim.frame, uiBuild(false) no-op via the per-frame build cache documented at system.js:601). Not yet run against the real browser to confirm.",
     "hud-toast-corpus.mjs's population (395 strings) is NOT the plan's 75 -- re-derived independently per rule 18 rather than trust the prior recipe, enumerating every (faction,rank,term) combination with a template rather than only realistic rank-appropriate refusals. A wider, more literal reading of 'every uiToast() caller'; both numbers are reported rather than forcing a match.",
     "other_populations (prompt/boss/slot-label) in hud-toast-corpus.mjs walks game/data/world + npcs for prop/NPC 'name' fields as a proxy for _interactPrompt()'s reachable population -- not a literal simulation walk. slot-label's 70/119 'over budget' figure is measured against the RAW name width, not the ALREADY-TRUNCATED (char-slice(0,8)+ellipsis) text hud.js's quickslot code actually draws -- it does NOT describe a live defect and must not be read as one."
-  ]
+  ],
+  "plan_state": "awaiting-remediation",
+  "plan_critique_2026_08_09": {
+    "verdict": "BLOCKING",
+    "biggest_gap": "The operative Piece B acceptance still contradicts the later S-PLAN-HUD-B3 ruling and cannot be dispatched deterministically.",
+    "findings": [
+      "Section 1 still grades broad P with OPAQUE although the later ruling replaces it with the 14-member P_E and report-only 109-tool census.",
+      "B2 requires 4/4 but adjacent prose calls 3/4 a non-failure.",
+      "The four historical positives still lack executable membership and fixture rules.",
+      "Piece A is already built and must not be redispatched during Piece B plan remediation."
+    ],
+    "next_step": "Remediate Piece B text only, preserve Piece A, then mark awaiting-recriticism."
+  }
 }

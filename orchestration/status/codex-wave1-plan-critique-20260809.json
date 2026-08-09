@@ -1,0 +1,47 @@
+{
+  "task_id": "codex-wave1-plan-critique-20260809",
+  "status": "complete",
+  "plan_state": "complete",
+  "files_touched": [
+    "orchestration/plans/W1-02.md",
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/W1-02.json",
+    "orchestration/status/W1-HUD-TOAST-A.json",
+    "orchestration/status/codex-wave1-plan-critique-20260809.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-09-wave1-plan-critique.svg",
+    "docs/index.html",
+    "docs/progress.html",
+    "docs/status.json"
+  ],
+  "files_claimed": [
+    "orchestration/plans/W1-02.md",
+    "orchestration/plans/W1-HUD-TOAST.md",
+    "orchestration/status/W1-02.json",
+    "orchestration/status/W1-HUD-TOAST-A.json",
+    "orchestration/status/codex-wave1-plan-critique-20260809.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-09-wave1-plan-critique.svg",
+    "docs/index.html",
+    "docs/progress.html",
+    "docs/status.json"
+  ],
+  "next_step": "Owner command: Remediate the current Wave 1 plan critiques.",
+  "phase": "plan-critique",
+  "summary": "Independently criticised both Wave 1 plans awaiting criticism and returned both for remediation.",
+  "plan_state_summary": {
+    "needs-current-state-plan": 61,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 2,
+    "awaiting-recriticism": 0,
+    "satisfied": 0,
+    "current_action": [
+      "W1-02",
+      "W1-HUD-TOAST"
+    ]
+  },
+  "findings": [
+    "W1-02 changes or omits native RI-WLD12 M64/M66/M67/M70 predicates and misstates RI-WLD14 scoring/completeness.",
+    "W1-HUD-TOAST retains an obsolete broad Piece B population, contradictory 4/4 recall semantics, and unresolved historical-positive fixtures."
+  ]
+}

@@ -1,5 +1,7 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
+Plan-State: awaiting-remediation
+
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
 (`measure`, `faceOf('ink')`, size 16, wrap budget `400 − 24 = 376`) in `node` and running it over
@@ -1062,3 +1064,32 @@ but **BLOCKING-4 is not** — deciding how the four historical positives enter t
 and whether a missed one is a recall failure or a scope error, is discretion with no written rule,
 and the piece's own text says *"B2 is the acceptance, not B1's headline."* The discretion moved; it
 did not leave.
+
+## Fresh plan critique — 2026-08-09
+
+**Verdict: BLOCKING.** Piece A has already been built and the later measurement supplies a sounder
+Piece B ruling, but the operative acceptance section was never remediated to match that ruling.
+This is not a cosmetic history problem: a builder following §1 today would run a different,
+partly-vacuous population from the one the plan's own final section authorises.
+
+1. **BLOCKING — the plan has two incompatible Piece B specifications.** §1 still defines broad `P`,
+   permits `OPAQUE`, and grades B1 as 100% classification. The later S-PLAN-HUD-B3 correctly rules
+   that this cannot go red, replaces it with `P_E` (the enumerated 14), forbids `OPAQUE` in the
+   graded result, and makes the 109-tool census report-only. Fold B1′/B1b into §1 and point at the
+   committed 14-member enumeration; historical critique text cannot serve as the build contract.
+2. **BLOCKING — B2 contradicts itself.** Its table requires **4/4** historical positives, while the
+   paragraph immediately below says **3/4 is a result, not a failure**. Keep 4/4 as the acceptance
+   and state that 3/4 is an honestly reported *failed* result, or lower the bar through the existing
+   ruling mechanism. A predicate cannot both pass and fail at 3/4.
+3. **BLOCKING — the four positives still lack executable membership/fixture rules.** The final text
+   explicitly leaves BLOCKING-4 unresolved. For each positive, name the member tool, frozen expected
+   side, exact reseed mutation, observed side, and why it belongs to the graded population. If one
+   is a scope error, replace it before dispatch rather than letting the builder decide after seeing
+   recall.
+4. **BLOCKING — the canonical document only now receives its required state marker.** Keep the
+   marker at the top, mirror it in the piece status, and separate already-built Piece A state from
+   not-yet-build-ready Piece B so `satisfied` cannot accidentally redispatch A.
+
+**Remediation acceptance:** rewrite the operative Piece B table and steps from S-PLAN-HUD-B3,
+resolve the four fixtures and 4/4 semantics, preserve the historical exchange as evidence, and mark
+the plan `awaiting-recriticism`. Do not change or rebuild Piece A while remediating this text.
