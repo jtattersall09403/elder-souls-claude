@@ -49,7 +49,7 @@
     "hud-toast-corpus.mjs's population (395 strings) is NOT the plan's 75 -- re-derived independently per rule 18 rather than trust the prior recipe, enumerating every (faction,rank,term) combination with a template rather than only realistic rank-appropriate refusals. A wider, more literal reading of 'every uiToast() caller'; both numbers are reported rather than forcing a match.",
     "other_populations (prompt/boss/slot-label) in hud-toast-corpus.mjs walks game/data/world + npcs for prop/NPC 'name' fields as a proxy for _interactPrompt()'s reachable population -- not a literal simulation walk. slot-label's 70/119 'over budget' figure is measured against the RAW name width, not the ALREADY-TRUNCATED (char-slice(0,8)+ellipsis) text hud.js's quickslot code actually draws -- it does NOT describe a live defect and must not be read as one."
   ],
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The operative Piece B acceptance still contradicts the later S-PLAN-HUD-B3 ruling and cannot be dispatched deterministically.",
@@ -70,5 +70,10 @@
     "verdict": "BLOCKING",
     "biggest_gap": "Piece A \u00a72 still requires escaped_px > 0 although clipping makes that impossible, uses the stale 58/75 denominator, and \u00a75 retains the rejected getUIState generalisation.",
     "next_step": "Remediate only the stale Piece A null-control and step text; preserve landed code and Piece B, then request fresh re-criticism."
+  },
+  "plan_recritique_remediation_2026_08_09": {
+    "state": "complete",
+    "summary": "Replaced the impossible escaped-pixel null with A2a cut-pixel worsening over the committed 395-string corpus, retained A2b only as a guarded same-row-count residue check, and made the owning-element register protocol the operative step without changing landed code or Piece B.",
+    "next_step": "Fresh independent plan re-criticism."
   }
 }
