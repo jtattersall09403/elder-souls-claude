@@ -81,6 +81,7 @@
     "note": "The run was still going at hand-off. Re-read reports/w1-28/hour/hour.json for the latest."
   },
   "caveat_the_gap_numbers_inherit_F2": "gap_max 496 s and gap_p95 477 s must NOT be read as C1/C2 verdicts, and the reason is F2. C1 counts an input only when the trace CORROBORATES one of its five world-facts within a second, and the trace cannot see fifteen of the sixteen buttons — so only 3 of 135 dispatched actions could be corroborated at all. The gap statistic is therefore measuring the instrument's blindness, not the hour's emptiness. C1/C2 are UNMEASURABLE on this build until `input_action` reaches the live combat path, and that is the honest reading. By contrast combat_fraction 0.223 is computed from entity proximity, not from inputs, so it does NOT inherit F2 — and it sits inside C5's 0.12-0.30 band, which is the first evidence anywhere that this hour is neither the walking simulator nor the arena of How-we-lose #1 and #2.",
-  "plan_state": "awaiting-recriticism",
-  "planning_next_step": "Fresh independent reviewer-editor must re-criticise the materially remediated orchestration/plans/W1-28.md; this remediation does not approve it."
+  "plan_state": "satisfied",
+  "planning_next_step": "Plan independently re-criticised and SATISFIED; ready for build dispatch when owner selects it.",
+  "plan_reviewer_editor_2026_08_09": "SATISFIED with no material edit."
 }
