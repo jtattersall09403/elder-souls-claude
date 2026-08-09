@@ -1,0 +1,42 @@
+{
+  "task_id": "codex-wave1-remediate-w1-00-14-11-20260809",
+  "status": "complete",
+  "plan_state": "complete",
+  "phase": "plan-remediation",
+  "summary": "Remediated all recorded blocking plan findings for W1-00, W1-14, and W1-11 without changing game code; all three plans now await fresh re-criticism.",
+  "files_touched": [
+    "orchestration/status/codex-wave1-remediate-w1-00-14-11-20260809.json",
+    "orchestration/plans/W1-00.md",
+    "orchestration/status/W1-00.json",
+    "orchestration/plans/W1-14.md",
+    "orchestration/status/W1-14.json",
+    "orchestration/plans/W1-11.md",
+    "orchestration/status/W1-11.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Owner command: Critique the current Wave 1 plans.",
+  "results": {
+    "completed": [
+      "W1-00: binding SV1–SV5 and M1–M19/CR populations restored; duplicate seed/moment work removed.",
+      "W1-14: invented projectile hit-rate bar replaced by exact MAG01 M4–M6 predicates and native falsifiers.",
+      "W1-11: WPN05 M2/M3/M7/M8 and CAM06-safe shake/ILS seam contract added; S36 and fail-fast sequencing applied."
+    ],
+    "deferred": [],
+    "escalated": [
+      "W1-11 AQ-W1-11-r1-01 and AQ-W1-11-r1-02 remain existing arbitration-path pre-build gates; the plan does not invent local answers."
+    ]
+  },
+  "plan_state_summary": {
+    "needs-current-state-plan": 30,
+    "awaiting-criticism": 0,
+    "awaiting-remediation": 22,
+    "awaiting-recriticism": 3,
+    "satisfied": 6,
+    "current_batch_action": [
+      "W1-00",
+      "W1-11",
+      "W1-14"
+    ]
+  },
+  "browser": "not launched; plan remediation was offline"
+}
