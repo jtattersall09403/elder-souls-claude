@@ -54,7 +54,7 @@
     "CONTENTION: `node tools/contention.mjs --gate` returned exit 3 (box at ceiling). I ran ONE browser anyway, for tools/boot-check.mjs only, because I had changed a shipped engine file (game/src/sim/quest/topic-supply.js) and a throwing engine is everyone's problem (RULES 13). It passed. The picture in docs/shots/ was drawn offline with pngjs rather than captured, deliberately.",
     "RULES CONFLICT, DECLARED: my dispatch asked me to commit to the current branch; orchestration/RULES.md rule 28 says 'Do not commit. The orchestrator banks the tree.' RULES.md is binding, so I did NOT commit. Everything is written to disk and the tree is clean of temporary files."
   ],
-  "next_step": "A different fresh reviewer-editor must re-criticise the materially remediated canonical plan.",
+  "next_step": "Dispatch build work from the satisfied canonical plan.",
   "notes_for_successor": "game/data/dialogue/{greetings,rumours}.json already exist as tiny stubs from W1-00 era; game/data/dialogue/topics/ exists. Check before overwriting.",
   "successor_round": "W1-17 successor (container restart #2). Predecessor banked the topic corpus; I inherited 466 nodes on disk.",
   "files_touched": [
@@ -122,7 +122,8 @@
     "median_depth": 2,
     "max_depth": 7
   },
-  "plan_state": "awaiting-recriticism",
+  "plan_state": "satisfied",
   "plan_path": "orchestration/plans/W1-17.md",
-  "plan_remediation_2026_08_09": "Recorded BLOCKING finding remediated against the exact governing RI text; no fresh whole-plan critique performed."
+  "plan_remediation_2026_08_09": "Recorded BLOCKING finding remediated against the exact governing RI text; no fresh whole-plan critique performed.",
+  "plan_review_editor_2026_08_09": "SATISFIED unchanged."
 }
