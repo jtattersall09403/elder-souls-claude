@@ -3,10 +3,11 @@
 **Temporary capacity exception, not doctrine:** owner-reviewed Codex Cloud **planning** tasks may run
 at whatever useful concurrency the owner can sustain, with no fixed planning-task cap, provided each
 task owns a distinct logical piece, writes only piece-specific planning/status artifacts, and avoids
-shared generated/publishing files while the parallel flight is in progress. Critique, remediation
-and any task that must touch shared state should remain conservatively batched unless ownership is
-explicitly disjoint. Quality, independence, evidence and acceptance bars do not change. Claude Code
-may ignore/remove this bridge when normal high-parallelism orchestration resumes.
+shared generated/publishing files while the parallel flight is in progress. Review/edit,
+remediation and any task that must touch shared state should remain conservatively batched unless
+ownership is explicitly disjoint. Quality, independence, evidence and acceptance bars do not
+change. Claude Code may ignore/remove this bridge when normal high-parallelism orchestration
+resumes.
 
 ## Bootstrap and select
 
@@ -22,19 +23,39 @@ Use the existing status/ownership conventions. Each canonical plan contains `Pla
 piece status mirrors `plan_state` using the states in `PLAN-LOOP.md`. A missing plan always takes
 precedence over `needs-builder`, including for previously built or criticised work.
 
+For every plan/review task, derive the governing bar rather than trusting a plan's summary of it:
+start from the piece's canonical owned paths/decomposition, follow authoritative `judges:` metadata
+and corpus/index references to the governing reference items, then read each item's native methods,
+predicates, thresholds, populations, hard fails and applicable later rulings/amendments. A plan may
+summarise this material but never becomes the authority for its own bar.
+
 ## Interpret the short prompt
 
 - **Plan:** select `needs current-state plan` pieces and write rigorous continuation plans only.
-- **Critique:** in a new independent task/session, select `plan awaiting criticism` or `plan
-  awaiting fresh re-criticism`; inspect repository evidence independently, test both bar sufficiency
-  and cost-effective deliverability, and update findings/state.
-- **Remediate:** select `plan has blocking criticism; awaiting remediation`, resolve every eligible
-  plan finding including material cost/deliverability findings, and mark `awaiting-recriticism`.
-  Do not build game code.
+- **Remediate:** select `plan has blocking criticism; awaiting remediation`, resolve the **already
+  recorded** blocking findings and perform the cost/deliverability cleanup required below. This is
+  not another full independent criticism round. Mark completed plans `awaiting-recriticism`. Do not
+  build game code.
+- **Review/edit:** in a new independent task/session, select `plan awaiting criticism` or `plan
+  awaiting fresh re-criticism`; reconstruct the governing bar independently, review both bar
+  sufficiency and cost-effective deliverability, and **edit the plan immediately when an ordinary
+  fix is clear**. A reviewer-editor may either approve the version it received unchanged/materially
+  unchanged, or materially edit it, but never both: if it makes a material plan change, the result
+  must remain `awaiting-recriticism` for a different fresh reviewer-editor. If it finds no material
+  defect and makes no material change, it may mark `satisfied`. If a blocker cannot safely be edited
+  because authority, a ruling, an instrument or a cross-piece seam is genuinely ambiguous, do not
+  choose a convenient answer; record/escalate it through the existing ruling mechanism and leave the
+  plan blocked.
+
+The current 2026-08-09 numbered-Wave-1 batch has already received an independent criticism round.
+For pieces currently in `awaiting-remediation`, perform **remediation first** against those recorded
+findings; do not spend another task re-discovering the same critique. After those remediation PRs
+land, use fresh reviewer-editors for every `awaiting-recriticism` piece. From then on, repeat only
+fresh reviewer-editor rounds until `satisfied` or legitimately escalated.
 
 A task may process many pieces, but stop at a clean, reviewable boundary before context growth
 makes later work shallower. Commit one owner-reviewable batch. The next phase begins only from the
-canonical branch after the owner publishes that PR. Plan criticism is offline where possible;
+canonical branch after the owner publishes that PR. Plan review is offline where possible;
 browser/build evidence stays in the build loop unless plan validity genuinely requires it.
 
 ## Cost-effective plan gate
@@ -44,8 +65,8 @@ the governing bar. It must describe a **clear, deliverable, materially cost-effe
 current HEAD to that same bar**. The bar is never lowered to save tokens; efficiency means removing
 waste while preserving the required quality, evidence, independence and acceptance strength.
 
-Plan authors, critics and remediators must prefer the minimum sufficient work/evidence set that can
-prove the governing predicates. In particular they must:
+Plan authors, remediators and reviewer-editors must prefer the minimum sufficient work/evidence set
+that can prove the governing predicates. In particular they must:
 
 - preserve and reuse current behaviour and still-valid independent evidence instead of rebuilding or
   re-proving it without a concrete reason;
@@ -66,28 +87,30 @@ prove the governing predicates. In particular they must:
 - keep the builder brief concise enough to execute directly: current state, required deltas,
   dependency/order, acceptance/evidence and stop conditions, without restating large source material.
 
-A plan critic therefore asks **both**:
+A reviewer-editor therefore asks **both**:
 
 1. *Could a competent builder execute this plan exactly as written, get every planned check green,
-   and still fail any governing reference-item predicate?* If yes, BLOCKING.
+   and still fail any governing reference-item predicate?* If yes, the plan is not satisfactory.
 2. *Is there a materially cheaper or simpler credible route from current HEAD to the exact same bar
    because this plan duplicates established work/evidence, over-tests, over-builds, uses unnecessarily
-   expensive instruments/passes, or lacks useful stopping/order constraints?* If yes, BLOCKING when
-   the waste is material enough to make the plan substantially more expensive or less deliverable;
-   state the cheaper bar-preserving remediation concretely. Do not invent micro-optimisations or trade
-   away verification quality merely to report a cost finding.
+   expensive instruments/passes, or lacks useful stopping/order constraints?* If yes, the plan is not
+   satisfactory when the waste is material enough to make it substantially more expensive or less
+   deliverable. Do not invent micro-optimisations or trade away verification quality merely to report
+   a cost finding.
 
-Remediation must resolve both kinds of blocker. A fresh re-critic may mark `satisfied` only when the
-plan is simultaneously **bar-sufficient and cost-effective/deliverable**. Exact token forecasts are
-not required where they would be guesswork; critics should reason from concrete expensive operations
-(agent passes, browser work, blind judging, corpus breadth, repeated reads, duplicate implementation,
-large sweeps) and the repository's actual cost evidence in `COST.md`/`PLAN-LOOP.md`.
+When either defect is ordinary and the correction is clear, the reviewer-editor should make the
+bar-preserving/cost-preserving edit in the same task rather than writing a hand-off essay for another
+agent. Any material edit forces `awaiting-recriticism`; only a fresh reviewer-editor may approve that
+version. Exact token forecasts are not required where they would be guesswork; reason from concrete
+expensive operations (agent passes, browser work, blind judging, corpus breadth, repeated reads,
+duplicate implementation, large sweeps) and the repository's actual cost evidence in
+`COST.md`/`PLAN-LOOP.md`.
 
 ## Temporary no-blog/no-illustration rule
 
 For the entire owner-driven Codex bridge phase, suspend the routine progress-blog requirement in
 `AGENT-PROTOCOL.md` for Codex tasks. **Do not create an owner-facing blog entry, explanatory
-illustration, or progress screenshot merely because a Plan, Critique, Remediate, Build or Critic
+illustration, or progress screenshot merely because a Plan, Review/Edit, Remediate, Build or Critic
 task completed.** In particular, do not append routine progress lines to `reports/blog-feed.jsonl`,
 do not create `docs/shots/*` illustrations for task summaries, and do not regenerate/publish docs
 solely to surface routine task progress.
@@ -99,18 +122,20 @@ evidence location. Likewise, do not delete or rewrite existing blog/history arti
 blogging may resume when normal Claude orchestration resumes or when the owner explicitly asks for
 it.
 
-At the end of every Plan, Critique, or Remediate task, run or derive the canonical Wave 1 plan-state
-inventory from current task HEAD and include a short **Plan-state summary** in both the task's final
-response and its PR description. Report counts for `needs-current-state-plan`, `awaiting-criticism`,
-`awaiting-remediation`, `awaiting-recriticism`, and `satisfied`, plus the names of any pieces still
-requiring action in the current batch. State the owner's next short command explicitly. If every
-plan in the current batch is `satisfied`, say so plainly and state that the owner may move on to
-`Plan the next Wave 1 batch.` Do not make the owner maintain a separate tracking list.
+At the end of every Plan, Review/Edit, or Remediate task, run or derive the canonical Wave 1
+plan-state inventory from current task HEAD and include a short **Plan-state summary** in both the
+task's final response and its PR description. Report counts for `needs-current-state-plan`,
+`awaiting-criticism`, `awaiting-remediation`, `awaiting-recriticism`, and `satisfied`, plus the names
+of any pieces still requiring action in the current batch. State the owner's next short command
+explicitly. If every plan in the current batch is `satisfied`, say so plainly and state that the
+owner may move on to the next build-ready work. Do not make the owner maintain a separate tracking
+list.
 
-Fresh critics may read prior critique/remediation evidence to verify closure but may not adopt the
-author's reasoning as their own. Repeat remediation and fresh criticism without a round ceiling.
-Escalate stalled repeats, disputed bars, invalid instruments and seams through the existing ruling
-mechanism. `CARRIED` cannot bypass a gate required before the next phase.
+Fresh reviewer-editors may read prior critique/remediation evidence to verify closure but must
+independently reconstruct the governing bar and may not adopt the previous author's reasoning as
+their own. There is no round ceiling. Escalate stalled repeats, disputed bars, invalid instruments
+and seams through the existing ruling mechanism. `CARRIED` cannot bypass a gate required before the
+next phase.
 
 ## Compatibility and resumption
 
