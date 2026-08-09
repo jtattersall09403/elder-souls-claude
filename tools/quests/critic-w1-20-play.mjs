@@ -39,7 +39,7 @@
 //
 // RUN: node tools/quests/critic-w1-20-play.mjs [--out <file>]
 // Exit 0 = every question answered; exit 1 = at least one answer is a finding against the piece.
-// This tool is allowed to exit 1 and usually should: a critic that cannot find a gap has failed.
+// This tool may exit 1 when it demonstrates a gap; it may pass when the governing bar survives.
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

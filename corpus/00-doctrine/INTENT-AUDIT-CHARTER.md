@@ -79,7 +79,8 @@ specific corrections and the orchestrator applies them.
 > must inspect the actual output — run the game headless, screenshot it, trace the combat, read the
 > quest text as written — then compare it to its reference items using that item's method, blind and
 > unlabeled wherever a blind pair is possible. It picks a winner, names the single biggest remaining
-> gap, and sends it back. Be a harsh critic. A critic that cannot find a gap has failed; make it
+> gap, and sends it back. Be a harsh critic: try to falsify every claim, but do not invent a gap
+> after the evidence meets the governing bar; make it
 > look harder.
 >
 > At the end of each wave, spawn one fresh agent that plays the whole game and fixes coherence

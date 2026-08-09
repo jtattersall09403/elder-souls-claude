@@ -43,8 +43,8 @@ fight** — frames, stamina, hitboxes, animation, enemy behaviour. **Morrowind w
 
 1. **Build the bar first.** A reference corpus of measurable requirements, then waves of work, wide
    before deep.
-2. **One builder, one separate critic with fresh context, per piece.** *A critic that cannot find a
-   gap has failed.* No builder grades itself.
+2. **One builder, one separate critic with fresh context, per piece.** Critics try to falsify the
+   work and may PASS without inventing a gap when the written bar is evidenced. No builder grades itself.
 3. **Nothing counts because someone says so.** A model nothing in the running world reads scores
    zero. A fix is not a fix until it has been deleted on a copy and the old number has come back.
 4. **Report what you could not do as plainly as what you did.**

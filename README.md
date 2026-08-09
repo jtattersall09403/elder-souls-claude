@@ -151,6 +151,6 @@ missing, which is a worse defect than the bug.
 
 The bar is built before the thing: a reference corpus of measurable requirements, then waves of
 work, wide before deep. Every piece gets one builder and one **separate critic with fresh context**,
-and *a critic that cannot find a gap has failed*. Nothing counts as done because someone says it is
+and a critic must try to falsify each piece but may PASS when evidence meets the bar. Nothing counts as done because someone says it is
 — a model that nothing in the running world reads scores zero, and a fix is not a fix until it has
 been deleted on a copy and the old number has come back.

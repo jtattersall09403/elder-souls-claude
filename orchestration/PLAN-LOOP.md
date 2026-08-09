@@ -3,7 +3,7 @@
 **Owner's proposal, adopted with three changes.** Every piece now runs two loops, not one:
 
 ```
-  plan  ⇄  plan critic        cheap, text only, no browser, bounded at 2 exchanges
+  plan  ⇄  plan critic        cheap, text/offline where possible, repeat until satisfied
     ↓
   build ⇄  build critic       expensive: browsers, hours, 200–450k tokens a side
 ```
@@ -26,14 +26,28 @@ And the failures are the shape a plan critic catches. Every one of these is real
 
 None of those needed a browser to find. All needed somebody to read the method against the bar.
 
-## The three changes to the owner's version
+## Current-state plans apply to every piece
 
-**1. The loop is bounded at two exchanges, and feedback is split.** "Loop until the critic is
-satisfied" fights this project's own doctrine: *a critic that cannot find a gap has failed*, so it
-will always find something and the loop never closes on its own. So the plan critic marks every
-item **BLOCKING** or **CARRIED**. Blocking must be resolved before the build starts. Carried become
-**declared risks written into the build brief** — visible, owned, and graded later rather than
-argued now. Unbounded becomes bounded with an explicit residue.
+The plan gate is prospective and applies even when a Wave 1 piece was built or criticised before
+this loop existed. Such a piece does not pretend to start over. Its **current-state continuation
+plan** reconciles current HEAD, measured evidence, accepted behaviour and unresolved gaps/risks,
+then states the next work needed to reach the governing bar. It must name what landed and must be
+preserved, what independent evidence already established, what remains unresolved, which old
+assumptions are stale, and what the next build/remediation must prove. If the bar is already met,
+the plan says so and specifies only legitimate verification/closure; it does not manufacture work.
+
+Until a canonical plan is satisfied, prior build activity never exempts a relevant piece from the
+plan gate. `node tools/dispatchable.mjs --wave1-plans` reports the canonical state signals.
+
+## The three operating rules
+
+**1. Repeat until satisfied; do not count rounds.** A fresh independent task criticises each
+canonical plan. BLOCKING findings return it to remediation, then another fresh critic. There is no
+arbitrary ceiling. CARRIED is only for a non-blocking empirical risk that genuinely cannot be
+resolved in this phase; it must be visible in the build brief and cannot bypass a pre-build
+requirement. Successive rounds with no substantive progress, repeated disagreement about the same
+bar, an invalid instrument, or a seam/ruling ambiguity go to the existing arbiter/ruling mechanism
+rather than automatic acceptance.
 
 **2. The plan's deliverable is not the steps. It is the acceptance, the units and the null.**
 Two rounds were lost this week to *definition* disputes rather than build errors — a prop count
@@ -72,9 +86,14 @@ a bolt using pure pursuit. **A plan must never become a commitment device.** So:
 
 - `orchestration/plans/<piece>.md` — the plan. The build brief **points at it** rather than
   restating it (rule 18, which the orchestrator has broken four times).
-- The plan carries `BLOCKING` items resolved, `CARRIED` risks listed, the acceptance table, the null
-  control, and the model the plan critic recommends with its reason.
-- `node tools/dispatchable.mjs` reports `needs-plan` before `needs-builder`.
+- The plan carries a `Plan-State:` marker using one of the states below, BLOCKING items resolved,
+  CARRIED risks listed, the acceptance table, the null control, and the critic's recommendation.
+- Status files mirror `"plan_state"` so dispatch remains machine-readable. Canonical states are
+  `awaiting-criticism`, `awaiting-remediation`, `awaiting-recriticism`, and `satisfied`. Absence of
+  a canonical plan means `needs-current-state-plan`; `satisfied` means build-ready. Build status
+  remains in the existing status/verdict/gap system (`build-awaiting-criticism`,
+  `build-blocked`, or `build-satisfied`) rather than a second ledger.
+- `node tools/dispatchable.mjs --wave1-plans` reports plan state before any builder category.
 
 ## What it is expected to save, stated as an estimate
 

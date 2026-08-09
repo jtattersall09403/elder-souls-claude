@@ -13,7 +13,7 @@ Also read: `corpus/10-combat/RI-CMB02` (attack frame data), `RI-CMB03` (stamina)
 - **RI-WPN04** Contextual attacks — roll-attack, backstep-attack, running, jumping. Input windows, per-class frame data, tactical role. **A slot that silently falls back to the standard light attack is a hard fail** — that is the specific fake to detect.
 - **RI-WPN05** Weapon feel: hitstop frames by weight, impact by material (flesh/chitin/stone/shield), whiff feel, mass in the animation. Partially closes BAR-CRITIQUE **G5** ("nothing judges impact").
 - **RI-WPN06** Two-handing (a distinct moveset, not a damage multiplier), shields, offhand, parry/riposte. Cite RI-CMB05.
-- **WEAPON-CRITIC.md** — charter for the dedicated harsh critic: fresh context, drives every slot of every weapon through the harness, extracts animation ids and frame data from traces, computes the matrix, must find a gap. State plainly that N weapons sharing a moveset with no variation fails regardless of frame-data quality.
+- **WEAPON-CRITIC.md** — charter for the dedicated harsh critic: fresh context, drives every slot of every weapon through the harness, extracts animation ids and frame data from traces, computes the matrix, and tries to falsify every governing bar. State plainly that N weapons sharing a moveset with no variation fails regardless of frame-data quality.
 
 Likely new subsystem root: `weapon.*` — list the full path set in your reply.
 
@@ -38,4 +38,3 @@ Browser Three.js game: **Morrowind in almost every system** (quests, factions, d
 - `corpus/40-dialogue/data/morrowind-dialogue.csv.gz` — 69,876 real Morrowind dialogue rows (Race/Gender/SpeakerId/FactionId/FactionRank/Text)
 - `corpus/60-lore/data/argonian-dialogue-corpus.json` — all 3,888 Argonian-voiced lines
 - `corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz` — 6,299 UESP pages (4,961 Morrowind + 1,338 Black Marsh). `xz -dc` it in /tmp, never into the repo.
-

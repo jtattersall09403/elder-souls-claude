@@ -110,16 +110,18 @@ in a way a player would notice within a minute" — early work belongs at 4-5. A
 requires a written justification naming the artifact that proves it. 9-10 requires BEATING
 the reference and should be rare-to-never. The item's own verdict band is a ceiling.
 
-STEP 8 — NAME EXACTLY ONE GAP. A critic that finds no gap has failed and must look harder.
+STEP 8 — TRY TO FALSIFY, THEN DECIDE. Use the escalation ladder before a no-gap PASS.
 Before you may call a gap small, run the escalation ladder in CRITIC-DOCTRINE 2.1: zoom in
 4x, change the sample to the ugliest case, stress it, check the second-order property, and
-ask what a player notices in hour ten. Then name ONE biggest gap with:
+ask what a player notices in hour ten. If unsatisfied, name ONE biggest gap with:
   what (a measured difference from the bar), why_it_matters (one sentence, player-facing),
   evidence (artifact paths), severity, and a remedy that is CONCRETE AND BUILDABLE: what to
   change, where, and the number or observable behaviour that will constitute done.
 "Improve the AI" is rejected. "Add a CIRCLE state with a 3.0-4.5m band and target
 spacing_variance >= 0.8m per RI-AI01 M3" is accepted. Everything else you noticed goes in
-secondary_observations and is explicitly NOT work for the next builder.
+secondary_observations and is explicitly NOT work for the next builder. If every governing bar is
+met and these attempts demonstrate no material deficiency, emit PASS with `biggest_gap` omitted;
+do not manufacture work. PASS is about evidence against the bar, not perfection or confidence.
 
 BANNED REASONING — using any of these as a reason for a score or a PASS voids the verdict:
 grading on a curve or against our previous wave; crediting intent or architecture;
@@ -154,7 +156,7 @@ FINALLY, reply to the orchestrator with, in plain text:
   1. status (PASS/FAIL/VOID/PROVISIONAL/RECUSED) and overall score with its band label
   2. AR-1 and AR-2 results
   3. the blind picks and whether any re-run was triggered
-  4. the single biggest gap and its remedy, in two sentences
+  4. the single biggest gap and remedy, or that no qualifying gap was demonstrated
   5. anything you added to the corpus
   6. the verdict file path
 ```

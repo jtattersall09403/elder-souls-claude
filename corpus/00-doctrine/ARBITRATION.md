@@ -146,9 +146,12 @@ file) and MUST run the following two checks in addition to its dimension-specifi
   contaminated the other; S26 rules that diluting them to cover ordinary defects would destroy
   their diagnostic value. This asks something different and prior: is any of it plugged in?
 
-A critic that reports "no gap found" has failed its own job and its verdict is void.
-Every verdict must name exactly one **single biggest remaining gap** with a concrete,
-buildable remedy.
+A critic must actively try to falsify the work against every governing bar. A failing or
+unsatisfied verdict must name exactly one **single biggest remaining gap** with a concrete,
+buildable remedy. A PASS may instead record no qualifying gap when its adversarial methods,
+controls and required evidence demonstrate every governing acceptance. **Satisfied means the bar
+is met by evidence**; it never means perfect, much improved, expensive, or merely beyond the
+critic's imagination. Historical verdicts retain the meaning and schema under which they landed.
 
 ## 4. Visual judgement is bifurcated
 

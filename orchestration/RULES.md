@@ -198,7 +198,10 @@ right now). Between these two you should not need to go looking for anything.
 ## Judgement
 
 22. **You do not grade yourself.** A separate critic with fresh context judges every piece.
-23. **A critic that cannot find a gap has failed.**
+23. **A critic tries to falsify the work, then reports the truth against the written bar.** A
+    failing verdict names one actionable biggest gap. A rigorous PASS may name no qualifying gap;
+    it is earned only after the applicable adversarial methods and controls fail to demonstrate a
+    material deficiency. Neither finding faults nor passing work is rewarded.
 24. **If a method names a tool that does not exist, build it** — and make it able to fail. Never
     stub a tool to pass; if the system it measures does not exist, it reports that absence and
     exits non-zero. See `orchestration/TOOL-LOOP.md`.

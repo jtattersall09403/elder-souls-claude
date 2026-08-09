@@ -46,6 +46,10 @@ const SELF_AUDIT_KEYS = [
   'escalation_ladder_used_if_gap_seemed_small',
 ];
 
+function requireGapForOutcome(v, g, E) {
+  if (!g && v.status !== 'PASS') E('biggest_gap missing — an unsatisfied verdict must name one actionable biggest gap (ARBITRATION §3)');
+}
+
 function validate(file) {
   const errors = [];
   const warns = [];
@@ -58,7 +62,7 @@ function validate(file) {
 
   // --- identity
   if (v.schema_version !== 1) E('schema_version must be 1');
-  for (const k of ['piece_id', 'wave', 'critic', 'bifurcation', 'reference_items', 'artifacts', 'arbitration', 'score', 'status', 'biggest_gap', 'self_audit']) {
+  for (const k of ['piece_id', 'wave', 'critic', 'bifurcation', 'reference_items', 'artifacts', 'arbitration', 'score', 'status', 'self_audit']) {
     if (v[k] === undefined) E(`missing required field \`${k}\``);
   }
   if (!Array.isArray(v.subsystem_paths) || v.subsystem_paths.length === 0) E('subsystem_paths must be a non-empty array');
@@ -320,8 +324,8 @@ function validate(file) {
 
   // --- the gap
   const g = v.biggest_gap;
+  requireGapForOutcome(v, g, E);
   if (!g) {
-    E('biggest_gap missing — "a critic that reports no gap found has failed its own job and its verdict is void" (ARBITRATION §3)');
   } else {
     if (!/^GAP-W\d+-[a-z0-9-]+$/.test(g.gap_id || '')) E(`biggest_gap.gap_id "${g.gap_id}" must match GAP-W<wave>-<slug>`);
     if (g.subsystem_path && !canonical.has(g.subsystem_path) && !aliases[g.subsystem_path]) E(`biggest_gap.subsystem_path "${g.subsystem_path}" is not canonical`);
@@ -387,6 +391,17 @@ function validate(file) {
 
 // ------------------------------------------------------------------ cli
 let targets = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+if (process.argv.includes('--self-test')) {
+  const errors = [];
+  requireGapForOutcome({ status: 'PASS' }, undefined, m => errors.push(m));
+  if (errors.length) throw new Error('rigorous PASS without a qualifying gap was rejected');
+  requireGapForOutcome({ status: 'FAIL' }, undefined, m => errors.push(m));
+  if (errors.length !== 1) throw new Error('FAIL without an actionable gap was accepted');
+  requireGapForOutcome({ status: 'FAIL' }, { gap_id: 'GAP-W1-test' }, m => errors.push(m));
+  if (errors.length !== 1) throw new Error('FAIL with a gap was rejected');
+  console.log('verdict validator self-test: no-gap PASS accepted; gapless FAIL rejected; historical gap-bearing shape accepted.');
+  process.exit(0);
+}
 if (process.argv.includes('--all')) {
   targets = [];
   const vd = join(ROOT, 'corpus', '90-verdicts');

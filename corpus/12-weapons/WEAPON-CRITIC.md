@@ -325,7 +325,8 @@ In addition to everything `VERDICT-SCHEMA.md` requires:
 | `sampling` | If not a full sweep: the stratification rule and the count |
 | `seam_sterile` | true/false with justification (see §7) |
 
-**This critic must find a gap.** CRITIC-DOCTRINE §2.1's five-step escalation ladder applies,
+**This critic must try to falsify the work.** CRITIC-DOCTRINE §2.1's five-step escalation ladder applies;
+a no-gap PASS is legal only when the governing weapon bars survive it,
 and for this area the ladder has a known good rung: **step 2, change the sample.** The gap is
 almost always in the class with the fewest weapons (WHP, FST, CGS, GHM, BOW at four to five
 each) or in the slots nobody demos (`backstep.r1`, `roll.r2`, `guard.counter`,

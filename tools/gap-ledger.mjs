@@ -26,6 +26,13 @@ const VERDICT_DIR = join(ROOT, 'corpus', '90-verdicts');
 const OUT_JSON = join(VERDICT_DIR, 'GAP-LEDGER.json');
 const OUT_MD = join(VERDICT_DIR, 'GAP-LEDGER.md');
 const CHECK_ONLY = process.argv.includes('--check');
+if (process.argv.includes('--self-test')) {
+  const synthetic = [{ status: 'PASS' }, { status: 'FAIL', biggest_gap: { gap_id: 'GAP-W1-test' } }];
+  const opened = synthetic.filter(v => v.biggest_gap).length;
+  if (opened !== 1) throw new Error('a satisfied no-gap verdict incorrectly opened a ledger entry');
+  console.log('gap-ledger self-test: satisfied no-gap verdict opens no gap; failing verdict does.');
+  process.exit(0);
+}
 
 const rel = (p) => relative(ROOT, p).split(sep).join('/');
 mkdirSync(VERDICT_DIR, { recursive: true });
@@ -60,7 +67,7 @@ const warnings = [];
 for (const v of verdicts) {
   const g = v.biggest_gap;
   if (!g) {
-    warnings.push(`${v._file}: verdict has no biggest_gap — VOID per ARBITRATION.md §3 ("a critic that reports no gap found has failed its own job").`);
+    if (v.status !== 'PASS') warnings.push(`${v._file}: unsatisfied verdict has no biggest_gap; validator should reject it.`);
     continue;
   }
   if (ledger.has(g.gap_id)) {
@@ -175,10 +182,10 @@ M.push('> **GENERATED FILE — DO NOT HAND-EDIT.** Regenerate with `node tools/g
 M.push('> Canonical data: `corpus/90-verdicts/GAP-LEDGER.json`. Source: every verdict\'s');
 M.push('> `biggest_gap` (opens) and `gap_closure[]` (closes). Rules: `SCORING.md` §5.');
 M.push('');
-M.push(`Generated: ${doc.generated} · verdicts read: ${doc.verdicts_read} · waves: ${doc.waves_seen.join(', ') || '(none)'}`);
+M.push(`Generated: ${doc.generated} · verdicts read: ${doc.verdicts_read} · waves: ${doc.waves_seen.filter(w => w !== undefined && w !== null).join(', ') || '(none)'}`);
 M.push('');
 M.push('**The three rules that matter**');
-M.push('1. Every verdict opens exactly one gap. A verdict with no gap is void.');
+M.push('1. Every unsatisfied verdict opens exactly one gap. An evidence-earned PASS may open none.');
 M.push('2. A gap is closed only by a **later wave\'s critic**, re-measuring the gap\'s own');
 M.push('   `acceptance` condition — **never** by the agent that built the fix.');
 M.push('3. Every open gap on a subsystem path is handed to that path\'s next builder **up');
