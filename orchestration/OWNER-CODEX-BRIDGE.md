@@ -26,14 +26,62 @@ precedence over `needs-builder`, including for previously built or criticised wo
 
 - **Plan:** select `needs current-state plan` pieces and write rigorous continuation plans only.
 - **Critique:** in a new independent task/session, select `plan awaiting criticism` or `plan
-  awaiting fresh re-criticism`; inspect repository evidence independently and update findings/state.
+  awaiting fresh re-criticism`; inspect repository evidence independently, test both bar sufficiency
+  and cost-effective deliverability, and update findings/state.
 - **Remediate:** select `plan has blocking criticism; awaiting remediation`, resolve every eligible
-  plan finding, and mark `awaiting-recriticism`. Do not build game code.
+  plan finding including material cost/deliverability findings, and mark `awaiting-recriticism`.
+  Do not build game code.
 
 A task may process many pieces, but stop at a clean, reviewable boundary before context growth
 makes later work shallower. Commit one owner-reviewable batch. The next phase begins only from the
 canonical branch after the owner publishes that PR. Plan criticism is offline where possible;
 browser/build evidence stays in the build loop unless plan validity genuinely requires it.
+
+## Cost-effective plan gate
+
+For this owner-driven Codex phase, a plan is not build-ready merely because it can eventually reach
+the governing bar. It must describe a **clear, deliverable, materially cost-effective route from
+current HEAD to that same bar**. The bar is never lowered to save tokens; efficiency means removing
+waste while preserving the required quality, evidence, independence and acceptance strength.
+
+Plan authors, critics and remediators must prefer the minimum sufficient work/evidence set that can
+prove the governing predicates. In particular they must:
+
+- preserve and reuse current behaviour and still-valid independent evidence instead of rebuilding or
+  re-proving it without a concrete reason;
+- reuse existing authoritative instruments, fixtures and measurements where valid rather than
+  creating parallel implementations or duplicate evidence pipelines;
+- avoid redundant agent passes, browser captures, exhaustive sweeps, repeated corpus reads and
+  verification that does not change a governing decision;
+- use cheap/offline/static checks before expensive browser/runtime/blind-judge work when they can
+  eliminate or narrow that work without weakening the bar;
+- order build work so high-information, high-risk or gating checks happen early and expensive work
+  is not performed for a branch that should already have stopped;
+- define bounded populations, stopping conditions and escalation triggers rather than open-ended
+  "keep iterating" or gratuitously exhaustive work;
+- distinguish work required to **reach** the bar from optional polish, extra confidence or future
+  improvements. Optional work must not silently become a build prerequisite;
+- avoid speculative refactors, architectural rewrites or new tooling unless they are required by the
+  governing bar or are demonstrably cheaper than using the current implementation/instrument;
+- keep the builder brief concise enough to execute directly: current state, required deltas,
+  dependency/order, acceptance/evidence and stop conditions, without restating large source material.
+
+A plan critic therefore asks **both**:
+
+1. *Could a competent builder execute this plan exactly as written, get every planned check green,
+   and still fail any governing reference-item predicate?* If yes, BLOCKING.
+2. *Is there a materially cheaper or simpler credible route from current HEAD to the exact same bar
+   because this plan duplicates established work/evidence, over-tests, over-builds, uses unnecessarily
+   expensive instruments/passes, or lacks useful stopping/order constraints?* If yes, BLOCKING when
+   the waste is material enough to make the plan substantially more expensive or less deliverable;
+   state the cheaper bar-preserving remediation concretely. Do not invent micro-optimisations or trade
+   away verification quality merely to report a cost finding.
+
+Remediation must resolve both kinds of blocker. A fresh re-critic may mark `satisfied` only when the
+plan is simultaneously **bar-sufficient and cost-effective/deliverable**. Exact token forecasts are
+not required where they would be guesswork; critics should reason from concrete expensive operations
+(agent passes, browser work, blind judging, corpus breadth, repeated reads, duplicate implementation,
+large sweeps) and the repository's actual cost evidence in `COST.md`/`PLAN-LOOP.md`.
 
 ## Temporary no-blog/no-illustration rule
 
