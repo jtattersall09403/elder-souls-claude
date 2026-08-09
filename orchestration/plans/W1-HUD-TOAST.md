@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-recriticism
+Plan-State: awaiting-remediation
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -1109,3 +1109,27 @@ partly-vacuous population from the one the plan's own final section authorises.
 **Remediation acceptance:** rewrite the operative Piece B table and steps from S-PLAN-HUD-B3,
 resolve the four fixtures and 4/4 semantics, preserve the historical exchange as evidence, and mark
 the plan `awaiting-recriticism`. Do not change or rebuild Piece A while remediating this text.
+
+
+---
+
+## Fresh plan re-critique — 2026-08-09
+
+**Verdict: BLOCKING.** The Piece B remediation now matches S-PLAN-HUD-B3: it freezes `P_E` and
+`P_report`, removes OPAQUE from grading, makes 4/4 the only B2 pass, and gives every historical
+positive an executable fixture. Piece A is not ready to be treated as a coherent preserved plan,
+however, because its operative null-control section still describes the retired measurement.
+
+**One actionable biggest gap:** rewrite Piece A's §2 null control (and the stale §5 instruction) to
+match A2a/A2b and the recorded build-time deviation. It currently requires `escaped_px > 0` from the
+pre-W1-20 arm even though §1 explains that the element clip makes escaped ink impossible by
+construction and retires toast-vs-null; it also retains the obsolete 58/75 denominator after the
+landed corpus re-derived 395 strings. The same plan then says that an `escaped_px == 0` arm invalidates
+everything, so following §2 literally rejects both the fixed and broken builds. Specify the A2a
+`cut_px` worsening on the committed population, retain A2b only with a same-row-count pair and its
+non-empty diff guard, and replace §5's instruction to generalise `getUIState()` with the owning-element
+register protocol already ruled in the build-time deviation. Preserve Piece A's landed code and do
+not redispatch it while repairing this plan text.
+
+**Recommendation:** remediate those two stale operative instructions only, then request fresh
+re-criticism. Piece B needs no further substantive rewrite from this pass.
