@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">Every missing-value count now has one result</title>
+  <desc id="desc">The HUD instrument plan passes with no errors, reports one through six as a failed partial result, and treats seven through fourteen as ungradeable.</desc>
+  <rect width="1200" height="675" fill="#17130f"/>
+  <text x="80" y="105" fill="#ead9b7" font-family="Georgia,serif" font-size="44">One result for every missing-value count</text>
+  <text x="80" y="155" fill="#b8a98c" font-family="sans-serif" font-size="22">B1′ no longer says the same run both passes and fails.</text>
+  <g font-family="sans-serif" text-anchor="middle">
+    <rect x="80" y="230" width="300" height="260" rx="18" fill="#203b2b" stroke="#79b88d" stroke-width="3"/>
+    <text x="230" y="300" fill="#dff4e5" font-size="58" font-weight="bold">0</text>
+    <text x="230" y="350" fill="#dff4e5" font-size="26">missing E_tool</text>
+    <text x="230" y="425" fill="#79d59a" font-size="34" font-weight="bold">PASS</text>
+    <rect x="450" y="230" width="300" height="260" rx="18" fill="#42351e" stroke="#d5ad58" stroke-width="3"/>
+    <text x="600" y="300" fill="#fff0c8" font-size="58" font-weight="bold">1–6</text>
+    <text x="600" y="350" fill="#fff0c8" font-size="26">missing E_tool</text>
+    <text x="600" y="410" fill="#f0c66e" font-size="30" font-weight="bold">NON-PASSING</text>
+    <text x="600" y="448" fill="#f0c66e" font-size="25">PARTIAL RESULT</text>
+    <rect x="820" y="230" width="300" height="260" rx="18" fill="#422326" stroke="#d77a82" stroke-width="3"/>
+    <text x="970" y="300" fill="#ffe2e4" font-size="58" font-weight="bold">7–14</text>
+    <text x="970" y="350" fill="#ffe2e4" font-size="26">missing E_tool</text>
+    <text x="970" y="410" fill="#ef9299" font-size="30" font-weight="bold">UNGRADEABLE</text>
+    <text x="970" y="448" fill="#ef9299" font-size="23">B2 + report-only census</text>
+  </g>
+  <path d="M230 535 H970" stroke="#75664d" stroke-width="3"/>
+  <text x="600" y="590" fill="#c9b995" font-family="Georgia,serif" font-size="27" text-anchor="middle">Zero ambiguity. Piece A and all four B2 fixtures stay unchanged.</text>
+</svg>

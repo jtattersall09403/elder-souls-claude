@@ -1,6 +1,6 @@
 # PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it
 
-Plan-State: awaiting-remediation
+Plan-State: awaiting-recriticism
 
 **Plan agent, first use of the role. No browser launched, no `game/` source edited.**
 All numbers below measured offline at **`6bb9003`** by importing `game/src/ui/glyphs.js`
@@ -143,7 +143,10 @@ Per `P_E` member, the **yardstick-drift test (YD)** fires the declared perturbat
 graded row: observed `O`; the tool artifact's own expected side `E_tool`; the frozen value quoted by
 the verdict `E_verdict`; and clean/perturbed verdicts. If **7 or more of 14** lack a readable
 `E_tool`, the explicit S-PLAN-HUD-B3 overturn condition fires: B1′ is ungradeable, is reported as
-such, and the piece reduces to B2 plus the report-only census. The builder does not invent a value.
+such, and the piece reduces to B2 plus the report-only census. If **1–6 of 14** lack a readable
+`E_tool`, the overturn condition has not fired, but B1′ is a **reported, non-passing partial
+result**: every missing value is an `ERROR`, and B1′ passes only with zero `ERROR` rows. The builder
+does not invent a value in either case.
 
 | outcome | meaning |
 |---|---|
@@ -154,7 +157,7 @@ such, and the piece reduces to B2 plus the report-only census. The builder does 
 
 | id | predicate | acceptance | units |
 |---|---|---|---|
-| **B1′** | every member of `P_E` classified into {INDEPENDENT, COUPLED, INERT, ERROR}, with `E_tool` and `E_verdict` printed per graded row | **14/14 classified; OPAQUE unavailable; fewer than 7 missing `E_tool`** | tools |
+| **B1′** | every member of `P_E` classified into {INDEPENDENT, COUPLED, INERT, ERROR}, with `E_tool` and `E_verdict` printed per graded row | **PASS only at 14/14 classified with zero `ERROR` rows; OPAQUE unavailable. 1–6 missing `E_tool` rows are a reported non-passing partial result; 7–14 fire the S-PLAN-HUD-B3 overturn and make B1′ ungradeable.** | tools |
 | **B1b** | wide `P_report` census | report **109 denominator, 95 without external E, and exact path list**; never graded | tools |
 | **B2** | separately denominated shape recall against the four executable fixtures below, each run clean and re-seeded on a scratch worktree | **4 of 4 flagged as the named coupled/inert-control shape** | fixtures |
 | **B3** | **false-positive discipline** against two known-good controls: W1-20's post-fix rect-derived `fits` (`ui/system.js:1157-1170`) and `tools/dialogue/w1-17-r2-deletefix.mjs` (a 2×2 whose control was watched going red) | **0 of 2 flagged** | instances |
@@ -1169,3 +1172,17 @@ the B1′ error/overturn wording needs remediation before another fresh re-criti
 
 **Recommendation:** remediate the B1′ aggregate predicate and its adjacent missing-`E_tool` text,
 then request fresh re-criticism. Do not redispatch or rewrite Piece A.
+
+---
+
+## Fresh plan re-critique 2 remediation — 2026-08-09
+
+The single blocking contradiction is resolved in the operative Piece B contract. B1′ now passes
+only with **zero `ERROR` rows**. A run with **1–6** missing `E_tool` values is classified and
+published as a **non-passing partial result**; it cannot satisfy B1′. A run with **7–14** missing
+values fires the existing S-PLAN-HUD-B3 overturn condition and makes B1′ ungradeable, reducing the
+piece to B2 plus B1b's report-only census. Thus every possible missing-value count has one outcome.
+
+Piece A's landed code, acceptance, and null remain untouched. Piece B's four B2 fixtures and its
+4/4 pass requirement also remain untouched. The plan is **awaiting fresh re-criticism**; this
+remediation does not make either piece build-ready by self-judgement.
