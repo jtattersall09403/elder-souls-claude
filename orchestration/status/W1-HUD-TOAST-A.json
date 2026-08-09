@@ -49,7 +49,7 @@
     "hud-toast-corpus.mjs's population (395 strings) is NOT the plan's 75 -- re-derived independently per rule 18 rather than trust the prior recipe, enumerating every (faction,rank,term) combination with a template rather than only realistic rank-appropriate refusals. A wider, more literal reading of 'every uiToast() caller'; both numbers are reported rather than forcing a match.",
     "other_populations (prompt/boss/slot-label) in hud-toast-corpus.mjs walks game/data/world + npcs for prop/NPC 'name' fields as a proxy for _interactPrompt()'s reachable population -- not a literal simulation walk. slot-label's 70/119 'over budget' figure is measured against the RAW name width, not the ALREADY-TRUNCATED (char-slice(0,8)+ellipsis) text hud.js's quickslot code actually draws -- it does NOT describe a live defect and must not be read as one."
   ],
-  "plan_state": "awaiting-remediation",
+  "plan_state": "awaiting-recriticism",
   "plan_critique_2026_08_09": {
     "verdict": "BLOCKING",
     "biggest_gap": "The operative Piece B acceptance still contradicts the later S-PLAN-HUD-B3 ruling and cannot be dispatched deterministically.",
@@ -94,5 +94,15 @@
     "verdict": "BLOCKING",
     "biggest_gap": "B1 prime has no classification for fixed E with changed O when the verdict does not flip, so its required 14/14 classification is not total.",
     "next_step": "Remediate only the B1 prime outcome table and aggregate predicate; preserve Piece A, the zero-ERROR rule, and the B2 fixtures, then request fresh re-criticism."
+  },
+  "plan_recritique_3_remediation_2026_08_09": {
+    "state": "complete",
+    "summary": "Made B1 prime exhaustive with NON_DECISIVE and WRONG_DIRECTION outcomes, made both explicit non-passing results outside the missing-E_tool threshold, and required 14/14 INDEPENDENT rows for a pass.",
+    "preserved": [
+      "Piece A landed code and acceptance",
+      "the zero-ERROR and 7-row overturn rules",
+      "all four B2 fixtures and their 4/4 pass requirement"
+    ],
+    "next_step": "Fresh independent plan re-criticism."
   }
 }
