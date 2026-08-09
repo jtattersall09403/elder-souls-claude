@@ -1,0 +1,49 @@
+{
+  "task_id": "critic-w1-plans-13-21-10-08-29-20260809",
+  "title": "Independent current-state Wave 1 plan criticism: W1-13, W1-21, W1-10, W1-08, W1-29",
+  "state": "complete",
+  "plan_state": "not-applicable",
+  "started": "2026-08-09",
+  "files_claimed": [
+    "orchestration/plans/W1-13.md",
+    "orchestration/plans/W1-21.md",
+    "orchestration/plans/W1-10.md",
+    "orchestration/plans/W1-08.md",
+    "orchestration/plans/W1-29.md",
+    "orchestration/status/W1-13.json",
+    "orchestration/status/W1-21.json",
+    "orchestration/status/W1-10.json",
+    "orchestration/status/W1-08.json",
+    "orchestration/status/W1-29.json",
+    "orchestration/status/critic-w1-plans-13-21-10-08-29-20260809.json"
+  ],
+  "files_touched": [
+    "orchestration/plans/W1-13.md",
+    "orchestration/plans/W1-21.md",
+    "orchestration/plans/W1-10.md",
+    "orchestration/plans/W1-08.md",
+    "orchestration/plans/W1-29.md",
+    "orchestration/status/W1-13.json",
+    "orchestration/status/W1-21.json",
+    "orchestration/status/W1-10.json",
+    "orchestration/status/W1-08.json",
+    "orchestration/status/W1-29.json",
+    "orchestration/status/critic-w1-plans-13-21-10-08-29-20260809.json"
+  ],
+  "completed_pieces": [
+    "W1-13",
+    "W1-21",
+    "W1-10",
+    "W1-08",
+    "W1-29"
+  ],
+  "deferred_pieces": [],
+  "next_step": "Owner command: Remediate the current Wave 1 plan critiques.",
+  "findings": {
+    "W1-13": "BLOCKING: JRN06 native timing/range predicates and multiple M-D rows were weakened or elided; PRG04 method 8 was substituted.",
+    "W1-21": "BLOCKING: UIX03 blind comparison and UIX06 independent two-pass anti-contamination method were omitted; UI model consumption was not exhaustive.",
+    "W1-10": "BLOCKING: WPN05 M5b exhaustive per-clip integrity, M7/M8, and distinct impact blind evidence were not operatively accepted.",
+    "W1-08": "BLOCKING: RI-JRN03 CONSUMPTION was narrowed to profile/binding rather than exhaustive journey models.",
+    "W1-29": "BLOCKING: RI-JRN04 CONSUMPTION lacked exhaustive model enumeration and per-model visible/actionable perturbation/null evidence."
+  }
+}
