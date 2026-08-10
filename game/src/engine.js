@@ -6355,11 +6355,17 @@ export class Engine {
       return;
     }
     this.ambience.suppressed = null;
+    // A settlement exterior is still a province render cell, but it is not wilderness. Consume
+    // W1-04's authoritative state directly; do not infer a second, audio-only location from the
+    // player coordinates. Missing settlement data deliberately falls through to the regional bed.
+    const settlementBed = this.sim.env.settlement
+      ? this.ambience.bedFor(`settlement-${this.sim.env.settlement}`)
+      : null;
     const r = this.field ? this.field.regionAt(p.pos[0], p.pos[2]) : null;
     // One reused argument object. This runs on every frame of every probe in the project, and a
     // fresh object literal per frame is an allocation charged to nothing anybody reads.
     const a = this._ambienceArg || (this._ambienceArg = { regionId: null, x: 0, z: 0, yawRad: 0, timeOfDay: 12, weather: 'clear', frame: 0, dt: STEP_MS / 1000 });
-    a.regionId = r ? r.id : null;
+    a.regionId = settlementBed ? settlementBed.id : (r ? r.id : null);
     a.x = p.pos[0]; a.z = p.pos[2];
     a.yawRad = (p.yaw || 0) * Math.PI / 180;
     a.timeOfDay = this.sim.env.timeOfDay;
