@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-25-builder",
+  "piece": "experience instruments and seam crossings",
+  "state": "done",
+  "started_at": "2026-08-10T00:00:00Z",
+  "summary": "Builder instruments and handoff complete; facility green, governing live outcomes honestly remain red/NOT_RUN rather than inheriting facility green.",
+  "next_step": "Owning siblings repair the zero live crossings and missing live substrates; then record matched played sessions and dispatch isolated recall, verifier, blind judge, non-player annotator, and independent critic.",
+  "files_touched": [
+    "orchestration/status/W1-25-builder.json",
+    "tools/experience/lib/session-analysis.mjs",
+    "tools/experience/classes-from-md.mjs",
+    "tools/experience/recall-run.mjs",
+    "tools/experience/shape-check.mjs",
+    "tools/experience/sag-fit.mjs",
+    "tools/experience/session-beats.mjs",
+    "tools/experience/session-shape.mjs",
+    "tools/experience/permissiveness-live.mjs",
+    "reports/composition/w1-25-builder/matrix.json",
+    "reports/experience/w1-25-builder/handoff.json"
+  ],
+  "files_claimed": [],
+  "not_roles": [
+    "isolated recall baton",
+    "blind comparison judge",
+    "independent critic"
+  ],
+  "dispatch_head": "c9603f64155c15bec8f17a09a8c9110a0a81e67e",
+  "tested_commit": "c9603f64155c15bec8f17a09a8c9110a0a81e67e",
+  "contention_note": "Gate reported 10 zombie headless_shell processes and refused. Forced one run because ps showed all ten were defunct, not live browsers; the native matrix aggregation completed and remained red at 0 demonstrated crossings."
+}
