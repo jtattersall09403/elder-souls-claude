@@ -263,12 +263,12 @@
   "analog": {
     "owner": "RI-JRN04 \u00a7D",
     "left_stick": {
-      "inner_deadzone": 0.15,
+      "inner_deadzone": 0.14,
       "outer_saturation": 0.92,
       "rescale": "m' = clamp((m - inner) / (outer - inner), 0, 1)",
       "curve": "linear",
       "walk_run_threshold": 0.55,
-      "deadzone_conflict_note": "RI-JRN04 \u00a7D binds the inner deadzone at 0.14; RI-CAM02 \u00a7C binds 'idle (deadzone)' at <= 0.15 and its M1 hard-FAILs any yaw at m <= 0.15. 0.15 is used because it satisfies both: RI-JRN04 M-P6 asks only that output magnitude be 0 BELOW 0.14, which 0.15 gives. The outer saturation 0.92 is RI-JRN04's; RI-CAM02 states none. The 0.55 walk/run boundary is stated identically by both and is applied to the RESCALED magnitude, which is what RI-CAM02 \u00a7C's preamble means by 'the post-deadzone movement-stick vector'. Recorded as corpus debt: RI-JRN04 \u00a7D should cite RI-CAM02 rather than restate a different number."
+      "deadzone_ruling": "ARBITRATION S32: RI-JRN04 owns the device deadzone, so movement uses its exact 0.14 radius. RI-CAM02 owns the response above the edge. The 0.55 walk/run boundary is applied to the rescaled magnitude."
     },
     "right_stick": {
       "inner_deadzone": 0.15,

@@ -240,10 +240,11 @@ export class UILayer {
      */
     const layout = (k, winSize) => {
       const s = base * k;
+      const mobileFloor = W > H * 1.8 && H <= 900 ? 36 : 0;
       const pad = Math.round(34 * s);
-      const bodySize = Math.max(11, Math.round(30 * s));
-      const nameSize = Math.max(9, Math.round(22 * s));
-      const optSize = Math.max(10, Math.round(27 * s));
+      const bodySize = Math.max(11, mobileFloor, Math.round(30 * s));
+      const nameSize = Math.max(9, mobileFloor, Math.round(22 * s));
+      const optSize = Math.max(10, mobileFloor, Math.round(27 * s));
       const lineH = Math.round(bodySize * 1.36);
       const optH = Math.round(optSize * 1.62);
       const spokenH = Math.round(nameSize * 1.32);

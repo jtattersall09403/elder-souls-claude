@@ -1627,11 +1627,35 @@ async function padChecks(page, h, ev) {
     const fired = (H.getInputEdges().slice(e0b)[0] || {}).button || null;
     H.gamepad(unk(-1)); H.stepFrames(2);
     out.calibrated_action_for_raw0 = fired;
+
+    // Lifecycle population added by W1-29's satisfied continuation plan: unplug at EVERY
+    // prompt, then replace the unknown pad at the same index with a standard pad. No prompt
+    // may survive and the replacement's A/RB inputs must not be swallowed or remapped.
+    out.calibration_disconnects = [];
+    for (let cut = 0; cut < 6; cut++) {
+      H.gamepad(null); H.stepFrames(2);
+      const id = `Calibration Disconnect ${cut}`;
+      const u = (i) => { const b = new Array(18).fill(0); if (i >= 0) b[i] = 1; return { index: 0, buttons: b, axes: new Array(6).fill(0), mapping: '', id }; };
+      H.gamepad(u(-1)); H.stepFrames(2);
+      for (let i = 0; i < cut; i++) { H.gamepad(u(i)); H.stepFrames(1); H.gamepad(u(-1)); H.stepFrames(1); }
+      const before = H.getInputState().gamepad.calibrationPrompt;
+      H.gamepad(null); H.stepFrames(1);
+      const afterDrop = H.getInputState().gamepad;
+      const standard = (i) => { const b = new Array(17).fill(0); if (i >= 0) b[i] = 1; return { index: 0, buttons: b, axes: [0, 0, 0, 0], mapping: 'standard', id: `Standard Replacement ${cut}` }; };
+      H.gamepad(standard(-1)); H.stepFrames(2);
+      const e = H.getInputEdges().length;
+      H.gamepad(standard(0)); H.stepFrames(1); H.gamepad(standard(-1)); H.stepFrames(2);
+      H.gamepad(standard(5)); H.stepFrames(1); H.gamepad(standard(-1)); H.stepFrames(2);
+      const actions = H.getInputEdges().slice(e).filter((x) => x.edge === 'down').map((x) => x.button);
+      out.calibration_disconnects.push({ cut, prompt: before, calibrating_after_drop: afterDrop.calibrating, actions });
+    }
     return out;
   });
   const quirkOk = quirk.raw0.hold === 'use_item' && quirk.raw1.hold === 'interact'
     && (quirk.raw2.hold === 'sprint' || quirk.raw2.tap === 'roll') && quirk.raw5.hold === 'light'
-    && quirk.calibration.started && quirk.calibration.finished && quirk.calibration.inputs <= 8;
+    && quirk.calibration.started && quirk.calibration.finished && quirk.calibration.inputs <= 8
+    && quirk.calibration_disconnects.length === 6
+    && quirk.calibration_disconnects.every((x) => !x.calibrating_after_drop && x.actions.includes('interact') && x.actions.includes('light'));
   record('M-P15', 'RI-JRN04', 'a mapping-"" pad is de-permuted from pad-quirks.json; an unknown one calibrates on the pad alone',
     quirkOk, quirk, 'known id -> correct map, no prompt; unknown id -> calibration in <= 8 inputs (HF2)');
 

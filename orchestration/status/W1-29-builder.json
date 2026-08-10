@@ -1,0 +1,29 @@
+{
+  "task_id": "W1-29-builder",
+  "role": "builder",
+  "plan": "orchestration/plans/W1-29.md",
+  "status": "builder_delivery_complete_awaiting_critic",
+  "files_touched": [
+    "game/data/input/profiles.json",
+    "game/src/input/gamepad.js",
+    "game/src/render/ui.js",
+    "game/src/ui/glyphs.js",
+    "game/src/ui/surface.js",
+    "tools/journey/input-checks.mjs",
+    "reports/W1-29-builder-delivery.md",
+    "orchestration/status/W1-29-builder.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Fresh independent critic reruns the complete RI-JRN04 aggregate and consumption census; independent JC-04N supplies the sealed naive transcript.",
+  "independent_actor_requirements": [
+    "JC-04N naive pass/transcript",
+    "fresh build critic"
+  ],
+  "results": {
+    "native_pad_viewport": "23/23 pass",
+    "calibration_disconnect_population": "6/6 positions pass inside M-P15",
+    "touch_population": "M-P21a/M-P21b/T2/M-P22/M-P17 pass",
+    "coupling": "3 live couplings; stable null; delete-the-fix arm recorded"
+  },
+  "no_independent_pass_claimed": true
+}

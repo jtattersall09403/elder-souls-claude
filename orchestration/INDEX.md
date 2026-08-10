@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2b7a661`: 803 tools, 153 reference
-items, 127 pieces in flight.
+so it cannot drift. Generated at `07e75bd`: 808 tools, 153 reference
+items, 131 pieces in flight.
 
-Its purpose is to stop 127+ concurrent agents each paying separately to discover the
+Its purpose is to stop 131+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -93,7 +93,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
 
-### `tools/analysis/` — 48
+### `tools/analysis/` — 49
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -136,6 +136,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/ui-census.mjs` — RI-UIX01 §C (the budget) and §D (stamina as a correctness property).
 - `tools/analysis/ui-forbidden.mjs` — RI-UIX01 §B, both probes, and RI-UIX03 §D.
 - `tools/analysis/ui-layer.mjs` — RI-UIX02 §C, detector 1 of three: the pixel sweep.
+- `tools/analysis/w1-07-native.mjs` — **no header comment**
 - `tools/analysis/w1-12-chart.mjs` — THE PICTURE FOR W1-12: where an enemy stands, for sixty seconds, while you fight it.
 - `tools/analysis/w1-13-r4-chart.mjs` — THE PICTURE FOR W1-13 ROUND 4: what one ordinary enemy is worth, when you died and when you did not.
 - `tools/analysis/w1-15-consumption.mjs` — RI-MTH07 / ARBITRATION §3 CONSUMPTION, for W1-15's whole parameter set.
@@ -144,7 +145,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-chartfont-shot-sweep.mjs` — SWEEP docs/shots/ FOR FIGURES DRAWN WITH THE SHEARED CHART FONT — by reading the PIXELS.
 - `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
 
-### `tools/audio/` — 11
+### `tools/audio/` — 12
 
 - `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
 - `tools/audio/critic-w1-22-r2-bands.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement).
@@ -157,6 +158,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/w1-22-r3-daynight.mjs` — RI-AUD03 R5 — "Night is a different L2/L4 SELECTION, not a filter." W1-22 round 3.
 - `tools/audio/w1-22-r3-hive-bar.mjs` — THE HIVE'S BAR, RE-MEASURED WITHOUT THE EVENT THAT WAS OUTSIDE THE CAP.
 - `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
+- `tools/audio/w1-22-r4-s41.mjs` — W1-22 completion-builder capture preparation.
 
 ### `tools/blind/` — 6
 
@@ -293,7 +295,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 235
+### `tools/harness/` — 236
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -458,6 +460,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/trace-stats.mjs` — turn a per-frame JSONL trace into the combat statistics the combat reference items score against.
 - `tools/harness/trace.mjs` — drive scripted inputs and dump a JSONL per-frame trace.
 - `tools/harness/ui-pause.mjs` — RI-UIX03 §A, measured as frame arithmetic, plus the gamepad-only reachability walk this piece is required to survive.
+- `tools/harness/w1-07-birthsign-consume.mjs` — **no header comment**
 - `tools/harness/w1-07-consume.mjs` — W1-07 round 3 — the CONSUMPTION instrument.
 - `tools/harness/w1-07-scene.mjs` — the Writ House, screenshotted node by node, and measured live.
 - `tools/harness/w1-08-29-r2-coupling.mjs` — CONSUMPTION (RI-MTH07 §B) for the two models W1-29 shipped with no world-side consumer, plus the delete-the-fix leg.
@@ -643,7 +646,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/playability/standing-check.mjs` — THE one command.
 - `tools/playability/verify-links.mjs` — do the OTHER two links work, and does every link inside them resolve?
 
-### `tools/progression/` — 6
+### `tools/progression/` — 7
 
 - `tools/progression/critic-souls-r1.mjs` — the W1-SOULS round-1 critic's OWN instrument.
 - `tools/progression/critic-souls-r2.mjs` — the W1-SOULS ROUND-2 critic's OWN instrument.
@@ -651,6 +654,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/progression/souls-consumption.mjs` — the CONSUMPTION probe for the soul economy.
 - `tools/progression/souls-ledger-oracle.mjs` — THE INVARIANT, NOT THE INSTANCES.
 - `tools/progression/souls-r3-shot.mjs` — one picture of what W1-SOULS round 3 changed.
+- `tools/progression/w1-16-bar-matrix.mjs` — **no header comment**
 
 ### `tools/prose/` — 9
 
@@ -766,12 +770,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 8
+### `tools/ui/` — 9
 
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
+- `tools/ui/w1-21-model-consumption.mjs` — Exhaustive RI-MTH07 coupling gate for every player-facing UISystem model/drawer in W1-21.
 - `tools/ui/w1-21-r3-browser.mjs` — W1-21 round 3's ONE browser: the derived `markers` field, CONSUMPTION, and the six screens.
 - `tools/ui/w1-21-r3-empty.mjs` — RULES 6, FOR THE INSTRUMENT: run every graded check with its subject removed and confirm that none of them goes green.
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
@@ -968,7 +973,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **178 tools have no header comment**, so nobody can tell what they do without
+> **181 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1142,7 +1147,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `plan-w1-17-06-03-26-codex-20260809` | ? | Owner command: Critique the current Wave 1 plans | `orchestration/plans/W1-17.md` `orchestration/status/W1-17.json` `orchestration/plans/W1-06.md` `orchestration/status/W1-06.json` `orchestration/plans/W1-03.md` `orchestration/status/W1-03.json` |
+| `W1-29-builder` | ? | Fresh independent critic reruns the complete RI-JRN04 aggregate and consumption census; in | `game/data/input/profiles.json` `game/src/input/gamepad.js` `game/src/render/ui.js` `game/src/ui/glyphs.js` `game/src/ui/surface.js` `tools/journey/input-checks.mjs` |
+| `W1-00-codex-builder-sweep` | builder_completion_repair_delivered_remaining_rows_recorded | Independent critic must not enter yet: dispatch remaining builder for RI-MTH02 R1/R5/R7/R8 | `game/data/save-manifest.json` `game/src/combat/system.js` `game/src/core/canonical.js` `game/src/engine.js` `game/src/sim/state.js` `orchestration/status/W1-00-codex-builder-sweep.json` |
+| `W1-21-builder` | ? | Independent UIX03/UIX04/UIX06 judges use the prepared source-pack specification; a fresh c | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` `reports/w1-21-builder/aggregate.md` `reports/w1-21-builder/ui-comparison-packs.json` |
+| `W1-23-builder-codex-20260810` | ready_for_independent_criticism | Independent critic: exhaustive 163-document live walk and RI-MTH07 coupling; semantic secr | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` `game/data/books/manifest.json` `game/data/books/scraps.json` |
 | `remediate-w1-07-w1-28-w1-13-codex-20260809` | ? | Request fresh independent re-criticism for W1-07, W1-28, and W1-13. | `orchestration/plans/W1-07.md` `orchestration/plans/W1-28.md` `orchestration/plans/W1-13.md` `orchestration/status/W1-07.json` `orchestration/status/W1-28.json` `orchestration/status/W1-13.json` |
 | `review-edit-w1-08-29-17-06-codex-20260809` | ? | Owner command: Critique the current Wave 1 plans — dispatch a fresh reviewer-editor for W1 | `orchestration/plans/W1-08.md` `orchestration/plans/W1-29.md` `orchestration/plans/W1-17.md` `orchestration/plans/W1-06.md` `orchestration/status/W1-08.json` `orchestration/status/W1-29.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
@@ -1156,6 +1164,7 @@ work is the difference between resuming and starting over.
 | `judge-w1-22-r3` | ? | none - complete | `reports/packs/w1-22-r3-hard-judgement.md` `orchestration/status/judge-w1-22-r3.json` `reports/blog-feed.jsonl` |
 | `measure-own-e-w1-hud-toast-b` | running | 1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify th | — |
 | `plan-review-editor-w1-13-w1-21-w1-10-fresh-20260809` | done | A different fresh reviewer-editor must review W1-13, W1-21, and W1-10; this task materiall | `orchestration/plans/W1-13.md` `orchestration/plans/W1-21.md` `orchestration/plans/W1-10.md` `orchestration/status/W1-13.json` `orchestration/status/W1-21.json` `orchestration/status/W1-10.json` |
+| `plan-w1-17-06-03-26-codex-20260809` | ? | Owner command: Critique the current Wave 1 plans | `orchestration/plans/W1-17.md` `orchestration/status/W1-17.json` `orchestration/plans/W1-06.md` `orchestration/status/W1-06.json` `orchestration/plans/W1-03.md` `orchestration/status/W1-03.json` |
 | `critic-w1-12` | done | none — the verdict is filed at corpus/90-verdicts/wave1/W1-12-r1.md/.json and validates. A | `orchestration/status/critic-w1-12.json` `corpus/90-verdicts/wave1/W1-12-r1.md` `corpus/90-verdicts/wave1/W1-12-r1.json` `tools/combat/critic-w1-12-census.mjs` `tools/combat/critic-w1-12-s22.mjs` `tools/combat/critic-w1-12-chart.mjs` |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `critic-w1-14-r3` | done | none — verdict emitted, schema-valid, committed. | `corpus/90-verdicts/wave1/W1-14-r3.md` `corpus/90-verdicts/wave1/W1-14-r3.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-E.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-G.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-J.json` `corpus/90-verdicts/wave1/artifacts/W1-14-r3/critic-part-K.json` |
@@ -1209,7 +1218,6 @@ work is the difference between resuming and starting over.
 | `arbiter-dlg-s37` | done | none — ruling landed; builder implements per NEXT-DISPATCH T0, res referred at T | `orchestration/status/arbiter-dlg-s37.json` `tools/dialogue/arbiter-order-divergence.mjs` `tools/dialogue/arbiter-reference-reader.mjs` `corpus/00-doctrine/ARBITRATION.md` `corpus/40-dialogue/RI-DLG01-topic-graph.md` `orchestration/NEXT-DISPATCH.md` |
 | `arbiter-map-s38` | done | none — ruling landed, gate green, S35 amended in place | `corpus/00-doctrine/ARBITRATION.md` `tools/map/arbiter-map-s38.mjs` `orchestration/status/arbiter-map-s38.json` `reports/blog-feed.jsonl` `docs/shots/2026-08-08-s38-what-a-forged-save-can-and-cannot-put-on-the-map.png` |
 | `arbiter-wpn-s36` | done | DONE. S36 is ruled and on disk. Three referrals filed as NEXT-DISPATCH §S1 (RI-CMB04 subst | `corpus/00-doctrine/ARBITRATION.md` `corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md` `corpus/12-weapons/RI-WPN05-weapon-feel-impact.md` `orchestration/NEXT-DISPATCH.md` `orchestration/INDEX.md` `orchestration/status/arbiter-wpn-s36.json` |
-| `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-CROSSING-r2` | in-progress | Sweep 2 running (both fixes in). Then: delete-the-fix browser arms, consumption null/posit | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` `tools/world/w1-crossing-r2-pursue-sim.mjs` `tools/world/w1-crossing-r2-parapet-trap.mjs` |
 | `W1-DLG-S37` | done | critic round; then the two hand-offs below (stale instruments; the manifest reorder questi | `game/src/character/converse.js` `game/data/dialogue/topics/_manifest.json` `game/data/index.json` `tools/dialogue/order-infos.mjs` `tools/dialogue/s37-unhearable.mjs` `tools/dialogue/s37-merge-order-consume.mjs` |
 | `W1-FACTIONS-r3` | researching | patch faction-probe to travelToGiver; then prose, records_belief, template break, browser  | — |
@@ -1231,7 +1239,7 @@ work is the difference between resuming and starting over.
 | `W1-28` | partial | Fresh independent reviewer-editor re-criticises the materially edited orchestration/plans/ | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` `reports/w1-28/` `docs/shots/2026-08-08-w1-28-the-verb-ledger-cannot-see-the-buttons.png` |
 | `W1-CAPTURE-R2` | researching | rebuild arrival.mjs | — |
 | `W1-CHARTFONT-r2` | ? | none — handoffs below. W1-18-r2, W1-19-r3, W1-READABLES, W1-22-r2, W1-22-r3 and W1-01-r4 e | `orchestration/status/W1-CHARTFONT-r2.json` `tools/analysis/w1-15-r3-chart.mjs` `tools/harness/w1-16-r3-chart.mjs` `tools/world/road-join-chart.mjs` `tools/world/w1-01-r4-crossing-chart.mjs` `tools/audio/critic-w1-22-r2-chart.mjs` |
-| `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
+| `W1-CHARTFONT` | ? | Handoffs below. Nothing outstanding for this task. | `orchestration/status/W1-CHARTFONT.json` `tools/lib/chart-font.mjs` `tools/analysis/w1-chartfont-deletefix.mjs` `tools/analysis/w1-chartfont-shot.mjs` `tools/quests/reveal-route-chart.mjs` `tools/economy/w1-souls-ledger-chart.mjs` |
 | `W1-14-r5` | done | commit; nothing outstanding | `docs/shots/2026-08-08-w1-14-r5-the-bolt-goes-where-the-body-is-going.png` `game/data/magic/cast-classes.json` `game/data/npcs/spellwrights.json` `game/src/combat/player.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `W1-15-r3` | building | A fresh-context critic should: (1) drive a real loadState(blob) round trip with civilians/ | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` `game/data/world/property/archon.json` `game/data/world/property/blackrose.json` |
 | `W1-15-r4` | ? | a fresh-context critic | `orchestration/status/W1-15-r4.json` `game/src/world/interior-lighting.js` `game/src/render/interior.js` `game/src/sim/stealth/system.js` `game/src/sim/stealth/search.js` `game/src/sim/crime/state.js` |
@@ -1247,6 +1255,7 @@ work is the difference between resuming and starting over.
 | `W1-12` | done | none - piece complete. A successor should read reports/w1-12/survey.md sections 3c, 4 and  | `orchestration/status/W1-12.json` `reports/w1-12/survey.md` `reports/w1-12/ai-probe-souls-inf_trash.json` `game/data/combat/ai.json` `game/data/index.json` `game/src/combat/ai.js` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
 | `W1-14-r3` | done | CLOSED: both surviving collisions from round 3 (bind_lesser/bind_greater magnitude-blindne | `game/src/sim/magic/apply.js` `game/src/sim/magic/system.js` `game/data/magic/effects.json` `game/src/harness/api.js` `tools/harness/w1-14-r3-dials.mjs` `tools/harness/w1-14-r3-summon.mjs` |
+| `W1-14-r4` | done | hand to a critic. See the not_done note. | `docs/shots/2026-08-08-w1-14-r4-a-spell-nobody-wrote-cast-in-the-street-it-was-bought-in.png` `game/data/dialogue/rumours.json` `game/data/index.json` `game/data/magic/enchanting.json` `game/data/npcs/spellwrights.json` `game/src/combat/enemy.js` |
 | `W1-06-r2` | partial | 1) tools/harness/w1-13-r3-bloom-sight.mjs still has its aim-only/eye-only arms written and | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |
 | `W1-06` | partial | Dispatch build work from the satisfied plan; preserve its stop/escalation at the unresolve | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
