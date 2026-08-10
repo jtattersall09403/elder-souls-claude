@@ -1,0 +1,33 @@
+{
+  "schema": "elder-souls/w1-00-builder-manifest@1",
+  "piece": "W1-00",
+  "role": "builder",
+  "tested_commit": "2b7a661a82b5812e16ba3aad960ba3d19b321379",
+  "branch": "codex/wave1-build-experiment",
+  "dirty_at_measurement": ["orchestration/status/W1-00-codex-builder-sweep.json"],
+  "items": [
+    {"id":"RI-MTH02","tool":"tools/harness/determinism.mjs","exists":true,"result":"RED","observed":"4/9 rungs; R1/R5/R6/R7/R8/R9 red"},
+    {"id":"RI-JRN05","tool":"tools/journey/state-diff.mjs","exists":true,"result":"RED","observed":"0/12 diagnostic trials clean; binding SV1-SV5 aggregate absent"},
+    {"id":"RI-MTH01","tool":"tools/harness/api-probe.mjs","exists":true,"result":"NOT_RUN","reason":"save/determinism hard failures stop cheap-first continuation"},
+    {"id":"RI-PLT01","tool":"tools/platform/alloc-probe.mjs","exists":true,"result":"NOT_RUN","reason":"save/determinism hard failures stop cheap-first continuation"},
+    {"id":"RI-PLT03","tool":"tools/platform/streaming.mjs","exists":false,"result":"RED","reason":"item-named aggregate instrument not found; no substitute credited"},
+    {"id":"RI-AUD02","tool":"tools/analysis/audio-budget.mjs","exists":true,"result":"NOT_RUN","reason":"native audio-capable A3 and dependency validation remain outstanding"},
+    {"id":"RI-JRN03","tool":"tools/journey/input-checks.mjs","exists":true,"result":"NOT_RUN","reason":"real pointer-lock delivery and dependency validation remain outstanding"},
+    {"id":"RI-CAM02","tool":"corpus/80-methods/m-cam02-control.mjs","exists":true,"result":"NOT_RUN","reason":"save/determinism hard failures stop cheap-first continuation"},
+    {"id":"RI-CAM06","tool":null,"exists":false,"result":"RED","reason":"no single item-native tool identified by current manifest census"},
+    {"id":"RI-CMB07","tool":"tools/harness/cmb-exemplar.mjs","exists":true,"result":"NOT_RUN","reason":"save/determinism hard failures stop cheap-first continuation"},
+    {"id":"RI-MTH07","tool":null,"exists":false,"result":"RED","reason":"no exhaustive W1-00 model census/consumer/VERIFY aggregate exists; narrower save consumption probes are not exhaustive"}
+  ],
+  "cheap_gates": {
+    "check_data":"GREEN",
+    "check_save_shape":"GREEN",
+    "lint_determinism":"GREEN",
+    "corpus_index":"GREEN_WITH_41_WAVE1_WARNINGS",
+    "boot_check":"GREEN"
+  },
+  "artifacts": [
+    "reports/w1-00-codex-builder-sweep/determinism.json",
+    "reports/w1-00-codex-builder-sweep/state-diff.json"
+  ],
+  "verdict": "NOT_ISSUED_BUILDER_BOUNDARY"
+}
