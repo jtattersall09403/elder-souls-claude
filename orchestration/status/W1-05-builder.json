@@ -1,0 +1,26 @@
+{
+  "task_id": "W1-05-builder",
+  "role": "builder",
+  "state": "awaiting-criticism",
+  "plan": "orchestration/plans/W1-05.md",
+  "started_at": "2026-08-10",
+  "files_touched": [
+    "orchestration/status/W1-05-builder.json",
+    "tools/world/w1-05-body-matrix.mjs"
+  ],
+  "files_claimed": [],
+  "next_step": "Independent critic executes the exact handoff; no builder PASS claimed.",
+  "checks": {
+    "cheap_static": "PASS: signpost audit; travel static; scale audit; road-through-building; data/content/quest/prose gates",
+    "live_complete_matrix": "NOT_RUN: native 24-row walk exceeded 13 minutes on its first row and was stopped; population checkpoint is fail-closed with 0/24 and ok=false",
+    "live_transport": "NOT_RUN: existing live audit exceeded 14 minutes and was stopped",
+    "waylamp": "NOT_RUN: browser command did not complete inside the 30-second command window",
+    "independent_visual_judge": "NOT_RUN by builder role"
+  },
+  "delivery": [
+    "Added a single-browser, fail-closed live capsule matrix covering all 20 directed adjacent legs and 4 directed named routes.",
+    "Matrix records water, teleport/reanchor, abort, arrival offset, off-road metrics when exposed, and a 120-frame settling control; it checkpoints every row.",
+    "No settlement, interior, border, map, or production road geometry was changed because all cheap owned gates were green."
+  ],
+  "critic_handoff": "Fresh independent W1-05 critic: run node tools/world/w1-05-body-matrix.mjs --out reports/w1-05-builder-delivery.json to completion under an unconstrained browser window; treat any result other than complete=true, rows_run=24, directed_legs_arrived=20, directed_named_routes_arrived=4, ok=true as FAIL. Then run the satisfied-plan native item rows and independent visual/judge rows; do not accept the builder population-only checkpoint as traversal evidence. Reuse current green signpost/scale/travel-static/road-through-building gates and preserve W1-04/W1-02/W1-21 seams."
+}
