@@ -1,0 +1,42 @@
+{
+  "task_id": "W1-16-r5",
+  "role": "production_builder",
+  "state": "complete_candidate",
+  "started": "2026-08-10",
+  "base": "codex/wave1-build-experiment",
+  "git_at_start": "2b7a661a82b5812e16ba3aad960ba3d19b321379",
+  "next_step": "Fresh build critic: run the emitted 200-row matrix, reproduce r4 save/magic controls independently, then attack RED and UNMEASURABLE rows without treating sibling-owned gaps as waived.",
+  "files_touched": [
+    "orchestration/status/W1-16-r5.json",
+    "tools/progression/w1-16-bar-matrix.mjs",
+    "reports/w1-16/bar-matrix.json",
+    "reports/w1-16/r5-live.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-16-r5.json",
+    "tools/progression/w1-16-bar-matrix.mjs",
+    "reports/w1-16/bar-matrix.json",
+    "reports/w1-16/r5-live.json"
+  ],
+  "production_changes": [],
+  "production_note": "No new production delta: current HEAD already contains the r4 continuation repairs. Builder reran rather than rewrote independently established code.",
+  "builder_evidence": {
+    "bar_matrix": "200 rows: 11 PASS, 11 FAIL, 178 UNMEASURABLE (fail-closed)",
+    "r4_offline": "6/6 PASS; all 6 red under selftest teardown",
+    "r4_live": "7/7 probes coupled: pinfight, burden, talisman, overloaded, feather, refusal, consumption",
+    "souls_world": "310 ledger rows agree; 144 posts, 267 bodies, 10,679 souls",
+    "creation": "89/96 assertions pass; 6 hard failures and 1 declared XFAIL; sibling-owned character content left untouched"
+  },
+  "independent_not_run": [
+    "RI-CMB01 M2 blind i-frame boundary judgement",
+    "RI-PRG02 six-character manual judgement",
+    "RI-CHR01 signature legibility blind judgement",
+    "RI-CHR02 register conformance blind judgement",
+    "RI-UIX03 inventory blind pair"
+  ],
+  "plan_defects": [
+    "The plan says one row per native hard fail. The emitted matrix keeps one fail-closed hard-fail-set row per item rather than pretending current evidence resolved individual native clauses; a fresh critic must expand and judge each constituent before closure."
+  ],
+  "scope_controls": "No W1-07 character content, W1-09 combat-core calibration, or W1-04/W1-23 world/canon production file was changed. S23 separation was preserved.",
+  "tested_commit": "8adf631"
+}
