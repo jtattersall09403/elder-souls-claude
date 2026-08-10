@@ -1,0 +1,39 @@
+{
+  "task_id": "W1-03-builder",
+  "role": "builder",
+  "status": "done",
+  "plan_state": "satisfied",
+  "files_touched": [
+    "orchestration/status/W1-03-builder.json",
+    "game/data/world/traversal.json",
+    "game/src/combat/system.js",
+    "game/src/render/renderer.js",
+    "game/src/sim/traversal.js",
+    "game/src/world/field.js",
+    "game/src/world/province.js",
+    "tools/world/w1-03-water-gate.mjs"
+  ],
+  "files_claimed": [],
+  "next_step": "Fresh independent W1-03 critic: run every native RI-WLD10 M47-M56, RI-WLD11 M57-M63, RI-VIS04 \u00a79 and RI-VIS02 REF-M4 method at this commit. Reuse tools/world/w1-03-water-gate.mjs first; then live-test tide mesh/body alignment without restream, shore coverage at (2226.9,4376.1), drying at exit/1/19/21 s, moving held-action traversal, enemy producer-to-consumer/pursuit/DPS, and all hazard rows. Independently judge the native paired visual pack. Treat unmeasured rows and visual/blind judgement as NOT_RUN, never PASS.",
+  "state": "built_awaiting_critic",
+  "builder_delivery": {
+    "implemented": [
+      "exact-zero non-tidal tide consumption",
+      "shore cells retained and clamped to terrain",
+      "live streamed water vertex updates from the field tide phase",
+      "body-relative 20-second drying band",
+      "END-derived breath maximum with live combat-body consumption",
+      "hard-fail/red-control gate"
+    ],
+    "checks_passed": [
+      "m-wld10-water-census",
+      "m-wld11-hazard-census",
+      "check-data",
+      "boot-check",
+      "w1-03-water-gate",
+      "git diff --check"
+    ],
+    "independent_visual_judgement": "NOT_RUN",
+    "native_rows_not_claimed": "Any row not named in checks_passed remains NOT_RUN for the independent critic; builder makes no PASS judgement."
+  }
+}

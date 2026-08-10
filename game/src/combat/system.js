@@ -214,6 +214,7 @@ export class CombatSystem {
       haPool: (d.poise.hyperarmour.pools[moves._classKey] || {}).one_handed || 0,
     });
     body.shieldId = shieldId;
+    body.endurance = endurance;
     // RI-CMB04 §A step 5 / RI-AI01 minimum standoff. Declared in hitgeometry.json rather than
     // baked here so a critic can read the number without reading the source.
     body.bodyRadius = (d.hitgeometry.bodies && d.hitgeometry.bodies.player_radius_m) || 0.30;

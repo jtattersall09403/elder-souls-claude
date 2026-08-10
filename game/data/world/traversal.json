@@ -62,6 +62,9 @@
    "W4"
   ],
   "breath_max_s": 60.0,
+  "breath_base_s": 40.0,
+  "breath_per_endurance_over_10_s": 2.0,
+  "breath_cap_s": 100.0,
   "_breath_source": "RI-WLD10 \u00a73: breath_max = 40 s + 2.0 s per point of Endurance above 10, capped at 100. The shipped build is an Endurance 20 sheet, so 60 s.",
   "breath_refill_mult": 3.0,
   "drown_hp_pct_per_s": 2.0,
