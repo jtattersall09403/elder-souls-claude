@@ -73,6 +73,10 @@ export function makePlayer() {
     // both unreachable. Null except for the one frame between the blow and the death tick.
     lethalCause: null,
     estus: PLAYER_CONST.estus_max,
+    estusMax: PLAYER_CONST.estus_max,
+    // Baseline used by idempotent birthsign pool derivation. Declare it at construction so
+    // a default/named state and the same state after a blob load have the same durable shape.
+    _birthsignBaseEstus: PLAYER_CONST.estus_max,
     lockOn: null,
     hitboxes: [],
     // Seam S19 view fields, refreshed from MagicSystem by sim/combat-bridge.js `mirror()`.

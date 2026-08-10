@@ -1,0 +1,564 @@
+{
+  "schema": "elder-souls/api-probe@1",
+  "presence": [
+    {
+      "id": "A01",
+      "method": "version",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A02",
+      "method": "ready",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A03",
+      "method": "getBuildInfo",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A04",
+      "method": "setSeed",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A05",
+      "method": "getSeed",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A06",
+      "method": "reset",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A07",
+      "method": "loadState",
+      "tier": "mandatory-world",
+      "present": true
+    },
+    {
+      "id": "A08",
+      "method": "saveState",
+      "tier": "optional",
+      "present": true
+    },
+    {
+      "id": "A09",
+      "method": "setMode",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A10",
+      "method": "stepFrames",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A11",
+      "method": "getFrame",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A12",
+      "method": "queueInputs",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A13",
+      "method": "clearInputs",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A14",
+      "method": "snapshot",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A15",
+      "method": "traceStart",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A16",
+      "method": "traceDrain",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A17",
+      "method": "traceStop",
+      "tier": "mandatory",
+      "present": true
+    },
+    {
+      "id": "A18",
+      "method": "teleport",
+      "tier": "mandatory-world",
+      "present": true
+    },
+    {
+      "id": "A19",
+      "method": "spawn",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A20",
+      "method": "despawn",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A21",
+      "method": "aggro",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A22",
+      "method": "lockOn",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A23",
+      "method": "setTimeOfDay",
+      "tier": "mandatory-visual",
+      "present": true
+    },
+    {
+      "id": "A24",
+      "method": "setWeather",
+      "tier": "mandatory-visual",
+      "present": true
+    },
+    {
+      "id": "A25",
+      "method": "camera",
+      "tier": "mandatory-visual",
+      "present": true
+    },
+    {
+      "id": "A26",
+      "method": "listAnchors",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A27",
+      "method": "setUIVisible",
+      "tier": "optional",
+      "present": true
+    },
+    {
+      "id": "A28",
+      "method": "listEntities",
+      "tier": "optional",
+      "present": true
+    },
+    {
+      "id": "A29",
+      "method": "getPlayerStats",
+      "tier": "optional",
+      "present": true
+    },
+    {
+      "id": "A30",
+      "method": "getWorldStats",
+      "tier": "mandatory-world",
+      "present": true
+    },
+    {
+      "id": "A31",
+      "method": "getQuestState",
+      "tier": "mandatory-quest",
+      "present": true
+    },
+    {
+      "id": "A32",
+      "method": "renderFrame",
+      "tier": "expected",
+      "present": true
+    },
+    {
+      "id": "A33",
+      "method": "screenshot",
+      "tier": "optional",
+      "present": true
+    }
+  ],
+  "probes": {
+    "M3_step_exactness": {
+      "pass": true,
+      "before": 0,
+      "after": 137,
+      "delta": 137,
+      "returned": {
+        "frame": 137,
+        "t_ms": 2283.333
+      },
+      "t_ms": 2283.333,
+      "expected_t_ms": 2283.3333333333335,
+      "t_ms_error": 0.00033333333340124227
+    },
+    "M4_loop_suspension": {
+      "pass": true,
+      "frame_before": 138,
+      "frame_after_700ms": 138
+    },
+    "M5_input_relativity": {
+      "pass": true,
+      "warmup": 30,
+      "pressed": [
+        "light"
+      ],
+      "held": [
+        "light"
+      ],
+      "state": "ATK_STARTUP",
+      "anim": "clip_w_ssw_garrison_sword_r1_1"
+    },
+    "M6_argument_rejection": {
+      "pass": true,
+      "queueInputs_unknown_button": {
+        "threw": true,
+        "message": "unknown button 'banana'. The action set is closed (HARNESS.md §4): light heavy roll block parry sprint jump use_item interact lock_on two_hand swap_right swap_l"
+      },
+      "stepFrames_negative": {
+        "threw": true,
+        "message": "stepFrames(-1): n must be a non-negative integer"
+      },
+      "spawn_unknown_archetype": {
+        "threw": true,
+        "message": "spawn('nope'): no such archetype. Known: beast_slitherfang, cam_boss_great, cam_boss_mid, cam_elite, cam_levy, cam_rat, champion_hist_marked, cst_sap_speaker, d"
+      },
+      "setWeather_unknown": {
+        "threw": true,
+        "message": "setWeather('brimstone'): unknown state. Named states: clear, overcast, rain, storm, fog, cold_rain, warm_rain, heavy_rain, dawn_mist, sea_fog, sea_squall, fever"
+      },
+      "setTimeOfDay_out_of_range": {
+        "threw": true,
+        "message": "setTimeOfDay(37): hours must be 0..24"
+      },
+      "loadState_unknown": {
+        "threw": true,
+        "message": "loadState('nowhere'): no such named state. Known: arena_champion, arena_duel, arena_flat, arena_probe, barge-hold, cam_boardwalk, cam_boss_arena, cam_cistern, c"
+      },
+      "despawn_unknown": {
+        "threw": true,
+        "message": "despawn('e999'): no such entity"
+      },
+      "setMode_unknown": {
+        "threw": true,
+        "message": "setMode: unknown mode 'turbo'. Legal: play | harness | play-instrumented"
+      }
+    },
+    "M7_camera_exactness": {
+      "pass": true,
+      "requested": {
+        "pos": [
+          10,
+          2,
+          10
+        ],
+        "look": [
+          0,
+          1,
+          0
+        ],
+        "fov": 55
+      },
+      "readback": {
+        "pos": [
+          10,
+          2,
+          10
+        ],
+        "look": [
+          0,
+          1,
+          0
+        ],
+        "fov": 55,
+        "mode": "free",
+        "lockOn": null,
+        "yaw_deg": 225,
+        "pitch_deg": -4.044691235386268,
+        "roll_deg": 0,
+        "overridden": true
+      },
+      "position_error_m": 0,
+      "readback_after_24_steps": {
+        "pos": [
+          10,
+          2,
+          10
+        ],
+        "look": [
+          0,
+          1,
+          0
+        ],
+        "fov": 55,
+        "mode": "free",
+        "lockOn": null,
+        "yaw_deg": 225,
+        "pitch_deg": -4.044691,
+        "roll_deg": 0,
+        "overridden": true
+      },
+      "position_error_after_steps_m": 0
+    },
+    "cross_loadState_not_hardcoded": {
+      "pass": true,
+      "worldStats_arena": {
+        "region": "arena",
+        "interior": null,
+        "drawCalls": 13,
+        "triangles": 5888,
+        "entitiesLive": 0
+      },
+      "worldStats_sv5": {
+        "region": "thornmarsh",
+        "interior": "thorn-hall",
+        "drawCalls": 13,
+        "triangles": 5888,
+        "entitiesLive": 1
+      },
+      "questState_arena": {
+        "journal": 0,
+        "topics": 0,
+        "flags": 0
+      },
+      "questState_sv5": {
+        "journal": 42,
+        "topics": 5,
+        "flags": 3
+      }
+    },
+    "dead_entities_present": {
+      "pass": true,
+      "eid": "e0",
+      "enemies": [
+        {
+          "eid": "e0",
+          "state": "SUSPICIOUS",
+          "ai": "scripted",
+          "hp": 412
+        }
+      ],
+      "note": "A DEAD entity stays in enemies[] until despawn — see game/src/sim/entities.js; the death path is exercised by the combat scenarios."
+    },
+    "snapshot_matches_trace_shape": {
+      "pass": true,
+      "trace_keys": "camera,civilians,enemies,env,events,f,input,player,rng,t_ms",
+      "snapshot_keys": "camera,civilians,enemies,env,events,f,input,player,rng,t_ms"
+    }
+  },
+  "buildInfo": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 576
+  },
+  "anchors": [
+    "arena_flat",
+    "barge_hold",
+    "dungeon_primary",
+    "helstrom_market",
+    "interior_firelit",
+    "material_showcase",
+    "npc_showcase",
+    "region_blackwood",
+    "region_clay_moor",
+    "region_crimson_coast",
+    "region_deep_marshes",
+    "region_eastern_rootlands",
+    "region_hive",
+    "region_marauders_coast",
+    "region_salt_hills",
+    "region_stone_forest",
+    "region_stone_wastes",
+    "region_thornmarsh",
+    "region_valus_ridge",
+    "region_western_rootlands",
+    "rootlands_well",
+    "settlement_primary_street",
+    "site_archon",
+    "site_blackrose",
+    "site_bloodmarl-isle",
+    "site_bone-ladder",
+    "site_ceyatatar-zel-ayleid-vault-",
+    "site_clayfast",
+    "site_gideon",
+    "site_helstrom",
+    "site_hollow-reeds",
+    "site_ixtaxh-tzil",
+    "site_kiln-camp",
+    "site_lilmoth",
+    "site_mudwater-landing",
+    "site_nine-mud",
+    "site_rootway-post",
+    "site_salt-egg-camp",
+    "site_soulrest",
+    "site_stilt-row",
+    "site_stormhold",
+    "site_sunken-barrow",
+    "site_tenmarch-bridge",
+    "site_the-border-falls",
+    "site_the-counting-obelisk",
+    "site_the-drowned-xanmeer",
+    "site_the-glassed-crater",
+    "site_the-leaning-stone",
+    "site_the-red-wells",
+    "site_the-weeping-ford",
+    "site_the-xanmeer-of-ix-thakla",
+    "site_thorn",
+    "site_tideway-shrine",
+    "site_wayshrine-of-the-ninth-root",
+    "site_xal-ithix",
+    "site_xanmeer-of-sunken-teeth",
+    "stormhold_street",
+    "swamp_canopy",
+    "vista_primary",
+    "water_shallows",
+    "writ_house"
+  ],
+  "capability_report": {
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "implemented": [
+      "fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)",
+      "seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step",
+      "the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need",
+      "the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer",
+      "IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation",
+      "deterministic sky, sun and named weather; the nine viewpoint anchors",
+      "the game/data/** layout of HARNESS.md §5 with a generated index.json",
+      "W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening",
+      "W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)",
+      "W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window",
+      "W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule",
+      "W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies",
+      "W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte",
+      "W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering",
+      "W1-09: RI-CMB08 healing with animation commitment and finite charges",
+      "W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley"
+    ],
+    "not_implemented": [
+      {
+        "what": "enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)",
+        "owner": "RI-AI01..07 / wave-1 piece W1-12",
+        "surfaced_as": "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed."
+      },
+      {
+        "what": "mid-animation combat state across a save/load",
+        "owner": "W1-09, declared limitation",
+        "surfaced_as": "sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered."
+      },
+      {
+        "what": "weapon movesets beyond the 7-class spine, and attack ratings",
+        "owner": "RI-WPN01..06 / wave-1 piece W1-10",
+        "surfaced_as": "movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00)."
+      },
+      {
+        "what": "hitstop, mass and impact feel",
+        "owner": "RI-WPN05 / RI-AUD01 / wave-1 piece W1-11",
+        "surfaced_as": "hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11."
+      },
+      {
+        "what": "a quest runtime",
+        "owner": "wave-1 pieces W1-14..W1-16",
+        "surfaced_as": "getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist"
+      },
+      {
+        "what": "dialogue, topics, journal writing at runtime",
+        "owner": "wave-1 pieces W1-11..W1-13",
+        "surfaced_as": "data files exist and are analysable; getDialogueState() (A-JRN13) is absent"
+      },
+      {
+        "what": "the province: 13 regions, 8 settlements, 250 interiors, roads",
+        "owner": "wave-1 pieces W1-01..W1-05",
+        "surfaced_as": "getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement"
+      },
+      {
+        "what": "combat FOLEY (footsteps, cloth, armour rattle)",
+        "owner": "RI-AUD01 §D / no wave-1 owner",
+        "surfaced_as": "the §D sparseness budget counts non-combat voices and there are none, so the exploration mix is silence rather than a bed at -26..-22 LUFS-S. §D is a budget approached only from below and RI-AUD01 says so"
+      },
+      {
+        "what": "music (audio.music.policy)",
+        "owner": "RI-AUD04 / no wave-1 owner",
+        "surfaced_as": "no music bus, no music. RI-AUD04 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "voice (audio.voice.policy)",
+        "owner": "RI-AUD05 / no wave-1 owner",
+        "surfaced_as": "no voice bus. RI-AUD05 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "settlement ambience beds (RI-WLD08 §6 wants >=8)",
+        "owner": "W1-22 / W1-01..W1-05",
+        "surfaced_as": "two settlement beds exist (market, street) because Engine.cellFor() returns exactly two settlement cells in this build. Eight would mean authoring beds for six settlements the world does not have; ambience-census C14 warns rather than fails, so the gap is charged where it lives"
+      },
+      {
+        "what": "positional ambient emitters per km2 (RI-WLD08 §6 wants >=25)",
+        "owner": "W1-22, outstanding",
+        "surfaced_as": "four R7 emitters in the province (bell buoy, hide-drum, legion horn, kiln). They now SOUND — round 1 computed their pan and gain every frame and scheduled no audio at all — but four is not twenty-five per km2, and the shortfall is data authoring rather than a missing mechanism"
+      },
+      {
+        "what": "boss-arena ambience (cell `arena`)",
+        "owner": "W1-22 / RI-AUD01",
+        "surfaced_as": "getAmbienceState().suppressed names the cell. Deliberate: an arena's sound belongs to the combat mix, and RI-AUD03 is a REGIONAL identity item. Reported rather than filled with a bed nobody specified"
+      },
+      {
+        "what": "heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs",
+        "owner": "runner-side or later pieces",
+        "surfaced_as": "the methods are absent rather than present-and-lying"
+      },
+      {
+        "what": "Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)",
+        "owner": "attested real hardware",
+        "surfaced_as": "getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all"
+      }
+    ],
+    "harness_amendments_implemented": [
+      "A-JRN1 (partial: play-instrumented mode, no UI-text stream)",
+      "A-JRN3",
+      "A-JRN5 (partial: Tier-S fields only)",
+      "A-JRN6",
+      "A-JRN7",
+      "A-JRN8",
+      "A-JRN10",
+      "A-JRN11",
+      "A-JRN15 (partial)",
+      "A-JRN2 (gamepad, W1-29)",
+      "A-JRN4 (viewport/orientation/safe-area, W1-29)",
+      "A-JRN12 (runner-side via CDP Input.dispatchKeyEvent, W1-08)"
+    ],
+    "harness_amendments_absent": [
+      "A-JRN9",
+      "A-JRN13",
+      "A-JRN14"
+    ]
+  },
+  "page_errors": []
+}
