@@ -1,0 +1,1650 @@
+{
+  "schema": "elder-souls/w1-07-birthsign-consume@1",
+  "commit": "9418cc0",
+  "result": {
+    "neutral": {
+      "derived": {
+        "hp_max": 196,
+        "stamina_max": 88,
+        "stamina_regen_per_s": 42.6,
+        "stamina_regen_per_frame": 0.71,
+        "focus_max": 30,
+        "spell_slots": 2,
+        "equip_load_max": 60,
+        "from": {
+          "vigour": 6,
+          "endurance": 12,
+          "willpower": 10,
+          "strength": 6
+        },
+        "birthsign_terms": [
+          {
+            "sign": "xan-kheel",
+            "kind": "resistance",
+            "element": "fire",
+            "applied": 0.5,
+            "scale": 1
+          },
+          {
+            "sign": "xan-kheel",
+            "kind": "resistance",
+            "element": "frost",
+            "applied": 0.25,
+            "scale": 1
+          }
+        ],
+        "focus_restores_at_hearth": true,
+        "focus_max_base": 30,
+        "resistances": {
+          "fire": 0.5,
+          "frost": 0.25
+        },
+        "live": {
+          "hp": 196,
+          "hp_max": 196,
+          "stamina": 88,
+          "stamina_max": 88
+        },
+        "focus_live": {
+          "focus": 30,
+          "focus_max": 30
+        },
+        "curves": {
+          "hp_at": {
+            "10": 300,
+            "20": 560,
+            "27": 742,
+            "40": 924,
+            "60": 1044,
+            "99": 1122
+          },
+          "stamina_at": {
+            "10": 80,
+            "20": 120,
+            "30": 145,
+            "40": 157,
+            "99": 180.6
+          }
+        },
+        "skills": {
+          "blades": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "axes-maces": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "polearms": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "greatweapons": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "marksman": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "claw-fang": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "shieldcraft": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "endurance",
+            "levels_since_rest": 0
+          },
+          "sorcery": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "root-speech": {
+            "value": 10,
+            "progress": 0,
+            "to_next": 22,
+            "governing": "hist-bond",
+            "levels_since_rest": 0
+          },
+          "warding": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "veiling": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "alchemy": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "athletics": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "speed",
+            "levels_since_rest": 0
+          },
+          "acrobatics": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "survival": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "vigour",
+            "levels_since_rest": 0
+          },
+          "sneak": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "security": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "mercantile": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          },
+          "speechcraft": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          }
+        }
+      },
+      "player": {
+        "pos": [
+          2766.5,
+          0,
+          5011
+        ],
+        "yaw_deg": 180,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 0,
+        "hp": 196,
+        "hp_max": 196,
+        "stamina": 88,
+        "stamina_max": 88,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 5,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "souls_to_next": 418,
+        "souls_spent": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": false,
+        "water_band": "W0",
+        "breath_s": 60,
+        "breath_max_s": 60,
+        "submerged": false,
+        "airborne": false,
+        "mired": false,
+        "denied_by_water": {
+          "sprint": false,
+          "roll": false
+        },
+        "afflictions": [],
+        "stranded_by": null,
+        "equipped": {
+          "weapon_id": "ssw_garrison_sword",
+          "weapon_name": "Imperial garrison sword",
+          "weapon_class": "SSW",
+          "weight_tier": "light",
+          "reach_m": 1.95,
+          "attack_rating": 118,
+          "stance": "one_hand",
+          "offhand": "o1_sword_shield",
+          "offhand_kind": "shield",
+          "shield": "marsh_oak_medium",
+          "shield_class": "medium",
+          "guard_angle_deg": 75,
+          "slots_declared": 31,
+          "slots_reachable_in_this_configuration": [
+            "art.1",
+            "backstep.r1",
+            "guard.counter",
+            "guardbreak",
+            "jump.r1",
+            "plunge",
+            "r1.1",
+            "r1.2",
+            "r1.3",
+            "r2",
+            "r2.charged",
+            "roll.r1",
+            "run.r1",
+            "run.r2",
+            "shield.bash"
+          ],
+          "chain_root": "r1.1",
+          "distinct_clips": 31
+        },
+        "focus": 30,
+        "focus_max": 30,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "altitude_m": 0
+      },
+      "fare": 90,
+      "price": {
+        "r": 2,
+        "buyMult": 0.988,
+        "sellMult": 1.01,
+        "skill_terms": {
+          "buyMult": 1.1065,
+          "sellMult": 0.4252,
+          "disposition": 50,
+          "mercantile": 25,
+          "personality": 14
+        },
+        "skill_buy_mult": 1.1065,
+        "skill_sell_mult": 0.4252,
+        "effective_buy_mult": 1.0932,
+        "effective_sell_mult": 0.4295,
+        "buy": 66,
+        "sell": 26,
+        "buy_surcharge_only": 59,
+        "sell_surcharge_only": 61
+      }
+    },
+    "control": {
+      "derived": {
+        "hp_max": 196,
+        "stamina_max": 88,
+        "stamina_regen_per_s": 42.6,
+        "stamina_regen_per_frame": 0.71,
+        "focus_max": 30,
+        "spell_slots": 2,
+        "equip_load_max": 60,
+        "from": {
+          "vigour": 6,
+          "endurance": 12,
+          "willpower": 10,
+          "strength": 6
+        },
+        "birthsign_terms": [
+          {
+            "sign": "raj-xul",
+            "kind": "flask_charges",
+            "applied": 1,
+            "scale": 1
+          }
+        ],
+        "focus_restores_at_hearth": true,
+        "focus_max_base": 30,
+        "flask_charge_delta": 1,
+        "live": {
+          "hp": 196,
+          "hp_max": 196,
+          "stamina": 88,
+          "stamina_max": 88
+        },
+        "focus_live": {
+          "focus": 30,
+          "focus_max": 30
+        },
+        "curves": {
+          "hp_at": {
+            "10": 300,
+            "20": 560,
+            "27": 742,
+            "40": 924,
+            "60": 1044,
+            "99": 1122
+          },
+          "stamina_at": {
+            "10": 80,
+            "20": 120,
+            "30": 145,
+            "40": 157,
+            "99": 180.6
+          }
+        },
+        "skills": {
+          "blades": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "axes-maces": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "polearms": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "greatweapons": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "marksman": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "claw-fang": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "shieldcraft": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "endurance",
+            "levels_since_rest": 0
+          },
+          "sorcery": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "root-speech": {
+            "value": 10,
+            "progress": 0,
+            "to_next": 22,
+            "governing": "hist-bond",
+            "levels_since_rest": 0
+          },
+          "warding": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "veiling": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "alchemy": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "athletics": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "speed",
+            "levels_since_rest": 0
+          },
+          "acrobatics": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "survival": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "vigour",
+            "levels_since_rest": 0
+          },
+          "sneak": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "security": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "mercantile": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          },
+          "speechcraft": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          }
+        }
+      },
+      "player": {
+        "pos": [
+          2766.5,
+          0,
+          5011
+        ],
+        "yaw_deg": 180,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 0,
+        "hp": 196,
+        "hp_max": 196,
+        "stamina": 88,
+        "stamina_max": 88,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 6,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "souls_to_next": 418,
+        "souls_spent": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": false,
+        "water_band": "W0",
+        "breath_s": 60,
+        "breath_max_s": 60,
+        "submerged": false,
+        "airborne": false,
+        "mired": false,
+        "denied_by_water": {
+          "sprint": false,
+          "roll": false
+        },
+        "afflictions": [],
+        "stranded_by": null,
+        "equipped": {
+          "weapon_id": "ssw_garrison_sword",
+          "weapon_name": "Imperial garrison sword",
+          "weapon_class": "SSW",
+          "weight_tier": "light",
+          "reach_m": 1.95,
+          "attack_rating": 118,
+          "stance": "one_hand",
+          "offhand": "o1_sword_shield",
+          "offhand_kind": "shield",
+          "shield": "marsh_oak_medium",
+          "shield_class": "medium",
+          "guard_angle_deg": 75,
+          "slots_declared": 31,
+          "slots_reachable_in_this_configuration": [
+            "art.1",
+            "backstep.r1",
+            "guard.counter",
+            "guardbreak",
+            "jump.r1",
+            "plunge",
+            "r1.1",
+            "r1.2",
+            "r1.3",
+            "r2",
+            "r2.charged",
+            "roll.r1",
+            "run.r1",
+            "run.r2",
+            "shield.bash"
+          ],
+          "chain_root": "r1.1",
+          "distinct_clips": 31
+        },
+        "focus": 30,
+        "focus_max": 30,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "altitude_m": 0
+      },
+      "fare": 90,
+      "price": {
+        "r": 2,
+        "buyMult": 0.988,
+        "sellMult": 1.01,
+        "skill_terms": {
+          "buyMult": 1.1065,
+          "sellMult": 0.4252,
+          "disposition": 50,
+          "mercantile": 25,
+          "personality": 14
+        },
+        "skill_buy_mult": 1.1065,
+        "skill_sell_mult": 0.4252,
+        "effective_buy_mult": 1.0932,
+        "effective_sell_mult": 0.4295,
+        "buy": 66,
+        "sell": 26,
+        "buy_surcharge_only": 59,
+        "sell_surcharge_only": 61
+      }
+    },
+    "trade": {
+      "derived": {
+        "hp_max": 196,
+        "stamina_max": 88,
+        "stamina_regen_per_s": 42.6,
+        "stamina_regen_per_frame": 0.71,
+        "focus_max": 30,
+        "spell_slots": 2,
+        "equip_load_max": 60,
+        "from": {
+          "vigour": 6,
+          "endurance": 12,
+          "willpower": 10,
+          "strength": 6
+        },
+        "birthsign_terms": [
+          {
+            "sign": "deek-xul",
+            "kind": "travel_fare",
+            "applied": 0.6,
+            "scale": 1
+          },
+          {
+            "sign": "deek-xul",
+            "kind": "merchant_disposition",
+            "applied": 5,
+            "scale": 1
+          }
+        ],
+        "focus_restores_at_hearth": true,
+        "focus_max_base": 30,
+        "travel_fare_multiplier": 0.6,
+        "merchant_disposition_delta": 5,
+        "live": {
+          "hp": 196,
+          "hp_max": 196,
+          "stamina": 88,
+          "stamina_max": 88
+        },
+        "focus_live": {
+          "focus": 30,
+          "focus_max": 30
+        },
+        "curves": {
+          "hp_at": {
+            "10": 300,
+            "20": 560,
+            "27": 742,
+            "40": 924,
+            "60": 1044,
+            "99": 1122
+          },
+          "stamina_at": {
+            "10": 80,
+            "20": 120,
+            "30": 145,
+            "40": 157,
+            "99": 180.6
+          }
+        },
+        "skills": {
+          "blades": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "axes-maces": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "polearms": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "greatweapons": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "marksman": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "claw-fang": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "shieldcraft": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "endurance",
+            "levels_since_rest": 0
+          },
+          "sorcery": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "root-speech": {
+            "value": 10,
+            "progress": 0,
+            "to_next": 22,
+            "governing": "hist-bond",
+            "levels_since_rest": 0
+          },
+          "warding": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "veiling": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "alchemy": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "athletics": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "speed",
+            "levels_since_rest": 0
+          },
+          "acrobatics": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "survival": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "vigour",
+            "levels_since_rest": 0
+          },
+          "sneak": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "security": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "mercantile": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          },
+          "speechcraft": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          }
+        }
+      },
+      "player": {
+        "pos": [
+          2766.5,
+          0,
+          5011
+        ],
+        "yaw_deg": 180,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 0,
+        "hp": 196,
+        "hp_max": 196,
+        "stamina": 88,
+        "stamina_max": 88,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 5,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "souls_to_next": 418,
+        "souls_spent": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": false,
+        "water_band": "W0",
+        "breath_s": 60,
+        "breath_max_s": 60,
+        "submerged": false,
+        "airborne": false,
+        "mired": false,
+        "denied_by_water": {
+          "sprint": false,
+          "roll": false
+        },
+        "afflictions": [],
+        "stranded_by": null,
+        "equipped": {
+          "weapon_id": "ssw_garrison_sword",
+          "weapon_name": "Imperial garrison sword",
+          "weapon_class": "SSW",
+          "weight_tier": "light",
+          "reach_m": 1.95,
+          "attack_rating": 118,
+          "stance": "one_hand",
+          "offhand": "o1_sword_shield",
+          "offhand_kind": "shield",
+          "shield": "marsh_oak_medium",
+          "shield_class": "medium",
+          "guard_angle_deg": 75,
+          "slots_declared": 31,
+          "slots_reachable_in_this_configuration": [
+            "art.1",
+            "backstep.r1",
+            "guard.counter",
+            "guardbreak",
+            "jump.r1",
+            "plunge",
+            "r1.1",
+            "r1.2",
+            "r1.3",
+            "r2",
+            "r2.charged",
+            "roll.r1",
+            "run.r1",
+            "run.r2",
+            "shield.bash"
+          ],
+          "chain_root": "r1.1",
+          "distinct_clips": 31
+        },
+        "focus": 30,
+        "focus_max": 30,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "altitude_m": 0
+      },
+      "fare": 54,
+      "price": {
+        "r": 2,
+        "buyMult": 0.988,
+        "sellMult": 1.01,
+        "skill_terms": {
+          "buyMult": 1.0765,
+          "sellMult": 0.4377,
+          "disposition": 55,
+          "mercantile": 25,
+          "personality": 14
+        },
+        "skill_buy_mult": 1.0765,
+        "skill_sell_mult": 0.4377,
+        "effective_buy_mult": 1.0636,
+        "effective_sell_mult": 0.4421,
+        "buy": 64,
+        "sell": 27,
+        "buy_surcharge_only": 59,
+        "sell_surcharge_only": 61,
+        "birthsign_disposition_delta": 5
+      }
+    },
+    "dry": {
+      "derived": {
+        "hp_max": 196,
+        "stamina_max": 88,
+        "stamina_regen_per_s": 42.6,
+        "stamina_regen_per_frame": 0.71,
+        "focus_max": 48,
+        "spell_slots": 2,
+        "equip_load_max": 60,
+        "from": {
+          "vigour": 6,
+          "endurance": 12,
+          "willpower": 10,
+          "strength": 6
+        },
+        "birthsign_terms": [
+          {
+            "sign": "nu-ixtu",
+            "kind": "focus_max_multiplier",
+            "applied": 1.6,
+            "scale": 1
+          },
+          {
+            "sign": "nu-ixtu",
+            "kind": "spell_absorption",
+            "applied": 0.55,
+            "scale": 1
+          },
+          {
+            "sign": "nu-ixtu",
+            "kind": "drawback",
+            "removes": "focus_restore_at_hearth",
+            "scale": 1,
+            "via": null,
+            "ruled_by": "S27"
+          }
+        ],
+        "focus_restores_at_hearth": false,
+        "focus_max_base": 30,
+        "spell_absorption": 0.55,
+        "live": {
+          "hp": 196,
+          "hp_max": 196,
+          "stamina": 88,
+          "stamina_max": 88
+        },
+        "focus_live": {
+          "focus": 48,
+          "focus_max": 48
+        },
+        "curves": {
+          "hp_at": {
+            "10": 300,
+            "20": 560,
+            "27": 742,
+            "40": 924,
+            "60": 1044,
+            "99": 1122
+          },
+          "stamina_at": {
+            "10": 80,
+            "20": 120,
+            "30": 145,
+            "40": 157,
+            "99": 180.6
+          }
+        },
+        "skills": {
+          "blades": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "axes-maces": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "polearms": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "greatweapons": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "marksman": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "claw-fang": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "shieldcraft": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "endurance",
+            "levels_since_rest": 0
+          },
+          "sorcery": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "root-speech": {
+            "value": 10,
+            "progress": 0,
+            "to_next": 22,
+            "governing": "hist-bond",
+            "levels_since_rest": 0
+          },
+          "warding": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "veiling": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "alchemy": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "athletics": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "speed",
+            "levels_since_rest": 0
+          },
+          "acrobatics": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "survival": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "vigour",
+            "levels_since_rest": 0
+          },
+          "sneak": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "security": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "mercantile": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          },
+          "speechcraft": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          }
+        }
+      },
+      "player": {
+        "pos": [
+          2766.5,
+          0,
+          5011
+        ],
+        "yaw_deg": 180,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 0,
+        "hp": 196,
+        "hp_max": 196,
+        "stamina": 88,
+        "stamina_max": 88,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 5,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "souls_to_next": 418,
+        "souls_spent": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": false,
+        "water_band": "W0",
+        "breath_s": 60,
+        "breath_max_s": 60,
+        "submerged": false,
+        "airborne": false,
+        "mired": false,
+        "denied_by_water": {
+          "sprint": false,
+          "roll": false
+        },
+        "afflictions": [],
+        "stranded_by": null,
+        "equipped": {
+          "weapon_id": "ssw_garrison_sword",
+          "weapon_name": "Imperial garrison sword",
+          "weapon_class": "SSW",
+          "weight_tier": "light",
+          "reach_m": 1.95,
+          "attack_rating": 118,
+          "stance": "one_hand",
+          "offhand": "o1_sword_shield",
+          "offhand_kind": "shield",
+          "shield": "marsh_oak_medium",
+          "shield_class": "medium",
+          "guard_angle_deg": 75,
+          "slots_declared": 31,
+          "slots_reachable_in_this_configuration": [
+            "art.1",
+            "backstep.r1",
+            "guard.counter",
+            "guardbreak",
+            "jump.r1",
+            "plunge",
+            "r1.1",
+            "r1.2",
+            "r1.3",
+            "r2",
+            "r2.charged",
+            "roll.r1",
+            "run.r1",
+            "run.r2",
+            "shield.bash"
+          ],
+          "chain_root": "r1.1",
+          "distinct_clips": 31
+        },
+        "focus": 48,
+        "focus_max": 48,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart",
+          "slowfall"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "altitude_m": 0
+      },
+      "fare": 90,
+      "price": {
+        "r": 2,
+        "buyMult": 0.988,
+        "sellMult": 1.01,
+        "skill_terms": {
+          "buyMult": 1.1065,
+          "sellMult": 0.4252,
+          "disposition": 50,
+          "mercantile": 25,
+          "personality": 14
+        },
+        "skill_buy_mult": 1.1065,
+        "skill_sell_mult": 0.4252,
+        "effective_buy_mult": 1.0932,
+        "effective_sell_mult": 0.4295,
+        "buy": 66,
+        "sell": 26,
+        "buy_surcharge_only": 59,
+        "sell_surcharge_only": 61
+      },
+      "rest": {
+        "before": 44,
+        "after": 44,
+        "event": {
+          "rested": true,
+          "focus_restored": false,
+          "focus": 44,
+          "focus_max": 48,
+          "why": "The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.",
+          "rest_clamp_reset": true,
+          "sap_taint": {
+            "band": 0,
+            "rests": 0,
+            "immune": true,
+            "ward_uses_left": 3
+          },
+          "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.",
+          "hearth": null,
+          "hearth_resolved_by": "none",
+          "respawn_point_set": null,
+          "hearths_discovered": [
+            "hearth-lilmoth"
+          ],
+          "world_reset": null,
+          "clock": {
+            "before": null,
+            "after": null,
+            "hours": 0,
+            "day": 0
+          },
+          "diseases_advanced": [],
+          "hp": 196,
+          "flask_charges": 5,
+          "no_hearth_note": "No sapwell within reach, so this was the pools-and-clamp half only: no respawn point was set, nothing re-grew and the clock did not move. RI-PRG04 §1 needs a well.",
+          "menu": null
+        }
+      }
+    },
+    "twoDrink": {
+      "derived": {
+        "hp_max": 196,
+        "stamina_max": 88,
+        "stamina_regen_per_s": 42.6,
+        "stamina_regen_per_frame": 0.71,
+        "focus_max": 39,
+        "spell_slots": 2,
+        "equip_load_max": 60,
+        "from": {
+          "vigour": 6,
+          "endurance": 12,
+          "willpower": 10,
+          "strength": 6
+        },
+        "birthsign_terms": [
+          {
+            "sign": "nu-ixtu",
+            "kind": "focus_max_multiplier",
+            "applied": 1.3,
+            "scale": 0.5
+          },
+          {
+            "sign": "nu-ixtu",
+            "kind": "spell_absorption",
+            "applied": 0.55,
+            "scale": 0.5
+          },
+          {
+            "sign": "nu-ixtu",
+            "kind": "drawback",
+            "removes": "focus_restore_at_hearth",
+            "scale": 1,
+            "via": "kaal-kaal",
+            "ruled_by": "S27"
+          }
+        ],
+        "focus_restores_at_hearth": false,
+        "focus_max_base": 30,
+        "spell_absorption": 0.275,
+        "live": {
+          "hp": 196,
+          "hp_max": 196,
+          "stamina": 88,
+          "stamina_max": 88
+        },
+        "focus_live": {
+          "focus": 39,
+          "focus_max": 39
+        },
+        "curves": {
+          "hp_at": {
+            "10": 300,
+            "20": 560,
+            "27": 742,
+            "40": 924,
+            "60": 1044,
+            "99": 1122
+          },
+          "stamina_at": {
+            "10": 80,
+            "20": 120,
+            "30": 145,
+            "40": 157,
+            "99": 180.6
+          }
+        },
+        "skills": {
+          "blades": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "axes-maces": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "polearms": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "greatweapons": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "strength",
+            "levels_since_rest": 0
+          },
+          "marksman": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "claw-fang": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "shieldcraft": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "endurance",
+            "levels_since_rest": 0
+          },
+          "sorcery": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "root-speech": {
+            "value": 10,
+            "progress": 0,
+            "to_next": 22,
+            "governing": "hist-bond",
+            "levels_since_rest": 0
+          },
+          "warding": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "veiling": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "willpower",
+            "levels_since_rest": 0
+          },
+          "alchemy": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "intellect",
+            "levels_since_rest": 0
+          },
+          "athletics": {
+            "value": 15,
+            "progress": 0,
+            "to_next": 30,
+            "governing": "speed",
+            "levels_since_rest": 0
+          },
+          "acrobatics": {
+            "value": 5,
+            "progress": 0,
+            "to_next": 14,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "survival": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "vigour",
+            "levels_since_rest": 0
+          },
+          "sneak": {
+            "value": 20,
+            "progress": 0,
+            "to_next": 38,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "security": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "agility",
+            "levels_since_rest": 0
+          },
+          "mercantile": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          },
+          "speechcraft": {
+            "value": 25,
+            "progress": 0,
+            "to_next": 46,
+            "governing": "personality",
+            "levels_since_rest": 0
+          }
+        }
+      },
+      "player": {
+        "pos": [
+          2766.5,
+          0,
+          5011
+        ],
+        "yaw_deg": 180,
+        "state": "IDLE",
+        "anim": "idle",
+        "anim_frame": 0,
+        "hp": 196,
+        "hp_max": 196,
+        "stamina": 88,
+        "stamina_max": 88,
+        "poise_cur": 48,
+        "poise_max": 48,
+        "estus": 5,
+        "locked_on": null,
+        "level": 1,
+        "souls": 0,
+        "souls_to_next": 418,
+        "souls_spent": 0,
+        "attributes": {
+          "strength": 6,
+          "endurance": 12,
+          "agility": 13,
+          "speed": 11,
+          "vigour": 6,
+          "willpower": 10,
+          "intellect": 15,
+          "hist-bond": 14,
+          "personality": 14,
+          "luck": 11
+        },
+        "equip_load_pct": 24,
+        "roll_class": "LIGHT",
+        "burden_ratio": 0,
+        "burden_tier": "UNBURDENED",
+        "in_combat": false,
+        "water_band": "W0",
+        "breath_s": 60,
+        "breath_max_s": 60,
+        "submerged": false,
+        "airborne": false,
+        "mired": false,
+        "denied_by_water": {
+          "sprint": false,
+          "roll": false
+        },
+        "afflictions": [],
+        "stranded_by": null,
+        "equipped": {
+          "weapon_id": "ssw_garrison_sword",
+          "weapon_name": "Imperial garrison sword",
+          "weapon_class": "SSW",
+          "weight_tier": "light",
+          "reach_m": 1.95,
+          "attack_rating": 118,
+          "stance": "one_hand",
+          "offhand": "o1_sword_shield",
+          "offhand_kind": "shield",
+          "shield": "marsh_oak_medium",
+          "shield_class": "medium",
+          "guard_angle_deg": 75,
+          "slots_declared": 31,
+          "slots_reachable_in_this_configuration": [
+            "art.1",
+            "backstep.r1",
+            "guard.counter",
+            "guardbreak",
+            "jump.r1",
+            "plunge",
+            "r1.1",
+            "r1.2",
+            "r1.3",
+            "r2",
+            "r2.charged",
+            "roll.r1",
+            "run.r1",
+            "run.r2",
+            "shield.bash"
+          ],
+          "chain_root": "r1.1",
+          "distinct_clips": 31
+        },
+        "focus": 39,
+        "focus_max": 39,
+        "focus_locked": true,
+        "attuned": [
+          "spark_dart"
+        ],
+        "effects_active": [],
+        "levitating": false,
+        "altitude_m": 0
+      },
+      "fare": 90,
+      "price": {
+        "r": 2,
+        "buyMult": 0.988,
+        "sellMult": 1.01,
+        "skill_terms": {
+          "buyMult": 1.1065,
+          "sellMult": 0.4252,
+          "disposition": 50,
+          "mercantile": 25,
+          "personality": 14
+        },
+        "skill_buy_mult": 1.1065,
+        "skill_sell_mult": 0.4252,
+        "effective_buy_mult": 1.0932,
+        "effective_sell_mult": 0.4295,
+        "buy": 66,
+        "sell": 26,
+        "buy_surcharge_only": 59,
+        "sell_surcharge_only": 61
+      }
+    }
+  },
+  "checks": [
+    {
+      "id": "First Tithe changes combat flask inventory",
+      "pass": true
+    },
+    {
+      "id": "Long Root changes live fare",
+      "pass": true
+    },
+    {
+      "id": "Long Root changes merchant quote",
+      "pass": true
+    },
+    {
+      "id": "Dry Well enlarges live Focus",
+      "pass": true
+    },
+    {
+      "id": "Dry Well blocks a real hearth refill",
+      "pass": true
+    },
+    {
+      "id": "Two-Drink halves power and keeps drawback",
+      "pass": true
+    }
+  ]
+}

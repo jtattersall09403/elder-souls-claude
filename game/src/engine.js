@@ -1593,6 +1593,20 @@ export class Engine {
       this.magic.spellAbsorption = pools.spell_absorption || 0;
     }
     this.sim.pools = pools;
+    // RI-CHR03: The First Tithe changes the carried, combat-consumed flask inventory.  Pool
+    // derivation runs after creation, load and level-up, so retain an unmodified baseline rather
+    // than adding the sign's charge on every invocation.
+    if (this.sim.player) {
+      if (this.sim.player._birthsignBaseEstus === undefined) {
+        this.sim.player._birthsignBaseEstus = Math.max(0, Number(this.sim.player.estus || 0));
+      }
+      this.sim.player.estus = this.sim.player._birthsignBaseEstus + Number(pools.flask_charge_delta || 0);
+      if (this.combat && this.combat.playerCtl) {
+        this.combat.playerCtl.estus = this.sim.player.estus;
+        this.combat.playerCtl.estusMax = this.sim.player.estus;
+      }
+      this.sim.player.estusMax = this.sim.player.estus;
+    }
     if (b) mirror(this.sim, this.combat);
     this.sim.player.focusMax = pools.focus_max;
     this.sim.player.focusLocked = !pools.focus_restores_at_hearth;
@@ -5246,14 +5260,19 @@ export class Engine {
     // them. Round 1 required the caller to supply the 0.80 by hand, which meant the item's
     // "the best social build reaches par, not advantage" clause held only when a critic fed
     // it the answer.
-    return priceQuote(this.chData, {
+    const args = {
       group: q.group, race: q.race || (ch && ch.race), upbringing: q.upbringing || (ch && ch.upbringing),
       basePrice: q.base_price ?? 60,
       skillBuyMult: q.skill_buy_mult, skillSellMult: q.skill_sell_mult,
       skills: q.skills || this.sim.progression.skills,
       attributes: q.attributes || this.sim.progression.attributes,
       disposition: q.disposition,
-    });
+    };
+    const delta = Number((this.sim.pools || {}).merchant_disposition_delta || 0);
+    if (delta) args.disposition = Number(q.disposition === undefined ? 50 : q.disposition) + delta;
+    const quote = priceQuote(this.chData, args);
+    if (delta) quote.birthsign_disposition_delta = delta;
+    return quote;
   }
 
   getGuardTerms(race) {
@@ -6919,6 +6938,7 @@ export class Engine {
     else if (m <= 2500) gold = 12 + 33 * (m - 1000) / 1500;
     else gold = 45 + 45 * (m - 2500) / 4400;
     gold *= (t.mode_multiplier && mode && t.mode_multiplier[mode] !== undefined) ? t.mode_multiplier[mode] : 1;
+    gold *= Number((this.sim.pools || {}).travel_fare_multiplier || 1);
     return Math.max(t.floor_gold ?? 6, Math.round(gold));
   }
 
