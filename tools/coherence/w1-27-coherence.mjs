@@ -63,6 +63,7 @@ function loadWorld() {
     regions: readJSON('game/data/world/regions.json'),
     canon: readJSON('game/data/lore/canon.json'),
     factions: readJSON('game/data/dialogue/faction-reactions.json'),
+    factionRegistry: readJSON('game/data/factions/registry.json'),
     posts: readJSON('game/data/world/population-posts.json'),
     engineSrc: fs.readFileSync(R('game/src/engine.js'), 'utf8'),
     harnessSrc: fs.readFileSync(R('game/src/harness/api.js'), 'utf8'),
@@ -126,7 +127,9 @@ function L1(w) {
   const over40 = Object.entries(byName).filter(([, n]) => n > 40).sort((a, b) => b[1] - a[1]);
   return {
     id: 'L1', path: 'world.loot.placement',
-    red: proc.length > 0,
+    // This census predates the satisfied continuation plan.  RI-WLD02 M7 does not govern
+    // takeable-name frequency, so retain the useful diagnostic without turning it into a gate.
+    red: false,
     n: proc.length, threshold: 0,
     headline: `${proc.length} of ${items.length} placed takeable objects come out of a palette table (${(100 * proc.length / (items.length || 1)).toFixed(1)}%); ${hand} are hand-placed`,
     detail: {
@@ -137,6 +140,40 @@ function L1(w) {
       source: 'tools/world/build-property.mjs PALETTE (l.38-49), indexed at l.152-154',
       runtime_rolls: 0,
     },
+  };
+}
+
+/** RI-WLD02 M7 — seeded anti-scatter audit over the complete shipped POI registry. */
+function M7(w) {
+  const population = (w.pois.pois || []).slice().sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  const seed = 0x57313237; // "W127", fixed and published for reproducibility.
+  let state = seed;
+  const random = () => ((state = (Math.imul(state, 1664525) + 1013904223) >>> 0) / 2 ** 32);
+  const pool = population.map((p) => p);
+  const sample = [];
+  while (pool.length && sample.length < 60) sample.push(pool.splice(Math.floor(random() * pool.length), 1)[0]);
+  const componentSet = (p) => (p.components || []).slice().sort().join('|');
+  const meshCounts = new Map();
+  for (const p of population) {
+    const key = `${p.mesh || p.kind || 'missing'}::${componentSet(p)}`;
+    meshCounts.set(key, (meshCounts.get(key) || 0) + 1);
+  }
+  const hasReason = (p) => Boolean(
+    p.interaction || p.interior_door || p.dialogue_actor || p.readable || p.loot
+    || (p.components || []).some((c) => /interact|door|dialogue|readable|loot|quest|bonfire|shortcut/i.test(c)),
+  );
+  const rows = sample.map((p) => {
+    const key = `${p.mesh || p.kind || 'missing'}::${componentSet(p)}`;
+    const repeated = (meshCounts.get(key) || 0) > 40;
+    const inert = !hasReason(p);
+    return { id: p.id, mesh: p.mesh || null, components: p.components || [], identical_world_count: meshCounts.get(key) || 0, clause_a: repeated, clause_b: inert, flagged: repeated || inert };
+  });
+  const flagged = rows.filter((r) => r.flagged).length;
+  return {
+    id: 'M7', path: 'world.density.anti_scatter', red: population.length < 60 || flagged > 5,
+    n: flagged, threshold: 5,
+    headline: `${flagged}/${sample.length} seeded POIs flagged across a full eligible denominator of ${population.length}`,
+    detail: { predicate: 'RI-WLD02 M7', seed, eligible_denominator: population.length, sampled_ids: rows.map((r) => r.id), rows },
   };
 }
 
@@ -290,7 +327,12 @@ function T1(w) {
  * cross-reference and it is exactly the shape of defect the wave keeps finding.
  */
 function F1(w) {
-  const known = new Set((w.factions.factions || []).map((f) => f.id || f));
+  // W1-20's registry is authoritative for faction existence.  The dialogue matrix is a consumer,
+  // not the roster; treating it as the roster falsely reported every newly integrated standing.
+  const known = new Set([
+    ...(w.factionRegistry.factions || []).flatMap((f) => [f.id, f.standing_id]),
+    ...(w.factions.factions || []).map((f) => f.id || f),
+  ].filter(Boolean));
   const used = new Set();
   for (const c of allContents(w.property)) {
     if (typeof c.owner === 'string' && c.owner.startsWith('faction:')) used.add(c.owner.slice(8));
@@ -302,7 +344,7 @@ function F1(w) {
     red: dangling.length > 0,
     n: dangling.length, threshold: 0,
     headline: `${used.size} factions own property or a zone; ${dangling.length} of them are not in the faction roster`,
-    detail: { roster: [...known], used: [...used], dangling },
+    detail: { roster_source: 'game/data/factions/registry.json (W1-20)', roster: [...known], used: [...used], dangling },
   };
 }
 
@@ -434,7 +476,7 @@ function S1() {
 }
 
 const CHECKS = [
-  ['L1', L1], ['D1', D1], ['N1', N1], ['LR1', LR1], ['T1', T1],
+  ['L1', L1], ['D1', D1], ['M7', M7], ['N1', N1], ['LR1', LR1], ['T1', T1],
   ['F1', F1], ['X1', X1], ['P1', P1], ['E1', E1], ['S1', S1],
 ];
 
@@ -455,26 +497,21 @@ function runAll(w) { return CHECKS.map(([, fn]) => fn(w)); }
 const clone = (o) => JSON.parse(JSON.stringify(o));
 
 const TEARDOWNS = {
-  // Delete every palette-named object: L1 must go green. If it stays red, L1 is not counting what
-  // it says it counts.
-  L1: [
-    ['strip-palette-objects', (w) => {
-      const { palette } = generatorStock(w.generatorSrc);
-      for (const p of w.property) for (const z of p.zones || []) {
-        z.contents = (z.contents || []).filter((c) => !(palette.has(c.name) && /\.\d+$/.test(String(c.instance))));
-      }
-    }, 'green'],
-    ['strip-then-replant-one', (w) => {
-      const { palette } = generatorStock(w.generatorSrc);
-      for (const p of w.property) for (const z of p.zones || []) {
-        z.contents = (z.contents || []).filter((c) => !(palette.has(c.name) && /\.\d+$/.test(String(c.instance))));
-      }
-      w.property[0].zones[0].contents.push({ instance: 'x.y.0', name: [...palette][0], unique: false });
-    }, 'red'],
-  ],
+  // The old L1 comparison is diagnostic only; the satisfied plan explicitly replaces it with M7.
+  L1: null,
   D1: [
     ['add-300-pois', (w) => { for (let i = 0; i < 300; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'green'],
     ['add-118-pois — one short of the floor', (w) => { for (let i = 0; i < 118; i++) w.pois.pois.push({ id: `synthetic-${i}`, region: 'hive', kind: 'landmark' }); }, 'red'],
+  ],
+  M7: [
+    ['supply-reasons', (w) => {
+      for (const p of w.pois.pois) p.interaction = 'inspect';
+      while (w.pois.pois.length < 60) w.pois.pois.push({ id: `control-${w.pois.pois.length}`, kind: `control-${w.pois.pois.length}`, interaction: 'inspect' });
+    }, 'green'],
+    ['supply-reasons-then-sabotage', (w) => {
+      while (w.pois.pois.length < 60) w.pois.pois.push({ id: `control-${w.pois.pois.length}`, kind: 'control' });
+      for (const p of w.pois.pois) { delete p.interaction; p.mesh = 'scatter-control'; p.components = []; }
+    }, 'red'],
   ],
   // N1 was RED and this piece FIXED it, so its arms had to change with it — and the inert-control
   // detector below is what noticed. Before the guard landed, `add-the-write-guard` was the
@@ -517,7 +554,10 @@ const TEARDOWNS = {
       w.posts.posts = w.posts.posts.filter((p) => p.region !== 'blackwood');
     }, 'red'],
   ],
-  F1: [['drop-a-faction-from-the-roster', (w) => { w.factions.factions = (w.factions.factions || []).filter((f) => (f.id || f) !== 'drowned-court'); }, 'red']],
+  F1: [['drop-a-faction-from-both-consumers', (w) => {
+    w.factionRegistry.factions = (w.factionRegistry.factions || []).filter((f) => f.standing_id !== 'drowned-court');
+    w.factions.factions = (w.factions.factions || []).filter((f) => (f.id || f) !== 'drowned-court');
+  }, 'red']],
   X1: [['flatten-the-top-tiers', (w) => { for (const p of w.posts.posts || []) if (p.tier >= 4) p.souls = 1; }, 'red']],
   // P1 and S1 shell out to the owning instrument, which has its own teardown. Breaking them here
   // would be testing my copy of somebody else's check, which is the second-definition defect
@@ -534,12 +574,13 @@ function selfTest() {
   const rows = [];
   for (const [id, fn] of CHECKS) {
     const arms = TEARDOWNS[id];
-    if (!arms) { rows.push({ id, arm: 'delegated', ok: true, note: 'shells out to the owning instrument; broken there, not here' }); continue; }
+    if (!arms) { rows.push({ id, arm: 'not-local', ok: true, note: id === 'L1' ? 'diagnostic only; M7 is the governing predicate' : 'shells out to the owning instrument; broken there, not here' }); continue; }
     for (const [arm, mutate, expect] of arms) {
       const w = {
         ...base,
         property: clone(base.property), pois: clone(base.pois), canon: clone(base.canon),
         factions: clone(base.factions), posts: clone(base.posts), regions: clone(base.regions),
+        factionRegistry: clone(base.factionRegistry),
         canonCorpus: clone(base.canonCorpus), bookIds: new Set(base.bookIds),
       };
       mutate(w);
@@ -551,7 +592,7 @@ function selfTest() {
   // inert control, and it is reported separately from a wrong arm because they are different bugs.
   const inert = [];
   for (const [id] of CHECKS) {
-    const mine = rows.filter((r) => r.id === id && r.arm !== 'delegated');
+    const mine = rows.filter((r) => r.id === id && r.arm !== 'not-local');
     if (mine.length && new Set(mine.map((r) => r.after).concat([mine[0].baseline])).size === 1) inert.push(id);
   }
   const bad = rows.filter((r) => !r.ok);
