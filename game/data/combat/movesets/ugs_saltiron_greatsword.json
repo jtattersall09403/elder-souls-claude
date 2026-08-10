@@ -103,8 +103,8 @@
    ]
   },
   "r1.3": {
-   "anim": "clip_zwei_r1_3",
-   "anim_owner": "lin_zwei",
+   "anim": "clip_w_ugs_saltiron_greatsword_r1_3",
+   "anim_owner": "ugs_saltiron_greatsword",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -120,14 +120,14 @@
    "stamina": 49,
    "motion_value": 1.84,
    "poise_damage": 67,
-   "root_dz_m": 1.478,
-   "arc_sweep_deg": 175.7,
-   "shape": "slash_d",
+   "root_dz_m": 1.618,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.13,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"

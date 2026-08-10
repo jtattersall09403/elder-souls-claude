@@ -768,7 +768,7 @@ for (const w of ROSTER.weapons) {
       recovery_f: f.r,
       ...(spec.charge ? { charge_max_f: spec.charge, charge_ramp: { motion_value_at_full: 1.30, poise_damage_at_full: 1.50, hyperarmour_at_full: true } } : {}),
       stamina: Math.min(90, Math.round(spec.stam * 10) / 10),
-      motion_value: Math.min(4.0, Math.round(spec.mv * 100) / 100),
+      motion_value: Math.min(4.0, Math.round((spec.mv + (slotId === 'bow.quick' ? (w.quick_mv_delta || 0) : 0) + (slotId === 'r1.1' ? (w.r1_mv_delta || 0) : 0)) * 100) / 100),
       poise_damage: Math.min(140, Math.round(spec.poise)),
       root_dz_m: rootM,
       arc_sweep_deg: Math.min(360, Math.round(prof.arc_deg === 0 ? 0 : Math.abs(prof.arc_deg) * 10) / 10),

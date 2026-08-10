@@ -65,8 +65,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_golem_r1_2",
-   "anim_owner": "lin_golem",
+   "anim": "clip_w_ugs_tomb_colossus_r1_2",
+   "anim_owner": "ugs_tomb_colossus",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -82,14 +82,14 @@
    "stamina": 45,
    "motion_value": 1.66,
    "poise_damage": 55,
-   "root_dz_m": 1.425,
-   "arc_sweep_deg": 200,
-   "shape": "sweep",
+   "root_dz_m": 1.845,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.13,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip",

@@ -66,8 +66,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_memorial_r1_2",
-   "anim_owner": "lin_memorial",
+   "anim": "clip_w_gsw_memorial_blade_r1_2",
+   "anim_owner": "gsw_memorial_blade",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -83,15 +83,14 @@
    "stamina": 35,
    "motion_value": 1.38,
    "poise_damage": 40,
-   "root_dz_m": 0.722,
-   "arc_sweep_deg": 164.5,
-   "shape": "slash_h",
-   "peak_tip_speed_mps_implied": 42,
+   "root_dz_m": 0.935,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.11,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"
