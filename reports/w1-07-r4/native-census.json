@@ -1,0 +1,114 @@
+{
+  "schema": "elder-souls/w1-07-native@1",
+  "commit": "b1b3230",
+  "generated_at": "2026-08-10T09:37:03.049Z",
+  "summary": {
+    "GREEN": 12,
+    "RED": 2,
+    "NOT_RUN": 1
+  },
+  "rows": [
+    {
+      "id": "CHR01-signature-population",
+      "state": "GREEN",
+      "measured": "540/540",
+      "control": "delete one sign: population becomes 480",
+      "dependency": null
+    },
+    {
+      "id": "CHR01-signature-invariants",
+      "state": "GREEN",
+      "measured": "540/540",
+      "control": "set one race delta +1: attribute invariant goes red",
+      "dependency": null
+    },
+    {
+      "id": "CHR03-roster-families",
+      "state": "GREEN",
+      "measured": "9 signs; {\"given\":3,\"withheld\":3,\"turned\":3}",
+      "control": "delete one sign: roster and 540 population go red",
+      "dependency": null
+    },
+    {
+      "id": "CHR03-drawback-population",
+      "state": "GREEN",
+      "measured": "mechanical=3, conditional=3",
+      "control": "neutralise any drawback.kind: count goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-flask_charges",
+      "state": "GREEN",
+      "measured": "live consumer: _birthsignBaseEstus",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-travel_fare",
+      "state": "GREEN",
+      "measured": "live consumer: travel_fare_multiplier",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-merchant_disposition",
+      "state": "GREEN",
+      "measured": "live consumer: birthsign_disposition_delta",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-focus_max_multiplier",
+      "state": "GREEN",
+      "measured": "live consumer: focusMax = pools.focus_max",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-spell_absorption",
+      "state": "GREEN",
+      "measured": "live consumer: spellAbsorption = pools.spell_absorption",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CONSUMPTION-hearth_focus_restore",
+      "state": "GREEN",
+      "measured": "live consumer: focusRestoresAtHearth = pools.focus_restores_at_hearth",
+      "control": "delete consumer token: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CHR03-kaal-kaal-all-eight",
+      "state": "GREEN",
+      "measured": "8/8 second-sign compositions: power=0.5, drawback=1.0",
+      "control": "halve drawback scale: row goes red",
+      "dependency": null
+    },
+    {
+      "id": "CHR03-kaal-kaal-dry-well",
+      "state": "GREEN",
+      "measured": "focus 30->39; hearth restore=false",
+      "control": "neutralise Dry Well drawback: restore becomes true",
+      "dependency": null
+    },
+    {
+      "id": "CHR01-end-to-end-viability",
+      "state": "RED",
+      "measured": "tool named by satisfied plan is absent",
+      "dependency": "RI-MTH06 / tools/quests/viability-walk.mjs full signature walk"
+    },
+    {
+      "id": "CHR01-blind-ordinary-play-20",
+      "state": "NOT_RUN",
+      "measured": "builder prepared no self-judged blind result",
+      "dependency": "fresh independent judge"
+    },
+    {
+      "id": "CHR03-decidability-walk",
+      "state": "RED",
+      "measured": "no current walk covers every sign x six families",
+      "dependency": "quest viability + W1-16 progression + W1-09 combat"
+    }
+  ]
+}
