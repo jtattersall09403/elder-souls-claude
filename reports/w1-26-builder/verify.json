@@ -1,0 +1,644 @@
+{
+  "schema": "elder-souls/w1-26-r4-verify@1",
+  "piece": "W1-26-r4",
+  "items": [
+    "RI-JRN01",
+    "RI-JRN09",
+    "RI-CHR01",
+    "RI-MTH07"
+  ],
+  "commit": "c9603f6",
+  "conditions": {
+    "loadavg": [
+      0.66,
+      0.22,
+      0.08
+    ],
+    "page_errors": []
+  },
+  "checks": {
+    "A0": {
+      "ok": true,
+      "what": "the shipped body ('saxhleel') observes cleanly and the scene finishes — the assertion is silent on the tree that ships",
+      "shipped": "saxhleel",
+      "observed": "saxhleel",
+      "threw": null,
+      "walk": {
+        "began": true,
+        "threw": null,
+        "visited": [
+          "hold.come-to",
+          "hold.hatch-name",
+          "hold.out",
+          "writ.race-observed",
+          "writ.sex",
+          "writ.upbringing",
+          "writ.given-name",
+          "writ.class-routes",
+          "writ.class-named",
+          "writ.class-verdict",
+          "writ.birthsign",
+          "writ.stamp"
+        ],
+        "stopped_at": null,
+        "done": true,
+        "refusal": null,
+        "fault": null,
+        "body_race": "saxhleel",
+        "body_race_raw": "saxhleel",
+        "body_race_fault": null,
+        "drawn": []
+      }
+    },
+    "A1": {
+      "ok": true,
+      "what": "race 'altmer' fails at observation, naming the id, and the scene never opens (0 nodes reached, was 11)",
+      "race": "altmer",
+      "why": "a real Elder Scrolls race, offered by writ-house.json's misread table as a WRONG GUESS, and not a body here — the exact string the r3 critic measured",
+      "threw": "census: the body carries race 'altmer', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene.",
+      "walk_visited": [],
+      "raw": {
+        "id": null,
+        "raw": "altmer",
+        "known": [
+          "saxhleel",
+          "naga",
+          "dunmer",
+          "imperial",
+          "nord",
+          "breton",
+          "redguard",
+          "khajiit",
+          "orsimer",
+          "bosmer"
+        ],
+        "fault": "census: the body carries race 'altmer', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene."
+      }
+    },
+    "A2": {
+      "ok": true,
+      "what": "race 'zzz-not-a-race' fails at observation, naming the id, and the scene never opens (0 nodes reached, was 11)",
+      "race": "zzz-not-a-race",
+      "why": "a race that does not exist at all, anywhere in the data",
+      "threw": "census: the body carries race 'zzz-not-a-race', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene.",
+      "walk_visited": [],
+      "raw": {
+        "id": null,
+        "raw": "zzz-not-a-race",
+        "known": [
+          "saxhleel",
+          "naga",
+          "dunmer",
+          "imperial",
+          "nord",
+          "breton",
+          "redguard",
+          "khajiit",
+          "orsimer",
+          "bosmer"
+        ],
+        "fault": "census: the body carries race 'zzz-not-a-race', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene."
+      }
+    },
+    "A3": {
+      "ok": true,
+      "what": "race 'argonian' fails at observation, naming the id, and the scene never opens (0 nodes reached, was 11)",
+      "race": "argonian",
+      "why": "the literal this field carried at e00e6fe, which is not an id here (`saxhleel` is) — the class of defect r3 fixed the VALUE of and left the MECHANISM of",
+      "threw": "census: the body carries race 'argonian', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene.",
+      "walk_visited": [],
+      "raw": {
+        "id": null,
+        "raw": "argonian",
+        "known": [
+          "saxhleel",
+          "naga",
+          "dunmer",
+          "imperial",
+          "nord",
+          "breton",
+          "redguard",
+          "khajiit",
+          "orsimer",
+          "bosmer"
+        ],
+        "fault": "census: the body carries race 'argonian', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene."
+      }
+    },
+    "A4": {
+      "ok": true,
+      "what": "getCensusState() still answers with a broken body and NAMES it: body_race_raw \"altmer\", body_race_fault set",
+      "threw": null,
+      "body_race": null,
+      "raw": "altmer",
+      "fault": "census: the body carries race 'altmer', which is not an id in game/data/progression/races.json (known: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer). The Warden-Scribe has nothing to write down for it and no authored misread line to say. This is a fault in whatever wrote sim.identity.race — creation.json starting_body.race, a --state 'race=…' run, a load, or the title's body picker — and NOT something the census declines to write down. Fix the body, not the scene."
+    },
+    "A5": {
+      "ok": true,
+      "what": "DELETE-THE-FIX WENT RED: with r3's expression restored, 'altmer' is observed as null — silently — the scene OPENS, walks 4 nodes and stops at 'writ.race-observed' with the authored refusal over it",
+      "observed": null,
+      "visited": [
+        "hold.come-to",
+        "hold.hatch-name",
+        "hold.out",
+        "writ.race-observed"
+      ],
+      "stopped_at": "writ.race-observed",
+      "refusal": null,
+      "fault": null
+    },
+    "B1": {
+      "ok": true,
+      "what": "0 HUD strings drawn while getTitleState().shown is true (0 hud elements, suppressed: true)",
+      "hud_elements": 0,
+      "hud_total": 0,
+      "suppressed": true,
+      "texts": []
+    },
+    "B2": {
+      "ok": true,
+      "what": "DELETE-THE-FIX WENT RED: with the suppression lied to, the title paints 3 HUD string(s) again — [\"6\",\"LIGHT\",\"Spark-Dart\"] — and 0 again when it is put back",
+      "title_shown": true,
+      "with_title": {
+        "hud_elements": 0,
+        "hud_total": 0,
+        "suppressed": true,
+        "texts": []
+      },
+      "teardown": {
+        "hud_elements": 6,
+        "hud_total": 6,
+        "suppressed": false,
+        "texts": [
+          "6",
+          "LIGHT",
+          "Spark-Dart"
+        ]
+      },
+      "restored": {
+        "hud_elements": 0,
+        "hud_total": 0,
+        "suppressed": true,
+        "texts": []
+      }
+    },
+    "consumption_arms": [
+      {
+        "race": "saxhleel",
+        "spec_race": "saxhleel",
+        "writ_chars": 15,
+        "character_race": "saxhleel",
+        "talk_player_race": "saxhleel",
+        "topics_known": "background,duties,latest-rumors,little-advice,little-secret,my-trade,services,someone-in-particular,specific-place",
+        "dispositions": {
+          "clerk-avelia-doren": {
+            "value": 26,
+            "race_term": null
+          },
+          "warden-scribe-tuleeh-ma": {
+            "value": 43,
+            "race_term": null
+          }
+        },
+        "topics_offered": {
+          "clerk-avelia-doren": [
+            "the-fee",
+            "the-provincial-office",
+            "writ-amendment",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ],
+          "warden-scribe-tuleeh-ma": [
+            "lukiul",
+            "my-work",
+            "the-list",
+            "the-provincial-office",
+            "the-tides",
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ]
+        },
+        "drawn_sample": [
+          "The Writ House at Tidewrack",
+          "Stand where the light is. I have to be able to see you to write you down.",
+          "Naga, then. — No. No, you are not, are you. Marsh-form. I have had three of them through here this morning and I have"
+        ],
+        "drawn_joined": "Tuleeh-Ma | The Writ House at Tidewrack | Stand where the light is. I have to be able to see you to write you down. | Naga, then. — No. No, you are not, are you. Marsh-form. I have had three of them through here this morning and I have | stopped looking properly. | Correct her. | Tuleeh-Ma | The Writ House at Tidewrack | And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat | you differently for it and I have watched for eleven years. | Male. | Female. | Leave it empty. | Tuleeh-Ma | The Writ House at Tidewrack | Where were you a child? Answer in the name of a water, not a country. | Black water, no bottom. | The harbour at Lilmoth. | A river you have not heard of. | The ditch under the wall. | Tuleeh-Ma | The Writ House at Tidewrack | The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors. | And the name they will use. | Teeba-Ei | Hul-Meesh | Okan-Zei | Vinesh-Ka | Deem-Ja | Ashul-Reeh | Nokh-Vashan | Ree-Jeeh | Tuleeh-Ma | The Writ House at Tidewrack | Silt-Under-Salt. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line. | Profession. There are three ways to do this and I do not care which, and neither does the box. | Name a trade the Office already has a word for. | Tell her what you actually do. | Ask me something instead. I do not know what to call it. | Tuleeh-Ma | The Writ House at Tidewrack | Go on then. | Salt-Blade | Marsh-Knight | Hollow-Hunter | Wet-Foot | Ledger-Hand | Net-Cutter | Deelith | Reed-Walker | Xanmeer-Delver | Bone-Setter | Sap-Reader | Tuleeh-Ma | The Writ House at Tidewrack | Salt-Blade. Somebody paid you to stand at the front of something. | Salt-Blade, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it | and no clerk in Gideon will have to think about it. Not all get that. Most of what walks in here has to be rounded. | Let her write it. | Tuleeh-Ma | The Writ House at Tidewrack | Which tide were you drawn on? | The Full Root | The Warm Stone | The Long Root | The Dry Well | The Spilled | The Unlit Water | The Backward Tide | The Two-Drink | The Grey Sap | Tuleeh-Ma | The Writ House at Tidewrack | The tide was in and the root had more than it needed. It gave you a swallow it did not owe you. | PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON | Name recorded: Silt-Under-Salt | Also called: Silt-Under-Salt | Observed as: Saxhleel | Raised at: black water, no bottom | Trade declared: Salt-Blade | Tide drawn on: The Full Root (Raj-Xul) | Second tide: None recorded. | Recorded: Male. | Silt-Under-Salt. Saxhleel. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a | person rather than a shape that was seen. Do not lose it. The door behind me is the one you want. Past it, no one tells you a thing you have not | asked for. It is the only part of this province that is free. | Take the reed-case."
+      },
+      {
+        "race": "dunmer",
+        "spec_race": "dunmer",
+        "writ_chars": 15,
+        "character_race": "dunmer",
+        "talk_player_race": "dunmer",
+        "topics_known": "background,duties,latest-rumors,little-advice,little-secret,my-trade,services,someone-in-particular,specific-place",
+        "dispositions": {
+          "clerk-avelia-doren": {
+            "value": 34,
+            "race_term": null
+          },
+          "warden-scribe-tuleeh-ma": {
+            "value": 33,
+            "race_term": null
+          }
+        },
+        "topics_offered": {
+          "clerk-avelia-doren": [
+            "the-fee",
+            "the-provincial-office",
+            "writ-amendment",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ],
+          "warden-scribe-tuleeh-ma": [
+            "lukiul",
+            "my-work",
+            "the-list",
+            "the-provincial-office",
+            "the-tides",
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ]
+        },
+        "drawn_sample": [
+          "The Writ House at Tidewrack",
+          "Stand where the light is. I have to be able to see you to write you down.",
+          "Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer."
+        ],
+        "drawn_joined": "Tuleeh-Ma | The Writ House at Tidewrack | Stand where the light is. I have to be able to see you to write you down. | Altmer. — No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer. | Correct her. | Tuleeh-Ma | The Writ House at Tidewrack | And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat | you differently for it and I have watched for eleven years. | Male. | Female. | Leave it empty. | Tuleeh-Ma | The Writ House at Tidewrack | Where were you a child? Answer in the name of a water, not a country. | Black water, no bottom. | The harbour at Lilmoth. | A river you have not heard of. | The ditch under the wall. | Tuleeh-Ma | The Writ House at Tidewrack | The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors. | Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man. So it is true. A raid went badly and the kin who found what was left did not do the | obvious thing with it. You will be hated in Helstrom by people who will feed you first. | And the name they will use. | Neras Athrenil | Ilvani Sarethi | Drovas Reln | Menyi Dalen | Ravyn Ules | Tedryn Hlaalu | Serjo Andrano | Tuleeh-Ma | The Writ House at Tidewrack | Silt-Under-Salt. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line. | Profession. There are three ways to do this and I do not care which, and neither does the box. | Name a trade the Office already has a word for. | Tell her what you actually do. | Ask me something instead. I do not know what to call it. | Tuleeh-Ma | The Writ House at Tidewrack | Go on then. | Salt-Blade | Marsh-Knight | Hollow-Hunter | Wet-Foot | Ledger-Hand | Net-Cutter | Deelith | Reed-Walker | Xanmeer-Delver | Bone-Setter | Sap-Reader | Tuleeh-Ma | The Writ House at Tidewrack | Salt-Blade. Somebody paid you to stand at the front of something. | Salt-Blade, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it | and no clerk in Gideon will have to think about it. Not all get that. Most of what walks in here has to be rounded. | Let her write it. | Tuleeh-Ma | The Writ House at Tidewrack | Which tide were you drawn on? | The Full Root | The Warm Stone | The Long Root | The Dry Well | The Spilled | The Unlit Water | The Backward Tide | The Two-Drink | The Grey Sap | Tuleeh-Ma | The Writ House at Tidewrack | The tide was in and the root had more than it needed. It gave you a swallow it did not owe you. | PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON | Name recorded: Silt-Under-Salt | Also called: Silt-Under-Salt | Observed as: Dunmer | Raised at: black water, no bottom | Trade declared: Salt-Blade | Tide drawn on: The Full Root (Raj-Xul) | Second tide: None recorded. | Recorded: Male. | Silt-Under-Salt. Dunmer. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a | person rather than a shape that was seen. Do not lose it. The door behind me is the one you want. Past it, no one tells you a thing you have not | asked for. It is the only part of this province that is free. | Take the reed-case."
+      },
+      {
+        "race": "khajiit",
+        "spec_race": "khajiit",
+        "writ_chars": 15,
+        "character_race": "khajiit",
+        "talk_player_race": "khajiit",
+        "topics_known": "background,duties,latest-rumors,little-advice,little-secret,my-trade,services,someone-in-particular,specific-place",
+        "dispositions": {
+          "clerk-avelia-doren": {
+            "value": 22,
+            "race_term": null
+          },
+          "warden-scribe-tuleeh-ma": {
+            "value": 33,
+            "race_term": null
+          }
+        },
+        "topics_offered": {
+          "clerk-avelia-doren": [
+            "the-fee",
+            "the-provincial-office",
+            "writ-amendment",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ],
+          "warden-scribe-tuleeh-ma": [
+            "lukiul",
+            "my-work",
+            "the-list",
+            "the-provincial-office",
+            "the-tides",
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ]
+        },
+        "drawn_sample": [
+          "The Writ House at Tidewrack",
+          "Stand where the light is. I have to be able to see you to write you down.",
+          "Bosmer. — No. Khajiit. There is a box for that and the box has a second line under it and I am going to leave the second"
+        ],
+        "drawn_joined": "Tuleeh-Ma | The Writ House at Tidewrack | Stand where the light is. I have to be able to see you to write you down. | Bosmer. — No. Khajiit. There is a box for that and the box has a second line under it and I am going to leave the second | line empty. | Correct her. | Tuleeh-Ma | The Writ House at Tidewrack | And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat | you differently for it and I have watched for eleven years. | Male. | Female. | Leave it empty. | Tuleeh-Ma | The Writ House at Tidewrack | Where were you a child? Answer in the name of a water, not a country. | Black water, no bottom. | The harbour at Lilmoth. | A river you have not heard of. | The ditch under the wall. | Tuleeh-Ma | The Writ House at Tidewrack | The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors. | And the name they will use. | Ma'zharra | Dro'Sithis | Ahzirr Vaba | S'renji | Kir'jhera | Do'Rassa | Ma'iq the Later | Tsarra-dar | Tuleeh-Ma | The Writ House at Tidewrack | Silt-Under-Salt. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line. | Profession. There are three ways to do this and I do not care which, and neither does the box. | Name a trade the Office already has a word for. | Tell her what you actually do. | Ask me something instead. I do not know what to call it. | Tuleeh-Ma | The Writ House at Tidewrack | Go on then. | Salt-Blade | Marsh-Knight | Hollow-Hunter | Wet-Foot | Ledger-Hand | Net-Cutter | Deelith | Reed-Walker | Xanmeer-Delver | Bone-Setter | Sap-Reader | Tuleeh-Ma | The Writ House at Tidewrack | Salt-Blade. Somebody paid you to stand at the front of something. | Salt-Blade, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it | and no clerk in Gideon will have to think about it. Not all get that. Most of what walks in here has to be rounded. | Let her write it. | Tuleeh-Ma | The Writ House at Tidewrack | Which tide were you drawn on? | The Full Root | The Warm Stone | The Long Root | The Dry Well | The Spilled | The Unlit Water | The Backward Tide | The Two-Drink | The Grey Sap | Tuleeh-Ma | The Writ House at Tidewrack | The tide was in and the root had more than it needed. It gave you a swallow it did not owe you. | PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON | Name recorded: Silt-Under-Salt | Also called: Silt-Under-Salt | Observed as: Khajiit | Raised at: black water, no bottom | Trade declared: Salt-Blade | Tide drawn on: The Full Root (Raj-Xul) | Second tide: None recorded. | Recorded: Male. | Silt-Under-Salt. Khajiit. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a | person rather than a shape that was seen. Do not lose it. The door behind me is the one you want. Past it, no one tells you a thing you have not | asked for. It is the only part of this province that is free. | Take the reed-case."
+      },
+      {
+        "race": "nord",
+        "spec_race": "nord",
+        "writ_chars": 15,
+        "character_race": "nord",
+        "talk_player_race": "nord",
+        "topics_known": "background,duties,latest-rumors,little-advice,little-secret,my-trade,services,someone-in-particular,specific-place",
+        "dispositions": {
+          "clerk-avelia-doren": {
+            "value": 40,
+            "race_term": null
+          },
+          "warden-scribe-tuleeh-ma": {
+            "value": 41,
+            "race_term": null
+          }
+        },
+        "topics_offered": {
+          "clerk-avelia-doren": [
+            "the-fee",
+            "the-provincial-office",
+            "writ-amendment",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ],
+          "warden-scribe-tuleeh-ma": [
+            "lukiul",
+            "my-work",
+            "the-list",
+            "the-provincial-office",
+            "the-tides",
+            "the-writ",
+            "the-writ-house",
+            "tidewrack",
+            "duties",
+            "background",
+            "specific-place",
+            "someone-in-particular",
+            "services",
+            "my-trade",
+            "little-advice",
+            "latest-rumors",
+            "little-secret"
+          ]
+        },
+        "drawn_sample": [
+          "The Writ House at Tidewrack",
+          "Stand where the light is. I have to be able to see you to write you down.",
+          "Orsimer. — No. Nord. In this light and at that height it is an honest mistake and you may take it however you like."
+        ],
+        "drawn_joined": "Tuleeh-Ma | The Writ House at Tidewrack | Stand where the light is. I have to be able to see you to write you down. | Orsimer. — No. Nord. In this light and at that height it is an honest mistake and you may take it however you like. | Correct her. | Tuleeh-Ma | The Writ House at Tidewrack | And I have to put something in this box, because the box is there. It changes nothing. Nothing in this province will treat | you differently for it and I have watched for eleven years. | Male. | Female. | Leave it empty. | Tuleeh-Ma | The Writ House at Tidewrack | Where were you a child? Answer in the name of a water, not a country. | Black water, no bottom. | The harbour at Lilmoth. | A river you have not heard of. | The ditch under the wall. | Tuleeh-Ma | The Writ House at Tidewrack | The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors. | And the name they will use. | Hrolf Iron-Reed | Sigrunn Stormhand | Ulfr Wet-Boot | Brynja Halstein | Gorm Ashfell | Ingrid Skalder | Torvar Snow-Sent | Hakon Vale | Tuleeh-Ma | The Writ House at Tidewrack | Silt-Under-Salt. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under the line. | Profession. There are three ways to do this and I do not care which, and neither does the box. | Name a trade the Office already has a word for. | Tell her what you actually do. | Ask me something instead. I do not know what to call it. | Tuleeh-Ma | The Writ House at Tidewrack | Go on then. | Salt-Blade | Marsh-Knight | Hollow-Hunter | Wet-Foot | Ledger-Hand | Net-Cutter | Deelith | Reed-Walker | Xanmeer-Delver | Bone-Setter | Sap-Reader | Tuleeh-Ma | The Writ House at Tidewrack | Salt-Blade. Somebody paid you to stand at the front of something. | Salt-Blade, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it | and no clerk in Gideon will have to think about it. Not all get that. Most of what walks in here has to be rounded. | Let her write it. | Tuleeh-Ma | The Writ House at Tidewrack | Which tide were you drawn on? | The Full Root | The Warm Stone | The Long Root | The Dry Well | The Spilled | The Unlit Water | The Backward Tide | The Two-Drink | The Grey Sap | Tuleeh-Ma | The Writ House at Tidewrack | The tide was in and the root had more than it needed. It gave you a swallow it did not owe you. | PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON | Name recorded: Silt-Under-Salt | Also called: Silt-Under-Salt | Observed as: Nord | Raised at: black water, no bottom | Trade declared: Salt-Blade | Tide drawn on: The Full Root (Raj-Xul) | Second tide: None recorded. | Recorded: Male. | Silt-Under-Salt. Nord. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a person | rather than a shape that was seen. Do not lose it. The door behind me is the one you want. Past it, no one tells you a thing you have not asked for. It | is the only part of this province that is free. | Take the reed-case."
+      }
+    ],
+    "C1": {
+      "ok": true,
+      "what": "the scene's consumer: 4/4 distinct observed races, 4/4 distinct drawn scenes",
+      "spec_races": [
+        "saxhleel",
+        "dunmer",
+        "khajiit",
+        "nord"
+      ],
+      "samples": [
+        {
+          "race": "saxhleel",
+          "line": "The Writ House at Tidewrack"
+        },
+        {
+          "race": "dunmer",
+          "line": "The Writ House at Tidewrack"
+        },
+        {
+          "race": "khajiit",
+          "line": "The Writ House at Tidewrack"
+        },
+        {
+          "race": "nord",
+          "line": "The Writ House at Tidewrack"
+        }
+      ]
+    },
+    "C2": {
+      "ok": true,
+      "what": "the WORLD's consumer: derivedDisposition()/raceTerm() moves with the body — 4/4 distinct disposition vectors over the people standing here",
+      "by_race": [
+        {
+          "race": "saxhleel",
+          "dispositions": {
+            "clerk-avelia-doren": {
+              "value": 26,
+              "race_term": null
+            },
+            "warden-scribe-tuleeh-ma": {
+              "value": 43,
+              "race_term": null
+            }
+          }
+        },
+        {
+          "race": "dunmer",
+          "dispositions": {
+            "clerk-avelia-doren": {
+              "value": 34,
+              "race_term": null
+            },
+            "warden-scribe-tuleeh-ma": {
+              "value": 33,
+              "race_term": null
+            }
+          }
+        },
+        {
+          "race": "khajiit",
+          "dispositions": {
+            "clerk-avelia-doren": {
+              "value": 22,
+              "race_term": null
+            },
+            "warden-scribe-tuleeh-ma": {
+              "value": 33,
+              "race_term": null
+            }
+          }
+        },
+        {
+          "race": "nord",
+          "dispositions": {
+            "clerk-avelia-doren": {
+              "value": 40,
+              "race_term": null
+            },
+            "warden-scribe-tuleeh-ma": {
+              "value": 41,
+              "race_term": null
+            }
+          }
+        }
+      ]
+    },
+    "C3_offer_gate": {
+      "distinct_topic_offers": 1,
+      "topics_known_identical": true,
+      "finding": "the offer gate READS the race (topic-supply.js :141/:164/:166) and the two people in the barge hold carry no race-gated infos, so it computes the same list for all four — the r3 critic's §8 table, reproduced. The gate is real; in this room it has nothing to bite on. Reported as the standing NEXT-DISPATCH §1b finding and NOT claimed as consumption."
+    },
+    "C4": {
+      "ok": true,
+      "what": "TEARDOWN WENT RED: with bodyRace() pinned to one literal, 4 bodies collapse to 1 distinct scene — the four differences in C1 are the field",
+      "distinct": 1,
+      "of": 4
+    },
+    "D": {
+      "teaching_clause_drawn": false,
+      "stamp_line": "Silt-Under-Salt. Saxhleel. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a",
+      "distinct_drawn": 91,
+      "topics_known": [
+        "background",
+        "duties",
+        "latest-rumors",
+        "little-advice",
+        "little-secret",
+        "my-trade",
+        "services",
+        "someone-in-particular",
+        "specific-place"
+      ],
+      "topics_never_named_to_the_player": [
+        "background",
+        "duties",
+        "latest-rumors",
+        "little-advice",
+        "little-secret",
+        "my-trade",
+        "services",
+        "someone-in-particular",
+        "specific-place"
+      ],
+      "asked": [
+        {
+          "topic": "background",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        },
+        {
+          "topic": "duties",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        },
+        {
+          "topic": "latest-rumors",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        },
+        {
+          "topic": "little-advice",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        }
+      ]
+    },
+    "D1": {
+      "ok": true,
+      "what": "the teaching clause \"So ask them what they do, and what is being said here.\" is no longer drawn anywhere in the opening",
+      "stamp_line": "Silt-Under-Salt. Saxhleel. interior. Salt-Blade. The Full Root. — Reed-case, stamped, and it is the only thing in this province that says you are a"
+    },
+    "D2": {
+      "ok": true,
+      "what": "_censusFinish() still grants 9 root topics with the clause gone",
+      "topics": [
+        "background",
+        "duties",
+        "latest-rumors",
+        "little-advice",
+        "little-secret",
+        "my-trade",
+        "services",
+        "someone-in-particular",
+        "specific-place"
+      ]
+    },
+    "D3": {
+      "ok": true,
+      "what": "9 of the granted topics were never named on any drawn frame, and one of them — 'background' — was ASKED and answered anyway",
+      "never_named": [
+        "background",
+        "duties",
+        "latest-rumors",
+        "little-advice",
+        "little-secret",
+        "my-trade",
+        "services",
+        "someone-in-particular",
+        "specific-place"
+      ],
+      "answered": [
+        {
+          "topic": "background",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        },
+        {
+          "topic": "duties",
+          "eid": "clerk-avelia-doren",
+          "answered": true,
+          "text": ""
+        }
+      ]
+    }
+  },
+  "passes": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "B1",
+    "B2",
+    "C1",
+    "C2",
+    "C4",
+    "D1",
+    "D2",
+    "D3"
+  ],
+  "failures": [],
+  "summary": {
+    "pass": 14,
+    "fail": 0
+  }
+}
