@@ -220,6 +220,7 @@ export function measure(text, face, size) {
  * report into a surface nobody registered.
  */
 export function drawText(ctx, text, x, y, face, size, colour, opts) {
+  size = Math.max(size, Number(ctx.__esMinTextPx || 0));
   const u = size * CAP_EM / CAP;
   const s = String(text);
   const o = opts || {};
