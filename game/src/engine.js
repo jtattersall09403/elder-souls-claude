@@ -553,6 +553,9 @@ export class Engine {
     // rather than failing a critic run later.
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
+    // W1-20: one authoritative identity/representative/relationship/service registry.  Rank
+    // remains derived by FactionGates; this registry describes what that rank unlocks in-world.
+    this.factionRegistry = this.data.factionRegistry || { factions: [] };
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
     // W1-20. The recruiters' words. `FactionGates.evaluate()` has always computed the whole
     // four-part statement with the player's own numbers in it and `QuestEngine.open()` has always
@@ -5112,6 +5115,20 @@ export class Engine {
     try { ev = this.factionGates.evaluate(factionId, Math.max(0, Math.min(7, Number(want) || 0)), ctx); }
     catch { ev = null; }   // a faction with no ladder — refusal.js answers that in words too
     return this._speakFactionRefusal(factionId, ev);
+  }
+
+  factionAccess(factionId) {
+    const row = (this.factionRegistry.factions || []).find((f) => f.id === factionId);
+    if (!row) return { ok: false, faction: factionId, reason: 'unknown faction' };
+    const standing = this._questFactionsView()[factionId] || {};
+    const rank = Number(standing.rank) || 0;
+    const services = Object.entries(row.services || {})
+      .filter(() => !!standing.member)
+      .filter(([key]) => rank >= Number(key.replace('rank_', '')))
+      .flatMap(([, values]) => values);
+    return { ok: true, faction: factionId, name: row.name, member: !!standing.member,
+      rank, representative: row.representative, seat: row.seat, rivals: row.rivals || [],
+      services, quest_hook: row.quest_hook, lore: row.lore || [] };
   }
 
   /** The half that actually reaches a person. Separated so `open()` can call it on its own gate. */
@@ -10513,6 +10530,7 @@ async function loadData(onBytes) {
     // Consumed by `Engine.factionRefusal()` via `sim/quest/refusal.js`, and reached from play
     // through `QuestEngine.open()`'s rank-gate refusal path.
     else if (entry.path === 'dialogue/faction-refusals.json') out.factionRefusals = doc;
+    else if (entry.path === 'factions/registry.json') out.factionRegistry = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;

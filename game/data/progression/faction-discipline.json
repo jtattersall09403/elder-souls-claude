@@ -1,11 +1,11 @@
 {
  "schema": "elder-souls/faction-discipline@1",
  "id": "faction-discipline",
- "corpus_item": "RI-QST03 §D (expulsion and readmission), RI-CRM02 §4",
- "owner": "W1-FACTIONS round 2",
- "why": "RI-QST03 §D requires an expulsion path and a readmission path, and the round-1 verdict scored both 0 — absent: 'no data file, no code path; the string appears in one quest and one guard'. This is the data file. The code path is QuestEngine.context() (expulsion lands in ctx.locked exactly as a rivalry lock does, so canOffer() already speaks it) and QuestEngine.readmit().",
- "design_note": "Expulsion is NEVER caused by a refusal. RI-QST02 D4 requires a refusal to be a way to win, and round 1's refusals already capped the ladder at rank 6 — making them also expel would be the same defect twice. Every cause below is an act the player took AGAINST the faction while inside it: carrying its instruments to a rival court, publishing its private roll, putting its measurements into an Imperial return. The faction finds out because the world flag says so, which is the only way anything in this build finds anything out.",
- "readmission_note": "Readmission is a price, not a timer. Each house asks for the thing it actually deals in — the Ledger takes a bond in coin, the Assize takes a filed instrument and the standing that goes with it, the Xul-Aneekh takes a blood-price under the ku-vastei because that is the only currency the interior recognises for a wrong done to kin. Nobody grovels and nobody waits out a cooldown.",
+ "corpus_item": "RI-QST03 \u00a7D (expulsion and readmission), RI-CRM02 \u00a74",
+ "owner": "W1-20 continuation; all eight live ladders have expulsion and priced readmission.",
+ "why": "RI-QST03 \u00a7D requires an expulsion path and a readmission path, and the round-1 verdict scored both 0 \u2014 absent: 'no data file, no code path; the string appears in one quest and one guard'. This is the data file. The code path is QuestEngine.context() (expulsion lands in ctx.locked exactly as a rivalry lock does, so canOffer() already speaks it) and QuestEngine.readmit().",
+ "design_note": "Expulsion is NEVER caused by a refusal. RI-QST02 D4 requires a refusal to be a way to win, and round 1's refusals already capped the ladder at rank 6 \u2014 making them also expel would be the same defect twice. Every cause below is an act the player took AGAINST the faction while inside it: carrying its instruments to a rival court, publishing its private roll, putting its measurements into an Imperial return. The faction finds out because the world flag says so, which is the only way anything in this build finds anything out.",
+ "readmission_note": "Readmission is a price, not a timer. Each house asks for the thing it actually deals in \u2014 the Ledger takes a bond in coin, the Assize takes a filed instrument and the standing that goes with it, the Xul-Aneekh takes a blood-price under the ku-vastei because that is the only currency the interior recognises for a wrong done to kin. Nobody grovels and nobody waits out a cooldown.",
  "factions": [
   {
    "faction": "the_wet_ledger",
@@ -71,6 +71,96 @@
     "offered_by": "ee-vashum",
     "line": "There is a blood-price for a wrong to kin and it does not care whether you meant it. Pay it to the hollow you did it to and the gallery stops counting.",
     "refusal_line_no_gold": "A blood-price is a number and yours is nine hundred. You are {shortfall} from it."
+   }
+  },
+  {
+   "faction": "deep_kin",
+   "expelled_by": [
+    {
+     "flag": "deep_kin_trust_broken",
+     "reason": "The deep kin will not deal with you after you carried its private work to a rival."
+    }
+   ],
+   "readmission": {
+    "flag": "deep_kin_readmitted",
+    "price_gold": 800,
+    "reputation_floor": 36,
+    "costs_reputation": 10,
+    "offered_by": "ee-vashum",
+    "line": "The breach has a price of 800 gold and a witnessed return to standing.",
+    "refusal_line_no_gold": "The price is not a promise. You are {shortfall} short."
+   }
+  },
+  {
+   "faction": "the_dockhands",
+   "expelled_by": [
+    {
+     "flag": "dockhands_trust_broken",
+     "reason": "The Dockhands will not deal with you after you carried its private work to a rival."
+    }
+   ],
+   "readmission": {
+    "flag": "dockhands_readmitted",
+    "price_gold": 300,
+    "reputation_floor": 36,
+    "costs_reputation": 10,
+    "offered_by": "npc-porter-eeja",
+    "line": "The breach has a price of 300 gold and a witnessed return to standing.",
+    "refusal_line_no_gold": "The price is not a promise. You are {shortfall} short."
+   }
+  },
+  {
+   "faction": "the_drowned_court",
+   "expelled_by": [
+    {
+     "flag": "drowned_court_trust_broken",
+     "reason": "The Drowned Court will not deal with you after you carried its private work to a rival."
+    }
+   ],
+   "readmission": {
+    "flag": "drowned_court_readmitted",
+    "price_gold": 600,
+    "reputation_floor": 36,
+    "costs_reputation": 10,
+    "offered_by": "undertaker-vaskh",
+    "line": "The breach has a price of 600 gold and a witnessed return to standing.",
+    "refusal_line_no_gold": "The price is not a promise. You are {shortfall} short."
+   }
+  },
+  {
+   "faction": "the_ixtu_vakh",
+   "expelled_by": [
+    {
+     "flag": "ixtu_vakh_trust_broken",
+     "reason": "The Ixtu-Vakh will not deal with you after you carried its private work to a rival."
+    }
+   ],
+   "readmission": {
+    "flag": "ixtu_vakh_readmitted",
+    "price_gold": 500,
+    "reputation_floor": 36,
+    "costs_reputation": 10,
+    "offered_by": "cutter-neeth",
+    "line": "The breach has a price of 500 gold and a witnessed return to standing.",
+    "refusal_line_no_gold": "The price is not a promise. You are {shortfall} short."
+   }
+  },
+  {
+   "faction": "the_rootkeepers",
+   "expelled_by": [
+    {
+     "flag": "rootkeepers_trust_broken",
+     "reason": "The Rootkeepers will not deal with you after you carried its private work to a rival."
+    }
+   ],
+   "readmission": {
+    "flag": "rootkeepers_readmitted",
+    "price_gold": 450,
+    "reputation_floor": 36,
+    "costs_reputation": 10,
+    "offered_by": "rootkeeper-jeen",
+    "line": "The breach has a price of 450 gold and a witnessed return to standing.",
+    "refusal_line_no_gold": "The price is not a promise. You are {shortfall} short."
    }
   }
  ]
