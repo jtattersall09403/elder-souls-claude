@@ -1,0 +1,342 @@
+{
+  "schema": "elder-souls/ui-forbidden@1",
+  "item": "RI-UIX01",
+  "at": "2026-08-10T12:28:55.658Z",
+  "state": "arena_champion",
+  "screen": [
+    1280,
+    720
+  ],
+  "declared": [],
+  "scanned": [
+    {
+      "where": "combat",
+      "mode": "world",
+      "elements": 6,
+      "visible_elements": 6,
+      "kinds": [
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "inventory",
+      "mode": "inventory",
+      "elements": 27,
+      "visible_elements": 27,
+      "kinds": [
+        "category",
+        "detail_panel",
+        "divider",
+        "encumbrance",
+        "equip_load",
+        "focus_bar",
+        "gold",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "scroll_extent",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "journal",
+      "mode": "journal",
+      "elements": 12,
+      "visible_elements": 12,
+      "kinds": [
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "page_count",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "sheet",
+      "mode": "sheet",
+      "elements": 48,
+      "visible_elements": 48,
+      "kinds": [
+        "attribute_row",
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "sheet_row",
+        "skill_row",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "spells",
+      "mode": "spells",
+      "elements": 13,
+      "visible_elements": 13,
+      "kinds": [
+        "detail_panel",
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "spell_row",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "map",
+      "mode": "map",
+      "elements": 13,
+      "visible_elements": 13,
+      "kinds": [
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "map_player",
+        "map_terrain",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    }
+  ],
+  "observed": [],
+  "self_test": null,
+  "buffer": [
+    1280,
+    720
+  ],
+  "declared_hits": 0,
+  "observed_digit_hits": 0,
+  "observed_bar_hits": 0,
+  "declared_samples": {
+    "surfaces": [
+      "combat",
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "map"
+    ],
+    "elements_scanned": 119,
+    "per_surface": [
+      {
+        "where": "combat",
+        "mode": "world",
+        "elements": 6,
+        "visible_elements": 6,
+        "kinds": [
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "inventory",
+        "mode": "inventory",
+        "elements": 27,
+        "visible_elements": 27,
+        "kinds": [
+          "category",
+          "detail_panel",
+          "divider",
+          "encumbrance",
+          "equip_load",
+          "focus_bar",
+          "gold",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "scroll_extent",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "journal",
+        "mode": "journal",
+        "elements": 12,
+        "visible_elements": 12,
+        "kinds": [
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "page_count",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "sheet",
+        "mode": "sheet",
+        "elements": 48,
+        "visible_elements": 48,
+        "kinds": [
+          "attribute_row",
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "sheet_row",
+          "skill_row",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "spells",
+        "mode": "spells",
+        "elements": 13,
+        "visible_elements": 13,
+        "kinds": [
+          "detail_panel",
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "spell_row",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "map",
+        "mode": "map",
+        "elements": 13,
+        "visible_elements": 13,
+        "kinds": [
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "map_player",
+          "map_terrain",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      }
+    ],
+    "surfaces_not_reached": []
+  },
+  "checks": [
+    {
+      "id": "U4",
+      "what": "no forbidden element (X1-X12, N4-N5) declared on any surface",
+      "status": "PASS",
+      "pass": true,
+      "samples": 119,
+      "sample_of": "declared elements examined",
+      "detail": "0 hits over 119 elements on [combat,inventory,journal,sheet,spells,map]",
+      "counts": {
+        "surfaces": 6,
+        "surfaces_expected": 6,
+        "per_surface": [
+          [
+            "combat",
+            6
+          ],
+          [
+            "inventory",
+            27
+          ],
+          [
+            "journal",
+            12
+          ],
+          [
+            "sheet",
+            48
+          ],
+          [
+            "spells",
+            13
+          ],
+          [
+            "map",
+            13
+          ]
+        ]
+      }
+    },
+    {
+      "id": "U5",
+      "what": "no floating damage number (X1) or enemy nameplate bar (X2) in the frame after a hit",
+      "status": "EMPTY",
+      "pass": false,
+      "samples": 0,
+      "sample_of": "enemy regions on the post-hit frame",
+      "detail": "NOT GRADED — 0 enemy regions on the post-hit frame sampled. not run (--declared-only)",
+      "counts": {
+        "candidates": 0,
+        "region_px": 0,
+        "enemies_live": 0,
+        "hit_frame": null,
+        "buffer_is_1to1": null
+      }
+    }
+  ],
+  "U4": "PASS",
+  "U5": "EMPTY",
+  "sample_table": "| Tool | Check | Status | Samples | One sample is | Detail |\n|---|---|---|---|---|---|\n| `ui-forbidden.mjs` | U4 | **PASS** | 119 | declared elements examined | 0 hits over 119 elements on [combat,inventory,journal,sheet,spells,map] |\n| `ui-forbidden.mjs` | U5 | **EMPTY** | 0 | enemy regions on the post-hit frame | NOT GRADED — 0 enemy regions on the post-hit frame sampled. not run (--declared-only) |"
+}

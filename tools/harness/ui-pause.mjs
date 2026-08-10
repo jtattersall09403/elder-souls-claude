@@ -88,7 +88,13 @@ try {
   await h.h('closeMenu');
   await h.h('lockOn', null);
   const enemies = (await h.h('listEntities')).filter((e) => e.archetype !== 'player');
-  for (const e of enemies) { try { await h.h('despawn', e.eid); } catch { /* */ } }
+  // `h.h()` intentionally turns a harness throw into a process exit, so a JavaScript try/catch
+  // around it cannot make a stale streamed-entity census optional. Ask and catch in-page: an
+  // entity may leave the stream between listEntities() and despawn(), which is not a pause-rule
+  // failure and previously killed this native row before it sampled a frame.
+  for (const e of enemies) {
+    await h.page.evaluate((eid) => { try { window.__HARNESS.despawn(eid); } catch { /* stale */ } }, e.eid);
+  }
   await h.h('stepFrames', 8);
   let rep = await h.h('getUIPauseReport');
   await h.h('openMenu', 'inventory');
@@ -223,7 +229,9 @@ try {
 
   // ---- P4: combat begins while the screen is open ---------------------------------------------
   await h.h('closeMenu');
-  for (const e of (await h.h('listEntities')).filter((x) => x.archetype !== 'player')) { try { await h.h('despawn', e.eid); } catch { /* */ } }
+  for (const e of (await h.h('listEntities')).filter((x) => x.archetype !== 'player')) {
+    await h.page.evaluate((eid) => { try { window.__HARNESS.despawn(eid); } catch { /* stale */ } }, e.eid);
+  }
   await h.h('lockOn', null);
   await h.h('stepFrames', 8);
   await h.h('openMenu', 'inventory');
@@ -297,8 +305,13 @@ try {
   const colBefore = (await h.h('getUIState')).focus.col;
   await pad([PAD.DLEFT]);                          // d-pad left: change column
   const uiAfterDpad = await h.h('getUIState');
+  const padDiag = await h.page.evaluate(() => ({
+    uiMode: !!(window.__ENGINE.real.pad && window.__ENGINE.real.pad.uiMode),
+    menuOpen: !!window.__ENGINE.real.menuOpen,
+    move: [window.__ENGINE.input.moveX, window.__ENGINE.input.moveY],
+  }));
   reach.push({ after: 'DPAD LEFT', col: uiAfterDpad.focus.col, colBefore,
-    focus: uiAfterDpad.elements.filter((e) => e.focused).map((e) => e.id) });
+    focus: uiAfterDpad.elements.filter((e) => e.focused).map((e) => e.id), pad: padDiag });
   await pad([PAD.DDOWN]);
   await pad([PAD.A]);                              // A: confirm
   reach.push({ after: 'A', mode: (await h.h('getUIState')).mode });

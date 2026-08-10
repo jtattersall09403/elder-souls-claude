@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-21-builder",
+  "role": "builder",
+  "plan_state": "built-awaiting-independent-criticism",
+  "updated_at": "2026-08-10T13:00:00Z",
+  "files_touched": [
+    "orchestration/status/W1-21-builder.json",
+    "game/data/world/readables/site-marks.json",
+    "tools/harness/ui-pause.mjs",
+    "tools/ui/w1-21-model-consumption.mjs",
+    "reports/w1-21-builder/aggregate.md",
+    "reports/w1-21-builder/ui-comparison-packs.json",
+    "reports/w1-21-builder/ui-census.json",
+    "reports/w1-21-builder/ui-forbidden.json",
+    "reports/w1-21-builder/journal-ui.json",
+    "reports/w1-21-builder/journal-capture.json",
+    "reports/w1-21-builder/marker-diff.json",
+    "reports/w1-21-builder/ui-pause.json",
+    "reports/w1-21-builder/model-consumption.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Independent UIX03/UIX04/UIX06 judges use the prepared source-pack specification; a fresh critic falsifies the D-pad row and validates mixed-item sibling evidence.",
+  "notes": [
+    "Start from current HEAD; do not regenerate generated docs, indexes, progress, status publication, or blog feed.",
+    "Independent UIX03/UIX04/UIX06 and fresh-judge rows received source-pack specifications and remain not_run.",
+    "No new binary capture is committed.",
+    "Automatic reruns: UIX01 census 10/10, UIX02 marker scan/differential/yaw green, UIX03 native automatic rows green, UIX04 11/11, UI model consumption 12/12.",
+    "GameSir pad opens, stick-navigates, confirms, and closes, but the extra D-pad column assertion remains red and is disclosed in the aggregate."
+  ]
+}
