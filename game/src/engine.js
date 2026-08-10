@@ -2617,6 +2617,33 @@ export class Engine {
     return st;
   }
 
+  /** Learn a quest fact by remaining close enough to hear without being noticed. */
+  eavesdrop(eid) {
+    const n = this.sim.findNPC(eid);
+    if (!n) return { ok: false, reason: `nobody by '${eid}' is present` };
+    const p = this.sim.player && this.sim.player.pos;
+    if (!p || !n.pos) return { ok: false, reason: 'no world position' };
+    const distance_m = Math.hypot(n.pos[0] - p[0], n.pos[2] - p[2]);
+    if (distance_m > 8) return { ok: false, reason: 'too far to hear', distance_m };
+    if (n.noticing) return { ok: false, reason: 'the speaker is watching you', distance_m };
+    const learned = this.questEngine.learnFrom('eavesdrop', n.eid, { trace: true });
+    const ev = this.bus.emit(this.sim.frame, 'input_action');
+    ev.action = 'interact'; ev.surface = 'world'; ev.via = 'eavesdrop'; ev.node = n.eid;
+    return { ok: learned.learned.length > 0, distance_m, learned };
+  }
+
+  /** Examine a named body; a living actor cannot satisfy a corpse reveal route. */
+  examineCorpse(eid) {
+    const n = this.sim.findNPC(eid);
+    if (!n) return { ok: false, reason: `nobody by '${eid}' is present` };
+    const dead = n.dead === true || n.alive === false || Number(n.hp) <= 0;
+    if (!dead) return { ok: false, reason: 'the actor is alive' };
+    const learned = this.questEngine.learnFrom('corpse', n.eid, { trace: true });
+    const ev = this.bus.emit(this.sim.frame, 'input_action');
+    ev.action = 'interact'; ev.surface = 'world'; ev.via = 'corpse'; ev.node = n.eid;
+    return { ok: learned.learned.length > 0, learned };
+  }
+
   /**
    * Install the world-side supply of topic keywords: the three readers that `topic-supply.js`
    * exists to be. Called once at boot, after the quest book is loaded, because two of the three
