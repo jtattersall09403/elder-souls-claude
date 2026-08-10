@@ -93,8 +93,11 @@ export function buildBargeHold(root, mats) {
   box(root, mats.plank, 2.0, 0.16, 0.9, -2.3, 0.55, 2.4, 0);
   box(root, mats.cloth, 1.7, 0.14, 0.7, -2.3, 0.70, 2.4, 0);
   box(root, mats.plank, 2.0, 0.16, 0.9, 2.3, 0.55, 1.2, 0);
-  lamp(root, 0, 2.35, 1.2, 0xffc07a, 30, 22);
-  lamp(root, 0, 2.35, -3.6, 0xffa860, 16, 14);
+  // Same authored sources as interior-lighting.js consumes for stealth. These positions and
+  // weights are deliberately not a third lighting policy for the opening room.
+  lamp(root, 0, 2.2, 5, 0xffc07a, 1.1 * 9, 11);
+  lamp(root, -1.8, 1.7, -1.2, 0xffa860, 0.45 * 9, 11);
+  lamp(root, 1.9, 1.7, -4.4, 0xffa860, 0.45 * 9, 11);
   root.visible = false;
   return root;
 }
@@ -155,11 +158,9 @@ export function buildWritHouse(root, mats) {
   const win = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.0), new THREE.MeshBasicMaterial({ color: 0xb9c8cf }));
   win.position.set(0, 2.9, 6.30); win.rotation.y = Math.PI;
   root.add(win);
-  const sun = new THREE.DirectionalLight(0xc7d4da, 1.15);
-  sun.position.set(0.5, 3.4, 5.6); sun.target.position.set(0, 1.1, 1.2);
-  root.add(sun, sun.target);
-  lamp(root, -0.2, 2.7, 1.0, 0xffc48c, 26, 20);
-  lamp(root, -3.6, 2.4, 2.0, 0xffb877, 12, 10);
+  // The record currently has no authored lamp, so litLights() supplies one explicit fail-open
+  // hearth at this position. Match that shared policy rather than inventing two private lamps.
+  lamp(root, 0, 1.2, -4, 0xffa050, 0.9 * 22, 22);
   root.visible = false;
   return root;
 }

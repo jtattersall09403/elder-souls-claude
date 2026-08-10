@@ -268,6 +268,15 @@ export class CrimeWorld {
     return this.unattributed.imperial;
   }
 
+  /** Total bounty the world can attribute to the player, across every jurisdiction. */
+  attributedTotal() {
+    let total = this.attributedIn('imperial');
+    for (const settlement of Object.keys(this.bounty.settlement || {})) {
+      total += this.attributedIn('settlement', settlement);
+    }
+    return total;
+  }
+
   /**
    * The settlement's alarm state — the second of `unidentified_effect`'s three promises.
    *

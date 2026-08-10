@@ -1,0 +1,47 @@
+{
+  "task_id": "codex-builder-w1-15-20260810",
+  "status": "builder_delivery_complete",
+  "brief": "Production builder for complete satisfied W1-15 plan under S43 and AMENDMENT-W1-15-01 \u00a7\u00a71\u20134",
+  "files_touched": [
+    "game/data/stealth/detection.json",
+    "game/src/engine.js",
+    "game/src/render/places.js",
+    "game/src/sim/crime/state.js",
+    "tools/harness/w1-15-r4-lights.mjs",
+    "tools/quests/w1-15-prerequisite-ledger.mjs",
+    "tools/stealth/critic-w1-15-r4.mjs",
+    "orchestration/status/codex-builder-w1-15-20260810.json"
+  ],
+  "files_claimed": [],
+  "authority": [
+    "orchestration/plans/W1-15.md",
+    "corpus/00-doctrine/ARBITRATION.md S43",
+    "corpus/00-doctrine/AMENDMENT-W1-15-01.md \u00a7\u00a71\u20134"
+  ],
+  "delivered": {
+    "detection": "Joined-world lamp scale 3.0; 36.3% saturated floor cells and 1 saturated room, with the old 9.3275 scale as a red control.",
+    "render_consumption": "Opening barge and writ-house lamps now match the canonical world lighting sources instead of a private renderer policy.",
+    "crime_attribution": "CrimeWorld.attributedTotal() is the single consumer for dialogue, HUD, and sanction consequences; unidentified bounty remains alarm/zone memory but does not poison conversations.",
+    "qst05_prerequisite_ledger": "18 canonical quest files, 32 references, 0 missing/coupling-zero. Delete-consumer control fails all 32. QST05 score NOT_RUN.",
+    "native_live": "W1-15 r4 live suite passed all 15 printed rows: light/time/windowless/discrimination, fence refusal, ownership resolution, world zones, trespass, cover/search, attributed guard bands, alarms, zone memory, and save/load."
+  },
+  "independent_blind_rows": "NOT_RUN \u2014 builder did not self-judge or rerun sibling quest populations.",
+  "critic_handoff": {
+    "action": "Fresh independent critic runs the five governing items at this commit, starting with the cheap ledger/static/light gates, then the existing W1-15 live harness. Consume W1-18 QST05 evidence only if commit-stamped and population-complete; otherwise retain QST05 NOT_RUN.",
+    "commands": [
+      "node tools/analysis/crime-audit.mjs",
+      "node tools/analysis/w1-15-consumption.mjs --all --selftest",
+      "node tools/quests/w1-15-prerequisite-ledger.mjs",
+      "node tools/quests/w1-15-prerequisite-ledger.mjs --control (must exit 1)",
+      "node tools/harness/w1-15-r4-lights.mjs --hour 12",
+      "node tools/harness/w1-15-r4-deletefix.mjs",
+      "node tools/harness/w1-15-r4-live.mjs"
+    ],
+    "not_run": [
+      "independent/blind scoring",
+      "W1-18 random ten-quest browser population"
+    ]
+  },
+  "next_step": "Exact critic handoff above; ordinary builder-actionable W1-15 rows are resolved.",
+  "screenshot_taken_not_committed": "Writ-house runtime screenshot inspected, then removed under the no-committed-binary-evidence policy."
+}
