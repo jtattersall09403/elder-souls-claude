@@ -6839,6 +6839,96 @@
           ]
         }
       ]
+    },
+    {
+      "id": "helstrom.faction-rootkeepers.r0",
+      "name": "the Rootkeepers undertemple",
+      "settlement": "helstrom",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:rootkeepers",
+      "owner_name": "the Rootkeepers undertemple",
+      "residents": [],
+      "faction": "rootkeepers",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "helstrom.faction-rootkeepers.r0.registry",
+          "id": "faction_registry",
+          "name": "the Rootkeepers undertemple membership roll",
+          "owner": "faction:rootkeepers",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "helstrom.faction-ixtu-vakh.r0",
+      "name": "the Ixtu-Vakh cutter lodge",
+      "settlement": "helstrom",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:ixtu-vakh",
+      "owner_name": "the Ixtu-Vakh cutter lodge",
+      "residents": [],
+      "faction": "ixtu-vakh",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "helstrom.faction-ixtu-vakh.r0.registry",
+          "id": "faction_registry",
+          "name": "the Ixtu-Vakh cutter lodge membership roll",
+          "owner": "faction:ixtu-vakh",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
     }
   ]
 }

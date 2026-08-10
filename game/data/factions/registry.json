@@ -1,0 +1,262 @@
+{
+  "schema": "elder-souls/faction-registry@1",
+  "id": "faction-registry",
+  "owner": "W1-20",
+  "canon": [
+    "CF-027",
+    "CF-029",
+    "RI-LOR02 \u00a74",
+    "RI-LOR08 \u00a74"
+  ],
+  "identity_ruling": "Deep Kin and Xul-Aneekh are distinct playable institutions: Deep Kin is the broad rootkeeper/war-brood consensus; Xul-Aneekh is its oath-bound interior fighting society. Q-MAG-07 and both independent standing ledgers therefore remain canonical, not aliases.",
+  "factions": [
+    {
+      "id": "deep_kin",
+      "standing_id": "deep-kin",
+      "name": "The Deep Kin",
+      "joinable": true,
+      "representative": "ee-vashum",
+      "seat": "stormhold.faction-deep-kin.r0",
+      "allegiance": "interior consensus",
+      "rivals": [
+        "the_imperial_assize"
+      ],
+      "services": {
+        "rank_1": [
+          "hollow shelter"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "war-brood safe passage"
+        ],
+        "rank_7": [
+          "consensus voice"
+        ]
+      },
+      "quest_hook": "Q-DEEP-30",
+      "lore": [
+        "CF-027",
+        "RI-LOR08 \u00a74"
+      ]
+    },
+    {
+      "id": "the_dockhands",
+      "standing_id": "dockhands",
+      "name": "The Dockhands",
+      "joinable": true,
+      "representative": "npc-porter-eeja",
+      "seat": "gideon.faction-dockhands.r0",
+      "allegiance": "free river labour",
+      "rivals": [
+        "the_imperial_assize"
+      ],
+      "services": {
+        "rank_1": [
+          "hiring board"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "union rates"
+        ],
+        "rank_7": [
+          "elect foreman"
+        ]
+      },
+      "quest_hook": "Q-DOCK-00",
+      "lore": [
+        "RI-LOR02 \u00a74"
+      ]
+    },
+    {
+      "id": "the_drowned_court",
+      "standing_id": "drowned-court",
+      "name": "The Drowned Court",
+      "joinable": true,
+      "representative": "undertaker-vaskh",
+      "seat": "lilmoth.priest6.r0",
+      "allegiance": "Soulrest death court",
+      "rivals": [
+        "the_wet_ledger"
+      ],
+      "services": {
+        "rank_1": [
+          "tally access"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "unclaimed-dead records"
+        ],
+        "rank_7": [
+          "court seat"
+        ]
+      },
+      "quest_hook": "Q-CORT-00",
+      "lore": [
+        "RI-LOR02 \u00a74"
+      ]
+    },
+    {
+      "id": "the_imperial_assize",
+      "standing_id": "imperial-assize",
+      "name": "The Imperial Assize",
+      "joinable": true,
+      "representative": "assizer-corvo",
+      "seat": "gideon.faction-imperial-assize.r0",
+      "allegiance": "late-Septim provincial law",
+      "rivals": [
+        "the_wet_ledger",
+        "deep_kin",
+        "the_dockhands"
+      ],
+      "services": {
+        "rank_1": [
+          "filing"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "legal account"
+        ],
+        "rank_7": [
+          "assizer seal"
+        ]
+      },
+      "quest_hook": "Q-ASSZ-00",
+      "lore": [
+        "CF-067",
+        "RI-LOR02 \u00a71"
+      ]
+    },
+    {
+      "id": "the_ixtu_vakh",
+      "standing_id": "ixtu-vakh",
+      "name": "The Ixtu-Vakh",
+      "joinable": true,
+      "representative": "cutter-neeth",
+      "seat": "helstrom.faction-ixtu-vakh.r0",
+      "allegiance": "Sap-Cutters",
+      "rivals": [
+        "the_rootkeepers"
+      ],
+      "services": {
+        "rank_1": [
+          "cutter camp"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "sap allotment"
+        ],
+        "rank_7": [
+          "first axe"
+        ]
+      },
+      "quest_hook": "Q-VAKH-00",
+      "lore": [
+        "RI-LOR05 \u00a74",
+        "RI-LOR02 \u00a74"
+      ]
+    },
+    {
+      "id": "the_rootkeepers",
+      "standing_id": "rootkeepers",
+      "name": "The Rootkeepers",
+      "joinable": true,
+      "representative": "rootkeeper-jeen",
+      "seat": "helstrom.faction-rootkeepers.r0",
+      "allegiance": "Hist tending tradition",
+      "rivals": [
+        "the_ixtu_vakh"
+      ],
+      "services": {
+        "rank_1": [
+          "well slate"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "graft archive"
+        ],
+        "rank_7": [
+          "elder ring"
+        ]
+      },
+      "quest_hook": "Q-ROOT-00",
+      "lore": [
+        "CF-027",
+        "RI-LOR08 \u00a74"
+      ]
+    },
+    {
+      "id": "the_wet_ledger",
+      "standing_id": "wet-ledger",
+      "name": "The Wet Ledger",
+      "joinable": true,
+      "representative": "harbourmistress-tesh",
+      "seat": "lilmoth.factor0.r0",
+      "allegiance": "coastal mercantile compact",
+      "rivals": [
+        "the_imperial_assize",
+        "the_drowned_court"
+      ],
+      "services": {
+        "rank_1": [
+          "table work"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "report interception"
+        ],
+        "rank_7": [
+          "ledger chair"
+        ]
+      },
+      "quest_hook": "Q-LEDG-00",
+      "lore": [
+        "RI-LOR02 \u00a74"
+      ]
+    },
+    {
+      "id": "the_xul_aneekh",
+      "standing_id": "xul-aneekh",
+      "name": "The Xul-Aneekh",
+      "joinable": true,
+      "representative": "ee-vashum",
+      "seat": "stormhold.faction-xul-aneekh.r0",
+      "allegiance": "oath-bound interior war-broods",
+      "rivals": [
+        "the_imperial_assize"
+      ],
+      "services": {
+        "rank_1": [
+          "root gallery"
+        ],
+        "rank_2": [
+          "shared property"
+        ],
+        "rank_4": [
+          "war-brood safe passage"
+        ],
+        "rank_7": [
+          "speaker challenge"
+        ]
+      },
+      "quest_hook": "Q-XULA-00",
+      "lore": [
+        "CF-029",
+        "RI-LOR02 \u00a74"
+      ]
+    }
+  ]
+}

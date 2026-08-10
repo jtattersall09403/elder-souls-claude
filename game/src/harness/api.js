@@ -2064,6 +2064,7 @@ export function installHarness(engine, bootPromise) {
      * would see on the HUD when they said it. `rank` defaults to the next one up.
      */
     factionRefusal(factionId, rank) { return engine.factionRefusal(String(factionId), rank === undefined ? undefined : Number(rank)); },
+    factionAccess(factionId) { return engine.factionAccess(String(factionId)); },
     /** Every faction this build can refuse in words, and the three it refuses as not-joinable. */
     factionRefusalCensus() {
       const r = engine.factionRefusals;
