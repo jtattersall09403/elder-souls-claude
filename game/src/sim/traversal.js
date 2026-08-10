@@ -41,6 +41,11 @@ const BAND_MIN = { W0: 0.00, W1: 0.01, W2: 0.21, W3: 0.51, W4: 0.96, W5: 1.41 };
 const AMPHIBIOUS_RACES = new Set(['saxhleel', 'naga']);
 export function isAmphibiousRace(race) { return AMPHIBIOUS_RACES.has(String(race || '').toLowerCase()); }
 export const bandIndex = (b) => BANDS.indexOf(b);
+export function breathMaxForEndurance(endurance, waterCfg) {
+  const end = Math.max(10, Number.isFinite(Number(endurance)) ? Number(endurance) : 20);
+  return Math.min(waterCfg.breath_cap_s, waterCfg.breath_base_s +
+    waterCfg.breath_per_endurance_over_10_s * (end - 10));
+}
 
 /**
  * How far a swimming body's origin sits BELOW the water surface: the submerged fraction of a
@@ -89,6 +94,7 @@ export class Traversal {
     this.depth = 0;
     this.submerged = false;
     this.breath = this.cfg.water.breath_max_s;
+    this.breathMax = this.cfg.water.breath_max_s;
     // Seam S19's two water effects write these, and this file reads them. Both false for every
     // body that has not been enchanted, so a run with no magic in it behaves exactly as before.
     this.breathesWater = false;
@@ -163,6 +169,8 @@ export class Traversal {
     // of defect the round-2 verdict found in the water retraction ("what survived was a constant
     // POSITIONAL LAG ... which is why the whole locomotion ladder read inert"), one field over.
     this.body = body || null;
+    this.breathMax = breathMaxForEndurance(body && body.endurance, C.water);
+    this.breath = Math.min(this.breath, this.breathMax);
     this.events.length = 0;
     let x = p.pos[0], z = p.pos[2];
     let dx = x - px, dz = z - pz;
@@ -359,7 +367,7 @@ export class Traversal {
     // refilled to max every frame never reaches zero), rather than inventing a second "infinite
     // breath" mechanism that could disagree with the first.
     if (this.submerged && (this.breathesWater || this.amphibious)) {
-      this.breath = W.breath_max_s;
+      this.breath = this.breathMax;
     } else if (this.submerged) {
       this.breath = Math.max(0, this.breath - 1 / 60);
       if (this.breath <= 0) {
@@ -373,8 +381,8 @@ export class Traversal {
         // cause down; `die()` reads it and clears it.
         if (p.hp <= 0) { p.lethalCause = 'drown'; this._setState(p, 'DEATH'); this.events.push({ kind: 'drowned' }); }
       }
-    } else if (this.breath < W.breath_max_s) {
-      this.breath = Math.min(W.breath_max_s, this.breath + W.breath_refill_mult / 60);
+    } else if (this.breath < this.breathMax) {
+      this.breath = Math.min(this.breathMax, this.breath + W.breath_refill_mult / 60);
     }
 
     // ---- 9. substrate: the mire counter -------------------------------------------------------
@@ -508,7 +516,7 @@ export class Traversal {
         airborne: this.airborne, vertical_mps: +this.vy.toFixed(3),
         sliding: this.slide > 0, slide_mps: +this.slide.toFixed(2),
         submerged: this.submerged, sinking: !!this.sinking, breath_s: +this.breath.toFixed(2),
-        breath_max_s: this.cfg.water.breath_max_s,
+        breath_max_s: this.breathMax,
         breathes_water: !!this.breathesWater, buoyant: !!this.buoyant,
         amphibious: !!this.amphibious,
         stamina_drain_per_s: this.staminaDrainPerS || 0,

@@ -10141,7 +10141,7 @@ export class Engine {
       // five quantities that make the world's claim on the body legible without a second call.
       water_band: p.waterBand || 'W0',
       breath_s: this.traversal ? +this.traversal.breath.toFixed(2) : null,
-      breath_max_s: this.traversal ? this.traversal.cfg.water.breath_max_s : null,
+      breath_max_s: this.traversal ? this.traversal.breathMax : null,
       submerged: this.traversal ? this.traversal.submerged : null,
       airborne: this.traversal ? this.traversal.airborne : null,
       mired: !!p.mired,

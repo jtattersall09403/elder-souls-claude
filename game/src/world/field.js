@@ -631,7 +631,10 @@ export class WorldField {
     const g = this.heightAt(x, z);
     const table = this.baseAt(x, z) + this._bilinear(this.woffI, x, z, 0.01);
     const sea = this.seaAt(x, z);
-    const tidalHere = this.tidal[r] === 1 || !this.isLandAt(x, z);
+    // Tide is a REGION property, not an "open water" shader.  In particular, water bodies in
+    // the eight non-tidal regions must remain exactly still even when their cell is offshore of
+    // the land mask (RI-WLD10 M54's automatic-fail population).
+    const tidalHere = this.tidal[r] === 1;
     const coast = this.coastDistAt(x, z);
     const damp = tidalHere ? (coast <= 0 ? 1 : 1 - smoothstep(0, this.inlandDamping, coast)) : 0;
     const tide = this.tideHeight(sea, phase) * damp;

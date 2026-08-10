@@ -606,17 +606,24 @@ export class Renderer {
   _playerWaterline(sim) {
     const DRY_FRAMES = 20 * 60;
     const FADE_FRAMES = 3 * 60;
-    if (!this._waterline) this._waterline = { y: -9999, wetUntil: -Infinity };
+    if (!this._waterline) this._waterline = { y: -9999, bodyOffset: 0, wetUntil: -Infinity };
     const W = this._waterline;
     const frame = sim.frame || 0;
     const band = (sim.player && sim.player.waterBand) || 'W0';
     if (band !== 'W0' && this.cell === 'province' && this.field) {
       const surf = this.field.waterSurfaceAt(sim.player.pos[0], sim.player.pos[2]);
-      if (surf !== null && surf !== undefined) { W.y = surf; W.wetUntil = frame + DRY_FRAMES; }
+      if (surf !== null && surf !== undefined) {
+        W.y = surf;
+        W.bodyOffset = surf - sim.player.pos[1];
+        W.wetUntil = frame + DRY_FRAMES;
+      }
     }
     const remain = W.wetUntil - frame;
     if (remain <= 0) return null;
-    return { y: W.y, wetness: remain >= FADE_FRAMES ? 1 : remain / FADE_FRAMES };
+    // Once ashore the band follows the body rather than remaining at its old world elevation;
+    // otherwise stepping up a bank makes every vertex instantly clear the supposedly wet band.
+    const y = band === 'W0' ? sim.player.pos[1] + W.bodyOffset : W.y;
+    return { y, wetness: remain >= FADE_FRAMES ? 1 : remain / FADE_FRAMES };
   }
 
   /**
