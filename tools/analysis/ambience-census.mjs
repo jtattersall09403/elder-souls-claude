@@ -380,15 +380,8 @@ if (!Object.keys(interiors).length) {
   if (nInterior < 4) {
     fail('C14', `${nInterior} interior beds; RI-WLD08 §6 requires >=4.`);
   }
-  // The settlement shortfall is REPORTED AND NOT FAILED, and the reason is that it is not this
-  // piece's to fix: `Engine.cellFor()` returns exactly two settlement cells in this build
-  // (`helstrom-market`, `stormhold-street`), so eight settlement beds would mean authoring beds
-  // for six settlements that do not exist in the world. Failing here would make an audio check
-  // red for a world gap and hide the real one.
   if (nSettlement < 8) {
-    warn('C14', `${nSettlement} settlement beds; RI-WLD08 §6 wants >=8. The shortfall is the `
-      + 'WORLD\'s, not the bed set\'s: this build has only two settlement cells to give a bed to. '
-      + 'Recorded as corpus/world debt rather than failed here.');
+    fail('C14', `${nSettlement} settlement beds; RI-WLD08 §6 requires >=8. Counted members may not be hidden behind representative sampling.`);
   }
   for (const [id, b] of Object.entries(interiors)) {
     if (!b.layers) { fail('C14', `${id}: no layers.`); continue; }

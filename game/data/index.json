@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 568,
+  "file_count": 576,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -74,6 +74,62 @@
       "id": "market",
       "bytes": 7625,
       "sha256": "a7ea782074903fea"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_archon.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-archon",
+      "bytes": 3499,
+      "sha256": "719d94c09a450aef"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_blackrose.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-blackrose",
+      "bytes": 3528,
+      "sha256": "68fd19c8b3e3d54e"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_gideon.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-gideon",
+      "bytes": 3497,
+      "sha256": "d1a971d77d8e2799"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_helstrom.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-helstrom",
+      "bytes": 3518,
+      "sha256": "a1e1e3820c037615"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_lilmoth.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-lilmoth",
+      "bytes": 3509,
+      "sha256": "c97b1f3105c2b35b"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_soulrest.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-soulrest",
+      "bytes": 3522,
+      "sha256": "92da4a30657cd1b4"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_stormhold.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-stormhold",
+      "bytes": 3534,
+      "sha256": "78041e4de626e5cb"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_thorn.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-thorn",
+      "bytes": 3489,
+      "sha256": "6305778a73c99b6f"
     },
     {
       "path": "audio/ambience/interiors/street.json",
@@ -360,8 +416,8 @@
       "path": "combat/ai.json",
       "schema": "elder-souls/enemy-ai@2",
       "id": "enemy-ai",
-      "bytes": 27108,
-      "sha256": "2133eeb69b262402",
+      "bytes": 27556,
+      "sha256": "847d429a98391be3",
       "declared_incomplete": true
     },
     {
@@ -2051,7 +2107,7 @@
       "schema": "elder-souls/input-profiles@1",
       "id": "input-profiles",
       "bytes": 13524,
-      "sha256": "4ec4382d155a4289"
+      "sha256": "4176cb6c3330f399"
     },
     {
       "path": "items/carried.json",
