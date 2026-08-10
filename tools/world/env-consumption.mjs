@@ -25,6 +25,8 @@ import { dirname, resolve } from 'node:path';
 import { Environment, FRAMES_PER_DAY, phaseOf, daylightAt } from '../../game/src/sim/environment.js';
 import { skyAmbient } from '../../game/src/sim/stealth/system.js';
 import { isNight, awardFor } from '../../game/src/sim/souls.js';
+import { regenStamina } from '../../game/src/combat/rules.js';
+import { applyWeatherExposure } from '../../game/src/sim/combat-bridge.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const weather = JSON.parse(readFileSync(resolve(ROOT, 'game/data/world/weather.json'), 'utf8'));
@@ -276,6 +278,44 @@ const pass = (name, detail) => results.push({ check: name, pass: true, detail })
   (atNight > atNoon * 2 ? pass : fail)('C6 nocturnal states are actually nocturnal', {
     state: 'night_cold', rolls: 400, chosen_at_0100: atNight, chosen_at_1200: atNoon,
     machine: m.region,
+  });
+}
+
+// ---------------------------------------------------------------------------------------------
+// C7. CLOSED EFFECT SCHEMA AND THREE SHIPPING CONSUMERS. Each arm is perturbed independently;
+// zero controls must return exactly to baseline while the other channels remain unchanged.
+// ---------------------------------------------------------------------------------------------
+{
+  const allowed = new Set(['stamina_regen_mult', 'chip_dps', 'disease_buildup_per_s']);
+  const unknown = [];
+  for (const m of weather.regions) for (const s of m.states) {
+    for (const key of Object.keys(s.effect || {})) if (!allowed.has(key)) unknown.push(`${m.region}/${s.id}:${key}`);
+  }
+  const C = { regen: { per_frame: 0.1, multipliers: { guard_raised: 1, overloaded: 1, equip_load_over_70pct: 1, staggered_or_guard_broken: 1 } } };
+  const stamina = (mult) => {
+    const b = { stamina: 0, staminaMax: 1000, regenBlockUntil: -1 };
+    for (let f = 0; f < 600; f++) regenStamina(b, f, C, { guardRaised: false, tier: 'LIGHT', hitstun: false, weatherStaminaMult: mult });
+    return b.stamina;
+  };
+  const exposure = (effect) => {
+    const b = { hp: 100, status: {} };
+    for (let f = 0; f < 600; f++) applyWeatherExposure(b, effect);
+    return { hp: b.hp, disease: b.status.disease || 0 };
+  };
+  const base = exposure({});
+  const chip = exposure({ chip_dps: 1.2 });
+  const disease = exposure({ disease_buildup_per_s: 0.55 });
+  const ok = unknown.length === 0
+    && Math.abs(stamina(0.8) - 48) < 1e-8 && Math.abs(stamina(1) - 60) < 1e-8
+    && Math.abs(chip.hp - 88) < 1e-8 && chip.disease === 0
+    && disease.hp === 100 && Math.abs(disease.disease - 5.5) < 1e-8
+    && base.hp === 100 && base.disease === 0;
+  (ok ? pass : fail)('C7 every retained weather effect changes its shipping entity path', {
+    closed_schema: [...allowed], unknown,
+    stamina: { mult_0_8: stamina(0.8), control_1: stamina(1), expected: [48, 60] },
+    chip: { observed_hp: chip.hp, expected_hp: 88, unrelated_disease: chip.disease },
+    disease: { observed: disease.disease, expected: 5.5, unrelated_hp: disease.hp },
+    zero_control: base,
   });
 }
 

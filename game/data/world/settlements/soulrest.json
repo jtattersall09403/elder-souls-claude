@@ -10,15 +10,15 @@
   4877
  ],
  "radius_m": 44,
- "identity": "A dying village around a dying Hist. It was a port; the bay silted; now it mines salt and old bones out of the Wastes. Tension: the villagers are openly debating whether to burn their Hist before it dies on its own — the single most blasphemous conversation in Argonia, and they are having it in the street.",
+ "identity": "A dying village around a dying Hist. It was a port; the bay silted; now it mines salt and old bones out of the Wastes. Tension: the villagers are openly debating whether to burn their Hist before it dies on its own \u2014 the single most blasphemous conversation in Argonia, and they are having it in the street.",
  "power_reading": "Every house faces the tree, and the tree is grey.",
  "layout": {
   "plan": "facing",
   "proof": "Every dwelling is yawed to within ten degrees of the Hist at the centre, in a ring, with no building behind another. It is the only plan where the buildings are all looking at the same thing, and the thing they are looking at is dead."
  },
  "architecture_kit": {
-  "material_rule": "Whale-bone frames and salt-block walls, bleached white. The only settlement in Argonia with no green in it — no reed, no thatch, no living wood anywhere.",
-  "silhouette": "the rib-frame — a whale rib used as a roof truss, ends visible above the wall",
+  "material_rule": "Whale-bone frames and salt-block walls, bleached white. The only settlement in Argonia with no green in it \u2014 no reed, no thatch, no living wood anywhere.",
+  "silhouette": "the rib-frame \u2014 a whale rib used as a roof truss, ends visible above the wall",
   "meshes": [
    "sou_rib_frame",
    "sou_salt_block",
@@ -106,7 +106,23 @@
     4877
    ],
    "service": "bonfire",
-   "faction": "rootkeepers"
+   "faction": "rootkeepers",
+   "grammar": "kiln-dome",
+   "mesh_id": "shrine-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-court-steps",
@@ -128,7 +144,23 @@
     4885.95
    ],
    "service": null,
-   "faction": "drowned-court"
+   "faction": "drowned-court",
+   "grammar": "kiln-dome",
+   "mesh_id": "temple-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-market",
@@ -150,7 +182,23 @@
     4888.15
    ],
    "service": "trader",
-   "faction": null
+   "faction": null,
+   "grammar": "kiln-dome",
+   "mesh_id": "shop-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-smithy",
@@ -172,7 +220,23 @@
     4897.92
    ],
    "service": "smith",
-   "faction": null
+   "faction": null,
+   "grammar": "kiln-dome",
+   "mesh_id": "shop-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-pawn",
@@ -194,7 +258,23 @@
     4891.92
    ],
    "service": "fence",
-   "faction": null
+   "faction": null,
+   "grammar": "kiln-dome",
+   "mesh_id": "shop-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-quay",
@@ -216,7 +296,23 @@
     4896.05
    ],
    "service": "travel",
-   "faction": "rootkeepers"
+   "faction": "rootkeepers",
+   "grammar": "kiln-dome",
+   "mesh_id": "travel-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-boneyard",
@@ -238,11 +334,27 @@
     4885.82
    ],
    "service": "trader",
-   "faction": null
+   "faction": null,
+   "grammar": "kiln-dome",
+   "mesh_id": "shop-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-old-harbourmaster",
-   "name": "The Harbourmaster’s House",
+   "name": "The Harbourmaster\u2019s House",
    "kind": "sealed-with-reason",
    "building_kind": "sealed",
    "enterable": false,
@@ -255,7 +367,23 @@
    "yaw_deg": 102,
    "seal_state": "visible",
    "reason": "the last harbourmaster locked it the day the bay silted and took the key with him",
-   "told_by_trade": "fisher"
+   "told_by_trade": "fisher",
+   "grammar": "kiln-dome",
+   "mesh_id": "sealed-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-salt-house",
@@ -272,7 +400,23 @@
    "yaw_deg": 78,
    "seal_state": "visible",
    "reason": "the roof went and the salt took the walls; it is a hole full of white now",
-   "told_by_trade": "trader"
+   "told_by_trade": "trader",
+   "grammar": "kiln-dome",
+   "mesh_id": "sealed-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-burnt-shrine",
@@ -289,7 +433,23 @@
    "yaw_deg": 54,
    "seal_state": "visible",
    "reason": "somebody tried to burn a Hist here once already, and the village keeps the ruin as an argument",
-   "told_by_trade": "rootkeeper"
+   "told_by_trade": "rootkeeper",
+   "grammar": "kiln-dome",
+   "mesh_id": "sealed-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-struct-the-grey-hist",
@@ -304,7 +464,23 @@
     -12.99
    ],
    "yaw_deg": 30,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "kiln-dome",
+   "mesh_id": "structure-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-struct-the-silt-quay",
@@ -319,7 +495,23 @@
     -21.88
    ],
    "yaw_deg": 6,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "kiln-dome",
+   "mesh_id": "structure-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-struct-the-salt-pans",
@@ -334,7 +526,23 @@
     -14.27
    ],
    "yaw_deg": 342,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "kiln-dome",
+   "mesh_id": "structure-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-struct-the-bone-stacks",
@@ -349,7 +557,23 @@
     -16.35
    ],
    "yaw_deg": 318,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "kiln-dome",
+   "mesh_id": "structure-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "soulrest-struct-the-court-steps",
@@ -364,7 +588,23 @@
     -6.1
    ],
    "yaw_deg": 294,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "kiln-dome",
+   "mesh_id": "structure-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "crazing"
+   ],
+   "local_repair": false,
+   "good_order": null
   }
  ],
  "interiors": [
@@ -376,5 +616,9 @@
   "soulrest-quay",
   "soulrest-boneyard"
  ],
- "generated_by": "tools/world/build-settlements.mjs"
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "kiln-dome",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

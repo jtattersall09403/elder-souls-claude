@@ -38,7 +38,7 @@ const terrain = R('game/data/world/terrain.json');
 
 const arg = (k, d) => { const a = process.argv.find((s) => s.startsWith(`--${k}=`)); return a ? a.split('=')[1] : d; };
 const OUT = arg('out', 'reports/wld12-blind');
-const W = Number(arg('width', 1280)), H = Number(arg('height', 720));
+const W = Number(arg('width', 1920)), H = Number(arg('height', 1080));
 const LIMIT = Number(arg('limit', 0));
 
 const COLS = terrain.cols, CELL = terrain.cell_m;
@@ -88,15 +88,19 @@ for (let i = shots.length - 1; i > 0; i--) {
 }
 
 const dir = resolve(ROOT, OUT);
+const revealDir = resolve(ROOT, `${OUT}.reveal`);
 mkdirSync(dir, { recursive: true });
+mkdirSync(revealDir, { recursive: true });
 
 const session = new CaptureSession();
 const key = [];
+const failures = [];
 try {
   for (let i = 0; i < shots.length; i++) {
     const s = shots[i];
     const name = `f${String(i).padStart(2, '0')}.png`;
-    const shot = await session.capture({
+    let shot;
+    try { shot = await session.capture({
       evidence_of: 'appearance',
       claim: `RI-WLD12 M68: the crossover point of a region border, for a blind "one place or two?" judgement`,
       place: { x: +s.x.toFixed(1), z: +s.z.toFixed(1) },
@@ -107,8 +111,12 @@ try {
       // around a teleport, so |A-C| accumulates across both intervals and G3c fires. That refusal
       // is correct and is the reason blank and half-built frames have nearly been cited in this
       // project before. The answer is to give the streamer time, not to lower the gate.
-      settle_frames: 90, settle_gap: 45,
-    });
+      settle_frames: 180, settle_gap: 60,
+    }); } catch (error) {
+      failures.push({ frame: name, code: error.code || 'ERROR', message: error.message });
+      process.stderr.write(`  REJECT ${name}: ${error.code || error.message}\n`);
+      continue;
+    }
     // The daemon writes into its own build-keyed cache and hands back a path; it does not take an
     // output name, and it must not — a caller-chosen filename is how a cache gets poisoned. So the
     // frame is COPIED under its opaque pack name and the real one is recorded in the key.
@@ -124,19 +132,20 @@ try {
   if (session.close) await session.close();
 }
 
-writeFileSync(resolve(dir, 'KEY.json'), JSON.stringify({
+writeFileSync(resolve(revealDir, 'KEY.json'), JSON.stringify({
   item: 'RI-WLD12 M68 — one place or two',
   built_by: 'W1-02 builder',
   do_not_show_to_the_judge: true,
-  shuffle: 'deterministic Fisher-Yates, seed 0xb11d — re-derivable from tools/world/wld12-blind-pack.mjs',
+  shuffle: 'deterministic opaque shuffle; recipe quarantined with this reveal',
   frames: key.length,
+  rejected_candidates: failures,
   key,
 }, null, 1) + '\n');
 
 writeFileSync(resolve(dir, 'QUESTION.md'), `# Blind judgement — RI-WLD12 M68
 
-**You are being shown ${key.length} unlabeled screenshots.** Do not open \`KEY.json\`; it is the
-answer key and opening it voids the comparison.
+**You are being shown ${key.length} unlabeled screenshots.** The answer key is quarantined in a
+sibling reveal directory; opening it voids the comparison.
 
 For each frame, answer two questions:
 
@@ -150,16 +159,10 @@ Write your answers as \`reports/wld12-blind/ANSWERS.json\`:
 { "judge": "<who you are>", "answers": [ { "frame": "f00.png", "verdict": "two", "cue": "a cairn" } ] }
 \`\`\`
 
-## How it is scored (RI-WLD12 M68), so you know what is being asked
-
-- **PASS:** at least **80%** answered "two", **and** at least **70%** named an **object or a
-  landform** rather than a colour.
-- **FAIL:** 25% or more answer "one" — or the most common cue across the whole set is **fog or
-  colour**, which would mean the borders are a post-process rather than a place.
-
 **The builder of this pack may not score it.** \`RI-MTH03\` and this piece's brief are explicit,
 and self-judging has voided two comparisons in this project already.
 `);
 
-console.log(`\nwld12-blind: ${key.length} frames in ${OUT}/ (shuffled), KEY.json + QUESTION.md written`);
+console.log(`\nwld12-blind: ${key.length} frames in ${OUT}/; ${failures.length} rejected; reveal quarantined in ${OUT}.reveal/`);
 console.log('The builder does not judge this pack. Hand it to a critic.');
+if (key.length !== shots.length) process.exitCode = 1;

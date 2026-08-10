@@ -348,6 +348,12 @@ export function planSettlement(rec, interiors) {
       interior: b.interior || null,
       quarter: b.quarter || null,
       service: b.service || null,
+      // RI-WLD14: keep the grammar contract on the same planned building the
+      // exterior renderer consumes; this is not a parallel architecture model.
+      grammar: b.grammar || null,
+      mesh_id: b.mesh_id || null,
+      volume_m3: b.volume_m3 || null,
+      decay_states: (b.decay_states || []).slice(),
       x: pos[0] + (b.offset_m ? b.offset_m[0] : 0),
       y: (b.offset_m ? b.offset_m[1] : 0),
       z: pos[2] + (b.offset_m ? b.offset_m[2] : 0),

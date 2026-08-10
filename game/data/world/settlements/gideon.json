@@ -1,532 +1,888 @@
 {
-  "schema": "elder-souls/settlement@2",
-  "id": "gideon",
-  "name": "Gideon",
-  "tier": "town",
-  "region": "blackwood",
-  "pos": [
-    439,
+ "schema": "elder-souls/settlement@2",
+ "id": "gideon",
+ "name": "Gideon",
+ "tier": "town",
+ "region": "blackwood",
+ "pos": [
+  439,
+  2.72,
+  2913.5
+ ],
+ "radius_m": 62,
+ "identity": "The control group. Timber, grain, road tolls; a proper inn and a chapel. It looks like Cyrodiil and that is the point. Tension: an Imperial county in all but name, worked by Argonians who are not paid.",
+ "power_reading": "Somebody imported a plan.",
+ "layout": {
+  "plan": "imported",
+  "proof": "A square with a market cross at its exact centre, four streets leaving it at right angles, every building aligned to one of two axes and none rotated by anything but a multiple of ninety degrees. It is the only plan in the province with a right angle in it."
+ },
+ "architecture_kit": {
+  "material_rule": "Cyrodilic: timber frame, tile roofs, a market cross, a square. Right angles, deliberately, and no Argonian material anywhere above the foundation course.",
+  "silhouette": "the market cross \u2014 a stone cross on four steps, the only one in Argonia",
+  "meshes": [
+   "gid_timber_frame",
+   "gid_tile_roof",
+   "gid_market_cross",
+   "gid_square_arcade",
+   "gid_toll_house",
+   "gid_grain_barn",
+   "gid_chapel_porch",
+   "gid_county_court"
+  ]
+ },
+ "quarters": [
+  "provincial-office",
+  "docks",
+  "high-street"
+ ],
+ "targets": {
+  "buildings": 18,
+  "named_interiors": 12,
+  "enterable_pct": 67,
+  "named_npcs": 20,
+  "scheduled_npc_pct": 70,
+  "shops": 3,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 2,
+  "trainers": 2,
+  "quest_givers": 5,
+  "rumour_variants": 8,
+  "bonfire": 1,
+  "road_gates": 2,
+  "unique_architecture_kit": "required",
+  "souls_loop_dungeon_attached": 1
+ },
+ "counts": {
+  "buildings": 22,
+  "interior": 12,
+  "sealed_with_reason": 4,
+  "structure": 6,
+  "named_interiors": 12,
+  "enterable_pct": 75,
+  "property_zones": 29,
+  "shops": 3,
+  "taverns": 1,
+  "temple_shrine": 2,
+  "guild_halls": 3,
+  "road_gates": 2
+ },
+ "services": {
+  "trader": [
+   "gideon-lowmarket"
+  ],
+  "healer": [
+   "gideon-chapel"
+  ],
+  "inn": [
+   "gideon-inn"
+  ],
+  "smith": [
+   "gideon-smithy"
+  ],
+  "alchemist": [
+   "gideon-apothecary"
+  ],
+  "bonfire": [
+   "gideon-shrine"
+  ],
+  "travel": [
+   "gideon-rootpost"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "gideon-court",
+   "name": "The County Court",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "gideon-court",
+   "enterable": true,
+   "quarter": "high-street",
+   "offset_m": [
+    12,
+    0,
+    7
+   ],
+   "yaw_deg": 0,
+   "door": [
+    451,
     2.72,
-    2913.5
-  ],
-  "radius_m": 62,
-  "identity": "The control group. Timber, grain, road tolls; a proper inn and a chapel. It looks like Cyrodiil and that is the point. Tension: an Imperial county in all but name, worked by Argonians who are not paid.",
-  "power_reading": "Somebody imported a plan.",
-  "layout": {
-    "plan": "imported",
-    "proof": "A square with a market cross at its exact centre, four streets leaving it at right angles, every building aligned to one of two axes and none rotated by anything but a multiple of ninety degrees. It is the only plan in the province with a right angle in it."
+    2920.5
+   ],
+   "service": null,
+   "faction": "the-imperial-assize",
+   "grammar": "nest-mound",
+   "mesh_id": "guild-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "architecture_kit": {
-    "material_rule": "Cyrodilic: timber frame, tile roofs, a market cross, a square. Right angles, deliberately, and no Argonian material anywhere above the foundation course.",
-    "silhouette": "the market cross — a stone cross on four steps, the only one in Argonia",
-    "meshes": [
-      "gid_timber_frame",
-      "gid_tile_roof",
-      "gid_market_cross",
-      "gid_square_arcade",
-      "gid_toll_house",
-      "gid_grain_barn",
-      "gid_chapel_porch",
-      "gid_county_court"
-    ]
+  {
+   "id": "gideon-lowmarket",
+   "name": "The Low Market",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "gideon-lowmarket",
+   "enterable": true,
+   "quarter": "docks",
+   "offset_m": [
+    -12,
+    0,
+    -7
+   ],
+   "yaw_deg": 90,
+   "door": [
+    427,
+    2.72,
+    2906.5
+   ],
+   "service": "trader",
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "shop-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "quarters": [
-    "provincial-office",
-    "docks",
-    "high-street"
-  ],
-  "targets": {
-    "buildings": 18,
-    "named_interiors": 12,
-    "enterable_pct": 67,
-    "named_npcs": 20,
-    "scheduled_npc_pct": 70,
-    "shops": 3,
-    "taverns": 1,
-    "temple_shrine": 1,
-    "guild_halls": 2,
-    "trainers": 2,
-    "quest_givers": 5,
-    "rumour_variants": 8,
-    "bonfire": 1,
-    "road_gates": 2,
-    "unique_architecture_kit": "required",
-    "souls_loop_dungeon_attached": 1
+  {
+   "id": "gideon-tollhouse",
+   "name": "The Toll House",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "gideon-tollhouse",
+   "enterable": true,
+   "quarter": "high-street",
+   "offset_m": [
+    7,
+    0,
+    12
+   ],
+   "yaw_deg": 180,
+   "door": [
+    446,
+    2.72,
+    2925.5
+   ],
+   "service": null,
+   "faction": "the-imperial-assize",
+   "grammar": "nest-mound",
+   "mesh_id": "guild-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "counts": {
-    "buildings": 22,
-    "interior": 12,
-    "sealed_with_reason": 4,
-    "structure": 6,
-    "named_interiors": 12,
-    "enterable_pct": 75,
-    "property_zones": 29,
-    "shops": 3,
-    "taverns": 1,
-    "temple_shrine": 2,
-    "guild_halls": 3,
-    "road_gates": 2
+  {
+   "id": "gideon-chapel",
+   "name": "The Chapel of the Nine",
+   "kind": "interior",
+   "building_kind": "temple",
+   "interior": "gideon-chapel",
+   "enterable": true,
+   "quarter": "docks",
+   "offset_m": [
+    -7,
+    0,
+    -12
+   ],
+   "yaw_deg": 270,
+   "door": [
+    432,
+    2.72,
+    2901.5
+   ],
+   "service": "healer",
+   "faction": "the-imperial-assize",
+   "grammar": "nest-mound",
+   "mesh_id": "temple-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "services": {
-    "trader": [
-      "gideon-lowmarket"
-    ],
-    "healer": [
-      "gideon-chapel"
-    ],
-    "inn": [
-      "gideon-inn"
-    ],
-    "smith": [
-      "gideon-smithy"
-    ],
-    "alchemist": [
-      "gideon-apothecary"
-    ],
-    "bonfire": [
-      "gideon-shrine"
-    ],
-    "travel": [
-      "gideon-rootpost"
-    ]
+  {
+   "id": "gideon-inn",
+   "name": "The Wheel and Barge",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "gideon-inn",
+   "enterable": true,
+   "quarter": "docks",
+   "offset_m": [
+    23,
+    0,
+    7
+   ],
+   "yaw_deg": 0,
+   "door": [
+    462,
+    2.72,
+    2920.5
+   ],
+   "service": "inn",
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "tavern-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "buildings": [
-    {
-      "id": "gideon-court",
-      "name": "The County Court",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "gideon-court",
-      "enterable": true,
-      "quarter": "high-street",
-      "offset_m": [
-        12,
-        0,
-        7
-      ],
-      "yaw_deg": 0,
-      "door": [
-        451,
-        2.72,
-        2920.5
-      ],
-      "service": null,
-      "faction": "the-imperial-assize"
-    },
-    {
-      "id": "gideon-lowmarket",
-      "name": "The Low Market",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "gideon-lowmarket",
-      "enterable": true,
-      "quarter": "docks",
-      "offset_m": [
-        -12,
-        0,
-        -7
-      ],
-      "yaw_deg": 90,
-      "door": [
-        427,
-        2.72,
-        2906.5
-      ],
-      "service": "trader",
-      "faction": null
-    },
-    {
-      "id": "gideon-tollhouse",
-      "name": "The Toll House",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "gideon-tollhouse",
-      "enterable": true,
-      "quarter": "high-street",
-      "offset_m": [
-        7,
-        0,
-        12
-      ],
-      "yaw_deg": 180,
-      "door": [
-        446,
-        2.72,
-        2925.5
-      ],
-      "service": null,
-      "faction": "the-imperial-assize"
-    },
-    {
-      "id": "gideon-chapel",
-      "name": "The Chapel of the Nine",
-      "kind": "interior",
-      "building_kind": "temple",
-      "interior": "gideon-chapel",
-      "enterable": true,
-      "quarter": "docks",
-      "offset_m": [
-        -7,
-        0,
-        -12
-      ],
-      "yaw_deg": 270,
-      "door": [
-        432,
-        2.72,
-        2901.5
-      ],
-      "service": "healer",
-      "faction": "the-imperial-assize"
-    },
-    {
-      "id": "gideon-inn",
-      "name": "The Wheel and Barge",
-      "kind": "interior",
-      "building_kind": "tavern",
-      "interior": "gideon-inn",
-      "enterable": true,
-      "quarter": "docks",
-      "offset_m": [
-        23,
-        0,
-        7
-      ],
-      "yaw_deg": 0,
-      "door": [
-        462,
-        2.72,
-        2920.5
-      ],
-      "service": "inn",
-      "faction": null
-    },
-    {
-      "id": "gideon-smithy",
-      "name": "The Square Forge",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "gideon-smithy",
-      "enterable": true,
-      "quarter": "high-street",
-      "offset_m": [
-        -23,
-        0,
-        -7
-      ],
-      "yaw_deg": 90,
-      "door": [
-        416,
-        2.72,
-        2906.5
-      ],
-      "service": "smith",
-      "faction": null
-    },
-    {
-      "id": "gideon-apothecary",
-      "name": "The Physick",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "gideon-apothecary",
-      "enterable": true,
-      "quarter": "provincial-office",
-      "offset_m": [
-        7,
-        0,
-        23
-      ],
-      "yaw_deg": 180,
-      "door": [
-        446,
-        2.72,
-        2936.5
-      ],
-      "service": "alchemist",
-      "faction": null
-    },
-    {
-      "id": "gideon-shrine",
-      "name": "The Blackwood Hist-Shrine",
-      "kind": "interior",
-      "building_kind": "shrine",
-      "interior": "gideon-shrine",
-      "enterable": true,
-      "quarter": "high-street",
-      "offset_m": [
-        -7,
-        0,
-        -23
-      ],
-      "yaw_deg": 270,
-      "door": [
-        432,
-        2.72,
-        2890.5
-      ],
-      "service": "bonfire",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "gideon-rootpost",
-      "name": "The Gideon Rootpost",
-      "kind": "interior",
-      "building_kind": "travel",
-      "interior": "gideon-rootpost",
-      "enterable": true,
-      "quarter": "docks",
-      "offset_m": [
-        34,
-        0,
-        7
-      ],
-      "yaw_deg": 0,
-      "door": [
-        473,
-        2.72,
-        2920.5
-      ],
-      "service": "travel",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "gideon-grange",
-      "name": "The Grange",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "gideon-grange",
-      "enterable": true,
-      "quarter": "high-street",
-      "offset_m": [
-        -34,
-        0,
-        -7
-      ],
-      "yaw_deg": 90,
-      "door": [
-        405,
-        2.72,
-        2906.5
-      ],
-      "service": null,
-      "faction": "wet-ledger"
-    },
-    {
-      "id": "gideon-house-0",
-      "name": "Wuxnorg's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "gideon-house-0",
-      "enterable": true,
-      "quarter": "provincial-office",
-      "offset_m": [
-        -7,
-        0,
-        34
-      ],
-      "yaw_deg": 180,
-      "door": [
-        432,
-        2.72,
-        2947.5
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "gideon-house-1",
-      "name": "Naheeshtei's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "gideon-house-1",
-      "enterable": true,
-      "quarter": "docks",
-      "offset_m": [
-        7,
-        0,
-        -34
-      ],
-      "yaw_deg": 270,
-      "door": [
-        446,
-        2.72,
-        2879.5
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "gideon-old-barn",
-      "name": "The Old Grain Barn",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "provincial-office",
-      "offset_m": [
-        45,
-        0,
-        -7
-      ],
-      "yaw_deg": 0,
-      "seal_state": "visible",
-      "reason": "condemned after the roof took the weight of a wet harvest; the county will not pay to rebuild it",
-      "told_by_trade": "factor"
-    },
-    {
-      "id": "gideon-argonian-row",
-      "name": "The Boarded Row",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "docks",
-      "offset_m": [
-        -45,
-        0,
-        7
-      ],
-      "yaw_deg": 90,
-      "seal_state": "visible",
-      "reason": "the Argonian labourers who lived in it were moved outside the toll line and the row was boarded the same week",
-      "told_by_trade": "weaver"
-    },
-    {
-      "id": "gideon-cellar",
-      "name": "The Court Cellar",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "provincial-office",
-      "offset_m": [
-        -7,
-        0,
-        45
-      ],
-      "yaw_deg": 180,
-      "seal_state": "visible",
-      "reason": "flooded; the court records that were in it are officially \"in transit\"",
-      "told_by_trade": "scribe"
-    },
-    {
-      "id": "gideon-burnt-shop",
-      "name": "The Burnt Shop",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "high-street",
-      "offset_m": [
-        7,
-        0,
-        -45
-      ],
-      "yaw_deg": 270,
-      "seal_state": "visible",
-      "reason": "burnt with its owner still owing tolls, which the toll book records as settled",
-      "told_by_trade": "publican"
-    },
-    {
-      "id": "gideon-struct-the-market-cross",
-      "name": "The Market Cross",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "provincial-office",
-      "offset_m": [
-        56,
-        0,
-        -7
-      ],
-      "yaw_deg": 0,
-      "residential_props": false
-    },
-    {
-      "id": "gideon-struct-the-square-arcade",
-      "name": "The Square Arcade",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "docks",
-      "offset_m": [
-        -56,
-        0,
-        7
-      ],
-      "yaw_deg": 90,
-      "residential_props": false
-    },
-    {
-      "id": "gideon-struct-the-toll-gate",
-      "name": "The Toll Gate",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "docks",
-      "offset_m": [
-        -7,
-        0,
-        56
-      ],
-      "yaw_deg": 180,
-      "residential_props": false
-    },
-    {
-      "id": "gideon-struct-the-barge-dock",
-      "name": "The Barge Dock",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "docks",
-      "offset_m": [
-        7,
-        0,
-        -56
-      ],
-      "yaw_deg": 270,
-      "residential_props": false
-    },
-    {
-      "id": "gideon-struct-the-grain-weighbridge",
-      "name": "The Grain Weighbridge",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "docks",
-      "offset_m": [
-        67,
-        0,
-        7
-      ],
-      "yaw_deg": 0,
-      "residential_props": false
-    },
-    {
-      "id": "gideon-struct-the-chapel-wall",
-      "name": "The Chapel Wall",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "provincial-office",
-      "offset_m": [
-        -67,
-        0,
-        -7
-      ],
-      "yaw_deg": 90,
-      "residential_props": false
-    }
-  ],
-  "interiors": [
-    "gideon-court",
-    "gideon-lowmarket",
-    "gideon-tollhouse",
-    "gideon-chapel",
-    "gideon-inn",
-    "gideon-smithy",
-    "gideon-apothecary",
-    "gideon-shrine",
-    "gideon-rootpost",
-    "gideon-grange",
-    "gideon-house-0",
-    "gideon-house-1"
-  ],
-  "generated_by": "tools/world/build-settlements.mjs"
+  {
+   "id": "gideon-smithy",
+   "name": "The Square Forge",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "gideon-smithy",
+   "enterable": true,
+   "quarter": "high-street",
+   "offset_m": [
+    -23,
+    0,
+    -7
+   ],
+   "yaw_deg": 90,
+   "door": [
+    416,
+    2.72,
+    2906.5
+   ],
+   "service": "smith",
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "shop-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-apothecary",
+   "name": "The Physick",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "gideon-apothecary",
+   "enterable": true,
+   "quarter": "provincial-office",
+   "offset_m": [
+    7,
+    0,
+    23
+   ],
+   "yaw_deg": 180,
+   "door": [
+    446,
+    2.72,
+    2936.5
+   ],
+   "service": "alchemist",
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "shop-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-shrine",
+   "name": "The Blackwood Hist-Shrine",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "gideon-shrine",
+   "enterable": true,
+   "quarter": "high-street",
+   "offset_m": [
+    -7,
+    0,
+    -23
+   ],
+   "yaw_deg": 270,
+   "door": [
+    432,
+    2.72,
+    2890.5
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers",
+   "grammar": "nest-mound",
+   "mesh_id": "shrine-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-rootpost",
+   "name": "The Gideon Rootpost",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "gideon-rootpost",
+   "enterable": true,
+   "quarter": "docks",
+   "offset_m": [
+    34,
+    0,
+    7
+   ],
+   "yaw_deg": 0,
+   "door": [
+    473,
+    2.72,
+    2920.5
+   ],
+   "service": "travel",
+   "faction": "rootkeepers",
+   "grammar": "nest-mound",
+   "mesh_id": "travel-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-grange",
+   "name": "The Grange",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "gideon-grange",
+   "enterable": true,
+   "quarter": "high-street",
+   "offset_m": [
+    -34,
+    0,
+    -7
+   ],
+   "yaw_deg": 90,
+   "door": [
+    405,
+    2.72,
+    2906.5
+   ],
+   "service": null,
+   "faction": "wet-ledger",
+   "grammar": "nest-mound",
+   "mesh_id": "guild-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-house-0",
+   "name": "Wuxnorg's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "gideon-house-0",
+   "enterable": true,
+   "quarter": "provincial-office",
+   "offset_m": [
+    -7,
+    0,
+    34
+   ],
+   "yaw_deg": 180,
+   "door": [
+    432,
+    2.72,
+    2947.5
+   ],
+   "service": null,
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "dwelling-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-house-1",
+   "name": "Naheeshtei's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "gideon-house-1",
+   "enterable": true,
+   "quarter": "docks",
+   "offset_m": [
+    7,
+    0,
+    -34
+   ],
+   "yaw_deg": 270,
+   "door": [
+    446,
+    2.72,
+    2879.5
+   ],
+   "service": null,
+   "faction": null,
+   "grammar": "nest-mound",
+   "mesh_id": "dwelling-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-old-barn",
+   "name": "The Old Grain Barn",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "provincial-office",
+   "offset_m": [
+    45,
+    0,
+    -7
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "condemned after the roof took the weight of a wet harvest; the county will not pay to rebuild it",
+   "told_by_trade": "factor",
+   "grammar": "nest-mound",
+   "mesh_id": "sealed-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-argonian-row",
+   "name": "The Boarded Row",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "docks",
+   "offset_m": [
+    -45,
+    0,
+    7
+   ],
+   "yaw_deg": 90,
+   "seal_state": "visible",
+   "reason": "the Argonian labourers who lived in it were moved outside the toll line and the row was boarded the same week",
+   "told_by_trade": "weaver",
+   "grammar": "nest-mound",
+   "mesh_id": "sealed-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-cellar",
+   "name": "The Court Cellar",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "provincial-office",
+   "offset_m": [
+    -7,
+    0,
+    45
+   ],
+   "yaw_deg": 180,
+   "seal_state": "visible",
+   "reason": "flooded; the court records that were in it are officially \"in transit\"",
+   "told_by_trade": "scribe",
+   "grammar": "nest-mound",
+   "mesh_id": "sealed-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-burnt-shop",
+   "name": "The Burnt Shop",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "high-street",
+   "offset_m": [
+    7,
+    0,
+    -45
+   ],
+   "yaw_deg": 270,
+   "seal_state": "visible",
+   "reason": "burnt with its owner still owing tolls, which the toll book records as settled",
+   "told_by_trade": "publican",
+   "grammar": "nest-mound",
+   "mesh_id": "sealed-4",
+   "volume_m3": 75,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-market-cross",
+   "name": "The Market Cross",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "provincial-office",
+   "offset_m": [
+    56,
+    0,
+    -7
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-5",
+   "volume_m3": 96,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-square-arcade",
+   "name": "The Square Arcade",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "docks",
+   "offset_m": [
+    -56,
+    0,
+    7
+   ],
+   "yaw_deg": 90,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-6",
+   "volume_m3": 175,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-toll-gate",
+   "name": "The Toll Gate",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "docks",
+   "offset_m": [
+    -7,
+    0,
+    56
+   ],
+   "yaw_deg": 180,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-7",
+   "volume_m3": 60,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-barge-dock",
+   "name": "The Barge Dock",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "docks",
+   "offset_m": [
+    7,
+    0,
+    -56
+   ],
+   "yaw_deg": 270,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-8",
+   "volume_m3": 120,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-grain-weighbridge",
+   "name": "The Grain Weighbridge",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "docks",
+   "offset_m": [
+    67,
+    0,
+    7
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-9",
+   "volume_m3": 140,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "gideon-struct-the-chapel-wall",
+   "name": "The Chapel Wall",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "provincial-office",
+   "offset_m": [
+    -67,
+    0,
+    -7
+   ],
+   "yaw_deg": 90,
+   "residential_props": false,
+   "grammar": "nest-mound",
+   "mesh_id": "structure-10",
+   "volume_m3": 75,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "slumping"
+   ],
+   "local_repair": false,
+   "good_order": null
+  }
+ ],
+ "interiors": [
+  "gideon-court",
+  "gideon-lowmarket",
+  "gideon-tollhouse",
+  "gideon-chapel",
+  "gideon-inn",
+  "gideon-smithy",
+  "gideon-apothecary",
+  "gideon-shrine",
+  "gideon-rootpost",
+  "gideon-grange",
+  "gideon-house-0",
+  "gideon-house-1"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "nest-mound",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

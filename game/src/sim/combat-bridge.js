@@ -24,8 +24,23 @@ import { openUI, closeUI } from './camera.js';
 import { DAMAGE_EFFECTS, DAMAGE_EFFECT_KIND } from './magic/apply.js';
 import { mitigate } from '../combat/resolve.js';
 
+/** Apply one fixed-step of the closed weather-effect schema to the combat authority. */
+export function applyWeatherExposure(body, effect = {}) {
+  const chip = Math.max(0, Number(effect.chip_dps) || 0) / 60;
+  if (chip) body.hp = Math.max(0, body.hp - chip);
+  const disease = Math.max(0, Number(effect.disease_buildup_per_s) || 0) / 60;
+  if (disease) {
+    body.status ||= {};
+    body.status.disease = (body.status.disease || 0) + disease;
+  }
+}
+
 export function stepCombat(sim, input, combat, bus) {
   const frame = sim.frame;
+  const effect = (sim.env && sim.env.weatherEffect) || {};
+  // Put the weather multiplier on the authoritative combat bodies before their
+  // normal resource tick. This is deliberately not mirrored arithmetic.
+  for (const b of combat.bodies) b.weatherStaminaMult = effect.stamina_regen_mult ?? 1;
 
   // The one seeded draw in the simulation, kept exactly where W1-00 put it and for the same
   // reason (GAP-W1-platform-prng-never-drawn): a per-entity idle phase offset, drawn INSIDE
@@ -58,6 +73,11 @@ export function stepCombat(sim, input, combat, bus) {
   }
 
   combat.step(frame, input, sim.camera, bus, sim);
+
+  // Weather exposure uses the authoritative player body and the existing S11
+  // status register. Rates are per second; the fixed step is 60 Hz.
+  const playerBody = combat.player;
+  if (playerBody) applyWeatherExposure(playerBody, effect);
 
   // Seam S19. Spell geometry advances INSIDE the armed determinism guard, in the same slot the
   // weapon resolver runs in, so a projectile is swept per fixed step exactly as a blade is and

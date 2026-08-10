@@ -40,6 +40,9 @@ export function regenStamina(actor, frame, C, ctx) {
   if (ctx.tier === 'OVERLOADED') rate *= C.regen.multipliers.overloaded;
   else if (ctx.tier === 'HEAVY') rate *= C.regen.multipliers.equip_load_over_70pct;
   if (ctx.hitstun) rate *= C.regen.multipliers.staggered_or_guard_broken;
+  // RI-WLD12/W1-02: weather reaches the shipping regeneration path rather than a
+  // second environment-side stamina calculator.  Absence is the exact baseline.
+  rate *= Number.isFinite(ctx.weatherStaminaMult) ? ctx.weatherStaminaMult : 1;
   if (rate <= 0) return 0;
   const before = actor.stamina;
   actor.stamina = Math.min(actor.staminaMax, actor.stamina + rate);
