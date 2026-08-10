@@ -1,0 +1,153 @@
+{
+  "schema": "elder-souls/w1-21-model-consumption@1",
+  "viewport": [
+    1280,
+    720
+  ],
+  "dpr": 1,
+  "models_expected": 12,
+  "models_sampled": 12,
+  "rows": [
+    {
+      "model": "_hudModel",
+      "mode": "world",
+      "consumer": "UISystem.build -> world production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 7,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_inventoryModel",
+      "mode": "inventory",
+      "consumer": "UISystem.build -> inventory production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 43,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_containerModel",
+      "mode": "container",
+      "consumer": "UISystem.build -> container production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 27,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_journalModel",
+      "mode": "journal",
+      "consumer": "UISystem.build -> journal production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 27,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_bookModel",
+      "mode": "book",
+      "consumer": "UISystem.build -> book production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 14,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_levelModel",
+      "mode": "levelup",
+      "consumer": "UISystem.build -> levelup production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 26,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_sheetModel",
+      "mode": "sheet",
+      "consumer": "UISystem.build -> sheet production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 49,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_spellModel",
+      "mode": "spells",
+      "consumer": "UISystem.build -> spells production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 14,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "_mapModel",
+      "mode": "map",
+      "consumer": "UISystem.build -> map production drawer",
+      "consequence": "registered visible pixels/text change",
+      "baseline_elements": 14,
+      "changed": true,
+      "equalised_red": true,
+      "restored": true,
+      "pass": true
+    },
+    {
+      "model": "touch-overlay model",
+      "mode": "world",
+      "consumer": "drawTouchOverlay",
+      "consequence": "actionable interact control",
+      "changed": true,
+      "equalised_red": true,
+      "pass": true
+    },
+    {
+      "model": "rotate/calibration model",
+      "mode": "world",
+      "consumer": "drawRotateState",
+      "consequence": "orientation refusal text",
+      "changed": true,
+      "equalised_red": true,
+      "pass": true
+    },
+    {
+      "model": "rebinding/refusal view",
+      "mode": "world",
+      "consumer": "UISystem.open/navigable/state",
+      "consequence": "forbidden minimap action is refused",
+      "changed": true,
+      "equalised_red": true,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "page_errors": [],
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 576
+  },
+  "sha256": "4014681d1676c077994fc94558472c56cef771a8fd6581cc377a81653b95f4ab"
+}
