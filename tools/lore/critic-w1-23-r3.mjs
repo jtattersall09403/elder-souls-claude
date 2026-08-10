@@ -57,6 +57,10 @@ export function loadBooks(dir = 'game/data/books') {
   const out = [];
   for (const f of ls(dir)) {
     const d = rd(`${dir}/${f}`);
+    // The shipped manifest is the authoritative title index required by RI-LOR06 M1, not a
+    // second copy of the readable corpus. Counting it here doubled every denominator and made
+    // every manifest row appear untaxoned and unplaced.
+    if (d.schema === 'elder-souls/books-manifest@1') continue;
     const arr = Array.isArray(d) ? d : (d.books || d.texts || d.entries || (d.schema && d.text ? [d] : []));
     for (const b of arr) out.push({ ...b, _file: f });
   }

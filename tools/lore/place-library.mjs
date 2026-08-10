@@ -56,6 +56,7 @@ export const PLACEMENTS = {
     ['standing-instruction-for-auxiliaries', 'Standing Instruction, arming and marching'],
     ['minute-on-the-authority-of-section-nine', 'Office minute, registry 1114/9'],
     ['the-relief-of-the-reman-ford', 'The Relief of the Reman Ford'],
+    ['sealed-letter-stormhold', 'A letter, sealed at Stormhold'],
   ],
   // Blackrose warders' hall. A serjeant of twenty years wrote what he thinks of the Instruction
   // in the back of his own book, and he is not in Stormhold, which is the point.
@@ -149,10 +150,12 @@ export const PLACEMENTS = {
   'lilmoth-customs': [
     ['the-blessings-of-the-coast', 'The Blessings of the Coast: an address'],
     ['marginalia-in-a-borrowed-book', 'A borrowed copy of the Blessings, written in'],
+    ['shore-compass', 'Instruction, with the shore compass'],
   ],
   'lilmoth-ledger-house': [
     ['ledger-and-journal-of-andrel-vorin', 'Ledger and journal of Andrel Vorin, salt-factor'],
     ['the-descents', 'The Descents, kept at the rootpost'],
+    ['ledger-leaf', 'A water-damaged ledger leaf'],
   ],
 
   // ---- what survives when a soul returns to the Hist ----------------------------------------
@@ -176,11 +179,13 @@ export const PLACEMENTS = {
   'thorn-hall': [
     ['the-water-does-not-take-sides', 'What the weir people say about the ford'],
     ['nine-stanzas-upon-the-drowning', 'Nine stanzas upon the drowning'],
+    ['the-drowned-ford', 'On the Drowning at the Ford'],
   ],
   'gideon-court': [
     ['a-short-account-of-the-pacification', 'A short account of the pacification'],
     ['the-casebook-i', 'The casebook of the Assize, the first'],
     ['the-casebook-ii', 'The casebook of the Assize, the second'],
+    ['crate-tally', 'Crate tally, three counts'],
   ],
   'helstrom-archive': [
     ['the-account-the-marsh-keeps', 'The account the marsh keeps'],
@@ -238,6 +243,7 @@ export const PLACEMENTS = {
     ['thirty-years-in-the-auxiliaries-i', 'Thirty years in the auxiliaries, the first'],
     ['thirty-years-in-the-auxiliaries-ii', 'Thirty years in the auxiliaries, the second'],
     ['thirty-years-in-the-auxiliaries-iii', 'Thirty years in the auxiliaries, the third'],
+    ['pilots-chart-book', 'The Topal Shore Run, as it is actually sailed'],
   ],
   'gideon-tollhouse': [
     ['a-receipt-and-what-is-on-the-back', 'A receipt, and what is on the back'],
