@@ -1,0 +1,4863 @@
+{
+ "schema": "es-combat-reach/1",
+ "ruling": "ARBITRATION.md S26",
+ "enemy": "champion_hist_marked",
+ "step_m": 0.05,
+ "max_m": 4,
+ "acceptance": {
+  "min_hit_distance_m": 0.35,
+  "turtle_damage_fraction": 0.4,
+  "ablation_delta_max_m": 0.35,
+  "radius_delta_max_m": 0.05
+ },
+ "probes": {
+  "enemy": {
+   "chop": {
+    "declared_root_dz_m": 1.2,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 3.35,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "attribution": {
+     "weapon": {
+      "events": 67,
+      "dmg_min": 106,
+      "dmg_max": 106,
+      "pd": [
+       32
+      ]
+     }
+    },
+    "body_only_distances_m": [],
+    "body_damage_ge_weapon": [],
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.36,
+      "events": []
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.434,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.465,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.467,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.467,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.467,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.492,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.542,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.568,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.57,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.608,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.608,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.623,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.5,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.55,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.6,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "head",
+        "f": 72
+       }
+      ]
+     },
+     {
+      "d": 2.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 73
+       }
+      ]
+     },
+     {
+      "d": 3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 73
+       }
+      ]
+     },
+     {
+      "d": 3.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 74
+       }
+      ]
+     },
+     {
+      "d": 3.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_lower",
+        "f": 74
+       }
+      ]
+     },
+     {
+      "d": 3.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_lower",
+        "f": 74
+       }
+      ]
+     },
+     {
+      "d": 3.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 74
+       }
+      ]
+     },
+     {
+      "d": 3.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "thigh_r",
+        "f": 76
+       }
+      ]
+     },
+     {
+      "d": 3.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "thigh_r",
+        "f": 76
+       }
+      ]
+     },
+     {
+      "d": 3.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "thigh_r",
+        "f": 76
+       }
+      ]
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2,
+      "events": []
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25,
+      "events": []
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3,
+      "events": []
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35,
+      "events": []
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4,
+      "events": []
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45,
+      "events": []
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5,
+      "events": []
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55,
+      "events": []
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6,
+      "events": []
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65,
+      "events": []
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7,
+      "events": []
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75,
+      "events": []
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8,
+      "events": []
+     }
+    ]
+   },
+   "thrust": {
+    "declared_root_dz_m": 1.6,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 4,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "attribution": {
+     "weapon": {
+      "events": 80,
+      "dmg_min": 79,
+      "dmg_max": 79,
+      "pd": [
+       24
+      ]
+     }
+    },
+    "body_only_distances_m": [],
+    "body_damage_ge_weapon": [],
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.36,
+      "events": []
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.235,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.243,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.293,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "pelvis",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.343,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.367,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.367,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.367,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.367,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.367,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.37,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.42,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 58
+       }
+      ]
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.52,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 59
+       }
+      ]
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.57,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 59
+       }
+      ]
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.596,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 59
+       }
+      ]
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.596,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 59
+       }
+      ]
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.602,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 59
+       }
+      ]
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.624,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 0.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 60
+       }
+      ]
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 61
+       }
+      ]
+     },
+     {
+      "d": 2.95,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.5,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 62
+       }
+      ]
+     },
+     {
+      "d": 3,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.55,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 62
+       }
+      ]
+     },
+     {
+      "d": 3.05,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.6,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 62
+       }
+      ]
+     },
+     {
+      "d": 3.1,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "thigh_r",
+        "f": 62
+       }
+      ]
+     },
+     {
+      "d": 3.15,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.699,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.2,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.749,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.25,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.799,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.3,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.849,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.35,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.899,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.4,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.949,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.45,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 1.999,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.5,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.049,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.55,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.099,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.6,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.149,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.65,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.199,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 63
+       }
+      ]
+     },
+     {
+      "d": 3.7,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.214,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 3.75,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.264,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 3.8,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.314,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 3.85,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.364,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 3.9,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.414,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 3.95,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.464,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     },
+     {
+      "d": 4,
+      "hit": true,
+      "dmg": 79,
+      "via": "weapon",
+      "closest_m": 2.514,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 79,
+        "pd": 24,
+        "part": "forearm_r",
+        "f": 64
+       }
+      ]
+     }
+    ]
+   },
+   "combo_a": {
+    "declared_root_dz_m": 0.9,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 2.85,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "attribution": {
+     "weapon": {
+      "events": 57,
+      "dmg_min": 69,
+      "dmg_max": 69,
+      "pd": [
+       20
+      ]
+     }
+    },
+    "body_only_distances_m": [],
+    "body_damage_ge_weapon": [],
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.36,
+      "events": []
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.47,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.485,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.535,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.563,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.563,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.608,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.609,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.626,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 0.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.5,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.55,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.6,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 1.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "head",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 2.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 69,
+      "via": "weapon",
+      "closest_m": 2.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 69,
+        "pd": 20,
+        "part": "torso_upper",
+        "f": 48
+       }
+      ]
+     },
+     {
+      "d": 2.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2,
+      "events": []
+     },
+     {
+      "d": 2.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.05,
+      "events": []
+     },
+     {
+      "d": 3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.1,
+      "events": []
+     },
+     {
+      "d": 3.05,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.15,
+      "events": []
+     },
+     {
+      "d": 3.1,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2,
+      "events": []
+     },
+     {
+      "d": 3.15,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25,
+      "events": []
+     },
+     {
+      "d": 3.2,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3,
+      "events": []
+     },
+     {
+      "d": 3.25,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35,
+      "events": []
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4,
+      "events": []
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45,
+      "events": []
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5,
+      "events": []
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55,
+      "events": []
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6,
+      "events": []
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65,
+      "events": []
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7,
+      "events": []
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75,
+      "events": []
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8,
+      "events": []
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.85,
+      "events": []
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.9,
+      "events": []
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.95,
+      "events": []
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3,
+      "events": []
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.05,
+      "events": []
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 3.1,
+      "events": []
+     }
+    ]
+   },
+   "combo_b": {
+    "declared_root_dz_m": 1.1,
+    "min_hit_distance_m": 0.05,
+    "max_hit_distance_m": 3.25,
+    "contiguous": true,
+    "interior_gaps_m": [],
+    "misses_inside_min_m": [
+     0
+    ],
+    "via_at_min": "weapon",
+    "attribution": {
+     "weapon": {
+      "events": 65,
+      "dmg_min": 106,
+      "dmg_max": 106,
+      "pd": [
+       32
+      ]
+     }
+    },
+    "body_only_distances_m": [],
+    "body_damage_ge_weapon": [],
+    "row": [
+     {
+      "d": 0,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 0.36,
+      "events": []
+     },
+     {
+      "d": 0.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 0.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.455,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.502,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.511,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.511,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.524,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.574,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.605,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.605,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.612,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.628,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 0.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 1.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.35,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.35,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.4,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.4,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.45,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.45,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.5,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.5,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.55,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.55,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.6,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.6,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.65,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.65,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.7,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.7,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.75,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.75,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.8,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.8,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.85,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.85,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.9,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.9,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 1.95,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 27
+       }
+      ]
+     },
+     {
+      "d": 2.95,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "torso_upper",
+        "f": 28
+       }
+      ]
+     },
+     {
+      "d": 3,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.05,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "upper_arm_l",
+        "f": 29
+       }
+      ]
+     },
+     {
+      "d": 3.05,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.1,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 29
+       }
+      ]
+     },
+     {
+      "d": 3.1,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.15,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 29
+       }
+      ]
+     },
+     {
+      "d": 3.15,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.2,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 29
+       }
+      ]
+     },
+     {
+      "d": 3.2,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.25,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 29
+       }
+      ]
+     },
+     {
+      "d": 3.25,
+      "hit": true,
+      "dmg": 106,
+      "via": "weapon",
+      "closest_m": 2.3,
+      "events": [
+       {
+        "via": "weapon",
+        "dmg": 106,
+        "pd": 32,
+        "part": "forearm_l",
+        "f": 30
+       }
+      ]
+     },
+     {
+      "d": 3.3,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.2,
+      "events": []
+     },
+     {
+      "d": 3.35,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.25,
+      "events": []
+     },
+     {
+      "d": 3.4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.3,
+      "events": []
+     },
+     {
+      "d": 3.45,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.35,
+      "events": []
+     },
+     {
+      "d": 3.5,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.4,
+      "events": []
+     },
+     {
+      "d": 3.55,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.45,
+      "events": []
+     },
+     {
+      "d": 3.6,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.5,
+      "events": []
+     },
+     {
+      "d": 3.65,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.55,
+      "events": []
+     },
+     {
+      "d": 3.7,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.6,
+      "events": []
+     },
+     {
+      "d": 3.75,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.65,
+      "events": []
+     },
+     {
+      "d": 3.8,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.7,
+      "events": []
+     },
+     {
+      "d": 3.85,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.75,
+      "events": []
+     },
+     {
+      "d": 3.9,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.8,
+      "events": []
+     },
+     {
+      "d": 3.95,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.85,
+      "events": []
+     },
+     {
+      "d": 4,
+      "hit": false,
+      "dmg": 0,
+      "via": null,
+      "closest_m": 2.9,
+      "events": []
+     }
+    ]
+   }
+  }
+ },
+ "acceptance_failures": [],
+ "ok": true
+}

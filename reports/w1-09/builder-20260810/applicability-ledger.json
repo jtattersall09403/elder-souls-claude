@@ -1,0 +1,38 @@
+{
+  "schema": "elder-souls/w1-applicability-ledger@1",
+  "piece": "W1-09",
+  "role": "builder",
+  "evidence_commit": "2b7a661a82b5812e16ba3aad960ba3d19b321379",
+  "classification_rule": "orchestration/plans/W1-09.md fail-closed three-way predicate rule",
+  "outcome": {
+    "w1_09_owned_applicable": [
+      {
+        "item": "RI-CMB12",
+        "row": "M1 champion_hist_marked combo_b reactability, idle and walk entry",
+        "applicability_reason": "The native row directly consumes W1-09-owned combat.exchange.reactability and the champion attack commitment timing.",
+        "trace": "champion_hist_marked.combo_b.startup -> EnemyMoves/Clip phase timing -> cmb-exchange f_active/t_react consumer",
+        "status": "fresh-pass",
+        "evidence": "cmb-exchange-fixed.json"
+      }
+    ],
+    "sibling_owned_reused": [],
+    "not_applicable": []
+  },
+  "unclassified_or_not_run": {
+    "status": "not_run",
+    "items": [
+      "RI-AI02", "RI-AI03", "RI-AI04", "RI-AI05", "RI-CAM02", "RI-CAM04",
+      "RI-CMB01", "RI-CMB02", "RI-CMB03", "RI-CMB04", "RI-CMB05", "RI-CMB06",
+      "RI-CMB07", "RI-CMB08", "RI-CMB09", "RI-CMB11", "RI-LOR05", "RI-PRG02",
+      "RI-PRG03", "RI-PRG04", "RI-PRG07", "RI-PRG08", "RI-UIX01", "RI-UIX03",
+      "RI-VIS08", "RI-WLD10", "RI-WPN01", "RI-WPN02", "RI-WPN04", "RI-WPN06"
+    ],
+    "reason": "This coherent continuation pass repaired and controlled the first executable hard-red row. It does not classify absent or stale sibling evidence green, does not renormalise an aggregate, and does not claim that the remaining native predicate population is inapplicable. Predicate expansion and independent digest qualification remain critic handoff work."
+  },
+  "digests": {
+    "game/data/combat/enemies/champion_hist_marked.json": "f898e237bcfc7712c2ee8a14ffcf3c7577f7194c0d08ebd4bed627b5140b3123",
+    "tools/harness/cmb-exchange.mjs": "852c076c0b0edc70b618f23d12d6a2d0599747d64d1a2f70429788eb15042124",
+    "game/data/combat/clips.json": "305b98843381416b22d11327ca069c5e899b0ff515a076624d26e319ee502467",
+    "tools/harness/cmb-probe.mjs": "4dfffc95c551a73a19f26eeed97bea2538f0a3babca69301e3a40cbb1db9d5d0"
+  }
+}

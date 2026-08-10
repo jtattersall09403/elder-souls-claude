@@ -356,7 +356,18 @@ const PROBES = {
       frames_at_exactly_zero: zeroFrames,
       exhausted_frames: exhaustedFrames,
       first_exhausted_frame: firstExh,
-      declared: { cadence_f: 52, rolls_before_denial: 5, frames_to_denial: 260, stamina_at_denial: 10 },
+      declared: {
+        cadence_f: 52,
+        regen_suppression_f_inclusive: [1, 42],
+        regen_frames_between_starts: 9,
+        stamina_regenerated_between_starts: 6.75,
+        rolls_before_denial: 7,
+        stamina_after_seventh: 6.5,
+        stamina_at_denial: 13.25,
+        denial_offset_f: 364,
+        canonical_denial_frame: 366,
+        rejected_zero_regen_arm: { rolls_before_denial: 5, canonical_denial_frame: 260 },
+      },
     };
 
     // M6 — the zero-stamina gate: everything free stays free

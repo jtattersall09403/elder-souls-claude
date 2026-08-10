@@ -1,0 +1,34 @@
+{
+  "task_id": "codex-w1-09-builder-20260810",
+  "piece": "W1-09",
+  "role": "builder",
+  "state": "complete",
+  "started": "2026-08-10T00:00:00Z",
+  "base": "2b7a661",
+  "files_touched": [
+    "orchestration/status/codex-w1-09-builder-20260810.json",
+    "game/data/combat/enemies/champion_hist_marked.json",
+    "tools/harness/cmb-probe.mjs",
+    "reports/w1-09/BUILDER-SWEEP-20260810.md",
+    "reports/w1-09/builder-20260810/",
+    "docs/shots/2026-08-10-w1-09-combat-core.svg",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "game/src/combat/",
+    "game/data/combat/",
+    "tools/harness/cmb-reach.mjs",
+    "reports/w1-09/",
+    "docs/shots/2026-08-10-w1-09-combat-core.svg",
+    "reports/blog-feed.jsonl"
+  ],
+  "next_step": "Independent critic reruns the positive/delete-fix RI-CMB12 arms, expands the fail-closed predicate ledger, and preserves all documented RED, dependency, and NOT_RUN rows.",
+  "notes": [
+    "Continuation only; preserve current implementation and evidence.",
+    "S40 arithmetic is fixed authority and will not be reinterpreted.",
+    "No independent or blind verdict was issued by this builder.",
+    "RI-CMB12 M1 combo_b repaired from t_react 18 to the native 19-frame floor by one additional committed startup frame.",
+    "S40 live probe observes seven starts and canonical frame-366 denial; stale instrument declarations were corrected without changing production roll/stamina arithmetic.",
+    "The PR evidence image is a text-native SVG chart so the branch contains no unsupported binary files."
+  ]
+}
