@@ -1,0 +1,155 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "settlement-lilmoth",
+  "cell": "settlement-lilmoth",
+  "settlement": "lilmoth",
+  "bed_kind": "settlement",
+  "region_name": "Lilmoth exterior settlement",
+  "brief": "river stalls: a settlement-specific exterior bed selected by the shipping settlement state",
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -26,
+  "crossfade_s": 4,
+  "max_voices": 8,
+  "denies": [],
+  "layers": {
+    "L1": {
+      "id": "l1_settlement_lilmoth_air",
+      "text": "lilmoth built-space resonance",
+      "level_db": 0,
+      "classes": [
+        "pressure"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 310,
+          "q": 0.8
+        },
+        "gain_db": -9,
+        "width": 0.55
+      }
+    },
+    "L2": {
+      "id": "l2_settlement_lilmoth_activity",
+      "text": "day workers give way to a distinct night watch selection",
+      "level_db": -4,
+      "sublayers": [
+        {
+          "when": {
+            "tod": "day"
+          },
+          "classes": [
+            "labour"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 1060,
+              "q": 1.1
+            },
+            "gain_db": -16,
+            "width": 0.7
+          }
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "classes": [
+            "watch"
+          ],
+          "synth": {
+            "kind": "osc",
+            "waveform": "sine",
+            "freq_hz": 178,
+            "gain_db": -24,
+            "width": 0.35
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_settlement_lilmoth_work",
+      "text": "local work punctuation",
+      "interval_s": [
+        16,
+        32
+      ],
+      "level_db": 0,
+      "events": [
+        {
+          "id": "lilmoth_work",
+          "classes": [
+            "labour"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.8,
+            0.8
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "bandpass",
+              "hz": 980,
+              "q": 2
+            },
+            "env": {
+              "attack_s": 0.002,
+              "decay_s": 0.25
+            },
+            "gain_db": -8
+          }
+        }
+      ],
+      "event_gain_db": 4
+    },
+    "L4": {
+      "id": "l4_settlement_lilmoth_life",
+      "text": "local animal or watch signal",
+      "interval_s": [
+        67,
+        130
+      ],
+      "level_db": 0,
+      "events": [
+        {
+          "id": "lilmoth_call",
+          "classes": [
+            "creature"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.9,
+            0.9
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sine",
+            "freq_hz": 1320,
+            "env": {
+              "attack_s": 0.01,
+              "decay_s": 0.35
+            },
+            "gain_db": -10
+          }
+        }
+      ],
+      "event_gain_db": 2
+    }
+  },
+  "emitters": [],
+  "bed_gain_db": 0,
+  "provenance": "W1-22 S41 continuation. Exhaustive RI-WLD08 settlement population; selected by live sim.env.settlement, not representative sampling."
+}
