@@ -111,6 +111,22 @@ add('T3 the first hostile beyond a tier border stands at least first_hostile_min
       : 'every announced jump gives the player ground between the warning and the consequence',
   });
 
+// ---- T4: no gate, level check, readiness prose, or crossing-only scaling ----------------------
+const forbidden = jumps.filter((b) => b.level_gate || b.soft_wall || b.readiness_message
+  || b.crossing_enemy_scale || b.requires_level);
+add('T4 tier borders do not gate or scale the crossing', forbidden.length === 0, {
+  inspected_fields: ['level_gate', 'soft_wall', 'readiness_message', 'crossing_enemy_scale', 'requires_level'],
+  violations: forbidden.map((b) => b.id),
+});
+
+// ---- T5: directionality is a census, not a damage surrogate ----------------------------------
+// Declaration order is the stable province-border direction used by the item. A negative delta
+// means the far side is lower-tier and therefore supplies a retreating/descending crossing.
+const descents = doc.borders.filter((b) => b.delta_tier < 0);
+add('T5 at least three province borders have a lower tier on the far side', descents.length >= 3, {
+  lower_tier_on_far_side: descents.length, bar: 3, borders: descents.map((b) => b.id),
+});
+
 // ---- report --------------------------------------------------------------------------------------
 const passed = checks.filter((c) => c.pass).length;
 const out = {

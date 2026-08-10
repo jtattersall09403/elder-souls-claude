@@ -1,0 +1,200 @@
+{
+ "schema": "elder-souls/architecture@1",
+ "owner": "W1-02",
+ "consumed_by": [
+  "game/src/render/exterior.js#planSettlement building grammar fields",
+  "tools/world/architecture.mjs mesh-derived census"
+ ],
+ "grammars": [
+  {
+   "id": "root-arch",
+   "living": true,
+   "primary_regions": [
+    "eastern-rootlands"
+   ],
+   "material": "living Hist root and trained cane",
+   "method": "grown",
+   "joint": "graft",
+   "opening": "arch",
+   "roofline": "continuous branch",
+   "ornament": "process marks remain visible",
+   "decay": "closes",
+   "bounds": {
+    "right_angle_max": 0.1,
+    "vertical_max": 0.35,
+    "silhouette_turning_min": 0.22,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "hist-bole",
+   "living": true,
+   "primary_regions": [
+    "western-rootlands"
+   ],
+   "material": "living Hist",
+   "method": "hollowed",
+   "joint": "none",
+   "opening": "bark sphincter",
+   "roofline": "crown",
+   "ornament": "process marks remain visible",
+   "decay": "scarring",
+   "bounds": {
+    "right_angle_max": 0.1,
+    "vertical_max": 0.35,
+    "silhouette_turning_min": 0.22,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "nest-mound",
+   "living": true,
+   "primary_regions": [
+    "deep-marshes"
+   ],
+   "material": "mud spit reed",
+   "method": "extruded",
+   "joint": "one piece",
+   "opening": "round hatch",
+   "roofline": "smooth dome",
+   "ornament": "process marks remain visible",
+   "decay": "slumping",
+   "bounds": {
+    "right_angle_max": 0.1,
+    "vertical_max": 0.35,
+    "silhouette_turning_min": 0.22,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "stilt-row",
+   "living": true,
+   "primary_regions": [
+    "blackwood"
+   ],
+   "material": "cane and plank",
+   "method": "floated",
+   "joint": "lashing",
+   "opening": "high doorway",
+   "roofline": "shallow pitch",
+   "ornament": "process marks remain visible",
+   "decay": "waterline rot",
+   "bounds": {
+    "right_angle_max": 0.1,
+    "vertical_max": 0.35,
+    "silhouette_turning_min": 0.22,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "xanmeer",
+   "living": true,
+   "primary_regions": [
+    "stone-forest"
+   ],
+   "material": "white limestone",
+   "method": "stacked",
+   "joint": "dry-set",
+   "opening": "narrow slot",
+   "roofline": "stepped terrace",
+   "ornament": "process marks remain visible",
+   "decay": "root-cracked",
+   "bounds": {
+    "right_angle_max": 0.45,
+    "vertical_max": 1,
+    "silhouette_turning_min": 0,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "kiln-dome",
+   "living": true,
+   "primary_regions": [
+    "clay-moor"
+   ],
+   "material": "fired clay",
+   "method": "fired",
+   "joint": "vitrified",
+   "opening": "low round door",
+   "roofline": "dome",
+   "ornament": "process marks remain visible",
+   "decay": "crazing",
+   "bounds": {
+    "right_angle_max": 0.1,
+    "vertical_max": 0.35,
+    "silhouette_turning_min": 0.22,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "bone-scaffold",
+   "living": true,
+   "primary_regions": [
+    "marauders-coast"
+   ],
+   "material": "rib and keel",
+   "method": "lashed",
+   "joint": "rope wedge",
+   "opening": "between ribs",
+   "roofline": "tarpaulin",
+   "ornament": "process marks remain visible",
+   "decay": "collapse",
+   "bounds": {
+    "right_angle_max": 0.25,
+    "vertical_max": 1,
+    "silhouette_turning_min": 0,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "salt-block",
+   "living": true,
+   "primary_regions": [
+    "stone-wastes"
+   ],
+   "material": "salt crust and bone",
+   "method": "sawn",
+   "joint": "pegged",
+   "opening": "shuttered slot",
+   "roofline": "flat weighted",
+   "ornament": "process marks remain visible",
+   "decay": "dissolution",
+   "bounds": {
+    "right_angle_max": 0.25,
+    "vertical_max": 1,
+    "silhouette_turning_min": 0,
+    "opening_rectangularity_max": 0.15
+   }
+  },
+  {
+   "id": "imperial-cut-stone",
+   "living": true,
+   "primary_regions": [
+    "salt-hills"
+   ],
+   "material": "ashlar brick mortar",
+   "method": "built",
+   "joint": "mortar cramps",
+   "opening": "rectangular lintel",
+   "roofline": "crenellation tile",
+   "ornament": "process marks remain visible",
+   "decay": "failing",
+   "bounds": {
+    "right_angle_max": 1,
+    "vertical_max": 1,
+    "silhouette_turning_min": 0,
+    "opening_rectangularity_max": 1
+   }
+  }
+ ],
+ "banned_patterns": [
+  "half-timbered",
+  "flower_box",
+  "gothic_vault",
+  "rose_window",
+  "flying_buttress",
+  "dwemer_gear",
+  "tin_roof",
+  "generic_swamp_shack"
+ ]
+}

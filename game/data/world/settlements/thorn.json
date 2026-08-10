@@ -111,14 +111,30 @@
     13.31,
     859
    ],
-   "footprint_m2": 252.0,
+   "footprint_m2": 252,
    "roofline_m": 6.2,
    "apertures": [],
    "door_world_bearing_deg": 0,
    "footprint_m": [
     16.01,
     15.74
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "hall-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-inn",
@@ -153,7 +169,23 @@
    "footprint_m": [
     14.81,
     16.81
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "tavern-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-trader",
@@ -188,7 +220,23 @@
    "footprint_m": [
     14.81,
     16.81
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "shop-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-apothecary",
@@ -223,7 +271,23 @@
    "footprint_m": [
     14.81,
     14.5
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "shop-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-sapwell",
@@ -258,7 +322,23 @@
    "footprint_m": [
     14.81,
     14.5
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "shrine-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-rootpost",
@@ -293,7 +373,23 @@
    "footprint_m": [
     14.81,
     16.81
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "travel-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-gate",
@@ -328,7 +424,23 @@
    "footprint_m": [
     5.01,
     14.69
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "gate-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-north-lean",
@@ -345,7 +457,23 @@
    "yaw_deg": 115.7,
    "seal_state": "visible",
    "reason": "the thorn grew through the roof and the family moved into the hall; the thicket has closed over the door",
-   "told_by_trade": "cook"
+   "told_by_trade": "cook",
+   "grammar": "salt-block",
+   "mesh_id": "sealed-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-court-store",
@@ -362,7 +490,23 @@
    "yaw_deg": 90,
    "seal_state": "visible",
    "reason": "the hall’s store, shut since the court had anything to store",
-   "told_by_trade": "scribe"
+   "told_by_trade": "scribe",
+   "grammar": "salt-block",
+   "mesh_id": "sealed-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-burnt-stilt",
@@ -379,7 +523,23 @@
    "yaw_deg": 64.3,
    "seal_state": "visible",
    "reason": "a Dunmer raiding party burnt it and the village left it standing as a marker",
-   "told_by_trade": "publican"
+   "told_by_trade": "publican",
+   "grammar": "salt-block",
+   "mesh_id": "sealed-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-struct-the-charter-post",
@@ -394,7 +554,23 @@
     -13.29
    ],
    "yaw_deg": 38.6,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "salt-block",
+   "mesh_id": "structure-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-struct-the-needle-stacks",
@@ -409,7 +585,23 @@
     -22.42
    ],
    "yaw_deg": 12.9,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "salt-block",
+   "mesh_id": "structure-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-struct-the-bow-racks",
@@ -424,7 +616,23 @@
     -10.72
    ],
    "yaw_deg": 347.1,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "salt-block",
+   "mesh_id": "structure-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-struct-the-sapwell-kerb",
@@ -439,7 +647,23 @@
     -13.29
    ],
    "yaw_deg": 321.4,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "salt-block",
+   "mesh_id": "structure-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-struct-the-thicket-wall",
@@ -454,7 +678,23 @@
     -9.98
    ],
    "yaw_deg": 295.7,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "salt-block",
+   "mesh_id": "structure-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "thorn-house-0",
@@ -489,7 +729,23 @@
    "footprint_m": [
     5.01,
     12.75
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "hall-0-thorn-house-0",
+   "volume_m3": 174.78,
+   "door_height_m": 1.71,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "barge-hold",
@@ -533,7 +789,23 @@
    "footprint_m": [
     7.01,
     16.01
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "tavern-1-barge-hold",
+   "volume_m3": 436.35,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "writ-house",
@@ -577,7 +849,23 @@
    "footprint_m": [
     10.01,
     13.01
-   ]
+   ],
+   "grammar": "salt-block",
+   "mesh_id": "shop-2-writ-house",
+   "volume_m3": 393.82,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "dissolution"
+   ],
+   "local_repair": false,
+   "good_order": null
   }
  ],
  "interiors": [
@@ -589,5 +877,9 @@
   "thorn-rootpost",
   "thorn-gate"
  ],
- "generated_by": "tools/world/build-settlements.mjs"
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "salt-block",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

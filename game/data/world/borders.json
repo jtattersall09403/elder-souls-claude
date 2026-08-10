@@ -5,10 +5,10 @@
  "source": "corpus/50-world/RI-WLD12-region-borders.md",
  "what_this_is": "The province's edges. Before this file, field.regionAt() was a bare read of one byte out of the 25 m region raster and all NINE of RI-WLD04's axes were fields of the object it returned, so every axis crossed at exactly the same coordinate: stddev(c) = 0, which is RI-WLD12 M65's automatic fail (the texture swap). This file carries, per border, the kind, the transition width, the threshold objects, the tier announcement, and the nine per-axis crossover offsets in metres; plus a signed distance field so a runtime lookup knows how far THROUGH a border a point is.",
  "consumed_by": [
-  "game/src/world/borders.js — BorderField.axisRegionAt(x, z, axis) and blendAt()",
-  "game/src/world/province.js — the flora and palette axes choose the props and the ground colour",
-  "game/src/sim/environment.js — the weather axis chooses which machine is running",
-  "game/src/engine.js#getBorderCrossover — the read-back RI-WLD12 M65 measures"
+  "game/src/world/borders.js \u2014 BorderField.axisRegionAt(x, z, axis) and blendAt()",
+  "game/src/world/province.js \u2014 the flora and palette axes choose the props and the ground colour",
+  "game/src/sim/environment.js \u2014 the weather axis chooses which machine is running",
+  "game/src/engine.js#getBorderCrossover \u2014 the read-back RI-WLD12 M65 measures"
  ],
  "cell_m": 25,
  "cols": 193,
@@ -25,7 +25,7 @@
   "architecture",
   "only_here"
  ],
- "canonical_order_note": "RI-WLD12 §2. Ground and flora cross first (they are the terrain); architecture and the ONLY-HERE element cross last (they are the statement); fauna and audio cross in between; the danger tier crosses at the narrowest point, so the moment the world becomes more dangerous is a place with a name.",
+ "canonical_order_note": "RI-WLD12 \u00a72. Ground and flora cross first (they are the terrain); architecture and the ONLY-HERE element cross last (they are the statement); fauna and audio cross in between; the danger tier crosses at the narrowest point, so the moment the world becomes more dangerous is a place with a name.",
  "threshold_vocabulary": {
   "imperial_border_cairn": {
    "owner": "the Empire, badly maintained",
@@ -190,7 +190,7 @@
    "b_tier": 2,
    "delta_tier": 0,
    "kind": "MARKED",
-   "width_m": 152,
+   "width_m": 120,
    "axis_spread_m": 143,
    "frontier_m": 1825,
    "landform": {
@@ -704,7 +704,7 @@
    "b_tier": 4,
    "delta_tier": 0,
    "kind": "MARKED",
-   "width_m": 172,
+   "width_m": 120,
    "axis_spread_m": 162,
    "frontier_m": 900,
    "landform": {
@@ -786,7 +786,7 @@
    "b_tier": 3,
    "delta_tier": -1,
    "kind": "MARKED",
-   "width_m": 140,
+   "width_m": 120,
    "axis_spread_m": 132,
    "frontier_m": 1600,
    "landform": {
@@ -1204,7 +1204,7 @@
    "b_tier": 3,
    "delta_tier": -1,
    "kind": "MARKED",
-   "width_m": 126,
+   "width_m": 120,
    "axis_spread_m": 118,
    "frontier_m": 300,
    "landform": {
@@ -1626,7 +1626,7 @@
    "b_tier": 3,
    "delta_tier": -2,
    "kind": "MARKED",
-   "width_m": 151,
+   "width_m": 120,
    "axis_spread_m": 142,
    "frontier_m": 1725,
    "landform": {
@@ -1838,7 +1838,7 @@
    "b_tier": 2,
    "delta_tier": 0,
    "kind": "MARKED",
-   "width_m": 152,
+   "width_m": 120,
    "axis_spread_m": 143,
    "frontier_m": 600,
    "landform": {
@@ -1902,7 +1902,7 @@
    "b_tier": 1,
    "delta_tier": -1,
    "kind": "MARKED",
-   "width_m": 169,
+   "width_m": 120,
    "axis_spread_m": 159,
    "frontier_m": 1075,
    "landform": {
@@ -2008,7 +2008,7 @@
    "b_tier": 5,
    "delta_tier": 3,
    "kind": "MARKED",
-   "width_m": 123,
+   "width_m": 120,
    "axis_spread_m": 116,
    "frontier_m": 1600,
    "landform": {
@@ -2192,7 +2192,7 @@
    "b_tier": 1,
    "delta_tier": -1,
    "kind": "MARKED",
-   "width_m": 164,
+   "width_m": 120,
    "axis_spread_m": 154,
    "frontier_m": 150,
    "landform": {
@@ -2216,10 +2216,10 @@
     "weather": -16.73,
     "fauna": 14.6,
     "audio": 25.75,
-    "hazard": 42.96,
+    "hazard": -35,
     "tier": -22.23,
-    "architecture": 67.56,
-    "only_here": 73.86
+    "architecture": 5,
+    "only_here": 20
    },
    "crossover_stats": {
     "stddev_m": 48.15,
@@ -2636,7 +2636,7 @@
    "b_tier": 1,
    "delta_tier": -4,
    "kind": "MARKED",
-   "width_m": 133,
+   "width_m": 120,
    "axis_spread_m": 125,
    "frontier_m": 1200,
    "landform": {
