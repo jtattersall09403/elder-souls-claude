@@ -123,7 +123,27 @@
    "footprint_m": [
     13.61,
     15.61
-   ]
+   ],
+   "grammar": "imperial-cut-stone",
+   "mesh_id": "guild-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.92,
+    "true_vertical_fraction": 0.78,
+    "silhouette_turning_rad_per_m": 0.06,
+    "opening_rectangularity": 0.94,
+    "process_visible": true
+   },
+   "decay_states": [
+    "fungal-digestion",
+    "subsidence",
+    "local-rethatch",
+    "root-jacking",
+    "local-lashed-repair"
+   ],
+   "local_repair": true,
+   "good_order": false
   },
   {
    "id": "archon-vat-house",
@@ -158,7 +178,27 @@
    "footprint_m": [
     7.97,
     15.61
-   ]
+   ],
+   "grammar": "imperial-cut-stone",
+   "mesh_id": "shop-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.92,
+    "true_vertical_fraction": 0.78,
+    "silhouette_turning_rad_per_m": 0.06,
+    "opening_rectangularity": 0.94,
+    "process_visible": true
+   },
+   "decay_states": [
+    "fungal-digestion",
+    "subsidence",
+    "local-rethatch",
+    "root-jacking",
+    "local-lashed-repair"
+   ],
+   "local_repair": true,
+   "good_order": false
   },
   {
    "id": "archon-market",
@@ -193,7 +233,23 @@
    "footprint_m": [
     7.97,
     5.65
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-apothecary",
@@ -228,7 +284,23 @@
    "footprint_m": [
     10.5,
     5.65
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-inn",
@@ -263,7 +335,23 @@
    "footprint_m": [
     12.41,
     5.68
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "tavern-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-ward",
@@ -298,7 +386,23 @@
    "footprint_m": [
     8.66,
     5.68
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "temple-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-shrine",
@@ -333,7 +437,23 @@
    "footprint_m": [
     5.19,
     14.41
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shrine-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-rootpost",
@@ -368,7 +488,23 @@
    "footprint_m": [
     5.19,
     14.41
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "travel-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-kiln-house",
@@ -403,7 +539,23 @@
    "footprint_m": [
     5.01,
     14.41
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-house-0",
@@ -438,7 +590,23 @@
    "footprint_m": [
     5.01,
     11.61
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-house-1",
@@ -473,7 +641,23 @@
    "footprint_m": [
     5.99,
     11.61
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-house-2",
@@ -508,7 +692,23 @@
    "footprint_m": [
     7.99,
     14.41
-   ]
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-first-vat",
@@ -525,7 +725,23 @@
    "yaw_deg": 174.3,
    "seal_state": "visible",
    "reason": "the vat went through the floor with two harvesters in it and the guild sealed the building rather than recover them",
-   "told_by_trade": "apothecary"
+   "told_by_trade": "apothecary",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-naga-row",
@@ -542,7 +758,23 @@
    "yaw_deg": 168.5,
    "seal_state": "visible",
    "reason": "the naga who raised this town were paid off and sent away; their row was shuttered the day they left",
-   "told_by_trade": "trader"
+   "told_by_trade": "trader",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-old-kiln",
@@ -559,7 +791,23 @@
    "yaw_deg": 162.8,
    "seal_state": "visible",
    "reason": "cracked through and no longer holds heat; it is used as a wall now",
-   "told_by_trade": "smith"
+   "told_by_trade": "smith",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-quay-store",
@@ -576,7 +824,23 @@
    "yaw_deg": 157.1,
    "seal_state": "visible",
    "reason": "the tide comes into it twice a day and has done for six years",
-   "told_by_trade": "boatwright"
+   "told_by_trade": "boatwright",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-4",
+   "volume_m3": 75,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-dye-vats",
@@ -591,7 +855,23 @@
     34.23
    ],
    "yaw_deg": 151.4,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-5",
+   "volume_m3": 96,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-drying-racks",
@@ -606,7 +886,23 @@
     31.37
    ],
    "yaw_deg": 145.6,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-6",
+   "volume_m3": 175,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-kiln-stacks",
@@ -621,7 +917,23 @@
     31.37
    ],
    "yaw_deg": 139.9,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-7",
+   "volume_m3": 60,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-lichen-cribs",
@@ -636,7 +948,23 @@
     27.88
    ],
    "yaw_deg": 134.2,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-8",
+   "volume_m3": 120,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-old-quay",
@@ -651,7 +979,23 @@
     22.39
    ],
    "yaw_deg": 128.5,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-9",
+   "volume_m3": 140,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
   {
    "id": "archon-struct-the-wind-screen",
@@ -666,7 +1010,23 @@
     20
    ],
    "yaw_deg": 122.7,
-   "residential_props": false
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-10",
+   "volume_m3": 75,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   }
  ],
  "interiors": [
@@ -683,5 +1043,9 @@
   "archon-house-1",
   "archon-house-2"
  ],
- "generated_by": "tools/world/build-settlements.mjs"
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "root-arch",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

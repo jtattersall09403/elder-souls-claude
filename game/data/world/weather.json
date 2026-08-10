@@ -2,13 +2,13 @@
  "schema": "elder-souls/weather@1",
  "generator": "tools/world/build-weather.mjs",
  "owner": "W1-02",
- "source": "corpus/50-world/RI-WLD08-the-living-world.md §1 and §5",
+ "source": "corpus/50-world/RI-WLD08-the-living-world.md \u00a71 and \u00a75",
  "what_this_is": "The thirteen per-region weather state machines and the clock they run on. Before this file the build had no weather SYSTEM at all: sim.env.weather's only writers in the whole tree were the harness verb Engine.setWeather() and the save loader, which is the RI-MTH07 failure mode exactly. The machine now runs inside the fixed step.",
  "consumed_by": [
-  "game/src/sim/environment.js — Clock + WeatherMachine, stepped from sim/step.js",
-  "game/src/sim/stealth/system.js#skyAmbient — `light` sets the outdoor ambient, which sets L, which sets V",
-  "game/src/render/sky.js — `sightline_m` as a Beer-Lambert extinction, and the named-state table",
-  "game/src/engine.js#getEnvironment — the read-back a critic measures"
+  "game/src/sim/environment.js \u2014 Clock + WeatherMachine, stepped from sim/step.js",
+  "game/src/sim/stealth/system.js#skyAmbient \u2014 `light` sets the outdoor ambient, which sets L, which sets V",
+  "game/src/render/sky.js \u2014 `sightline_m` as a Beer-Lambert extinction, and the named-state table",
+  "game/src/engine.js#getEnvironment \u2014 the read-back a critic measures"
  ],
  "timescale": 20,
  "frames_per_game_day": 259200,
@@ -17,7 +17,7 @@
  "tick_frames": 72000,
  "dawn_dusk_real_minutes": 6,
  "deviations": [
-  "The Hive. RI-WLD08 §5 gives it \"still (only state) + queen-agitation\"; M43 asserts >= 4 states with no transition probability of 0 or 1, which one state cannot satisfy. Built with four states and the province's highest stationary probability (0.62) so it still reads as the region whose weather does not change. Flagged rather than silently resolved."
+  "The Hive. RI-WLD08 \u00a75 gives it \"still (only state) + queen-agitation\"; M43 asserts >= 4 states with no transition probability of 0 or 1, which one state cannot satisfy. Built with four states and the province's highest stationary probability (0.62) so it still reads as the region whose weather does not change. Flagged rather than silently resolved."
  ],
  "counts": {
   "regions": 13,
@@ -41,9 +41,7 @@
      "light": "dark",
      "sightline_m": 150,
      "effect": {
-      "tracks_washed": true,
-      "stamina_regen_mult": 0.86,
-      "navigation_degraded": true
+      "stamina_regen_mult": 0.86
      },
      "diurnal": null
     },
@@ -116,9 +114,7 @@
      "id": "dust_devil",
      "light": "sun",
      "sightline_m": 340,
-     "effect": {
-      "knockback": true
-     },
+     "effect": {},
      "diurnal": {
       "night": 0.3,
       "day": 1.5
@@ -207,8 +203,7 @@
      "light": "dark",
      "sightline_m": 220,
      "effect": {
-      "stamina_regen_mult": 0.85,
-      "navigation_degraded": true
+      "stamina_regen_mult": 0.85
      },
      "diurnal": null
     }
@@ -270,9 +265,7 @@
      "light": "dark",
      "sightline_m": 190,
      "effect": {
-      "tracks_washed": true,
-      "stamina_regen_mult": 0.9,
-      "navigation_degraded": true
+      "stamina_regen_mult": 0.9
      },
      "diurnal": null
     },
@@ -280,10 +273,7 @@
      "id": "thick_fog",
      "light": "overcast",
      "sightline_m": 25,
-     "effect": {
-      "navigation_degraded": true,
-      "hides_enemies": true
-     },
+     "effect": {},
      "diurnal": null
     }
    ],
@@ -331,19 +321,14 @@
      "id": "warm_rain",
      "light": "overcast",
      "sightline_m": 420,
-     "effect": {
-      "tracks_washed": true
-     },
+     "effect": {},
      "diurnal": null
     },
     {
      "id": "night_bloom",
      "light": "sun",
      "sightline_m": 520,
-     "effect": {
-      "bioluminescent": true,
-      "sight_aid": true
-     },
+     "effect": {},
      "diurnal": {
       "night": 3.6,
       "day": 0.08
@@ -403,9 +388,7 @@
      "id": "queen_agitation",
      "light": "sun",
      "sightline_m": 700,
-     "effect": {
-      "aggro_radius_mult": 2
-     },
+     "effect": {},
      "diurnal": null
     },
     {
@@ -424,9 +407,7 @@
      "id": "drone_haze",
      "light": "overcast",
      "sightline_m": 420,
-     "effect": {
-      "aggro_radius_mult": 1.35
-     },
+     "effect": {},
      "diurnal": null
     }
    ],
@@ -474,9 +455,7 @@
      "id": "sea_fog",
      "light": "overcast",
      "sightline_m": 90,
-     "effect": {
-      "navigation_degraded": true
-     },
+     "effect": {},
      "diurnal": {
       "night": 1.4,
       "day": 1,
@@ -497,7 +476,6 @@
      "light": "dark",
      "sightline_m": 260,
      "effect": {
-      "knockback": true,
       "stamina_regen_mult": 0.84
      },
      "diurnal": null
@@ -556,9 +534,7 @@
      "id": "hill_mist",
      "light": "overcast",
      "sightline_m": 90,
-     "effect": {
-      "navigation_degraded": true
-     },
+     "effect": {},
      "diurnal": {
       "night": 0.9,
       "day": 1,
@@ -619,9 +595,7 @@
      "id": "dry_thunder",
      "light": "overcast",
      "sightline_m": 640,
-     "effect": {
-      "lightning_damage_mult": 1.5
-     },
+     "effect": {},
      "diurnal": null
     },
     {
@@ -699,9 +673,7 @@
      "light": "dark",
      "sightline_m": 60,
      "effect": {
-      "chip_dps": 2,
-      "navigation_degraded": true,
-      "hides_enemies": true
+      "chip_dps": 2
      },
      "diurnal": null
     },
@@ -756,9 +728,7 @@
      "id": "ashfall",
      "light": "overcast",
      "sightline_m": 300,
-     "effect": {
-      "navigation_degraded": true
-     },
+     "effect": {},
      "diurnal": null
     },
     {
@@ -773,8 +743,6 @@
      "light": "dark",
      "sightline_m": 50,
      "effect": {
-      "navigation_degraded": true,
-      "hides_enemies": true,
       "chip_dps": 0.6
      },
      "diurnal": null
@@ -831,9 +799,7 @@
      "id": "cloud_below",
      "light": "sun",
      "sightline_m": 1400,
-     "effect": {
-      "navigation_degraded": true
-     },
+     "effect": {},
      "diurnal": null
     },
     {
@@ -849,10 +815,7 @@
      "id": "rockfall_wind",
      "light": "overcast",
      "sightline_m": 480,
-     "effect": {
-      "falling_hazards_active": true,
-      "knockback": true
-     },
+     "effect": {},
      "diurnal": null
     }
    ],
@@ -900,9 +863,7 @@
      "id": "warm_rain",
      "light": "overcast",
      "sightline_m": 420,
-     "effect": {
-      "tracks_washed": true
-     },
+     "effect": {},
      "diurnal": null
     },
     {
@@ -921,9 +882,7 @@
      "light": "dark",
      "sightline_m": 190,
      "effect": {
-      "tracks_washed": true,
-      "stamina_regen_mult": 0.9,
-      "navigation_degraded": true
+      "stamina_regen_mult": 0.9
      },
      "diurnal": null
     }

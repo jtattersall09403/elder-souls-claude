@@ -41,6 +41,38 @@ const regionIndexAt = (x, z) => {
 };
 
 const bf = new BorderField(bordersDoc, regionsDoc.regions);
+
+// M64 inventory is derived independently from the terrain/navmesh raster, then compared in both
+// directions with the declared border table. This deliberately does not ask BorderField which
+// adjacencies exist.
+const navPairEdges = new Map();
+for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+  const a = regionU[y * COLS + x];
+  for (const [dx, dy] of [[1, 0], [0, 1]]) {
+    if (x + dx >= COLS || y + dy >= ROWS) continue;
+    const b = regionU[(y + dy) * COLS + x + dx];
+    if (a !== b && a < regionsDoc.regions.length && b < regionsDoc.regions.length) {
+      const pair = [regionsDoc.regions[a].id, regionsDoc.regions[b].id].sort().join('--');
+      navPairEdges.set(pair, (navPairEdges.get(pair) || 0) + 1);
+    }
+  }
+}
+const droppedPairs = new Set((bordersDoc.dropped || []).map((d) => d.pair.split('|').map(Number)
+  .map((i) => regionsDoc.regions[i].id).sort().join('--')));
+// The generator records corner artefacts explicitly. Everything else seen in the independent
+// raster is an adjacency, including narrow authored crossings.
+const navPairs = new Set([...navPairEdges].filter(([pair]) => !droppedPairs.has(pair)).map(([pair]) => pair));
+const declaredPairs = new Set(bordersDoc.borders.map((b) => b.id));
+const m64 = {
+  navmesh_not_declared: [...navPairs].filter((x) => !declaredPairs.has(x)),
+  declared_not_navmesh: [...declaredPairs].filter((x) => !navPairs.has(x)),
+  empty: bordersDoc.borders.filter((b) => !b.landform && !(b.threshold_objects || []).length).map((b) => b.id),
+  hard_share: bordersDoc.borders.filter((b) => b.kind === 'HARD').length / bordersDoc.borders.length,
+  object_types: new Set(bordersDoc.borders.flatMap((b) => (b.threshold_objects || []).map((o) => o.type))).size,
+  bad_marked_width: bordersDoc.borders.filter((b) => b.kind === 'MARKED' && (b.width_m < 60 || b.width_m > 120)).map((b) => b.id),
+  bad_graded_width: bordersDoc.borders.filter((b) => b.kind === 'GRADED' && (b.width_m < 120 || b.width_m > 180)).map((b) => b.id),
+  excluded_corner_contacts: [...navPairEdges].filter(([pair]) => droppedPairs.has(pair)).map(([pair, edges]) => ({ pair, edges })),
+};
 const only = (process.argv.find((a) => a.startsWith('--border=')) || '').split('=')[1] || null;
 const outPath = (process.argv.find((a) => a.startsWith('--out=')) || '').split('=')[1] || 'reports/border-crossover.json';
 
@@ -95,6 +127,7 @@ const summary = {
     min: resolved.length ? Math.min(...resolved.map((r) => r.span_m)) : null,
     max: resolved.length ? Math.max(...resolved.map((r) => r.span_m)) : null,
   },
+  m64_inventory: m64,
   rows,
 };
 
@@ -110,5 +143,8 @@ for (const r of rows) {
   console.log(`  ${flag} ${r.border.padEnd(38)} ${r.kind.padEnd(7)} axes ${r.axes_resolved}/9 sd ${String(r.stddev_m).padStart(6)} span ${String(r.span_m).padStart(6)}  order: ${r.order.join(' > ')}`);
 }
 console.log(`\nwrote ${outPath}`);
-const hardFail = summary.automatic_fails_texture_swap.length || summary.failing_stddev.length || summary.failing_span.length || summary.failing_collision.length;
+const hardFail = summary.automatic_fails_texture_swap.length || summary.failing_stddev.length || summary.failing_span.length || summary.failing_collision.length
+  || m64.navmesh_not_declared.length || m64.declared_not_navmesh.length || m64.empty.length
+  || m64.hard_share < .4 || m64.object_types < 6 || m64.bad_marked_width.length || m64.bad_graded_width.length
+  || rows.some((r) => !r.all_nine_resolved);
 if (hardFail) { console.error('M65: FAILING BARS ABOVE'); process.exit(1); }

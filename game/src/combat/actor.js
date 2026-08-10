@@ -424,7 +424,10 @@ export class CombatBody {
 
   tickResources(frame, C) {
     const hitstun = frame < this.staggerUntil || frame < this.guardBreakUntil || this.beingCritted;
-    regenStamina(this, frame, C.stamina, { guardRaised: this.guardRaised, tier: this.tier, hitstun });
+    regenStamina(this, frame, C.stamina, {
+      guardRaised: this.guardRaised, tier: this.tier, hitstun,
+      weatherStaminaMult: this.weatherStaminaMult,
+    });
     regenPoise(this, frame, C.poise);
     return updateExhaustion(this, C.stamina);
   }
