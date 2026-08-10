@@ -2207,6 +2207,36 @@ export class MagicSystem {
     return { used: true, item: it.id, dmg, charge: it.charge, focus_spent: 0 };
   }
 
+  /** Fire an equipped weapon's on-strike enchantment through the ordinary effect pipeline. */
+  strikeWithEnchantedItem(frame, itemId, target) {
+    const it = this.enchantedItem(itemId);
+    if (!it || it.kind !== 'on_strike') return { used: false, reason: 'not an on-strike enchantment' };
+    return this.useEnchantedItem(frame, itemId, target);
+  }
+
+  /** Apply/remove a constant enchantment when the real equipment slot changes. */
+  wearEnchantedItem(frame, itemId, worn, target) {
+    const it = this.enchantedItem(itemId);
+    if (!it || it.kind !== 'constant') return { worn: false, reason: 'not a constant enchantment' };
+    if (!!it.worn === !!worn) return { worn: it.worn, unchanged: true };
+    if (worn) {
+      const spell = { id: it.id, name: it.name, from_item: true, class: 'CANTRIP', range: 'self',
+        effects: it.effects.map((e) => ({ ...e, duration_s: 31536000 })), schools: [], school: null,
+        effects_source: 'constant_enchantment' };
+      this.applyEffects(frame, spell, target || (this.w && this.w.combat && this.w.combat.player), this.wil);
+    } else {
+      for (let i = this.active.length - 1; i >= 0; i--) {
+        const a = this.active[i];
+        if (a.spell !== it.id && a.spell_id !== it.id && a.source !== it.id) continue;
+        if (typeof a._undo === 'function') a._undo();
+        this.active.splice(i, 1);
+      }
+    }
+    it.worn = !!worn;
+    this._emit(frame, 'enchant_use', { item: it.id, kind: 'constant', worn: it.worn, target: target ? target.id : 'player', focus_spent: 0 });
+    return { worn: it.worn, item: it.id };
+  }
+
   /** Delete-the-fix: the object still exists and pressing it does nothing, which is round 4. */
   __breakEnchantUse(on) { this._enchantUseBlind = !!on; return this._enchantUseBlind; }
 

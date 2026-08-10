@@ -230,18 +230,7 @@ export class EnchantCounter {
     const uses = q.charge_per_activation > 0
       ? ` A ${words(this.draft.soulGrade)} soul gives it ${q.charge_pool} charge, which is ${Math.floor(q.charge_pool / Math.max(1, Math.round(q.charge_per_activation)))} uses.`
       : ' It draws nothing, because it never stops.';
-    // SAID BEFORE THE MONEY IS TAKEN. `on_strike` and `constant` can be quoted, made, carried and
-    // saved, and this build does not yet READ either one — a struck weapon does not fire its
-    // enchantment and a worn ring does not apply one, because both need a hook in the weapon
-    // resolver and the equip path that belong to other pieces. That is declared in
-    // `spellwrights.json` for an auditor and it is declared HERE, in the enchanter's own voice,
-    // for the player: a shop that sells an object the game will not read, without saying so, is
-    // the same defect as a service that opens nothing.
-    const unread = this.draft.kind === 'on_use' ? ''
-      : this.draft.kind === 'on_strike'
-        ? ' I will make it and I will not lie to you: nothing in these lands has learned to read a blade yet. It will sit in your hand and wait.'
-        : ' I will make it and I will not lie to you: nothing has learned to read a worn thing yet. It will hang on you and wait.';
-    return `${head}. ${q.points} points of the ${q.capacity} a ${words(this.draft.itemClass)} holds. ${q.gold} gold, and you have ${this.gold()}.${uses}${unread}`;
+    return `${head}. ${q.points} points of the ${q.capacity} a ${words(this.draft.itemClass)} holds. ${q.gold} gold, and you have ${this.gold()}.${uses}`;
   }
 
   // ---- picking ------------------------------------------------------------------------------

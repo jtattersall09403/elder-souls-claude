@@ -544,7 +544,9 @@ export function applySaveMagic(sim, blob) {
   M.gems = blob.magic.gems.map((g) => ({ ...g }));
   // W1-14 r5. Tolerant of a blob written before the field existed, because a save from an
   // earlier commit of this same schema version is a real thing on this tree.
-  M.enchanted = (blob.magic.enchanted || []).map((e) => ({ ...e, enchanted: true, effects: e.effects.map((t) => ({ ...t })) }));
+  // Constant leases are runtime objects and are rebuilt from the equipped inventory slot by
+  // Engine._afterStep; persisting `worn:true` without the lease would make a loaded item inert.
+  M.enchanted = (blob.magic.enchanted || []).map((e) => ({ ...e, worn: false, enchanted: true, effects: e.effects.map((t) => ({ ...t })) }));
   M.xulHesh = blob.magic.xul_hesh;
   M.soulHistory = new Map(blob.magic.soul_history.map((r) => [r.instance, r.traps]));
   if (blob.magic.catalyst) M.setCatalyst(blob.magic.catalyst); else { M.catalyst = 'none'; M.hasCatalyst = false; }

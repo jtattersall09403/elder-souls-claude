@@ -32,7 +32,7 @@
   ],
   "declared_incomplete": [
     "CLOSED IN W1-14 ROUND 5: the enchanting counter is built (`sim/magic/enchant-counter.js`), all seven records open it on the `enchanting` subject, and `enchantQuote` now has a caller that is not the harness. `enchantItem` consumes a filled soul gem and moves the engine's purse, and `useEnchantedItem` spends the object's CHARGE — not Focus — to take hit points off a body, which is the world-side consumer this model had never had. `H.__breakEnchantCounter` leaves the person, the town and the subject and takes the door.",
-    "WHAT IS STILL NOT BUILT, said plainly rather than tagged: `on_strike` and `constant` enchantments can be QUOTED and MADE at the counter and are carried in the save, but only `on_use` is consumed — a struck weapon does not fire its enchantment and a worn ring does not apply one, because both need a hook in `combat/resolve.js` and in the equip path that belongs to W1-09 and W1-16 rather than here. A player can therefore make an object this build will not read. The counter says so in the enchanter's own voice before it takes the money.",
+    "CLOSED IN W1-14 ROUND 6: commissioned objects enter the ordinary inventory. Equipping an on-strike weapon connects real combat HIT events to its charge/effect consumer; equipping and removing a constant item applies and releases its world-side lease through the ordinary equipment path.",
     "The four spellwrights keep NO HOURS: their schedule is `at: null` for the whole day, which",
     "`populateSettlement` reads as 'at the authored post'. No interior in this build is a",
     "spellwright's shop, and inventing one would have been a second piece of work hiding inside",

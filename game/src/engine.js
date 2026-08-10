@@ -2872,7 +2872,13 @@ export class Engine {
       this._enchantSurface();
       const st = this.conversation.state();
       st.enchanting = this.enchantCounter.state();
-      if (r.made) st.enchanted = r.made.id;
+      if (r.made) {
+        st.enchanted = r.made.id;
+        if (!this.sim.inventory.some((x) => x.id === r.made.id)) this.sim.inventory.push({
+          id: r.made.id, count: 1, condition: 1, charge: r.made.charge,
+          stolen: false, owner: null, slot: null, quickSlot: null,
+        });
+      }
       if (r.refused) st.refused = r.refused;
       return st;
     }
@@ -4273,6 +4279,18 @@ export class Engine {
     return null;
   }
 
+  _enchantedEquipRecord(id) {
+    const it = this.magic && this.magic.enchantedItem(id);
+    if (!it) return null;
+    const cls = it.item_class;
+    const slot = cls === 'one_handed_weapon' || cls === 'two_handed_weapon' ? 'right'
+      : cls === 'shield' ? 'left'
+        : cls === 'ring' || cls === 'amulet' ? 'talisman'
+          : cls === 'robe' || cls === 'clothing' || /armour$/.test(cls) ? 'chest' : null;
+    return { id: it.id, name: it.name, kind: cls.includes('weapon') ? 'weapon' : cls,
+      category: 'enchanted', slot, enchanted: true, enchantment: it };
+  }
+
   /**
    * W1-16 round 4 — THE HANDS AND THE TALISMAN, PRICED IN EXACTLY ONE PLACE.
    *
@@ -5008,7 +5026,7 @@ export class Engine {
     if (!c || this.sim.frame < c.at) return;
     this._equipCommit = null;
     const row = this.sim.inventory.find((r) => r.id === c.item);
-    const rec = row && this.ui && this.ui.data.items.get(row.id);
+    const rec = row && ((this.ui && this.ui.data.items.get(row.id)) || this._enchantedEquipRecord(row.id));
     const slot = this._slotForItem(rec);
     const ev = this.bus.emit(this.sim.frame, 'equip_end');
     ev.item = c.item; ev.slot = slot;
@@ -5020,6 +5038,7 @@ export class Engine {
     // is no way to REDUCE your load, and a one-way encumbrance model is not a model.
     if (row.slot === slot) {
       row.slot = null; ev.equipped = false;
+      if (rec.enchanted) this.magic.wearEnchantedItem(this.sim.frame, row.id, false, this.combat.player);
       if (hand && !(this._w116Break && this._w116Break.onehand)) this._restoreDeclaredHand(slot, ev);
       if (slot === 'talisman') this._setCatalystFromSlot(null, ev);
       this._sayEquip(ev, rec, 'off');
@@ -5027,7 +5046,7 @@ export class Engine {
     }
     // DELETE-THE-FIX arm (`__breakW116('onehand')`): the round-2 world exactly — the row lands in
     // the hand slot and is weighed there, and the fight goes on swinging what it was holding.
-    if (hand && !(this._w116Break && this._w116Break.onehand)) {
+    if (hand && !rec.enchanted && !(this._w116Break && this._w116Break.onehand)) {
       const { patch, why } = this._loadoutForItem(rec, slot);
       // REFUSED, and named. The alternative is the round-2 defect: a weight in the ratio for an
       // object the fight is not holding.
@@ -5038,6 +5057,7 @@ export class Engine {
     for (const r of this.sim.inventory) if (r.slot === slot) r.slot = null;
     row.slot = slot;
     ev.equipped = true;
+    if (rec.enchanted) this.magic.wearEnchantedItem(this.sim.frame, row.id, true, this.combat.player);
     // W1-16 round 4 — RI-PRG07 §2's FOURTH TERM REACHES THE FIGHT. A talisman is not just a weight
     // in a slot: it is the catalyst the MagicSystem casts through, so putting one on moves the
     // focus cost and `castNow`'s `no_catalyst` refusal as well as the equip ratio. A term that
@@ -6024,6 +6044,26 @@ export class Engine {
     // load, and a standing that is only correct on the frame a quest closed is not a standing.
     this.syncFactionStandings();
     this._journeyStamps();
+    // W1-14: a commissioned on-strike enchantment is read by the real combat HIT, not by a
+    // harness verb. Only the equipped right-hand object may fire; body-corridor contacts do not
+    // count as a blade strike. The magic system owns charge and effect resolution.
+    if (this.magic && this.combat && this.combat.player) {
+      for (const row of this.sim.inventory) {
+        if (!row.slot) continue;
+        const it = this.magic.enchantedItem(row.id);
+        if (it && it.kind === 'constant' && !it.worn) this.magic.wearEnchantedItem(this.sim.frame, row.id, true, this.combat.player);
+      }
+      const held = this.sim.inventory.find((x) => x.slot === 'right');
+      const ench = held && this.magic.enchantedItem(held.id);
+      if (ench && ench.kind === 'on_strike') {
+        for (let i = 0, n = this.bus.count; i < n; i++) {
+          const hit = this.bus.pool[i];
+          if (hit.type !== 'HIT' || hit.src !== this.combat.player.id || hit.via !== 'weapon') continue;
+          const target = this.combat.bodies.find((b) => b.id === hit.dst);
+          if (target) this.magic.strikeWithEnchantedItem(this.sim.frame, held.id, target);
+        }
+      }
+    }
     // A census commit latched inside the step is applied here — outside the armed guard, and
     // strictly before the frame record, so its `creation_field` event is in this frame.
     if (this._titlePending) { const t = this._titlePending; this._titlePending = null; this._titleApply(t); }
