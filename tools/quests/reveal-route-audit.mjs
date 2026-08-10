@@ -142,7 +142,7 @@ const personRouted = new Set();
 const personSourceMissing = [];
 for (const { q } of quests) {
   for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
-    if (CHANNEL_READERS[rev.channel] !== 'person') continue;
+    if (!['person', 'eavesdrop', 'corpse'].includes(CHANNEL_READERS[rev.channel])) continue;
     if (npcIds.has(rev.source)) personRouted.add(`${q.id}|${rev.id}`);
     else personSourceMissing.push({ quest: q.id, reveal: rev.id, channel: rev.channel, source: rev.source });
   }

@@ -1,0 +1,504 @@
+{
+  "schema": "elder-souls/npcs@1",
+  "group": "quest-witnesses",
+  "owner": "W1-18",
+  "source": "People named by deceit.revealed_by who previously had no world record. Each has a settlement post and a quest-specific first line.",
+  "npcs": [
+    {
+      "id": "captain-oreem",
+      "actor": "townsman",
+      "name": "Captain Oreem",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "archon",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The vats pay men to forget what the strand smells like."
+      },
+      "post": {
+        "settlement": "archon",
+        "at_building": null,
+        "at_building_name": "Archon witness post",
+        "pos": [
+          3800.0,
+          3,
+          3840.0
+        ],
+        "yaw": 0,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "clerk-meno",
+      "actor": "townsman",
+      "name": "Clerk Meno",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "blackrose",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The prison count and the office count have not agreed since First Seed."
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": null,
+        "at_building_name": "Blackrose witness post",
+        "pos": [
+          -3298.3,
+          5,
+          5901.3
+        ],
+        "yaw": 37,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-ossei",
+      "actor": "townsman",
+      "name": "Ossei",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Ask which seal was warm when it reached the archive."
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": null,
+        "at_building_name": "Stormhold witness post",
+        "pos": [
+          853.4,
+          4,
+          -4197.4
+        ],
+        "yaw": 74,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "rootkeeper-under-the-temple",
+      "actor": "townsman",
+      "name": "Keeper Under-the-Temple",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "lilmoth",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The lower roots remember what the upper rooms deny."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "Lilmoth witness post",
+        "pos": [
+          4905.1,
+          2,
+          -596.1
+        ],
+        "yaw": 111,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-eleen",
+      "actor": "townsman",
+      "name": "Eleen",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "lilmoth",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The stopper mark was cut before the phial crossed the quay."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "Lilmoth witness post",
+        "pos": [
+          4906.8,
+          2,
+          -594.8
+        ],
+        "yaw": 148,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "cutter-ashaan-hulei",
+      "actor": "townsman",
+      "name": "Ashaan Hulei",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I cut the shaded face. I know which stroke was added later."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5091.5,
+          6,
+          -3593.5
+        ],
+        "yaw": 185,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-skara-hull-chalk",
+      "actor": "townsman",
+      "name": "Skara Hull-Chalk",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "lilmoth",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Those tidemarks were on the hull before the tally was signed."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "Lilmoth witness post",
+        "pos": [
+          4910.2,
+          2,
+          -592.2
+        ],
+        "yaw": 222,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-ineve-corrano",
+      "actor": "townsman",
+      "name": "Ineve Corrano",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "lilmoth",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I kept the first minute. The clean copy is not the first."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "Lilmoth witness post",
+        "pos": [
+          4911.9,
+          2,
+          -590.9
+        ],
+        "yaw": 259,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-ishi-vaal",
+      "actor": "townsman",
+      "name": "Ishi-Vaal",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "stormhold",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "Her arithmetic leaves one boat uncounted every fourth day."
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": null,
+        "at_building_name": "Stormhold witness post",
+        "pos": [
+          863.6,
+          4,
+          -4189.6
+        ],
+        "yaw": 296,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-sorel-ithan",
+      "actor": "townsman",
+      "name": "Sorel Ithan",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The foreman changed the roll after the hollow answered."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5084.7,
+          6,
+          -3588.3
+        ],
+        "yaw": 333,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-uneel-vaakh-sister",
+      "actor": "townsman",
+      "name": "Uneel-Vaakh's Sister",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "My brother promised the root and the gallery different things."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5083.0,
+          6,
+          -3587.0
+        ],
+        "yaw": 10,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-high-hollow-speaker",
+      "actor": "townsman",
+      "name": "Speaker of the High Hollow",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "The high hollow answered once, and the lower posts went quiet."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5081.3,
+          6,
+          -3585.7
+        ],
+        "yaw": 47,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-fourth-day-boatman",
+      "actor": "townsman",
+      "name": "Fourth-Day Boatman",
+      "race": "dunmer",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I take the empty boat on the fourth day. It is never empty coming back."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5079.6,
+          6,
+          -3584.4
+        ],
+        "yaw": 84,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-ineel-sa",
+      "actor": "townsman",
+      "name": "Ineel-Sa",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "blackrose",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I kept what the clean copy leaves out."
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": null,
+        "at_building_name": "Blackrose witness post",
+        "pos": [
+          -3290,
+          5,
+          5890
+        ],
+        "yaw": 90,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-widow-tesla-vor",
+      "actor": "townsman",
+      "name": "Widow Tesla Vor",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "lilmoth",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I kept what the clean copy leaves out."
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "Lilmoth witness post",
+        "pos": [
+          4891,
+          2,
+          -589
+        ],
+        "yaw": 90,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    },
+    {
+      "id": "npc-river-band-elder",
+      "actor": "townsman",
+      "name": "River-Band Elder",
+      "race": "saxhleel",
+      "class": "witness",
+      "faction": null,
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "helstrom",
+      "interior": null,
+      "disposition": 45,
+      "topics": [
+        "little-advice"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "I kept what the clean copy leaves out."
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": null,
+        "at_building_name": "Helstrom witness post",
+        "pos": [
+          -5088,
+          6,
+          -3588
+        ],
+        "yaw": 90,
+        "note": "W1-18: placed source for a declared reveal route."
+      }
+    }
+  ]
+}

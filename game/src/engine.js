@@ -554,6 +554,8 @@ export class Engine {
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+    // Quest gold rewards use the canonical purse writer so combat, magic, stealth and UI agree.
+    this.questEngine.awardGold = (amount) => this._setGold(this._gold() + Number(amount || 0));
     // W1-20. The recruiters' words. `FactionGates.evaluate()` has always computed the whole
     // four-part statement with the player's own numbers in it and `QuestEngine.open()` has always
     // refused on it — and what came back was `the_drowned_court rank 0/2`, a debug string with
@@ -2571,6 +2573,23 @@ export class Engine {
    * and the character's race class — so the reaction matrix, the birthsign terms and the
    * player's race all reach a sentence somebody says out loud.
    */
+  eavesdrop(eid) {
+    const n = this.sim.findNPC(eid);
+    if (!n) return { ok: false, reason: 'source is not present' };
+    const p = this.sim.player;
+    const distance_m = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
+    const civ = this.sim.stealth && this.sim.stealth.civilians && this.sim.stealth.civilians.find((x) => x.id === eid || x.eid === eid);
+    if (!this.sim.stealth || !this.sim.stealth.p.crouched) return { ok: false, reason: 'not crouched' };
+    if (distance_m > 6) return { ok: false, reason: 'conversation is out of hearing', distance_m };
+    if (civ && !['CALM', 'WATCHING'].includes(civ.state)) return { ok: false, reason: 'the speakers noticed you', state: civ.state };
+    return { ok: true, source: eid, distance_m, learned: this.questEngine.learnFrom('eavesdrop', eid) };
+  }
+
+  examineCorpse(eid) {
+    if (!(this.sim.world.npcsDead || []).includes(eid)) return { ok: false, reason: 'the named person is not dead' };
+    return { ok: true, source: eid, learned: this.questEngine.learnFrom('corpse', eid) };
+  }
+
   talkTo(eid) {
     const n = this.sim.findNPC(eid);
     if (!n) throw new Error(`talkTo('${eid}'): nobody by that name is in the world`);
@@ -3497,7 +3516,10 @@ export class Engine {
           const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
           if (d <= Math.min(n.notice_radius_m, 3.0) && d < whoD) { who = n; whoD = d; }
         }
-        if (who) this._talkPending = who.eid;
+        if (who) {
+          if (this.sim.stealth && this.sim.stealth.p.crouched) this._eavesdropPending = who.eid;
+          else this._talkPending = who.eid;
+        }
       }
       return;
     }
@@ -6073,6 +6095,7 @@ export class Engine {
       return;
     }
     if (this._propPending) this._takePropPending();
+    if (this._eavesdropPending) { const w = this._eavesdropPending; this._eavesdropPending = null; this.eavesdrop(w); }
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
     if (this._writPending) { this._writPending = false; this.openWrit(); }

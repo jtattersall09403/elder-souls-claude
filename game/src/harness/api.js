@@ -1047,6 +1047,8 @@ export function installHarness(engine, bootPromise) {
      * character currently in the world after `requires.race` / `forbids.race`.
      */
     talkTo(eid) { return engine.talkTo(eid); },
+    eavesdrop(eid) { return engine.eavesdrop(String(eid)); },
+    examineCorpse(eid) { return engine.examineCorpse(String(eid)); },
     /** Say a topic. Returns the info, or `{refused:'no_info'}` — never a silent nothing. */
     conversationSay(topic) { return engine.conversationSay(topic); },
     conversationClose() { return engine.conversationClose(); },

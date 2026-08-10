@@ -97,6 +97,16 @@
             "res_the_factors_leg"
           ],
           "irreversible": false
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 50,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_shore_and_go",
+            "res_the_factors_leg"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -120,11 +130,16 @@
               "the_works_are_open",
               "the_way_down_is_walkable",
               "the_company_camp_stands",
-              "fifteen_days_of_ordinary_work"
+              "fifteen_days_of_ordinary_work",
+              "quest_q_main_24_res_shore_and_go_choice_recorded",
+              "quest_q_main_24_res_shore_and_go_world_answered",
+              "quest_q_main_24_res_shore_and_go_route_closed"
             ],
             "npc_disposition": {
               "keeper-teeja-lun": 10,
-              "dockmaster-weeja-sen": 10
+              "dockmaster-weeja-sen": 10,
+              "undersexton-aveline-rell": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -152,11 +167,16 @@
               "the_way_down_is_walkable",
               "the_company_factor_is_a_prisoner",
               "the_factors_account_of_who_told_him",
-              "the_company_lost_a_factor_and_a_party"
+              "the_company_lost_a_factor_and_a_party",
+              "quest_q_main_24_res_the_factors_leg_choice_recorded",
+              "quest_q_main_24_res_the_factors_leg_world_answered",
+              "quest_q_main_24_res_the_factors_leg_route_closed"
             ],
             "npc_disposition": {
               "blackwood-company-factor": -30,
-              "keeper-teeja-lun": 6
+              "keeper-teeja-lun": 6,
+              "undersexton-aveline-rell": -3,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -197,7 +217,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "act_five_opened"
         ],
@@ -234,6 +257,24 @@
           "unique_named": true,
           "id": "blackwood-company-factor",
           "name": "a Company factor with a broken leg",
+          "on_resolution": [
+            "res_the_factors_leg"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_24_res_shore_and_go",
+          "name": "Consequence of shore and go",
+          "on_resolution": [
+            "res_shore_and_go"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_24_res_the_factors_leg",
+          "name": "Consequence of the factors leg",
           "on_resolution": [
             "res_the_factors_leg"
           ]
@@ -367,11 +408,16 @@
               "approach_by_the_counting_floor",
               "player_heard_the_eleven_keepers",
               "third_bay_avoided",
-              "a_day_and_a_half_on_the_counting_floor"
+              "a_day_and_a_half_on_the_counting_floor",
+              "quest_q_main_25_res_counting_floor_choice_recorded",
+              "quest_q_main_25_res_counting_floor_world_answered",
+              "quest_q_main_25_res_counting_floor_route_closed"
             ],
             "npc_disposition": {
               "gallery-intake-keepers": 25,
-              "keeper-ei-vashan": 10
+              "keeper-ei-vashan": 10,
+              "undersexton-bel-mourne": 3,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -397,10 +443,15 @@
               "approach_by_the_intake_stair",
               "third_bay_avoided",
               "two_hours_and_nobody_spoken_to",
-              "ei_vashan_came_up"
+              "ei_vashan_came_up",
+              "quest_q_main_25_res_intake_stair_choice_recorded",
+              "quest_q_main_25_res_intake_stair_world_answered",
+              "quest_q_main_25_res_intake_stair_route_closed"
             ],
             "npc_disposition": {
-              "keeper-ei-vashan": 25
+              "keeper-ei-vashan": 25,
+              "undersexton-bel-mourne": -3,
+              "notary-sedda-vell": -2
             }
           }
         },
@@ -422,13 +473,18 @@
               "approach_through_the_third_bay",
               "the_third_bay_is_empty",
               "the_gallery_knows_what_the_player_did",
-              "the_keepers_will_say_more_not_less"
+              "the_keepers_will_say_more_not_less",
+              "quest_q_main_25_res_through_the_third_bay_choice_recorded",
+              "quest_q_main_25_res_through_the_third_bay_world_answered",
+              "quest_q_main_25_res_through_the_third_bay_route_closed"
             ],
             "kills_npc": [
               "npc-the-thing-in-the-third-bay"
             ],
             "npc_disposition": {
-              "gallery-intake-keepers": -10
+              "gallery-intake-keepers": -10,
+              "undersexton-bel-mourne": 3,
+              "ee-vashum": 2
             }
           }
         }
@@ -470,7 +526,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_ash_gallery_crossed"
         ],
@@ -519,6 +578,33 @@
           "unique_named": true,
           "id": "item_duskfall_ward_fragment",
           "name": "a fragment of what was left in the third bay",
+          "on_resolution": [
+            "res_through_the_third_bay"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_25_res_counting_floor",
+          "name": "Consequence of counting floor",
+          "on_resolution": [
+            "res_counting_floor"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_25_res_intake_stair",
+          "name": "Consequence of intake stair",
+          "on_resolution": [
+            "res_intake_stair"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_25_res_through_the_third_bay",
+          "name": "Consequence of through the third bay",
           "on_resolution": [
             "res_through_the_third_bay"
           ]
@@ -667,10 +753,14 @@
             "world_flags": [
               "the_argument_was_heard",
               "player_knows_how_the_count_opens",
-              "the_three_accounts_do_not_agree"
+              "the_three_accounts_do_not_agree",
+              "quest_q_main_26_res_hear_him_out_choice_recorded",
+              "quest_q_main_26_res_hear_him_out_world_answered",
+              "quest_q_main_26_res_hear_him_out_route_closed"
             ],
             "npc_disposition": {
-              "ixtu-meer": 15
+              "ixtu-meer": 15,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -698,11 +788,15 @@
               "player_knows_how_the_count_opens",
               "the_clause_was_put_to_him",
               "he_never_wrote_in_the_recension",
-              "the_last_word_on_the_clause_settles_nothing"
+              "the_last_word_on_the_clause_settles_nothing",
+              "quest_q_main_26_res_press_him_on_the_clause_choice_recorded",
+              "quest_q_main_26_res_press_him_on_the_clause_world_answered",
+              "quest_q_main_26_res_press_him_on_the_clause_route_closed"
             ],
             "npc_disposition": {
               "ixtu-meer": 25,
-              "undersexton-bel-mourne": 10
+              "undersexton-bel-mourne": 10,
+              "notary-sedda-vell": -2
             }
           }
         }
@@ -751,7 +845,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_conversation_happened"
         ],
@@ -788,6 +885,24 @@
           "unique_named": true,
           "id": "topic_he_has_never_written_in_the_recension",
           "name": "he has never written in the Recension",
+          "on_resolution": [
+            "res_press_him_on_the_clause"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_26_res_hear_him_out",
+          "name": "Consequence of hear him out",
+          "on_resolution": [
+            "res_hear_him_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_26_res_press_him_on_the_clause",
+          "name": "Consequence of press him on the clause",
           "on_resolution": [
             "res_press_him_on_the_clause"
           ]
@@ -892,11 +1007,18 @@
               "intakes_from_above_closed",
               "works_camp_unreachable",
               "the_eight_voices_are_finished",
-              "the_sill_is_behind_me"
+              "the_sill_is_behind_me",
+              "quest_q_main_27_res_cross_choice_recorded",
+              "quest_q_main_27_res_cross_world_answered",
+              "quest_q_main_27_res_cross_route_closed"
             ],
             "locks": [
               "Q-MAIN-29"
-            ]
+            ],
+            "npc_disposition": {
+              "ixtu-meer": 3,
+              "gideon-court-factor": 2
+            }
           }
         }
       ],
@@ -935,7 +1057,10 @@
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "on_the_reservoir_floor"
         ],
@@ -951,6 +1076,15 @@
           "unique_named": true,
           "id": "loc_the_reservoir_floor",
           "name": "the reservoir floor"
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_27_res_cross",
+          "name": "Consequence of cross",
+          "on_resolution": [
+            "res_cross"
+          ]
         }
       ],
       "notes": "Act V quest 4, the point of no return. RI-EXP05 LH2: 27 of the mainline's 28 acted quests sit behind it, 0.964. LH3: three independent diegetic channels — Ei-Vashan's remark at journal 20, the camp's behaviour at journal 24, the chapter and the dockmaster at journal 28 — the earliest of them delivered three weeks of simulated time before the sill can be reached. LH4: there is no confirmation dialog, no UI string, no autosave prompt and no modal of any kind; the crossing is a resolution called res_cross whose method is wait. LH5: six world flags and four named threads close, each with an in-fiction acknowledgement."
@@ -1034,6 +1168,18 @@
             "res_walk_out"
           ],
           "irreversible": true
+        },
+        {
+          "id": "br_declared_choice",
+          "at_journal_index": 20,
+          "condition": "The player must choose which declared resolution and consequence to accept",
+          "leads_to": [
+            "res_open_the_count",
+            "res_take_his_place",
+            "res_kill_him",
+            "res_walk_out"
+          ],
+          "irreversible": true
         }
       ],
       "resolutions": [
@@ -1077,11 +1223,15 @@
               "blackwood_company_left_the_province",
               "the_court_is_vindicated",
               "the_deep_kin_stood_down",
-              "the_recension_is_still_unsettled"
+              "the_recension_is_still_unsettled",
+              "quest_q_main_28_res_open_the_count_choice_recorded",
+              "quest_q_main_28_res_open_the_count_world_answered",
+              "quest_q_main_28_res_open_the_count_route_closed"
             ],
             "npc_disposition": {
               "ixtu-meer": 20,
-              "keeper-teeja-lun": -20
+              "keeper-teeja-lun": -20,
+              "gideon-court-factor": 2
             }
           }
         },
@@ -1122,12 +1272,16 @@
               "the_court_is_discredited",
               "the_deep_kin_are_mobilising",
               "the_recension_is_still_unsettled",
-              "the_player_does_not_come_up"
+              "the_player_does_not_come_up",
+              "quest_q_main_28_res_take_his_place_choice_recorded",
+              "quest_q_main_28_res_take_his_place_world_answered",
+              "quest_q_main_28_res_take_his_place_route_closed"
             ],
             "npc_disposition": {
               "ixtu-meer": 40,
               "keeper-ei-vashan": -20,
-              "gallery-intake-keepers": 25
+              "gallery-intake-keepers": 25,
+              "notary-sedda-vell": -2
             },
             "locks": [
               "Q-MAIN-32"
@@ -1165,13 +1319,18 @@
               "the_court_is_discredited",
               "the_deep_kin_are_mobilising",
               "the_recension_is_still_unsettled",
-              "nobody_keeps_the_count"
+              "nobody_keeps_the_count",
+              "quest_q_main_28_res_kill_him_choice_recorded",
+              "quest_q_main_28_res_kill_him_world_answered",
+              "quest_q_main_28_res_kill_him_route_closed"
             ],
             "kills_npc": [
               "ixtu-meer"
             ],
             "npc_disposition": {
-              "gallery-intake-keepers": -40
+              "gallery-intake-keepers": -40,
+              "ixtu-meer": 3,
+              "ee-vashum": 2
             }
           }
         },
@@ -1203,12 +1362,16 @@
               "the_curve_continues",
               "the_court_is_discredited",
               "the_recension_is_still_unsettled",
-              "the_player_came_back_up"
+              "the_player_came_back_up",
+              "quest_q_main_28_res_walk_out_choice_recorded",
+              "quest_q_main_28_res_walk_out_world_answered",
+              "quest_q_main_28_res_walk_out_route_closed"
             ],
             "npc_disposition": {
               "keeper-ei-vashan": -10,
               "ixtu-meer": 10,
-              "keeper-teeja-lun": -15
+              "keeper-teeja-lun": -15,
+              "rootkeeper-ashul-tei": -2
             }
           }
         }
@@ -1249,7 +1412,10 @@
         "never_revealed": true
       },
       "consequences": {
-        "faction_reputation": {},
+        "faction_reputation": {
+          "the_wet_ledger": -1,
+          "the_imperial_assize": 1
+        },
         "world_flags": [
           "the_main_quest_is_finished",
           "act_five_closed"
@@ -1302,6 +1468,42 @@
           "unique_named": true,
           "id": "topic_that_is_a_decision",
           "name": "“that is a decision”",
+          "on_resolution": [
+            "res_walk_out"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_28_res_open_the_count",
+          "name": "Consequence of open the count",
+          "on_resolution": [
+            "res_open_the_count"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_28_res_take_his_place",
+          "name": "Consequence of take his place",
+          "on_resolution": [
+            "res_take_his_place"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_28_res_kill_him",
+          "name": "Consequence of kill him",
+          "on_resolution": [
+            "res_kill_him"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": false,
+          "id": "reward_quest_q_main_28_res_walk_out",
+          "name": "Consequence of walk out",
           "on_resolution": [
             "res_walk_out"
           ]

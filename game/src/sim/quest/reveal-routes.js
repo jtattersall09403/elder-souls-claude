@@ -87,6 +87,10 @@
 export const CHANNEL_READERS = {
   talk_to_target: 'person',
   rival_npc: 'person',
+  // W1-18 builder: crouched interact uses Engine.eavesdrop(); it refuses once the listener is noticed.
+  eavesdrop: 'eavesdrop',
+  // A dead named body is examined through Engine.examineCorpse(), never the crime witness verb.
+  corpse: 'corpse',
   // W1-READABLES round 2. `environment` says the source of the truth is a thing in the world,
   // and until this round every one of its 27 rows named a place, a station or a mark that was
   // not an object anywhere in the build. `game/data/world/readables/site-marks.json` is the
