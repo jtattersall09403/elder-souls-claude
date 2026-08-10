@@ -1,205 +1,298 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "stormhold-customs",
-  "name": "The Pass Customs",
-  "settlement": "stormhold",
-  "cell_kind": "named",
-  "interior_kind": "guild",
-  "service": null,
-  "faction": "the-imperial-assize",
-  "exterior_door": [
-    2152.5,
-    141.12,
-    731
+ "schema": "elder-souls/interior@1",
+ "id": "stormhold-customs",
+ "name": "The Pass Customs",
+ "settlement": "stormhold",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "the-imperial-assize",
+ "exterior_door": [
+  2152.5,
+  141.12,
+  731
+ ],
+ "continuity": {
+  "building": "stormhold-customs",
+  "building_offset_m": [
+   -19,
+   0,
+   -30
   ],
-  "continuity": {
-    "building": "stormhold-customs",
-    "building_offset_m": [
-      -19,
-      0,
-      -30
-    ],
-    "building_yaw_deg": 0,
-    "exterior_footprint_m": [
-      12.4,
-      14.4
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6
-    ],
-    "exterior_spawn": [
-      2152.5,
-      141.12,
-      732.8
-    ]
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.87
+  ],
+  "exterior_spawn": [
+   2152.5,
+   141.12,
+   738.7
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2152.5,
+   141.12,
+   732.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.87,
+   5.87
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.87,
+   6.87
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "stormhold.publican5.r2.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.2,
-      6.2
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.2,
-      7.2
-    ]
+  {
+   "id": "stormhold.publican5.r2.lamp0",
+   "pos": [
+    2.5,
+    1.6,
+    1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 178.6,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.88
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "stormhold.publican5.r2.lamp1",
+   "pos": [
+    -2.6,
+    1.6,
+    1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "stormhold.publican5.r2.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "stormhold.publican5.r2.lamp0",
-      "pos": [
-        2.5,
-        1.6,
-        1.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.publican5.r2.lamp1",
-      "pos": [
-        -2.6,
-        1.6,
-        1.4000000000000004
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.factor12.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "stormhold.factor12.r0.lamp0",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        -3.6
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.factor12.r0.lamp1",
-      "pos": [
-        -2.1,
-        1.6,
-        -3.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.factor12.r0.lamp2",
-      "pos": [
-        -3.4,
-        1.6,
-        -3.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "desk_writing",
-    "record_press",
-    "map_table",
-    "seal_press",
-    "muster_board",
-    "chest_iron",
-    "chair_formal",
-    "shelf_deed",
-    "lamp_desk",
-    "banner_wall",
-    "key_rail",
-    "inkstand",
-    "strongbox",
-    "bench_wait",
-    "sto_legion_block",
-    "sto_bloom_course",
-    "sto_grid_barrack",
-    "sto_wall_lean"
-  ],
-  "property_zones": [
-    "stormhold.publican5.r2",
-    "stormhold.factor12.r0"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "stormhold-customs-unique",
-    "name": "a Dunmer slave-collar entered as cargo",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:stormhold-publican-5"
+  {
+   "id": "stormhold.factor12.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "readable": [
-    {
-      "id": "stormhold-customs-readable",
-      "title": "Goods Declared"
-    },
-    {
-      "id": "thirty-years-in-the-auxiliaries-i",
-      "title": "Thirty years in the auxiliaries, the first",
-      "book": "thirty-years-in-the-auxiliaries-i"
-    },
-    {
-      "id": "thirty-years-in-the-auxiliaries-ii",
-      "title": "Thirty years in the auxiliaries, the second",
-      "book": "thirty-years-in-the-auxiliaries-ii"
-    },
-    {
-      "id": "thirty-years-in-the-auxiliaries-iii",
-      "title": "Thirty years in the auxiliaries, the third",
-      "book": "thirty-years-in-the-auxiliaries-iii"
-    },
-    {
-      "id": "pilots-chart-book",
-      "title": "The Topal Shore Run, as it is actually sailed",
-      "book": "pilots-chart-book"
-    }
+  {
+   "id": "stormhold.factor12.r0.lamp0",
+   "pos": [
+    -0.2,
+    1.6,
+    -3.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.factor12.r0.lamp1",
+   "pos": [
+    -2.1,
+    1.6,
+    -3.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.factor12.r0.lamp2",
+   "pos": [
+    -3.4,
+    1.6,
+    -3.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "sto_legion_block",
+  "sto_bloom_course",
+  "sto_grid_barrack",
+  "sto_wall_lean"
+ ],
+ "property_zones": [
+  "stormhold.publican5.r2",
+  "stormhold.factor12.r0"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "stormhold-customs-unique",
+  "name": "a Dunmer slave-collar entered as cargo",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:stormhold-publican-5"
+ },
+ "readable": [
+  {
+   "id": "stormhold-customs-readable",
+   "title": "Goods Declared"
+  },
+  {
+   "id": "thirty-years-in-the-auxiliaries-i",
+   "title": "Thirty years in the auxiliaries, the first",
+   "book": "thirty-years-in-the-auxiliaries-i"
+  },
+  {
+   "id": "thirty-years-in-the-auxiliaries-ii",
+   "title": "Thirty years in the auxiliaries, the second",
+   "book": "thirty-years-in-the-auxiliaries-ii"
+  },
+  {
+   "id": "thirty-years-in-the-auxiliaries-iii",
+   "title": "Thirty years in the auxiliaries, the third",
+   "book": "thirty-years-in-the-auxiliaries-iii"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.5,
+    1.6,
+    1.5
+   ]
+  },
+  {
+   "pos": [
+    -2.6,
+    1.6,
+    1.4000000000000004
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -3.6
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    -3.5
+   ]
+  },
+  {
+   "pos": [
+    -3.4,
+    1.6,
+    -3.4
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "stormhold-customs",
+ "door_world_pos": [
+  2152.5,
+  141.12,
+  738.2
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }
