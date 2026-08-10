@@ -1,0 +1,26 @@
+{
+  "task_id": "W1-06-build",
+  "role": "builder",
+  "status": "builder_delivery_with_hard_fails",
+  "plan": "orchestration/plans/W1-06.md",
+  "current_head": "07e75bdbf54fd322ada371c25dfcf739f449a7c1",
+  "files_touched": [
+    "orchestration/status/W1-06-build.json",
+    "tools/camera/cam-probe.mjs",
+    "evidence/W1-06/builder-ledger.md",
+    "evidence/W1-06/mechanical/m-cam01-rig.json",
+    "evidence/W1-06/source-pack/SHA256SUMS",
+    "evidence/W1-06/mechanical/rig-rerun.json",
+    "evidence/W1-06/mechanical/cam-consume.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Fresh builder must repair valid cistern/boardwalk/stair and wall-fixture clipping, rerun all mechanical rows, then dispatch the exact independent handoff in evidence/W1-06/builder-ledger.md.",
+  "hard_fails": [
+    "cistern arm shortening distribution",
+    "2493 clip frames across cistern/boardwalk/stair",
+    "moving-wall fixture clipping",
+    "backing-wall fixture clipping"
+  ],
+  "formal_blocker": "AMENDMENT-W1-06-01 crawl geometry remains unresolved; no local threshold changed.",
+  "independent_passes_awarded": 0
+}

@@ -1,0 +1,297 @@
+{
+  "schema": "elder-souls/cam-probe@1",
+  "unit": "f@60",
+  "piece": "W1-06",
+  "generated": "2026-08-10T16:47:40.929Z",
+  "probes": {
+    "rig": {
+      "report": [
+        "declared fov=50  near=0.1  far=1200  pivot_h=1.55",
+        "arm at pitch 0 = 4.1 m desired 4.1 (declared 4.10 at pitch 0)",
+        "obstructed poses (camera below the ground plane at positive pitch): 4 of 24",
+        "arm at pitch -55 = 3.362 m (4.10 x 0.82 = 3.362 at -55)"
+      ],
+      "checks": {
+        "fov_50": {
+          "pass": true,
+          "note": "observed fov_deg=50"
+        },
+        "near_far": {
+          "pass": true,
+          "note": "near=0.1 far=1200"
+        },
+        "pivot_height_1p55": {
+          "pass": true,
+          "note": "observed 1.55 m above ground contact"
+        },
+        "shoulder_right_0p42": {
+          "pass": true,
+          "note": "min=0.42 max=0.42 over 20 unobstructed poses of 24"
+        },
+        "shoulder_up_0p10": {
+          "pass": true,
+          "note": "min=0.1 max=0.1"
+        },
+        "shoulder_nonzero": {
+          "pass": true,
+          "note": "a centred camera is not a Souls camera"
+        },
+        "pitch_arm_scale_2pct": {
+          "pass": true,
+          "note": "max deviation 0.005% (bar 2%)"
+        },
+        "derived_height_at_-55": {
+          "pass": true,
+          "note": "1.55+0.10+4.10*0.82*sin55 = 4.404 m (item §E); measured arm 3.362"
+        }
+      },
+      "grid": [
+        {
+          "pitch": -55,
+          "yaw": 0,
+          "arm": 3.362,
+          "desired": 3.362,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.82
+        },
+        {
+          "pitch": -55,
+          "yaw": 90,
+          "arm": 3.362,
+          "desired": 3.362,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.82
+        },
+        {
+          "pitch": -55,
+          "yaw": 180,
+          "arm": 3.362,
+          "desired": 3.362,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.82
+        },
+        {
+          "pitch": -55,
+          "yaw": 270,
+          "arm": 3.362,
+          "desired": 3.362,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.82
+        },
+        {
+          "pitch": -40,
+          "yaw": 0,
+          "arm": 3.5633,
+          "desired": 3.5633,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.8691
+        },
+        {
+          "pitch": -40,
+          "yaw": 90,
+          "arm": 3.5633,
+          "desired": 3.5633,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.8691
+        },
+        {
+          "pitch": -40,
+          "yaw": 180,
+          "arm": 3.5633,
+          "desired": 3.5633,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.8691
+        },
+        {
+          "pitch": -40,
+          "yaw": 270,
+          "arm": 3.5633,
+          "desired": 3.5633,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.8691
+        },
+        {
+          "pitch": -20,
+          "yaw": 0,
+          "arm": 3.8316,
+          "desired": 3.8316,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9345
+        },
+        {
+          "pitch": -20,
+          "yaw": 90,
+          "arm": 3.8316,
+          "desired": 3.8316,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9345
+        },
+        {
+          "pitch": -20,
+          "yaw": 180,
+          "arm": 3.8316,
+          "desired": 3.8316,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9345
+        },
+        {
+          "pitch": -20,
+          "yaw": 270,
+          "arm": 3.8316,
+          "desired": 3.8316,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9345
+        },
+        {
+          "pitch": 0,
+          "yaw": 0,
+          "arm": 4.1,
+          "desired": 4.1,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 1
+        },
+        {
+          "pitch": 0,
+          "yaw": 90,
+          "arm": 4.1,
+          "desired": 4.1,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 1
+        },
+        {
+          "pitch": 0,
+          "yaw": 180,
+          "arm": 4.1,
+          "desired": 4.1,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 1
+        },
+        {
+          "pitch": 0,
+          "yaw": 270,
+          "arm": 4.1,
+          "desired": 4.1,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 1
+        },
+        {
+          "pitch": 20,
+          "yaw": 0,
+          "arm": 3.9705,
+          "desired": 3.9705,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9684
+        },
+        {
+          "pitch": 20,
+          "yaw": 90,
+          "arm": 3.9705,
+          "desired": 3.9705,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9684
+        },
+        {
+          "pitch": 20,
+          "yaw": 180,
+          "arm": 3.9705,
+          "desired": 3.9705,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9684
+        },
+        {
+          "pitch": 20,
+          "yaw": 270,
+          "arm": 3.9705,
+          "desired": 3.9705,
+          "hit": false,
+          "sr": 0.42,
+          "su": 0.1,
+          "scale": 0.9684
+        },
+        {
+          "pitch": 38,
+          "yaw": 0,
+          "arm": 2.1138,
+          "desired": 3.854,
+          "hit": true,
+          "sr": 0.2304,
+          "su": 0.0548,
+          "scale": 0.94
+        },
+        {
+          "pitch": 38,
+          "yaw": 90,
+          "arm": 2.1138,
+          "desired": 3.854,
+          "hit": true,
+          "sr": 0.2304,
+          "su": 0.0548,
+          "scale": 0.94
+        },
+        {
+          "pitch": 38,
+          "yaw": 180,
+          "arm": 2.1138,
+          "desired": 3.854,
+          "hit": true,
+          "sr": 0.2304,
+          "su": 0.0548,
+          "scale": 0.94
+        },
+        {
+          "pitch": 38,
+          "yaw": 270,
+          "arm": 2.1138,
+          "desired": 3.854,
+          "hit": true,
+          "sr": 0.2304,
+          "su": 0.0548,
+          "scale": 0.94
+        }
+      ]
+    }
+  },
+  "summary": {
+    "checks": 8,
+    "failed": 0,
+    "failures": []
+  }
+}
