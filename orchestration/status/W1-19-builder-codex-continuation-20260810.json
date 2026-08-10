@@ -1,0 +1,48 @@
+{
+  "task_id": "W1-19-builder-codex-continuation-20260810",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "builder_delivery_incomplete",
+  "base_commit": "46d3c0432fceb7cf1fa622f205c4728daa8321e9",
+  "branch": "codex/wave1-build-experiment",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "orchestration/status/W1-19-builder-codex-continuation-20260810.json",
+    "game/data/npcs/mainline.json",
+    "game/data/index.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/current-head-summary.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/chain-floor/mainline-chain-floor.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/reveal-world",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/controls/no-router.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/controls/unplace.log"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-19-builder-codex-continuation-20260810.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/",
+    "tools/quests/",
+    "tools/experience/",
+    "game/data/quests/mainline*.json",
+    "game/data/npcs/mainline.json",
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/src/sim/quest/"
+  ],
+  "next_step": "Replace or repair the legacy chain population so it performs the routed ledger/person/mark actions and player-facing resolution choices instead of questOpen/questNote/questResolve; then run 40 signatures x both chains, matched Gate B fixtures, Gate C aftermath populations and all remaining red/delete controls.",
+  "notes": [
+    "Continuation from integrated PR #106 and siblings; no prior result is assumed current.",
+    "Independent-only RI-EXP05 blind/critic/judgement remains NOT_RUN and is handed off without a self-awarded PASS.",
+    "Authoritative current-HEAD reveal routing was still 108/121 at the required base. Added 16 reachable, posted NPC records: all 13 demanded missing person sources plus the three additional declared person sources.",
+    "The positive route audit is now 121/121 with zero missing person records. Its no-router inverted control passes and its unplace control returns red at 80/121.",
+    "The authoritative 40-signature chain population remains 0/40: all 80 intended/backpath arms stop at Q-MAIN-06. The shipped routes exist, but mainline-chain-floor never performs the ledger action and still advances via prohibited direct quest APIs, so it cannot supply admissible end-to-end evidence.",
+    "A browser world-action sample passed 2/2 run person routes with unopened-quest and wrong-person controls, but 43/45 candidates were explicitly skipped behind prerequisites; this is not promoted to full evidence.",
+    "Browser work proceeded after contention reported 6 instances over the ceiling; this is recorded as a load limitation, not hidden."
+  ],
+  "gate_accounting": {
+    "reveal_routes": "COMPLETE: 121/121 demanded routes, 0 unrouted, 0 named person sources absent; red controls discriminate",
+    "A": "RED_NOT_COMPLETE: 0/40 signatures complete both chains; 80/80 arms stop at Q-MAIN-06 in the authoritative runner",
+    "B": "NOT_RUN: matched failing/passing gates and exclusive-choice siblings remain",
+    "C_builder": "NOT_RUN: intended/alternative/backpath repetitions and aftermath population remain",
+    "C_independent": "NOT_RUN_INDEPENDENT_ONLY: RI-EXP05 blind landing and critic judgement",
+    "D": "PARTIAL: mainline census/content/data/reveal gates pass; complete RI-LOR01/02/05 and RI-WLD09 played aggregate remains"
+  },
+  "implementation_commit": "ad2cccc"
+}

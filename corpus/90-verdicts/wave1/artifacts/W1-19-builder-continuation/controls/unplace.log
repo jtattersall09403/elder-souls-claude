@@ -1,0 +1,2915 @@
+[falsify unplace] forgot 164 book placement(s); every document route must go red
+{
+  "schema": "elder-souls/reveal-route-audit@1",
+  "generated_by": "tools/quests/reveal-route-audit.mjs",
+  "commit": "46d3c04",
+  "quests": 202,
+  "hooks_rows_total": 234,
+  "hooks_rows_with_quest_and_reveal": 5,
+  "demanded_reveals": 121,
+  "routed": 80,
+  "unrouted": 41,
+  "by_channel": {
+    "letter": {
+      "total": 7,
+      "routed": 0
+    },
+    "eavesdrop": {
+      "total": 9,
+      "routed": 9
+    },
+    "ledger": {
+      "total": 28,
+      "routed": 0
+    },
+    "rival_npc": {
+      "total": 23,
+      "routed": 23
+    },
+    "talk_to_target": {
+      "total": 28,
+      "routed": 28
+    },
+    "environment": {
+      "total": 16,
+      "routed": 16
+    },
+    "book": {
+      "total": 6,
+      "routed": 0
+    },
+    "later_quest": {
+      "total": 3,
+      "routed": 3
+    },
+    "corpse": {
+      "total": 1,
+      "routed": 1
+    }
+  },
+  "fully_blocked_quests": [
+    {
+      "file": "mainline-act2.json",
+      "id": "Q-MAIN-06",
+      "resolutions": 2
+    },
+    {
+      "file": "mainline-act2.json",
+      "id": "Q-MAIN-07",
+      "resolutions": 2
+    },
+    {
+      "file": "mainline-act2.json",
+      "id": "Q-MAIN-08",
+      "resolutions": 3
+    },
+    {
+      "file": "mainline-act2.json",
+      "id": "Q-MAIN-10",
+      "resolutions": 2
+    },
+    {
+      "file": "mainline-backpath.json",
+      "id": "Q-MAIN-30",
+      "resolutions": 2
+    }
+  ],
+  "coupling": {
+    "candidates": 5,
+    "tested": [
+      {
+        "flag": "point_of_no_return_crossed",
+        "raised_by": "Q-MAIN-27/res_cross",
+        "via": "_applyConsequences (the resolve path)",
+        "error": null,
+        "flag_raised": true,
+        "hook_payload_landed": false,
+        "leg_ran": true,
+        "payload": "journal 90"
+      },
+      {
+        "flag": "the_eleven_roots_are_cut",
+        "raised_by": "Q-MAIN-29/res_through_the_seventh",
+        "via": "_applyConsequences (the resolve path)",
+        "error": null,
+        "flag_raised": true,
+        "hook_payload_landed": true,
+        "leg_ran": true,
+        "payload": "the root channels"
+      },
+      {
+        "flag": "ledger_first_chair_refused",
+        "raised_by": "Q-LEDG-07/res_refuse",
+        "via": "_applyConsequences (the resolve path)",
+        "error": "Cannot read properties of null (reading 'flags')",
+        "flag_raised": true,
+        "hook_payload_landed": true,
+        "leg_ran": true,
+        "payload": "the-second-refusal"
+      },
+      {
+        "flag": "assize_prefect_refused",
+        "raised_by": "Q-ASSZ-07/res_refuse_hulen",
+        "via": "_applyConsequences (the resolve path)",
+        "error": "Cannot read properties of null (reading 'flags')",
+        "flag_raised": true,
+        "hook_payload_landed": true,
+        "leg_ran": true,
+        "payload": "the-removal-that-is-not-one"
+      },
+      {
+        "flag": "deepkin_speaker_refused",
+        "raised_by": "Q-XULA-07/res_tell_the_hollow",
+        "via": "_applyConsequences (the resolve path)",
+        "error": "Cannot read properties of null (reading 'flags')",
+        "flag_raised": true,
+        "hook_payload_landed": true,
+        "leg_ran": true,
+        "payload": "the-fourth-silence"
+      }
+    ],
+    "via_setflag": [
+      {
+        "flag": "point_of_no_return_crossed",
+        "flag_raised": true,
+        "hook_payload_landed": false
+      },
+      {
+        "flag": "the_eleven_roots_are_cut",
+        "flag_raised": true,
+        "hook_payload_landed": true
+      },
+      {
+        "flag": "ledger_first_chair_refused",
+        "flag_raised": true,
+        "hook_payload_landed": true
+      },
+      {
+        "flag": "assize_prefect_refused",
+        "flag_raised": true,
+        "hook_payload_landed": true
+      },
+      {
+        "flag": "deepkin_speaker_refused",
+        "flag_raised": true,
+        "hook_payload_landed": true
+      }
+    ],
+    "coupled": true,
+    "vacuous": false,
+    "legs_run": 5,
+    "unfireable_rows": [
+      "point_of_no_return_crossed"
+    ],
+    "comparable_legs": 4,
+    "setflag_works": true
+  },
+  "end_to_end": {
+    "cases": [
+      {
+        "reveal": "rev_what_the_cut_costs",
+        "on": "Q-MAIN-14",
+        "learned_by_playing": "Q-MAIN-12/(every ending)",
+        "flag": "the_wells_and_the_machine_are_one_system",
+        "know_flag_written": true,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": [],
+        "demanding_resolutions": 0,
+        "passed": false,
+        "no_gate_demands_it": true
+      },
+      {
+        "reveal": "rev_what_the_cut_does",
+        "on": "Q-MAIN-29",
+        "learned_by_playing": "Q-MAIN-12/(every ending)",
+        "flag": "the_wells_and_the_machine_are_one_system",
+        "know_flag_written": true,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": [
+          "you do not know rev_what_the_cut_does"
+        ],
+        "demanding_resolutions": 2,
+        "passed": true,
+        "no_gate_demands_it": false
+      },
+      {
+        "reveal": "rev_how_the_count_opens",
+        "on": "Q-MAIN-28",
+        "learned_by_playing": "Q-MAIN-26/(every ending)",
+        "flag": "the_conversation_happened",
+        "know_flag_written": true,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": [
+          "you do not know rev_how_the_count_opens"
+        ],
+        "demanding_resolutions": 2,
+        "passed": true,
+        "no_gate_demands_it": false
+      },
+      {
+        "reveal": "rev_who_told_the_company",
+        "on": "Q-MAIN-19",
+        "learned_by_playing": "Q-MAIN-26/(every ending)",
+        "flag": "the_conversation_happened",
+        "know_flag_written": true,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": [],
+        "demanding_resolutions": 0,
+        "passed": false,
+        "no_gate_demands_it": true
+      },
+      {
+        "reveal": "rev_crew_list_echo",
+        "on": "Q-XULA-14",
+        "learned_by_playing": "Q-XULA-11/(every ending)",
+        "flag": "rootlands_returned_worker_question_raised",
+        "know_flag_written": true,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": [
+          "you do not know rev_crew_list_echo"
+        ],
+        "demanding_resolutions": 1,
+        "passed": true,
+        "no_gate_demands_it": false
+      }
+    ],
+    "ok": true,
+    "demonstrable": 3,
+    "undemanded": [
+      "rev_what_the_cut_costs",
+      "rev_who_told_the_company"
+    ]
+  },
+  "people_channel": {
+    "cases": [
+      {
+        "quest": "Q-ASSZ-01",
+        "sources": [
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          48
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-02",
+        "sources": [
+          "blackrose-yard-hands",
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell_daybooks",
+          "rev_gang"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell_daybooks"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          50
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell_daybooks",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-03",
+        "sources": [
+          "notary-sedda-vell",
+          "npc-ineel-sa"
+        ],
+        "reveals": [
+          "rev_widow",
+          "rev_far_bank"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_far_bank"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          52
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_far_bank",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-04",
+        "sources": [
+          "blackrose-yard-hands",
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell_terms",
+          "rev_yard_hands"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell_terms"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          54
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 3,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell_terms",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-05",
+        "sources": [
+          "salt-factor-neloth-vaun"
+        ],
+        "reveals": [
+          "rev_receipts",
+          "rev_the_offer"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_receipts"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          44
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_receipts",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-06",
+        "sources": [
+          "assizer-corvo"
+        ],
+        "reveals": [
+          "rev_corvo_hand"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_corvo_hand"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_corvo_hand",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-07",
+        "sources": [
+          "notary-sedda-vell",
+          "prefect-hallow"
+        ],
+        "reveals": [
+          "rev_hallow",
+          "rev_vell_on_hallow"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_hallow"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          56
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_hallow",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-08",
+        "sources": [
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell_on_the_seal"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell_on_the_seal"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          60
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell_on_the_seal",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-10",
+        "sources": [
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell_was_right"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell_was_right"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          36
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell_was_right",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-12",
+        "sources": [
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_hallow_was_the_clerk"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_hallow_was_the_clerk"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          60
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_hallow_was_the_clerk",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-13",
+        "sources": [
+          "scribe-hulen"
+        ],
+        "reveals": [
+          "rev_hulen_wrote_them"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_hulen_wrote_them"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          30
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_hulen_wrote_them",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-14",
+        "sources": [
+          "prefect-hallow"
+        ],
+        "reveals": [
+          "rev_hallow_knew"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_hallow_knew"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          50
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_hallow_knew",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-15",
+        "sources": [
+          "notary-sedda-vell"
+        ],
+        "reveals": [
+          "rev_vell_in_the_yard"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vell_in_the_yard"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          50
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vell_in_the_yard",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-BLAK-01",
+        "sources": [
+          "clerk-meno"
+        ],
+        "reveals": [
+          "rev_meno"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_meno"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_meno",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-DEEP-01",
+        "sources": [
+          "cutter-ashaan-hulei"
+        ],
+        "reveals": [
+          "rev_hulei"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_hulei"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_hulei",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-01",
+        "sources": [
+          "master-anse",
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_anse",
+          "rev_wuleen"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 2,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-LEDG-02",
+        "sources": [
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_wuleen_counterfoil"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wuleen_counterfoil"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          42
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wuleen_counterfoil",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-03",
+        "sources": [
+          "npc-porter-eeja",
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_wuleen_lilmoth",
+          "rev_eeja"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wuleen_lilmoth"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          44
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wuleen_lilmoth",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-04",
+        "sources": [
+          "harbourmistress-tesh",
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_tesh",
+          "rev_wuleen_nine_years"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wuleen_nine_years"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          52
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wuleen_nine_years",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-05",
+        "sources": [
+          "ee-vashum",
+          "npc-skara-hull-chalk"
+        ],
+        "reveals": [
+          "rev_tidemarks",
+          "rev_vashum"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_tidemarks",
+          "rev_vashum"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          56
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 3,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_tidemarks",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-06",
+        "sources": [
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_fifth_vote"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_fifth_vote"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          54
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_fifth_vote",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-07",
+        "sources": [
+          "npc-ineve-corrano"
+        ],
+        "reveals": [
+          "rev_corrano"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_corrano"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_corrano",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-08",
+        "sources": [
+          "assizer-corvo",
+          "harbourmistress-tesh"
+        ],
+        "reveals": [
+          "rev_tesh_was_asked_first",
+          "rev_corvo_reads_the_roll"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 2,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": true,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-LEDG-10",
+        "sources": [
+          "npc-widow-tesla-vor",
+          "npc-wuleen-kus"
+        ],
+        "reveals": [
+          "rev_wuleen_float",
+          "rev_widow_line"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wuleen_float"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          36
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wuleen_float",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-12",
+        "sources": [
+          "assizer-corvo",
+          "npc-ishi-vaal"
+        ],
+        "reveals": [
+          "rev_her_arithmetic",
+          "rev_corvo_count"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_her_arithmetic",
+          "rev_corvo_count"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          48
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_her_arithmetic",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-LEDG-13",
+        "sources": [
+          "npc-ineve-corrano"
+        ],
+        "reveals": [
+          "rev_corrano_knew"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": true,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-LEDG-15",
+        "sources": [
+          "assizer-corvo"
+        ],
+        "reveals": [
+          "rev_corvo_will_hold_it"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_corvo_will_hold_it"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          50
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_corvo_will_hold_it",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-01",
+        "sources": [
+          "gideon-court-factor"
+        ],
+        "reveals": [
+          "rev_factor"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_factor"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          45
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_factor",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-02",
+        "sources": [
+          "ojal-weeth"
+        ],
+        "reveals": [
+          "rev_ojal"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_ojal"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          45
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_ojal",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-03",
+        "sources": [
+          "keeper-teeja-lun"
+        ],
+        "reveals": [
+          "rev_keepers_knew"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-07",
+        "sources": [
+          "neeja-xul"
+        ],
+        "reveals": [
+          "rev_fresh_wounds_give"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-09",
+        "sources": [
+          "undersexton-bel-mourne"
+        ],
+        "reveals": [
+          "rev_the_gap"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-10",
+        "sources": [
+          "rootkeeper-ashul-tei"
+        ],
+        "reveals": [
+          "rev_ashul_withheld"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-13",
+        "sources": [
+          "ledgerer-hosk-vei"
+        ],
+        "reveals": [
+          "rev_hosk_omission"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-14",
+        "sources": [
+          "neeja-xul"
+        ],
+        "reveals": [
+          "rev_the_route_under"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-15",
+        "sources": [
+          "rootkeeper-sesh-anaat"
+        ],
+        "reveals": [
+          "rev_keepers_silence"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-16",
+        "sources": [
+          "undersexton-bel-mourne"
+        ],
+        "reveals": [
+          "rev_the_middle_three"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_middle_three"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          20
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_middle_three",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-17",
+        "sources": [
+          "factor-ruvela-sath"
+        ],
+        "reveals": [
+          "rev_sath_wants_half"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-18",
+        "sources": [
+          "rootkeeper-ashul-tei"
+        ],
+        "reveals": [
+          "rev_the_eleven"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_eleven"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          20
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_eleven",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-20",
+        "sources": [
+          "prefect-galvus-arn"
+        ],
+        "reveals": [
+          "rev_the_lever"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_lever"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          36
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_lever",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-21",
+        "sources": [
+          "dockmaster-weeja-sen"
+        ],
+        "reveals": [
+          "rev_weeja_sens_price"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-23",
+        "sources": [
+          "salt-factor-neloth-vaun"
+        ],
+        "reveals": [
+          "rev_why_the_clause"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_why_the_clause"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          38
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_why_the_clause",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-24",
+        "sources": [
+          "keeper-teeja-lun"
+        ],
+        "reveals": [
+          "rev_teeja_luns_question"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-25",
+        "sources": [
+          "gallery-intake-keepers",
+          "keeper-ei-vashan"
+        ],
+        "reveals": [
+          "rev_the_keepers_accounts",
+          "rev_ei_vashans_count"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_keepers_accounts"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          30
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_keepers_accounts",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-26",
+        "sources": [
+          "ixtu-meer"
+        ],
+        "reveals": [
+          "rev_how_the_count_opens",
+          "rev_he_never_wrote_the_recension"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_how_the_count_opens",
+          "rev_he_never_wrote_the_recension"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          56
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 3,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_how_the_count_opens",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-27",
+        "sources": [
+          "keeper-ei-vashan"
+        ],
+        "reveals": [
+          "rev_what_the_sill_closes"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-28",
+        "sources": [
+          "gallery-intake-keepers"
+        ],
+        "reveals": [
+          "rev_the_three_accounts"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-31",
+        "sources": [
+          "ixtu-meer"
+        ],
+        "reveals": [
+          "rev_he_knew_from_the_third"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-32",
+        "sources": [
+          "aftermath-province-npcs"
+        ],
+        "reveals": [
+          "rev_nobody_agrees"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_nobody_agrees"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          20
+        ],
+        "refusals": [],
+        "crossed_ponr": true,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_nobody_agrees",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-SAP-01",
+        "sources": [
+          "npc-eleen"
+        ],
+        "reveals": [
+          "rev_eleen"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_eleen"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_eleen",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-SOUL-02",
+        "sources": [
+          "undertaker-vaskh"
+        ],
+        "reveals": [
+          "rev_vaskh"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-STRM-01",
+        "sources": [
+          "npc-ossei"
+        ],
+        "reveals": [
+          "rev_ossei"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_ossei"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_ossei",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-01",
+        "sources": [
+          "npc-river-band-elder",
+          "npc-sorel-ithan"
+        ],
+        "reveals": [
+          "rev_the_foreman",
+          "rev_the_elders_count"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_foreman"
+        ],
+        "learned": 2,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_foreman",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-02",
+        "sources": [
+          "rootkeeper-ashul-tei"
+        ],
+        "reveals": [
+          "rev_ashul_knew"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_ashul_knew"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          50
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_ashul_knew",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-03",
+        "sources": [
+          "ee-vashum"
+        ],
+        "reveals": [
+          "rev_vashum_wrote_it",
+          "rev_the_daughter"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vashum_wrote_it",
+          "rev_the_daughter"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          46,
+          54
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vashum_wrote_it",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-04",
+        "sources": [
+          "ee-vashum"
+        ],
+        "reveals": [
+          "rev_vashum_on_the_rim"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vashum_on_the_rim"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          48
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vashum_on_the_rim",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-05",
+        "sources": [
+          "cutter-neeth"
+        ],
+        "reveals": [
+          "rev_cutters_said_so"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-XULA-06",
+        "sources": [
+          "ku-vastei-ixakh"
+        ],
+        "reveals": [
+          "rev_ixakh"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_ixakh"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          36
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_ixakh",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-07",
+        "sources": [
+          "ee-vashum",
+          "speaker-teel-ashaan"
+        ],
+        "reveals": [
+          "rev_teel_himself",
+          "rev_vashum_refuses"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_teel_himself",
+          "rev_vashum_refuses"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          64
+        ],
+        "refusals": [
+          "rev_teel_himself: journal 52 is behind 64; the journal is append-only"
+        ],
+        "crossed_ponr": false,
+        "refusals_before": 3,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_teel_himself",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-08",
+        "sources": [
+          "rootkeeper-ashul-tei"
+        ],
+        "reveals": [
+          "rev_ashul_says_it"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-XULA-10",
+        "sources": [
+          "ee-vashum",
+          "speaker-teel-ashaan"
+        ],
+        "reveals": [
+          "rev_vashum_older",
+          "rev_teel_knew"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_vashum_older"
+        ],
+        "learned": 2,
+        "journal_entries_written": [
+          48
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_vashum_older",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-11",
+        "sources": [
+          "ee-vashum",
+          "npc-uneel-vaakh-sister"
+        ],
+        "reveals": [
+          "rev_his_sister",
+          "rev_vashum_waited"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_his_sister"
+        ],
+        "learned": 2,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_his_sister",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-12",
+        "sources": [
+          "npc-high-hollow-speaker"
+        ],
+        "reveals": [
+          "rev_the_high_hollow"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_high_hollow"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_high_hollow",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-13",
+        "sources": [
+          "speaker-teel-ashaan"
+        ],
+        "reveals": [
+          "rev_teel_counted"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_teel_counted"
+        ],
+        "learned": 1,
+        "journal_entries_written": [
+          58
+        ],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_teel_counted",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-14",
+        "sources": [
+          "npc-fourth-day-boatman"
+        ],
+        "reveals": [
+          "rev_the_boat"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_boat"
+        ],
+        "learned": 1,
+        "journal_entries_written": [],
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_boat",
+        "leg_ran": true,
+        "passed": true
+      }
+    ],
+    "ok": true,
+    "journal_writes": 37,
+    "legs_run": 46,
+    "legs_total": 65,
+    "not_run": [
+      "Q-LEDG-01",
+      "Q-LEDG-08",
+      "Q-LEDG-13",
+      "Q-MAIN-03",
+      "Q-MAIN-07",
+      "Q-MAIN-09",
+      "Q-MAIN-10",
+      "Q-MAIN-13",
+      "Q-MAIN-14",
+      "Q-MAIN-15",
+      "Q-MAIN-17",
+      "Q-MAIN-21",
+      "Q-MAIN-24",
+      "Q-MAIN-27",
+      "Q-MAIN-28",
+      "Q-MAIN-31",
+      "Q-SOUL-02",
+      "Q-XULA-05",
+      "Q-XULA-08"
+    ],
+    "call_site": {
+      "where": "game/src/engine.js#talkTo(eid)",
+      "calls_learn_from": true,
+      "note": "static assertion; the world-side proof is a browser run under reports/runs/W1-18-R2/"
+    }
+  },
+  "mark_channel": {
+    "cases": [
+      {
+        "quest": "Q-ARCH-01",
+        "sources": [
+          "env_lichen_beds_at_archon"
+        ],
+        "reveals": [
+          "rev_cough"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-ASSZ-10",
+        "sources": [
+          "item_distraint_order_wax"
+        ],
+        "reveals": [
+          "rev_the_wax"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_wax"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_wax",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-ASSZ-12",
+        "sources": [
+          "item_prefect_returns_press"
+        ],
+        "reveals": [
+          "rev_no_countersign"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-ASSZ-13",
+        "sources": [
+          "item_tally_sheet_fold"
+        ],
+        "reveals": [
+          "rev_the_crease"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-DEEP-01",
+        "sources": [
+          "env_the_shaded_cut"
+        ],
+        "reveals": [
+          "rev_knife"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_knife"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_knife",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-01",
+        "sources": [
+          "item_stale_mortuary_seal"
+        ],
+        "reveals": [
+          "rev_seal"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-03",
+        "sources": [
+          "loc_shaft_under_the_rib"
+        ],
+        "reveals": [
+          "rev_shaft"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_shaft"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_shaft",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-08",
+        "sources": [
+          "item_lead_ring_seal"
+        ],
+        "reveals": [
+          "rev_the_ring"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_ring"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_ring",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-11",
+        "sources": [
+          "loc_the_flooding_road"
+        ],
+        "reveals": [
+          "rev_the_rhythm"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_rhythm"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_rhythm",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-12",
+        "sources": [
+          "loc_the_sixth_intake"
+        ],
+        "reveals": [
+          "rev_wells_drink_the_overflow"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wells_drink_the_overflow"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wells_drink_the_overflow",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-15",
+        "sources": [
+          "loc_the_tree_at_thorn"
+        ],
+        "reveals": [
+          "rev_the_tree_does_not_know"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_tree_does_not_know"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_tree_does_not_know",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-21",
+        "sources": [
+          "loc_lilmoth_rotting_quarter"
+        ],
+        "reveals": [
+          "rev_the_rotting_quarter"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_rotting_quarter"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_rotting_quarter",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-MAIN-26",
+        "sources": [
+          "loc_the_counting_chamber_wall"
+        ],
+        "reveals": [
+          "rev_the_chain_on_the_wall"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-27",
+        "sources": [
+          "loc_the_works_camp"
+        ],
+        "reveals": [
+          "rev_the_camp_knows"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-MAIN-29",
+        "sources": [
+          "loc_the_seventh_root"
+        ],
+        "reveals": [
+          "rev_the_keepers_stand"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-SAP-01",
+        "sources": [
+          "env_stopper_mark_on_the_phial"
+        ],
+        "reveals": [
+          "rev_wax"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_wax"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_wax",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-STRM-01",
+        "sources": [
+          "env_chalked_doors_stormhold"
+        ],
+        "reveals": [
+          "rev_chalk"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-XULA-02",
+        "sources": [
+          "item_salt_sack_wire"
+        ],
+        "reveals": [
+          "rev_the_wire"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_wire"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_wire",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-04",
+        "sources": [
+          "environment_the_four_reaches",
+          "environment_the_lower_sluice"
+        ],
+        "reveals": [
+          "rev_the_number",
+          "rev_lower_sluice"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_number",
+          "rev_lower_sluice"
+        ],
+        "learned": 2,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 2,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_lower_sluice",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-05",
+        "sources": [
+          "environment_the_fourth_well"
+        ],
+        "reveals": [
+          "rev_fourth_well"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_fourth_well"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_fourth_well",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-08",
+        "sources": [
+          "item_gallery_outlander_post"
+        ],
+        "reveals": [
+          "rev_the_kept_post"
+        ],
+        "demanded_by_a_resolution": [],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 0,
+        "refusals_after": 0,
+        "sample_refusal": null,
+        "leg_ran": false,
+        "passed": false
+      },
+      {
+        "quest": "Q-XULA-10",
+        "sources": [
+          "item_gallery_dead_post"
+        ],
+        "reveals": [
+          "rev_the_dead_post"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_dead_post"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_dead_post",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-13",
+        "sources": [
+          "item_gallery_silence_post"
+        ],
+        "reveals": [
+          "rev_the_silence_post"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_silence_post"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_silence_post",
+        "leg_ran": true,
+        "passed": true
+      },
+      {
+        "quest": "Q-XULA-14",
+        "sources": [
+          "item_gallery_unreachable_posts"
+        ],
+        "reveals": [
+          "rev_the_four_posts"
+        ],
+        "demanded_by_a_resolution": [
+          "rev_the_four_posts"
+        ],
+        "learned": 1,
+        "refusals": [],
+        "crossed_ponr": false,
+        "refusals_before": 1,
+        "refusals_after": 0,
+        "sample_refusal": "you do not know rev_the_four_posts",
+        "leg_ran": true,
+        "passed": true
+      }
+    ],
+    "ok": true,
+    "legs_run": 15,
+    "legs_total": 24,
+    "not_run": [
+      "Q-ARCH-01",
+      "Q-ASSZ-12",
+      "Q-ASSZ-13",
+      "Q-MAIN-01",
+      "Q-MAIN-26",
+      "Q-MAIN-27",
+      "Q-MAIN-29",
+      "Q-STRM-01",
+      "Q-XULA-08"
+    ],
+    "call_site": {
+      "where": "game/src/engine.js#_takePropPending()",
+      "calls_learn_from": true,
+      "spawns_marks": true,
+      "note": "static assertion; the world-side proof is a browser run under reports/runs/W1-READABLES-R2/"
+    }
+  },
+  "person_routes_with_no_such_npc": [],
+  "unrouted_rows": [
+    {
+      "file": "blackmarsh-coast.json",
+      "quest": "Q-ARCH-01",
+      "reveal": "rev_letter",
+      "channel": "letter",
+      "source": "item_guild_denial",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "blackmarsh-coast.json",
+      "quest": "Q-SOUL-02",
+      "reveal": "rev_lease",
+      "channel": "ledger",
+      "source": "item_blackrose_lease_stub",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "blackmarsh-coast.json",
+      "quest": "Q-BLAK-01",
+      "reveal": "rev_destinations",
+      "channel": "ledger",
+      "source": "item_lease_register_third_hand",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "blackmarsh-coast.json",
+      "quest": "Q-LILM-01",
+      "reveal": "rev_four",
+      "channel": "letter",
+      "source": "item_tesh_drawer_charters",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "blackmarsh-core.json",
+      "quest": "Q-LEDG-01",
+      "reveal": "rev_hand",
+      "channel": "ledger",
+      "source": "item_unsealed_chits",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-06",
+      "reveal": "rev_renewal_clause",
+      "channel": "ledger",
+      "source": "item_blackrose_lease_roll",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-07",
+      "reveal": "rev_transfers",
+      "channel": "ledger",
+      "source": "item_stormhold_transfer_file",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-08",
+      "reveal": "rev_forty_uses",
+      "channel": "ledger",
+      "source": "item_legates_seal_register",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-12",
+      "reveal": "rev_the_damp_four",
+      "channel": "ledger",
+      "source": "item_prefect_returns_damp",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-13",
+      "reveal": "rev_dated_drafts",
+      "channel": "ledger",
+      "source": "item_declaration_drafts",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-14",
+      "reveal": "rev_the_commission",
+      "channel": "ledger",
+      "source": "item_prefect_commission",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-15",
+      "reveal": "rev_the_fourth_writ",
+      "channel": "ledger",
+      "source": "item_fourth_writ_attainder",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-imperial-assize.json",
+      "quest": "Q-ASSZ-15",
+      "reveal": "rev_the_older_seal_book",
+      "channel": "book",
+      "source": "book_the_court_and_the_tide",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-04",
+      "reveal": "rev_returns",
+      "channel": "ledger",
+      "source": "item_eighth_chair_returns",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-06",
+      "reveal": "rev_the_note",
+      "channel": "letter",
+      "source": "item_corvo_note",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-10",
+      "reveal": "rev_pencil",
+      "channel": "ledger",
+      "source": "item_wharf_float_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-11",
+      "reveal": "rev_lamp",
+      "channel": "letter",
+      "source": "letter_held_to_the_lamp",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-12",
+      "reveal": "rev_inspection_date",
+      "channel": "ledger",
+      "source": "item_berth_roll",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-13",
+      "reveal": "rev_the_daughter",
+      "channel": "letter",
+      "source": "letter_soulrest_daughter",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-13",
+      "reveal": "rev_the_minutes",
+      "channel": "ledger",
+      "source": "item_harbour_minute_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-14",
+      "reveal": "rev_the_article",
+      "channel": "book",
+      "source": "book_articles_of_the_wet_ledger",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-14",
+      "reveal": "rev_the_licence",
+      "channel": "letter",
+      "source": "letter_soulrest_licence",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-wet-ledger.json",
+      "quest": "Q-LEDG-15",
+      "reveal": "rev_the_bound_copy",
+      "channel": "book",
+      "source": "book_articles_of_the_wet_ledger",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-xul-aneekh.json",
+      "quest": "Q-XULA-02",
+      "reveal": "rev_the_survey_line",
+      "channel": "ledger",
+      "source": "item_coast_survey_line",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-xul-aneekh.json",
+      "quest": "Q-XULA-03",
+      "reveal": "rev_third_column",
+      "channel": "ledger",
+      "source": "item_helstrom_kin_list",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-xul-aneekh.json",
+      "quest": "Q-XULA-05",
+      "reveal": "rev_court_ledger",
+      "channel": "ledger",
+      "source": "item_court_shortfall_series",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-xul-aneekh.json",
+      "quest": "Q-XULA-11",
+      "reveal": "rev_the_crew_list",
+      "channel": "ledger",
+      "source": "item_coast_crew_list",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "faction-xul-aneekh.json",
+      "quest": "Q-XULA-12",
+      "reveal": "rev_the_old_vote",
+      "channel": "ledger",
+      "source": "item_gallery_consensus_record",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act1.json",
+      "quest": "Q-MAIN-05",
+      "reveal": "rev_the_ink",
+      "channel": "book",
+      "source": "item_chapter_room_recension",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act2.json",
+      "quest": "Q-MAIN-06",
+      "reveal": "rev_the_curve_predates",
+      "channel": "ledger",
+      "source": "item_the_drowned_tally",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act2.json",
+      "quest": "Q-MAIN-06",
+      "reveal": "rev_the_steward_named",
+      "channel": "ledger",
+      "source": "item_tally_volume_four",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act2.json",
+      "quest": "Q-MAIN-07",
+      "reveal": "rev_older_cutting",
+      "channel": "ledger",
+      "source": "item_the_grandmother_yard_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act2.json",
+      "quest": "Q-MAIN-08",
+      "reveal": "rev_true_tonnage",
+      "channel": "ledger",
+      "source": "item_archon_true_manifest",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act2.json",
+      "quest": "Q-MAIN-10",
+      "reveal": "rev_the_letter",
+      "channel": "letter",
+      "source": "item_stewards_letter",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act3.json",
+      "quest": "Q-MAIN-12",
+      "reveal": "rev_sarn_flows",
+      "channel": "book",
+      "source": "item_ivo_sarns_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act3.json",
+      "quest": "Q-MAIN-13",
+      "reveal": "rev_the_full_cost",
+      "channel": "ledger",
+      "source": "item_the_drowned_tally_appendix",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act4.json",
+      "quest": "Q-MAIN-16",
+      "reveal": "rev_the_debt",
+      "channel": "ledger",
+      "source": "item_wet_ledger_private_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act4.json",
+      "quest": "Q-MAIN-17",
+      "reveal": "rev_the_gem_money",
+      "channel": "ledger",
+      "source": "item_compact_share_book",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act4.json",
+      "quest": "Q-MAIN-22",
+      "reveal": "rev_the_eleven_leaves",
+      "channel": "book",
+      "source": "book_the_leave_book_of_thorn",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-act4.json",
+      "quest": "Q-MAIN-22",
+      "reveal": "rev_the_cutters_list",
+      "channel": "ledger",
+      "source": "item_the_cutters_list",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    },
+    {
+      "file": "mainline-backpath.json",
+      "quest": "Q-MAIN-30",
+      "reveal": "rev_the_three_previous",
+      "channel": "ledger",
+      "source": "item_the_drowned_tally_severances",
+      "via_hook": false,
+      "via_book": false,
+      "via_person": false,
+      "via_embodied": false,
+      "via_mark": false,
+      "doc_exists": true,
+      "doc_placed": false,
+      "mark_exists": false,
+      "mark_placed": false,
+      "routed": false
+    }
+  ]
+}
+
+wrote reports/runs/W1-19-R3/reveal-route-audit.json
