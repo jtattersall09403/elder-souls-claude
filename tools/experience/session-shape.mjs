@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+// Builder-side RI-EXP03 orchestration. This never manufactures events and never awards blind rows.
+import fs from 'node:fs'; import path from 'node:path'; import { spawnSync } from 'node:child_process';
+const a=process.argv.slice(2),v=k=>{const i=a.indexOf(`--${k}`);return i<0?null:a[i+1]},trace=v('trace'),intent=v('intent'),out=v('out');
+const run=(tool,args)=>spawnSync(process.execPath,[path.join('tools/experience',tool),...args],{encoding:'utf8'});
+if(a.includes('--self-test')) { for(const t of ['classes-from-md.mjs','shape-check.mjs','sag-fit.mjs','session-beats.mjs']){const r=run(t,['--self-test']);if(r.status) {process.stderr.write(r.stderr);process.exit(1)}} console.log('PASS session-shape aggregation self-test 4/4');process.exit(); }
+if(!trace||!out){console.error('usage: --trace TRACE [--intent INTENT] --out DIR');process.exit(2)} fs.mkdirSync(out,{recursive:true});
+const classes=run('classes-from-md.mjs',['--out',path.join(out,'classes.json')]); const shape=run('shape-check.mjs',['--trace',trace,'--out',path.join(out,'shape.json')]); const beatsArgs=['--trace',trace,'--out',path.join(out,'beats.json')];if(intent)beatsArgs.push('--intent',intent);const beats=run('session-beats.mjs',beatsArgs);const sag=run('sag-fit.mjs',['--shape',path.join(out,'shape.json'),'--out',path.join(out,'sag.json')]);
+const manifest={schema:'elder-souls/session-shape-pack@1',trace:path.resolve(trace),outputs:['classes.json','shape.json','beats.json','sag.json'],builder_results:{classes:classes.status,shape:shape.status,beats:beats.status,sag:sag.status},sabotage:{SAB_P:'NOT_RUN',SAB_E:'NOT_RUN'},matched_90_minute_comparison:'NOT_RUN',independent_annotation:'NOT_RUN',pass:false};fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');console.log('PREPARED structural pack; matched 90-minute, SAB-P/SAB-E and independent annotation NOT_RUN');process.exit(shape.status||sag.status?1:0);
