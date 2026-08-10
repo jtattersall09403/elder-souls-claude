@@ -1,218 +1,330 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "blackrose-smithy",
-  "name": "The Chain Forge",
-  "settlement": "blackrose",
-  "cell_kind": "named",
-  "interior_kind": "shop",
-  "service": "smith",
-  "faction": null,
-  "exterior_door": [
-    1876.5,
-    2.68,
-    4446
+ "schema": "elder-souls/interior@1",
+ "id": "blackrose-smithy",
+ "name": "The Chain Forge",
+ "settlement": "blackrose",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "smith",
+ "faction": null,
+ "exterior_door": [
+  1876.5,
+  2.68,
+  4446
+ ],
+ "continuity": {
+  "building": "blackrose-smithy",
+  "building_offset_m": [
+   -29,
+   0,
+   -4
   ],
-  "continuity": {
-    "building": "blackrose-smithy",
-    "building_offset_m": [
-      -29,
-      0,
-      -4
-    ],
-    "building_yaw_deg": 180,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      1876.5,
-      2.68,
-      4447.8
-    ]
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   1.17
+  ],
+  "exterior_spawn": [
+   1876.5,
+   2.68,
+   4449
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   1876.5,
+   2.68,
+   4447.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.47,
+   6.47
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -2.17,
+   2.17
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   1.02
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "blackrose.rootkeeper5.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "blackrose.rootkeeper5.r0.lamp0",
+   "pos": [
+    -1.1,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "blackrose.rootkeeper5.r0.lamp1",
+   "pos": [
+    0.8,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "blackrose.rootkeeper5.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.rootkeeper5.r0.lamp0",
-      "pos": [
-        -1.1,
-        1.6,
-        -3.7
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.rootkeeper5.r0.lamp1",
-      "pos": [
-        0.7999999999999998,
-        1.6,
-        -3.8
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.apothecary9.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.apothecary9.r0.lamp0",
-      "pos": [
-        -3.1,
-        1.6,
-        -2.9
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.apothecary9.r0.lamp1",
-      "pos": [
-        -1.2000000000000002,
-        1.6,
-        -3
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.weaver13.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.weaver13.r1.lamp0",
-      "pos": [
-        -1.5,
-        1.6,
-        -0.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.weaver13.r1.lamp1",
-      "pos": [
-        0.3999999999999999,
-        1.6,
-        -0.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "counter_long",
-    "shelf_stack",
-    "scale_brass",
-    "crate_sealed",
-    "ledger_stand",
-    "coin_tray",
-    "sack_row",
-    "hook_rail",
-    "lamp_hanging",
-    "stool_high",
-    "strongbox",
-    "sample_board",
-    "measure_jug",
-    "sweep_broom",
-    "bla_fortress_wall",
-    "bla_furred_parapet",
-    "bla_corridor_gate",
-    "bla_prison_block"
-  ],
-  "property_zones": [
-    "blackrose.rootkeeper5.r0",
-    "blackrose.apothecary9.r0",
-    "blackrose.weaver13.r1"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "blackrose-smithy-unique",
-    "name": "a set of irons cut too small for a man",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:blackrose-rootkeeper-5"
+  {
+   "id": "blackrose.apothecary9.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "readable": [
-    {
-      "id": "blackrose-smithy-readable",
-      "title": "On Fitting Irons"
-    },
-    {
-      "id": "on-locks-bars-and-the-opening-of-armouries",
-      "title": "Of locks, bars and the opening of armouries",
-      "book": "on-locks-bars-and-the-opening-of-armouries"
-    },
-    {
-      "id": "the-notch-count-of-a-broom-handle",
-      "title": "On the selling of romances to soldiers",
-      "book": "the-notch-count-of-a-broom-handle"
-    }
+  {
+   "id": "blackrose.apothecary9.r0.lamp0",
+   "pos": [
+    -3.1,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.apothecary9.r0.lamp1",
+   "pos": [
+    -1.2,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.weaver13.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.weaver13.r1.lamp0",
+   "pos": [
+    -1.5,
+    1.6,
+    -0.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.weaver13.r1.lamp1",
+   "pos": [
+    0.4,
+    1.6,
+    -0.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "bla_fortress_wall",
+  "bla_furred_parapet",
+  "bla_corridor_gate",
+  "bla_prison_block"
+ ],
+ "property_zones": [
+  "blackrose.rootkeeper5.r0",
+  "blackrose.apothecary9.r0",
+  "blackrose.weaver13.r1"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "blackrose-smithy-unique",
+  "name": "a set of irons cut too small for a man",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:blackrose-rootkeeper-5"
+ },
+ "readable": [
+  {
+   "id": "blackrose-smithy-readable",
+   "title": "On Fitting Irons"
+  },
+  {
+   "id": "on-locks-bars-and-the-opening-of-armouries",
+   "title": "Of locks, bars and the opening of armouries",
+   "book": "on-locks-bars-and-the-opening-of-armouries"
+  },
+  {
+   "id": "the-notch-count-of-a-broom-handle",
+   "title": "On the selling of romances to soldiers",
+   "book": "the-notch-count-of-a-broom-handle"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.1,
+    1.6,
+    -3.7
+   ]
+  },
+  {
+   "pos": [
+    0.7999999999999998,
+    1.6,
+    -3.8
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -3.1,
+    1.6,
+    -2.9
+   ]
+  },
+  {
+   "pos": [
+    -1.2000000000000002,
+    1.6,
+    -3
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.5,
+    1.6,
+    -0.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    -0.7999999999999998
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "blackrose-smithy",
+ "door_world_pos": [
+  1876.5,
+  2.68,
+  4448.5
+ ],
+ "door_world_bearing_deg": 0,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 56.16
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

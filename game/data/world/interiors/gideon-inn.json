@@ -1,229 +1,352 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "gideon-inn",
-  "name": "The Wheel and Barge",
-  "settlement": "gideon",
-  "cell_kind": "named",
-  "interior_kind": "tavern",
-  "service": "inn",
-  "faction": null,
-  "exterior_door": [
-    462,
-    2.72,
-    2920.5
+ "schema": "elder-souls/interior@1",
+ "id": "gideon-inn",
+ "name": "The Wheel and Barge",
+ "settlement": "gideon",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  462,
+  2.72,
+  2920.5
+ ],
+ "continuity": {
+  "building": "gideon-inn",
+  "building_offset_m": [
+   23,
+   0,
+   7
   ],
-  "continuity": {
-    "building": "gideon-inn",
-    "building_offset_m": [
-      23,
-      0,
-      7
-    ],
-    "building_yaw_deg": 0,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      462,
-      2.72,
-      2922.3
-    ]
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.47
+  ],
+  "exterior_spawn": [
+   462,
+   2.72,
+   2928.8
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   462,
+   2.72,
+   2922.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.47,
+   6.47
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.47,
+   7.47
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "gideon.publican4.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "gideon.publican4.r0.lamp0",
+   "pos": [
+    -1.8,
+    1.6,
+    1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "gideon.publican4.r0.lamp1",
+   "pos": [
+    3.3,
+    1.6,
+    1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "gideon.publican4.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.publican4.r0.lamp0",
-      "pos": [
-        -1.8,
-        1.6,
-        1.4000000000000004
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.publican4.r0.lamp1",
-      "pos": [
-        3.3,
-        1.6,
-        1.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.publican4.r0.lamp2",
-      "pos": [
-        2,
-        1.6,
-        1.5999999999999996
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.apothecary8.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.apothecary8.r1.lamp0",
-      "pos": [
-        1.2999999999999998,
-        1.6,
-        -0.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.apothecary8.r1.lamp1",
-      "pos": [
-        3.2,
-        1.6,
-        -0.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.cook13.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.cook13.r1.lamp0",
-      "pos": [
-        -2.7,
-        1.6,
-        1.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.cook13.r1.lamp1",
-      "pos": [
-        -0.7999999999999998,
-        1.6,
-        1.2000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "bar_long",
-    "bench_pair",
-    "table_round",
-    "barrel_row",
-    "tankard_shelf",
-    "hearth_open",
-    "bed_rentable",
-    "dice_cup",
-    "lamp_hanging",
-    "stair_narrow",
-    "keg_tap",
-    "cloak_hook",
-    "stew_pot",
-    "notice_board",
-    "gid_timber_frame",
-    "gid_tile_roof",
-    "gid_market_cross",
-    "gid_square_arcade"
-  ],
-  "property_zones": [
-    "gideon.publican4.r0",
-    "gideon.apothecary8.r1",
-    "gideon.cook13.r1"
-  ],
-  "containers": [
-    "gideon.publican4.r0.0",
-    "gideon.publican4.r0.2",
-    "gideon.publican4.r0.8",
-    "gideon.cook13.r1.8"
-  ],
-  "unique_item": {
-    "id": "gideon-inn-unique",
-    "name": "a Cyrodilic wine older than the town",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:gideon-publican-4"
+  {
+   "id": "gideon.publican4.r0.lamp2",
+   "pos": [
+    2,
+    1.6,
+    1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "gideon-inn-readable",
-      "title": "House Rules, The Wheel"
-    },
-    {
-      "id": "the-two-sisters-and-the-sluice",
-      "title": "The two sisters and the sluice",
-      "book": "the-two-sisters-and-the-sluice"
-    }
+  {
+   "id": "gideon.apothecary8.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.apothecary8.r1.lamp0",
+   "pos": [
+    1.3,
+    1.6,
+    -0.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.apothecary8.r1.lamp1",
+   "pos": [
+    3.2,
+    1.6,
+    -0.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.cook13.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.cook13.r1.lamp0",
+   "pos": [
+    -2.7,
+    1.6,
+    1.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.cook13.r1.lamp1",
+   "pos": [
+    -0.8,
+    1.6,
+    1.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "gid_timber_frame",
+  "gid_tile_roof",
+  "gid_market_cross",
+  "gid_square_arcade"
+ ],
+ "property_zones": [
+  "gideon.publican4.r0",
+  "gideon.apothecary8.r1",
+  "gideon.cook13.r1"
+ ],
+ "containers": [
+  "gideon.publican4.r0.0",
+  "gideon.publican4.r0.2",
+  "gideon.publican4.r0.8",
+  "gideon.cook13.r1.8"
+ ],
+ "unique_item": {
+  "id": "gideon-inn-unique",
+  "name": "a Cyrodilic wine older than the town",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:gideon-publican-4"
+ },
+ "readable": [
+  {
+   "id": "gideon-inn-readable",
+   "title": "House Rules, The Wheel"
+  },
+  {
+   "id": "the-two-sisters-and-the-sluice",
+   "title": "The two sisters and the sluice",
+   "book": "the-two-sisters-and-the-sluice"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 6,
-  "close_h": 26
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.8,
+    1.6,
+    1.4000000000000004
+   ]
+  },
+  {
+   "pos": [
+    3.3,
+    1.6,
+    1.5
+   ]
+  },
+  {
+   "pos": [
+    2,
+    1.6,
+    1.5999999999999996
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    1.2999999999999998,
+    1.6,
+    -0.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    3.2,
+    1.6,
+    -0.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.7,
+    1.6,
+    1.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -0.7999999999999998,
+    1.6,
+    1.2000000000000002
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "gideon-inn",
+ "door_world_pos": [
+  462,
+  2.72,
+  2928.3
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 193.32
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 193.32
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

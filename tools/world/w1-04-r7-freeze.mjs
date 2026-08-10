@@ -28,10 +28,38 @@ const interiors = loadDir('game/data/world/interiors');
 const npcs = loadDir('game/data/npcs');
 const properties = loadDir('game/data/world/property');
 const placed = new Map();
-for (const {data:s} of settlements) for (const b of (s.buildings || [])) if (b.interior) placed.set(b.interior, { settlement:s.id, building:b.id });
+const exteriorById = new Map();
+for (const {data:s} of settlements) for (const b of (s.buildings || [])) {
+  if (b.id) exteriorById.set(b.id, {...b, settlement:s.id});
+  if (b.interior) placed.set(b.interior, { settlement:s.id, building:b.id });
+}
+if (process.argv.includes('--self-test-orphan')) placed.delete(interiors[0].data.id);
 const orphans = interiors.filter(({data}) => !placed.has(data.id)).map(({data}) => ({ id:data.id, declared_settlement:data.settlement || null }));
 const requiredM71 = ['exterior_building_id','door_world_pos','door_world_bearing_deg','storeys','apertures','seamless','see_into','water_plane_m'];
+if (process.argv.includes('--self-test-contract')) delete interiors[0].data.door_world_pos;
 const contractMissing = interiors.map(({data}) => ({ id:data.id, missing:requiredM71.filter(k => !(k in data)) })).filter(r => r.missing.length);
+const angleDelta = (a,b) => Math.abs((((a-b)+540)%360)-180);
+const auditRows = interiors.filter(({data}) => requiredM71.every(k => k in data)).map(({data:r}) => {
+  const e = exteriorById.get(r.exterior_building_id);
+  if (!e) return {id:r.id, exterior_building_id:r.exterior_building_id, orphan:true};
+  const interiorArea = r.storeys.reduce((n,s)=>n+Number(s.area_m2||0),0);
+  const exteriorArea = Number(e.footprint_m2||0) * r.storeys.length;
+  const apertureKey = a => `${a.kind}:${(a.world_pos||[]).map(Number).join(',')}`;
+  const ia = r.apertures.map(apertureKey).sort(), ea = (e.apertures||[]).map(apertureKey).sort();
+  const top = Math.max(...r.storeys.map(s=>Number(s.floor_height_m||0))) + ((r.bounds_m?.y?.[1]||3.2));
+  return {id:r.id, exterior_building_id:e.id, orphan:false,
+    n1_ratio:exteriorArea ? +(interiorArea/exteriorArea).toFixed(4) : null,
+    n2_bearing_delta_deg:+angleDelta(r.door_world_bearing_deg,e.door_world_bearing_deg).toFixed(3),
+    n4_aperture_diff:ia.length===ea.length && ia.every((v,i)=>v===ea[i]) ? 0 : Math.max(ia.length,ea.length),
+    n5_top_below_roofline_m:+(Number(e.roofline_m||0)-top).toFixed(3)};
+});
+const breaches = {
+  n1:auditRows.filter(r=>r.orphan || r.n1_ratio<0.70 || r.n1_ratio>1.15),
+  n2:auditRows.filter(r=>r.orphan || r.n2_bearing_delta_deg>5),
+  n4:auditRows.filter(r=>r.orphan || r.n4_aperture_diff>0),
+  n5:auditRows.filter(r=>r.orphan || r.n5_top_below_roofline_m<0),
+};
+const m71Fail = breaches.n2.length > 0 || breaches.n1.length/interiors.length > .02 || breaches.n4.length/interiors.length > .02 || breaches.n5.length/interiors.length > .02;
 const npcRows = npcs.flatMap(({data}) => data.npcs || []);
 
 // S42 makes applicability row-level. These are execution classifications, not scores: mixed means
@@ -52,9 +80,11 @@ const report = {
   counts:{settlements:settlements.length,interiors:interiors.length,npc_files:npcs.length,npc_records:npcRows.length,property_files:properties.length},
   s42:{denominator:interiors.length,placed:placed.size,orphans,zero_orphans:orphans.length===0},
   m71_contract:{required_fields:requiredM71,complete_records:interiors.length-contractMissing.length,incomplete_records:contractMissing.length,rows:contractMissing},
+  m71_audit:{population:auditRows.length,breach_counts:Object.fromEntries(Object.entries(breaches).map(([k,v])=>[k,v.length])),rows:auditRows,
+    worst_n1:auditRows.filter(r=>!r.orphan).sort((a,b)=>Math.abs(1-b.n1_ratio)-Math.abs(1-a.n1_ratio)).slice(0,10)},
   applicability_ledger:ledger,
-  hard_failures:[...(orphans.length ? [`${orphans.length} orphan interior(s)`] : []), ...(contractMissing.length ? [`${contractMissing.length} interior record(s) lack the native M71 data contract`] : [])],
-  outcome:(orphans.length || contractMissing.length) ? 'RED' : 'GREEN',
+  hard_failures:[...(orphans.length ? [`${orphans.length} orphan interior(s)`] : []), ...(contractMissing.length ? [`${contractMissing.length} interior record(s) lack the native M71 data contract`] : []), ...(m71Fail ? ['native M71 tolerance breach'] : [])],
+  outcome:(orphans.length || contractMissing.length || m71Fail) ? 'RED' : 'GREEN',
 };
 fs.mkdirSync(path.dirname(OUT), {recursive:true});
 fs.writeFileSync(OUT, JSON.stringify(report,null,2)+'\n');

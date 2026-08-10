@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   5.4
+   5.27
   ],
   "exterior_spawn": [
+   2787.824,
+   7.37,
+   5063.327
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2786.8,
    7.37,
    5057.81
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -5.6,
-   5.6
+   -4.435,
+   4.435
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -6.6,
-   6.6
+   -6.27,
+   6.27
   ]
  },
  "floor_area_m2": 147.8,
@@ -89,7 +100,7 @@
    "pos": [
     -2.4,
     1.6,
-    -1.2000000000000002
+    -1.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -134,5 +145,64 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.7,
+    1.6,
+    -1.1
+   ]
+  },
+  {
+   "pos": [
+    -2.4,
+    1.6,
+    -1.2000000000000002
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "lilmoth-apothecary",
+ "door_world_pos": [
+  2786.8,
+  7.37,
+  5062.61
+ ],
+ "door_world_bearing_deg": 0,
+ "storeys": [
+  {
+   "floor_height_m": 4.6,
+   "area_m2": 111.23
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

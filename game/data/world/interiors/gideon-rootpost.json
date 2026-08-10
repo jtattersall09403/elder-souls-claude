@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   6
+   5.87
   ],
   "exterior_spawn": [
+   473,
+   2.72,
+   2928.2
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    473,
    2.72,
    2922.3
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -6.2,
-   6.2
+   -5.87,
+   5.87
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -7.2,
-   7.2
+   -6.87,
+   6.87
   ]
  },
  "floor_area_m2": 178.6,
@@ -78,7 +89,7 @@
    "pos": [
     -1,
     1.6,
-    4.199999999999999
+    4.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -89,7 +100,7 @@
    "pos": [
     -2.9,
     1.6,
-    4.300000000000001
+    4.3
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -131,9 +142,9 @@
   {
    "id": "gideon.smith10.r1.lamp1",
    "pos": [
-    0.20000000000000018,
+    0.2,
     1.6,
-    0.40000000000000036
+    0.4
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -181,5 +192,92 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1,
+    1.6,
+    4.199999999999999
+   ]
+  },
+  {
+   "pos": [
+    -2.9,
+    1.6,
+    4.300000000000001
+   ]
+  },
+  {
+   "pos": [
+    2.8,
+    1.6,
+    4.4
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.7,
+    1.6,
+    0.5
+   ]
+  },
+  {
+   "pos": [
+    0.20000000000000018,
+    1.6,
+    0.40000000000000036
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "gideon-rootpost",
+ "door_world_pos": [
+  473,
+  2.72,
+  2927.7
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

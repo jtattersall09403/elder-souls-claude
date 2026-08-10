@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   5.4
+   5.27
   ],
   "exterior_spawn": [
+   2775.579,
+   7.37,
+   5066.92
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2774.28,
    7.37,
    5061.37
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -5.6,
-   5.6
+   -5.27,
+   5.27
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -6.6,
-   6.6
+   -6.27,
+   6.27
   ]
  },
  "floor_area_m2": 147.8,
@@ -76,9 +87,9 @@
   {
    "id": "lilmoth.priest8.r1.lamp0",
    "pos": [
-    1.9000000000000004,
+    1.9,
     1.6,
-    4.300000000000001
+    4.3
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -89,7 +100,7 @@
    "pos": [
     -3.2,
     1.6,
-    4.199999999999999
+    4.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -136,5 +147,64 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    4.300000000000001
+   ]
+  },
+  {
+   "pos": [
+    -3.2,
+    1.6,
+    4.199999999999999
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "lilmoth-pawn",
+ "door_world_pos": [
+  2774.28,
+  7.37,
+  5066.17
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 4.6,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

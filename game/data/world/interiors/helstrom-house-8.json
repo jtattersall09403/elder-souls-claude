@@ -1,227 +1,353 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "helstrom-house-8",
-  "name": "Shekh-Neekh's house",
-  "settlement": "helstrom",
-  "cell_kind": "named",
-  "interior_kind": "dwelling",
-  "service": null,
-  "faction": null,
-  "exterior_door": [
-    2216.07,
-    27.22,
-    2754.95
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-house-8",
+ "name": "Shekh-Neekh's house",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "dwelling",
+ "service": null,
+ "faction": null,
+ "exterior_door": [
+  2216.07,
+  27.22,
+  2754.95
+ ],
+ "continuity": {
+  "building": "helstrom-house-8",
+  "building_offset_m": [
+   -46.43,
+   0,
+   -18.55
   ],
-  "continuity": {
-    "building": "helstrom-house-8",
-    "building_offset_m": [
-      -46.43,
-      0,
-      -18.55
-    ],
-    "building_yaw_deg": 68.2,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      2216.07,
-      27.22,
-      2756.75
-    ]
+  "building_yaw_deg": 68.2,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.47
+  ],
+  "exterior_spawn": [
+   2213.359,
+   27.22,
+   2761.728
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2216.07,
+   27.22,
+   2756.75
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.47,
+   6.47
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.47,
+   7.47
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "helstrom.publican8.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "helstrom.publican8.r0.lamp0",
+   "pos": [
+    2.4,
+    1.6,
+    1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "helstrom.publican8.r0.lamp1",
+   "pos": [
+    0.5,
+    1.6,
+    1.9
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "helstrom.publican8.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.publican8.r0.lamp0",
-      "pos": [
-        2.4000000000000004,
-        1.6,
-        1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r0.lamp1",
-      "pos": [
-        0.5,
-        1.6,
-        1.9000000000000004
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r0.lamp2",
-      "pos": [
-        -1.4,
-        1.6,
-        1.5999999999999996
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.publican8.r1.lamp0",
-      "pos": [
-        2.5,
-        1.6,
-        4.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r1.lamp1",
-      "pos": [
-        -2.6,
-        1.6,
-        4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r2.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.publican8.r2.lamp0",
-      "pos": [
-        -0.7999999999999998,
-        1.6,
-        -0.40000000000000036
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r2.lamp1",
-      "pos": [
-        -2.7,
-        1.6,
-        -0.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.publican8.r2.lamp2",
-      "pos": [
-        3,
-        1.6,
-        -0.20000000000000018
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
+  {
+   "id": "helstrom.publican8.r0.lamp2",
+   "pos": [
+    -1.4,
+    1.6,
+    1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.publican8.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "helstrom.publican8.r1.lamp0",
+   "pos": [
+    2.5,
+    1.6,
+    4.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.publican8.r1.lamp1",
+   "pos": [
+    -2.6,
+    1.6,
+    4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.publican8.r2.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "helstrom.publican8.r2.lamp0",
+   "pos": [
+    -0.8,
+    1.6,
+    -0.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.publican8.r2.lamp1",
+   "pos": [
+    -2.7,
+    1.6,
+    -0.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.publican8.r2.lamp2",
+   "pos": [
+    3,
+    1.6,
+    -0.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "reed_mat",
+  "sleeping_shelf",
+  "clay_hearth",
+  "cook_pot",
+  "wall_peg",
+  "water_butt",
+  "stool_low",
+  "chest_small",
+  "hanging_bundle",
+  "oil_lamp",
+  "floor_basket",
+  "child_toy",
+  "washing_line",
+  "bone_comb",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [
+  "helstrom.publican8.r0",
+  "helstrom.publican8.r1",
+  "helstrom.publican8.r2"
+ ],
+ "containers": [
+  "helstrom.publican8.r0.2",
+  "helstrom.publican8.r1.3",
+  "helstrom.publican8.r1.7",
+  "helstrom.publican8.r2.0",
+  "helstrom.publican8.r2.2"
+ ],
+ "unique_item": null,
+ "readable": null,
+ "inhabitants": [
+  "helstrom-publican-8"
+ ],
+ "anchor": "interior_firelit",
+ "open_h": 0,
+ "close_h": 24,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "props": [
-    "reed_mat",
-    "sleeping_shelf",
-    "clay_hearth",
-    "cook_pot",
-    "wall_peg",
-    "water_butt",
-    "stool_low",
-    "chest_small",
-    "hanging_bundle",
-    "oil_lamp",
-    "floor_basket",
-    "child_toy",
-    "washing_line",
-    "bone_comb",
-    "hel_bole_arch",
-    "hel_grown_wall_a",
-    "hel_grown_wall_b",
-    "hel_shell_roof"
+  "y": [
+   0,
+   3.2
   ],
-  "property_zones": [
-    "helstrom.publican8.r0",
-    "helstrom.publican8.r1",
-    "helstrom.publican8.r2"
-  ],
-  "containers": [
-    "helstrom.publican8.r0.2",
-    "helstrom.publican8.r1.3",
-    "helstrom.publican8.r1.7",
-    "helstrom.publican8.r2.0",
-    "helstrom.publican8.r2.2"
-  ],
-  "unique_item": null,
-  "readable": null,
-  "inhabitants": [
-    "helstrom-publican-8"
-  ],
-  "anchor": "interior_firelit",
-  "open_h": 0,
-  "close_h": 24
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.4000000000000004,
+    1.6,
+    1.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    0.5,
+    1.6,
+    1.9000000000000004
+   ]
+  },
+  {
+   "pos": [
+    -1.4,
+    1.6,
+    1.5999999999999996
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.5,
+    1.6,
+    4.1
+   ]
+  },
+  {
+   "pos": [
+    -2.6,
+    1.6,
+    4
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.7999999999999998,
+    1.6,
+    -0.40000000000000036
+   ]
+  },
+  {
+   "pos": [
+    -2.7,
+    1.6,
+    -0.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    3,
+    1.6,
+    -0.20000000000000018
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "helstrom-house-8",
+ "door_world_pos": [
+  2213.545,
+  27.22,
+  2761.264
+ ],
+ "door_world_bearing_deg": 248.2,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 193.32
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

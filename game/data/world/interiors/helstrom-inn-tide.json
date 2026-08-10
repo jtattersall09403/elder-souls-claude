@@ -1,114 +1,165 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "helstrom-inn-tide",
-  "name": "The Turning Tide",
-  "settlement": "helstrom",
-  "cell_kind": "named",
-  "interior_kind": "tavern",
-  "service": "inn",
-  "faction": null,
-  "exterior_door": [
-    2266.71,
-    27.22,
-    2807.24
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-inn-tide",
+ "name": "The Turning Tide",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  2266.71,
+  27.22,
+  2807.24
+ ],
+ "continuity": {
+  "building": "helstrom-inn-tide",
+  "building_offset_m": [
+   4.21,
+   0,
+   33.74
   ],
-  "continuity": {
-    "building": "helstrom-inn-tide",
-    "building_offset_m": [
-      4.21,
-      0,
-      33.74
-    ],
-    "building_yaw_deg": 187.1,
-    "exterior_footprint_m": [
-      10,
-      12
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      4.8
-    ],
-    "exterior_spawn": [
-      2266.71,
-      27.22,
-      2809.04
-    ]
-  },
-  "bounds_m": {
-    "x": [
-      -5,
-      5
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -6,
-      6
-    ]
-  },
-  "floor_area_m2": 120,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.4
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
-  },
-  "lights": [],
-  "props": [
-    "bar_long",
-    "bench_pair",
-    "table_round",
-    "barrel_row",
-    "tankard_shelf",
-    "hearth_open",
-    "bed_rentable",
-    "dice_cup",
-    "lamp_hanging",
-    "stair_narrow",
-    "keg_tap",
-    "cloak_hook",
-    "stew_pot",
-    "notice_board",
-    "hel_bole_arch",
-    "hel_grown_wall_a",
-    "hel_grown_wall_b",
-    "hel_shell_roof"
+  "building_yaw_deg": 187.1,
+  "exterior_footprint_m": [
+   10,
+   12
   ],
-  "property_zones": [],
-  "containers": [],
-  "unique_item": {
-    "id": "helstrom-inn-tide-unique",
-    "name": "the landlord’s confiscated dice",
-    "unique": true,
-    "takeable": true,
-    "owner": null
-  },
-  "readable": [
-    {
-      "id": "helstrom-inn-tide-readable",
-      "title": "House Rules, The Turning Tide"
-    },
-    {
-      "id": "songs-for-the-weir",
-      "title": "Songs for the weir",
-      "book": "songs-for-the-weir"
-    },
-    {
-      "id": "the-heron-and-the-clerk",
-      "title": "The heron and the clerk",
-      "book": "the-heron-and-the-clerk"
-    }
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   4.67
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 6,
-  "close_h": 26
+  "exterior_spawn": [
+   2267.513,
+   27.22,
+   2813.69
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   4.8
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2266.71,
+   27.22,
+   2809.04
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -4.67,
+   4.67
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -5.67,
+   5.67
+  ]
+ },
+ "floor_area_m2": 120,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.4
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [],
+ "containers": [],
+ "unique_item": {
+  "id": "helstrom-inn-tide-unique",
+  "name": "the landlord’s confiscated dice",
+  "unique": true,
+  "takeable": true,
+  "owner": null
+ },
+ "readable": [
+  {
+   "id": "helstrom-inn-tide-readable",
+   "title": "House Rules, The Turning Tide"
+  },
+  {
+   "id": "songs-for-the-weir",
+   "title": "Songs for the weir",
+   "book": "songs-for-the-weir"
+  },
+  {
+   "id": "the-heron-and-the-clerk",
+   "title": "The heron and the clerk",
+   "book": "the-heron-and-the-clerk"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -5,
+   5
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6,
+   6
+  ]
+ },
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.4
+ ],
+ "exterior_building_id": "helstrom-inn-tide",
+ "door_world_pos": [
+  2267.452,
+  27.22,
+  2813.194
+ ],
+ "door_world_bearing_deg": 7.1,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 105.92
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 105.92
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": false,
+ "water_plane_m": null
 }
