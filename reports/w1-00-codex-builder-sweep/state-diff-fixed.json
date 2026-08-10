@@ -1,0 +1,348 @@
+{
+  "schema": "elder-souls/state-diff@1",
+  "mode": "round-trip",
+  "item": "RI-JRN05 M1/M2/M4/M5",
+  "seeds": [
+    4711
+  ],
+  "states": [
+    "arena_flat"
+  ],
+  "frames": 60,
+  "preroll_frames": 120,
+  "trials": [
+    {
+      "state": "arena_flat",
+      "seed": 4711,
+      "m1_hash_before": "eb3777fd2236a31700694893829fbec99eecd613dd43368accaf7237ae83691a",
+      "m1_hash_after_load": "83f592ac66d65ff53cb751134772340f84e4e898d5fc1e416b24e2c017b96a25",
+      "m1_pass": false,
+      "m2_round_trip_diff": [
+        {
+          "path": "world.entities",
+          "a": "[{\"alert\":100,\"alert_channel\":\"scripted\",\"alert_state\":\"AGGRO\",\"anchor\":[0,0,7],\"anim\":\"e_overhead_chop\",\"anim_frame\":37,\"anim_phase0\":23,\"attack_token\":false,\"eid\":\"sdA\",\"encounter_aggroed\":false,\"encounter_hailed\":false,\"encounter_id\":null,\"encounter_leader\":false,\"encounter_role\":null,\"hit_active",
+          "b": "[{\"alert\":100,\"alert_channel\":\"scripted\",\"alert_state\":\"AGGRO\",\"anchor\":[0,0,7],\"anim\":\"e_overhead_chop\",\"anim_frame\":37,\"anim_phase0\":23,\"attack_token\":false,\"eid\":\"sdA\",\"encounter_aggroed\":false,\"encounter_hailed\":false,\"encounter_id\":null,\"encounter_leader\":false,\"encounter_role\":null,\"hit_active"
+        }
+      ],
+      "m2_pass": false,
+      "m4_in_save_not_on_manifest": [],
+      "m4_on_manifest_not_in_save": [],
+      "m4_entity_keys": {
+        "live": [
+          "ai",
+          "alert",
+          "alertChannel",
+          "alertState",
+          "anchor",
+          "anim",
+          "animFrame",
+          "animLen",
+          "animPhase0",
+          "archetype",
+          "attackToken",
+          "eid",
+          "encAggroed",
+          "encHailed",
+          "encLeader",
+          "encounterId",
+          "encounterRole",
+          "hitActive",
+          "hitById",
+          "hitboxes",
+          "hp",
+          "hpMax",
+          "id",
+          "lastSeenF",
+          "lkp",
+          "percept_dist",
+          "percept_los",
+          "phase",
+          "poise",
+          "poiseMax",
+          "pos",
+          "prevState",
+          "radius_m",
+          "sight_cone_deg",
+          "sight_radius_m",
+          "speed",
+          "stagger",
+          "staggerUntil",
+          "state",
+          "stateEnteredF",
+          "tier",
+          "yaw",
+          "yawRate"
+        ],
+        "saved": [
+          "alert",
+          "alert_channel",
+          "alert_state",
+          "anchor",
+          "anim",
+          "anim_frame",
+          "anim_phase0",
+          "attack_token",
+          "eid",
+          "encounter_aggroed",
+          "encounter_hailed",
+          "encounter_id",
+          "encounter_leader",
+          "encounter_role",
+          "hit_active",
+          "hit_by_id",
+          "hp",
+          "id",
+          "last_seen_ago_frames",
+          "lkp",
+          "percept_dist_m",
+          "percept_los",
+          "phase",
+          "poise",
+          "pos",
+          "prev_state",
+          "speed_mps",
+          "stagger",
+          "stagger_in_frames",
+          "state",
+          "state_entered_ago_frames",
+          "yaw_deg",
+          "yaw_rate_dps"
+        ],
+        "declared_durable": [
+          "id",
+          "eid",
+          "pos",
+          "yaw_deg",
+          "yaw_rate_dps",
+          "speed_mps",
+          "hp",
+          "poise",
+          "alert",
+          "alert_state",
+          "state",
+          "prev_state",
+          "anim",
+          "anim_frame",
+          "anim_phase0",
+          "phase",
+          "hit_active",
+          "attack_token",
+          "hit_by_id",
+          "anchor",
+          "stagger",
+          "stagger_in_frames",
+          "state_entered_ago_frames",
+          "alert_channel",
+          "percept_dist_m",
+          "percept_los",
+          "last_seen_ago_frames",
+          "lkp",
+          "encounter_id",
+          "encounter_role",
+          "encounter_leader",
+          "encounter_aggroed",
+          "encounter_hailed"
+        ],
+        "declared_derived_from_archetype": [
+          "archetype",
+          "tier",
+          "ai",
+          "animLen",
+          "hpMax",
+          "poiseMax",
+          "radius_m",
+          "sight_radius_m",
+          "sight_cone_deg"
+        ],
+        "declared_absent": [
+          "hitboxes"
+        ],
+        "live_not_declared_anywhere": [],
+        "declared_durable_not_in_save": [],
+        "in_save_not_declared": [],
+        "declared_absent_but_non_empty": [],
+        "live_to_save_map_disagrees_with_field_list": false
+      },
+      "m4_pass": true,
+      "m5_frames": 60,
+      "m5_control_body_sha256": "ecace6f369854f6980ae1fc035ca79a9d591f8c709130e6a63ee98a78c035e6b",
+      "m5_loaded_body_sha256": "ecace6f369854f6980ae1fc035ca79a9d591f8c709130e6a63ee98a78c035e6b",
+      "m5_identical": true,
+      "m5_differing_fields": {},
+      "m5_first_divergence": null,
+      "m5_pass": true,
+      "census_ok": false,
+      "census_unaccounted": [
+        {
+          "path": "player._birthsignBaseEstus",
+          "before": null,
+          "after": 5
+        },
+        {
+          "path": "player.estusMax",
+          "before": null,
+          "after": 5
+        },
+        {
+          "path": "env._clockFrames",
+          "before": 129720,
+          "after": null
+        },
+        {
+          "path": "env._awardFrames",
+          "before": 129720,
+          "after": null
+        },
+        {
+          "path": "env.clockHeldByDeath",
+          "before": false,
+          "after": null
+        },
+        {
+          "path": "env.awardTimeOfDay",
+          "before": 12.011111,
+          "after": null
+        },
+        {
+          "path": "env.daylight",
+          "before": 1,
+          "after": null
+        },
+        {
+          "path": "env.phase",
+          "before": "day",
+          "after": null
+        },
+        {
+          "path": "env.weatherRegion",
+          "before": "valus-ridge",
+          "after": null
+        },
+        {
+          "path": "env._lastWeather",
+          "before": "clear",
+          "after": null
+        },
+        {
+          "path": "env._weatherFrom",
+          "before": "clear",
+          "after": null
+        },
+        {
+          "path": "env._frontFrame",
+          "before": 0,
+          "after": null
+        },
+        {
+          "path": "env._frontLen",
+          "before": 1,
+          "after": null
+        },
+        {
+          "path": "env._lastTick",
+          "before": 0,
+          "after": null
+        },
+        {
+          "path": "env.frontProgress",
+          "before": 1,
+          "after": null
+        },
+        {
+          "path": "env.sightlineM",
+          "before": 1200,
+          "after": null
+        },
+        {
+          "path": "env.weatherLight",
+          "before": "sun",
+          "after": null
+        },
+        {
+          "path": "env.weatherEffect",
+          "before": {},
+          "after": null
+        },
+        {
+          "path": "entities[].yawRate",
+          "before": 0.000408,
+          "after": 0
+        },
+        {
+          "path": "entities[].classifiedBy",
+          "before": {
+            "statblock": [],
+            "world_map": [],
+            "spawn_opts": []
+          },
+          "after": null
+        },
+        {
+          "path": "entities[].yawRate",
+          "before": 60.90655,
+          "after": 0
+        },
+        {
+          "path": "entities[].classifiedBy",
+          "before": {
+            "statblock": [],
+            "world_map": [],
+            "spawn_opts": []
+          },
+          "after": null
+        }
+      ],
+      "saved_entity_record": {
+        "id": "inf_trash",
+        "eid": "sdA",
+        "pos": [
+          -0.58939,
+          0,
+          5.080381
+        ],
+        "yaw_deg": 178.051693,
+        "yaw_rate_dps": 0.000408,
+        "speed_mps": 0.044859,
+        "hp": 412,
+        "poise": 32,
+        "alert": 100,
+        "alert_state": "AGGRO",
+        "state": "ATK_WINDUP",
+        "prev_state": "PUNISH_READ",
+        "anim": "e_overhead_chop",
+        "anim_frame": 37,
+        "anim_phase0": 23,
+        "phase": "windup",
+        "hit_active": false,
+        "attack_token": false,
+        "hit_by_id": "",
+        "anchor": [
+          0,
+          0,
+          7
+        ],
+        "stagger": false,
+        "stagger_in_frames": 0,
+        "state_entered_ago_frames": 37,
+        "encounter_id": null,
+        "encounter_role": null,
+        "encounter_leader": false,
+        "encounter_aggroed": false,
+        "encounter_hailed": false,
+        "alert_channel": "scripted",
+        "percept_dist_m": 2.825228,
+        "percept_los": true,
+        "last_seen_ago_frames": 1,
+        "lkp": [
+          -0.493338,
+          0,
+          2.256786
+        ]
+      },
+      "pass": false
+    }
+  ],
+  "page_errors": [],
+  "trials_passed": 0,
+  "pass": false
+}

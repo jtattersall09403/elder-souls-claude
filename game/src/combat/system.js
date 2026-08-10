@@ -234,6 +234,9 @@ export class CombatSystem {
     this.playerCtl.magic = this.magic || null;   // seam S19: set by the engine at boot
     this.playerCtl.flaskLevel = loadout.flaskLevel || 0;
     this.playerCtl.estus = loadout.estus !== undefined ? loadout.estus : d.flask.charges.at_game_start;
+    // Keep the durable controller shape canonical before the first pool-derivation pass.
+    // Otherwise a save omits `estusMax`, while loading that save rebuilds it as five.
+    this.playerCtl.estusMax = this.playerCtl.estus;
     this.bodies = [body];
     body.evaluateRig(0);
     return body;

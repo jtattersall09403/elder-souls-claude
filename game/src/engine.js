@@ -5844,6 +5844,14 @@ export class Engine {
     // And only now is the view true. `mirror()` is the ONLY writer of 26 of these fields and
     // it had never run on this path.
     mirror(sim, c);
+    // `mirror()` derives yaw rate from the change since its call began. During restoration
+    // the body and view already have the saved yaw, so that delta is necessarily zero. Keep
+    // the explicitly durable rate for frame zero; subsequent fixed steps derive it normally.
+    const savedEntities = new Map((blob.world.entities || []).map((e) => [e.eid, e]));
+    for (const e of sim.entities) {
+      const saved = savedEntities.get(e.eid);
+      if (saved) e.yawRate = saved.yaw_rate_dps;
+    }
     return { bodies: c.bodies.length, weapon: c.player.weaponId };
   }
 
@@ -7986,7 +7994,9 @@ export class Engine {
       // is the truthful baseline for a body the save says is at zero HP.
       if (this.death) {
         if (this.death.active) this.death.lastHp = 0;
-        else { this.death.lastHp = null; this.death.lastGrounded = null; }
+        // `lastGrounded` remains durable outside an in-flight death: the next fall/hazard
+        // death consumes it. applySave() has just restored it, so do not discard it here.
+        else this.death.lastHp = null;
       }
       // The death SURFACE is a renderer object and a camera mode, and neither is save state.
       // `_deathTick()` installs them on the transition into `active`, and after a load there is
@@ -8111,6 +8121,8 @@ export class Engine {
       'input': 'The input pipeline is a per-session device, not saved state. __HARNESS.loadState() calls input.reset(frame) explicitly so a load cannot inherit a half-buffered press from the session that wrote the save.',
       'nextEid': 'Re-derived from the restored eids by applySave(), so a load cannot mint a colliding eid. Carried as a derivation rather than as a field.',
       'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 §B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
+      'env.runtime_projection': 'Fields other than the durable clock/region/weather/interior inputs are EnvironmentSystem projections recomputed on the next fixed step; they are not independent state.',
+      'entities[].classifiedBy': 'Instrumentation provenance attached by population classification; it has no world-side reader and is intentionally session-scoped.',
     };
 
     const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -8178,6 +8190,12 @@ export class Engine {
       }
       delete o.camera.override;
       delete o.env.wallClockOffsetMs;
+      // Keep only EnvironmentSystem inputs. The remaining keys are its cached/output model
+      // (daylight, phase, sightline and weather-front diagnostics) and are derived on step.
+      for (const k of Object.keys(o.env)) {
+        if (!['timeOfDay', 'dayCount', 'weather', 'region', 'interior', 'settlement'].includes(k)) delete o.env[k];
+      }
+      for (const e of o.entities) delete e.classifiedBy;
       return o;
     };
 
