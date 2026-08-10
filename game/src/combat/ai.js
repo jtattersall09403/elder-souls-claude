@@ -774,6 +774,17 @@ export class SoulsAI {
     if (b.animFrame > b.move.startup + b.move.active) this._enter('RECOVER', frame);
   }
 
+  /** Unwind attack root motion during RECOVER without making a new decision. */
+  recoverSpacing(player) {
+    if (this.state !== 'RECOVER' || !player) return;
+    const dx = player.pos[0] - this.b.pos[0], dz = player.pos[2] - this.b.pos[2];
+    const dist = Math.hypot(dx, dz);
+    const clear = 0.9 * this.omega;
+    if (dist >= clear || dist <= 1e-6) return;
+    const step = Math.min(this.cfg.movement.recover_retreat_mps / 60, clear - dist);
+    this._move(-(dx / dist) * step, -(dz / dist) * step);
+  }
+
   /** T15/T16: the attack has ended. Token goes back, cooldown starts, back to CIRCLE. */
   onMoveEnded(frame, ctx) {
     // RECOVER is accepted here as well as COMMIT: as of round 2 a swing that reaches its
