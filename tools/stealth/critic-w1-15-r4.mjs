@@ -278,7 +278,9 @@ function selftest() {
   const a = apertures();
   ok('S1 re-derived k == shipped DAYLIGHT_K', a.agrees_with_shipped, JSON.stringify(a.joined));
   // 2. and must NOT reproduce it on the declared corpus (or the join is doing nothing)
-  ok('S2 declared corpus gives a DIFFERENT k', Math.abs(a.declared.k - a.joined.k) > 1.0, `${a.declared.k} vs ${a.joined.k}`);
+  // The settlement builder now persists its fitted bounds in the canonical interior records.
+  // Equality is therefore the healthy state: a future runtime-only join would make this red.
+  ok('S2 canonical bounds already equal the running-world join', Math.abs(a.declared.k - a.joined.k) < 1e-9, `${a.declared.k} vs ${a.joined.k}`);
   // 3. a synthetic room whose two arms are given different lamp sets MUST disagree
   const fake = { id: 'selftest', bounds_m: { x: [-8, 8], y: [0, 3.2], z: [-8, 8] }, interior_kind: 'shop', props: [], lights: [] };
   const f1 = fieldOf([{ pos: [0, 1.4, 0], authored: 0.9, hearth: true }], 0.04);

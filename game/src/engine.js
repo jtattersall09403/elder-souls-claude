@@ -4140,7 +4140,7 @@ export class Engine {
       upbringing: this.sim.character ? this.sim.character.upbringing_id : null,
       classLabel: this.sim.identity.profession, birthsign: this.sim.identity.sign,
       reputation: (this.sim.quest.factions && this.sim.quest.factions.reputation) || 0,
-      bounty: Object.values(this.sim.quest.crime.bounty || {}).reduce((a, b) => a + (Number(b) || 0), 0),
+      bounty: this.sim.stealth.crime.attributedTotal(),
       focusLabel: this.sim.player.focusMax ? `${Math.round(this.sim.player.focus)} of ${Math.round(this.sim.player.focusMax)}` : null,
       dpr: this._dpr || 1,
       drawingBufferWidth: this.renderer.canvas.width,
@@ -9114,9 +9114,7 @@ export class Engine {
   _questPlayerView() {
     const ch = this.sim.character;
     const attrs = (this.sim.progression && this.sim.progression.attributes) || {};
-    const crime = this.sim.quest && this.sim.quest.crime;
-    const bounty = crime && crime.bounty
-      ? Object.values(crime.bounty).reduce((a, b) => a + (Number(b) || 0), 0) : 0;
+    const bounty = this.sim.stealth.crime.attributedTotal();
     return {
       race: ch ? ch.race : this.sim.identity.race,
       upbringing: ch ? ch.upbringing : this.sim.identity.upbringing,
@@ -9977,9 +9975,9 @@ export class Engine {
       standings: { ...st.p.standings },
       standing_key: STL_SAN.standingKey(st.p.standings),
       warbrood_shift: STL_SAN.warbroodDispositionShift(st.d.sanction, st.p.standings),
-      deep_kin_regard: STL_SAN.deepKinRegard(st.d.justice, st.crime.bounty.imperial),
+      deep_kin_regard: STL_SAN.deepKinRegard(st.d.justice, st.crime.attributedIn('imperial')),
       writs: st.crime.writs, favours_owed: st.crime.favoursOwed, hunters: st.crime.hunters,
-      faction_consequences: STL_SAN.factionConsequences(st.d.justice, { imperialBounty: st.crime.bounty.imperial, deathFlagsInSettlement: 0, theftFromLedger: false, killedLegionSoldier: false }),
+      faction_consequences: STL_SAN.factionConsequences(st.d.justice, { imperialBounty: st.crime.attributedIn('imperial'), deathFlagsInSettlement: 0, theftFromLedger: false, killedLegionSoldier: false }),
     };
   }
 

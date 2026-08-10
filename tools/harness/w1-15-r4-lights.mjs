@@ -148,13 +148,13 @@ function simArm(rec) {
 }
 
 // ---- THE FIELD, the simulation's own, on BOTH arms so the only variable is which lamps are lit --
-function fieldFor(lamps, ambient) {
+function fieldFor(lamps, ambient, scale = SCALE) {
   const f = new LightField(DET);
   f.defaultAmbient = ambient;
   let i = 0;
   for (const L of lamps) {
     f.addSource({
-      id: `x${i++}`, pos: L.pos, intensity: L.authored * SCALE,
+      id: `x${i++}`, pos: L.pos, intensity: L.authored * scale,
       reach_m: L.hearth ? REACH.hearth : REACH.flame, zone: null,
     });
   }
@@ -289,17 +289,20 @@ function discrimination() {
     { id: 'r4_derived_noon_overcast', amb: (r) => interiorAmbientL(r, 0.75).L },
     { id: 'r4_derived_0300_overcast', amb: (r) => interiorAmbientL(r, 0.09).L },
     { id: 'CONTROL_r3_critic_arm01_0.75', amb: () => 0.75 },
+    { id: 'CONTROL_old_lamp_scale_9.3275', amb: (r) => interiorAmbientL(r, 1.00).L, scale: 9.3275 },
   ];
   const out = [];
   for (const arm of arms) {
-    let disc = 0, flat = 0, sum = 0;
+    let disc = 0, flat = 0, sum = 0, saturated = 0, cells = 0, saturatedRooms = 0;
     for (const rec of list) {
-      const f = fieldFor(simArm(rec), arm.amb(rec));
-      let mn = Infinity, mx = -Infinity;
+      const f = fieldFor(simArm(rec), arm.amb(rec), arm.scale);
+      let mn = Infinity, mx = -Infinity, roomSaturated = 0, roomCells = 0;
       const b = rec.bounds_m;
       for (let x = b.x[0] + 0.2; x <= b.x[1] - 0.2; x += 0.4) {
         for (let z = b.z[0] + 0.2; z <= b.z[1] - 0.2; z += 0.4) {
           const L = f.sample(x, b.y[0] + 1.35, z, null);
+          roomCells++; cells++;
+          if (L >= 0.9999) { roomSaturated++; saturated++; }
           if (L < mn) mn = L; if (L > mx) mx = L;
         }
       }
@@ -307,8 +310,11 @@ function discrimination() {
       sum += sp;
       if (sp > 0.30) disc++;
       if (sp < 1e-9) flat++;
+      if (roomCells > 0 && roomSaturated === roomCells) saturatedRooms++;
     }
-    out.push({ arm: arm.id, rooms: list.length, discriminating: disc, flat, mean_spread: +(sum / list.length).toFixed(4) });
+    out.push({ arm: arm.id, rooms: list.length, discriminating: disc, flat,
+      saturated_cells: saturated, cells, saturated_fraction: +(saturated / cells).toFixed(4),
+      saturated_rooms: saturatedRooms, mean_spread: +(sum / list.length).toFixed(4) });
   }
   return out;
 }
@@ -358,17 +364,21 @@ if (VERBOSE) {
 
 const disc = discrimination();
 process.stdout.write(`\n  DOES THE ROOM STILL DISCRIMINATE — spread over each room's floor, all ${shipped.interiors} interiors\n${'-'.repeat(84)}\n`);
-process.stdout.write(`  ${'ambient arm'.padEnd(32)} ${'spread>0.30'.padStart(12)} ${'flat'.padStart(6)} ${'mean spread'.padStart(12)}\n`);
-for (const d of disc) process.stdout.write(`  ${d.arm.padEnd(32)} ${String(`${d.discriminating}/${d.rooms}`).padStart(12)} ${String(d.flat).padStart(6)} ${String(d.mean_spread).padStart(12)}\n`);
+process.stdout.write(`  ${'ambient arm'.padEnd(32)} ${'spread>0.30'.padStart(12)} ${'flat'.padStart(6)} ${'sat cells'.padStart(10)} ${'sat rooms'.padStart(10)} ${'mean spread'.padStart(12)}\n`);
+for (const d of disc) process.stdout.write(`  ${d.arm.padEnd(32)} ${String(`${d.discriminating}/${d.rooms}`).padStart(12)} ${String(d.flat).padStart(6)} ${String(`${(100 * d.saturated_fraction).toFixed(1)}%`).padStart(10)} ${String(d.saturated_rooms).padStart(10)} ${String(d.mean_spread).padStart(12)}\n`);
 process.stdout.write('  The last row is the round-3 critic\'s 2x2 arm 01 — the old 0.75 ambient with the lamps kept.\n');
 
 const r3arm = disc.find((d) => d.arm === 'r3_flat_0.04');
 const r4arm = disc.find((d) => d.arm === 'r4_derived_noon_clear');
 const ctlArm = disc.find((d) => d.arm === 'CONTROL_r3_critic_arm01_0.75');
+const oldScaleArm = disc.find((d) => d.arm === 'CONTROL_old_lamp_scale_9.3275');
 const pass = shipped.disagree === 0 && worstRegressed > CFG.interior_ambient_L && control.disagree > 0
-  && r4arm.discriminating >= r3arm.discriminating - 3 && r4arm.discriminating > ctlArm.discriminating;
+  && r4arm.discriminating >= r3arm.discriminating - 3 && r4arm.discriminating > ctlArm.discriminating
+  && r4arm.saturated_fraction < 0.40 && r4arm.saturated_rooms <= 3
+  && oldScaleArm.saturated_fraction > 0.70 && oldScaleArm.saturated_rooms > 3;
 process.stdout.write(`\n  ${pass ? 'PASS' : 'FAIL'}  0 disagreeing cells (got ${shipped.disagree}); the eleven rooms above ${CFG.interior_ambient_L} (got ${worstRegressed.toFixed(4)}); the control bites (got ${control.disagree}); the derived ambient costs at most 3 discriminating rooms against round 3's constant (${r3arm.discriminating} -> ${r4arm.discriminating}) and beats the 0.75 arm (${ctlArm.discriminating}).\n`);
 process.stdout.write(`  ambient constants in play: unlit ${UNLIT_L}, daylight_k ${DAYLIGHT_K.toFixed(4)}\n\n`);
+process.stdout.write(`  saturation hard gate: ${(100 * r4arm.saturated_fraction).toFixed(1)}% < 40.0%, ${r4arm.saturated_rooms} fully saturated rooms <= 3.\n\n`);
 
 if (JSON_OUT) {
   fs.mkdirSync(path.dirname(path.join(ROOT, JSON_OUT)), { recursive: true });
