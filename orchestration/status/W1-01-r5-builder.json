@@ -1,0 +1,23 @@
+{
+  "task_id": "W1-01-r5-builder",
+  "brief": "Production builder execution of the satisfied W1-01 current-state continuation plan",
+  "started": "2026-08-10",
+  "state": "partial",
+  "files_touched": [
+    "orchestration/status/W1-01-r5-builder.json",
+    "reports/w1-01-r5/builder-evidence.md",
+    "tools/world/road-through-building.mjs",
+    "tools/world/parapet-probe.mjs"
+  ],
+  "files_claimed": [],
+  "preserved": ["W1-02 border/architecture", "W1-04 interior continuity", "W1-05 roads/wayfinding"],
+  "builder_rows": {
+    "pass": ["scale aggregate 20/20", "road-water 10 legs x 4 tides", "WLD10 census", "WLD11 census", "TRV01 static", "region axes", "road/building shipped geometry", "boot"],
+    "red": ["live capsule crossing stalls at 17.7 m on 105 settlement solids", "900-frame parapet population leaks", "earth shoulder regain/fall"],
+    "not_run_independent": ["WLD04 M17", "AI05 clustering", "WLD10 curve comparison", "WLD10/M56 image comparison and ranking", "CAM02 mass comparison"]
+  },
+  "controls": ["road/building injected RED and moved GREEN", "road-grade bent leg RED", "300-frame parapet candidate green then governing 900-frame falsification and production revert"],
+  "blockers": ["cross-piece live-solid join between W1-04 settlement continuity and W1-05 road geometry requires a fresh builder; offline building footprints omit the blocking live-solid class"],
+  "evidence": "reports/w1-01-r5/builder-evidence.md",
+  "next_step": "Fresh builder must close live settlement-solid crossing, full 900-frame span pushes, and earth shoulders before captures or independent judging."
+}

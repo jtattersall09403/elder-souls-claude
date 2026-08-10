@@ -122,24 +122,33 @@ if (SELF_TEST) {
   // (position is `rec.pos + b.offset_m`), so the mutation did nothing and the pre-existing
   // offence read as a detection.
   //
-  // The subject is `stormhold-scribe`, which the shipped tree puts across `stormhold-helstrom`
-  // at 43-53 m. Arm A is the tree as shipped. Arm B moves that one building 1,000 m east by
-  // its own `offset_m` and changes nothing else. A working probe flags it in A and not in B,
-  // and leaves every OTHER offence in the province untouched across both arms.
+  // The old control depended on `stormhold-scribe` still being the shipped offence. Once the
+  // road/settlement join was repaired that made the control report that the probe was blind.
+  // Controls must manufacture their defect: arm A puts that building on the first road sample
+  // outside Stormhold, while arm B moves the same building 1,000 m east.
   const SUBJECT = 'stormhold-scribe', LEG = 'stormhold-helstrom';
-  const shove = (dx) => (doc) => {
-    if (doc.id !== 'stormhold') return;
-    const b = doc.buildings.find((q) => q.id === SUBJECT);
+  const leg = roads.legs.find((q) => q.id === LEG);
+  if (!leg) throw new Error(`self-test: ${LEG} is absent`);
+  const target = leg.points[Math.min(8, leg.points.length - 1)];
+  const plans = loadPlans(null);
+  const arm = (dx) => {
+    const copy = structuredClone(plans);
+    const town = copy.find((q) => q.id === 'stormhold');
+    const b = town && town.buildings.find((q) => q.id === SUBJECT);
     if (!b) throw new Error(`self-test: ${SUBJECT} is not in stormhold.json any more — retarget this test`);
-    b.offset_m = [(b.offset_m ? b.offset_m[0] : 0) + dx, b.offset_m ? b.offset_m[1] : 0, b.offset_m ? b.offset_m[2] : 0];
+    b.x = target[0] + dx;
+    b.z = target[1];
+    return audit(copy, 1);
   };
-  const A = audit(loadPlans(shove(0)), 1);
-  const B = audit(loadPlans(shove(1000)), 1);
+  const A = arm(0);
+  const B = arm(1000);
   const flagged = (res) => (res.legs.find((l) => l.leg === LEG) || { buildings: [] }).buildings.includes(SUBJECT);
-  const others = (res) => JSON.stringify(res.legs.map((l) => [l.leg, l.buildings.filter((b) => b !== SUBJECT)]));
+  const others = (res) => JSON.stringify(res.legs
+    .map((l) => [l.leg, l.buildings.filter((b) => b !== SUBJECT)])
+    .filter(([, buildings]) => buildings.length));
   const red = flagged(A), green = !flagged(B), stable = others(A) === others(B);
   process.stdout.write(`self-test on ${SUBJECT} / ${LEG}\n`);
-  process.stdout.write(`  arm A (as shipped)      -> ${red ? 'FLAGGED  (correct)' : 'not flagged  (PROBE IS BLIND)'}\n`);
+  process.stdout.write(`  arm A (injected on-road) -> ${red ? 'FLAGGED  (correct)' : 'not flagged  (PROBE IS BLIND)'}\n`);
   process.stdout.write(`  arm B (moved 1000 m E)  -> ${green ? 'clean    (correct)' : 'STILL FLAGGED  (PROBE IS STUCK ON)'}\n`);
   process.stdout.write(`  every other offence identical across both arms: ${stable ? 'yes' : 'NO — the mutation moved more than one building'}\n`);
   const ok = red && green && stable;
