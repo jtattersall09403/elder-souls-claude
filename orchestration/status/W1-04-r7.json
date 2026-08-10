@@ -1,0 +1,29 @@
+{
+  "task_id": "W1-04-r7",
+  "brief": "Production builder execution of the satisfied W1-04 current-state continuation plan under S42",
+  "started": "2026-08-10",
+  "state": "complete_with_red_and_plan_defect",
+  "tested_head": "2b7a661a82b5812e16ba3aad960ba3d19b321379",
+  "files_touched": [
+    "orchestration/status/W1-04-r7.json",
+    "orchestration/evidence/W1-04-r7-builder.md",
+    "tools/world/w1-04-r7-freeze.mjs"
+  ],
+  "files_claimed": [
+    "reports/w1-04-r7/"
+  ],
+  "redundant_with": [],
+  "findings": [
+    "S42 denominator frozen at 115; 3 orphan interiors are a hard RED",
+    "115/115 interiors lack at least one literal RI-WLD13 section 4 contract field",
+    "live RI-MTH07 is 23/23 CONSUMED; self-test is 9/9 invertible rows GOES-RED with 14 scenario rows explicitly SKIPPED",
+    "live exit settle is 0/0/0/0 at frames 1/30/120/600, but re-entry is RED at 112 same / 1 other / 2 none",
+    "plan defect: preserving boot-time applyInteriorBounds derivation conflicts with RI-WLD13 independent-record and automatic-fail language"
+  ],
+  "not_run": [
+    "RI-WLD03 M13 independent blind judgement",
+    "RI-WLD13 M73-M76 after cheap M71 hard fail",
+    "applicable mixed rows without qualifying current-commit sibling evidence"
+  ],
+  "next_step": "fresh W1-04 critic must falsify the freeze gate and resolve the RI-WLD13 derivation/contract conflict before native M71-M76 acceptance"
+}
