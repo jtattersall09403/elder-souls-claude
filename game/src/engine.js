@@ -3893,6 +3893,14 @@ export class Engine {
     // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
     this.sim.uiDriver = (input) => {
       if (this.censusSurface && this.censusSurface.takesInput) return;   // the census has the input
+      if (this.real && this.real.rebinder && this.real.rebinder.open) {
+        const before = this.real.rebinder.open;
+        this.real._lastRebindStep = this.real.rebinder.step(input);
+        input.consumeUI(['menu', 'interact', 'swap_left', 'swap_right', 'two_hand']);
+        input.moveX = 0; input.moveY = 0;
+        if (before && !this.real.rebinder.open) this.real.closeRebinding();
+        return;
+      }
       const wasMenu = this.ui.isMenu();
       const taken = this.ui.step(input, this._uiCtx());
       if (taken.length) input.consumeUI(taken);
@@ -4165,6 +4173,11 @@ export class Engine {
       // drawing and misses the control.
       touch: this._touchOverlayModel(),
       rotate: this.real ? this.real.viewport.rotateState() : null,
+      rebinding: this.real ? {
+        open: !!this.real.rebinder.open,
+        device: this.real.rebinder.device,
+        view: this.real.rebinder.view(this.real.layoutMap),
+      } : null,
     };
   }
 

@@ -366,6 +366,10 @@ export class RealInput {
       if (was && !this.pointerLocked) {
         this._releaseEverything();
         this.menuOpen = true;
+        // Escape is the desktop pause/back gesture. Its visible menu is the settings ledger;
+        // this also makes rebinding reachable through the native path rather than only through
+        // __HARNESS.openRebinding(). A second Escape is consumed by RebindModel and returns.
+        if (!this.rebinder.open) this.rebinder.openSurface('keyboard');
         this.onLockLost && this.onLockLost();
       } else if (this.pointerLocked) {
         this.menuOpen = false;

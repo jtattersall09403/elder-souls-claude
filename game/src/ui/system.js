@@ -53,6 +53,7 @@ import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './scr
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
 import { drawMap, shadeHex } from './screens/map.js';
+import { drawBindings } from './screens/bindings.js';
 import { drawTouchOverlay, drawRotateState } from './touch-overlay.js';
 import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
@@ -640,6 +641,11 @@ export class UISystem {
     }
     if (this.isMenu()) S.endScreen();
 
+    // RI-JRN03 RB/CONSUMPTION: RebindModel is a shipping surface, not a harness-only table.
+    // It is painted from the same `view()` that applies the live map, so layout labels,
+    // conflicts and authored refusals have a player-visible consumer.
+    this.bindingsDrawn = ctx.rebinding && ctx.rebinding.open ? drawBindings(S, ctx.rebinding.view) : 0;
+
     // ---- RI-JRN04 §G/H1: the two models that had no renderer, drawn ----------------------
     //
     // Both are drawn AFTER the screens and outside `beginScreen()`'s rectangle, for the same
@@ -1171,6 +1177,12 @@ export class UISystem {
         area_frac: +(S.unionArea((e) => e.kind === 'touch_button' || e.kind === 'touch_stick') / (S.W * S.H)).toFixed(4),
         rotate_area_frac: +(S.unionArea((e) => e.kind === 'rotate_illustration') / (S.W * S.H)).toFixed(4),
         labelled: els.filter((e) => (e.kind === 'touch_button' || e.kind === 'touch_stick') && e.text !== null).map((e) => e.id),
+      },
+      bindings: {
+        open: !!(ctx && ctx.rebinding && ctx.rebinding.open),
+        rows_drawn: this.bindingsDrawn || 0,
+        device: ctx && ctx.rebinding ? ctx.rebinding.device : null,
+        message_drawn: !!(ctx && ctx.rebinding && ctx.rebinding.view && ctx.rebinding.view.message),
       },
       // legacy fields the pre-existing getUIState() reported; kept so nothing that read them breaks
       surfaces: els.length ? 1 : 0,

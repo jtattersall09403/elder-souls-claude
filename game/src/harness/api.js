@@ -739,7 +739,9 @@ export function installHarness(engine, bootPromise) {
     openRebinding(device) { return engine.real ? engine.real.openRebinding(device) : null; },
     closeRebinding() { return engine.real ? engine.real.closeRebinding() : null; },
     rebindView() { return engine.real ? engine.real.rebinder.view(engine.real.layoutMap) : null; },
-    rebindStep() { return engine.real ? engine.real.rebinder.step(engine.input) : null; },
+    // Production advances the surface in Engine.sim.uiDriver. Return that result so an
+    // instrument does not advance the same native press a second time.
+    rebindStep() { return engine.real ? (engine.real._lastRebindStep || engine.real.rebinder.step(engine.input)) : null; },
     rebindOffer(control) { return engine.real ? engine.real.rebinder.offer(control) : null; },
     rebindCommit(take) { return engine.real ? engine.real.rebinder.commit(take !== false) : null; },
     rebindBegin(action, slot) { return engine.real ? engine.real.rebinder.beginCapture(action, slot | 0) : null; },
