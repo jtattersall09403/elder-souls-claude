@@ -82,3 +82,50 @@ checks. Falsify the registry by restoring either stale `#notary` voice, and fals
 restoring each old mononym. Then independently execute the named `NOT_RUN` rows with actor-independent
 packs and sealed keys. Do not declare W1-23 pass while the book-stat, secret-triage, exhaustive
 document consumption, taxonomy, drift, or native-coverage rows above remain red.
+
+## Completion-builder continuation — current HEAD
+
+The completion pass did not treat the first red row as a stopping condition. It repaired and reran
+three independent native failures:
+
+* **LOR03 M1/M4/M5/M6/M7:** the authoritative corpus loader now excludes the title manifest from
+  readable denominators. All 163 real texts have a substantive taxon; the exact floors are now
+  T1 16, T2 10, T3 14, T4 47, T5 10, T6 16, T7 12, T8 10, T9 6, T10 22, with zero untaxoned.
+  `book-stats.py --self-test` is green: all length, 28/28 disputed-fact representation, zero
+  missing titled sources, hint ratio, register IQR and authorship predicates pass. The translated
+  Drowned Court song now distinguishes collective authorship from its Tamrielic translator.
+* **All-document placement:** the six records that existed only as inventory/interface fixtures
+  now also have authored placements through the existing interior-readable seam. The static
+  denominator is 163/163 placed. No new placement system was introduced; `place-library --check`
+  still proves all mutual contradiction pairs placed and separated.
+* **Contradiction/slavery reachability substrate:** CF-D028 now has two actual written witnesses
+  (the cutters' list and the Blackrose roll), while retaining the opposed sapcutter/outlaw dialogue
+  holders. The registry projection remains 84 facts, 28 disputes, 69 positions and 139 voiced
+  sources. The two previously unwritten titled references were replaced with existing books that
+  already carry the applicable positions rather than with aliases.
+
+### Remaining independent handoff (not builder-graded)
+
+At this continuation tree, the builder-side static red rows above are repaired. A fresh actor must
+still execute and judge LOR03 M2/M3, LOR04 M6, LOR06 M3/M5/M6/M7 and the qualitative rows in the
+nine-judge applicability table. The critic must also perform L1's browser walk over **all 163 placed
+texts** (not the prior 45-leg sample) and L8's shipping-path perturb/null analysis. The older r3
+`topics_taught` diagnostic still reports only 5/163 books moving a dialogue/quest gate; that is not
+silently promoted to a model-coupling pass merely because reading all books changes `booksRead`.
+
+LOR06 M2 likewise remains an independent semantic disposition task rather than an automatic keyword
+pass: reproduce the current strict candidate population with:
+
+```sh
+mapfile -t files < <(find game/data -type f -name '*.json' | sort)
+python3 corpus/80-methods/canon-check.py --claims "${files[@]}" --strict --json > /tmp/W1-23-secret-hits.json
+sha256sum /tmp/W1-23-secret-hits.json
+```
+
+At the pre-commit tree this produces 4,171 harvested text fields, 6,913 candidate fact overlaps and
+903 strict late/open candidates. The required fresh semantic reviewer must disposition every row
+with source/key/reason and must not confuse overlap with disclosure. No binary artifact is committed.
+For LOR06 M8, the only non-bank authored registry commit visible in the integrated history is
+`4e067b5ea6d30af2abba4ca20ef55555cdb20745`; a fresh critic must verify that this is an admissible
+pre-wave baseline before scoring drift. These unresolved judgement/evidence rows are **NOT_RUN**, not
+builder PASS claims.
