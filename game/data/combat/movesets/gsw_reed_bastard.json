@@ -65,8 +65,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_claymore_r1_2",
-   "anim_owner": "lin_claymore",
+   "anim": "clip_w_gsw_reed_bastard_r1_2",
+   "anim_owner": "gsw_reed_bastard",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -82,15 +82,14 @@
    "stamina": 35,
    "motion_value": 1.38,
    "poise_damage": 40,
-   "root_dz_m": 0.731,
-   "arc_sweep_deg": 179.2,
-   "shape": "slash_h",
-   "peak_tip_speed_mps_implied": 42,
+   "root_dz_m": 1.114,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.11,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"

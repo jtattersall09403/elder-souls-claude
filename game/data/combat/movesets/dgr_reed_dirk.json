@@ -70,8 +70,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_shell_r1_2",
-   "anim_owner": "lin_shell",
+   "anim": "clip_w_dgr_reed_dirk_r1_2",
+   "anim_owner": "dgr_reed_dirk",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -87,14 +87,14 @@
    "stamina": 13,
    "motion_value": 0.68,
    "poise_damage": 8,
-   "root_dz_m": 0.172,
-   "arc_sweep_deg": 72.6,
-   "shape": "slash_h",
+   "root_dz_m": 0.239,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.07,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"

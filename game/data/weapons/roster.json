@@ -441,6 +441,10 @@
    "lin": "shell",
    "unq": [
     [
+     "r1.2",
+     "thrust_high"
+    ],
+    [
      "backstep.r1",
      "backstep_cut"
     ],
@@ -732,6 +736,10 @@
    "class": "CSW",
    "lin": "naga",
    "unq": [
+    [
+     "r1.2",
+     "thrust_low"
+    ],
     [
      "roll.r2",
      "roll_sweep"
@@ -1062,6 +1070,10 @@
    "lin": "garrison",
    "unq": [
     [
+     "r1.2",
+     "thrust_high"
+    ],
+    [
      "r2",
      "thrust_straight"
     ],
@@ -1216,6 +1228,10 @@
    "lin": "gig",
    "baseline": true,
    "unq": [
+    [
+     "r1.2",
+     "sweep_low"
+    ],
     [
      "r1.1",
      "thrust_straight"
@@ -1467,7 +1483,7 @@
    "unq": [
     [
      "r1.2",
-     "cut_horizontal"
+     "thrust_low"
     ],
     [
      "roll.r2",
@@ -1775,6 +1791,10 @@
    "lin": "bill",
    "unq": [
     [
+     "r1.2",
+     "thrust_low"
+    ],
+    [
      "r1.3",
      "thrust_low"
     ],
@@ -2050,6 +2070,10 @@
    "baseline": true,
    "unq": [
     [
+     "r1.2",
+     "thrust_low"
+    ],
+    [
      "r1.1",
      "cut_diagonal"
     ],
@@ -2154,6 +2178,10 @@
    "class": "GSW",
    "lin": "claymore",
    "unq": [
+    [
+     "r1.2",
+     "thrust_high"
+    ],
     [
      "backstep.r1",
      "backstep_step"
@@ -2488,6 +2516,10 @@
    "lin": "pile",
    "unq": [
     [
+     "r1.2",
+     "sweep_low"
+    ],
+    [
      "run.r1",
      "run_lunge"
     ],
@@ -2514,6 +2546,7 @@
   },
   {
    "id": "ghm_kings_ruin",
+   "r1_mv_delta": 0.04,
    "name": "The King's Ruin",
    "class": "GHM",
    "lin": "pile",
@@ -2587,7 +2620,7 @@
    "unq": [
     [
      "r1.2",
-     "sweep_wide"
+     "thrust_high"
     ]
    ],
    "d": {
@@ -2636,6 +2669,10 @@
    "lin": "zwei",
    "unq": [
     [
+     "r1.3",
+     "thrust_low"
+    ],
+    [
      "run.r1",
      "run_lunge"
     ],
@@ -2658,6 +2695,10 @@
    "class": "UGS",
    "lin": "golem",
    "unq": [
+    [
+     "r1.2",
+     "thrust_high"
+    ],
     [
      "guard.counter",
      "cut_vertical"
@@ -2731,6 +2772,7 @@
   },
   {
    "id": "bow_horn_sinew",
+   "quick_mv_delta": 0.03,
    "name": "Horn-and-sinew bow",
    "class": "BOW",
    "lin": "horn",
@@ -2750,6 +2792,7 @@
   },
   {
    "id": "bow_reed_shortbow",
+   "quick_mv_delta": -0.03,
    "name": "Reed shortbow",
    "class": "BOW",
    "lin": "horn",
@@ -2781,6 +2824,7 @@
   },
   {
    "id": "bow_marsh_longbow",
+   "quick_mv_delta": -0.04,
    "name": "Marsh longbow",
    "class": "BOW",
    "lin": "chitinbow",
@@ -2811,6 +2855,7 @@
   },
   {
    "id": "bow_chitin_recurve",
+   "quick_mv_delta": 0.04,
    "name": "Chitin recurve",
    "class": "BOW",
    "lin": "chitinbow",

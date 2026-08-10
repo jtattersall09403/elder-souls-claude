@@ -88,15 +88,14 @@
    "stamina": 26,
    "motion_value": 1.09,
    "poise_damage": 27,
-   "root_dz_m": 0.298,
-   "arc_sweep_deg": 170.7,
-   "shape": "slash_h",
-   "peak_tip_speed_mps_implied": 40.1,
+   "root_dz_m": 0.328,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.09,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"

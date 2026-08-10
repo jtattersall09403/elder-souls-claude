@@ -72,8 +72,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_bill_r1_2",
-   "anim_owner": "lin_bill",
+   "anim": "clip_w_hlb_fen_hook_r1_2",
+   "anim_owner": "hlb_fen_hook",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -89,15 +89,14 @@
    "stamina": 30,
    "motion_value": 1.19,
    "poise_damage": 32,
-   "root_dz_m": 0.485,
-   "arc_sweep_deg": 129.3,
-   "shape": "sweep",
-   "peak_tip_speed_mps_implied": 41.6,
+   "root_dz_m": 0.53,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.09,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip",

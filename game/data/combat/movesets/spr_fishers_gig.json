@@ -70,8 +70,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_gig_r1_2",
-   "anim_owner": "lin_gig",
+   "anim": "clip_w_spr_fishers_gig_r1_2",
+   "anim_owner": "spr_fishers_gig",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -87,14 +87,14 @@
    "stamina": 19,
    "motion_value": 0.95,
    "poise_damage": 17,
-   "root_dz_m": 0.605,
-   "arc_sweep_deg": 9.6,
-   "shape": "thrust",
+   "root_dz_m": 0.495,
+   "arc_sweep_deg": 8,
+   "shape": "sweep",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule",
+    "kind": "capsule_swept",
     "radius_m": 0.09,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"

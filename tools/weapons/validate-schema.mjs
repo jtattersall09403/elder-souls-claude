@@ -74,6 +74,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const seen = new Map();
   for (const f of files) {
     const doc = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    // combat/movesets is a shared registry: spell movesets intentionally live beside weapon
+    // movesets.  A schema census must select its native population rather than report every
+    // foreign document as malformed.
+    if (schema.properties?.schema?.const && doc.schema !== schema.properties.schema.const) continue;
     const errs = validate(schema, schema, doc, '', []);
     total++;
     if (errs.length) {

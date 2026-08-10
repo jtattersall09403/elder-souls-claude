@@ -71,8 +71,8 @@
    ]
   },
   "r1.2": {
-   "anim": "clip_garrison_r1_2",
-   "anim_owner": "lin_garrison",
+   "anim": "clip_w_ssw_barsaebic_warblade_r1_2",
+   "anim_owner": "ssw_barsaebic_warblade",
    "trigger": {
     "button": "light",
     "modifier": "none",
@@ -88,15 +88,14 @@
    "stamina": 22,
    "motion_value": 0.95,
    "poise_damage": 21,
-   "root_dz_m": 0.326,
-   "arc_sweep_deg": 81.3,
-   "shape": "slash_h",
-   "peak_tip_speed_mps_implied": 26.4,
+   "root_dz_m": 0.483,
+   "arc_sweep_deg": 19,
+   "shape": "thrust",
    "hyperarmour": {
     "enabled": false
    },
    "hitbox": {
-    "kind": "capsule_swept",
+    "kind": "capsule",
     "radius_m": 0.07,
     "bone_a": "wpn_guard",
     "bone_b": "wpn_tip"
