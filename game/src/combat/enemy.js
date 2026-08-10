@@ -316,6 +316,9 @@ export class EnemyController {
       // SoulsAI.noteAttackPhase. `SoulsAI.step()` is still unreachable for the whole clip, which
       // is what makes an enemy attack uncancellable and the recovery a real punish window.
       if (this.ai) this.ai.noteAttackPhase(frame, b);
+      // This does not make RECOVER cancellable: it only unwinds forward root motion while the
+      // controller continues to own and advance the same attack clip.
+      if (this.ai && b.move.kind === 'attack') this.ai.recoverSpacing(ctx.player);
     } else {
       this._idleBehaviour(frame, ctx);
     }

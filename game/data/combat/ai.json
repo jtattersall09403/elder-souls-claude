@@ -47,6 +47,7 @@
     "movement.min_standoff_m": "m",
     "movement.walk_in_min_closure_mps": "m_per_s",
     "movement.rush_closure_window_f": "f@60",
+    "movement.recover_retreat_mps": "m_per_s",
     "circle.reseed_frames": "f@60",
     "circle.strafe_speed_fraction": "fraction",
     "circle.preferred_band_multiple": "multiple_of_omega",
@@ -162,6 +163,8 @@
 
     "walk_in_min_closure_mps": 0.5,
     "rush_closure_window_f": 30,
+    "recover_retreat_mps": 5.4,
+    "_recover_retreat_note": "Recovery remains uncancellable and turn-locked, but forward attack root motion must not leave an enemy parked inside STRIKE for most non-COMMIT frames. During RECOVER the body retreats straight away from the player at this bounded speed until it clears 0.9·Omega. This locomotion cannot shorten the clip, turn, attack, or regain a token.",
     "_closure_rule_two_zones": "The rule has an inner half. Outside the DANCE band, `rush_when_closure_below_mps` asks 'am I gaining?'. INSIDE the DANCE band the enemy is meant to hold station, so not-gaining is normal and a sprint there would be the chase-bot RI-AI01 M3 exists to fail; the inner test therefore asks the stricter question 'is the gap OPENING faster than `chase_when_gap_opening_above_mps`?' and only then leaves CIRCLE. Both numbers are 0.8 m/s and they are separate leaves because they answer different questions and a future round may want to move one without the other. Without the inner half, round 2 measured an enemy that rushed from 10 m to 2.9 m and then circled a player walking away at 2.0 m/s while strafing at 1.36 — the same standoff one band further in.",
     "_closure_rule": "THE ROUND-2 HEADLINE. RI-AI01 T07/T09 gate the sprint on a DISTANCE BAND (`dist > 5.0·Ω`), and round 1 implemented exactly that. Measured, it meant an enemy 10 m from a player WALKING away closed at 0.20 m/s — INFANTRY's approach walk of 2.20 against the player's walk of 2.00 — never entered RUSH in 1,800 frames, never got nearer than 8.14 m, hit its 32 m leash and went home. Worse against a walk than against a jog, because walking keeps the gap just inside the band boundary that would have triggered a sprint. THE RULE THIS FILE ADDS: an enemy also sprints when it is NOT GAINING. It measures its own closure — how much the gap has shrunk over the last `rush_closure_window_f` frames, in m/s — and if that is below `rush_when_closure_below_mps` while it is still outside the DANCE band, it enters RUSH whatever band it is in. It leaves RUSH when it reaches the DANCE band, or when it is closing faster than the threshold and the band no longer calls for a sprint. Distance decides WHERE the enemy wants to be; closure decides HOW FAST IT HAS TO MOVE TO GET THERE. 0.8 m/s is chosen so that an enemy walking in on a stationary or laterally-moving player (closure ~2.2 m/s) never sprints — the approach still reads as a walk — while any target that is actually pulling away trips it inside half a second."
   },
@@ -170,7 +173,7 @@
     "_source": "RI-AI01 T11 — reseed on a 48-96 f@60 timer from the seeded PRNG.",
     "reseed_frames": [48, 96],
     "strafe_speed_fraction": 0.62,
-    "preferred_band_multiple": 1.6,
+    "preferred_band_multiple": 1.8,
     "_preferred_note": "Where CIRCLE tries to sit, as a multiple of the enemy's own reach. 1.6 is inside RI-AI01 §C's DANCE band (1.25-2.2) and near its lower edge on purpose: the feint step (T13) has 36 f@60 to cross from here to STRIKE (0.85), and at the archetype sprint that is only possible from about 1.8 or nearer. An enemy that circles at the TOP of DANCE can never reach a commit inside the window the item allows, which is the difference between a fight and a standoff.",
     "_strafe_note": "A strafe is slower than a forward walk; at 1.0 the enemy orbits at walking pace and the circle reads as a charge that missed.",
     "radial_drift_mps": 0.35,
