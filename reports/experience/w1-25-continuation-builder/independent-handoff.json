@@ -1,0 +1,11 @@
+{
+  "schema": "elder-souls/w1-25-independent-handoff@1",
+  "quarantined": true,
+  "builder_did_not_grade": true,
+  "packs": {
+    "isolated_recall": {"status": "not_ready", "reason": "No compliant played 500-word baton chain was produced in this continuation."},
+    "blind_judges": {"status": "not_ready", "reason": "No leak-gated played-session comparison pack was produced."},
+    "non_player_annotators": {"status": "not_ready", "reason": "Session-shape population remains absent."},
+    "independent_critics": {"status": "ready_for_partial_falsification", "artifacts": ["matrix-live-final.json", "crossing-manifest.json"], "warning": "Do not infer builder or piece PASS; native aggregate remains red."}
+  }
+}

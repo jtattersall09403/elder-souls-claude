@@ -1,0 +1,20 @@
+matrix-probe — 10 cells, one browser, seed 1234.
+  OK              TOD->ROS    support 4/4,2
+  VACUOUS         SCH->ROS    support 0/0,0
+  INERT           SPL->ROS    support 1/1,1
+  INERT           STL->ROS    support 92/92,92
+  INERT           EQP->ROS    support 1/1,1
+  INERT           DIS->BOS    support 1/1,1
+  OK              ROS->WLD    support 1/1,1
+  OK              ROS->DIS    support 376/376,376
+  OK              WEA->ROS    support 1/1,1
+  INERT           FAC->ROS    support 1/1,1
+
+  demonstrated live cells      4  (W1 floor 10)
+  demonstrated seam crossings  4  (W1 floor 4)  2 W->F / 2 F->W
+  demonstrated structural      0  (W1 floor 1)
+  matrix score                 8  (W1 floor 20)
+  paper cells                  5: SPL->ROS, STL->ROS, EQP->ROS, DIS->BOS, FAC->ROS
+  vacuous cells                1: SCH->ROS
+  crossings never probed       31: FAC->BOS, DIS->ROS, GLD->ROS, GLD->BOS, SKL->ROS, SKL->BOS, SPL->BOS, SPL->DUN, LOR->ROS, LOR->BOS, STL->BOS, QST->ROS, QST->BOS, WLD->ROS, WLD->BOS, TOD->BOS, WEA->BOS, EQP->BOS, UPG->BOS, ROS->FAC, ROS->QST, ROS->SCH, BOS->FAC, BOS->DIS, BOS->LOR, BOS->QST, BOS->WLD, BOS->SCH, DUN->ROS, DUN->BOS, SCH->BOS
+wrote reports/experience/w1-25-continuation-builder/matrix-live-final.json

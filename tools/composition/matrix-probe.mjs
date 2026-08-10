@@ -110,10 +110,11 @@ const PROBES = [
     fork: ({ set }) => {
       const H = window.__HARNESS;
       H.setTimeOfDay(set ? 3 : 15);
-      H.stepFrames(120);
-      const who = (H.whereIsEveryone ? H.whereIsEveryone() : null) || {};
-      const ids = Object.keys(who).sort();
-      return { value: ids.map((k) => `${k}@${who[k]}`), support: ids.length, detail: { hour: set ? 3 : 15 } };
+      const a = alertArena(H, 'wl-fen-sentry');
+      H.stepFrames(30);
+      const members = H.getEncounterState('wl-fen-sentry').members;
+      return { value: members.map((m) => `${m.eid}:${m.role}`).sort(), support: members.length,
+        detail: { hour: set ? 3 : 15, spawned: a.spawned } };
     },
   },
   {
@@ -228,7 +229,7 @@ const PROBES = [
       H.stepFrames(180);
       const d = H.getDispositions ? H.getDispositions() : {};
       const keys = Object.keys(d || {}).sort();
-      return { value: keys.map((k) => `${k}:${d[k]}`), support: Math.min(keys.length, a.members.length || 0) || a.members.length, detail: { npcs: keys.length, encounter_members: a.members.length, spawn_error: a.error || null } };
+      return { value: keys.map((k) => `${k}:${d[k]}`), support: keys.length, detail: { npcs: keys.length, encounter_members: a.members.length, spawn_error: a.error || null } };
     },
   },
   {
@@ -240,11 +241,11 @@ const PROBES = [
     fork: ({ set }) => {
       const H = window.__HARNESS;
       try { H.setWeather(set ? 'salt_storm' : 'clear'); } catch (e) { /* */ }
-      const a = alertArena(H, 'wl-fen-sentry');
+      const a = (() => { try { return { ...H.spawnEncounter('wl-fen-sentry', 18, 0), members: H.getEncounterState('wl-fen-sentry').members }; } catch (e) { return { members: [], error: String(e) }; } })();
       H.stepFrames(180);
       const m = alertArena(H, 'wl-fen-sentry').members;
       const use = m.length ? m : a.members;
-      const seen = use.map((x) => { let l = '?'; try { l = H.losBetween ? String(!!H.losBetween('player', x.eid)) : '?'; } catch (e) { l = 'err'; } return x.eid + ':' + x.alert_state + ':' + x.dist_m + ':' + l; });
+      const seen = use.map((x) => x.eid + ':' + x.alert_state + ':' + x.dist_m + ':' + x.sight_radius_m);
       return { value: seen.sort(), support: use.length, detail: { spawn_error: a.error || null } };
     },
   },
@@ -258,7 +259,7 @@ const PROBES = [
       const H = window.__HARNESS;
       const st = H.getFactionStanding ? H.getFactionStanding() : {};
       const fid = Object.keys(st || {})[0] || 'the_drowned_court';
-      try { H.setFactionStanding(fid, set ? 3 : 0); } catch (e) { /* */ }
+      try { H.setFactionStanding(fid, { member: !!set, rank: set ? 3 : 0, reputation: set ? 100 : 0 }); } catch (e) { /* */ }
       const a = alertArena(H, 'wl-legion-picket');
       H.stepFrames(180);
       const m = alertArena(H, 'wl-legion-picket').members.length ? alertArena(H, 'wl-legion-picket').members : a.members;
@@ -289,6 +290,9 @@ function fakeWorld(mode) {
     setWeather(w) { weather = w; },
     setRenderRate() {}, stepFrames() {}, loadState() {}, setSeed() {},
     listEntities: () => ents(),
+    spawnEncounter: () => ({ eids: ents().map((e) => e.eid) }),
+    getEncounterState: () => ({ members: ents().concat(live && hour < 6 ? [{ eid: 'night', role: 'night_watch', alert_state: 'IDLE', dist_m: 5 }] : [])
+      .map((e) => ({ ...e, role: e.role || 'infantry', dist_m: e.dist_m || 18 })) }),
     whereIsEveryone: () => (mode === 'empty' ? {} : (live && hour < 6 ? { a: 'inn', b: 'inn' } : { a: 'market', b: 'quay' })),
     residentsPresent: () => (mode === 'empty' ? [] : (live && hour < 6 ? ['a'] : ['a', 'b'])),
     aggro() {}, learnSpell() {}, castNow() { if (live) for (const e of base) e.alert_state = 'CALM'; },
@@ -297,7 +301,7 @@ function fakeWorld(mode) {
     getInventory: () => [{ id: 'legion_cuirass' }],
     equipItem(i) { worn = i; },
     setDisposition(id, v) { disp[id] = v; },
-    setFactionStanding(f, v) { rank = v; },
+    setFactionStanding(f, v) { rank = Number(v && typeof v === 'object' ? v.rank : v) || 0; },
     getFactionStanding: () => ({ the_drowned_court: rank }),
     getDispositions: () => (mode === 'empty' ? {} : { n1: live && dead.size ? 60 : 40, n2: 40, n3: 40, n4: 40, n5: 40 }),
     killEntity(id) { dead.add(id); },

@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-25-continuation-builder",
+  "status": "builder_incomplete",
+  "starting_commit": "46d3c0432fceb7cf1fa622f205c4728daa8321e9",
+  "files_touched": [
+    "game/src/engine.js",
+    "tools/composition/matrix-probe.mjs",
+    "orchestration/status/W1-25-continuation-builder.json",
+    "reports/experience/w1-25-continuation-builder/crossing-manifest.json",
+    "reports/experience/w1-25-continuation-builder/independent-handoff.json",
+    "reports/experience/w1-25-continuation-builder/matrix-live-final.json",
+    "reports/experience/w1-25-continuation-builder/matrix-live-final.log",
+    "reports/experience/w1-25-continuation-builder/matrix-reproduction.json",
+    "reports/experience/w1-25-continuation-builder/matrix-reproduction.log",
+    "reports/experience/w1-25-continuation-builder/matrix-self-test.txt"
+  ],
+  "files_claimed": [],
+  "original_result": {"qualifying_crossings": 0},
+  "current_result": {"qualifying_crossings": 4, "w2f": 2, "f2w": 2, "native_aggregate_pass": false},
+  "builder_complete": false,
+  "critic_pass_claimed": false,
+  "remaining_builder_work": [
+    "Reach native floors of 10 live cells, one structural cell and matrix score 20.",
+    "Run consumer-delete and irrelevant-source controls for every crossing.",
+    "Complete live permissiveness closure/restore/repeat population.",
+    "Complete matched played session-shape, anecdote, sag, breakage and composition populations."
+  ],
+  "independent_only_work": ["isolated recall", "blind judging", "non-player annotation", "independent criticism"],
+  "next_step": "Continue production work on the remaining native red cells; do not dispatch final judges yet."
+}
