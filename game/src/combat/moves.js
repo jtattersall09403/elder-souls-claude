@@ -406,7 +406,11 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
     active: pl.phases.PARLEY_ACTIVE[1] - pl.phases.PARLEY_ACTIVE[0] + 1,
     recovery: pl.total_f - pl.phases.PARLEY_ACTIVE[1],
     total: pl.total_f,
-    stamina: pl.stamina,
+    // The first twelve frames are an arm window, not a committed action. PlayerController
+    // spends this explicitly on f13; `stamina` stays zero so begin() cannot charge on f1.
+    stamina: 0,
+    commit_stamina: pl.stamina,
+    arm_until: 12,
     hitbox: false,
     iframes: null,
     hitstop_frames: 0,

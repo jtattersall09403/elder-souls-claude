@@ -2894,9 +2894,18 @@ export class Engine {
     // main quests on `opens_by.topic` from a cold boot and no world action could clear the
     // refusal; the only producer of a topic was `hooks.json`, whose main-quest edges granted
     // the topic of the quest whose own journal fired them.
-    const learned = learnTopics(this.sim.quest.topicsKnown, [topicId, ...(info.to || [])]);
+    const resultTopics = info.res && Array.isArray(info.res.addTopic) ? info.res.addTopic : [];
+    const learned = learnTopics(this.sim.quest.topicsKnown, [topicId, ...(info.to || []), ...resultTopics]);
     for (const t of learned) {
       this.questEngine.noteTopicLearned(t, info.source === 'rumour' ? 'RUMOUR' : 'CONVERSATION', this.conversation.npc.eid);
+    }
+    // RI-DLG01 / RI-MTH07 — consume the authored RESULT, rather than carrying a decorative
+    // field through the reader. Journal writes remain owned and validated by QuestEngine;
+    // dialogue only requests an existing non-terminal entry on an already-open quest.
+    if (info.res && info.res.flag) this.questEngine.setFlag(info.res.flag, true);
+    if (info.res && Array.isArray(info.res.journal) && info.res.journal.length === 2) {
+      const [quest, index] = info.res.journal;
+      if (this.questEngine.isOpen(quest)) this.questEngine.note(quest, Number(index));
     }
     // `topic_select` is already in HARNESS.md §5's closed vocabulary (A-JRN7) and is exactly
     // this event; an earlier draft invented `dialogue_topic`, which the bus refused. Reuse the

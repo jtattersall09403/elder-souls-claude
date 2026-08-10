@@ -7,7 +7,7 @@
   "generated_by": null,
   "why": [
     "W1-04 reported 9 NPC topic ids with no body anywhere. Six of them are real and all six are",
-    "on `game/data/npcs/writ-house.json` — the opening cell, the two people the player meets",
+    "on `game/data/npcs/writ-house.json` \u2014 the opening cell, the two people the player meets",
     "before they have a name, a sheet or a quest. Those six keywords were offered by the only",
     "two mouths in the game at that moment and answered by nothing.",
     "",
@@ -17,12 +17,12 @@
     "and the bodies exist in 50-mainline.json as `the-chapters-vote`, `the-interiors-consent`",
     "and `the-ledgers-terms`. The audit used its own slug, which split on the apostrophe. An",
     "audit that does not use the runtime's own key function reports gaps the runtime does not",
-    "have — worth more than the three topics it cost.",
+    "have \u2014 worth more than the three topics it cost.",
     "",
     "Rules followed, from 50-mainline.json and 55-utility.json: at least two infos from",
     "different actor archetypes; the LAST info on every topic ungated, so a keyword once known",
     "is never a silence; `to` is the AddTopic graph `sim/quest/topic-supply.js` reads, and every",
-    "target here already has a body. Nothing states a solution — these are the first six things",
+    "target here already has a body. Nothing states a solution \u2014 these are the first six things",
     "anyone says to you, and the first thing this game has to establish is what you are."
   ],
   "topics": [
@@ -37,30 +37,6 @@
           "to": [
             "the-writ-house",
             "the-provincial-office"
-          ]
-        },
-        {
-          "a": "villager",
-          "cell": "barge-hold",
-          "requires": {
-            "race": [
-              "saxhleel",
-              "naga"
-            ]
-          },
-          "x": "Egg-sibling. Sit against the ribs, not the boards — the boards sweat and you'll be wet the whole crossing. We came up from the yards at Lilmoth. No one has told us where we're going and no one is going to, so I've stopped asking and started counting the tides. Where did they take you from?",
-          "to": [
-            "the-tides",
-            "tidewrack"
-          ]
-        },
-        {
-          "a": "villager",
-          "cell": "barge-hold",
-          "x": "Twenty-six of us and four benches. Do not stand when she rolls. The scribe up top has a list with all of us on it and when he reads it out you say the name he reads, not the one you were given — that is the only advice worth what it costs.",
-          "to": [
-            "the-list",
-            "your-hatch-name"
           ]
         },
         {
@@ -107,7 +83,7 @@
               "naga"
             ]
           },
-          "x": "You would not have one. It is the name the water gives, and it is three sounds long, and it does not fit in the box on their form — so they take it off you at the desk and hand you back something they can file. That is the first thing they take. It is not the last.",
+          "x": "You would not have one. It is the name the water gives, and it is three sounds long, and it does not fit in the box on their form \u2014 so they take it off you at the desk and hand you back something they can file. That is the first thing they take. It is not the last.",
           "to": [
             "what-they-take-off-you",
             "the-hatch-name-list"
@@ -154,7 +130,7 @@
         },
         {
           "a": "townsman",
-          "x": "A writ. If you're carrying one you're working it off. If you're carrying two you're a problem for someone. And don't lose it — the copy the Office keeps is not the one that gets read!",
+          "x": "A writ. If you're carrying one you're working it off. If you're carrying two you're a problem for someone. And don't lose it \u2014 the copy the Office keeps is not the one that gets read!",
           "to": [
             "the-writ-house",
             "the-writ-of-passage"
@@ -211,7 +187,7 @@
     },
     {
       "id": "the-list",
-      "note": "warden-scribe-tuleeh-ma. The intake roll — and the thing `the-shadowscale-list` is quietly not.",
+      "note": "warden-scribe-tuleeh-ma. The intake roll \u2014 and the thing `the-shadowscale-list` is quietly not.",
       "infos": [
         {
           "a": "clerk",
@@ -225,7 +201,7 @@
         {
           "a": "outlaw",
           "d": 20,
-          "x": "Whose list? Everyone here is on a list. The trick is being on the boring one — the boring one gets read out and the interesting one gets acted on.",
+          "x": "Whose list? Everyone here is on a list. The trick is being on the boring one \u2014 the boring one gets read out and the interesting one gets acted on.",
           "to": [
             "the-shadowscale-list"
           ]
@@ -283,7 +259,7 @@
               "naga"
             ]
           },
-          "x": "It is our word, not yours, and it means assimilated — one of us raised among you. You will hear it used gently by the Office and hard by the deep villages, and both of them are talking about me.",
+          "x": "It is our word, not yours, and it means assimilated \u2014 one of us raised among you. You will hear it used gently by the Office and hard by the deep villages, and both of them are talking about me.",
           "to": [
             "the-lukiul-question",
             "the-lukiul"
@@ -291,7 +267,7 @@
         },
         {
           "a": "townsman",
-          "x": "An Argonian word. It means one of them brought up in an imperial town — a clerk, a scribe, a legionary. Half the province is one and the other half has an opinion about it.",
+          "x": "An Argonian word. It means one of them brought up in an imperial town \u2014 a clerk, a scribe, a legionary. Half the province is one and the other half has an opinion about it.",
           "to": [
             "the-lukiul",
             "the-lukiul-question"
