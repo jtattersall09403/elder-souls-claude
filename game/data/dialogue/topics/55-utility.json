@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/topics@1",
   "group": "utility-and-standalone",
-  "owner": "W1-19 round 2, gen 3 — the main quest, end to end (this file is the tree-wide half of its finding)",
+  "owner": "W1-19 round 2, gen 3 \u2014 the main quest, end to end (this file is the tree-wide half of its finding)",
   "key_legend_ref": "00-roots.json#key_legend",
   "hand_authored": true,
   "generated_by": null,
@@ -24,7 +24,7 @@
     "  * at least two infos per topic, from different actor archetypes, because a keyword",
     "    answerable only by the quest giver is a briefing rather than a conversation (RI-DLG01).",
     "  * the LAST info on every topic is ungated, so the keyword is never a silence once known.",
-    "    Cell-gated and disposition-gated infos come first; first-match-wins (RI-DLG01 §A).",
+    "    Cell-gated and disposition-gated infos come first; first-match-wins (RI-DLG01 \u00a7A).",
     "  * `to` is the AddTopic graph `sim/quest/topic-supply.js` reads. Asking about one thing",
     "    teaches the words for the next, which is how these quests are found without a marker.",
     "  * nothing here states the quest's solution. It states that there is a problem and who is",
@@ -514,18 +514,8 @@
     },
     {
       "id": "the-witness",
-      "note": "Opens Q-MAG-10 (assizer-corvo, the Gideon court). W1-DLG-SHADOWS: the clerk/gideon info below carries `d:20`, added because it tied on specificity against 50-factions.json's clerk/gideon info for this same id ('She gave a statement and she gave it twice...') — same actor, same cell, neither carried a `d` — and, loading second (50-factions.json < 55-utility.json), was permanently unreachable from that speaker regardless of context. The quest was still openable via the legionary info below (`to` also includes `the-dead-runner`), so this was a silenced unique line rather than a blocked quest, but it is silenced all the same. `d:20` makes the clerk's insider reveal the thing you hear once you have their trust, and the faction-neutral first read the thing you hear before it.",
+      "note": "Opens Q-MAG-10 (assizer-corvo, the Gideon court). W1-DLG-SHADOWS: the clerk/gideon info below carries `d:20`, added because it tied on specificity against 50-factions.json's clerk/gideon info for this same id ('She gave a statement and she gave it twice...') \u2014 same actor, same cell, neither carried a `d` \u2014 and, loading second (50-factions.json < 55-utility.json), was permanently unreachable from that speaker regardless of context. The quest was still openable via the legionary info below (`to` also includes `the-dead-runner`), so this was a silenced unique line rather than a blocked quest, but it is silenced all the same. `d:20` makes the clerk's insider reveal the thing you hear once you have their trust, and the faction-neutral first read the thing you hear before it.",
       "infos": [
-        {
-          "a": "clerk",
-          "cell": "gideon",
-          "d": 20,
-          "x": "She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he can write into a file.",
-          "to": [
-            "the-dead-runner",
-            "gideon"
-          ]
-        },
         {
           "a": "legionary",
           "x": "The Assize can compel a statement. It can't compel a true one. So it persuades instead.",
@@ -761,7 +751,7 @@
         {
           "a": "innkeeper",
           "cell": "blackrose",
-          "x": "I need the cellar door to stay shut for one night. Not locked — shut. Can you do that?",
+          "x": "I need the cellar door to stay shut for one night. Not locked \u2014 shut. Can you do that?",
           "to": [
             "the-two-brothers",
             "blackrose"
@@ -963,6 +953,28 @@
         {
           "a": "townsman",
           "x": "The warden has a calf in a net and a temper on the bank about it. Someone should help him!",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "enchanting",
+      "name": "enchanting",
+      "infos": [
+        {
+          "a": "magister",
+          "x": "Enchanting binds a known effect into a sound object. Bring a filled soul gem and something worth binding, provincial.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "spellmaking",
+      "name": "spellmaking",
+      "infos": [
+        {
+          "a": "magister",
+          "x": "Spellmaking is a commission, not a parlour trick. State the effect, its reach, and its duration; then pay for the risk, provincial.",
           "to": []
         }
       ]

@@ -328,6 +328,14 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     // it, so `cell: "gideon"` covers `gideon-inn` and `gideon-tollhouse`. Tested against the
     // SPEAKER's place, not the player's, because it is field 6 of the speaker's filter.
     if (info.cell && !inCell(npc, info.cell)) continue;
+    // Filter field 4 — speaker faction. Dialogue data uses the Construction Set spelling
+    // (hyphens) while several NPC ledgers use save-safe underscores, so compare canonical
+    // slugs rather than bytes. A faction-qualified line must never fall through to an actor
+    // who merely shares the same voice register.
+    if (info.f) {
+      const factionKey = (v) => String(v || '').toLowerCase().replace(/[_\s]+/g, '-');
+      if (factionKey(npc.faction) !== factionKey(info.f)) continue;
+    }
     const matchesActor = actor && info.a === actor;
     if (!matchesActor && info.a) continue;         // written for somebody else's mouth
     // ARBITRATION S37 — THE WHOLE OF THE SELECTION RULE. Take the first survivor.
@@ -390,6 +398,9 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     // `game/src/sim/quest/topic-supply.js` for why that is the whole of the main quest's
     // bootstrap.
     to: Array.isArray(best.to) ? best.to.slice() : [],
+    // Morrowind RESULT script, kept declarative in JSON. Engine.conversationSay() is the
+    // world-side consumer: it writes the journal/flag and learns addTopic entries.
+    res: best.res && typeof best.res === 'object' ? structuredClone(best.res) : null,
   };
 }
 

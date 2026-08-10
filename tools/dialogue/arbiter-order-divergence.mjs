@@ -83,6 +83,7 @@ function inCell(npc, cell) {
   }
   return false;
 }
+const factionKey = (v) => String(v || '').toLowerCase().replace(/[_\s]+/g, '-');
 // The shipped weights, lifted from converse.js:283-284. Kept as data so --self-test can move them.
 const W = ASSUME_FM
   ? { actor: 0, cell: 0, requires: 0, forbids: 0, dBase: 0, dSlope: 0 }
@@ -178,6 +179,7 @@ function analyse(docs, npcs, players) {
       for (let i = 0; i < n; i++) {
         const info = t.infos[i];
         if (info.cell && !inCell(npc, info.cell)) continue;
+        if (info.f && factionKey(npc.faction) !== factionKey(info.f)) continue;
         const matchesActor = actor && info.a === actor;
         if (!matchesActor && info.a) continue;
         m |= (1 << i);
@@ -313,6 +315,7 @@ async function verifyEngine(docs, npcs, players, readerPath) {
             if (!(pm & (1 << i))) continue;
             const info = t.infos[i];
             if (info.cell && !inCell(npc, info.cell)) continue;
+            if (info.f && factionKey(npc.faction) !== factionKey(info.f)) continue;
             const matchesActor = actor && info.a === actor;
             if (!matchesActor && info.a) continue;
             firstText = info.x; break;

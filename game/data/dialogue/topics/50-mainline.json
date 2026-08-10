@@ -53,29 +53,6 @@
           ]
         },
         {
-          "a": "townsman",
-          "forbids": {
-            "race": [
-              "saxhleel",
-              "naga"
-            ]
-          },
-          "x": "Dry-one's question. It's the count of the drowned. You aren't in it and neither am I, and that's meant to be a comfort. Does it comfort you? Go to Soulrest and ask the undersexton.",
-          "to": [
-            "soulrest",
-            "the-drowned-court"
-          ]
-        },
-        {
-          "a": "townsman",
-          "x": "The Court's book of the dead. Every drowned soul in the province gets a line in it and the line is the whole of what they are owed. They have been carting boxes up from Soulrest to be read against it and the carting has not stopped since Sun's Height.",
-          "to": [
-            "the-empty-boxes",
-            "the-drowned-court",
-            "soulrest"
-          ]
-        },
-        {
           "a": "clerk",
           "x": "A register, and the only one the Court will read from. It's kept at Soulrest and read by an undersexton named Rell. She's been asking after a hand off a customs bench who can count and can't be leaned on. Can you count?",
           "to": [
@@ -454,6 +431,20 @@
         },
         {
           "a": "archivist",
+          "cf": "CF-D018",
+          "pos": "B",
+          "d": 20,
+          "x": "They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the object was, which is the wrong order of operations and produced the right number anyway. A boundary stone marks one place. These count."
+        },
+        {
+          "a": "archivist",
+          "cf": "CF-D018",
+          "pos": "A",
+          "x": "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the court has read as a boundary is a boundary, whatever it was cut for. Would you argue that in front of a notary?",
+          "cell": "blackrose"
+        },
+        {
+          "a": "archivist",
           "x": "Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make him say it, or go in with him, and going in with him is not the safe one of those two.",
           "to": [
             "the-skei",
@@ -604,6 +595,13 @@
     {
       "id": "the-cutters-terms",
       "infos": [
+        {
+          "a": "sapcutter",
+          "cf": "CF-D017",
+          "pos": "A",
+          "d": 20,
+          "x": "Friend, this one was taught the depth and this one was taught the season, and this one keeps both. What the buyer does after is between the buyer and his own tree. Show this one the clause that says otherwise and this one will read it."
+        },
         {
           "a": "sapcutter",
           "x": "The yards want the leases read in a language the crews speak and they want the Company off the third stand. Neeja-Xul will say the first out loud and not the second.",

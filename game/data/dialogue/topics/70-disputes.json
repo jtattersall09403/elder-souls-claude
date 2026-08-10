@@ -2,8 +2,8 @@
   "schema": "elder-souls/dialogue-topics@2",
   "group": "registered-disputes",
   "owner": "W1-23. The province arguing with itself, on the record.",
-  "key_legend_ref": "topics/00-roots.json §key_legend",
-  "note": "Every info here carries `cf` (a registered dispute in game/data/lore/canon.json) and `pos` (which side of it the line takes), and game/src/world/canon.js#allows offers it ONLY to a speaker the register says holds that side. So these are not extra lines: they are the register's holders made audible. Ask two people the same word and the province disagrees with itself in front of you, and nothing corrects either of them — RI-LOR06 §1.2. Strike a holder out of the register and the line stops being offered; that is the perturbation this file exists to make visible.",
+  "key_legend_ref": "topics/00-roots.json \u00a7key_legend",
+  "note": "Every info here carries `cf` (a registered dispute in game/data/lore/canon.json) and `pos` (which side of it the line takes), and game/src/world/canon.js#allows offers it ONLY to a speaker the register says holds that side. So these are not extra lines: they are the register's holders made audible. Ask two people the same word and the province disagrees with itself in front of you, and nothing corrects either of them \u2014 RI-LOR06 \u00a71.2. Strike a holder out of the register and the line stops being offered; that is the perturbation this file exists to make visible.",
   "consumed_by": "game/src/character/converse.js#infoFor via CanonRegistry.allows()",
   "topics": [
     {
@@ -30,7 +30,7 @@
           "a": "clerk",
           "cf": "CF-D006",
           "pos": "B",
-          "x": "The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few seasons — no mystery in it at all. Wound a thing often enough and it stops giving. Ask the cutters how many routes ran the Helstrom shelf ten years ago and how many run it now."
+          "x": "The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few seasons \u2014 no mystery in it at all. Wound a thing often enough and it stops giving. Ask the cutters how many routes ran the Helstrom shelf ten years ago and how many run it now."
         },
         {
           "a": "mudborn",
@@ -44,13 +44,6 @@
       "id": "the-cutters-terms",
       "note": "W1-DLG-SHADOWS. The sapcutter (CF-D017 pos A) info carries `d:20`, added for the same reason as reading-the-count's note in this file: it tied on specificity against 50-mainline.json's ungated sapcutter info for this id ('The yards want the leases read...') and, loading second (50-mainline.json < 70-disputes.json), was permanently unreachable regardless of context. `d:20` makes the dispute stance reachable once earned rather than silently dead.",
       "infos": [
-        {
-          "a": "sapcutter",
-          "cf": "CF-D017",
-          "pos": "A",
-          "d": 20,
-          "x": "Friend, this one was taught the depth and this one was taught the season, and this one keeps both. What the buyer does after is between the buyer and his own tree. Show this one the clause that says otherwise and this one will read it."
-        },
         {
           "a": "rootkeeper",
           "cf": "CF-D017",
@@ -66,7 +59,7 @@
           "a": "merchant",
           "cf": "CF-D010",
           "pos": "A",
-          "x": "The Empire doesn't go inland because it doesn't want to, and it says so in the address they hand out at the market — go and read it! There's no shame in the thing. A house doesn't garrison its own garden."
+          "x": "The Empire doesn't go inland because it doesn't want to, and it says so in the address they hand out at the market \u2014 go and read it! There's no shame in the thing. A house doesn't garrison its own garden."
         }
       ]
     },
@@ -94,7 +87,7 @@
           "a": "outlaw",
           "cf": "CF-D011",
           "pos": "D",
-          "x": "There's a song with names in it. Not weir people either — nine of them, and the record has none of them, and the depots won't have it sung in a yard. Ask yourself why a depot cares what a song says about an accident."
+          "x": "There's a song with names in it. Not weir people either \u2014 nine of them, and the record has none of them, and the depots won't have it sung in a yard. Ask yourself why a depot cares what a song says about an accident."
         }
       ]
     },
@@ -142,13 +135,6 @@
       "id": "the-xanmeers",
       "infos": [
         {
-          "a": "archivist",
-          "cf": "CF-D015",
-          "pos": "A",
-          "x": "Solid, all the way through. The survey measured eleven of them with one rod and found no chamber in any, and what the guides sell as a chamber is a fall of the upper courses with a door cut into it by a guide's grandfather.",
-          "cell": "blackrose"
-        },
-        {
           "a": "merchant",
           "cf": "CF-D015",
           "pos": "B",
@@ -158,23 +144,8 @@
     },
     {
       "id": "reading-the-count",
-      "note": "W1-DLG-SHADOWS. The archivist (CF-D018 pos B) info carries `d:20`, added so it stops tying against 50-mainline.json's ungated archivist info for this same id ('Hosk-Vei can read the Count...') — same actor, neither side previously carried a requires/cell/d, so `infoFor()`'s score was an exact tie and Map iteration order (50-mainline.json loads before 70-disputes.json) made the dispute stance permanently unreachable from this archivist regardless of context, defeating RI-LOR06's requirement that a registered dispute be heard from a real, qualified speaker. `d:20` makes the two deterministic instead of order-dependent: the practical fact answers below that trust threshold, the archivist's dispute position once the player has earned it.",
-      "infos": [
-        {
-          "a": "archivist",
-          "cf": "CF-D018",
-          "pos": "B",
-          "d": 20,
-          "x": "They are tallies, and the Surveyor's count is sound: she counted the notches before she decided what the object was, which is the wrong order of operations and produced the right number anyway. A boundary stone marks one place. These count."
-        },
-        {
-          "a": "archivist",
-          "cf": "CF-D018",
-          "pos": "A",
-          "x": "Boundary stones. The Assize has taken them as boundary stones in evidence twice. And a stone the court has read as a boundary is a boundary, whatever it was cut for. Would you argue that in front of a notary?",
-          "cell": "blackrose"
-        }
-      ]
+      "note": "W1-DLG-SHADOWS. The archivist (CF-D018 pos B) info carries `d:20`, added so it stops tying against 50-mainline.json's ungated archivist info for this same id ('Hosk-Vei can read the Count...') \u2014 same actor, neither side previously carried a requires/cell/d, so `infoFor()`'s score was an exact tie and Map iteration order (50-mainline.json loads before 70-disputes.json) made the dispute stance permanently unreachable from this archivist regardless of context, defeating RI-LOR06's requirement that a registered dispute be heard from a real, qualified speaker. `d:20` makes the two deterministic instead of order-dependent: the practical fact answers below that trust threshold, the archivist's dispute position once the player has earned it.",
+      "infos": []
     },
     {
       "id": "the-count-itself",

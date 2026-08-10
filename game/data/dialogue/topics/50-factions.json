@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/topics@1",
   "group": "faction-lines",
-  "owner": "W1-FACTIONS — the three carried faction questlines",
+  "owner": "W1-FACTIONS \u2014 the three carried faction questlines",
   "key_legend_ref": "00-roots.json#key_legend",
   "hand_authored": true,
   "generated_by": null,
@@ -29,7 +29,7 @@
     "quests are ranks of lines this piece carries and a line with a hole in it is not a line.",
     "",
     "`tools/quests/topic-supply-audit.mjs` reports the other 34 quest topics in this tree that",
-    "still have no body — all of them on quests owned by other pieces — and the 37 hooks.json",
+    "still have no body \u2014 all of them on quests owned by other pieces \u2014 and the 37 hooks.json",
     "entry_topics rows that are still self-loops after W1-19 repaired the Q-MAIN ones."
   ],
   "topics": [
@@ -260,7 +260,7 @@
           "a": "clerk",
           "cell": "gideon",
           "d": 45,
-          "x": "An underwriter holds a gate. Not the guild's gate — a gate, one gate, and the toll off it comes to their hand before it comes to the table. It is how the Ledger makes a person expensive to lose.",
+          "x": "An underwriter holds a gate. Not the guild's gate \u2014 a gate, one gate, and the toll off it comes to their hand before it comes to the table. It is how the Ledger makes a person expensive to lose.",
           "to": [
             "the-archon-question",
             "the-first-chair"
@@ -394,7 +394,7 @@
         },
         {
           "a": "archivist",
-          "x": "Two books, in fact — the fair copy that the Governor signs and the day-book the notary actually writes in. They differ, often, by exactly one entry.",
+          "x": "Two books, in fact \u2014 the fair copy that the Governor signs and the day-book the notary actually writes in. They differ, often, by exactly one entry.",
           "to": [
             "the-blackrose-day-book",
             "the-struck-off-notary"
@@ -418,7 +418,7 @@
         {
           "a": "legionary",
           "cell": "blackrose",
-          "x": "Labour lease. Men go out on a chit and come back on a chit, and the number that go out is the number that come back — because the same man writes both numbers.",
+          "x": "Labour lease. Men go out on a chit and come back on a chit, and the number that go out is the number that come back \u2014 because the same man writes both numbers.",
           "to": [
             "the-blackrose-day-book"
           ]
@@ -499,7 +499,7 @@
         {
           "a": "clerk",
           "d": 35,
-          "x": "It clears the bounty on the name written on it. It clears nothing else — not the door you broke, not the man who got in the way, not the fourteen days after which the office takes it back and tells your target who you are.",
+          "x": "It clears the bounty on the name written on it. It clears nothing else \u2014 not the door you broke, not the man who got in the way, not the fourteen days after which the office takes it back and tells your target who you are.",
           "to": [
             "the-prefects-return"
           ]
@@ -1091,6 +1091,16 @@
     {
       "id": "the-witness",
       "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 20,
+          "x": "She saw it. She will not say so, and Corvo will not say why she will not. He knows why. It is not a reason he can write into a file.",
+          "to": [
+            "the-dead-runner",
+            "gideon"
+          ]
+        },
         {
           "a": "clerk",
           "cell": "gideon",

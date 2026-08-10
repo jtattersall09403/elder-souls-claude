@@ -3,9 +3,9 @@
   "id": "topic-merge-manifest",
   "title": "The declared merge order of the topic files",
   "owner": "W1-DLG-S37",
-  "authority": "corpus/00-doctrine/ARBITRATION.md S37; corpus/40-dialogue/RI-DLG01-topic-graph.md §A",
+  "authority": "corpus/00-doctrine/ARBITRATION.md S37; corpus/40-dialogue/RI-DLG01-topic-graph.md \u00a7A",
   "why": [
-    "RI-DLG01 §A: 'first-match-wins in AUTHORED file order'. Since ARBITRATION S37 the reader",
+    "RI-DLG01 \u00a7A: 'first-match-wins in AUTHORED file order'. Since ARBITRATION S37 the reader",
     "returns the first admissible INFO in that order, so the order is CONTENT: 18.242% of",
     "resolutions across 64 topics move if it moves.",
     "",
@@ -50,31 +50,136 @@
   "open_question": {
     "id": "main-quest-argument-vs-50-mainline",
     "what": "`the-steward-of-the-count` is declared by both 50-mainline.json (an old stub) and main-quest-argument.json (authored later, deliberately). Under BOTH the old scoring rule and the new first-match rule, 50-mainline wins, because it comes first -- the W1-17 round-1 hard fail. Promoting main-quest-argument above 50-mainline in this list is now a one-line fix for it.",
-    "why_not_done_here": "It is an authoring judgement about which answer is better, and ARBITRATION S37 explicitly does not decide it ('WHAT THIS DOES NOT DECIDE', item 7). W1-DLG-S37 landed the selection rule and declared the order; it did not re-author the corpus. Measured, not guessed -- see orchestration/status/W1-DLG-S37.json.",
-    "owner": "unassigned"
+    "why_not_done_here": "Resolved by W1-17 builder: the authoritative Act-V argument is intentionally ordered before the legacy mainline stub; provenance gates verify every documented signature.",
+    "owner": "W1-17"
   },
   "order": [
-    { "file": "00-roots.json", "group": "roots", "topics": 9, "infos": 53 },
-    { "file": "05-asking-around.json", "group": "asking-around", "topics": 42, "infos": 63 },
-    { "file": "06-opening-roots.json", "group": "opening-roots", "topics": 9, "infos": 18 },
-    { "file": "07-root-coverage.json", "group": "root-coverage", "topics": 9, "infos": 86 },
-    { "file": "10-global.json", "group": "global", "topics": 72, "infos": 151 },
-    { "file": "20-tier-a.json", "group": "tier-a-settlements", "topics": 34, "infos": 70 },
-    { "file": "21-tier-b.json", "group": "tier-b-settlements", "topics": 23, "infos": 46 },
-    { "file": "22-tier-c.json", "group": "tier-c-settlements", "topics": 16, "infos": 32 },
-    { "file": "30-texture.json", "group": "texture", "topics": 65, "infos": 77 },
-    { "file": "40-race-gated.json", "group": "race-gated", "topics": 96, "infos": 116 },
-    { "file": "45-speaker-coverage.json", "group": "speaker-coverage", "topics": 34, "infos": 56 },
-    { "file": "50-factions.json", "group": "faction-lines", "topics": 41, "infos": 106 },
-    { "file": "50-mainline.json", "group": "mainline", "topics": 46, "infos": 128 },
-    { "file": "55-utility.json", "group": "utility-and-standalone", "topics": 34, "infos": 102 },
-    { "file": "56-writ-house-open.json", "group": "writ-house-opening", "topics": 6, "infos": 24 },
-    { "file": "60-roads.json", "group": "roads", "topics": 8, "infos": 24 },
-    { "file": "70-disputes.json", "group": "registered-disputes", "topics": 10, "infos": 22 },
-    { "file": "75-tribes.json", "group": "the-peoples", "topics": 12, "infos": 70 },
-    { "file": "main-quest-argument.json", "group": "main-quest-argument", "topics": 12, "infos": 36 },
-    { "file": "thorn.json", "group": "thorn", "topics": 4, "infos": 0 },
-    { "file": "writ-house.json", "group": "writ-house", "topics": 0, "infos": 0 }
+    {
+      "file": "00-roots.json",
+      "group": "roots",
+      "topics": 9,
+      "infos": 53
+    },
+    {
+      "file": "05-asking-around.json",
+      "group": "asking-around",
+      "topics": 42,
+      "infos": 63
+    },
+    {
+      "file": "06-opening-roots.json",
+      "group": "opening-roots",
+      "topics": 9,
+      "infos": 18
+    },
+    {
+      "file": "07-root-coverage.json",
+      "group": "root-coverage",
+      "topics": 9,
+      "infos": 86
+    },
+    {
+      "file": "10-global.json",
+      "group": "global",
+      "topics": 72,
+      "infos": 151
+    },
+    {
+      "file": "20-tier-a.json",
+      "group": "tier-a-settlements",
+      "topics": 34,
+      "infos": 70
+    },
+    {
+      "file": "21-tier-b.json",
+      "group": "tier-b-settlements",
+      "topics": 23,
+      "infos": 46
+    },
+    {
+      "file": "22-tier-c.json",
+      "group": "tier-c-settlements",
+      "topics": 16,
+      "infos": 32
+    },
+    {
+      "file": "30-texture.json",
+      "group": "texture",
+      "topics": 65,
+      "infos": 77
+    },
+    {
+      "file": "40-race-gated.json",
+      "group": "race-gated",
+      "topics": 96,
+      "infos": 116
+    },
+    {
+      "file": "45-speaker-coverage.json",
+      "group": "speaker-coverage",
+      "topics": 34,
+      "infos": 56
+    },
+    {
+      "file": "50-factions.json",
+      "group": "faction-lines",
+      "topics": 41,
+      "infos": 106
+    },
+    {
+      "file": "main-quest-argument.json",
+      "group": "main-quest-argument",
+      "topics": 12,
+      "infos": 36
+    },
+    {
+      "file": "50-mainline.json",
+      "group": "mainline",
+      "topics": 46,
+      "infos": 128
+    },
+    {
+      "file": "55-utility.json",
+      "group": "utility-and-standalone",
+      "topics": 34,
+      "infos": 102
+    },
+    {
+      "file": "56-writ-house-open.json",
+      "group": "writ-house-opening",
+      "topics": 6,
+      "infos": 24
+    },
+    {
+      "file": "60-roads.json",
+      "group": "roads",
+      "topics": 8,
+      "infos": 24
+    },
+    {
+      "file": "70-disputes.json",
+      "group": "registered-disputes",
+      "topics": 10,
+      "infos": 22
+    },
+    {
+      "file": "75-tribes.json",
+      "group": "the-peoples",
+      "topics": 12,
+      "infos": 70
+    },
+    {
+      "file": "thorn.json",
+      "group": "thorn",
+      "topics": 4,
+      "infos": 0
+    },
+    {
+      "file": "writ-house.json",
+      "group": "writ-house",
+      "topics": 0,
+      "infos": 0
+    }
   ],
   "note_on_counts": "`topics` and `infos` are documentation, not law. Nothing reads them; the loader reads `group` and the position. They are here so a reader can see at a glance how much text each position is worth -- the first four files alone hold 220 INFOs and win every tie."
 }
