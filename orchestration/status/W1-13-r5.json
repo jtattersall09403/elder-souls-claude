@@ -1,0 +1,50 @@
+{
+  "task_id": "W1-13-r5",
+  "title": "BUILDER: complete satisfied W1-13 death and corpse-run continuation",
+  "state": "done",
+  "plan_state": "satisfied",
+  "files_touched": [
+    "game/data/save-manifest.json",
+    "game/src/save/state.js",
+    "tools/journey/jrn06-death.mjs",
+    "tools/harness/w1-13-r5-save-clock.mjs",
+    "orchestration/status/W1-13-r5.json"
+  ],
+  "files_claimed": [
+    "game/src/save/state.js",
+    "game/src/sim/environment.js",
+    "tools/journey/jrn06-death.mjs",
+    "tools/harness/w1-13-r5-save-clock.mjs",
+    "orchestration/status/W1-13-r5.json",
+    "game/data/save-manifest.json"
+  ],
+  "next_step": "Fresh critic reruns the native aggregation in healthy browser capacity, begins at the save-clock and M8 roster controls above, then judges all owned-seam rows against orchestration/plans/W1-13.md.",
+  "findings": [
+    "Browser load declaration: contention reported 8 instances but 0 MB resident and load 0.17/core; proceeded with the single mandatory aggregation because the processes were non-resident/ghost-like and system load was well below the 4.0/core ceiling.",
+    "Repaired the current blocking save defect: clock.award_frames is now a declared durable field; applySave restores both integer clocks atomically and preserves backwards compatibility for same-schema saves lacking the additive field.",
+    "Deterministic browser probe at current dirty HEAD: after 20 deaths from 04:48 the saved award_frames was 54862; the same ordinary enemy paid 42 before and 42 after blob restore. Deleting clock.award_frames reproduced 57 after restore, so the control goes red.",
+    "Repaired RI-PRG04 M8 population construction in the native aggregation: it now uses and explicitly populates Lilmoth, requires a non-empty population, requires >=20 identical actor ids across rested/no-rest/four-rest arms, and cannot score the former Archon-well/Lilmoth-roster mismatch.",
+    "Mandatory jrn06 aggregation was attempted twice after the native change. Browser launch exited without a journey.json under the declared 8-instance/0-MB contention condition; no aggregate PASS is claimed. The fresh critic should rerun the exact command below when browser capacity is healthy.",
+    "Existing current-HEAD death/corpse-run, combat, save and progression seams were consumed; no parallel death/save/soul model was introduced."
+  ],
+  "critic_entry_point": {
+    "command": "node tools/journey/journey-run.mjs --journey jrn06-death --seed 4711 --profile desktop-720p --input-mode real --trace-events --deaths 20 --out reports/journeys/critic-w1-13-r5-jrn06",
+    "first_targets": [
+      "clock.award_frames exact save/restore and 42->57 delete-the-fix",
+      "m_prg04_m8_clock_consequence roster_population_n >= 20 and roster_population_matches_all_arms true",
+      "source-level environment-clock x souls-consumer 2x2",
+      "empty/wrong-settlement roster controls"
+    ],
+    "independence": "Builder makes no PASS declaration; fresh critic owns judgement."
+  },
+  "checks": {
+    "cheap_gates": [
+      "node tools/boot-check.mjs",
+      "node tools/check-data.mjs",
+      "node tools/check-souls-world.mjs --totals",
+      "node tools/check-quests.mjs"
+    ],
+    "save_clock_probe": "node tools/harness/w1-13-r5-save-clock.mjs --out /tmp/w1-13-r5-save-clock.json \u2014 pass:true; exact_round_trip:true; control_goes_red:true",
+    "aggregation_attempt": "node tools/journey/journey-run.mjs --journey jrn06-death --seed 4711 --profile desktop-720p --input-mode real --trace-events --deaths 20 --out /tmp/w1-13-r5-jrn06 \u2014 environment produced no journey.json under browser contention; not claimed as evidence"
+  }
+}

@@ -335,7 +335,12 @@ export async function runJrn06(h, args, led, ctx = {}) {
     await h.h('setRenderRate', 0);
     await h.h('stepFrames', 2);
     const wells8 = (await h.h('listHearths')).hearths || [];
-    const well8 = wells8.find((x) => x.kind === 'settlement') || wells8[0];
+    // Use the settlement that the default state actually populates. The old `find()` selected
+    // Archon while the live actors belonged to Lilmoth, leaving the control arm with zero people
+    // and allowing `0 moved` to masquerade as a valid no-rest result.
+    const well8 = wells8.find((x) => x.id === 'hearth-lilmoth')
+      || wells8.find((x) => x.kind === 'settlement') || wells8[0];
+    const settlement8 = well8.id.replace(/^hearth-/, '');
     const interiorIds = ((await h.h('listInteriors')) || [])
       .map((x) => (typeof x === 'string' ? x : x.id)).filter(Boolean);
 
@@ -375,6 +380,10 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const runArm8 = async (rests) => {
       await h.h('loadState', 'default');
       await h.h('setRenderRate', 0);
+      const populated = await h.h('populateSettlement', settlement8);
+      if (!Array.isArray(populated) || populated.length === 0) {
+        throw new Error(`RI-PRG04 M8 EMPTY/FAIL: no residents for ${settlement8}`);
+      }
       await h.h('teleport', well8.pos[0], well8.pos[2]);
       await h.h('stepFrames', 4);
       await h.h('setTimeOfDay', 17.0);
@@ -407,7 +416,13 @@ export async function runJrn06(h, args, led, ctx = {}) {
 
     const c1 = Math.abs(rested8.after.hour - 23) < 0.01
       && rested8.rest_clocks.every((x) => x.hours === 6);
-    const c2 = rested8.npcs_moved_n > 0 && control8.npcs_moved_n === 0;
+    const rosterKeys8 = (arm) => Object.keys(arm.before.roster).sort();
+    const rosterPopulation8 = rosterKeys8(rested8);
+    const rosterPopulationMatches8 = rosterPopulation8.length >= 20
+      && JSON.stringify(rosterPopulation8) === JSON.stringify(rosterKeys8(control8))
+      && JSON.stringify(rosterPopulation8) === JSON.stringify(rosterKeys8(four8));
+    const c2 = rosterPopulationMatches8
+      && rested8.npcs_moved_n > 0 && control8.npcs_moved_n === 0;
     const c3 = rested8.shops_closed_n > 0 && control8.shops_closed_n === 0;
     const c5 = Math.abs(four8.hours_moved - 24) < 0.02 && four8.days_moved === 1
       && four8.rest_clocks.length === 4 && four8.rest_clocks.every((x) => x.hours === 6);
@@ -417,6 +432,9 @@ export async function runJrn06(h, args, led, ctx = {}) {
 
     put('m_prg04_m8_clock_consequence', 'RI-PRG04 method 8 — rest at 17:00 and the world at 23:00', {
       rested: rested8, no_rest_control: control8, four_rests: four8,
+      settlement: settlement8,
+      roster_population_n: rosterPopulation8.length,
+      roster_population_matches_all_arms: rosterPopulationMatches8,
       c1_clock_reads_23_00: c1,
       c2_night_roster_active: c2,
       c3_merchants_closed: c3,

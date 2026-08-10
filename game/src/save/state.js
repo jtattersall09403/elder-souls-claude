@@ -25,6 +25,7 @@ import { rng } from '../core/rng.js';
 import { canonicalise } from '../core/canonical.js';
 import { sha256 } from '../core/sha256.js';
 import { saveFight } from './fight.js';
+import { FRAMES_PER_DAY } from '../sim/environment.js';
 
 /**
  * 2, and the bump is deliberate. The W1 save/load repair added the FIGHT (the loadout, the
@@ -354,6 +355,12 @@ export function buildSave(sim, build) {
     },
     clock: {
       time_of_day: r6(sim.env.timeOfDay),
+      // The award clock deliberately continues while the world clock is held by death. Losing
+      // this counter on load re-seated rewards on the held world hour, so saving at 04:48 after
+      // a corpse run changed the same enemy's award from 42 to 57 souls after Continue.
+      award_frames: Number.isInteger(sim.env._awardFrames)
+        ? ((sim.env._awardFrames % FRAMES_PER_DAY) + FRAMES_PER_DAY) % FRAMES_PER_DAY
+        : Math.round((((sim.env.timeOfDay % 24) + 24) % 24) / 24 * FRAMES_PER_DAY) % FRAMES_PER_DAY,
       day_count: sim.env.dayCount,
       weather: sim.env.weather,
     },
@@ -802,6 +809,15 @@ export function applySave(sim, blob, moves, statFor, hooks) {
   }
 
   sim.env.timeOfDay = blob.clock.time_of_day;
+  // Restore both integer clock sources together. Setting only the public float lets
+  // Environment._syncFromFloat() interpret the load as an external clock write and erase the
+  // saved death-held offset on the first frame. Older same-schema saves predate award_frames;
+  // they safely begin with zero offset rather than failing a user's Continue.
+  sim.env._clockFrames = Math.round((((sim.env.timeOfDay % 24) + 24) % 24) / 24 * FRAMES_PER_DAY) % FRAMES_PER_DAY;
+  sim.env._awardFrames = Number.isInteger(blob.clock.award_frames)
+    ? ((blob.clock.award_frames % FRAMES_PER_DAY) + FRAMES_PER_DAY) % FRAMES_PER_DAY
+    : sim.env._clockFrames;
+  sim.env.awardTimeOfDay = Math.round(sim.env._awardFrames * 24 / FRAMES_PER_DAY * 1e6) / 1e6;
   sim.env.dayCount = blob.clock.day_count;
   sim.env.weather = blob.clock.weather;
   sim.env.region = blob.pose.region;
