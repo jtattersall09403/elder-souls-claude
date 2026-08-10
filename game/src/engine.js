@@ -5329,6 +5329,16 @@ export class Engine {
     const enc = encounterById(this.chData, id);
     const eids = [];
     let first = true;
+    // W1-25: encounter composition is a consumer of the running world, not merely of the
+    // encounter JSON.  These inputs are all registers ordinary play moves (the clock advances,
+    // weather fronts advance and quest reputation earns rank).  Keep the effects on roster and
+    // perception/hostility; never alter a statblock's combat numbers.
+    const hour = Number(this.sim.env.timeOfDay) || 0;
+    const nightRoster = hour < 6 || hour >= 21;
+    const saltHidden = this.sim.env.weather === 'salt_storm';
+    const factionRows = (this.sim.quest && this.sim.quest.factions) || {};
+    const legionRank = Object.values(factionRows).reduce((best, row) =>
+      Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
     for (const m of enc.members) {
       // AR-3, the seam. The W1-19 round-1 verdict declared this piece `seam_sterile: true`:
       // "the complete set of consequence keys across all 32 mainline quests is faction_reputation,
@@ -5358,11 +5368,51 @@ export class Engine {
         e.encLeader = first && m.role === 'infantry';
         e.encAggroed = false;
         e.encHailed = false;
+        if (saltHidden) e.sight_radius_m = Math.min(e.sight_radius_m, 15);
+        if (id === 'wl-legion-picket' && legionRank >= 3) {
+          e.sight_radius_m = 0;
+          e.encounterFriendlyRank = legionRank;
+        }
         if (first && m.role === 'infantry') first = false;
         eids.push(eid);
       }
     }
+    // The nocturnal roster is deliberately an extra body rather than a buff: composition is the
+    // legal seam lever, and getEncounterState/listEntities expose the observable consequence.
+    if (nightRoster && id === 'wl-fen-sentry' && enc.members[0]) {
+      const m = enc.members[0];
+      const eid = this.spawn(m.statblock, Number(x) - 2, Number(z) + 5,
+        { as: `${opts.tag || id}-night-watch-0`, yaw: opts.yaw });
+      const e = this.sim.findEntity(eid);
+      e.encounterId = id; e.encounterRole = 'night_watch'; e.encAggroed = false;
+      e.encHailed = false; e.encLeader = false;
+      if (saltHidden) e.sight_radius_m = Math.min(e.sight_radius_m, 15);
+      eids.push(eid);
+    }
     return { encounter: id, eids, opening: this.sim.character ? openingFor(this.chData, enc, this.sim.character) : null };
+  }
+
+  _consumeEncounterSeams() {
+    const q = this.sim.quest;
+    if (!q) return;
+    const members = this.sim.entities.filter((e) => e.encounterId === 'wl-legion-picket');
+    const rank = Object.values(q.factions || {}).reduce((best, row) =>
+      Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
+    for (const e of members) {
+      if (e.hp <= 0 || e.state === 'DEAD') continue;
+      if (rank < 3) { e.alert = 100; e.alertState = 'AGGRO'; e.encAggroed = true; }
+      else { e.alert = 0; e.alertState = 'IDLE'; e.encAggroed = false; }
+      const ec = this.combat.enemies.get(e.eid);
+      if (ec) { ec.alert = e.alert; ec.alertState = e.alertState; ec.b.aggro = e.encAggroed; }
+    }
+    if (q.flags.w1_25_legion_picket_consumed || !members.length ||
+        members.some((e) => e.hp > 0 && e.state !== 'DEAD')) return;
+    // A cleared patrol is consumed by both the traversal/world register and the settlement's
+    // social register. The latch makes the consequence durable and prevents per-frame farming.
+    q.flags.w1_25_legion_picket_consumed = true;
+    q.flags.road_legion_picket_cleared = true;
+    const ids = Object.keys(q.dispositions || {}).sort().slice(0, 5);
+    for (const id of ids) q.dispositions[id] = Math.min(100, Number(q.dispositions[id] || 0) + 10);
   }
 
   getEncounterState(id) {
@@ -5372,6 +5422,7 @@ export class Engine {
       eid: e.eid, role: e.encounterRole, statblock: e.id, archetype: e.archetype,
       moveset: `enemy:${e.id}`, hp: e.hp, hp_max: e.hpMax, poise_max: e.poiseMax,
       alert_state: e.alertState, aggroed: !!e.encAggroed, hailed: !!e.encHailed,
+      sight_radius_m: e.sight_radius_m,
       dist_m: Math.round(Math.hypot(this.sim.player.pos[0] - e.pos[0], this.sim.player.pos[2] - e.pos[2]) * 1000) / 1000,
     }));
     return {
@@ -6050,6 +6101,7 @@ export class Engine {
     // because reputation and therefore derived rank also move through `setFlag` and through a
     // load, and a standing that is only correct on the frame a quest closed is not a standing.
     this.syncFactionStandings();
+    this._consumeEncounterSeams();
     this._journeyStamps();
     // A census commit latched inside the step is applied here — outside the armed guard, and
     // strictly before the frame record, so its `creation_field` event is in this frame.
