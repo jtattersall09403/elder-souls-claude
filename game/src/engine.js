@@ -1119,6 +1119,9 @@ export class Engine {
     // the scheduler's luck. The fight is rebuilt by every `loadState()`, so this is re-hung
     // here for the same reason the stealth handle above is.
     if (this.impactAudio) this.combat.setAudio(this.impactAudio);
+    // ARBITRATION S44 AQ-02: preserve CAM06's player-took-damage seam. No IMPACT shake request
+    // is consumed here; the fight calls this only after resolved player HP actually decreases.
+    this.combat.setPlayerDamageFeedback(({ hp_fraction }) => triggerShake(this.sim, hp_fraction));
     // W1-15 round-2: the stealth subsystem owns the alert meter and must be able to write it
     // through to the fight's controllers. The fight is rebuilt by every loadState(), so the
     // handle is re-hung here rather than captured once at boot.

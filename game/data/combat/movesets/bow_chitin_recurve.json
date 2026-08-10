@@ -63,16 +63,7 @@
     "RANGED",
     "CASTER",
     "AMBUSHER"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "bow.quick": {
    "anim": "clip_chitinbow_bow_quick",
@@ -113,16 +104,7 @@
    "answers": [
     "RANGED",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "bow.aimed": {
    "anim": "clip_chitinbow_bow_aimed",
@@ -170,16 +152,7 @@
     "CASTER",
     "RANGED",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "bow.roll": {
    "anim": "clip_chitinbow_bow_roll",
@@ -222,16 +195,7 @@
    "answers": [
     "AMBUSHER",
     "DUELIST"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "plunge": {
    "anim": "clip_chitinbow_plunge",
@@ -273,16 +237,7 @@
    "answers": [
     "AMBUSHER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "guardbreak": {
    "anim": "clip_chitinbow_guardbreak",
@@ -319,16 +274,7 @@
    ],
    "answers": [
     "TURTLE"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   },
   "art.1": {
    "anim": "clip_chitinbow_art_1",
@@ -366,16 +312,7 @@
    "answers": [
     "ELITE",
     "GANK_DUO"
-   ],
-   "hitstop_f": {
-    "flesh": 3,
-    "chitin": 5,
-    "stone": 8,
-    "metal": 6,
-    "shield": 7,
-    "wood": 3,
-    "water": 2
-   }
+   ]
   }
  },
  "notes": "Drawn from the chest rather than the ear: it shoots flatter and hits harder on chitin, which is what it is made of.\n\nProjectile range 21.95 m (RI-WPN02 §B); reach_m above is the bow's own hitbox reach.\n\nLineage: chitinbow — A chitin recurve: shorter limbs, a lower draw, and the shot comes from the chest rather than the ear.\nMandatory slots present: 7/7. Total slots: 7.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."

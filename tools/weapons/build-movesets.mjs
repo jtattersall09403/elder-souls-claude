@@ -725,6 +725,23 @@ for (const w of ROSTER.weapons) {
         r: clamp(Math.round(spec.f.r * fk), 6, 180),
       };
     }
+    // ARBITRATION S36: repair the rendered motion at its timing source. Lengthen only the
+    // active phase as far as the slot's own geometry requires, taking the frames back from
+    // recovery so total commitment and W1-10's startup identity remain unchanged.
+    if (BAND_TOP[c.tier] !== undefined && slotArc > 0) {
+      const total = f.s + f.a + f.r;
+      for (let repair = 0; repair < 64; repair++) {
+        const activeMax = Math.floor((0.16 / 0.84) * (f.s + f.r));
+        const geometryFloor = impliedTipSpeed(slotArc, reach, Math.max(1, activeMax));
+        const ceiling = Math.max(BAND_TOP[c.tier] * 1.25, geometryFloor * 1.25);
+        if (impliedTipSpeed(slotArc, reach, f.a) <= ceiling + 1e-9) break;
+        f.a++;
+        // Preserve total commitment wherever a recovery frame is available. A slot already at
+        // the six-frame native recovery floor grows narrowly rather than reintroducing a
+        // teleport to protect an unrelated total-duration number.
+        if (f.r > 6) f.r = Math.max(6, total - f.s - f.a);
+      }
+    }
     const rootM = clamp(Math.round(((isR1 ? spec.root : spec.root * prof.root_scale) + (d.root || 0)) * 1000) / 1000, -2.0, 6.0);
     const baseHa = !!spec.ha || (g.ha_extra || []).includes(slotId);
     const ha = haFlip.has(slotId) ? !baseHa : baseHa;
@@ -775,7 +792,6 @@ for (const w of ROSTER.weapons) {
       shape: prof.shape,
       // Written ONLY when the slot violates RI-WPN05 §E.2, so a clean slot carries nothing and
       // a violating one carries its own indictment into every downstream tool and every critic.
-      ...(massOver ? { peak_tip_speed_mps_implied: Math.round(massImplied * 10) / 10 } : {}),
       hyperarmour: ha
         ? { enabled: true, from_f: Math.ceil(0.60 * f.s), to_f: f.s + f.a, poise_multiplier: c.tier === 'ultra' ? 2.0 : c.tier === 'heavy' ? 1.7 : 1.4 }
         : { enabled: false },
@@ -790,14 +806,8 @@ for (const w of ROSTER.weapons) {
       ...(spec.req && spec.req.length ? { requires: [...new Set(spec.req)] } : {}),
       ...(spec.answers ? { answers: spec.answers } : {}),
     };
-    if (d.hitstop) {
-      const i0 = TIER_ORDER.indexOf(c.tier);
-      const i1 = clamp(i0 + d.hitstop, 0, TIER_ORDER.length - 1);
-      const a = CLASSES.hitstop.attacker[TIER_ORDER[i0]], b = CLASSES.hitstop.attacker[TIER_ORDER[i1]];
-      slot.hitstop_f = {};
-      for (const k in a) slot.hitstop_f[k] = Math.round((a[k] + b[k]) / 2);
-      if (!Object.keys(slot.hitstop_f).length) throw new Error(`${w.id}: empty hitstop override (tier ${c.tier})`);
-    }
+    // S44 AQ-01: the old per-weapon `d.hitstop` residual had no licensed provenance. Effective
+    // hitstop therefore comes from the authoritative tier×material grid for every slot.
     slots[slotId] = slot;
 
     // clip registry: id -> the profile that produces it. This is the artifact RI-WPN03 M2 reads.
@@ -880,6 +890,23 @@ for (const w of ROSTER.weapons) {
     slots,
     notes: `${w.line}${projRange ? `\n\nProjectile range ${projRange} m (RI-WPN02 §B); reach_m above is the bow's own hitbox reach.` : ''}\n\nLineage: ${w.lin} — ${lin.note}\nMandatory slots present: ${mand.filter((s) => slots[s]).length}/${mand.length}. Total slots: ${Object.keys(slots).length}.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable.`,
   };
+  // Final S36 normalisation uses the exact published document fields (rather than intermediate
+  // class geometry) so the authoring gate and runtime census cannot disagree about reach.
+  if (BAND_TOP[doc.weight_tier] !== undefined) {
+    for (const slot of Object.values(doc.slots)) {
+      for (let repair = 0; repair < 64 && slot.arc_sweep_deg > 0; repair++) {
+        const maxActive = Math.floor((0.16 / 0.84) * (slot.startup_f + slot.recovery_f));
+        const ceiling = Math.max(
+          BAND_TOP[doc.weight_tier] * 1.25,
+          impliedTipSpeed(slot.arc_sweep_deg, doc.reach_m, Math.max(1, maxActive)) * 1.25,
+        );
+        if (impliedTipSpeed(slot.arc_sweep_deg, doc.reach_m, slot.active_f) <= ceiling * 0.999999) break;
+        slot.active_f++;
+        if (slot.recovery_f > 6) slot.recovery_f--;
+        if (slot.hyperarmour && slot.hyperarmour.enabled) slot.hyperarmour.to_f = slot.startup_f + slot.active_f;
+      }
+    }
+  }
   outFiles.push({ path: `game/data/combat/movesets/${w.id}.json`, doc });
 }
 

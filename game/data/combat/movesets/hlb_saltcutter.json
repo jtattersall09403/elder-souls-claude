@@ -44,15 +44,14 @@
    "chains_to": "r1.2",
    "chain_index": 1,
    "startup_f": 40,
-   "active_f": 14,
-   "recovery_f": 59,
+   "active_f": 15,
+   "recovery_f": 58,
    "stamina": 28,
    "motion_value": 1.25,
    "poise_damage": 34,
    "root_dz_m": 0.495,
    "arc_sweep_deg": 142.6,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 45.4,
    "hyperarmour": {
     "enabled": false
    },
@@ -69,16 +68,7 @@
    "answers": [
     "INFANTRY",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "r1.2": {
    "anim": "clip_glaive_r1_2",
@@ -101,7 +91,6 @@
    "root_dz_m": 0.495,
    "arc_sweep_deg": 131.8,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 42,
    "hyperarmour": {
     "enabled": false
    },
@@ -117,16 +106,7 @@
    ],
    "answers": [
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "r1.3": {
    "anim": "clip_glaive_r1_3",
@@ -164,16 +144,7 @@
    "answers": [
     "INFANTRY",
     "DUELIST"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "r2": {
    "anim": "clip_glaive_r2",
@@ -188,19 +159,18 @@
    "chains_to": "r2.follow",
    "chain_index": 1,
    "startup_f": 70,
-   "active_f": 16,
-   "recovery_f": 86,
+   "active_f": 19,
+   "recovery_f": 83,
    "stamina": 48,
    "motion_value": 1.94,
    "poise_damage": 63,
    "root_dz_m": 0.81,
    "arc_sweep_deg": 131.8,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 36.7,
    "hyperarmour": {
     "enabled": true,
     "from_f": 42,
-    "to_f": 86,
+    "to_f": 89,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -216,16 +186,7 @@
    "answers": [
     "POISE_MONSTER",
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "r2.charged": {
    "anim": "clip_glaive_r2_charged",
@@ -272,16 +233,7 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "r2.follow": {
    "anim": "clip_glaive_r2_follow",
@@ -319,16 +271,7 @@
    "answers": [
     "INFANTRY",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "run.r1": {
    "anim": "clip_w_hlb_saltcutter_run_r1",
@@ -369,16 +312,7 @@
    "answers": [
     "RANGED",
     "CASTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "run.r2": {
    "anim": "clip_glaive_run_r2",
@@ -419,16 +353,7 @@
    "answers": [
     "POISE_MONSTER",
     "RANGED"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "roll.r1": {
    "anim": "clip_glaive_roll_r1",
@@ -470,16 +395,7 @@
     "DUELIST",
     "POISE_MONSTER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "backstep.r1": {
    "anim": "clip_glaive_backstep_r1",
@@ -504,7 +420,6 @@
    "root_dz_m": 0.896,
    "arc_sweep_deg": 105.7,
    "shape": "slash_d",
-   "peak_tip_speed_mps_implied": 33.7,
    "hyperarmour": {
     "enabled": false
    },
@@ -520,16 +435,7 @@
    "answers": [
     "DUELIST",
     "GANK_DUO"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "jump.r1": {
    "anim": "clip_glaive_jump_r1",
@@ -572,16 +478,7 @@
     "TURTLE",
     "POISE_MONSTER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "guard.counter": {
    "anim": "clip_glaive_guard_counter",
@@ -628,16 +525,7 @@
     "INFANTRY",
     "TURTLE",
     "POISE_MONSTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "plunge": {
    "anim": "clip_glaive_plunge",
@@ -679,16 +567,7 @@
    "answers": [
     "AMBUSHER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "guardbreak": {
    "anim": "clip_glaive_guardbreak",
@@ -725,16 +604,7 @@
    ],
    "answers": [
     "TURTLE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "art.1": {
    "anim": "clip_glaive_art_1",
@@ -749,15 +619,14 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 80,
-   "active_f": 21,
-   "recovery_f": 104,
+   "active_f": 27,
+   "recovery_f": 98,
    "stamina": 53,
    "motion_value": 2.19,
    "poise_damage": 68,
    "root_dz_m": 1.179,
    "arc_sweep_deg": 202.9,
    "shape": "spin",
-   "peak_tip_speed_mps_implied": 43.1,
    "hyperarmour": {
     "enabled": false
    },
@@ -773,16 +642,7 @@
    "answers": [
     "ELITE",
     "GANK_DUO"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "art.2": {
    "anim": "clip_glaive_art_2",
@@ -823,16 +683,7 @@
    "answers": [
     "ELITE",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "off.r1.1": {
    "anim": "clip_glaive_off_r1_1",
@@ -855,7 +706,6 @@
    "root_dz_m": 0.405,
    "arc_sweep_deg": 131.8,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 42,
    "hyperarmour": {
     "enabled": false
    },
@@ -875,16 +725,7 @@
    "answers": [
     "INFANTRY",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "off.r1.2": {
    "anim": "clip_glaive_off_r1_2",
@@ -899,15 +740,14 @@
    "chains_to": null,
    "chain_index": 2,
    "startup_f": 36,
-   "active_f": 14,
-   "recovery_f": 74,
+   "active_f": 17,
+   "recovery_f": 71,
    "stamina": 25,
    "motion_value": 1.06,
    "poise_damage": 29,
    "root_dz_m": 0.369,
    "arc_sweep_deg": 123.1,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 39.2,
    "hyperarmour": {
     "enabled": false
    },
@@ -927,16 +767,7 @@
    "answers": [
     "INFANTRY",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "off.r2": {
    "anim": "clip_glaive_off_r2",
@@ -951,15 +782,14 @@
    "chains_to": null,
    "chain_index": 3,
    "startup_f": 60,
-   "active_f": 16,
-   "recovery_f": 87,
+   "active_f": 19,
+   "recovery_f": 84,
    "stamina": 25,
    "motion_value": 1.56,
    "poise_damage": 29,
    "root_dz_m": 0.405,
    "arc_sweep_deg": 131.8,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 36.7,
    "hyperarmour": {
     "enabled": false
    },
@@ -978,16 +808,7 @@
    ],
    "answers": [
     "DUELIST"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r1.1": {
    "anim": "clip_glaive_2h_r1_1",
@@ -1002,15 +823,14 @@
    "chains_to": "2h.r1.2",
    "chain_index": 1,
    "startup_f": 44,
-   "active_f": 16,
-   "recovery_f": 63,
+   "active_f": 17,
+   "recovery_f": 62,
    "stamina": 32,
    "motion_value": 1.44,
    "poise_damage": 44,
    "root_dz_m": 0.511,
    "arc_sweep_deg": 145.3,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 34.3,
    "hyperarmour": {
     "enabled": false
    },
@@ -1030,16 +850,7 @@
    "answers": [
     "INFANTRY",
     "SWARM"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r1.2": {
    "anim": "clip_glaive_2h_r1_2",
@@ -1062,7 +873,6 @@
    "root_dz_m": 0.563,
    "arc_sweep_deg": 155.5,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 36.7,
    "hyperarmour": {
     "enabled": false
    },
@@ -1081,16 +891,7 @@
    ],
    "answers": [
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r1.3": {
    "anim": "clip_glaive_2h_r1_3",
@@ -1131,16 +932,7 @@
    "answers": [
     "INFANTRY",
     "DUELIST"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r2": {
    "anim": "clip_glaive_2h_r2",
@@ -1155,19 +947,18 @@
    "chains_to": "2h.r2.follow",
    "chain_index": 1,
    "startup_f": 77,
-   "active_f": 18,
-   "recovery_f": 93,
+   "active_f": 22,
+   "recovery_f": 89,
    "stamina": 55,
    "motion_value": 2.23,
    "poise_damage": 82,
    "root_dz_m": 0.925,
    "arc_sweep_deg": 155.5,
    "shape": "sweep",
-   "peak_tip_speed_mps_implied": 32.7,
    "hyperarmour": {
     "enabled": true,
     "from_f": 47,
-    "to_f": 95,
+    "to_f": 99,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1186,16 +977,7 @@
    "answers": [
     "POISE_MONSTER",
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r2.charged": {
    "anim": "clip_glaive_2h_r2_charged",
@@ -1245,16 +1027,7 @@
    "answers": [
     "TURTLE",
     "POISE_MONSTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.r2.follow": {
    "anim": "clip_glaive_2h_r2_follow",
@@ -1295,16 +1068,7 @@
    "answers": [
     "INFANTRY",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.run.r1": {
    "anim": "clip_glaive_2h_run_r1",
@@ -1346,16 +1110,7 @@
    "answers": [
     "RANGED",
     "CASTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.run.r2": {
    "anim": "clip_glaive_2h_run_r2",
@@ -1397,16 +1152,7 @@
    "answers": [
     "POISE_MONSTER",
     "RANGED"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.roll.r1": {
    "anim": "clip_glaive_2h_roll_r1",
@@ -1454,16 +1200,7 @@
     "DUELIST",
     "POISE_MONSTER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.backstep.r1": {
    "anim": "clip_glaive_2h_backstep_r1",
@@ -1506,16 +1243,7 @@
    "answers": [
     "DUELIST",
     "GANK_DUO"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.jump.r1": {
    "anim": "clip_glaive_2h_jump_r1",
@@ -1559,16 +1287,7 @@
     "TURTLE",
     "POISE_MONSTER",
     "ELITE"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.guard.counter": {
    "anim": "clip_glaive_2h_guard_counter",
@@ -1616,16 +1335,7 @@
     "INFANTRY",
     "TURTLE",
     "POISE_MONSTER"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.art.1": {
    "anim": "clip_glaive_2h_art_1",
@@ -1640,15 +1350,14 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 88,
-   "active_f": 24,
-   "recovery_f": 112,
+   "active_f": 30,
+   "recovery_f": 106,
    "stamina": 61,
    "motion_value": 2.52,
    "poise_damage": 88,
    "root_dz_m": 1.349,
    "arc_sweep_deg": 239.4,
    "shape": "spin",
-   "peak_tip_speed_mps_implied": 37.7,
    "hyperarmour": {
     "enabled": false
    },
@@ -1667,16 +1376,7 @@
    "answers": [
     "ELITE",
     "GANK_DUO"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.roll.r2": {
    "anim": "clip_glaive_2h_roll_r2",
@@ -1691,19 +1391,18 @@
    "chains_to": null,
    "chain_index": 1,
    "startup_f": 82,
-   "active_f": 19,
-   "recovery_f": 98,
+   "active_f": 24,
+   "recovery_f": 93,
    "stamina": 55,
    "motion_value": 2.34,
    "poise_damage": 82,
    "root_dz_m": 0.749,
    "arc_sweep_deg": 170.9,
    "shape": "spin",
-   "peak_tip_speed_mps_implied": 34,
    "hyperarmour": {
     "enabled": true,
     "from_f": 50,
-    "to_f": 101,
+    "to_f": 106,
     "poise_multiplier": 1.4
    },
    "hitbox": {
@@ -1721,16 +1420,7 @@
    "answers": [
     "POISE_MONSTER",
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   },
   "2h.jump.r2": {
    "anim": "clip_glaive_2h_jump_r2",
@@ -1774,16 +1464,7 @@
    "answers": [
     "POISE_MONSTER",
     "INFANTRY"
-   ],
-   "hitstop_f": {
-    "flesh": 10,
-    "chitin": 13,
-    "stone": 19,
-    "metal": 15,
-    "shield": 17,
-    "wood": 8,
-    "water": 3
-   }
+   ]
   }
  },
  "notes": "Eight frames slower and heavier on impact; its running attack barges rather than passes, so it arrives already committed.\n\nLineage: glaive — A blade rather than a hook: it cuts downward through a lane instead of sweeping across one.\nMandatory slots present: 25/25. Total slots: 34.\nart.1/art.2 trigger: the schema's trigger block cannot express a chord, so the declared button is 'two_hand' with modifier hold/double_tap. The runtime conjunction is 'heavy pressed while two_hand is HELD' (art.1) and 'heavy HELD while two_hand is HELD' (art.2) — game/data/weapons/input-map.json is authoritative and machine-readable."

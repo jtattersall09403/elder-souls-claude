@@ -86,8 +86,11 @@ function run(fixture, panSource, opts = {}) {
     bearing_spread_deg: pts.length ? +(Math.max(...pts.map(p=>p.rel)) - Math.min(...pts.map(p=>p.rel))).toFixed(1) : 0,
     pan_distinct: new Set(pts.map(p=>p.pan.toFixed(4))).size,
     distance_m_max: pts.length ? +Math.max(...pts.map(p=>p.dist)).toFixed(4) : null,
+    all_noncontact_distances_positive: pts.length > 0 && pts.every(p => p.dist > 0),
     r: r === null ? null : +r.toFixed(4),
-    M6_PASSES: r !== null && r >= 0.8 && pts.length >= 20 };
+    M6_PASSES: r !== null && r >= 0.8 && pts.length >= 20
+      && pts.every(p => p.dist > 0)
+      && (Math.max(...pts.map(p => p.rel)) - Math.min(...pts.map(p => p.rel))) >= 70 };
 }
 
 const rows = [];
@@ -101,7 +104,7 @@ const rs = legacy.filter(r => r.r !== null).map(r => r.r);
 const out = {
   generated: new Date().toISOString(),
   question: 'Is RI-AUD01 M6 PASS a property of the panner or of the fixture?',
-  m6_bar: { r_min: 0.8, events_min: 20 },
+  m6_bar: { r_min: 0.8, events_min: 20, bearing_span_min_deg: 70, noncontact_distance_m: '>0' },
   rows,
   legacy_r_range: rs.length ? [Math.min(...rs), Math.max(...rs)] : null,
   legacy_fixtures_on_which_the_BROKEN_rule_PASSES_M6: legacyPass.map(r => r.fixture),

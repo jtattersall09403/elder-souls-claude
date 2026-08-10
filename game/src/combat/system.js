@@ -64,6 +64,8 @@ export class CombatSystem {
     this.frame = 0;
     /** W1-11 — `audio.combat.impact`. Set by `Engine` (or a probe) via `setAudio()`. */
     this.audio = null;
+    /** CAM06-authorised world consumer. Engine supplies this; probes may disconnect it. */
+    this.playerDamageFeedback = null;
     /** [frame, kind, event] triples emitted this step, drained by `_flushAudio()`. */
     this._audioPending = [];
     this.world = { gold: 0, dispositions: {}, factions: {}, topicsKnown: [] };
@@ -80,6 +82,11 @@ export class CombatSystem {
    * one (RI-AUD01: "Unimplemented audio scores 0, not 'not assessed'").
    */
   setAudio(driver) { this.audio = driver || null; return this; }
+
+  setPlayerDamageFeedback(consumer) {
+    this.playerDamageFeedback = typeof consumer === 'function' ? consumer : null;
+    return this;
+  }
 
   /**
    * The listener frame handed to the audio driver, RI-AUD02 §E S6.
@@ -307,6 +314,7 @@ export class CombatSystem {
    */
   step(frame, input, camera, bus, sim) {
     this.frame = frame;
+    const playerHpBefore = this.player ? this.player.hp : null;
     // Every combat event is emitted in RI-CMB07 §A's UPPER_SNAKE vocabulary (the
     // es-combat-trace/1 stream) and, where HARNESS.md §5 has an equivalent, in §5's
     // lower_snake vocabulary too (the elder-souls/trace@1 stream). Two streams, one run,
@@ -486,6 +494,20 @@ export class CombatSystem {
 
     // steps 8–9
     sweepAndResolve(this.bodies, this.d, frame, emit, sim);
+
+    // S44 AQ-02: camera feedback belongs to CAM06, not to an attack's impact request. The
+    // observable trigger is strictly a loss of PLAYER HP. Blocks/parries and player-dealt
+    // hits therefore cannot call the consumer, while enemy damage does so once on resolution.
+    if (this.playerDamageFeedback && this.player && this.player.hp < playerHpBefore) {
+      this.playerDamageFeedback({
+        frame,
+        damage: playerHpBefore - this.player.hp,
+        hp_before: playerHpBefore,
+        hp_after: this.player.hp,
+        hp_max: this.player.hpMax,
+        hp_fraction: (playerHpBefore - this.player.hp) / Math.max(1, this.player.hpMax),
+      });
+    }
 
     // lock retention, after positions have moved
     const brk = this.lock.update(this.player, this.bodies, frame, true);
