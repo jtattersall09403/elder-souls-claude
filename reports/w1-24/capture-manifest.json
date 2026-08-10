@@ -1,0 +1,49 @@
+{
+  "schema": "elder-souls/w1-24-capture-manifest@1",
+  "build_sha": "b5850ff0e6cff4bfe26cd269fa515159e32915e4",
+  "binary_policy": "Native PNGs were generated under /tmp and are intentionally not committed. Reproduce them before any independent image judgement; an absent PNG is NOT_RUN, never numeric evidence.",
+  "reproduction": {
+    "preflight": "node tools/contention.mjs --gate",
+    "command": "rm -rf /tmp/w1-24-native && node tools/render/cam07-back.mjs --out /tmp/w1-24-native",
+    "browser": "Playwright-installed Chromium, one 1920x1080 DPR-1 browser, HUD disabled, clear weather, noon"
+  },
+  "sources": [
+    {
+      "role": "RI-CAM07 canonical player back source; also feeds the distinct S46 derived windows",
+      "semantic_filename": "cam07/player_back_closeup.png",
+      "transient_path": "/tmp/w1-24-native/cam07/player_back_closeup.png",
+      "sha256": "395d75285a1308c8c6283135847e0a713ef12466d2469dfa5ad702ff88dcd99a",
+      "bytes": 371874,
+      "width": 1920,
+      "height": 1080,
+      "character_height_fraction": 0.6393
+    },
+    {
+      "role": "RI-CAM07 canonical player front source; also feeds the distinct S46 derived windows",
+      "semantic_filename": "cam07/player_front_closeup.png",
+      "transient_path": "/tmp/w1-24-native/cam07/player_front_closeup.png",
+      "sha256": "5e32306f449144d59b8a545d94fa785325185b4fa6615d6d4a67d079c1fdaef2",
+      "bytes": 367248,
+      "width": 1920,
+      "height": 1080,
+      "character_height_fraction": 0.619
+    }
+  ],
+  "windows": {
+    "cam07_b1": {
+      "status": "NOT_RUN",
+      "definition": "For each source, player ID-mask bounding box expanded on every side by 5% of character height; L=floor_pow2(min of both expanded widths and heights), L>=256; same relative centre; native pixels; no clip, resize, or pad.",
+      "reason": "The capture API did not emit an ID mask. The old whole-frame 1024-square B1_prime result is explicitly rejected and is not substituted."
+    },
+    "vis03_m5_character_closeup": {
+      "status": "RUN_RED",
+      "definition": "A separate native 1024x1024 square centred on the player centroid in each 1920x1080 source; background retained; no resampling.",
+      "crop_origin_xy": [448, 28],
+      "back": {"HFR": 0.016889372835635155, "NYQ_ratio": 0.08833930470815918, "alpha": 3.128812402079},
+      "front": {"HFR": 0.016304540704037855, "NYQ_ratio": 0.0876336568674663, "alpha": 3.118030515738278},
+      "profile": {"HFR": "0.05-0.24", "NYQ_ratio_max": 0.15, "alpha": "1.6-2.8"},
+      "aggregation": "minimum/worst source; both sources fail HFR and alpha",
+      "note": "This absolute VIS03 row cannot stand in for CAM07 B1 parity."
+    }
+  }
+}
