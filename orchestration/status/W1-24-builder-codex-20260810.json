@@ -1,0 +1,36 @@
+{
+  "task_id": "W1-24-builder-codex-20260810",
+  "role": "builder",
+  "state": "builder_delivery_complete_independent_rows_not_run",
+  "plan": "orchestration/plans/W1-24.md",
+  "files_touched": [
+    "orchestration/status/W1-24-builder-codex-20260810.json",
+    "reports/w1-24/BUILDER-DELIVERY.md",
+    "reports/w1-24/capture-manifest.json",
+    "reports/w1-24/protocol-b-preregister.json",
+    "reports/w1-24/instrument-hashes.txt",
+    "reports/w1-24/visual-reading-selftest.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-24-builder-codex-20260810.json",
+    "reports/w1-24/",
+    "tools/harness/viewpoints.json"
+  ],
+  "constraints": [
+    "No binary evidence committed",
+    "No independent visual or blind judgement by builder",
+    "No tuning against scored populations",
+    "No routine generated documentation or feed updates"
+  ],
+  "completed": [
+    "Verified both offline instrument falsifiers",
+    "Verified the RI-VIS09 reference manifest after installing Pillow",
+    "Generated the canonical close-up pair transiently and retained text-safe hashes, roles, reproduction command, crop definitions and numeric measurements",
+    "Preserved S45 current-output scope and S46's disjoint native windows",
+    "Pre-registered S47 scored/calibration populations and fixed ladder without viewing or tuning against scored answers",
+    "Recorded every missing native population and independent judgement fail-closed"
+  ],
+  "environment_block": "The full four-claim live audit did not complete after more than ten minutes in the one-browser run; no partial result was promoted.",
+  "independence_block": "RI-VIS06 A and B, CAM07 F2-F5, UI ART and other image judgements require fresh eligible independent critics. S47 transform selection requires a disjoint calibration actor.",
+  "next_step": "Independent handoff: regenerate native binaries, administer RI-VIS08 and the disjoint S47 calibration, then separately judge VIS06 A, VIS06 B, CAM07 art and UI ART/FIDELITY exactly as reports/w1-24/BUILDER-DELIVERY.md specifies."
+}
