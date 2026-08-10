@@ -1,0 +1,10 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at Object.hOpt (/workspace/elder-souls-claude/tools/lib/browser.mjs:157:34)
+    at launchGame (/workspace/elder-souls-claude/tools/lib/browser.mjs:199:36)
+    at async file:///workspace/elder-souls-claude/tools/harness/cmb-probe.mjs:42:16
+
+Node.js v20.20.2

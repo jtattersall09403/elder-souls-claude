@@ -1,0 +1,312 @@
+{
+  "schema": "elder-souls/w1-09-completion-ledger@1",
+  "piece": "W1-09",
+  "role": "builder",
+  "head": "b5850ff0e6cff4bfe26cd269fa515159e32915e4",
+  "s40": "PRESERVED_EXACTLY: cadence 52; suppress f0+1..f0+42; regen f0+43..f0+51; 6.75/inter-roll; seven starts; 6.5 after seventh; 13.25 at next press; denial f0+364/canonical 366; rejected null five/frame260",
+  "classification_vocabulary": [
+    "W1-09-owned/applicable",
+    "sibling-owned/reused",
+    "not applicable"
+  ],
+  "counts": {
+    "governing_items": 31,
+    "owned_applicable": 31,
+    "sibling_reused": 0,
+    "not_applicable": 0,
+    "fresh_or_preserved_partial": 3,
+    "not_run_or_partial": 31,
+    "independent_pass": 0
+  },
+  "rows": [
+    {
+      "requirement": "RI-CMB01",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned roll tier/i-frame/recovery consumer; browser census attempted but target closed; prior independent evidence requires digest qualification",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB02",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned attack startup/active/recovery/commitment; browser census attempted but target closed",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB03",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "partial_preserved_pass",
+      "applicability_reason": "owned stamina, guard, parry and exhaustion; S40 stamina positive is preserved by fresh prior live artifact; remaining browser rows target closed",
+      "evidence": [
+        "reports/w1-09/builder-20260810/cmb-probe-stamina.json"
+      ],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB04",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "partial_preserved_pass_with_red",
+      "applicability_reason": "owned hit/body volumes and S26; fresh enemy reach artifact is green; M9 and full 2x2 remain explicit red/not_run, never classified away",
+      "evidence": [
+        "reports/w1-09/builder-20260810/cmb-reach-enemy.json"
+      ],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB05",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned poise/stagger/parry/riposte consumer; full M1-M6 not completed in this environment",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB06",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned lock/directional-roll path; browser census target closed",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB07",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned trace/exemplar; M1 corpus_debt and M2-LIVE W1-12 seam debt; independent/blind excluded",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB08",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned healing commitment/charges/pause coupling; full safe/pressured browser population not completed",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB09",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned recovery/exhaustion; S40 preserved exactly; M7 independent NOT_RUN; other full populations not completed",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB11",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "owned input-buffer/visible combat latency; physical-edge browser population not completed",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CMB12",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "partial_fresh_pass",
+      "applicability_reason": "owned exchange; fresh deterministic M1 reactability pass; M2 full fork population not completed; independent hitstop judgement NOT_RUN",
+      "evidence": [
+        "reports/w1-09/builder-completion-20260810/cmb-exchange-react.json"
+      ],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-AI02",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-AI03",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-AI04",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-AI05",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CAM02",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-CAM04",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-LOR05",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-PRG02",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-PRG03",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-PRG04",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-PRG07",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-PRG08",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-UIX01",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-UIX03",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-VIS08",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-WLD10",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-WPN01",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-WPN02",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-WPN04",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    },
+    {
+      "requirement": "RI-WPN06",
+      "classification": "W1-09-owned/applicable",
+      "builder_state": "not_run",
+      "applicability_reason": "mixed governing item consumes a W1-09-owned combat producer/model/consumer; sibling-only predicates require digest-qualified reuse and otherwise remain not_run",
+      "evidence": [],
+      "independent_state": "NOT_RUN",
+      "independent_pass": false
+    }
+  ],
+  "aggregate": {
+    "state": "NOT_RUN",
+    "reason": "Conjunctive aggregate cannot treat required missing, dependency, or independent inputs as green or renormalise them."
+  }
+}
