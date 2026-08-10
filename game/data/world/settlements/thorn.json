@@ -100,12 +100,25 @@
    ],
    "yaw_deg": 180,
    "door": [
+    3819.25,
+    13.31,
+    866.865
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
     3820,
     13.31,
     859
    ],
-   "service": null,
-   "faction": null
+   "footprint_m2": 252.0,
+   "roofline_m": 6.2,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    16.01,
+    15.74
+   ]
   },
   {
    "id": "thorn-inn",
@@ -124,10 +137,23 @@
    "door": [
     3837,
     13.31,
-    859
+    851.6
    ],
    "service": "inn",
-   "faction": null
+   "faction": null,
+   "door_declared": [
+    3837,
+    13.31,
+    859
+   ],
+   "footprint_m2": 248.96,
+   "roofline_m": 6.2,
+   "apertures": [],
+   "door_world_bearing_deg": 270,
+   "footprint_m": [
+    14.81,
+    16.81
+   ]
   },
   {
    "id": "thorn-trader",
@@ -144,12 +170,25 @@
    ],
    "yaw_deg": 244.3,
    "door": [
+    3837.511,
+    13.31,
+    875.648
+   ],
+   "service": "trader",
+   "faction": "wet-ledger",
+   "door_declared": [
     3840.72,
     13.31,
     868.98
    ],
-   "service": "trader",
-   "faction": "wet-ledger"
+   "footprint_m2": 248.96,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 64.3,
+   "footprint_m": [
+    14.81,
+    16.81
+   ]
   },
   {
    "id": "thorn-apothecary",
@@ -166,12 +205,25 @@
    ],
    "yaw_deg": 218.6,
    "door": [
+    3831.38,
+    13.31,
+    873.262
+   ],
+   "service": "alchemist",
+   "faction": null,
+   "door_declared": [
     3826.86,
     13.31,
     867.6
    ],
-   "service": "alchemist",
-   "faction": null
+   "footprint_m2": 214.75,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 38.6,
+   "footprint_m": [
+    14.81,
+    14.5
+   ]
   },
   {
    "id": "thorn-sapwell",
@@ -188,12 +240,25 @@
    ],
    "yaw_deg": 192.9,
    "door": [
+    3825.397,
+    13.31,
+    882.632
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers",
+   "door_declared": [
     3823.78,
     13.31,
     875.57
    ],
-   "service": "bonfire",
-   "faction": "rootkeepers"
+   "footprint_m2": 214.75,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 12.9,
+   "footprint_m": [
+    14.81,
+    14.5
+   ]
   },
   {
    "id": "thorn-rootpost",
@@ -210,12 +275,25 @@
    ],
    "yaw_deg": 167.1,
    "door": [
+    3813.005,
+    13.31,
+    889.608
+   ],
+   "service": "travel",
+   "faction": "rootkeepers",
+   "door_declared": [
     3814.88,
     13.31,
     881.42
    ],
-   "service": "travel",
-   "faction": "rootkeepers"
+   "footprint_m2": 248.96,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 347.1,
+   "footprint_m": [
+    14.81,
+    16.81
+   ]
   },
   {
    "id": "thorn-gate",
@@ -232,12 +310,25 @@
    ],
    "yaw_deg": 141.4,
    "door": [
+    3808.561,
+    13.31,
+    873.336
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
     3813.14,
     13.31,
     867.6
    ],
-   "service": null,
-   "faction": null
+   "footprint_m2": 73.6,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 321.4,
+   "footprint_m": [
+    5.01,
+    14.69
+   ]
   },
   {
    "id": "thorn-north-lean",
@@ -364,6 +455,129 @@
    ],
    "yaw_deg": 295.7,
    "residential_props": false
+  },
+  {
+   "id": "thorn-house-0",
+   "name": "Uxithtei's house",
+   "kind": "interior",
+   "building_kind": "house",
+   "interior": "thorn-house-0",
+   "enterable": true,
+   "quarter": "the-boards",
+   "offset_m": [
+    -6.86,
+    0,
+    8.6
+   ],
+   "yaw_deg": 141.4,
+   "door": [
+    3808.58,
+    13.31,
+    872.11
+   ],
+   "service": null,
+   "faction": "wet-ledger",
+   "door_declared": [
+    3813.14,
+    13.31,
+    867.6
+   ],
+   "footprint_m2": 63.88,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 321.4,
+   "footprint_m": [
+    5.01,
+    12.75
+   ]
+  },
+  {
+   "id": "barge-hold",
+   "name": "The Hold of the Gideon Barge",
+   "kind": "interior",
+   "building_kind": "warehouse",
+   "interior": "barge-hold",
+   "enterable": true,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -20,
+    0,
+    49
+   ],
+   "yaw_deg": 90,
+   "door": [
+    3800,
+    0,
+    904.5
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
+    3800,
+    0,
+    908
+   ],
+   "footprint_m2": 112.23,
+   "roofline_m": 5.4,
+   "apertures": [
+    {
+     "world_pos": [
+      3800,
+      0,
+      908
+     ],
+     "kind": "hatch"
+    }
+   ],
+   "door_world_bearing_deg": 90,
+   "footprint_m": [
+    7.01,
+    16.01
+   ]
+  },
+  {
+   "id": "writ-house",
+   "name": "The Writ House at Tidewrack",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "writ-house",
+   "enterable": true,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -14,
+    0,
+    43
+   ],
+   "yaw_deg": 0,
+   "door": [
+    3806.25,
+    0,
+    908.5
+   ],
+   "service": null,
+   "faction": "the-imperial-assize",
+   "door_declared": [
+    3806,
+    0,
+    902
+   ],
+   "footprint_m2": 130.23,
+   "roofline_m": 4.2,
+   "apertures": [
+    {
+     "world_pos": [
+      3806,
+      0,
+      902
+     ],
+     "kind": "window"
+    }
+   ],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    10.01,
+    13.01
+   ]
   }
  ],
  "interiors": [

@@ -1,150 +1,220 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "helstrom-hist-shrine",
-  "name": "The Hist Shrine at the Mound",
-  "settlement": "helstrom",
-  "cell_kind": "named",
-  "interior_kind": "shrine",
-  "service": "bonfire",
-  "faction": "rootkeepers",
-  "exterior_door": [
-    2308.93,
-    27.22,
-    2792.05
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-hist-shrine",
+ "name": "The Hist Shrine at the Mound",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "shrine",
+ "service": "bonfire",
+ "faction": "rootkeepers",
+ "exterior_door": [
+  2308.93,
+  27.22,
+  2792.05
+ ],
+ "continuity": {
+  "building": "helstrom-hist-shrine",
+  "building_offset_m": [
+   46.43,
+   0,
+   18.55
   ],
-  "continuity": {
-    "building": "helstrom-hist-shrine",
-    "building_offset_m": [
-      46.43,
-      0,
-      18.55
-    ],
-    "building_yaw_deg": 248.2,
-    "exterior_footprint_m": [
-      11.2,
-      13.2
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      5.4
-    ],
-    "exterior_spawn": [
-      2308.93,
-      27.22,
-      2793.85
-    ]
+  "building_yaw_deg": 248.2,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.27
+  ],
+  "exterior_spawn": [
+   2306.665,
+   27.22,
+   2797.714
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2308.93,
+   27.22,
+   2793.85
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.27,
+   5.27
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.27,
+   6.27
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "helstrom.boatwright13.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -5.6,
-      5.6
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -6.6,
-      6.6
-    ]
+  {
+   "id": "helstrom.boatwright13.r0.lamp0",
+   "pos": [
+    -1.9,
+    1.6,
+    -4.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 147.8,
-  "light": {
-    "kind": "hearth",
-    "pos": [
-      0,
-      0.6,
-      2.64
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "helstrom.boatwright13.r0.lamp1",
+   "pos": [
+    0,
+    1.6,
+    -4.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "sap_tap",
+  "root_kerb",
+  "kneel_root",
+  "votive_rag",
+  "offering_shelf",
+  "lamp_votive",
+  "bark_strip",
+  "tally_brass",
+  "water_stoup",
+  "bench_row",
+  "sapling_pot",
+  "ash_tray",
+  "wind_chime",
+  "stone_marker",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [
+  "helstrom.boatwright13.r0"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "helstrom-hist-shrine-unique",
+  "name": "a sap-tap of black glass",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:helstrom-boatwright-13"
+ },
+ "readable": [
+  {
+   "id": "helstrom-hist-shrine-readable",
+   "title": "Sap Rites, Copied Badly"
   },
-  "lights": [
-    {
-      "id": "helstrom.boatwright13.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.boatwright13.r0.lamp0",
-      "pos": [
-        -1.9,
-        1.6,
-        -4.3
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.boatwright13.r0.lamp1",
-      "pos": [
-        0,
-        1.6,
-        -4.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "sap_tap",
-    "root_kerb",
-    "kneel_root",
-    "votive_rag",
-    "offering_shelf",
-    "lamp_votive",
-    "bark_strip",
-    "tally_brass",
-    "water_stoup",
-    "bench_row",
-    "sapling_pot",
-    "ash_tray",
-    "wind_chime",
-    "stone_marker",
-    "hel_bole_arch",
-    "hel_grown_wall_a",
-    "hel_grown_wall_b",
-    "hel_shell_roof"
-  ],
-  "property_zones": [
-    "helstrom.boatwright13.r0"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "helstrom-hist-shrine-unique",
-    "name": "a sap-tap of black glass",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:helstrom-boatwright-13"
+  {
+   "id": "the-egg-speaks-twice",
+   "title": "Nine root-songs of the deep marsh",
+   "book": "the-egg-speaks-twice"
   },
-  "readable": [
-    {
-      "id": "helstrom-hist-shrine-readable",
-      "title": "Sap Rites, Copied Badly"
-    },
-    {
-      "id": "the-egg-speaks-twice",
-      "title": "Nine root-songs of the deep marsh",
-      "book": "the-egg-speaks-twice"
-    },
-    {
-      "id": "the-gem-and-the-root",
-      "title": "A statement of the Deep-Kin",
-      "book": "the-gem-and-the-root"
-    }
+  {
+   "id": "the-gem-and-the-root",
+   "title": "A statement of the Deep-Kin",
+   "book": "the-gem-and-the-root"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.9,
+    1.6,
+    -4.3
+   ]
+  },
+  {
+   "pos": [
+    0,
+    1.6,
+    -4.4
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "helstrom-hist-shrine",
+ "door_world_pos": [
+  2306.85,
+  27.22,
+  2797.25
+ ],
+ "door_world_bearing_deg": 68.2,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

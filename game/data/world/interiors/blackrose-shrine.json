@@ -1,205 +1,310 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "blackrose-shrine",
-  "name": "The Lime-Pit Hist-Shrine",
-  "settlement": "blackrose",
-  "cell_kind": "named",
-  "interior_kind": "shrine",
-  "service": "bonfire",
-  "faction": "rootkeepers",
-  "exterior_door": [
-    1887.5,
-    2.68,
-    4437
+ "schema": "elder-souls/interior@1",
+ "id": "blackrose-shrine",
+ "name": "The Lime-Pit Hist-Shrine",
+ "settlement": "blackrose",
+ "cell_kind": "named",
+ "interior_kind": "shrine",
+ "service": "bonfire",
+ "faction": "rootkeepers",
+ "exterior_door": [
+  1887.5,
+  2.68,
+  4437
+ ],
+ "continuity": {
+  "building": "blackrose-shrine",
+  "building_offset_m": [
+   -18,
+   0,
+   -13
   ],
-  "continuity": {
-    "building": "blackrose-shrine",
-    "building_offset_m": [
-      -18,
-      0,
-      -13
-    ],
-    "building_yaw_deg": 180,
-    "exterior_footprint_m": [
-      12.4,
-      14.4
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6
-    ],
-    "exterior_spawn": [
-      1887.5,
-      2.68,
-      4438.8
-    ]
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.87
+  ],
+  "exterior_spawn": [
+   1887.5,
+   2.68,
+   4444.7
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   1887.5,
+   2.68,
+   4438.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.87,
+   5.87
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.87,
+   6.87
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "blackrose.publican6.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.2,
-      6.2
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.2,
-      7.2
-    ]
+  {
+   "id": "blackrose.publican6.r0.lamp0",
+   "pos": [
+    -0.2,
+    1.6,
+    -2.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 178.6,
-  "light": {
-    "kind": "hearth",
-    "pos": [
-      0,
-      0.6,
-      2.88
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "blackrose.publican6.r0.lamp1",
+   "pos": [
+    -2.1,
+    1.6,
+    -2.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "blackrose.publican6.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.publican6.r0.lamp0",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        -2.2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.publican6.r0.lamp1",
-      "pos": [
-        -2.1,
-        1.6,
-        -2.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.publican6.r0.lamp2",
-      "pos": [
-        3,
-        1.6,
-        -2.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.factor10.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.factor10.r0.lamp0",
-      "pos": [
-        3,
-        1.6,
-        -1.6
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.factor10.r0.lamp1",
-      "pos": [
-        1.0999999999999996,
-        1.6,
-        -1.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.factor10.r0.lamp2",
-      "pos": [
-        -0.7999999999999998,
-        1.6,
-        -1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "sap_tap",
-    "root_kerb",
-    "kneel_root",
-    "votive_rag",
-    "offering_shelf",
-    "lamp_votive",
-    "bark_strip",
-    "tally_brass",
-    "water_stoup",
-    "bench_row",
-    "sapling_pot",
-    "ash_tray",
-    "wind_chime",
-    "stone_marker",
-    "bla_fortress_wall",
-    "bla_furred_parapet",
-    "bla_corridor_gate",
-    "bla_prison_block"
-  ],
-  "property_zones": [
-    "blackrose.publican6.r0",
-    "blackrose.factor10.r0"
-  ],
-  "containers": [
-    "blackrose.publican6.r0.2",
-    "blackrose.factor10.r0.0",
-    "blackrose.factor10.r0.4"
-  ],
-  "unique_item": {
-    "id": "blackrose-shrine-unique",
-    "name": "a sapling planted on the lime pit",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:blackrose-publican-6"
+  {
+   "id": "blackrose.publican6.r0.lamp2",
+   "pos": [
+    3,
+    1.6,
+    -2.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "blackrose-shrine-readable",
-      "title": "On Planting In Lime"
-    },
-    {
-      "id": "the-grandmother-yard-book",
-      "title": "A yard book, older than the bench",
-      "book": "the-grandmother-yard-book"
-    }
+  {
+   "id": "blackrose.factor10.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.factor10.r0.lamp0",
+   "pos": [
+    3,
+    1.6,
+    -1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.factor10.r0.lamp1",
+   "pos": [
+    1.1,
+    1.6,
+    -1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.factor10.r0.lamp2",
+   "pos": [
+    -0.8,
+    1.6,
+    -1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "sap_tap",
+  "root_kerb",
+  "kneel_root",
+  "votive_rag",
+  "offering_shelf",
+  "lamp_votive",
+  "bark_strip",
+  "tally_brass",
+  "water_stoup",
+  "bench_row",
+  "sapling_pot",
+  "ash_tray",
+  "wind_chime",
+  "stone_marker",
+  "bla_fortress_wall",
+  "bla_furred_parapet",
+  "bla_corridor_gate",
+  "bla_prison_block"
+ ],
+ "property_zones": [
+  "blackrose.publican6.r0",
+  "blackrose.factor10.r0"
+ ],
+ "containers": [
+  "blackrose.publican6.r0.2",
+  "blackrose.factor10.r0.0",
+  "blackrose.factor10.r0.4"
+ ],
+ "unique_item": {
+  "id": "blackrose-shrine-unique",
+  "name": "a sapling planted on the lime pit",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:blackrose-publican-6"
+ },
+ "readable": [
+  {
+   "id": "blackrose-shrine-readable",
+   "title": "On Planting In Lime"
+  },
+  {
+   "id": "the-grandmother-yard-book",
+   "title": "A yard book, older than the bench",
+   "book": "the-grandmother-yard-book"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -2.2
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    -2.1
+   ]
+  },
+  {
+   "pos": [
+    3,
+    1.6,
+    -2.4
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    3,
+    1.6,
+    -1.6
+   ]
+  },
+  {
+   "pos": [
+    1.0999999999999996,
+    1.6,
+    -1.5
+   ]
+  },
+  {
+   "pos": [
+    -0.7999999999999998,
+    1.6,
+    -1.7999999999999998
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "blackrose-shrine",
+ "door_world_pos": [
+  1887.5,
+  2.68,
+  4444.2
+ ],
+ "door_world_bearing_deg": 0,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

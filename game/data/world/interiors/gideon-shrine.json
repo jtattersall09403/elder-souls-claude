@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   6
+   5.87
   ],
   "exterior_spawn": [
+   440.415,
+   2.72,
+   2897.347
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    432,
    2.72,
    2892.3
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -6.2,
-   6.2
+   -5.87,
+   5.87
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -7.2,
-   7.2
+   -6.87,
+   6.87
   ]
  },
  "floor_area_m2": 178.6,
@@ -76,9 +87,9 @@
   {
    "id": "gideon.trader5.r0.lamp0",
    "pos": [
-    0.2999999999999998,
+    0.3,
     1.6,
-    -1.2999999999999998
+    -1.3
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -111,7 +122,7 @@
    "pos": [
     -1,
     1.6,
-    -0.20000000000000018
+    -0.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -122,7 +133,7 @@
    "pos": [
     -2.9,
     1.6,
-    -0.09999999999999964
+    -0.1
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -179,5 +190,92 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    0.2999999999999998,
+    1.6,
+    -1.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    2.2,
+    1.6,
+    -1.4
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1,
+    1.6,
+    -0.20000000000000018
+   ]
+  },
+  {
+   "pos": [
+    -2.9,
+    1.6,
+    -0.09999999999999964
+   ]
+  },
+  {
+   "pos": [
+    2.8,
+    1.6,
+    0
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "gideon-shrine",
+ "door_world_pos": [
+  438,
+  2.72,
+  2896.7
+ ],
+ "door_world_bearing_deg": 90,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

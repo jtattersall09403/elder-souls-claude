@@ -1,255 +1,381 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "archon-guild-office",
-  "name": "The Dyers’ Guild Office",
-  "settlement": "archon",
-  "cell_kind": "named",
-  "interior_kind": "guild",
-  "service": null,
-  "faction": "wet-ledger",
-  "exterior_door": [
-    3785,
-    3.42,
-    3789.5
+ "schema": "elder-souls/interior@1",
+ "id": "archon-guild-office",
+ "name": "The Dyers’ Guild Office",
+ "settlement": "archon",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "wet-ledger",
+ "exterior_door": [
+  3785,
+  3.42,
+  3789.5
+ ],
+ "continuity": {
+  "building": "archon-guild-office",
+  "building_offset_m": [
+   0,
+   0,
+   -34
   ],
-  "continuity": {
-    "building": "archon-guild-office",
-    "building_offset_m": [
-      0,
-      0,
-      -34
-    ],
-    "building_yaw_deg": 0,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      3785,
-      3.42,
-      3791.3
-    ]
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.47
+  ],
+  "exterior_spawn": [
+   3785,
+   3.42,
+   3797.8
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   3785,
+   3.42,
+   3791.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.47,
+   6.47
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.47,
+   7.47
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "archon.priest3.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "archon.priest3.r0.lamp0",
+   "pos": [
+    -2.1,
+    1.6,
+    -1.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "archon.priest3.r0.lamp1",
+   "pos": [
+    -0.2,
+    1.6,
+    -1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "archon.priest3.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.priest3.r0.lamp0",
-      "pos": [
-        -2.1,
-        1.6,
-        -1.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.priest3.r0.lamp1",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        -1.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.factor7.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.factor7.r1.lamp0",
-      "pos": [
-        -3.2,
-        1.6,
-        -3.2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.factor7.r1.lamp1",
-      "pos": [
-        1.9000000000000004,
-        1.6,
-        -3.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.factor7.r1.lamp2",
-      "pos": [
-        0.5999999999999996,
-        1.6,
-        -3
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.legionary12.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 1.4,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.legionary12.r0.lamp0",
-      "pos": [
-        -2.8,
-        1.6,
-        0
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.legionary12.r0.lamp1",
-      "pos": [
-        2.3,
-        1.6,
-        0.09999999999999964
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.legionary12.r0.lamp2",
-      "pos": [
-        0.3999999999999999,
-        1.6,
-        -0.20000000000000018
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "desk_writing",
-    "record_press",
-    "map_table",
-    "seal_press",
-    "muster_board",
-    "chest_iron",
-    "chair_formal",
-    "shelf_deed",
-    "lamp_desk",
-    "banner_wall",
-    "key_rail",
-    "inkstand",
-    "strongbox",
-    "bench_wait",
-    "arc_clay_dome",
-    "arc_stain_line",
-    "arc_dye_vat",
-    "arc_drying_rack"
-  ],
-  "property_zones": [
-    "archon.priest3.r0",
-    "archon.factor7.r1",
-    "archon.legionary12.r0"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "archon-guild-office-unique",
-    "name": "the denial, signed four times",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:archon-priest-3"
+  {
+   "id": "archon.factor7.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "readable": [
-    {
-      "id": "archon-guild-office-readable",
-      "title": "On The Health Of Harvesters"
-    },
-    {
-      "id": "the-archon-true-manifest",
-      "title": "A second manifest, not the office copy",
-      "book": "the-archon-true-manifest"
-    },
-    {
-      "id": "the-harbour-minute-book",
-      "title": "The minute book of the harbour office, the spring sitting",
-      "book": "the-harbour-minute-book"
-    },
-    {
-      "id": "the-soulrest-daughter-letter",
-      "title": "A letter to the harbour office from a daughter at Soulrest",
-      "book": "the-soulrest-daughter-letter"
-    },
-    {
-      "id": "valus-survey-fragment",
-      "title": "Survey of the ridge above Tenmarch, sheet four",
-      "book": "valus-survey-fragment"
-    },
-    {
-      "id": "the-marker-at-the-second-bend",
-      "title": "The marker at the second bend",
-      "book": "the-marker-at-the-second-bend"
-    }
+  {
+   "id": "archon.factor7.r1.lamp0",
+   "pos": [
+    -3.2,
+    1.6,
+    -3.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.factor7.r1.lamp1",
+   "pos": [
+    1.9,
+    1.6,
+    -3.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.factor7.r1.lamp2",
+   "pos": [
+    0.6,
+    1.6,
+    -3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary12.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.legionary12.r0.lamp0",
+   "pos": [
+    -2.8,
+    1.6,
+    0
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary12.r0.lamp1",
+   "pos": [
+    2.3,
+    1.6,
+    0.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary12.r0.lamp2",
+   "pos": [
+    0.4,
+    1.6,
+    -0.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "arc_clay_dome",
+  "arc_stain_line",
+  "arc_dye_vat",
+  "arc_drying_rack"
+ ],
+ "property_zones": [
+  "archon.priest3.r0",
+  "archon.factor7.r1",
+  "archon.legionary12.r0"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "archon-guild-office-unique",
+  "name": "the denial, signed four times",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:archon-priest-3"
+ },
+ "readable": [
+  {
+   "id": "archon-guild-office-readable",
+   "title": "On The Health Of Harvesters"
+  },
+  {
+   "id": "the-archon-true-manifest",
+   "title": "A second manifest, not the office copy",
+   "book": "the-archon-true-manifest"
+  },
+  {
+   "id": "the-harbour-minute-book",
+   "title": "The minute book of the harbour office, the spring sitting",
+   "book": "the-harbour-minute-book"
+  },
+  {
+   "id": "the-soulrest-daughter-letter",
+   "title": "A letter to the harbour office from a daughter at Soulrest",
+   "book": "the-soulrest-daughter-letter"
+  },
+  {
+   "id": "valus-survey-fragment",
+   "title": "Survey of the ridge above Tenmarch, sheet four",
+   "book": "valus-survey-fragment"
+  },
+  {
+   "id": "the-marker-at-the-second-bend",
+   "title": "The marker at the second bend",
+   "book": "the-marker-at-the-second-bend"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    -1.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -1.4
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -3.2,
+    1.6,
+    -3.2
+   ]
+  },
+  {
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    -3.1
+   ]
+  },
+  {
+   "pos": [
+    0.5999999999999996,
+    1.6,
+    -3
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.8,
+    1.6,
+    0
+   ]
+  },
+  {
+   "pos": [
+    2.3,
+    1.6,
+    0.09999999999999964
+   ]
+  },
+  {
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    -0.20000000000000018
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "archon-guild-office",
+ "door_world_pos": [
+  3785,
+  3.42,
+  3797.3
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 193.32
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": true,
+ "water_plane_m": null
 }

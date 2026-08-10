@@ -1,235 +1,365 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "blackrose-inn",
-  "name": "The Visitors’ House",
-  "settlement": "blackrose",
-  "cell_kind": "named",
-  "interior_kind": "tavern",
-  "service": "inn",
-  "faction": null,
-  "exterior_door": [
-    1865.5,
-    2.68,
-    4454
+ "schema": "elder-souls/interior@1",
+ "id": "blackrose-inn",
+ "name": "The Visitors’ House",
+ "settlement": "blackrose",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  1865.5,
+  2.68,
+  4454
+ ],
+ "continuity": {
+  "building": "blackrose-inn",
+  "building_offset_m": [
+   -40,
+   0,
+   4
   ],
-  "continuity": {
-    "building": "blackrose-inn",
-    "building_offset_m": [
-      -40,
-      0,
-      4
-    ],
-    "building_yaw_deg": 0,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      1865.5,
-      2.68,
-      4455.8
-    ]
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   1.17
+  ],
+  "exterior_spawn": [
+   1863.603,
+   2.68,
+   4458.138
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   1865.5,
+   2.68,
+   4455.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.47,
+   6.47
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -2.17,
+   2.17
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   1.02
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "blackrose.legionary3.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "blackrose.legionary3.r1.lamp0",
+   "pos": [
+    2.6,
+    1.6,
+    -0.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "blackrose.legionary3.r1.lamp1",
+   "pos": [
+    0.7,
+    1.6,
+    -0.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "blackrose.legionary3.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 1.4,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.legionary3.r1.lamp0",
-      "pos": [
-        2.5999999999999996,
-        1.6,
-        -0.40000000000000036
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.legionary3.r1.lamp1",
-      "pos": [
-        0.7000000000000002,
-        1.6,
-        -0.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.legionary3.r1.lamp2",
-      "pos": [
-        -0.6000000000000001,
-        1.6,
-        -0.20000000000000018
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.warder7.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.warder7.r1.lamp0",
-      "pos": [
-        -0.8999999999999999,
-        1.6,
-        -3.7
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.warder7.r1.lamp1",
-      "pos": [
-        1,
-        1.6,
-        -3.8
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.smith12.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "blackrose.smith12.r0.lamp0",
-      "pos": [
-        3.4000000000000004,
-        1.6,
-        -1.6
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.smith12.r0.lamp1",
-      "pos": [
-        1.5,
-        1.6,
-        -1.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "blackrose.smith12.r0.lamp2",
-      "pos": [
-        -0.3999999999999999,
-        1.6,
-        -1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "bar_long",
-    "bench_pair",
-    "table_round",
-    "barrel_row",
-    "tankard_shelf",
-    "hearth_open",
-    "bed_rentable",
-    "dice_cup",
-    "lamp_hanging",
-    "stair_narrow",
-    "keg_tap",
-    "cloak_hook",
-    "stew_pot",
-    "notice_board",
-    "bla_fortress_wall",
-    "bla_furred_parapet",
-    "bla_corridor_gate",
-    "bla_prison_block"
-  ],
-  "property_zones": [
-    "blackrose.legionary3.r1",
-    "blackrose.warder7.r1",
-    "blackrose.smith12.r0"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "blackrose-inn-unique",
-    "name": "a visitors’ book with the same name forty times",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:blackrose-legionary-3"
+  {
+   "id": "blackrose.legionary3.r1.lamp2",
+   "pos": [
+    -0.6,
+    1.6,
+    -0.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "blackrose-inn-readable",
-      "title": "Visiting Hours"
-    },
-    {
-      "id": "the-ninth-comes-down-the-road",
-      "title": "The Ninth Comes Down the Road",
-      "book": "the-ninth-comes-down-the-road"
-    }
+  {
+   "id": "blackrose.warder7.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.warder7.r1.lamp0",
+   "pos": [
+    -0.9,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.warder7.r1.lamp1",
+   "pos": [
+    1,
+    1.6,
+    -1.82
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.smith12.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    1.02
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.smith12.r0.lamp0",
+   "pos": [
+    3.4,
+    1.6,
+    -1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.smith12.r0.lamp1",
+   "pos": [
+    1.5,
+    1.6,
+    -1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.smith12.r0.lamp2",
+   "pos": [
+    -0.4,
+    1.6,
+    -1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "bla_fortress_wall",
+  "bla_furred_parapet",
+  "bla_corridor_gate",
+  "bla_prison_block"
+ ],
+ "property_zones": [
+  "blackrose.legionary3.r1",
+  "blackrose.warder7.r1",
+  "blackrose.smith12.r0"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "blackrose-inn-unique",
+  "name": "a visitors’ book with the same name forty times",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:blackrose-legionary-3"
+ },
+ "readable": [
+  {
+   "id": "blackrose-inn-readable",
+   "title": "Visiting Hours"
+  },
+  {
+   "id": "the-ninth-comes-down-the-road",
+   "title": "The Ninth Comes Down the Road",
+   "book": "the-ninth-comes-down-the-road"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 6,
-  "close_h": 26
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.5999999999999996,
+    1.6,
+    -0.40000000000000036
+   ]
+  },
+  {
+   "pos": [
+    0.7000000000000002,
+    1.6,
+    -0.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -0.6000000000000001,
+    1.6,
+    -0.20000000000000018
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.8999999999999999,
+    1.6,
+    -3.7
+   ]
+  },
+  {
+   "pos": [
+    1,
+    1.6,
+    -3.8
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    3.4000000000000004,
+    1.6,
+    -1.6
+   ]
+  },
+  {
+   "pos": [
+    1.5,
+    1.6,
+    -1.5
+   ]
+  },
+  {
+   "pos": [
+    -0.3999999999999999,
+    1.6,
+    -1.7999999999999998
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "blackrose-inn",
+ "door_world_pos": [
+  1864.75,
+  2.68,
+  4456.5
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 56.16
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 56.16
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

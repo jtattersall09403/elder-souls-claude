@@ -1,164 +1,241 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "helstrom-legation",
-  "name": "The Imperial Legation",
-  "settlement": "helstrom",
-  "cell_kind": "named",
-  "interior_kind": "guild",
-  "service": null,
-  "faction": "the-imperial-assize",
-  "exterior_door": [
-    2318.07,
-    27.22,
-    2809.12
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-legation",
+ "name": "The Imperial Legation",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "the-imperial-assize",
+ "exterior_door": [
+  2318.07,
+  27.22,
+  2809.12
+ ],
+ "continuity": {
+  "building": "helstrom-legation",
+  "building_offset_m": [
+   55.57,
+   0,
+   35.62
   ],
-  "continuity": {
-    "building": "helstrom-legation",
-    "building_offset_m": [
-      55.57,
-      0,
-      35.62
-    ],
-    "building_yaw_deg": 237.3,
-    "exterior_footprint_m": [
-      11.2,
-      13.2
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      5.4
-    ],
-    "exterior_spawn": [
-      2318.07,
-      27.22,
-      2810.92
-    ]
+  "building_yaw_deg": 237.3,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.27
+  ],
+  "exterior_spawn": [
+   2314.775,
+   27.22,
+   2814.253
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2318.07,
+   27.22,
+   2810.92
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.27,
+   5.27
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.27,
+   6.27
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "helstrom.boatwright13.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -5.6,
-      5.6
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -6.6,
-      6.6
-    ]
+  {
+   "id": "helstrom.boatwright13.r1.lamp0",
+   "pos": [
+    -2.8,
+    1.6,
+    -1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 147.8,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.64
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "helstrom.boatwright13.r1.lamp1",
+   "pos": [
+    2.3,
+    1.6,
+    -1.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "helstrom.boatwright13.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.boatwright13.r1.lamp0",
-      "pos": [
-        -2.8,
-        1.6,
-        -1.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.boatwright13.r1.lamp1",
-      "pos": [
-        2.3,
-        1.6,
-        -1.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.boatwright13.r1.lamp2",
-      "pos": [
-        1,
-        1.6,
-        -1.2000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "desk_writing",
-    "record_press",
-    "map_table",
-    "seal_press",
-    "muster_board",
-    "chest_iron",
-    "chair_formal",
-    "shelf_deed",
-    "lamp_desk",
-    "banner_wall",
-    "key_rail",
-    "inkstand",
-    "strongbox",
-    "bench_wait",
-    "hel_bole_arch",
-    "hel_grown_wall_a",
-    "hel_grown_wall_b",
-    "hel_shell_roof"
-  ],
-  "property_zones": [
-    "helstrom.boatwright13.r1"
-  ],
-  "containers": [
-    "helstrom.boatwright13.r1.3",
-    "helstrom.boatwright13.r1.5"
-  ],
-  "unique_item": {
-    "id": "helstrom-legation-unique",
-    "name": "the legate's unopened writ",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:helstrom-boatwright-13"
+  {
+   "id": "helstrom.boatwright13.r1.lamp2",
+   "pos": [
+    1,
+    1.6,
+    -1.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [
+  "helstrom.boatwright13.r1"
+ ],
+ "containers": [
+  "helstrom.boatwright13.r1.3",
+  "helstrom.boatwright13.r1.5"
+ ],
+ "unique_item": {
+  "id": "helstrom-legation-unique",
+  "name": "the legate's unopened writ",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:helstrom-boatwright-13"
+ },
+ "readable": [
+  {
+   "id": "helstrom-legation-readable",
+   "title": "Standing Orders, Argonia"
   },
-  "readable": [
-    {
-      "id": "helstrom-legation-readable",
-      "title": "Standing Orders, Argonia"
-    },
-    {
-      "id": "the-last-letter-of-a-file-leader",
-      "title": "A letter found folded in a helmet",
-      "book": "the-last-letter-of-a-file-leader"
-    },
-    {
-      "id": "the-casebook-iii",
-      "title": "The casebook of the Assize, the third",
-      "book": "the-casebook-iii"
-    }
+  {
+   "id": "the-last-letter-of-a-file-leader",
+   "title": "A letter found folded in a helmet",
+   "book": "the-last-letter-of-a-file-leader"
+  },
+  {
+   "id": "the-casebook-iii",
+   "title": "The casebook of the Assize, the third",
+   "book": "the-casebook-iii"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.8,
+    1.6,
+    -1.4
+   ]
+  },
+  {
+   "pos": [
+    2.3,
+    1.6,
+    -1.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    1,
+    1.6,
+    -1.2000000000000002
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "helstrom-legation",
+ "door_world_pos": [
+  2315.045,
+  27.22,
+  2813.832
+ ],
+ "door_world_bearing_deg": 57.3,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

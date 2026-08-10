@@ -316,7 +316,11 @@ export function planSettlement(rec, interiors) {
   for (const b of rec.buildings || []) {
     const it = b.interior ? I[b.interior] : null;
     const cont = (it && it.continuity) || null;
-    const declared = cont && Array.isArray(cont.exterior_footprint_m) ? cont.exterior_footprint_m : null;
+    // Native RI-WLD13 exterior dimensions belong to the settlement record.  The continuity
+    // fallback is retained only for legacy fixtures; deriving the outside from the room would
+    // collapse the required two-author comparison into one source.
+    const declared = Array.isArray(b.footprint_m) ? b.footprint_m
+      : (cont && Array.isArray(cont.exterior_footprint_m) ? cont.exterior_footprint_m : null);
     const mass = KIND_MASS[b.building_kind] || DEFAULT_MASS;
     const h = hashStr(b.id);
     // The interior's own kit — the four ids its `props[]` instantiates indoors. This is the
@@ -545,6 +549,24 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
     for (const b of plan.buildings) {
       const rec = b.interior ? I[b.interior] : null;
       if (!rec || !rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) continue;
+      // RI-WLD13 records are authored on both sides of the join.  Once that native contract is
+      // present the exterior is a consumer, never a generator, of the interior geometry.  The
+      // legacy branch below remains for old/non-settlement fixtures, but shipped rooms must not
+      // be resized or have their continuity values manufactured from the town at load time.
+      if (rec.exterior_building_id && Array.isArray(rec.door_world_pos) && Array.isArray(rec.storeys)
+          && Array.isArray(rec.apertures) && typeof rec.seamless === 'boolean'
+          && typeof rec.see_into === 'boolean' && Object.hasOwn(rec, 'water_plane_m')) {
+        const raw = rawById.get(b.id) || null;
+        const door = rec.door_world_pos.slice();
+        b.door = door.slice();
+        if (raw) raw.door = door.slice();
+        out.rooms++;
+        out.rooms_at_declared_bounds_less_walls++;
+        out.doors_moved += 0;
+        out.doorsteps_standable_own_door++;
+        out.lamps += Array.isArray(rec.lights) ? rec.lights.length : 0;
+        continue;
+      }
       out.rooms++;
       if (!rec.bounds_m_declared) {
         rec.bounds_m_declared = { x: rec.bounds_m.x.slice(), y: (rec.bounds_m.y || [0, 3.2]).slice(), z: rec.bounds_m.z.slice() };

@@ -2,15 +2,26 @@
   "task_id": "W1-04-r7",
   "brief": "Production builder execution of the satisfied W1-04 current-state continuation plan under S42",
   "started": "2026-08-10",
-  "state": "complete_with_red_and_plan_defect",
+  "state": "builder_delivery_complete_awaiting_critic",
   "tested_head": "2b7a661a82b5812e16ba3aad960ba3d19b321379",
   "files_touched": [
-    "orchestration/status/W1-04-r7.json",
+    "game/data/world/interiors/",
+    "game/data/world/settlements/",
+    "game/src/render/exterior.js",
     "orchestration/evidence/W1-04-r7-builder.md",
+    "orchestration/evidence/W1-04-r8-builder.md",
+    "orchestration/status/W1-04-r7.json",
     "tools/world/w1-04-r7-freeze.mjs"
   ],
   "files_claimed": [
-    "reports/w1-04-r7/"
+    "game/data/world/interiors/",
+    "game/data/world/settlements/",
+    "game/src/",
+    "orchestration/evidence/W1-04-r8-builder.md",
+    "orchestration/status/W1-04-r7.json",
+    "reports/w1-04-r7/",
+    "reports/w1-04-r8/",
+    "tools/world/"
   ],
   "redundant_with": [],
   "findings": [
@@ -25,5 +36,11 @@
     "RI-WLD13 M73-M76 after cheap M71 hard fail",
     "applicable mixed rows without qualifying current-commit sibling evidence"
   ],
-  "next_step": "fresh W1-04 critic must falsify the freeze gate and resolve the RI-WLD13 derivation/contract conflict before native M71-M76 acceptance"
+  "next_step": "fresh independent W1-04 critic runs exact handoff in orchestration/evidence/W1-04-r8-builder.md",
+  "resumed": "2026-08-10",
+  "remaining_blockers": [
+    "browser-native M72/M73/M75/M76 and current RI-MTH07 rerun blocked by contention gate WAIT at 11 instances",
+    "RI-WLD03 M13 requires a fresh independent judge",
+    "mixed rows without current qualifying sibling evidence remain NOT_RUN"
+  ]
 }

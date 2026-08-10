@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   6
+   5.87
   ],
   "exterior_spawn": [
+   2206.58,
+   141.12,
+   791.508
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2210.2,
    141.12,
    787.67
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -6.2,
-   6.2
+   -5.87,
+   5.87
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -7.2,
-   7.2
+   -6.87,
+   6.87
   ]
  },
  "floor_area_m2": 178.6,
@@ -76,7 +87,7 @@
   {
    "id": "stormhold.warder6.r0.lamp0",
    "pos": [
-    -0.8999999999999999,
+    -0.9,
     1.6,
     -2.7
    ],
@@ -111,7 +122,7 @@
    "pos": [
     3.3,
     1.6,
-    3.0999999999999996
+    3.1
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -170,5 +181,85 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.8999999999999999,
+    1.6,
+    -2.7
+   ]
+  },
+  {
+   "pos": [
+    1,
+    1.6,
+    -2.8
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    3.3,
+    1.6,
+    3.0999999999999996
+   ]
+  },
+  {
+   "pos": [
+    -1.8,
+    1.6,
+    3
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "stormhold-market",
+ "door_world_pos": [
+  2206.851,
+  141.12,
+  791.087
+ ],
+ "door_world_bearing_deg": 237.3,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": true,
+ "water_plane_m": null
 }

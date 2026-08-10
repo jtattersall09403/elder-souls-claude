@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   5.4
+   5.27
   ],
   "exterior_spawn": [
+   2152.5,
+   141.12,
+   753.1
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2152.5,
    141.12,
    747.8
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -5.6,
-   5.6
+   -5.27,
+   5.27
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -6.6,
-   6.6
+   -6.27,
+   6.27
   ]
  },
  "floor_area_m2": 147.8,
@@ -76,7 +87,7 @@
   {
    "id": "stormhold.smith10.r1.lamp0",
    "pos": [
-    -0.2999999999999998,
+    -0.3,
     1.6,
     2.5
    ],
@@ -87,9 +98,9 @@
   {
    "id": "stormhold.smith10.r1.lamp1",
    "pos": [
-    1.5999999999999996,
     1.6,
-    2.4000000000000004
+    1.6,
+    2.4
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -134,5 +145,64 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.2999999999999998,
+    1.6,
+    2.5
+   ]
+  },
+  {
+   "pos": [
+    1.5999999999999996,
+    1.6,
+    2.4000000000000004
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "stormhold-kiln",
+ "door_world_pos": [
+  2152.5,
+  141.12,
+  752.6
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }
