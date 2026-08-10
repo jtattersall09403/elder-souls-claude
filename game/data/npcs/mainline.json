@@ -1177,6 +1177,614 @@
       },
       "reaction_group": "RG-TOWN",
       "actor": "townsman"
+    },
+    {
+      "id": "captain-oreem",
+      "name": "Captain Oreem",
+      "race": "redguard",
+      "class": "captain",
+      "faction": null,
+      "settlement": "archon",
+      "disposition": 40,
+      "topics": [
+        "the vats or the people"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the vats or the people."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3788.34,
+          3.42,
+          3789.06
+        ],
+        "yaw": 180,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "clerk-meno",
+      "name": "Meno",
+      "race": "imperial",
+      "class": "lease clerk",
+      "faction": null,
+      "settlement": "blackrose",
+      "disposition": 40,
+      "topics": [
+        "the lease"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the lease."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-shrine",
+        "at_building_name": "The Lime-Pit Hist-Shrine",
+        "pos": [
+          1888.81,
+          2.68,
+          4438.0
+        ],
+        "yaw": 234,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-ossei",
+      "name": "Ossei",
+      "race": "saxhleel",
+      "class": "quarter resident",
+      "faction": null,
+      "settlement": "stormhold",
+      "disposition": 40,
+      "topics": [
+        "the walled quarter"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the walled quarter."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "mudborn",
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-praetorium",
+        "at_building_name": "The Praetorium",
+        "pos": [
+          2223.0,
+          141.12,
+          773.04
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "rootkeeper-under-the-temple",
+      "name": "Keeper-Under-the-Temple",
+      "race": "saxhleel",
+      "class": "rootkeeper",
+      "faction": null,
+      "settlement": "lilmoth",
+      "disposition": 40,
+      "topics": [
+        "the company man"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the company man."
+      },
+      "reaction_group": "RG-ROOT",
+      "actor": "archivist",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2806.61,
+          0.37,
+          5029.81
+        ],
+        "yaw": 90,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-eleen",
+      "name": "Eleen",
+      "race": "breton",
+      "class": "fish seller",
+      "faction": null,
+      "settlement": "archon",
+      "disposition": 40,
+      "topics": [
+        "a phial for the blind man"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about a phial for the blind man."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3788.34,
+          3.42,
+          3790.31
+        ],
+        "yaw": 180,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "cutter-ashaan-hulei",
+      "name": "Ashaan-Hulei",
+      "race": "saxhleel",
+      "class": "cutter",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "what the cutting leaves"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about what the cutting leaves."
+      },
+      "reaction_group": "RG-DEEP",
+      "actor": "mudborn",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2301.32,
+          27.22,
+          2783.16
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-skara-hull-chalk",
+      "name": "Skara",
+      "race": "nord",
+      "class": "hull chalker",
+      "faction": null,
+      "settlement": "archon",
+      "disposition": 40,
+      "topics": [
+        "nine days at anchor"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about nine days at anchor."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3790.84,
+          3.42,
+          3790.31
+        ],
+        "yaw": 180,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-ineve-corrano",
+      "name": "Ineve Corrano",
+      "race": "imperial",
+      "class": "first chair",
+      "faction": null,
+      "settlement": "gideon",
+      "disposition": 40,
+      "topics": [
+        "nineteen years in the first chair"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about nineteen years in the first chair."
+      },
+      "reaction_group": "RG-LEDGER",
+      "actor": "archivist",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          409.3,
+          2.72,
+          2908.43
+        ],
+        "yaw": 258,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-ishi-vaal",
+      "name": "Ishi-Vaal",
+      "race": "saxhleel",
+      "class": "bond-wife",
+      "faction": null,
+      "settlement": "archon",
+      "disposition": 40,
+      "topics": [
+        "a berth for the bond-wife"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about a berth for the bond-wife."
+      },
+      "reaction_group": "RG-LEDGER",
+      "actor": "townsman",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3788.34,
+          3.42,
+          3791.56
+        ],
+        "yaw": 180,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-sorel-ithan",
+      "name": "Sorel Ithan",
+      "race": "imperial",
+      "class": "sapwell foreman",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "the track is not cut"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the track is not cut."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2301.32,
+          27.22,
+          2784.41
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-uneel-vaakh-sister",
+      "name": "Tsal-Vaakh",
+      "race": "saxhleel",
+      "class": "hollow keeper",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "the man who came back from the coast"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the man who came back from the coast."
+      },
+      "reaction_group": "RG-DEEP",
+      "actor": "mudborn",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2302.57,
+          27.22,
+          2784.41
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-high-hollow-speaker",
+      "name": "Speaker-of-the-High-Hollow",
+      "race": "saxhleel",
+      "class": "speaker",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "the consensus that would not come"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the consensus that would not come."
+      },
+      "reaction_group": "RG-DEEP",
+      "actor": "mudborn",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2303.82,
+          27.22,
+          2784.41
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-fourth-day-boatman",
+      "name": "Fourth-Day Boatman",
+      "race": "saxhleel",
+      "class": "boatman",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "speaking for people who are not there"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about speaking for people who are not there."
+      },
+      "reaction_group": "RG-DEEP",
+      "actor": "townsman",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2300.07,
+          27.22,
+          2785.66
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-ineel-sa",
+      "name": "Ineel-Sa",
+      "race": "saxhleel",
+      "class": "widow",
+      "faction": null,
+      "settlement": "gideon",
+      "disposition": 40,
+      "topics": [
+        "the widow"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the widow."
+      },
+      "reaction_group": "RG-TOWN",
+      "actor": "townsman",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          406.8,
+          2.72,
+          2910.93
+        ],
+        "yaw": 258,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-widow-tesla-vor",
+      "name": "Tesla Vor",
+      "race": "imperial",
+      "class": "widow",
+      "faction": null,
+      "settlement": "gideon",
+      "disposition": 40,
+      "topics": [
+        "the widow line"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the widow line."
+      },
+      "reaction_group": "RG-LEDGER",
+      "actor": "townsman",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          408.05,
+          2.72,
+          2910.93
+        ],
+        "yaw": 258,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
+    },
+    {
+      "id": "npc-river-band-elder",
+      "name": "Elder-Who-Counts-the-Band",
+      "race": "saxhleel",
+      "class": "river-band elder",
+      "faction": null,
+      "settlement": "helstrom",
+      "disposition": 40,
+      "topics": [
+        "the elders count"
+      ],
+      "services": [],
+      "lines": {
+        "greeting": "You came about the elders count."
+      },
+      "reaction_group": "RG-DEEP",
+      "actor": "mudborn",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2303.82,
+          27.22,
+          2785.66
+        ],
+        "yaw": 79,
+        "note": "W1-19 continuation: player-facing reveal source posted beside a reachable settlement landmark."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "24:00",
+          "at": null,
+          "activity": "post"
+        }
+      ]
     }
   ],
   "reaction_group_note": "W1-07 round 4. The group is the FACTION the person belongs to read as a social body, except where the person's own trade reads differently: a rootkeeper of the Xul-Aneekh is RG-ROOT (a well-keeper, wherever they draw their pay) rather than RG-DEEP, and the intake keepers of the gallery are RG-DEEP because the gallery is the interior's own. The Drowned Court maps to RG-COURT, the one all-zero row in the 12x10 matrix — which is why ten of the thirty-two main-quest stages are race-blind by authorship rather than by exemption.",

@@ -1,0 +1,26 @@
+{
+  "schema": "elder-souls/w1-19-builder-continuation@1",
+  "base_commit": "46d3c0432fceb7cf1fa622f205c4728daa8321e9",
+  "tested_tree": "implementation content committed as ad2cccc (the final bookkeeping commit only restores forbidden generated outputs and stamps evidence)",
+  "commands": {
+    "reveal_routes": "node tools/quests/reveal-route-audit.mjs --json",
+    "chain_population": "node tools/quests/mainline-chain-floor.mjs --out corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/chain-floor --json",
+    "world_person_sample": "node tools/quests/reveal-route-world.mjs --cases 6 --out corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/reveal-world",
+    "control_no_router": "node tools/quests/reveal-route-audit.mjs --json --falsify no-router",
+    "control_unplace": "node tools/quests/reveal-route-audit.mjs --json --falsify unplace"
+  },
+  "results": {
+    "demanded_reveal_routes": "121/121 routed; 0 unrouted",
+    "named_person_sources": "0 missing NPC records",
+    "world_person_sample": "2/2 run cases passed; 43 prerequisite-gated cases explicitly skipped, so this is not a full population",
+    "chain_population": "0/40 signatures finished both chains; all 80 chain arms stopped at Q-MAIN-06 because the legacy runner does not perform the routed ledger action",
+    "no_router_control": "PASS as an inverted red control: all person/place route legs went red after the router was emptied",
+    "unplace_control": "RED as expected: routed count fell from 121 to 80 and 41 rows became unrouted"
+  },
+  "independent_only": {
+    "RI-EXP05_blind_landing": "NOT_RUN",
+    "critic_verdict": "NOT_RUN",
+    "self_awarded_pass": false
+  },
+  "implementation_commit": "ad2cccc"
+}
