@@ -139,12 +139,19 @@ try {
   }
 } catch { /* no npc tree */ }
 const personRouted = new Set();
+const embodiedRouted = new Set();
 const personSourceMissing = [];
 for (const { q } of quests) {
   for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
     if (CHANNEL_READERS[rev.channel] !== 'person') continue;
     if (npcIds.has(rev.source)) personRouted.add(`${q.id}|${rev.id}`);
     else personSourceMissing.push({ quest: q.id, reveal: rev.id, channel: rev.channel, source: rev.source });
+  }
+}
+for (const { q } of quests) {
+  for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+    if (!['eavesdrop', 'corpse'].includes(CHANNEL_READERS[rev.channel])) continue;
+    if (npcIds.has(rev.source)) embodiedRouted.add(`${q.id}|${rev.id}`);
   }
 }
 
@@ -315,7 +322,8 @@ for (const { file, q } of quests) {
     const mark = markRoute(d);
     const viaMark = mark.via;
     const viaPerson = personRouted.has(`${q.id}|${revId}`);
-    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, via_mark: viaMark, doc_exists: doc.exists, doc_placed: doc.placed, mark_exists: mark.exists, mark_placed: mark.placed, routed: viaHook || viaBook || viaPerson || viaMark });
+    const viaEmbodied = embodiedRouted.has(`${q.id}|${revId}`);
+    rows.push({ file, quest: q.id, reveal: revId, channel: d ? d.channel : '(UNDECLARED)', source: d ? d.source : null, via_hook: viaHook, via_book: viaBook, via_person: viaPerson, via_embodied: viaEmbodied, via_mark: viaMark, doc_exists: doc.exists, doc_placed: doc.placed, mark_exists: mark.exists, mark_placed: mark.placed, routed: viaHook || viaBook || viaPerson || viaEmbodied || viaMark });
   }
 }
 const unrouted = rows.filter((r) => !r.routed);
