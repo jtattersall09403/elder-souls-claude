@@ -1,6 +1,6 @@
 {
   "task_id": "W1-25-persistent-builder",
-  "status": "builder_incomplete_dependency_blocked",
+  "status": "builder_owned_work_complete_dependency_blocked",
   "starting_commit": "1378e2a7372d4e3c819f81986b65979524ae08a7",
   "branch": "codex/wave1-build-experiment",
   "files_touched": [
@@ -44,7 +44,7 @@
     "reports/experience/w1-25-persistent-builder/",
     "orchestration/status/W1-25-persistent-builder.json"
   ],
-  "builder_complete": false,
+  "builder_complete": true,
   "critic_pass_claimed": false,
   "progress": [
     "Resumed at required commit 11ae120b81595c00dc7d3f56d520aab89efe8543 on codex/wave1-build-experiment and ran the recorded exact resume command first: RED 0/10 qualifying, 0/1 structural, score 0/20 (exit 1).",
@@ -74,7 +74,9 @@
     "Reran RI-EXP06 through the shipping browser path: B-01 baseline/closure/repeat/restore remains a valid live row; 14/15 are honestly UNMEASURABLE and the chain is NOT_RUN. The fail-closed validator reports RED 1/15 rather than accepting static substrate.",
     "Reran cheap falsification gates: permissiveness validator self-test, crossing-control self-test, sabotage 14/14 plus 10/10 injected defects, and replay corpus 9/9 all pass.",
     "RI-CMP01 remains complete from merged live evidence (10 controlled cells, 3 structural, score 32). Critic-owned long sessions, isolated recall/baton, blind comparisons and final populations remain handoff and were not self-scored.",
-    "Targeted delete/red proof: running the browser collector against the readable parent engine before reapplying B-01 reached TypeError: engine.resetAlchemy is not a function; after restoration the same shipping-path command executed 1/15 and wrote the valid B-01 row."
+    "Targeted delete/red proof: running the browser collector against the readable parent engine before reapplying B-01 reached TypeError: engine.resetAlchemy is not a function; after restoration the same shipping-path command executed 1/15 and wrote the valid B-01 row.",
+    "Merged-HEAD continuation found that the purported restored engine still contained invalid binary bytes at line 8267. Restored the latest readable merged production base from ba5f8dc, reapplied the already-merged B-01 production consumer, and committed it as 4c6ef4c; syntax, boot, and shipping browser execution now pass.",
+    "At tested commit 4c6ef4c the native matrix improved to 12/15 demonstrated cells, three structural, score 36, 5 W2F/7 F2W. The RI-EXP06 shipping browser population remains honestly RED at 1/15: B-01 passes all four arms; B-02..B-15 remain canonical sibling substrate dependencies."
   ],
   "interruption_reason": null,
   "completion": [
@@ -88,7 +90,7 @@
       "row": "RI-CMP01",
       "state": "PASS",
       "artifact": "reports/composition/w1-25-persistent-builder/matrix-live.json",
-      "result": "native aggregate 10/3/32; controlled aggregate 10 unique, 3 structural, score 32, 5 W2F/5 F2W; all six arms observed"
+      "result": "native aggregate 12 live/3 structural/score 36 (5 W2F/7 F2W); controlled aggregate remains 10 unique, 3 structural, score 32, all six arms observed"
     },
     {
       "row": "RI-EXP02",
@@ -106,11 +108,11 @@
       "row": "RI-EXP06",
       "state": "RED",
       "artifact": "tools/experience/permissiveness-browser.mjs",
-      "result": "live production probes 1/15 PASS (B-01 alchemy); 14 canonical substrates UNMEASURABLE; chain NOT_RUN; fail-closed report RED"
+      "result": "live production probes 1/15 PASS (B-01 alchemy); B-02 through B-15 canonical substrates UNMEASURABLE; chain NOT_RUN; fail-closed report RED"
     }
   ],
   "exact_next_command": "node tools/composition/matrix-probe.mjs --seed 1234 --out reports/composition/w1-25-persistent-builder/matrix-live.json",
-  "next_step": "Canonical sibling owners must supply B-02 through B-15 production substrates. Then rerun the recorded browser command and hand the complete population to a fresh critic; no other builder-owned W1-25 work is currently available.",
+  "next_step": "Builder-owned W1-25 work is complete at 4c6ef4c. Canonical sibling owners must supply B-02 through B-15; critic owns the matched long sessions, isolated recall/blind work, full populations and verdict.",
   "dependency_blocks": [
     {
       "items": [
@@ -142,5 +144,6 @@
       "reason": "No completed active played chain exists. Exact >=90-minute matched sessions and isolated recall/blind actors are critic-owned under the execution contract; prior live attempts completed 0/2 and partial traces were not scored.",
       "reproduction": "cat reports/experience/w1-25-persistent-builder/session-inputs/live-attempt.json"
     }
-  ]
+  ],
+  "tested_commit": "4c6ef4c"
 }
