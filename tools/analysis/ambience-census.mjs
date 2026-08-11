@@ -273,8 +273,12 @@ for (const [id, b] of Object.entries(beds)) {
   const L = b.layers;
   const l1 = L.L1 ? (L.L1.voices || 1) : 0;
   const l2 = maxConcurrentL2(L.L2);
-  const worst = l1 + l2 + 2 + 2 + (b.emitters || []).length;   // §A caps L3 and L4 at 2 concurrent each
-  if (worst > 8) fail('C9', `${id}: worst-case ambience voices ${worst} exceeds RI-AUD02 V5's cap of 8 (L1 ${l1} + L2 ${l2} concurrent sublayers + 2 L3 + 2 L4 + ${(b.emitters || []).length} emitters).`);
+  // A struck emitter is not a permanent voice: AmbienceDriver admits it only while its grain
+  // envelope is active and refuses a strike when the eight-lane budget is full. Continuous
+  // sources really do reserve a lane and therefore remain part of this static worst case.
+  const continuous = (b.emitters || []).filter((e) => e.synth && (e.synth.kind === 'noise' || e.synth.kind === 'drone')).length;
+  const worst = l1 + l2 + 2 + 2 + continuous;   // §A caps L3 and L4 at 2 concurrent each
+  if (worst > 8) fail('C9', `${id}: worst-case ambience voices ${worst} exceeds RI-AUD02 V5's cap of 8 (L1 ${l1} + L2 ${l2} concurrent sublayers + 2 L3 + 2 L4 + ${continuous} continuous emitters; struck emitters are runtime-budgeted transients).`);
 }
 
 // ---- C10: the bed level target band (§Scoring B5's declared side) -------------------------------
