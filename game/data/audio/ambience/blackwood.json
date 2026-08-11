@@ -240,7 +240,1854 @@
       "event_gain_db": 10.27
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "blackwood_landmark_01",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.893,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_02",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        462.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.46,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_03",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.683,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_04",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        3562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.49,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_05",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        262.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.001,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_06",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1212.5,
+        2462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.56,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_07",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        662.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.735,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_08",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1762.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.902,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_09",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1562.5,
+        3662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.509,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_10",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        762.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.661,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_11",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2212.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.998,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_12",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        2912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.451,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_13",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        262.5,
+        2762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.18,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_14",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        812.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.297,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_15",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1562.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.082,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_16",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        2862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.031,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_17",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        812.5,
+        3262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.28,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_18",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1512.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.933,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_19",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1812.5,
+        3462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.198,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_20",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        962.5,
+        2262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.11,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_21",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        362.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.421,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_22",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1112.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.156,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_23",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        2862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.811,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_24",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        562.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.562,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_25",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        2862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.753,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_26",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        562.5,
+        2662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.952,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_27",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        712.5,
+        2312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.263,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_28",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        3262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.862,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_29",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1212.5,
+        2712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.981,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_30",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        3512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.999,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_31",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.824,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_32",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        362.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.265,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_33",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1262.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.754,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_34",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        462.5,
+        2862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.947,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_35",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1762.5,
+        2662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.724,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_36",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        562.5,
+        3162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.157,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_37",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1512.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.966,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_38",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        962.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.271,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_39",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        962.5,
+        3762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.208,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_40",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.336,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_41",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        762.5,
+        2762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.151,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_42",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        2612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.482,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_43",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.721,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_44",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1412.5,
+        2712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.124,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_45",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        262.5,
+        3212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.011,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_46",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.03,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_47",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1712.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.389,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_48",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1612.5,
+        3462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.08,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_49",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        612.5,
+        2462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.031,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_50",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        812.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.969,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    },
+    {
+      "id": "blackwood_landmark_51",
+      "text": "World-anchored canopy drip landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        3462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.418,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 1450,
+        "glide_hz": [
+          1450,
+          620
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.09
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "blackwood_landmark_52",
+      "text": "World-anchored distant axe landmark; region-native source distributed across the complete Blackwood native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        412.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.599,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 520,
+          "q": 3
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.55
+        },
+        "gain_db": -13,
+        "repeats": {
+          "n": 3,
+          "gap_s": 1.4,
+          "gap_jitter_s": 0.25
+        }
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -4.21,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
