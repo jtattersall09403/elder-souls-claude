@@ -260,7 +260,1286 @@
       "event_gain_db": 4.71
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "eastern_rootlands_landmark_01",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2412.5,
+        4012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.016,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_02",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4112.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.569,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_03",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3562.5,
+        4512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.402,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_04",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3262.5,
+        3512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.651,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_05",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        4662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.044,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_06",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3912.5,
+        4012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.485,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_07",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        4062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.75,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_08",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        4562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.583,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_09",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2762.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.832,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_10",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3462.5,
+        3962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.218,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_11",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3712.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.769,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_12",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.816,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_13",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2662.5,
+        4312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.399,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_14",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3162.5,
+        4412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.094,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_15",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3162.5,
+        4812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.605,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_16",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4012.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.316,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_17",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2712.5,
+        3962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.067,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_18",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3512.5,
+        3362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.074,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_19",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3412.5,
+        4262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.785,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_20",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2512.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.673,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_21",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2312.5,
+        4262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.946,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_22",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2912.5,
+        4362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.623,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_23",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2612.5,
+        4612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.88,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_24",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2962.5,
+        3812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.157,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_25",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        3912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.246,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_26",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3862.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.163,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_27",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3412.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.452,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_28",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3662.5,
+        4112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.401,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_29",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3712.5,
+        3862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.802,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_30",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        4162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.624,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_31",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3062.5,
+        4612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.799,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_32",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3362.5,
+        4462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.554,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_33",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3062.5,
+        4262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.065,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_34",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2462.5,
+        4412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.524,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_35",
+      "text": "World-anchored oar stroke landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3512.5,
+        3562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "labour",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.747,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 380,
+          "q": 2
+        },
+        "env": {
+          "attack_s": 0.02,
+          "decay_s": 0.32
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "eastern_rootlands_landmark_36",
+      "text": "World-anchored stilt creak landmark; region-native source distributed across the complete Eastern Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2512.5,
+        4162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.766,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 190,
+        "glide_hz": [
+          190,
+          240
+        ],
+        "filter": {
+          "type": "bandpass",
+          "hz": 420,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.1,
+          "decay_s": 0.45
+        },
+        "gain_db": -12
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -7.55,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
