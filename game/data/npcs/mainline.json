@@ -1,9 +1,9 @@
 {
   "schema": "elder-souls/npcs@1",
   "group": "mainline",
-  "owner": "W1-19 — the main quest, end to end",
+  "owner": "W1-19 \u2014 the main quest, end to end",
   "source": "The people the mainline names. Every `giver.npc_id`, every `deceit.revealed_by[].source` that is a person, and every id that appears as a key of `consequences.npc_disposition` in game/data/quests/mainline-act1..5.json and mainline-backpath.json. Written because the quests referred to twenty-six people who did not exist as records anywhere in the build, which made `giver.disposition_min` unreachable and made the mainline unofferable from a cold start.",
-  "consumed_by": "game/src/engine.js seedDispositions() — `disposition` here is copied into sim.quest.dispositions at boot and on every reset, which is what QuestEngine.context() reads and what gate.js canOffer() checks against giver.disposition_min. Before W1-19 nothing in the build read this field on any NPC record in any file, so every authored disposition in game/data/npcs/** was inert and every quest with a disposition_min was unofferable without a Charm spell.",
+  "consumed_by": "game/src/engine.js seedDispositions() \u2014 `disposition` here is copied into sim.quest.dispositions at boot and on every reset, which is what QuestEngine.context() reads and what gate.js canOffer() checks against giver.disposition_min. Before W1-19 nothing in the build read this field on any NPC record in any file, so every authored disposition in game/data/npcs/** was inert and every quest with a disposition_min was unofferable without a Charm spell.",
   "declared_incomplete": true,
   "declared_incomplete_note": "Wave 1. These records carry id, name, race, settlement, disposition, topics and one greeting line each. Schedules, services and interiors are W1-04's and W1-17's and are not filled here. reaction_group and actor were filled by W1-07 round 4: without a reaction_group the quest-offer gate reads the same disposition for every race, which is exactly the defect that round was dispatched to close, and Engine._assertGiversAreVisibleToRace() now refuses to boot without them.",
   "npcs": [
@@ -34,15 +34,15 @@
       "actor": "mudborn",
       "post": {
         "settlement": "soulrest",
-        "at_building": "soulrest-court-steps",
-        "at_building_name": "The Drowned Court Steps",
+        "at_building": null,
+        "at_building_name": "Soulrest public quay",
         "pos": [
           630,
-          7.91,
-          4894.5
+          8.13,
+          4877
         ],
         "yaw": 66,
-        "note": "W1-19: production-walked Court-steps post, outside the closed footprint and reachable from the quay."
+        "note": "W1-19: production-walked public quay post outside the closed Court footprint."
       },
       "schedule": [
         {
@@ -141,15 +141,15 @@
       "actor": "archivist",
       "post": {
         "settlement": "soulrest",
-        "at_building": "soulrest-court-steps",
-        "at_building_name": "The Drowned Court Steps",
+        "at_building": null,
+        "at_building_name": "Soulrest public quay",
         "pos": [
-          628.5,
-          7.91,
-          4894.5
+          618,
+          8.13,
+          4877
         ],
         "yaw": 66,
-        "note": "W1-19: production-walked Court post on the open stair apron."
+        "note": "W1-19: production-walked public quay post outside the closed Court footprint."
       },
       "schedule": [
         {
@@ -195,14 +195,14 @@
       "post": {
         "settlement": "soulrest",
         "at_building": null,
-        "at_building_name": "the open public approach",
+        "at_building_name": "Soulrest public quay",
         "pos": [
-          636.5,
-          7.91,
-          4896
+          618,
+          8.13,
+          4879
         ],
         "yaw": 180,
-        "note": "W1-19: production-walked mainline reveal post."
+        "note": "W1-19: production-walked public quay post outside the closed Court footprint."
       }
     },
     {
@@ -463,15 +463,15 @@
       "actor": "sapcutter",
       "post": {
         "settlement": "blackrose",
-        "at_building": "blackrose-shrine",
-        "at_building_name": "The Lime-Pit Hist-Shrine",
+        "at_building": null,
+        "at_building_name": "Blackrose public roadhead",
         "pos": [
-          1885.56,
-          2.68,
-          4436
+          1905.5,
+          2.59,
+          4450
         ],
         "yaw": 234,
-        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-shrine's door."
+        "note": "W1-19: production-walked public roadhead post outside the shrine footprint."
       },
       "schedule": [
         {
@@ -536,7 +536,7 @@
       "post": {
         "settlement": "archon",
         "at_building": "archon-guild-office",
-        "at_building_name": "The Dyers’ Guild Office",
+        "at_building_name": "The Dyers\u2019 Guild Office",
         "pos": [
           3786.34,
           3.42,
@@ -1296,7 +1296,7 @@
       "post": {
         "settlement": "archon",
         "at_building": "archon-guild-office",
-        "at_building_name": "The Dyers’ Guild Office",
+        "at_building_name": "The Dyers\u2019 Guild Office",
         "pos": [
           3788.34,
           3.42,
@@ -1448,7 +1448,7 @@
       "post": {
         "settlement": "archon",
         "at_building": "archon-guild-office",
-        "at_building_name": "The Dyers’ Guild Office",
+        "at_building_name": "The Dyers\u2019 Guild Office",
         "pos": [
           3788.34,
           3.42,
@@ -1524,7 +1524,7 @@
       "post": {
         "settlement": "archon",
         "at_building": "archon-guild-office",
-        "at_building_name": "The Dyers’ Guild Office",
+        "at_building_name": "The Dyers\u2019 Guild Office",
         "pos": [
           3790.84,
           3.42,
@@ -1600,7 +1600,7 @@
       "post": {
         "settlement": "archon",
         "at_building": "archon-guild-office",
-        "at_building_name": "The Dyers’ Guild Office",
+        "at_building_name": "The Dyers\u2019 Guild Office",
         "pos": [
           3788.34,
           3.42,
@@ -1885,6 +1885,6 @@
       ]
     }
   ],
-  "reaction_group_note": "W1-07 round 4. The group is the FACTION the person belongs to read as a social body, except where the person's own trade reads differently: a rootkeeper of the Xul-Aneekh is RG-ROOT (a well-keeper, wherever they draw their pay) rather than RG-DEEP, and the intake keepers of the gallery are RG-DEEP because the gallery is the interior's own. The Drowned Court maps to RG-COURT, the one all-zero row in the 12x10 matrix — which is why ten of the thirty-two main-quest stages are race-blind by authorship rather than by exemption.",
+  "reaction_group_note": "W1-07 round 4. The group is the FACTION the person belongs to read as a social body, except where the person's own trade reads differently: a rootkeeper of the Xul-Aneekh is RG-ROOT (a well-keeper, wherever they draw their pay) rather than RG-DEEP, and the intake keepers of the gallery are RG-DEEP because the gallery is the interior's own. The Drowned Court maps to RG-COURT, the one all-zero row in the 12x10 matrix \u2014 which is why ten of the thirty-two main-quest stages are race-blind by authorship rather than by exemption.",
   "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

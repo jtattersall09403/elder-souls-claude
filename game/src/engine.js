@@ -2470,13 +2470,23 @@ export class Engine {
       // which is `_readBook()` — the world-side consumer of `topics_taught`, `knowledge_key` and
       // the skill-book overlay. Nothing about reading is re-implemented here.
       try {
+        // The world-readable route used to open only the renderer-side UI. The production menu
+        // button then toggled `sim.menuOpen` from false to true while the UI closed, leaving an
+        // invisible menu that consumed all subsequent movement. Keep the simulation and UI
+        // surfaces on the same side of the toggle, just like the inventory book route.
+        this.sim.menuOpen = true;
         this.ui.open('book', { id: o.readable_book }, this._uiCtx());
         cameraOpenUI(this.sim, 'menu');
         this.ui._surfaceChanged(this.real);
         this.ui.build(this._uiCtx(), true);
         const ev = this.bus.emit(this.sim.frame, 'input_action');
         ev.action = 'interact'; ev.surface = 'world'; ev.via = 'readable'; ev.node = o.eid;
-      } catch { /* the book went away with the data; the prop stays where it is */ }
+      } catch (error) {
+        // A production-readable whose backing book disappeared is broken authored content, not
+        // an optional decoration. Fail loudly instead of leaving a convincing prop whose only
+        // player-facing interaction silently does nothing.
+        throw error;
+      }
       return;
     }
     // W1-READABLES round 2. A MARK. There is nothing to open and nothing to carry: the chalk is
@@ -3579,11 +3589,15 @@ export class Engine {
         const sn = (this.field && typeof this.field.nearestSign === 'function' && this.cellFor(this.sim.env) === 'province')
           ? this.field.nearestSign(p.pos[0], p.pos[2], SIGN_REACH_M) : null;
         if (sn) { this._signPending = sn; return; }
-        let best = null, bestD = Infinity;
+        let best = null, bestD = Infinity, bestKind = Infinity;
         for (const o of this.sim.props) {
           if (o.taken) continue;
           const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
-          if (d <= o.reach_m && d < bestD) { best = o; bestD = d; }
+          // A readable is an intentional interaction target; a loose bowl or pedestal object
+          // inside the same reach circle must not silently eat the button. Prefer the readable
+          // among reachable props, then preserve the historical nearest-object ordering.
+          const kind = o.readable_book ? 0 : 1;
+          if (d <= o.reach_m && (kind < bestKind || (kind === bestKind && d < bestD))) { best = o; bestD = d; bestKind = kind; }
         }
         if (best) { this._propPending = best.eid; return; }
         // Nothing to pick up: reach for the nearest person instead. Opening a conversation
@@ -3993,10 +4007,22 @@ export class Engine {
       // surface still advertises `takesInput`. Returning unconditionally here let that hidden
       // consumer swallow the GameSir D-pad after the UIX03 fixture's combat transitions.
       if (this.censusSurface && this.censusSurface.takesInput && !this.ui.isMenu()) return;
+      // A world-readable opens the book directly rather than through inventory. Make the
+      // ordinary menu/back button close that terminal surface before any peer-navigation or
+      // combat consumer can reinterpret it. This is still the production input edge; no
+      // harness UI mutator participates.
+      if (this.ui.mode === 'book' && input.pressedName('menu')) {
+        this.ui.close(); this.sim.menuOpen = false; input.consumeUI(['menu']);
+        cameraCloseUI(this.sim); this.ui._surfaceChanged(this.real); return;
+      }
       const wasMenu = this.ui.isMenu();
       const taken = this.ui.step(input, this._uiCtx());
       if (taken.length) input.consumeUI(taken);
       if (this.ui.isMenu() !== wasMenu) {
+        // UISystem consumes the button before combat-bridge sees it, so the simulation-side
+        // menu bit cannot be maintained by combat's menu toggle on this path. Keep the two
+        // surfaces synchronized here; an invisible true bit suppresses ordinary movement.
+        this.sim.menuOpen = this.ui.isMenu();
         if (this.ui.isMenu()) cameraOpenUI(this.sim, 'menu'); else cameraCloseUI(this.sim);
         this.ui._surfaceChanged(this.real);
       }
@@ -8915,7 +8941,10 @@ export class Engine {
           script.push({f:0,press:['light']},{f:2,release:['light']}); defensiveSwings++;
         } else if (!body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
       }
-      if (this.traversal && this.traversal.mired && !this.sim.env.interior) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
+      if (this.traversal && this.traversal.mired && !this.sim.env.interior
+          && (!this.combat || !this.combat.player || this.combat.player.stamina >= 25)) {
+        script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] });
+      }
       this.input.queueInputs(script, this.sim.frame);
       const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
       this.loop.stepOnce();

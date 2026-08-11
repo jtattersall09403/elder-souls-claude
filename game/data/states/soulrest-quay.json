@@ -1,9 +1,9 @@
 {
   "schema": "elder-souls/state@1",
   "id": "soulrest-quay",
-  "owner": "W1-19 round 2 — the main quest, end to end",
+  "owner": "W1-19 round 2 \u2014 the main quest, end to end",
   "title": "The quay side at Soulrest, an hour after noon, with the reading room behind the Court's mark and a cart standing on the coast road. The round-1 verdict on this piece said a player who boots the build and walks to Soulrest cannot start the main quest. There was no Soulrest to walk to: no named state in game/data/states/** put Undersexton Aveline Rell or any of the three people Q-MAIN-01 names in `opens_by.overheard_from` anywhere a player could stand. This is that place, and it is the state the findability probe loads.",
-  "note": "Four of these five are in `game/data/npcs/mainline.json` already; nothing here invents a person. Nerien Vass, Falus Grey and Eeja-Sul are the three `opens_by.overheard_from` NPCs of Q-MAIN-01 — greeting any one of them teaches `the drowned tally`, which is the only route into the chain that owes nothing to a prior quest. Ojal-Weeth is here because Q-MAIN-09 names her too, and because a mortuary hand outside the door is the picture.",
+  "note": "Four of these five are in `game/data/npcs/mainline.json` already; nothing here invents a person. Nerien Vass, Falus Grey and Eeja-Sul are the three `opens_by.overheard_from` NPCs of Q-MAIN-01 \u2014 greeting any one of them teaches `the drowned tally`, which is the only route into the chain that owes nothing to a prior quest. Ojal-Weeth is here because Q-MAIN-09 names her too, and because a mortuary hand outside the door is the picture.",
   "env": {
     "timeOfDay": 13.0,
     "weather": "overcast",
@@ -29,8 +29,8 @@
       "from_record": "undersexton-aveline-rell",
       "pos": [
         630,
-        7.91,
-        4894.5
+        8.13,
+        4877
       ],
       "yaw": 185,
       "behaviour": "tend",

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6efc32c`: 834 tools, 153 reference
+so it cannot drift. Generated at `3eb4de5`: 834 tools, 153 reference
 items, 146 pieces in flight.
 
 Its purpose is to stop 146+ concurrent agents each paying separately to discover the
@@ -1179,7 +1179,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-19-builder-codex-persistent-20260811` | ? | Complete the production-walked Soulrest-to-Blackrose Q-MAIN-07 approach, then continue int | `orchestration/status/W1-19-builder-codex-persistent-20260811.json` `tools/quests/mainline-chain-floor.mjs` `tools/quests/mainline-gate-b-fixtures.mjs` `game/data/world/assembled-lore.json` `game/data/world/voids.json` `game/data/index.json` |
+| `W1-19-builder-codex-persistent-20260811` | ? | Continue the production-resumable intended chain at Q-MAIN-08 from the clean Q-MAIN-07 che | `orchestration/status/W1-19-builder-codex-persistent-20260811.json` `tools/quests/mainline-chain-floor.mjs` `tools/quests/mainline-gate-b-fixtures.mjs` `game/data/world/assembled-lore.json` `game/data/world/voids.json` `game/data/index.json` |
 | `W1-25-builder` | done | Owning siblings repair the zero live crossings and missing live substrates; then record ma | `orchestration/status/W1-25-builder.json` `tools/experience/lib/session-analysis.mjs` `tools/experience/classes-from-md.mjs` `tools/experience/recall-run.mjs` `tools/experience/shape-check.mjs` `tools/experience/sag-fit.mjs` |
 | `W1-25-continuation-builder` | ? | Continue production work on the remaining native red cells; do not dispatch final judges y | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` `reports/experience/w1-25-continuation-builder/independent-handoff.json` `reports/experience/w1-25-continuation-builder/matrix-live-final.json` |
 | `W1-25-persistent-builder` | ? | Continue earliest red production cell and execute all six arms; do not claim builder_compl | `game/data/items/carried.json` `game/src/engine.js` `game/src/harness/api.js` `orchestration/status/W1-25-persistent-builder.json` `reports/composition/w1-25-persistent-builder/crossing-controls.json` `reports/composition/w1-25-persistent-builder/matrix-live.json` |

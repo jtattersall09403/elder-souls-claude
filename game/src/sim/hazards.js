@@ -49,7 +49,10 @@ const ANCHOR = {
 /** Hazards whose volume is a terrain, water or weather condition rather than a placed object. */
 const CONDITION = {
   'ridge-exposure': (c) => c.region === 'salt-hills' && c.y > 150,
-  'salt-storm': (c) => c.region === 'stone-wastes',
+  // The province weather table and ambience contract both define this as a weather-gated
+  // event. Treating every clear/overcast Stone Wastes frame as an active storm made the
+  // 1.7 km Soulrest--Blackrose mainline road lethal even while the sky reported overcast.
+  'salt-storm': (c) => c.region === 'stone-wastes' && c.weather === 'salt_storm',
   rockfall: (c) => (c.region === 'valus-ridge' || c.region === 'salt-hills') && c.slope > 26,
   thirst: (c) => c.region === 'clay-moor',
   'ash-lung': (c) => c.region === 'thornmarsh' && (c.weather === 'ashfall' || c.weather === 'dust_devil'),
