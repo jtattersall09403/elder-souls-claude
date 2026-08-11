@@ -1,0 +1,517 @@
+{
+  "tool": "tools/quests/mainline-census.mjs",
+  "written_by": "W1-19 under orchestration/TOOL-LOOP.md — RI-QST06 §Comparison method named jq over game/src/data/quests/*.json, a path that does not exist",
+  "when": "2026-08-11T18:38:17.066Z",
+  "quests_total": 202,
+  "main_total": 32,
+  "acted": 28,
+  "off_act": [
+    "Q-MAIN-29",
+    "Q-MAIN-30",
+    "Q-MAIN-31",
+    "Q-MAIN-32"
+  ],
+  "acts": [
+    {
+      "act": 1,
+      "n": 5,
+      "mean_stakes": 2.4,
+      "kinds": [
+        "delivery",
+        "errand",
+        "investigation"
+      ],
+      "ids": [
+        "Q-MAIN-01",
+        "Q-MAIN-02",
+        "Q-MAIN-03",
+        "Q-MAIN-04",
+        "Q-MAIN-05"
+      ]
+    },
+    {
+      "act": 2,
+      "n": 5,
+      "mean_stakes": 3.6,
+      "kinds": [
+        "investigation"
+      ],
+      "ids": [
+        "Q-MAIN-06",
+        "Q-MAIN-07",
+        "Q-MAIN-08",
+        "Q-MAIN-09",
+        "Q-MAIN-10"
+      ]
+    },
+    {
+      "act": 3,
+      "n": 5,
+      "mean_stakes": 7.6,
+      "kinds": [
+        "moral_dilemma",
+        "pilgrimage",
+        "weird"
+      ],
+      "ids": [
+        "Q-MAIN-11",
+        "Q-MAIN-12",
+        "Q-MAIN-13",
+        "Q-MAIN-14",
+        "Q-MAIN-15"
+      ]
+    },
+    {
+      "act": 4,
+      "n": 8,
+      "mean_stakes": 8.5,
+      "kinds": [
+        "politics",
+        "rival_conflict"
+      ],
+      "ids": [
+        "Q-MAIN-16",
+        "Q-MAIN-17",
+        "Q-MAIN-18",
+        "Q-MAIN-19",
+        "Q-MAIN-20",
+        "Q-MAIN-21",
+        "Q-MAIN-22",
+        "Q-MAIN-23"
+      ]
+    },
+    {
+      "act": 5,
+      "n": 5,
+      "mean_stakes": 10,
+      "kinds": [
+        "pilgrimage",
+        "succession"
+      ],
+      "ids": [
+        "Q-MAIN-24",
+        "Q-MAIN-25",
+        "Q-MAIN-26",
+        "Q-MAIN-27",
+        "Q-MAIN-28"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "QST06.A1",
+      "label": "five acts present",
+      "value": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "bar": "5 acts",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A2",
+      "label": "per-act counts within +-1 of 5/5/5/8/5",
+      "value": {
+        "1": 5,
+        "2": 5,
+        "3": 5,
+        "4": 8,
+        "5": 5
+      },
+      "bar": "5/5/5/8/5 +-1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A3",
+      "label": "total acted main quests",
+      "value": 28,
+      "bar": ">= 24",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A4",
+      "label": "mean stakes strictly increasing across acts",
+      "value": [
+        2.4,
+        3.6,
+        7.6,
+        8.5,
+        10
+      ],
+      "bar": "strictly increasing",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A5",
+      "label": "Act I mean stakes",
+      "value": 2.4,
+      "bar": "<= 3.5",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.HF1",
+      "label": "HARD FAIL — high stakes in Act I",
+      "value": 2.4,
+      "bar": "<= 4",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "QST06.A6",
+      "label": "Act V mean stakes",
+      "value": 10,
+      "bar": ">= 9",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.HF2",
+      "label": "HARD FAIL — Act IV sequenced rather than simultaneous",
+      "value": [],
+      "bar": "empty",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "QST06.A7",
+      "label": "every Act IV quest opens off the same prerequisite set",
+      "value": [
+        "[\"Q-MAIN-15\"]"
+      ],
+      "bar": "exactly 1 distinct set",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A8",
+      "label": "Act IV quests with a faction-rank-gated resolution",
+      "value": 7,
+      "bar": ">= 4",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A9",
+      "label": "Act IV mean resolutions",
+      "value": 3.375,
+      "bar": ">= 3.0",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A10",
+      "label": "Act II quests rewarding information",
+      "value": 5,
+      "bar": ">= 3",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A11",
+      "label": "Acts II-III quests rewarding information",
+      "value": 10,
+      "bar": ">= 5",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A12",
+      "label": "main quests carrying deceit pattern D7",
+      "value": 4,
+      "bar": ">= 2",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A13",
+      "label": "of those, never_revealed",
+      "value": 4,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A14",
+      "label": "an in-world book argues the mandate is genuine AND one argues it is constructed",
+      "value": {
+        "for": true,
+        "against": true
+      },
+      "bar": "both",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.HF3",
+      "label": "HARD FAIL — the mandate is adjudicated by the game",
+      "value": false,
+      "bar": "never_adjudicated: true",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "QST06.A15",
+      "label": "Act V quests with a talk_to_target reveal",
+      "value": 5,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A16",
+      "label": "Act V quests with a non-violent resolution",
+      "value": 5,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH9",
+      "label": "non-violent resolutions to the final confrontation",
+      "value": 3,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "EXP05.LH6a",
+      "label": "the conversation quest has no violence_required resolution at all",
+      "value": 0,
+      "bar": "0",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A17",
+      "label": "backpath quests",
+      "value": [
+        {
+          "id": "Q-MAIN-14",
+          "act": 3,
+          "irreversible": 1
+        },
+        {
+          "id": "Q-MAIN-29",
+          "act": null,
+          "irreversible": 1
+        },
+        {
+          "id": "Q-MAIN-30",
+          "act": null,
+          "irreversible": 0
+        },
+        {
+          "id": "Q-MAIN-31",
+          "act": null,
+          "irreversible": 1
+        },
+        {
+          "id": "Q-MAIN-32",
+          "act": null,
+          "irreversible": 0
+        }
+      ],
+      "bar": ">= 3",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.HF4",
+      "label": "HARD FAIL — no backpath",
+      "value": 5,
+      "bar": ">= 3",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "QST06.A18",
+      "label": "at least one backpath quest with an irreversible branch",
+      "value": 3,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.A19",
+      "label": "the backpath ending flag differs from every intended ending flag",
+      "value": [
+        "ending_the_count_went_past_the_roots",
+        "ending_the_count_bled_slowly"
+      ],
+      "bar": "disjoint",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST06.HF5",
+      "label": "HARD FAIL — a main quest hard-gated on faction rank",
+      "value": [],
+      "bar": "empty",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "EXP05.LH2",
+      "label": "ponr_position_fraction",
+      "value": 0.9643,
+      "bar": ">= 0.94",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH3",
+      "label": "ponr_signal_channels (independent, declared with evidence)",
+      "value": 3,
+      "bar": ">= 3",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH5",
+      "label": "threads permanently closed by the crossing, each with in-fiction acknowledgement",
+      "value": 4,
+      "bar": ">= 4, all in fiction",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH4",
+      "label": "ponr_modals / confirmation strings in shipped mainline text",
+      "value": [],
+      "bar": "0",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "EXP05.LH14",
+      "label": "terminal furniture (credits, score, completion %, grade)",
+      "value": 0,
+      "bar": "0",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH12",
+      "label": "world_flag_delta between the intended ending and the backpath ending",
+      "value": 25,
+      "bar": ">= 25",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "EXP05.LH7",
+      "label": "antagonist_verified_claims, each resolved to an earlier player-observed event",
+      "value": 3,
+      "bar": ">= 2",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "EXP05.LH8",
+      "label": "antagonist_refuted_by_game",
+      "value": [],
+      "bar": "false",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "EXP05.LH7b",
+      "label": "verified claims whose evidence flag no quest sets",
+      "value": [],
+      "bar": "empty",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "WLD09.B3a",
+      "label": "unanswered questions in the main quest",
+      "value": 5,
+      "bar": "3-6",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "WLD09.B3b",
+      "label": "of which the player explicitly asks and is refused or evaded on screen",
+      "value": 3,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "WLD09.B3c",
+      "label": "of which the antagonist asks about the player",
+      "value": 1,
+      "bar": ">= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "WLD09.B3d",
+      "label": "answered in a book but not in dialogue",
+      "value": 1,
+      "bar": "<= 1",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "WLD09.B3e",
+      "label": "ending text that closes a declared unanswered question",
+      "value": 0,
+      "bar": "0",
+      "pass": true,
+      "hard": true
+    },
+    {
+      "id": "QST05.M1",
+      "label": "mainline quests with >= 1 non-violent resolution",
+      "value": "32/32",
+      "bar": "100%",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST05.M2",
+      "label": "mainline quests with an empty kill_required_npcs",
+      "value": "32/32",
+      "bar": "100%",
+      "pass": true,
+      "hard": false
+    },
+    {
+      "id": "QST05.M3",
+      "label": "shipped quests with >= 1 non-violent resolution",
+      "value": "202/202 = 100.0%",
+      "bar": ">= 45%",
+      "pass": true,
+      "hard": false
+    }
+  ],
+  "unmeasurable_here": [
+    {
+      "id": "EXP05.LH11",
+      "why": "ending_specific_facts requires resolving ending text against a played chain (RI-EXP05 step 4, FULL tier). No played chain exists for this build."
+    },
+    {
+      "id": "EXP05.LH12b",
+      "why": "npc_reaction_delta requires the scripted 6-topic x 40-NPC sweep over two loaded ending states (RI-EXP05 step 3). W1-17 owns the topic bodies; only the flag delta is answerable here."
+    },
+    {
+      "id": "EXP05.LH10",
+      "why": "final_hour_scripted_seconds and final_boss_phases require a combat trace. The mainline authors no scripted sequence and no phased encounter, so the data-side answer is 0/0, but a trace is what proves it."
+    },
+    {
+      "id": "JRN07.L5",
+      "why": "the fresh-agent navigation leg is RI-WLD06 M29, cited not restated, and belongs to a journey run rather than to a census."
+    }
+  ],
+  "hard_fails": []
+}

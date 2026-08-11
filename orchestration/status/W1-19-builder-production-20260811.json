@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-19-builder-production-20260811",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "INCOMPLETE_BUILDER_DEFECT",
+  "base_commit": "8a0b034830cb2f4583d26efc45b6663ec8ed7176",
+  "branch": "codex/wave1-build-experiment",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "orchestration/status/W1-19-builder-production-20260811.json",
+    "game/src/engine.js",
+    "tools/quests/mainline-chain-floor.mjs",
+    "evidence/W1-19/"
+  ],
+  "files_claimed": [],
+  "next_step": "Repair the Blackrose-to-Archon survival/navigation route recorded in evidence/W1-19/intended-q8-block.json, then continue intended and backpath chains and remaining builder gates.",
+  "gate_accounting": {
+    "A": "INCOMPLETE: cold production Q-MAIN-01..07 complete; Q-MAIN-08 blocked by death/respawn during Blackrose-to-Archon walk",
+    "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
+    "C_builder": "NOT_RUN: waits on Gate A",
+    "C_independent": "CRITIC_HANDOFF",
+    "D": "MERGED EVIDENCE RETAINED"
+  }
+}

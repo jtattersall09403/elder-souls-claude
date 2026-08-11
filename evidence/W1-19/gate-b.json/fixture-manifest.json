@@ -1,0 +1,5549 @@
+{
+  "schema": "elder-souls/w1-19-gate-b-fixtures@1",
+  "tool": "tools/quests/mainline-gate-b-fixtures.mjs",
+  "quest_population": 32,
+  "fixture_population": 104,
+  "counts": {
+    "disposition": 39,
+    "attribute": 3,
+    "knowledge": 55,
+    "faction": 7
+  },
+  "exclusive_choice_population": 77,
+  "q_main_23_crossing_rows": 3,
+  "observations_supplied": false,
+  "observed": {
+    "fixture_rows": 0,
+    "choice_rows": 0,
+    "failures": []
+  },
+  "fixtures": [
+    {
+      "id": "Q-MAIN-01::offer::disposition",
+      "quest": "Q-MAIN-01",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-01:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-01::res_double::knowledge",
+      "quest": "Q-MAIN-01",
+      "resolution": "res_double",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_factor"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-01:res_double",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-01::res_name_him::knowledge",
+      "quest": "Q-MAIN-01",
+      "resolution": "res_name_him",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_factor"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-01:res_name_him",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-02::offer::disposition",
+      "quest": "Q-MAIN-02",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-02:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-02::res_count_and_tell::disposition",
+      "quest": "Q-MAIN-02",
+      "resolution": "res_count_and_tell",
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-02:res_count_and_tell",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-02::res_count_and_tell::knowledge",
+      "quest": "Q-MAIN-02",
+      "resolution": "res_count_and_tell",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_ojal"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-02:res_count_and_tell",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-03::offer::disposition",
+      "quest": "Q-MAIN-03",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-03:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-03::res_report_drain::knowledge",
+      "quest": "Q-MAIN-03",
+      "resolution": "res_report_drain",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_shaft"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-03:res_report_drain",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-03::res_widen::knowledge",
+      "quest": "Q-MAIN-03",
+      "resolution": "res_widen",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_shaft"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-03:res_widen",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-04::offer::disposition",
+      "quest": "Q-MAIN-04",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-04:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-05::offer::disposition",
+      "quest": "Q-MAIN-05",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-05:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-05::res_say_the_ink::knowledge",
+      "quest": "Q-MAIN-05",
+      "resolution": "res_say_the_ink",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_ink"
+      },
+      "source": "game/data/quests/mainline-act1.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-05:res_say_the_ink",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-06::offer::disposition",
+      "quest": "Q-MAIN-06",
+      "resolution": null,
+      "giver": "ledgerer-hosk-vei",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-06:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-06::res_the_fair_copy::disposition",
+      "quest": "Q-MAIN-06",
+      "resolution": "res_the_fair_copy",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "disposition",
+      "demand": {
+        "min": 40,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-06:res_the_fair_copy",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-06::res_the_fair_copy::knowledge",
+      "quest": "Q-MAIN-06",
+      "resolution": "res_the_fair_copy",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_curve_predates"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-06:res_the_fair_copy",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-06::res_the_fair_copy::knowledge",
+      "quest": "Q-MAIN-06",
+      "resolution": "res_the_fair_copy",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_steward_named"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-06:res_the_fair_copy",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-06::res_the_number::knowledge",
+      "quest": "Q-MAIN-06",
+      "resolution": "res_the_number",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_curve_predates"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-06:res_the_number",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-07::offer::disposition",
+      "quest": "Q-MAIN-07",
+      "resolution": null,
+      "giver": "neeja-xul",
+      "kind": "disposition",
+      "demand": {
+        "min": 14,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-07:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-07::res_take_the_book::knowledge",
+      "quest": "Q-MAIN-07",
+      "resolution": "res_take_the_book",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_older_cutting"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-07:res_take_the_book",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-07::res_trade_the_number::knowledge",
+      "quest": "Q-MAIN-07",
+      "resolution": "res_trade_the_number",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_older_cutting"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-07:res_trade_the_number",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::offer::disposition",
+      "quest": "Q-MAIN-08",
+      "resolution": null,
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "disposition",
+      "demand": {
+        "min": 20,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::res_ask_the_crane::knowledge",
+      "quest": "Q-MAIN-08",
+      "resolution": "res_ask_the_crane",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_true_tonnage"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:res_ask_the_crane",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::res_enter_the_store::knowledge",
+      "quest": "Q-MAIN-08",
+      "resolution": "res_enter_the_store",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_true_tonnage"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:res_enter_the_store",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::res_enter_the_store::knowledge",
+      "quest": "Q-MAIN-08",
+      "resolution": "res_enter_the_store",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_ring"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:res_enter_the_store",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::res_lean_on_cuiro::attribute",
+      "quest": "Q-MAIN-08",
+      "resolution": "res_lean_on_cuiro",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "attribute",
+      "demand": {
+        "attribute": "personality",
+        "min": 17
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:res_lean_on_cuiro",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-08::res_lean_on_cuiro::knowledge",
+      "quest": "Q-MAIN-08",
+      "resolution": "res_lean_on_cuiro",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_true_tonnage"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-08:res_lean_on_cuiro",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-09::offer::disposition",
+      "quest": "Q-MAIN-09",
+      "resolution": null,
+      "giver": "undersexton-bel-mourne",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-09:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-10::offer::disposition",
+      "quest": "Q-MAIN-10",
+      "resolution": null,
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-10:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-10::res_carry_the_letter::disposition",
+      "quest": "Q-MAIN-10",
+      "resolution": "res_carry_the_letter",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "disposition",
+      "demand": {
+        "min": 45,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-10:res_carry_the_letter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-10::res_carry_the_letter::knowledge",
+      "quest": "Q-MAIN-10",
+      "resolution": "res_carry_the_letter",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_letter"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-10:res_carry_the_letter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-10::res_hear_it_out::knowledge",
+      "quest": "Q-MAIN-10",
+      "resolution": "res_hear_it_out",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_letter"
+      },
+      "source": "game/data/quests/mainline-act2.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-10:res_hear_it_out",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-11::offer::disposition",
+      "quest": "Q-MAIN-11",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-11:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-11::res_bring_sarn_up::knowledge",
+      "quest": "Q-MAIN-11",
+      "resolution": "res_bring_sarn_up",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_rhythm"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-11:res_bring_sarn_up",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-11::res_bring_sarn_up::knowledge",
+      "quest": "Q-MAIN-11",
+      "resolution": "res_bring_sarn_up",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_sarns_book"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-11:res_bring_sarn_up",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-11::res_walk_it::knowledge",
+      "quest": "Q-MAIN-11",
+      "resolution": "res_walk_it",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_rhythm"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-11:res_walk_it",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-12::offer::disposition",
+      "quest": "Q-MAIN-12",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-12:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-12::res_arithmetic::knowledge",
+      "quest": "Q-MAIN-12",
+      "resolution": "res_arithmetic",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_sarn_flows"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-12:res_arithmetic",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-12::res_full_test::knowledge",
+      "quest": "Q-MAIN-12",
+      "resolution": "res_full_test",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_wells_drink_the_overflow"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-12:res_full_test",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-12::res_short_test::knowledge",
+      "quest": "Q-MAIN-12",
+      "resolution": "res_short_test",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_wells_drink_the_overflow"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-12:res_short_test",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-13::offer::disposition",
+      "quest": "Q-MAIN-13",
+      "resolution": null,
+      "giver": "ledgerer-hosk-vei",
+      "kind": "disposition",
+      "demand": {
+        "min": 35,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-13:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-13::res_make_him_say_it::attribute",
+      "quest": "Q-MAIN-13",
+      "resolution": "res_make_him_say_it",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "attribute",
+      "demand": {
+        "attribute": "willpower",
+        "min": 20
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-13:res_make_him_say_it",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-13::res_make_him_say_it::knowledge",
+      "quest": "Q-MAIN-13",
+      "resolution": "res_make_him_say_it",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_full_cost"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-13:res_make_him_say_it",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-14::offer::disposition",
+      "quest": "Q-MAIN-14",
+      "resolution": null,
+      "giver": "neeja-xul",
+      "kind": "disposition",
+      "demand": {
+        "min": 14,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-14:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-15::offer::disposition",
+      "quest": "Q-MAIN-15",
+      "resolution": null,
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-15:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-15::res_heard_it::knowledge",
+      "quest": "Q-MAIN-15",
+      "resolution": "res_heard_it",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_tree_does_not_know"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-15:res_heard_it",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-15::res_keep_the_fourth::disposition",
+      "quest": "Q-MAIN-15",
+      "resolution": "res_keep_the_fourth",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "disposition",
+      "demand": {
+        "min": 40,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-15:res_keep_the_fourth",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-15::res_keep_the_fourth::knowledge",
+      "quest": "Q-MAIN-15",
+      "resolution": "res_keep_the_fourth",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_tree_does_not_know"
+      },
+      "source": "game/data/quests/mainline-act3.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-15:res_keep_the_fourth",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::offer::disposition",
+      "quest": "Q-MAIN-16",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::res_buy_debt::knowledge",
+      "quest": "Q-MAIN-16",
+      "resolution": "res_buy_debt",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_debt"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:res_buy_debt",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::res_expose_debt::knowledge",
+      "quest": "Q-MAIN-16",
+      "resolution": "res_expose_debt",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_debt"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:res_expose_debt",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::res_persuade_chapter::disposition",
+      "quest": "Q-MAIN-16",
+      "resolution": "res_persuade_chapter",
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 45,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:res_persuade_chapter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::res_persuade_chapter::knowledge",
+      "quest": "Q-MAIN-16",
+      "resolution": "res_persuade_chapter",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_middle_three"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:res_persuade_chapter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-16::res_serve_chapter::faction",
+      "quest": "Q-MAIN-16",
+      "resolution": "res_serve_chapter",
+      "giver": "undersexton-aveline-rell",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_drowned_court",
+        "min_rank": 3
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-16:res_serve_chapter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-17::offer::disposition",
+      "quest": "Q-MAIN-17",
+      "resolution": null,
+      "giver": "factor-ruvela-sath",
+      "kind": "disposition",
+      "demand": {
+        "min": 24,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-17:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-17::res_half_arithmetic::knowledge",
+      "quest": "Q-MAIN-17",
+      "resolution": "res_half_arithmetic",
+      "giver": "factor-ruvela-sath",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_gem_money"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-17:res_half_arithmetic",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-17::res_ledger_rank::faction",
+      "quest": "Q-MAIN-17",
+      "resolution": "res_ledger_rank",
+      "giver": "factor-ruvela-sath",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_wet_ledger",
+        "min_rank": 3
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-17:res_ledger_rank",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-17::res_whole_arithmetic::knowledge",
+      "quest": "Q-MAIN-17",
+      "resolution": "res_whole_arithmetic",
+      "giver": "factor-ruvela-sath",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_gem_money"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-17:res_whole_arithmetic",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-18::offer::disposition",
+      "quest": "Q-MAIN-18",
+      "resolution": null,
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-18:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-18::res_deepkin_rank::faction",
+      "quest": "Q-MAIN-18",
+      "resolution": "res_deepkin_rank",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 2
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-18:res_deepkin_rank",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-18::res_keepers_name::knowledge",
+      "quest": "Q-MAIN-18",
+      "resolution": "res_keepers_name",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_eleven"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-18:res_keepers_name",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-18::res_speak_the_fourth::knowledge",
+      "quest": "Q-MAIN-18",
+      "resolution": "res_speak_the_fourth",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_what_the_fourth_does"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-18:res_speak_the_fourth",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-18::res_walk_the_eleven::knowledge",
+      "quest": "Q-MAIN-18",
+      "resolution": "res_walk_the_eleven",
+      "giver": "rootkeeper-ashul-tei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_eleven"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-18:res_walk_the_eleven",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-19::offer::disposition",
+      "quest": "Q-MAIN-19",
+      "resolution": null,
+      "giver": "neeja-xul",
+      "kind": "disposition",
+      "demand": {
+        "min": 14,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-19:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-19::res_cutters_rank::faction",
+      "quest": "Q-MAIN-19",
+      "resolution": "res_cutters_rank",
+      "giver": "neeja-xul",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_ixtu_vakh",
+        "min_rank": 2
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-19:res_cutters_rank",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-19::res_expose_the_yard::knowledge",
+      "quest": "Q-MAIN-19",
+      "resolution": "res_expose_the_yard",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_company_retainer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-19:res_expose_the_yard",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-19::res_outbid_the_company::knowledge",
+      "quest": "Q-MAIN-19",
+      "resolution": "res_outbid_the_company",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_company_retainer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-19:res_outbid_the_company",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-20::offer::disposition",
+      "quest": "Q-MAIN-20",
+      "resolution": null,
+      "giver": "prefect-galvus-arn",
+      "kind": "disposition",
+      "demand": {
+        "min": 12,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-20:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-20::res_assize_rank::faction",
+      "quest": "Q-MAIN-20",
+      "resolution": "res_assize_rank",
+      "giver": "prefect-galvus-arn",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_imperial_assize",
+        "min_rank": 2
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-20:res_assize_rank",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-20::res_finding_of_fact::knowledge",
+      "quest": "Q-MAIN-20",
+      "resolution": "res_finding_of_fact",
+      "giver": "prefect-galvus-arn",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_lever"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-20:res_finding_of_fact",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-20::res_the_paragraph::knowledge",
+      "quest": "Q-MAIN-20",
+      "resolution": "res_the_paragraph",
+      "giver": "prefect-galvus-arn",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_lever"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-20:res_the_paragraph",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-21::offer::disposition",
+      "quest": "Q-MAIN-21",
+      "resolution": null,
+      "giver": "dockmaster-weeja-sen",
+      "kind": "disposition",
+      "demand": {
+        "min": 12,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-21:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-21::res_dockhand_rank::faction",
+      "quest": "Q-MAIN-21",
+      "resolution": "res_dockhand_rank",
+      "giver": "dockmaster-weeja-sen",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_dockhands",
+        "min_rank": 2
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-21:res_dockhand_rank",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-21::res_the_eleven::knowledge",
+      "quest": "Q-MAIN-21",
+      "resolution": "res_the_eleven",
+      "giver": "dockmaster-weeja-sen",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_rotting_quarter"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-21:res_the_eleven",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-22::offer::disposition",
+      "quest": "Q-MAIN-22",
+      "resolution": null,
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-22:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-22::res_as_a_cutter::faction",
+      "quest": "Q-MAIN-22",
+      "resolution": "res_as_a_cutter",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "faction",
+      "demand": {
+        "faction": "the_rootkeepers",
+        "min_rank": 1
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-22:res_as_a_cutter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-22::res_as_a_cutter::knowledge",
+      "quest": "Q-MAIN-22",
+      "resolution": "res_as_a_cutter",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_cutters_list"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-22:res_as_a_cutter",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-22::res_true_reason::disposition",
+      "quest": "Q-MAIN-22",
+      "resolution": "res_true_reason",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "disposition",
+      "demand": {
+        "min": 45,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-22:res_true_reason",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-22::res_true_reason::knowledge",
+      "quest": "Q-MAIN-22",
+      "resolution": "res_true_reason",
+      "giver": "rootkeeper-sesh-anaat",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_eleven_leaves"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-22:res_true_reason",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-23::offer::disposition",
+      "quest": "Q-MAIN-23",
+      "resolution": null,
+      "giver": "salt-factor-neloth-vaun",
+      "kind": "disposition",
+      "demand": {
+        "min": 8,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-23:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-23::res_sign_the_clause::knowledge",
+      "quest": "Q-MAIN-23",
+      "resolution": "res_sign_the_clause",
+      "giver": "salt-factor-neloth-vaun",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_why_the_clause"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-23:res_sign_the_clause",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-23::res_turn_the_writ::attribute",
+      "quest": "Q-MAIN-23",
+      "resolution": "res_turn_the_writ",
+      "giver": "salt-factor-neloth-vaun",
+      "kind": "attribute",
+      "demand": {
+        "attribute": "personality",
+        "min": 20
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-23:res_turn_the_writ",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-23::res_turn_the_writ::knowledge",
+      "quest": "Q-MAIN-23",
+      "resolution": "res_turn_the_writ",
+      "giver": "salt-factor-neloth-vaun",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_why_the_clause"
+      },
+      "source": "game/data/quests/mainline-act4.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-23:res_turn_the_writ",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-24::offer::disposition",
+      "quest": "Q-MAIN-24",
+      "resolution": null,
+      "giver": "undersexton-aveline-rell",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-24:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-24::res_the_factors_leg::knowledge",
+      "quest": "Q-MAIN-24",
+      "resolution": "res_the_factors_leg",
+      "giver": "undersexton-aveline-rell",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_company_went_first"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-24:res_the_factors_leg",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-25::offer::disposition",
+      "quest": "Q-MAIN-25",
+      "resolution": null,
+      "giver": "undersexton-bel-mourne",
+      "kind": "disposition",
+      "demand": {
+        "min": 25,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-25:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-25::res_counting_floor::knowledge",
+      "quest": "Q-MAIN-25",
+      "resolution": "res_counting_floor",
+      "giver": "undersexton-bel-mourne",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_keepers_accounts"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-25:res_counting_floor",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-26::offer::disposition",
+      "quest": "Q-MAIN-26",
+      "resolution": null,
+      "giver": "ixtu-meer",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-26:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-26::res_hear_him_out::knowledge",
+      "quest": "Q-MAIN-26",
+      "resolution": "res_hear_him_out",
+      "giver": "ixtu-meer",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_how_the_count_opens"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-26:res_hear_him_out",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-26::res_press_him_on_the_clause::disposition",
+      "quest": "Q-MAIN-26",
+      "resolution": "res_press_him_on_the_clause",
+      "giver": "ixtu-meer",
+      "kind": "disposition",
+      "demand": {
+        "min": 20,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-26:res_press_him_on_the_clause",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-26::res_press_him_on_the_clause::knowledge",
+      "quest": "Q-MAIN-26",
+      "resolution": "res_press_him_on_the_clause",
+      "giver": "ixtu-meer",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_how_the_count_opens"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-26:res_press_him_on_the_clause",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-26::res_press_him_on_the_clause::knowledge",
+      "quest": "Q-MAIN-26",
+      "resolution": "res_press_him_on_the_clause",
+      "giver": "ixtu-meer",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_he_never_wrote_the_recension"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-26:res_press_him_on_the_clause",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-27::offer::disposition",
+      "quest": "Q-MAIN-27",
+      "resolution": null,
+      "giver": "ixtu-meer",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-27:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-28::offer::disposition",
+      "quest": "Q-MAIN-28",
+      "resolution": null,
+      "giver": "ixtu-meer",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-28:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-28::res_open_the_count::knowledge",
+      "quest": "Q-MAIN-28",
+      "resolution": "res_open_the_count",
+      "giver": "ixtu-meer",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_how_the_count_opens"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-28:res_open_the_count",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-28::res_take_his_place::knowledge",
+      "quest": "Q-MAIN-28",
+      "resolution": "res_take_his_place",
+      "giver": "ixtu-meer",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_how_the_count_opens"
+      },
+      "source": "game/data/quests/mainline-act5.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-28:res_take_his_place",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-29::offer::disposition",
+      "quest": "Q-MAIN-29",
+      "resolution": null,
+      "giver": "neeja-xul",
+      "kind": "disposition",
+      "demand": {
+        "min": 14,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-29:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-29::res_round_the_barrow::knowledge",
+      "quest": "Q-MAIN-29",
+      "resolution": "res_round_the_barrow",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_what_the_cut_does"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-29:res_round_the_barrow",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-29::res_through_the_seventh::knowledge",
+      "quest": "Q-MAIN-29",
+      "resolution": "res_through_the_seventh",
+      "giver": "neeja-xul",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_what_the_cut_does"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-29:res_through_the_seventh",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-30::offer::disposition",
+      "quest": "Q-MAIN-30",
+      "resolution": null,
+      "giver": "ledgerer-hosk-vei",
+      "kind": "disposition",
+      "demand": {
+        "min": 15,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-30:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-30::res_carry_on::knowledge",
+      "quest": "Q-MAIN-30",
+      "resolution": "res_carry_on",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_three_previous"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-30:res_carry_on",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-30::res_the_fourth_entry::disposition",
+      "quest": "Q-MAIN-30",
+      "resolution": "res_the_fourth_entry",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "disposition",
+      "demand": {
+        "min": 30,
+        "scope": "resolution"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-30:res_the_fourth_entry",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-30::res_the_fourth_entry::knowledge",
+      "quest": "Q-MAIN-30",
+      "resolution": "res_the_fourth_entry",
+      "giver": "ledgerer-hosk-vei",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_the_three_previous"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-30:res_the_fourth_entry",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-32::offer::disposition",
+      "quest": "Q-MAIN-32",
+      "resolution": null,
+      "giver": "keeper-teeja-lun",
+      "kind": "disposition",
+      "demand": {
+        "min": 0,
+        "scope": "offer"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-32:offer",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    },
+    {
+      "id": "Q-MAIN-32::res_walk_it::knowledge",
+      "quest": "Q-MAIN-32",
+      "resolution": "res_walk_it",
+      "giver": "keeper-teeja-lun",
+      "kind": "knowledge",
+      "demand": {
+        "fact": "rev_nobody_agrees"
+      },
+      "source": "game/data/quests/mainline-backpath.json",
+      "matched_fixture": {
+        "common_checkpoint": "before:Q-MAIN-32:res_walk_it",
+        "failing_arm": {
+          "expected_choice_visible": false,
+          "expected_refusal": true,
+          "production_actions_only": true
+        },
+        "passing_arm": {
+          "expected_choice_visible": true,
+          "expected_refusal": false,
+          "production_actions_only": true
+        },
+        "forbidden_verbs": [
+          "questOpen",
+          "questReveal",
+          "questNote",
+          "questSetFlag",
+          "questResolve",
+          "learnTopic",
+          "spawnNPC",
+          "teleport"
+        ]
+      }
+    }
+  ],
+  "exclusive_choices": [
+    {
+      "id": "Q-MAIN-01::res_carry::res_double",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_carry+res_double",
+      "arms": [
+        {
+          "resolution": "res_carry",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_carry)"
+        },
+        {
+          "resolution": "res_double",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_double)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-01::res_carry::res_name_him",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_carry+res_name_him",
+      "arms": [
+        {
+          "resolution": "res_carry",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_carry)"
+        },
+        {
+          "resolution": "res_name_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_name_him)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-01::res_carry::res_refuse_bait",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_carry+res_refuse_bait",
+      "arms": [
+        {
+          "resolution": "res_carry",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_carry)"
+        },
+        {
+          "resolution": "res_refuse_bait",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_refuse_bait)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-01::res_double::res_name_him",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_double+res_name_him",
+      "arms": [
+        {
+          "resolution": "res_double",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_double)"
+        },
+        {
+          "resolution": "res_name_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_name_him)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-01::res_double::res_refuse_bait",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_double+res_refuse_bait",
+      "arms": [
+        {
+          "resolution": "res_double",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_double)"
+        },
+        {
+          "resolution": "res_refuse_bait",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_refuse_bait)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-01::res_name_him::res_refuse_bait",
+      "quest": "Q-MAIN-01",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-01:res_name_him+res_refuse_bait",
+      "arms": [
+        {
+          "resolution": "res_name_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_name_him)"
+        },
+        {
+          "resolution": "res_refuse_bait",
+          "action": "conversationSay(quest-resolve:Q-MAIN-01:res_refuse_bait)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-02::res_count_and_tell::res_count_plain",
+      "quest": "Q-MAIN-02",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-02:res_count_and_tell+res_count_plain",
+      "arms": [
+        {
+          "resolution": "res_count_and_tell",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_and_tell)"
+        },
+        {
+          "resolution": "res_count_plain",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_plain)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-02::res_count_and_tell::res_count_to_sexton",
+      "quest": "Q-MAIN-02",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-02:res_count_and_tell+res_count_to_sexton",
+      "arms": [
+        {
+          "resolution": "res_count_and_tell",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_and_tell)"
+        },
+        {
+          "resolution": "res_count_to_sexton",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_to_sexton)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-02::res_count_plain::res_count_to_sexton",
+      "quest": "Q-MAIN-02",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-02:res_count_plain+res_count_to_sexton",
+      "arms": [
+        {
+          "resolution": "res_count_plain",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_plain)"
+        },
+        {
+          "resolution": "res_count_to_sexton",
+          "action": "conversationSay(quest-resolve:Q-MAIN-02:res_count_to_sexton)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-03::res_report_drain::res_report_failure",
+      "quest": "Q-MAIN-03",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-03:res_report_drain+res_report_failure",
+      "arms": [
+        {
+          "resolution": "res_report_drain",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_report_drain)"
+        },
+        {
+          "resolution": "res_report_failure",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_report_failure)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-03::res_report_drain::res_widen",
+      "quest": "Q-MAIN-03",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-03:res_report_drain+res_widen",
+      "arms": [
+        {
+          "resolution": "res_report_drain",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_report_drain)"
+        },
+        {
+          "resolution": "res_widen",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_widen)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-03::res_report_failure::res_widen",
+      "quest": "Q-MAIN-03",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-03:res_report_failure+res_widen",
+      "arms": [
+        {
+          "resolution": "res_report_failure",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_report_failure)"
+        },
+        {
+          "resolution": "res_widen",
+          "action": "conversationSay(quest-resolve:Q-MAIN-03:res_widen)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-05::res_accept_quietly::res_say_the_ink",
+      "quest": "Q-MAIN-05",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act1.json",
+      "common_checkpoint": "before-choice:Q-MAIN-05:res_accept_quietly+res_say_the_ink",
+      "arms": [
+        {
+          "resolution": "res_accept_quietly",
+          "action": "conversationSay(quest-resolve:Q-MAIN-05:res_accept_quietly)"
+        },
+        {
+          "resolution": "res_say_the_ink",
+          "action": "conversationSay(quest-resolve:Q-MAIN-05:res_say_the_ink)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-06::res_the_fair_copy::res_the_number",
+      "quest": "Q-MAIN-06",
+      "giver": "ledgerer-hosk-vei",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-06:res_the_fair_copy+res_the_number",
+      "arms": [
+        {
+          "resolution": "res_the_fair_copy",
+          "action": "conversationSay(quest-resolve:Q-MAIN-06:res_the_fair_copy)"
+        },
+        {
+          "resolution": "res_the_number",
+          "action": "conversationSay(quest-resolve:Q-MAIN-06:res_the_number)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-07::res_take_the_book::res_trade_the_number",
+      "quest": "Q-MAIN-07",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-07:res_take_the_book+res_trade_the_number",
+      "arms": [
+        {
+          "resolution": "res_take_the_book",
+          "action": "conversationSay(quest-resolve:Q-MAIN-07:res_take_the_book)"
+        },
+        {
+          "resolution": "res_trade_the_number",
+          "action": "conversationSay(quest-resolve:Q-MAIN-07:res_trade_the_number)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-08::res_ask_the_crane::res_enter_the_store",
+      "quest": "Q-MAIN-08",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-08:res_ask_the_crane+res_enter_the_store",
+      "arms": [
+        {
+          "resolution": "res_ask_the_crane",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_ask_the_crane)"
+        },
+        {
+          "resolution": "res_enter_the_store",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_enter_the_store)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-08::res_ask_the_crane::res_lean_on_cuiro",
+      "quest": "Q-MAIN-08",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-08:res_ask_the_crane+res_lean_on_cuiro",
+      "arms": [
+        {
+          "resolution": "res_ask_the_crane",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_ask_the_crane)"
+        },
+        {
+          "resolution": "res_lean_on_cuiro",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_lean_on_cuiro)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-08::res_enter_the_store::res_lean_on_cuiro",
+      "quest": "Q-MAIN-08",
+      "giver": "harbourmaster-cuiro-vaneth",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-08:res_enter_the_store+res_lean_on_cuiro",
+      "arms": [
+        {
+          "resolution": "res_enter_the_store",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_enter_the_store)"
+        },
+        {
+          "resolution": "res_lean_on_cuiro",
+          "action": "conversationSay(quest-resolve:Q-MAIN-08:res_lean_on_cuiro)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-09::res_carry_the_copies::res_hold_both",
+      "quest": "Q-MAIN-09",
+      "giver": "undersexton-bel-mourne",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-09:res_carry_the_copies+res_hold_both",
+      "arms": [
+        {
+          "resolution": "res_carry_the_copies",
+          "action": "conversationSay(quest-resolve:Q-MAIN-09:res_carry_the_copies)"
+        },
+        {
+          "resolution": "res_hold_both",
+          "action": "conversationSay(quest-resolve:Q-MAIN-09:res_hold_both)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-10::res_carry_the_letter::res_hear_it_out",
+      "quest": "Q-MAIN-10",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act2.json",
+      "common_checkpoint": "before-choice:Q-MAIN-10:res_carry_the_letter+res_hear_it_out",
+      "arms": [
+        {
+          "resolution": "res_carry_the_letter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-10:res_carry_the_letter)"
+        },
+        {
+          "resolution": "res_hear_it_out",
+          "action": "conversationSay(quest-resolve:Q-MAIN-10:res_hear_it_out)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-11::res_bring_sarn_up::res_walk_it",
+      "quest": "Q-MAIN-11",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-11:res_bring_sarn_up+res_walk_it",
+      "arms": [
+        {
+          "resolution": "res_bring_sarn_up",
+          "action": "conversationSay(quest-resolve:Q-MAIN-11:res_bring_sarn_up)"
+        },
+        {
+          "resolution": "res_walk_it",
+          "action": "conversationSay(quest-resolve:Q-MAIN-11:res_walk_it)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-12::res_arithmetic::res_full_test",
+      "quest": "Q-MAIN-12",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-12:res_arithmetic+res_full_test",
+      "arms": [
+        {
+          "resolution": "res_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_arithmetic)"
+        },
+        {
+          "resolution": "res_full_test",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_full_test)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-12::res_arithmetic::res_short_test",
+      "quest": "Q-MAIN-12",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-12:res_arithmetic+res_short_test",
+      "arms": [
+        {
+          "resolution": "res_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_arithmetic)"
+        },
+        {
+          "resolution": "res_short_test",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_short_test)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-12::res_full_test::res_short_test",
+      "quest": "Q-MAIN-12",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-12:res_full_test+res_short_test",
+      "arms": [
+        {
+          "resolution": "res_full_test",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_full_test)"
+        },
+        {
+          "resolution": "res_short_test",
+          "action": "conversationSay(quest-resolve:Q-MAIN-12:res_short_test)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-13::res_go_in::res_make_him_say_it",
+      "quest": "Q-MAIN-13",
+      "giver": "ledgerer-hosk-vei",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-13:res_go_in+res_make_him_say_it",
+      "arms": [
+        {
+          "resolution": "res_go_in",
+          "action": "conversationSay(quest-resolve:Q-MAIN-13:res_go_in)"
+        },
+        {
+          "resolution": "res_make_him_say_it",
+          "action": "conversationSay(quest-resolve:Q-MAIN-13:res_make_him_say_it)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-14::res_give_it_back::res_take_the_skei",
+      "quest": "Q-MAIN-14",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-14:res_give_it_back+res_take_the_skei",
+      "arms": [
+        {
+          "resolution": "res_give_it_back",
+          "action": "conversationSay(quest-resolve:Q-MAIN-14:res_give_it_back)"
+        },
+        {
+          "resolution": "res_take_the_skei",
+          "action": "conversationSay(quest-resolve:Q-MAIN-14:res_take_the_skei)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-15::res_heard_it::res_keep_the_fourth",
+      "quest": "Q-MAIN-15",
+      "giver": "rootkeeper-sesh-anaat",
+      "source": "game/data/quests/mainline-act3.json",
+      "common_checkpoint": "before-choice:Q-MAIN-15:res_heard_it+res_keep_the_fourth",
+      "arms": [
+        {
+          "resolution": "res_heard_it",
+          "action": "conversationSay(quest-resolve:Q-MAIN-15:res_heard_it)"
+        },
+        {
+          "resolution": "res_keep_the_fourth",
+          "action": "conversationSay(quest-resolve:Q-MAIN-15:res_keep_the_fourth)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_buy_debt::res_expose_debt",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_buy_debt+res_expose_debt",
+      "arms": [
+        {
+          "resolution": "res_buy_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_buy_debt)"
+        },
+        {
+          "resolution": "res_expose_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_expose_debt)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_buy_debt::res_persuade_chapter",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_buy_debt+res_persuade_chapter",
+      "arms": [
+        {
+          "resolution": "res_buy_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_buy_debt)"
+        },
+        {
+          "resolution": "res_persuade_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_persuade_chapter)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_buy_debt::res_serve_chapter",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_buy_debt+res_serve_chapter",
+      "arms": [
+        {
+          "resolution": "res_buy_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_buy_debt)"
+        },
+        {
+          "resolution": "res_serve_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_serve_chapter)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_expose_debt::res_persuade_chapter",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_expose_debt+res_persuade_chapter",
+      "arms": [
+        {
+          "resolution": "res_expose_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_expose_debt)"
+        },
+        {
+          "resolution": "res_persuade_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_persuade_chapter)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_expose_debt::res_serve_chapter",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_expose_debt+res_serve_chapter",
+      "arms": [
+        {
+          "resolution": "res_expose_debt",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_expose_debt)"
+        },
+        {
+          "resolution": "res_serve_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_serve_chapter)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-16::res_persuade_chapter::res_serve_chapter",
+      "quest": "Q-MAIN-16",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-16:res_persuade_chapter+res_serve_chapter",
+      "arms": [
+        {
+          "resolution": "res_persuade_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_persuade_chapter)"
+        },
+        {
+          "resolution": "res_serve_chapter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-16:res_serve_chapter)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_half_arithmetic::res_ledger_rank",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_half_arithmetic+res_ledger_rank",
+      "arms": [
+        {
+          "resolution": "res_half_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_half_arithmetic)"
+        },
+        {
+          "resolution": "res_ledger_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_rank)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_half_arithmetic::res_ledger_surety",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_half_arithmetic+res_ledger_surety",
+      "arms": [
+        {
+          "resolution": "res_half_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_half_arithmetic)"
+        },
+        {
+          "resolution": "res_ledger_surety",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_surety)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_half_arithmetic::res_whole_arithmetic",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_half_arithmetic+res_whole_arithmetic",
+      "arms": [
+        {
+          "resolution": "res_half_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_half_arithmetic)"
+        },
+        {
+          "resolution": "res_whole_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_whole_arithmetic)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_ledger_rank::res_ledger_surety",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_ledger_rank+res_ledger_surety",
+      "arms": [
+        {
+          "resolution": "res_ledger_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_rank)"
+        },
+        {
+          "resolution": "res_ledger_surety",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_surety)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_ledger_rank::res_whole_arithmetic",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_ledger_rank+res_whole_arithmetic",
+      "arms": [
+        {
+          "resolution": "res_ledger_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_rank)"
+        },
+        {
+          "resolution": "res_whole_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_whole_arithmetic)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-17::res_ledger_surety::res_whole_arithmetic",
+      "quest": "Q-MAIN-17",
+      "giver": "factor-ruvela-sath",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-17:res_ledger_surety+res_whole_arithmetic",
+      "arms": [
+        {
+          "resolution": "res_ledger_surety",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_ledger_surety)"
+        },
+        {
+          "resolution": "res_whole_arithmetic",
+          "action": "conversationSay(quest-resolve:Q-MAIN-17:res_whole_arithmetic)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_deepkin_rank::res_keepers_name",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_deepkin_rank+res_keepers_name",
+      "arms": [
+        {
+          "resolution": "res_deepkin_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_deepkin_rank)"
+        },
+        {
+          "resolution": "res_keepers_name",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_keepers_name)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_deepkin_rank::res_speak_the_fourth",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_deepkin_rank+res_speak_the_fourth",
+      "arms": [
+        {
+          "resolution": "res_deepkin_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_deepkin_rank)"
+        },
+        {
+          "resolution": "res_speak_the_fourth",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_speak_the_fourth)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_deepkin_rank::res_walk_the_eleven",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_deepkin_rank+res_walk_the_eleven",
+      "arms": [
+        {
+          "resolution": "res_deepkin_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_deepkin_rank)"
+        },
+        {
+          "resolution": "res_walk_the_eleven",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_walk_the_eleven)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_keepers_name::res_speak_the_fourth",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_keepers_name+res_speak_the_fourth",
+      "arms": [
+        {
+          "resolution": "res_keepers_name",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_keepers_name)"
+        },
+        {
+          "resolution": "res_speak_the_fourth",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_speak_the_fourth)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_keepers_name::res_walk_the_eleven",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_keepers_name+res_walk_the_eleven",
+      "arms": [
+        {
+          "resolution": "res_keepers_name",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_keepers_name)"
+        },
+        {
+          "resolution": "res_walk_the_eleven",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_walk_the_eleven)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-18::res_speak_the_fourth::res_walk_the_eleven",
+      "quest": "Q-MAIN-18",
+      "giver": "rootkeeper-ashul-tei",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-18:res_speak_the_fourth+res_walk_the_eleven",
+      "arms": [
+        {
+          "resolution": "res_speak_the_fourth",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_speak_the_fourth)"
+        },
+        {
+          "resolution": "res_walk_the_eleven",
+          "action": "conversationSay(quest-resolve:Q-MAIN-18:res_walk_the_eleven)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-19::res_cutters_rank::res_expose_the_yard",
+      "quest": "Q-MAIN-19",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-19:res_cutters_rank+res_expose_the_yard",
+      "arms": [
+        {
+          "resolution": "res_cutters_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_cutters_rank)"
+        },
+        {
+          "resolution": "res_expose_the_yard",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_expose_the_yard)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-19::res_cutters_rank::res_outbid_the_company",
+      "quest": "Q-MAIN-19",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-19:res_cutters_rank+res_outbid_the_company",
+      "arms": [
+        {
+          "resolution": "res_cutters_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_cutters_rank)"
+        },
+        {
+          "resolution": "res_outbid_the_company",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_outbid_the_company)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-19::res_expose_the_yard::res_outbid_the_company",
+      "quest": "Q-MAIN-19",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-19:res_expose_the_yard+res_outbid_the_company",
+      "arms": [
+        {
+          "resolution": "res_expose_the_yard",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_expose_the_yard)"
+        },
+        {
+          "resolution": "res_outbid_the_company",
+          "action": "conversationSay(quest-resolve:Q-MAIN-19:res_outbid_the_company)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-20::res_assize_rank::res_finding_of_fact",
+      "quest": "Q-MAIN-20",
+      "giver": "prefect-galvus-arn",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-20:res_assize_rank+res_finding_of_fact",
+      "arms": [
+        {
+          "resolution": "res_assize_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_assize_rank)"
+        },
+        {
+          "resolution": "res_finding_of_fact",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_finding_of_fact)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-20::res_assize_rank::res_the_paragraph",
+      "quest": "Q-MAIN-20",
+      "giver": "prefect-galvus-arn",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-20:res_assize_rank+res_the_paragraph",
+      "arms": [
+        {
+          "resolution": "res_assize_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_assize_rank)"
+        },
+        {
+          "resolution": "res_the_paragraph",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_the_paragraph)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-20::res_finding_of_fact::res_the_paragraph",
+      "quest": "Q-MAIN-20",
+      "giver": "prefect-galvus-arn",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-20:res_finding_of_fact+res_the_paragraph",
+      "arms": [
+        {
+          "resolution": "res_finding_of_fact",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_finding_of_fact)"
+        },
+        {
+          "resolution": "res_the_paragraph",
+          "action": "conversationSay(quest-resolve:Q-MAIN-20:res_the_paragraph)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-21::res_dockhand_rank::res_outbid_company",
+      "quest": "Q-MAIN-21",
+      "giver": "dockmaster-weeja-sen",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-21:res_dockhand_rank+res_outbid_company",
+      "arms": [
+        {
+          "resolution": "res_dockhand_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_dockhand_rank)"
+        },
+        {
+          "resolution": "res_outbid_company",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_outbid_company)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-21::res_dockhand_rank::res_the_eleven",
+      "quest": "Q-MAIN-21",
+      "giver": "dockmaster-weeja-sen",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-21:res_dockhand_rank+res_the_eleven",
+      "arms": [
+        {
+          "resolution": "res_dockhand_rank",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_dockhand_rank)"
+        },
+        {
+          "resolution": "res_the_eleven",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_the_eleven)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-21::res_outbid_company::res_the_eleven",
+      "quest": "Q-MAIN-21",
+      "giver": "dockmaster-weeja-sen",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-21:res_outbid_company+res_the_eleven",
+      "arms": [
+        {
+          "resolution": "res_outbid_company",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_outbid_company)"
+        },
+        {
+          "resolution": "res_the_eleven",
+          "action": "conversationSay(quest-resolve:Q-MAIN-21:res_the_eleven)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-22::res_as_a_cutter::res_on_a_silence",
+      "quest": "Q-MAIN-22",
+      "giver": "rootkeeper-sesh-anaat",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-22:res_as_a_cutter+res_on_a_silence",
+      "arms": [
+        {
+          "resolution": "res_as_a_cutter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_as_a_cutter)"
+        },
+        {
+          "resolution": "res_on_a_silence",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_on_a_silence)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-22::res_as_a_cutter::res_true_reason",
+      "quest": "Q-MAIN-22",
+      "giver": "rootkeeper-sesh-anaat",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-22:res_as_a_cutter+res_true_reason",
+      "arms": [
+        {
+          "resolution": "res_as_a_cutter",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_as_a_cutter)"
+        },
+        {
+          "resolution": "res_true_reason",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_true_reason)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-22::res_on_a_silence::res_true_reason",
+      "quest": "Q-MAIN-22",
+      "giver": "rootkeeper-sesh-anaat",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-22:res_on_a_silence+res_true_reason",
+      "arms": [
+        {
+          "resolution": "res_on_a_silence",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_on_a_silence)"
+        },
+        {
+          "resolution": "res_true_reason",
+          "action": "conversationSay(quest-resolve:Q-MAIN-22:res_true_reason)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-23::res_buy_the_water::res_sign_the_clause",
+      "quest": "Q-MAIN-23",
+      "giver": "salt-factor-neloth-vaun",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-23:res_buy_the_water+res_sign_the_clause",
+      "arms": [
+        {
+          "resolution": "res_buy_the_water",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_buy_the_water)"
+        },
+        {
+          "resolution": "res_sign_the_clause",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_sign_the_clause)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": {
+        "clause_resolution": "res_sign_the_clause",
+        "clause_roster": 4,
+        "sibling_roster": 6,
+        "consumer": "production encounter consequence pipeline"
+      }
+    },
+    {
+      "id": "Q-MAIN-23::res_buy_the_water::res_turn_the_writ",
+      "quest": "Q-MAIN-23",
+      "giver": "salt-factor-neloth-vaun",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-23:res_buy_the_water+res_turn_the_writ",
+      "arms": [
+        {
+          "resolution": "res_buy_the_water",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_buy_the_water)"
+        },
+        {
+          "resolution": "res_turn_the_writ",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_turn_the_writ)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": {
+        "clause_resolution": "res_sign_the_clause",
+        "clause_roster": 4,
+        "sibling_roster": 6,
+        "consumer": "production encounter consequence pipeline"
+      }
+    },
+    {
+      "id": "Q-MAIN-23::res_sign_the_clause::res_turn_the_writ",
+      "quest": "Q-MAIN-23",
+      "giver": "salt-factor-neloth-vaun",
+      "source": "game/data/quests/mainline-act4.json",
+      "common_checkpoint": "before-choice:Q-MAIN-23:res_sign_the_clause+res_turn_the_writ",
+      "arms": [
+        {
+          "resolution": "res_sign_the_clause",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_sign_the_clause)"
+        },
+        {
+          "resolution": "res_turn_the_writ",
+          "action": "conversationSay(quest-resolve:Q-MAIN-23:res_turn_the_writ)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": {
+        "clause_resolution": "res_sign_the_clause",
+        "clause_roster": 4,
+        "sibling_roster": 6,
+        "consumer": "production encounter consequence pipeline"
+      }
+    },
+    {
+      "id": "Q-MAIN-24::res_shore_and_go::res_the_factors_leg",
+      "quest": "Q-MAIN-24",
+      "giver": "undersexton-aveline-rell",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-24:res_shore_and_go+res_the_factors_leg",
+      "arms": [
+        {
+          "resolution": "res_shore_and_go",
+          "action": "conversationSay(quest-resolve:Q-MAIN-24:res_shore_and_go)"
+        },
+        {
+          "resolution": "res_the_factors_leg",
+          "action": "conversationSay(quest-resolve:Q-MAIN-24:res_the_factors_leg)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-25::res_counting_floor::res_intake_stair",
+      "quest": "Q-MAIN-25",
+      "giver": "undersexton-bel-mourne",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-25:res_counting_floor+res_intake_stair",
+      "arms": [
+        {
+          "resolution": "res_counting_floor",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_counting_floor)"
+        },
+        {
+          "resolution": "res_intake_stair",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_intake_stair)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-25::res_counting_floor::res_through_the_third_bay",
+      "quest": "Q-MAIN-25",
+      "giver": "undersexton-bel-mourne",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-25:res_counting_floor+res_through_the_third_bay",
+      "arms": [
+        {
+          "resolution": "res_counting_floor",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_counting_floor)"
+        },
+        {
+          "resolution": "res_through_the_third_bay",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_through_the_third_bay)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-25::res_intake_stair::res_through_the_third_bay",
+      "quest": "Q-MAIN-25",
+      "giver": "undersexton-bel-mourne",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-25:res_intake_stair+res_through_the_third_bay",
+      "arms": [
+        {
+          "resolution": "res_intake_stair",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_intake_stair)"
+        },
+        {
+          "resolution": "res_through_the_third_bay",
+          "action": "conversationSay(quest-resolve:Q-MAIN-25:res_through_the_third_bay)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-26::res_hear_him_out::res_press_him_on_the_clause",
+      "quest": "Q-MAIN-26",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-26:res_hear_him_out+res_press_him_on_the_clause",
+      "arms": [
+        {
+          "resolution": "res_hear_him_out",
+          "action": "conversationSay(quest-resolve:Q-MAIN-26:res_hear_him_out)"
+        },
+        {
+          "resolution": "res_press_him_on_the_clause",
+          "action": "conversationSay(quest-resolve:Q-MAIN-26:res_press_him_on_the_clause)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_kill_him::res_open_the_count",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_kill_him+res_open_the_count",
+      "arms": [
+        {
+          "resolution": "res_kill_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_kill_him)"
+        },
+        {
+          "resolution": "res_open_the_count",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_open_the_count)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_kill_him::res_take_his_place",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_kill_him+res_take_his_place",
+      "arms": [
+        {
+          "resolution": "res_kill_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_kill_him)"
+        },
+        {
+          "resolution": "res_take_his_place",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_take_his_place)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_kill_him::res_walk_out",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_kill_him+res_walk_out",
+      "arms": [
+        {
+          "resolution": "res_kill_him",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_kill_him)"
+        },
+        {
+          "resolution": "res_walk_out",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_walk_out)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_open_the_count::res_take_his_place",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_open_the_count+res_take_his_place",
+      "arms": [
+        {
+          "resolution": "res_open_the_count",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_open_the_count)"
+        },
+        {
+          "resolution": "res_take_his_place",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_take_his_place)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_open_the_count::res_walk_out",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_open_the_count+res_walk_out",
+      "arms": [
+        {
+          "resolution": "res_open_the_count",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_open_the_count)"
+        },
+        {
+          "resolution": "res_walk_out",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_walk_out)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-28::res_take_his_place::res_walk_out",
+      "quest": "Q-MAIN-28",
+      "giver": "ixtu-meer",
+      "source": "game/data/quests/mainline-act5.json",
+      "common_checkpoint": "before-choice:Q-MAIN-28:res_take_his_place+res_walk_out",
+      "arms": [
+        {
+          "resolution": "res_take_his_place",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_take_his_place)"
+        },
+        {
+          "resolution": "res_walk_out",
+          "action": "conversationSay(quest-resolve:Q-MAIN-28:res_walk_out)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-29::res_round_the_barrow::res_through_the_seventh",
+      "quest": "Q-MAIN-29",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-29:res_round_the_barrow+res_through_the_seventh",
+      "arms": [
+        {
+          "resolution": "res_round_the_barrow",
+          "action": "conversationSay(quest-resolve:Q-MAIN-29:res_round_the_barrow)"
+        },
+        {
+          "resolution": "res_through_the_seventh",
+          "action": "conversationSay(quest-resolve:Q-MAIN-29:res_through_the_seventh)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-30::res_carry_on::res_the_fourth_entry",
+      "quest": "Q-MAIN-30",
+      "giver": "ledgerer-hosk-vei",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-30:res_carry_on+res_the_fourth_entry",
+      "arms": [
+        {
+          "resolution": "res_carry_on",
+          "action": "conversationSay(quest-resolve:Q-MAIN-30:res_carry_on)"
+        },
+        {
+          "resolution": "res_the_fourth_entry",
+          "action": "conversationSay(quest-resolve:Q-MAIN-30:res_the_fourth_entry)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-31::res_drain_past_the_roots::res_kill_him_below",
+      "quest": "Q-MAIN-31",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-31:res_drain_past_the_roots+res_kill_him_below",
+      "arms": [
+        {
+          "resolution": "res_drain_past_the_roots",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_drain_past_the_roots)"
+        },
+        {
+          "resolution": "res_kill_him_below",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_kill_him_below)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-31::res_drain_past_the_roots::res_shut_the_channels",
+      "quest": "Q-MAIN-31",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-31:res_drain_past_the_roots+res_shut_the_channels",
+      "arms": [
+        {
+          "resolution": "res_drain_past_the_roots",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_drain_past_the_roots)"
+        },
+        {
+          "resolution": "res_shut_the_channels",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_shut_the_channels)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-31::res_kill_him_below::res_shut_the_channels",
+      "quest": "Q-MAIN-31",
+      "giver": "neeja-xul",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-31:res_kill_him_below+res_shut_the_channels",
+      "arms": [
+        {
+          "resolution": "res_kill_him_below",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_kill_him_below)"
+        },
+        {
+          "resolution": "res_shut_the_channels",
+          "action": "conversationSay(quest-resolve:Q-MAIN-31:res_shut_the_channels)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    },
+    {
+      "id": "Q-MAIN-32::res_sit_at_the_well::res_walk_it",
+      "quest": "Q-MAIN-32",
+      "giver": "keeper-teeja-lun",
+      "source": "game/data/quests/mainline-backpath.json",
+      "common_checkpoint": "before-choice:Q-MAIN-32:res_sit_at_the_well+res_walk_it",
+      "arms": [
+        {
+          "resolution": "res_sit_at_the_well",
+          "action": "conversationSay(quest-resolve:Q-MAIN-32:res_sit_at_the_well)"
+        },
+        {
+          "resolution": "res_walk_it",
+          "action": "conversationSay(quest-resolve:Q-MAIN-32:res_walk_it)"
+        }
+      ],
+      "required_state_vector": {
+        "durable_flags_min": 3,
+        "rewards_min": 1,
+        "entity_delta_min": 1,
+        "route_specific_journal": true
+      },
+      "production_actions_only": true,
+      "q_main_23_crossing": null
+    }
+  ]
+}

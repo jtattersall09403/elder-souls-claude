@@ -5417,48 +5417,6 @@ export class Engine {
 
   getRaceGap(a, b) { return meanRaceGap(this.chData, a, b); }
 
-  // ---- RI-EXP06 B-01: finite, self-amplifying alchemy --------------------------------------
-  // The loop ends through finite ingredients rather than an artificial power cap.
-  _alchemyState() {
-    if (!this.sim.alchemy) this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
-    return this.sim.alchemy;
-  }
-
-  resetAlchemy() {
-    this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
-    return { ...this.sim.alchemy };
-  }
-
-  setPermissivenessClosure(id, on) {
-    if (!this._permissivenessClosures) this._permissivenessClosures = new Set();
-    if (on) this._permissivenessClosures.add(String(id));
-    else this._permissivenessClosures.delete(String(id));
-    return { id: String(id), closed: this._permissivenessClosures.has(String(id)) };
-  }
-
-  brewFortifyAlchemy() {
-    const a = this._alchemyState();
-    if (this._permissivenessClosures?.has('B-01')) {
-      return { ok: false, player_facing: true, text: 'The mixture will not take while another fortifying draught is active.' };
-    }
-    if (a.ingredients < 2) {
-      return { ok: false, player_facing: true, text: 'There are not enough ingredients left.', exhausted: true };
-    }
-    a.ingredients -= 2;
-    const potion = { id: `fortify-alchemy-${++a.serial}`, magnitude: 1 + a.fortify };
-    a.potions.push(potion);
-    return { ok: true, potion: { ...potion }, ingredients_left: a.ingredients };
-  }
-
-  drinkFortifyAlchemy(id) {
-    const a = this._alchemyState();
-    const i = a.potions.findIndex((p) => p.id === String(id));
-    if (i < 0) return { ok: false, player_facing: true, text: 'That potion is not in the pack.' };
-    const [potion] = a.potions.splice(i, 1);
-    a.fortify += potion.magnitude;
-    return { ok: true, active_fortify: a.fortify, consumed: potion.id };
-  }
-
   setCrossingControl(cell, enabled = true) {
     this._crossingControls.set(String(cell), enabled !== false);
     this._crossingCalls.set(String(cell), 0);
@@ -5478,6 +5436,44 @@ export class Engine {
     return value;
   }
 
+  /** Consume an optional boss outcome through the production quest machine. */
+  consumeBossOutcome(questId, resolutionId) {
+    if (!resolutionId) return { ok: true, consumed: false, reason: 'no boss outcome present' };
+    return this.questEngine.resolve(String(questId), String(resolutionId));
+  }
+
+  // ---- RI-EXP06 B-01: finite, self-amplifying alchemy --------------------------------------
+  // Kept on simulation state so save/load owns it once the save schema is extended. The lazy
+  // seed is deliberately finite: the permissive loop ends by ingredient exhaustion, never a cap.
+  _alchemyState() {
+    if (!this.sim.alchemy) this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
+    return this.sim.alchemy;
+  }
+  resetAlchemy() { this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 }; return { ...this.sim.alchemy }; }
+
+  setPermissivenessClosure(id, on) {
+    if (!this._permissivenessClosures) this._permissivenessClosures = new Set();
+    if (on) this._permissivenessClosures.add(String(id)); else this._permissivenessClosures.delete(String(id));
+    return { id: String(id), closed: this._permissivenessClosures.has(String(id)) };
+  }
+
+  brewFortifyAlchemy() {
+    const a = this._alchemyState();
+    if (this._permissivenessClosures?.has('B-01')) return { ok: false, player_facing: true, text: 'The mixture will not take while another fortifying draught is active.' };
+    if (a.ingredients < 2) return { ok: false, player_facing: true, text: 'There are not enough ingredients left.', exhausted: true };
+    a.ingredients -= 2;
+    const potion = { id: `fortify-alchemy-${++a.serial}`, magnitude: 1 + a.fortify };
+    a.potions.push(potion);
+    return { ok: true, potion: { ...potion }, ingredients_left: a.ingredients };
+  }
+
+  drinkFortifyAlchemy(id) {
+    const a = this._alchemyState(), i = a.potions.findIndex((p) => p.id === String(id));
+    if (i < 0) return { ok: false, player_facing: true, text: 'That potion is not in the pack.' };
+    const [p] = a.potions.splice(i, 1); a.fortify += p.magnitude;
+    return { ok: true, active_fortify: a.fortify, consumed: p.id };
+  }
+
   // ---- AR-3: race-conditioned encounters -----------------------------------------------------
 
   /**
@@ -5494,11 +5490,12 @@ export class Engine {
     // weather fronts advance and quest reputation earns rank).  Keep the effects on roster and
     // perception/hostility; never alter a statblock's combat numbers.
     const hour = Number(this.sim.env.timeOfDay) || 0;
-    const nightRoster = hour < 6 || hour >= 21;
-    const saltHidden = this.sim.env.weather === 'salt_storm';
+    const nightRoster = this._consumeCrossing('TOD->ROS', hour < 6 || hour >= 21, false);
+    const saltHidden = this._consumeCrossing('WEA->ROS', this.sim.env.weather === 'salt_storm', false);
     const factionRows = (this.sim.quest && this.sim.quest.factions) || {};
-    const legionRank = Object.values(factionRows).reduce((best, row) =>
+    const legionRankRaw = Object.values(factionRows).reduce((best, row) =>
       Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
+    const legionRank = this._consumeCrossing('FAC->ROS', legionRankRaw, 0);
     // A disguise is equipment, not a probe switch.  `equipItem()` lands ordinary inventory rows
     // in their authored slot and patrols consume that state here.  Restricting the recognition to
     // actual equipped Imperial issue keeps carrying looted armour from pacifying a patrol.
@@ -5720,6 +5717,8 @@ export class Engine {
     // setWorldSeed() decides what the exterior one IS, and groundAt() must agree with it.
     if (this.sim.worldSeed !== null && this.sim.worldSeed !== undefined) this.renderer.setWorldSeed(this.sim.worldSeed);
     const cell = this.cellFor(this.sim.env);
+    this.renderer.setInteriorContinuity(this.sim.env.interior
+      ? this.settlements.interior(this.sim.env.interior) : null);
     // THE ROOM THE FILE DESCRIBES. `cellFor()` folds 113 of the 115 named interiors onto one
     // generic `interior` cell, which was `scene.js buildHall()` — 249 triangles and one light,
     // the same hearth and the same six benches for the Crimson Apothecary in Archon and for
@@ -5728,7 +5727,8 @@ export class Engine {
     // 30 unique items that nothing instantiated. `render/interior.js` is the consumer: the shell
     // comes from `bounds_m`, the lamps from `lights[]`, the furniture from `props[]`.
     if (cell === 'interior') {
-      const summary = this.renderer.setInteriorRecord(this.settlements.interior(this.sim.env.interior));
+      const rec = this.settlements.interior(this.sim.env.interior);
+      const summary = this.renderer.setInteriorRecord(rec);
       this._furnishInterior(summary);
     } else if (this._interiorProps && this._interiorProps.length) {
       this._furnishInterior(null);
@@ -8268,1529 +8268,6 @@ export class Engine {
       // has just invalidated every eid it was holding — a line W1-POPULATION's own round-1
       // critic charges as an S5 violation, because clearing it while `ordinaryRespawnEpoch`
       // stands still hands the player a province of newly built bodies for the price of a
-      // ROUND 2 — but NOT the in-flight death, and not the last grounded position. Clearing
-      // no transition — the death is already in flight. Put them up here so a mid-death load
-      // first step ran, and the input gate reads `denyRoll` — so for one frame after every
-    // `save_read` was declared in the HARNESS.md §5 vocabulary in wave 1 and emitted by
-    // nothing: `writeSave()` emitted `save_write`, and the other half of the pair — the one
-    // see — had no emitter anywhere in `game/src`. `degraded` is the field that matters: it is
-   * DURABLE FIELD CENSUS — the instrument that would have caught
-   * needs no declaration to be right — a field nobody remembered to declare still shows up.
-    // *_ago_frames offset — this list is the re-basing rule, not an exclusion list. The two
-      'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 §B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
-    //   * `sim.character` — `loadCreation()` dropped `powers` and `drawbacks`, so the Focus
-    //   * the combat bodies — the AUTHORITY behind `sim.player` (sim/combat-bridge.js).
-Ъ[HЫИЭ\ЫЩJ
-H™YYИ›В€ЛИ[™Ъ[™H™Y™\™[ЩK€Щ]™Y›Ь™HHљ\њЭЭ]H\И\YY‚€\ЛњЪ[K™[ЫЭ[ќ\‘]HH\Л™]KЪ\XЭ\ЋВ€ЛИМKLMN€HЭX[ШЬљ[YHЭXњЮ\Э[K[™ИЫ€HЪ[HЫИЭ\ЫЩJ
-H™YYИ›И[™Ъ[™B€ЛИ™Y™\™[ЩK€ќZ[™Y›Ь™HHљ\њЭЭ]H\И\YYЫИHШЩ[\љ[ИШ[€ШY[ќИ]‚€\ЛњЪ[KњЭX[H™]ИЭX[Ьљ[YJ\Л™]JNВ€ЛИМKTУХSО€HУХTђСK€[™ИЫ€HЪ[H›Ь€HШ[YH™X\ЫЫ€HЫИX›Э™H\™H8 %ЫВ€ЛИЭ\ЫЩJ
-X™YYИ›И[™Ъ[™H™Y™\™[ЩK€[ќ[\И[™H^\ЭYЫЭ[Т[Y^XЭB€ЛИЫ™H›ЩXЩ\€[€HЪЫHќZ[
-X]љњШ[™[™ИXЪИH›ЫЩЭZ[€[ЭHY[™XYB€ЛИZY›ЬЉKЫИЬЬ[™ЫЭ[К
-X[™’KT‘МIЬИLОK\›ЭИЭ\ќ™HЩ\™H[€[™ќ[™X›HЪ[љЛ‚€ЛИHЩXЫЫ™\™Э[Y[ќ\ИHНH™\ЭЫЭ[ќ\‹[™]\ИЪ]ЭЬИHЬ[][Ы€[\њ›ЫB€ЛИ™Z[™ИHЫЭ[\›N€HЬЭ]\Ь]ЫњИ[™™\Ь]ЫњИ[™\€HШ[YHZY™XШ]\ЩHH^Y\‚€ЛИШ[ЩYЭ]Щ€[™XЪИ[ќИ]ИY]\И]\Э›Э™K\^K€Ы›H™\Ь]Ы“Ь™[\ћJ
-X8 %B€ЛИX\ќ™\ЭЬ€H^Y\€X]8 %ќ[\И]€\ЬЩY\ИHќ[Э[Ы€™XШ]\ЩH\Л™X]\ИЫ‚€ЛИH[™Ъ[™H[™Ъ[KЬЫЭ[ЛљњШ]\Э›ЭXЬ]Z\™H[€[™Ъ[™H[™K€ЩYHЪ[KЬЫЭ[ЛљњШ‚€\ЛњЪ[KњЫЭ[ИH™]ИЫЭ[ФЮ\Э[J\Л™]K™[™[ZY\Л
-
-HO€
-\Л™X]	‰€\Л™X]›Ь™[\ћT™\Ь]Ы‘\ШЪ
-H
-NВ€\ЛЩ[њЭ\ИH™]ИЩ[њЭ\К\Л™]KЪ\XЭ\ЉNВ€ЛИМKLО€H]Ы€[€Щ€HЩ[њЭ\Л€Щ[њЭ\ФЭ\™XЩXЫИHЩ[XЭ[Ы€[™^B€ЛИ[‹\›ЩЬ™\ЬИXЪЬИ[™H\Y[YNИЪ[KЩ[њЭ\Сљ]™\\ИЪ]Ъ[KЬЭ\љњИШ[ИЫВ€ЛИ]HЩ[њЭ\И[њЭЩ\€\њљ]™\И›ЭYЪHШ[YH]ЪY[њ]HЭЪ[™ИЩ\И
-’KR”“ЊHМMКK‚€\ЛЩ[њЭ\ФЭ\™XЩHH™]ИЩ[њЭ\ФЭ\™XЩJ\Л™]KЪ\XЭ\ЉNВ€\ЛњЪ[KЩ[њЭ\Сљ]™\€H
-[њ]
-HO€
-\Л—ШЩ[њЭ\ФЭ\И\Л—ШЩ[њЭ\ФЭ\
-[њ]
-H€ќ[
-NВ€ЛИМKLЌ€›Э[™‹€HЬ[љ[™ИШ[››Э™HШ[ЩYЭ]Щ€[‹Yљ[љ\ЪY€ЫЩHН€Ш]™HH^Y\‚€ЛИЪ^HЩXЫЫ™ИЩ€›ЩH™Y›Ь™HHљ\њЭ]Y\Э[Ы‹[ќ\XЭ]HЫЫ\[љ[ЫќШ^H™XШ[YHB€ЛИШ^HИX]™HHЫЪ]HШЩ[™HЭ[]\ЩY[€]8 %[™›Э[™Ињљ[™ЬИ[ЭHXЪЛЫВ€ЛИHЪ\XЭ\€\И™]™\€Ь™X]Y[™HШ[YH\И[™љ[љ\ЪX›Hњ›ЫHHљ\њЭZ[ќ]K‚€ЛИHќ[H\ИHШЩ[™IЬЛ›ЭHЫЬ‰ЬЛЫИ]]™\И\™N€Ъ[HHЬ™X][Ы€\Иќ[›љ[™Л€ЛИHЩ[HХT”‘S•“СHTИСUS€ЫИ]    // at all — the live object is camelCase and the save is snake_case, and `prev_state` hid
-XЩHЫЫY\Ињ›ЫHHЬ\€ЛИ
-›ЩKњXЩX
-KЫИHШЩ[™H]]\€Ь[њИЫЫY]Ъ\™H[ЩH™YYИ›ИЫЩHЪ[™ЩK[™B€ЛИ™Yќ\Ш[Ш\њљY\ИЫЬ™И]\€[€™Z[™ИHЫЬ€]Ъ[[ќHЩ\И›Э[™Л‚€\ЛњЪ[K™ЫЬ•™]ИH
-[ќ\љ[Ь’Y
-HO€В€Y€
-]\ЛЩ[њЭ\И\ЛЩ[њЭ\Л™Ы™JH™]\›€ќ[В€ЫЫњЭЭH\ЛЩ[њЭ\ЛњЭ]J
-NВ€Y€
-Э™Ы™H\ЭњXЩHЭњXЩHOOH[ќ\љ[Ь’Y
-H™]\›€ќ[В€™]\›€	ХH]Ъ\И\њ™Y[ќ[[ЭH\™HЬљ][€ЭЫ‹‰ОВ€NВ€ЛИМKLИ›Э[™О€HЫЬ›\ЪYH™XY\€›Ь€Ь™Y][™ЬЛљњЫЫ€[™HXЩKYШ]YЬXЬЛ‚€ЛИHЬXИ[™^\ИќZ[ЫЩHЭ™\€]™\ћHX[ЩЭYKЭЬXЬЛК‹љњЫЫ€[€H™YKЫИB€ЛИ  // ---- load boundaries (A-JRN7, RI-PLT03 §B) ---------------------------------------------------
-        TTFP: 'Tier-H (RI-PLT03 §A). navigationStart→first-controllable wall clock on SwiftShader measures the rasteriser. Report TTFP_model instead, with the GPU constant stated.',
-ЬXZШX›HH[ЫY[ќ]\И[™^Y‚€\ЛќЬXТ[™^HќZ[ЬXТ[™^
-\Л™]KЪ\XЭ\‹ќЬXСШЬКNВ€\ЛЫЫќ™\њШ][Ы€H™]ИЫЫќ™\њШ][ЫЉ\Л™]KЪ\XЭ\‹\ЛќЬXТ[™^
-NВ€\Л—ЩЬ™Y]ЫЭ[ќH™]ИX\
-
-NВ€ЛИМKLMЌ€HЬ[XZЪ[™ИЫЭ[ќ\‹Ъ[€Ы™H\ИЬ[‹€ќ[H™\ЭЩ€H[YKЪXЪ\В€ЛИ]™\ћHњ[YHH^Y\€\И›ЭЭ[™[™И[€њ›ЫќЩ€Ы™HЩ€HЩ]™[€Ь[ЬљYЪИ]љ[™В€ЛИZ\ЩYHЭXљ™XЭ€ЩYHШЫЫ[Z\ЬЪ[Ы“Ь[њШ‚€\ЛЫЫ[Z\ЬЪ[Ы€Hќ[В€\Л—ШЫЫ[Z\ЬЪ[Ы‘\ШX›YH[ЩNВ€\Л™[Ъ[ќЫЭ[ќ\€Hќ[ИЛИМKLMЌB€\Л—Щ[Ъ[ќ\ШX›YH[ЩNВ€\ЛќЬљ]™XY\€HИЬ[Ћ€[ЩK[™\О€ЧKЬ€NВ€ЛИМKLK’KUУ€‹€HЬЭ[ЭH\™HЭ[™[™И]Y€[ЭH]™H™XXЪY›Ь€Ы™K€Ш[YHЪ\B€ЛИ\ИHЬљ]™XY\‹Ы€\њЬЩN€HШЭ[Y[ќ[ЭHЫ[™H›Ш\™[ЭHЭ[™[™\€\™HB€ЛИШ[YH›Ш›[H8 %HЬљ][€[™ИH^Y\€]\Э™HX›HИ‘PQ›ЭY\™[HИ™H™X\‹‚€ЛИ’KR”“ЊШ	ЬИУУ”ХSTSУ€›ЭHШ[ИHЭљ[™И   * HARNESS.md §7 rule 4's pair: `game/data/world/traversal.json` is the declaration, the live
-  /** What is around you that only exists here — the diegetic form of "which region am I in". */
-   * Pin the tide. `RI-WLD10` §7's cycle is 12 real minutes with four states; the phase is the
-ЛИ›Ьњ[€^‹[™Ш^\И]\ИY[ќXШ[њ›ЫHH^Y\‰ЬИЪZ\€ИЫ™H™]™\€Ьљ][‹‚€\ЛњЪYЫ”™XY\€HИЬ[Ћ€[ЩKЪYЫЋ€ќ[[™\О€ЧKYЪX›N€ќYHNВ€ЛИМKLћ	ЬИXXЪ[™KМKLM	ЬИ™X\ЫЫ€›Ь€\›љ[™И]Ы‹€H]Y\Э›ЫЪИШY\ИђRSSХQћB€ЛИ\ЪYЫ€
-YњЛљњКN€H]Y\ЭЪЬЩH›Э\›[[™XЩ\И\™HЭ]Щ€[™ЪЬЩH›ЬЩHљ\В€ЛИ’KQМH0©СЬ€ЪЬЩHЫЪЬИЪ[ќ][€[ќћH]Щ\И›Э^\ЭЭЬИHШ[YH›ЫЭ[™В€ЛИ]\€[€Z[[™ИHЬљ]XИќ[€]\‹‚€\Лњ]Y\Э›ЫЪИH™]И]Y\Э›ЫЪК\Л™]Kњ]Y\ЭКNВ€\Л™XЭ[Ы‘Ш]\ИH™]ИXЭ[Ы‘Ш]\К\Л™]Kњ]Y\ЭЦЙЩXЭ[Ы‹YШ]\ЙЧHИXЭ[ЫњО€ЧHJNВ€\Лњ]Y\Э[™Ъ[™HH™]И]Y\Э[™Ъ[™J\Лњ]Y\Э›ЫЪЛ\Л™XЭ[Ы‘Ш]\Л\Л™]Kњ]Y\ЭЦЙЬ]Y\ЭZЫЪЬЙЧK\ЛњЪ[JNВ€ЛИМKLЊ€H™XЬќZ]\њЙИЫЬ™Л€XЭ[Ы‘Ш]\Л™][X]J
-X\И[Ш^\ИЫЫ\]YHЪЫB€ЛИ›Э\‹\\ќЭ][Y[ќЪ]H^Y\‰ЬИЭЫ€ќ[X™\њИ[€][™]Y\Э[™Ъ[™K›Ь[Љ
-X\И[Ш^\В€ЛИ™Yќ\ЩYЫ€]8 %[™Ъ]Ш[YHXЪИШ\ИWЩ›ЭЫ™YШЫЭ\ќ[љИМHXќYИЭљ[™ИЪ]€ЛИЩ[ZXЫЫЫњИ[€]€’KTTХИ0©РИ™\]Z\™\ИH™Yќ\Ш[И™HЬЪЩ[‹€[њЭ[YЫ€H]Y\Э€ЛИ[™Ъ[™HЫИ]H™Yќ\Ш[‘PPТQ”“УHVHШ\њљY\ИH[™K›ЭЫ›HЫ™H\ЪЩY›Ь€ћHB€ЛИ›Ш™NИ™Yќ\Ш[љњШ™]™\€Э]\ИH™\ЪЫЫИHY\€Э^\И   * `combat/player.js`, not by this method — which is the point, because M3 exists to catch an
-   * Resumable: pass `chunkFrames` and call again until `done` — 57.6 minutes is 207,360 fixed
-   * piece could produce was `scale-audit.mjs`'s grid flood fill — which verdict W1-01 §6 called
-   *   1. **It cannot recover.** Displace the body — a boulder, a wall, a slope slide, a fall off a
-   *      viaduct — and it does not come back to the road. It puts its head down and beelines at a
-   *      of it and finished in 16 m of sea. That leg's ground is innocent — this instrument's own
-   *      census gives it a worst regain angle of 11.5 deg, no falls and no slope-gate refusals —
-   * polyline. `forward` shrinks as the body's lateral error grows — at 4.5 m off the road the
-    // How much road is left in front of the projection — the honest "remaining", and the arrival
-
-    // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
-    // F7 and in survey §2c, as landing in "`walkRoute` AND `walkPath`". It had not landed here.
-    // fields, same reasoning — see `walkRoute`'s note below for why 1 m is the bar.
-      // stamina, one per 30 f, three of them break you out) and nothing else clears the state —
-      // mode AGENT-PROTOCOL names — a probe that cannot fail.
-      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND — see `walkRoute`. Metres the
-      // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED —
-      // `arrived` is answered against the body's position, which a respawn also moves — so a walk
-      // The target is the body's PROJECTION ONTO THE ROAD, pushed forward — see `_pursue`. The old
-      // that is how a walk that died 1,370 m into THE CROSSING reported 4,812 m of it — the
-      // The leg the body is ON, which is the leg its PROJECTION sits on — not the leg of whatever
-      // streamed the province while a body moved — `request()` + `pump(1)` every 90 frames, and
-X][ЫЉHO€\Л—ЬЬXZСXЭ[Ы”™Yќ\Ш[
-XЭ[Ы’Y][X][ЫЉNВ€ЛИМKLИ›Э[™€HXЩKЭ\њљ[™Ъ[™ЛЩXЭ[Ы€\›HЫ€HЩ™™\€Ш]K€[њЭ[Y™Y›Ь™HB€ЛИљ\њЭЩYYЫИ›ИЪ[™ЭИ^\ЭИ[€ЪXЪHШ]H\И][X]YЫ€H]И™YЪ\Э\‹‚€\Лњ]Y\Э[™Ъ[™K™\ЬЬЪ][Ы“[Щ[H\Л—Ь]Y\Э\ЬЬЪ][Ы“[Щ[
-
-NВ€ЛИ’KTTХИ0©С€^[Ъ[Ы€[™™XYZ\ЬЪ[Ы‹ЪXЪ›Э[™HШЫЬ™Y8 %XњЩ[ќ€[њЭ[Y\™B€ЛИ]\€[€ЫЫњЭќXЭY[њЪYH]Y\Э[™Ъ[™HЫИ][€[™Ъ[™HќZ[Ъ]Э]Hљ[HЭ[€ЛИ›ЫЭИ[™Ъ[\H\И›И\ШЪ\[™K\€Hќ[HX›Э]\›Z[™И[€\ЬЩ\ќ[Ы€™Y›Ь™H]И]K‚€\Лњ]Y\Э[™Ъ[™K™\ШЪ\[™HH
-\Л™]Kњ›ЩЬ™\ЬЪ[Ы€	‰€\Л™]Kњ›ЩЬ™\ЬЪ[Ы–ЙЩXЭ[Ы‹Y\ШЪ\[™IЧJHќ[В€ЛИМKSP”ђT–H›Э[™Ћ€Ъ]XXЪ›ЫЪИXXЪ\ИH]Y\ЭШ]K[њЭ[Y™Y›Ь™HHљ\њЭШ]B€ЛИ\И]™\€][X]Y€ђRSSХQЫ€H[™Ы[™ИЩ^K[€HШ[YHЬ\љ]\ИЪ[њЭ[ЬXЪ]X‚€ЛИHЫ›ЭЫYЩWЪЩ^X›И]Y\Э\ЪЬИ›Ь€\ИH›ЫЪИ][љЬИ]Ь[њИHЫЬ€]\И›Э€ЛИ\™K[™]\И^XЭHЭИ\И[Щ[Ш[YHИ]™H›И™XY\€Ъ]Э][ћX›ЩH›ЭXЪ[™Л‚€ЛИHЪXЪИќ[њИHЭ\€Ш^HЫЛ[€ЫЫЛШЪXЪЛXЫЫќ[ќ›ZњШ‚€ЛИФђТTХђUФ‰ЬИЭX\™™[[Э™YЊЌ‹LLИћHМKSP”ђT–H›Э[™Ћ€Ш›ЫЪТЫ›ЭЫYЩR[™^
-
-X€ЛИ^\ЭИ™[ЭИ[™™]\›њИHX\ЫИHЭX\™	ЬИЯX[XЪИШ\И›ЭY\™[HXY]Ш\В€ЛИHЬ›Ы™И\H›Ь€H™Щ]
-
-X[€]Y\Э[™Ъ[™KЫЫќ^
-
-X€[™Ы[™ИЩ^\И\™H™\ЬќYћB€ЛИЪXЪЛXЫЫќ[ќ›ZњШ]\€[€›ЭЫ€\™NИЩYHHY]Щ	ЬИЭЫ€›ЭH›Ь€ЪK‚€\Лњ]Y\Э[™Ъ[™K›ЫЪТЫ›ЭЫYЩHH\Л—Ш›ЫЪТЫ›ЭЫYЩR[™^
-
-NВ€\Л—Ш\ЬЩ\ќЪ]™\њР\™Uљ\ЪX›UФXЩJ
-NВ€ЛИМKLNN€H]]Ь™Y”И\ЬЬЪ][Ы€X›KЫЬYY[ќИH™YЪ\Э\€H]Y\ЭШ]\И™XY‚€ЛИЪ]Э]\И]™\ћHЪ]™\‹™\ЬЬЪ][Ы—ЫZ[[€Ш[YKЩ]KЬ]Y\ЭЛКЉ€\И[њ™XXЪX›K‚€\ЛњЩYY\ЬЬЪ][ЫњК
-NВ€ЛИМKLNH›Э[™Ћ€HЫЬ›\ЪYHЭ\HЩ€ЬXИЩ^]ЫЬ™Л€›Э\€]]Ь™Y[Щ[ИY›В€ЛИ™XY\€™Y›Ь™H\И[™H8 %[™›ЛќШ
-M€[™›ЬКKЬ[њЧШћK›Э™\љX\™Щњ›ЫX
-И]Y\ЭКK€ЛИK™\™XЭ[ЫњШ
-М€Эљ[™ЬКH[™X[ЩЭYKЬќ[[Э\њЛљњЫЫ8 %[™HЫЫњЩ\]Y[ЩHШ\И]€ЛИЩ€М€XZ[€]Y\ЭИЩ\™HЩ™™\X›H]HЫЫЭ\ќ€ЩYHЪ[KЬ]Y\ЭЭЬXЛ\Э\KљњЛ‚€\Л—Ъ[њЭ[ЬXФЭ\J
-NВ€ЛИМKLN›Э[™Ћ€HЫЬ›\ЪYH™XY\€›Ь€XЩZ]њ™]™X[YШћVЧKЪ[›™[ИњЫЭ\ЩX€N‚€ЛИ]]Ь™Y›ЭЬЛ™\›И™XY\њИ[€Ш[YKЬЬЛШ™Y›Ь™H\И[™K[™LLИЩ€HLЊH™]™X[ИB€ЛИ™\ЫЫ][Ы€[X[™ИY›И›Э]H[€^H][€[њЭ[YYќ\€H]Y\Э›ЫЪИ\ИШYY€ЛИ™XШ]\ЩHH[™^\ИќZ[Э]Щ€H]Y\ЭYљ[љ][ЫњИ[\Щ[™\Л‚€ЛИЩYHЪ[KЬ]Y\ЭЬ™]™X[\›Э]\ЛљњШИHЭ[™[™ИЪXЪИ\ИЫЫЛЬ]Y\ЭЛЬ™]™X[\›Э]KX]Y]›ZњШ‚€\Л—Ъ[њЭ[™]™X[›Э]\К
-NВ€ЛИМKSФPТUK€HЬXЪ]H™YЪ\Э\‹[™]ИZ[XЫЬЩY™XY\‹€’KSUЛРTђ’UђUSУ€0©МО‚€ЛИH™YЪ\Э\€›Э[™И™XYИ\ИH^љ[K€Ъ[њЭ[ЬXЪ]X™\ЫЫ™\И]™\ћH[ЪЬ‹€ЛИ]љY[ЩHY[™[ЩKXXШЫЭ[ќYYШZ[њЭH]H]XЭX[HШYY[™“ХФИЫ€B€ЛИ[™ЫK[€[™ИH™YЪ\Э\€ИHЫЫќ™\њШ][Ы€ЫИHЫЬ›Ш[€XЫ[™K‚€\Л—Ъ[њЭ[ЬXЪ]J
-NВ€ЛИМKLЊЛ€’KSФЊ€И’KSUО€HШ[›Ы€™YЪ\Э\‹€]™\ЫЫ™\И]™\ћHЫЭ\ЩHH™YЪ\ЭћHШ^\В€ЛИЫИHЬЪ][Ы‹“ФИH›ЭЬИ][YHЫЫY][™И›Э[€\ИќZ[
-      // RI-MAG05 §B2's budget quantities. Reported here rather than in a second call because
-        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled — see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not.',
-  // ================= W1-15 — stealth, theft, crime and justice ===============================
-      // W1-15 round 2 — the fields RI-MTH07's hand-feed audit needs. `in_cover_source` says
-      // W1-15 r3 — the hand-feed audit for LIGHT. `world_sources` is what the interior record
-      // reading RI-MAG06 §B's row for `chameleon` / `invisibility` / `muffle` / `night_eye` /
-   * `hist_sight` writes EXACTLY ONE prose journal entry and ZERO HUD markers (RI-MAG06 §B,
-   * RI-MAG02 §H, AR-2). The prose is copied verbatim out of a quest file by Journal.write() —
-   * calls `SimState.reset()`, because that replaces `sim.quest` wholesale — which is both
-    // pointing at the previous world — but re-install anyway, because a rebind that half
-   * the build with a `disposition_min` above zero was unofferable from a cold start — the
-   * `seedDispositions()` above writes the register — the world's *written* opinion. This is
-   *   * `character/reaction.js derivedDisposition` — RI-CHR02 §3's 12x10 matrix, the upbringing
-   *   * `sim/dialogue/disposition.js movableTerms` — RI-DLG04 §B's Personality, faction,
-   *     with no route through, which `race-reactions.json` §repair_paths explicitly rejects
-M
-K[€[њЭ[И]Щ[€Ы€HЫЫќ™\њШ][Ы€ЫИHЬXZЩ\‰ЬИ™YЪ\Э\™Y€ЛИЭ[ЩHXЪY\ИЪXЪЪYHЩ€H\Ь]HH^Y\€X\њЛ‚€\Л—Ъ[њЭ[Ш[›ЫЉ
-NВ€\ЛњЪ[Kњ]Y\Э[™Ъ[™HH\Лњ]Y\Э[™Ъ[™NВ€\Лњ™X[›Ы•^Ъ\€H
-Ъ
-HO€\Л—ШЩ[њЭ\Х\PЪ\ЉЪ
-NВ€ЛИМKLЌ€ЊО€[HU’PСH^Y\€Ъ[€H^љY[\ИHЩ^X›Ш\™ЫИ]Ш[€›Э]HB€ЛИ]\€ИHљY[[њЭXYЩ€ИHќ]Ы€]]\€\И›Э[™Л€Ъ]Э]\ИB€ЛИ[њ]^Y\€\И›ИШ^HИЫ›ЭЛ[™›Э\ќY[€Щ€HЩ[ќK\Ъ^]\њИ™]™\€\њљ]™Y‚€\Лњ™X[ќ^›ШЭ\ИH
-
-HO€\Л—ШЩ[њЭ\ХZЩ\Х^
-
-NВ€ЛИH›ЩHH^Y\€ШZЩ\И\[‹Э]Щ€]H]\€[€Э]Щ€H]\[\™K€ЩYB€ЛИ›ЩTXЩJ
-X[™Ш[YKЩ]KЬ›ЩЬ™\ЬЪ[Ы‹ШЬ™X][Ы‹љњЫЫЭ\ќ[™ЧШ›ЩX€Ьљ][€‘Q“Ф‘B€ЛИ\S[YYЭ]XЫИH[YYЭ]H
-K\Э]HњXЩOY[›Y\€
-HЭ[Э™\њљY\И][™B€ЛИ™YK\ќ[€XЩHЫЫ\\љ\ЫЫњИ’KPТЊ€Y]Щ\ЪЬИ›Ь€\™H[Y™™XЭY‚€\Л—Ш\TЭ\ќ[™Р›ЩJ
-NВ€\Л\S[YYЭ]JЬЛњЭ]H	ЩY][	КNВ€\Л—Э]™[[љ]
-
-NВ€\Л›ШYЭ]WЛњ\ЩHH	Ь™XYIОВ€\Л›ШYЭ]WЛњ™YЪ[ЫњФ™\ЪY[ќHЭ\ЛњЪ[K™[ќ‹њ™YЪ[Ы—NВ€\Л—Ш›Э[™\ћQ[™
-	Ъ[љ]X[	КNВ‚€\ЛњЩ][ЩJЬЛ›[ЩH	Ъ\›™\ЬЙКNВ‚€ЛИKKKHМKLЌЋ€H]HЭ\™XЩH
-’KR”“ЊHLЊИЋJHKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB€ЛИHЭ\™XЩH\ИУУ”Х•PХQ[€]™\ћH[ЩH8 %Щ]]TЭ]J
-Kњ™\Щ[ќ\ИќYHЪ]\‚€ЛИЬ€›Э]\И\8 %[™]\ИТХУ€[€^H[ЩKЪXЪ\ИH[ЩHLЊYX\Э\™\И
-™њ›ЫB€ЛИHњ™\Ъњ›ЭЬЩ\€›Щљ[HЪ][€^\Э[™ИШ]™H™\Щ[ќ[€[™^Y€ЉK€[™\€\›™\ЬШ€ЛИ]Э\ќИЭЫ€[›\ЬИЭ]OLX™XШ]\ЩH\ќK[Щ›Ш™\И[€ЫЫЛШ›ЫЭHШ[YB€ЛИ[™[[YYX][Hљ]™HHЫЬ›[™HЭ\™XЩH]]HZ\€љ\њЭњ[YHЫЭ[™HB€ЛИYX\Э\™[Y[ќЪ[™ЩH™\ЬЩY\ИH™X]\™K€]TЪЭК
-XZ\Щ\И][€[ћH[ЩKЫИB€ЛИЪXЪИ\Иќ[›X›H[™\€]]ЫX][Ы€Ъ]Э]H[ЩH›Ш›ЩH^\Л‚€ЫЫњЭШ[ќ]HHЬЛќ]HOOHќYB€
-\[Щ€ШШ][Ы€OOH	Э[™Yљ[™Y	И	‰€™]ИT“ЩX\Ъ\[\КШШ][Ы‹њЩX\Ъ
-K™Щ]
-	Э]IКHOOH	МIКNВ€ћHВ€\Лњ™[™\™\‹ќ]KњЩ]Ш]™\К]ШZ]\ЛњЭЬ™K›\ЭЫЭК
-JNВ€HШ]ЪИК€Hњ›ЭЬЩ\€    // attributes, skills, world flags. Deliberately NOT `qe.context()` — that calls
-  /** The character as RI-DLG04 §B's movable terms read them, from live sim state only. */
-      // DECLARED EXCLUSION, measured rather than assumed. RI-DLG04 §B's Personality term is
-      // and a starting Personality of 5-20 — a saxhleel reed-walker ships with 6 — so the term
-      // in this build — which meant `factionTerm`'s rank amplification was dead and, worse, that
-      const msg = 'quest givers invisible to the RI-CHR02 reaction matrix — '
-      // closed again — a giver that gates every race identically is exactly the defect this was
-        // genuinely open and must say so — `resolve()` now gates on `opened`.
-
-    // here is declaring a scenario override — recorded so the next step doesn't silently
-      // critic can tell the world's answer from a hand-fed one (RI-MTH07 §C3).
-   * A wall. Added to the stealth occluder cell — a real `CollisionCell` of the same primitives
-   * `sim/collision.js` gives the camera — so that the thing a probe puts between two characters
-    if (!min || !max) throw new Error('addOccluder: expected {id, min:[x,y,z], max:[x,y,z]} — an axis-aligned box in world metres');
-   * `group: 'guard'` — which makes them a full witness at `guard_V_min` (RI-CRM01 §2), a report
-   * target for the shout and run-to-guard routes (§3a), and a body a fleeing witness runs at.
-    // W1-16: was `gold === null ? st.p.gold : gold` — the stale mirror. `_gold()` is the
-    // W1-16: was `st.p.gold += q.price_g` — a purse seeded at 400 and touched by nothing else
-  // ================= W1-04 — settlements, interiors and the people in them ====================
-  // never touches — the failure mode that put one good detection model and one broken one in
-   * has them in right now. Idempotent — `spawnNPC` returns the existing person for an eid that
-   * occupying one point. Nothing here draws RNG — `mix` is a hash of the id.
-        // W1-GIVER-PRESENCE, defect 1: this read `schedule[0].at` — the FIRST row of the day,
-          // weight: the block below derives a position from an INTERIOR's bounds — a cell-local
-          // frame centred on nothing — and a settlement stands at world coordinates
-   * Everyone the build declares at a NAMED SITE that is not a settlement — the hollow above the
-HШ[YHЪYHЩ€HЩX[HHЩ^YЭЫ€\ИЫ‹‚€\Л›ЫЬ™Y›Ь™UXЪИH
-
-HO€ИY€
-\Лњ™X[	‰€\Лњ™X[]XЪY
-H\Лњ™X[њЫШ[Y\Y
-
-NИNВ€\Л›ЫЬњЭ\ќ
-
-NВ€\Лњ™[™\™\‹њ™[™\Љ\ЛњЪ[JNВ€\Лњ™XYT™\ЫЫ™YHќYNВ€™]\›€ќYNВ€B‚€ЛИKKKH[ЩHKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€Щ][ЩJ[ЩJHВ€\Л›ЫЬњЩ][ЩJ[ЩJNВ€\Л›[ЩHH[ЩNВ€Y€
-[ЩHOOH	Ъ\›™\ЬЙКHВ€Y€
-\Лњ™X[	‰€\Лњ™X[]XЪY
-H\Лњ™X[™]XЪ
-
-NВ€H[ЩHY€
-\Лњ™X[	‰€]\Лњ™X[]XЪY
-HВ€\Лњ™X[]XЪ
-
-NВ€B€™]\›€[ЩNВ€B‚€ЛИKKKH]\›Z[љ\ЫHKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€КЉ€™\ЩYYИHЫШ[“‘Л€Ы›Э\™YћHH™^ШYЭ]KЬ™\Щ]
-T“‘TФЛ›YЉK€
-‹В€Щ]ЩYY
-ЉHВ€\ЛњЪ[KњЩYYH€ЏЏ€В€›™Лњ™\ЩYY
-\ЛњЪ[KњЩYY
-NВ€™]\›€\ЛњЪ[KњЩYYВ€B‚€ЛИKKKH]HKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€Щ][Э™\К
-HИ™]\›€\ЛЫЫX]И\ЛЫЫX]њ^Y\‹›[Э™\И€ќ[ИB‚€КЉ€]™\ћHШ[YKЩ]KШЫЫX]К‹љњЫЫ‹\ИШЫЫ[Э[Ы€ЫЫњЭ[ќЛ[€HЪ\HЫЫX]Ю\Э[HШ[ќЛ€
-‹В€ШЫЫX]]J
-HВ€ЫЫњЭH\Л™]NВ€™]\›€В€њ[Y\О€ЫЫX]™њ[Y\Л€›Ы€ЫЫX]њ›Ы€Э[Z[N€ЫЫX]њЭ[Z[K€Ъ\ЩN€ЫЫX]њЪ\ЩK€]Щ[ЫY]ћN€ЫЫX]љ]Щ[ЫY]ћK€ШЪЫЫЋ€ЫЫX]›ШЪЫЫ‹€›\ЪО€ЫЫX]™›\ЪЛ€\›^N€ЫЫX]њ\›^K€ЪЩ[]ЫЋ€ЫЫX]њЪЩ[]Ы‹€Ы\О€ЫЫX]Ы\Л€ЛИМKLLЋ€’KPRLH0©РЛр©Ср©СKр©С‰ЬИ\[Y]\€X›\Л€ЫЫX]ШZKљњШ›ЭЬИЪ]Э]]]\‚€ЛИ[€[[™ИXЪИИЫЫњЭ[ќИ[€ЫЩKЪXЪ\ИH’KSUИZ[\™H\И›Ъ™XЭ\В€ЛИЪ\YЪ^Y[€[Y\Л‚€ZN€ЫЫX]ZK€[Э™\Щ]О€›[Э™\Щ]Л€ЛИМKLL€HЛ]ЩX\Ы€›ЬЭ\‹HЫ\ЬИX›H[™HЫ\™YЪ\ЭћH\™HЪ]H’QТ€ЛИ™XYИ›ЭЛ€[Э™\Щ]Ш
-HЩ]™[€Ь[™Hљ[\КHЭ^\И[€HЪ\HЫ›HЫИ][ћ][™В€ЛИЭ[Ы[™ИHЬ[™HYШ[€™H[X\ЩYИЫЫX]Ю\Э[H™XYИ]›ЭЪ\™H[ЩK‚€ЩX\Ы“[Э™\Щ]О€ќЩX\Ы“[Э™\Щ]Л€ЩX\ЫђЫ\ЬЩ\О€ќЩX\ЫњИ	‰€ќЩX\ЫњЛЫ\ЬЩ\Л€Ы\™YЪ\ЭћN€ќЩX\ЫњИ	‰€ќЩX\ЫњЦЙШЫ\\™YЪ\ЭћIЧK€Щ™љ[™€ќЩX\ЫњИ	‰€ќЩX\ЫњЛ›Щ™љ[™€ШЫЫ[Э[ЫЋ€В€Ш[ЧЫ\О€VQT—РУУ”ХќШ[ЧЫ\Л€›ЩЧЫ\О€VQT—РУУ”Хљ›ЩЧЫ\Л€Ьљ[ќЫ\О€VQT—РУУ”ХњЬљ[ќЫ\Л€\›—Ь]WЩО€VQT—РУУ”Хќ\›—Ь]WЩЛ€ЛИМKL€И’KPРSL€0©РО€H›Э[™Y]\›€]И\ИУИЩZ[[™ЬИ[™HЫ\›ЭЫ™B€ЛИ]K€МЊ0¬ЬИЪ[H[Эљ[™И
-Hљ\ЪX›H\КK0¬ЬИЪ[HЭ][Ы\ћH[™\€L0¬Щ‚€ЛИ\њ›Ь‹[™[€NYњ[YH›ЫЭ[[Э[Ы€\›—Ъ[—ЬXЩXЫ\™^[Ы™]€HЪ[™ЫB€ЛИ0¬ЬИЫЫњЭ[ќ\ИќZ[Ъ\YXYHHќ[›љ[™ИN0¬™]™\њШ[ZЩHЊ€њ[Y\В€ЛИ[њЭXYЩ€MH[™Y›И\›‹Z[‹\XЩH][ЪXЪ’KPРSL€MZ[ИЫ€›Э›ЭЬЛ‚€\›—Ь]WЫ[Эљ[™ЧЩО€МЊ€\›—Ь]WЬЭ][Ы\ћWЩО€€\›—Ъ[—ЬXЩWЭ™\ЪЫЩYО€L€\›—Ъ[—ЬXЩWЩњ[Y\О€N€ЛИМKQРSQTQ8 %РTИЊMKS‘UРTИHСPУУ‘PQ“У‘HУ€S€S‘PQKQPQ“У‘QХPТЛ‚€ЛВ€ЛИЫЫX]Ь^Y\‹љњОЋNM™XYИ\И[™Y\ИH›ЩH]XYИH[Э™WЩXY›Ы™X€ћHB€ЛИ[YHXYШ™XXЪ\И][™HH[Э™[Y[ќЭXЪИ\ИS‘PQH™Y[€›ЭYЪ€ЛИ[њ]ЩШ[Y\YљњИЪ\S[Э™TЭXЪК
-X
-Ь€[њ]ЭЭXЪљњШЪXЪ\ИHШ[YHX]КK€ЛИЪXЪ™[[Э™\И’KR”“Њ0©С	ЬИЊMH[›™\€XY›Ы™H[™‘TРРSTИЪ]\ИYќЫќИМWH8 %€ЛИ[™HЪЫHЪ[ќЩ€]™\ШШ[K[€Ъ\S[Э™TЭXЪЙЬИЭЫ€ЫЬ™Л\ИњЫИ\™H\И›В€ЛИXYЭ\]HXY›Ы™HYЩH‹€\Z[™ИЊMHYШZ[€ИH™\ШШ[Y[YH]HXY€ЛИЭ\ЭZYЪXЪЛЫ™H™\ШШ[Hќ\ќ\€Э]‚€ЛВ€ЛИYX\Э\™YЫ™H›ЩKЫ™Hњ›ЭЬЩ\‹X]ЪY\›\И
-   * the people who own it — which in wave 1 means a companion or a possessed body, and is
-   * The sound radius for a hypothetical motion. `muffle`'s consuming system: RI-MAG06 §B names
-    // `observedBy` is a hand-feed and RI-MTH07 §C3 audits it. It is still accepted, because a
-    // scenario legitimately wants to state the case — but the DEFAULT is derived: the live
-    // `livesHere` was a hardcoded `false` here for the whole of wave 1, which is RI-MTH07 §C3's
-    // hand-feed in its purest form: RI-STL02 §1 makes the entire `shared` scope turn on it and
-    // nothing in the world could ever make it true. It is now DERIVED — from whether the
-   * `observedBy`, and the answer to RI-MTH07 §C3's hand-feed audit for this verb.
-    // little a trespass at three in the morning as at noon and `zone.schedule.open_h` — on all
-    // 233 zones — was read by nothing. It is now derived from the world clock and the hours of
-   * named people; the property tree's zone `residents[]` holds 280 more — the elders, siblings and
-   * buyer in a DIFFERENT town and a DIFFERENT faction — and there is exactly one relation in this
-   * RI-STL02 §6's third refusal line was written for, and until now nothing could reach it.
-   * household (kin) 90, faction 70, quarter-mate 65, a route that calls at the owner's town 60 —
-   * — and a shared reaction group 25, which deliberately does NOT reach it.
-   * not a person — `npc:tuls-avaro` is, and the roster has carried that field all along.
-ЭXЪИШ\В€ЛИ]ЊЌИЩ€ќ[Y›XЭ[Ы€8 %›ЭHШЭ[Y[ќYЊMK[™Ъ][€›Э[™[™ИЩ€B€ЛИЊMH
-ИЊMJЉЋL‹LЊMJHHЊЌЌMH]ЭX›H\XШ][Ы€™YXЭЛ€љYќY[€\€Щ[ќЩ‚€ЛИH]™HЭXЪИ[™ЩHШ\ИXY[™Hљ\њЭY›XЭ[Ы€]Y[ћ][™Иќ[\Y€ЛИЭZYЪИЌMИKЬИ]\€[€X\Ъ[™И[‹‚€ЛВ€ЛИУ“HS€SђSСХQHU’PСHУХS‘PPТUЪXЪ\ИЪH]Э\ќљ]™Y€[њ]Ь™X[љњВ€ЛИЬ\Ъ[Э™J
-X›Ь›X[\Щ\ИHЩ^X›Ш\™ИXYЫљ]YHKЫИHЩ^X›Ш\™™]™\€[ќ\њИ\В€ЛИњ[Ъ][€HY[™HЭXЪШЬ™Y[€Щ\™HHЫ›HЫИ]љXЩ\ИY™™XЭY‚€ЛВ€ЛИHЭX\™\ИЩ\[™Щ]И]\€[€[]Y€HXY›Ы™H™[Ы™ЬИИH]љXЩB€ЛИ^Y\€
-’KR”“Њ0©С’KPРSL€0©РКH[™›Э[[ЩЭYH›ЩXЩ\њИ[\[Y[ќ]\™Kќ]Y‚€ЛИHќ]\™H›ЩXЩ\€]™\€[™И\И[™HHђUИЭXЪИXYЫљ]YK\И\ИЪ\™H]ЫЭ[™B€ЛИШ]YЪ[™H]™H]\[\ИX\ЪY\€Иљ[™[€H[]Yњ[Ъ‚€[Э™WЩXY›Ы™N€€Ш[ЧЬќ[—Э™\ЪЫ€ЌMK€K€NВ€B‚€Э]›ЬЉYZY‹њ[YJHВ€ЫЫњЭЭ]H\Л™]K™[™[ZY\ЦЪYNВ€Y€
-\Э]
-HВ€›ЭИ™]И\њ›ЬЉ€Ь]ЫЉ	ЙЪYIКN€›ИЭXЪ\Ъ]\K€Ы›ЭЫЋ€	УШљ™XЭљЩ^\К\Л™]K™[™[ZY\КKњЫЬќ
-
-Kљ›Ъ[Љ	Л	К_K€
-В€	Р\Ъ]\\И\™HXЫ\™Y[€Ш[YKЩ]KШЫЫX]Щ[™[ZY\ЛК‹љњЫЫЋИH[ќЫHZYЫЭ[™HH	И
-В€	ЩXњљXШ]YYX\Э\™[Y[ќ
-’KSUHMЉK‰КNВ€B€™]\›€XZЩQ[ќ]JЭ]ZY‹њ[YJNВ€B‚€КЉ‚€
-€HЫЬ›YЩ[™\][Ы€ЩYY›Ь€HЩ[\ИЭ]H[Y\ЛђUУ€њ›ЫHHЪ[][][Ы€“‘Л‚€
-‚€
-€ЫИ›Ь\ќY\Л›Э[X™\]N‚€
-‚€
-€
-€]\ИH™X[]ЛЫИ›™Л™]ЬШ[Э™\И›Ь€HЫЬ›Ъ]›И[ќ]H[€]8 %HШ\ЩB€
-€Ъ\™HМKL	ЬИ›Э[™L€Ьљ]XИYX\Э\™YЩ€Kњ[Y\ИY™™\љ[™И™]ЩY[€ЫИЩYYВ€
-€
-™\™XЭ0©ОKЊJK™XШ]\ЩHHЫ›HЩYYY]X[ќ]H[€HќZ[™[Ы™ЩYИ[ќ]Y\ОВ€
-€
-€]\И]Ы€У“H›Ь€H›ШЩY\[HЩ[™\]YЩ[€H\™[KH[ќ\љ[ЬњИ[™B€
-€[™Щ[Ы€\™H]]Ь™YЩ[ЫY]ћN€\™H\И›Э[™И[€[H›Ь€HЩYYИЩ[XЭЫВ€
-€›Э[™И\И]Ы‹›™Л™]ЬШЭ^\И\™K[™’KSUЌЭ[ЫЬњ™XЭH™Yќ\Щ\В€
-€ИЩ\ќYћHЩYYЩ[њЪ]]љ]HЫ€]]Ш\›]\[›Щ[™[^XЪ]™X\ЫЫ€›™ЧЫ™]™\—Щ]Ы‚€
-€]\ШЬљ[Z[]Ь€\ИHЫ™HH›Э[™L€Ьљ]XИ›Э™YШ\И›ЭHќX™\€Э[\[™]€
-€\И›ЭЩXZЩ[™Y\™H8 %]\ИYќЪ]HШЩ[\љ[И]Э[^\Ъ\Щ\И]‚€
-‹В€Щ]ХЫЬ›ЩYY
-
-HВ€Y€
-\ЛЩ[›ЬЉ\ЛњЪ[K™[ќЉHOOH	Щ^\љ[Ь‰КH™]\›€ќ[В€™]\›€›™Лљ[ќ
-Щ™™™™™™ЉNВ€B‚€КЉ‚€
-€T‹TСTФТSУ€Р”СT•‘T”И8 %HУ‘HTХ€МKTУХSИ›Э[™Л‚€
-‚€
-€KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB€
-€ТHTИVTХЛ[™]\ИHЫ\ЬИЩ€Y™XЭ]\€[€HYK]\‚€
-€KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB€
-‚€
-€Щ]™\[ЭXњЮ\Э[\И[€\ИќZ[ЩY\Hљ]]H›ЭHЩ€
-ќЪ]^H]™H[™XYHЩY[€B€
-€›ЩHК€8 %HЫЭ[ИYЩ\‹HX]ШњЩ\ќ™\‰ЬИ\Щ[[™KHЬ[][Ы€Ю\Э[IЬВ€
-€]™HЬЭ[™^HЭX[ЭXњЮ\Э[IЬИЪ]љ[X[њИ[™ЩX\Ъ\ЛHЬ™Y][™ИЫЭ[ќ\‹‚€
-€›Ы™HЩ€]\ИШ]™HЭ]K€[Щ€]\И[€ШњЩ\ќ][Ы€X›Э]HЫЬ›[™]\ИЫ›B€
-€ќYHЩ€H   * a band and until now they computed it from different ledgers — this one from
-   * band 3 look like" is a legitimate question and always was — but the override is reported as
-    // W1-15 r3: was `st.p.gold -= bounty` — a write to the stealth mirror only.
-‚€
-€\™H\™HУИШЩ[\љ[И›Э[™\љY\И8 %\S[YYЭ]J
-X[™HШYЭ]J›ШЉX]8 %€
-€[™[ќ[\ИY]Щ\™HЩ\™HУИS‘SPRS•RS‘QTХИЩ€ЪXЪШњЩ\ќ™\њИXXЪЫ™B€
-€ЫX\™Y€^HY[™XYHљYќY[™HљYќШ\И›Э[Ь™]XШ[‚€
-‚€
-€
-€Ъ[KњЫЭ[ШШ\И[€H›Ш€\ЭЪ]ZYЪ[™\ИЩ€ЫЫ[Y[ќ^Z[љ[™ИЪK[™“Х€
-€[€H[YY\Э]H\Э€HШ[YHљYЪXЬ›ЬЬИШYЭ]J	Ш\™[WЩ›]	КXZY
-МО€
-€[™[€
-М€
-МKTУХSЛ\Њ‹LKЉB€
-€
-€\Л—ЩЬ™Y]ЫЭ[ќШ\И[€‘RUT‹ЫИH›ќЬ™Y][™И€]€
-€Ъ\XЭ\‹ШЫЫќ™\њЩKљњИXЪК
-XЩ[XЭИH[™HЪ]Ш\њљYYXЬ›ЬЬИ]™\ћH›Э[™\ћH[€B€
-€Щ\ЬЪ[ЫЋ€Hљ\њЭ\њЫЫ€[ЭHЬЪЩHИ[€HЩXЫЫ™ШЩ[\љ[И[њЭЩ\™Y[ЭHЪ]B€
-€›Э\ќ[™И^HYИШ^K€›Э[™ћHШ[Ъ[™И\И\Э›ЭћHЫЪЪ[™И›Ь€]‚€
-‚€
-€HZ\ЬЪ[™И[™H[€H\Э›Ш›ЩH™XYИ\И[ќљ\ЪX›K€
-Љ”ЫИH\Э\ИHXЫ\][Ы‹[™€
-€]™\ћHШњЩ\ќ™\€]\ЭЭ]HЪ]]Щ\И]“Х›Э[™\љY\КЉ€8 %[ЫY[™И››Э[™И‹Ъ]B€
-€™X\ЫЫ‹[€ЪWЫ›Э      // `sim.reset()` could not clear — so it survived a state load it should not have and did
-      // system RI-MAG06 §B names for an effect: `cure_disease`/`cure_poison` read the affliction
-      // quest area for a whole round — a declaration of incompleteness is exactly as much a
-      // makes "an object outside melee reach becomes takeable" (RI-MAG06 §B) a readable check.
-      // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
-      // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
-      // `RI-PRG04` §1 both turn on "souls held falls by exactly `soulsToNextLevel()`", and
-      // round 1 had no way to read either without going through the level-up screen — which is
-    // RI-WPN06 §C / game/data/weapons/offhand.json: each configuration has its OWN verb list.
-[€H[™H›Ш›ЩH›ЭXЩ\И\ИXњЩ[ќЪXЪ\ИHЫ›H™\њЪ[Ы€Щ€\И]XZЩ\В€
-€H™^[њЭ[ЩH[\ЬЬЪX›H]\€[€Y\™[HXњЩ[ќ‚€
-‚€
-€\ќ
-
-X\ИЪ][€[њЭќ[Y[ќ™XYО€HЪ[™ЫHќ[X™\€\€ШњЩ\ќ™\€]\И›Ь€HЫX[‚€
-€ШЩ[\љ[Л€ЫЫЛЬ›ЩЬ™\ЬЪ[Ы‹ЬЫЭ[Л[YЩ\‹[ЬXЫK›ZњШ\Щ\И]И\ЬЩ\ќ]Ь›ЬЬЪ[™ИB€
-€›Э[™\ћHXЭX[HX]™\ИHЫЬ›ЫX[‹Ы€›Э]\И›Ш›ЩH\ИљYY‚€
-‚€
-€\ЩX™\Щ\ќ™\ИH^\Э[™ИШ[Ь™\€^XЭN€X\›Xќ[њИЪ\™HH›Э\€ЫX\њВ€
-€[™XYHЩ\™H
-™Y›Ь™HHЭ]IЬИЭЫ€ЫЫќ[ќ\И\YY
-K]Xќ[њИЪ\™B€
-€X]њ™\Щ]
-
-X[™XYHШ\И
-Yќ\€HЬ]ЫњЛ™Y›Ь™HHЭ\ќ[™ИX\ќ\ИЩYYY
-K‚€
-€›Э[™И\™H™[Ь™\њИ[€^\Э[™ИШ[‚€
-‹В€ЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-HВ€ЫЫњЭHH\ОВ€™]\›€В€В€Y€	ЬЭX[	Л€Ъ]€	Ц›Ы™SY[[ЬћKЬљ[YUЫЬ›
-Ъ]™\ЬЩ\И\™HZYZЩ^YY
-KЪ]љ[X[њЛ[™[™И™\ЬќЛЩX\Ъ\ЛЫЭ™\€›Ы[Y\ЛШШЫY\њЛHYЪЫЭ\Щ\Ч	И]›YЬИ[™]™\ћHШљ™XЭ	ЬИЭЫ[—Щњ›ЫK‰Л€\ЩN€	ЩX\›IЛ€\ќ€
-
-HO€
-KњЪ[KњЭX[ИKњЪ[KњЭX[Ъ]љ[X[њЛ›[™Э
-ИKњЪ[KњЭX[њЩX\Ъ\Л›[™Э
-ИKњЪ[KњЭX[њ[™[™Л›[™Э€
-K€[YY€
-
-HO€ИY€
-KњЪ[KњЭX[
-HKњЪ[KњЭX[њ™\Щ]ЭXњЮ\Э[J
-NИK€ЛИМKLMHЊЛ€™\Щ]ЭXњЮ\Э[J
-XШ[››Эќ[€\™H[›[ЩYљYY€\TШ]™J
-X
-Ш]™KЬЭ]KљњКB€ЛИ™\ЭЬ™\ИЬљ[YK›YЩ\[™Ьљ[YKћ›Ы™\Шњ›ЫHH›Ш€У‘HХUSQS•™Y›Ь™H\В€ЛИ›Э[™\ћHќ[њЛ[™™\Щ]ЭXњЮ\Э[J
-X[ЫИ™KX™]ШИ›Э8 %]ЫЭ[›ЭИH™\ЭЬ™B€ЛИ]Ш^HЫ€H™\ћH™^[™K€™\Щ]Щ\ЬЪ[Ы‘\[Y\J
-X\ИHШ[YHЫX\€Z[ќ\ИЬЩHЫВ€ЛИљY[Л\ИH™XЫЫЪ[X][Ы€Щ€HЫЬ›	ЬИЭЫ[—Щњ›ЫXX\љЬИYШZ[њЭH™YЪ\ЭћB€ЛИH›Ш€ќ\Э™\ЭЬ™Y€™\ЬќYћHМKTУХSИЊИ\ИЪ]љ[X[њЛЬЩX\Ъ\ЛЬ[™[™ИЭ\ќљ]™B€ЛИHШYЋИЫЬЩY\™K‚€Ш]™N€
-
-HO€ИY€
-KњЪ[KњЭX[
-HKњЪ[KњЭX[њ™\Щ]Щ\ЬЪ[Ы‘\[Y\J
-NИK€K€В€Y€	Щ\ШЫЭ™\ћIЛ€Ъ]€	ЭHX\\ШЫЭ™\ћH\Э\€8 %ќЪ\™HTИЪ\XЭ\€\И™Y[€‹‰Л€\ЩN€	ЩX\›IЛ€\ќ€
-
-HO€€[YY€
-
-HO€ИY€
-KњЪ[K™\ШЫЭ™\ћJHKњЪ[K™\ШЫЭ™\ћKњ™\ЭЬ™Jќ[
-NИK€Ш]™N€ќ[€ЪWЫ›Э€	Ш\TШ]™J
-H™\ЭЬ™\ИЫЬ›™\ШЫЭ™\ћHњ›ЫHH›Ш‹ЪXЪ\И// P10 — THE LOADER HAD NO RETRY, AND ONE HICCUP ON ONE OF 569 FILES WAS A BLACK SCREEN.
-// later run: 1 retried 5xx across 2828 requests. On this build machine — localhost, one client,
-// no CDN — it essentially never happens, which is exactly why it reached the owner and not us.
-//   * **transient** — 5xx, 408, 429, or the fetch rejecting outright (DNS, TLS, a dropped
-//   * **permanent** — 404. The file is genuinely not published. This is the OTHER black-screen
-// (±40% jitter), so a single unlucky file costs at most ~3.85 s. Across the WHOLE load the
-// network is not slower at all — nothing sleeps unless something has already failed.
-В€Y€	ЬЬ[][Ы‰Л€Ъ]€	ЭHЬЭЭ]HX›H[™H]™HЬЭO€ZY[™^€]™\ћHZY]Ш\ИЫ[™И\И[™XYHЫЫ™K‰Л€\ЩN€	ЩX\›IЛ€\ќ€
-
-HO€
-KњЬ[][Ы€ИKњЬ[][Ы‹›]™KњЪ^™H€
-K€[YY€
-
-HO€ИY€
-KњЬ[][ЫЉHKњЬ[][Ы‹њ™\Щ]
-
-NИK€Ш]™N€
-
-HO€ИY€
-KњЬ[][ЫЉHKњЬ[][Ы‹њ™\Щ]
-
-NИK€ЛИZ\€ЭЫ€›Э[™LHЬљ]XИЪ\™Щ\И\И[™N€™\Щ][™И[ЬЭИИФ“PS•Ы€HШY€ЛИЪ[HЬ™[\ћT™\Ь]Ы‘\ШЪЩ\И›Э[Э™H\И[€[›Э[™YШ]™KЫШY\›B€ЛИ
-РTUМK\Ь[][Ы‹\Ш]™K\™[ШY\™\^\ЛY]™\ћKXЫЬњЩJK€H™[YYH\ИZ\њИ8 %\њЪ\Э€ЛИHЫX\™Y\ЬЭЩ]8 %[™\И[X™\][H“Х][\Yњ›ЫH\™K‚€›ЭN€	ХМKTФSUSУ‹\ЊH0©М€Ъ\™Щ\ИHШ]™K\]™\Щ]\И[€НHљ[Ы][Ы‹€Z\€™[YYKZ\€љ[K‰Л€K€В€Y€	ЬЫЭ[          throw new Error(`data file UNREADABLE: ${rel} — HTTP 200 from ${href} but the body is not JSON (${e.message}). This is not a network failure; the published file is corrupt.`);
-      // diagnoses it — masking a genuinely unpublished file behind four retries would be strictly
-        throw new Error(`data file MISSING: ${rel} — HTTP ${status} on ${href}, after ${attempt} attempt${attempt === 1 ? '' : 's'}. A ${status} is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.`);
-        throw new Error(`data file UNAVAILABLE: ${rel} — ${what} on ${href}, unchanged after ${attempt} attempt${attempt === 1 ? '' : 's'} spanning ${Math.round(sleptHere)} ms of waiting; gave up at ${stop}. The file is NOT missing — the server would not serve it. This usually clears on a reload.`);
-    // W1-08 round 2. RI-JRN03 §F DS2 — the ONLY sanctioned way this game may teach a verb,
-    // shipping nothing — and shipping nothing is exactly what M-K21 measured on this build
-    // W1-READABLES round 2 — the `environment` channel's objects. See `Engine._ensureProvinceMarks`.
-    // dropped — which is exactly how `dialogue/persuasion-gmst.json` spent a round being loaded
-    // W1-02. The thirteen weather state machines and the 20x clock they run on (RI-WLD08 §1,
-    // §5). Own branch for the reason the `world/signposts.json` comment above gives: a
-    // W1-OPACITY. RI-WLD09 §B1's register of the 24 things this world refuses to explain.
-    // W1-22. The thirteen regional ambience beds (RI-AUD03 §B). It MUST have a branch here for
-    // fix — 39 audio strings in regions.json that nothing read. Consumed by
-    // W1-11. The twelve combat impact classes (RI-AUD01 §A) and their forty-eight variants.
-    // Same rule, same reason: no branch here and the file is fetched, counted, and dropped —
-    // W1-07 round 4: both of these were fetched at boot and then DROPPED — they matched no
-    // branch below and fell off the end of the chain. RI-DLG04 §B's whole term set was
-  // W1-07 — the character-creation view of the data, assembled once at boot so that
-HO€
-KњЪ[KњЫЭ[ИИKњЪ[KњЫЭ[Л—Ш[]™KњЪ^™H€
-K€[YY€
-
-HO€ИY€
-KњЪ[KњЫЭ[КHKњЪ[KњЫЭ[Лњ™\Щ]
-
-NИK€Ш]™N€
-
-HO€ИY€
-KњЪ[KњЫЭ[КHKњЪ[KњЫЭ[Лњ™\Щ]
-
-NИK€›ЭN€	ФЪ[ЩHЊИHYЩ\€\ИЩ^YYЫ€H[ќ]HР’‘PХЫИ\ИШ[\ИYЪY[™H[™›ЭHYXЪ[љ\ЫH8 %H›Э[™\ћH]›Ь™ЫЭ]ЫЭ[Э[›ЭZ\Л\^K€ЩYHЪ[KЬЫЭ[ЛљњЛ‰Л€K€В€Y€	ЩЬ™Y][™ЧШЫЭ[ќ	Л€Ъ]€	ЫњИZYO€ЭИX[ћH[Y\И\ИЪ\XЭ\€\ИЬ[™YHЫЫќ™\њШ][Ы€Ъ][K€Ъ\XЭ\‹ШЫЫќ™\њЩKљњИXЪК[™\ЛњТYќ
-HЩ[XЭИHФ‘QUS‘ИS‘HЪ]][™[™Ъ[™Kњќ[[Э\‘›Ь€\ЬЩ\ИHШ[YHќИHќ[[Э\€›ЫЪЛ‰Л€\ЩN€	ЩX\›IЛ€\ќ€
-
-HO€K—ЩЬ™Y]ЫЭ[ќњЪ^™K€ЛИ›Э[™ћHЬљ][™И\И\Э€]Ш\И[€™Z]\€›Э[™\ћIЬИ\Э[™Ъ[Kњ™\Щ]
-
-X€ЛИ›ЫЭЩYћHЬ[]TЩ][Y[ќ
-
-X™XќZ[И]™\ћH”И[™\€HРSQH]\›Z[љ\ЭXВ€ЛИZY8 %ЫИHЫЭ[ќШ\И[€ШњЩ\ќ][Ы€X›Э]H\њЫЫ€ЪИ›ИЫ™Щ\€^\ЭЛ\YY€ЛИИH\њЫЫ€ЪИ™\XЩY[K‚€[YY€
-
-HO€ИK—ЩЬ™Y]ЫЭ[ќЫX\Љ
-NИK€Ш]™N€
-
-HO€ИK—ЩЬ™Y]ЫЭ[ќЫX\Љ
-NИK€K€В€Y€	ЩX]	Л€Ъ]€	ЭHX]ќ[ќ[YN€HШњЩ\ќ™\—	ЬИ\Щ[[™KH\ЭЬ›Э[™YЬЪ][Ы€[™H[‹Y›YЪX]‰Л€\ЩN€	Ы]IЛ€\ќ€
-
-HO€€[YY€
-
-HO€ИY€
-K™X]
-HK™X]њ™\Щ]
-
-NИK€Ш]™N€ќ[€ЪWЫ›Э€	ЭH›Ш€][X™\][HЩ\И“ХЫX\€\ИЪЫ\Ш[H8 %\TШ]™J
-H\Иќ\Э™\ЭЬ™Y[€[‹Y›YЪX][™X]Ю\Э[Kњ™\ЭЬ™R[‘›YЪ
-
-K[™ЫX\љ[™И]™]ИHЊ\ЫЭ[›ЫЫH]Ш^H
-МKLLИЊЉK€H›Ш€]Щ\И]ИЭЫ€\њ›ЭЩ\€љ^\[€ШYЭ]J
-K‰Л€K€NВ€B‚€КЉ‚€
-€ЫX\€]™\ћH\‹\Щ\ЬЪ[Ы€ШњЩ\ќ™\€\И›Э[™\ћHXЫ\™\Л€™]\›њИHYИ]ЫX\™YЫИB€
-€Ш[\€
-[™[€[њЭќ[Y[ќ
-HШ[€ЩYHЪ]XЭX[H[€]\€[€Ъ]Ш\И[ќ[™Y‚€
-‚€
-€\[HЙЫ[YY	Я	ЬШ]™IЯH›Э[™\ћB€
-€\[HЙЩX\›IЯ	Ы]IЯH\ЩB€
-‹В€Ь™\Щ]Щ\ЬЪ[Ы“ШњЩ\ќ™\њК›Э[™\ћK\ЩJHВ€ЫЫњЭЫ™HHЧNВ€›Ь€
-ЫЫњЭИЩ€\Л—ЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-JHВ€Y€
-Лњ\ЩHOOH\ЩJHЫЫќ[ќYNВ€ЫЫњЭ›€HЦШ›Э[™\ћWNВ€Y€
-\[Щ€›€OOH	Щќ[Э[Ы‰КHИ›Љ
-NИЫ™Kњ\Ъ
-ЛљY
-NИB€B€™]\›€Ы™NВ€B‚€КЉ‚€
-€Ъ][€[њЭќ[Y[ќ™XYО€]™\ћH\‹\Щ\ЬЪ[Ы€ШњЩ\ќ™\‹Ъ]]Щ\И]XXЪ›Э[™\ћK[™ЭВ€
-€\ќH]\ИљYЪ›ЭЛ€HЫX[€ШЩ[\љ[И\И]™\ћH\ќ]‚€
-‹В€Щ]Щ\ЬЪ[Ы“ШњЩ\ќ™\ђЩ[њЭ\К
-HВ€™]\›€\Л—ЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-K›X\
-
-КHO€
-В€Y€ЛљYЪ]€ЛќЪ]\ЩN€Лњ\ЩK€ЫX\њЧЫЫ—Ы[YYЬЭ]N€\[Щ€Л›[YYOOH	Щќ[Э[Ы‰Л€ЫX\њЧЫЫ—ЬШ]™WЫШY€\[Щ€ЛњШ]™HOOH	Щќ[Э[Ы‰Л€ЪWЫ›Э€ЛќЪWЫ›Эќ[€›ЭN€Л››ЭHќ[€\ќ€Л™\ќ
-
-K€JJNВ€B‚€Ь™\Щ]›Э\›™^TЭ[\К
-HВ€\Л—Щљ\њЭ[њ]њ[YHHќ[В€\Л—Щљ\њЭЫЫќ›Ыњ[YHHќ[В€\Л—Щљ\њЭљY[њ[YHHќ[В€\Л—Щљ\њЭљY[›ЩHHќ[В€\Л—Ъ›Э\›™^T™]”ЬЩHHќ[В€B‚€\S[YYЭ]J[YJHВ€ЫЫњЭ]ЪH\Л™]KњЭ]\ЦЫ[YWNВ€Y€
-\]Ъ
-HВ€›ЭИ™]И\њ›ЬЉШYЭ]J	ЙЫ[Y_IКN€›ИЭXЪ[YYЭ]K€Ы›ЭЫЋ€	УШљ™XЭљЩ^\К\Л™]KњЭ]\КKњЫЬќ
-
-Kљ›Ъ[Љ	Л	К_X
-NВ€B€ЫЫњЭЪ[HH\ЛњЪ[NВ€Ъ[Kњ™\Щ]
-›™ЛњЩYY[YJNВ€ЛИ\ЩHЫ™K\ЪЭ›Э\›™^HШњЩ\ќ][ЫњИ™[Ы™ИИHЫЬ›]›ЩXЩY[K€H[YY€ЛИЭ]H\ИH›ЩXЭ[Ы€ШЩ[\љ[И›Э[™\ћK›ЭY\™[HH\›™\ЬИЫЫќ™[љY[ЩK‚€\Л—Ь™\Щ]›Э\›™^TЭ[\К
-NВ€ЛИЪ[TЭ]Kњ™\Щ]
-
-X™\XЩ\ИЪ[Kњ]Y\ЭЪЫ\Ш[KЫИH]Y\Э[™Ъ[™HќZ[]›ЫЭ\ИYќ€ЛИЫ[™ИH‘U’SХTИЭ]HШљ™XЭ[™]И›Э\›[\ИYќЫ[™ИH™]љ[Э\И[ќљY\В€ЛИ\њ^K€]™\ћHЬљ]HYќ\€Hљ\њЭШYЭ]J
-X[€[™И[€H]XЪY\њ^H]€ЛИ›Э[™И™\ЬќИ8 %ЪXЪ\И^XЭHЪ]\ЭЬЪYЪYX\Э\™Y\ИS”‘PQХSQTЋ€HY™™XЭ€ЛИЬ›ЭHH›Э\›[[™KЫЬњ™XЭK[ќИH›Э\›[›Ш›ЩHЫЭ[™XY‚€\Л—Ь™Xљ[™]Y\Эќ[ќ[YJ
-NВ€ЛИHT‹TСTФТSУ€Р”СT•‘T”Л€МKLMH›Э[™€\ЭX›\ЪYHќ[H\ЩH[™\И^\Э›Ь€8 %€ЛИHШЩ[\љ[И›Э[™\ћH]Щ\И›ЭЫX\€HЭXњЮ\Э[H\И›ЭHШЩ[\љ[И›Э[™\ћK[™B€ЛИЫЬЭ\ИYX\Э\™Y[€Ь›Ы™И™\™XЭИ]\€[€[€ќYЬИ€8 %[™МKSPT[™МKTФSUSУ‚€ЛИXXЪYYZ\€ЭЫ€[™H[™\€]€›Э\€[™]Ьљ][€[™\И\™KHY™™\™[ќЩ]Щ€[™€ЛИ]Ьљ][€[™\ИЫ€H›Ш€][™Ъ[KњЫЭ[Ш™\Щ[ќ[€]\Э[™Z\ЬЪ[™Ињ›ЫB€ЛИ\ИЫ™N€
-МО[€
-М›Ь€HШ[YHљYЪXЬ›ЬЬИ\И›Э[™\ћH
-МKTУХSЛ\Њ€‹LJK‚€ЛВ€ЛИ^H\™H›ЭИУ‘HPУT‘QTХ8 %ЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-X8 %ЪXЪ›Э›Э[™\љY\ИЫЫњЭ[YH[™€ЛИ[€ЪXЪ]™\ћHШњЩ\ќ™\€]\ЭШ^HЪ]]Щ\И]XXЪ€Ш[YHШ[ЛШ[YHЬ™\‹\ИB€ЛИЫИ]Щ\™HZ\ЬЪ[™Л€ЩYHHXY\€Ы€ЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-X‚€\Л—Ь™\Щ]Щ\ЬЪ[Ы“ШњЩ\ќ™\њК	Ы[YY	Л	ЩX\›IКNВ€Y€
-]Ъ™[ќЉHШљ™XЭ\ЬЪYЫЉЪ[K™[ќ‹В€[YSЩ‘^N€]Ъ™[ќ‹ќ[YSЩ‘^HПИЪ[K™[ќ‹ќ[YSЩ‘^K€ЩX]\Ћ€]Ъ™[ќ‹ќЩX]\€ПИЪ[K™[ќ‹ќЩX]\‹€™YЪ[ЫЋ€]Ъ™[ќ‹њ™YЪ[Ы€ПИЪ[K™[ќ‹њ™YЪ[Ы‹€[ќ\љ[ЬЋ€]Ъ™[ќ‹љ[ќ\љ[Ь€OOH[™Yљ[™YИЪ[K™[ќ‹љ[ќ\љ[Ь€€]Ъ™[ќ‹љ[ќ\љ[Ь‹€ЛИМKLNH›Э[™Ћ€ЪXЪЭЫ€[ЭH\™HЭ[™[™И[‹€X[ЩЭYKЬќ[[Э\њЛљњЫЫ\ИЩ^YYћB€ЛИЩ][Y[ќ
-’KQМ€8 %ќ[[Э\њИUTХY™™\€\€ЭЫЉH[™[ќ[\И[™HHЫ›B€ЛИЩ][Y[ќH[™Ъ[™HЫЭ[[YHШ\ИЪXЪ]™\€Ы™H[€”И™XЫЬ™\[™YИШ\њћKЫВ€ЛИH\њЫЫ€Ъ]›ИЩ][Y[ќљY[Y›Э[™ИИЫЬЬЪ\X›Э]‚€Щ][Y[ќ€]Ъ™[ќ‹њЩ][Y[ќOOH[™Yљ[™YИЪ[K™[ќ‹њЩ][Y[ќ€]Ъ™[ќ‹њЩ][Y[ќ€JNВ€Y€
-]Ъњ^Y\ЉHВ€ЫЫњЭHЪ[Kњ^Y\ЋВ€Y€
-]Ъњ^Y\‹њЬКHИњЬЦМHH]Ъњ^Y\‹њЬЦМNИњЬЦМWHH]Ъњ^Y\‹њЬЦМWNИњЬЦМ—HH]Ъњ^Y\‹њЬЦМ—NИB€Y€
-]Ъњ^Y\‹ћX]ИOOH[™Yљ[™Y
-HћX]ИH]Ъњ^Y\‹ћX]ОВ€Y€
-]Ъњ^Y\‹љOOH[™Yљ[™Y
-HљH]Ъњ^Y\‹љВ€Y€
-]Ъњ^Y\‹њЭ[Z[HOOH[™Yљ[™Y
-HњЭ[Z[HH]Ъњ^Y\‹њЭ[Z[NВ€B€Y€
-]ЪШ[Y\JHВ€Y€
-]ЪШ[Y\KћX]ИOOH[™Yљ[™Y
-HЪ[KШ[Y\KћX]ИH]ЪШ[Y\KћX]ОВ€Y€
-]ЪШ[Y\Kњ]ЪOOH[™Yљ[™Y
-HЪ[KШ[Y\Kњ]ЪH]ЪШ[Y\Kњ]ЪВ€Y€
-]ЪШ[Y\K›[ЩJHЪ[KШ[Y\K›[ЩHH]ЪШ[Y\K›[ЩNВ€B€Y€
-]Ъљ[ќ™[ќЬћJHЪ[Kљ[ќ™[ќЬћHH”УУ‹њ\њЩJ”УУ‹њЭљ[™ЪYћJ]Ъљ[ќ™[ќЬћJJNВ€Y€
-]Ъњ›ЩЬ™\ЬЪ[ЫЉHШљ™XЭ\ЬЪYЫЉЪ[Kњ›ЩЬ™\ЬЪ[Ы‹”УУ‹њ\њЩJ”УУ‹њЭљ[™ЪYћJ]Ъњ›ЩЬ™\ЬЪ[ЫЉJJNВ€Y€
-]Ъњ]Y\Э
-HY\\ЬЪYЫЉЪ[Kњ]Y\Э”УУ‹њ\њЩJ”УУ‹њЭљ[™ЪYћJ]Ъњ]Y\Э
-JJNВ€Y€
-]ЪќЫЬ›
-HY\\ЬЪYЫЉЪ[KќЫЬ›”УУ‹њ\њЩJ”УУ‹њЭљ[™ЪYћJ]ЪќЫЬ›
-JJNВ€ЛИ]Ы€Q•T€H[ќ€]Ъ
-HЩ[\И›ЭЫ›ЭЫ€™Y›Ь™H]
-H[™‘Q“Ф‘HШ\PЩ[
-
-K€ЛИЬ›Э[™]
-
-H[™HЬ]ЫњЛ[Щ€ЪXЪ™XYHЩ[™\]Y\њZ[‹‚€Ъ[KќЫЬ›ЩYYH\Л—Щ]ХЫЬ›ЩYY
-
-NВ€\Л—Ш\PЩ[
-
-NВ€ЛИМKLN€HљYЪ\И™XќZ[њ›ЫHH[YYЭ]IЬИШYЭ]€HЫЫX]›ЩY\И\™HB€ЛИ]]Ьљ]H[™Ъ[Kњ^Y\€\ИHљY]И
-Ъ[KШЫЫX]XњљYЩKљњКNИ™XќZ[[™И\™H]\€[‚€ЛИ]Ъ[™ИH]™HЮ\Э[H\ИЪ]XZЩ\ИШYЭ]J
-H™\›ЩXЪX›K‚€\Л—ЫШYЭ]HШљ™XЭ\ЬЪYЫЉЯK]Ъ›ШYЭ]ЯJNВ€\Л—ШќZ[ЫЫX]
-\Л—ЫШYЭ]
-NВ€ЛИМKLО€H[YYЭ]HX^HXЫ\™HHќ[HЬ™X]YЪ\XЭ\€[™HXЩKXЫЫ™][Ы™Y€ЛИ[ЫЭ[ќ\‹€\И\ИЭИ’KPТЊ€Y]Щ	ЬИK\Э]HњXЩOOЏ‹\њљ[™Ъ[™ПY›Ь™ZYЫ‹X›Ь›€€ЛИ™\ЫЫ™\ИЪ]Э]HШЩ[\љ[И]љ[™ИИ™\^HHЪЫHЬљ]Э\ЩHШЩ[™K‚€Ъ[K™[ЫЭ[ќ\‘]HH\Л™]KЪ\XЭ\ЋВ€Y€
-]ЪЪ\XЭ\ЉH\ЛњЩ]Ъ\XЭ\Љ]ЪЪ\XЭ\ЉNВ€ЛИМKLM›Э[™ЛРTUМK[XYЪXЛ\ЪЪ[Yњ›Ю™[‹€Ъ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[Ш\ИHЪЪ[™YЪ\Э\Ћ‚€ЛИH]Y\ЭXXЪ[™IЬИ™\]Z\™\ЛњЪЪ[Ш™XYИ]Ъ\XЭ\‹ЬЪЪ[\ЩKљњШЬљ]\И]€ЛИШ]™KЬЭ]KљњШ\њЪ\ЭИ][™XYЪXФЮ\Э[KњЪЪ[Ш\И›ЭИHљY]ИЩ€]€]Ш\ИЯX[‚€ЛИ]™\ћHЭ]H]Y›ЭXЫ\™HHЪ\XЭ\›ШЪЛЪXЪYX[ќXYЪXИYИЩY\B€ЛИљ]]HЫЬH8 %[™Hљ]]HЫЬHШ\ИHY™XЭ€ЩYY]ЫИ\™H\И^XЭHЫ™K‚€\Л—Щ[њЭ\™TЪЪ[™YЪ\Э\Љ
-NВ€ЛИМKLLИ›Э[™ЛРTUМK[]™[\\ШЬ™Y[‹X[™XЪ\XЭ\‹\ЬXZЛYY™™\™[ќ[[™ЭXYЩ\Л€H^XЭ€ЛИЪ[€Щ€H[™HX›Э™K›Ь€HU’P•UH™YЪ\Э\‹[™Yќ™Z[™Ъ[€]Ы™H[™Y‚€ЛИH]™[]\ШЬ™Y[€]ЬИH]Hљ[IЬИ[€[™XZЩT›ЩЬ™\ЬЪ[ЫЉ
-XЩYYYЪ^™YHЩ‚€ЛИЪXЪЩ\™H›Э[€HXЫ\™YЫЬ›][€™XЫЫЪ[Y\™KЫ€HШ[YHШ[ЫИHЭ]B€ЛИљ[H][™]Ьљ]\ИH›ЩЬ™\ЬЪ[Ы‹]љXќ]\Ш›ШЪИШ[››Э™Z[ќ›ЩXЩHHЬ]‚€\Л—Щ[њЭ\™P]љXќ]T™YЪ\Э\Љ
-NВ€ЛИМKLО€H[ЬH[™H[™ЬЛ€HЭ]Hљ[H][Y\И[€[ќ\љ[Ь€[™]И›Ш›ЩB€ЛИ[€]\ИH›Э[™LHZ[\™H[€]H›Ь›K‚€\ЛЩ[њЭ\ФXЩHHќ[В€›Ь€
-ЫЫњЭ€Щ€]Ъ›њЬИЧJH\ЛњЬ]Ы“”КЉNВ€ЛИKKKHМKQТU‘T‹T‘TСSђСK€HЭЫ‹›Эќ\ЭHШЩ[™K€KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB€ЛВ€ЛИРTUМK\]Y\ЭYЪ]™\њЛ[›ЭZ[‹]K]ЫЬ›€\ИШ\ИHЪЫHY™XЭ€Ш[YKЩ]KЫњЬЛШЫВ€ЛИМН€™XЫЬ™ОИH[љXљ]YЫЬ›Ш\ИСS‘HSФK™XШ]\ЩHHЫ›H[™И]Y]™\‚€ЛИ]H›ЩH[€H[YYЭ]HШ\ИHњЬО›ШЪИX›Э™H[™›Э\€Э]Hљ[\И™]ЩY[€[B€ЛИXЫ\™HЩ[™K€МKLќZ[Ь[]TЩ][Y[ќ
-
-X8 %HXXЪ[™H]љ[ИHЭЫ€њ›ЫH]В€ЛИ™XЫЬ™И8 %[™Ъ\™Y]ИЭ\Щ][Y[ќЪXЪљ\™\И]Ы€HЩ][Y[ќФ“ФФТS‘Л€›В€ЛИ›ЫЭX›HЭ]HЭ[™ИH^Y\€[њЪYHHЩ][Y[ќY]\ЛЫИHЬ›ЬЬЪ[™И™]™\‚€ЛИ\[™Y[™H›Ш™H]ШYИHЭ]H[™\ЪЬИHЫЬ›H]Y\Э[Ы€Ъ]Э]Э\[™В€ЛИ
-ЪXЪ\И]™\ћH]Y\Э›Ш™H[€H™YJHЫЭ[›Э]™H™XXЪY]]™[€Y€Ы™HY‚€ЛВ€ЛИHЭ]H[Y\И]ИЭЫ€Z]\€Э]љYЪ
-[ќ‹њЩ][Y[ќ
-HЬ€ћH[Z[™ИHЩ[]™[Ы™ЬВ€ЛИИЫ™NИЪ]X[Y\ИHXЩH]\И›ЭHЭЫ€][€Ь[][™И\™H]\€[€Ы€B€ЛИљ\њЭЭ\\И[X™\]N€ШYЭ]J
-X]\ЭX]™HHЫЬ›[€HЭ]H]\ШЬљX™\Л[™€ЛИќHX\љЩ]Ь]X\™KЫЩH[ЭH]™HZЩ[€HЭ\€\И›ЭHX\љЩ]Ь]X\™K‚€В€]ЪYH\ЛњЪ[K™[ќ‹њЩ][Y[ќќ[В€Y€
-\ЪY	‰€\ЛњЪ[K™[ќ‹љ[ќ\љ[Ь€	‰€\ЛњЩ][Y[ќКHВ€ЫЫњЭH\ЛњЩ][Y[ќЛљ[ќ\љ[ЬЉ\ЛњЪ[K™[ќ‹љ[ќ\љ[ЬЉNВ€Y€
-	‰€њЩ][Y[ќ
-HЪYHњЩ][Y[ќВ€B€Y€
-ЪY
-HИ\ЛњЪ[K™[ќ‹њЩ][Y[ќHЪYИ\ЛњЬ[]TЩ][Y[ќ
-ЪY
-NИB€Y€
-]ЪњЪ]JH\ЛњЬ[]TЪ]J]ЪњЪ]JNВ€B€›Ь€
-ЫЫњЭИЩ€]Ъњ›ЬИЧJH\ЛњЬ]Ы”›Ь
-КNВ€\Л—ЬЬ]Ы’[њШЬљ\[ЫњК[YJNВ€ЛИМKLLИЊЋ€HЭ]Hљ[IЬИЬ]ЫЋ›ШЪИX^HXЫ\™HHЪ^НHЫ\ЬЪYљXШ][Ы€›YЬЛЫВ€ЛИH]Y\ЭXЩ\И[€Ь™[\ћH\Ъ]\H\ИH[YYXЭЬ€€\И^™\ЬЪX›H[€UH[™›Э€ЛИЫ›H›ЭYЪH\›™\ЬИШ[€›Э[™H›ЬY]™\ћ][™Иќ]\ШЫ€H›ЫЬ‹‚€›Ь€
-ЫЫњЭИЩ€]ЪњЬ]Ы€ЧJHВ€ЫЫњЭИHИ\О€Л\ИNВ€Y€
-ЛћX]ИOOH[™Yљ[™Y
-HЛћX]ИHЛћX]ОВ€›Ь€
-ЫЫњЭ€Щ€ЙЫ[YY	Л	Э[љ\]YIЛ	Ш›ЬЬЙЛ	ЫY\Ъ[ќ	Л	ЭZ[™\‰Л	Ь]Y\ЭXЭЬ‰ЧJHВ€Y€
-ЦЩ—JHЦЩ—HHќYNВ€B€\ЛњЬ]ЫЉЛљYЛћЛћ‹КNВ€B€›Ь€
-ЫЫњЭHЩ€]Ъ™[ЫЭ[ќ\њИЧJH\ЛњЬ]Ы‘[ЫЭ[ќ\ЉKљYKћKћ‹JNВ€ЛИ]H^Y\€Ы€HЬ›Э[™Щ€Ъ]]™\€Щ[HЭ]H[Y\Л‚€Ъ[Kњ^Y\‹њЬЦМWHH\Л™Ь›Э[™]
-Ъ[Kњ^Y\‹њЬЦМKЪ[Kњ^Y\‹њЬЦМ—JNВ€ЛИHШ[Y\IЬИЫЫ\Ъ[Ы€Щ[€H[YYЭ]HX^HXЫ\™HШ[Y\WШЩ[ИЪ]Э]Ы™HB€ЛИЩ[\И[\H[™HЬљ[™И\›H\И›Э[™ИИЫЫYHЪ]ЪXЪ\ИHЫ™\Э€ЛИЭ]HЩ€H›ШЩY\[^\љ[Ь€[ќ[МKLHX›\Ъ\ИЫЫ\Ъ[Ы€›Ь€]‚€\ЛњЩ]Ш[Y\PЩ[
-]ЪШ[Y\WШЩ[ќ[
-NВ€\Л—ЬЩ]PШ[Y\J
-NВ€ЛИМKLLЛ€HШЩ[\љ[И›Э[™\ћHЫX\њИHX]ќ[ќ[YH›Ь€HШ[YH™X\ЫЫ€МKLMIЬВ€ЛИЫX\њИHЭX[ЭXњЮ\Э[N€HШЩ[\љ[И›Э[™\ћH]Щ\И›ЭЫX\€HЭXњЮ\Э[H\В€ЛИ›ЭHШЩ[\љ[И›Э[™\ћK[™HЫЬЭ\ИYX\Э\™Y[€Ь›Ы™И™\™XЭИ]\€[€[‚€ЛИќYЬЛ€€HTђP“H[€8 %H›ЫЫH]Щ[€8 %]™\И[€Ъ[Kњ]Y\Э™X]›ЫЩЭZ[[™€ЛИ\И™\Щ]ћHЪ[Kњ™\Щ]
-
-X[™[€]ЪYћHHЭ]K^XЭHZЩH]™\ћHЭ\‚€ЛИ\X›HљY[€]ќ[њИT‘H]\€[€Ъ]HЭ\€›Э\€™XШ]\ЩH]]\Эќ[€Yќ\€B€ЛИЬ]ЫњОИ]\ИЪHЬЩ\ЬЪ[Ы“ШњЩ\ќ™\њК
-XШ\њљY\ИH\ЩX[™Щ\И›Э™[Ь™\€[ћ][™Л‚€\Л—Ь™\Щ]Щ\ЬЪ[Ы“ШњЩ\ќ™\њК	Ы[YY	Л	Ы]IКNВ€\Л—ЬЩYYЭ\ќ[™ТX\ќ
-
-NВ€]X[ќ\ЩPЫЫЭ]JЪ[JNВ€™]\›€ИЪО€ќYKњ[YN€Ъ[K™њ[YKЩYY€›™ЛњЩYYNВ€B‚€КЉ‚€
-€ќZ[HљYЪњ›ЫHHШYЭ]€Ш[YћH\S[YYЭ]HЫИH[YYЭ]Hќ[B€
-€]\›Z[™\ИHЫЫX]Ю\Э[KЪXЪ\ИЪ]XZЩ\ИHШЩ[\љ[И™\›ЩXЪX›K‚€
-‹В€ШќZ[ЫЫX]
-ШYЭ]
-HВ€ЛИМKLM€›Э[™€8 %HTURTSРQS‹™\Щ]]HЫ™H›Э[™\ћH]™XќZ[ИHљYЪ‚€ЛИHШЩ[\љ[И]Э]\И]ИЭЫ€\]Z\ШY\И[›™Y][™Ь™XЫЫ\]Q\]Z\ШY
-
-XЩY\В€ЛИ]И[™ИЩ™ЋИ]™\ћH\™[KШ[Y\Hљ^\™H[™Ь‹[ШYЭ]JЭ]HЩ\И^XЭH]ЫВ€ЛИHМKLKМLМLHШ[Xњ][Ы€\И[ќЭXЪY€HШЩ[\љ[И]Щ\И“ХЭ]HЫ™HЩ]ИB€ЛИЫЬ›	ЬИ[њЭЩ\€[њЭXYЩ€H\™ЫЩYЌЊ€Ш[YHЪ\H\И›Э[™IЬИЭX[ЫЭ™\њљY[‚€\Л—Щ\]Z\ШY[›™YHHJШYЭ]	‰€ШYЭ]™\]Z\ШYЭOOH[™Yљ[™Y
-NВ€ЛИМKLM€›Э[™8 %HS‰ФИђSQKЩ\™\ЪYHH›YИ[њЭXYЩ€Ы›HЫ€H›ЩK‚€ЛИЬX›\Ъ\]Z\ШY
-
-X™XЫЫ\]\И‹™\]Z\ШYЭњ›ЫHH\ЩH[™[€Щ™њЩ]Ы€]™\ћHЬљ]K€ЛИЫИH\ЩHЩ€H[›™YљYЪ\ИИ™HHљY[]\€[€ќЪ]]™\€H›ЩHШ^\И›ЭИ€8 %€ЛИЭ\ќЪ\ЩHHЬ[Щ™њЩ]\YYИH[›™YШЩ[\љ[ИЫЭ[™H™KXYYЫ€H™^X›\Ъ‚€\Л—Щ\]Z\ШY[•[YHH\Л—Щ\]Z\ШY[›™YИќ[X™\ЉШYЭ]™\]Z\ШYЭ
-H€ќ[В€ЛИМKLM€›Э[™8 %HФSС‘”СUS€UИХУ€’QS€ЩYHЬX›\Ъ\]Z\ШY
-
-X›Ь€B€ЛИYX\Э\™YY™XЭ\И™[[Э™\И
-™X]\€YќHШ\Э\€H›ЫY\€PU’QT€Ъ[€]^\™Y
-K‚€ЛИ™\Щ]\™H[™›ЭЪ\™H[ЩN€ШќZ[ЫЫX]™XќZ[ИHXYЪXФЮ\Э[K[™H™XќZ[€ЛИXYЪXФЮ\Э[H\И›И]™HX\Щ\ЛЫИ\™H\И›ИЩ™њЩ]YќИЭЫ‹‚€\Л—Щ\]Z\ШYЩ™њЩ]HВ€\Л—Шќ\™[”[›™YH[ЩNВ€\Л—Щ\]Z\ШY[™ШYЩYH[ЩNВ€\Л—Щ\]Z\ШY\ЩHHќ[В€\ЛЫЫX]H™]ИЫЫX]Ю\Э[J\Л—ШЫЫX]]J
-JNВ€ЛИМKLM€›Э[™И8 %‘KTP“TТHЭ™\њЬљ[ќSUKUKQ’VT“HPФ“ФФИHРСSђT’SИ“ХS‘T–K‚€ЛВ€ЛИ\И[™H^\ЭИ™XШ]\ЩHHЫЫќ›ЫШ\ИS‘T•Ъ]Э]][™HШ]ЪY]ЫИ[™\ќ€ЛИ
-•STИН‹HZ[\™HМKL	ЬИШ[XЫЫ\Ъ[Ы€\›HЪ\Y
-K€ЫЫX]Ь^Y\‹љњШЫИB€ЛИЫЫX]UHШљ™XЭ[™H›ЩH[™›И™Y™\™[ЩHИH[™Ъ[™KЫИH\›H\ИШ\њљYYЫ‚€ЛИЫЫX]™ИШЫЫX]]J
-XќZ[ИH”‘TТШљ™XЭ]\[Ы€]™\ћHШќZ[ЫЫX][™B€ЛИ›Ш™HШYИHШЩ[\љ[И[њЪYHXXЪ\›KЫИH›YИШ\И›ЬY™]ЩY[€™Z[™ИЩ][™™Z[™В€ЛИ™XY[™›Э\›\ИYX\Э\™YHљ^YЫЩK€ћ]KZY[ќXШ[Y]™\И[€›ЭЬ™\њИ\ИЪ][‚€ЛИ[™\ќЫЫќ›ЫЫЪЬИZЩHњ›ЫHHЭ]ЪYK[™]ЫЪЬИ^XЭHZЩHHЫX[€™YШ]]™K‚€\ЛЫЫX]™—ЧЭМLM—ЫЭ™\њЬљ[ќHHJ\Л—ЭМLMђњ™XZИ	‰€\Л—ЭМLMђњ™XZЛ›Э™\њЬљ[ќ
-NВ€ЛИМKLL‹€ЫИ[™\ИH[™[^HRH™YYИ[™X^H›ЭЫЫњЭќXЭ›Ь€]Щ[‹‚€ЛВ€ЛИ›™Ш\ИHЫШ[[њЭ[ЩHњ›ЫHЫЬ™KЬ›™ЛљњИ8 %››Э[™И[€Ъ[KИX^HЫЫњЭќXЭ]ИЭЫ€‹€ЛИ[™[€RHЪ]Hљ]]HЭ™X[HЫЭ[™H^XЭH]ќ[Hњ›ЪЩ[€ЫЫY]Ъ\™H]ZY]\‹€]В€ЛИ]ЬИ\™HЫЭ[ќY[™]ИЭ]H\И[€HШ]™H›Ш‹ЫИHЭY™H™\ЩYY\ИH™X[ЩYYY€ЛИЪ[][][Ы€]X[ќ]H[™›ЭY[€[ќ›ЬK‚€ЛВ€ЛИ[ќ]SЩ\ИЭИHЪЩ[€\љ]]Ь€љ[™И[€[™[^IЬИ[ЫЭ[ќ\€Ь›Э\
-’KPRLH0©СIЬВ€ЛИњШ[YH[ЫЭ[ќ\€›Ы[YHЉK€]\ИHЫЪЭ\›ЭHЬљ]N€HRHШ[››ЭЭXЪH[ќ]K‚€\ЛЫЫX]њ›™ИH›™ОВ€\ЛЫЫX]™[ќ]SЩ€H
-ZY
-HO€\ЛњЪ[K™љ[™[ќ]JZY
-NВ€ЛИМKLLH8 %HљYЪ\ИЪ\™H[\XЭ]Y[И\ИPТQQЫИHљ]™\€\И[™ИЫ€HљYЪ€ЛИ]\€[€ЫYњ›ЫHЭ]ЪYH]€ЫЫX]Ю\Э[KњЭ\	ЬИ[Z]ЫЬЭ\™HШ[В€ЛИЫ‘]™[ќ
-њ[YKЪ[™KЫЬ›
-X[њЪYHЭЩY\[™™\ЫЫ™X	ЬИШ[ЭXЪЛЪXЪ\ИЪ]€ЛИXZЩ\И’KPUQH0©Р‰ЬИ]Y[Л™њ[YHOH]™[ќ™H›Ь\ќHЩ€HЫЩHЪ\H]\€[€Щ‚€ЛИHШЪY[\‰ЬИXЪЛ€HљYЪ\И™XќZ[ћH]™\ћHШYЭ]J
-XЫИ\И\И™KZ[™В€ЛИ\™H›Ь€HШ[YH™X\ЫЫ€HЭX[[™HX›Э™H\Л‚€Y€
-\Лљ[\XЭ]Y[КH\ЛЫЫX]њЩ]]Y[К\Лљ[\XЭ]Y[КNВ€ЛИМKLMH›Э[™LЋ€HЭX[ЭXњЮ\Э[HЭЫњИH[\ќY]\€[™]\Э™HX›HИЬљ]H]€ЛИ›ЭYЪИHљYЪ	ЬИЫЫќ›Ы\њЛ€HљYЪ\И™XќZ[ћH]™\ћHШYЭ]J
-KЫИB€ЛИ[™H\И™KZ[™И\™H]\€[€Ш\\™YЫЩH]›ЫЭ‚€\ЛњЪ[K—ШЫЫX]H\ЛЫЫX]В€ЛИЩX[HМNK€HXYЪXФЮ\Э[H\ИќZ[Ъ]HљYЪ[™[™YИHљYЪ™XШ]\ЩB€ЛИШ\Э[™И\И[€XЭ[Ы€S€HљYЪ[™’KSPQМHЪ]™\И]HШ[YHЫЫ[Z]Y[ќXXЪ[™\ћB€ЛИ]™\ћHЭЪ[™И\Л€]™\ћ][™И]ЭЫњИЭ]ЪYHHљYЪ8 %HШ][ЩЭYKЬ[XZЪ[™Л€ЛИ[Ъ[ќ[™ЛHЩ[HXЫЫ›Ы^H8 %[™ЬИЩ™€HШ[YHШљ™XЭЫИ\™H\И^XЭHЫ™HXЩB€ЛИЪ\™HќHШ[YHЬ[€YX[њИHШ[YH[™ИЫ€›ЭЪY\ИЩ€H›Э[™\ћK‚€\Л›XYЪXИH™]ИXYЪXФЮ\Э[JВ€Y™™XЭО€\Л™]K›XYЪXЛ™Y™™XЭЛ€Ь[О€\Л™]K›XYЪXЛњЬ[Л€Ш\ЭЫ\ЬЩ\О€\Л™]K›XYЪXЦЙШШ\ЭXЫ\ЬЩ\ЙЧK€Ш\ЭЫ\О€\Л™]K›XYЪXЦЙШШ\ЭXЫ\ЙЧK€[Ъ[ќ[™О€\Л™]K›XYЪXЛ™[Ъ[ќ[™Л€™ћ€\Л™]K›XYЪXЛќ™ћ€JNВ€\ЛЫЫX]›XYЪXИH\Л›XYЪXОВ€\ЛњЪ[K›XYЪXИH\Л›XYЪXОВ€ЛИ’KSPQМ‹€[ќ[\И[™HHШ][ЩЭYHY›ЭЪ\™HИЬљ]Hќ]]ИЭЫ€[Y\€\Э€ЛИЪXЪ\И™XЪ\Щ[HЭИLЩ€MHY™™XЭИШ[YHИИ›Э[™Л€љ[™ЫЬ›[™ИB€ЛИXYЪXФЮ\Э[HHZYЪЫЫњЭ[Z[™ИЮ\Э[\И][™XYH^\Э[€\ИќZ[
-HљYЪB€ЛИЭX[\›\ЛH\]Z\ШYH]Y\ЭЭ]KHЫЫ\Ъ[Ы€Щ[H[ќ]H\ЭB€ЛИY™›XЭ[Ы€™YЪ\Э\€[™HЫЬ›[]]][Ы€Щ]КH\ИHЫX[™YЪ\Э\њИШ\™ЛљњЫЫ€ЛИЩYYЛ[™]™\ћH[™\€[€XYЪXЛШ\KљњИ™XXЪ\И]ИЫЫњЭ[Y\€›ЭYЪ]‚€\Л›XYЪXЛљ[™ЫЬ›
-В€Ъ[N€\ЛњЪ[KЫЫX]€\ЛЫЫX][™Ъ[™N€\Лќ\О€\Лќ\Л€XYЪXХЫЬ›€\Л™]K›XYЪXЛќШ\™Л€JNВ€\Л›XYЪXЛ™ЫЫH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫВ€ЛИМKLMЌ8 %У‘HT”СK€XYЪXФЮ\Э[K›XZЩTЬ[Y\Л™ЫЫOHK™ЫЫ[™XYЪXЛ™ЫЫ€ЛИ\ИHRT”“ФЋ€ЬЩ]ЫЫ
-
-X\ИHЫ™HЬљ]\€]™\ћHЭ\€\њЩH[€HќZ[YЬ™Y\ИЫ‚€ЛИ
-Ъ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫЫЫX]ќЫЬ›™ЫЫЪ[KњЭX[њ™ЫЫ
-K[™]Э™\ќЬљ]\ИB€ЛИZ\њ›Ь€Ы€]И™^Ш[€ЫИHЫЫ[Z\ЬЪ[Ы™YЬ[Ш\ИZY›Ь€Э]Щ€HЫЬH8 %Щ]ЫЫ
-
-X€ЛИY›Э[Э™KHШ]™HY›Э[Э™K[™H™^Щ]ЫЫШX\ќ™\ЭЩ™[ЩH^[Y[ќ]€ЛИH[Ы™^HXЪЛ€\И\ИМKLM‰ЬИљ[™[™ИЫ™HЮ\Э[H[Ы™И[™HШ[YHљ^€H[Щ[ЩY\В€ЛИ]ИЭЫ€љY[›Ь€\љ]Y]XЛ[™HФS‘ЫЩ\И›ЭYЪH[™Ъ[™IЬИ\њЩK‚€\Л›XYЪXЛ—ЬЬ[™ЫЫH
-КHO€\Л—ЬЩ]ЫЫ
-\Л—ЩЫЫ
-
-HHќ[X™\ЉИ
-JNВ€Y€
-ШYЭ]ќЪ[ЭЩ\€OOH[™Yљ[™Y
-H\Л›XYЪXЛњЩ]Ъ[ЭЩ\ЉШYЭ]ќЪ[ЭЩ\ЉNВ€Y€
-ШYЭ]Ш][\Э
-H\Л›XYЪXЛњЩ]Ш][\Э
-ШYЭ]Ш][\Э
-NВ€Y€
-ШYЭ]][™Y
-H\Л›XYЪXЛњЩ]][™Y
-ШYЭ]][™Y
-NВ€ЫЫњЭ€H\ЛЫЫX]Ь™X]T^Y\ЉШYЭ]
-NВ€ЛИМKLM€›Э[™И8 %СQQHSIФИФ’QТS‹ЫИHљ\њЭ[™ШYЩ[Y[ќ\ИH[H[™›Э[‚€ЛИ\ЬЪYЫ›Y[ќ€Ь™XЫЫ\]Q\]Z\ШY
-
-X\Y\ИЭ
-ПH
-\ЩHHЩ\]Z\ШY\ЩJXЫИ][‚€ЛИY]]™HЬ[Щ™њЩ]
-™X]\€LМќ\™[€
-Н
-HљY\ИЫ€ЬЩ€H\]Z\Y[ќЭ[K€Ъ]€ЛИЩ\]Z\ШY\ЩXYќќ[Hљ\њЭ[™ШYЩ[Y[ќ™XY™]Щ™€H“СH8 %ЪXЪћH[‚€ЛИ[™XYHШ\њљYYHЩ™њЩ]8 %[™H[HЫЫ\ЩYИ[€\ЬЪYЫ›Y[ќ]Ъ[[ќB€ЛИ[]YHЬ[€H›Э[™L€™\™XЭ0©СHШ]YЪ\ИЩ™›[™H[™ЫЭ[›Э[™]]™K‚€ЛВ€ЛИ\™H\ИHЫ™H[ЫY[ќ[€HљYЪ	ЬИY™HЪ[€H›ЩIЬИ\]Z\ШY\И›ЭX›HH\™B€ЛИ\]Z\Y[ќ\ЩHЪ]›ИЩ™њЩ]ИЫ€]€Ь™X]T^Y\\Иќ\ЭќZ[]њ›ЫHHШYЭ][™€ЛИ›ИY™™XЭ\И™Y[€\YYY]€ЩYY[™И]\™HXZЩ\И™]H™X[™]љ[Э\И\ЩH›Ь™]™\‚€ЛИYќ\‹Ы€]™\ћH][ЫY[™ИЩ]ШYЭ]
-
-X
-ЪXЪ™\Щ\ќ™\И™]‹™\]Z\ШYЭXЬ›ЬЬВ€ЛИH™XќZ[[™ЫИШ\њљY\И[ћH]™HЩ™њЩ]Ъ]]
-K‚€\Л—Щ\]Z\ШY\ЩHH‹™\]Z\ШYЭВ€ЛИ“ХS‘€X›\ЪЫЩH\™HЫИЪ[Kњ^Y\‹™\]Z\ШY[›™Y\ИќYHњ›ЫHHљ\њЭњ[YHЩ€B€ЛИS“‘QШЩ[\љ[Л€Ь™XЫЫ\]Q\]Z\ШY
-
-X™]\›њИX\›HЪ[€HШY\И[›™YЫИЪ]Э]€ЛИ\И[™HHЫ›HЭ]\ИЪЬЩH[€HШ]™HЫЭ[ЩYHЫЭ[™HHЫ™\И]И›Э]™B€ЛИЫ™H8 %[™Ш]™KЩљYЪљњШЫЭ[Ьљ]H\]Z\ЫШYЬ[›™Y€[ЩX›Ь€]™\ћH\™[K‚€\Л—ЬX›\Ъ\]Z\ШY
-
-NВ€ЛИМKLM€›Э[™И8 %Ъ]HШЩ[\љ[ИШ^\И\И[€[Э\€[™ЛЫИZЪ[™ИHXЪЩY]\ЩX\Ы€XЪВ€ЛИЩ™€™\ЭЬ™\И][њЭXYЩ€X]љ[™И[ЭH[\KZ[™Y€ЪY[€[™Yљ[™YYX[њИќB€ЛИ^[\\€‹ЪY[€ќ[YX[њИHМ‹ЫМИЫЫ™љYЭ\][ЫњИ]]™H›Ы™NИ›Э\™H™\Щ\ќ™Y€ЛИ^XЭKЪXЪ\ИЪH\И™XYИ[]\€[€Hќ][™\ЬИ\Э‚€\Л—Ъ[™\ЩHHВ€ЩX\ЫЋ€ШYЭ]ќЩX\Ы€	ЬЭZYЪ\ЭЫЬ™	Л€ЪY[€	ЬЪY[	И[€ШYЭ]ИШYЭ]њЪY[€[™Yљ[™Y€NВ€ЛИHЫЫX]›ЩH\ИHUUФ’UH[™Ъ[Kњ^Y\\ИHљY]И
-Ъ[KШЫЫX]XњљYЩKљњКK€B€ЛИШЬљ\Y›Э]H\™Y›Ь™H\ИИЬљ]HH›ЩK›ЭHљY]ЛЬ€Z\њ›ЬЉ
-X[™Щ\И]Ы‚€ЛИH™^њ[YK€\И™Y™\™[ЩH\ИЭИЪ[KЬ›Э]KљњИ™XXЪ\И]Ъ]Э][\Ьќ[™ИЫЫX]‚€\ЛњЪ[KЫЫX]›ЩHHЋВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€‹њЬЦМHHњЬЦМNИ‹њЬЦМWHHњЬЦМWNИ‹њЬЦМ—HHњЬЦМ—NВ€‹ћX]ИHћX]ОВ€Y€
-ШYЭ]њЭ[Z[HOOH[™Yљ[™Y
-H‹њЭ[Z[HHШYЭ]њЭ[Z[NВ€Y€
-ШYЭ]љOOH[™Yљ[™Y
-H‹љHШYЭ]љВ€ЛИH\›^H™XYИХUSС‹Q’QТЭ]K€\И\ИHT‹LИЬ›ЬЬЪ[™И[™]\ИЪ\™Y\™N‚€ЛИЫЫ\ЬЬЪ][ЫњЛXЭ[Ы€[љЬИ[™Ы›ЭЫ€X[ЩЭYHЬXЬИ[ЫЫYHњ›ЫHHШ[YB€ЛИЪ[Kњ]Y\ЭИЪ[Kљ[ќ™[ќЬћHH[Ьњ›ЭЪ[™[€Щ€HШ[YHЬљ]\Л‚€\ЛЫЫX]ќЫЬ›HВ€ЫЫ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫШYЭ]™ЫЫ€\ЬЬЪ][ЫњО€\ЛњЪ[Kњ]Y\Э™\ЬЬЪ][ЫњЛ€XЭ[ЫњО€\ЛњЪ[Kњ]Y\Э™XЭ[ЫњЛ€ЬXЬТЫ›ЭЫЋ€\ЛњЪ[Kњ]Y\ЭќЬXЬТЫ›ЭЫ‹€NВ€ЛИМKLLИ›Э[™Л€HУУSђТФ‹€Ш\\™Y\™Kњ›ЫHH›ЩHHШYЭ]XЭX[H\ЪЩY€ЛИ›Ь‹™Y›Ь™H[ћ][™И\љ]™\ИHЫЫњ›ЫHHЪY]8 %ЫИ]\ИH›Ь\ќHЩ€HХUH[™€ЛИ›ЭЩ€ЭИX[ћH]™[И]™HЪ[ЩH™Y[€Ь[ќ[™]Э\ќљ]™\ИHШ]™KЫШY[Ъ[™ЩY€ЛИ™XШ]\ЩHШќZ[ЫЫX]ќ[њИYШZ[€Ы€HЭ\€ЪYHЪ]HШ[YHШYЭ]‚€ЛВ€ЛИЪ]HЪ\XЭ\‹\Q\љ]™YЫЫК
-XYЫ›Ь™\И][ќ\™[H[™HЪY]\ИXњЫЫ]K‚€ЛИЪ]Э]Ы™KHЪY]	ЬИY[ќ]H™YЪ\Э\€[™И^XЭH\™H[™]™\ћHЬ[™[Э™\Ињ›ЫB€ЛИ\™H8 %ЪXЪ\ИЭИH]™[Ш[€ќ^HЫЫY][™ИЫ€HЭ]HЪ]›ИЪ\XЭ\€Ъ]Э][Эљ[™В€ЛИ\™[WШЪ[\[Ы	ЬИЊЊ›ЩHћHHЪ[™ЫHЪ[ќ€™XYHЫ™И›ЭHЫ€\Q\љ]™YЫЫШ‚€\Л—ЬЫЫ[ЪЬ€HВ€ЫX^€‹љX^HQS•UWФУУЛљЫX^€Э[Z[WЫX^€‹њЭ[Z[SX^HQS•UWФУУЛњЭ[Z[WЫX^€Ъ[ЭЩ\Ћ€
-\Л›XYЪXИИ\Л›XYЪXЛќЪ[€QS•UWРU’P•UTЛќЪ[ЭЩ\ЉHHQS•UWРU’P•UTЛќЪ[ЭЩ\‹€NВ€‹™][X]TљYК
-NВ€Z\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€™]\›€ЋВ€B‚€КЉ€H\]Z\ШYHљYЪ™XYЛ€ЩX[HМЊО€’KPУPЊHЭЫњИЪ]HY\€СTИ[€HљYЪВ€
-€’KT‘МИЭЫњИ[Э[Xњ[ЩHЭ]ЪYH][™X^HЩY\љ[™\€Ь[ќ[\љ]HЪ]›И[‹YљYЪ€
-€Y™™XЭ€\ИЩ]\€\ИHЩX[K[™]\И[X™\][HHЫ›HШ^HXЬ›ЬЬИ]€
-‹В€КЉ‚€
-€™KY\]Z\[™™XќZ[HљYЪ[€XЩK€HШYЭ]\ИY\™ЩYЭ™\€HЭ\њ™[ќЫ™KЫВ€
-€Щ]ШYЭ]
-ЭЩX\ЫЋ‰Ш^IЯJXЩY\ИHќZ[	ЬИ[™\[ЩK\›[Э\€[™ЪY[€ЬЪ][Ы‹€
-€XЪ[™Л\]Z\ШY[™H[™[ZY\И\™H™\Щ\ќ™YИHњ™\ЪЩX\Ы€YX[њИHњ™\Ъ[Э™HX›K€
-€ЪXЪ\ИЪ]XZЩ\И’KPУPЊ€LIЬИM\›ЭИЩ[њЭ\ИHЩ[њЭ\И]\€[€Щ]™[€Щ\\]Hќ[њЛ‚€
-‹В€Щ]ШYЭ]
-]Ъ
-HВ€ЫЫњЭИH\ЛЫЫX]В€ЫЫњЭ™]€HЛњ^Y\ЋВ€\Л—ЫШYЭ]HШљ™XЭ\ЬЪYЫЉЯK\Л—ЫШYЭ]ЯK]ЪЯJNВ€ЫЫњЭЭ\њИHЛ›ЩY\Л™љ[\Љ
-
-HO€OOH™]ЉK›X\
-
-
-HO€
-И›ЩN€Э€Л™[™[ZY\Л™Щ]
-љY
-HJJNВ€ЫЫњЭ€HЛЬ™X]T^Y\Љ\Л—ЫШYЭ]
-NВ€‹њЬЦМHH™]‹њЬЦМNИ‹њЬЦМWHH™]‹њЬЦМWNИ‹њЬЦМ—HH™]‹њЬЦМ—NВ€‹ћX]ИH™]‹ћX]ОВ€‹™\]Z\ШYЭH™]‹™\]Z\ШYЭВ€‹ќY\€HЛќY\“ЩЉЉNВ€ЛИМKLM€›Э[™Л€ШќZ[ЫЫX]
-
-XX›\Ъ\ИH›ЩH]ќZ[\ИЪ[KЫЫX]›ЩX[™€ЛИЪ[KЬ›Э]KљњШ[™™[™\‹ЬЬ[]™ћљњШЭY\€H^Y\€›ЭYЪ]™Y™\™[ЩK€™XќZ[[™В€ЛИHљYЪYќ]Ъ[ќ[™И]HTРРT‘Q›ЩKЫИHШЬљ\Y›Э]HЫЭ[]™H™Y[‚€ЛИЬљ][™ИHЫЬњЩK€]™]™\€X]\™YЪ[HЩ]ШYЭ]
-
-XШ\ИH›Ш™K[Ы›H™\ЋИ›Э[™В€ЛИXZЩ\И]HШ^H[€Ь™[\ћH^Y\€]ИHЭЫЬ™[€Z\€[™ЫИ]X]\њИ›ЭЛ‚€\ЛњЪ[KЫЫX]›ЩHHЋВ€›Ь€
-ЫЫњЭИЩ€Э\њКHИЛ›ЩY\Лњ\Ъ
-Л›ЩJNИY€
-ЛЭ
-HЛ™[™[ZY\ЛњЩ]
-Л›ЩKљYЛЭ
-NИB€Л›ЩY\ЛњЫЬќ
-
-JHO€
-љYKљYИLH€љY€KљYИH€
-JNВ€‹™][X]TљYК
-NВ€Z\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€™]\›€ИЩX\ЫЋ€‹›[Э™\Л—Ы[Э™\Щ]YЩX\Ы—ШЫ\ЬО€‹›[Э™\Л—ШЫ\ЬТЩ^KЪY[€‹њЪY[YЭ[Z[WЫX^€‹њЭ[Z[SX^Y\Ћ€‹ќY\€NВ€B‚€КЉ‚€
-€][€[ќ™[ќЬћH›ЭИЫ‹›ЭYЪHШ[YHЪ[›™[H^Y\€\Щ\Л‚€
-‚€
-€ZKЬЮ\Э[KљњИШЫЫ™љ\›J
-X]Y]Y\ИЪЪ[™‰Щ\]Z\	Л][_XЪ[€[ЭH™\ЬИ[ќ\XЭЫ€HЩX\Ы‹€
-€\›[Э\€Ь€ЫЭ[™И›ЭОИ[™Ъ[™K—Ш\URT[™[™К
-X™XYИ]]Y]YKЫИH›ЩH›Ь€М€
-€њ[Y\Л[™Щљ[љ\Ъ\]Z\ЫЫ[Z]
-
-X[™И][€HЫЭ€\И™\€Ьљ]\ИHРSQH]Y]YH8 %€
-€]Щ\И›ЭЭXЪ›ЭЛњЫЭ[™]Щ\И›ЭЪЪ\HЫЫ[Z]Y[ќ8 %ЫИH›Ш™HYX\Э\™\ИB€
-€\]Z\]]\€[€HЪЬќЭ]\›Э[™]€Ъ]]ЪЪ\И\ИH[ќ™[ќЬћHХT”УФ‹ЪXЪ\В€
-€’KURVЙЬИЭXњЮ\Э[H[™›Э[Э[Xњ[ЩIЬЛ‚€
-‚€
-€™]\›њИHњ[YHH\]Z\Ъ[[™Ы‹ЫИHШ[\€Ы›ЭЬИЭИ\€ИЭ\‚€
-‹В€\]Z\][JY
-HВ€ЫЫњЭ›ЭИH
-\ЛњЪ[Kљ[ќ™[ќЬћHЧJK™љ[™
-
-ЉHO€‹љYOOHЭљ[™КY
-JNВ€Y€
-\›ЭКH›ЭИ™]И\њ›ЬЉ\]Z\][J	ЙЪYIКN€›Э[€H[ќ™[ќЬћK€Ш\њљYY€	К\ЛњЪ[Kљ[ќ™[ќЬћHЧJK›X\
-
-ЉHO€‹љY
-Kљ›Ъ[Љ	Л	КH	К›Э[™КIЯX
-NВ€Y€
-]\ЛќZJH›ЭИ™]И\њ›ЬЉ	Щ\]Z\][N€›ИRHЮ\Э[H8 %\]Z\[™И\ИHRHXЭ[Ы€[™H[™Ъ[™H\Y\И]Yќ\€HЭ\	КNВ€\ЛќZKњ[™[™ИHИЪ[™€	Щ\]Z\	Л][N€›ЭЛљYNВ€\ЛќZKXЭ\ШЪ
-КОВ€™]\›€И]Y]YY€›ЭЛљYЫЫ[Z]Щњ[Y\О€М[™ЧЫЫ—Щњ[YN€\ЛњЪ[K™њ[YH
-ИМNВ€B‚€Щ]\]Z\ШY
-Э
-HВ€ЫЫњЭ€Hќ[X™\ЉЭ
-NВ€Y€
-Sќ[X™\‹љ\Сљ[љ]JЉH€
-H›ЭИ™]И\њ›ЬЉЩ]\]Z\ШY
-	Т”УУ‹њЭљ[™ЪYћJЭ
-_JN€^XЭYH›Ы‹[™YШ]]™H\Щ[ќYЩX
-NВ€ЛИH[™Y™Y[YH\ИHSЋ€HЫЬ›ЭЬИЬљ][™И\ИљY[[ќ[H™^ШЩ[\љ[В€ЛИ›Э[™\ћK€Ъ]Э]]Ь™XЫЫ\]Q\]Z\ШY
-
-XЫЭ[Э™\ќЬљ]HHЬљ]XЙЬИЭЩ\[YHЫ€B€ЛИ™^Э\[™]™\ћHMHЫY™€ЭЩY\ЫЭ[Ъ[[ќHYX\Э\™HHШ[YHY\€ЊH[Y\Л‚€\Л—Щ\]Z\ШY[›™YHќYNВ€ЛИМKLM€›Э[™€H[›™Y[YH\ИHђTСK[™[ћH]™HЬ[Щ™њЩ]Э[љY\ИЫ€]8 %€ЛИЪXЪ\ИЪ]XZЩ\ИЩ]\]Z\ШY
-
-XH[€Ы€H\]Z\Y[ќ\›H]\€[€H[€Ы€B€ЛИЪЫH[Щ[€ЬX›\Ъ\]Z\ШY
-
-X\ИHЪ[™ЫHЬљ]\€Щ€‹™\]Z\ШYЭњ›ЫH\™HЫ‹‚€\Л—Щ\]Z\ШY[•[YHHЋВ€\Л—Щ\]Z\ШYЩ™њЩ]HВ€\Л—ЬX›\Ъ\]Z\ШY
-
-NВ€™]\›€И\]Z\ЫШYЬЭ€\ЛЫЫX]њ^Y\‹™\]Z\ШYЭY\Ћ€\ЛЫЫX]њ^Y\‹ќY\€NВ€B‚€КЉ‚€
-€HУ‘HT”СH
-МKLM€љ[™[™КK€Ъ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫ\ИШ[›ЫљXШ[8 %]\ИЪ]€
-€Ш]™KЬЭ]KљњШ\њЪ\ЭИ[™Ъ]Щ]ЫЫ
-
-X\И[Ш^\И™XY8 %[™™Y›Ь™H\ИY]Щ€
-€^\ЭY›Э\€Ш[Ъ]\ИXXЪЩ\Z\€ЭЫ€ЫЬHЩ€љЭИ]XЪЫЫH^Y\€\И€[™›Ы™B€
-€Щ€[H[ЩYИXXЪЭ\Ћ€™[ЩTЩ[ZY[ќИЪ[KњЭX[њ™ЫЫ
-ЩYYYЫЩH]€
-€[™™]™\€ЭXЪYYШZ[ЉK›Ш\™]™[Ь[ќЭ]Щ€ЫЫX]ќЫЬ›™ЫЫ
-HЫ\ЪЭ€
-€ZЩ[€]H\ЭШќZ[ЫЫX]ЫИH\™HЭ\ќљ]™YHШ]™KЫШY™[ШY›Ь€њ™YJKHШ]™B€
-€Ь›ЭH[™™XYЪ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫ[™H]™[]\Ъ[ќ™[ќЬћHШЬ™Y[€™]В€
-€Ъ[K›ШYЭ]™ЫЫЪ[K™ЫЫ8 %ЫИљY[И›Э[™И]™\€Щ]ЫИ]™XY
-ЉЊ
-Љ€Ъ]\€Ь‚€
-€›ЭЩ]ЫЫ
-ННКXYќ\Э™Y[€Ш[Y€]™\ћHЬљ]H›ЭИЫЩ\И›ЭYЪ\™NИ]™\ћHZ\њ›Ь‚€
-€[Э™\И[€HШ[YHњ[YK‚€
-‹В€ЬЩ]ЫЫ
-ЉHВ€ЫЫњЭ€Hќ[X™\ЉЉHВ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫHЋВ€Y€
-\Л›XYЪXКH\Л›XYЪXЛ™ЫЫHЋВ€Y€
-\ЛЫЫX]	‰€\ЛЫЫX]ќЫЬ›
-H\ЛЫЫX]ќЫЬ›™ЫЫHЋВ€Y€
-\ЛњЪ[KњЭX[
-H\ЛњЪ[KњЭX[њ™ЫЫHЋВ€™]\›€ЋВ€B‚€КЉ€HЫ™H\њЩK™XY€ЩYHЬЩ]ЫЫ€
-‹В€ЩЫЫ
-
-HИ™]\›€ќ[X™\Љ\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹™ЫЫ
-HИB‚€КЉ€ШYHШЬљ\Y[™[^HXЭ[Ы€\Э8 %’KPУPЊИLH[ЩKPIЬИ[њЭќ[Y[ќ€
-‹В€]Y]YQ[™[^TШЬљ\
-ZYШЬљ\
-HВ€ЫЫњЭXИH\ЛЫЫX]™[™[ZY\Л™Щ]
-ZY
-NВ€Y€
-YXКH›ЭИ™]И\њ›ЬЉ]Y]YQ[™[^TШЬљ\
-	ЙЩZYIКN€›ИЭXЪ[™[^X
-NВ€™]\›€XЛ›ШYШЬљ\
-ШЬљ\\ЛњЪ[K™њ[YJNВ€B‚€КЉ€Э][Щ‹YљYЪЭ]HH\›^H™XYЛ€T‹LО€\И\ИHЫЬ›™XXЪ[™И[ќИHљYЪ€
-‹В€Щ]ЫЬ›Ы›ЭЫYЩJ]Ъ
-HВ€ЫЫњЭИH\ЛЫЫX]ќЫЬ›В€Y€
-]Ъ™ЫЫOOH[™Yљ[™Y
-HЛ™ЫЫHќ[X™\Љ]Ъ™ЫЫ
-NВ€Y€
-]ЪќЬXЬТЫ›ЭЫЉHИЛќЬXЬТЫ›ЭЫ€H]ЪќЬXЬТЫ›ЭЫ‹њЫXЩJ
-NИ\ЛњЪ[Kњ]Y\ЭќЬXЬТЫ›ЭЫ€HЛќЬXЬТЫ›ЭЫЋИB€Y€
-]Ъ™\ЬЬЪ][ЫњКHШљ™XЭ\ЬЪYЫЉЛ™\ЬЬЪ][ЫњЛ]Ъ™\ЬЬЪ][ЫњКNВ€Y€
-]Ъ™XЭ[ЫњКHШљ™XЭ\ЬЪYЫЉЛ™XЭ[ЫњЛ]Ъ™XЭ[ЫњКNВ€™]\›€ИЫЫ€Л™ЫЫЬXЬТЫ›ЭЫЋ€ЛќЬXЬТЫ›ЭЫ‹њЫXЩJ
-K\ЬЬЪ][ЫњО€И‹‹ќЛ™\ЬЬЪ][ЫњИKXЭ[ЫњО€”УУ‹њ\њЩJ”УУ‹њЭљ[™ЪYћJЛ™XЭ[ЫњКJHNВ€B‚€ЛИOOOOOOOOOOOOOOOOHМKLИ8 %Ъ\XЭ\€Ь™X][Ы€OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOB‚€КЉ€H]HљY]ИШ[YKЬЬЛШЪ\XЭ\‹КЉ€ЫЫњЭ[Y\Л€Ы™HШљ™XЭЪ\™YЪ]H]Y]ЫЫ€
-‹В€Щ]Ъ]J
-HИ™]\›€\Л™]KЪ\XЭ\ЋИB‚€КЉ‚€
-€ЫЫ\ЬЩHHЪ\XЭ\€\™XЭHњ›ЫHHЬXЛ€\ЩYћH[YYЭ]\И[™ћHH\›™\ЬОИB€
-€VQT‰ЬИ›Э]HИ\И\ИHЬљ]Э\ЩHШЩ[™K›Э\ИY]Щ
-’KR”“ЊHНКK‚€
-‹В€Щ]Ъ\XЭ\ЉЬXКHВ€ЛИHT•PS]Ъ\ИYШ[[™\ИЭИ’KPТЊ€Y]ЩЫЬљЬО€HЭ]HXЫ\™\ИHЪЫB€ЛИЪ\XЭ\€[™K\Э]HњXЩOY[›Y\€[Э™\И^XЭHЫ™HљY[Щ€]ЫИH™YHќ[њВ€ЛИЩ€]Y]ЩY™™\€[€Ы™HљY[[™›Э[™И[ЩK€]™\ћH[њЬXЪYљYYљY[[ИXЪВ€ЛИИHЪ\XЭ\€[™XYHШYY‚€ЫЫњЭ™]€H\ЛњЪ[KЪ\XЭ\ЋВ€Y€
-™]ЉHВ€ЬXИHВ€XЩN€™]‹њXЩK\њљ[™Ъ[™О€™]‹ќ\њљ[™Ъ[™ЛЫ\ЬО€™]‹Ы\ЬЧЪY€љ\ќЪYЫЋ€™]‹љ\ќЪYЫ‹љ\ќЪYЫ—ЬЩXЫЫ™€™]‹љ\ќЪYЫ—ЬЩXЫЫ™€Ъ]™[—Ы[YN€™]‹™Ъ]™[—Ы[YK]ЪЫ[YN€™]‹љ]ЪЫ[YKЩ^€™]‹њЩ^€›Э]N€™]‹Ы\ЬЧЬ›Э]K›YЬО€™]‹™›YЬЛ€‹‹њЬXЛ€NВ€B€ЫЫњЭЪHЫЫ\ЬЩPЪ\XЭ\Љ\ЛЪ]KВ€XЩN€ЬXЛњXЩK\њљ[™Ъ[™О€ЬXЛќ\њљ[™Ъ[™Л€Ы\ЬТY€ЬXЛЫ\ЬИЬXЛЫ\ЬТYќ[Э\ЭЫN€ЬXЛЭ\ЭЫHќ[€љ\ќЪYЫЋ€ЬXЛљ\ќЪYЫ‹љ\ќЪYЫ”ЩXЫЫ™€ЬXЛљ\ќЪYЫ—ЬЩXЫЫ™ЬXЛљ\ќЪYЫ”ЩXЫЫ™ќ[€Ъ]™[“[YN€ЬXЛ™Ъ]™[—Ы[YHЬXЛ™Ъ]™[“[YH	Х[ќЬљ][‰Л€]Ъ[YN€ЬXЛљ]ЪЫ[YHЬXЛљ]Ъ[YH	ЙЛ€]Ъ[YT™Yќ\ЩY€HJЬXЛљ]ЪЫ[YWЬ™Yќ\ЩYЬXЛљ]Ъ[YT™Yќ\ЩY
-K€Щ^€ЬXЛњЩ^	Э[њ™XЫЬ™Y	Л€›Э]N€ЬXЛњ›Э]H	Ы[YY	Л€JNВ€Ъ™›YЬИHЬXЛ™›YЬИИЬXЛ™›YЬЛњЫXЩJ
-H€ЧNВ€\Л—ЬЪЪ[ФЩYYYH[ЩNВ€ЫЫњЭЬљ]H™[™\•Ьљ]
-\ЛЪ]KЪ
-NВ€ЪќЬљ]Э^HЬљ]ќ^В€\ЛњЪ[KЪ\XЭ\€HЪВ€\ЛњЪ[KљY[ќ]K›[YHHЪ™Ъ]™[—Ы[YNВ€\ЛњЪ[KљY[ќ]KњXЩHHЪњXЩNВ€\ЛњЪ[KљY[ќ]KњЪYЫ€HЪљ\ќЪYЫЋВ€\ЛњЪ[KљY[ќ]Kњ›Щ™\ЬЪ[Ы€HЪЫ\ЬЧЪYВ€\ЛњЪ[KљY[ќ]K™ШЭ[Y[ќHЬљ]ќ^В€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\ИHИ‹‹Ъ]љXќ]\ИNВ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ИHЯNВ€›Ь€
-ЫЫњЭИЩ€Шљ™XЭљЩ^\КЪњЪЪ[КJH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ЦЪЧHHИ[YN€ЪњЪЪ[ЦЪЧK\ЩT›ЩЬ™\ЬО€]™[ФЪ[ЩT™\Э€™\ЭЫ[\Y€[ЩHNВ€Y€
-]\ЛњЪ[Kљ[ќ™[ќЬћKњЫЫYJ
-JHO€KљYOOH	ЬЭ[\Y]Ьљ]	КJHВ€\ЛњЪ[Kљ[ќ™[ќЬћKњ\Ъ
-ИY€	ЬЭ[\Y]Ьљ]	ЛЫЭ[ќ€KЫЫ™][ЫЋ€KЪ\™ЩN€ЭЫ[Ћ€[ЩKЭЫ™\Ћ€ќ[ЫЭ€ќ[]ZXЪФЫЭ€ќ[JNВ€B€\Л\Q\љ]™YЫЫКИ™Yљ[€ќYKЪN€	ЬЩ]Ъ\XЭ\‰ИJNВ€]X[ќ\ЩPЫЫЭ]J\ЛњЪ[JNВ€™]\›€\Л™Щ]Ъ\XЭ\Љ
-NВ€B‚€КЉ‚€
-€XZЩHЭ\™HЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[Ш8 %HЪЪ[™YЪ\Э\€8 %\ИH›ЭИ›Ь€]™\ћHЪЪ[[‚€
-€Ш[YKЩ]KЬ›ЩЬ™\ЬЪ[Ы‹ЬЪЪ[ЛљњЫЫ‚€
-‚€
-€МKLM›Э[™Л€™Y›Ь™H\ИY]ЩH™YЪ\Э\€Ш\ИЬљ][€[€^XЭHЫ™HXЩB€
-€
-Щ]Ъ\XЭ\
-KЫИHЭ]Hљ[HЪ]›ИЪ\XЭ\›ШЪИYќ]ЯX€™YH[™ЬИ[‚€
-€›ЫЭЩY[™[™YHЩ\™HЩ\\][H™\ЬќY\ИY™XЭИћHЫИЬљ]XЬО‚€
-‚€
-€HЪ[KЬЭ\љњШШ]YЭ\ЪЪ[\ЩXЫ€Ъ[KЪ\XЭ\ЫИ“ИЪЪ[Y[ЩYћH\ЩH[‚€
-€[ћH\™[HЭ]H8 %’KT‘МЙЬИЪЫH][KЩ™‹[€HЭ]\И]И›Ш™\Иќ[€[ЋВ€
-€HH]Y\ЭXXЪ[™H][X]Y™\]Z\™\ЛњЪЪ[ШYШZ[њЭЯXЫИ]™\ћHЪЪ[YШ]Y]Y\Э€
-€™\ЫЫ][Ы€Ш\И[њ™XXЪX›HћH^NВ€
-€HXYЪXИЫЭ[›Э™XYHЪY]ЫИ]Щ\Hљ]]HЬЫЬЩ\ћN€М8 )џX]›Э[™В€
-€ЫЭ[Ьљ]KЪXЪ\ИРTUМK[XYЪXЛ\ЪЪ[Yњ›Ю™[‹‚€
-‚€
-€H[Y\И\™HHЫ™\ИЪ\XЭ\€Ь™X][Ы€]Щ[€ЫЭ[›ЩXЩH›Ь€HШ[YIЬИЭЫ€Э\ќ[™В€
-€Ъ\XЭ\€
-ЫЫ\ЬЩTЪЪ[ШHX^
-KXЩTЪЪ[Ы\ЬФЪЪ[
-X
-K›ЭHќ[X™\€[ќ™[ќY\™N‚€
-€HЭ]H]\И›Э™Y[€›ЭYЪHЬљ]Э\ЩHЩ]ИHЪY]Щ€ЫЫY[Ы™HЪИ\Иќ\Э€
-€ЫЫYHЩ™€H\™ЩK€HЭ]HТUHЪ\XЭ\›ШЪИ\И[™XYH™Y[€ЫЫ\ЬЩYћB€
-€Щ]Ъ\XЭ\[™\ИYќ[Ы™K‚€
-‹В€Щ[њЭ\™TЪЪ[™YЪ\Э\Љ
-HВ€ЫЫњЭИH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ОВ€Y€
-TИ\[Щ€ИOOH	ЫШљ™XЭ	КH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ИHЯNВ€ЫЫњЭ™YИH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ОВ€ЫЫњЭYњИH\ЛЪ]H	‰€\ЛЪ]KњЪЪ[ИИ\ЛЪ]KњЪЪ[ЛњЪЪ[И€ќ[В€Y€
-YYњКH™]\›€™YОВ€ЫЫњЭ\ЩHH\ЛЪ]KњЪЪ[Л\ЩWЭ[YHOOH[™Yљ[™YИH€\ЛЪ]KњЪЪ[Л\ЩWЭ[YNВ€ЛИHY][Э\ќ[™ИЪ\XЭ\Ћ€HШ[YHXЩKШЫ\ЬИ]™\ћHЪ\Y\њ]]™HЭ]H\Щ\Л‚€]ЩYYHќ[В€ћHВ€ЩYYHЫЫ\ЬЩTЪЪ[К\ЛЪ]KQђUSФХT•њXЩK€
-\ЛЪ]KЫ\ЬЩ\ЛЫ\ЬЩ\ИЧJK™љ[™
-
-КHO€ЛљYOOHQђUSФХT•Ы\ЬЧЪY
-Hќ[
-NВ€HШ]Ъ
-\њЉHИЩYYHќ[ИB€›Ь€
-ЫЫњЭЩ€YњКHВ€ЫЫњЭЭ\€H™YЦЩљYNВ€Y€
-Э\€	‰€\[Щ€Э\€OOH	ЫШљ™XЭ	И	‰€Э\‹ќ[YHOOH[™Yљ[™Y
-HЫЫќ[ќYNВ€ЫЫњЭ€HЭ\€OOH[™Yљ[™Y	‰€Э\€OOHќ[	‰€\[Щ€Э\€OOH	ЫШљ™XЭ	В€Иќ[X™\ЉЭ\ЉB€€
-ЩYY	‰€ЩYYЩљYHOOH[™Yљ[™YИЩYYЩљYH€\ЩJNВ€ЛИH\‹\™\ЭШ\љY[И\™HXЫ\™Y]Z\€Y[ќ]H[Y\И\™KЪ]H™YЪ\Э\‚€ЛИ]Щ[‹›Ь€HШ[YH™X\ЫЫ€]™\ћHЭ\€Y[ќ]H[YH[€\И™\Z\€\О€H™XЫЬ™€ЛИЪЬЩHЩ^HЩ]\[™ИЫ€Ъ]\€[ћ[Ы™H\И]™[YHЪЪ[Y]Ш[››Э™HY™™Y‚€™YЦЩљYHHИ[YN€‹\ЩT›ЩЬ™\ЬО€]™[ФЪ[ЩT™\Э€™\ЭЫ[\Y€[ЩHNВ€B€™]\›€™YОВ€B‚€КЉ€HYИШ[YKЩ]KЬ›ЩЬ™\ЬЪ[Ы‹Ш]љXќ]\ЛљњЫЫXЫ\™\И8 %HЫ™H›ШШXќ[\ћK€
-‹В€]љXќ]RYК
-HВ€ЫЫњЭXЫH
-\Л™]Kњ›ЩЬ™\ЬЪ[Ы€	‰€\Л™]Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\В€	‰€\Л™]Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\Л]љXќ]\КHЧNВ€™]\›€XЫ›X\
-
-JHO€KљY
-NВ€B‚€КЉ‚€
-€XZЩHЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\ШШ\њћH
-Љ™^XЭJЉ€H]љXќ]\ИHШ[YHXЫ\™\Л‚€
-‚€
-€МKLLИ›Э[™Л[™HЪ[€Щ€Щ[њЭ\™TЪЪ[™YЪ\Э\Љ
-XX›Э™K€H›Э[™L€™\™XЭYX\Э\™Y€
-€HЬ]њ›ЫHH]Ы€[[Y[ќИ]\€[€њ›ЫHH]N€H]™[]\ШЬ™Y[€\ЭY[‚€
-€›ЭЬИ
-]™[\]‹ЏY
-H[™HЪ\XЭ\€Ш\њљYYЪ^^HЩ\™H
-™Y™™\™[ќ
-€Ъ^[™€
-€ЬЬ[™ЫЭ[К
-X8 %ЪXЪY›И[Y][Ы€Щ€[ћHЪ[™8 %
-Љ›Z[ќYHљXЭ][Э\И]љXќ]H]€
-€LJЉ€Ы€Hљ\њЭЫЫ™љ\›K€ЫИЩ€H›Э[™L€ќZ[\‰ЬИЭЫ€™YHXY[™HЬ[™И›ЭYЪ€
-€]љXќ]\И]И›Э^\Э‚€
-‚€
-€™YH[™ЬИ\[€\™H[™›Э[™И[ЩN‚€
-‚€
-€K€[€ЫЪ^ZY™YЪ\Э\‰ЬИ^\љ]XИ[ќ[YЩ[ЩXИZ]Ъ[ќИ\™HШ\њљYYЭ™\‚€
-€ИYЪ[]XИ[ќ[XЭИ\ЭX›Ы™
-QРPЦWРU’P•UWРSPTСTШ
-KЫИHШ]™HЬљ][‚€
-€™Y›Ь™H\И›Э[™Щ\И›ЭЬЩHЪ]]™XЫЬ™YВ€
-€‹€]™\ћHXЫ\™YY]\ИXњЩ[ќЩ]ИH]Hљ[IЬИ\ЩWЭ[YX8 %^Щ\H™YB€
-€HЪ\YљYЪ\ИШ[Xњ]YYШZ[њЭЪXЪZЩHQS•UWРU’P•UTШЫИ]€
-€\љ]™TЫЫК
-X™]\›њИ
-™^XЭJ€Ъ]]™]\›™Y™Y›Ь™H\ИЪ[™ЩHЫ€Hњ™\ЪЭ]NВ€
-€Л€]™\ћHY]\И
-Љ››Э
-Љ€XЫ\™Y\И[]Y™XШ]\ЩHHШЬ™Y[€Ш[››ЭЪЭИ]B€
-€Э\ќ™\ИШ[››Э™XY][™ЬЬ[™ЫЭ[Ш›ЭИ™Yќ\Щ\И]‚€
-‚€
-€™]\›њИH™XЫЫЪ[X][Ы€ЫИH›Ш™HШ[€\ЬЩ\ќЫ€]]\€[€[™™\€]‚€
-‹В€Щ[њЭ\™P]љXќ]T™YЪ\Э\Љ
-HВ€ЫЫњЭ›ЩИH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[ЫЋВ€Y€
-\›ЩЛ]љXќ]\И\[Щ€›ЩЛ]љXќ]\ИOOH	ЫШљ™XЭ	КH›ЩЛ]љXќ]\ИHЯNВ€ЫЫњЭHH›ЩЛ]љXќ]\ОВ€ЫЫњЭXЫH\Л]љXќ]RYК
-NВ€ЛИ›И]H
-H\™H[љ]]\Э[™Ъ[™JN€X]™HHY[ќ]H™YЪ\Э\€[Ы™H]\€[€[\H]‚€Y€
-YXЫ›[™Э
-H™]\›€ИXЫ\™Y€ZYЬ]Y€ЧKЩYYY€ЧK›ЬY€ЧHNВ€ЫЫњЭ\ЩHH
-\Л™]Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\Л\ЩWЭ[YHOOH[™Yљ[™Y
-B€ИL€\Л™]Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\Л\ЩWЭ[YNВ€ЫЫњЭXЫЩ]H™]ИЩ]
-XЫ
-NВ€ЫЫњЭZYЬ]YHЧKЩYYYHЧK›ЬYHЧNВ€›Ь€
-ЫЫњЭЩњ›ЫKЧHЩ€Шљ™XЭ™[ќљY\КQРPЦWРU’P•UWРSPTСTКJHВ€Y€
-VЩњ›ЫWHOOH[™Yљ[™Y
-HЫЫќ[ќYNВ€Y€
-XЫЩ]љ\ККH	‰€VЭЧHOOH[™Yљ[™Y
-HИVЭЧHHќ[X™\ЉVЩњ›ЫWJNИZYЬ]Yњ\Ъ
-	Щњ›Ы_KO‰ЭЯX
-NИB€B€›Ь€
-ЫЫњЭYЩ€XЫ
-HВ€Y€
-VЪYHOOH[™Yљ[™Y	‰€ќ[X™\‹љ\Сљ[љ]Jќ[X™\ЉVЪYJJJHИVЪYHHќ[X™\ЉVЪYJNИЫЫќ[ќYNИB€VЪYHHQS•UWРU’P•UTЦЪYHOOH[™Yљ[™YИ\ЩH€QS•UWРU’P•UTЦЪYNВ€ЩYYYњ\Ъ
-Y
-NВ€B€›Ь€
-ЫЫњЭИЩ€Шљ™XЭљЩ^\КJJHY€
-YXЫЩ]љ\ККJHИ[]HVЪЧNИ›ЬYњ\Ъ
-КNИB€™]\›€ИXЫ\™Y€XЫ›[™ЭZYЬ]YЩYYY›ЬYNВ€B‚€КЉ‚€
-€\ИH]™[]\ШЬ™Y[€ЬXZЪ[™ИHЪ\XЭ\‰ЬИ[™ЭXYЩOИYX\Э\X›K›Э[™™\X›K‚€
-‚€
-€ЪО€[ЩX\ИЪ]Ь[“Y[ќJ	Ы]™[\	КX™Yќ\Щ\ИЫ€[™Ъ]ЬЬ[™ЫЭ[К
-X™Yќ\Щ\И[€Y€
-€YШZ[њЭ€њ™XZИH™YЪ\Э\€Ы€\њЬЩH[™\ИЫЩ\И™Y8 %]\ИHЪ[ќЩ€]‚€
-‹В€]љXќ]U›ШШXќ[\ћJ
-HВ€ЫЫњЭXЫ\™YH\Л]љXќ]RYК
-NВ€ЫЫњЭ]™HHШљ™XЭљЩ^\К
-\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы€	‰€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\КHЯJNВ€ЫЫњЭH™]ИЩ]
-XЫ\™Y
-KH™]ИЩ]
-]™JNВ€ЫЫњЭЫ—ЬШЬ™Y[—Ы›ЭШШ\њљYYHXЫ\™Y™љ[\Љ
-КHO€[љ\ККJNВ€ЫЫњЭШ\њљYYЫ›ЭЫЫ—ЬШЬ™Y[€H]™K™љ[\Љ
-КHO€Yљ\ККJNВ€™]\›€В€XЫ\™Y]™N€]™KњЫXЩJ
-KњЫЬќ
-
-K€Ы—ЬШЬ™Y[—Ы›ЭШШ\њљYYШ\њљYYЫ›ЭЫЫ—ЬШЬ™Y[‹€ЪО€XЫ\™Y›[™Э€	‰€Ы—ЬШЬ™Y[—Ы›ЭШШ\њљYY›[™ЭOOH	‰€Ш\њљYYЫ›ЭЫЫ—ЬШЬ™Y[‹›[™ЭOOH€NВ€B‚€КЉ‚€
-€HЪY]™XY‚€
-‚€
-€’KT‘М€0©МЙЬИЭ\ќ™\И\YYИHЫЫ\ЬЩY]љXќ]\Л[€’KPТЊЙЬИљ\ќЪYЫ€\›\В€
-€\YYЫ€Ь[€Ьљ][€ИHУУPђU“СH8 %ЪXЪ\ИH]]Ьљ]H
-ЩYB€
-€ШќZ[ЫЫX]
-H8 %[™Z\њ›Ь™YXЪИ[ќИHљY]Л€›Э[™HЫЫ\ЬЩY[Щ€\ИЫЬњ™XЭB€
-€[™[€Ь›ЭH›Ы™HЩ€][ћ]Ъ\™HHљYЪЫЭ[ЩYKЪXЪ\ИЪH’QУХT€€[™€
-€’QУХT€N›Э™\ЬќYЫX^ЊЊ‚€
-‚€
-€™Yљ[ЬИHЫЫИ\И[€X\›™Y]љXќ]HЪ[ќZY\ќ[€Z\Щ\ИHЩZ[[™ИЪ]Э]€
-€X[[™И[ЭKЪXЪ\ИHЫЭ[И™Z]љ[Э\€[™[ЫИHЫ™\ЭЫ™K‚€
-‹В€\Q\љ]™YЫЫКЬИHЯJHВ€ЫЫњЭЪH\ЛњЪ[KЪ\XЭ\ЋВ€ЛИМKLLИ›Э[™Л€\ИY]Щ\ЩYИЬ[€Y€
-XЪ
-H™]\›€ќ[Ш[™]Ъ[™ЫH[™H\В€ЛИЪHНЛЌL€ЫЭ[ИXЬ›ЬЬИЌ]™[И[Э™YЫX^ЊЊO€ЊЊЭ[Z[WЫX^LЊO€LЊ[™€ЛИ›ШЭ\ЧЫX^MO€MЫ€HЪ\YY][Э]KЪ]ЬЫЫС\ќXЭXЪИќYB€ЛИ›Ь™]™\‹€Ъ[KЪ\XЭ\\Иќ[[€]™\ћH[YYЭ]KЫИH^Y\€ЪИ\И›ЭШ[ЩY€ЛИ›ЭYЪHЬљ]Э\ЩHЫЭ[Ь[™ЫЭ[И›Ь€H™\ЭЩ€Z\€Y™H[™Щ]›Э[™Л‚€ЛВ€ЛИ]Ш\И›Э[€Э™\њЪYЪ€Ъ\XЭ\‹Щ\љ]™KљњШ	ЬИЭЫ€XY\€XЫ\™\И]€
-€HШYЭ]Ъ]€ЛИ›ИЪ\XЭ\€™Z[™]ЩY\И’KPУPЊЙЬИЬЫЫKЫИ]™\ћH^\Э[™ИМKLHШЩ[\љ[ИYX\Э\™\В€ЛИ^XЭHЪ]]YX\Э\™Y™Y›Ь™K€›Э[™И[€HљYЪЪ[™Щ\Л€Љ€\љ]љ[™ИP”УУUSH\™B€ЛИЫЭ[Ы›Э\€МKLLИ[™њ™XZИ]›ЫZ\ЩH[€HШ[YHЭ›ЪЩH8 %\™[WШЪ[\[Ы	ЬИ^Y\‚€ЛИЫЩ\ИЊЊO€М[™MO€М›ШЭ\Л[™ЫЫЛЪ\›™\ЬЛШЫX‹\Ъ\ЩK›ZњШ\Щ\ИЏHЊЊ€ЛИ\И]ИЭЫ€ђPХRUH]XЭЬ‹ЫИ]ЫЭ[ЭЬ™Z[™ИX›HИ[HZ\ЬЩY]њ›ЫHB€ЛИ[™YЫ™K€[€HШ]™IЬИЫЫX]Ш[Xњ][Ы€\И[ЪЬ™YЫ€]›ЩK‚€ЛВ€ЛИЫИ›Э\™HЩ\ћHXZЪ[™ИHXЫ\™Y›ЩHHЪY]	ЬИФ’QТS€]\€[€]Иљ][‚€ЛВ€ЛИ
-€Ъ]HЪ\XЭ\‹HЫЫИ\™HP”УУUK^XЭH\И™Y›Ь™NВ€ЛИ
-€Ъ]Э]Ы™KHXЫ\™YЭ]›ШЪИ
-ЬЫЫ[ЪЬШ\\™Y[€ШќZ[ЫЫX]њ›ЫB€ЛИHШYЭ]HЭ]HXЭX[H\ЪЩY›ЬЉH\ИЪ\™HHY[ќ]H™YЪ\Э\€[™Л[™€ЛИHЪY]Э\Y\И
-Љ™]™\ћH[Э™[Y[ќ]Ш^Hњ›ЫH]
-Љ‹€]QS•UWРU’P•UTШB€ЛИќ[X™\њИ\™Hљ]Y›Ь‹Xљ]Ъ]^HЩ\™H™Y›Ь™H\ИЪ[™ЩNИЫ™HЪ[ќЩ€’QУХT€[Э™\В€ЛИЫX^ћH^XЭHЪ]HЭ\ќ™HШ^\И][Э™\ЛЪXЪ\ИHЪЫHЫЫ\Z[ќ‚€ЛВ€ЛИHXШЩ\[ЩHH™\™XЭЩ]\ИHSH\Э8 %ќH›ЛXЪ\XЭ\\›H™\ЬќИHШ[YB€ЛИЫX^ИЭ[Z[WЫX^И›ШЭ\ЧЫX^[\И\И]ИЪ]XЪ\XЭ\\›H€8 %[™\И\ИB€ЛИ™XY[™ИЩ€]]Щ\И›ЭЫЬЭ[›Э\€YXЩH]И[њЭќ[Y[ќЛ‚€ЫЫњЭ[ЪЬ™YHXЪВ€ЫЫњЭHH\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\ОВ€ЫЫњЭ[ИH[ЪЬ™YИ
-\Л—ЬЫЫ[ЪЬ€‘T“ЧФУУРSђТФЉH€ќ[В€ЛИТSХСT€\И[ЪЬ™Y[€U’P•UHЬXЩK›ЭЫЫЬXЩKЫИ]Ь[ЬЫЭШ[™B€ЛИШ\Э\‰ЬИЭЫ€Ъ[[Э™HЪ]HЬ[™ЫИ8 %H›ШЭ\ИЩZ[[™И]Ь›ЭЬИЪ[HHЫЭЫЭ[ќ€ЛИЩ\И›ЭЫЭ[™HHЩXЫЫ™]ZY]\€™\њЪ[Ы€Щ€HШ[YHY™XЭ‚€ЫЫњЭЫЫИH\Pљ\ќЪYЫ•ФЫЫК€\љ]™TЫЫК[ЪЬ™YИИ‹‹ђKЪ[ЭЩ\Ћ€ќ[LL
-KќЪ[ЭЩ\ЉH
-И[ЛќЪ[ЭЩ\€H€JKЪ
-NВ€Y€
-[ЪЬ™Y
-HВ€ЫЫЛљЫX^HX]›X^
-KX]њ›Э[™
-ЫЫЛљЫX^
-И[ЛљЫX^
-JNВ€ЫЫЛњЭ[Z[WЫX^HX]›X^
-KX]њ›Э[™
-ЫЫЛњЭ[Z[WЫX^
-И[ЛњЭ[Z[WЫX^
-JNВ€ЫЫЛ™›ШЭ\ЧЫX^Ш\ЩHHЫЫЛ™›ШЭ\ЧЫX^В€ЫЫЛ[ЪЬ™YЭЧЫШYЭ]HИ‹‹[ИNВ€B€ЫЫњЭ€H\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ЋВ€Y€
-ЉHВ€ЫЫњЭњXИH‹љX^€И‹љИ‹љX^€NВ€ЫЫњЭЭњXИH‹њЭ[Z[SX^€И‹њЭ[Z[HИ‹њЭ[Z[SX^€NВ€‹љX^HЫЫЛљЫX^В€‹њЭ[Z[SX^HЫЫЛњЭ[Z[WЫX^В€‹љHЬЛњ™Yљ[ИЫЫЛљЫX^€X]›Z[ЉЫЫЛљЫX^њXИ
-€ЫЫЛљЫX^
-NВ€‹њЭ[Z[HHЬЛњ™Yљ[ИЫЫЛњЭ[Z[WЫX^€X]›Z[ЉЫЫЛњЭ[Z[WЫX^ЭњXИ
-€ЫЫЛњЭ[Z[WЫX^
-NВ€ЛИ’KT‘М€0©МЙЬИ™YЩ[€[\€’KPУPЊИЭЫњИHSVH
-€ЉH[™H][\Y\њОИЫ›B€ЛИH]H[Э™\Л[™][Э™\ИИ^XЭHKЊЬИ]HS‘LЊ^[\\‹ЫИ›Э[™В€ЛИМKLHYX\Э\™YЪ[™Щ\Л‚€Y€
-\ЛЫЫX]™	‰€\ЛЫЫX]™њЭ[Z[JH\ЛЫЫX]™њЭ[Z[Kњ™YЩ[‹њ\—Щњ[YHHЫЫЛњЭ[Z[WЬ™YЩ[—Ь\—Щњ[YNВ€B€Y€
-\Л›XYЪXКHВ€\Л›XYЪXЛњЩ]Ъ[ЭЩ\ЉЫЫЛ™њ›ЫKќЪ[ЭЩ\ЉNВ€ЛИH™\Щ\ќ›Ъ\€HЪYЫ€Ъ]™\И[ЭK›ЭHЫ™HТSХСT€[Ы™HЫЭ[‚€ЫЫњЭШ\Сќ[H\Л›XYЪXЛ™›ШЭ\ИЏH\Л›XYЪXЛ™›ШЭ\УX^В€\Л›XYЪXЛ™›ШЭ\УX^HЫЫЛ™›ШЭ\ЧЫX^В€Y€
-ЬЛњ™Yљ[Ш\Сќ[
-H\Л›XYЪXЛ™›ШЭ\ИHЫЫЛ™›ШЭ\ЧЫX^В€[ЩH\Л›XYЪXЛ™›ШЭ\ИHX]›Z[Љ\Л›XYЪXЛ™›ШЭ\ЛЫЫЛ™›ШЭ\ЧЫX^
-NВ€ЛИ’KPТЊИИSQS‘QS•UМKLЛLО€HЫ™H[™ИHћHЩ[Ш[€XЭX[HZЩH]Ш^K‚€\Л›XYЪXЛ™›ШЭ\Ф™\ЭЬ™\Р]X\ќHЫЫЛ™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќВ€ЛИМЌЙЬИЫ™HYШ[^Щ\[ЫЋ€HTРФ‘UKЫ™K\ЪЭЬ[ќЩ€›ШЭ\Ињ›ЫH[€Y™™XЭ]€ЛИ[™ИЫ€[ЭK€\љ]™Y\™H[™ЫЫњЭ[YY[€XYЪXЛЬЮ\Э[KљњОXњЫЬ“Ы’]ИШ]™HB€ЛИ\љ]™Y][™ЫЫњЭ[YY]›ЭЪ\™KЫИHћHЩ[	ЬИЭЩ\€Ш\И\И[›ШњЩ\ќX›H\И]В€ЛИ]ШXЪИ[™XYЪXЛX]Y]Z[YЫ€HZ\‹‚€\Л›XYЪXЛњЬ[XњЫЬњ[Ы€HЫЫЛњЬ[ШXњЫЬњ[Ы€В€B€\ЛњЪ[KњЫЫИHЫЫОВ€ЛИ’KPТЊО€Hљ\њЭ]HЪ[™Щ\ИHШ\њљYYЫЫX]XЫЫњЭ[YY›\ЪИ[ќ™[ќЬћK€ЫЫ€ЛИ\љ]][Ы€ќ[њИYќ\€Ь™X][Ы‹ШY[™]™[]\ЫИ™]Z[€[€[›[ЩYљYY\Щ[[™H]\‚€ЛИ[€Y[™ИHЪYЫ‰ЬИЪ\™ЩHЫ€]™\ћH[ќ›ШШ][Ы‹‚€Y€
-\ЛњЪ[Kњ^Y\ЉHВ€Y€
-\ЛњЪ[Kњ^Y\‹—Шљ\ќЪYЫђ\ЩQ\Э\ИOOH[™Yљ[™Y
-HВ€\ЛњЪ[Kњ^Y\‹—Шљ\ќЪYЫђ\ЩQ\Э\ИHX]›X^
-ќ[X™\Љ\ЛњЪ[Kњ^Y\‹™\Э\И
-JNВ€B€\ЛњЪ[Kњ^Y\‹™\Э\ИH\ЛњЪ[Kњ^Y\‹—Шљ\ќЪYЫђ\ЩQ\Э\И
-Иќ[X™\ЉЫЫЛ™›\ЪЧШЪ\™ЩWЩ[H
-NВ€Y€
-\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ђЭ
-HВ€\ЛЫЫX]њ^Y\ђЭ™\Э\ИH\ЛњЪ[Kњ^Y\‹™\Э\ОВ€\ЛЫЫX]њ^Y\ђЭ™\Э\УX^H\ЛњЪ[Kњ^Y\‹™\Э\ОВ€B€\ЛњЪ[Kњ^Y\‹™\Э\УX^H\ЛњЪ[Kњ^Y\‹™\Э\ОВ€B€Y€
-ЉHZ\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€\ЛњЪ[Kњ^Y\‹™›ШЭ\УX^HЫЫЛ™›ШЭ\ЧЫX^В€\ЛњЪ[Kњ^Y\‹™›ШЭ\УШЪЩYH\ЫЫЛ™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќВ€Y€
-\Лќ\КHВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЬЫЫЧЩ\љ]™Y	КNВ€]‹љЫX^HЫЫЛљЫX^И]‹њЭ[Z[WЫX^HЫЫЛњЭ[Z[WЫX^И]‹™›ШЭ\ЧЫX^HЫЫЛ™›ШЭ\ЧЫX^В€]‹ќљYЫЭ\€HЫЫЛ™њ›ЫKќљYЫЭ\ЋИ]‹™[™\[ЩHHЫЫЛ™њ›ЫK™[™\[ЩNИ]‹ќЪ[ЭЩ\€HЫЫЛ™њ›ЫKќЪ[ЭЩ\ЋВ€]‹™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќHЫЫЛ™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќВ€]‹ќЪHHЬЛќЪH	Щ\љ]™IОВ€B€\ЛњЪ[K—ЬЫЫС\ќHH[ЩNВ€™]\›€ЫЫОВ€B‚€КЉ€]™\ћH\љ]™Yќ[X™\€HЪY]›ЩXЩ\ЛЪ]H]љXќ]HXXЪШ[YHњ›ЫK€
-‹В€Щ]\љ]™YЭ]К
-HВ€ЫЫњЭЪH\ЛњЪ[KЪ\XЭ\ЋВ€Y€
-XЪ
-H™]\›€ИЬ™X]Y€[ЩKЭЪN€	Ы›Э[™И\И™Y[€Ьљ][€ЭЫ€Y]	ИNВ€ЫЫњЭЫЫИH\Pљ\ќЪYЫ•ФЫЫК\љ]™TЫЫК\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\КKЪ
-NВ€ЫЫњЭ€H\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ЋВ€™]\›€В€‹‹њЫЫЛ€]™N€€ИИ€‹љЫX^€‹љX^Э[Z[N€›Э[™ЩJ‹њЭ[Z[JKЭ[Z[WЫX^€‹њЭ[Z[SX^H€ќ[€›ШЭ\ЧЫ]™N€\Л›XYЪXИИИ›ШЭ\О€›Э[™ЩJ\Л›XYЪXЛ™›ШЭ\КK›ШЭ\ЧЫX^€\Л›XYЪXЛ™›ШЭ\УX^H€ќ[€Э\ќ™\О€В€Ш]€ИL€X^›ЬЉL
-KЊ€X^›ЬЉЊ
-KЌО€X^›ЬЉЌКK€X^›ЬЉ
-KЊ€X^›ЬЉЊ
-KNN€X^›ЬЉNJHK€Э[Z[WШ]€ИL€Э[Z[SX^›Ь•љYКL
-KЊ€Э[Z[SX^›Ь•љYКЊ
-KМ€Э[Z[SX^›Ь•љYКМ
-K€Э[Z[SX^›Ь•љYК
-KNN€Э[Z[SX^›Ь•љYКNJHK€K€ЪЪ[О€\Л™Щ]ЪЪ[ЪY]
-
-K€NВ€B‚€КЉ€]™\ћHЪЪ[]И[YK]И[љЩY›ЩЬ™\ЬИ[™Ъ]]ZЩ\ИИ[Э™K€
-‹В€Щ]ЪЪ[ЪY]
-
-HВ€ЫЫњЭЭ]HЯNВ€ЫЫњЭЫЭ€HЫЭ™\›љ[™УX\
-\ЛЪ]JNВ€›Ь€
-ЫЫњЭИЩ€Шљ™XЭљЩ^\К\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[КJHВ€ЫЫњЭ€H\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ЦЪЧNВ€Э]ЪЧHHВ€[YN€‹ќ[YK›ЩЬ™\ЬО€›Э[™ЩJ‹ќ\ЩT›ЩЬ™\ЬИ
-KЧЫ™^€›ЩЬ™\ЬХУ™^
-‹ќ[YJK€ЫЭ™\›љ[™О€ЫЭ–ЪЧHќ[]™[ЧЬЪ[ЩWЬ™\Э€‹›]™[ФЪ[ЩT™\Э€NВ€B€™]\›€Э]В€B‚€КЉ‚€
-€’KT‘МИ0©МЙЬИЭ][Щ‹YљYЪ[Ћ€H\ЩH]™[ќHљYЪШ[››Э[Z]€Ъ[™\ИHЩ^HЩ‚€
-€TСWСU‘S•Ш[™ЭЫЬЭ\ИЪ]]XЭX[HЫЫњЭ[YY8 %HШ[Ъ]ЫЬЭ\И™Yќ\ЩY€
-€ћHHЫЬЭШ]H[™Ш^\ИЫЛ‚€
-‹В€Ь[ќЪЪ[\ЩJЪ[™Э
-HИ™]\›€Ь[ќ\ЩJ\ЛњЪ[K\Лќ\Л\ЛЪ]KЪ[™ЭЯJNИB‚€КЉ‚€
-€HPT•™\Э€’KT‘МЭЫњИH™\Э]Щ[ЋИЪ]\И\™H\ИHЫИ[™ЬИМKLЙЬВ€
-€][\ИXZЩH]™\ЬЫњЪX›H›ЬЋ€’KT‘МИ0©Н	ЬИ™\ЭЫ[\™\Щ]Л[™’KPТЊЙЬИћHЩ[€
-€]ШXЪИXЪY\ИЪ]\€›ШЭ\ИЫЫY\ИXЪЛ‚€
-‹В€X\ќ™\Э
-ЬИHЯJHВ€ЛИМKLLЛ€ТPТЩ[€ЬЛ][Y\ИЫ™H^XЪ]H
-H\›™\ЬИY™›Ь™[ЩH[€\™[B€ЛИШЩ[\љ[И™YYЛ[™]\ИX™[Y\ИЭXЪ[€H™]\›€[YJNИЭ\ќЪ\ЩHHЩ[B€ЛИ›ЩH\ИЭ[™[™И]€™\ЫЫљ[™ИИ“ХS‘И\И›Э[€\њ›Ь€8 %]™\ћHМKLMXYЪXИ›Ш™H[‚€ЛИH™YHШ[ИX\ќ™\Э
-
-X[€[€\™[HЪ]›ИЩ[[€][™^XЭИH›ШЭ\В€ЛИ™Yљ[8 %ќ]H™\ЭЪ]›ИЩ[™Z[™]Щ\И›ЭЩ]H™\Ь]Ы€Ъ[ќЩ\И›Э€ЛИ™KYЬ›ЭИHX\њЪ[™Щ\И›Э[Э™HHЫШЪЛ[™Ш^\ИЫЛ‚€ЫЫњЭX\ќHЬЛ]€И
-\ЛљX\ќИИ\ЛљX\ќЛ™Щ]
-ЬЛ]
-H€ќ[
-B€€
-\ЛљX\ќИИ\ЛљX\ќЛ]
-\ЛњЪ[Kњ^Y\‹њЬЦМK\ЛњЪ[Kњ^Y\‹њЬЦМ—JH€ќ[
-NВ€Y€
-ЬЛ]	‰€ZX\ќ
-HВ€›ЭИ™]И\њ›ЬЉX\ќ™\Э
-Ш]‰ЙЫЬЛ]IЯJN€›ИЭXЪX\ќ€	Э\ЛљX\ќИИ\ЛљX\ќЛЫЭ[ќ
-
-H€H\™HXЩY[€Ш[YKЩ]KЭЫЬ›ЪX\ќЛљњЫЫ‹
-NВ€B€›Ь€
-ЫЫњЭИЩ€Шљ™XЭљЩ^\К\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[КJHВ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ЦЪЧK›]™[ФЪ[ЩT™\ЭHВ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[ЦЪЧKњ™\ЭЫ[\YH[ЩNВ€B€ЫЫњЭЫЫИH\ЛњЪ[KЪ\XЭ\‚€И\Pљ\ќЪYЫ•ФЫЫК\љ]™TЫЫК\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\КK\ЛњЪ[KЪ\XЭ\ЉB€€ќ[В€ЫЫњЭ™\ЭЬ™\ИH\ЫЫИЫЫЛ™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќВ€]›ШЭ\Р™Y›Ь™HHќ[›ШЭ\РYќ\€Hќ[В€Y€
-\Л›XYЪXКHВ€›ШЭ\Р™Y›Ь™HH\Л›XYЪXЛ™›ШЭ\ОВ€ЛИ’KSPQМH0©РHЭЫњИH™Yљ[]Щ[ЋИМKLИЭЫњИЫ›HЪ]\€]\И[ЭЩYИ\[‹‚€Y€
-™\ЭЬ™\КH\Л›XYЪXЛљX\ќ™\Э
-
-NВ€›ШЭ\РYќ\€H\Л›XYЪXЛ™›ШЭ\ОВ€B€ЫЫњЭ€H\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ЋВ€Y€
-ЉHИ‹љH‹љX^И‹њЭ[Z[HH‹њЭ[Z[SX^ИB€ЛИ’KSФЊH0©НK\™Ш[›Ы€
-С‹LЉK[™]Y›И[\[Y[ќ][Ы€][[ќ[›ЭО‚€ЛИ’Ы™Y[[™ИИHЫЭ[™YX[њИZЪ[™ИШ\[ќИH›ЩH]Ш\И›ЭXYH›Ь€]€]™\ћH™\Э\В€ЛИHЫX[Ъ\ЫЫљ[™Л€]XШЭ[][]\Л€€H›Ы‹P\™ЫЫљX[€ЪИ™\ЭИЫ[XњИHZ[ќ[™ОИ[‚€ЛИ\™ЫЫљX[€™]™\€Щ\Л™XШ]\ЩHHЩ[Ы›ЭЬИ[H[™Ш\\И›ЫЩ€HЫЫњЭ[Y\€\И”В€ЛИ\ЬЬЪ][Ы€
-Ъ[KЩX[ЩЭYKЩ\ЬЬЪ][Ы‹љњШ
-K™]™\€Hњ[YKH]›ЮЬ€H[XYЩHќ[X™\€8 %€ЛИ[€[™[^H]‘RU‘QY™™\™[ќH[™\€Z[ќЫЭ[™H[€T‹LHZ[€‚€ЫЫњЭZ[ќHZ[ќЩЉ\ЛњЪ[JNВ€ЫЫњЭZ[ќ™Y›Ь™HHZ[ќ[™В€Y€
-]Z[ќљ[[][™JHИZ[ќњ™\ЭККОИZ[ќ[™H[™њ›ЫT™\ЭКZ[ќ
-NИB€ЛИKKKHМKLLО€H›Э\€[™ЬИHPT•Щ\И]H›ШЭ\И™Yљ[\И›ЭKKKKKKKKKKKKKKKKKB€ЛИ’KT‘М0©МH[™0©М‹€]™\ћHЫ™HЩ€\ЩH™XXЪ\ИHљY[]\И™Y[€[€HШ]™HЪ[ЩB€ЛИШ]™HHЪ]›ИЬљ]\Ћ€X\ќ\Э™\ЭYX\ќС\ШЫЭ™\™Y[™[ZY\СXY[ќ[™\Э‚€]™\Ь]Ы™YHќ[ЫШЪР™Y›Ь™HHќ[ЫШЪРYќ\€Hќ[\ЩX\Щ\ИHЧNВ€Y€
-X\ќ
-HВ€ЛИK€H›ЫЭ\Э\И[ЭK[™\™XYќ\€ЫИ[Э\€]\›€
-’KSФЊH0©Н
-K€H™\Ь]Ы‚€ЛИЪ[ќ8 %[™HЫ›H[™И[€\ИќZ[]Ьљ]\И]‚€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќ\Э™\ЭYHX\ќљYВ€Y€
-]\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќС\ШЫЭ™\™Yљ[ЫY\КX\ќљY
-JHВ€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќС\ШЫЭ™\™Yњ\Ъ
-X\ќљY
-NВ€B€ЛИ‹€HX\њЪ™KYЬ›ЭЬИЪ][ЭHќ[™Y
-НK[™[YYXЭЬњИ\™HЭ]ЪYH]И™XXЪ
-K‚€™\Ь]Ы™YH\Л™X]€И\Л™X]њ™\Ь]Ы“Ь™[\ћJ\ЛњЪ[K\ЛЫЫX]\Лќ\Л	ЪX\ќЬ™\Э	КB€€ќ[В€ЛИЛ€HЫШЪИ[Э™\ИЪ^Э\њЛЪXЪ\ИHУФХЩ€™\Э[™И[™H[Ьњ›ЭЪ[™[€Щ‚€ЛИHЪXЪЬЪ[ќ€X]Щ\И“ХИ\И
-’KT‘М0©Н€ќ[H
-K‚€ЫШЪР™Y›Ь™HH\ЛњЪ[K™[ќ‹ќ[YSЩ‘^NВ€ЫЫњЭHЫШЪР™Y›Ь™H
-И‘TХТХT”ОВ€\ЛњЪ[K™[ќ‹ќ[YSЩ‘^HH
-
-	HЌ
-H
-ИЌ
-H	HЌВ€Y€
-ЏHЌ
-H\ЛњЪ[K™[ќ‹™^PЫЭ[ќH
-\ЛњЪ[K™[ќ‹™^PЫЭ[ќ
-H
-ИX]™›ЫЬЉИЌ
-NВ€ЫШЪРYќ\€H\ЛњЪ[K™[ќ‹ќ[YSЩ‘^NВ€ЛИ€[€[ќ™X]Y\ЩX\ЩHY[Щ\ИЫ™HЭYЩK€’KR”“Њ€’ЭИЩHЬЩH€МLH\ИX›Э]B€ЛИЭ\€\™XЭ[Ы€8 %X]]\Э›ЭХT‘HЫ™H8 %[™›Э[™\И\™H™YYY›Ь€B€ЛИY™›XЭ[Ы€XЫЫ›Ы^HИYX[€[ћ][™Л‚€›Ь€
-ЫЫњЭHЩ€\ЛњЪ[Kњ]Y\ЭY™›XЭ[ЫњКHВ€Y€
-KљЪ[™OOH	Щ\ЩX\ЩIКHЫЫќ[ќYNВ€KњЭYЩHH
-KњЭYЩHJH
-ИNВ€\ЩX\Щ\Лњ\Ъ
-ИY€KљYЭYЩN€KњЭYЩHJNВ€B€B‚€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	Ш›Ы™љ\™WЬ™\Э	КNВ€]‹™›ШЭ\ЧШ™Y›Ь™HH›ШЭ\Р™Y›Ь™NИ]‹™›ШЭ\ЧШYќ\€H›ШЭ\РYќ\ЋИ]‹™›ШЭ\ЧЬ™\ЭЬ™YH™\ЭЬ™\ОВ€]‹њШ\ЭZ[ќШ[™HZ[ќ[™И]‹њШ\ЭZ[ќЬ™\ЭИHZ[ќњ™\ЭОВ€Y€
-Z[ќ[™OOHZ[ќ™Y›Ь™JH]‹њШ\ЭZ[ќЬ›ЬЩHHќYNВ€]‹љX\ќHX\ќИX\ќљY€ќ[В€]‹™[™[ZY\ЧЬ™\Ь]Ы™YH™\Ь]Ы™YИ™\Ь]Ы™Yњ™\Ь]Ы™Y›[™Э€В€]‹›[YYЪ[ЩXYH™\Ь]Ы™YИ™\Ь]Ы™Yљ[ЩXY›[™Э€В€]‹ЫШЪЧШ™Y›Ь™HHЫШЪР™Y›Ь™NИ]‹ЫШЪЧШYќ\€HЫШЪРYќ\ЋВ€Z\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€Y€
-\Л™X]
-H\Л™X]›\ЭH\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\€И\ЛЫЫX]њ^Y\‹љ€\ЛњЪ[Kњ^Y\‹љВ€]X[ќ\ЩPЫЫЭ]J\ЛњЪ[JNВ€™]\›€В€™\ЭY€ќYK›ШЭ\ЧЬ™\ЭЬ™Y€™\ЭЬ™\Л›ШЭ\О€›ШЭ\РYќ\‹›ШЭ\ЧЫX^€\Л›XYЪXИИ\Л›XYЪXЛ™›ШЭ\УX^€ќ[€ЪN€™\ЭЬ™\ИИќ[€	ХHћHЩ[€’KPТЊО€HЩ[ИИ›Эљ[[ЭK€SQS‘QS•UМKLЛLЛ‰Л€™\ЭШЫ[\Ь™\Щ]€ќYK€Ш\ЭZ[ќ€И[™€Z[ќ[™™\ЭО€Z[ќњ™\ЭЛ[[][™N€Z[ќљ[[][™KШ\™Э\Щ\ЧЫYќ€Z[ќќШ\™\Щ\УYќK€›ЭN€	Ф’KSPQМH0©РN€H™\Щ\ќ›Ъ\€™Yљ[И\™H[™›ЭЪ\™H[ЩH8 %[™›Ь€Ы™Hљ\ќЪYЫ€[€љ[™K›Э]™[€\™K‰Л€ЛИKKKHМKLLИKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB€X\ќ€X\ќИX\ќљY€ќ[€X\ќЬ™\ЫЫ™YШћN€X\ќИ
-ЬЛ]И	Щ^XЪ]	И€	Ь›Ю[Z]IКH€	Ы›Ы™IЛ€™\Ь]Ы—ЬЪ[ќЬЩ]€X\ќИX\ќљY€ќ[€X\ќЧЩ\ШЫЭ™\™Y€Л‹‹ќ\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќС\ШЫЭ™\™YK€ЫЬ›Ь™\Щ]€™\Ь]Ы™Y€ЫШЪО€И™Y›Ь™N€ЫШЪР™Y›Ь™KYќ\Ћ€ЫШЪРYќ\‹Э\њО€X\ќИ‘TХТХT”И€^N€\ЛњЪ[K™[ќ‹™^PЫЭ[ќK€\ЩX\Щ\ЧШY[ЩY€\ЩX\Щ\Л€€\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\€И\ЛЫЫX]њ^Y\‹љ€\ЛњЪ[Kњ^Y\‹љ€›\ЪЧШЪ\™Щ\О€\ЛњЪ[Kњ^Y\‹™\Э\Л€›ЧЪX\ќЫ›ЭN€X\ќИќ[€€	У›ИШ\Щ[Ъ][€™XXЪЫИ\ИШ\ИHЫЫЛX[™XЫ[\[€Ы›N€›И™\Ь]Ы€Ъ[ќ	В€
-И	ЭШ\ИЩ]›Э[™И™KYЬ™]И[™HЫШЪИY›Э[Э™K€’KT‘М0©МH™YYИHЩ[‰Л€ЛИЩX[HНЛ™]\›™Y]\€[€\ЬЩ\ќY€’KT‘МY]Щ€\ЪЬИ]HPT•€ЛИ[ќ\XЭ[Ы€^ЬЩH›И\Э[][Ы€\ЭЩ€[ћHЪ[™‚€Y[ќN€X\ќ	‰€\ЛљX\ќИИ\ЛљX\ќЛ›Y[ќJX\ќљY
-H€ќ[€NВ€B‚€ЛИKKKHМKLLО€X]H›ЫЫH[™Hќ[€XЪИKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€КЉ‚€
-€Ы™Hњ[YHЩ€HX]ЫЬќ[€њ›ЫHШYќ\”Э\
-
-X‚€
-‚€
-€Ъ[KЩX]љњШЭЫњИ]™\ћHќ[NИЪ]\И\™H\ИHЫИ[™ЬИЫ›HH[™Ъ[™HШ[€Э\N‚€
-€HТТT
-[ћH[њ]Ы€HЭ\™XЩIЬИљ\њЭњ[YH8 %’KR”“Њ€K’KR”“ЊHМЉK[™B€
-€Ш[Y\KЪXЪ\ИHШ[YHљYИљ]™[€ИHY™™\™[ќ\™Щ]
-’KPРSL€0©Т
-K‚€
-‹В€ЩX]XЪК
-HВ€Y€
-]\Л™X]
-H™]\›€ќ[В€\Л—Щ›ЩСШ]UXЪК
-NВ€Y€
-\Л™X]XЭ]™H	‰€\Лљ[њ]	‰€\Лљ[њ]њ™\ЬЩY
-H\Л™X]њ™\]Y\ЭЪЪ\
-\ЛњЪ[K™њ[YJNВ€ЫЫњЭШ\РXЭ]™HH\Л™X]XЭ]™NВ€ЫЫњЭ€H\Л™X]›ШњЩ\ќ™J\ЛњЪ[K\ЛЫЫX]\Лќ\КNВ€Y€
-]Ш\РXЭ]™H	‰€\Л™X]XЭ]™JHВ€ЛИHЭ\™XЩH\Иќ\ЭЫЫ™H\€’KPРSLH0©С‰ЬИЫЬЩY›ШШXќ[\ћH[™XYH\ИX][€]‚€™YЪ[‘X]Ш[Y\J\ЛњЪ[JNВ€Y€
-\Лњ™[™\™\ЉH\Лњ™[™\™\‹ќZKњЩ][Щ[
-\Л—ЩX]Э\™XЩS[Щ[
-
-JNВ€B€Y€
-Ш\РXЭ]™H	‰€]\Л™X]XЭ]™JHВ€Y€
-\Лњ™[™\™\€	‰€\Лњ™[™\™\‹ќZK›[Щ[	‰€\Лњ™[™\™\‹ќZK›[Щ[љЪ[™OOH	ЩX]	КHВ€\Лњ™[™\™\‹ќZKњЩ][Щ[
-ќ[
-NВ€B€ЛИHX]Ш[Y\H\ИХPТЦHћH\ЪYЫЋ€Ъ[KШШ[Y\KљњИ™\ЫЫ™S[ЩJ
-X™KX\ЬЩ\ќВ€ЛИ[ЩHH	ЩX]	ШЫ€]™\ћHЭ\Ъ[HШ[Y\K™X]њ[YHЏHЫИЬљ][™И[ЩX\™B€ЛИШ\И[™Ы™HЫ™Hњ[YH]\€[™HљYИЭ^YY[€]ИX]Ьљ]›Ь€H™\ЭЩ€B€ЛИЩ\ЬЪ[Ы‹€HXЬ›ЬЬЛYX]Y™€Ш]YЪ]\ИЬЩKШ[Y\WЫ[ЩH™њ™YH€O€™X]€ЛИЭ\ќљ]љ[™ИH™\Ь]Ы‹ЪXЪ\ИHЪЫH\™Э[Y[ќ›Ь€ќ[›љ[™ИHY™‹‚€\ЛњЪ[KШ[Y\K™X]њ[YHHLNВ€\ЛњЪ[KШ[Y\K›[ЩHH	Щњ™YIОВ€ЛИЩX[HМЌИ[™’KPТЊО€ШZЪ[™И]HЩ[\ИHШ[YH[њШXЭ[Ы€\И™\Э[™И]]ЫВ€ЛИHћHЩ[	ЬИ]ШXЪИ\Y\ИИ]€HЪYЫ€ЪЬЩHЫЬЭ[ЭHШ[€ЩЩHћHZ[™И\И›Э€ЛИHЫЬЭ€H™]™\њЩH8 %H™\Ь]Ы€]™Yљ[Y›ШЭ\И›Ь€]™\ћ[Ы™H8 %ЫЭ[[ЫИ™HB€ЛИЫ™H›Э]HМЌИШ^\ИЩ\И›Э^\Э‚€ЫЫњЭЫЫИH\ЛњЪ[KЪ\XЭ\‚€И\Pљ\ќЪYЫ•ФЫЫК\љ]™TЫЫК\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹]љXќ]\КK\ЛњЪ[KЪ\XЭ\ЉB€€ќ[В€ЫЫњЭ™\ЭЬ™\ИH\ЫЫИЫЫЛ™›ШЭ\ЧЬ™\ЭЬ™\ЧШ]ЪX\ќВ€Y€
-\Л›XYЪXИ	‰€™\ЭЬ™\КH\Л›XYЪXЛљX\ќ™\Э
-
-NВ€Y€
-ЉH‹™›ШЭ\ЧЬ™\ЭЬ™YH™\ЭЬ™\ОВ€Y€
-\Л›XYЪXКHВ€\ЛњЪ[Kњ^Y\‹™›ШЭ\ИH\Л›XYЪXЛ™›ШЭ\ОВ€\ЛњЪ[Kњ^Y\‹™›ШЭ\УX^H\Л›XYЪXЛ™›ШЭ\УX^В€B€Z\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€]X[ќ\ЩPЫЫЭ]J\ЛњЪ[JNВ€B€™]\›€ЋВ€B‚€КЉ‚€
-€H›ЬЬИ\™[\Л\И›Ы[Y\ИЫ€HЬ›Э[™
-ЫЫX]›ЬЬЛ\™[X
-K‚€
-‚€
-€Ш[YKЩ]KЭЫЬ›ЪX\ќЛљњЫЫXЫ\™\ИЫИ›ЩИШ]\ИЪ]HЬЪ][Ы‹HY]\ЛH›ЬЬВ€
-€™Z[™XXЪ[™HЩ[ЊLLLИ]Ш^H]’KT‘М0©НH™\]Z\™\Л€\И\ИHќ[ќ[YH]€
-€XZЩ\И[HHXЩH]\€[€HX›N€Ь›ЬЬЪ[™И[ќИЫ™HЬљ]\ИЪ[KќЫЬ›™›ЩСШ]\Ф\ЬЩY€
-€8 %H™YЪ\Э\€HШ]™H\ИШ\њљYYЪ[ЩHШ]™HHЪ]›ИЬљ]\€8 %љ]™\ИHШ[Y\H›ЭYЪ€
-€’KPРSL€0©ТIЬИLYњ[YHШ]H[Э™K[™]ИX\ќЮ\Э[K™Ш]P]
-
-X[€H]Щ‚€
-€X]Ю\Э[KњXЩTЭZ[Љ
-XЪXЪ\ИЪ]ЩY\ИH›ЫЫHњ›ЫH[™[™И[њЪYHH™\ЩX[Y€
-€\™[H
-’KT‘М0©Н‹Hќ[H]^\ЭИЫИ™XЫЭ™\љ[™ИЫЭ[И™]™\€™\]Z\™\И™KYљYЪ[™ИB€
-€›ЬЬКK‚€
-‹В€Щ›ЩСШ]UXЪК
-HВ€Y€
-]\ЛљX\ќИ]\ЛљX\ќЛ™Ш]\Л›[™Э
-H™]\›ЋВ€Y€
-\ЛЩ[›ЬЉ\ЛњЪ[K™[ќЉHOOH	Ь›Эљ[ЩIКH™]\›ЋВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€ЫЫњЭИH\ЛљX\ќЛ™Ш]P]
-њЬЦМKњЬЦМ—JNВ€ЫЫњЭШ\ИH\Л—Ъ[‘›ЩСШ]Hќ[В€Y€
-И	‰€ЛљYOOHШ\КHВ€\Л—Ъ[‘›ЩСШ]HHЛљYВ€Y€
-]\ЛњЪ[KќЫЬ›™›ЩСШ]\Ф\ЬЩYљ[ЫY\КЛљY
-JHВ€\ЛњЪ[KќЫЬ›™›ЩСШ]\Ф\ЬЩYњ\Ъ
-ЛљY
-NВ€\ЛњЪ[KќЫЬ›™›ЩСШ]\Ф\ЬЩYњЫЬќ
-
-NВ€B€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЬЭ\™XЩWЩ[ќ\‰КNВ€]‹њЭ\™XЩHH	Щ›ЩЧЩШ]IОИ]‹™Ш]HHЛљYИ]‹›ЬЬИHЛ›ЬЬОВ€™YЪ[‘›ЩСШ]J\ЛњЪ[Kќ[
-NВ€H[ЩHY€
-YИ	‰€Ш\КHВ€\Л—Ъ[‘›ЩСШ]HHќ[В€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЬЭ\™XЩWЩ^]	КNВ€]‹њЭ\™XЩHH	Щ›ЩЧЩШ]IОИ]‹™Ш]HHШ\ОВ€B€B‚€КЉ€HЫИ›ЩИШ]\ЛЪ\™H^H\™KЪXЪ›ЬЬИ\И™Z[™XXЪ[™HЩ[]Щ\ќ™\И]€
-‹В€Щ]›ЩСШ]\К
-HВ€Y€
-]\ЛљX\ќКH™]\›€ИЫЭ[ќ€Ш]\О€ЧHNВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€™]\›€В€ЫЭ[ќ€\ЛљX\ќЛ™Ш]\Л›[™Э€[њЪYN€\Л—Ъ[‘›ЩСШ]Hќ[€\ЬЩY€Л‹‹ќ\ЛњЪ[KќЫЬ›™›ЩСШ]\Ф\ЬЩYK€Ш]\О€\ЛљX\ќЛ™Ш]\Л›X\
-
-КHO€
-В€‹‹™Л€\ЭЫN€ЛњЬИИ
-УX]љ\Э
-ЛњЬЦМHHњЬЦМKЛњЬЦМ—HHњЬЦМ—JKќСљ^Y
-ЉH€ќ[€JJK€NВ€B‚€КЉ€HЫ™H[™HHX]Э\™XЩHШ\њљY\Л€’KR”“Њ€KСN€›ИЭ]\ЭXЬЛ›И\Л€
-‹В€ЩX]Э\™XЩS[Щ[
-
-HВ€™]\›€ИЪ[™€	ЩX]	Л[™N€PUУS‘KЪЪ\X›N€ќYKX^Щњ[Y\О€ХT‘ђPСWС”ђSQTИNВ€B‚€Щ]X]Э]J
-HВ€Y€
-]\Л™X]
-H™]\›€И™\Щ[ќ€[ЩHNВ€™]\›€В€™\Щ[ќ€ќYK€‹‹ќ\Л™X]њ™\Ьќ
-\ЛњЪ[JK€X\ќЧЬXЩY€\ЛљX\ќИИ\ЛљX\ќЛЫЭ[ќ
-
-H€€™\Ь]Ы—ЬШЫЬN€\Л™X]њ™\Ь]Ы”™\Ьќ
-\ЛњЪ[JK€NВ€B‚€КЉ‚€
-€МKLLИЊЋ€HT‘ХSQS•TИ“ХИУ“ХT‘Q€›Э[™IЬИЪ[^Y\ЉШ]\ЩJXЫЪИHШ]\ЩK€
-€\ШШ\™Y][™™]\›™Y][€]ИЭЫ€™\Ьќ8 %ЩX]XЪК
-XШ[Y€
-€X]›ШњЩ\ќ™JЪ[KЫЫX]ќ\КXЪ]›ИЬЛЫИЬЛШ]\ЩXY›ИЭ\Y\€[ћ]Ъ\™H[‚€
-€HќZ[€УУSУФќ[HИMKH›YИ]Y\Л[™H›Э[™LHќZ[\€Ьљ]XЪ\ЩYB€
-€Ш[YHЪ\H[Щ]Ъ\™H[€HШ[YHЩ\ЬЪ[Ы‹‚€
-‚€
-€]\ИЬљ][€Ъ\™HHУФ“Ьљ]\И]
-Ъ[Kњ^Y\‹›][Ш]\ЩXHљY[]™\њШ[љњШ€
-€Щ]ИЪ[€H[Ь€H›ЭЫ€[™ИHЪ[[™И›ЭКH]\€[€›ЭYЪHљ]]H\›™\ЬВ€
-€Ъ[›™[ЫИH\›™\ЬИ›Э]H[™HЫЬ››Э]H\™HHШ[YH›Э]H[™H›Ш™HШ[››Э€
-€^\Ъ\ЩHH]H^Y\€Ш[››Э‚€
-‹В€Ъ[^Y\ЉШ]\ЩJHВ€ЫЫњЭ€H\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ЋВ€Y€
-XЉH›ЭИ™]И\њ›ЬЉ	ЪЪ[^Y\Ћ€›ИЫЫX]›ЩIКNВ€ЫЫњЭQРSHЙШЫЫX]	Л	Щ[	Л	Ъ^\™	Л	Щ›ЭЫ‰ЧNВ€Y€
-Ш]\ЩHOOH[™Yљ[™Y	‰€Ш]\ЩHOOHќ[	‰€SQРSљ[ЫY\КЭљ[™КШ]\ЩJJJHВ€›ЭИ™]И\њ›ЬЉЪ[^Y\Љ	ЙШШ]\Щ_IКN€[љЫ›ЭЫ€Ш]\ЩK€YШ[€	УQРSљ›Ъ[Љ	Л	К_K€€
-ИXЩTЭZ[Љ
-Xњ[Ъ\ИЫ€]ЫИHШ]\ЩH]Щ\И›ЭЫ›ЭИЫЭ[Ъ[[ќHZЩHH‚€
-И	ЩX]ЬЪ[ќњ[Ъ[™HШ[ЫЭ[ЫЪИZЩH]YЫЬљЩY‰КNВ€B€‹љHИ‹™XYHќYNВ€\ЛњЪ[Kњ^Y\‹љHВ€\ЛњЪ[Kњ^Y\‹›][Ш]\ЩHHШ]\ЩHИЭљ[™КШ]\ЩJH€ќ[В€™]\›€В€€Ш]\ЩN€Ш]\ЩH	ШЫЫX]	ЛШ]\ЩWЪЫ›Э\™Y€HXШ]\ЩK€›ЭN€	ХHX]]Щ[€љ\™\Ињ›ЫHШYќ\”Э\Ы€H™^Э\њ[Y\КJK€HШ]\ЩH\И	В€
-И	ЭЬљ][€ИЪ[Kњ^Y\‹›][Ш]\ЩH8 %HШ[YHљY[]™\њШ[љњИЬљ]\ИЫ€H[Ь€H	В€
-И	Щ›ЭЫ€8 %[™Ъ[™™\ђШ]\ЩJ
-H™XYИ]\™K‰Л€NВ€B‚€™XЫЭ™\ђ›ЫЩЭZ[Љ
-HВ€Y€
-]\Л™X]
-H™]\›€ќ[В€™]\›€\Л™X]ќћT™XЫЭ™\Љ\ЛњЪ[K\Лќ\КNВ€B‚€\ЭX\ќК
-HВ€Y€
-]\ЛљX\ќКH™]\›€ИЫЭ[ќ€X\ќО€ЧK›ЩЧЩШ]\О€ЧHNВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€ЫЫњЭ€H\ЛљX\ќЛ›™X\™\Э
-њЬЦМKњЬЦМ—JNВ€™]\›€В€ЫЭ[ќ€\ЛљX\ќЛЫЭ[ќ
-
-K€X\ќО€\ЛљX\ќЛ›\Э
-
-K€›ЩЧЩШ]\О€\ЛљX\ќЛ™Ш]\Л›X\
-
-КHO€
-И‹‹™ИJJK€YX\Э\™Y€\ЛљX\ќЛ™›YX\Э\™Yќ[€Э[™[™ЧШ]€
-
-
-HO€ИЫЫњЭH\ЛљX\ќЛ]
-њЬЦМKњЬЦМ—JNИ™]\›€ИљY€ќ[ИJJ
-K€™X\™\Э€€ИИY€‹љX\ќљY\ЭЫN€
-Ы‹™\ЭЫKќСљ^Y
-ЉHH€ќ[€\ЭЬ™\ЭY€\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќ\Э™\ЭY€\ШЫЭ™\™Y€Л‹‹ќ\ЛњЪ[Kњ›ЩЬ™\ЬЪ[Ы‹љX\ќС\ШЫЭ™\™YK€NВ€B‚€Щ]Ъ\XЭ\Љ
-HВ€Y€
-]\ЛњЪ[KЪ\XЭ\ЉHВ€™]\›€ИЬ™X]Y€[ЩKЭЪN€	Ф’KR”“ЊHНЋ€H^Y\€\ИЫЫќ›ЫX›K[€H›ЩK™Y›Ь™H[ћ][™ИYљ[™\И[K€›Э[™И\И™Y[€Ьљ][€ЭЫ€Y]‰ИNВ€B€™]\›€ИЬ™X]Y€ќYK‹‹ќ\ЛњЪ[KЪ\XЭ\€NВ€B‚€КЉ‚€
-€]HЭ\ќ[™И›ЩIЬИXЩHЫ€H]™HЪ[Kњ›ЫHЬ™X][Ы‹љњЫЫЭ\ќ[™ЧШ›ЩX‚€
-‚€
-€Ш[YЫЩH]›ЫЭ™Y›Ь™H[ћH[YYЭ]H\И\YYЫИ]\ИH›ЫЬ€[™™]™\€B€
-€ЩZ[[™О€[ћ][™И]Ьљ]\ИЪ[KљY[ќ]KњXЩXYќ\ќШ\™И8 %H[YYЭ]KHШYЬ‚€
-€Ъ]]™\€МKLИ]™[ќX[H]И[€њ›ЫќЩ€H]H8 %Ъ[њЛ[™›ЩTXЩJ
-X™XYВ€
-€Ъ]]™\€\И\™H]H[ЫY[ќHШЬљX™HЫЪЬИ\]\€[€Ъ]Ш\И\™H]›ЫЭ‚€
-‹В€Ш\TЭ\ќ[™Р›ЩJ
-HВ€ЫЫњЭ›ЩHH
-\ЛЪ]H	‰€\ЛЪ]KЬ™X][Ы€	‰€\ЛЪ]KЬ™X][Ы‹њЭ\ќ[™ЧШ›ЩJHќ[В€Y€
-X›ЩHX›ЩKњXЩJH™]\›€ќ[В€\ЛњЪ[KљY[ќ]KњXЩHH›ЩKњXЩNВ€™]\›€›ЩKњXЩNВ€B‚€КЉ‚€
-€HXЩHЩ€H›ЩHH^Y\€\И[‹\И[€YШ[YKЩ]KЬ›ЩЬ™\ЬЪ[Ы‹ЬXЩ\ЛљњЫЫЫ›ЭЬЛ‚€
-‚€
-€\И\ИHЫ™H[™ИHШ\™[‹TШЬљX™HУТФИU€]\И[X™\][HH™XYЩ€]™HЫЬ›€
-€Э]H[™›ЭHЫЫњЭ[ќ€\ќ\€Ъ[KљY[ќ]KњXЩX8 %HK\Э]HњXЩOx )€ќ[‹HШYЬ‚€
-€Ъ]]™\€МKLИ]™[ќX[H]И[€њ›ЫќЩ€H]H8 %[™HZ\Ь™XYЪHШ^\ИЭ]ЭY€
-€HЫЬњ™XЭ[Ы‹HЫЫ\ЬЩYЪY]HЬљ][™]™\ћH\ЬЬЪ][Ы€\›HЭЫњЭ™X[H[[Э™B€
-€Ъ]]€ЩYHЫЫЛЭМKLЌ‹\ЌЭМKLЌ‹\Ќ]™\љYћK›ZњШ‚€
-‚€
-€U“ХФИУ€HђPСHTИ•RSСTИ“ХУ“ХЛS‘UTИHТS•С€TИ•SђХSУ‹‚€
-‚€
-€›Э[™И[™Y™]\›€›ЭЬЛњЫЫYJ
-ЉHO€‹љYOOHY
-HИY€ќ[€H›ЩHШ\њћZ[™И[€Y€
-€XЩ\ЛљњЫЫЩ\И›Э\ЭШ\И\™Y›Ь™HШњЩ\ќ™Y\И
-Љ›ќ[Ъ[[ќK]ШЩ[™HЭ\ќ
-Љ‹[™€
-€HЩ[њЭ\И™Yќ\ЩYSU‘S€“СTИUT€]Ьљ]њXЩK[ШњЩ\ќ™Y8 %Ъ\™HH›ЭИ\ИШ]YЪ[™€
-€™XЫЫY\ИHЫ™H]]Ь™Y™Yќ\Ш[[™KЫИH^Y\€™XY
-€“›Э[€]›Ю[™›Э[€ЬЩB€
-€ЫЬ™ИЉ€[€њ›ЫќЩ€HЫЬ€[Ъ][™Y›ИШ^HИЫ›ЭИH]H][Y\[™Y][‚€
-€HМKLЌ€ЊИЬљ]XИYX\Э\™Y]Ъ][Y\€HXЩH
-ЉќHШЬљX™IЬИЭЫ€Ьљ][€[™HШ^\ИЭ]€
-€ЭY
-Љ€
-Ьљ]ZЭ\ЩKљњЫЫ	ЬИZ\Ь™XYX›HЩ™™\њИ]\ИHЬ›Ы™ИЭY\ЬКH[™Ы™H]\И›ЭB€
-€›ЩH\™K€]LM™™XH]\[[€Ь™X][Ы‹љњЫЫШ\И\™ЫЫљX[ЪXЪ\ИZЩ]Ъ\ЩH›Э€
-€[€Y\™H8 %H›Э[™љ^YH[YH[™YќHYXЪ[љ\ЫKЫИHЫ\ЬИЩ€Y™XЭШ\ИЫ™B€
-€YЭљ[™Ињ›ЫH™]\›љ[™Л‚€
-‚€
-€›Э\€[™ЬИЬљ]HЪ[KљY[ќ]KњXЩX[™›Ы™HЩ€[H[Y]\И]€Ш\TЭ\ќ[™Р›ЩJ
-X€
-€\S[YYЭ]J	ЬXЩOx )‰КXШ]™KЬЭ]KљњШЫ€ШY[™Ъ]]™\€МKLИ]™[ќX[H]И[‚€
-€њ›ЫќЩ€H]K€HЪ[[ќќ[Ш[››Э[[ћHЩ€[H\\ќњ›ЫHHЫЬњ™XЭШњЩ\ќ][Ы‹‚€
-€ЫИHZ[\™H\И[Э™YИHЪ[ќЩ€ШњЩ\ќ][Ы€[™][Y\ИHY]ЫЭ[›Э™XY‚€
-‚€
-€HУ‘HS‘ИUСTИ“Х“ХИУ€\ИH›ЩHЪ]›ИXЩH][
-ќ[Ш	ЙШ
-K€]\И›Э€
-€[€[њ™XYX›HШњЩ\ќ][Ы‹]\ИHXњЩ[ЩHЩ€Ы™H8 %HШЩ[™HЬ[™YЫ€›Э[™И8 %[™]\В€
-€HЭ[™[™ИЫЫќ›Ы\›HЩ€ЫЫЛЪ›Э\›™^KШЩ[њЭ\Л[™]ЩШ[YK›ZњШ[™Щ€МKLЌ‹\ЊЛ]™\љYћK›ZњШ€
-€M›ЭЩ€ЪXЪ›Э™HHXЩHЪXЪИ\И›Э[™\ќћHШ]Ъ[™ИH›ЛX›ЩHШЩ[™HЭЬ]B€
-€\ЪЛ€\›љ[™И][ќИH›ЭИ\™HЫЭ[[]HЫИЫЫќ›ЫИИЫЬЩHHЫH]\В€
-€[™XYHЭY‚€
-‚€
-€™XY]Ъ]Э]H›ЭИ8 %›Ь€[€XШЩ\ЬЫЬ‹HXYЫ›ЬЭXИЬ€H™\Ьќ8 %Ъ]€
-€Ш›ЩTXЩT]К
-XЪXЪ™]\›њИH][\ИHЭљ[™И[њЭXYЩ€Z\Ъ[™И]‚€
-‹В€›ЩTXЩJ
-HВ€ЫЫњЭ€H\Л—Ш›ЩTXЩT]К
-NВ€Y€
-‹™][
-H›ЭИ™]И\њ›ЬЉ‹™][
-NВ€™]\›€‹љYВ€B‚€КЉ‚€
-€›ЩTXЩJ
-XЪ]Э]H›ЭО€ИY]ЛЫ›ЭЫ‹][X‚€
-‚€
-€Y\ИHШњЩ\ќ™YXЩHЬ€ќ[И]Ш\ИЪ]Ш\ИXЭX[HЫ€H›ЩH]™[€Ъ[€]\В€
-€[њ™XYX›NИ][\ИHЩ[ќ[ЩH›ЩTXЩJ
-XЫЭ[]™H›ЭЫ‹Ь€ќ[‚€
-‚€
-€\И^\ЭИЫИ]H‘TФ•X›Э]Hњ›ЪЩ[€›ЩH\ИЭ[™XYX›K€Щ]Щ[њЭ\ФЭ]J
-X\ИB€
-€XШЩ\ЬЫЬ€]™\ћH›Ш™H™XXЪ\И›Ь€Ъ[€HШЩ[™H\ИЫЫ™HЬ›Ы™Л[™[€XШЩ\ЬЫЬ€]›ЭЬВ€
-€™XШ]\ЩHH[™И]\И™\Ьќ[™ИЫ€\Ињ›ЪЩ[€[ИH™XY\€›Э[™И][‚€
-‹В€Ш›ЩTXЩT]К
-HВ€ЫЫњЭYH\ЛњЪ[H	‰€\ЛњЪ[KљY[ќ]HИ\ЛњЪ[KљY[ќ]KњXЩH€ќ[В€ЫЫњЭ›ЭЬИH
-\ЛЪ]H	‰€\ЛЪ]KњXЩ\И	‰€\ЛЪ]KњXЩ\ЛњXЩ\КHЧNВ€ЫЫњЭЫ›ЭЫ€H›ЭЬЛ›X\
-
-ЉHO€‹љY
-NВ€Y€
-ZY
-H™]\›€ИY€ќ[]О€ќ[Ы›ЭЫ‹][€ќ[NВ€Y€
-Ы›ЭЫ‹љ[™^ЩЉY
-HЏH
-H™]\›€ИY]О€YЫ›ЭЫ‹][€ќ[NВ€™]\›€В€Y€ќ[]О€YЫ›ЭЫ‹€][€Щ[њЭ\О€H›ЩHШ\њљY\ИXЩH	ЙЪYIЛЪXЪ\И›Э[€Y[€€
-ИШ[YKЩ]KЬ›ЩЬ™\ЬЪ[Ы‹ЬXЩ\ЛљњЫЫ€
-Ы›ЭЫЋ€	ЪЫ›ЭЫ‹љ›Ъ[Љ	Л	К_JK€HШ\™[‹TШЬљX™H\И€
-И	Ы›Э[™ИИЬљ]HЭЫ€›Ь€][™›И]]Ь™YZ\Ь™XY[™HИШ^K€\И\ИH][[€	В€
-И	ЭЪ]]™\€Ь›ЭHЪ[KљY[ќ]KњXЩH8 %Ь™X][Ы‹љњЫЫ€Э\ќ[™ЧШ›ЩKњXЩKHK\Э]H	В€
-И‰ЬXЩOx )‰Иќ[‹HШYЬ€H]IЬИ›ЩHXЪЩ\€8 %[™“ХЫЫY][™ИHЩ[њЭ\И‚€
-И	ЩXЫ[™\ИИЬљ]HЭЫ‹€љ^H›ЩK›ЭHШЩ[™K‰Л€NВ€B‚€ЛИKKKHHЩ[њЭ\ИШЩ[™HKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€Щ[њЭ\Р™YЪ[ЉЬИHЯJHВ€\ЛЩ[њЭ\Лњ™\Щ]
-
-NВ€ЛИН‰ФИ‘QHХSTИ‘SУ‘ИИУ‘HФS’S‘ЛS‘S•S“ХИVH‘SУ‘СQИHQСK‚€ЛВ€ЛИЩљ\њЭ[њ]њ[YXЩљ\њЭЫЫќ›Ыњ[YX[™Щљ\њЭљY[њ[YX]ЪЫЩHXXЪ[™Щ\™B€ЛИ™\Щ]ћH›Э[™И8 %›ЭћHЩ[њЭ\Р™YЪ[›ЭћH]PXЭ]]J	Ы™]ЙКX›ЭћHHШY€ЫВ€ЛИHЩXЫЫ™Ь[љ[™И^YY[€Hњ›ЭЬЩ\€[љ\љ]YHљ\њЭЫ™IЬИЭ[\Л[™€ЛИЩ]›Э\›™^TЭ[\К
-XЪY\™ќ[HЭXќXЭYЫИќ[X™\њИ™[Ы™Ъ[™ИИY™™\™[ќШЩ[™\Л‚€ЛВ€ЛИQPTХT‘Q€МKLЌ‹[Ь[љ[™Л›ZњШШ[ЬИHЪЫHШЩ[™H›Ь€€[€ЩXЭ[Ы€[™[€^\В€ЛИHЬ[љ[™ИYШZ[€›Ь€Н€[€ЩXЭ[Ы€Л€]Ш[YHXЪИљ\њЭЩљY[Щњ[YN€€ЛИљ\њЭШЫЫќ›ЫЩњ[YN€НX[ќ\ќ[
-Љ‹LЌMHКЉ€8 %H]Y\Э[Ы€[њЭЩ\™YЫИњ[Y\И™Y›Ь™B€ЛИH^Y\€ЫЭ[[Э™H8 %Ъ[H™\Ьќ[™Л[€HШ[YHШљ™XЭЩ[њЭ\ЧЫ›ЩWШ]ЬЭ\ќ‚€ЛИљЫЫЫYK]ИЬ[™YЬ]\ЩY€ќYX[™[Э™YЫN€ЛЊ€HШЩ[™HШ\И[[ЫњЭX›B€ЛИШZ][™И[™HЭ[\ШZY]Y[™XYH\ЪЩY€HYXЩIЬИЭ\€›Ш™KЪXЪ^\ИB€ЛИЬ[љ[™ИЫЩH[€Hњ™\ЪYЩK™XYHШ[YHќZ[]
-НЊЛЌHЛ€HЌ\ЩXЫЫ™\ШYЬ™Y[Y[ќ€ЛИ™]ЩY[€ЫИЩ€\ИYXЩIЬИЭЫ€[њЭќ[Y[ќЛ[™H™YШ]]™HЫ™H\ИH\ќYXЭ‚€ЛВ€ЛИHЭ[\]Э\ќљ]™\ИHШЩ[™H]Э[\И\И›ЭHYX\Э\™[Y[ќЩ€HШЩ[™K€ЫX\™Y\™K€ЛИЪ\™HHЬ[љ[™И™YЪ[њЛЫИH[ќ\ќ[\И[Ш^\ИZЩ[€Ъ][€Ы™H^Z[™ИЩ€]‚€\Л—Щљ\њЭ[њ]њ[YHHќ[В€\Л—Щљ\њЭЫЫќ›Ыњ[YHHќ[В€\Л—Щљ\њЭљY[њ[YHHќ[В€\Л—Щљ\њЭљY[›ЩHHќ[В€\Л—Ъ›Э\›™^T™]”ЬЩHHќ[В€ЛИHРФ’P‘HР”СT•‘TИH“СK€H“СHTИ“ХS€T‘ХSQS•ИTИ•SђХSУ‹‚€ЛВ€ЛИМKLЌ€Њ€0©М‹H›Э[™	ЬИ›ШЪЪ[™ИШ\€Э]P\J	Ы™]ЙКX8 %H›ЭИH]IЬИ™]Ш€ЛИЫЫ[Z]ИЛ[™HЫ›H]H^Y\€\И8 %Ш[Y\ИЪ]ЯX€Щ[њЭ\Л›ШњЩ\ќ™J
-X€ЛИШ\И™XXЪYњ›ЫH›ЭЪ\™H[ЩKЫИЫ€H^Y\‰ЬИ]ЬXЛњXЩXЭ^YYќ[B€ЛИЩ[њЭ\И™]И]Ьљ]њXЩK[ШњЩ\ќ™YH›ЭИШ\ИШ]YЪ[™H^Y\€ЭЫЩ[€њ›Ыќ€ЛИЩ€HШ\™[‹TШЬљX™H™XY[™И[€[™Ъ[™H\њ›Ь€Ъ]HЫЬ€[Ъ]€]™\ћHќ[X™\€\В€ЛИYXЩH\И]™\€X›\ЪYШ\ИZЩ[€Ы€HШЩ[™HЫ›HH\›™\ЬИЫЭ[Ь[‹™XШ]\ЩHЫ›B€ЛИH\›™\ЬИ\ЬЩYЬЛњXЩX‚€ЛВ€ЛИ’KPТЊH0©МH›ЭИ€Ш^\ИXЩH\ИР”СT•‘Q›Э\ЪЩYЫИHљ^Ш[››Э™HH]Y\Э[Ы€[™€ЛИ]\Э›Э™HH]\[Ьљ][€\™N€H\™ЫЩYY][ЫЭ[Ш]\ЩћHHXШЩ\[ЩH\Э€ЛИ[™™]^HH][K€]\И™XYњ›ЫHH›ЩHH^Y\€\И[™XYHЭ[™[™И[€8 %€ЛИЪ[KљY[ќ]KњXЩX8 %ЫИHXЩHHШЬљX™HЬљ]\ИЭЫ€[™HXЩHH›Эљ[ЩH™XXЭВ€ЛИИ\™HЫ™HљY[[™Ш[››Э\ШYЬ™YK€Ъ]]™\€ЪЫЬЩ\И]›ЩH
-МKLКHЪ[™Щ\ИЪ]ЪB€ЛИЩY\ИћHЬљ][™И]љY[[™›Э[™И\™H™YYИY][™Л‚€ЛВ€ЛИHУИУУ”ХSQT”ЛђSQQУФ”‘PХK€›Э[™ЙЬИЫЫ[Y[ќ\™HШZY\ИШ\ИќHШ[YHљY[€ЛИЬ^Y\‘Ш]\К
-X[™ИHX[ЩЭYHЩ™™\€Ш]\И[™™XXЭ[Ы•К
-X[™ИH\ЬЬЪ][Ы‚€ЛИX]љ^‹€
-Љ“™Z]\€ќ[Э[Ы€\И]™\€^\ЭY
-Љ€8 %HЊИЬљ]XИЬ™\YШ[YKЬЬЛШ›Ь€›Э€ЛИ[™›Э[™Ы›H\ИЫЫ[Y[ќ€H™X[]\ИЫ™Hќ[Э[Ы€[™ЫИЫЫњЭ[Y\њО‚€ЛВ€ЛИЭ[Ф^Y\Љ
-X™XYИЪ[KљY[ќ]KњXЩX
-Ь€Ъ[KЪ\XЭ\‹њXЩXЫЩHHЬљ]^\ЭКB€ЛИ[™[™ИИXЩK\њљ[™Ъ[™Лљ\ќЪYЫ‹Ы›ЭЬЛЬXЬЧЪЫ›ЭЫ€XВ€ЛИ
-€ЬXЬС›ЬЉ
-X8 %Ъ[KЬ]Y\ЭЭЬXЛ\Э\KљњШЊMKОЊMЌОЊMЌ‹HX[ЩЭYHС‘‘T€Ш]K‚€ЛИ™\]Z\™\ЛњXЩXЩ™™\њИ[€[™›ИЫ›HИ]XЩNИ›ЬљYЛњXЩX™]™\€Щ™™\њИ]В€ЛИ[K€Ш[YKЩ]KЩX[ЩЭYKЭЬXЬЛН\XЩKYШ]YљњЫЫ\ИЬљ][€[ќ\™[HYШZ[њЭ]‚€ЛИ
-€\љ]™Y\ЬЬЪ][ЫЉ
-XO€XЩU\›J
-X8 %Ъ[KЩX[ЩЭYKЩ\ЬЬЪ][Ы‹љњШЊЌЊОЊЌЌH[™€ЛИЊЋMЛ™XXЪYњ›ЫHњС\ЬЬЪ][ЫЉ
-X€XЩK\™XXЭ[ЫњЛљњЫЫ	ЬИX]љ^\ИYYИB€ЛИ”ЙЬИ\ЩH\ЬЬЪ][Ы€‘Q“Ф‘H]™\ћHЭ\€\›K[™[ЭX›U\›\К
-XYВ€ЛИ‘\ЬXЩS[ЩYШZ[€Ъ[€H”ИЪ\™\ИH^Y\‰ЬИXЩK‚€ЛВ€ЛИ›Э\™H[[ЫњЭ]YћH\ќ\][Ы€[€ЫЫЛЭМKLЌ‹\ЌЭМKLЌ‹\Ќ]™\љYћK›ZњШ0©РИ]\‚€ЛИ[€\ЬЩ\ќY\™K™XШ]\ЩHHЫЫ[Y[ќ][Y\ИHЫЫњЭ[Y\€\И^XЭHЪ]Ш\ИЬ›Ы™ИЪ]€ЛИH\ЭЫ™K€Ъ]HЊИЬљ]XИYX\Э\™Y8 %›Э\€XЩ\Л›Э\€Y[ќXШ[ЬXЬЧЪЫ›ЭЫ™\›В€ЛИЬXЬИЩ™™\™Y8 %\ИќYH[™\И›ЭHЫЫќYXЭ[ЫЋ€ЬXЬЧЪЫ›ЭЫ\ИЪ]HЪ\XЭ\‚€ЛИ\И™Y[€ТU‘S€
-[\H[ќ[ШЩ[њЭ\Сљ[љ\Ъ
-KHXЩHШ]H\И\YYИЪ]\ИС‘‘T‘Q€ЛИ[™HЫИ[ЬH[€H\™ЩHЫШ\њћH›ИXЩKYШ]Y[™›ЬЛ€[€HЫHЩ™™\€Ш]B€ЛИ\И™X[[™\И›Э[™ИИљ]HЫЋИH\ЬЬЪ][Ы€\›Hљ]\И[[YYX][K‚€ЛВ€ЛИЬЛњXЩXЭ[Ъ[њЛЫИ]™\ћH\›™\ЬИШ[И[™]™\ћH^\Э[™И›Ш™H\И[Ъ[™ЩY‚€\ЛЩ[њЭ\Л›ШњЩ\ќ™JЬЛњXЩH\Л›ЩTXЩJ
-JNВ€Y€
-ЬЛ]
-HИ\ЛЩ[њЭ\Л››ЩRYHЬЛ]И\ЛЩ[њЭ\Лњ]\ЩYH[ЩNИ\ЛЩ[њЭ\Л—Ш]]РY[ЩJ
-NИB€ЛИHРСS‘K€›Э[™HЬ[™YHЩ[њЭ\И\ИH\™HЭ]HXXЪ[™H[™YќHШ[Y\B€ЛИЪ\™]™\€H™]љ[Э\ИЭ]HY]]ЪXЪ\ИЪHљ[™]Y[€›Щ\И›ЩXЩYЩ[ќB€ЛИћ]KZY[ќXШ[њ[Y\ИЩ€[€[\HљY[€HЩ[њЭ\И›ЭИSХ‘TИ[ЭH[ќИH›ЫЫH]\В€ЛИЩ][‹[™]ИH[ЬHЪИЬXZИ[€][ќИ]‚€\Л—ШЩ[њЭ\ФXЩJXЩSЩ“›ЩJ\ЛЩ[њЭ\Л››ЩJ
-JJNВ€ЛИX[ЩЭYWЫЬ[Ъ[€HX[ЩЭYHXЭX[HЬ[њЛ[™›Э™Y›Ь™K€HШЩ[™H›ЭИХT•В€ЛИ]\ЩY8 %ЫЫЫYK]Ш[™ИЫЫќ›ЫXЪИЪ]›Ш›ЩH[Ъ[™И8 %ЫИ[Z][™ИH]™[ќ€ЛИ\™H[ЫЫ™][Ы[HЫЭ[]™H]HX[ЩЭYHЫ€HXЩH]њ[YHЩ€HШЩ[™HЪЬЩB€ЛИЪЫHЪ[ќ\И]\™H\И›ИX[ЩЭYH]њ[YH€Щ[њЭ\С[ќ\Љ
-X[Z]И]Ъ[€ЪB€ЛИЬXZЬЛ€’KR”“ЊHMЫ]\ЩHHYX\Э\™\ИH[ќ\ќ[ИHљ\њЭ’QSUФ’US‘В€ЛИX[ЩЭYWЫЬ[ЫИH[ЩHЫ™H]HЬљYЪ[€ЫЭ[]™HXYHHYX\Э\™[Y[ќYX[љ[™Ы\ЬВ€ЛИ[€H\™XЭ[Ы€]›]\њИ\Л‚€Y€
-]\ЛЩ[њЭ\Лњ]\ЩY
-HВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЩX[ЩЭYWЫЬ[‰КNВ€]‹›њИH
-\ЛЩ[њЭ\Л››ЩJ
-HЯJKњЬXZЩ\€	Ъ™YZYZIОИ]‹њШЩ[™HH	ШЩ[њЭ\ЙОВ€B€\Л—ШЩ[њЭ\ФЮ[К
-NВ€™]\›€\Л™Щ]Щ[њЭ\ФЭ]J
-NВ€B‚€ЛИKKKHHШЩ[™K\ИHXЩHKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKB‚€КЉ‚€
-€]HШ[Y\KH›ЩH[™HШ\Э[ќИHXЩHHЩ[њЭ\И›ЩH\И\ЪЩY[‹‚€
-‚€
-€Ш[Yњ›ЫHЩ[њЭ\Р™YЪ[Щ[њЭ\С[ќ\[™
-Y™\њ™Y™]™\€[њЪYHHљ^YЭ\
-B€
-€њ›ЫHШЩ[њЭ\Р\T[™[™Ш™XШ]\ЩHШ\PЩ[
-
-XШ[€Ь[€HШY›Э[™\ћH[™HШY€
-€›Э[™\ћH™XYИHШ[ЫШЪЛЪXЪH\›YY]\›Z[љ\ЫHЭX\™›ЬљYЛ‚€
-‹В€ШЩ[њЭ\ФXЩJXЩRY
-HВ€ЫЫњЭXЩHHСS”ХTЧФPСTЦЬXЩRYNВ€Y€
-\XЩJH›ЭИ™]И\њ›ЬЉЩ[њЭ\О€›ЩHXЩH	ЙЬXЩRYIИ\И›ИЭYЪ[™И[€Ъ\XЭ\‹ЬШЩ[™KљњШ
-NВ€Y€
-\ЛЩ[њЭ\ФXЩHOOHXЩRY
-H™]\›€XЩRYВ€\ЛЩ[њЭ\ФXЩHHXЩRYВ€\ЛњЪ[K™[ќ‹љ[ќ\љ[Ь€HXЩKљ[ќ\љ[ЬЋВ€\ЛњЪ[K™[ќ‹њЪЭШШ\ЩHH[ЩNВ€\Л—Ш\PЩ[
-
-NВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€њЬЦМHHXЩKњ^Y\—ЬЬЦМNИњЬЦМWHHXЩKњ^Y\—ЬЬЦМWNИњЬЦМ—HHXЩKњ^Y\—ЬЬЦМ—NВ€ћX]ИHXЩKњ^Y\—ЮX]ОВ€ЫЫњЭ€H\ЛЫЫX]	‰€\ЛЫЫX]њ^Y\ЋВ€Y€
-ЉHИ‹њЬЦМHHњЬЦМNИ‹њЬЦМWHHњЬЦМWNИ‹њЬЦМ—HHњЬЦМ—NИ‹ћX]ИHћX]ОИB€\ЛњЪ[KШ[Y\KћX]ИHXЩKШ[Y\KћX]ОВ€\ЛњЪ[KШ[Y\Kњ]ЪHXЩKШ[Y\Kњ]ЪВ€\ЛњЪ[KШ[Y\K›[ЩHH	Щњ™YIОВ€њЬЦМWHH\Л™Ь›Э[™]
-њЬЦМKњЬЦМ—JNВ€\ЛЫX\“”ЬК
-NВ€\ЛЫX\”›ЬК
-NВ€›Ь€
-ЫЫњЭИЩ€СS”ХTЧРРTХЬXЩRYHЧJH\ЛњЬ]Ы“”КИ‹‹Лњ›ЫWЬ™XЫЬ™€ЛљYJNВ€Y€
-XЩRYOOH	Ш\™ЩKZЫ	КHВ€ЛИН‰ЬИZЩXX›K[™]\И›ЭHЫЪ[Ћ€HЫљY™HЫЫYX›ЩHY›Эљ[™Ы€HЬ]H[ЭB€ЛИЫЪЩH\™^Л€HЬљ]Э\ЩHШYЭ][™XYHШ^\ИH^Y\€\ИЫ™K‚€\ЛњЬ]Ы”›Ь
-ИZY€	ЪЫZЫљY™IЛ[YN€	РHЫљY™HЫЫYX›ЩHY›Эљ[™	Л][N€	ЩYЩЩ\‰ЛЬО€ЛL‹ЊЋ‹Њ—KX]О€ЌX]\љX[€	ЫY][	ЛЪ\N€	Э[	ИJNВ€\ЛњЬ]Ы”›Ь
-ИZY€	ЪЫYЫЭ\™	Л[YN€	РH]KYЫЭ\™[\IЛ][N€	Э]KYЫЭ\™	ЛЬО€МKЌ‹Ћ‹LKЌ—KX]О€ЊX]\љX[€	Ь™YY	ИJNВ€B€\Л—ЬЩ]PШ[Y\J
-NВ€Y€
-\ЛЫЫX]
-HZ\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€™]\›€XЩRYВ€B‚€КЉ€]H\њЫЫ€[€HЫЬ›€њ›ЫWЬ™XЫЬ™[И[YKЬXЩKЭЬXЬИЭ]Щ€њЬЛК‹љњЫЫ‹€
-‹В€Ь]Ы“”КЬXКHВ€ЫЫњЭY\™ЩYHИ‹‹њЬXИNВ€ЫЫњЭ™XТYHЬXЛ™њ›ЫWЬ™XЫЬ™ЬXЛљYЬXЛ™ZYВ€Y€
-™XТY
-HВ€ЫЫњЭ™XИH\Л™]K›њЬЦЙЭЬљ]ZЭ\ЩIЧH	‰€\Л™]K›њЬЦЙЭЬљ]ZЭ\ЩIЧK›њЬЛ™љ[™
-
-
-HO€љYOOH™XТY
-NВ€ЫЫњЭ™XМ€H™XИ\Л—Ш[ћSњФ™XЫЬ™
-™XТY
-NВ€Y€
-™XМЉHВ€Y\™ЩY™ZYH™XМ‹љYВ€Y\™ЩY›[YHHЬXЛ›[YH™XМ‹›[YNВ€Y\™ЩYќ]HHЬXЛќ]H™XМ‹ќ]Hќ[В€Y\™ЩYњXЩHHЬXЛњXЩH™XМ‹њXЩNВ€Y\™ЩY™XЭ[Ы€HЬXЛ™XЭ[Ы€™XМ‹™XЭ[Ы€ќ[В€Y\™ЩYњ™XXЭ[Ы—ЩЬ›Э\HЬXЛњ™XXЭ[Ы—ЩЬ›Э\™XМ‹њ™XXЭ[Ы—ЩЬ›Э\ќ[В€Y\™ЩYњЩ][Y[ќHЬXЛњЩ][Y[ќ™XМ‹њЩ][Y[ќќ[В€Y\™ЩYљ[ќ\љ[Ь€HЬXЛљ[ќ\љ[Ь€™XМ‹љ[ќ\љ[Ь€ќ[В€Y\™ЩY™\ЬЬЪ][Ы€HЬXЛ™\ЬЬЪ][Ы€OOH[™Yљ[™YИ™XМ‹™\ЬЬЪ][Ы€€ЬXЛ™\ЬЬЪ][ЫЋВ€Y\™ЩYќЬXЬИHЬXЛќЬXЬИ™XМ‹ќЬXЬИЧNВ€Y\™ЩYњЩ\ќљXЩ\ИHЬXЛњЩ\ќљXЩ\И™XМ‹њЩ\ќљXЩ\ИЧNВ€ЛИЪXЪX›ЭИЩ€HЬXИ™XЫЬ™\И\њЫЫ€[њЭЩ\њИЪ]€HЬXИЫЬњ\ИЩ^\И]В€ЛИ[™›ЬИћH[€PХФ€“УH8 %›ЫЭЩY\\‹љ\Ъ\‹™\ЛYXЭЬ‹YЪ[Ы\ћH8 %[™[€”В€ЛИ™XЫЬ™	ЬИЫ\ЬШ\И[™XYH]ЫЬ™›Ь€[ЬЭЩ€HШ\ЭИXЭЬЭ™\њљY\И]€ЛИЪ\™HHЫИ›ШШXќ[\љY\И\ШYЬ™YH
-H[™Y[\[њЭЩ\њИ\ИHYШKY[\
-K‚€Y\™ЩYXЭЬ€HЬXЛXЭЬ€™XМ‹XЭЬ€™XМ‹Ы\ЬИќ[В€Y\™ЩY›[™\ИHЬXЛ›[™\И™XМ‹›[™\Иќ[В€ЛИМKL€H™XЫЬ™	ЬИ^K€XZЩS”Ш™]™\€ЫЬYYШЪY[XЩ™€H™XЫЬ™ЫИB€ЛИљY[Ш\ИЬљ][€ћH]™\ћHќZ[\€]ЭXЪY[€”Иљ[H[™™XYћH›Э[™И8 %€ЛИHШ[YHЪ\HЩ€Y™XЭ\ИЬXЬЧЭ]YЪ€\ЩH›Э\€[™\И\™HЪ]XZЩHH\њЫЫ‚€ЛИ]™HЫЫY]Ъ\™HИ™NИЪ[KЫњЛљњИЭ\ШЪY[J
-X\ИЪ]XZЩ\И[HЫИ\™K‚€Y\™ЩYњШЪY[HHЬXЛњШЪY[H™XМ‹њШЪY[Hќ[В€ЛИМKQТU‘T‹T‘TСSђСN€HXЩH[€HЫЬ›\И\њЫЫ€Э[™ИЪ[€^H\™H›Э[™ЫЬњЛ‚€ЛИШ[YHZ[\™HЪ\H\ИШЪY[XX›Э™H8 %HљY[ЫЭ[]™H™Y[€Ьљ][€Ы€ОH™XЫЬ™В€ЛИ[™™XYћH›Ш›ЩKЪXЪ\ИH\ќY[ќ[YH\И›Ъ™XЭ\ИЫ™H]‚€Y\™ЩYњЬЭHЬXЛњЬЭ™XМ‹њЬЭќ[В€Y\™ЩYљЫYWЪ[ќ\љ[Ь€HЬXЛљЫYWЪ[ќ\љ[Ь€™XМ‹љЫYWЪ[ќ\љ[Ь€™XМ‹љ[ќ\љ[Ь€ќ[В€Y\™ЩYќЫЬљЧЪ[ќ\љ[Ь€HЬXЛќЫЬљЧЪ[ќ\љ[Ь€™XМ‹ќЫЬљЧЪ[ќ\љ[Ь€™XМ‹љ[ќ\љ[Ь€ќ[В€Y\™ЩY›ЭЫњЧЮ›Ы™\ИHЬXЛ›ЭЫњЧЮ›Ы™\И™XМ‹›ЭЫњЧЮ›Ы™\ИЧNВ€Y\™ЩY™Z]љ[Э\€HЬXЛ™Z]љ[Э\€™XМ‹™Z]љ[Э\€[™Yљ[™YВ€H[ЩHY€
-[Y\™ЩY™ZY
-HY\™ЩY™ZYH™XТYВ€B€Y€
-\ЛњЪ[K™љ[™”КY\™ЩY™ZY
-JH™]\›€\ЛњЪ[K™љ[™”КY\™ЩY™ZY
-NВ€ЫЫњЭ€H\ЛњЪ[KY”КXZЩS”КY\™ЩY
-JNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЬЬ]Ы‰КNВ€]‹™ZYH‹™ZYИ]‹љЪ[™H	ЫњЙОИ]‹›[YHH‹›[YNИ]‹њXЩHH‹њXЩNВ€]‹њЬИHЫ‹њЬЦМK‹њЬЦМWK‹њЬЦМ—WNВ€™]\›€ЋВ€B‚€Ш[ћSњФ™XЫЬ™
-Y
-HВ€›Ь€
-ЫЫњЭЬ›Э\Щ€Шљ™XЭќ[Y\К\Л™]K›њЬКJHВ€Y€
-YЬ›Э\YЬ›Э\›њЬКHЫЫќ[ќYNВ€ЫЫњЭ€HЬ›Э\›њЬЛ™љ[™
-
-
-HO€љYOOHY
-NВ€Y€
-ЉH™]\›€ЋВ€B€™]\›€ќ[В€B‚€КЉ‚€
-€H[™И[€HЫЬ›[ЭHШ[€XЪИ\€’KR”“ЊHН€™\]Z\™\ИЫ™H[€H™KYYљ[љ][Ы‚€
-€Ъ[™ЭИ[™LL™\]Z\™\ИЫЬ›\XЩY™XYX›\ОИ›Э\™HHШ[YHYXЪ[љ\ЫK‚€
-‹В€Ь]Ы”›Ь
-ЬXКHВ€ЫЫњЭИHВ€ZY€Эљ[™КЬXЛ™ZY
-K€[YN€ЬXЛ›[YHЬXЛ™ZY€ЬО€Уќ[X™\ЉЬXЛњЬЦМJKќ[X™\ЉЬXЛњЬЦМWJKќ[X™\ЉЬXЛњЬЦМ—JWK€X]О€ќ[X™\ЉЬXЛћX]И
-K€Ъ\N€ЬXЛњЪ\H	Ш›Ю	Л€X]\љX[€ЬXЛ›X]\љX[	Ь[љЙЛ€ZЩXX›N€ЬXЛќZЩXX›HOOH[ЩK€ZЩ[Ћ€[ЩK€][N€ЬXЛљ][HЬXЛ™ZY€™XYX›N€ЬXЛњ™XYX›Hќ[€ЛИМKT‘PQP“TЛ€H›ЫЪИY[€Ш[YKЩ]KШ›ЫЪЬЛКЉ€Ъ[€Щ][ќ\XЭФS”И]Ъ\™H]€ЛИЭ[™И[њЭXYЩ€ШЪЩ][™И]ИЩYHЭZЩT›Ь[™[™Ш‚€™XYX›WШ›ЫЪО€ЬXЛњ™XYX›WШ›ЫЪИќ[€ЛИМKT‘PQP“TИ›Э[™‹€HYЩ€HXЩZ]њ™]™X[YШћX›ЭЙЬИ[ќљ\›Ы›Y[ќЫЭ\ЩK€Ъ[‚€ЛИЩ][ќ\XЭУТФИ]H[™И[™›Э[™И\ИЬ[™YZЩ[€Ь€ШZYИЩYB€ЛИЭZЩT›Ь[™[™Ш‚€Ъ]WЫX\љО€ЬXЛњЪ]WЫX\љИќ[€ЛИМKLMHЊЛ€H[њЭ[ЩXЩ€\ИШљ™XЭ	ЬИ›ЭИ[€Ш[YKЩ]KЭЫЬ›Ь›Ь\ќKК‹љњЫЫ€ЛИЪ[€]\ИЫ™K€Щ]ZЩT›Ь
-
-XЭЬИ™Z[™ИHњ™YHXЪЭ\[™›Э]\И›ЭYЪB€ЛИЭЫ™\њЪ\Ю\Э[H8 %ZЩSШљ™XЭ
-
-X\ХYќHЭЫ[€™YЪ\ЭћKHЪ]™\ЬИ\ЬИ[™€ЛИH›Э[ќK€HЪЫHY™™\™[ЩH™]ЩY[€H›ЫЫHќ[Щ€›ЬИ[™H›ЫЫHќ[Щ‚€ЛИУУQSУ‘IФИS‘ФИ
-’KTХ€0©МJH\И\ИљY[™Z[™И™XYЫ€HШ^HЭ]Щ€H›ЫЫK‚€›Ь\ќWЪ[њЭ[ЩN€ЬXЛњ›Ь\ќWЪ[њЭ[ЩHќ[€™XXЪЫN€ќ[X™\ЉЬXЛњ™XXЪЫHOOH[™Yљ[™YИ‹Њ€€ЬXЛњ™XXЪЫJK€NВ€›Ь€
-ЫЫњЭHЩ€\ЛњЪ[Kњ›ЬКHY€
-K™ZYOOHЛ™ZY
-H™]\›€NВ€\ЛњЪ[Kњ›ЬЛњ\Ъ
-КNВ€\ЛњЪ[Kњ›ЬЛњЫЬќ
-
-KЉHO€
-K™ZY‹™ZYИLH€K™ZY€‹™ZYИH€
-JNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЬЬ]Ы‰КNВ€]‹™ZYHЛ™ZYИ]‹љЪ[™H	ЫШљ™XЭ	ОИ]‹›[YHHЛ›[YNИ]‹њЬИHЛњЬЛњЫXЩJ
-NВ€™]\›€ОВ€B‚€КЉ‚€
-€’KR”“ЊИ0©С€8 %]HЭ]IЬИ[њШЬљ\[ЫњИ[ќИ]‚€
-‚€
-€ТHTИVTХЛ€МH›ЬљYЛ›Ь€HЪЫHШ[YK]™\ћHYXЪ[љ\ЫHHШ[YH›Ь›X[H\Щ\ИВ€
-€XXЪHЫЫќ›Ы€Ь]\Л[Щ[ЛШ\ЭЛ[›™\њЛЫЫќ›ЫYЩ[™Л[Э™\›^\Л€М€[‚€
-€[Y\ИHЪ[™ЫH[™И]\И[ЭЩY[њЭXY8 %H\ЪXШ[[ќ]HЪ]HЬЪ][Ы‹€
-€™XYX›HљXH[ќ\XЭЬљ][€[‹YљXЭ[Ы€ћHЫЫY[Ы™HЪИШ\И\™H‹€›Э[™‰ЬИKRМЊHЭЩ\€
-€ZYЪ[YYЭ]\И[™›Э[™
-Љћ™\›КЉ€™XYX›H[ќ]Y\ЛЫИHќZ[YZЩ[€МIЬВ€
-€›ЪXљ][Ы€[™Ъ\Y›Ы™HЩ€М‰ЬИ™[YYN€HШ[YH]X^H›Э[[ЭH[ћ][™И[™Щ\В€
-€›ЭЪЭИ[ЭH[ћ][™ИZ]\‹‚€
-‚€
-€HЩ[њЭ\ИЫЭ[›ЭШ]Ъ]Ы€]ИЭЫ‹[™]\ИЫЬќШ^Z[™ИЭ]ЭY™XШ]\ЩH]\В€
-€HЪ\H\И›Ъ™XЭЩY\Иљ[™[™Л€[™YHЩ€KRМЊIЬИ™\ЪЫИ\™HTT€›Э[™И8 %€
-€HHML	HЪ][€X8 %[™[€[\HЫЬ›Ш]\ЩљY\И]™\ћHЫ™HЩ€[KB€
-€\ЭЫ™HXЭ[Э\ЫK€HќZ[Ъ]›И[њШЬљ\[ЫњИ][ШЫЬ™\Иќ[X\љЬИ[›\ЬИHЪXЪВ€
-€™Yќ\Щ\ИHXЭ[Э\И\ЬИ^XЪ]KЪXЪ\ИЪHZМЊJ
-XЩ\Л‚€
-‚€
-€[€[њШЬљ\[Ы€\ИH“Ф[™›ЭH™]И[ќ]HЪ[™€]ЫЩ\И›ЭYЪЬ]Ы”›Ь
-
-XШ\њљY\ИB€
-€™XYX›X™XЫЬ™[™\ИZЩXX›N€[ЩX™XШ]\ЩH[ЭHШ[››ЭШЪЩ]H]Ъњ[YK€]€
-€XZЩ\И]љ\ЪX›HИ\Э[ќ]Y\К
-XИШЩ[њЭ\ФЭ\	ЬИ[ќ\XЭ™XXЪ\Э[™ИB€
-€Ш]™H›Э[™љ\Ъ]Э][ћHЩ€[HX\›љ[™ИH™]И\K‚€
-‚€
-€\[HЬЭљ[™ЯHЭ]S[YHH[YYЭ]Hќ\Э\YY€
-‹В€ЬЬ]Ы’[њШЬљ\[ЫњКЭ]S[YJHВ€ЫЫњЭШИH\Л™]Kљ[њШЬљ\[ЫњОВ€Y€
-YШИP\њ^Kљ\Р\њ^JШЛљ[њШЬљ\[ЫњКJH™]\›€В€ЛИHќYЩ]\ИЪXЪЩYУђСKЫ€Hљ\њЭЭ]H\YY[™]“ХФЛ€М‰ЬИЫИШ\И\™B€ЛИHЪЫH™X\ЫЫ€0©С€\ИHќYЩ][™›ЭHXЩ[ЩK[™H]Hљ[H]]ZY]HЫ\ИЭ™\‚€ЛИ[HЫЭ[\›€HЫ™HШ[Э[Ы™YXXЪ[™ИYXЪ[љ\ЫH[ќИH]ЬљX[МH›ЬљYЛ€B€ЛИ›ЫЭ]Z[ИЭYH\ИHЪX\Z[\™NИHШ[YH]XXЪ\И]ИШ^H\ЭЌH\И›Э‚€Y€
-]\Л—Ъ[њШЬљ\[ЫђќYЩ]ЪXЪЩY
-HВ€\Л—Ъ[њШЬљ\[ЫђќYЩ]ЪXЪЩYHќYNВ€ЫЫњЭ[HШЛљ[њШЬљ\[ЫњОВ€ЫЫњЭX\›HH[™љ[\Љ
-JHO€K™Y›Ь™WЩљ\њЭШЪЪXЩJK›[™ЭВ€ЫЫњЭ€HШЛќYЩ]ЯNВ€Y€
-[›[™Э€
-‹ќЪЫWЩШ[YWЫX^M
-JHВ€›ЭИ™]И\њ›ЬЉ[њШЬљ\[ЫњЛљњЫЫЋ€	Ш[›[™ЭH[њШЬљ\[ЫњИ^ЩYYИ’KR”“ЊИМ‰ЬИЪЫKYШ[YHќYЩ]Щ€	Ш‹ќЪЫWЩШ[YWЫX^MX
-NВ€B€Y€
-X\›H€
-‹™Y›Ь™WЩљ\њЭШЪЪXЩWЫX^ЉJHВ€›ЭИ™]И\њ›ЬЉ[њШЬљ\[ЫњЛљњЫЫЋ€	ЩX\›_H[њШЬљ\[ЫњИX\љЩY™Y›Ь™WЩљ\њЭШЪЪXЩH^ЩYYИМ‰ЬИќYЩ]Щ€	Ш‹™Y›Ь™WЩљ\њЭШЪЪXЩWЫX^џX
-NВ€B€B€]€HВ€›Ь€
-ЫЫњЭ[њИЩ€ШЛљ[њШЬљ\[ЫњКHВ€Y€
-[њЛњЭ]HOOHЭ]S[YJHЫЫќ[ќYNВ€\ЛњЬ]Ы”›Ь
-В€ZY€[њЛ™ZY€[YN€[њЛ›[YK€ЬО€[њЛњЬЛ€X]О€[њЛћX]Л€X]\љX[€[њЛ›X]\љX[€Ъ\N€[њЛњЪ\H	Щ›]	Л€ЛИ[ЭH™XY]Ъ\™H]\Л€М‰ЬИњ\ЪXШ[[ќ]HЪ]HЬЪ][Ы€€\ИHЪЫHЪ[ќ‚€ЛИ[€[њШЬљ\[Ы€[ЭHЫЭ[Ш\њћH]Ш^H\ИH›ЭK[™H›ЭH\ИH]ЬљX[Ъ]B€ЛИY™™\™[ќ›Э[‹‚€ZЩXX›N€[ЩK€ЛИ™XXЪЫX\ИH™YЪ\Э\€ШЩ[њЭ\ФЭ\\ЭИЪ[€[ќ\XЭ\И™\ЬЩY€]\ИB€ЛИ›ЬY][]\€[€ЫЫY][™ИЪY\‹ЫИ[€[њШЬљ\[Ы€\И™XYћHЭ[™[™И]]‚€™XYX›N€В€XXЪ\О€[њЛќXXЪ\Л€^€[њЛќ^€™Y›Ь™WЩљ\њЭШЪЪXЩN€HZ[њЛ™Y›Ь™WЩљ\њЭШЪЪXЩK€ЛИМИ\ИHTХSђСH™\ЪЫЫИHЪ]X][Ы€H™\€\И›Ь€\ИИ™HHЬЪ][Ы‚€ЛИ[™›ЭHЩ[ќ[ЩK€Ш\њљYY›ЭYЪИ\Э[ќ]Y\К
-XЫИKRМЊHШ[€YX\Э\™HB€ЛИ\Э[ЩH]\€[€\ЬЭ[YH]8 %›Э[™‰ЬИљ\њЭYќ™X]Y[€XњЩ[ќ\Э[ЩH\В€ЛИќЪ][€[™ЩH‹ЪXЪ\ИH™\ЪЫ]Ш[››Э™HZ[Y‚€Ъ]X][ЫЋ€[њЛњЪ]X][Ы€ИИЪ]€[њЛњЪ]X][Ы‹ќЪ]ЬО€[њЛњЪ]X][Ы‹њЬИH€ќ[€K€JNВ€ЉКОВ€B€™]\›€ЋВ€B‚€ЫX\”›ЬК
-HВ€\ЛњЪ[Kњ›ЬЛ›[™ЭHВ€ЛИМKT‘PQP“TИ›Э[™‹€H›Эљ[ЩIЬИX\љЬИ\™H›ЬЛЫИ\ИZЩ\И[HЫИ8 %[™]\В€ЛИШ[YћH]™\ћH[YY\Э]H\XШ][Ы‹ЪXЪ\ИЪ]™\Щ]
-
-XЩ\Л€›Ь™Щ][™И]B€ЛИX\љИШ\И]™\€Ь]Ы™Y\ИHЪЫHЩ€Hљ^€ЬЮ[РЩ[
-
-X]И[HXЪИЫ€H™^€ЛИњ[YHH›Эљ[ЩH\ИHЩ[[™Ь]Ы”›Ь
-
-X\ИY[\Э[ќЫ€HZYЫИHШ[\‚€ЛИ]ЫX\њИ[™™KXЫX\њИЩ\И›Э[™\Ъ]ЫИЪ[ИX\љЬИЫ€Ы™H[X‹‚€\Л—Ь›Эљ[ЩSX\љЬСЫ™HH[ЩNВ€™]\›€ќYNВ€B‚€КЉ€XЪИ]\€[Z]И][X^XЭH\ИHЬљ]Щ\ИЪ[€]\И[™YЭ™\€H\ЪЛ€
-‹В€КЉ€\И\™HH›Ь\ќK]™YH›ЭИЪ]\И[њЭ[ЩHYИ
-‹В€Ь›Ь\ќR\К[њЭ[ЩJHВ€›Ь€
-ЫЫњЭИЩ€Шљ™XЭљЩ^\К\Л™]Kњ›Ь\ќHЯJJHВ€›Ь€
-ЫЫњЭ€Щ€\Л™]Kњ›Ь\ќVЪЧKћ›Ы™\КHY€
-‹ЫЫќ[ќЛњЫЫYJ
-КHO€Лљ[њЭ[ЩHOOH[њЭ[ЩJJH™]\›€ќYNВ€B€™]\›€[ЩNВ€B‚€КЉ‚€
-€XЪИ]\€[Z]И][X^XЭH\ИHЬљ]Щ\ИЪ[€]\И[™YЭ™\€H\ЪЛ‚€
-‚€
-€МKLMHЊО€S‘Q€U‘SУ‘ФИИУУQP“СKUTИHQ•€\ИY]Щ\ЩYИ\Ъ]™\ћB€
-€›Ь[ќИH[ќ™[ќЬћHЪ]ЭЫ[Ћ€[ЩKЭЫ™\Ћ€ќ[[ЫЫ™][Ы[KЪXЪYX[ќB€
-€Ы™HZЩK]™\€H^Y\‰ЬИ[ќ\XЭќ]Ы€Ш[€XЭX[H™XXЪШ\ИHЫ™H™\€[€B€
-€ќZ[]Y™]™\€X\™Щ€ЭЫ™\њЪ\€И[ќ\љ[Ь€[љ\]YH][\И8 %H[ЬЭШќљ[Э\ЫB€
-€ЭX[X›HШљ™XЭ[€]™\ћH›ЫЫH[€H›Эљ[ЩKXXЪЪ][€ЭЫ™\]]Ь™YЫ€]8 %Ш[YB€
-€]Ш^HЫX[€[€њ›ЫќЩ€Z\€ЭЫ™\њЛ€HYќЪZ[€^\ЭY[™Ш\ИYX\Э\™YИ]Ш\В€
-€™XXЪX›HЫ›Hњ›ЫHZЩSШљ™XЭ
-
-XH\›™\ЬИ™\‹‚€
-‚€
-€ZЩSШљ™XЭ
-
-X\И›Э™KZ[\[Y[ќY\™K€]\ИРSQЫИ\™H\И^XЭHЫ™HYќ]€
-€[™HЪ]™\ЬИ\ЬЛHЭЫ[€™YЪ\ЭћKH›Э[ќKH™[ЩH™Yќ\Ш[[™HШ]™H[€
-€ЩYH\ИXЪЭ\\И^HЩYH]™\ћHЭ\€Ы™K‚€
-‹В€ZЩT›Ь
-ZY
-HВ€ЫЫњЭИH\ЛњЪ[Kњ›ЬЛ™љ[™
-
-
-HO€™ZYOOHZY
-NВ€Y€
-[КH›ЭИ™]И\њ›ЬЉZЩT›Ь
-	ЙЩZYIКN€›ИЭXЪШљ™XЭ[€HЫЬ›
-NВ€Y€
-ЛќZЩ[ЉH™]\›€ИZYZЩ[Ћ€ќYK[™XYN€ќYHNВ€]YќHќ[В€Y€
-ЛќZЩXX›H	‰€Лњ›Ь\ќWЪ[њЭ[ЩJHВ€ЛИHZ[\™H\™H]\Э›ЭX]HXЪЭ\€Y€H›Ь\ќH›ЭИЩ[ќ]Ш^HЪ]B€ЛИ™YЩ[™\][Ы‹HШљ™XЭ\ИЭ[H[™И[ЭH\™HЫ[™Л‚€ћHИYќH\ЛќZЩSШљ™XЭ
-Лњ›Ь\ќWЪ[њЭ[ЩKЯJNИHШ]ЪИYќHќ[ИB€B€ЛќZЩ[€HќYNВ€\ЛњЪ[KќЫЬ›љ][\ХZЩ[‹њ\Ъ
-Л™ZY
-NВ€ЛИZЩSШљ™XЭ
-
-X\И[™XYH\ЪYH[ќ™[ќЬћH›ЭИ8 %Ш\њћZ[™ИЭЫ[[™ЭЫ™\8 %ЫВ€ЛИ\Ъ[™ИYШZ[€\™HЫЭ[Ъ]™HH^Y\€ЫИЩ€][™HЩXЫЫ™Ы™HЫX[‹‚€Y€
-ЛќZЩXX›H	‰€]Yќ
-HВ€\ЛњЪ[Kљ[ќ™[ќЬћKњ\Ъ
-ИY€Лљ][KЫЭ[ќ€KЫЫ™][ЫЋ€KЪ\™ЩN€ЭЫ[Ћ€[ЩKЭЫ™\Ћ€ќ[ЫЭ€ќ[]ZXЪФЫЭ€ќ[JNВ€B€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	Ъ][IКNВ€]‹љ][HHЛљ][NИ]‹љЭИH	ЬXЪЩY\	ОИ]‹™ZYHЛ™ZYВ€Y€
-Yќ
-HИ]‹њЭЫ[€HH]YќќYќИ]‹›ЭЫ™\€HYќњЭЫ[—Щњ›ЫHќ[ИB€]X[ќ\ЩPЫЫЭ]J\ЛњЪ[JNВ€™]\›€ИZYZЩ[Ћ€ќYK][N€Лљ][K[YN€Л›[YKYќNВ€B‚€КЉ‚€
-€HШ\\™K™\ЫЫ™Y€›ЭHX]€H\њЩH[™HЬљ]Ъ[™ЩH[™Л[™[ЭHШZЩH\€
-€ЫЫY]Ъ\™H[ЭHY›ЭШ[ИЛ€\YYYќ\€HЭ\™XШ]\ЩH][Э™\ИHШ[Y\K‚€
-‹В€Ь™\ЫЫ™PШ\\™J
-HВ€ЫЫњЭ™\HH\ЛњЪ[KШ\\™T™\]Y\ЭВ€\ЛњЪ[KШ\\™T™\]Y\ЭHќ[В€Y€
-\™\JH™]\›ЋВ€ЫЫњЭЫЫ™Y›Ь™HH\Л—ЩЫЫ
-
-NВ€\Л—ЬЩ]ЫЫ
-
-NВ€ЫЫњЭЬљ]YH\ЛњЪ[Kљ[ќ™[ќЬћK™љ[™[™^
-
-JHO€KљYOOH	ЬЭ[\Y]Ьљ]	КNВ€Y€
-Ьљ]YЏH
-H\ЛњЪ[Kљ[ќ™[ќЬћKњЬXЩJЬљ]YJNВ€\ЛњЪ[K›™]Y[ќ[HВ€\ЛњЪ[K™[ќ‹љ[ќ\љ[Ь€H	Ш\™ЩKZЫ	ОВ€\Л—Ш\PЩ[
-
-NВ€ЫЫњЭH\ЛњЪ[Kњ^Y\ЋВ€њЬЦМHHЊОИњЬЦМWHHИњЬЦМ—HHLKЊЋИћX]ИHМЋNВ€ЫЫњЭ€H\ЛЫЫX]њ^Y\ЋВ€‹њЬЦМHHњЬЦМNИ‹њЬЦМWHHњЬЦМWNИ‹њЬЦМ—HHњЬЦМ—NИ‹ћX]ИHћX]ОВ€\ЛњЪ[KШ[Y\KћX]ИHНLNИ\ЛњЪ[KШ[Y\Kњ]ЪHMВ€›Ь€
-ЫЫњЭHЩ€\ЛњЪ[K™[ќ]Y\ЛњЫXЩJ
-JHY€
-K™[ЫЭ[ќ\’Y
-H\Л™\Ь]ЫЉK™ZY
-NВ€\Л—ЬЩ]PШ[Y\J
-NВ€Z\њ›ЬЉ\ЛњЪ[K\ЛЫЫX]
-NВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	ЫШY	КNВ€]‹њЭ]HH	Ш\ЪЫ‹ZЫ	ОИ]‹™XШ]\ЩHH	ШШ\\™IОИ]‹™ЫЫЭZЩ[€HЫЫ™Y›Ь™NИ]‹ќЬљ]ЭZЩ[€HЬљ]YЏHВ€]X[ќ\ЩPЫЫЭ]J\ЛњЪ[JNВ€™]\›€ќYNВ€B‚€КЉ€Ш\ИH^Y\€Ш\\™Y[™Ъ]Y]ЫЬЭИ›ЭHЭљ[™И[€HXЩHљY[€
-‹В€Щ]Ш\\™TЭ]J
-HВ€™]\›€\ЛњЪ[KШ\\™Y€ИИ‹‹ќ\ЛњЪ[KШ\\™YЫЫ€\ЛЫЫX]ќЫЬ›™ЫЫ\ЧЭЬљ]€\ЛњЪ[Kљ[ќ™[ќЬћKњЫЫYJ
-JHO€KљYOOH	ЬЭ[\Y]Ьљ]	КHB€€ИШ\\™Y€[ЩHNВ€B‚€КЉ‚€
-€HY™\њ™Y[€Щ€[ќ\XЭЪXЪ\ИZ]\€HZЩHЬ€8 %МKT‘PQP“TИ8 %H‘PQ‚€
-‚€
-€ТHHСPУУ‘ХUУУQH“Ф€У‘H•UУ‹€НXЩZ]њ™]™X[YШћX›ЭЬИЩ€Ъ[›™[YЩ\[YHB€
-€ШЭ[Y[ќ\ИHЫЭ\ЩHЩ€Hќ]H™\ЫЫ][Ы€[X[™Л[™›ЭЫ™HЩ€[HШ\И[€Шљ™XЭ[‚€
-€\ИќZ[€HYЩ\€\ИH›ЫЪИЪ]HY™™\™[ќ›Э[€[™H™XY[™ИЩ€]ЫЩ\И›ЭYЪB€
-€Xњ\ћIЬИ™XY\€[Ъ[™ЩY
-Ь™XY›ЫЪШ
-H8 %ќ]HР’‘PХ\И›ЭH›ЫЪИ[ЭHЭЫ‹€H›ЭЫ™Y€
-€ЫЭ\ќ	ЬИ\Ъ]љ\ЭќЪ[›Э]H›ЫЪЬИX]™HH›ЫЫH‹[™KSPRS‹L€Ъ\ИHZ[\™B€
-€Э]KZ[ЭЫЪЧЭWШ›ЫЪЬШЪЬЩHШ]\ЩH\И
-€ќH^Y\€™[[Э™\ИH›Ы[YHЩ€H[Hњ›ЫB€
-€H\Ъ]™HЉ‹€Y€HЫ›H[™И[ќ\XЭЫЭ[И]HYЩ\€Ш\ИШЪЩ]][€HЫ™B€
-€[ќ\XЭ[Ы€H\Ъ]™HЩ™™\™YЫЭ[™HHЫ™H]ЫЬЩ\И]‚€
-‚€
-€ЫИH›ЬX^HШ\њћH™XYX›WШ›ЫЪШ[™™XXЪ[™И›Ь€]Ь[њИH›ЫЪИШЬ™Y[€Ъ\™H]€
-€Э[™Л€›И™]ИXЭ[Ы€[™›И™]И[њ]€T“‘TФЛ›Y0©Н	ЬИЩ]\ИЫЬЩY[™[ќ\XЭ[™XYB€
-€YX[њИ
-њ™XXЪ›Ь€H[™И[€њ›ЫќЩ€[ЭJ‹€]\ИY™\њ™YЭ]Щ€Hљ^YЭ\›Ь€^XЭB€
-€H™X\ЫЫ€HZЩH\И8 %Ь[љ[™ИHШЬ™Y[€ЭXЪ\ИH™[™\™\‹‚€
-‹В€ЭZЩT›Ь[™[™К
-HВ€ЫЫњЭYH\Л—Ь›Ь[™[™ОВ€\Л—Ь›Ь[™[™ИHќ[В€Y€
-ZY
-H™]\›ЋВ€ЫЫњЭИH\ЛњЪ[Kњ›ЬЛ™љ[™
-
-
-HO€™ZYOOHY
-NВ€Y€
-И	‰€Лњ™XYX›WШ›ЫЪИ	‰€\ЛќZH	‰€\Л™]K›ЫЪЬКHВ€ЛИШ[YHЫЬ€\ИH^Y\‰ЬИ[ќ™[ќЬћH›Э]N€RTЮ\Э[K›Ь[Љ	Ш›ЫЪЙКXљ\™\ИЫђ›ЫЪУЬ[™Y€ЛИЪXЪ\ИЬ™XY›ЫЪК
-X8 %HЫЬ›\ЪYHЫЫњЭ[Y\€Щ€ЬXЬЧЭ]YЪЫ›ЭЫYЩWЪЩ^X[™€ЛИHЪЪ[X›ЫЪИЭ™\›^K€›Э[™ИX›Э]™XY[™И\И™KZ[\[Y[ќY\™K‚€ћHВ€ЛИHЫЬ›\™XYX›H›Э]H\ЩYИЬ[€Ы›HH™[™\™\‹\ЪYHRK€H›ЩXЭ[Ы€Y[ќB€ЛИќ]Ы€[€ЩЩЫYЪ[K›Y[ќSЬ[њ›ЫH[ЩHИќYHЪ[HHRHЫЬЩYX]љ[™И[‚€ЛИ[ќљ\ЪX›HY[ќH]ЫЫњЭ[YY[ЭXњЩ\]Y[ќ[Э™[Y[ќ€ЩY\HЪ[][][Ы€[™RB€ЛИЭ\™XЩ\ИЫ€HШ[YHЪYHЩ€HЩЩЫKќ\ЭZЩHH[ќ™[ќЬћH›ЫЪИ›Э]K‚€\ЛњЪ[K›Y[ќSЬ[€HќYNВ€\ЛќZK›Ь[Љ	Ш›ЫЪЙЛИY€Лњ™XYX›WШ›ЫЪИK\Л—ЭZPЭ
-
-JNВ€Ш[Y\SЬ[•RJ\ЛњЪ[K	ЫY[ќIКNВ€\ЛќZK—ЬЭ\™XЩPЪ[™ЩY
-\Лњ™X[
-NВ€\ЛќZKќZ[
-\Л—ЭZPЭ
-
-KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
-\ЛњЪ[K™њ[YK	Ъ[њ]ШXЭ[Ы‰КNВ€]‹XЭ[Ы€H	Ъ[ќ\XЭ	ОИ]‹њЭ\™XЩHH	ЭЫЬ›	ОИ]‹ќљXHH	Ь™XYX›IОИ]‹››ЩHHЛ™ZYВ€HШ]Ъ
-\њ›ЬЉHВ€ЛИH›ЩXЭ[Ы‹\™XYX›HЪЬЩHXЪЪ[™И›ЫЪИ\Ш\X\™Y\Ињ›ЪЩ[€]]Ь™YЫЫќ[ќ›Э€ЛИ[€Ь[Ы[XЫЬ][Ы‹€Z[ЭYH[њЭXYЩ€X]љ[™ИHЫЫќљ[Ъ[™И›ЬЪЬЩHЫ›B€ЛИ^Y\‹YXЪ[™И[ќ\XЭ[Ы€Ъ[[ќHЩ\И›Э[™Л‚€›ЭИ\њ›ЬЋВ€B€™]\›ЋВ€B€ЛИМKT‘PQP“TИ›Э[™‹€HPT’Л€\™H\И›Э[™ИИЬ[€[™›Э[™ИИШ\њћN€HЪ[И\В€ЛИЫ€H[X‹HЬЭ\И›Ш›ЩHЫ€]HЪYќЫЩ\ИЭЫ€[™\€HљX‹€™XXЪ[™И›Ь€]€ЛИ\ИУТТS‘И]][™HЫ›H[™И]Ъ[™Щ\И\ИЪ]HЪ\XЭ\€›ЭИЫ›ЭЬИ8 %€ЛИX\›‘њ›ЫJ	ЬXЩIЛ‹‹ЉXЩ™™\њИH[ќљ\›Ы›Y[ќ›ЭЬИ\ИX\љИ\ИHXЫ\™YЫЭ\ЩB€ЛИЩ€[™™Yќ\Щ\ИHЫµУЭwТЪ$z{-®йЬjЧќes for the price of a
       // reload. That remedy is theirs and is deliberately not attempted from here; what IS
       // fixed here is that this file no longer asks the souls ledger to hide it.
       this._resetSessionObservers('save', 'early');
@@ -9798,7 +8275,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
       //
-      // ROUND 2 вЂ” but NOT the in-flight death, and not the last grounded position. Clearing
+      // ROUND 2 — but NOT the in-flight death, and not the last grounded position. Clearing
       // those two unconditionally is half of why a save taken with the death surface up came
       // back with 0 of 4,200 souls: `applySave` had just restored them (see
       // `DeathSystem.restoreInFlight`) and this line threw them away one statement later, so
@@ -9812,7 +8289,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       }
       // The death SURFACE is a renderer object and a camera mode, and neither is save state.
       // `_deathTick()` installs them on the transition into `active`, and after a load there is
-      // no transition вЂ” the death is already in flight. Put them up here so a mid-death load
+      // no transition — the death is already in flight. Put them up here so a mid-death load
       // shows the same screen the death itself did, rather than a live world behind a body
       // that cannot move.
       if (this.death && this.death.active) {
@@ -9842,7 +8319,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // The traversal VIEW on `sim.player`, refreshed from the authority the save just put
       // back. `stepOnce()` writes these seven every step; without this line a state loaded in
       // W5 water read `waterBand: 'W0'`, `denyRoll: false` and a full breath meter until the
-      // first step ran, and the input gate reads `denyRoll` вЂ” so for one frame after every
+      // first step ran, and the input gate reads `denyRoll` — so for one frame after every
       // load the player could roll in water the world had already denied it in.
       this._mirrorTraversalToPlayer();
       quantiseColdState(this.sim);
@@ -9872,10 +8349,10 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const r = await this.store.load(slot);
     if (!r.ok) return r;
     this.loadState(r.state);
-    // `save_read` was declared in the HARNESS.md В§5 vocabulary in wave 1 and emitted by
-    // nothing: `writeSave()` emitted `save_write`, and the other half of the pair вЂ” the one
+    // `save_read` was declared in the HARNESS.md §5 vocabulary in wave 1 and emitted by
+    // nothing: `writeSave()` emitted `save_write`, and the other half of the pair — the one
     // RI-JRN05 M17 (slot-list honesty) and M12 (a degraded load must be SURFACED) both need to
-    // see вЂ” had no emitter anywhere in `game/src`. `degraded` is the field that matters: it is
+    // see — had no emitter anywhere in `game/src`. `degraded` is the field that matters: it is
     // true when the digest failed and generation n-1 was loaded instead, and a load that falls
     // back silently is HF3.
     const e = this.bus.emit(this.sim.frame, 'save_read');
@@ -9886,7 +8363,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   getSaveManifest() { return this.data.saveManifest; }
 
   /**
-   * DURABLE FIELD CENSUS вЂ” the instrument that would have caught
+   * DURABLE FIELD CENSUS — the instrument that would have caught
    * `GAP-W1-platform-save-drops-entity-prev-state` on the day it was written.
    *
    * `RI-JRN05` M4 is a set difference between the manifest and the SAVE. That check is
@@ -9900,7 +8377,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    *
    * This runs the differential instead: deep-copy the live simulation, save, load the save
    * back, deep-copy again, and report every live field whose value did not survive. It
-   * needs no declaration to be right вЂ” a field nobody remembered to declare still shows up.
+   * needs no declaration to be right — a field nobody remembered to declare still shows up.
    *
    * Absolute frame indices are re-based (loadState resets the frame to 0 by RI-MTH01 A07),
    * and the re-based set is DECLARED below rather than skipped silently. Anything else that
@@ -9912,7 +8389,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   getDurableFieldCensus() {
     // Absolute frame indices, re-based against the frame each copy was taken at. Every entry
     // is a live-object path, and every one of them IS carried in the save as a *_in_frames /
-    // *_ago_frames offset вЂ” this list is the re-basing rule, not an exclusion list. The two
+    // *_ago_frames offset — this list is the re-basing rule, not an exclusion list. The two
     // rules differ and the difference is the save's own arithmetic: a `rel()` timer is
     // stored CLAMPED at zero (an expired timer is expired, and reloading it as "expired 120
     // frames ago" would be inventing history), while `state_entered_ago_frames` is a plain
@@ -9932,7 +8409,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       'env.wallClockOffsetMs': 'A-JRN10 advanceWallClock(). Never read by the simulation and never hashed; it exists so a critic can move an in-world clock without perturbing the fixed step.',
       'input': 'The input pipeline is a per-session device, not saved state. __HARNESS.loadState() calls input.reset(frame) explicitly so a load cannot inherit a half-buffered press from the session that wrote the save.',
       'nextEid': 'Re-derived from the restored eids by applySave(), so a load cannot mint a colliding eid. Carried as a derivation rather than as a field.',
-      'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 В§B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
+      'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 §B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
       'env.runtime_projection': 'Fields other than the durable clock/region/weather/interior inputs are EnvironmentSystem projections recomputed on the next fixed step; they are not independent state.',
       'entities[].classifiedBy': 'Instrumentation provenance attached by population classification; it has no world-side reader and is intentionally session-scoped.',
     };
@@ -9940,10 +8417,10 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const clone = (o) => JSON.parse(JSON.stringify(o));
     // W1-repair: `character`, `npcs`, `props`, `magic` and THE COMBAT BODIES were not in this
     // snapshot, and every one of them was carrying a defect the census is built to catch.
-    //   * `sim.character` вЂ” `loadCreation()` dropped `powers` and `drawbacks`, so the Focus
+    //   * `sim.character` — `loadCreation()` dropped `powers` and `drawbacks`, so the Focus
     //     multiplier, the spell absorption and the whole Dry Well drawback (seam S27) were
     //     lost by every load. The census could not see the sheet, so it never said so.
-    //   * the combat bodies вЂ” the AUTHORITY behind `sim.player` (sim/combat-bridge.js).
+    //   * the combat bodies — the AUTHORITY behind `sim.player` (sim/combat-bridge.js).
     //     Nothing restored them, so 26 player fields were absent after a load and the body's
     //     frame stamps were never rebased.
     // A census that walks a subset of the simulation is an instrument that certifies a subset.
@@ -10058,7 +8535,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const inSaveNotDeclared = savedKeys.filter((k) => !declared.includes(k) && blob.world.entities[0]);
     // Third direction: the live->save NAME MAP and the save-side field list must agree, so
     // neither can drift without the other. The map is what makes the live key set checkable
-    // at all вЂ” the live object is camelCase and the save is snake_case, and `prev_state` hid
+    // at all — the live object is camelCase and the save is snake_case, and `prev_state` hid
     // in exactly that gap.
     const mapValues = Object.values(liveToSave).slice().sort();
     const mapDisagrees = JSON.stringify(mapValues) !== JSON.stringify(declared.slice().sort());
@@ -10125,7 +8602,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     return this.loadState(blob);
   }
 
-  // ---- load boundaries (A-JRN7, RI-PLT03 В§B) ---------------------------------------------------
+  // ---- load boundaries (A-JRN7, RI-PLT03 §B) ---------------------------------------------------
 
   _boundaryBegin(kind) {
     const rec = { kind, beganAt: wallNow(), endedAt: null, simFramesLost: 0 };
@@ -10154,7 +8631,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       boundaries: this.boundaries.map((b) => ({ kind: b.kind, ms: b.endedAt === null ? null : +(b.endedAt - b.beganAt).toFixed(2) })),
       navigationToReadyMs: this.readyResolved ? +(this.firstControlAt !== null ? this.firstControlAt - this.navigationStart : 0).toFixed(2) : null,
       _unmeasurable: {
-        TTFP: 'Tier-H (RI-PLT03 В§A). navigationStartв†’first-controllable wall clock on SwiftShader measures the rasteriser. Report TTFP_model instead, with the GPU constant stated.',
+        TTFP: 'Tier-H (RI-PLT03 §A). navigationStart→first-controllable wall clock on SwiftShader measures the rasteriser. Report TTFP_model instead, with the GPU constant stated.',
       },
     };
   }
@@ -10220,7 +8697,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
 
   /**
    * What the ground and the water are doing to the body right now, declared beside observed.
-   * HARNESS.md В§7 rule 4's pair: `game/data/world/traversal.json` is the declaration, the live
+   * HARNESS.md §7 rule 4's pair: `game/data/world/traversal.json` is the declaration, the live
    * counters are the observation, and a critic diffs them without re-deriving either.
    */
   getTraversalReport() {
@@ -10256,7 +8733,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     };
   }
 
-  /** What is around you that only exists here вЂ” the diegetic form of "which region am I in". */
+  /** What is around you that only exists here — the diegetic form of "which region am I in". */
   getRegionSignature(x, z) {
     if (!this.signatures) throw new Error('getRegionSignature: no province is loaded');
     const px = x === undefined ? this.sim.player.pos[0] : Number(x);
@@ -10278,7 +8755,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   }
 
   /**
-   * Pin the tide. `RI-WLD10` В§7's cycle is 12 real minutes with four states; the phase is the
+   * Pin the tide. `RI-WLD10` §7's cycle is 12 real minutes with four states; the phase is the
    * only state the simulation keeps, and it is a number, so a critic can hold it still.
    */
   setTide(stateOrPhase) {
@@ -10344,21 +8821,21 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * it computes the bearing to the next point on the BUILT road spline, converts it to the
    * camera-relative stick vector the player would hold, pushes it through `queueInputs()`, and
    * advances the simulation by exactly one fixed step. The capsule is moved by
-   * `combat/player.js`, not by this method вЂ” which is the point, because M3 exists to catch an
+   * `combat/player.js`, not by this method — which is the point, because M3 exists to catch an
    * hour manufactured out of friction rather than distance, and a method that teleported the
    * capsule along the spline would be unable to show either.
    *
    * Speed is set by the magnitude of the stick, exactly as a player's would be: 0.55 is the walk
    * band's ceiling, which is `walk_mps` = 2.0 m/s, and 1.0 is the jog.
    *
-   * Resumable: pass `chunkFrames` and call again until `done` вЂ” 57.6 minutes is 207,360 fixed
+   * Resumable: pass `chunkFrames` and call again until `done` — 57.6 minutes is 207,360 fixed
    * steps and a single call would sit past a browser automation timeout.
    */
   /**
    * Walk an ARBITRARY polyline with the capsule, under the same locomotion the player uses.
    *
    * `walkRoute` could only walk the named road routes, so the only reachability evidence this
-   * piece could produce was `scale-audit.mjs`'s grid flood fill вЂ” which verdict W1-01 В§6 called
+   * piece could produce was `scale-audit.mjs`'s grid flood fill — which verdict W1-01 §6 called
    * "a flood fill wearing a walk's clothes", and whose own `depth <= 1.40 m` passability rule was
    * what concealed the drowned road: a cell under 65 m of water simply dropped out of the fill
    * while the road through it stayed a road. This is the verb that lets the claim be a walk.
@@ -10382,13 +8859,13 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * and the body always steers *straight at that one point*. Both halves are defects, and between
    * them they account for every failed reachability walk this project has published:
    *
-   *   1. **It cannot recover.** Displace the body вЂ” a boulder, a wall, a slope slide, a fall off a
-   *      viaduct вЂ” and it does not come back to the road. It puts its head down and beelines at a
+   *   1. **It cannot recover.** Displace the body — a boulder, a wall, a slope slide, a fall off a
+   *      viaduct — and it does not come back to the road. It puts its head down and beelines at a
    *      waypoint that is now across country. If anything at all stands between it and that point
    *      it slides along the obstacle and orbits, forever, because nothing in the loop is a
    *      function of *the road*: `soulrest-blackrose` is 1,841 m long and the body walked 6,459 m
-   *      of it and finished in 16 m of sea. That leg's ground is innocent вЂ” this instrument's own
-   *      census gives it a worst regain angle of 11.5 deg, no falls and no slope-gate refusals вЂ”
+   *      of it and finished in 16 m of sea. That leg's ground is innocent — this instrument's own
+   *      census gives it a worst regain angle of 11.5 deg, no falls and no slope-gate refusals —
    *      so the wander was never the province. It was this loop.
    *   2. **It cuts corners.** Aiming 4.5 m ahead across a bend on a road whose points are 12 m
    *      apart takes the body off the carriageway by design. On the 471 m viaduct that stands 50.6
@@ -10397,7 +8874,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * So the target is now computed from the body's PROJECTION ONTO THE PATH: find the nearest point
    * on the polyline (searching forward only, within a 150 m window, so a road that doubles back
    * cannot teleport the target backwards), then take the point `forward` metres further along the
-   * polyline. `forward` shrinks as the body's lateral error grows вЂ” at 4.5 m off the road the
+   * polyline. `forward` shrinks as the body's lateral error grows — at 4.5 m off the road the
    * target is the road itself, so a displaced body's first move is *back onto it*, and once it is
    * back the target slides ahead again and it resumes. The road is the thing being followed, which
    * is what "follow the road" has to mean.
@@ -10419,7 +8896,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       if (span > 150) break;                       // the search window, not the path
     }
     st.seg = bestSeg;                              // monotonic: the walk never un-walks a segment
-    // How much road is left in front of the projection вЂ” the honest "remaining", and the arrival
+    // How much road is left in front of the projection — the honest "remaining", and the arrival
     // test, both of which used to be a waypoint count.
     let remaining = 0;
     {
@@ -10464,13 +8941,13 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const st = { seg: 0 };
     let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0, healsUsed = 0, sprintInputs = 0, defensiveSwings = 0;
     let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
-    // W1-CROSSING round 1, В§A3 вЂ” THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
+    // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
     // (`path_m` counted a respawn as walked distance) was landed in `walkRoute` and stated, in
-    // F7 and in survey В§2c, as landing in "`walkRoute` AND `walkPath`". It had not landed here.
+    // F7 and in survey §2c, as landing in "`walkRoute` AND `walkPath`". It had not landed here.
     // `walkPath` is the verb the reachability and drowning instruments drive
     // (`tools/world/w1-01-r4-soulrest-leg.mjs`, `tools/world/rawleg-check.mjs`), so until now no
     // `walkPath` distance in this project was a walked distance. Same threshold, same three
-    // fields, same reasoning вЂ” see `walkRoute`'s note below for why 1 m is the bar.
+    // fields, same reasoning — see `walkRoute`'s note below for why 1 m is the bar.
     const jumps = []; let jumpCount = 0, jumpM = 0;
     const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
     const deepest = { depth_m: 0, at: null };
@@ -10489,12 +8966,12 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
       // A MIRED body struggles. `sim/player.js` turns a roll press into a mire STRUGGLE (25
-      // stamina, one per 30 f, three of them break you out) and nothing else clears the state вЂ”
+      // stamina, one per 30 f, three of them break you out) and nothing else clears the state —
       // so a scripted walk that never presses roll can be mired permanently, and the S9 walked
       // reachability probe was then measuring the probe rather than the province: 0 of 13 regions
       // entered, every leg aborting on a 900-frame stuck run in shin-deep SUCK. A player presses
       // the button. The probe must too, or it cannot succeed, which is the mirror of the failure
-      // mode AGENT-PROTOCOL names вЂ” a probe that cannot fail.
+      // mode AGENT-PROTOCOL names — a probe that cannot fail.
       const script = [{ f: 0, move: [-Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
       if (o.survival && !this.sim.env.interior && this.combat && this.combat.player) {
         const body=this.combat.player, ctl=this.combat.playerCtl;
@@ -10515,7 +8992,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       this.loop.stepOnce();
       this._afterStep();
       const step = Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
-      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND вЂ” see `walkRoute`. Metres the
+      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND — see `walkRoute`. Metres the
       // world MOVED the body (a death and a respawn at a hearth, a fall handler re-placing the
       // capsule, a streamer re-seat) are recorded and NOT walked. The hearth this province
       // respawns you at is 116.7 m from THE CROSSING's destination, so without this a body that
@@ -10531,7 +9008,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // frames as "stuck" is what made every S9 walked leg abort inside a delta the flood fill
       // calls 99.3% walkable: three struggles at 25 stamina take 90 frames of zero movement, and
       // waiting for the stamina to pay for them takes more. They are counted and reported
-      // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED вЂ”
+      // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED —
       // which is a finding about the province, not a stall.
       if (this.traversal && this.traversal.mired && !this.sim.env.interior) {
         miredFrames++;
@@ -10559,7 +9036,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       worst_off_path_m: +worstOff.toFixed(2), off_path_frames: offRoadFrames, regains: regains + (off ? 0 : 0),
       // Discontinuities: metres the body was MOVED rather than walked. `path_m` excludes them.
       teleports: jumpCount, teleported_m: +jumpM.toFixed(1), teleport_log: jumps,
-      // `arrived` is answered against the body's position, which a respawn also moves вЂ” so a walk
+      // `arrived` is answered against the body's position, which a respawn also moves — so a walk
       // that teleported is not an arrival this tool will vouch for on its own. Read the two together.
       arrival_is_clean: jumpCount === 0,
     };
@@ -10598,7 +9075,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const p = this.sim.player;
     let n = 0;
     while (n < o.chunkFrames && !w.done) {
-      // The target is the body's PROJECTION ONTO THE ROAD, pushed forward вЂ” see `_pursue`. The old
+      // The target is the body's PROJECTION ONTO THE ROAD, pushed forward — see `_pursue`. The old
       // "advance the waypoint when you get near it, then beeline at it" loop is the reason a body
       // that left the road never came back, and the reason this walk cut corners off a 50 m viaduct.
       const pur = this._pursue(w.pts, w, o.lookahead_m, 1.5);
@@ -10625,7 +9102,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // and the steepest slide in the province is under 0.2 m, so anything over 1 m is the world
       // MOVING the body, not the body walking: a death and a respawn at a hearth, a fall handler
       // re-placing the capsule, a streamer re-seat. Those metres were being added to `path_m`, and
-      // that is how a walk that died 1,370 m into THE CROSSING reported 4,812 m of it вЂ” the
+      // that is how a walk that died 1,370 m into THE CROSSING reported 4,812 m of it — the
       // respawn was 3,391 m and the sum called it progress. They are recorded and NOT walked.
       if (step > 1) {
         if (w.jumps.length < 40) w.jumps.push({ at_m: +w.dist.toFixed(1), frame: w.frames, jump_m: +step.toFixed(1),
@@ -10634,14 +9111,14 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
         w.jumpCount++; w.jumpM += step;
       } else w.dist += step;
       w.frames++; n++;
-      // The leg the body is ON, which is the leg its PROJECTION sits on вЂ” not the leg of whatever
+      // The leg the body is ON, which is the leg its PROJECTION sits on — not the leg of whatever
       // point it happened to be aiming at, which on a lookahead can already be the next leg.
       w.legFrames.set(pur.tag, (w.legFrames.get(pur.tag) || 0) + 1);
       if (w.frames % o.sampleEvery === 0) w.samples.push(+(step * 60).toFixed(4));
       const reg = this.field.regionAt(p.pos[0], p.pos[2]).id;
       if (reg !== w.lastRegion) { w.regions.push({ region: reg, frame: w.frames, m: +w.dist.toFixed(1) }); w.lastRegion = reg; }
       // `opts.stream` is accepted and IGNORED. It used to be the only thing in this file that
-      // streamed the province while a body moved вЂ” `request()` + `pump(1)` every 90 frames, and
+      // streamed the province while a body moved — `request()` + `pump(1)` every 90 frames, and
       // only if a caller opted in. The streamer is pumped from `_afterStep()` now, which this
       // loop calls above, so the world builds itself under a walking player whether or not
       // anybody asked. Leaving the old line here as well would be two implementations of one
@@ -10694,7 +9171,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       streaming: prov,
       drawCalls: s.drawCalls || 0,
       triangles: s.triangles || 0,
-      // RI-MAG05 В§B2's budget quantities. Reported here rather than in a second call because
+      // RI-MAG05 §B2's budget quantities. Reported here rather than in a second call because
       // the item's F-M5 reads `getWorldStats()` at the release frame and 20 frames later, and
       // a budget in a different object from the draw calls it is a budget ON is a budget that
       // gets checked against the wrong frame.
@@ -10725,12 +9202,12 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       interior: this.sim.env.interior,
       _declared_incomplete: {
         owner: 'wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)',
-        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled вЂ” see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not.',
+        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled — see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not.',
       },
     };
   }
 
-  // ================= W1-15 вЂ” stealth, theft, crime and justice ===============================
+  // ================= W1-15 — stealth, theft, crime and justice ===============================
   // Thin: every one of these delegates to game/src/sim/stealth/** or game/src/sim/crime/**,
   // which are the same modules tools/harness/stl-probe.mjs drives headless. There is no second
   // implementation here for the two to disagree about.
@@ -10750,7 +9227,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       gold: p.gold, picks: p.picks, standings: { ...p.standings },
       crouch_refused: p.crouchRefusedReason,
       hud_elements: 0,
-      // W1-15 round 2 вЂ” the fields RI-MTH07's hand-feed audit needs. `in_cover_source` says
+      // W1-15 round 2 — the fields RI-MTH07's hand-feed audit needs. `in_cover_source` says
       // whether the x0.80 came from geometry or from a caller; `motion_forced` says the same
       // for the movement band. A number a critic supplied and a number the world computed must
       // never be indistinguishable in an artifact.
@@ -10759,14 +9236,14 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       motion_forced: p.motionForced || null,
       zone_context_multiplier: st.zones.contextMultiplier(p.zone, this.sim.frame),
       lights_out: st.light.sources.filter((s) => !s.lit).map((s) => s.id),
-      // W1-15 r3 вЂ” the hand-feed audit for LIGHT. `world_sources` is what the interior record
+      // W1-15 r3 — the hand-feed audit for LIGHT. `world_sources` is what the interior record
       // put here; `scenario_sources` is what a probe put here with `addLightSource`. Until this
       // round the first number was 0 in all 115 interiors.
       lights: st.lightSourceCensus(),
       searches: st.searches.filter((s) => !s.over).length,
       stolen_registry_n: st.crime.stolenRegistry.length,
       // Seam S19's five Veiling terms, reported next to the terms they modify so that a critic
-      // reading RI-MAG06 В§B's row for `chameleon` / `invisibility` / `muffle` / `night_eye` /
+      // reading RI-MAG06 §B's row for `chameleon` / `invisibility` / `muffle` / `night_eye` /
       // `false_face` sees the cause and the effect in the same object. Every one defaults to
       // the identity, so a build with no spell active reports exactly what it reported before.
       magic: {
@@ -10781,8 +9258,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   }
 
   /**
-   * `hist_sight` writes EXACTLY ONE prose journal entry and ZERO HUD markers (RI-MAG06 В§B,
-   * RI-MAG02 В§H, AR-2). The prose is copied verbatim out of a quest file by Journal.write() вЂ”
+   * `hist_sight` writes EXACTLY ONE prose journal entry and ZERO HUD markers (RI-MAG06 §B,
+   * RI-MAG02 §H, AR-2). The prose is copied verbatim out of a quest file by Journal.write() —
    * this method chooses which entry, it never composes one, which is the rule
    * game/src/sim/quest/journal.js exists to make structurally impossible to break.
    */
@@ -10794,7 +9271,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * together. Binding by reference rather than copying is what makes `reset()` clear it: the UI
    * writes through the same object `saveState()` reads, so there is exactly one reading
    * position and no opportunity for the two to drift. It must be re-run after ANYTHING that
-   * calls `SimState.reset()`, because that replaces `sim.quest` wholesale вЂ” which is both
+   * calls `SimState.reset()`, because that replaces `sim.quest` wholesale — which is both
    * entry points to a load, and is why this is a method rather than a line.
    *
    * Before it existed, `UISystem.bookPages` was a plain object on the UI system: it survived a
@@ -10812,7 +9289,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     this.questEngine.sim = this.sim;
     this.questEngine.journal = new Journal(this.sim.quest.journal);
     // The model closes over `this`, not over `this.sim`, so a state load cannot leave it
-    // pointing at the previous world вЂ” but re-install anyway, because a rebind that half
+    // pointing at the previous world — but re-install anyway, because a rebind that half
     // survives is exactly the contamination W1-15 round 2 found in the stealth subsystem.
     this.questEngine.dispositionModel = this._questDispositionModel();
     this.seedDispositions();
@@ -10825,7 +9302,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * `giver.disposition_min` against `QuestEngine.context().dispositions`, which is
    * `sim.quest.dispositions`, which started empty and was only ever written by a Charm effect
    * (`sim/magic/apply.js`) or by a quest's own consequences. The result was that every quest in
-   * the build with a `disposition_min` above zero was unofferable from a cold start вЂ” the
+   * the build with a `disposition_min` above zero was unofferable from a cold start — the
    * eighth shipped-model-with-no-reader in this project, and the one that would have made the
    * main quest unplayable.
    *
@@ -10853,7 +9330,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   /**
    * **The quest-offer path's race term, which until W1-07 round 4 did not exist.**
    *
-   * `seedDispositions()` above writes the register вЂ” the world's *written* opinion. This is
+   * `seedDispositions()` above writes the register — the world's *written* opinion. This is
    * the function that turns a written number into what the person in front of you actually
    * feels, and installing it on `QuestEngine` is what makes `gate.js canOffer()` see race at
    * all. Two layers were needed and the data layer alone was measured, on a shadow tree, to
@@ -10862,14 +9339,14 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    *
    * The arithmetic is borrowed, never re-derived:
    *
-   *   * `character/reaction.js derivedDisposition` вЂ” RI-CHR02 В§3's 12x10 matrix, the upbringing
+   *   * `character/reaction.js derivedDisposition` — RI-CHR02 §3's 12x10 matrix, the upbringing
    *     table, and RI-CHR03's birthsign term. This is the function `creation-audit.mjs` and
    *     `npcDisposition()` already agree with, so the number on a quest gate and the number on
    *     a price quote come from one place.
-   *   * `sim/dialogue/disposition.js movableTerms` вЂ” RI-DLG04 В§B's Personality, faction,
+   *   * `sim/dialogue/disposition.js movableTerms` — RI-DLG04 §B's Personality, faction,
    *     same-race, bounty and crime terms, supplied as `otherTerms`. Without them the fix
    *     differentiates BY SUBTRACTION: a Dunmer would be permanently refused in the interior
-   *     with no route through, which `race-reactions.json` В§repair_paths explicitly rejects
+   *     with no route through, which `race-reactions.json` §repair_paths explicitly rejects
    *     ("Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40").
    *
    * Sap taint and disease are deliberately NOT passed: `QuestEngine._dispositionToward()` has
@@ -10921,7 +9398,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     if (!qe || !qe.gates) return live;
     const out = {};
     // The ladder needs the same four inputs `canOffer` gives it, and only those: reputation,
-    // attributes, skills, world flags. Deliberately NOT `qe.context()` вЂ” that calls
+    // attributes, skills, world flags. Deliberately NOT `qe.context()` — that calls
     // `dispositionView()`, which calls this, which would be an infinite regress.
     const q = this.sim.quest;
     const reputation = {};
@@ -10938,7 +9415,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     return out;
   }
 
-  /** The character as RI-DLG04 В§B's movable terms read them, from live sim state only. */
+  /** The character as RI-DLG04 §B's movable terms read them, from live sim state only. */
   _questPlayerView() {
     const ch = this.sim.character;
     const attrs = (this.sim.progression && this.sim.progression.attributes) || {};
@@ -10948,10 +9425,10 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     return {
       race: ch ? ch.race : this.sim.identity.race,
       upbringing: ch ? ch.upbringing : this.sim.identity.upbringing,
-      // DECLARED EXCLUSION, measured rather than assumed. RI-DLG04 В§B's Personality term is
+      // DECLARED EXCLUSION, measured rather than assumed. RI-DLG04 §B's Personality term is
       // `0.5 * (Personality - 50)`, transcribed from a GMST calibrated against Morrowind's
       // live dialogue slider. This build's `progression/attributes.json` has `base_value: 10`
-      // and a starting Personality of 5-20 вЂ” a saxhleel reed-walker ships with 6 вЂ” so the term
+      // and a starting Personality of 5-20 — a saxhleel reed-walker ships with 6 — so the term
       // is a flat **-22 against every person in the province at level 1**, for every race
       // alike. Applying it here would silently re-calibrate every `disposition_min` W1-19
       // authored, by an amount nobody authored, in the name of a race fix. Passing the GMST's
@@ -10961,7 +9438,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       Personality: (this.data.persuasionGmst && this.data.persuasionGmst.gmst.fDispPersonalityBase) || 50,
       // W1-19 round 2: the LADDER's ranks, not the stored ones. `_applyConsequences()` writes
       // reputation and never rank, so `q.factions[f].rank` is 0 for every faction in every save
-      // in this build вЂ” which meant `factionTerm`'s rank amplification was dead and, worse, that
+      // in this build — which meant `factionTerm`'s rank amplification was dead and, worse, that
       // its membership test (see `sim/dialogue/disposition.js`) had nothing but a reputation row
       // to go on. `QuestEngine.context()` already derives the rank a character has EARNED from
       // `faction-gates.json` (reputation + attribute + two favoured skills + world state) and
@@ -10996,7 +9473,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       if (!rec.reaction_group && !ungrouped.includes(g)) ungrouped.push(g);
     }
     if (missing.length || ungrouped.length) {
-      const msg = 'quest givers invisible to the RI-CHR02 reaction matrix вЂ” '
+      const msg = 'quest givers invisible to the RI-CHR02 reaction matrix — '
         + `${missing.length} with no NPC record (${missing.slice(0, 8).join(', ')}), `
         + `${ungrouped.length} with a record and no reaction_group (${ungrouped.slice(0, 8).join(', ')}). `
         + 'A giver in either list gates every race identically; see game/data/npcs/**.';
@@ -11004,7 +9481,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // it and made HEAD unbootable for six concurrent agents, whose measurements are void
       // against a game that will not start. `game/data/npcs/quest-givers.json` (19 records) and
       // the reaction groups on `npcs/mainline.json` (37 records) now satisfy it, so it fails
-      // closed again вЂ” a giver that gates every race identically is exactly the defect this was
+      // closed again — a giver that gates every race identically is exactly the defect this was
       // written to catch, and it shipped a whole wave invisible to every instrument.
       //
       // The guard alone does not close that defect and must never be read as if it did:
@@ -11043,7 +9520,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       const e = qe.journal.write(q, ref.index, this.sim.env.dayCount, {});
       if (e) {
         // GAP-FCT-01: historical sight WRITES the quest's opening journal entry, so the quest is
-        // genuinely open and must say so вЂ” `resolve()` now gates on `opened`.
+        // genuinely open and must say so — `resolve()` now gates on `opened`.
         if (!this.sim.quest.quests[q.id]) this.sim.quest.quests[q.id] = { stage: ref.index, flags: {}, branch: null, failed: false, opened: true };
         else {
           this.sim.quest.quests[q.id].stage = Math.max(this.sim.quest.quests[q.id].stage, ref.index);
@@ -11062,7 +9539,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const allow = ['sneak', 'security', 'agility', 'mercantile', 'speechcraft', 'load', 'race', 'surface', 'inCover', 'zone', 'carryingTorch', 'gold', 'picks', 'crouched', 'jurisdiction', 'settlement'];
     // Fields the world otherwise tracks live off the character sheet every frame
     // (`StealthCrime.syncFromCharacter`, RI-PRG03 consumption). A caller stating one of them
-    // here is declaring a scenario override вЂ” recorded so the next step doesn't silently
+    // here is declaring a scenario override — recorded so the next step doesn't silently
     // stomp it back to whatever the character carries.
     const trackedByCharacter = ['sneak', 'security', 'agility', 'mercantile', 'speechcraft', 'race', 'gold'];
     for (const k of Object.keys(patch)) {
@@ -11071,7 +9548,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       if (trackedByCharacter.includes(k)) st._overridden.add(k);
       // `in_cover` is derived from geometry every frame unless a scenario states it. Setting it
       // here is a declaration that the scenario is stating it, and the trace records that so a
-      // critic can tell the world's answer from a hand-fed one (RI-MTH07 В§C3).
+      // critic can tell the world's answer from a hand-fed one (RI-MTH07 §C3).
       if (k === 'inCover') p.inCoverForced = true;
     }
     return this.getStealthState();
@@ -11098,13 +9575,13 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   // ---- W1-15 round 2: the world-side surfaces RI-MTH07's coupling test drives --------------
 
   /**
-   * A wall. Added to the stealth occluder cell вЂ” a real `CollisionCell` of the same primitives
-   * `sim/collision.js` gives the camera вЂ” so that the thing a probe puts between two characters
+   * A wall. Added to the stealth occluder cell — a real `CollisionCell` of the same primitives
+   * `sim/collision.js` gives the camera — so that the thing a probe puts between two characters
    * is geometry rather than a flag.
    */
   addOccluder(spec) {
     const min = spec.min, max = spec.max;
-    if (!min || !max) throw new Error('addOccluder: expected {id, min:[x,y,z], max:[x,y,z]} вЂ” an axis-aligned box in world metres');
+    if (!min || !max) throw new Error('addOccluder: expected {id, min:[x,y,z], max:[x,y,z]} — an axis-aligned box in world metres');
     const c = [(min[0] + max[0]) / 2, (min[1] + max[1]) / 2, (min[2] + max[2]) / 2];
     const h = [(max[0] - min[0]) / 2, (max[1] - min[1]) / 2, (max[2] - min[2]) / 2];
     const s = this.sim.stealth.occluders.add({ k: 'box', c, h, id: spec.id || `occ${this.sim.stealth.occluders.shapes.length}` });
@@ -11134,8 +9611,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   /**
    * A guard. The round-1 verdict: "There are no guard entities either, so `getGuardBand()` is a
    * function of a number you set with `setBounty()`." A guard is a person in `civilians` with
-   * `group: 'guard'` вЂ” which makes them a full witness at `guard_V_min` (RI-CRM01 В§2), a report
-   * target for the shout and run-to-guard routes (В§3a), and a body a fleeing witness runs at.
+   * `group: 'guard'` — which makes them a full witness at `guard_V_min` (RI-CRM01 §2), a report
+   * target for the shout and run-to-guard routes (§3a), and a body a fleeing witness runs at.
    */
   spawnGuard(spec) {
     const st = this.sim.stealth;
@@ -11163,7 +9640,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const st = this.sim.stealth;
     const r = st.pending[i];
     if (!r) throw new Error(`bribeWitness(${i}): no pending report at that index`);
-    // W1-16: was `gold === null ? st.p.gold : gold` вЂ” the stale mirror. `_gold()` is the
+    // W1-16: was `gold === null ? st.p.gold : gold` — the stale mirror. `_gold()` is the
     // canonical purse.
     const purse = gold === null || gold === undefined ? this._gold() : gold;
     const out = r.bribe(purse, this.sim.frame);
@@ -11197,7 +9674,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     if (!row) throw new Error(`fenceSell: ${JSON.stringify(instance)} is not in the stolen registry. Registered: ${st.crime.stolenRegistry.map((s) => s.instance).join(', ') || '(none)'}`);
     const q = this.fenceQuote(fenceId, { stolen_from: row.owner, value_g: row.value_g, unique: row.unique, stolen_settlement: row.settlement });
     if (!q.buys) return q;
-    // W1-16: was `st.p.gold += q.price_g` вЂ” a purse seeded at 400 and touched by nothing else
+    // W1-16: was `st.p.gold += q.price_g` — a purse seeded at 400 and touched by nothing else
     // in the game, disjoint from `sim.progression.gold` (what the save writes and `getGold()`
     // reads). Routed through `_setGold` so a fence payment is real money.
     this._setGold(this._gold() + q.price_g);
@@ -11215,21 +9692,21 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     return { ...q, sold: true, gold: st.p.gold, laundered: true };
   }
 
-  // ================= W1-04 вЂ” settlements, interiors and the people in them ====================
+  // ================= W1-04 — settlements, interiors and the people in them ====================
   // Thin, like the stealth block above it: every one of these delegates to
   // game/src/sim/settlement.js, which is the same module `sim/step.js` drives every frame.
   // There is no second implementation, so a probe cannot pass against a surface the player
-  // never touches вЂ” the failure mode that put one good detection model and one broken one in
+  // never touches — the failure mode that put one good detection model and one broken one in
   // this build at the same time.
 
   /**
    * Spawn everyone whose record says they belong to this town, at the position their schedule
-   * has them in right now. Idempotent вЂ” `spawnNPC` returns the existing person for an eid that
+   * has them in right now. Idempotent — `spawnNPC` returns the existing person for an eid that
    * is already in the world, so walking in and out of a gate does not duplicate a village.
    *
    * Positions are derived, not authored per-person: a person stands at their cell's centre with
    * a deterministic offset off their own eid, which is what keeps forty people in a capital from
-   * occupying one point. Nothing here draws RNG вЂ” `mix` is a hash of the id.
+   * occupying one point. Nothing here draws RNG — `mix` is a hash of the id.
    */
   populateSettlement(sid) {
     const out = [];
@@ -11239,7 +9716,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       for (const rec of group.npcs) {
         if (rec.settlement !== sid) continue;
         if (this.sim.findNPC(rec.id)) { out.push(rec.id); continue; }
-        // W1-GIVER-PRESENCE, defect 1: this read `schedule[0].at` вЂ” the FIRST row of the day,
+        // W1-GIVER-PRESENCE, defect 1: this read `schedule[0].at` — the FIRST row of the day,
         // whatever hour it is. A person whose midnight slot is their house was placed in their
         // house at noon and then walked out of it on the first step, so their body and the cell
         // the clock said they were in disagreed for as long as nobody stepped. Ask the clock.
@@ -11249,8 +9726,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
         let pos;
         if (cell === null && rec.post && Array.isArray(rec.post.pos)) {
           // W1-GIVER-PRESENCE, defect 2, and it is the one that made the whole mechanism dead
-          // weight: the block below derives a position from an INTERIOR's bounds вЂ” a cell-local
-          // frame centred on nothing вЂ” and a settlement stands at world coordinates
+          // weight: the block below derives a position from an INTERIOR's bounds — a cell-local
+          // frame centred on nothing — and a settlement stands at world coordinates
           // (helstrom is at [2262.5, 27.22, 2773.5]). So `populateSettlement` placed the people
           // of every town in a heap around the world origin, kilometres from the town they
           // belong to. Someone standing outdoors goes at their authored post.
@@ -11274,7 +9751,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   }
 
   /**
-   * Everyone the build declares at a NAMED SITE that is not a settlement вЂ” the hollow above the
+   * Everyone the build declares at a NAMED SITE that is not a settlement — the hollow above the
    * sap-line, the counting chamber under the Stone Wastes. W1-04's rule stands: `settlement: null`
    * is the correct record for somebody who belongs to no town, and a hermit is not a signpost. But
    * eight faction quests and four main ones are given by four such people, and until this existed
@@ -11358,7 +9835,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
 
   /**
    * RI-STL02's `livesHere`. True when the character taking something from this zone is one of
-   * the people who own it вЂ” which in wave 1 means a companion or a possessed body, and is
+   * the people who own it — which in wave 1 means a companion or a possessed body, and is
    * false for the ordinary player, but is now COMPUTED rather than asserted.
    */
   _livesHere(zoneId) {
@@ -11375,7 +9852,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   }
 
   /**
-   * The sound radius for a hypothetical motion. `muffle`'s consuming system: RI-MAG06 В§B names
+   * The sound radius for a hypothetical motion. `muffle`'s consuming system: RI-MAG06 §B names
    * `sound_r_m`, and the live per-frame value is 0 whenever the character is standing still, so
    * a census that only ever reads the standing value can never see the effect. This applies the
    * same live term the per-frame computation does, and reports it, so the paired read is real.
@@ -11415,14 +9892,14 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       for (const z of this.data.property[k].zones) { const c = z.contents.find((x) => x.instance === instance); if (c) { obj = c; zone = z; } }
     }
     if (!obj) throw new Error(`no placed object ${JSON.stringify(instance)}`);
-    // `observedBy` is a hand-feed and RI-MTH07 В§C3 audits it. It is still accepted, because a
-    // scenario legitimately wants to state the case вЂ” but the DEFAULT is derived: the live
+    // `observedBy` is a hand-feed and RI-MTH07 §C3 audits it. It is still accepted, because a
+    // scenario legitimately wants to state the case — but the DEFAULT is derived: the live
     // civilians who can actually see you, by the same line-of-sight cast the perception pass
     // uses, not merely by "civ_state !== CALM" as in round 1.
     const observers = opts.observedBy || this._observersOf(st);
-    // `livesHere` was a hardcoded `false` here for the whole of wave 1, which is RI-MTH07 В§C3's
-    // hand-feed in its purest form: RI-STL02 В§1 makes the entire `shared` scope turn on it and
-    // nothing in the world could ever make it true. It is now DERIVED вЂ” from whether the
+    // `livesHere` was a hardcoded `false` here for the whole of wave 1, which is RI-MTH07 §C3's
+    // hand-feed in its purest form: RI-STL02 §1 makes the entire `shared` scope turn on it and
+    // nothing in the world could ever make it true. It is now DERIVED — from whether the
     // character is standing in a zone one of whose owners is a person they are travelling with,
     // or, in the ordinary case, whether the player character is themselves an owner of it.
     const lives = this._livesHere(zone.id);
@@ -11461,7 +9938,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
 
   /**
    * Who can actually see the player right now. The default source for `takeObject`'s
-   * `observedBy`, and the answer to RI-MTH07 В§C3's hand-feed audit for this verb.
+   * `observedBy`, and the answer to RI-MTH07 §C3's hand-feed audit for this verb.
    */
   _observersOf(st) {
     const out = [];
@@ -11507,8 +9984,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
   trespassCheck(zoneId, opts) {
     const z = this._zoneById(zoneId);
     // W1-04: `shopOpen` defaulted to `true` at every call site in the build, so a shop was as
-    // little a trespass at three in the morning as at noon and `zone.schedule.open_h` вЂ” on all
-    // 233 zones вЂ” was read by nothing. It is now derived from the world clock and the hours of
+    // little a trespass at three in the morning as at noon and `zone.schedule.open_h` — on all
+    // 233 zones — was read by nothing. It is now derived from the world clock and the hours of
     // the interior the zone is a room of, unless the caller states the case explicitly.
     const derived = { shopOpen: this.isOpenNow(z.id), residents_present: this.settlements.residentsPresent(this.sim, z.id).present };
     return { zone: z.id, hour: Math.round(this.sim.env.timeOfDay * 100) / 100, derived_shop_open: derived.shopOpen, residents_present: derived.residents_present, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks: this.sim.stealth.p.standings, shopOpen: derived.shopOpen, ...opts }) };
@@ -11518,7 +9995,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * WHO OWNS THIS, AND DOES THE BUYER KNOW THEM.
    *
    * `npcById` over BOTH registers, and the second one is the point. `game/data/npcs/` holds 376
-   * named people; the property tree's zone `residents[]` holds 280 more вЂ” the elders, siblings and
+   * named people; the property tree's zone `residents[]` holds 280 more — the elders, siblings and
    * children of a household, who own 1,000-odd of the objects in their own houses and who exist
    * nowhere else. Reading only the first register would leave most of the tree unresolvable and
    * the fence refusals still dead for it. Measured over the shipped tree at this commit: **1,787
@@ -11564,16 +10041,16 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    *
    * DERIVED, and from relations the world already declares rather than a new authored table.
    * `same_settlement` and `same_faction` refuse first, so this branch is only ever asked about a
-   * buyer in a DIFFERENT town and a DIFFERENT faction вЂ” and there is exactly one relation in this
+   * buyer in a DIFFERENT town and a DIFFERENT faction — and there is exactly one relation in this
    * corpus that crosses a town boundary: **the two itinerant fences' `route`**. The barge factor
    * calls at Gideon, Soulrest and Lilmoth; the Sap-Cutter's cart works Thorn, Stormhold and Archon.
    * A fence who ties up at your victim's dock every third day knows your victim. That is the case
-   * RI-STL02 В§6's third refusal line was written for, and until now nothing could reach it.
+   * RI-STL02 §6's third refusal line was written for, and until now nothing could reach it.
    *
    * The rest are ordered by how strong the relation is, and all four are checkable in the data:
-   * household (kin) 90, faction 70, quarter-mate 65, a route that calls at the owner's town 60 вЂ”
+   * household (kin) 90, faction 70, quarter-mate 65, a route that calls at the owner's town 60 —
    * exactly at the threshold, because "he calls there" is the weakest thing that should still count
-   * вЂ” and a shared reaction group 25, which deliberately does NOT reach it.
+   * — and a shared reaction group 25, which deliberately does NOT reach it.
    */
   dispositionBetween(ownerId, buyerNpcId, fenceRow) {
     const a = this.npcById(ownerId);
@@ -11607,7 +10084,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    *
    * Both stubs are gone. `buyer.id` is now the fence's own **NPC** id rather than its roster row
    * id, because `dispositionBetween` is a question about two people and `fence.archon.salvage` is
-   * not a person вЂ” `npc:tuls-avaro` is, and the roster has carried that field all along.
+   * not a person — `npc:tuls-avaro` is, and the roster has carried that field all along.
    */
   fenceQuote(fenceId, item) {
     const st = this.sim.stealth;
@@ -11727,7 +10204,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    *
    * `StealthCrime.stepGuards()` asks `guardBandNow()`, which decides what a guard standing in front
    * of you does. This method is what a probe, the HUD and `getCrimeState()` ask. They both computed
-   * a band and until now they computed it from different ledgers вЂ” this one from
+   * a band and until now they computed it from different ledgers — this one from
    * `crime.bounty.imperial`, the total, and `guardBandNow()` (as of round 4) from the ATTRIBUTED
    * total. The first live run of `w1-15-r4-live.mjs` caught it in the act: four unidentified
    * reports, attributed bounty 0, `stepGuards` correctly holding at band 0, and this method
@@ -11735,7 +10212,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
    * world acts on is worse than either number alone.
    *
    * It now reads the same ledger. `opts.bounty` still overrides, because a probe asking "what would
-   * band 3 look like" is a legitimate question and always was вЂ” but the override is reported as
+   * band 3 look like" is a legitimate question and always was — but the override is reported as
    * `bounty_source: 'caller'` so it cannot be mistaken for the world's answer.
    */
   getGuardBand(opts) {
@@ -11775,7 +10252,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       jurisdiction: opts.jurisdiction || 'imperial', settlement: opts.settlement || null,
       persuadeSucceeded: !!opts.persuadeSucceeded, stolenItems: opts.stolenItems || [],
     });
-    // W1-15 r3: was `st.p.gold -= bounty` вЂ” a write to the stealth mirror only.
+    // W1-15 r3: was `st.p.gold -= bounty` — a write to the stealth mirror only.
     // `syncFromCharacter()` re-heals `p.gold` from `sim.progression.gold` on the very next
     // frame (see its own W1-16 comment), so the deduction was invisible by the next step and
     // paying off a bounty at the guard cost nothing against the purse the save actually writes.
@@ -11833,7 +10310,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // the agent had actually read rather than what it was given.
       // W1-LIBRARY r2: read off `sim.quest`, which the SAVE carries. It used to read
       // `Engine._booksRead`, a Set on the engine object that no save blob mentioned and that
-      // `sim.reset()` could not clear вЂ” so it survived a state load it should not have and did
+      // `sim.reset()` could not clear — so it survived a state load it should not have and did
       // not survive a save/load it must.
       booksRead: q.booksRead.slice().sort(),
       // What reading those books has actually unlocked, resolved through the same map
@@ -11845,7 +10322,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       factions: JSON.parse(JSON.stringify(q.factions)),
       crime: JSON.parse(JSON.stringify(q.crime)),
       // W1-14 round 3. The two registers this call did not expose, and both are the consuming
-      // system RI-MAG06 В§B names for an effect: `cure_disease`/`cure_poison` read the affliction
+      // system RI-MAG06 §B names for an effect: `cure_disease`/`cure_poison` read the affliction
       // register (which `sim/hazards.js` now writes, rather than only the harness), and `mark`
       // writes the recall destination. A consumer nobody can read through the call every critic
       // uses is a consumer nobody can check.
@@ -11856,7 +10333,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       // `_declared_incomplete` used to say "a quest runtime: no quest in this build can be
       // started, advanced or completed by playing". That became false when the runtime was
       // constructed in round 2, and it stayed in the single most-read harness surface for the
-      // quest area for a whole round вЂ” a declaration of incompleteness is exactly as much a
+      // quest area for a whole round — a declaration of incompleteness is exactly as much a
       // measurement as a number is, and a stale one misleads in the direction of modesty.
       quest_runtime: {
         present: !!this.questEngine,
@@ -11877,7 +10354,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     for (const o of this.sim.props) {
       // `reach_m` is the field `_censusStep` actually tests when `interact` is pressed, and it
       // is the register `telekinesis` was moved onto in W1-14 round 3. Reporting it here is what
-      // makes "an object outside melee reach becomes takeable" (RI-MAG06 В§B) a readable check.
+      // makes "an object outside melee reach becomes takeable" (RI-MAG06 §B) a readable check.
       // `readable` is the field RI-JRN03 DS2's inscription census (M-K21) counts: an inscription
       // is a physical entity with a position, readable via `interact`, that teaches a verb. It
       // was carried on the prop and reported nowhere, so the census had nothing to count and
@@ -11912,8 +10389,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
         two_handed: !!p.twoHanded, airborne: !!p.airborne,
         pos: [p.pos[0], p.pos[1], p.pos[2]], yaw_deg: p.yaw,
       },
-      // `menu` opens a UI surface and does NOT pause the fixed step вЂ” frames.json
-      // В§actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
+      // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
+      // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
       menu: { open: !!this.sim.menuOpen, pauses_simulation: false },
       lock: { target: c.lock.target, score: c.lock.score, both_framed: c.lock.bothFramed },
       world_knowledge: { gold: c.world.gold, topicsKnown: c.world.topicsKnown, dispositions: c.world.dispositions, factions: c.world.factions },
@@ -11945,8 +10422,8 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
       poise_cur: p.poise, poise_max: p.poiseMax, estus: p.estus, locked_on: p.lockOn,
       level: this.sim.progression.level, souls: this.sim.progression.soulsHeld,
       // W1-13 r2: the PRICE of the next level and the running total spent. `RI-JRN06` M-D1 and
-      // `RI-PRG04` В§1 both turn on "souls held falls by exactly `soulsToNextLevel()`", and
-      // round 1 had no way to read either without going through the level-up screen вЂ” which is
+      // `RI-PRG04` §1 both turn on "souls held falls by exactly `soulsToNextLevel()`", and
+      // round 1 had no way to read either without going through the level-up screen — which is
       // the thing under test.
       souls_to_next: this.soulsToNextLevel(),
       souls_spent: this.sim.progression.soulsSpent || 0,
@@ -11985,7 +10462,7 @@ KќYJNВ€ЫЫњЭ]€H\Лќ\Л™[Z]
     const lib = c.lib;
     const ms = lib && b.weaponId ? lib.movesets[b.weaponId] : null;
     const pre = b.twoHanded ? '2h.' : '';
-    // RI-WPN06 В§C / game/data/weapons/offhand.json: each configuration has its OWN verb list.
+    // RI-WPN06 §C / game/data/weapons/offhand.json: each configuration has its OWN verb list.
     // O3 stows the offhand and swaps the whole table for `2h.*`; O2 has no block, no parry and no
     // guard counter; O1 adds the shield's own verbs. `plunge` and `guardbreak` are stance-shared.
     const SHARED = new Set(['plunge', 'guardbreak']);
@@ -12069,12 +10546,12 @@ function deepAssign(target, src) {
 
 // ---- data loading -------------------------------------------------------------------------
 
-// P10 вЂ” THE LOADER HAD NO RETRY, AND ONE HICCUP ON ONE OF 569 FILES WAS A BLACK SCREEN.
+// P10 — THE LOADER HAD NO RETRY, AND ONE HICCUP ON ONE OF 569 FILES WAS A BLACK SCREEN.
 //
 // The playability agent ran the deployed site twice on a real network and both runs died on
 // `world/hazards.json` answering **503**. GitHub Pages' CDN wobbled again, unprompted, during a
-// later run: 1 retried 5xx across 2828 requests. On this build machine вЂ” localhost, one client,
-// no CDN вЂ” it essentially never happens, which is exactly why it reached the owner and not us.
+// later run: 1 retried 5xx across 2828 requests. On this build machine — localhost, one client,
+// no CDN — it essentially never happens, which is exactly why it reached the owner and not us.
 //
 // The old code was `if (!res.ok) throw new Error('data file missing: ...')`, and the boot notice
 // then told the player *"A file the game needs is missing."* The file was not missing. That
@@ -12084,21 +10561,21 @@ function deepAssign(target, src) {
 // Two failure classes, and they must never be confused, because the fix for one is the poison
 // for the other:
 //
-//   * **transient** вЂ” 5xx, 408, 429, or the fetch rejecting outright (DNS, TLS, a dropped
+//   * **transient** — 5xx, 408, 429, or the fetch rejecting outright (DNS, TLS, a dropped
 //     connection). The file is there and the server is having a moment. Retry it.
-//   * **permanent** вЂ” 404. The file is genuinely not published. This is the OTHER black-screen
+//   * **permanent** — 404. The file is genuinely not published. This is the OTHER black-screen
 //     class on this project (`tools/check-shipped-files.mjs` exists because a module 404'd on the
 //     deployed tree and every check on the build machine stayed green). Retrying a 404 would
 //     spend four requests and 2.75 s to arrive at the same answer while burying the one word that
 //     names the bug. **Never retried, and the message says so.**
 //
 // THE CAP ON ADDED BOOT LATENCY. The ladder sleeps 250/750/1750 ms before retries 1, 2 and 3
-// (В±40% jitter), so a single unlucky file costs at most ~3.85 s. Across the WHOLE load the
+// (±40% jitter), so a single unlucky file costs at most ~3.85 s. Across the WHOLE load the
 // loader will sleep at most `totalSleepBudgetMs` (12 s) and issue at most `maxRetriesTotal` (24)
 // extra requests; past either the ladder stops and the next transient failure is fatal, and the
 // message says which limit ran out. So: **a boot on a flaky network is at most 12 s slower than a
 // boot on a good one, plus the round-trip cost of up to 24 extra requests.** A boot on a good
-// network is not slower at all вЂ” nothing sleeps unless something has already failed.
+// network is not slower at all — nothing sleeps unless something has already failed.
 //
 // Deliberately NOT added: a per-request timeout. A 17 MB world on a slow phone is a long, slow,
 // perfectly healthy download, and a timeout tuned on this machine would abort it. That leaves a
@@ -12153,7 +10630,7 @@ async function loadData(onBytes) {
           return JSON.parse(text);
         } catch (e) {
           // 200 with a body that is not JSON is not a network problem and retrying cannot help.
-          throw new Error(`data file UNREADABLE: ${rel} вЂ” HTTP 200 from ${href} but the body is not JSON (${e.message}). This is not a network failure; the published file is corrupt.`);
+          throw new Error(`data file UNREADABLE: ${rel} — HTTP 200 from ${href} but the body is not JSON (${e.message}). This is not a network failure; the published file is corrupt.`);
         }
       }
 
@@ -12161,12 +10638,12 @@ async function loadData(onBytes) {
       const what = res ? `HTTP ${status}` : `network error (${(netErr && netErr.message) || 'no message'})`;
 
       // A 404 IS AN ANSWER, NOT A HICCUP. Fail on the first one, loudly, and name the tool that
-      // diagnoses it вЂ” masking a genuinely unpublished file behind four retries would be strictly
+      // diagnoses it — masking a genuinely unpublished file behind four retries would be strictly
       // worse than the bug this whole block fixes.
       if (res && !isTransientStatus(status)) {
         log.failure = { file: rel, url: href, status, attempts: attempt, kind: 'permanent' };
         log.events.push({ file: rel, outcome: 'permanent', status, attempt });
-        throw new Error(`data file MISSING: ${rel} вЂ” HTTP ${status} on ${href}, after ${attempt} attempt${attempt === 1 ? '' : 's'}. A ${status} is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.`);
+        throw new Error(`data file MISSING: ${rel} — HTTP ${status} on ${href}, after ${attempt} attempt${attempt === 1 ? '' : 's'}. A ${status} is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.`);
       }
 
       log.events.push({ file: rel, outcome: 'transient', status, attempt, detail: what });
@@ -12188,7 +10665,7 @@ async function loadData(onBytes) {
         log.failure = { file: rel, url: href, status, attempts: attempt, kind: 'transient', stopped: stop };
         log.events.push({ file: rel, outcome: 'gave-up', status, attempt, stopped: stop });
         // NOT "missing". Say the status, say the URL, say how many times we asked.
-        throw new Error(`data file UNAVAILABLE: ${rel} вЂ” ${what} on ${href}, unchanged after ${attempt} attempt${attempt === 1 ? '' : 's'} spanning ${Math.round(sleptHere)} ms of waiting; gave up at ${stop}. The file is NOT missing вЂ” the server would not serve it. This usually clears on a reload.`);
+        throw new Error(`data file UNAVAILABLE: ${rel} — ${what} on ${href}, unchanged after ${attempt} attempt${attempt === 1 ? '' : 's'} spanning ${Math.round(sleptHere)} ms of waiting; gave up at ${stop}. The file is NOT missing — the server would not serve it. This usually clears on a reload.`);
       }
 
       log.retries++;
@@ -12226,20 +10703,20 @@ async function loadData(onBytes) {
     // Consumed by `world/field.js#setSignposts` -> `world/province.js#_signposts` (drawn) and by
     // `Engine.signRead()` (read).
     else if (entry.path === 'world/signposts.json') out.signposts = doc;
-    // W1-08 round 2. RI-JRN03 В§F DS2 вЂ” the ONLY sanctioned way this game may teach a verb,
+    // W1-08 round 2. RI-JRN03 §F DS2 — the ONLY sanctioned way this game may teach a verb,
     // because DS1 sets the tutorial budget at zero for the whole game. Needs its own branch for
     // the reason the comment above gives: a `world/*.json` that matches no branch here is
     // fetched, counted in the byte total, and then dropped, which is indistinguishable from
-    // shipping nothing вЂ” and shipping nothing is exactly what M-K21 measured on this build
+    // shipping nothing — and shipping nothing is exactly what M-K21 measured on this build
     // (0 readable entities across 8 named states). Consumed by `applyNamedState()` below, which
     // spawns each into the state it names, and read back by `listEntities().readable`.
     else if (entry.path === 'world/inscriptions.json') out.inscriptions = doc;
-    // W1-READABLES round 2 вЂ” the `environment` channel's objects. See `Engine._ensureProvinceMarks`.
+    // W1-READABLES round 2 — the `environment` channel's objects. See `Engine._ensureProvinceMarks`.
     else if (entry.path === 'world/readables/site-marks.json') out.siteMarks = doc;
     // W1-05. RI-WLD06 L3, the spoken direction. Same branch discipline as `world/signposts.json`
     // above and for the same reason: `bucketFor` only claims `dialogue/topics/`, so a
     // `dialogue/*.json` that matches nothing here is fetched, counted in the byte total, and
-    // dropped вЂ” which is exactly how `dialogue/persuasion-gmst.json` spent a round being loaded
+    // dropped — which is exactly how `dialogue/persuasion-gmst.json` spent a round being loaded
     // and unreadable. Consumed by `sim/quest/topic-supply.js#RoadBook` via `_installTopicSupply`.
     else if (entry.path === 'dialogue/road-directions.json') out.roadDirections = doc;
     else if (entry.path === 'world/signatures.json') out.signatures = doc;
@@ -12252,8 +10729,8 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('crime/')) { out.crime = out.crime || {}; out.crime[entry.path.slice('crime/'.length).replace(/\.json$/, '')] = doc; }
     else if (entry.path.startsWith('world/property/')) { out.property = out.property || {}; out.property[doc.settlement] = doc; }
     else if (entry.path === 'world/hazards.json') out.hazards = doc;
-    // W1-02. The thirteen weather state machines and the 20x clock they run on (RI-WLD08 В§1,
-    // В§5). Own branch for the reason the `world/signposts.json` comment above gives: a
+    // W1-02. The thirteen weather state machines and the 20x clock they run on (RI-WLD08 §1,
+    // §5). Own branch for the reason the `world/signposts.json` comment above gives: a
     // `world/*.json` matching no branch here is fetched, counted in the byte total, and then
     // dropped, which is indistinguishable from shipping nothing. Consumed by
     // `sim/environment.js#Environment`, stepped from `sim/step.js`.
@@ -12274,7 +10751,7 @@ async function loadData(onBytes) {
     // three lines down: a world/*.json that matches nothing is fetched and then dropped.
     else if (entry.path === 'world/population.json') out.population = doc;
     else if (entry.path === 'world/population-posts.json') out.populationPosts = doc;
-    // W1-OPACITY. RI-WLD09 В§B1's register of the 24 things this world refuses to explain.
+    // W1-OPACITY. RI-WLD09 §B1's register of the 24 things this world refuses to explain.
     // It MUST have a branch here: a world/*.json that matches nothing is fetched and then
     // dropped on the floor, which is exactly how `dialogue/persuasion-gmst.json` and
     // `dialogue/faction-reactions.json` spent a round being loaded and unreadable.
@@ -12291,16 +10768,16 @@ async function loadData(onBytes) {
     // nothing. Consumed by `sim/discovery.js` (the reveal radius and the standing radii) and by
     // `ui/screens/map.js` (the palette and the local span).
     else if (entry.path === 'ui/map.json') out.mapUI = doc;
-    // W1-22. The thirteen regional ambience beds (RI-AUD03 В§B). It MUST have a branch here for
+    // W1-22. The thirteen regional ambience beds (RI-AUD03 §B). It MUST have a branch here for
     // exactly the reason the `world/opacity.json` comment above gives, and the reason is worth
     // repeating for an audio file specifically: a bed that is fetched, counted in the byte
     // total and then dropped is INDISTINGUISHABLE FROM SHIPPING NOTHING, and "shipping nothing
     // while a data file says otherwise" is precisely the defect this piece was dispatched to
-    // fix вЂ” 39 audio strings in regions.json that nothing read. Consumed by
+    // fix — 39 audio strings in regions.json that nothing read. Consumed by
     // `Engine.ambience` (an AmbienceDriver, built in the constructor) which is stepped from
     // `_afterStep()`, and read back by `getAmbienceState()` / `ambienceCapture()`.
-    // W1-11. The twelve combat impact classes (RI-AUD01 В§A) and their forty-eight variants.
-    // Same rule, same reason: no branch here and the file is fetched, counted, and dropped вЂ”
+    // W1-11. The twelve combat impact classes (RI-AUD01 §A) and their forty-eight variants.
+    // Same rule, same reason: no branch here and the file is fetched, counted, and dropped —
     // which for an audio file is indistinguishable from the silence the item scores 0 for.
     // Consumed by `Engine.impactAudio` (an ImpactAudio, built in the constructor), handed to
     // the fight in `_buildCombat()`, driven from `CombatSystem.step`'s `emit`, and read back
@@ -12329,8 +10806,8 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('combat/movesets/')) out.weaponMovesets[doc.weapon_id] = doc;
     else if (entry.path.startsWith('weapons/')) out.weapons[entry.path.slice('weapons/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;
-    // W1-07 round 4: both of these were fetched at boot and then DROPPED вЂ” they matched no
-    // branch below and fell off the end of the chain. RI-DLG04 В§B's whole term set was
+    // W1-07 round 4: both of these were fetched at boot and then DROPPED — they matched no
+    // branch below and fell off the end of the chain. RI-DLG04 §B's whole term set was
     // therefore unreachable by any consumer, which is one of the reasons `derivedDisposition`
     // never made it onto the quest path.
     else if (entry.path === 'dialogue/persuasion-gmst.json') out.persuasionGmst = doc;
@@ -12354,7 +10831,7 @@ async function loadData(onBytes) {
       if (doc.id) out.progression[doc.id] = doc;
     }
   }
-  // W1-07 вЂ” the character-creation view of the data, assembled once at boot so that
+  // W1-07 — the character-creation view of the data, assembled once at boot so that
   // game/src/character/** and tools/analysis/creation-audit.mjs consume the identical object.
   out.character = {
     attributes: out.progression['attributes'],
