@@ -10,10 +10,12 @@
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { NodeArena, loadCombatData } = await import(`${ROOT}/tools/lib/combat-node.mjs`);
+const { resolveImpact } = await import(`${ROOT}/game/src/combat/impact.js`);
 const D = loadCombatData();
 const CLASSES = JSON.parse(fs.readFileSync(`${ROOT}/game/data/weapons/classes.json`, 'utf8'));
 
@@ -42,11 +44,18 @@ function land(weapon, material, slot = 'r1.1', dist = 1.2) {
   a.queueInputs([{ f: 3, press: [btn] }, { f: 5, release: [btn] }]);
   const hp0 = e.hp, ez0 = e.pos[2], px0 = a.player.pos[2];
   let imp = null, hitF = null, aHold = 0, vHold = 0, pa = -1, pe = -1, whiffTotal = null;
+  let impactEvents = 0;
   let sawFrac = false;
-  for (let i = 0; i < 500; i++) {
+  // Native motion calibration may legally lengthen a clip to preserve S36 geometry and the
+  // per-frame pose/socket bounds. Keep the impact fixture above the longest shipped attack so
+  // ranged rows cannot silently become "NO HIT" merely because an audit repaired their timing.
+  for (let i = 0; i < 1200; i++) {
     a.step();
     for (const ev of a.drain()) {
-      if (ev.kind === 'IMPACT' && !imp) { imp = ev; hitF = ev.f; }
+      if (ev.kind === 'IMPACT') {
+        impactEvents++;
+        if (!imp) { imp = ev; hitF = ev.f; }
+      }
     }
     if (!Number.isInteger(a.player.animFrame)) sawFrac = true;
     if (hitF !== null && i > 0 && a.player.animFrame === pa) aHold++;
@@ -77,6 +86,7 @@ function land(weapon, material, slot = 'r1.1', dist = 1.2) {
     material_mult: imp ? imp.material_mult : null,
     damage_type: imp ? imp.damage_type : null,
     added_recovery_f: imp ? imp.added_recovery_f : null,
+    impact_events: impactEvents,
     non_integer_anim_frame: sawFrac,
   };
 }
@@ -164,7 +174,9 @@ out.M2 = { cells: m2, failures: m2Fail, distinct_damage_over_20_repeats: rep.siz
   }
   out.M2.statblocks_missing_material = miss;
   out.M2.statblocks_total = tot;
+  if (miss / Math.max(1, tot) > 0.10) m2Fail.push(`statblocks missing material ${miss}/${tot} > 10%`);
 }
+if (rep.size !== 1) m2Fail.push(`damage varied across 20 repeats (${rep.size} distinct values)`);
 
 // ---- M3: deflection — TSW thrust (pd 12), SSW slash (22) and MCE strike (32) on stone ------
 const m3 = {};
@@ -176,7 +188,10 @@ for (const [k, w] of Object.entries({ TSW: 'tsw_bog_rapier', SSW: 'ssw_garrison_
 }
 out.M3 = { rows: m3,
   pass: m3.TSW.deflect === true && m3.SSW.deflect === true && m3.MCE.deflect === false
-        && m3.TSW.added_recovery_f === CLASSES.hitstop.deflect.added_recovery_f };
+        && m3.TSW.dmg === 0 && m3.SSW.dmg === 0 && m3.MCE.dmg > 0
+        && m3.TSW.added_recovery_f === CLASSES.hitstop.deflect.added_recovery_f
+        && m3.SSW.added_recovery_f === CLASSES.hitstop.deflect.added_recovery_f
+        && m3.MCE.added_recovery_f === 0 };
 
 // ---- M4: whiff arithmetic — total_on_hit - total_on_whiff == attacker_hitstop --------------
 const m4 = []; const m4Fail = [];
@@ -202,6 +217,44 @@ const m4 = []; const m4Fail = [];
   }
 }
 out.M4 = { rows: m4, failures: m4Fail };
+
+// ---- M7: presentation event discipline ---------------------------------------------------
+// A resolved contact owns exactly one IMPACT record, and that record owns exactly one decal.
+// Emitting it per active frame is the historical failure this census can distinguish. Rendered
+// decal count remains a separate world-side observation; this row deliberately does not pretend
+// that an event declaration proves the renderer consumed it.
+const m7Bad = out.rows.filter((r) => !r.hit || r.impact_events !== 1 || !r.decal)
+  .map((r) => `${r.weapon}/${r.material}: impacts=${r.impact_events} decal=${r.decal}`);
+out.M7 = { rows: out.rows.length, exactly_one_decal_event_per_hit: m7Bad.length === 0, failures: m7Bad,
+  floating_damage_numbers: 'measured by tools/analysis/ui-forbidden.mjs',
+  retained_camera_rotation: 'measured by CAM06 post-rig fixture' };
+
+// ---- M8: five-seed equality over the complete effective impact population ----------------
+// resolveImpact is the function the fight calls on contact. The driven rows above prove that
+// world-side consumption separately; this sweep proves no seed can change any effective slot x
+// material output, including slot overrides, material damage, deflection and hitstop.
+const seeds = [1, 7, 1337, 0x51ed, 0xffffffff];
+const m8Runs = seeds.map((seed) => {
+  const rows = [];
+  for (const [weapon, moveset] of Object.entries(D.weaponMovesets).sort()) {
+    for (const [slot, move] of Object.entries(moveset.slots).sort()) {
+      if (!move) continue;
+      for (const material of [...MATERIALS, 'plant']) {
+        const imp = resolveImpact(CLASSES, {
+          ...move, weight_tier: moveset.weight_tier, weapon_class: moveset.class,
+          hitstop_f_table: move.hitstop_f || move.hitstop_f_table || null,
+        }, material);
+        rows.push([weapon, slot, material, imp.attacker_hitstop_f, imp.victim_hitstop_f,
+          imp.multiplier, imp.deflect, imp.added_recovery_f, imp.knockback_m, imp.decal]);
+      }
+    }
+  }
+  return { seed, rows, sha256: crypto.createHash('sha256').update(JSON.stringify(rows)).digest('hex') };
+});
+const m8Base = m8Runs[0].sha256;
+const m8Bad = m8Runs.filter((r) => r.sha256 !== m8Base).map((r) => r.seed);
+out.M8 = { seeds, rows_per_seed: m8Runs[0].rows.length, identical: m8Bad.length === 0,
+  differing_seeds: m8Bad, runs: m8Runs.map(({ seed, rows, sha256 }) => ({ seed, rows: rows.length, sha256 })) };
 
 // ---- M6: the Impact Legibility Score ------------------------------------------------------
 // The observable triple per §F is (attacker_hitstop, camera_shake_peak, knockback_m).
@@ -290,8 +343,12 @@ console.log(`\nM1 failures: ${m1Fail.length}${m1Fail.length ? ' -> ' + m1Fail.sl
 console.log(`M2 failures: ${m2Fail.length}${m2Fail.length ? ' -> ' + m2Fail.slice(0, 8).join(' | ') : ''}   statblocks missing material: ${out.M2.statblocks_missing_material}/${out.M2.statblocks_total}   distinct dmg over 20 repeats: ${out.M2.distinct_damage_over_20_repeats}`);
 console.log(`M3 deflection: TSW ${m3.TSW.deflect} SSW ${m3.SSW.deflect} MCE ${m3.MCE.deflect}  added_recovery ${m3.TSW.added_recovery_f}  -> ${out.M3.pass ? 'PASS' : 'FAIL'}`);
 console.log(`M4 failures: ${out.M4.failures.length}${out.M4.failures.length ? ' -> ' + out.M4.failures.slice(0, 6).join(' | ') : ''}`);
+console.log(`M7 decal-event failures: ${out.M7.failures.length}${out.M7.failures.length ? ' -> ' + out.M7.failures.slice(0, 6).join(' | ') : ''}`);
+console.log(`M8 five-seed effective rows: ${out.M8.rows_per_seed} per seed, identical=${out.M8.identical}`);
 console.log(`M6 ILS_unique ${out.M6.ILS_unique}  ILS_1nn ${out.M6.ILS_1nn}  span ${JSON.stringify(out.M6.tier_hitstop_span)} ok=${out.M6.span_ok}  monotone=${out.M6.monotone_down_tier}`);
 
 const target = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : null;
 if (target) fs.writeFileSync(target, JSON.stringify(out, null, 1));
-if (process.argv.includes('--gate') && (m1Fail.length || m2Fail.length || !out.M3.pass || out.M6.ILS_unique < 0.8)) process.exit(1);
+if (process.argv.includes('--gate') && (m1Fail.length || m2Fail.length || !out.M3.pass
+  || m4Fail.length || m7Bad.length || !out.M8.rows_per_seed || !out.M8.identical
+  || out.M6.ILS_unique < 0.8)) process.exit(1);

@@ -20,9 +20,8 @@
 // bearing is therefore not a property of the bug — it is whatever the fixture's player-yaw
 // history happens to make it. This tool sweeps the fixture and reports r for both rules.
 //
-// HOW IT CAN FAIL: if the legacy rule's r stayed below 0.80 on every fixture, this tool prints
-// `LEGACY_NEVER_PASSES` and exits 0 with no finding. It exits 3 only when it has actually
-// constructed a fixture on which the BROKEN rule passes M6.
+// S44/W1-11 continuation closes that loophole with the source/listener distance invariant:
+// every non-contact landed hit must have positive distance as well as the correlation bar.
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -85,9 +84,11 @@ function run(fixture, panSource, opts = {}) {
     impacts: pts.length,
     bearing_spread_deg: pts.length ? +(Math.max(...pts.map(p=>p.rel)) - Math.min(...pts.map(p=>p.rel))).toFixed(1) : 0,
     pan_distinct: new Set(pts.map(p=>p.pan.toFixed(4))).size,
+    distance_m_min: pts.length ? +Math.min(...pts.map(p=>p.dist)).toFixed(4) : null,
     distance_m_max: pts.length ? +Math.max(...pts.map(p=>p.dist)).toFixed(4) : null,
     r: r === null ? null : +r.toFixed(4),
-    M6_PASSES: r !== null && r >= 0.8 && pts.length >= 20 };
+    M6_PASSES: r !== null && r >= 0.8 && pts.length >= 20
+      && pts.every((p) => p.dist > 0) };
 }
 
 const rows = [];
@@ -101,7 +102,7 @@ const rs = legacy.filter(r => r.r !== null).map(r => r.r);
 const out = {
   generated: new Date().toISOString(),
   question: 'Is RI-AUD01 M6 PASS a property of the panner or of the fixture?',
-  m6_bar: { r_min: 0.8, events_min: 20 },
+  m6_bar: { r_min: 0.8, events_min: 20, every_noncontact_distance_m: '>0' },
   rows,
   legacy_r_range: rs.length ? [Math.min(...rs), Math.max(...rs)] : null,
   legacy_fixtures_on_which_the_BROKEN_rule_PASSES_M6: legacyPass.map(r => r.fixture),
@@ -110,7 +111,13 @@ const out = {
     ? 'M6 as specified (Pearson r of pan against bearing) does NOT discriminate the two rules. The invariant that does is distance_m: under the legacy rule every player-landed blow is 0.0000 m from the listener on every fixture.'
     : 'LEGACY_NEVER_PASSES — no fixture found on which the broken rule passes M6.',
 };
-if (OUT) { fs.mkdirSync(path.dirname(OUT), { recursive: true }); fs.writeFileSync(OUT, JSON.stringify(out, null, 2)); }
 for (const r of rows) console.log(`${r.fixture.padEnd(20)} ${r.rule.padEnd(28)} n=${String(r.impacts).padStart(3)} spread=${String(r.bearing_spread_deg).padStart(5)}deg dist_max=${r.distance_m_max} r=${r.r} ${r.M6_PASSES ? 'M6 PASSES' : 'M6 fails'}`);
-console.log('\nlegacy r range:', out.legacy_r_range, '  broken rule passes M6 on:', out.legacy_fixtures_on_which_the_BROKEN_rule_PASSES_M6);
-process.exit(legacyPass.length ? 3 : 0);
+const shippedDiscriminating = rows.filter((r) => r.rule.startsWith('SHIPPED')
+  && r.impacts >= 20 && r.bearing_spread_deg >= 70 && r.r !== null);
+const shippedPass = shippedDiscriminating.filter((r) => r.M6_PASSES);
+out.gate = { shipped_discriminating: shippedDiscriminating.length, shipped_pass: shippedPass.length,
+  legacy_pass: legacyPass.length, LEGACY_NEVER_PASSES: legacyPass.length === 0 };
+if (OUT) { fs.mkdirSync(path.dirname(OUT), { recursive: true }); fs.writeFileSync(OUT, JSON.stringify(out, null, 2)); }
+console.log('\nlegacy r range:', out.legacy_r_range, '  broken rule passes full M6 on:', out.legacy_fixtures_on_which_the_BROKEN_rule_PASSES_M6);
+console.log(`gate: shipped ${shippedPass.length}/${shippedDiscriminating.length}, legacy ${legacyPass.length}/5 — ${legacyPass.length ? 'FAIL' : 'LEGACY_NEVER_PASSES'}`);
+process.exit(legacyPass.length || shippedPass.length !== shippedDiscriminating.length || shippedPass.length < 2 ? 3 : 0);

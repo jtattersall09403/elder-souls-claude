@@ -233,10 +233,19 @@ export function buildSwing(p, opts) {
   // between it and round 3's reverted `calibrateBladePitch`, which was a per-clip SOLVE bolted
   // on outside and cost 40.4% arc nonconformance fighting the gain solver
   // (`reports/W1-10-ROUND3.md` §4). There is no second solver here.
-  const ARM_LINE = [-46, -128, -104, -96, -86, -72];
+  // A near-vertical/no-sweep action holds its arm line through the live window. Previously the
+  // elbow and shoulder performed a full extension even when arc_deg was zero, creating lateral
+  // bearing travel that no yaw gain could cancel (zero multiplied by any gain is still zero).
+  const activePoseScale = Math.min(1, Math.abs(arcDecl) / 20);
+  const ARM_LINE = [-46, -128, -104,
+    -104 + (-96 - -104) * activePoseScale,
+    -104 + (-86 - -104) * activePoseScale,
+    -104 + (-72 - -104) * activePoseScale];
   const lowerKeys = [
     [0.0, -32], [cockP, -68 + 30 * e], [1.0, -58 + 40 * e],
-    [2.0, -78 + 74 * e], [2.0 + folP, -62 + 58 * e], [3.0, -66 + 52 * e],
+    [2.0, (-58 + 40 * e) + ((-78 + 74 * e) - (-58 + 40 * e)) * activePoseScale],
+    [2.0 + folP, (-58 + 40 * e) + ((-62 + 58 * e) - (-58 + 40 * e)) * activePoseScale],
+    [3.0, (-58 + 40 * e) + ((-66 + 52 * e) - (-58 + 40 * e)) * activePoseScale],
   ];
   const upperKeys = lowerKeys.map(([ph, v], i) => [ph, r2(ARM_LINE[i] - v)]);
   tracks.upperarm_r.rx = tracks.upperarm_r.rx.map(([ph, v], i) => [ph, r2(v + upperKeys[i][1])]);
@@ -245,7 +254,11 @@ export function buildSwing(p, opts) {
   // Blade roll — a cut lands edge-on, a flat lands flat, and the two sweep different capsule
   // paths even at identical yaw.
   const tw = p.twist_deg || 0;
-  put('hand_r', 'rz', [[0.0, 4], [cockP, tw * 0.4 - 12], [1.0, tw * 0.7], [2.0, tw], [2.0 + folP, tw * 0.8 + 8], [3.0, tw * 0.2]]);
+  const twOpen = tw * 0.7;
+  put('hand_r', 'rz', [[0.0, 4], [cockP, tw * 0.4 - 12], [1.0, twOpen],
+    [2.0, twOpen + (tw - twOpen) * activePoseScale],
+    [2.0 + folP, twOpen + (tw * 0.8 + 8 - twOpen) * activePoseScale],
+    [3.0, twOpen + (tw * 0.2 - twOpen) * activePoseScale]]);
   // THE SHOULDER ROLL, AND THE BIGGEST DEFECT IN THIS FILE.
   //
   // This track used to swing a FIXED 32 + 8e degrees of `rz` across the active window for every
@@ -526,9 +539,14 @@ export function profileDistance(a, b) {
  * @param {function} makeRig () -> a fresh Rig
  * @returns {number} the gain to pass as `opts.yawGain`
  */
-export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
-  const target = Math.abs(p.arc_deg);
-  if (!(target > 0.5)) return 1;
+export function calibrateYawGain(p, frames, sockA, sockB, makeRig, targetArcDeg = p.arc_deg) {
+  const target = Math.abs(targetArcDeg);
+  // A zero/small declared arc is still a real slot contract. Returning the uncalibrated swing
+  // here made plunges, parries and guardbreaks inherit 20--70 degrees of arm-extension drift,
+  // even though the negative calibration branch below exists specifically to cancel that drift.
+  // Let the deterministic nearest-point solve handle zero as an (occasionally unreachable)
+  // boundary just as it handles every other declared arc.
+  if (!Number.isFinite(target)) return 1;
   const rig = makeRig();
   //   k  > 0   the arc chain drives the blade the way the clip declares
   //   k <= 1   the shoulder roll is damped with it, which is what reaches the small arcs
@@ -553,20 +571,27 @@ export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
     const d = Math.abs(vals[i].v - target);
     if (d < bd) { bd = d; bi = i; }
   }
-  // Bracket: the grid point nearest the target and whichever neighbour lies on the other side.
-  let a = vals[bi], b = null;
-  for (const j of [bi - 1, bi + 1]) {
-    if (j < 0 || j > GRID) continue;
-    if ((vals[j].v - target) * (a.v - target) <= 0) { b = vals[j]; break; }
+  // Wrapped bearings and corrective limb motion can create several valid roots. Solve every
+  // bracket, then take the least-magnitude gain among equally conforming roots: it preserves the
+  // authored pose and avoids selecting a multi-revolution alias that has the same terminal arc.
+  const candidates = [vals[bi]];
+  for (let j = 0; j < GRID; j++) {
+    if ((vals[j].v - target) * (vals[j + 1].v - target) > 0) continue;
+    let lo = vals[j], hi = vals[j + 1];
+    for (let i = 0; i < 22; i++) {
+      const mk = (lo.k + hi.k) / 2;
+      const mv = measure(mk);
+      if ((mv - target) * (lo.v - target) <= 0) hi = { k: mk, v: mv }; else lo = { k: mk, v: mv };
+    }
+    candidates.push(Math.abs(lo.v - target) <= Math.abs(hi.v - target) ? lo : hi);
   }
-  if (!b) return a.k;                            // target outside the reachable range: honest ceiling
-  let lo = a, hi = b;
-  for (let i = 0; i < 22; i++) {
-    const mk = (lo.k + hi.k) / 2;
-    const mv = measure(mk);
-    if ((mv - target) * (lo.v - target) <= 0) hi = { k: mk, v: mv }; else lo = { k: mk, v: mv };
-  }
-  return (lo.k + hi.k) / 2;
+  candidates.sort((a, b) => {
+    const da = Math.abs(a.v - target), db = Math.abs(b.v - target);
+    // All roots within numerical arc tolerance are equivalent; prefer the smallest pose change.
+    if (da < 0.01 && db < 0.01) return Math.abs(a.k) - Math.abs(b.k);
+    return da - db;
+  });
+  return candidates[0].k;
 }
 
 /**
@@ -594,11 +619,15 @@ export function measureActiveArc(p, gain, frames, sockA, sockB, rig, ClipCtor, a
       let d = b - prev;
       while (d > Math.PI) d -= 2 * Math.PI;
       while (d < -Math.PI) d += 2 * Math.PI;
-      travel += Math.abs(d);
+      // arc_sweep is the directed start-to-end sweep, not path length. Vertical attacks can
+      // wobble a few degrees around their line as the elbow extends; summing |d| counted that
+      // harmless counter-motion as a 40--70 degree "arc" and made a declared zero arc
+      // mathematically unreachable. Preserve wrap-safe signed travel, then compare magnitude.
+      travel += d;
     }
     prev = b;
   }
-  return (travel * 180) / Math.PI;
+  return Math.abs((travel * 180) / Math.PI);
 }
 
 let _Clip = null;

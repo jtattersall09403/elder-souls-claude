@@ -40,6 +40,11 @@ const RACE_TINT = {
   redguard: [0x8a6547, 0x3c4a4e],
 };
 
+const IMPACT_DECAL_COLOUR = {
+  blood_spray: 0x54120f, chip: 0x6e6556, spark_dust: 0x9b7b45,
+  splinter: 0x5b351d, splash: 0x356878, sap: 0x513b18,
+};
+
 export class Renderer {
   constructor(canvas, seed) {
     this.canvas = canvas;
@@ -94,6 +99,15 @@ export class Renderer {
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
     this.propMeshes = new Map();
+    // RI-WPN05 M7: combat decals are a rendered consumer of the resolved IMPACT, not merely a
+    // string on an event. Each victim/frame identity is consumed once even when render() runs
+    // repeatedly between fixed steps; a simulation rewind clears the identities and decals.
+    this.combatDecalGroup = new THREE.Group();
+    this.combatDecalGroup.name = 'combat-impact-decals';
+    this.scene.add(this.combatDecalGroup);
+    this.combatDecalSeen = new Set();
+    this.combatDecalCount = 0;
+    this.combatDecalLastFrame = -1;
     // The dialogue surface. Drawn INTO this canvas, not into the DOM — see render/ui.js.
     this.ui = new UILayer(canvas.width, canvas.height);
     // W1-21. The HUD and the menus, on a SECOND offscreen 2D canvas composited as a second
@@ -162,6 +176,10 @@ export class Renderer {
     this.terrain = built.terrain;
     this.playerMesh = built.player;
     this.mats = built.mats;
+    this.scene.add(this.combatDecalGroup);
+    this.combatDecalSeen.clear();
+    this.combatDecalCount = 0;
+    this.combatDecalLastFrame = -1;
     this.sky = new Sky(this.scene);
     this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
     this.npcMeshes.clear();
@@ -655,6 +673,7 @@ export class Renderer {
     this.syncNPCs(sim);
     this.syncProps(sim);
     this.syncDeathMarkers(sim, this.hearths);
+    this._syncCombatDecals(sim);
 
     this.camera.position.set(c.pos[0], c.pos[1], c.pos[2]);
     this._look.set(c.pivot[0], c.pivot[1], c.pivot[2]);
@@ -744,8 +763,39 @@ export class Renderer {
       programs: (this.three.info.programs || []).length,
       // RI-MAG05 §B2's budget quantities, reported next to the frame they belong to.
       vfx: this.vfx ? { ...this.vfx.stats } : { particles: 0, systems: 0, decals: 0, meshes: 0, particleDrawCalls: 0 },
+      combatDecals: this.combatDecalCount,
     };
     return true;
+  }
+
+  _syncCombatDecals(sim) {
+    if (sim.frame < this.combatDecalLastFrame) {
+      this.combatDecalSeen.clear();
+      this.combatDecalCount = 0;
+      while (this.combatDecalGroup.children.length) {
+        const m = this.combatDecalGroup.children.pop();
+        m.geometry.dispose(); m.material.dispose();
+      }
+    }
+    this.combatDecalLastFrame = sim.frame;
+    const bodies = sim._combat && sim._combat.bodies ? sim._combat.bodies : [];
+    for (const b of bodies) {
+      const imp = b.lastImpactTaken;
+      const f = b.lastImpactTakenF;
+      if (!imp || !Number.isInteger(f) || !imp.decal) continue;
+      const key = `${b.id}:${f}`;
+      if (this.combatDecalSeen.has(key)) continue;
+      this.combatDecalSeen.add(key);
+      const geo = new THREE.CircleGeometry(0.16, 9);
+      const mat = new THREE.MeshBasicMaterial({ color: IMPACT_DECAL_COLOUR[imp.decal] || 0x54120f,
+        transparent: true, opacity: 0.72, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1 });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.name = `combat-impact-decal:${key}`;
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.position.set(b.pos[0], b.pos[1] + 0.012, b.pos[2]);
+      this.combatDecalGroup.add(mesh);
+      this.combatDecalCount++;
+    }
   }
 
   /**
