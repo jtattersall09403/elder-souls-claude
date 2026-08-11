@@ -260,7 +260,9 @@ export function buildSave(sim, build) {
       props: sim.props.map((o) => ({
         eid: o.eid, name: o.name, item: o.item, pos: vec(o.pos), yaw_deg: r6(o.yaw),
         shape: o.shape, material: o.material, takeable: !!o.takeable, taken: !!o.taken,
-        reach_m: r6(o.reach_m),
+        reach_m: r6(o.reach_m), readable: o.readable || null,
+        readable_book: o.readable_book || null, site_mark: o.site_mark || null,
+        property_instance: o.property_instance || null,
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
       // ENTITY RECORD — the field set is enumerated in game/data/save-manifest.json under the
       // World group (`entity_record_fields`), and `getDurableFieldCensus()` checks the LIVE
@@ -774,7 +776,9 @@ export function applySave(sim, blob, moves, statFor, hooks) {
     sim.props.push({
       eid: o.eid, name: o.name, item: o.item, pos: [...o.pos], yaw: o.yaw_deg,
       shape: o.shape, material: o.material, takeable: o.takeable, taken: o.taken,
-      reach_m: o.reach_m, readable: null,
+      reach_m: o.reach_m, readable: o.readable || null,
+      readable_book: o.readable_book || null, site_mark: o.site_mark || null,
+      property_instance: o.property_instance || null,
     });
   }
 
