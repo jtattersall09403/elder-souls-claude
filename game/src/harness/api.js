@@ -1276,6 +1276,9 @@ export function installHarness(engine, bootPromise) {
     spawnEncounter(id, x, z, opts) { return engine.spawnEncounter(id, Number(x), Number(z), opts || {}); },
     /** AR-3. What this encounter is doing, and what it would do to a different race. */
     getEncounterState(id) { return engine.getEncounterState(id); },
+    /** RI-CMP01 fenced ablation: disables the named production read, never a target write. */
+    setCrossingControl(cell, enabled) { return engine.setCrossingControl(cell, enabled); },
+    getCrossingControl(cell) { return engine.getCrossingControl(cell); },
 
     /**
      * W1-POPULATION. What the hostile population is doing right now: how many posts exist, how
