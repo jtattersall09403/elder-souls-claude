@@ -8856,11 +8856,20 @@ export class Engine {
   walkPath(points, opts = {}) {
     const o = Object.assign({ speed: 'walk', maxFrames: 400000, lookahead_m: 4.5, arrive_m: 3.0, stuckAbort: 900, miredAbort: 36000 }, opts);
     if (!this.field) throw new Error('walkPath: no province is loaded');
-    if (!Array.isArray(points) || points.length < 2) throw new Error('walkPath(points): expected at least two [x, z] points');
+    if (!Array.isArray(points) || points.length < (o.fromCurrent ? 1 : 2)) throw new Error('walkPath(points): expected a destination, or at least two [x, z] points');
     const mag = o.speed === 'jog' ? 1.0 : 0.55 - 1e-9;
     const p = this.sim.player;
-    this.teleport(points[0][0], points[0][1]);
-    p.pos[1] = this.field.heightAt(points[0][0], points[0][1]);
+    // Production quest traces begin wherever prior conversation, interior exit, or world action
+    // left the body. They must not use walkPath's historical probe-only placement at points[0].
+    // In that mode the current pose becomes the first path point and every metre is still driven
+    // through the fixed-step input queue below.
+    const route = o.fromCurrent
+      ? [[p.pos[0], p.pos[2]], ...points.map((q) => [Number(q[0]), Number(q[1])])]
+      : points;
+    if (!o.fromCurrent) {
+      this.teleport(route[0][0], route[0][1]);
+      p.pos[1] = this.field.heightAt(route[0][0], route[0][1]);
+    }
     const st = { seg: 0 };
     let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
     let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
@@ -8875,7 +8884,7 @@ export class Engine {
     const visited = new Set([this.field.regionAt(p.pos[0], p.pos[2]).id]);
     const deepest = { depth_m: 0, at: null };
     while (frames < o.maxFrames) {
-      const pur = this._pursue(points, st, o.lookahead_m, o.arrive_m);
+      const pur = this._pursue(route, st, o.lookahead_m, o.arrive_m);
       // WHAT "IT GOT BACK ON" MEANS, COUNTED. Off is more than the carriageway's half-width from
       // the centreline; a regain is a body that was off and is now back inside it. Both are
       // reported, because "the body recovered" is a claim and a claim needs a count.
@@ -8895,7 +8904,7 @@ export class Engine {
       // entered, every leg aborting on a 900-frame stuck run in shin-deep SUCK. A player presses
       // the button. The probe must too, or it cannot succeed, which is the mirror of the failure
       // mode AGENT-PROTOCOL names — a probe that cannot fail.
-      const script = [{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
+      const script = [{ f: 0, move: [-Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
       if (this.traversal && this.traversal.mired) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
       this.input.queueInputs(script, this.sim.frame);
       const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
@@ -8930,7 +8939,7 @@ export class Engine {
       if (dep > deepest.depth_m) { deepest.depth_m = +dep.toFixed(3); deepest.at = [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)]; }
     }
     const end = [p.pos[0], p.pos[2]];
-    const target = points[points.length - 1];
+    const target = route[route.length - 1];
     return {
       arrived: !aborted && Math.hypot(end[0] - target[0], end[1] - target[1]) <= Math.max(o.arrive_m, o.lookahead_m + 1),
       aborted, frames, minutes: +(frames / 3600).toFixed(3), path_m: +dist.toFixed(1),
@@ -9003,7 +9012,7 @@ export class Engine {
       const b = Math.atan2(dx, dz);
       const cy = this.sim.camera.yaw * Math.PI / 180;
       this.input.reset(this.sim.frame);
-      this.input.queueInputs([{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
+      this.input.queueInputs([{ f: 0, move: [-Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }], this.sim.frame);
       const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
       this.loop.stepOnce();
       this._afterStep();

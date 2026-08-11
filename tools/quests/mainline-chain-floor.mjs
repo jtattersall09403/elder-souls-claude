@@ -90,6 +90,8 @@ for (const f of fs.readdirSync(QDIR).sort()) {
   for (const q of doc.quests || []) defs[q.id] = q;
 }
 const mainline = JSON.parse(fs.readFileSync(path.join(QDIR, 'mainline.json'), 'utf8'));
+const roads = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/world/roads.json'), 'utf8'));
+const travelStations = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/world/travel/stations.json'), 'utf8')).stations;
 
 
 const npcActions = {};
@@ -173,20 +175,45 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
 
     const walkTo = (x, z, reach = 1.0) => {
-      let frames = 0, last = Infinity, stuck = 0;
-      while (frames < 1400) {
-        const here = H.whereAmI().pos, dx = x - here[0], dz = z - here[2], d = Math.hypot(dx, dz);
-        if (d <= reach) return { ok: true, frames, left_m: d };
-        if (d >= last - 0.02) stuck += 30; else stuck = 0; if (stuck > 300) return { ok: false, frames, left_m: d, stuck: true }; last = d;
-        H.queueInputs([{ f: 0, move: [dx / d * 0.55, dz / d * 0.55] }, { f: 30, move: [0, 0] }]); H.stepFrames(31); frames += 31;
+      const started = H.whereAmI().pos.slice();
+      // Follow the authored road graph between the nearest settlements. The short joins at
+      // each end are walked too; no pose is written and walkPath reports any discontinuity.
+      const here = started;
+      const nearest = (px, pz) => [...travelStations].sort((a,b) => Math.hypot(a.x-px,a.z-pz)-Math.hypot(b.x-px,b.z-pz))[0];
+      const from = nearest(here[0], here[2]), to = nearest(x, z);
+      const dist = Object.fromEntries(travelStations.map(q => [q.id, Infinity])); dist[from.id]=0;
+      const prev = {}, unused = new Set(travelStations.map(q => q.id));
+      while (unused.size) {
+        const u=[...unused].sort((a,b)=>dist[a]-dist[b])[0]; unused.delete(u); if(u===to.id || !Number.isFinite(dist[u])) break;
+        for (const leg of roads.legs.filter(l=>l.from.toLowerCase()===u||l.to.toLowerCase()===u)) { const v=(leg.from.toLowerCase()===u?leg.to:leg.from).toLowerCase(), nd=dist[u]+leg.built_path_m; if(nd<dist[v]){dist[v]=nd;prev[v]={u,leg};} }
       }
-      const here = H.whereAmI().pos; return { ok: false, frames, left_m: Math.hypot(x-here[0],z-here[2]) };
+      const hops=[]; let cur=to.id; while(cur!==from.id && prev[cur]) { hops.unshift({from:prev[cur].u,to:cur,leg:prev[cur].leg});cur=prev[cur].u; }
+      const route=[];
+      for (const h of hops) { const pts=h.leg.from.toLowerCase()===h.from?h.leg.points:[...h.leg.points].reverse(); for(const q of pts) if(!route.length||q[0]!==route.at(-1)[0]||q[1]!==route.at(-1)[1]) route.push([q[0],q[1]]); }
+      route.push([x,z]);
+      const walked = H.walkPath(route, {
+        fromCurrent: true,
+        speed: 'jog',
+        maxFrames: 5000,
+        arrive_m: reach,
+        stuckAbort: 1800,
+        miredAbort: 36000,
+      });
+      return {
+        ok: walked.arrived && walked.arrival_is_clean,
+        frames: walked.frames,
+        left_m: walked.offset_m,
+        started,
+        ended: H.whereAmI().pos.slice(),
+        production_input: true,
+        walk: walked,
+      };
     };
 
     const sampleStanding = () => {
@@ -299,7 +326,8 @@ try {
         // same interact input a player presses after walking to the spawned prop.
         out.world_actions = out.world_actions || [];
         const preferredId = prefer[name] && prefer[name][step.id];
-        const preferredResolution = step.resolutions.find((x) => x.id === preferredId) || step.resolutions[0];
+        const preferredResolution = step.resolutions.find((x) => x.id === preferredId)
+          || [...step.resolutions].sort((a, b) => a.requires_knowing.length - b.requires_knowing.length)[0];
         const neededReveals = new Set((preferredResolution && preferredResolution.requires_knowing) || []);
         for (const r of step.reveals.filter((x) => neededReveals.has(x.id))) {
           const a = { reveal: r.id, channel: r.channel, source: r.source, ok: false };
@@ -392,7 +420,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------
