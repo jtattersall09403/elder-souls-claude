@@ -1,9 +1,9 @@
 {
   "task": "W1-22",
   "method": "S41 completion-builder capture preparation",
-  "taken_at": "2026-08-10T12:26:04.872Z",
+  "taken_at": "2026-08-11T07:40:57.434Z",
   "git": {
-    "commit": "b5850ff0e6cff4bfe26cd269fa515159e32915e4",
+    "commit": "11ae120b81595c00dc7d3f56d520aab89efe8543",
     "dirty": true
   },
   "generation_command": "node tools/audio/w1-22-r4-s41.mjs",
@@ -24,7 +24,7 @@
     "alternate_arms": "diagnostic only"
   },
   "beds_digest": {
-    "sha256": "c83dee04560bde351bfd7c614343c62bd651fa1100b29e75a59ed76a58fe449f",
+    "sha256": "ea3c4f55eec0cf761cb6b30887e0164f83177f3045071289d2ad0c44976466eb",
     "files": 28
   },
   "centroids": {
@@ -171,11 +171,19 @@
           "id": "stilt_creak",
           "at_s": 14.96,
           "pan": -0.01
+        },
+        {
+          "layer": "emitter",
+          "id": "eastern_rootlands_landmark_14",
+          "at_s": 10.43,
+          "pan": -0.642,
+          "gain": 0.222,
+          "distance_m": 108
         }
       ],
-      "sha256": "3bb590264df1df298ba550c49fa7d4b1caf53fb73a86da902bdcc760070f44f8",
-      "repeat_sha256": "3bb590264df1df298ba550c49fa7d4b1caf53fb73a86da902bdcc760070f44f8",
-      "seed_1338_sha256": "2bd812480e13d300c3af61aa80e7966ed226af5b8262743b4be506cc0e33bb5e",
+      "sha256": "964345d3669561777068c8e0a50db700701cedfb2dc37ed3e2f9f4c7de204028",
+      "repeat_sha256": "964345d3669561777068c8e0a50db700701cedfb2dc37ed3e2f9f4c7de204028",
+      "seed_1338_sha256": "4c023698c502a59e437fa1f1dad4e08e1f88f4eba686d91d269a3b249821f905",
       "fixed_seed_identical": true,
       "changed_seed_changes_pcm": true,
       "peak": 0.272156,
@@ -306,11 +314,19 @@
           "id": "thorn_clatter",
           "at_s": 9.62,
           "pan": 0.07
+        },
+        {
+          "layer": "emitter",
+          "id": "thornmarsh_landmark_26",
+          "at_s": 0,
+          "pan": 0.577,
+          "gain": 0.154,
+          "distance_m": 156
         }
       ],
-      "sha256": "a88f220cb926fd9c3aafb575e1b7a978067043f33991191f3a051b3a46e68d81",
-      "repeat_sha256": "a88f220cb926fd9c3aafb575e1b7a978067043f33991191f3a051b3a46e68d81",
-      "seed_1338_sha256": "e1ea73913d682ac95f32dbba362b4ce8ac76ee9d85d8de192772451e2589d31c",
+      "sha256": "1e8cb49c141b3fba1ba099a1fbf0c0e38e306563122d7d1517872fc55e3d8442",
+      "repeat_sha256": "1e8cb49c141b3fba1ba099a1fbf0c0e38e306563122d7d1517872fc55e3d8442",
+      "seed_1338_sha256": "ff524d8c5c34d07cd038d4dbc67b746778a3e1a42b56b62e2bd058a52d6bcae8",
       "fixed_seed_identical": true,
       "changed_seed_changes_pcm": true,
       "peak": 0.32074,
@@ -358,11 +374,19 @@
           "pan": 0,
           "gain": 1,
           "distance_m": 0
+        },
+        {
+          "layer": "emitter",
+          "id": "western_rootlands_landmark_25",
+          "at_s": 5.58,
+          "pan": 0.172,
+          "gain": 0.116,
+          "distance_m": 207
         }
       ],
-      "sha256": "109b90d2efbc69eb9ae5ce63beca010661f134a062f52339be057f759c096c28",
-      "repeat_sha256": "109b90d2efbc69eb9ae5ce63beca010661f134a062f52339be057f759c096c28",
-      "seed_1338_sha256": "319eca5fc3e733be3da60b92ce51e919b2e163612c9eea1c4c55a3a8945db76a",
+      "sha256": "d852746b0fef040a67ac7d20ae17aa2421829324e21c61c7d0f46965d3e4e962",
+      "repeat_sha256": "d852746b0fef040a67ac7d20ae17aa2421829324e21c61c7d0f46965d3e4e962",
+      "seed_1338_sha256": "f98e79b86e27b4b8a0aa6ac017baadcdb8671fb0cdc0d98a22e969465a486992",
       "fixed_seed_identical": true,
       "changed_seed_changes_pcm": true,
       "peak": 0.323914,
@@ -474,6 +498,56 @@
       "identical": true,
       "peak": 0.300659,
       "rms_dbfs": -22.068
+    }
+  },
+  "emitter_pcm_coupling": {
+    "blackwood": {
+      "emitter": "blackwood_landmark_05",
+      "listener": [
+        262.5,
+        3412.5,
+        0
+      ],
+      "seconds": 2,
+      "full_sha256": "a7ea3756b16fac38216c0af4b7ce3a9d3aefac551c5992fe9290e0fb3d22ce05",
+      "delete_consumer_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "no_listener_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "no_listener_delete_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
+    },
+    "clay-moor": {
+      "emitter": "clay_moor_landmark_14",
+      "listener": [
+        3912.5,
+        1462.5,
+        0
+      ],
+      "seconds": 9.732,
+      "full_sha256": "28d2033c227b0f8be484192e28f563c0e2378dbc90248abe7c576c2c336e9f8f",
+      "delete_consumer_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "no_listener_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "no_listener_delete_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
+    },
+    "marauders-coast": {
+      "emitter": "marauders_coast_landmark_08",
+      "listener": [
+        262.5,
+        3462.5,
+        0
+      ],
+      "seconds": 7.314,
+      "full_sha256": "42dd2b106c1edd8455edce31423dbbf5608d1b548ebbb4a15896d3db14f2cc7d",
+      "delete_consumer_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "no_listener_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "no_listener_delete_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
     }
   },
   "consumer": {
