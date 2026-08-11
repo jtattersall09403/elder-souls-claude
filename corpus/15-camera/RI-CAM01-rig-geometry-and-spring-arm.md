@@ -48,7 +48,7 @@ Character reference height 1.80 m, eye node 1.66 m, chest node 1.38 m, feet at y
 | Arm length, free camera (unlocked) | **4.10 m** | |
 | Arm length, locked | **3.60 m** at target distance ≤ 4 m, ramping **linearly** to **5.20 m** at 14 m **[CMB06]** | |
 | Arm length, absolute max (framing-driven, RI-CAM03) | **7.50 m** | only RI-CAM03's containment constraint may request beyond the locked ramp |
-| Arm length, absolute min (collision) | **0.90 m** **[CMB06]** | |
+| Arm length, normal collision minimum | **0.90 m** **[CMB06] [S49]** | The penetration guard may cross this floor only under §C's proved emergency condition. |
 | Pitch-dependent arm scale | `1.00` at pitch 0°, `0.82` at pitch −55°, `0.94` at pitch +38°; linear in pitch on each side | stops the camera burying itself in the floor when the player looks down |
 | Collision probe | **sphere cast, radius 0.28 m** **[CMB06]** | from pivot toward the desired camera point |
 | Vertical FOV | **50.0°**, constant, in every state, forever | see RI-CAM06 §D — FOV variance across a whole run is **zero** |
@@ -80,8 +80,10 @@ Per frame, in this order:
 4. safe_len     := hit ? (hit.dist - 0.02) : desired_len
 5. safe_len     := clamp(safe_len, 0.90, 7.50)
 6. cur_len      := rate_limit(cur_len -> safe_len)      # §C table
-7. penetration guard: if the sphere at cur_len still overlaps solid geometry,
-                      set cur_len := overlap-free length IMMEDIATELY, ignoring the rate limit
+7. penetration guard: if the origin or a near-plane corner at cur_len is contained,
+                      search the unchanged boom ray toward the pivot and set cur_len to
+                      the greatest overlap-free length IMMEDIATELY, ignoring the rate limit
+                      and, only when no overlap-free length >= 0.90 exists, the normal floor
 8. camera_pos   := pivot + (-forward * cur_len) + shoulder_offset
 ```
 
@@ -89,6 +91,7 @@ Per frame, in this order:
 |---|---|---|
 | **Pull-in** max rate | **40.0 m/s** = **0.667 m/frame** | effectively instant at human speeds, but bounded so a 1-frame sphere-cast spike cannot teleport the camera |
 | **Penetration guard** | **unbounded**, same frame | step 7. The rate limit is a smoothing device, never a correctness device. If a rate-limited camera would be inside geometry, correctness wins. |
+| **Emergency below-floor authority [S49]** | **containment-only; greatest clear length; same frame** | `cur_len < 0.90` is legal only if an independent origin-plus-four-near-plane-corners search proves that every candidate on the unchanged boom ray in `[0.90, desired_len]` is contained. Choose the greatest clear non-negative length below 0.90, emit `camera.arm_penetration_guard == true` and `camera.arm_floor_emergency == true`, and return to 0.90 at the ordinary push-out law as soon as a clear ≥0.90 candidate exists. No look input, mode, yaw, pitch, FOV, denominator or `clip_through` exception is created. If no non-negative point on the ray is clear, the frame still fails `clip_through`; the guard may not cross the pivot, move laterally or invent a second camera mode. |
 | **Push-out** dwell | **6 frames** of continuous "no obstruction" before push-out may begin | stops the arm pumping while brushing along a pillar row |
 | **Push-out** max rate | **3.0 m/s** = **0.050 m/frame** | the asymmetry: ~13× slower out than in |
 | Sphere-cast origin | the pivot, **not** the current camera position | casting from the camera lets it get stranded outside a wall it already passed |
@@ -97,7 +100,7 @@ Per frame, in this order:
 
 **Character fade.** As the arm collapses, the character occludes the view. When
 `cur_len < 1.30 m`, the player mesh (and attached equipment) dither-fades linearly to
-**0.00** opacity at `cur_len == 0.90 m`. Fade is on the material, not a mesh toggle: no
+**0.00** opacity at `cur_len ≤ 0.90 m`. Fade is on the material, not a mesh toggle: no
 popping, and the character's shadow is **retained** at full opacity throughout (Souls keeps
 the shadow; it is how you still read your own animation with your body faded).
 
@@ -110,9 +113,10 @@ order and exhaustively:
    find a gap, does not "recover" to a clear angle. Auto-yaw-on-collision is the
    Elden-Ring-corner failure and is forbidden here; the player, not the rig, chooses yaw.
 4. The pitch does not change.
-5. The FOV does not change.
-6. `camera.clip_through` stays `false` on every frame.
-7. On stepping away, push-out waits the 6-frame dwell, then returns at 0.050 m/frame.
+5. If the origin or near plane cannot clear at 0.90 m, the §C penetration guard uses the greatest clear below-floor length and marks the frame as an emergency; it does not orbit or slide.
+6. The FOV does not change.
+7. `camera.clip_through` stays `false` on every frame.
+8. On stepping away, push-out waits the 6-frame dwell, then returns at 0.050 m/frame.
 
 ### C.1 Player occlusion by world geometry (BAR-CRITIQUE-01 Rank 6)
 
@@ -187,7 +191,7 @@ cluster — the geometry that is 70% of this world), and `cam-walk-boardwalk` (a
 boardwalk **with railings**, the thin-geometry case a sphere cast most often misses).
 - Emit `arm_len_m` per frame. Report the full histogram at 0.10 m bins plus
   `p05 / p25 / p50 / p95 / min / max`.
-- **FAIL** if `min < 0.90 m` (the floor is not being honoured).
+- **FAIL** if `min < 0.90 m` on any frame not marked `arm_floor_emergency`, or if any marked frame fails §C's independent necessity/maximality proof. Report the ordinary and emergency minima separately.
 - **FAIL** if `max > desired_len + 0.02` on any frame (the arm is being pushed *out* past
   its own target — a sign someone is easing toward a stale desired length).
 - Report `fraction(arm_len < 1.60 m)`. RI-CAM05 §D sets the pass band for interiors; this
@@ -219,6 +223,7 @@ buffer every frame (or every 4th frame, recording the sampling rate in `method_d
   between the last frame with `arm_hit == true` and the first frame with `d > 0`).
 - **FAIL** if the measured asymmetry ratio `max(−d)/max(+d)` < 8.0. A symmetric spring is
   the single most common wrong answer.
+- On every below-floor frame, independently search the unchanged boom ray. **FAIL** unless no candidate in `[0.90, desired_len]` is clear, the chosen `cur_len` is the greatest clear non-negative candidate, both emergency flags are true, and `clip_through` is false.
 
 **M5 — Back-into-wall behaviour.** Place the character 3.0 m from a flat wall, camera yaw
 set so the wall is directly behind the camera. Walk backwards into it for 120 frames, hold
@@ -228,6 +233,7 @@ set so the wall is directly behind the camera. Walk backwards into it for 120 fr
 - **FAIL** if `|Δcamera.pitch_deg|` summed exceeds 0.5°.
 - **FAIL** if `fov_deg` varies at all.
 - **FAIL** if `clip_through` is ever true.
+- **FAIL** if a below-floor frame lacks `arm_penetration_guard` + `arm_floor_emergency`, if any ≥0.90 m candidate was independently clear, or if the chosen length is not the greatest clear non-negative candidate on the unchanged ray.
 - **FAIL** if the character's material opacity is not < 0.05 on the frames where
   `arm_len ≤ 0.91` (check via `screenshot()` — the player silhouette must be absent from the
   ID buffer) **or** if the character's cast shadow disappears with it.
@@ -263,6 +269,7 @@ Score = sum of passed weights, 0–100.
 - **< 70** — **we lose.**
 - **Automatic fail regardless of score:**
   - any frame with `clip_through == true`;
+  - any `arm_len < 0.90 m` frame that fails S49's independently re-derived necessity, maximality, telemetry or unchanged-pose conditions;
   - any run of `player_occluded` longer than 6 consecutive frames (§C.1);
   - the camera yaw or pitch changing without look input as a *result of collision*
     (auto-wall-recovery / auto-corner-escape);
