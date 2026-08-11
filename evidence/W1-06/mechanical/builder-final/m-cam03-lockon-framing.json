@@ -1,0 +1,603 @@
+{
+  "schema": "elder-souls/cam-probe@1",
+  "unit": "f@60",
+  "piece": "W1-06",
+  "generated": "2026-08-11T18:16:22.440Z",
+  "probes": {
+    "lock": {
+      "report": [
+        "duel-infantry (h=1.9): T_a=1 P_a=1 T_h=1 safe=0.0117 band=1 yaw_p100=5.1824",
+        "duel-in-corridor (h=1.9): T_a=0.3975 P_a=1 T_h=0 safe=0 band=0 yaw_p100=7",
+        "duel-on-stair (h=1.9): T_a=0.86 P_a=1 T_h=0.7008 safe=0.0925 band=0.5658 yaw_p100=7",
+        "adversarial-h1p9 (h=1.9): T_a=0.9408 P_a=1 T_h=0.9575 safe=0.7858 band=0.7692 yaw_p100=7",
+        "adversarial-h8p0 (h=8): T_a=0.7425 P_a=1 T_h=0.4942 safe=0.5225 band=0.0358 yaw_p100=7",
+        "adversarial-h4p5 (h=4.5): T_a=0.8258 P_a=1 T_h=0.6725 safe=0.685 band=0.1492 yaw_p100=7",
+        "duel-rat (h=0.6): T_a=0.6592 P_a=1 T_h=0.85 safe=0.5083 band=0.245 yaw_p100=7"
+      ],
+      "checks": {
+        "onscreen_T_a_ge_0p995": {
+          "pass": false,
+          "note": "worst = 0.3975 (pass ≥0.995, FAIL <0.980)"
+        },
+        "onscreen_P_a_ge_0p980": {
+          "pass": true,
+          "note": "worst = 1 (pass ≥0.980, FAIL <0.950 — the camera.lookAt(target) signature)"
+        },
+        "onscreen_T_h_banded": {
+          "pass": false,
+          "note": "small-target worst 0 (≥0.970); large-target 0.4942 (≥0.880)"
+        },
+        "T_a_safe_rect_ge_0p960": {
+          "pass": false,
+          "note": "worst = 0"
+        },
+        "T_a_band_ge_0p900": {
+          "pass": false,
+          "note": "worst = 0 (CMB06 38–62% band)"
+        },
+        "yaw_rate_le_7_per_frame": {
+          "pass": true,
+          "note": "p100 = 7 °/frame (CMB06 clamp 7.000)"
+        },
+        "arm_le_7p50": {
+          "pass": true,
+          "note": "max arm = 5.3214 m"
+        },
+        "arm_rates_0p150_0p080": {
+          "pass": false,
+          "note": "max +1.683 / −3.2364 m/frame"
+        },
+        "no_clip_under_lock": {
+          "pass": true,
+          "note": "Σ clip_through = 0 (RI-CAM01 M3 applies inside lock too)"
+        },
+        "no_cut_gt_20deg": {
+          "pass": true,
+          "note": "max single-frame orientation change = 7°"
+        }
+      },
+      "scenarios": {
+        "duel-infantry": {
+          "frames_locked": 1200,
+          "target_h_m": 1.9,
+          "onscreen_T_a": 1,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 1,
+          "T_a_in_safe_rect": 0.0117,
+          "T_a_in_38_62_band": 1,
+          "p100_yaw_rate": 5.1824,
+          "max_arm": 3.9564,
+          "max_arm_extend": 0.1415,
+          "max_arm_retract": 0.0837,
+          "clip_frames": 0,
+          "max_cut_deg": 5.1824
+        },
+        "duel-in-corridor": {
+          "frames_locked": 1200,
+          "target_h_m": 1.9,
+          "onscreen_T_a": 0.3975,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0,
+          "T_a_in_safe_rect": 0,
+          "T_a_in_38_62_band": 0,
+          "p100_yaw_rate": 7,
+          "max_arm": 0.9,
+          "max_arm_extend": 0.1737,
+          "max_arm_retract": 1.879,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        },
+        "duel-on-stair": {
+          "frames_locked": 1200,
+          "target_h_m": 1.9,
+          "onscreen_T_a": 0.86,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0.7008,
+          "T_a_in_safe_rect": 0.0925,
+          "T_a_in_38_62_band": 0.5658,
+          "p100_yaw_rate": 7,
+          "max_arm": 2.9347,
+          "max_arm_extend": 0.1868,
+          "max_arm_retract": 0.4943,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        },
+        "adversarial-h1p9": {
+          "frames_locked": 1200,
+          "target_h_m": 1.9,
+          "onscreen_T_a": 0.9408,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0.9575,
+          "T_a_in_safe_rect": 0.7858,
+          "T_a_in_38_62_band": 0.7692,
+          "p100_yaw_rate": 7,
+          "max_arm": 4.801,
+          "max_arm_extend": 1.683,
+          "max_arm_retract": 1.2205,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        },
+        "adversarial-h8p0": {
+          "frames_locked": 1200,
+          "target_h_m": 8,
+          "onscreen_T_a": 0.7425,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0.4942,
+          "T_a_in_safe_rect": 0.5225,
+          "T_a_in_38_62_band": 0.0358,
+          "p100_yaw_rate": 7,
+          "max_arm": 4.1718,
+          "max_arm_extend": 1.4432,
+          "max_arm_retract": 2.2787,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        },
+        "adversarial-h4p5": {
+          "frames_locked": 1200,
+          "target_h_m": 4.5,
+          "onscreen_T_a": 0.8258,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0.6725,
+          "T_a_in_safe_rect": 0.685,
+          "T_a_in_38_62_band": 0.1492,
+          "p100_yaw_rate": 7,
+          "max_arm": 4.7699,
+          "max_arm_extend": 1.4522,
+          "max_arm_retract": 2.0335,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        },
+        "duel-rat": {
+          "frames_locked": 1200,
+          "target_h_m": 0.6,
+          "onscreen_T_a": 0.6592,
+          "onscreen_P_a": 1,
+          "onscreen_T_h": 0.85,
+          "T_a_in_safe_rect": 0.5083,
+          "T_a_in_38_62_band": 0.245,
+          "p100_yaw_rate": 7,
+          "max_arm": 5.3214,
+          "max_arm_extend": 0.1407,
+          "max_arm_retract": 3.2364,
+          "clip_frames": 0,
+          "max_cut_deg": 7
+        }
+      }
+    },
+    "pitchlaw": {
+      "report": [
+        "h=0.6: d2→-19.54° d3→-19.258° d4→-18.212° d6→-16.08° d8→-14.107° d10→-12.231° d12→-10.418° d14→-8.649°",
+        "h=1.9: d2→-14.947° d3→-15.029° d4→-14.301° d6→-12.858° d8→-11.369° d10→-9.851° d12→-8.315° d14→-6.765°",
+        "h=8: d2→32° d3→32° d4→32° d6→32° d8→32° d10→32° d12→32° d14→32°"
+      ],
+      "checks": {
+        "monotone_in_distance": {
+          "pass": false,
+          "note": "settled pitch is non-decreasing in d for every h (a flat pitch means the law is not wired)"
+        },
+        "monotone_in_height": {
+          "pass": true,
+          "note": "settled pitch is non-decreasing in h for every d (the size term is what handles the boss)"
+        },
+        "locked_pitch_band": {
+          "pass": true,
+          "note": "observed [-19.54, 32] (locked band −50 / +32)"
+        },
+        "boom_ramp_3p60_to_5p20": {
+          "pass": true,
+          "note": "arm at h=1.9: d=2→3.424 d=14→5.085 (ramp 3.60→5.20, ×pitch scale)"
+        }
+      },
+      "grid": [
+        {
+          "h": 0.6,
+          "d": 2,
+          "pitch_deg": -19.54,
+          "arm": 3.37,
+          "predicted_bias": -16,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 3,
+          "pitch_deg": -19.258,
+          "arm": 3.373,
+          "predicted_bias": -16,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 4,
+          "pitch_deg": -18.212,
+          "arm": 3.386,
+          "predicted_bias": -15.2,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 6,
+          "pitch_deg": -16.08,
+          "arm": 3.714,
+          "predicted_bias": -13.6,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 8,
+          "pitch_deg": -14.107,
+          "arm": 4.044,
+          "predicted_bias": -12,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 10,
+          "pitch_deg": -12.231,
+          "arm": 4.378,
+          "predicted_bias": -10.4,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 12,
+          "pitch_deg": -10.418,
+          "arm": 4.714,
+          "predicted_bias": -8.8,
+          "lock_h": 0.6
+        },
+        {
+          "h": 0.6,
+          "d": 14,
+          "pitch_deg": -8.649,
+          "arm": 5.053,
+          "predicted_bias": -7.2,
+          "lock_h": 0.6
+        },
+        {
+          "h": 1.9,
+          "d": 2,
+          "pitch_deg": -14.947,
+          "arm": 3.424,
+          "predicted_bias": -16,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 3,
+          "pitch_deg": -15.029,
+          "arm": 3.423,
+          "predicted_bias": -16,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 4,
+          "pitch_deg": -14.301,
+          "arm": 3.432,
+          "predicted_bias": -15.2,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 6,
+          "pitch_deg": -12.858,
+          "arm": 3.755,
+          "predicted_bias": -13.6,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 8,
+          "pitch_deg": -11.369,
+          "arm": 4.082,
+          "predicted_bias": -12,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 10,
+          "pitch_deg": -9.851,
+          "arm": 4.413,
+          "predicted_bias": -10.4,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 12,
+          "pitch_deg": -8.315,
+          "arm": 4.747,
+          "predicted_bias": -8.8,
+          "lock_h": 1.9
+        },
+        {
+          "h": 1.9,
+          "d": 14,
+          "pitch_deg": -6.765,
+          "arm": 5.085,
+          "predicted_bias": -7.2,
+          "lock_h": 1.9
+        },
+        {
+          "h": 2.6,
+          "d": 2,
+          "pitch_deg": -9.383,
+          "arm": 3.49,
+          "predicted_bias": -15.78,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 3,
+          "pitch_deg": -9.865,
+          "arm": 3.484,
+          "predicted_bias": -15.78,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 4,
+          "pitch_deg": -9.491,
+          "arm": 3.488,
+          "predicted_bias": -14.98,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 6,
+          "pitch_deg": -8.833,
+          "arm": 3.807,
+          "predicted_bias": -13.38,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 8,
+          "pitch_deg": -7.903,
+          "arm": 4.13,
+          "predicted_bias": -11.78,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 10,
+          "pitch_deg": -6.802,
+          "arm": 4.459,
+          "predicted_bias": -10.18,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 12,
+          "pitch_deg": -5.589,
+          "arm": 4.791,
+          "predicted_bias": -8.58,
+          "lock_h": 2.6
+        },
+        {
+          "h": 2.6,
+          "d": 14,
+          "pitch_deg": -4.298,
+          "arm": 5.127,
+          "predicted_bias": -6.98,
+          "lock_h": 2.6
+        },
+        {
+          "h": 4.5,
+          "d": 2,
+          "pitch_deg": 13.789,
+          "arm": 3.522,
+          "predicted_bias": -11.6,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 3,
+          "pitch_deg": 12.021,
+          "arm": 3.532,
+          "predicted_bias": -11.6,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 4,
+          "pitch_deg": 11.295,
+          "arm": 3.536,
+          "predicted_bias": -10.8,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 6,
+          "pitch_deg": 9.376,
+          "arm": 3.862,
+          "predicted_bias": -9.2,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 8,
+          "pitch_deg": 8.409,
+          "arm": 4.184,
+          "predicted_bias": -7.6,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 10,
+          "pitch_deg": 8.058,
+          "arm": 4.502,
+          "predicted_bias": -6,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 12,
+          "pitch_deg": 8.128,
+          "arm": 4.817,
+          "predicted_bias": -4.4,
+          "lock_h": 4.5
+        },
+        {
+          "h": 4.5,
+          "d": 14,
+          "pitch_deg": 8.497,
+          "arm": 5.13,
+          "predicted_bias": -2.8,
+          "lock_h": 4.5
+        },
+        {
+          "h": 8,
+          "d": 2,
+          "pitch_deg": 32,
+          "arm": 2.462,
+          "predicted_bias": -3.9,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 3,
+          "pitch_deg": 32,
+          "arm": 2.465,
+          "predicted_bias": -3.9,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 4,
+          "pitch_deg": 32,
+          "arm": 2.466,
+          "predicted_bias": -3.1,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 6,
+          "pitch_deg": 32,
+          "arm": 2.465,
+          "predicted_bias": -1.5,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 8,
+          "pitch_deg": 32,
+          "arm": 2.459,
+          "predicted_bias": 0.1,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 10,
+          "pitch_deg": 32,
+          "arm": 2.456,
+          "predicted_bias": 1.7,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 12,
+          "pitch_deg": 32,
+          "arm": 2.453,
+          "predicted_bias": 3.3,
+          "lock_h": 8
+        },
+        {
+          "h": 8,
+          "d": 14,
+          "pitch_deg": 32,
+          "arm": 2.451,
+          "predicted_bias": 4.9,
+          "lock_h": 8
+        }
+      ]
+    },
+    "latency": {
+      "report": [
+        "acquisition frames: p100=17 median=17",
+        "90° reframe frames: p100=6 median=6",
+        "break: |Δyaw| on the break frame = 0°, mean of the preceding 10 = 0.0702°",
+        "arm after break settles to 3.9123 m (free arm 4.10 × pitch scale)"
+      ],
+      "checks": {
+        "acquire_le_30": {
+          "pass": true,
+          "note": "p100 = 17 frames (bar ≤30)"
+        },
+        "reframe_le_22": {
+          "pass": true,
+          "note": "p100 = 6 frames (bar ≤22)"
+        },
+        "no_snap_on_break": {
+          "pass": true,
+          "note": "0° vs preceding mean 0.0702° + 0.5° tolerance"
+        },
+        "no_recentre_after_break": {
+          "pass": true,
+          "note": "max |Δyaw| over 120 frames after break = 0° (no orbit, no recentre, no restore-to-stored-orientation)"
+        },
+        "no_auto_reacquire": {
+          "pass": true,
+          "note": "lock_target stayed null for 120 frames after the break"
+        }
+      },
+      "latency": {
+        "acquire": [
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "reframe": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ]
+      }
+    }
+  },
+  "summary": {
+    "checks": 19,
+    "failed": 6,
+    "failures": [
+      "lock.onscreen_T_a_ge_0p995: worst = 0.3975 (pass ≥0.995, FAIL <0.980)",
+      "lock.onscreen_T_h_banded: small-target worst 0 (≥0.970); large-target 0.4942 (≥0.880)",
+      "lock.T_a_safe_rect_ge_0p960: worst = 0",
+      "lock.T_a_band_ge_0p900: worst = 0 (CMB06 38–62% band)",
+      "lock.arm_rates_0p150_0p080: max +1.683 / −3.2364 m/frame",
+      "pitchlaw.monotone_in_distance: settled pitch is non-decreasing in d for every h (a flat pitch means the law is not wired)"
+    ]
+  }
+}

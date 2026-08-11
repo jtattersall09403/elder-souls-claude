@@ -1,0 +1,1317 @@
+{
+  "schema": "elder-souls/cam-probe@1",
+  "unit": "f@60",
+  "piece": "W1-06",
+  "generated": "2026-08-11T18:21:19.447Z",
+  "probes": {
+    "world": {
+      "report": [
+        "dialogue accommodation: 1.92° yaw, +0.5842 m arm, over 12 frames; pitch moved 0°",
+        "dialogue drift over 300 frames of full look input: Σ|Δpos| = 0.2856 m, Σ|Δyaw|+|Δpitch| = 0°",
+        "menu drift over 300 frames of full look+move input: Σ|Δpos| = 0 m, Σ|Δang| = 0°",
+        "rest: arm 4.1 → 4.7146 m, pitch → -11.7947° (declared 4.90 m, −12.0°)"
+      ],
+      "checks": {
+        "fov_identical": {
+          "pass": true,
+          "note": "all 6 pitch buckets: fov 50 in both"
+        },
+        "pivot_height_identical": {
+          "pass": true,
+          "note": "pivot height 1.55 m in both"
+        },
+        "shoulder_reduces_under_lock": {
+          "pass": true,
+          "note": "free 0.42 → locked 0.26 (RI-CAM01 §A: reduced so the framing law is not fighting a lateral bias)"
+        },
+        "dialogue_yaw_le_12": {
+          "pass": true,
+          "note": "1.92° (bar ±12.0°)"
+        },
+        "dialogue_arm_le_0p60": {
+          "pass": true,
+          "note": "+0.5842 m (bar +0.60 m)"
+        },
+        "dialogue_pitch_never_moves": {
+          "pass": true,
+          "note": "0° (bar exactly 0.0°)"
+        },
+        "dialogue_frozen_after": {
+          "pass": false,
+          "note": "Σ|Δpos|=0.2856 m (bar 0.01), Σ|Δyaw|+|Δpitch|=0° (bar 0.05) — look input ignored, not buffered"
+        },
+        "dialogue_mode_in_vocabulary": {
+          "pass": true,
+          "note": "camera.mode = 'dialogue'"
+        },
+        "accommodation_fires_once": {
+          "pass": true,
+          "note": "re-opening the panel moved the camera 0° (bar: once, at open, never again)"
+        },
+        "menu_frozen_hard": {
+          "pass": true,
+          "note": "Σ|Δpos|=0 (bar 0.001), Σ|Δang|=0 (bar 0.001)"
+        },
+        "rest_arm_le_4p90": {
+          "pass": true,
+          "note": "max arm 4.7223 m"
+        },
+        "rest_pitch_-12": {
+          "pass": true,
+          "note": "settled pitch -11.7947° (bar −12.0 ±1.0)"
+        },
+        "rest_no_fov_change": {
+          "pass": true,
+          "note": "no FOV change, no cut, no letterbox, no fade-to-black"
+        },
+        "rest_no_clip": {
+          "pass": true,
+          "note": "collision active throughout the rest"
+        }
+      },
+      "identity": {
+        "exploration": [
+          {
+            "pitch_bucket": -40,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": -20,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": -10,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 0,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 10,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 20,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.42,
+              0.1
+            ]
+          }
+        ],
+        "combat": [
+          {
+            "pitch_bucket": -40,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": -20,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": -10,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 0,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 10,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          },
+          {
+            "pitch_bucket": 20,
+            "fov_deg": 50,
+            "pivot_h": 1.55,
+            "shoulder": [
+              0.26,
+              0.1
+            ]
+          }
+        ]
+      },
+      "dialogue": {
+        "accommodation_yaw_deg": 1.92,
+        "accommodation_arm_m": 0.5842,
+        "accommodation_frames": 12,
+        "pitch_moved_deg": 0,
+        "drift_pos_m": 0.2856,
+        "drift_ang_deg": 0,
+        "mode": "dialogue"
+      },
+      "menu": {
+        "drift_pos_m": 0,
+        "drift_ang_deg": 0,
+        "mode": "menu"
+      },
+      "rest": {
+        "arm_start": 4.1,
+        "arm_end": 4.7146,
+        "pitch_end": -11.7947,
+        "max_arm": 4.7223,
+        "clip": 0
+      }
+    },
+    "stairs": {
+      "report": [
+        "stair: p99|Δcam.y| = 0.1989 m/frame, residual p-p = 2.7315 m",
+        "tread-frequency FFT peak ratio = 2.473× the median bin (bar ≤1.5×)"
+      ],
+      "checks": {
+        "p99_dy_le_0p020": {
+          "pass": false,
+          "note": "0.1989 m/frame (bar ≤0.020 = 1.2 m/s of vertical camera motion)"
+        },
+        "resid_p2p_le_0p045": {
+          "pass": false,
+          "note": "2.7315 m (bar ≤0.045)"
+        },
+        "fft_peak_le_1p5x": {
+          "pass": false,
+          "note": "2.473× (bar ≤1.5×) — this is the per-tread jolt, and the 0.250 s vertical spring is what removes it"
+        },
+        "stair_no_clip": {
+          "pass": false,
+          "note": "Σ clip_through = 72"
+        }
+      },
+      "stairs": {
+        "frames": 172,
+        "segment": "descent only, frames 2..174",
+        "p99_abs_dy": 0.1989,
+        "peak_to_peak_resid": 2.7315,
+        "tread_freq_cyc_per_frame": 0.2404,
+        "fft_peak": "1.816e-2",
+        "fft_median_bin": "7.344e-3",
+        "fft_peak_ratio": 2.473,
+        "largest_bin_ratio": 50.694,
+        "clip_frames": 72
+      }
+    },
+    "fp": {
+      "report": [
+        "140 probes (14 buttons × tap/hold × 5 states) + 121 wheel notches",
+        "min arm_len over EVERY probe = 3.4268 m (floor 0.90); min camera-to-head = 1.7783 m (floor 0.35)",
+        "listPerspectiveModes() = [\"third\"]"
+      ],
+      "checks": {
+        "arm_floor_never_breached": {
+          "pass": true,
+          "note": "min 3.4268 m over 140 probes + the wheel sweep (any probe below 0.90 is an automatic fail of the piece)"
+        },
+        "camera_to_head_ge_0p35": {
+          "pass": true,
+          "note": "min 1.7783 m"
+        },
+        "no_zoom_axis": {
+          "pass": true,
+          "note": "an invented zoom axis is refused by the closed input key set: queueInputs: unrecognised event key 'zoom'. HARNESS.md §4 events are {f, press?,"
+        },
+        "perspective_modes_third_only": {
+          "pass": true,
+          "note": "[\"third\"]"
+        },
+        "camera_first_throws": {
+          "pass": true,
+          "note": "{\"mode\":\"first\"}→threw {\"mode\":\"firstperson\"}→threw {\"mode\":1}→threw"
+        },
+        "mode_vocabulary_closed": {
+          "pass": true,
+          "note": "observed [\"dialogue\",\"free\",\"locked\",\"menu\",\"rest\"] ⊆ declared [\"free\",\"locked\",\"dialogue\",\"menu\",\"rest\",\"death\",\"fog_gate\"]"
+        }
+      },
+      "matrix": [
+        {
+          "state": "free",
+          "button": "light",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "light",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "heavy",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "heavy",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9994
+        },
+        {
+          "state": "free",
+          "button": "roll",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "free",
+          "button": "roll",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "free",
+          "button": "block",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "block",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "parry",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "parry",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "sprint",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "sprint",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "jump",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "jump",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "use_item",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "use_item",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "interact",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "interact",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "lock_on",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "lock_on",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "two_hand",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "two_hand",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "swap_right",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "swap_right",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "swap_left",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "swap_left",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "menu",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "free",
+          "button": "menu",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "locked",
+          "button": "light",
+          "kind": "tap",
+          "min_arm_m": 3.5157,
+          "min_head_dist_m": 3.4968
+        },
+        {
+          "state": "locked",
+          "button": "light",
+          "kind": "hold",
+          "min_arm_m": 3.4321,
+          "min_head_dist_m": 3.4145
+        },
+        {
+          "state": "locked",
+          "button": "heavy",
+          "kind": "tap",
+          "min_arm_m": 3.5168,
+          "min_head_dist_m": 3.498
+        },
+        {
+          "state": "locked",
+          "button": "heavy",
+          "kind": "hold",
+          "min_arm_m": 3.4318,
+          "min_head_dist_m": 3.4138
+        },
+        {
+          "state": "locked",
+          "button": "roll",
+          "kind": "tap",
+          "min_arm_m": 3.51,
+          "min_head_dist_m": 3.4901
+        },
+        {
+          "state": "locked",
+          "button": "roll",
+          "kind": "hold",
+          "min_arm_m": 3.4268,
+          "min_head_dist_m": 3.4084
+        },
+        {
+          "state": "locked",
+          "button": "block",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "block",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "parry",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "parry",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "sprint",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "sprint",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "jump",
+          "kind": "tap",
+          "min_arm_m": 3.5481,
+          "min_head_dist_m": 3.2473
+        },
+        {
+          "state": "locked",
+          "button": "jump",
+          "kind": "hold",
+          "min_arm_m": 3.4739,
+          "min_head_dist_m": 3.2473
+        },
+        {
+          "state": "locked",
+          "button": "use_item",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "use_item",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "interact",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "interact",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "lock_on",
+          "kind": "tap",
+          "min_arm_m": 3.9041,
+          "min_head_dist_m": 3.8991
+        },
+        {
+          "state": "locked",
+          "button": "lock_on",
+          "kind": "hold",
+          "min_arm_m": 3.9041,
+          "min_head_dist_m": 3.8991
+        },
+        {
+          "state": "locked",
+          "button": "two_hand",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "two_hand",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "swap_right",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "swap_right",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "swap_left",
+          "kind": "tap",
+          "min_arm_m": 3.5161,
+          "min_head_dist_m": 3.4973
+        },
+        {
+          "state": "locked",
+          "button": "swap_left",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "locked",
+          "button": "menu",
+          "kind": "tap",
+          "min_arm_m": 3.9041,
+          "min_head_dist_m": 3.8991
+        },
+        {
+          "state": "locked",
+          "button": "menu",
+          "kind": "hold",
+          "min_arm_m": 3.434,
+          "min_head_dist_m": 3.4167
+        },
+        {
+          "state": "dialogue",
+          "button": "light",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.3424
+        },
+        {
+          "state": "dialogue",
+          "button": "light",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.3447
+        },
+        {
+          "state": "dialogue",
+          "button": "heavy",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.2151
+        },
+        {
+          "state": "dialogue",
+          "button": "heavy",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.6598
+        },
+        {
+          "state": "dialogue",
+          "button": "roll",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "dialogue",
+          "button": "roll",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "dialogue",
+          "button": "block",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "block",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "parry",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "parry",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "sprint",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "sprint",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "jump",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.8885
+        },
+        {
+          "state": "dialogue",
+          "button": "jump",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.8885
+        },
+        {
+          "state": "dialogue",
+          "button": "use_item",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "use_item",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "interact",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "interact",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "lock_on",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "lock_on",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "two_hand",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "two_hand",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "swap_right",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "swap_right",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "swap_left",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "swap_left",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "menu",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "dialogue",
+          "button": "menu",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "light",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.3424
+        },
+        {
+          "state": "menu",
+          "button": "light",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.3447
+        },
+        {
+          "state": "menu",
+          "button": "heavy",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.2151
+        },
+        {
+          "state": "menu",
+          "button": "heavy",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.6598
+        },
+        {
+          "state": "menu",
+          "button": "roll",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "menu",
+          "button": "roll",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 1.7783
+        },
+        {
+          "state": "menu",
+          "button": "block",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "block",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "parry",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "parry",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "sprint",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "sprint",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "jump",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.8885
+        },
+        {
+          "state": "menu",
+          "button": "jump",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 4.8885
+        },
+        {
+          "state": "menu",
+          "button": "use_item",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "use_item",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "interact",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "interact",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "lock_on",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "lock_on",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "two_hand",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "two_hand",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "swap_right",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "swap_right",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "swap_left",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "swap_left",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "menu",
+          "kind": "tap",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "menu",
+          "button": "menu",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        },
+        {
+          "state": "rest",
+          "button": "light",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.5874
+        },
+        {
+          "state": "rest",
+          "button": "light",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.5897
+        },
+        {
+          "state": "rest",
+          "button": "heavy",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.4604
+        },
+        {
+          "state": "rest",
+          "button": "heavy",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.704
+        },
+        {
+          "state": "rest",
+          "button": "roll",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 2.0304
+        },
+        {
+          "state": "rest",
+          "button": "roll",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 2.0304
+        },
+        {
+          "state": "rest",
+          "button": "block",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "block",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "parry",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "parry",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "sprint",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "sprint",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "jump",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.6542
+        },
+        {
+          "state": "rest",
+          "button": "jump",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.6542
+        },
+        {
+          "state": "rest",
+          "button": "use_item",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "use_item",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "interact",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "interact",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "lock_on",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "lock_on",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "two_hand",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "two_hand",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "swap_right",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "swap_right",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "swap_left",
+          "kind": "tap",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "swap_left",
+          "kind": "hold",
+          "min_arm_m": 4.2427,
+          "min_head_dist_m": 4.2453
+        },
+        {
+          "state": "rest",
+          "button": "menu",
+          "kind": "tap",
+          "min_arm_m": 3.9772,
+          "min_head_dist_m": 3.9819
+        },
+        {
+          "state": "rest",
+          "button": "menu",
+          "kind": "hold",
+          "min_arm_m": 3.9927,
+          "min_head_dist_m": 3.9995
+        }
+      ],
+      "refusals": [
+        {
+          "attempt": "{\"mode\":\"first\"}",
+          "threw": true,
+          "msg": "camera({mode:'first'}): 'first' is not a camera mode. Seam S18 makes this game third-perso"
+        },
+        {
+          "attempt": "{\"mode\":\"firstperson\"}",
+          "threw": true,
+          "msg": "camera({mode:'firstperson'}): 'firstperson' is not a camera mode. Seam S18 makes this game"
+        },
+        {
+          "attempt": "{\"mode\":1}",
+          "threw": true,
+          "msg": "camera({mode:'1'}): '1' is not a camera mode. Seam S18 makes this game third-person at all"
+        }
+      ],
+      "detector": {
+        "probes": 140,
+        "wheel_notches": 121,
+        "wheel_events_delivered": 121,
+        "invented_zoom_axis_refused": true,
+        "zoom_refusal": "queueInputs: unrecognised event key 'zoom'. HARNESS.md §4 events are {f, press?,",
+        "min_arm_over_all_probes": 3.4268,
+        "min_camera_to_head_m": 1.7783,
+        "wheel_min_arm_m": 3.9927,
+        "perspective_modes": [
+          "third"
+        ],
+        "camera_modes_declared": [
+          "free",
+          "locked",
+          "dialogue",
+          "menu",
+          "rest",
+          "death",
+          "fog_gate"
+        ],
+        "modes_observed": [
+          "dialogue",
+          "free",
+          "locked",
+          "menu",
+          "rest"
+        ]
+      }
+    }
+  },
+  "summary": {
+    "checks": 24,
+    "failed": 5,
+    "failures": [
+      "world.dialogue_frozen_after: Σ|Δpos|=0.2856 m (bar 0.01), Σ|Δyaw|+|Δpitch|=0° (bar 0.05) — look input ignored, not buffered",
+      "stairs.p99_dy_le_0p020: 0.1989 m/frame (bar ≤0.020 = 1.2 m/s of vertical camera motion)",
+      "stairs.resid_p2p_le_0p045: 2.7315 m (bar ≤0.045)",
+      "stairs.fft_peak_le_1p5x: 2.473× (bar ≤1.5×) — this is the per-tread jolt, and the 0.250 s vertical spring is what removes it",
+      "stairs.stair_no_clip: Σ clip_through = 72"
+    ]
+  }
+}
