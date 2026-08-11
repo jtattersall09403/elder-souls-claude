@@ -1,13 +1,19 @@
 {
   "task_id": "W1-25-persistent-builder",
-  "status": "EXTERNALLY_INTERRUPTED",
+  "status": "builder_incomplete",
   "starting_commit": "317b054f3839cbd653bf76437073b8e6314f4c2b",
   "branch": "codex/wave1-build-experiment",
   "files_touched": [
-    "orchestration/status/W1-25-persistent-builder.json"
-    ,"tools/composition/crossing-controls.mjs"
-    ,"reports/composition/w1-25-persistent-builder/crossing-controls.json"
-    ,"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json"
+    "game/data/items/carried.json",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "orchestration/status/W1-25-persistent-builder.json",
+    "reports/composition/w1-25-persistent-builder/crossing-controls.json",
+    "reports/composition/w1-25-persistent-builder/matrix-live.json",
+    "reports/experience/w1-25-persistent-builder/independent-role-handoffs.json",
+    "tools/composition/crossing-controls.mjs",
+    "tools/experience/experience-populations.mjs",
+    "tools/experience/permissiveness-live.mjs"
   ],
   "files_claimed": [
     "game/src/engine.js",
@@ -21,17 +27,42 @@
   "builder_complete": false,
   "critic_pass_claimed": false,
   "progress": [
+    "Resumed at required commit 11ae120b81595c00dc7d3f56d520aab89efe8543 on codex/wave1-build-experiment and ran the recorded exact resume command first: RED 0/10 qualifying, 0/1 structural, score 0/20 (exit 1).",
     "Confirmed required starting commit; the checkout initially used local branch work, then created the required codex/wave1-build-experiment branch at the same commit.",
     "Read repository instructions, the satisfied W1-25 plan, predecessor statuses, reports and native instrument inventory.",
-    "Added a fail-closed native crossing-control gate. Its self-test sees six injected defects; applying it to the predecessor manifest honestly reports 0/4 controlled crossings because every consumer-delete and irrelevant-source arm is absent."
+    "Added a fail-closed native crossing-control gate. Its self-test sees six injected defects; applying it to the predecessor manifest honestly reports 0/4 controlled crossings because every consumer-delete and irrelevant-source arm is absent.",
+    "Added authored Imperial disguise and production EQP->ROS and STL->ROS consumers plus narrow execution/ablation instrumentation.",
+    "Hardened crossing validation to require six observed arms, valid/related hashes, production traces, no target writes, structural reload/restart durability, unique cells and direction diversity.",
+    "Hardened permissiveness validation and added exhaustive matched-session/consumption aggregate with seen-red self-tests.",
+    "Native browser matrix was run from earliest red: TOD->ROS and ROS->WLD passed; SCH vacuous and SPL/STL/EQP/DIS paper, confirming production aggregate remains below the completion gate."
   ],
-  "interruption_reason": "Codex task execution window ended before the production repairs and governing populations could be completed. Builder completion is not claimed.",
+  "interruption_reason": null,
   "completion": [
-    {"row":"RI-CMP01","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/composition/w1-25-persistent-builder/crossing-controls.json","result":"RED: 0 controlled qualifying cells"},
-    {"row":"RI-EXP02","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json","result":"handoff prepared; builder-owned played population absent"},
-    {"row":"RI-EXP03","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json","result":"matched played population absent"},
-    {"row":"RI-EXP06","state":"EXTERNALLY_INTERRUPTED","artifact":"tools/experience/permissiveness-live.mjs","result":"closure/restore/repeat population absent"}
+    {
+      "row": "RI-CMP01",
+      "state": "RED",
+      "artifact": "reports/composition/w1-25-persistent-builder/crossing-controls.json",
+      "result": "0 fully controlled qualifying cells; production arms incomplete"
+    },
+    {
+      "row": "RI-EXP02",
+      "state": "RED",
+      "artifact": "tools/experience/experience-populations.mjs",
+      "result": "validator complete; matched live population absent"
+    },
+    {
+      "row": "RI-EXP03",
+      "state": "RED",
+      "artifact": "tools/experience/experience-populations.mjs",
+      "result": "validator complete; matched live population absent"
+    },
+    {
+      "row": "RI-EXP06",
+      "state": "RED",
+      "artifact": "tools/experience/permissiveness-live.mjs",
+      "result": "validator complete; live closure population absent"
+    }
   ],
   "exact_next_command": "node tools/composition/crossing-controls.mjs --in reports/experience/w1-25-continuation-builder/crossing-manifest.json --out reports/composition/w1-25-persistent-builder/crossing-controls.json",
-  "next_step": "Resume at the first reported crossing-control failure; add live consumer-delete/source-remove/irrelevant/restore arms to matrix-probe, then rerun the exact command."
+  "next_step": "Continue earliest red production cell and execute all six arms; do not claim builder_complete until native crossing and experience aggregates pass."
 }

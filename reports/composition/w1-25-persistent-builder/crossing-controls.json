@@ -26,9 +26,13 @@
         "restore_recovers_positive": false,
         "consumer_executed": false,
         "deleted_consumer_not_executed": false,
-        "changed_hashes_recorded": false,
-        "no_direct_target_mutation": true,
-        "no_harness_consumer": false
+        "hashes_valid": false,
+        "source_hash_relations": false,
+        "irrelevant_hash_changed": false,
+        "consumer_hash_relations": false,
+        "no_direct_target_mutation": false,
+        "no_harness_consumer": false,
+        "structural_durability": true
       },
       "pass": false
     },
@@ -57,9 +61,13 @@
         "restore_recovers_positive": false,
         "consumer_executed": false,
         "deleted_consumer_not_executed": false,
-        "changed_hashes_recorded": false,
-        "no_direct_target_mutation": true,
-        "no_harness_consumer": false
+        "hashes_valid": false,
+        "source_hash_relations": false,
+        "irrelevant_hash_changed": false,
+        "consumer_hash_relations": false,
+        "no_direct_target_mutation": false,
+        "no_harness_consumer": false,
+        "structural_durability": true
       },
       "pass": false
     },
@@ -88,9 +96,13 @@
         "restore_recovers_positive": false,
         "consumer_executed": false,
         "deleted_consumer_not_executed": false,
-        "changed_hashes_recorded": false,
-        "no_direct_target_mutation": true,
-        "no_harness_consumer": false
+        "hashes_valid": false,
+        "source_hash_relations": false,
+        "irrelevant_hash_changed": false,
+        "consumer_hash_relations": false,
+        "no_direct_target_mutation": false,
+        "no_harness_consumer": false,
+        "structural_durability": true
       },
       "pass": false
     },
@@ -119,9 +131,13 @@
         "restore_recovers_positive": false,
         "consumer_executed": false,
         "deleted_consumer_not_executed": false,
-        "changed_hashes_recorded": false,
-        "no_direct_target_mutation": true,
-        "no_harness_consumer": false
+        "hashes_valid": false,
+        "source_hash_relations": false,
+        "irrelevant_hash_changed": false,
+        "consumer_hash_relations": false,
+        "no_direct_target_mutation": false,
+        "no_harness_consumer": false,
+        "structural_durability": true
       },
       "pass": false
     }
@@ -131,6 +147,15 @@
     "qualifying": 0,
     "structural": 0,
     "matrix_score": 0,
+    "directions": {
+      "W2F": 0,
+      "F2W": 0
+    },
+    "denominators": {
+      "submitted_rows": 4,
+      "unique_cells": 4,
+      "fully_observed_rows": 0
+    },
     "pass": false
   }
 }
