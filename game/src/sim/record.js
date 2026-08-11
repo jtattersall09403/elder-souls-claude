@@ -145,6 +145,7 @@ export function makeRecord(sim, input, bus, opts, perf) {
       arm_cast_m: r4(c.armCast),
       arm_hit: c.armHit,
       arm_penetration_guard: c.armGuard,
+      arm_floor_emergency: c.armFloorEmergency,
       arm_clear_frames: c.clearFrames,
       shoulder: [r4(c.shoulderR), r4(c.shoulderU)],
       char_opacity: r4(c.charOpacity),

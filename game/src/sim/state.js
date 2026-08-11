@@ -141,6 +141,7 @@ export function makeCamera() {
     armCast: 4.1,               // the raw sphere-cast length, before clamps and rate limits
     armHit: false,
     armGuard: false,            // §C step 7 fired on this frame — the flag M4 reads
+    armFloorEmergency: false,   // S49: guard proved no clear pose at/above the normal floor
     clearFrames: 0,             // consecutive unobstructed frames, for the 6-frame dwell
     shoulderR: 0.42,
     shoulderU: 0.10,
