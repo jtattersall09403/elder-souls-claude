@@ -1,8 +1,8 @@
 {
   "task_id": "W1-30",
   "role": "reviewer-editor",
-  "state": "plan-satisfied",
-  "plan_state": "satisfied",
+  "state": "awaiting-recriticism",
+  "plan_state": "awaiting-recriticism",
   "piece": "W1-30 — whole-game visual foundation and fidelity",
   "plan_path": "orchestration/plans/W1-30.md",
   "owner_amendment": "docs/DECOMPOSITION-W1-AMENDMENT-02.md",
@@ -44,14 +44,15 @@
     "RI-WLD03",
     "RI-WLD05"
   ],
-  "planning_next_step": "Finish and land W1-06 and W1-24, then dispatch one Sonnet builder for all builder-owned W1-30 work under the binding allocation.",
+  "planning_next_step": "Dispatch a fresh independent reviewer-editor to validate the material moving-reference and game-motion evidence correction. After approval and landed W1-06 builder work, dispatch one builder for all builder-owned W1-30 work.",
   "files_touched": [
     "orchestration/status/W1-30.json",
-    "orchestration/plans/W1-30.md"
+    "orchestration/plans/W1-30.md",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md"
   ],
   "files_claimed": [],
-  "plan_summary": "Complete whole-game W1-30 current-state plan delivered with binding builder/critic allocation, 21-path and all-surface scope, shared future-content foundation, canonical item bars, dependency and ownership seams, native acceptance, controls, risks and cheap-first route.",
-  "next_action": "finish and land W1-06 and W1-24, then dispatch the W1-30 builder; keep W1-28 and Wave 2 blocked pending the fresh build-critic 7.0/7.0 gate",
+  "plan_summary": "Whole-game W1-30 plan with binding builder/critic allocation and a material correction requiring action-matched moving references, independent acquisition for uncovered cells, and deterministic PNG-sequence game evidence with transient viewing encodes.",
+  "next_action": "fresh independent re-criticism of the corrected W1-30 motion-reference protocol; W1-06 final builder may proceed in parallel",
   "build_dependencies": [
     "W1-06 builder work landed",
     "W1-24 builder work landed"
@@ -59,6 +60,21 @@
   "build_sequence": "after W1-06 and W1-24; before W1-28 and every Wave-2 builder",
   "builder_critic_contract": "orchestration/plans/BUILDER-EXECUTION-CONTRACT.md",
   "wave1_gate": "applicable modern-fidelity and art-direction results each reach 7.0 through a fresh independent build critic",
-  "reviewer_outcome": "SATISFIED: a different fresh reviewer-editor found no material defect and made no material edit; the received current-r180 route, native acceptance coverage, fail-closed foundation, seams, controls and builder/critic allocation are build-ready after dependencies land.",
-  "reviewed_at": "2026-08-11"
+  "reviewer_outcome": "AWAITING RE-CRITICISM: the previous satisfied review predates a material correction to the moving-reference inventory and critic comparison protocol.",
+  "reviewed_at": "2026-08-11",
+  "motion_reference_correction": {
+    "corrected_at": "2026-08-11",
+    "current_manifest_snapshot": {
+      "files_on_disk": 808,
+      "animated_sequences": 207,
+      "on_disk_moving_or_video_files": 12
+    },
+    "authority": [
+      "corpus/70-visual/refs/MANIFEST.json",
+      "corpus/70-visual/refs/_provenance.json",
+      "corpus/70-visual/refs/acquire.py"
+    ],
+    "game_evidence": "deterministic PNG sequences with aligned traces are authoritative; transient GIF/WebM/MP4 viewing encodes are permitted; binaries are not committed",
+    "review_required": true
+  }
 }
