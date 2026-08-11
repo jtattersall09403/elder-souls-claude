@@ -1,0 +1,62 @@
+{
+  "schema": "elder-souls/w1-00-mth07-census@1",
+  "owner": "W1-00",
+  "owned_paths": ["engine.harness", "engine.loop", "engine.rng", "engine.physics", "engine.ai", "engine.animation", "platform.determinism.harness", "platform.save.persistence"],
+  "models": [
+    {
+      "id": "seeded-prng-stream",
+      "producer": "game/src/sim/state.js: SimState.rng/rngInt",
+      "consumer": "game/src/sim/step.js: SimStep.step, once per fixed frame, followed by the shipping AI/combat systems",
+      "entity_observable": "moving enemy state sequence and position in the RI-MTH02 R4 trace",
+      "treatment": "tools/harness/determinism.mjs R4, two distinct non-zero seeds",
+      "null": "R4 no-entity null: changing the seed produces zero differing entity frames",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "required_fields": ["model_value_a", "model_value_b", "observed_a", "observed_b", "coupling"]
+    },
+    {
+      "id": "fixed-step-integrator",
+      "producer": "game/src/core/loop.js: FixedStepLoop._tick accumulator and STEP_MS",
+      "consumer": "game/src/engine.js: Engine.stepFrames -> SimStep.step -> player and enemy bodies, every fixed frame",
+      "entity_observable": "player/enemy pose and state sequence in RI-MTH02 R1/R3/R7/R8 and RI-PLT01 M6/M9",
+      "treatment": "render rates 60/30/15/0 and different host chunk/wall-clock schedules",
+      "null": "identical fixed-frame input with rendering disabled; render-only work changes while entity sequence does not",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "required_fields": ["model_value_a", "model_value_b", "observed_a", "observed_b", "coupling"]
+    },
+    {
+      "id": "catch-up-cap",
+      "producer": "game/src/core/loop.js: MAX_CATCHUP_STEPS accumulator clamp",
+      "consumer": "game/src/core/loop.js: FixedStepLoop._tick controls how many shipping SimStep frames may move bodies per rAF",
+      "entity_observable": "fixed-frame advance and body displacement after a 400 ms main-thread stall",
+      "treatment": "tools/platform/decoupling.mjs M8 stalled versus unstalled accumulator",
+      "null": "paused/no-input body remains unchanged across the same stall",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "required_fields": ["model_value_a", "model_value_b", "observed_a", "observed_b", "coupling"]
+    },
+    {
+      "id": "durable-save-projection",
+      "producer": "game/src/engine.js: saveState/loadState and game/data/save-manifest.json",
+      "consumer": "game/src/engine.js: loadState restores the live player, combat controllers, world entities and death system before the next SimStep",
+      "entity_observable": "restored body/AI continuation, accepted action, searching position and recoverable bloodstain souls",
+      "treatment": "tools/harness/save-consume.mjs and save-ai-consumption.mjs separated saved values",
+      "null": "blank field and trace-only yawRate arms; both tools require a non-inert null result",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "required_fields": ["model_value_a", "model_value_b", "observed_a", "observed_b", "coupling"]
+    }
+  ],
+  "declared_instrumentation": [
+    {"id": "canonical-state-hash", "producer": "game/src/core/canonical.js", "reason": "observer used to compare state; it never decides gameplay and is not presented as a world model"},
+    {"id": "determinism-guard-report", "producer": "game/src/harness/api.js:getDeterminismReport", "reason": "trace-only guard telemetry; explicitly instrumentation"},
+    {"id": "combat-and-general-trace-fields", "producer": "game/src/engine.js: traceStart/combatTraceStart", "reason": "observers of shipping state; no trace field is claimed as a gameplay consumer"}
+  ],
+  "hand_feed_audit": {
+    "result": "none",
+    "basis": "W1-00 harness arguments set controls or scenario facts through shipping verbs; no W1-00-owned predicate returns a gameplay decision from caller-supplied world facts. Methods owned by input/journey and other pieces are excluded."
+  },
+  "partial_world_harnesses": [],
+  "partial_world_basis": "determinism.mjs, state-diff.mjs, save-consume.mjs and platform/decoupling.mjs boot game/index.html and drive window.__HARNESS through Engine/SimStep; none reimplements a subset of the simulation. Therefore RI-MTH07 VERIFY is not applicable, rather than silently omitted.",
+  "exclusions": [
+    "getFrame/getSeed/getCombatState/listEntities/getPlayerStats/getWorldStats/getLoadState/getPerfStats are raw state getters, not models",
+    "input rebinding, journey/UI, camera, audio, combat-design and neighbouring content models are neither shipped by W1-00 nor used to derive its harness result"
+  ]
+}
