@@ -1,0 +1,151 @@
+{
+  "schema": "elder-souls/permissiveness-browser-run@1",
+  "browser_session_id": "exp06-1786469727579-acd29576f0bd",
+  "register_sha256": "59ddbc9ec673c97852597d02783e7379baada21afff131fb55ebd3a037d22579",
+  "rows": [
+    {
+      "id": "B-01",
+      "browser_session_id": "exp06-1786469727579-acd29576f0bd",
+      "frame_start": 1,
+      "frame_end": 5,
+      "direct_target_mutation": false,
+      "consumer_execution": {
+        "consumer": "Engine.brewFortifyAlchemy",
+        "count": 4,
+        "frames": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "arms": {
+        "baseline": {
+          "observed": true,
+          "usable": true,
+          "source_sha256": "ad2f4d6f8d6d6987521c59f7a7d0afb6e520fd7b3ec0d46b9d883096b1fc800f",
+          "target_sha256": "769e206de2b38aecdde82f4787db134ce16b9a78855b9bf88ee83de21078ab77",
+          "target": {
+            "ok": true,
+            "potion": {
+              "id": "fortify-alchemy-1",
+              "magnitude": 1
+            },
+            "ingredients_left": 6
+          }
+        },
+        "closure": {
+          "observed": true,
+          "executed": true,
+          "changed_hash": true,
+          "source_sha256": "fc77b5831e1795c8de5fcce3b8939de723c7abc50225584ea800a2c7355ed241",
+          "target_sha256": "ebdb3337f537ebf1eb98669ed4e740d8d4de6002df3c6032e61a5b6dff2d58e9",
+          "target": {
+            "ok": false,
+            "player_facing": true,
+            "text": "The mixture will not take while another fortifying draught is active."
+          }
+        },
+        "repeat": {
+          "observed": true,
+          "usable": false,
+          "player_facing": true,
+          "source_sha256": "fc77b5831e1795c8de5fcce3b8939de723c7abc50225584ea800a2c7355ed241",
+          "target_sha256": "ebdb3337f537ebf1eb98669ed4e740d8d4de6002df3c6032e61a5b6dff2d58e9",
+          "target": {
+            "ok": false,
+            "player_facing": true,
+            "text": "The mixture will not take while another fortifying draught is active."
+          }
+        },
+        "restore": {
+          "observed": true,
+          "usable": true,
+          "source_sha256": "ad2f4d6f8d6d6987521c59f7a7d0afb6e520fd7b3ec0d46b9d883096b1fc800f",
+          "target_sha256": "769e206de2b38aecdde82f4787db134ce16b9a78855b9bf88ee83de21078ab77",
+          "target": {
+            "ok": true,
+            "potion": {
+              "id": "fortify-alchemy-1",
+              "magnitude": 1
+            },
+            "ingredients_left": 6
+          }
+        }
+      }
+    }
+  ],
+  "unmeasurable": [
+    {
+      "id": "B-02",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-03",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-04",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-05",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-06",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-07",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-08",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-09",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-10",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-11",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-12",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-13",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-14",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    },
+    {
+      "id": "B-15",
+      "reason": "production runPermissivenessProbe consumer not implemented yet; static substrate is not execution"
+    }
+  ],
+  "chain_status": "NOT_RUN",
+  "chain_discrepancies": null,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 585
+  },
+  "page_errors": []
+}

@@ -88,3 +88,37 @@ At exact starting commit `1378e2a7372d4e3c819f81986b65979524ae08a7`, the result 
 Diagnosis reached the genuine corpus-authority boundary recorded in `reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md`. The prescribed moving-wall endpoint, backing-wall reversal, 1.20 m pinch and eight-yaw 30° stair population each include configurations whose solid is inside the swept envelope of a fixed-ray camera constrained to an absolute 0.90 m boom. No predicate, population, denominator, route, arm threshold, or clipping label was changed. Because S48 explicitly resolves only the crawl ceiling, a further ruling is required before production can legally choose whether architecture/fixtures or the emergency boom yields.
 
 All perceptual packs remain unscored. Mechanical work that depends on a green collision prerequisite is intentionally not represented as complete.
+
+## S49 production continuation — 2026-08-11
+
+The merged S49 ruling is now implemented in the shipping camera path. The ordinary spring target
+and 0.90 m floor are unchanged. When the origin-plus-four-near-plane-corner envelope is contained,
+the guard independently searches the unchanged boom ray. It crosses the floor only if no clear
+candidate exists from 0.90 m through the desired length, selects the greatest clear candidate that
+also preserves the camera-to-head minimum, emits both `arm_penetration_guard` and
+`arm_floor_emergency`, and clears the emergency flag while returning under ordinary push-out.
+
+`node tools/camera/s49-penetration-guard.mjs` is the bounded production-path proof. Its five rows
+cover an open-world refusal, necessity, zero clipping, maximality at the next millimetre, and a
+settled late-frame return after the obstacle is removed. All five pass. Replacing only
+`game/src/sim/camera.js` with the starting-HEAD version makes the same instrument exit 1: the
+emergency remains at 0.90 m, emits neither flag and reports `clip_through: true`. This is the
+targeted delete-the-fix red arm; the positive and delete outputs were inspected from `/tmp` and
+are intentionally not committed as generated evidence.
+
+Deterministic generation and cheap gates pass: `gen-cells.mjs --check`, the live camera-module
+height table and moving-target trace, `check-data`, `check-content`, and `check-quests`. The quest
+gate retains its pre-existing warning about twelve document reveals but exits green.
+
+### Canonical dependency block on browser/native completion
+
+The exact merged HEAD stores `game/src/engine.js` as 300,062 bytes of non-JavaScript data
+(SHA-256 `9777c138f6fd210815a9a8d594ccb4df24ed3921e9501eb93e4a48f012bad7d2`). The blob is identical
+in both parents of PR #134 and first appears in merge `e0b0313`; both parents of that earlier merge
+contain readable JavaScript with different hashes. `node --check game/src/engine.js` fails at byte
+one, Chromium reports `SyntaxError: Invalid or unexpected token` for `/src/engine.js`, and the
+harness never appears. Therefore every browser-backed native method, rendered sample, mode/
+transition matrix, full collision census and browser aggregate is canonically unavailable on the
+required branch. Restoring either pre-merge parent would arbitrarily discard the other parent's
+merged engine work, so this camera builder records the exact dependency rather than inventing a
+cross-piece merge ruling. All independent visual/blind rows remain critic handoff and unscored.

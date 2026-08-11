@@ -866,32 +866,81 @@ function solveArm(sim, c, cell) {
   // step 5's 0.90 m floor, because step 7 comes after step 5 and correctness wins over
   // smoothing. Every frame it fires is flagged, which is the flag RI-CAM01 M4 already names.
   c.armGuard = false;
+  c.armFloorEmergency = false;
   desiredPoint(c, c.armLen, sr, su, _pt, _castRef);
-  if (cell !== EMPTY_CELL && cell.distance(_pt[0], _pt[1], _pt[2]) < CAMERA_CONST.guard_radius_m) {
-    desiredPoint(c, c.armDesired, sr, su, _to, c.armDesired);
-    const tg = cell.sphereCast(_from, _to, CAMERA_CONST.guard_radius_m);
-    let g = c.armDesired * tg - 0.005;
-    // THE 0.90 m FLOOR IS ABSOLUTE. RI-CAM01 §A calls it "arm length, absolute min (collision)
-    // [CMB06]", and RI-CAM05 §F makes it an invariant "on every frame of every state, forever"
-    // whose breach is "an automatic fail of the piece, whatever it is called in the build".
-    //
-    // §C step 7's penetration guard is "unbounded, same frame" — but read the sentence it is
-    // in: "The rate limit is a smoothing device, never a correctness device." What step 7
-    // overrides is step 6's RATE LIMIT, not step 5's clamp. This build previously let the
-    // guard drive to `arm_hard_min_m` = 0.30 m, and the first full probe run duly reported
-    // min arm_len 0.3499 m on two of the three worst routes. That is the automatic fail.
-    //
-    // The consequence is stated rather than hidden: in a space too tight for a 0.90 m boom the
-    // camera now STAYS at 0.90 m and `clip_through` may go true. That is the correct failure —
-    // it is visible, it is counted, and RI-CAM05 §D's answer to it is architectural (a wider
-    // corridor), not a shorter arm.
-    const dyHead = CAMERA_CONST.head_height_m - CAMERA_CONST.pivot_height_m - su;
-    const headMin = Math.sqrt(Math.max(0, CAMERA_CONST.camera_to_head_min_m ** 2 - dyHead * dyHead));
-    g = clamp(g, Math.max(CAMERA_CONST.arm_min_m, headMin), c.armLen);
-    if (g < c.armLen) { c.armLen = g; c.armGuard = true; }
+  if (cell !== EMPTY_CELL && !cameraEnvelopeClear(c, cell, c.armLen, sr, su, _castRef)) {
+    // S49 keeps 0.90 m as the ordinary target but permits the same-frame guard to cross it
+    // only when the unchanged boom ray has no clear origin-plus-four-corner pose at/above it.
+    // Search the complete non-negative ray rather than trusting the spring sphere cast: the
+    // near-plane corners, not the guard sphere, define clipping and narrow geometry need not
+    // be monotone along the ray.
+    const top = Math.max(0, c.armDesired);
+    const floor = Math.min(CAMERA_CONST.arm_min_m, top);
+    const normal = greatestClearArm(c, cell, floor, top, sr, su, c.armDesired);
+    let g = -1;
+    if (normal < 0) {
+      const dyHead = CAMERA_CONST.head_height_m - CAMERA_CONST.pivot_height_m - su;
+      const headMin = Math.sqrt(Math.max(0,
+        CAMERA_CONST.camera_to_head_min_m ** 2 - dyHead * dyHead));
+      g = greatestClearArm(c, cell, headMin, floor, sr, su, c.armDesired);
+      c.armFloorEmergency = g >= 0 && g < CAMERA_CONST.arm_min_m;
+    } else {
+      // Ordinary obstruction: retain the established pivot-outward sphere cast so the camera
+      // cannot teleport through a wall to a disconnected clear interval beyond it.
+      desiredPoint(c, c.armDesired, sr, su, _to, c.armDesired);
+      const tg = cell.sphereCast(_from, _to, CAMERA_CONST.guard_radius_m);
+      g = clamp(c.armDesired * tg - 0.005, CAMERA_CONST.arm_min_m, c.armLen);
+    }
+    if (g >= 0 && g < c.armLen) {
+      c.armLen = g;
+      c.armGuard = true;
+    }
   }
   c.dist = c.armLen;
   c.distTarget = c.armDesired;
+}
+
+/** True when the camera origin and all four near-plane corners are outside collision. */
+function cameraEnvelopeClear(c, cell, len, sr, su, castRef) {
+  desiredPoint(c, len, sr, su, _pt, castRef);
+  if (cell.contains(_pt[0], _pt[1], _pt[2])) return false;
+  viewBasis(c, _fwd, _right, _up);
+  const hh = CAMERA_CONST.near_m * Math.tan(CAMERA_CONST.fov_deg * DEG / 2);
+  const hw = hh * CAMERA_CONST.aspect;
+  for (let sx = -1; sx <= 1; sx += 2) {
+    for (let sy = -1; sy <= 1; sy += 2) {
+      const x = _pt[0] + _fwd[0] * CAMERA_CONST.near_m + _right[0] * hw * sx + _up[0] * hh * sy;
+      const y = _pt[1] + _fwd[1] * CAMERA_CONST.near_m + _right[1] * hw * sx + _up[1] * hh * sy;
+      const z = _pt[2] + _fwd[2] * CAMERA_CONST.near_m + _right[2] * hw * sx + _up[2] * hh * sy;
+      if (cell.contains(x, y, z)) return false;
+    }
+  }
+  return true;
+}
+
+/** Greatest clear sampled candidate in [lo, hi], refined to sub-millimetre precision. */
+function greatestClearArm(c, cell, lo, hi, sr, su, castRef) {
+  if (hi < lo) return -1;
+  // Authored collision features are no thinner than 5 cm. Half that width cannot skip a
+  // complete authored clear interval, while keeping the exceptional same-frame search bounded.
+  const step = 0.025;
+  let blockedAbove = hi + step;
+  for (let len = hi; len >= lo; len -= step) {
+    const candidate = len < lo ? lo : len;
+    if (!cameraEnvelopeClear(c, cell, candidate, sr, su, castRef)) {
+      blockedAbove = candidate;
+      continue;
+    }
+    // Refine the boundary above the greatest clear sample. If the ray contains separate clear
+    // intervals, the descending scan reaches the highest one first.
+    let a = candidate, b = Math.min(hi, blockedAbove);
+    for (let i = 0; i < 14; i++) {
+      const mid = (a + b) * 0.5;
+      if (cameraEnvelopeClear(c, cell, mid, sr, su, castRef)) a = mid; else b = mid;
+    }
+    return Math.max(lo, a - 1e-5);
+  }
+  return cameraEnvelopeClear(c, cell, lo, sr, su, castRef) ? lo : -1;
 }
 
 /** The camera point for a boom of `len`, with the shoulder offset applied at the camera end.

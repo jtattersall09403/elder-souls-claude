@@ -1,6 +1,6 @@
 {
   "task_id": "W1-25-persistent-builder",
-  "status": "builder_incomplete",
+  "status": "builder_incomplete_dependency_blocked",
   "starting_commit": "1378e2a7372d4e3c819f81986b65979524ae08a7",
   "branch": "codex/wave1-build-experiment",
   "files_touched": [
@@ -27,7 +27,10 @@
     "tools/composition/matrix-probe.mjs",
     "tools/contention.mjs",
     "tools/composition/crossing-live-browser.mjs",
-    "reports/experience/w1-25-persistent-builder/crossing-live-arms.json"
+    "reports/experience/w1-25-persistent-builder/crossing-live-arms.json",
+    "reports/experience/w1-25-persistent-builder/permissiveness-live-arms.json",
+    "reports/experience/w1-25-persistent-builder/permissiveness-live-report.json",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "game/src/engine.js",
@@ -65,7 +68,13 @@
     "Fixed contention gate to ignore explicit zombie Chromium processes; gate went from false 57 instances/0 MB to 0 live instances and enabled a clean native run.",
     "Native 15-cell matrix now clears the full aggregate: 10 live crossings, 3 structural, score 32, 3 W2F/7 F2W, both hard fails clear. RI-CMP01 remains red only because six-arm per-cell controls/durability are not yet compiled.",
     "Executed all six browser arms for 10 unique live cells. Fresh-browser restart and same-browser reload targets were observed for three structural cells; controlled aggregate PASS: 10/10, 3 structural, score 32, 5 W2F/5 F2W.",
-    "Implemented RI-EXP06 B-01 as a finite production alchemy loop. Live browser baseline/closure/repeat/restore passes provenance and consumer validation; register is now 1/15 instead of 0/15."
+    "Implemented RI-EXP06 B-01 as a finite production alchemy loop. Live browser baseline/closure/repeat/restore passes provenance and consumer validation; register is now 1/15 instead of 0/15.",
+    "Production-builder successor resumed the merged flight rather than restarting it. The requested branch had already been merged into repository HEAD and no Git remote exists; a local codex/wave1-build-experiment branch was created at 81b5efe.",
+    "Found the merged HEAD game/src/engine.js blob was binary/corrupt (starts 59 aa e7 8a) although each W1-25 parent was readable JavaScript. Reconstructed the latest readable production engine from ba5f8dc and reapplied the B-01 finite alchemy consumer from 5a46984; node syntax and a real browser invocation now execute it.",
+    "Reran RI-EXP06 through the shipping browser path: B-01 baseline/closure/repeat/restore remains a valid live row; 14/15 are honestly UNMEASURABLE and the chain is NOT_RUN. The fail-closed validator reports RED 1/15 rather than accepting static substrate.",
+    "Reran cheap falsification gates: permissiveness validator self-test, crossing-control self-test, sabotage 14/14 plus 10/10 injected defects, and replay corpus 9/9 all pass.",
+    "RI-CMP01 remains complete from merged live evidence (10 controlled cells, 3 structural, score 32). Critic-owned long sessions, isolated recall/baton, blind comparisons and final populations remain handoff and were not self-scored.",
+    "Targeted delete/red proof: running the browser collector against the readable parent engine before reapplying B-01 reached TypeError: engine.resetAlchemy is not a function; after restoration the same shipping-path command executed 1/15 and wrote the valid B-01 row."
   ],
   "interruption_reason": null,
   "completion": [
@@ -97,9 +106,41 @@
       "row": "RI-EXP06",
       "state": "RED",
       "artifact": "tools/experience/permissiveness-browser.mjs",
-      "result": "live production probes 1/15 PASS (B-01 alchemy); 14 UNMEASURABLE; chain NOT_RUN"
+      "result": "live production probes 1/15 PASS (B-01 alchemy); 14 canonical substrates UNMEASURABLE; chain NOT_RUN; fail-closed report RED"
     }
   ],
   "exact_next_command": "node tools/composition/matrix-probe.mjs --seed 1234 --out reports/composition/w1-25-persistent-builder/matrix-live.json",
-  "next_step": "Implement B-02 through B-15 production consumers and chain; then complete played populations."
+  "next_step": "Canonical sibling owners must supply B-02 through B-15 production substrates. Then rerun the recorded browser command and hand the complete population to a fresh critic; no other builder-owned W1-25 work is currently available.",
+  "dependency_blocks": [
+    {
+      "items": [
+        "B-02",
+        "B-03",
+        "B-04",
+        "B-05",
+        "B-06",
+        "B-07",
+        "B-08",
+        "B-09",
+        "B-10",
+        "B-11",
+        "B-12",
+        "B-13",
+        "B-14",
+        "B-15"
+      ],
+      "kind": "canonical production substrate",
+      "reason": "The register requires real faction-rank, exterior utility-route, late-region path/loot, severance/backpath, physical merchant stock, Drowned Step scroll, enchanting/soul-gem, disposition economy, speaking boss, NPC-vs-NPC lure, sealed-case confession, maximum Open scroll/lock, lore-shortcut, and boss-arena ledge consumers. These systems/content are absent or owned by their canonical sibling pieces; W1-25 measures them and must not manufacture harness-only substitutes.",
+      "reproduction": "node tools/experience/permissiveness-browser.mjs --out reports/experience/w1-25-persistent-builder/permissiveness-live-arms.json"
+    },
+    {
+      "items": [
+        "RI-EXP02",
+        "RI-EXP03"
+      ],
+      "kind": "critic handoff / unavailable completed played population",
+      "reason": "No completed active played chain exists. Exact >=90-minute matched sessions and isolated recall/blind actors are critic-owned under the execution contract; prior live attempts completed 0/2 and partial traces were not scored.",
+      "reproduction": "cat reports/experience/w1-25-persistent-builder/session-inputs/live-attempt.json"
+    }
+  ]
 }

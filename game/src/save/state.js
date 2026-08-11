@@ -414,6 +414,7 @@ export function buildSave(sim, build) {
       camera_arm_cast_m: r6(c.armCast),
       camera_arm_hit: !!c.armHit,
       camera_arm_guard: !!c.armGuard,
+      camera_arm_floor_emergency: !!c.armFloorEmergency,
       camera_clear_frames: c.clearFrames,
       camera_dist_target_m: r6(c.distTarget),
       camera_contain_arm_m: r6(c.containArm),
@@ -887,6 +888,7 @@ export function restoreCameraRig(c, pose, f) {
   c.armCast = pose.camera_arm_cast_m;
   c.armHit = pose.camera_arm_hit;
   c.armGuard = pose.camera_arm_guard;
+  c.armFloorEmergency = !!pose.camera_arm_floor_emergency;
   c.clearFrames = pose.camera_clear_frames;
   c.dist = pose.camera_dist_m;
   c.distTarget = pose.camera_dist_target_m;

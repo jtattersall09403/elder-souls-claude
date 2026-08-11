@@ -1,9 +1,9 @@
 {
   "task_id": "W1-06-build",
   "role": "builder",
-  "status": "blocked_on_authority_after_reproduction",
+  "status": "builder_available_work_complete_dependency_blocked",
   "plan": "orchestration/plans/W1-06.md",
-  "current_head": "1378e2a7372d4e3c819f81986b65979524ae08a7",
+  "current_head": "81b5efe",
   "files_touched": [
     "corpus/00-doctrine/ARBITRATION.md",
     "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
@@ -22,16 +22,38 @@
     "reports/w1-06/AMENDMENT-W1-06-01.md",
     "reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md",
     "tools/camera/cam-probe.mjs",
-    "tools/camera/gen-cells.mjs"
+    "tools/camera/gen-cells.mjs",
+    "game/src/save/state.js",
+    "game/src/sim/camera.js",
+    "game/src/sim/record.js",
+    "game/src/sim/state.js",
+    "tools/camera/s49-penetration-guard.mjs",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [],
-  "next_step": "Authority must rule AMENDMENT-W1-06-02: absolute 0.90 m boom floor versus exact zero-clip in moving-wall, backing-wall, 1.20 m pinch, and 30-degree stair populations. After ruling, implement the selected alternative and rerun every population.",
-  "hard_fails": [
-    "Starting-commit reproduction: 2456 clip frames (cistern 1716, stair 617, rig pinch 123; boardwalk 0 on this exact tree)",
-    "moving-wall fixture: 12 clipped frames",
-    "backing-wall fixture clipping"
-  ],
-  "formal_blocker": "reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md \u2014 exact blocked predicate: arm_len_m >= 0.90 and unchanged boom ray/pose cannot yield zero origin-plus-near-plane containment when prescribed solids are closer than the swept camera envelope.",
+  "next_step": "Critic handoff after the canonical engine blob is repaired by an authoritative merge recovery: rerun the exact browser/native collision, mode, transition, rendered-sample and bounded aggregate commands from W1-06.md. Do not score independent blind/fresh rows as builder evidence.",
+  "hard_fails": [],
+  "formal_blocker": null,
   "independent_passes_awarded": 0,
-  "authority_resolution": "AMENDMENT-W1-06-01 granted and applied through ARBITRATION S48: crawl ceiling is 1.80 m; zero clipping unchanged."
+  "authority_resolution": "S48 crawl ceiling 1.80 m remains binding. Merged S49 authorises only the same-frame greatest-clear non-negative below-0.90 m penetration guard when an independent origin-plus-four-near-plane-corners search proves no clear candidate at or above 0.90 m; zero clipping and all fixtures remain unchanged.",
+  "canonical_dependency_blocks": [
+    {
+      "dependency": "A valid merged game/src/engine.js on codex/wave1-build-experiment",
+      "observed": "Required HEAD blob is 300062 bytes, SHA-256 9777c138f6fd210815a9a8d594ccb4df24ed3921e9501eb93e4a48f012bad7d2; node --check fails at byte 1 and Chromium reports SyntaxError for /src/engine.js before window.__HARNESS exists.",
+      "blocked_work": [
+        "browser-backed native camera methods",
+        "all rendered samples",
+        "full collision/mode/transition populations",
+        "browser builder aggregate"
+      ],
+      "recovery": "Authoritatively reconstruct the e0b0313 engine merge; choosing either parent locally would discard the other parent's production work."
+    }
+  ],
+  "builder_results": {
+    "s49_instrument": "5/5 pass",
+    "delete_fix": "exit 1 with clip_through true and missing emergency telemetry",
+    "deterministic_cells": "up to date",
+    "cheap_gates": "check-data/check-content/check-quests pass; quest tool warns about 12 pre-existing missing document sources",
+    "critic_owned": "not_run by builder"
+  }
 }
