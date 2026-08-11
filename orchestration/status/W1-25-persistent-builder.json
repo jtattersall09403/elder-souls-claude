@@ -25,7 +25,9 @@
     "tools/experience/permissiveness-browser.mjs",
     "tools/experience/session-run.mjs",
     "tools/composition/matrix-probe.mjs",
-    "tools/contention.mjs"
+    "tools/contention.mjs",
+    "tools/composition/crossing-live-browser.mjs",
+    "reports/experience/w1-25-persistent-builder/crossing-live-arms.json"
   ],
   "files_claimed": [
     "game/src/engine.js",
@@ -61,7 +63,8 @@
     "Added fail-closed RI-EXP06 browser collector and hardened provenance validation. Live execution honestly returned 0/15 with all probes unmeasurable and chain NOT_RUN because production consumers are absent.",
     "PB-rule current-wave audit passed for zero RI files changed since 1378e2a; its four injected cases pass. Whole-corpus backlog is not used as the denominator.",
     "Fixed contention gate to ignore explicit zombie Chromium processes; gate went from false 57 instances/0 MB to 0 live instances and enabled a clean native run.",
-    "Native 15-cell matrix now clears the full aggregate: 10 live crossings, 3 structural, score 32, 3 W2F/7 F2W, both hard fails clear. RI-CMP01 remains red only because six-arm per-cell controls/durability are not yet compiled."
+    "Native 15-cell matrix now clears the full aggregate: 10 live crossings, 3 structural, score 32, 3 W2F/7 F2W, both hard fails clear. RI-CMP01 remains red only because six-arm per-cell controls/durability are not yet compiled.",
+    "Executed all six browser arms for 10 unique live cells. Fresh-browser restart and same-browser reload targets were observed for three structural cells; controlled aggregate PASS: 10/10, 3 structural, score 32, 5 W2F/5 F2W."
   ],
   "interruption_reason": null,
   "completion": [
@@ -73,9 +76,9 @@
     },
     {
       "row": "RI-CMP01",
-      "state": "RED",
+      "state": "PASS",
       "artifact": "reports/composition/w1-25-persistent-builder/matrix-live.json",
-      "result": "native aggregate PASS: 10 crossings, 3 structural, score 32, 3 W2F/7 F2W; full six-arm controlled population still absent"
+      "result": "native aggregate 10/3/32; controlled aggregate 10 unique, 3 structural, score 32, 5 W2F/5 F2W; all six arms observed"
     },
     {
       "row": "RI-EXP02",
@@ -97,5 +100,5 @@
     }
   ],
   "exact_next_command": "node tools/composition/matrix-probe.mjs --seed 1234 --out reports/composition/w1-25-persistent-builder/matrix-live.json",
-  "next_step": "Implement production RI-EXP06 probe/chain consumers and complete live 15-cell six-arm matrix plus two uninterrupted 90-minute played sessions before independent recall/blind handoff."
+  "next_step": "Implement production RI-EXP06 probe/chain consumers and complete two uninterrupted 90-minute played sessions before independent recall/blind handoff."
 }

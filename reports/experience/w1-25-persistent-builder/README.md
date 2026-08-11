@@ -12,8 +12,8 @@ corruption self-test is 4/4; the facility self-test covers 14/14 declared cases,
 ## Builder rows still red
 
 * **RI-CMP01:** the native aggregate now passes at 10 live crossings, three structural cells, score 32,
-  and 3 W2F / 7 F2W. The tool still does not execute the required six-arm per-cell control and
-  durability protocol, so RI-CMP01 itself remains red.
+  and 3 W2F / 7 F2W. The controlled browser runner now also passes 10/10 unique cells with all six arms, three
+  structural reload/restart observations, score 32, and 5 W2F / 5 F2W. RI-CMP01 is complete.
 * **RI-EXP02/03:** `session-inputs/matched-player-actions.json` is a frozen matched 324,000-frame
   keyboard script. The runner now holds real keys while stepping simulated frames. Both 90-minute
   attempts terminated before completion; `live-attempt.json` scores neither. No recall or blind

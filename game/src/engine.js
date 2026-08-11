@@ -5410,6 +5410,12 @@ export class Engine {
     return value;
   }
 
+  /** Consume an optional boss outcome through the production quest machine. */
+  consumeBossOutcome(questId, resolutionId) {
+    if (!resolutionId) return { ok: true, consumed: false, reason: 'no boss outcome present' };
+    return this.questEngine.resolve(String(questId), String(resolutionId));
+  }
+
   // ---- AR-3: race-conditioned encounters -----------------------------------------------------
 
   /**
@@ -5426,11 +5432,12 @@ export class Engine {
     // weather fronts advance and quest reputation earns rank).  Keep the effects on roster and
     // perception/hostility; never alter a statblock's combat numbers.
     const hour = Number(this.sim.env.timeOfDay) || 0;
-    const nightRoster = hour < 6 || hour >= 21;
-    const saltHidden = this.sim.env.weather === 'salt_storm';
+    const nightRoster = this._consumeCrossing('TOD->ROS', hour < 6 || hour >= 21, false);
+    const saltHidden = this._consumeCrossing('WEA->ROS', this.sim.env.weather === 'salt_storm', false);
     const factionRows = (this.sim.quest && this.sim.quest.factions) || {};
-    const legionRank = Object.values(factionRows).reduce((best, row) =>
+    const legionRankRaw = Object.values(factionRows).reduce((best, row) =>
       Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
+    const legionRank = this._consumeCrossing('FAC->ROS', legionRankRaw, 0);
     // A disguise is equipment, not a probe switch.  `equipItem()` lands ordinary inventory rows
     // in their authored slot and patrols consume that state here.  Restricting the recognition to
     // actual equipped Imperial issue keeps carrying looted armour from pacifying a patrol.
