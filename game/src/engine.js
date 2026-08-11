@@ -8976,7 +8976,7 @@ export class Engine {
       if (o.survival && !this.sim.env.interior && this.combat && this.combat.player) {
         const body=this.combat.player, ctl=this.combat.playerCtl;
         if (!body.move && body.hp < body.hpMax * 0.5 && ctl && ctl.estus > 0) { script.push({f:0,press:['use_item']}); healsUsed++; }
-        else if (!body.move && frames % 48 === 0 && body.stamina > body.staminaMax * 0.3) {
+        else if (o.defensive !== false && !body.move && frames % 48 === 0 && body.stamina > body.staminaMax * 0.3) {
           // Long player-facing journeys cross streamed hostile patrols. Swinging while the
           // camera is already facing the route is the ordinary-world answer; silently tanking
           // them until a hearth respawn would turn a walking trace into a discontinuity.

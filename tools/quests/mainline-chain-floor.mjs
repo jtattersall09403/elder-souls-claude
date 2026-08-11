@@ -264,8 +264,11 @@ try {
       let stealth=null;
       if(!H.whereAmI().interior && already>80){
         const ss=H.getStealthState();
-        if(!ss.crouched){H.queueInputs([{f:0,press:['crouch']},{f:2,release:['crouch']}]);H.stepFrames(4);}
-        stealth={action:ss.crouched?'keep-crouch':'crouch',production_input:true};
+        // A province-length route cannot remain crouched after detection: the patrol keeps pace
+        // and eventually exhausts every heal.  Stand before the journey so the production
+        // survival controller can sprint away without fighting.
+        if(ss.crouched){H.queueInputs([{f:0,press:['crouch']},{f:2,release:['crouch']}]);H.stepFrames(4);}
+        stealth={action:ss.crouched?'stand-to-flee':'already-standing',production_input:true};
       }
       const walked = H.walkPath(route, {
         fromCurrent: true,
@@ -275,7 +278,14 @@ try {
         lookahead_m: 0.5,
         stuckAbort: 1800,
         miredAbort: 36000,
-        survival: false,
+        // Ordinary player inputs keep a long provincial journey alive: heal, sprint away, and
+        // defend when a streamed patrol catches the player.  Disabling these inputs made the
+        // Q-MAIN-08 proof deliberately tank attacks until a hearth respawn, which measured a
+        // helpless harness rather than the player-available route.
+        survival: true,
+        // Quest-chain proof is explicitly nonviolent.  Flee and heal, but never let the generic
+        // survival walker swing at a patrol (which also keeps combat open across interior doors).
+        defensive: false,
       });
       const ended=H.whereAmI().pos.slice(), actualLeft=Math.hypot(x-ended[0],z-ended[2]);
       return {
