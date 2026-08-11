@@ -51,3 +51,19 @@ three committed JSON artifacts. These are preserved as critic/remediation handof
 being hidden by the restored engine. All fresh, blind, visual-scoring and final native aggregation
 rows remain critic-owned and `not_run by builder`.
 
+## Canonical disposition — S49 correction, 2026-08-11
+
+The “genuine canonical block” diagnosis above is preserved as the builder's accurate report of the
+then-governing authority, but it is superseded for dispatch by corrected ARBITRATION S49. The M4/M5
+failures arise from an **instrument fixture-coordinate defect**: the native wall distances denote
+the player-facing surface, while `cam-probe.mjs` supplied them as centres of the 0.80 m-thick
+`rail_wall`. The realised M4 face ended at 0.10 m rather than 0.50 m; M5 had the same 0.40 m offset
+and lacked the required pivot-side/body-collision proof. This creates the observed no-legal-pose
+interval when zero clipping, a non-negative boom, complete near-plane clearance and the 0.35 m
+camera-to-head floor are all correctly retained. It is neither a production implementation defect
+nor authority to edit game collision data or relax a camera threshold.
+
+Canonical reproduction now requires M4 centre endpoints −6.40/−0.90 m and M5 initial centre
+−3.40 m for the current 0.40 m half-depth, plus an independent M5 pivot-side assertion. The
+committed JSON remains valid evidence that the old instrument fails and must not be relabelled
+green. Pinch, stair and every other reported red row remain unresolved on their existing bars.
