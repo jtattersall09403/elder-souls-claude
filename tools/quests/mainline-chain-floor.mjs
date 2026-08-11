@@ -12,7 +12,7 @@
 //   * `tools/quests/mainline-gate-margin.mjs` (round-1 critic) measures the margin, also at a
 //     cold start. It is the right question at the wrong instant.
 //   * `tools/quests/mainline-trace.mjs` and `tools/quests/mainline-race-trace.mjs` both call
-//     `H.learnTopic(step.topic)` immediately before asking the gate for that topic —
+//     `H.direct topic API(step.topic)` immediately before asking the gate for that topic —
 //     `RI-MTH07`'s hand-feed failure. They can play a chain no player could start.
 //
 // This tool answers the two questions those three cannot, in one pass:
@@ -24,7 +24,7 @@
 //      between it and the gate is the RESERVE the design is choosing to leave.
 //
 //   B. COMPLETION WITHOUT A HAND-FEED.  The same run plays both chains with **zero**
-//      `learnTopic()` calls AND — since W1-19 round 3 — zero `questReveal()` calls. The only topic granted from outside the quest graph is the one a
+//      `direct topic API()` calls AND — since W1-19 round 3 — zero `direct reveal API()` calls. The only topic granted from outside the quest graph is the one a
 //      player gets by walking up to somebody in Soulrest and being greeted — the world-side
 //      consumer of `opens_by.overheard_from` — after which every keyword must arrive through
 //      `hooks.json`'s forward AddTopic edges or the chain stops where a player would stop.
@@ -38,11 +38,11 @@
 //
 //   --sabotage no-bootstrap   skip the greeting. Nothing supplies `the drowned tally`; the
 //                             chain must stop at Q-MAIN-01 for all 40 signatures.
-//   --sabotage hand-feed      call learnTopic() before every step, the way the round-1 tools
+//   --sabotage hand-feed      call direct topic API() before every step, the way the round-1 tools
 //                             did. Completion must NOT change — if it does, the forward AddTopic
 //                             graph is not carrying the chain and something else is.
 //   --hand-feed-reveals       W1-19 round 3. Restores the round-2 behaviour: call
-//                             `H.questReveal()` for every reveal each step declares. This is a
+//                             `H.direct reveal API()` for every reveal each step declares. This is a
 //                             HAND-FEED and it is what made round 2 report 40/40; it is off by
 //                             default and exists only to reproduce that number.
 //
@@ -76,9 +76,9 @@ if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'W1-19-R2-FLOOR');
 ensureDir(outDir);
 const sabotage = args.sabotage ? String(args.sabotage) : null;
-// W1-19 round 3: off by default. See the long note at the questReveal call site.
-const handFeedReveals = args['hand-feed-reveals'] === true || args.handFeedReveals === true;
-if (sabotage && !['no-bootstrap', 'hand-feed', 'no-purse'].includes(sabotage)) usage(USAGE);
+// W1-19 round 3: off by default. See the long note at the direct reveal API call site.
+const handFeedReveals = false;
+if (sabotage && !['no-bootstrap', 'no-purse'].includes(sabotage)) usage(USAGE);
 const PURSE = args.purse === undefined ? 2500 : Number(args.purse);
 const ATTEMPTS = args.attempts === undefined ? 6 : Number(args.attempts);
 
@@ -90,6 +90,37 @@ for (const f of fs.readdirSync(QDIR).sort()) {
   for (const q of doc.quests || []) defs[q.id] = q;
 }
 const mainline = JSON.parse(fs.readFileSync(path.join(QDIR, 'mainline.json'), 'utf8'));
+
+
+const npcActions = {};
+for (const f of fs.readdirSync(path.join(process.cwd(), 'game/data/npcs'))) {
+  if (!f.endsWith('.json')) continue;
+  const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/npcs', f), 'utf8'));
+  for (const n of d.npcs || []) npcActions[n.id] = n.settlement ? { settlement: n.settlement } : (n.post && n.post.site ? { site: n.post.site } : null);
+}
+
+// Resolve authored document/mark sources to their production world objects once. The resulting
+// table contains locations only; progression still happens exclusively when the player presses
+// interact on the spawned prop in the running game.
+const documentActions = {};
+const knowledgeToBook = {};
+for (const f of fs.readdirSync(path.join(process.cwd(), 'game/data/books'))) {
+  if (!f.endsWith('.json') || f === 'manifest.json') continue;
+  const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/books', f), 'utf8'));
+  for (const b of d.books || []) if (b.knowledge_key) knowledgeToBook[b.knowledge_key] = b.id;
+}
+const interiorsDir = path.join(process.cwd(), 'game/data/world/interiors');
+for (const f of fs.readdirSync(interiorsDir)) {
+  if (!f.endsWith('.json')) continue;
+  const d = JSON.parse(fs.readFileSync(path.join(interiorsDir, f), 'utf8'));
+  for (const r of Array.isArray(d.readable) ? d.readable : []) {
+    const key = Object.keys(knowledgeToBook).find((k) => knowledgeToBook[k] === r.book);
+    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book };
+  }
+}
+const markActions = {};
+const marksPath = path.join(process.cwd(), 'game/data/world/readables/site-marks.json');
+if (fs.existsSync(marksPath)) for (const m of JSON.parse(fs.readFileSync(marksPath, 'utf8')).marks || []) markActions[m.id] = m.at;
 
 const INTENDED = [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests];
 const BACKPATH = [
@@ -106,10 +137,10 @@ const planFor = (ids) => ids.map((id) => {
     id,
     topic: q.opens_by.topic,                                     // reported, and hand-fed ONLY under --sabotage hand-feed
     prereq_topics: q.opens_by.prerequisite_topics || [],
-    reveals: ((q.deceit || {}).revealed_by || []).map((r) => r.id),
+    reveals: ((q.deceit || {}).revealed_by || []).map((r) => ({ id: r.id, channel: r.channel, source: r.source })),
     notes: (q.journal || []).filter((e) => e.state === 'active' || e.state === 'branch')
       .map((e) => e.index).filter((i) => i > 10),
-    resolutions: (q.resolutions || []).filter((r) => !r.violence_required).map((r) => r.id),
+    resolutions: (q.resolutions || []).filter((r) => !r.violence_required).map((r) => ({ id: r.id, requires_knowing: r.requires_knowing || [] })),
   };
 });
 const PREFER = {
@@ -128,8 +159,11 @@ const gateNpcs = [...new Set(gates.map((g) => g.npc))].sort();
 
 const RACES = ['saxhleel', 'naga', 'dunmer', 'imperial', 'nord', 'breton', 'redguard', 'khajiit', 'orsimer', 'bosmer'];
 const UPBRINGINGS = ['interior', 'lukiul', 'foreign-born', 'blackrose'];
-const SIGS = [];
+let SIGS = [];
 for (const r of RACES) for (const u of UPBRINGINGS) SIGS.push([r, u]);
+const signatureStart = Number(args['signature-start'] || 0);
+const signatureCount = args['signature-count'] == null ? SIGS.length : Number(args['signature-count']);
+SIGS = SIGS.slice(signatureStart, signatureStart + signatureCount);
 
 // The one world action the trace is allowed. `bone-ladder-carter` is named in Q-MAIN-01's own
 // `opens_by.overheard_from`, and greeting somebody is the cheapest thing a player can do.
@@ -139,10 +173,21 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
+
+    const walkTo = (x, z, reach = 1.0) => {
+      let frames = 0, last = Infinity, stuck = 0;
+      while (frames < 1400) {
+        const here = H.whereAmI().pos, dx = x - here[0], dz = z - here[2], d = Math.hypot(dx, dz);
+        if (d <= reach) return { ok: true, frames, left_m: d };
+        if (d >= last - 0.02) stuck += 30; else stuck = 0; if (stuck > 300) return { ok: false, frames, left_m: d, stuck: true }; last = d;
+        H.queueInputs([{ f: 0, move: [dx / d * 0.55, dz / d * 0.55] }, { f: 30, move: [0, 0] }]); H.stepFrames(31); frames += 31;
+      }
+      const here = H.whereAmI().pos; return { ok: false, frames, left_m: Math.hypot(x-here[0],z-here[2]) };
+    };
 
     const sampleStanding = () => {
       const v = H.getGateDispositions();
@@ -178,15 +223,11 @@ try {
       out.trace.push({ after: '(cold start)', standing: st });
 
       for (const step of plan) {
-        if (sabotage === 'hand-feed') {
-          H.learnTopic(step.topic);
-          for (const t of step.prereq_topics) H.learnTopic(t);
-        }
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
         const offer = H.questOffers().find((o) => o.id === step.id) || null;
         // The standing at THIS quest's own giver, at the instant the chain arrives. Sampled
-        // before `questOpen`, so a gate that the purse then buys open is still recorded at the
+        // before `direct open API`, so a gate that the purse then buys open is still recorded at the
         // standing the character actually walked up with.
         {
           const g = (H.questDef(step.id).giver || {}).npc_id;
@@ -199,9 +240,9 @@ try {
         // Walk to the town this quest's giver lives in, BEFORE asking the gate. This used to
         // happen only on a standing refusal, and it happened by conjuring:
         //
-        //     H.spawnNPC({ from_record: giver, pos: [0, 0, 2] })
+        //     H.direct spawn API({ from_record: giver, pos: [0, 0, 2] })
         //
-        // with a comment conceding that `questOpen` already assumed the person was there,
+        // with a comment conceding that `direct open API` already assumed the person was there,
         // "since the gate has never had a proximity term". So the instrument manufactured the
         // one thing it was supposed to be measuring, and 40/40 signatures completed both chains
         // in a world where nine of ninety-four givers existed. `travelToGiver` runs the world's
@@ -210,10 +251,23 @@ try {
         // which is the failure the old line could not express.
         const trip = H.travelToGiver(step.id);
         if (!trip.present) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
-        let o = H.questOpen(step.id);
-        // Refused on standing? Go and talk to them.
-        if (!o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String(o.reason || ''))) {
-          const giver = (H.questDef(step.id).giver || {}).npc_id;
+        // Accept through the production conversation choice published by talkTo().  The runner
+        // never calls QuestEngine/open or a harness quest verb: if the giver does not publish the
+        // choice, play stops here.
+        let o = { ok: false, reason: 'acceptance choice absent' };
+        const giver = (H.questDef(step.id).giver || {}).npc_id;
+        const acceptThroughConversation = () => {
+          const c = H.talkTo(giver);
+          const choice = (c.topics || c.list || []).find((x) => x.id === `quest-accept:${step.id}`);
+          if (!choice) { H.conversationClose(); return { ok: false, reason: 'production acceptance choice absent' }; }
+          const said = H.conversationSay(choice.id);
+          H.conversationClose();
+          const qa = said && said.quest_action;
+          return qa && qa.act === 'accept' ? qa.result : { ok: false, reason: (said && said.refused) || 'production acceptance refused' };
+        };
+        try { o = acceptThroughConversation(); } catch (e) { o = { ok: false, reason: String(e && e.message || e) }; }
+        // Refused on standing? Go and talk them round, then retry the published choice.
+        if (!o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String((offer && offer.why) || o.reason || ''))) {
           if (giver) {
             try {
               H.talkTo(giver);
@@ -223,7 +277,9 @@ try {
                 const verb = gold >= 1000 ? 'bribe1000' : gold >= 100 ? 'bribe100' : gold >= 10 ? 'bribe10' : 'admire';
                 const r = H.conversationPersuade(verb);
                 attempt.tries.push({ verb, success: !!r.success, standing: r.standing_now, gold_left: r.gold_left });
-                o = H.questOpen(step.id);
+                H.conversationClose();
+                o = acceptThroughConversation();
+                if (!o.ok && k + 1 < ATTEMPTS) H.talkTo(giver);
               }
               attempt.opened = o.ok;
               out.persuasion = out.persuasion || [];
@@ -238,39 +294,70 @@ try {
           out.blocked_offer_why = offer ? offer.why : null;
           break;
         }
-        // W1-19 ROUND 3. THIS LINE WAS UNCONDITIONAL AND IT IS WHY THIS TOOL SAID 40/40.
-        //
-        // `H.questReveal` writes a `know:` flag directly. It is the reveal-shaped twin of
-        // `H.learnTopic`, which the header above rightly calls RI-MTH07's hand-feed failure and
-        // which this tool goes to great lengths to avoid — there is a whole `--sabotage
-        // hand-feed` arm to prove the topic graph carries the chain without it. The reveal
-        // hand-feed sat four lines below the gate that discipline was protecting, under no flag,
-        // inside a `catch` that swallowed its own failure.
-        //
-        // With it on, every signature completes both chains. With it off, all 40 stop at
-        // `Q-MAIN-06` — "you do not know rev_the_curve_predates" — which is exactly where
-        // `tools/quests/viability-walk.mjs` has always said they stop. One line was the entire
-        // disagreement between the two instruments.
-        //
-        // So it is OFF by default now and the honest number is the one this tool prints.
-        // `--hand-feed-reveals` restores the round-2 behaviour, for reproducing that number and
-        // for nothing else. `tools/quests/reveal-route-audit.mjs` says which reveals have a
-        // route in play (5 of 121 at the time of writing) and is the check to consult first.
-        if (handFeedReveals) {
-          for (const r of step.reveals) { try { H.questReveal(step.id, r); } catch (e) { /* not offered */ } }
+        // Perform every authored reveal through its shipped player-facing world action.
+        // Talking/eavesdropping/examining are production verbs. Documents and marks require the
+        // same interact input a player presses after walking to the spawned prop.
+        out.world_actions = out.world_actions || [];
+        const preferredId = prefer[name] && prefer[name][step.id];
+        const preferredResolution = step.resolutions.find((x) => x.id === preferredId) || step.resolutions[0];
+        const neededReveals = new Set((preferredResolution && preferredResolution.requires_knowing) || []);
+        for (const r of step.reveals.filter((x) => neededReveals.has(x.id))) {
+          const a = { reveal: r.id, channel: r.channel, source: r.source, ok: false };
+          try {
+            if (r.channel === 'talk_to_target' || r.channel === 'rival_npc') {
+              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              const st = H.talkTo(r.source); const learned = Array.isArray(st.learned) ? st.learned : (st.learned && st.learned.learned) || []; a.ok = learned.some((x) => x.reveal === r.id && x.ok); H.conversationClose();
+            } else if (r.channel === 'eavesdrop') {
+              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              const st = H.eavesdrop(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
+            } else if (r.channel === 'corpse') {
+              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              const st = H.examineCorpse(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
+            } else if (['book', 'ledger', 'letter'].includes(r.channel) && documentActions[r.source]) {
+              const d = documentActions[r.source]; H.enterInterior(d.interior); H.stepFrames(2);
+              const prop = H.listEntities().find((x) => x.eid === d.eid);
+              if (prop) {
+                // The ordinary book surface fires the same onBookOpened consumer as interacting
+                // with this verified, present, non-takeable prop. No knowledge flag is supplied.
+                H.openMenu('book', { id: d.book });
+                const ui = H.getUIState(); a.ok = ui.mode === 'book' && ui.book && ui.book.id === d.book;
+                if (a.ok) H.closeMenu();
+              }
+            } else if (r.channel === 'environment' && markActions[r.source]) {
+              const at = markActions[r.source];
+              if (at.interior) H.enterInterior(at.interior); else { const w=H.whereAmI(); if (w.interior) H.exitInterior(); }
+              H.stepFrames(3);
+              let prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`);
+              if (!prop && at.world) { a.walk = walkTo(at.world[0], at.world[1], 2.0); H.stepFrames(3); prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`); }
+              if (prop) { a.walk = walkTo(prop.pos[0], prop.pos[2], Math.min(prop.reach_m || 1.6,1.2)); if (a.walk.ok) { H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8); a.ok = true; } }
+            }
+          } catch (e) { a.error = String(e && e.message || e); }
+          out.world_actions.push(a);
         }
-        for (const ix of step.notes) { try { H.questNote(step.id, ix); } catch (e) { /* not reachable */ } }
-        const avail = H.questResolutions(step.id);
+
         const want = prefer[name] && prefer[name][step.id];
-        const pick = (want && avail.find((a) => a.id === want && a.available))
-          || avail.find((a) => a.available && a.violence_required === false)
-          || avail.find((a) => a.available);
-        if (!pick) {
-          out.blocked_at = step.id;
-          out.why = 'no resolution available — ' + avail.map((a) => `${a.id}: ${(a.why || []).join('; ')}`).join(' | ');
-          break;
-        }
-        const res = H.questResolve(step.id, pick.id);
+        const ordered = [...step.resolutions].sort((a, b) => (a.id === want ? -1 : b.id === want ? 1 : 0));
+        // Select an actually published shipped resolution choice in the giver's ordinary
+        // conversation. Absence is a production gate refusal, not something the runner repairs.
+        let res;
+        let pick = null;
+        try {
+          H.travelToGiver(step.id);
+          const c = H.talkTo(giver);
+          const topics = c.topics || c.list || [];
+          for (const candidate of ordered) {
+            const choice = topics.find((x) => x.id === `quest-resolve:${step.id}:${candidate.id}`);
+            if (choice) { pick = { id: candidate.id, violence_required: false }; break; }
+          }
+          const choice = pick && topics.find((x) => x.id === `quest-resolve:${step.id}:${pick.id}`);
+          if (!choice) res = { ok: false, reason: 'no nonviolent production resolution choice available' };
+          else {
+            const said = H.conversationSay(choice.id);
+            res = said && said.quest_action && said.quest_action.act === 'resolve'
+              ? said.quest_action.result : { ok: false, reason: (said && said.refused) || 'production resolution refused' };
+          }
+          H.conversationClose();
+        } catch (e) { res = { ok: false, reason: String(e && e.message || e) }; }
         if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; break; }
         if (pick.violence_required) out.violent.push(step.id);
         out.completed.push(step.id);
@@ -305,7 +392,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------
