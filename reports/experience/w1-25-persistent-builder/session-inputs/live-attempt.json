@@ -1,0 +1,31 @@
+{
+  "schema": "elder-souls/w1-25-played-session-attempt@1",
+  "tested_commit": "a4c847d39ffc452e3bac94db284a0e4a7a62921c",
+  "driver": "tools/experience/session-run.mjs",
+  "action_script": "reports/experience/w1-25-persistent-builder/session-inputs/matched-player-actions.json",
+  "requested_population": {
+    "arms": ["a", "b"],
+    "seed": 1337,
+    "minutes_each": 90,
+    "profile": "first-hour",
+    "render_policy": "never",
+    "same_actions": true
+  },
+  "attempt": {
+    "started_at": "2026-08-11T00:00:00Z",
+    "elapsed_seconds_before_operator_termination": 241,
+    "completed_arms": 0,
+    "reason": "Both running-build sessions were still executing their live simulated frames after 241 seconds. They were terminated; no partial trace or outcome is retained or scored.",
+    "status": "RED_NOT_POPULATED"
+  },
+  "honesty": {
+    "events_injected": false,
+    "outcomes_inferred": false,
+    "partial_runs_scored": false,
+    "independent_judgement_awarded": false
+  },
+  "reproduction": [
+    "node tools/experience/session-run.mjs --session w1-25-exp03-a --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 90 --render-policy never --profile first-hour --drive script:reports/experience/w1-25-persistent-builder/session-inputs/matched-player-actions.json --out reports/experience/w1-25-persistent-builder/sessions/a",
+    "node tools/experience/session-run.mjs --session w1-25-exp03-b --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 90 --render-policy never --profile first-hour --drive script:reports/experience/w1-25-persistent-builder/session-inputs/matched-player-actions.json --out reports/experience/w1-25-persistent-builder/sessions/b"
+  ]
+}

@@ -34,11 +34,14 @@ import { cpus, loadavg } from 'node:os';
 /** Every headless_shell pid, with its parent, in one ps call. */
 function browserProcs() {
   let out = '';
-  try { out = execSync('ps -eo pid,ppid,comm,rss', { encoding: 'utf8' }); } catch { return []; }
+  try { out = execSync('ps -eo pid,ppid,stat,comm,rss', { encoding: 'utf8' }); } catch { return []; }
   const rows = [];
   for (const line of out.split('\n').slice(1)) {
-    const m = line.trim().match(/^(\d+)\s+(\d+)\s+(\S+)\s+(\d+)$/);
-    if (m) rows.push({ pid: +m[1], ppid: +m[2], comm: m[3], rssKb: +m[4] });
+    const m = line.trim().match(/^(\d+)\s+(\d+)\s+(\S+)\s+(\S+)\s+(\d+)$/);
+    // PID 1 in some CI containers does not reap Chromium children.  A zombie has no CPU, memory,
+    // tab or browser instance left to contend with; counting it made the gate permanently red
+    // after otherwise clean runs.  Ignore only ps' explicit Z state, never a merely idle process.
+    if (m && !m[3].startsWith('Z')) rows.push({ pid: +m[1], ppid: +m[2], stat: m[3], comm: m[4], rssKb: +m[5] });
   }
   return rows;
 }

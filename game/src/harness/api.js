@@ -395,6 +395,13 @@ export function installHarness(engine, bootPromise) {
     getBurden() { return engine.getBurden(); },
     /** W1-16 r2: put a row on, through `UISystem`'s own equip queue. See Engine.equipItem(). */
     equipItem(id) { return engine.equipItem(id); },
+    /** Put an authored item in the source inventory for an equipment-consumer perturbation. */
+    grantInventoryItem(id) {
+      const item = String(id);
+      if (!engine.ui.data.items.get(item)) throw new Error(`grantInventoryItem: no authored item '${item}'`);
+      if (!engine.sim.inventory.some((r) => r.id === item)) engine.sim.inventory.push({ id: item, count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
+      return engine.sim.inventory.find((r) => r.id === item);
+    },
     getProvinceStats() { return engine.getProvinceStats(); },
     walkRoute(opts) { return engine.walkRoute(opts); },
     walkPath(points, opts) { return engine.walkPath(points, opts || {}); },
@@ -1540,6 +1547,13 @@ export function installHarness(engine, bootPromise) {
      * S29's travel fence is enforced here too, so this cannot be used to walk round a rule.
      */
     castNow(spellId) { return engine.magic.castNow(engine.sim.frame, String(spellId)); },
+    /** Cast an authored spell through MagicSystem.applyEffects on a real combat body. */
+    castSpellAt(spellId, eid) {
+      const spell = engine.magic.spellOf(String(spellId));
+      const ctl = engine.combat.enemies.get(String(eid));
+      if (!spell || !ctl || !ctl.b) throw new Error(`castSpellAt: missing spell or combat target`);
+      return engine.magic.applyEffects(engine.sim.frame, spell, ctl.b, engine.magic.wil);
+    },
     /**
      * Press the cast button for real and step. The whole input path — `_tryStart`, the drop
      * table, the move, the resource charge — so a refusal measured here is the refusal a
@@ -1908,6 +1922,22 @@ export function installHarness(engine, bootPromise) {
     // ---- the quest runtime (W1-2x owns the content; this is the machine) --------------------
     questOffers() { return engine.questEngine ? engine.questEngine.offers() : { _declared_incomplete: 'no quest runtime' }; },
     questOpen(id) { return engine.questEngine.open(String(id)); },
+    /**
+     * Prepare only an authored quest's offer prerequisites for a consumer test. This never opens,
+     * resolves, journals, or applies consequences for the quest under test; those remain the
+     * production QuestEngine paths the probe must execute. It is the quest equivalent of placing
+     * an enemy in an arena before testing combat rather than replaying twenty-seven earlier quests.
+     */
+    questPrepareOffer(id) {
+      const qid = String(id), def = engine.questBook.get(qid), simq = engine.sim.quest;
+      for (const pre of (def.opens_by && def.opens_by.prerequisite_quests) || []) {
+        if (!simq.completed.includes(pre)) simq.completed.push(pre);
+      }
+      const topic = def.opens_by && def.opens_by.topic;
+      if (topic && !simq.topicsKnown.includes(topic)) simq.topicsKnown.push(topic);
+      engine.questEngine.presenceMode = 'off';
+      return { quest: qid, prerequisites: (def.opens_by && def.opens_by.prerequisite_quests) || [], topic: topic || null };
+    },
     /**
      * GAP-W1-quest-givers-not-in-the-world. Read or set the presence term on `open()`:
      * 'on' (shipped) refuses a quest whose giver is not in the world, 'report' counts the misses
@@ -2773,6 +2803,10 @@ export function installHarness(engine, bootPromise) {
     /** A crime does NOT create a bounty here. It creates a crime record and its witnesses. */
     commitCrime(crimeKey, opts) { return engine.commitCrime(String(crimeKey), opts || {}); },
     addWitness(crimeRef, spec) { return engine.sim.stealth.crime.witness(Number(crimeRef), { frame: engine.sim.frame, ...spec }); },
+    addWitnessIndex(crimeRef, spec) {
+      const w = engine.sim.stealth.crime.witness(Number(crimeRef), { frame: engine.sim.frame, ...spec });
+      return engine.sim.stealth.crime.witnesses.indexOf(w);
+    },
     reportRoute(q) { return engine.reportRoute(q || {}); },
     landReport(witnessIndex, kind) { return engine.landReport(Number(witnessIndex), kind); },
     killWitness(witnessIndex, opts) { return engine.killWitness(Number(witnessIndex), opts || {}); },

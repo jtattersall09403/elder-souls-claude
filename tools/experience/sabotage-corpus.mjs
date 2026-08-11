@@ -192,6 +192,9 @@ function selfTest() {
   trial('a twin is deleted', () => fs.rmSync(path.join(tmp, first)), 'ABSENT');
   trial('an origin was regenerated and no longer matches its twin', () => {
     const p = path.join(tmp, CORPUS[0].origin);
+    // A fresh clone legitimately has only the tracked twin.  Materialise an origin first so this
+    // teardown still tests drift rather than crashing before the verifier can see it.
+    if (!fs.existsSync(p)) put(CORPUS[0].origin, fs.readFileSync(path.join(tmp, first)));
     fs.writeFileSync(p, fs.readFileSync(p).toString() + '\n');
   }, 'DRIFTED');
   fs.rmSync(tmp, { recursive: true, force: true });
