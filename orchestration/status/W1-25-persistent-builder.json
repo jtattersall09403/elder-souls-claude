@@ -1,0 +1,37 @@
+{
+  "task_id": "W1-25-persistent-builder",
+  "status": "EXTERNALLY_INTERRUPTED",
+  "starting_commit": "317b054f3839cbd653bf76437073b8e6314f4c2b",
+  "branch": "codex/wave1-build-experiment",
+  "files_touched": [
+    "orchestration/status/W1-25-persistent-builder.json"
+    ,"tools/composition/crossing-controls.mjs"
+    ,"reports/composition/w1-25-persistent-builder/crossing-controls.json"
+    ,"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json"
+  ],
+  "files_claimed": [
+    "game/src/engine.js",
+    "game/data/",
+    "tools/composition/",
+    "tools/experience/",
+    "reports/composition/w1-25-persistent-builder/",
+    "reports/experience/w1-25-persistent-builder/",
+    "orchestration/status/W1-25-persistent-builder.json"
+  ],
+  "builder_complete": false,
+  "critic_pass_claimed": false,
+  "progress": [
+    "Confirmed required starting commit; the checkout initially used local branch work, then created the required codex/wave1-build-experiment branch at the same commit.",
+    "Read repository instructions, the satisfied W1-25 plan, predecessor statuses, reports and native instrument inventory.",
+    "Added a fail-closed native crossing-control gate. Its self-test sees six injected defects; applying it to the predecessor manifest honestly reports 0/4 controlled crossings because every consumer-delete and irrelevant-source arm is absent."
+  ],
+  "interruption_reason": "Codex task execution window ended before the production repairs and governing populations could be completed. Builder completion is not claimed.",
+  "completion": [
+    {"row":"RI-CMP01","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/composition/w1-25-persistent-builder/crossing-controls.json","result":"RED: 0 controlled qualifying cells"},
+    {"row":"RI-EXP02","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json","result":"handoff prepared; builder-owned played population absent"},
+    {"row":"RI-EXP03","state":"EXTERNALLY_INTERRUPTED","artifact":"reports/experience/w1-25-persistent-builder/independent-role-handoffs.json","result":"matched played population absent"},
+    {"row":"RI-EXP06","state":"EXTERNALLY_INTERRUPTED","artifact":"tools/experience/permissiveness-live.mjs","result":"closure/restore/repeat population absent"}
+  ],
+  "exact_next_command": "node tools/composition/crossing-controls.mjs --in reports/experience/w1-25-continuation-builder/crossing-manifest.json --out reports/composition/w1-25-persistent-builder/crossing-controls.json",
+  "next_step": "Resume at the first reported crossing-control failure; add live consumer-delete/source-remove/irrelevant/restore arms to matrix-probe, then rerun the exact command."
+}

@@ -1,0 +1,136 @@
+{
+  "schema": "elder-souls/w1-25-crossing-controls@1",
+  "results": [
+    {
+      "cell": "TOD->ROS",
+      "missing_arms": [
+        "positive",
+        "null",
+        "consumer_delete",
+        "source_remove",
+        "irrelevant_source",
+        "restore"
+      ],
+      "checks": {
+        "declared_crossing": false,
+        "real_consumer_named": false,
+        "player_observable_named": false,
+        "support_nonzero": false,
+        "separated_source_values": false,
+        "predicted_effect_recorded": false,
+        "all_arms_observed": false,
+        "positive_differs_from_null": false,
+        "source_removal_returns_null": false,
+        "consumer_delete_returns_null": false,
+        "irrelevant_source_preserves_positive": false,
+        "restore_recovers_positive": false,
+        "consumer_executed": false,
+        "deleted_consumer_not_executed": false,
+        "changed_hashes_recorded": false,
+        "no_direct_target_mutation": true,
+        "no_harness_consumer": false
+      },
+      "pass": false
+    },
+    {
+      "cell": "ROS->WLD",
+      "missing_arms": [
+        "positive",
+        "null",
+        "consumer_delete",
+        "source_remove",
+        "irrelevant_source",
+        "restore"
+      ],
+      "checks": {
+        "declared_crossing": false,
+        "real_consumer_named": false,
+        "player_observable_named": false,
+        "support_nonzero": false,
+        "separated_source_values": false,
+        "predicted_effect_recorded": false,
+        "all_arms_observed": false,
+        "positive_differs_from_null": false,
+        "source_removal_returns_null": false,
+        "consumer_delete_returns_null": false,
+        "irrelevant_source_preserves_positive": false,
+        "restore_recovers_positive": false,
+        "consumer_executed": false,
+        "deleted_consumer_not_executed": false,
+        "changed_hashes_recorded": false,
+        "no_direct_target_mutation": true,
+        "no_harness_consumer": false
+      },
+      "pass": false
+    },
+    {
+      "cell": "ROS->DIS",
+      "missing_arms": [
+        "positive",
+        "null",
+        "consumer_delete",
+        "source_remove",
+        "irrelevant_source",
+        "restore"
+      ],
+      "checks": {
+        "declared_crossing": false,
+        "real_consumer_named": false,
+        "player_observable_named": false,
+        "support_nonzero": false,
+        "separated_source_values": false,
+        "predicted_effect_recorded": false,
+        "all_arms_observed": false,
+        "positive_differs_from_null": false,
+        "source_removal_returns_null": false,
+        "consumer_delete_returns_null": false,
+        "irrelevant_source_preserves_positive": false,
+        "restore_recovers_positive": false,
+        "consumer_executed": false,
+        "deleted_consumer_not_executed": false,
+        "changed_hashes_recorded": false,
+        "no_direct_target_mutation": true,
+        "no_harness_consumer": false
+      },
+      "pass": false
+    },
+    {
+      "cell": "WEA->ROS",
+      "missing_arms": [
+        "positive",
+        "null",
+        "consumer_delete",
+        "source_remove",
+        "irrelevant_source",
+        "restore"
+      ],
+      "checks": {
+        "declared_crossing": false,
+        "real_consumer_named": false,
+        "player_observable_named": false,
+        "support_nonzero": false,
+        "separated_source_values": false,
+        "predicted_effect_recorded": false,
+        "all_arms_observed": false,
+        "positive_differs_from_null": false,
+        "source_removal_returns_null": false,
+        "consumer_delete_returns_null": false,
+        "irrelevant_source_preserves_positive": false,
+        "restore_recovers_positive": false,
+        "consumer_executed": false,
+        "deleted_consumer_not_executed": false,
+        "changed_hashes_recorded": false,
+        "no_direct_target_mutation": true,
+        "no_harness_consumer": false
+      },
+      "pass": false
+    }
+  ],
+  "roll_up": {
+    "claimed": 4,
+    "qualifying": 0,
+    "structural": 0,
+    "matrix_score": 0,
+    "pass": false
+  }
+}
