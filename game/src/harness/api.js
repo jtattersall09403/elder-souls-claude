@@ -1963,6 +1963,10 @@ export function installHarness(engine, bootPromise) {
     questResolutions(id) { return engine.questEngine.resolutionsFor(String(id)); },
     questResolve(id, resolutionId) { return engine.questEngine.resolve(String(id), String(resolutionId)); },
     consumeBossOutcome(id, resolutionId) { return engine.consumeBossOutcome(String(id), resolutionId == null ? null : String(resolutionId)); },
+    setPermissivenessClosure(id, on) { return engine.setPermissivenessClosure(id, !!on); },
+    brewFortifyAlchemy() { return engine.brewFortifyAlchemy(); },
+    drinkFortifyAlchemy(id) { return engine.drinkFortifyAlchemy(id); },
+    resetAlchemy() { return engine.resetAlchemy(); },
     questFail(id, failureId) { return engine.questEngine.fail(String(id), String(failureId)); },
     questSetFlag(flag, v) { return engine.questEngine.setFlag(String(flag), v === undefined ? true : v); },
     /**

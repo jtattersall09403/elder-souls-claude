@@ -5416,6 +5416,38 @@ export class Engine {
     return this.questEngine.resolve(String(questId), String(resolutionId));
   }
 
+  // ---- RI-EXP06 B-01: finite, self-amplifying alchemy --------------------------------------
+  // Kept on simulation state so save/load owns it once the save schema is extended. The lazy
+  // seed is deliberately finite: the permissive loop ends by ingredient exhaustion, never a cap.
+  _alchemyState() {
+    if (!this.sim.alchemy) this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
+    return this.sim.alchemy;
+  }
+  resetAlchemy() { this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 }; return { ...this.sim.alchemy }; }
+
+  setPermissivenessClosure(id, on) {
+    if (!this._permissivenessClosures) this._permissivenessClosures = new Set();
+    if (on) this._permissivenessClosures.add(String(id)); else this._permissivenessClosures.delete(String(id));
+    return { id: String(id), closed: this._permissivenessClosures.has(String(id)) };
+  }
+
+  brewFortifyAlchemy() {
+    const a = this._alchemyState();
+    if (this._permissivenessClosures?.has('B-01')) return { ok: false, player_facing: true, text: 'The mixture will not take while another fortifying draught is active.' };
+    if (a.ingredients < 2) return { ok: false, player_facing: true, text: 'There are not enough ingredients left.', exhausted: true };
+    a.ingredients -= 2;
+    const potion = { id: `fortify-alchemy-${++a.serial}`, magnitude: 1 + a.fortify };
+    a.potions.push(potion);
+    return { ok: true, potion: { ...potion }, ingredients_left: a.ingredients };
+  }
+
+  drinkFortifyAlchemy(id) {
+    const a = this._alchemyState(), i = a.potions.findIndex((p) => p.id === String(id));
+    if (i < 0) return { ok: false, player_facing: true, text: 'That potion is not in the pack.' };
+    const [p] = a.potions.splice(i, 1); a.fortify += p.magnitude;
+    return { ok: true, active_fortify: a.fortify, consumed: p.id };
+  }
+
   // ---- AR-3: race-conditioned encounters -----------------------------------------------------
 
   /**

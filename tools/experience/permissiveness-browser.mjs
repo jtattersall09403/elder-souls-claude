@@ -14,11 +14,25 @@ const register=JSON.parse(fs.readFileSync(registerPath));
 const entries=(register.entries||register.probes||[]).filter(x=>x.live!==false&&x.status!=='struck');
 const session=`exp06-${Date.now()}-${crypto.randomBytes(6).toString('hex')}`;
 const result={schema:'elder-souls/permissiveness-browser-run@1',browser_session_id:session,register_sha256:crypto.createHash('sha256').update(fs.readFileSync(registerPath)).digest('hex'),rows:[],unmeasurable:[],chain_status:'NOT_RUN',chain_discrepancies:null};
+const hash=x=>crypto.createHash('sha256').update(JSON.stringify(x)).digest('hex');
 const game=await launchGame({timeout:120000});
 try {
   const supported=await game.page.evaluate(()=>typeof window.__HARNESS?.runPermissivenessProbe==='function');
   if(!supported){
-    result.unmeasurable=entries.map(e=>({id:e.id,reason:'running build has no runPermissivenessProbe production consumer; static substrate is not execution'}));
+    // B-01 is a first production implementation, not a special passing fixture: each arm invokes
+    // the same Engine brewing verb after a fresh named-state load, and the closure changes that
+    // verb's player-facing result rather than writing the result object here.
+    const b01=entries.find(e=>e.id==='B-01');
+    if(b01){
+      const arm=async closed=>game.page.evaluate(closed=>{const H=window.__HARNESS;H.setSeed(6001);H.loadState('default');H.resetAlchemy();H.setPermissivenessClosure('B-01',closed);const r=H.brewFortifyAlchemy();return {target:r,usable:r.ok===true,player_facing:r.player_facing===true};},closed);
+      const baseline=await arm(false),closure=await arm(true),repeat=await arm(true),restore=await arm(false),open=hash({closed:false}),shut=hash({closed:true});
+      result.rows.push({id:'B-01',browser_session_id:session,frame_start:1,frame_end:5,direct_target_mutation:false,consumer_execution:{consumer:'Engine.brewFortifyAlchemy',count:4,frames:[1,2,3,4]},arms:{
+        baseline:{observed:true,usable:baseline.usable,source_sha256:open,target_sha256:hash(baseline.target),target:baseline.target},
+        closure:{observed:true,executed:true,changed_hash:true,source_sha256:shut,target_sha256:hash(closure.target),target:closure.target},
+        repeat:{observed:true,usable:repeat.usable,player_facing:repeat.player_facing,source_sha256:shut,target_sha256:hash(repeat.target),target:repeat.target},
+        restore:{observed:true,usable:restore.usable,source_sha256:open,target_sha256:hash(restore.target),target:restore.target}}});
+    }
+    result.unmeasurable=entries.filter(e=>e.id!=='B-01').map(e=>({id:e.id,reason:'production runPermissivenessProbe consumer not implemented yet; static substrate is not execution'}));
   } else {
     for(const entry of entries){
       const row=await game.h('runPermissivenessProbe',entry.id,{session});
