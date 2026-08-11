@@ -60,7 +60,7 @@ lie within **±55°** of that screen-space direction from the current target; co
 | Yaw follow | critically damped spring, **half-life 0.120 s** |
 | Pitch follow | critically damped spring, **half-life 0.180 s** |
 | Boom length | **3.6 m** at target distance ≤ 4 m, ramping linearly to **5.2 m** at 14 m |
-| Boom collision | sphere cast, radius **0.28 m**, pulls in to a minimum of **0.9 m** |
+| Boom collision | sphere cast, radius **0.28 m**; normal minimum **0.9 m**. RI-CAM01 §C's S49 penetration guard alone may use the greatest clear below-floor length when the unchanged origin/near-plane envelope cannot clear at any length ≥0.9 m; zero clipping remains absolute. |
 | Vertical framing | target chest held between **38%** and **62%** of screen height |
 | Player right-stick input while locked | ignored for camera (used for target switching only) |
 | FOV | **unchanged** by lock (no dolly-zoom, no punch-in) |

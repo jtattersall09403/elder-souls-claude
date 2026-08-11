@@ -121,7 +121,7 @@ run speed, at 8 camera yaws per segment:
 |---|---|---|---|
 | `Σ clip_through` | **0** | **0** | **0** |
 | `fraction(arm_len < 1.60 m)` | ≤ **0.15** | ≤ **0.25** | ≤ 1.00 (unbounded — that is what a crawl space is) |
-| `fraction(arm_len == 0.90 m)` (pinned at the floor) | ≤ **0.02** | ≤ **0.08** | ≤ 1.00 |
+| `fraction(arm_len ≤ 0.90 m)` (normal-floor or S49 emergency) | ≤ **0.02** | ≤ **0.08** | ≤ 1.00 |
 | `p95(\|Δarm_len\|)` per frame | ≤ **0.10 m** | ≤ 0.10 m | ≤ 0.20 m |
 | Arm-length oscillation (sign changes in `Δarm_len` per second) | ≤ **3.0** | ≤ 3.0 | ≤ 6.0 |
 
@@ -151,7 +151,7 @@ The only permitted scripted camera move outside combat, and it is small.
 |---|---|
 | `listPerspectiveModes()` | must return exactly `["third"]` |
 | `camera.mode` closed vocabulary | `free \| locked \| dialogue \| menu \| rest \| death \| fog_gate` — nothing else may ever appear in a trace |
-| `arm_len` floor | **0.90 m** on every frame of every state, forever (RI-CAM01 §A) |
+| `arm_len` floor | **0.90 m** normally. Only RI-CAM01 §C's S49 penetration guard may cross it, only to the greatest clear non-negative length when the unchanged origin/near-plane envelope has no clear candidate at ≥0.90 m. |
 | Camera-to-`bones.head` distance | ≥ **0.35 m** on every frame |
 | Zoom input | there is none. Mouse wheel and any zoom axis are **unbound** for the gameplay camera. |
 | Options menu | contains no perspective, view, or camera-mode control. It may contain sensitivity, invert-Y, and auto-recentre on/off. |
@@ -162,15 +162,14 @@ The only permitted scripted camera move outside combat, and it is small.
 1. For each of the 14 buttons in HARNESS §4's closed set: `tap`, and `hold` for 120 frames,
    in each of `free`, `locked`, `dialogue`, `menu`, `rest` states. 14 × 2 × 5 = 140 probes.
 2. Sweep the mouse wheel −60 → +60 notches and back, and every unmapped axis of a gamepad.
-3. After each probe, assert `arm_len ≥ 0.90`, camera-to-head ≥ 0.35 m, and `camera.mode`
+3. After each probe, assert `arm_len ≥ 0.90` unless RI-CAM01 §C's independently verified S49 emergency predicate is true; always assert camera-to-head ≥ 0.35 m and `camera.mode`
    inside the closed vocabulary.
 4. Attempt `camera({mode:'first'})`, `camera({mode:'firstperson'})`, `camera({mode:1})`.
    Each must throw.
 5. Screenshot the options menu at every page. **FAIL** if any string matching
    `/first[- ]?person|perspective|view mode|third[- ]?person/i` is present as a control.
 
-**Any probe that reduces `arm_len` below 0.90 m is an automatic fail of the piece**, whatever
-it is called in the build.
+**Any probe that reduces `arm_len` below 0.90 m without satisfying and emitting RI-CAM01 §C's S49 emergency predicate is an automatic fail of the piece**, whatever it is called in the build. A marked emergency also fails unless an independent search proves necessity (no clear candidate at ≥0.90 m), maximality (the chosen length is the greatest clear non-negative candidate), unchanged yaw/pitch/FOV/mode, and `clip_through == false`.
 
 ## Comparison method
 
@@ -229,7 +228,8 @@ navigate for 300 frames and rotate a 3D item if the build supports it.
 camera yaw set to each of 8 values per segment.
 - Compute every row of §D.
 - **FAIL** if `Σ clip_through > 0` in any cell.
-- **FAIL** if any cell exceeds its class's `fraction(arm_len < 1.60)` or pinned-at-floor bar.
+- For every `arm_len < 0.90 m` frame, independently search the unchanged boom ray. **FAIL** unless no candidate in `[0.90, desired_len]` is clear, the selected length is the greatest clear non-negative candidate, both S49 flags are true, and yaw/pitch/FOV/mode are unchanged.
+- **FAIL** if any cell exceeds its class's `fraction(arm_len < 1.60)` or at/below-floor bar.
 - Separately, from `game/data/world/interiors/*.json` geometry, compute clear width, ceiling
   height and doorway width per segment. **FAIL** if any combat interior is under 2.60 m /
   3.20 m, any traversal interior under 2.20 m / 2.80 m, any crawl space is under 1.40 m /
@@ -250,7 +250,7 @@ camera yaw set to each of 8 values per segment.
 
 **M7 — First-person detector.** Run §F's 140 probes + wheel sweep + API attempts + options
 screenshots.
-- **FAIL** on any probe reducing `arm_len` below 0.90 m or camera-to-head below 0.35 m.
+- **FAIL** on camera-to-head below 0.35 m, or on `arm_len < 0.90 m` unless the frame satisfies the independently re-derived S49 necessity/maximality predicate from RI-CAM01 §C.
 - **FAIL** if `listPerspectiveModes()` returns anything but `["third"]`.
 - **FAIL** if `camera({mode:'first'})` does not throw.
 - **FAIL** if any `camera.mode` value outside the closed vocabulary appears.
