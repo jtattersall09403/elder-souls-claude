@@ -1,0 +1,21 @@
+{
+  "schema": "elder-souls/exp01-independent-handoff@1",
+  "piece": "W1-26",
+  "builder_commit": "TO_BE_STAMPED_AFTER_COMMIT",
+  "status": "NOT_RUN",
+  "actor_boundary": "A fresh independent driver/judge who has not read any reveal or builder diagnosis must execute and score this session. The builder has not driven or scored it.",
+  "brief": "corpus/95-experience/briefs/first-hour.md",
+  "beat_sheet": "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+  "viewport": {"profile":"desktop-1080p","width":1920,"height":1080,"dpr":1},
+  "seed": 4711,
+  "commands": [
+    "node tools/experience/beats-from-md.mjs --in corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md --out corpus/95-experience/RI-EXP01.beats.json",
+    "node tools/experience/session-run.mjs --session exp-w1-26-firsthour --brief corpus/95-experience/briefs/first-hour.md --duration 3600 --seed 4711",
+    "node tools/experience/isolation-check.mjs --session reports/sessions/exp-w1-26-firsthour",
+    "node tools/experience/beat-extract.mjs --in reports/sessions/exp-w1-26-firsthour",
+    "node tools/experience/beat-diff.mjs --beats corpus/95-experience/RI-EXP01.beats.json --log reports/sessions/exp-w1-26-firsthour/beat-log.json"
+  ],
+  "required_artifacts": ["complete session trace", "native session capture artifact", "tool-call isolation log", "beat-log.json", "beat-diff.json"],
+  "acceptance_for_independent_actor": {"native_min":85,"shared_ladder_min":7,"hard_fails":0},
+  "tell_audit": ["No expected answers or builder score included", "No beat reveal copied into the driver brief", "Seed and viewport fixed before the run", "Artifact itself required; feature-only summaries are not accepted"]
+}
