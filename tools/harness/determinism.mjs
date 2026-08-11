@@ -88,6 +88,19 @@ async function run(o) {
     else { H.loadState(s.state); H.setSeed(s.seed); }
     if (s.world && s.world.timeOfDay !== undefined) H.setTimeOfDay(s.world.timeOfDay);
     if (s.world && s.world.weather !== undefined) H.setWeather(s.world.weather);
+    // Warm-up the freshly loaded world before constructing the scenario fixture. Applying
+    // setup first lets a 90-frame warm-up evolve the spawned fight for 60 frames longer than
+    // the 30-frame arm; no clock re-anchor can undo the resulting HP, position, AI and camera
+    // changes. The warm-up predicate is about bootstrap history, not two different initial
+    // worlds, so both arms build their declared fixture at the window boundary.
+    if (s.warmup > 0) {
+      // Warm the production machinery, then rebuild the declared scenario boundary. Warm-up
+      // must not mean "let this fight evolve for a different amount of time".
+      H.stepFrames(s.warmup);
+      H.setSeed(s.seed); H.loadState(s.state);
+      if (s.world && s.world.timeOfDay !== undefined) H.setTimeOfDay(s.world.timeOfDay);
+      if (s.world && s.world.weather !== undefined) H.setWeather(s.world.weather);
+    }
     for (const op of s.setup) {
       if (op.op === 'teleport') H.teleport(op.x, op.z, op.opts || {});
       else if (op.op === 'spawn') H.spawn(op.id, op.x, op.z, { as: op.as });
@@ -95,7 +108,6 @@ async function run(o) {
       else if (op.op === 'lockOn') H.lockOn(op.target || op.eid || op.as);
       else if (op.op === 'despawn') H.despawn(op.eid || op.as);
     }
-    if (s.warmup > 0) H.stepFrames(s.warmup);
     // Scenario contract: the scripted window opens on a warm-up-independent world. This
     // re-anchors free-running per-entity clocks and REPORTS what it changed (AM-W1-00-02).
     const reanchor = H.reanchorFreeRunning();
@@ -153,7 +165,22 @@ try {
   // ---- R1: run to run, same process ---------------------------------------------------
   const a = await run({});
   const b = await run({});
-  rung('R1', 'run-to-run identical', a.hash === b.hash, { run_a: a.hash, run_b: b.hash, frames: a.records.length });
+  const fieldsR1 = new Map();
+  let firstDivergentFrameR1 = null;
+  for (let i = 0; i < Math.min(a.records.length, b.records.length); i++) {
+    const before = fieldsR1.size;
+    fieldDiff(a.records[i], b.records[i], fieldsR1);
+    if (firstDivergentFrameR1 === null && fieldsR1.size !== before) firstDivergentFrameR1 = i;
+  }
+  rung('R1', 'run-to-run identical', a.hash === b.hash, {
+    run_a: a.hash, run_b: b.hash, frames: a.records.length,
+    first_divergent_record: firstDivergentFrameR1,
+    differing_fields: [...fieldsR1.entries()].sort(([x], [y]) => x.localeCompare(y)),
+    first_divergent_values: firstDivergentFrameR1 === null ? null : {
+      run_a: a.records[firstDivergentFrameR1], run_b: b.records[firstDivergentFrameR1],
+    },
+  });
+  if (firstDivergentFrameR1 !== null) log(`        first_divergent_values: ${JSON.stringify({run_a:a.records[firstDivergentFrameR1],run_b:b.records[firstDivergentFrameR1]})}`);
 
   // ---- R2: fresh JS realm (page reload) ------------------------------------------------
   const c = await run({ freshRealm: true });

@@ -44,7 +44,7 @@ OPTIONS
   --mode <m>        'round-trip' (RI-JRN05, default) or 'across-death' (RI-JRN06 M-D4)
   --in <dir>        a journey-run output directory to cross-check against (across-death)
   --seeds <a,b,c>   Seeds to sweep (default 4711,1337,90210,2147483647)
-  --states <a,b>    Named states to run (default arena_flat,sv1-midquest,sv5-journal-bloodstain)
+  --states <a,b>    Named states to run (default sv1-midquest,sv2-mid-dungeon,sv3-post-rank-up,sv4-bounty-pursuit,sv5-journal-bloodstain)
   --frames <n>      Scripted window after the save point (default 600, the item's own)
   --preroll <n>     Frames run IDENTICALLY on both sides before the save (default 120)
   --out <dir>       Where to write state-diff.json (default reports/runs/STATE-DIFF)
@@ -55,7 +55,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 
 const SEEDS = String(args.seeds || '4711,1337,90210,2147483647').split(',').map((s) => Number(s.trim()));
-const STATES = String(args.states || 'arena_flat,sv1-midquest,sv5-journal-bloodstain').split(',').map((s) => s.trim());
+const STATES = String(args.states || 'sv1-midquest,sv2-mid-dungeon,sv3-post-rank-up,sv4-bounty-pursuit,sv5-journal-bloodstain').split(',').map((s) => s.trim());
 const FRAMES = Number(args.frames || 600);
 const PREROLL = Number(args.preroll || 120);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'STATE-DIFF');

@@ -1,0 +1,88 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "sv4-bounty-pursuit",
+  "title": "RI-JRN05 SV4. Bounty and pursuit: jurisdiction split, two live and one dead witness, three stolen items, and two hunting guards.",
+  "env": {
+    "timeOfDay": 18,
+    "weather": "storm",
+    "region": "thornmarsh",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      8,
+      0,
+      8
+    ],
+    "yaw": 225,
+    "stamina": 65,
+    "hp": 400
+  },
+  "camera": {
+    "yaw": 225,
+    "pitch": -10,
+    "mode": "free"
+  },
+  "inventory": [
+    {
+      "id": "stolen-item-1",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": true,
+      "owner": "warden-eshi",
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "stolen-item-2",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": true,
+      "owner": "ghen-the-younger",
+      "slot": null,
+      "quickSlot": null
+    },
+    {
+      "id": "stolen-item-3",
+      "count": 1,
+      "condition": 1.0,
+      "charge": 0,
+      "stolen": true,
+      "owner": "thorn-merchant",
+      "slot": null,
+      "quickSlot": null
+    }
+  ],
+  "quest": {
+    "crime": {
+      "bounty": {
+        "thornmarsh": 750,
+        "salt-hills": 0
+      },
+      "witnesses": [
+        "warden-eshi",
+        "ghen-the-younger"
+      ],
+      "stolen": [
+        "stolen-item-1",
+        "stolen-item-2",
+        "stolen-item-3"
+      ],
+      "hunting": [
+        "thorn-guard-01",
+        "thorn-guard-02"
+      ]
+    },
+    "flags": {
+      "crime:witness:dead:king-hlaalu-teeth": true
+    }
+  },
+  "world": {
+    "npcsDead": [
+      "king-hlaalu-teeth"
+    ]
+  },
+  "spawn": []
+}

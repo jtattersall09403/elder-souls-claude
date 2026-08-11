@@ -1,0 +1,221 @@
+{
+  "schema": "elder-souls/determinism@1",
+  "scenario": "cmb-duel-infantry",
+  "seed": 1337,
+  "seed2": 4242,
+  "frames": 180,
+  "rungs": [
+    {
+      "id": "R1",
+      "property": "run-to-run identical",
+      "pass": true,
+      "evidence": {
+        "run_a": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "run_b": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "frames": 180,
+        "first_divergent_record": null,
+        "differing_fields": [],
+        "first_divergent_values": null
+      }
+    },
+    {
+      "id": "R2",
+      "property": "process-to-process identical (fresh realm; see note for the OS-process check)",
+      "pass": true,
+      "evidence": {
+        "run_a": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "fresh_realm": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "os_process_check": "node tools/harness/trace.mjs --scenario cmb-duel-infantry --out reports/runs/DET-A  (twice, compare body_sha256)"
+      }
+    },
+    {
+      "id": "R3",
+      "property": "batch-invariant: stepFrames(1)xN == stepFrames(N)x1 == stepFrames(60)xM",
+      "pass": true,
+      "evidence": {
+        "chunk_1": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "chunk_N": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "chunk_60": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "frames": 180
+      }
+    },
+    {
+      "id": "R4",
+      "property": "seed-sensitive: different seed diverges, >=5% of frames differ in a field OTHER than rng.seed, and the PRNG is actually drawn from",
+      "pass": true,
+      "evidence": {
+        "seed_a": 1337,
+        "hash_a": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "seed_b": 4242,
+        "hash_b": "6ff47cc3e6ac95c00886ba252bda8f4270c52724b6252891a054e779862e1257",
+        "frames_differing_pct_excluding_rng_seed": 44.44,
+        "max_rng_draws": {
+          "1337": 6,
+          "4242": 6
+        },
+        "differing_fields_excluding_rng_seed": [
+          "camera.arm_desired_m",
+          "camera.lock_dist_m",
+          "camera.onscreen.target_band_y",
+          "camera.onscreen.target_head_ndc[]",
+          "camera.onscreen.target_ndc[]",
+          "camera.pitch_deg",
+          "camera.pivot[]",
+          "camera.pos[]",
+          "camera.yaw_deg",
+          "enemies[].anim",
+          "enemies[].anim_len",
+          "enemies[].dist_m",
+          "enemies[].leash_dist_m",
+          "enemies[].lkp[]",
+          "enemies[].pos[]",
+          "enemies[].speed_mps",
+          "enemies[].yaw_deg",
+          "events[].active",
+          "events[].mv",
+          "events[].punish_window[]",
+          "events[].recovery",
+          "events[].startup",
+          "events[].total",
+          "player.hitboxes[].a[]",
+          "player.hitboxes[].b[]",
+          "player.pos[]",
+          "player.weapon_guard[]",
+          "player.weapon_tip[]",
+          "player.yaw_deg"
+        ],
+        "note": "AM-W1-00-C1: rng.seed is a pure function of the independent variable and is excluded from the count. Before this fix the same build reported 100% with max_rng_draws 0."
+      }
+    },
+    {
+      "id": "R5",
+      "property": "warm-up-invariant: scripted-window records identical after re-basing every absolute frame index",
+      "pass": true,
+      "evidence": {
+        "warmup_30_frames": 600,
+        "warmup_90_frames": 600,
+        "absolute_frame_indices_rebased": [
+          "f",
+          "events[].f",
+          "enemies[].state_entered_f"
+        ],
+        "fields_excluded_from_the_comparison": [
+          "rng (R5 drops rng.draws; the whole block is dropped because rng.seed is identical between the two runs anyway)"
+        ],
+        "differing_fields": [],
+        "differing_fields_outside_the_enemy_block": [],
+        "window_reanchor": {
+          "frame": 0,
+          "seed": 1337,
+          "entities": [
+            {
+              "eid": "e0",
+              "anim_len": 48,
+              "seeded_phase": 40,
+              "anim_frame": [
+                0,
+                40
+              ],
+              "state_entered_f": [
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        "note": "enemies[].anim_frame IS compared. See orchestration/amendments/AM-W1-00-02-mth02-r5-absolute-frame-indices.md, which withdraws and replaces AM-W1-00-01."
+      }
+    },
+    {
+      "id": "R6",
+      "property": "load-order documented and reproducible: setSeed -> loadState is authoritative",
+      "pass": true,
+      "evidence": {
+        "documented_order": "setSeed() then loadState() — HARNESS.md D6, implemented in tools/lib/run.mjs",
+        "seed_then_load": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "seed_then_load_again": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "load_then_seed": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "note": "load-then-seed is NOT the documented order; its hash is printed for information only."
+      }
+    },
+    {
+      "id": "R7",
+      "property": "wall-clock-invariant: host sleeps between chunks change nothing",
+      "pass": true,
+      "evidence": {
+        "normal": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "with_800ms_sleeps": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a"
+      }
+    },
+    {
+      "id": "R8",
+      "property": "resolution-invariant: the simulation does not know the viewport size",
+      "pass": true,
+      "evidence": {
+        "at_1920x1080": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a",
+        "at_640x360": "9cfeb42b0027bbbfcb8213fdf5ba839fdb9b3df96b42764f57fd62b91f3b718a"
+      }
+    },
+    {
+      "id": "R9",
+      "property": "save round trip: state hash equal at EVERY swept seed, and the next 600 frames match the control FIELD BY FIELD",
+      "pass": true,
+      "evidence": {
+        "state_hash_before": "51e2ec46badcce316d277a5d261d270844f98c882814baf31db380bbd8b0e88c",
+        "state_hash_after": "51e2ec46badcce316d277a5d261d270844f98c882814baf31db380bbd8b0e88c",
+        "entities_in_the_world_at_the_save_point": 1,
+        "entity_spawned_by_the_rung": false,
+        "post_load_frames_compared": 600,
+        "post_load_differing_fields": [],
+        "durable_field_census_ok": true,
+        "durable_field_census_unaccounted": [],
+        "entity_keys_live_not_declared": [],
+        "round_trip_equal": true,
+        "round_trip_diff_fields": 0,
+        "round_trip_diff": [],
+        "canonical_bytes": 32883,
+        "control_tail_sha256": "b1d93c82328387c384e666a3612ae172f63b7403ddafb4a4285edfbeda2e2ac5",
+        "loaded_tail_sha256": "b1d93c82328387c384e666a3612ae172f63b7403ddafb4a4285edfbeda2e2ac5",
+        "seed_sweep": "5/5 seeds hash-stable",
+        "seed_sweep_seeds": [
+          1337,
+          4242,
+          104729,
+          112648,
+          4711
+        ],
+        "seed_sweep_failures": [],
+        "wide_sweep": "node tools/harness/seed-sweep.mjs — 20 seeds x 2 states, both trips",
+        "field_level_sweep": "node tools/journey/state-diff.mjs — RI-JRN05 M1/M2/M4/M5 across states x seeds, with the differing field names",
+        "note": "The rung runs the SCENARIO (setup ops and input script), not a bare named state: the version that reported PASS while enemies[].prev_state was missing from the save had no entity in the world it round-tripped, and compared one hash instead of the field set."
+      }
+    }
+  ],
+  "guards": {
+    "violations": 0,
+    "detail": [],
+    "guards": [
+      "Math.random",
+      "Date.now",
+      "performance.now",
+      "new Date()"
+    ],
+    "armedDuring": "exactly one fixed simulation step",
+    "rngSeed": 4711,
+    "note": "The guards throw rather than count, so a non-zero violation count means a step already failed loudly. HARNESS.md §8 D1-D3."
+  },
+  "page_errors": [],
+  "pass": true,
+  "rungs_passed": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9"
+  ],
+  "rungs_failed": []
+}
