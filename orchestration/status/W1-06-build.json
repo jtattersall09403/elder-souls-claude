@@ -3,24 +3,33 @@
   "role": "builder",
   "status": "builder_delivery_with_hard_fails",
   "plan": "orchestration/plans/W1-06.md",
-  "current_head": "07e75bdbf54fd322ada371c25dfcf739f449a7c1",
+  "current_head": "11ae120b81595c00dc7d3f56d520aab89efe8543",
   "files_touched": [
-    "orchestration/status/W1-06-build.json",
-    "tools/camera/cam-probe.mjs",
+    "corpus/00-doctrine/ARBITRATION.md",
+    "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+    "corpus/80-methods/m-cam02-control.mjs",
     "evidence/W1-06/builder-ledger.md",
+    "evidence/W1-06/mechanical/cam-consume.json",
+    "evidence/W1-06/mechanical/cam02-final/cam02.json",
+    "evidence/W1-06/mechanical/collision-final.json",
     "evidence/W1-06/mechanical/m-cam01-rig.json",
-    "evidence/W1-06/source-pack/SHA256SUMS",
     "evidence/W1-06/mechanical/rig-rerun.json",
-    "evidence/W1-06/mechanical/cam-consume.json"
+    "evidence/W1-06/source-pack/SHA256SUMS",
+    "game/data/camera/cells.json",
+    "game/src/sim/route.js",
+    "orchestration/status/W1-06-build.json",
+    "reports/w1-06/AMENDMENT-W1-06-01.md",
+    "tools/camera/cam-probe.mjs",
+    "tools/camera/gen-cells.mjs"
   ],
   "files_claimed": [],
-  "next_step": "Fresh builder must repair valid cistern/boardwalk/stair and wall-fixture clipping, rerun all mechanical rows, then dispatch the exact independent handoff in evidence/W1-06/builder-ledger.md.",
+  "next_step": "Collision sweep remains red after route/fixture repair: resolve the RI-CAM01 absolute 0.90 m arm floor versus penetration-guard zero-clip contradiction, then rerun the full checkpointed population. CAM02 builder rows pass; independent perceptual rows remain NOT_RUN.",
   "hard_fails": [
-    "cistern arm shortening distribution",
-    "2493 clip frames across cistern/boardwalk/stair",
-    "moving-wall fixture clipping",
+    "2726 clip frames in the post-repair complete collision population (cistern 1716, boardwalk 270, stair 617, rig pinch 123)",
+    "moving-wall fixture: 12 clipped frames",
     "backing-wall fixture clipping"
   ],
-  "formal_blocker": "AMENDMENT-W1-06-01 crawl geometry remains unresolved; no local threshold changed.",
-  "independent_passes_awarded": 0
+  "formal_blocker": null,
+  "independent_passes_awarded": 0,
+  "authority_resolution": "AMENDMENT-W1-06-01 granted and applied through ARBITRATION S48: crawl ceiling is 1.80 m; zero clipping unchanged."
 }

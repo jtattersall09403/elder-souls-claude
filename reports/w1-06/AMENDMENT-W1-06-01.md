@@ -1,5 +1,11 @@
 # AMENDMENT-W1-06-01 — `RI-CAM05` §D's crawl-space row demands a clip figure `RI-CAM01` §A's own rig cannot produce
 
+> **RULING — S48, wave 1: GRANTED VIA THE LEVEL-GEOMETRY ALTERNATIVE AND APPLIED.**
+> RI-CAM05 §D's crawl-space minimum clear ceiling is **1.80 m**. The camera geometry and
+> `Σ clip_through == 0` are unchanged; the proposal to permit bounded clipping is rejected.
+> RI-CAM05 M4 now fails any shipped crawl segment below 1.40 m width / 1.80 m ceiling before
+> interpreting camera results. See ARBITRATION S48 for scope, rationale and reversal evidence.
+
 **Filed by:** W1-06 (camera), wave 1, round 4 (confirming and filing arithmetic two predecessor
 rounds independently derived and left open at handoff)
 **Item:** `corpus/15-camera/RI-CAM05-camera-outside-the-fight.md` §D, the "Crawl space" row

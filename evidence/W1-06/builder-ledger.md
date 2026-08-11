@@ -45,3 +45,30 @@ Use only delivery-commit artifacts and regenerate visual binaries transiently; d
 7. **RI-CAM07 M6:** critic records disjoint bifurcation first; judge F2–F5 blind under RI-VIS06 against RI-VIS05 only. Keep fidelity and art scores separate; minimum governs.
 
 Do not dispatch these rows until the mechanical hard fails above are repaired and all source rows have complete commit-stamped artifacts. Builder-authored, context-exposed, leaked, wrong-reference, or self-scored answers are inadmissible and remain `NOT_RUN`.
+
+## Persistent-builder continuation — 2026-08-11
+
+Authority resolution is complete: ARBITRATION S48 granted `AMENDMENT-W1-06-01` via the
+level-geometry alternative, raised the crawl clear ceiling to 1.80 m, and preserved the exact
+zero-clipping law. The generator and committed camera cell population implement that ruling.
+
+The route consumer now seeds its first ground query from the authored cell ground, preventing
+interior routes from beginning on an overhead roof. The boardwalk fixture no longer authors a hut
+across its walking spine. These are production and fixture repairs, not threshold changes.
+
+The complete post-repair collision run is preserved in `mechanical/collision-final.json`. It remains
+red and therefore initiates another repair cycle: 2,726 clip frames (cistern 1,716; boardwalk 270;
+stair 617; rig pinch 123), plus moving-wall and backing-wall fixture failures. The run exposed a
+remaining authority-level contradiction: RI-CAM01 fixes an absolute 0.90 m arm floor while its M4
+moves a wall to 0.50 m behind the pivot and simultaneously requires the camera/near plane never to
+clip. The builder did not hide this by shortening below 0.90 m or weakening `clip_through`.
+
+RI-CAM02 M1/M2/M2b/M3/M5 are complete and green in `mechanical/cam02-final/cam02.json`: the native
+M1 population contains 808 rows / 24,240 frames, R² 0.999999999, a radial 0.15 deadzone, nonzero
+0.16 diagonal response, and exact 180/120 degree-per-second saturation. Locked M2 correctly applies
+its native explicit locked predicate (the [-50,+32] band) rather than mislabelling RI-CAM03 framing
+motion as unlocked-input bounce. M4/M6/M7 remain represented by the aggregate camera probe rather
+than being silently inferred here.
+
+No independent perceptual or blind row was scored or awarded by this builder. The exact independent
+handoff above is unchanged, and no committed PNG/binary was added.

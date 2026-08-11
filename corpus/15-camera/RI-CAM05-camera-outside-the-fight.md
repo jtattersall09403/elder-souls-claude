@@ -110,7 +110,7 @@ the world builder, not on the camera programmer.
 |---|---|---|---|---|
 | **Combat interior** (any cell where an encounter is placed) | **2.60 m** | **3.20 m** | — | yes |
 | **Traversal interior** (corridors, stairs, no encounter) | **2.20 m** | **2.80 m** | — | no |
-| **Crawl space** (deliberate pinch, a texture beat) | **1.40 m** | **1.60 m** | **12.0 m** | **no** |
+| **Crawl space** (deliberate pinch, a texture beat) | **1.40 m** | **1.80 m** **[S48]** | **12.0 m** | **no** |
 | Spiral stair, clear radius to the outer wall | **2.40 m** | 3.00 m headroom | — | yes, if it is a combat interior |
 | Doorway clear width | **1.80 m** | 2.40 m | — | — |
 
@@ -232,8 +232,9 @@ camera yaw set to each of 8 values per segment.
 - **FAIL** if any cell exceeds its class's `fraction(arm_len < 1.60)` or pinned-at-floor bar.
 - Separately, from `game/data/world/interiors/*.json` geometry, compute clear width, ceiling
   height and doorway width per segment. **FAIL** if any combat interior is under 2.60 m /
-  3.20 m, any traversal interior under 2.20 m / 2.80 m, or any crawl space is longer than
-  12.0 m or contains an encounter.
+  3.20 m, any traversal interior under 2.20 m / 2.80 m, any crawl space is under 1.40 m /
+  1.80 m, or any crawl space is longer than 12.0 m or contains an encounter. The crawl
+  ceiling is S48's resolution of `AMENDMENT-W1-06-01`; it does not relax the zero-clipping bar.
 - Apply CRITIC-DOCTRINE §2.1 step 2: report the **worst** cell by
   `fraction(arm_len < 1.60 m)` by name, not the median. A method run on the boss arena only
   has not been run.
