@@ -130,22 +130,28 @@ const PAGE_HELPERS = `(() => {
      * it would draw can reach the stream in the first place. That is a stronger exclusion than
      * a surface tag, because it cannot be defeated by a mislabelled entry.
      */
-    instructionBudget() {
+    async instructionBudget() {
       if (!H.getRenderedText) return { available: false };
       H.renderedTextClear();
       const states = [];
-      const drive = (label, fn) => { try { fn(); H.getUIState(); states.push(label); } catch (e) { states.push(label + ':ERR'); } };
-      drive('arena_flat/world', () => { H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(4); });
-      drive('settlement/world', () => { H.reset({ state: 'settlement_primary_street' }); H.setRenderRate(0); H.stepFrames(4); });
-      drive('helstrom-market/world', () => { H.reset({ state: 'helstrom-market' }); H.setRenderRate(0); H.stepFrames(4); });
-      drive('barge-hold/opening', () => { H.reset({ state: 'barge-hold' }); H.setRenderRate(0); H.stepFrames(4); });
-      drive('menu/inventory', () => { H.openMenu('inventory'); H.stepFrames(2); });
-      drive('menu/journal', () => { H.openMenu('journal'); H.stepFrames(2); });
-      drive('menu/sheet', () => { H.openMenu('sheet'); H.stepFrames(2); });
-      drive('menu/spells', () => { H.openMenu('spells'); H.stepFrames(2); });
-      drive('menu/close', () => { H.closeMenu(); H.stepFrames(2); });
-      drive('title', () => { H.titleShow(); H.stepFrames(2); });
-      drive('handheld/touch-overlay', () => {
+      const drive = async (label, fn) => { try { await fn(); H.getUIState(); states.push(label); } catch (e) { states.push(label + ':ERR:' + String(e && e.message || e)); } };
+      await drive('arena_flat/world', () => { H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(4); });
+      await drive('settlement/world', () => { H.reset({ state: 'settlement_primary_street' }); H.setRenderRate(0); H.stepFrames(4); });
+      await drive('helstrom-market/world', () => { H.reset({ state: 'helstrom-market' }); H.setRenderRate(0); H.stepFrames(4); });
+      await drive('barge-hold/opening', () => { H.reset({ state: 'barge-hold' }); H.setRenderRate(0); H.stepFrames(4); });
+      await drive('menu/inventory', () => { H.openMenu('inventory'); H.stepFrames(2); });
+      await drive('menu/journal', () => { H.openMenu('journal'); H.stepFrames(2); });
+      await drive('menu/sheet', () => { H.openMenu('sheet'); H.stepFrames(2); });
+      await drive('menu/spells', () => { H.openMenu('spells'); H.stepFrames(2); });
+      await drive('menu/close', () => { H.closeMenu(); H.stepFrames(2); });
+      // titleShow() is asynchronous.  The old fire-and-forget call sampled the register before
+      // the title renderer had painted and let an empty required population look clean.
+      await drive('title', async () => { await H.titleShow(); H.stepFrames(2); await H.screenshot(); });
+      // Use the real census entry path to put a dialogue panel on the draw surface.  Merely
+      // loading a state containing an NPC does not open dialogue, so it cannot establish that
+      // the dialogue text path is observable.
+      await drive('dialogue/census', () => { H.closeMenu(); H.censusBegin({}); H.censusEnter(); H.stepFrames(3); });
+      await drive('handheld/touch-overlay', () => {
         H.reset({ state: 'arena_flat' }); H.setRenderRate(0);
         H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
         H.stepFrames(4);
@@ -188,6 +194,7 @@ const PAGE_HELPERS = `(() => {
         entries: entries.length,
         distinct_count: distinct.length,
         surfaces: (t.summary && t.summary.surfaces) || {},
+        required_surfaces: ['menus', 'dialogue', 'title'],
         states,
         sample: distinct.slice(0, 16),
         jrn03: classify(['Press ', 'Tap ', 'Click ', 'Hold ', 'Tutorial', 'Tip:']),
@@ -847,9 +854,23 @@ function recordBudget(id, item, b, which, threshold) {
       }, threshold);
     return;
   }
+  const emptyRequired = (b.required_surfaces || []).filter((surface) => {
+    const population = b.surfaces && b.surfaces[surface];
+    return Number(population && typeof population === 'object' ? population.drawn : population || 0) < 1;
+  });
+  if (emptyRequired.length) {
+    record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
+      null, {
+        reason: 'a required rendered-text population is empty; EMPTY/FAIL is not evidence that the surface is clean',
+        empty_required_surfaces: emptyRequired, required_surfaces: b.required_surfaces,
+        entries: b.entries, surfaces: b.surfaces, states_driven: b.states,
+      }, threshold);
+    return;
+  }
   record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
     leg.violations.length === 0, {
       entries: b.entries, distinct: b.distinct_count, surfaces: b.surfaces,
+      required_surfaces: b.required_surfaces,
       states_driven: b.states,
       violations: leg.violations,
       in_world_prose_hits: leg.prose,
@@ -1029,10 +1050,11 @@ async function mk21(page, h, ev) {
         H.stepFrames(2);
         for (const e of H.listEntities()) {
           if (e.kind !== 'object') continue;
-          // An inscription is DS2's definition: a physical entity with a position, readable via
-          // `interact`, written in fiction by someone who was there. Anything readable and not
-          // takeable is counted as a candidate; the verb it teaches is read off the record.
-          if (!e.readable) continue;
+          // DS2 inscriptions are the controls-owned teaching records, not every readable book
+          // or placard another piece may add to an interior.  The teaching contract is typed:
+          // it names both the verb and the nearby situation.  Counting generic readables made
+          // unrelated W1-25 content fail W1-08's placement gate and crossed the ownership seam.
+          if (!e.readable || typeof e.readable !== 'object' || !e.readable.teaches || !e.readable.situation) continue;
           if (found.some((f) => f.eid === e.eid)) continue;   // a prop that survives a reset must not be counted twice
           found.push({ state: s, eid: e.eid, name: e.name, pos: e.pos, takeable: e.takeable, readable: e.readable, teaches: (e.readable && e.readable.teaches) || null });
         }

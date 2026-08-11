@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-08-builder-20260811",
+  "state": "complete",
+  "role": "builder",
+  "plan": "orchestration/plans/W1-08.md",
+  "outputs_written": [
+    "tools/journey/input-checks.mjs",
+    "reports/W1-08-builder-delivery.md",
+    "orchestration/status/W1-08-builder-20260811.json"
+  ],
+  "builder_requirements": "complete",
+  "independent_naive": "awaiting JC-03N; builder did not run or score it",
+  "status_reasons": [
+    "M-N native score remains 0 until a fresh isolated participant supplies the sealed transcript",
+    "W1-29 physical-device and modality rows are consumed later and were not rebuilt"
+  ],
+  "binary_evidence_committed": false,
+  "reproduce": [
+    "node tools/journey/input-checks.mjs --group desktop --out /tmp/w1-08-desktop",
+    "node tools/journey/input-checks.mjs --self-test --out /tmp/w1-08-self-test"
+  ]
+}
