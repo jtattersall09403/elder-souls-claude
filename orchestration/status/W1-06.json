@@ -83,7 +83,7 @@
     "CLIP-THROUGH ROOT CAUSE, ATTRIBUTED (RI-CAM01 M2b): every clip frame in the build occurs at arm_len == 0.900 m EXACTLY -- the camera is at the corpus-mandated floor and the geometry is still nearer than the boom. Longest runs: cistern 211 f at pivot [3.4, 5.4, -25.8] (up the spiral stair), stair 64 f at [0, 1.6, -3.2], boardwalk 36 f at [4.2, 2.7, -6]. cam-walk-mangrove, cam-boss-arena and cam-rig-pinch are ZERO over 8 yaws each. So this is not a rig bug: it is the arithmetic of a 0.90 m boom plus a 0.28 m cast sphere plus a 0.10 m near plane needing ~1.2 m of clear space behind the character, in fixtures that pinch below it. RI-CAM05 SD's answer is architectural and the remedy is an edit to tools/camera/gen-cells.mjs, not to the arm.",
     "POSSIBLE EARNED AMENDMENT (not filed -- ran out of budget to make it properly): RI-CAM05 SD's crawl space is 1.40 m wide x 1.60 m ceiling and SD's table still demands Sigma clip_through == 0 there. With RI-CAM01 SA's 1.55 m pivot the pivot sits 0.05 m BELOW that ceiling, and a 0.90 m arm at the resting -8 deg pitch puts the camera at 1.55 + 0.10 + 0.90*sin(8) = 1.78 m, i.e. 0.18 m ABOVE the ceiling. Zero clip in a 1.60 m crawl space is geometrically impossible given SA's own numbers. A successor should either verify this arithmetic and file it, or show where I have it wrong."
   ],
-  "next_step": "Dispatch a fresh reviewer-editor for the materially corrected W1-06 plan. Do not dispatch the final builder until that version is SATISFIED; then repair and red-seed the M4/M5 surface-coordinate instrument fixture before interpreting residuals.",
+  "next_step": "Dispatch the final builder directly from the satisfied W1-06 plan. Begin with the instrument-only M4/M5 surface-coordinate and pivot-side assertion repair, red-seed it, then complete all remaining builder-owned work before critic handoff.",
   "notes_for_successor": "Run: `node tools/camera/cam-probe.mjs --probe all` (~12 min). ALWAYS setRenderRate(0) in a probe or stepFrames(1) costs 528 ms each. queueInputs frames are RELATIVE; tap/hold are scenario sugar only. Camera dummies are cam_rat/cam_levy/cam_elite/cam_boss_mid/cam_boss_great with heights in game/data/camera/targets.json.",
   "open_failures_at_handoff": {
     "run": "reports/w1-06/cam-probe-all.txt and cam-probe-all.json — 111 checks, 22 failing",
@@ -152,9 +152,10 @@
     "death_in_lock": "reports/w1-06/cam-death-in-lock.json 14/15, one deliberate open failure",
     "shots": "3/3 written, all non-blank (290/378/343 distinct colours, luma sd 41.4/28.0/34.9)"
   },
-  "plan_state": "awaiting-recriticism",
+  "plan_state": "satisfied",
   "plan_path": "orchestration/plans/W1-06.md",
   "plan_remediation_2026_08_09": "Recorded BLOCKING finding remediated against the exact governing RI text; no fresh whole-plan critique performed.",
   "plan_review_editor_2026_08_09": "SATISFIED for the version then reviewed; superseded by the material S49 authority correction dated 2026-08-11.",
-  "s49_authority_resolution_2026_08_11": "M4/M5 failures classified as an instrument fixture-coordinate defect: native distances name the player-facing wall surface but cam-probe supplied them as centres of a 0.80 m-thick box. No production-code or threshold/population amendment is authorised. Fresh reviewer-editor approval is required before final-builder dispatch."
+  "s49_authority_resolution_2026_08_11": "M4/M5 failures classified as an instrument fixture-coordinate defect: native distances name the player-facing wall surface but cam-probe supplied them as centres of a 0.80 m-thick box. No production-code or threshold/population amendment is authorised.",
+  "plan_review_editor_2026_08_11": "SATISFIED unchanged by a fresh reviewer-editor independent of the S49 arbiter-editor. The corrected plan is directly dispatchable to the final builder."
 }
