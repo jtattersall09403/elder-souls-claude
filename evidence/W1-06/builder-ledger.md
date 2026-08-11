@@ -72,3 +72,19 @@ than being silently inferred here.
 
 No independent perceptual or blind row was scored or awarded by this builder. The exact independent
 handoff above is unchanged, and no committed PNG/binary was added.
+
+## Persistent continuation — starting commit reproduction and authority boundary (2026-08-11)
+
+The complete governing collision census was reproduced before making any production change with:
+
+```sh
+node tools/run.mjs -- node tools/camera/cam-probe.mjs \
+  --probe clip,rate,wall \
+  --out evidence/W1-06/mechanical/collision-reproduction-1378e2a.json
+```
+
+At exact starting commit `1378e2a7372d4e3c819f81986b65979524ae08a7`, the result is **2,456** clip frames: cistern 1,716, stair 617, rig pinch 123, and zero in mangrove, boardwalk, and boss arena. The earlier 2,726 artifact is not relabelled or overwritten: its additional 270 boardwalk frames do not reproduce on this exact later tree, whose integrated boardwalk fixture no longer places a hut across its spine. The M4 moving wall still clips on 12 frames and M5 backing-wall clipping still reproduces. The emitted clip flag agrees with the independent origin/near-plane containment derivation, so this is not an instrument false positive.
+
+Diagnosis reached the genuine corpus-authority boundary recorded in `reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md`. The prescribed moving-wall endpoint, backing-wall reversal, 1.20 m pinch and eight-yaw 30° stair population each include configurations whose solid is inside the swept envelope of a fixed-ray camera constrained to an absolute 0.90 m boom. No predicate, population, denominator, route, arm threshold, or clipping label was changed. Because S48 explicitly resolves only the crawl ceiling, a further ruling is required before production can legally choose whether architecture/fixtures or the emergency boom yields.
+
+All perceptual packs remain unscored. Mechanical work that depends on a green collision prerequisite is intentionally not represented as complete.

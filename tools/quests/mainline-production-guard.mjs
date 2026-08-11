@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+// Fail-closed W1-19 production advancement guard. It scans the runner that actually generated
+// Gate A/B/C evidence and, when supplied, recursively checks its played trace for discontinuities.
+import fs from 'node:fs'; import path from 'node:path';
+const argv=process.argv.slice(2), val=(k)=>{const i=argv.indexOf(`--${k}`);return i<0?null:argv[i+1]};
+const runner=path.resolve(val('runner')||'tools/quests/mainline-chain-floor.mjs');
+const FORBIDDEN=['questOpen','questReveal','questNote','questSetFlag','questResolve','learnTopic','spawnNPC','teleport','enterInterior','exitInterior','openMenu'];
+function scan(src){const hits=[];for(const verb of FORBIDDEN){const re=new RegExp(`\\bH\\.${verb}\\s*\\(`,'g');for(const m of src.matchAll(re))hits.push({verb,index:m.index,line:src.slice(0,m.index).split('\n').length});}return hits;}
+function walks(node,out=[]){if(Array.isArray(node))for(const x of node)walks(x,out);else if(node&&typeof node==='object'){if(node.arrival_is_clean!==undefined&&node.teleports!==undefined)out.push(node);for(const v of Object.values(node))walks(v,out);}return out;}
+if(argv.includes('--self-test')){const positives=FORBIDDEN.map(v=>scan(`H.${v}('injected')`).some(h=>h.verb===v));const clean=scan("H.queueInputs([]); H.walkPath([[1,2]],{fromCurrent:true}); H.talkTo('n'); H.conversationSay('c');").length===0;if(positives.every(Boolean)&&clean){console.log(`PASS production-guard self-test: ${positives.length}/${FORBIDDEN.length} forbidden verbs red; production actions green`);process.exit(0)}process.exit(1)}
+const src=fs.readFileSync(runner,'utf8'),hits=scan(src),required=['H.queueInputs(','H.walkPath(','fromCurrent: true','H.talkTo(','H.conversationSay('],missing=required.filter(x=>!src.includes(x));
+let trace=null,walkRows=[],traceFailures=[];const tf=val('trace');if(tf){trace=JSON.parse(fs.readFileSync(path.resolve(tf),'utf8'));walkRows=walks(trace);for(const w of walkRows){if(w.teleports!==0||w.teleported_m!==0||w.arrival_is_clean!==true)traceFailures.push({end:w.end,target:w.target,teleports:w.teleports,teleported_m:w.teleported_m,arrival_is_clean:w.arrival_is_clean});}}
+const result={schema:'elder-souls/w1-19-production-guard@1',runner:path.relative(process.cwd(),runner),forbidden_population:FORBIDDEN.length,forbidden_hits:hits,required_production_patterns:required,missing_production_patterns:missing,trace:tf?{file:tf,walk_rows:walkRows.length,discontinuity_failures:traceFailures}:null,pass:hits.length===0&&missing.length===0&&traceFailures.length===0};
+const out=val('out');if(out)fs.writeFileSync(path.resolve(out),JSON.stringify(result,null,2)+'\n');console.log(`${result.pass?'PASS':'RED'} production guard: forbidden calls ${hits.length}; missing production seams ${missing.length}; clean walked rows ${walkRows.length-traceFailures.length}/${walkRows.length}`);if(hits.length)for(const h of hits)console.log(`  ${h.verb} line ${h.line}`);process.exit(result.pass?0:1);

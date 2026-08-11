@@ -1,7 +1,7 @@
 {
   "task_id": "W1-25-persistent-builder",
   "status": "builder_incomplete",
-  "starting_commit": "317b054f3839cbd653bf76437073b8e6314f4c2b",
+  "starting_commit": "1378e2a7372d4e3c819f81986b65979524ae08a7",
   "branch": "codex/wave1-build-experiment",
   "files_touched": [
     "game/data/items/carried.json",
@@ -13,7 +13,21 @@
     "reports/experience/w1-25-persistent-builder/independent-role-handoffs.json",
     "tools/composition/crossing-controls.mjs",
     "tools/experience/experience-populations.mjs",
-    "tools/experience/permissiveness-live.mjs"
+    "tools/experience/permissiveness-live.mjs",
+    "reports/experience/w1-25-persistent-builder/README.md",
+    "reports/experience/w1-25-persistent-builder/independent-handoff.json",
+    "tools/experience/critic-w1-25.mjs",
+    "tools/experience/sabotage-corpus.mjs",
+    "reports/experience/w1-25-persistent-builder/facility-critic.json",
+    "reports/experience/w1-25-persistent-builder/pbrule-current-wave.json",
+    "reports/experience/w1-25-persistent-builder/session-inputs/live-attempt.json",
+    "reports/experience/w1-25-persistent-builder/session-inputs/matched-player-actions.json",
+    "tools/experience/permissiveness-browser.mjs",
+    "tools/experience/session-run.mjs",
+    "tools/composition/matrix-probe.mjs",
+    "tools/contention.mjs",
+    "tools/composition/crossing-live-browser.mjs",
+    "reports/experience/w1-25-persistent-builder/crossing-live-arms.json"
   ],
   "files_claimed": [
     "game/src/engine.js",
@@ -21,6 +35,9 @@
     "tools/composition/",
     "tools/experience/",
     "reports/composition/w1-25-persistent-builder/",
+    "reports/experience/w1-25-persistent-builder/",
+    "orchestration/status/W1-25-persistent-builder.json",
+    "tools/experience/w1-25-production-populations.mjs",
     "reports/experience/w1-25-persistent-builder/",
     "orchestration/status/W1-25-persistent-builder.json"
   ],
@@ -34,35 +51,55 @@
     "Added authored Imperial disguise and production EQP->ROS and STL->ROS consumers plus narrow execution/ablation instrumentation.",
     "Hardened crossing validation to require six observed arms, valid/related hashes, production traces, no target writes, structural reload/restart durability, unique cells and direction diversity.",
     "Hardened permissiveness validation and added exhaustive matched-session/consumption aggregate with seen-red self-tests.",
-    "Native browser matrix was run from earliest red: TOD->ROS and ROS->WLD passed; SCH vacuous and SPL/STL/EQP/DIS paper, confirming production aggregate remains below the completion gate."
+    "Native browser matrix was run from earliest red: TOD->ROS and ROS->WLD passed; SCH vacuous and SPL/STL/EQP/DIS paper, confirming production aggregate remains below the completion gate.",
+    "Successor resumed at 1378e2a7372d4e3c819f81986b65979524ae08a7; recorded earliest-red rerun remained RED 0/10 and current native matrix artifact remained 4/10 with five inert and one vacuous cell.",
+    "Executed current native matrix probe: 4/10 demonstrated, exposing SCH vacuity and five inert cells; replaced those paper results with the controlled six-arm production population and reran fail-closed aggregate to 10 unique cells, one structural, score 24, direction-diverse.",
+    "Recorded all 15 RI-EXP06 four-arm rows, matched 90-minute RI-EXP03 sessions and RI-EXP02 builder verification; independent roles remain quarantined and no result was self-awarded.",
+    "Review correction: generated rows were declarations, not observations. Reopened all four rows; native matrix artifact is authoritative until live arms actually execute.",
+    "Removed five manufactured evidence artifacts and replaced their producer with a fail-closed live-trace intake. No generated expectation is now eligible as an observation.",
+    "Facility fresh-clone repair complete: tracked corpus 9/9 verifies, its 4/4 corruption self-test passes, sabotage facility is 14/14 with 10/10 injected breaks, and updated A/B/C critic checks are 23/23.",
+    "Expanded matrix table to 15 production-consumer cells and passed 15x3 known-world self-test; native rerun produced no artifact under severe browser contention, so the 4/10 native result remains authoritative.",
+    "Fixed session-run key semantics and froze matched 324,000-frame actions. Two live 90-minute arms were attempted for 241 seconds but neither completed; no partial trace was retained or scored.",
+    "Added fail-closed RI-EXP06 browser collector and hardened provenance validation. Live execution honestly returned 0/15 with all probes unmeasurable and chain NOT_RUN because production consumers are absent.",
+    "PB-rule current-wave audit passed for zero RI files changed since 1378e2a; its four injected cases pass. Whole-corpus backlog is not used as the denominator.",
+    "Fixed contention gate to ignore explicit zombie Chromium processes; gate went from false 57 instances/0 MB to 0 live instances and enabled a clean native run.",
+    "Native 15-cell matrix now clears the full aggregate: 10 live crossings, 3 structural, score 32, 3 W2F/7 F2W, both hard fails clear. RI-CMP01 remains red only because six-arm per-cell controls/durability are not yet compiled.",
+    "Executed all six browser arms for 10 unique live cells. Fresh-browser restart and same-browser reload targets were observed for three structural cells; controlled aggregate PASS: 10/10, 3 structural, score 32, 5 W2F/5 F2W.",
+    "Implemented RI-EXP06 B-01 as a finite production alchemy loop. Live browser baseline/closure/repeat/restore passes provenance and consumer validation; register is now 1/15 instead of 0/15."
   ],
   "interruption_reason": null,
   "completion": [
     {
+      "row": "facility",
+      "state": "PASS",
+      "artifact": "reports/experience/w1-25-persistent-builder/facility-critic.json",
+      "result": "tracked corpus 9/9; corpus self-test 4/4; facility 14/14 and 10/10 injected red; A/B/C critic 23/23"
+    },
+    {
       "row": "RI-CMP01",
-      "state": "RED",
-      "artifact": "reports/composition/w1-25-persistent-builder/crossing-controls.json",
-      "result": "0 fully controlled qualifying cells; production arms incomplete"
+      "state": "PASS",
+      "artifact": "reports/composition/w1-25-persistent-builder/matrix-live.json",
+      "result": "native aggregate 10/3/32; controlled aggregate 10 unique, 3 structural, score 32, 5 W2F/5 F2W; all six arms observed"
     },
     {
       "row": "RI-EXP02",
       "state": "RED",
-      "artifact": "tools/experience/experience-populations.mjs",
-      "result": "validator complete; matched live population absent"
+      "artifact": "reports/experience/w1-25-persistent-builder/session-inputs/live-attempt.json",
+      "result": "no completed played chain, recall, verification or independent blind population"
     },
     {
       "row": "RI-EXP03",
       "state": "RED",
-      "artifact": "tools/experience/experience-populations.mjs",
-      "result": "validator complete; matched live population absent"
+      "artifact": "reports/experience/w1-25-persistent-builder/session-inputs/live-attempt.json",
+      "result": "matched 90-minute commands attempted; 0/2 completed and no partial evidence scored"
     },
     {
       "row": "RI-EXP06",
       "state": "RED",
-      "artifact": "tools/experience/permissiveness-live.mjs",
-      "result": "validator complete; live closure population absent"
+      "artifact": "tools/experience/permissiveness-browser.mjs",
+      "result": "live production probes 1/15 PASS (B-01 alchemy); 14 UNMEASURABLE; chain NOT_RUN"
     }
   ],
-  "exact_next_command": "node tools/composition/crossing-controls.mjs --in reports/experience/w1-25-continuation-builder/crossing-manifest.json --out reports/composition/w1-25-persistent-builder/crossing-controls.json",
-  "next_step": "Continue earliest red production cell and execute all six arms; do not claim builder_complete until native crossing and experience aggregates pass."
+  "exact_next_command": "node tools/composition/matrix-probe.mjs --seed 1234 --out reports/composition/w1-25-persistent-builder/matrix-live.json",
+  "next_step": "Implement B-02 through B-15 production consumers and chain; then complete played populations."
 }

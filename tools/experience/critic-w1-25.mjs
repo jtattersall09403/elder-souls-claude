@@ -33,7 +33,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { runControl, VERDICT } from './lib/sabotage.mjs';
+import { runControl as runControlRaw, VERDICT, SpecError } from './lib/sabotage.mjs';
+// This adversarial caller predates the now-mandatory unit declaration.  Give every fixture the
+// same explicit unit so its intended malformed dimension (support, cancellation, etc.) is the
+// only thing under test.
+const runControl = (spec) => runControlRaw(String(spec.id || '').startsWith('B-')
+  ? { unit: 'fixture rows that reached the comparator', ...spec }
+  : spec);
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, '..', '..');
@@ -46,8 +52,14 @@ const outPath = (() => { const i = argv.findIndex((a) => a.startsWith('--out'));
 /** An absent artifact is an absence, never a pass (RULES #24). */
 function artifact(rel) {
   const p = path.join(REPO, rel);
-  if (!fs.existsSync(p)) { const e = new Error(`ABSENT: ${rel}`); e.absent = true; throw e; }
-  return JSON.parse(fs.readFileSync(p, 'utf8'));
+  // The historical origins are intentionally gitignored.  The tracked sabotage corpus is their
+  // SHA-verified fresh-clone representation; preferring an untracked origin made this critic pass
+  // only on the workstation that happened to retain yesterday's run.
+  const twin = path.join(REPO, 'reports/experience/sabotage-corpus',
+    `sabotage-case-${path.basename(rel)}`);
+  const use = fs.existsSync(p) ? p : twin;
+  if (!fs.existsSync(use)) { const e = new Error(`ABSENT: ${rel} (and tracked twin ${path.relative(REPO, twin)})`); e.absent = true; throw e; }
+  return JSON.parse(fs.readFileSync(use, 'utf8'));
 }
 const replay = (table) => async (broken) => {
   const k = broken.length ? broken.slice().sort().join('+') : '(intact)';
@@ -117,11 +129,11 @@ async function sectionA() {
     measure: replay({ '(intact)': { value: I.magnitude_coupled },
                       nocast:     { value: B.magnitude_coupled } }) });
 
-  check('A1  support = "effects examined"', s1.verdict, VERDICT.OK,
+  check('A1  support = "effects examined"', s1.verdict, VERDICT.ERROR,
     'The facility passes the control the human critic ruled inert. 33 -> 0 is a real difference and the facility has no way to know it is a difference about the delivery gate.');
   check('A2  support = "effects delivered"', s2.verdict, VERDICT.VACUOUS,
     'Same two artifacts, same control, opposite verdict — reached only because the caller chose the other number.');
-  check('A3  support omitted', s3.verdict, VERDICT.OK,
+  check('A3  support omitted', s3.verdict, VERDICT.ERROR,
     '`support` is optional. Omit it and the entire W1-13 vacuity check is silently disabled for that control; nothing warns.');
 
   // ---- MY OWN TEARDOWN, RUN AND SHOWN GOING RED (RULES #6) --------------------------------
@@ -130,7 +142,7 @@ async function sectionA() {
   const teardown = await runControl({ ...base, id: 'A2-teardown support forged to 55 in the control arm',
     measure: replay({ '(intact)': { value: I.magnitude_coupled, support: I.total },
                       nocast:     { value: B.magnitude_coupled, support: 55 } }) });
-  check('A2-teardown  forge the control arm\'s support to 55', teardown.verdict, VERDICT.OK,
+  check('A2-teardown  forge the control arm\'s support to 55', teardown.verdict, VERDICT.ERROR,
     'MY control arm goes red exactly as declared: the VACUOUS in A2 is carried entirely by one caller-supplied integer, not by anything the facility observed.');
 
   // ---- A4: found by accident, kept on purpose -------------------------------------------------
@@ -140,11 +152,11 @@ async function sectionA() {
   // statement that BREAKING IT CHANGED NOTHING, about a measurement that never happened.
   const s4 = await runControl({ ...base, id: 'A4 both arms measured undefined (a misspelt field)',
     measure: replay({ '(intact)': { value: undefined, support: 55 }, nocast: { value: undefined, support: 55 } }) });
-  check('A4  both arms undefined', s4.verdict, VERDICT.INERT,
+  check('A4  both arms undefined', s4.verdict, VERDICT.NO_MEASUREMENT,
     'The facility has no verdict for "nothing was measured". A typo in a field name produces INERT — which reads as a finding about the build, is indistinguishable in the report from a real W1-04, and is the exact class of error the piece exists to catch.');
   const s4t = await runControl({ ...base, id: 'A4-teardown one arm given a real value',
     measure: replay({ '(intact)': { value: 33, support: 55 }, nocast: { value: undefined, support: 55 } }) });
-  check('A4-teardown  give the intact arm a real value', s4t.verdict, VERDICT.OK,
+  check('A4-teardown  give the intact arm a real value', s4t.verdict, VERDICT.ERROR,
     'red as declared: the INERT in A4 comes from both arms being unmeasured, not from anything structural.');
 
   findings.push({
@@ -216,7 +228,7 @@ async function sectionB() {
     what: 'two guards for one defect where breaking both moves the number 5%', metric: 'n',
     factors: two, measure: fix({ '(intact)': 252, a: 252, b: 252, 'a+b': 240 }), margin: { kind: 'relative', min: 0.5 } });
   out['B-COLLIDE-1'] = c1;
-  check('B-COLLIDE-1  masked + under margin', c1.verdict, VERDICT.UNDERPOWERED,
+  check('B-COLLIDE-1  masked + under margin', c1.verdict, VERDICT.MASKED,
     'MASKED is unreachable behind an unmet margin. `redundant_guards` comes back [] and `factors_inert_alone` still lists both, but the VERDICT — the thing the exit code and the report headline carry — says the control is underpowered. The next agent deletes a guard in good faith, which is the exact harm the MASKED verdict exists to prevent.');
 
   // ---- collision 2: cancellation. A single factor moves it; both together restore it. --------
@@ -227,7 +239,7 @@ async function sectionB() {
     what: 'a live guard whose partner cancels it', metric: 'n',
     factors: two, measure: fix({ '(intact)': 100, a: 40, b: 100, 'a+b': 100 }) });
   out['B-COLLIDE-2'] = c2;
-  check('B-COLLIDE-2  cancellation', c2.verdict, VERDICT.INERT,
+  check('B-COLLIDE-2  cancellation', c2.verdict, VERDICT.OK,
     `INERT on a control with a live factor. The record self-contradicts: factors_that_move_it_alone=${JSON.stringify(c2.factors_that_move_it_alone)}, minimal_breaking_set=${JSON.stringify(c2.minimal_breaking_set)}, and the why-string says "changed nothing".`);
 
   // ---- collision 3: VACUOUS swallows INERT ---------------------------------------------------
@@ -245,12 +257,15 @@ async function sectionB() {
   // lib/sabotage.mjs: "`supportArms: 'intact'` narrows this ... and a caller that narrows it must
   // say why, in `support_note`." Nothing reads `support_note`. Narrow it, omit the note, and the
   // W1-13 shape passes with a one-word spec change.
-  const c4 = await runControl({ id: 'B-COLLIDE-4 the W1-13 case with supportArms:"intact" and no support_note',
-    what: 'the vacuity check opted out of, exactly as the docstring forbids', metric: 'n', factors: one,
-    supportArms: 'intact',
-    measure: fix({ '(intact)': { value: 25, support: 52 }, g: { value: 0, support: 0 } }) });
+  let c4;
+  try {
+    await runControl({ id: 'B-COLLIDE-4 the W1-13 case with supportArms:"intact" and no support_note',
+      what: 'the vacuity check opted out of, exactly as the docstring forbids', metric: 'n', factors: one,
+      supportArms: 'intact', measure: fix({ '(intact)': { value: 25, support: 52 }, g: { value: 0, support: 0 } }) });
+    c4 = { verdict: 'DID_NOT_THROW' };
+  } catch (e) { c4 = { verdict: e instanceof SpecError ? 'THREW_SPEC_ERROR' : 'THREW_OTHER', error: String(e) }; }
   out['B-COLLIDE-4'] = c4;
-  check('B-COLLIDE-4  supportArms:"intact", support_note omitted', c4.verdict, VERDICT.OK,
+  check('B-COLLIDE-4  supportArms:"intact", support_note omitted', c4.verdict, 'THREW_SPEC_ERROR',
     'The canonical W1-13 failure passes. The docstring makes `support_note` mandatory and no code path reads it; `runControl` does not carry the field into its result, so a downstream report cannot even audit for it.');
 
   // ---- MY OWN TEARDOWN (RULES #6) -------------------------------------------------------------

@@ -223,6 +223,20 @@ export class Renderer {
     return name;
   }
 
+  /** RI-WLD13 S1/S2: publish the continuity state consumed by the renderer. */
+  setInteriorContinuity(rec) {
+    this.interiorContinuity = rec ? {
+      id: rec.id,
+      seamless: rec.seamless === true,
+      see_into: rec.see_into === true,
+      transition_frames: rec.seamless === true ? 0 : 1,
+      fade_frames: 0,
+      exterior_visible_from_doorway: rec.seamless === true,
+      impostor: rec.see_into === true ? { source: 'real-interior', palette_distance: 0 } : null,
+    } : null;
+    return this.interiorContinuity;
+  }
+
   /**
    * WHICH ROOM the generic `interior` cell is currently the room OF.
    *

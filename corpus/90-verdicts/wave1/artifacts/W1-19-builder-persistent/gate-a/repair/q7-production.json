@@ -1,0 +1,4772 @@
+{
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "schema": "elder-souls/mainline-chain-floor@1",
+  "measured_at": "2026-08-11T15:47:25.271Z",
+  "sabotage": null,
+  "state": "soulrest-quay",
+  "bootstrap_npc": "bone-ladder-carter",
+  "hand_fed_topics": false,
+  "signatures": 1,
+  "chains_run": [
+    "intended"
+  ],
+  "signatures_finishing_selected_chains": 1,
+  "signatures_finishing_both_chains": null,
+  "chain_lengths": {
+    "intended": 29,
+    "backpath": 17
+  },
+  "bootstrap_sample": {
+    "topics_before": 11,
+    "topics_after": 11
+  },
+  "gates": [
+    {
+      "quest": "Q-MAIN-01",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 48.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-02",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 48.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-03",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 48.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-04",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 48.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-05",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 43.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-06",
+      "act": 2,
+      "npc": "ledgerer-hosk-vei",
+      "min": 30,
+      "chain_floor": 56.38636363636363,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 26.386363636363633,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-08",
+      "act": 2,
+      "npc": "harbourmaster-cuiro-vaneth",
+      "min": 20,
+      "chain_floor": 30.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 10.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-09",
+      "act": 2,
+      "npc": "undersexton-bel-mourne",
+      "min": 25,
+      "chain_floor": 27.386363636363637,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 2.3863636363636367,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-10",
+      "act": 2,
+      "npc": "rootkeeper-ashul-tei",
+      "min": 0,
+      "chain_floor": 67.61363636363636,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 67.61363636363636,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-11",
+      "act": 3,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 43.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-12",
+      "act": 3,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 43.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-13",
+      "act": 3,
+      "npc": "ledgerer-hosk-vei",
+      "min": 35,
+      "chain_floor": 56.38636363636363,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 21.386363636363633,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-14",
+      "act": 3,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 42,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 28,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-15",
+      "act": 3,
+      "npc": "rootkeeper-sesh-anaat",
+      "min": 0,
+      "chain_floor": 65.22727272727272,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 65.22727272727272,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "act": 4,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 43.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-17",
+      "act": 4,
+      "npc": "factor-ruvela-sath",
+      "min": 24,
+      "chain_floor": 35.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 11.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "act": 4,
+      "npc": "rootkeeper-ashul-tei",
+      "min": 0,
+      "chain_floor": 67.61363636363636,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 67.61363636363636,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-19",
+      "act": 4,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 42,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 28,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "act": 4,
+      "npc": "prefect-galvus-arn",
+      "min": 12,
+      "chain_floor": 26.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 14.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-21",
+      "act": 4,
+      "npc": "dockmaster-weeja-sen",
+      "min": 12,
+      "chain_floor": 47,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 35,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-22",
+      "act": 4,
+      "npc": "rootkeeper-sesh-anaat",
+      "min": 0,
+      "chain_floor": 65.22727272727272,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 65.22727272727272,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "act": 4,
+      "npc": "salt-factor-neloth-vaun",
+      "min": 8,
+      "chain_floor": 3.75,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": -4.25,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-24",
+      "act": 5,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 73.38636363636364,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 43.38636363636364,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "act": 5,
+      "npc": "undersexton-bel-mourne",
+      "min": 25,
+      "chain_floor": 27.386363636363637,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 2.3863636363636367,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-27",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-28",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-29",
+      "act": null,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 42,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 28,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-30",
+      "act": null,
+      "npc": "ledgerer-hosk-vei",
+      "min": 15,
+      "chain_floor": 56.38636363636363,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 41.38636363636363,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-32",
+      "act": null,
+      "npc": "keeper-teeja-lun",
+      "min": 0,
+      "chain_floor": 95.22727272727272,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 95.22727272727272,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-07",
+      "act": 2,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 42,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 28,
+      "arrival_floor": 42,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 28
+    }
+  ],
+  "priced_gates": [
+    "Q-MAIN-23 (salt-factor-neloth-vaun floor 3.75 vs min 8, worst saxhleel/interior)"
+  ],
+  "arrival_short": [],
+  "gates_never_short": 30,
+  "persuasion": [],
+  "failures": [],
+  "violent_resolutions_taken": [],
+  "rows": [
+    {
+      "race": "saxhleel",
+      "upbringing": "interior",
+      "chains": {
+        "intended": {
+          "chain": "intended",
+          "precompleted": [
+            "Q-MAIN-01",
+            "Q-MAIN-02",
+            "Q-MAIN-03",
+            "Q-MAIN-04",
+            "Q-MAIN-05",
+            "Q-MAIN-06"
+          ],
+          "completed": [
+            "Q-MAIN-07"
+          ],
+          "blocked_at": null,
+          "why": null,
+          "violent": [],
+          "journal_n": 12,
+          "floor": {
+            "dockmaster-weeja-sen": 47,
+            "factor-ruvela-sath": 35.5,
+            "harbourmaster-cuiro-vaneth": 30.5,
+            "ixtu-meer": 79,
+            "keeper-teeja-lun": 95.22727272727272,
+            "ledgerer-hosk-vei": 56.38636363636363,
+            "neeja-xul": 42,
+            "prefect-galvus-arn": 26.5,
+            "rootkeeper-ashul-tei": 67.61363636363636,
+            "rootkeeper-sesh-anaat": 65.22727272727272,
+            "salt-factor-neloth-vaun": 3.75,
+            "undersexton-aveline-rell": 73.38636363636364,
+            "undersexton-bel-mourne": 27.386363636363637
+          },
+          "arrival": {
+            "Q-MAIN-07": 42
+          },
+          "trace": [
+            {
+              "after": "(cold start)",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 35.5,
+                "harbourmaster-cuiro-vaneth": 30.5,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 100,
+                "ledgerer-hosk-vei": 64.5,
+                "neeja-xul": 42,
+                "prefect-galvus-arn": 26.5,
+                "rootkeeper-ashul-tei": 73,
+                "rootkeeper-sesh-anaat": 71.5,
+                "salt-factor-neloth-vaun": 3.75,
+                "undersexton-aveline-rell": 75.5,
+                "undersexton-bel-mourne": 29.5
+              }
+            },
+            {
+              "quest": "Q-MAIN-07",
+              "topic": "the cutting yard",
+              "prerequisite_topics": [],
+              "arrival": {
+                "where": {
+                  "settlement": "blackrose",
+                  "interior": null,
+                  "hour": 16.3,
+                  "pos": [
+                    1906.15926,
+                    2.59,
+                    4449.842164
+                  ],
+                  "door_in_reach": null
+                },
+                "giver_distance_m": 0.6778908101574861,
+                "topics_known": [
+                  "a-name-for-cover",
+                  "the drowned tally",
+                  "the-burial-stair",
+                  "the-cold-well",
+                  "the-cutting",
+                  "the-cutting-yard",
+                  "the-empty-boxes",
+                  "the-gem-shipping",
+                  "the-ninth-clause-of-the-drowned-tally",
+                  "the-ninth-recension",
+                  "the-return-column"
+                ],
+                "books_read": [
+                  "the-drowned-tally-tenth-volume"
+                ],
+                "journal_n": 12,
+                "completed": [
+                  "Q-MAIN-01",
+                  "Q-MAIN-02",
+                  "Q-MAIN-03",
+                  "Q-MAIN-04",
+                  "Q-MAIN-05",
+                  "Q-MAIN-06"
+                ],
+                "active": [],
+                "durable_flags": [
+                  "act_one_closed",
+                  "act_two_opened",
+                  "bone_ladder_keeper_protected",
+                  "boxes_counted_plain",
+                  "court_backs_the_mandate_whole",
+                  "court_told_the_well_simply_failed",
+                  "cover_question_settled",
+                  "player_has_heard_the_sound_under_the_wastes",
+                  "player_has_seen_a_cold_well",
+                  "player_is_the_tally_reader",
+                  "player_known_to_the_drowned_court",
+                  "player_knows_the_curve_is_older",
+                  "player_took_a_ledger_name",
+                  "ravano_still_unnamed",
+                  "recension_unquestioned_in_chapter",
+                  "rell_kept_the_player_on",
+                  "soulrest_court_book_unchanged",
+                  "steward_of_the_count_named",
+                  "the_coast_keepers_trust_the_player",
+                  "the_mandate_is_claimed",
+                  "the_mortuary_count_stayed_in_the_mortuary",
+                  "the_road_was_reported_quiet",
+                  "the_sextons_use_the_word_without_qualifying_it",
+                  "the_sum_exists_only_in_the_players_head",
+                  "unlocked:Q-MAIN-02",
+                  "unlocked:Q-MAIN-03",
+                  "unlocked:Q-MAIN-04",
+                  "unlocked:Q-MAIN-05",
+                  "unlocked:Q-MAIN-06",
+                  "unlocked:Q-MAIN-07",
+                  "unlocked:Q-MAIN-08"
+                ],
+                "gold": 0,
+                "hour": 16.3,
+                "marker_count": 0,
+                "ui_mode": "world"
+              },
+              "offer": {
+                "id": "Q-MAIN-07",
+                "title": "What the Cutters Say",
+                "giver": "neeja-xul",
+                "offerable": true,
+                "why": [],
+                "gate": null
+              },
+              "giver_journey": {
+                "quest": "Q-MAIN-07",
+                "giver": "neeja-xul",
+                "went_to": "blackrose",
+                "present": true,
+                "reached": true,
+                "why": null,
+                "ok": true,
+                "walk": {
+                  "ok": true,
+                  "frames": 0,
+                  "left_m": 0.6778908101574861,
+                  "started": [
+                    1906.15926,
+                    2.59,
+                    4449.842164
+                  ],
+                  "ended": [
+                    1906.15926,
+                    2.59,
+                    4449.842164
+                  ],
+                  "production_input": true,
+                  "already_in_reach": true,
+                  "planned_route": [],
+                  "planned_clearance": [],
+                  "planner": null,
+                  "walk": {
+                    "arrived": true,
+                    "aborted": null,
+                    "frames": 0,
+                    "path_m": 0,
+                    "end": [
+                      1906.15926,
+                      4449.842164
+                    ],
+                    "target": [
+                      1905.5,
+                      4450
+                    ],
+                    "offset_m": 0.6778908101574861,
+                    "teleports": 0,
+                    "teleported_m": 0,
+                    "teleport_log": [],
+                    "arrival_is_clean": true
+                  }
+                },
+                "approach": {
+                  "ok": true,
+                  "frames": 8859,
+                  "left_m": 0.7845584462612463,
+                  "started": [
+                    1545.680561,
+                    3.594588,
+                    4540.5705
+                  ],
+                  "ended": [
+                    1906.262996,
+                    2.59,
+                    4449.817328
+                  ],
+                  "production_input": true,
+                  "planned_route": [
+                    [
+                      1546.180561,
+                      4541.0705
+                    ],
+                    [
+                      1546.680561,
+                      4541.0705
+                    ],
+                    [
+                      1547.180561,
+                      4541.5705
+                    ],
+                    [
+                      1547.680561,
+                      4542.0705
+                    ],
+                    [
+                      1558.74,
+                      4547.16
+                    ],
+                    [
+                      1570.44,
+                      4553.89
+                    ],
+                    [
+                      1580.31,
+                      4545.55
+                    ],
+                    [
+                      1586.66,
+                      4535.62
+                    ],
+                    [
+                      1593.73,
+                      4525.71
+                    ],
+                    [
+                      1600.45,
+                      4515.79
+                    ],
+                    [
+                      1608.38,
+                      4506.83
+                    ],
+                    [
+                      1616.51,
+                      4498.03
+                    ],
+                    [
+                      1624.64,
+                      4489.23
+                    ],
+                    [
+                      1631.72,
+                      4479.59
+                    ],
+                    [
+                      1638.02,
+                      4469.45
+                    ],
+                    [
+                      1645.14,
+                      4459.74
+                    ],
+                    [
+                      1653.5,
+                      4451.55
+                    ],
+                    [
+                      1663.65,
+                      4444.82
+                    ],
+                    [
+                      1674.41,
+                      4440.89
+                    ],
+                    [
+                      1685.25,
+                      4438.38
+                    ],
+                    [
+                      1692.45,
+                      4428.8
+                    ],
+                    [
+                      1700.19,
+                      4419.96
+                    ],
+                    [
+                      1711.09,
+                      4415.6
+                    ],
+                    [
+                      1722.79,
+                      4411.95
+                    ],
+                    [
+                      1734.46,
+                      4412.42
+                    ],
+                    [
+                      1746.27,
+                      4414.47
+                    ],
+                    [
+                      1757.49,
+                      4418.49
+                    ],
+                    [
+                      1768.44,
+                      4423.32
+                    ],
+                    [
+                      1778.72,
+                      4429.46
+                    ],
+                    [
+                      1788.94,
+                      4435.71
+                    ],
+                    [
+                      1874.6,
+                      4473.53
+                    ],
+                    [
+                      1907.6,
+                      4471.53
+                    ],
+                    [
+                      1916.6,
+                      4453.53
+                    ],
+                    [
+                      1911.6,
+                      4448.53
+                    ],
+                    [
+                      1905.5,
+                      4450
+                    ],
+                    [
+                      1905.5,
+                      4450
+                    ]
+                  ],
+                  "planned_clearance": [
+                    {
+                      "et": 0,
+                      "solid": false,
+                      "distance_m": 323.6759091972937
+                    },
+                    {
+                      "et": 0.2,
+                      "solid": false,
+                      "distance_m": 323.60494651178436
+                    },
+                    {
+                      "et": 0.4,
+                      "solid": false,
+                      "distance_m": 323.5340300789001
+                    },
+                    {
+                      "et": 0.6,
+                      "solid": false,
+                      "distance_m": 323.4631599290633
+                    },
+                    {
+                      "et": 0.8,
+                      "solid": false,
+                      "distance_m": 323.39233609270116
+                    },
+                    {
+                      "et": 1,
+                      "solid": false,
+                      "distance_m": 323.3215586002497
+                    }
+                  ],
+                  "planner": {
+                    "from": "soulrest",
+                    "to": "blackrose",
+                    "resumed_incoming": true,
+                    "found": true,
+                    "cols": 126,
+                    "rows": 125,
+                    "start": [
+                      60,
+                      60
+                    ],
+                    "goal": [
+                      64,
+                      63
+                    ],
+                    "open_left": 20,
+                    "cost_nodes": 24,
+                    "best_reachable": {
+                      "d": 0.25871978030522497,
+                      "x": 64,
+                      "z": 63,
+                      "world": [
+                        1547.680561,
+                        4542.0705
+                      ]
+                    }
+                  },
+                  "stealth": {
+                    "action": "crouch",
+                    "production_input": true
+                  },
+                  "hazards": {
+                    "declared_file": "game/data/world/hazards.json",
+                    "hazards": 19,
+                    "one_kill_hazard": true,
+                    "attrition_time_to_death_s": [
+                      {
+                        "id": "ridge-exposure",
+                        "pct_per_s": 0.8,
+                        "seconds": 125,
+                        "h4_pass": true
+                      },
+                      {
+                        "id": "the-thicket",
+                        "pct_per_s": 0.6,
+                        "seconds": 166.7,
+                        "h4_pass": true
+                      },
+                      {
+                        "id": "kiln-ground",
+                        "pct_per_s": 1,
+                        "seconds": 100,
+                        "h4_pass": true
+                      },
+                      {
+                        "id": "salt-storm",
+                        "pct_per_s": 1.2,
+                        "seconds": 83.3,
+                        "h4_pass": true
+                      },
+                      {
+                        "id": "thirst",
+                        "pct_per_s": 0.35,
+                        "seconds": 285.7,
+                        "h4_pass": true
+                      }
+                    ],
+                    "volumes": 19,
+                    "anchored_on_signature_geometry": [
+                      {
+                        "hazard": "kiln-ground",
+                        "anchor": "naga_kiln_dome",
+                        "radius_m": 30
+                      },
+                      {
+                        "hazard": "comb-collapse",
+                        "anchor": "comb_cliff",
+                        "radius_m": 26
+                      },
+                      {
+                        "hazard": "voriplasm",
+                        "anchor": "voriplasm",
+                        "radius_m": 6
+                      },
+                      {
+                        "hazard": "dye-fume",
+                        "anchor": "open_dye_vat",
+                        "radius_m": 26
+                      },
+                      {
+                        "hazard": "hist-sap-fume",
+                        "anchor": "petrified_bole",
+                        "radius_m": 10
+                      },
+                      {
+                        "hazard": "spore-bloom",
+                        "anchor": "welkynd_pillar",
+                        "radius_m": 30
+                      },
+                      {
+                        "hazard": "strangler-snare",
+                        "anchor": "welkynd_pillar",
+                        "radius_m": 12
+                      },
+                      {
+                        "hazard": "press-gang-water",
+                        "anchor": "root_arch",
+                        "radius_m": 22
+                      },
+                      {
+                        "hazard": "pair-lightning",
+                        "anchor": "petrified_bole",
+                        "radius_m": 18
+                      }
+                    ],
+                    "here": [
+                      {
+                        "id": "press-gang-water",
+                        "class": "STRANDING",
+                        "region": "western-rootlands",
+                        "inside": false,
+                        "approach_m": 259.2,
+                        "told_at_frame": null,
+                        "first_damage_frame": null,
+                        "damage_dealt": 0,
+                        "damage_total": 0,
+                        "fired": false,
+                        "armed": false,
+                        "spent": false,
+                        "fired_at_frame": null,
+                        "fires": 0,
+                        "outcome": null,
+                        "sheltered": false,
+                        "declared": {
+                          "kind": "none"
+                        },
+                        "suppressed_by": "settlement blackrose"
+                      }
+                    ],
+                    "active": [],
+                    "region": "western-rootlands"
+                  },
+                  "walk": {
+                    "arrived": true,
+                    "aborted": null,
+                    "frames": 8859,
+                    "minutes": 2.461,
+                    "path_m": 472.5,
+                    "mean_speed_mps": 3.2,
+                    "end": [
+                      1906.3,
+                      4449.8
+                    ],
+                    "target": [
+                      1905.5,
+                      4450
+                    ],
+                    "offset_m": 0.78,
+                    "longest_stuck_frames": 0,
+                    "mired_frames": 0,
+                    "survival_inputs": {
+                      "heals": 0,
+                      "sprint_frames": 0,
+                      "defensive_swings": 0
+                    },
+                    "regions_entered": [
+                      "western-rootlands"
+                    ],
+                    "deepest_water_on_the_walk": {
+                      "depth_m": 0,
+                      "at": null
+                    },
+                    "worst_off_path_m": 0.3,
+                    "off_path_frames": 0,
+                    "regains": 0,
+                    "teleports": 0,
+                    "teleported_m": 0,
+                    "teleport_log": [],
+                    "arrival_is_clean": true
+                  }
+                },
+                "schedule_entry": null,
+                "entity_pos": [
+                  1905.5,
+                  2.59,
+                  4450
+                ],
+                "location": {
+                  "settlement": "blackrose",
+                  "pos": [
+                    1905.5,
+                    2.59,
+                    4450
+                  ],
+                  "schedule": [
+                    {
+                      "from": "00:00",
+                      "to": "07:00",
+                      "at": "blackrose-inn",
+                      "activity": "home"
+                    },
+                    {
+                      "from": "07:00",
+                      "to": "19:00",
+                      "at": null,
+                      "activity": "post"
+                    },
+                    {
+                      "from": "19:00",
+                      "to": "00:00",
+                      "at": "blackrose-inn",
+                      "activity": "tavern"
+                    }
+                  ]
+                }
+              },
+              "world_actions": [
+                {
+                  "reveal": "rev_older_cutting",
+                  "channel": "ledger",
+                  "source": "item_the_grandmother_yard_book",
+                  "ok": true,
+                  "entry_walk": {
+                    "ok": true,
+                    "frames": 383,
+                    "left_m": 0.10651280433864017,
+                    "started": [
+                      1906.055524,
+                      2.59,
+                      4449.867
+                    ],
+                    "ended": [
+                      1887.563932,
+                      2.59,
+                      4444.785192
+                    ],
+                    "production_input": true,
+                    "planned_route": [
+                      [
+                        1905.5,
+                        4449.7
+                      ],
+                      [
+                        1905,
+                        4449.7
+                      ],
+                      [
+                        1904.5,
+                        4449.7
+                      ],
+                      [
+                        1904,
+                        4449.7
+                      ],
+                      [
+                        1903.5,
+                        4449.7
+                      ],
+                      [
+                        1903,
+                        4449.7
+                      ],
+                      [
+                        1902.5,
+                        4449.7
+                      ],
+                      [
+                        1902,
+                        4449.7
+                      ],
+                      [
+                        1901.5,
+                        4449.7
+                      ],
+                      [
+                        1901,
+                        4449.7
+                      ],
+                      [
+                        1900.5,
+                        4449.7
+                      ],
+                      [
+                        1900,
+                        4449.7
+                      ],
+                      [
+                        1899.5,
+                        4449.7
+                      ],
+                      [
+                        1899,
+                        4449.7
+                      ],
+                      [
+                        1898.5,
+                        4449.7
+                      ],
+                      [
+                        1898,
+                        4449.7
+                      ],
+                      [
+                        1897.5,
+                        4449.2
+                      ],
+                      [
+                        1897,
+                        4449.2
+                      ],
+                      [
+                        1896.5,
+                        4449.2
+                      ],
+                      [
+                        1896,
+                        4449.2
+                      ],
+                      [
+                        1895.5,
+                        4449.2
+                      ],
+                      [
+                        1895,
+                        4449.2
+                      ],
+                      [
+                        1894.5,
+                        4449.2
+                      ],
+                      [
+                        1894,
+                        4449.2
+                      ],
+                      [
+                        1893.5,
+                        4449.2
+                      ],
+                      [
+                        1893,
+                        4449.2
+                      ],
+                      [
+                        1892.5,
+                        4449.2
+                      ],
+                      [
+                        1892,
+                        4449.2
+                      ],
+                      [
+                        1891.5,
+                        4449.2
+                      ],
+                      [
+                        1891,
+                        4448.7
+                      ],
+                      [
+                        1890.5,
+                        4448.2
+                      ],
+                      [
+                        1890,
+                        4447.7
+                      ],
+                      [
+                        1889.5,
+                        4447.2
+                      ],
+                      [
+                        1889,
+                        4446.7
+                      ],
+                      [
+                        1888.5,
+                        4446.2
+                      ],
+                      [
+                        1888,
+                        4445.7
+                      ],
+                      [
+                        1888,
+                        4445.2
+                      ],
+                      [
+                        1887.5,
+                        4444.7
+                      ]
+                    ],
+                    "planned_clearance": [
+                      {
+                        "et": 0,
+                        "solid": false,
+                        "distance_m": 1.404370063258492
+                      },
+                      {
+                        "et": 0.2,
+                        "solid": false,
+                        "distance_m": 1.3189578739780277
+                      },
+                      {
+                        "et": 0.4,
+                        "solid": false,
+                        "distance_m": 1.2385330618303012
+                      },
+                      {
+                        "et": 0.6,
+                        "solid": false,
+                        "distance_m": 1.164129756656423
+                      },
+                      {
+                        "et": 0.8,
+                        "solid": false,
+                        "distance_m": 1.0969738869194794
+                      },
+                      {
+                        "et": 1,
+                        "solid": false,
+                        "distance_m": 1.0384724358400865
+                      }
+                    ],
+                    "planner": {
+                      "from": "blackrose",
+                      "to": "blackrose",
+                      "resumed_incoming": false,
+                      "found": true,
+                      "cols": 159,
+                      "rows": 132,
+                      "start": [
+                        97,
+                        70
+                      ],
+                      "goal": [
+                        60,
+                        60
+                      ],
+                      "open_left": 99,
+                      "cost_nodes": 240,
+                      "best_reachable": {
+                        "d": 0,
+                        "x": 60,
+                        "z": 60,
+                        "world": [
+                          1887.5,
+                          4444.7
+                        ]
+                      }
+                    },
+                    "stealth": null,
+                    "hazards": {
+                      "declared_file": "game/data/world/hazards.json",
+                      "hazards": 19,
+                      "one_kill_hazard": true,
+                      "attrition_time_to_death_s": [
+                        {
+                          "id": "ridge-exposure",
+                          "pct_per_s": 0.8,
+                          "seconds": 125,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "the-thicket",
+                          "pct_per_s": 0.6,
+                          "seconds": 166.7,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "kiln-ground",
+                          "pct_per_s": 1,
+                          "seconds": 100,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "salt-storm",
+                          "pct_per_s": 1.2,
+                          "seconds": 83.3,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "thirst",
+                          "pct_per_s": 0.35,
+                          "seconds": 285.7,
+                          "h4_pass": true
+                        }
+                      ],
+                      "volumes": 19,
+                      "anchored_on_signature_geometry": [
+                        {
+                          "hazard": "kiln-ground",
+                          "anchor": "naga_kiln_dome",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "comb-collapse",
+                          "anchor": "comb_cliff",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "voriplasm",
+                          "anchor": "voriplasm",
+                          "radius_m": 6
+                        },
+                        {
+                          "hazard": "dye-fume",
+                          "anchor": "open_dye_vat",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "hist-sap-fume",
+                          "anchor": "petrified_bole",
+                          "radius_m": 10
+                        },
+                        {
+                          "hazard": "spore-bloom",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "strangler-snare",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 12
+                        },
+                        {
+                          "hazard": "press-gang-water",
+                          "anchor": "root_arch",
+                          "radius_m": 22
+                        },
+                        {
+                          "hazard": "pair-lightning",
+                          "anchor": "petrified_bole",
+                          "radius_m": 18
+                        }
+                      ],
+                      "here": [
+                        {
+                          "id": "press-gang-water",
+                          "class": "STRANDING",
+                          "region": "western-rootlands",
+                          "inside": false,
+                          "approach_m": 259.2,
+                          "told_at_frame": null,
+                          "first_damage_frame": null,
+                          "damage_dealt": 0,
+                          "damage_total": 0,
+                          "fired": false,
+                          "armed": false,
+                          "spent": false,
+                          "fired_at_frame": null,
+                          "fires": 0,
+                          "outcome": null,
+                          "sheltered": false,
+                          "declared": {
+                            "kind": "none"
+                          },
+                          "suppressed_by": "settlement blackrose"
+                        }
+                      ],
+                      "active": [],
+                      "region": "western-rootlands"
+                    },
+                    "walk": {
+                      "arrived": true,
+                      "aborted": null,
+                      "frames": 383,
+                      "minutes": 0.106,
+                      "path_m": 20.4,
+                      "mean_speed_mps": 3.1996,
+                      "end": [
+                        1887.6,
+                        4444.8
+                      ],
+                      "target": [
+                        1887.5,
+                        4444.7
+                      ],
+                      "offset_m": 0.11,
+                      "longest_stuck_frames": 0,
+                      "mired_frames": 0,
+                      "survival_inputs": {
+                        "heals": 0,
+                        "sprint_frames": 0,
+                        "defensive_swings": 0
+                      },
+                      "regions_entered": [
+                        "western-rootlands"
+                      ],
+                      "deepest_water_on_the_walk": {
+                        "depth_m": 0,
+                        "at": null
+                      },
+                      "worst_off_path_m": 0.23,
+                      "off_path_frames": 0,
+                      "regains": 0,
+                      "teleports": 0,
+                      "teleported_m": 0,
+                      "teleport_log": [],
+                      "arrival_is_clean": true
+                    }
+                  },
+                  "entry_prompt": {
+                    "interior": "blackrose-shrine",
+                    "name": "The Lime-Pit Hist-Shrine",
+                    "way": "in",
+                    "dist_m": 0.589
+                  },
+                  "entry_where": {
+                    "settlement": "blackrose",
+                    "interior": "blackrose-shrine",
+                    "hour": 16.34,
+                    "pos": [
+                      -0.192072,
+                      0,
+                      5.614058
+                    ],
+                    "door_in_reach": {
+                      "interior": "blackrose-shrine",
+                      "name": null,
+                      "way": "out",
+                      "dist_m": 0.32
+                    }
+                  },
+                  "entry_ui": {
+                    "mode": "world",
+                    "map_exists": true,
+                    "map": {
+                      "exists": true,
+                      "reachable_from_journal": false,
+                      "journal_reachable_from_map": false,
+                      "markers": 0,
+                      "marker_census": {
+                        "scope": "map",
+                        "elements": 0,
+                        "derived": true,
+                        "clauses": [
+                          "m1 forbidden kind",
+                          "m2 world anchor",
+                          "m3 quest identity or destination",
+                          "m4 a place square the discovery model does not support"
+                        ],
+                        "model_available": true,
+                        "hits": []
+                      },
+                      "routes_drawn": 0,
+                      "quest_bearing_elements": [],
+                      "travel_affordances": [],
+                      "numeric_text": [],
+                      "measured": false,
+                      "elements_considered": 0,
+                      "elements_on_screen": 7,
+                      "non_map_elements": [
+                        "hud.health",
+                        "hud.stamina",
+                        "hud.focus",
+                        "hud.heal",
+                        "hud.equipload",
+                        "hud.quickslots",
+                        "hud.prompt"
+                      ],
+                      "numeric_text_screen": [
+                        "hud.heal"
+                      ],
+                      "drawn_cells": 0,
+                      "revealed_cells": 2487,
+                      "total_cells": 42846,
+                      "places_drawn": 0,
+                      "places_discovered": 3,
+                      "view": "world",
+                      "mutator_arities": {
+                        "observe": 0,
+                        "restore": 1,
+                        "resume": 0,
+                        "suspend": 0
+                      },
+                      "mutators": [
+                        {
+                          "name": "observe",
+                          "arity": 0,
+                          "member": "method"
+                        },
+                        {
+                          "name": "restore",
+                          "arity": 1,
+                          "member": "method"
+                        },
+                        {
+                          "name": "resume",
+                          "arity": 0,
+                          "member": "method"
+                        },
+                        {
+                          "name": "suspend",
+                          "arity": 0,
+                          "member": "method"
+                        }
+                      ],
+                      "mutators_enumerated": true,
+                      "zero_arity_mutators": [
+                        "observe",
+                        "resume",
+                        "suspend"
+                      ],
+                      "restore_reads": [
+                        "stood"
+                      ],
+                      "place_naming_parameters": []
+                    },
+                    "navigable": [
+                      "inventory",
+                      "journal",
+                      "sheet",
+                      "spells",
+                      "map"
+                    ],
+                    "nav": {
+                      "advertised": [
+                        "inventory",
+                        "journal",
+                        "sheet",
+                        "spells",
+                        "map"
+                      ],
+                      "walkable": [
+                        "world",
+                        "inventory",
+                        "journal",
+                        "sheet",
+                        "spells",
+                        "map"
+                      ],
+                      "walk_actions": {
+                        "prev": "swap_left",
+                        "next": "swap_right"
+                      },
+                      "walk_live": false,
+                      "refused": null
+                    },
+                    "at_hearth": false,
+                    "at_hearth_real": false,
+                    "at_hearth_overridden": false,
+                    "at_hearth_id": null,
+                    "screen": {
+                      "w": 1920,
+                      "h": 1080,
+                      "dpr": 1
+                    },
+                    "elements": [
+                      {
+                        "id": "hud.health",
+                        "kind": "health_bar",
+                        "rect": [
+                          42,
+                          40,
+                          400,
+                          16
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": null,
+                        "fill": 1,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false
+                      },
+                      {
+                        "id": "hud.stamina",
+                        "kind": "stamina_bar",
+                        "rect": [
+                          42,
+                          64,
+                          400,
+                          10
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": null,
+                        "fill": 1,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false,
+                        "meta": {
+                          "regen_blocked": false,
+                          "exhausted": false
+                        }
+                      },
+                      {
+                        "id": "hud.focus",
+                        "kind": "focus_bar",
+                        "rect": [
+                          42,
+                          82,
+                          400,
+                          10
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": null,
+                        "fill": 1,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false
+                      },
+                      {
+                        "id": "hud.heal",
+                        "kind": "heal_charges",
+                        "rect": [
+                          42,
+                          118,
+                          110,
+                          24
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": "6",
+                        "fill": 1.2,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false,
+                        "meta": {
+                          "charges": 6,
+                          "max": 5
+                        }
+                      },
+                      {
+                        "id": "hud.equipload",
+                        "kind": "equip_load",
+                        "rect": [
+                          1758,
+                          852,
+                          120,
+                          24
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": "LIGHT",
+                        "fill": 0.24,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false,
+                        "meta": {
+                          "roll_class": "LIGHT",
+                          "pct": 24
+                        }
+                      },
+                      {
+                        "id": "hud.quickslots",
+                        "kind": "quick_slots",
+                        "rect": [
+                          1728,
+                          888,
+                          150,
+                          150
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": "Spark-Dart",
+                        "fill": null,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false,
+                        "meta": {
+                          "left": null,
+                          "right": null,
+                          "item": null,
+                          "spell": "Spark-Dart",
+                          "leftActive": false,
+                          "rightActive": false
+                        }
+                      },
+                      {
+                        "id": "hud.prompt",
+                        "kind": "interact_prompt",
+                        "rect": [
+                          860,
+                          830,
+                          200,
+                          32
+                        ],
+                        "visible": true,
+                        "opacity": 1,
+                        "text": "Wuxshaneekh",
+                        "fill": null,
+                        "worldAnchor": null,
+                        "material": null,
+                        "focused": false,
+                        "meta": {
+                          "range_m": 1.27,
+                          "device": "keyboard",
+                          "glyph": "keycap"
+                        }
+                      }
+                    ],
+                    "coveragePct": 2.3544,
+                    "hud": {
+                      "suppressed": false,
+                      "suppressed_because": null,
+                      "persistent_count": 6,
+                      "total_count": 7,
+                      "coverage_pct": 2.0457,
+                      "coverage_with_conditional_pct": 2.3544,
+                      "centre_coverage_pct": 0,
+                      "world_anchored": [],
+                      "numeric_text": [
+                        "hud.heal"
+                      ],
+                      "bar_contrasts": {
+                        "health": {
+                          "fill_vs_trough": 6.351
+                        },
+                        "stamina": {
+                          "fill_vs_trough": 7.966,
+                          "spent_vs_trough": 10.923,
+                          "exhausted_trough_vs_trough": 10.923
+                        },
+                        "focus": {
+                          "fill_vs_trough": 5.659
+                        },
+                        "boss": {
+                          "fill_vs_trough": 6.351
+                        },
+                        "buildup_poison": {
+                          "fill_vs_trough": 7.827
+                        },
+                        "buildup_disease": {
+                          "fill_vs_trough": 6.351
+                        },
+                        "buildup_curse": {
+                          "fill_vs_trough": 5.659
+                        },
+                        "buildup_frost": {
+                          "fill_vs_trough": 8.826
+                        }
+                      }
+                    },
+                    "menu": {
+                      "area_frac": 0,
+                      "opacity": 0,
+                      "paused": false
+                    },
+                    "book": null,
+                    "focus": null,
+                    "journal": null,
+                    "fonts": [
+                      {
+                        "family": "Argonian Reed (project)",
+                        "size_px": 19,
+                        "weight": 1.15,
+                        "path": "game/src/ui/glyphs.js"
+                      },
+                      {
+                        "family": "Argonian Bone-cut (project)",
+                        "size_px": 15,
+                        "weight": 1.5,
+                        "path": "game/src/ui/glyphs.js"
+                      }
+                    ],
+                    "textRenderPath": "canvas-vector",
+                    "text_raster_scale": 1,
+                    "text_glyph_source": "game/src/ui/glyphs.js",
+                    "materials": [],
+                    "overdraw": 0.024,
+                    "touch": {
+                      "controls_drawn": 0,
+                      "rotate_drawn": false,
+                      "area_frac": 0,
+                      "rotate_area_frac": 0,
+                      "labelled": []
+                    },
+                    "surfaces": 1,
+                    "full_screen_panels": 0,
+                    "hud_elements": 7,
+                    "toast": null,
+                    "markers": 0,
+                    "marker_census": {
+                      "scope": "screen",
+                      "elements": 7,
+                      "derived": true,
+                      "clauses": [
+                        "m1 forbidden kind",
+                        "m2 world anchor",
+                        "m3 quest identity or destination",
+                        "m4 a place square the discovery model does not support"
+                      ],
+                      "model_available": true,
+                      "hits": []
+                    },
+                    "world_rendered_behind": true,
+                    "screen_alpha": null,
+                    "dialogue_surface": {
+                      "open": false
+                    },
+                    "non_world_area_frac": 0.0235,
+                    "draw_calls": 769,
+                    "frame": 9292
+                  },
+                  "reader_walk": {
+                    "ok": true,
+                    "frames": 98,
+                    "left_m": 0.5361560556778224,
+                    "started": [
+                      -0.256096,
+                      0,
+                      5.528744
+                    ],
+                    "ended": [
+                      -4.848866,
+                      0,
+                      3.033922
+                    ],
+                    "production_input": true,
+                    "planned_route": [
+                      [
+                        -5.32,
+                        2.778
+                      ]
+                    ],
+                    "planned_clearance": [
+                      {
+                        "et": 0,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.2,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.4,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.6,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.8,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 1,
+                        "solid": false,
+                        "distance_m": null
+                      }
+                    ],
+                    "planner": {
+                      "from": "stormhold",
+                      "to": "stormhold",
+                      "resumed_incoming": false,
+                      "found": false,
+                      "cols": 132,
+                      "rows": 127,
+                      "start": [
+                        70,
+                        66
+                      ],
+                      "goal": [
+                        60,
+                        60
+                      ],
+                      "open_left": 0,
+                      "cost_nodes": 1,
+                      "best_reachable": {
+                        "d": 5.8309518948453,
+                        "x": 70,
+                        "z": 66,
+                        "world": [
+                          -0.3200000000000003,
+                          5.777999999999999
+                        ]
+                      }
+                    },
+                    "stealth": null,
+                    "hazards": {
+                      "declared_file": "game/data/world/hazards.json",
+                      "hazards": 19,
+                      "one_kill_hazard": true,
+                      "attrition_time_to_death_s": [
+                        {
+                          "id": "ridge-exposure",
+                          "pct_per_s": 0.8,
+                          "seconds": 125,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "the-thicket",
+                          "pct_per_s": 0.6,
+                          "seconds": 166.7,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "kiln-ground",
+                          "pct_per_s": 1,
+                          "seconds": 100,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "salt-storm",
+                          "pct_per_s": 1.2,
+                          "seconds": 83.3,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "thirst",
+                          "pct_per_s": 0.35,
+                          "seconds": 285.7,
+                          "h4_pass": true
+                        }
+                      ],
+                      "volumes": 19,
+                      "anchored_on_signature_geometry": [
+                        {
+                          "hazard": "kiln-ground",
+                          "anchor": "naga_kiln_dome",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "comb-collapse",
+                          "anchor": "comb_cliff",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "voriplasm",
+                          "anchor": "voriplasm",
+                          "radius_m": 6
+                        },
+                        {
+                          "hazard": "dye-fume",
+                          "anchor": "open_dye_vat",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "hist-sap-fume",
+                          "anchor": "petrified_bole",
+                          "radius_m": 10
+                        },
+                        {
+                          "hazard": "spore-bloom",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "strangler-snare",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 12
+                        },
+                        {
+                          "hazard": "press-gang-water",
+                          "anchor": "root_arch",
+                          "radius_m": 22
+                        },
+                        {
+                          "hazard": "pair-lightning",
+                          "anchor": "petrified_bole",
+                          "radius_m": 18
+                        }
+                      ],
+                      "here": [],
+                      "active": [],
+                      "region": "valus-ridge"
+                    },
+                    "walk": {
+                      "arrived": true,
+                      "aborted": null,
+                      "frames": 98,
+                      "minutes": 0.027,
+                      "path_m": 5.2,
+                      "mean_speed_mps": 3.2,
+                      "end": [
+                        -4.8,
+                        3
+                      ],
+                      "target": [
+                        -5.3,
+                        2.8
+                      ],
+                      "offset_m": 0.54,
+                      "longest_stuck_frames": 0,
+                      "mired_frames": 0,
+                      "survival_inputs": {
+                        "heals": 0,
+                        "sprint_frames": 0,
+                        "defensive_swings": 0
+                      },
+                      "regions_entered": [
+                        "valus-ridge"
+                      ],
+                      "deepest_water_on_the_walk": {
+                        "depth_m": 40.731,
+                        "at": [
+                          -1.8,
+                          4.7
+                        ]
+                      },
+                      "worst_off_path_m": 0,
+                      "off_path_frames": 0,
+                      "regains": 0,
+                      "teleports": 0,
+                      "teleported_m": 0,
+                      "teleport_log": [],
+                      "arrival_is_clean": true
+                    }
+                  },
+                  "reader_at": {
+                    "where": {
+                      "settlement": "blackrose",
+                      "interior": "blackrose-shrine",
+                      "hour": 16.35,
+                      "pos": [
+                        -4.848866,
+                        0,
+                        3.033922
+                      ],
+                      "door_in_reach": null
+                    },
+                    "prop": {
+                      "eid": "interior-readable:the-grandmother-yard-book",
+                      "pos": [
+                        -5.32,
+                        1.1,
+                        2.778
+                      ],
+                      "reach_m": 2,
+                      "readable_book": "the-grandmother-yard-book"
+                    },
+                    "distance_m": 0.5361560556778224
+                  },
+                  "reader_ui": {
+                    "mode": "book",
+                    "book": {
+                      "id": "the-grandmother-yard-book",
+                      "page": 3,
+                      "pages": 6,
+                      "words_per_page": [
+                        136,
+                        105,
+                        116,
+                        121,
+                        120,
+                        100
+                      ],
+                      "metrics": [
+                        {
+                          "face": "ink",
+                          "words": 136,
+                          "lines": 14,
+                          "chars_per_line": 56.08,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        },
+                        {
+                          "face": "ink",
+                          "words": 105,
+                          "lines": 13,
+                          "chars_per_line": 52.8,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        },
+                        {
+                          "face": "ink",
+                          "words": 116,
+                          "lines": 14,
+                          "chars_per_line": 53.36,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        },
+                        {
+                          "face": "ink",
+                          "words": 121,
+                          "lines": 14,
+                          "chars_per_line": 60.36,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        },
+                        {
+                          "face": "ink",
+                          "words": 120,
+                          "lines": 14,
+                          "chars_per_line": 59.91,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        },
+                        {
+                          "face": "ink",
+                          "words": 100,
+                          "lines": 10,
+                          "chars_per_line": 57.56,
+                          "font_px": 26,
+                          "leading": 1.46,
+                          "body_screen_frac": 0.02407,
+                          "cap_em": 0.72
+                        }
+                      ]
+                    },
+                    "books_read": [
+                      "the-drowned-tally-tenth-volume",
+                      "the-grandmother-yard-book"
+                    ]
+                  },
+                  "exit_walk": {
+                    "ok": true,
+                    "frames": 113,
+                    "left_m": 0.6572871198266402,
+                    "started": [
+                      -4.942596,
+                      0,
+                      2.983006
+                    ],
+                    "ended": [
+                      -0.567561,
+                      0,
+                      5.538487
+                    ],
+                    "production_input": true,
+                    "planned_route": [
+                      [
+                        0,
+                        5.87
+                      ]
+                    ],
+                    "planned_clearance": [
+                      {
+                        "et": 0,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.2,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.4,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.6,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 0.8,
+                        "solid": false,
+                        "distance_m": null
+                      },
+                      {
+                        "et": 1,
+                        "solid": false,
+                        "distance_m": null
+                      }
+                    ],
+                    "planner": {
+                      "from": "stormhold",
+                      "to": "stormhold",
+                      "resumed_incoming": false,
+                      "found": false,
+                      "cols": 131,
+                      "rows": 127,
+                      "start": [
+                        60,
+                        60
+                      ],
+                      "goal": [
+                        70,
+                        66
+                      ],
+                      "open_left": 0,
+                      "cost_nodes": 1,
+                      "best_reachable": {
+                        "d": 5.723983715495007,
+                        "x": 60,
+                        "z": 60,
+                        "world": [
+                          -4.942596000000002,
+                          2.9830059999999996
+                        ]
+                      }
+                    },
+                    "stealth": null,
+                    "hazards": {
+                      "declared_file": "game/data/world/hazards.json",
+                      "hazards": 19,
+                      "one_kill_hazard": true,
+                      "attrition_time_to_death_s": [
+                        {
+                          "id": "ridge-exposure",
+                          "pct_per_s": 0.8,
+                          "seconds": 125,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "the-thicket",
+                          "pct_per_s": 0.6,
+                          "seconds": 166.7,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "kiln-ground",
+                          "pct_per_s": 1,
+                          "seconds": 100,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "salt-storm",
+                          "pct_per_s": 1.2,
+                          "seconds": 83.3,
+                          "h4_pass": true
+                        },
+                        {
+                          "id": "thirst",
+                          "pct_per_s": 0.35,
+                          "seconds": 285.7,
+                          "h4_pass": true
+                        }
+                      ],
+                      "volumes": 19,
+                      "anchored_on_signature_geometry": [
+                        {
+                          "hazard": "kiln-ground",
+                          "anchor": "naga_kiln_dome",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "comb-collapse",
+                          "anchor": "comb_cliff",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "voriplasm",
+                          "anchor": "voriplasm",
+                          "radius_m": 6
+                        },
+                        {
+                          "hazard": "dye-fume",
+                          "anchor": "open_dye_vat",
+                          "radius_m": 26
+                        },
+                        {
+                          "hazard": "hist-sap-fume",
+                          "anchor": "petrified_bole",
+                          "radius_m": 10
+                        },
+                        {
+                          "hazard": "spore-bloom",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 30
+                        },
+                        {
+                          "hazard": "strangler-snare",
+                          "anchor": "welkynd_pillar",
+                          "radius_m": 12
+                        },
+                        {
+                          "hazard": "press-gang-water",
+                          "anchor": "root_arch",
+                          "radius_m": 22
+                        },
+                        {
+                          "hazard": "pair-lightning",
+                          "anchor": "petrified_bole",
+                          "radius_m": 18
+                        }
+                      ],
+                      "here": [],
+                      "active": [],
+                      "region": "valus-ridge"
+                    },
+                    "walk": {
+                      "arrived": true,
+                      "aborted": null,
+                      "frames": 113,
+                      "minutes": 0.031,
+                      "path_m": 5.1,
+                      "mean_speed_mps": 2.6903,
+                      "end": [
+                        -0.6,
+                        5.5
+                      ],
+                      "target": [
+                        0,
+                        5.9
+                      ],
+                      "offset_m": 0.66,
+                      "longest_stuck_frames": 18,
+                      "mired_frames": 0,
+                      "survival_inputs": {
+                        "heals": 0,
+                        "sprint_frames": 0,
+                        "defensive_swings": 0
+                      },
+                      "regions_entered": [
+                        "valus-ridge"
+                      ],
+                      "deepest_water_on_the_walk": {
+                        "depth_m": 40.723,
+                        "at": [
+                          -1.9,
+                          4.7
+                        ]
+                      },
+                      "worst_off_path_m": 0,
+                      "off_path_frames": 0,
+                      "regains": 0,
+                      "teleports": 0,
+                      "teleported_m": 0,
+                      "teleport_log": [],
+                      "arrival_is_clean": true
+                    }
+                  },
+                  "exit_prompt": {
+                    "interior": "blackrose-shrine",
+                    "name": null,
+                    "way": "out",
+                    "dist_m": 0.66
+                  }
+                }
+              ],
+              "after_accept": {
+                "where": {
+                  "settlement": "blackrose",
+                  "interior": null,
+                  "hour": 16.38,
+                  "pos": [
+                    1887.776318,
+                    2.59,
+                    4444.8614
+                  ],
+                  "door_in_reach": {
+                    "interior": "blackrose-shrine",
+                    "name": "The Lime-Pit Hist-Shrine",
+                    "way": "in",
+                    "dist_m": 0.717
+                  }
+                },
+                "giver_distance_m": 18.45356641945205,
+                "topics_known": [
+                  "a-name-for-cover",
+                  "blackrose",
+                  "the drowned tally",
+                  "the-burial-stair",
+                  "the-cold-well",
+                  "the-cutting",
+                  "the-cutting-yard",
+                  "the-empty-boxes",
+                  "the-gem-shipping",
+                  "the-lease",
+                  "the-low-chapel",
+                  "the-ninth-clause-of-the-drowned-tally",
+                  "the-ninth-recension",
+                  "the-return-column",
+                  "the-sapwells"
+                ],
+                "books_read": [
+                  "the-drowned-tally-tenth-volume",
+                  "the-grandmother-yard-book"
+                ],
+                "journal_n": 12,
+                "completed": [
+                  "Q-MAIN-01",
+                  "Q-MAIN-02",
+                  "Q-MAIN-03",
+                  "Q-MAIN-04",
+                  "Q-MAIN-05",
+                  "Q-MAIN-06"
+                ],
+                "active": [
+                  {
+                    "id": "Q-MAIN-07",
+                    "stage": 10,
+                    "branch": null,
+                    "flags": {
+                      "opened_day": 0
+                    }
+                  }
+                ],
+                "durable_flags": [
+                  "act_one_closed",
+                  "act_two_opened",
+                  "bone_ladder_keeper_protected",
+                  "boxes_counted_plain",
+                  "court_backs_the_mandate_whole",
+                  "court_told_the_well_simply_failed",
+                  "cover_question_settled",
+                  "player_has_heard_the_sound_under_the_wastes",
+                  "player_has_seen_a_cold_well",
+                  "player_is_the_tally_reader",
+                  "player_known_to_the_drowned_court",
+                  "player_knows_the_curve_is_older",
+                  "player_took_a_ledger_name",
+                  "ravano_still_unnamed",
+                  "recension_unquestioned_in_chapter",
+                  "rell_kept_the_player_on",
+                  "soulrest_court_book_unchanged",
+                  "steward_of_the_count_named",
+                  "the_coast_keepers_trust_the_player",
+                  "the_mandate_is_claimed",
+                  "the_mortuary_count_stayed_in_the_mortuary",
+                  "the_road_was_reported_quiet",
+                  "the_sextons_use_the_word_without_qualifying_it",
+                  "the_sum_exists_only_in_the_players_head",
+                  "unlocked:Q-MAIN-02",
+                  "unlocked:Q-MAIN-03",
+                  "unlocked:Q-MAIN-04",
+                  "unlocked:Q-MAIN-05",
+                  "unlocked:Q-MAIN-06",
+                  "unlocked:Q-MAIN-07",
+                  "unlocked:Q-MAIN-08"
+                ],
+                "gold": 0,
+                "hour": 16.38,
+                "marker_count": 0,
+                "ui_mode": "world"
+              },
+              "after": "Q-MAIN-07",
+              "resolution": "res_trade_the_number",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 37.54545454545455,
+                "harbourmaster-cuiro-vaneth": 32.54545454545455,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 95.22727272727272,
+                "ledgerer-hosk-vei": 56.38636363636363,
+                "neeja-xul": 76.70454545454545,
+                "prefect-galvus-arn": 27.25,
+                "rootkeeper-ashul-tei": 67.61363636363636,
+                "rootkeeper-sesh-anaat": 65.22727272727272,
+                "salt-factor-neloth-vaun": 10.227272727272727,
+                "undersexton-aveline-rell": 73.38636363636364,
+                "undersexton-bel-mourne": 27.386363636363637
+              },
+              "after_resolution": {
+                "where": {
+                  "settlement": "blackrose",
+                  "interior": null,
+                  "hour": 16.41,
+                  "pos": [
+                    1904.878357,
+                    2.59,
+                    4449.70029
+                  ],
+                  "door_in_reach": null
+                },
+                "giver_distance_m": 0.6901203543941272,
+                "topics_known": [
+                  "a-name-for-cover",
+                  "blackrose",
+                  "the drowned tally",
+                  "the-burial-stair",
+                  "the-cold-well",
+                  "the-cutting",
+                  "the-cutting-yard",
+                  "the-empty-boxes",
+                  "the-gem-shipping",
+                  "the-lease",
+                  "the-low-chapel",
+                  "the-ninth-clause-of-the-drowned-tally",
+                  "the-ninth-recension",
+                  "the-return-column",
+                  "the-sapwells"
+                ],
+                "books_read": [
+                  "the-drowned-tally-tenth-volume",
+                  "the-grandmother-yard-book"
+                ],
+                "journal_n": 12,
+                "completed": [
+                  "Q-MAIN-01",
+                  "Q-MAIN-02",
+                  "Q-MAIN-03",
+                  "Q-MAIN-04",
+                  "Q-MAIN-05",
+                  "Q-MAIN-06",
+                  "Q-MAIN-07"
+                ],
+                "active": [],
+                "durable_flags": [
+                  "act_one_closed",
+                  "act_two_opened",
+                  "bone_ladder_keeper_protected",
+                  "boxes_counted_plain",
+                  "court_backs_the_mandate_whole",
+                  "court_told_the_well_simply_failed",
+                  "cover_question_settled",
+                  "cutters_account_heard",
+                  "cutters_will_hear_the_player",
+                  "player_has_heard_the_sound_under_the_wastes",
+                  "player_has_seen_a_cold_well",
+                  "player_is_the_tally_reader",
+                  "player_known_to_the_drowned_court",
+                  "player_knows_the_curve_is_older",
+                  "player_knows_the_cutting_predates_its_licence",
+                  "player_took_a_ledger_name",
+                  "ravano_still_unnamed",
+                  "recension_unquestioned_in_chapter",
+                  "rell_kept_the_player_on",
+                  "soulrest_court_book_unchanged",
+                  "steward_of_the_count_named",
+                  "the_coast_keepers_trust_the_player",
+                  "the_cutters_know_what_they_are_accused_of",
+                  "the_mandate_is_claimed",
+                  "the_mortuary_count_stayed_in_the_mortuary",
+                  "the_road_was_reported_quiet",
+                  "the_sextons_use_the_word_without_qualifying_it",
+                  "the_sum_exists_only_in_the_players_head",
+                  "unlocked:Q-MAIN-02",
+                  "unlocked:Q-MAIN-03",
+                  "unlocked:Q-MAIN-04",
+                  "unlocked:Q-MAIN-05",
+                  "unlocked:Q-MAIN-06",
+                  "unlocked:Q-MAIN-07",
+                  "unlocked:Q-MAIN-08"
+                ],
+                "gold": 0,
+                "hour": 16.41,
+                "marker_count": 0,
+                "ui_mode": "world"
+              }
+            }
+          ],
+          "giver_journeys": [
+            {
+              "quest": "Q-MAIN-07",
+              "phase": "accept",
+              "giver": "neeja-xul",
+              "went_to": "blackrose",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 0.6778908101574861,
+                "started": [
+                  1906.15926,
+                  2.59,
+                  4449.842164
+                ],
+                "ended": [
+                  1906.15926,
+                  2.59,
+                  4449.842164
+                ],
+                "production_input": true,
+                "already_in_reach": true,
+                "planned_route": [],
+                "planned_clearance": [],
+                "planner": null,
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "path_m": 0,
+                  "end": [
+                    1906.15926,
+                    4449.842164
+                  ],
+                  "target": [
+                    1905.5,
+                    4450
+                  ],
+                  "offset_m": 0.6778908101574861,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 8859,
+                "left_m": 0.7845584462612463,
+                "started": [
+                  1545.680561,
+                  3.594588,
+                  4540.5705
+                ],
+                "ended": [
+                  1906.262996,
+                  2.59,
+                  4449.817328
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    1546.180561,
+                    4541.0705
+                  ],
+                  [
+                    1546.680561,
+                    4541.0705
+                  ],
+                  [
+                    1547.180561,
+                    4541.5705
+                  ],
+                  [
+                    1547.680561,
+                    4542.0705
+                  ],
+                  [
+                    1558.74,
+                    4547.16
+                  ],
+                  [
+                    1570.44,
+                    4553.89
+                  ],
+                  [
+                    1580.31,
+                    4545.55
+                  ],
+                  [
+                    1586.66,
+                    4535.62
+                  ],
+                  [
+                    1593.73,
+                    4525.71
+                  ],
+                  [
+                    1600.45,
+                    4515.79
+                  ],
+                  [
+                    1608.38,
+                    4506.83
+                  ],
+                  [
+                    1616.51,
+                    4498.03
+                  ],
+                  [
+                    1624.64,
+                    4489.23
+                  ],
+                  [
+                    1631.72,
+                    4479.59
+                  ],
+                  [
+                    1638.02,
+                    4469.45
+                  ],
+                  [
+                    1645.14,
+                    4459.74
+                  ],
+                  [
+                    1653.5,
+                    4451.55
+                  ],
+                  [
+                    1663.65,
+                    4444.82
+                  ],
+                  [
+                    1674.41,
+                    4440.89
+                  ],
+                  [
+                    1685.25,
+                    4438.38
+                  ],
+                  [
+                    1692.45,
+                    4428.8
+                  ],
+                  [
+                    1700.19,
+                    4419.96
+                  ],
+                  [
+                    1711.09,
+                    4415.6
+                  ],
+                  [
+                    1722.79,
+                    4411.95
+                  ],
+                  [
+                    1734.46,
+                    4412.42
+                  ],
+                  [
+                    1746.27,
+                    4414.47
+                  ],
+                  [
+                    1757.49,
+                    4418.49
+                  ],
+                  [
+                    1768.44,
+                    4423.32
+                  ],
+                  [
+                    1778.72,
+                    4429.46
+                  ],
+                  [
+                    1788.94,
+                    4435.71
+                  ],
+                  [
+                    1874.6,
+                    4473.53
+                  ],
+                  [
+                    1907.6,
+                    4471.53
+                  ],
+                  [
+                    1916.6,
+                    4453.53
+                  ],
+                  [
+                    1911.6,
+                    4448.53
+                  ],
+                  [
+                    1905.5,
+                    4450
+                  ],
+                  [
+                    1905.5,
+                    4450
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 323.6759091972937
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 323.60494651178436
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 323.5340300789001
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 323.4631599290633
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 323.39233609270116
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 323.3215586002497
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "blackrose",
+                  "resumed_incoming": true,
+                  "found": true,
+                  "cols": 126,
+                  "rows": 125,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    64,
+                    63
+                  ],
+                  "open_left": 20,
+                  "cost_nodes": 24,
+                  "best_reachable": {
+                    "d": 0.25871978030522497,
+                    "x": 64,
+                    "z": 63,
+                    "world": [
+                      1547.680561,
+                      4542.0705
+                    ]
+                  }
+                },
+                "stealth": {
+                  "action": "crouch",
+                  "production_input": true
+                },
+                "hazards": {
+                  "declared_file": "game/data/world/hazards.json",
+                  "hazards": 19,
+                  "one_kill_hazard": true,
+                  "attrition_time_to_death_s": [
+                    {
+                      "id": "ridge-exposure",
+                      "pct_per_s": 0.8,
+                      "seconds": 125,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "the-thicket",
+                      "pct_per_s": 0.6,
+                      "seconds": 166.7,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "kiln-ground",
+                      "pct_per_s": 1,
+                      "seconds": 100,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "salt-storm",
+                      "pct_per_s": 1.2,
+                      "seconds": 83.3,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "thirst",
+                      "pct_per_s": 0.35,
+                      "seconds": 285.7,
+                      "h4_pass": true
+                    }
+                  ],
+                  "volumes": 19,
+                  "anchored_on_signature_geometry": [
+                    {
+                      "hazard": "kiln-ground",
+                      "anchor": "naga_kiln_dome",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "comb-collapse",
+                      "anchor": "comb_cliff",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "voriplasm",
+                      "anchor": "voriplasm",
+                      "radius_m": 6
+                    },
+                    {
+                      "hazard": "dye-fume",
+                      "anchor": "open_dye_vat",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "hist-sap-fume",
+                      "anchor": "petrified_bole",
+                      "radius_m": 10
+                    },
+                    {
+                      "hazard": "spore-bloom",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "strangler-snare",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 12
+                    },
+                    {
+                      "hazard": "press-gang-water",
+                      "anchor": "root_arch",
+                      "radius_m": 22
+                    },
+                    {
+                      "hazard": "pair-lightning",
+                      "anchor": "petrified_bole",
+                      "radius_m": 18
+                    }
+                  ],
+                  "here": [
+                    {
+                      "id": "press-gang-water",
+                      "class": "STRANDING",
+                      "region": "western-rootlands",
+                      "inside": false,
+                      "approach_m": 259.2,
+                      "told_at_frame": null,
+                      "first_damage_frame": null,
+                      "damage_dealt": 0,
+                      "damage_total": 0,
+                      "fired": false,
+                      "armed": false,
+                      "spent": false,
+                      "fired_at_frame": null,
+                      "fires": 0,
+                      "outcome": null,
+                      "sheltered": false,
+                      "declared": {
+                        "kind": "none"
+                      },
+                      "suppressed_by": "settlement blackrose"
+                    }
+                  ],
+                  "active": [],
+                  "region": "western-rootlands"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 8859,
+                  "minutes": 2.461,
+                  "path_m": 472.5,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    1906.3,
+                    4449.8
+                  ],
+                  "target": [
+                    1905.5,
+                    4450
+                  ],
+                  "offset_m": 0.78,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "survival_inputs": {
+                    "heals": 0,
+                    "sprint_frames": 0,
+                    "defensive_swings": 0
+                  },
+                  "regions_entered": [
+                    "western-rootlands"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.3,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "schedule_entry": null,
+              "entity_pos": [
+                1905.5,
+                2.59,
+                4450
+              ],
+              "location": {
+                "settlement": "blackrose",
+                "pos": [
+                  1905.5,
+                  2.59,
+                  4450
+                ],
+                "schedule": [
+                  {
+                    "from": "00:00",
+                    "to": "07:00",
+                    "at": "blackrose-inn",
+                    "activity": "home"
+                  },
+                  {
+                    "from": "07:00",
+                    "to": "19:00",
+                    "at": null,
+                    "activity": "post"
+                  },
+                  {
+                    "from": "19:00",
+                    "to": "00:00",
+                    "at": "blackrose-inn",
+                    "activity": "tavern"
+                  }
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-07",
+              "phase": "resolve",
+              "giver": "neeja-xul",
+              "went_to": "blackrose",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 0.6901203543941272,
+                "started": [
+                  1904.878357,
+                  2.59,
+                  4449.70029
+                ],
+                "ended": [
+                  1904.878357,
+                  2.59,
+                  4449.70029
+                ],
+                "production_input": true,
+                "already_in_reach": true,
+                "planned_route": [],
+                "planned_clearance": [],
+                "planner": null,
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "path_m": 0,
+                  "end": [
+                    1904.878357,
+                    4449.70029
+                  ],
+                  "target": [
+                    1905.5,
+                    4450
+                  ],
+                  "offset_m": 0.6901203543941272,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 356,
+                "left_m": 0.7967266422963183,
+                "started": [
+                  1887.868424,
+                  2.59,
+                  4444.9152
+                ],
+                "ended": [
+                  1904.780671,
+                  2.59,
+                  4449.657452
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    1888.368424,
+                    4445.4152
+                  ],
+                  [
+                    1888.868424,
+                    4445.9152
+                  ],
+                  [
+                    1889.368424,
+                    4446.4152
+                  ],
+                  [
+                    1889.868424,
+                    4446.9152
+                  ],
+                  [
+                    1890.368424,
+                    4447.4152
+                  ],
+                  [
+                    1890.868424,
+                    4447.9152
+                  ],
+                  [
+                    1890.868424,
+                    4448.4152
+                  ],
+                  [
+                    1890.868424,
+                    4448.9152
+                  ],
+                  [
+                    1891.368424,
+                    4449.4152
+                  ],
+                  [
+                    1891.868424,
+                    4449.4152
+                  ],
+                  [
+                    1892.368424,
+                    4449.4152
+                  ],
+                  [
+                    1892.868424,
+                    4449.4152
+                  ],
+                  [
+                    1893.368424,
+                    4449.4152
+                  ],
+                  [
+                    1893.868424,
+                    4449.4152
+                  ],
+                  [
+                    1894.368424,
+                    4449.4152
+                  ],
+                  [
+                    1894.868424,
+                    4449.4152
+                  ],
+                  [
+                    1895.368424,
+                    4449.4152
+                  ],
+                  [
+                    1895.868424,
+                    4449.4152
+                  ],
+                  [
+                    1896.368424,
+                    4449.4152
+                  ],
+                  [
+                    1896.868424,
+                    4449.4152
+                  ],
+                  [
+                    1897.368424,
+                    4449.4152
+                  ],
+                  [
+                    1897.868424,
+                    4449.4152
+                  ],
+                  [
+                    1898.368424,
+                    4449.4152
+                  ],
+                  [
+                    1898.868424,
+                    4449.4152
+                  ],
+                  [
+                    1899.368424,
+                    4449.4152
+                  ],
+                  [
+                    1899.868424,
+                    4449.4152
+                  ],
+                  [
+                    1900.368424,
+                    4449.4152
+                  ],
+                  [
+                    1900.868424,
+                    4449.4152
+                  ],
+                  [
+                    1901.368424,
+                    4449.4152
+                  ],
+                  [
+                    1901.868424,
+                    4449.4152
+                  ],
+                  [
+                    1902.368424,
+                    4449.4152
+                  ],
+                  [
+                    1902.868424,
+                    4449.4152
+                  ],
+                  [
+                    1903.368424,
+                    4449.4152
+                  ],
+                  [
+                    1903.868424,
+                    4449.4152
+                  ],
+                  [
+                    1904.368424,
+                    4449.4152
+                  ],
+                  [
+                    1904.868424,
+                    4449.4152
+                  ],
+                  [
+                    1905.368424,
+                    4449.9152
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.7507896401632571
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.7638127282109779
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.8019567842323871
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.8618929653832071
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.9394595700593622
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 1.0306837942729619
+                  }
+                ],
+                "planner": {
+                  "from": "blackrose",
+                  "to": "blackrose",
+                  "resumed_incoming": false,
+                  "found": true,
+                  "cols": 157,
+                  "rows": 132,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    95,
+                    70
+                  ],
+                  "open_left": 75,
+                  "cost_nodes": 164,
+                  "best_reachable": {
+                    "d": 0.1565352477109752,
+                    "x": 95,
+                    "z": 70,
+                    "world": [
+                      1905.368424,
+                      4449.9152
+                    ]
+                  }
+                },
+                "stealth": null,
+                "hazards": {
+                  "declared_file": "game/data/world/hazards.json",
+                  "hazards": 19,
+                  "one_kill_hazard": true,
+                  "attrition_time_to_death_s": [
+                    {
+                      "id": "ridge-exposure",
+                      "pct_per_s": 0.8,
+                      "seconds": 125,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "the-thicket",
+                      "pct_per_s": 0.6,
+                      "seconds": 166.7,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "kiln-ground",
+                      "pct_per_s": 1,
+                      "seconds": 100,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "salt-storm",
+                      "pct_per_s": 1.2,
+                      "seconds": 83.3,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "thirst",
+                      "pct_per_s": 0.35,
+                      "seconds": 285.7,
+                      "h4_pass": true
+                    }
+                  ],
+                  "volumes": 19,
+                  "anchored_on_signature_geometry": [
+                    {
+                      "hazard": "kiln-ground",
+                      "anchor": "naga_kiln_dome",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "comb-collapse",
+                      "anchor": "comb_cliff",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "voriplasm",
+                      "anchor": "voriplasm",
+                      "radius_m": 6
+                    },
+                    {
+                      "hazard": "dye-fume",
+                      "anchor": "open_dye_vat",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "hist-sap-fume",
+                      "anchor": "petrified_bole",
+                      "radius_m": 10
+                    },
+                    {
+                      "hazard": "spore-bloom",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "strangler-snare",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 12
+                    },
+                    {
+                      "hazard": "press-gang-water",
+                      "anchor": "root_arch",
+                      "radius_m": 22
+                    },
+                    {
+                      "hazard": "pair-lightning",
+                      "anchor": "petrified_bole",
+                      "radius_m": 18
+                    }
+                  ],
+                  "here": [
+                    {
+                      "id": "press-gang-water",
+                      "class": "STRANDING",
+                      "region": "western-rootlands",
+                      "inside": false,
+                      "approach_m": 259.2,
+                      "told_at_frame": null,
+                      "first_damage_frame": null,
+                      "damage_dealt": 0,
+                      "damage_total": 0,
+                      "fired": false,
+                      "armed": false,
+                      "spent": false,
+                      "fired_at_frame": null,
+                      "fires": 0,
+                      "outcome": null,
+                      "sheltered": false,
+                      "declared": {
+                        "kind": "none"
+                      },
+                      "suppressed_by": "settlement blackrose"
+                    }
+                  ],
+                  "active": [],
+                  "region": "western-rootlands"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 356,
+                  "minutes": 0.099,
+                  "path_m": 19,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    1904.8,
+                    4449.7
+                  ],
+                  "target": [
+                    1905.4,
+                    4449.9
+                  ],
+                  "offset_m": 0.64,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "survival_inputs": {
+                    "heals": 0,
+                    "sprint_frames": 0,
+                    "defensive_swings": 0
+                  },
+                  "regions_entered": [
+                    "western-rootlands"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.3,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "schedule_entry": null,
+              "entity_pos": [
+                1905.5,
+                2.59,
+                4450
+              ],
+              "location": {
+                "settlement": "blackrose",
+                "pos": [
+                  1905.5,
+                  2.59,
+                  4450
+                ],
+                "schedule": [
+                  {
+                    "from": "00:00",
+                    "to": "07:00",
+                    "at": "blackrose-inn",
+                    "activity": "home"
+                  },
+                  {
+                    "from": "07:00",
+                    "to": "19:00",
+                    "at": null,
+                    "activity": "post"
+                  },
+                  {
+                    "from": "19:00",
+                    "to": "00:00",
+                    "at": "blackrose-inn",
+                    "activity": "tavern"
+                  }
+                ]
+              }
+            }
+          ],
+          "world_actions": [
+            {
+              "reveal": "rev_older_cutting",
+              "channel": "ledger",
+              "source": "item_the_grandmother_yard_book",
+              "ok": true,
+              "entry_walk": {
+                "ok": true,
+                "frames": 383,
+                "left_m": 0.10651280433864017,
+                "started": [
+                  1906.055524,
+                  2.59,
+                  4449.867
+                ],
+                "ended": [
+                  1887.563932,
+                  2.59,
+                  4444.785192
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    1905.5,
+                    4449.7
+                  ],
+                  [
+                    1905,
+                    4449.7
+                  ],
+                  [
+                    1904.5,
+                    4449.7
+                  ],
+                  [
+                    1904,
+                    4449.7
+                  ],
+                  [
+                    1903.5,
+                    4449.7
+                  ],
+                  [
+                    1903,
+                    4449.7
+                  ],
+                  [
+                    1902.5,
+                    4449.7
+                  ],
+                  [
+                    1902,
+                    4449.7
+                  ],
+                  [
+                    1901.5,
+                    4449.7
+                  ],
+                  [
+                    1901,
+                    4449.7
+                  ],
+                  [
+                    1900.5,
+                    4449.7
+                  ],
+                  [
+                    1900,
+                    4449.7
+                  ],
+                  [
+                    1899.5,
+                    4449.7
+                  ],
+                  [
+                    1899,
+                    4449.7
+                  ],
+                  [
+                    1898.5,
+                    4449.7
+                  ],
+                  [
+                    1898,
+                    4449.7
+                  ],
+                  [
+                    1897.5,
+                    4449.2
+                  ],
+                  [
+                    1897,
+                    4449.2
+                  ],
+                  [
+                    1896.5,
+                    4449.2
+                  ],
+                  [
+                    1896,
+                    4449.2
+                  ],
+                  [
+                    1895.5,
+                    4449.2
+                  ],
+                  [
+                    1895,
+                    4449.2
+                  ],
+                  [
+                    1894.5,
+                    4449.2
+                  ],
+                  [
+                    1894,
+                    4449.2
+                  ],
+                  [
+                    1893.5,
+                    4449.2
+                  ],
+                  [
+                    1893,
+                    4449.2
+                  ],
+                  [
+                    1892.5,
+                    4449.2
+                  ],
+                  [
+                    1892,
+                    4449.2
+                  ],
+                  [
+                    1891.5,
+                    4449.2
+                  ],
+                  [
+                    1891,
+                    4448.7
+                  ],
+                  [
+                    1890.5,
+                    4448.2
+                  ],
+                  [
+                    1890,
+                    4447.7
+                  ],
+                  [
+                    1889.5,
+                    4447.2
+                  ],
+                  [
+                    1889,
+                    4446.7
+                  ],
+                  [
+                    1888.5,
+                    4446.2
+                  ],
+                  [
+                    1888,
+                    4445.7
+                  ],
+                  [
+                    1888,
+                    4445.2
+                  ],
+                  [
+                    1887.5,
+                    4444.7
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 1.404370063258492
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 1.3189578739780277
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 1.2385330618303012
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 1.164129756656423
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 1.0969738869194794
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 1.0384724358400865
+                  }
+                ],
+                "planner": {
+                  "from": "blackrose",
+                  "to": "blackrose",
+                  "resumed_incoming": false,
+                  "found": true,
+                  "cols": 159,
+                  "rows": 132,
+                  "start": [
+                    97,
+                    70
+                  ],
+                  "goal": [
+                    60,
+                    60
+                  ],
+                  "open_left": 99,
+                  "cost_nodes": 240,
+                  "best_reachable": {
+                    "d": 0,
+                    "x": 60,
+                    "z": 60,
+                    "world": [
+                      1887.5,
+                      4444.7
+                    ]
+                  }
+                },
+                "stealth": null,
+                "hazards": {
+                  "declared_file": "game/data/world/hazards.json",
+                  "hazards": 19,
+                  "one_kill_hazard": true,
+                  "attrition_time_to_death_s": [
+                    {
+                      "id": "ridge-exposure",
+                      "pct_per_s": 0.8,
+                      "seconds": 125,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "the-thicket",
+                      "pct_per_s": 0.6,
+                      "seconds": 166.7,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "kiln-ground",
+                      "pct_per_s": 1,
+                      "seconds": 100,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "salt-storm",
+                      "pct_per_s": 1.2,
+                      "seconds": 83.3,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "thirst",
+                      "pct_per_s": 0.35,
+                      "seconds": 285.7,
+                      "h4_pass": true
+                    }
+                  ],
+                  "volumes": 19,
+                  "anchored_on_signature_geometry": [
+                    {
+                      "hazard": "kiln-ground",
+                      "anchor": "naga_kiln_dome",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "comb-collapse",
+                      "anchor": "comb_cliff",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "voriplasm",
+                      "anchor": "voriplasm",
+                      "radius_m": 6
+                    },
+                    {
+                      "hazard": "dye-fume",
+                      "anchor": "open_dye_vat",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "hist-sap-fume",
+                      "anchor": "petrified_bole",
+                      "radius_m": 10
+                    },
+                    {
+                      "hazard": "spore-bloom",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "strangler-snare",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 12
+                    },
+                    {
+                      "hazard": "press-gang-water",
+                      "anchor": "root_arch",
+                      "radius_m": 22
+                    },
+                    {
+                      "hazard": "pair-lightning",
+                      "anchor": "petrified_bole",
+                      "radius_m": 18
+                    }
+                  ],
+                  "here": [
+                    {
+                      "id": "press-gang-water",
+                      "class": "STRANDING",
+                      "region": "western-rootlands",
+                      "inside": false,
+                      "approach_m": 259.2,
+                      "told_at_frame": null,
+                      "first_damage_frame": null,
+                      "damage_dealt": 0,
+                      "damage_total": 0,
+                      "fired": false,
+                      "armed": false,
+                      "spent": false,
+                      "fired_at_frame": null,
+                      "fires": 0,
+                      "outcome": null,
+                      "sheltered": false,
+                      "declared": {
+                        "kind": "none"
+                      },
+                      "suppressed_by": "settlement blackrose"
+                    }
+                  ],
+                  "active": [],
+                  "region": "western-rootlands"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 383,
+                  "minutes": 0.106,
+                  "path_m": 20.4,
+                  "mean_speed_mps": 3.1996,
+                  "end": [
+                    1887.6,
+                    4444.8
+                  ],
+                  "target": [
+                    1887.5,
+                    4444.7
+                  ],
+                  "offset_m": 0.11,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "survival_inputs": {
+                    "heals": 0,
+                    "sprint_frames": 0,
+                    "defensive_swings": 0
+                  },
+                  "regions_entered": [
+                    "western-rootlands"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.23,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entry_prompt": {
+                "interior": "blackrose-shrine",
+                "name": "The Lime-Pit Hist-Shrine",
+                "way": "in",
+                "dist_m": 0.589
+              },
+              "entry_where": {
+                "settlement": "blackrose",
+                "interior": "blackrose-shrine",
+                "hour": 16.34,
+                "pos": [
+                  -0.192072,
+                  0,
+                  5.614058
+                ],
+                "door_in_reach": {
+                  "interior": "blackrose-shrine",
+                  "name": null,
+                  "way": "out",
+                  "dist_m": 0.32
+                }
+              },
+              "entry_ui": {
+                "mode": "world",
+                "map_exists": true,
+                "map": {
+                  "exists": true,
+                  "reachable_from_journal": false,
+                  "journal_reachable_from_map": false,
+                  "markers": 0,
+                  "marker_census": {
+                    "scope": "map",
+                    "elements": 0,
+                    "derived": true,
+                    "clauses": [
+                      "m1 forbidden kind",
+                      "m2 world anchor",
+                      "m3 quest identity or destination",
+                      "m4 a place square the discovery model does not support"
+                    ],
+                    "model_available": true,
+                    "hits": []
+                  },
+                  "routes_drawn": 0,
+                  "quest_bearing_elements": [],
+                  "travel_affordances": [],
+                  "numeric_text": [],
+                  "measured": false,
+                  "elements_considered": 0,
+                  "elements_on_screen": 7,
+                  "non_map_elements": [
+                    "hud.health",
+                    "hud.stamina",
+                    "hud.focus",
+                    "hud.heal",
+                    "hud.equipload",
+                    "hud.quickslots",
+                    "hud.prompt"
+                  ],
+                  "numeric_text_screen": [
+                    "hud.heal"
+                  ],
+                  "drawn_cells": 0,
+                  "revealed_cells": 2487,
+                  "total_cells": 42846,
+                  "places_drawn": 0,
+                  "places_discovered": 3,
+                  "view": "world",
+                  "mutator_arities": {
+                    "observe": 0,
+                    "restore": 1,
+                    "resume": 0,
+                    "suspend": 0
+                  },
+                  "mutators": [
+                    {
+                      "name": "observe",
+                      "arity": 0,
+                      "member": "method"
+                    },
+                    {
+                      "name": "restore",
+                      "arity": 1,
+                      "member": "method"
+                    },
+                    {
+                      "name": "resume",
+                      "arity": 0,
+                      "member": "method"
+                    },
+                    {
+                      "name": "suspend",
+                      "arity": 0,
+                      "member": "method"
+                    }
+                  ],
+                  "mutators_enumerated": true,
+                  "zero_arity_mutators": [
+                    "observe",
+                    "resume",
+                    "suspend"
+                  ],
+                  "restore_reads": [
+                    "stood"
+                  ],
+                  "place_naming_parameters": []
+                },
+                "navigable": [
+                  "inventory",
+                  "journal",
+                  "sheet",
+                  "spells",
+                  "map"
+                ],
+                "nav": {
+                  "advertised": [
+                    "inventory",
+                    "journal",
+                    "sheet",
+                    "spells",
+                    "map"
+                  ],
+                  "walkable": [
+                    "world",
+                    "inventory",
+                    "journal",
+                    "sheet",
+                    "spells",
+                    "map"
+                  ],
+                  "walk_actions": {
+                    "prev": "swap_left",
+                    "next": "swap_right"
+                  },
+                  "walk_live": false,
+                  "refused": null
+                },
+                "at_hearth": false,
+                "at_hearth_real": false,
+                "at_hearth_overridden": false,
+                "at_hearth_id": null,
+                "screen": {
+                  "w": 1920,
+                  "h": 1080,
+                  "dpr": 1
+                },
+                "elements": [
+                  {
+                    "id": "hud.health",
+                    "kind": "health_bar",
+                    "rect": [
+                      42,
+                      40,
+                      400,
+                      16
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false
+                  },
+                  {
+                    "id": "hud.stamina",
+                    "kind": "stamina_bar",
+                    "rect": [
+                      42,
+                      64,
+                      400,
+                      10
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "regen_blocked": false,
+                      "exhausted": false
+                    }
+                  },
+                  {
+                    "id": "hud.focus",
+                    "kind": "focus_bar",
+                    "rect": [
+                      42,
+                      82,
+                      400,
+                      10
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false
+                  },
+                  {
+                    "id": "hud.heal",
+                    "kind": "heal_charges",
+                    "rect": [
+                      42,
+                      118,
+                      110,
+                      24
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "6",
+                    "fill": 1.2,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "charges": 6,
+                      "max": 5
+                    }
+                  },
+                  {
+                    "id": "hud.equipload",
+                    "kind": "equip_load",
+                    "rect": [
+                      1758,
+                      852,
+                      120,
+                      24
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "LIGHT",
+                    "fill": 0.24,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "roll_class": "LIGHT",
+                      "pct": 24
+                    }
+                  },
+                  {
+                    "id": "hud.quickslots",
+                    "kind": "quick_slots",
+                    "rect": [
+                      1728,
+                      888,
+                      150,
+                      150
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "Spark-Dart",
+                    "fill": null,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "left": null,
+                      "right": null,
+                      "item": null,
+                      "spell": "Spark-Dart",
+                      "leftActive": false,
+                      "rightActive": false
+                    }
+                  },
+                  {
+                    "id": "hud.prompt",
+                    "kind": "interact_prompt",
+                    "rect": [
+                      860,
+                      830,
+                      200,
+                      32
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "Wuxshaneekh",
+                    "fill": null,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "range_m": 1.27,
+                      "device": "keyboard",
+                      "glyph": "keycap"
+                    }
+                  }
+                ],
+                "coveragePct": 2.3544,
+                "hud": {
+                  "suppressed": false,
+                  "suppressed_because": null,
+                  "persistent_count": 6,
+                  "total_count": 7,
+                  "coverage_pct": 2.0457,
+                  "coverage_with_conditional_pct": 2.3544,
+                  "centre_coverage_pct": 0,
+                  "world_anchored": [],
+                  "numeric_text": [
+                    "hud.heal"
+                  ],
+                  "bar_contrasts": {
+                    "health": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "stamina": {
+                      "fill_vs_trough": 7.966,
+                      "spent_vs_trough": 10.923,
+                      "exhausted_trough_vs_trough": 10.923
+                    },
+                    "focus": {
+                      "fill_vs_trough": 5.659
+                    },
+                    "boss": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "buildup_poison": {
+                      "fill_vs_trough": 7.827
+                    },
+                    "buildup_disease": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "buildup_curse": {
+                      "fill_vs_trough": 5.659
+                    },
+                    "buildup_frost": {
+                      "fill_vs_trough": 8.826
+                    }
+                  }
+                },
+                "menu": {
+                  "area_frac": 0,
+                  "opacity": 0,
+                  "paused": false
+                },
+                "book": null,
+                "focus": null,
+                "journal": null,
+                "fonts": [
+                  {
+                    "family": "Argonian Reed (project)",
+                    "size_px": 19,
+                    "weight": 1.15,
+                    "path": "game/src/ui/glyphs.js"
+                  },
+                  {
+                    "family": "Argonian Bone-cut (project)",
+                    "size_px": 15,
+                    "weight": 1.5,
+                    "path": "game/src/ui/glyphs.js"
+                  }
+                ],
+                "textRenderPath": "canvas-vector",
+                "text_raster_scale": 1,
+                "text_glyph_source": "game/src/ui/glyphs.js",
+                "materials": [],
+                "overdraw": 0.024,
+                "touch": {
+                  "controls_drawn": 0,
+                  "rotate_drawn": false,
+                  "area_frac": 0,
+                  "rotate_area_frac": 0,
+                  "labelled": []
+                },
+                "surfaces": 1,
+                "full_screen_panels": 0,
+                "hud_elements": 7,
+                "toast": null,
+                "markers": 0,
+                "marker_census": {
+                  "scope": "screen",
+                  "elements": 7,
+                  "derived": true,
+                  "clauses": [
+                    "m1 forbidden kind",
+                    "m2 world anchor",
+                    "m3 quest identity or destination",
+                    "m4 a place square the discovery model does not support"
+                  ],
+                  "model_available": true,
+                  "hits": []
+                },
+                "world_rendered_behind": true,
+                "screen_alpha": null,
+                "dialogue_surface": {
+                  "open": false
+                },
+                "non_world_area_frac": 0.0235,
+                "draw_calls": 769,
+                "frame": 9292
+              },
+              "reader_walk": {
+                "ok": true,
+                "frames": 98,
+                "left_m": 0.5361560556778224,
+                "started": [
+                  -0.256096,
+                  0,
+                  5.528744
+                ],
+                "ended": [
+                  -4.848866,
+                  0,
+                  3.033922
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    -5.32,
+                    2.778
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "stormhold",
+                  "to": "stormhold",
+                  "resumed_incoming": false,
+                  "found": false,
+                  "cols": 132,
+                  "rows": 127,
+                  "start": [
+                    70,
+                    66
+                  ],
+                  "goal": [
+                    60,
+                    60
+                  ],
+                  "open_left": 0,
+                  "cost_nodes": 1,
+                  "best_reachable": {
+                    "d": 5.8309518948453,
+                    "x": 70,
+                    "z": 66,
+                    "world": [
+                      -0.3200000000000003,
+                      5.777999999999999
+                    ]
+                  }
+                },
+                "stealth": null,
+                "hazards": {
+                  "declared_file": "game/data/world/hazards.json",
+                  "hazards": 19,
+                  "one_kill_hazard": true,
+                  "attrition_time_to_death_s": [
+                    {
+                      "id": "ridge-exposure",
+                      "pct_per_s": 0.8,
+                      "seconds": 125,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "the-thicket",
+                      "pct_per_s": 0.6,
+                      "seconds": 166.7,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "kiln-ground",
+                      "pct_per_s": 1,
+                      "seconds": 100,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "salt-storm",
+                      "pct_per_s": 1.2,
+                      "seconds": 83.3,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "thirst",
+                      "pct_per_s": 0.35,
+                      "seconds": 285.7,
+                      "h4_pass": true
+                    }
+                  ],
+                  "volumes": 19,
+                  "anchored_on_signature_geometry": [
+                    {
+                      "hazard": "kiln-ground",
+                      "anchor": "naga_kiln_dome",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "comb-collapse",
+                      "anchor": "comb_cliff",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "voriplasm",
+                      "anchor": "voriplasm",
+                      "radius_m": 6
+                    },
+                    {
+                      "hazard": "dye-fume",
+                      "anchor": "open_dye_vat",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "hist-sap-fume",
+                      "anchor": "petrified_bole",
+                      "radius_m": 10
+                    },
+                    {
+                      "hazard": "spore-bloom",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "strangler-snare",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 12
+                    },
+                    {
+                      "hazard": "press-gang-water",
+                      "anchor": "root_arch",
+                      "radius_m": 22
+                    },
+                    {
+                      "hazard": "pair-lightning",
+                      "anchor": "petrified_bole",
+                      "radius_m": 18
+                    }
+                  ],
+                  "here": [],
+                  "active": [],
+                  "region": "valus-ridge"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 98,
+                  "minutes": 0.027,
+                  "path_m": 5.2,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    -4.8,
+                    3
+                  ],
+                  "target": [
+                    -5.3,
+                    2.8
+                  ],
+                  "offset_m": 0.54,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "survival_inputs": {
+                    "heals": 0,
+                    "sprint_frames": 0,
+                    "defensive_swings": 0
+                  },
+                  "regions_entered": [
+                    "valus-ridge"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 40.731,
+                    "at": [
+                      -1.8,
+                      4.7
+                    ]
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "reader_at": {
+                "where": {
+                  "settlement": "blackrose",
+                  "interior": "blackrose-shrine",
+                  "hour": 16.35,
+                  "pos": [
+                    -4.848866,
+                    0,
+                    3.033922
+                  ],
+                  "door_in_reach": null
+                },
+                "prop": {
+                  "eid": "interior-readable:the-grandmother-yard-book",
+                  "pos": [
+                    -5.32,
+                    1.1,
+                    2.778
+                  ],
+                  "reach_m": 2,
+                  "readable_book": "the-grandmother-yard-book"
+                },
+                "distance_m": 0.5361560556778224
+              },
+              "reader_ui": {
+                "mode": "book",
+                "book": {
+                  "id": "the-grandmother-yard-book",
+                  "page": 3,
+                  "pages": 6,
+                  "words_per_page": [
+                    136,
+                    105,
+                    116,
+                    121,
+                    120,
+                    100
+                  ],
+                  "metrics": [
+                    {
+                      "face": "ink",
+                      "words": 136,
+                      "lines": 14,
+                      "chars_per_line": 56.08,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    },
+                    {
+                      "face": "ink",
+                      "words": 105,
+                      "lines": 13,
+                      "chars_per_line": 52.8,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    },
+                    {
+                      "face": "ink",
+                      "words": 116,
+                      "lines": 14,
+                      "chars_per_line": 53.36,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    },
+                    {
+                      "face": "ink",
+                      "words": 121,
+                      "lines": 14,
+                      "chars_per_line": 60.36,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    },
+                    {
+                      "face": "ink",
+                      "words": 120,
+                      "lines": 14,
+                      "chars_per_line": 59.91,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    },
+                    {
+                      "face": "ink",
+                      "words": 100,
+                      "lines": 10,
+                      "chars_per_line": 57.56,
+                      "font_px": 26,
+                      "leading": 1.46,
+                      "body_screen_frac": 0.02407,
+                      "cap_em": 0.72
+                    }
+                  ]
+                },
+                "books_read": [
+                  "the-drowned-tally-tenth-volume",
+                  "the-grandmother-yard-book"
+                ]
+              },
+              "exit_walk": {
+                "ok": true,
+                "frames": 113,
+                "left_m": 0.6572871198266402,
+                "started": [
+                  -4.942596,
+                  0,
+                  2.983006
+                ],
+                "ended": [
+                  -0.567561,
+                  0,
+                  5.538487
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    0,
+                    5.87
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "stormhold",
+                  "to": "stormhold",
+                  "resumed_incoming": false,
+                  "found": false,
+                  "cols": 131,
+                  "rows": 127,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    70,
+                    66
+                  ],
+                  "open_left": 0,
+                  "cost_nodes": 1,
+                  "best_reachable": {
+                    "d": 5.723983715495007,
+                    "x": 60,
+                    "z": 60,
+                    "world": [
+                      -4.942596000000002,
+                      2.9830059999999996
+                    ]
+                  }
+                },
+                "stealth": null,
+                "hazards": {
+                  "declared_file": "game/data/world/hazards.json",
+                  "hazards": 19,
+                  "one_kill_hazard": true,
+                  "attrition_time_to_death_s": [
+                    {
+                      "id": "ridge-exposure",
+                      "pct_per_s": 0.8,
+                      "seconds": 125,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "the-thicket",
+                      "pct_per_s": 0.6,
+                      "seconds": 166.7,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "kiln-ground",
+                      "pct_per_s": 1,
+                      "seconds": 100,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "salt-storm",
+                      "pct_per_s": 1.2,
+                      "seconds": 83.3,
+                      "h4_pass": true
+                    },
+                    {
+                      "id": "thirst",
+                      "pct_per_s": 0.35,
+                      "seconds": 285.7,
+                      "h4_pass": true
+                    }
+                  ],
+                  "volumes": 19,
+                  "anchored_on_signature_geometry": [
+                    {
+                      "hazard": "kiln-ground",
+                      "anchor": "naga_kiln_dome",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "comb-collapse",
+                      "anchor": "comb_cliff",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "voriplasm",
+                      "anchor": "voriplasm",
+                      "radius_m": 6
+                    },
+                    {
+                      "hazard": "dye-fume",
+                      "anchor": "open_dye_vat",
+                      "radius_m": 26
+                    },
+                    {
+                      "hazard": "hist-sap-fume",
+                      "anchor": "petrified_bole",
+                      "radius_m": 10
+                    },
+                    {
+                      "hazard": "spore-bloom",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 30
+                    },
+                    {
+                      "hazard": "strangler-snare",
+                      "anchor": "welkynd_pillar",
+                      "radius_m": 12
+                    },
+                    {
+                      "hazard": "press-gang-water",
+                      "anchor": "root_arch",
+                      "radius_m": 22
+                    },
+                    {
+                      "hazard": "pair-lightning",
+                      "anchor": "petrified_bole",
+                      "radius_m": 18
+                    }
+                  ],
+                  "here": [],
+                  "active": [],
+                  "region": "valus-ridge"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 113,
+                  "minutes": 0.031,
+                  "path_m": 5.1,
+                  "mean_speed_mps": 2.6903,
+                  "end": [
+                    -0.6,
+                    5.5
+                  ],
+                  "target": [
+                    0,
+                    5.9
+                  ],
+                  "offset_m": 0.66,
+                  "longest_stuck_frames": 18,
+                  "mired_frames": 0,
+                  "survival_inputs": {
+                    "heals": 0,
+                    "sprint_frames": 0,
+                    "defensive_swings": 0
+                  },
+                  "regions_entered": [
+                    "valus-ridge"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 40.723,
+                    "at": [
+                      -1.9,
+                      4.7
+                    ]
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "exit_prompt": {
+                "interior": "blackrose-shrine",
+                "name": null,
+                "way": "out",
+                "dist_m": 0.66
+              }
+            }
+          ],
+          "stopped_after": "Q-MAIN-07",
+          "topics_known": 15,
+          "flags_ending": [],
+          "resume_state_file": "resume-saxhleel-interior-intended.json"
+        }
+      },
+      "bootstrap": {
+        "topics_before": 11,
+        "topics_after": 11
+      }
+    }
+  ]
+}

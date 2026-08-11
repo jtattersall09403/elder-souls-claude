@@ -1,0 +1,74 @@
+{
+  "schema": "RI-WLD03-M13-blind-pack-v1",
+  "commit": "1378e2a7372d4e3c819f81986b65979524ae08a7",
+  "prompt": "For each plan, in one sentence: who holds power here, and what does this place make or do?",
+  "instructions": [
+    "Judge plan-A.svg through plan-H.svg without opening the reveal directory.",
+    "Record one sentence per slot. Do not inspect filenames outside this pack.",
+    "A separate reference-sort fixture is sibling/reference-owned and is explicitly pending; do not infer its score from these eight."
+  ],
+  "ours": [
+    {
+      "slot": "A",
+      "file": "plan-A.svg",
+      "sha256": "f157f469b9400961d56b36d8c2d58b4fc23a0c6b52c7e9e5af7ec919d9200573",
+      "bytes": 2441
+    },
+    {
+      "slot": "B",
+      "file": "plan-B.svg",
+      "sha256": "fcce06c875275223d36df1e88f512f0b577e5c9a0a9984ce7970a32077f0bf6f",
+      "bytes": 1237
+    },
+    {
+      "slot": "C",
+      "file": "plan-C.svg",
+      "sha256": "b246b17a4a0f47073420db9cd2dfb8b781e7f650c66653f623bbf331768db523",
+      "bytes": 1722
+    },
+    {
+      "slot": "D",
+      "file": "plan-D.svg",
+      "sha256": "4be1f844cb617c14a81e9adadfbf931fecbb0979eac70e846cce942f4e76c283",
+      "bytes": 1208
+    },
+    {
+      "slot": "E",
+      "file": "plan-E.svg",
+      "sha256": "b3c2f3df573e686e4d2b5017f842e65fd63a0fb55410a1f5d275538cd20f92ff",
+      "bytes": 1057
+    },
+    {
+      "slot": "F",
+      "file": "plan-F.svg",
+      "sha256": "e33e537aea19949802613fa837ad0680ac0d6da489a4191c78bcdf25b11524d4",
+      "bytes": 1715
+    },
+    {
+      "slot": "G",
+      "file": "plan-G.svg",
+      "sha256": "d06b56d6da6eade96d80e762793d1d5a52a09f9f1699d8a0ba5e3c5574d011bf",
+      "bytes": 1203
+    },
+    {
+      "slot": "H",
+      "file": "plan-H.svg",
+      "sha256": "b323669459fcb2dd9deef96bbaff90690488f09a21e029b1ec9aecf8c2b42817",
+      "bytes": 790
+    }
+  ],
+  "judgement": {
+    "status": "not_run",
+    "required_correct": 6,
+    "total": 8,
+    "independent_judge_required": true
+  },
+  "tell_audit": {
+    "labels_icons_ui": "absent",
+    "settlement_names": "absent",
+    "slot_filenames_only": true,
+    "uniform_canvas": "512x512",
+    "uniform_palette": true,
+    "svg_metadata": "none"
+  }
+}
