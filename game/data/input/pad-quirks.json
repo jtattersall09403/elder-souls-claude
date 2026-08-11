@@ -4,6 +4,15 @@
   "owner": "W1-29",
   "binding_source": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md §C rule G2",
   "purpose": "When `gamepad.mapping !== 'standard'` the button order is the raw HID report order, not the W3C one. This table maps a normalised gamepad.id onto the §B standard layout. A build that assumes mapping==='standard' delivers a scrambled map on the exact device the project owner holds, and RI-JRN04 HF2 exists for it.",
+  "target_hardware": {
+    "owner_unit": "GameSir X2s Type-C Mobile Gaming Controller",
+    "connection": "wired USB-C",
+    "retailer": "Amazon UK",
+    "asin": "B0CRTMNQBL",
+    "listing": "https://www.amazon.co.uk/dp/B0CRTMNQBL",
+    "record_source": "project owner, 2026-08-11",
+    "acceptance_note": "This exact physical unit is the primary real-device acceptance target. Browser-reported id, mapping, button indices, axes, rest noise and trigger ranges must be captured on the owner unit; simulated descriptors remain preflight evidence."
+  },
 
   "normalisation": "lowercase; `vendor: XXXX` and `product: XXXX` extracted where present and joined as `vid:pid`; otherwise the id string with the parenthesised suffix and the literal 'standard gamepad' removed, collapsed whitespace. Matching tries vid:pid first, then a substring match on `id_match`, then falls back to the generic HID profile.",
 
