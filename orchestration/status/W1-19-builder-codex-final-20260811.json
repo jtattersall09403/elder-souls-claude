@@ -1,0 +1,61 @@
+{
+  "task_id": "W1-19-builder-codex-final-20260811",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "EXTERNALLY_INTERRUPTED",
+  "base_commit": "317b054f3839cbd653bf76437073b8e6314f4c2b",
+  "branch": "codex/wave1-build-experiment",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "orchestration/status/W1-19-builder-codex-final-20260811.json",
+    "game/src/engine.js",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-final/production-conversation/q-main-01-smoke.json"
+  ],
+  "files_claimed": [],
+  "next_step": "node tools/quests/mainline-chain-floor.mjs --out corpus/90-verdicts/wave1/artifacts/W1-19-builder-final/chain-floor --json",
+  "gate_accounting": {
+    "A": "INCOMPLETE: production accept/resolve seam added; authoritative 40x2 population not rerun",
+    "B": "NOT_RUN",
+    "C_builder": "NOT_RUN",
+    "C_independent": "NOT_RUN_INDEPENDENT_ONLY: RI-EXP05 fresh blind judge required by orchestration/RULES.md rules 22 and 25",
+    "D": "PARTIAL"
+  },
+  "notes": [
+    "Added the missing production player-facing seam: eligible quest acceptance and available resolution choices now appear in ordinary giver conversation and select through conversationSay.",
+    "A real browser smoke accepted Q-MAIN-01 through talkTo + conversationSay and observed the live QuestEngine state; no questOpen call was used.",
+    "The authoritative population runner still contains prohibited direct quest APIs and has not been repaired in this interrupted run; no builder completion is claimed.",
+    "Independent-only RI-EXP05 blind judgement remains separated by orchestration/RULES.md rules 22 and 25."
+  ],
+  "completion": [
+    {
+      "row": "Gate A",
+      "state": "EXTERNALLY_INTERRUPTED",
+      "artifact": "corpus/90-verdicts/wave1/artifacts/W1-19-builder-final/production-conversation/q-main-01-smoke.json",
+      "result": "Q-MAIN-01 production acceptance smoke passed; full population not run"
+    },
+    {
+      "row": "Gate B",
+      "state": "EXTERNALLY_INTERRUPTED",
+      "artifact": null,
+      "result": "not run"
+    },
+    {
+      "row": "Gate C builder",
+      "state": "EXTERNALLY_INTERRUPTED",
+      "artifact": null,
+      "result": "not run"
+    },
+    {
+      "row": "Gate C blind judgement",
+      "state": "NOT_RUN_INDEPENDENT_ONLY",
+      "artifact": null,
+      "result": "fresh blind judge required by rules 22 and 25"
+    },
+    {
+      "row": "Gate D",
+      "state": "EXTERNALLY_INTERRUPTED",
+      "artifact": null,
+      "result": "not run"
+    }
+  ]
+}

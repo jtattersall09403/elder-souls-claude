@@ -1,0 +1,134 @@
+{
+  "trip": {
+    "quest": "Q-MAIN-01",
+    "giver": "undersexton-aveline-rell",
+    "went_to": "soulrest",
+    "present": true,
+    "why": null
+  },
+  "option": {
+    "id": "quest-accept:Q-MAIN-01",
+    "text": "The Reading of the Count",
+    "gated": false,
+    "root": false
+  },
+  "accepted": {
+    "open": true,
+    "npc": "undersexton-aveline-rell",
+    "name": "Aveline Rell",
+    "title": null,
+    "greeting": "The court will hear it in order. Approach.",
+    "greeting_cell": "235",
+    "greeting_key": [
+      "RG-COURT",
+      "neutral",
+      "saxhleel"
+    ],
+    "said": "I have given you The Reading of the Count.",
+    "said_topic": "quest-accept:Q-MAIN-01",
+    "said_cell": null,
+    "said_source": "quest-accept",
+    "said_route": null,
+    "said_from": null,
+    "topics": [
+      {
+        "id": "a name for cover",
+        "text": "a name for cover",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the chapter's vote",
+        "text": "the chapter's vote",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the cold well",
+        "text": "the cold well",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the crypt road",
+        "text": "the crypt road",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the drowned tally",
+        "text": "the drowned tally",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the empty boxes",
+        "text": "the empty boxes",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the intakes",
+        "text": "the intakes",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the ninth recension",
+        "text": "the ninth recension",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the works",
+        "text": "the works",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the road to Blackrose",
+        "text": "the road to Blackrose",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "the road to Gideon",
+        "text": "the road to Gideon",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "latest rumors",
+        "text": "latest rumors",
+        "gated": false,
+        "root": false
+      },
+      {
+        "id": "quest-accept:Q-MAIN-01",
+        "text": "The Reading of the Count",
+        "gated": false,
+        "root": false
+      }
+    ],
+    "selected": 0,
+    "quest_action": {
+      "act": "accept",
+      "quest": "Q-MAIN-01",
+      "resolution": null,
+      "result": {
+        "ok": true,
+        "quest": "Q-MAIN-01",
+        "stage": 10
+      }
+    }
+  },
+  "quest": {
+    "id": "Q-MAIN-01",
+    "stage": 10,
+    "branch": null,
+    "failed": false,
+    "flags": {
+      "opened_day": 0
+    }
+  }
+}
