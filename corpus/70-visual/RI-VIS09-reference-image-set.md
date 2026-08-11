@@ -37,8 +37,10 @@ coverage honestly.
 
 ### §1 What exists
 
-Root: `corpus/70-visual/refs/`. **157 files in slot folders, 8 in `rejected/`** — of which **119
-are images and 38 are the non-image UI definitions that fill REF-A12** (see the REF-A12 row below).
+Root: `corpus/70-visual/refs/`. The current generated manifest records **808 files on disk**, of
+which **207 are animated sequences** and **304 are valid for behaviour comparison**. These are
+manifest counts, not interchangeable coverage counts; use the relevant `counts.by_metrics_purpose`
+population rather than quoting 808 as a denominator.
 
 **This table is a snapshot. Regenerate it rather than trusting it:**
 
@@ -56,8 +58,9 @@ python3 -c "import json,collections,os; \
 | `modern/hud/` | **24** | `elfhuo-github/sksebp-og.github.io` | Native 2560×1440 Witcher 3 gameplay, one 2022-12-17 session, twelve locations shot old-gen and next-gen. **Every frame carries HUD.** |
 | `modern/character_closeup/` | **1** | `BAAI-Agents/Cradle` | RDR2, Arthur Morgan from behind at Horseshoe Overlook, 1921×1081, HUD-free. |
 | `anti-generic/` | **5** | (copies of `modern/hud/`) | The negative anchor: crenellated castle, half-timbered street, pitched-roof village, thatched hamlet, birch-and-meadow woodland. |
-| `modern/exterior_daylight`, `exterior_lowlight`, `interior_darkemissive`, `combat`, `material_closeup` | **0** | — | empty |
-| `context/`, `video/` | **0** | — | empty |
+| `souls-behaviour/anim/` and related behaviour paths | **207 animated sequences; 304 behaviour-valid references corpus-wide** | source-registered wiki, Steam and archive sources | Moving attacks, telegraphs, impacts, stances, deaths, quicksteps and isolated boss moves; related paths add arena, camera and continuous-behaviour material. |
+| `video/` | populated | hash-pinned archive sources | Locomotion, continuous combat, traversal and boss-fight clips, including short reproducible derivatives whose source and cut method are recorded. |
+| `context/` | populated | registered ESO sources | Shadowfen/Murkmire context; never a fidelity or art-direction target. |
 | `rejected/` | 8 | — | with per-file reasons and the failing statistic |
 
 Machine-readable: `refs/MANIFEST.json` (one record per file, provenance joined to
@@ -78,7 +81,7 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS06 Protocol A** (fidelity blind) | `refs/modern/character_closeup/` as the `--ref` side | `refs/morrowind/`, `refs/modern/hud/` |
 | **RI-VIS06 Protocol B** (art-direction blind) | `refs/morrowind/REF-A*` as the `--ref` side | `refs/modern/` |
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
-| **RI-VIS08** (character animation) | nothing — `refs/video/` is empty | — |
+| **RI-VIS08** (character animation) | behaviour-valid records in `refs/souls-behaviour/anim/`, related `souls-behaviour/` paths and `refs/video/`, but only when action-matched and preregistered under §5a | still images for motion timing; any file routed to fidelity/art-direction; any behaviour record whose action/camera/rate mismatch is undisclosed |
 
 **No render is ever scored against `refs/modern/hud/`.** §5a of
 `REFERENCE-IMAGE-REQUEST.md` is the rule and this item does not soften it: those frames are
@@ -132,29 +135,33 @@ writes there.
    cite REF-A12 for layout and colour and must not cite it for look.** REF-A8 (NPC density) and
    REF-A17 (Imperial interior) remain partial. REF-A13, REF-A18 and REF-A19 were filled in the
    acquisition's second revision; see ACQUISITION-REPORT §13.1 and §14.
-6. **`refs/context/` is empty**, so no builder has seen a depiction of Shadowfen or Murkmire. The
-   "deliberately do not converge on ESO" instruction in RI-VIS05 currently has nothing behind it.
-7. **`refs/video/` is empty**, so every motion claim in RI-VIS08 — LOD pop, foliage frequency,
-   water temporal variance, foot planting — remains uncalibrated. This is a known limit, recorded
-   as such rather than as a missing deliverable.
+6. **`refs/context/` is populated** with registered Shadowfen/Murkmire material. It remains context,
+   not a target on either visual axis; the RI-VIS05 instruction to avoid converging on ESO must use
+   it only through that route.
+7. **Motion coverage is populated but not action-complete.** The manifest records 207 animated
+   sequences and 304 behaviour-valid references. `souls-behaviour/anim/` covers attacks,
+   telegraphs, impacts, stances, deaths, quicksteps and isolated boss moves; `video/` and related
+   paths cover locomotion, continuous combat, traversal and boss fights. An explicit action audit
+   is still required. Ordinary player jump/fall/landing and conventional directional rolls are
+   likely gaps until a critic demonstrates an appropriate registered match; absence is a search
+   trigger under §5a, not permission to compare a different action.
 8. **No image in the set is two-host corroborated.** Every image host except GitHub is blocked
    from the acquiring container; `corroboration: "one-host"` on every record.
 9. **`identified_by` on the Morrowind files is slot-level, not per-image**, and every record says
    so in `identified_how`. This is weaker than the specification asks for.
 
-**A merge with an externally acquired set is expected and the manifest schema is built for it.**
+**A merge with an externally acquired set remains supported and the manifest schema is built for it.**
 `_provenance.json` is keyed by path, so a second acquisition can add records without touching
 these; re-running `make-manifest.py` rebuilds `MANIFEST.json` over the union. **Do not hand-edit
 `MANIFEST.json`** — it is generated, and hand edits are lost on the next run. The step-by-step
 merge procedure is `ACQUISITION-REPORT.md` §13.5.
 
-**This item is written to survive new images.** When a population arrives, it changes the §1
+**This item is written to survive new media.** When a population arrives, it changes the §1
 snapshot (regenerated by the command above it), one row in §2, one line in §3, and the numbers in
 §4. **§2's routing table, §4a's prohibitions, §5's blind procedure and §6's failure list are
-rules, not inventory, and do not change when files land.** An external agent (Codex) is running
-the same specification with unrestricted network access; as of this writing it had produced
-nothing in `corpus/`. The correct action when it does is to re-run the two scripts and edit those
-four places — **not** to rewrite this item.
+rules, not inventory, and do not change when files land.** The correct action is to use
+`acquire.py` and re-run the manifest tooling, then edit the inventory-bearing places — **not** to
+hand-edit generated hashes or invent a parallel reference register.
 
 ## Comparison method
 
@@ -269,6 +276,44 @@ instruction. Until it does, a Protocol B result is not trustworthy.
 Everything else — forced choice, no ties, one named biggest gap, distrust a win — is unchanged
 from RI-VIS06 and CORPUS-CONTRACT §6.
 
+### §5a Motion-reference and frame-exact procedure
+
+For every shipped action that W1-30 judges, the independent critic first performs and seals an
+**action-coverage audit**. The required moving-comparison rows, wherever the shipped game exposes
+the action, are: walk, run, acceleration, stopping, 180-degree turn, every directional roll/dodge,
+jump, fall, landing, block, hit reaction, representative attacks from every shipped weapon class,
+recovery, and transitions between those states. A row cannot borrow a merely similar action.
+
+1. Search `MANIFEST.json` first for records with `metrics_valid_for: ["behaviour"]`, prioritising
+   `souls-behaviour/anim/`, related `souls-behaviour/` paths and `video/`. Verify the selected bytes
+   with `python3 corpus/70-visual/refs/acquire.py --check` and
+   `python3 corpus/70-visual/refs/make-manifest.py --check`; if a registered byte is absent, use the
+   existing `acquire.py` catalogue to reacquire and hash-check it **before searching elsewhere**.
+2. Before viewing or scoring our corresponding animation, preregister the selected reference path,
+   source page, direct URL, game and version, action, camera angle, playback rate, duration,
+   resolution, provenance and SHA-256. Match a rear/third-person camera, approximate on-screen
+   character scale and playback speed. Record every unavoidable mismatch; a mismatch may bound a
+   qualitative claim but may not silently become an exact timing target.
+3. If no appropriate registered action match exists — likely current cases include ordinary player
+   jump/fall/landing and conventional directional rolls — the independent critic searches online.
+   The critic records all fields above in a text preregistration before judging ours. Downloaded or
+   derived binaries remain transient; commit only the text manifest and exact reproduction
+   information. Admission to scoring is conditional on this item's integrity checks and RI-VIS01's
+   axis routing, never on convenience or apparent similarity after seeing ours.
+
+Our-game evidence may be a deterministic, frame-by-frame PNG sequence. Its text manifest records
+the tested commit, fixed seed, fixed simulation and render rates, exact inclusive frame range,
+action/state label for the sequence, per-frame SHA-256 and the animation trace (state, clip, phase,
+root/simulation displacement and declared contacts/events at each frame). The PNGs and trace are
+the authority for frame-exact timing, contact, displacement, anticipation, active, recovery and
+transition metrics.
+
+A transient GIF, animated image or video derivative may be made for human or blind moving
+comparison only. Record the exact encoder command, input frame range/rate and output SHA-256 in the
+text evidence. Use the moving derivative for qualitative motion judgement and the PNG/trace source
+for exact metrics. **Never use GIF/video-compressed pixels for texture, colour, anti-aliasing,
+sharpness or any other still-image fidelity measurement.**
+
 ## Scoring
 
 This item is a *register*, not a scored bar in its own right; the score it carries is a
@@ -281,8 +326,10 @@ compliance check that any wave can run in under a minute.
 | every such citation obeys the routing table in §2 | 0 cross-side citations |
 | every numeric band citation names its `reference-metrics.json` population **and** that population's `n` | 0 bare bands |
 | no verdict cites a file under `modern/hud/` or `anti-generic/` as a *target* | 0 |
+| every scored motion row was action-matched and preregistered before ours was judged, with all §5a fields | 0 missing/late registrations or undisclosed camera/scale/rate mismatches |
+| every external/transient motion source is reproducible and hash-pinned; every frame-exact claim resolves to PNG hashes plus trace | 0 unverifiable or compression-derived exact claims |
 
-**Any single failure is a hard fail for the visual area of that wave**, in the same way
+**Any single applicable failure is a hard fail for the visual area of that wave**, in the same way
 RI-VIS03 hard-fails a verdict reported as a bare number. A citation that cannot be resolved is
 indistinguishable from a remembered image, which is the exact condition this item exists to end.
 
@@ -292,7 +339,7 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 
 | Ladder | 4 | 6 | 8 |
 |---|---|---|---|
-| Native | n/a — register/compliance item | n/a — register/compliance item | all five compliance checks pass (the only non-failing state) |
+| Native | n/a — register/compliance item | n/a — register/compliance item | all applicable compliance checks pass (the only non-failing state) |
 
 **Aggregation (a property of this item, not of the critic):** gate, not score — any single failure is a hard fail for the visual area of that wave. Contributes no ladder number of its own. See SCORING.md §1.2's gate-and-cap clause.
 
