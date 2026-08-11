@@ -1,8 +1,8 @@
 {
   "task_id": "W1-30",
   "role": "planner",
-  "state": "needs-current-state-plan",
-  "plan_state": "needs-current-state-plan",
+  "state": "planned",
+  "plan_state": "awaiting-criticism",
   "piece": "W1-30 — whole-game visual foundation and fidelity",
   "plan_path": "orchestration/plans/W1-30.md",
   "owner_amendment": "docs/DECOMPOSITION-W1-AMENDMENT-02.md",
@@ -44,7 +44,14 @@
     "RI-WLD03",
     "RI-WLD05"
   ],
-  "planning_next_step": "Run the initial current-state plan task, then repeat fresh reviewer-editor tasks until the plan is satisfied.",
+  "planning_next_step": "A fresh independent reviewer-editor critiques W1-30; no builder dispatch until the plan is satisfied and W1-06 and W1-24 production work has landed.",
+  "files_touched": [
+    "orchestration/status/W1-30.json",
+    "orchestration/plans/W1-30.md"
+  ],
+  "files_claimed": [],
+  "plan_summary": "Complete whole-game W1-30 current-state plan delivered with binding builder/critic allocation, 21-path and all-surface scope, shared future-content foundation, canonical item bars, dependency and ownership seams, native acceptance, controls, risks and cheap-first route.",
+  "next_action": "fresh independent reviewer-editor for W1-30",
   "build_dependencies": [
     "W1-06 builder work landed",
     "W1-24 builder work landed"
