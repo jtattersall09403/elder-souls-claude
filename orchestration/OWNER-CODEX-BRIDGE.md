@@ -68,6 +68,11 @@ waste while preserving the required quality, evidence, independence and acceptan
 Plan authors, remediators and reviewer-editors must prefer the minimum sufficient work/evidence set
 that can prove the governing predicates. In particular they must:
 
+- apply `orchestration/plans/BUILDER-EXECUTION-CONTRACT.md` from the first plan draft and include a
+  binding piece-specific `Builder/critic execution allocation`; builder implementation and bounded
+  representative live proof stay builder-owned, while long/full/repeated/blind/fresh populations and
+  final scoring stay critic-owned unless the plan explicitly justifies an indispensable exception;
+
 - preserve and reuse current behaviour and still-valid independent evidence instead of rebuilding or
   re-proving it without a concrete reason;
 - reuse existing authoritative instruments, fixtures and measurements where valid rather than

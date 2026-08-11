@@ -102,6 +102,32 @@ Do not invent micro-optimisations and do not trade away verification quality. Ex
 are not required where they would be guesswork; reason from concrete cost drivers and the measured
 cost evidence in `COST.md` and this file.
 
+**3a. Every new or materially revised plan allocates builder work and critic work before it can be
+reviewed.** The plan must link `orchestration/plans/BUILDER-EXECUTION-CONTRACT.md` and contain a
+piece-specific `Builder/critic execution allocation` section. That allocation is part of the first
+draft, not a cleanup added after a builder has spent hours executing critic populations.
+
+The builder owns all production implementation, data/content integration and instruments needed to
+make the governing methods executable; exhaustive cheap deterministic checks; the smallest
+representative live population that proves each changed mechanism through the shipping path; targeted
+positive, boundary, refusal/null, motion/time, persistence and rendered-output cases as applicable;
+targeted red/delete-the-fix controls; one bounded builder aggregate; and text-only reproduction
+evidence. The builder keeps repairing these rows until they pass in the run.
+
+The fresh critic owns exact full populations, complete capture/modality matrices, repeated
+trials/seeds/sessions, long-duration journeys, blind/naive/fresh-participant work, independent replay,
+final native aggregation, hard-fail assessment, score and verdict. An empirical run expected to take
+more than about fifteen minutes belongs to the critic by default unless the piece-specific allocation
+explains why one longer run is indispensable to implementation confidence. Binary evidence may be
+created locally by a builder for inspection; the repository receives a text report naming what was
+created and checked plus exact reproduction commands, not those binaries.
+
+Historical plan prose that assigns a builder a full native population remains the final acceptance
+contract and critic instruction unless the piece-specific allocation explicitly retains that
+population for the builder. A reviewer-editor treats missing, ambiguous or wasteful allocation as a
+material plan defect. It also checks that moving work to the critic has not removed the builder's
+obligation to prove the implementation actually works in the running game.
+
 **4. Model choice is evidence, not a judgement call.** Sonnet is *proven* here — Sonnet blog
 writers have caught four errors in the orchestrator's own briefs, including a fabricated figure and
 a claim that contradicted its own source. Haiku is unproven and no build should be its first job.
@@ -191,7 +217,9 @@ a bolt using pure pursuit. **A plan must never become a commitment device.** So:
 - `orchestration/plans/<piece>.md` — the plan. The build brief **points at it** rather than
   restating it (rule 18, which the orchestrator has broken four times).
 - The plan carries a `Plan-State:` marker using one of the states below, BLOCKING items resolved,
-  CARRIED risks listed, the acceptance table, the null control, and the latest reviewer outcome.
+  CARRIED risks listed, the acceptance table, the null control, a binding piece-specific
+  `Builder/critic execution allocation` linked to `BUILDER-EXECUTION-CONTRACT.md`, and the latest
+  reviewer outcome.
 - Status files mirror `"plan_state"` so dispatch remains machine-readable. Canonical states are
   `awaiting-criticism`, `awaiting-remediation`, `awaiting-recriticism`, and `satisfied`. Absence of
   a canonical plan means `needs-current-state-plan`; `satisfied` means build-ready.
