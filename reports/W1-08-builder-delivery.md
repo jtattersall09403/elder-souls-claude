@@ -38,6 +38,14 @@ edge de-duplication (`repeat` false/true → one fire; sever edge queue → no a
 pipeline-loss counter (`pipelineDrops` remains distinct from combat `bufferMisses`; disconnect the
 pipeline → M-K24 red). These use the same production consumers and player-doable consequences.
 
+The formerly prose-only red arms are now executable. `--self-test-only` keeps each stateful arm
+bounded while still running its positive group first. The final targeted artifacts observed
+`instrument_went_red: true` for duplicate `KeyR` (M-K1), `.code` replaced by layout-dependent
+`.key` (M-K2), repeat refire (M-K5), disconnected input pipeline (M-K24), empty teaching
+inscriptions (M-K21), forbidden prompt text (M-K22), and a click-to-play surface (M-K8). Each arm
+restores the production model before the next arm; none relies on a synthetic transcript as
+player evidence.
+
 ## Native aggregation and ownership seams
 
 * RI-JRN03 builder gates are exercised separately with `input-checks --group desktop`, and red
@@ -63,8 +71,15 @@ final textual evidence with:
 node --check tools/journey/input-checks.mjs
 node tools/boot-check.mjs
 node tools/journey/input-checks.mjs --group desktop --out /tmp/w1-08-desktop
-node tools/journey/input-checks.mjs --self-test --out /tmp/w1-08-self-test
+node tools/journey/input-checks.mjs --group rebind --out /tmp/w1-08-rebind
+node tools/journey/journey-run.mjs --journey jrn03-desktop --layouts qwerty,azerty,qwertz --profile desktop-720p --out /tmp/w1-08-layouts
+node tools/journey/input-checks.mjs --group desktop --self-test --self-test-only M-K1,M-K2,M-K5,M-K8,M-K21,M-K22,M-K24 --out /tmp/w1-08-red-arms
 ```
+
+Observed results on the delivery tree: desktop 21/21; rebind 4/4; layout replay QWERTY,
+AZERTY and QWERTZ all moved with zero dropped inputs; core targeted red arms 7/7. `check-data`
+enumerated 585 indexed files and `check-content` found 551 quest resolutions with none lost.
+Temporary JSON and browser processes were inspected only under `/tmp` and are not deliverables.
 
 Run stateful groups separately. Supply the independently produced naive transcript only with
 `--group naive --naive PATH`; the builder must never manufacture it. Physical-device rows remain

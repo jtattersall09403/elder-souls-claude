@@ -17,6 +17,14 @@
   "binary_evidence_committed": false,
   "reproduce": [
     "node tools/journey/input-checks.mjs --group desktop --out /tmp/w1-08-desktop",
-    "node tools/journey/input-checks.mjs --self-test --out /tmp/w1-08-self-test"
-  ]
+    "node tools/journey/input-checks.mjs --group rebind --out /tmp/w1-08-rebind",
+    "node tools/journey/journey-run.mjs --journey jrn03-desktop --layouts qwerty,azerty,qwertz --profile desktop-720p --out /tmp/w1-08-layouts",
+    "node tools/journey/input-checks.mjs --group desktop --self-test --self-test-only M-K1,M-K2,M-K5,M-K8,M-K21,M-K22,M-K24 --out /tmp/w1-08-red-arms"
+  ],
+  "checks": {
+    "desktop": "21/21 pass",
+    "rebind": "4/4 pass",
+    "layouts": "qwerty/azerty/qwertz moved; 0 dropped",
+    "core_red_arms": "7/7 instrument_went_red"
+  }
 }
