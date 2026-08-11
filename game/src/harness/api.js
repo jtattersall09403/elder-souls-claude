@@ -2547,6 +2547,22 @@ export function installHarness(engine, bootPromise) {
         interior: r.interiorSummary || null,
       };
     },
+    /** RI-WLD13 M73/M75/M76: renderer-side, live continuity observation. */
+    getInteriorContinuity() {
+      const r = engine.renderer;
+      const c = r && r.interiorContinuity;
+      const sun = r && r.sky && r.sky.sun;
+      const target = sun && sun.target;
+      let sunBearingDeg = null;
+      if (sun && target) {
+        const dx = target.position.x - sun.position.x;
+        const dz = target.position.z - sun.position.z;
+        sunBearingDeg = (Math.atan2(dx, dz) * 180 / Math.PI + 360) % 360;
+      }
+      const ambient = engine.sim.stealth && engine.sim.stealth.interiorAmbientNow
+        ? engine.sim.stealth.interiorAmbientNow(engine.sim) : null;
+      return { ...(c || {}), sun_bearing_deg: sunBearingDeg, aperture_luminance: ambient && ambient.L, weather: engine.sim.env.weather, hour: engine.sim.env.timeOfDay };
+    },
     /**
      * W1-04 r4 — THE SIGNATURE OF WHAT IS ACTUALLY ON THE SCREEN.
      *

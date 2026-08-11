@@ -2,8 +2,8 @@
   "task_id": "W1-04-r7",
   "brief": "Production builder execution of the satisfied W1-04 current-state continuation plan under S42",
   "started": "2026-08-10",
-  "state": "builder_repair_cycle_incomplete",
-  "tested_head": "a492e018d96225d9ddf4875c982e5ed4c7eb8467",
+  "state": "builder_owned_complete_awaiting_independent_judgement",
+  "tested_head": "1378e2a7372d4e3c819f81986b65979524ae08a7",
   "files_touched": [
     "game/data/world/interiors/",
     "game/data/world/settlements/",
@@ -14,7 +14,16 @@
     "orchestration/evidence/W1-04-r8-builder.md",
     "orchestration/evidence/W1-04-r9-builder.md",
     "orchestration/status/W1-04-r7.json",
-    "tools/world/w1-04-r7-freeze.mjs"
+    "tools/world/w1-04-r7-freeze.mjs",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/src/render/renderer.js",
+    "tools/world/w1-04-r10-native.mjs",
+    "tools/world/w1-04-m13-pack.mjs",
+    "orchestration/evidence/W1-04-r10-builder.md",
+    "reports/w1-04-r10/",
+    "reports/packs/w1-04-m13/",
+    "reports/packs/w1-04-m13.reveal/"
   ],
   "files_claimed": [
     "docs/shots/",
@@ -28,26 +37,29 @@
     "reports/w1-04-r7/",
     "reports/w1-04-r8/",
     "reports/w1-04-r9/",
-    "tools/world/"
+    "tools/world/",
+    "tools/world/w1-04-r10-native.mjs",
+    "orchestration/evidence/W1-04-r10-builder.md",
+    "reports/w1-04-r10/"
   ],
   "redundant_with": [],
   "findings": [
     "M71 GREEN: 115/115 literal contracts, zero orphans, N1/N2/N4/N5 breaches 2/0/0/0",
-    "current live settle 0/0/0/0 at frames 1/30/120/600",
-    "current live re-entry repaired to 115 same / 0 wrong / 0 absent",
-    "current RI-MTH07 23/23 CONSUMED",
-    "W1-04 contributes all 115 S42 Tier-A interiors to W1-27; remaining exterior POI/A+B supply is W1-02/W1-05-owned"
+    "live settle 0/0/0/0 at frames 1/30/120/600; real-latch re-entry 115/115",
+    "RI-MTH07 23/23 CONSUMED after production continuity-observation change",
+    "RI-WLD13 M73 192/192; M75 115/115 with 23 seamless; M76 115/115 with 58 see-into",
+    "RI-WLD03 M13 owned 8-plan blind pack complete; independent judgement and sibling/reference median-rank leg pending"
   ],
   "not_run": [
     "RI-WLD03 M13 independent blind judgement",
-    "exact native M73/M75/M76 population runs",
-    "mixed rows without qualifying current-commit sibling evidence"
+    "RI-WLD03 M13 16-plan Morrowind median-rank leg pending separately licensed sibling/reference fixture",
+    "mixed sibling-owned rows without qualifying current-commit sibling evidence"
   ],
-  "next_step": "complete exact native browser M73/M75/M76 populations, then hand RI-WLD03 M13 pack to a fresh independent judge",
+  "next_step": "fresh independent judge scores the sealed RI-WLD03 M13 owned pack; sibling owners supply mixed/reference evidence",
   "resumed": "2026-08-11",
   "remaining_blockers": [
-    "exact browser-native M73/M75/M76 populations unfinished",
-    "RI-WLD03 M13 requires fresh independent blind judgement",
-    "mixed rows require qualifying current sibling evidence"
+    "independent RI-WLD03 M13 judgement (role-separated)",
+    "separately licensed Morrowind reference top-down fixture for M13 median-rank leg",
+    "qualifying current sibling evidence for mixed rows"
   ]
 }

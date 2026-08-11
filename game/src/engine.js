@@ -5652,6 +5652,8 @@ export class Engine {
     // setWorldSeed() decides what the exterior one IS, and groundAt() must agree with it.
     if (this.sim.worldSeed !== null && this.sim.worldSeed !== undefined) this.renderer.setWorldSeed(this.sim.worldSeed);
     const cell = this.cellFor(this.sim.env);
+    this.renderer.setInteriorContinuity(this.sim.env.interior
+      ? this.settlements.interior(this.sim.env.interior) : null);
     // THE ROOM THE FILE DESCRIBES. `cellFor()` folds 113 of the 115 named interiors onto one
     // generic `interior` cell, which was `scene.js buildHall()` — 249 triangles and one light,
     // the same hearth and the same six benches for the Crimson Apothecary in Archon and for
@@ -5660,7 +5662,8 @@ export class Engine {
     // 30 unique items that nothing instantiated. `render/interior.js` is the consumer: the shell
     // comes from `bounds_m`, the lamps from `lights[]`, the furniture from `props[]`.
     if (cell === 'interior') {
-      const summary = this.renderer.setInteriorRecord(this.settlements.interior(this.sim.env.interior));
+      const rec = this.settlements.interior(this.sim.env.interior);
+      const summary = this.renderer.setInteriorRecord(rec);
       this._furnishInterior(summary);
     } else if (this._interiorProps && this._interiorProps.length) {
       this._furnishInterior(null);
