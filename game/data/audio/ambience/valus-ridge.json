@@ -220,7 +220,1642 @@
       "event_gain_db": 1.84
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "valus_ridge_landmark_01",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        1562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.538,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_02",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        462.5,
+        2312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.287,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_03",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1712.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.152,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_04",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        1512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.621,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_05",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1462.5,
+        762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.886,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_06",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        2162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.787,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_07",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.18,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_08",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1512.5,
+        1312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.985,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_09",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1562.5,
+        1862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.77,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_10",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1912.5,
+        1062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.736,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_11",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        762.5,
+        1962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.207,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_12",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1512.5,
+        2262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.962,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_13",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1212.5,
+        1812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.473,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_14",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        2412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.932,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_15",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1862.5,
+        1912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.859,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_16",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        1062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.878,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_17",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        1312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.365,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_18",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        1562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.12,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_19",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        1562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.479,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_20",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1812.5,
+        2212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.019,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_21",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1812.5,
+        1312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.364,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_22",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        862.5,
+        2212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.333,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_23",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.022,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_24",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1412.5,
+        2512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.175,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_25",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        962.5,
+        1762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.864,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_26",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        2012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.961,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_27",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1262.5,
+        1312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.474,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_28",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2062.5,
+        1812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.851,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_29",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1062.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.804,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_30",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        562.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.33,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_31",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1062.5,
+        1962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.177,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_32",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1812.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.928,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_33",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1312.5,
+        2312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.511,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_34",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1612.5,
+        2062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.502,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_35",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        1162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.717,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_36",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.724,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_37",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        662.5,
+        2262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.179,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_38",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1462.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.186,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_39",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1112.5,
+        1662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.897,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_40",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1212.5,
+        1512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.253,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_41",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1862.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.742,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_42",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1412.5,
+        912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.715,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    },
+    {
+      "id": "valus_ridge_landmark_43",
+      "text": "World-anchored rockfall landmark; region-native source distributed across the complete Valus Ridge native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        1262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.964,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.01,
+          "decay_s": 0.9
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 5,
+          "gap_s": 0.19,
+          "gap_jitter_s": 0.12
+        }
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -12.12,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",
