@@ -500,7 +500,7 @@ try {
               if (!d.exterior_spawn || !d.interior_spawn) throw new Error(`${d.interior} has no two-sided production doorway`);
               const currentInterior=H.whereAmI().interior;
               if(currentInterior){const currentDoor=interiorActions[currentInterior];if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for ${d.interior}`);H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(180);const ew=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);if(!ew.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=currentDoor.exterior_spawn,ed=currentDoor.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);}
-              a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 0.35);
+              a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 1.5);
               a.entry_prompt = H.whereAmI().door_in_reach;
               if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
               H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
@@ -542,7 +542,7 @@ try {
               const at = markActions[r.source]; let markInterior=null;
               if (at.interior) {
                 markInterior=interiorActions[at.interior]; if(!markInterior || !markInterior.exterior_spawn) throw new Error(`${at.interior} has no production doorway`);
-                a.entry_walk=walkTo(markInterior.exterior_spawn[0],markInterior.exterior_spawn[2],.35);
+                a.entry_walk=walkTo(markInterior.exterior_spawn[0],markInterior.exterior_spawn[2],1.5);
                 a.entry_prompt=H.whereAmI().door_in_reach;
                 if(!a.entry_walk.ok||!a.entry_prompt||a.entry_prompt.interior!==at.interior)throw new Error(`production door not reachable for ${at.interior}`);
                 H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
@@ -621,7 +621,7 @@ try {
         const boot = { topics_before: H.getQuestState().topicsKnown.length };
         if (!resumeState && sabotage !== 'no-bootstrap') {
           const b = H.listEntities().find((x) => x.eid === BOOTSTRAP_NPC);
-          boot.world_action = b && b.pos ? walkTo(b.pos[0], b.pos[2], 3.0) : { ok:false, why:'bootstrap NPC absent' };
+          boot.world_action = b && b.pos ? walkTo(b.pos[0], b.pos[2], 4.0) : { ok:false, why:'bootstrap NPC absent' };
           if (boot.world_action.ok) { H.talkTo(BOOTSTRAP_NPC); H.conversationClose(); }
         }
         boot.topics_after = H.getQuestState().topicsKnown.length;
