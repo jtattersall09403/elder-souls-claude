@@ -1,0 +1,10 @@
+{
+  "schema": "voids@1",
+  "voids": [
+    {"id":"V-01","name":"The Drowned Reach","region":"The Deep Marshes","polygon":[[-940,-760],[-210,-760],[-210,90],[-940,90]],"area_km2":0.62,"reason":"dread","payoff_poi":"poi:the-drowned-xanmeer","routes":["road:deep-marsh-causeway"],"longest_empty_walk_s":420,"witness_props":5,"landmark_visible_fraction":0.94,"ambient_state":"deep-marshes","declared_wave":1},
+    {"id":"V-02","name":"The Ridge Walk","region":"Valus Ridge","polygon":[[1100,-750],[1700,-750],[1700,50],[1100,50]],"area_km2":0.48,"reason":"scale","payoff_poi":"poi:ceyatatar-zel-ayleid-vault","routes":["road:valus-ridge-walk"],"longest_empty_walk_s":360,"witness_props":4,"landmark_visible_fraction":0.93,"ambient_state":"valus-ridge","declared_wave":1},
+    {"id":"V-03","name":"The Salt Pan","region":"Stone Wastes","polygon":[[-1800,920],[-1150,920],[-1150,1520],[-1800,1520]],"area_km2":0.39,"reason":"hazard-field","payoff_poi":"poi:salt-egg-camp","routes":["track:stone-wastes-salt-road"],"longest_empty_walk_s":310,"witness_props":3,"landmark_visible_fraction":0.92,"ambient_state":"stone-wastes","declared_wave":1},
+    {"id":"V-04","name":"The Kiln Flats","region":"The Clay Moor","polygon":[[350,1250],[970,1250],[970,1750],[350,1750]],"area_km2":0.31,"reason":"crossing","payoff_poi":"poi:kiln-camp","routes":["road:clay-moor-kiln-leg"],"longest_empty_walk_s":270,"witness_props":2,"landmark_visible_fraction":0.91,"ambient_state":"clay-moor","declared_wave":1},
+    {"id":"V-05","name":"The Long Tide","region":"Eastern Rootlands","polygon":[[1200,520],[1880,520],[1880,1020],[1200,1020]],"area_km2":0.34,"reason":"threshold","payoff_poi":"poi:wayshrine-of-the-ninth-root","routes":["track:eastern-rootway"],"longest_empty_walk_s":290,"witness_props":3,"landmark_visible_fraction":0.95,"ambient_state":"eastern-rootlands","declared_wave":1}
+  ]
+}

@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 583,
+  "file_count": 585,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -1184,18 +1184,18 @@
       "sha256": "7048fc36fabc64a9"
     },
     {
-      "path": "combat/movesets/spell-loosen_the_joint.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-loosen_the_joint",
-      "bytes": 632,
-      "sha256": "cbd674bf4bed8c0f"
-    },
-    {
       "path": "combat/movesets/spell-loosen_the_joint_touch.json",
       "schema": "elder-souls/spell-moveset@1",
       "id": "spell-loosen_the_joint_touch",
       "bytes": 684,
       "sha256": "545df0a63fbb17e7"
+    },
+    {
+      "path": "combat/movesets/spell-loosen_the_joint.json",
+      "schema": "elder-souls/spell-moveset@1",
+      "id": "spell-loosen_the_joint",
+      "bytes": 632,
+      "sha256": "cbd674bf4bed8c0f"
     },
     {
       "path": "combat/movesets/spell-make_it_whole.json",
@@ -1877,6 +1877,13 @@
       "sha256": "5143598af217556e"
     },
     {
+      "path": "dialogue/greetings.json",
+      "schema": "elder-souls/greetings@2",
+      "id": "greetings",
+      "bytes": 186097,
+      "sha256": "0d80d54995d5c8c6"
+    },
+    {
       "path": "dialogue/greetings/00-priority-classes.json",
       "schema": "elder-souls/greetings@2",
       "id": null,
@@ -1889,13 +1896,6 @@
       "id": null,
       "bytes": 27799,
       "sha256": "302110d92b65a44e"
-    },
-    {
-      "path": "dialogue/greetings.json",
-      "schema": "elder-souls/greetings@2",
-      "id": "greetings",
-      "bytes": 186097,
-      "sha256": "0d80d54995d5c8c6"
     },
     {
       "path": "dialogue/persuasion-gmst.json",
@@ -1938,6 +1938,13 @@
       "id": null,
       "bytes": 117440,
       "sha256": "1db5ebcda47ef91d"
+    },
+    {
+      "path": "dialogue/topics/_manifest.json",
+      "schema": "elder-souls/dialogue-topic-manifest@1",
+      "id": "topic-merge-manifest",
+      "bytes": 7332,
+      "sha256": "b89462d0e4a2989a"
     },
     {
       "path": "dialogue/topics/00-roots.json",
@@ -2065,13 +2072,6 @@
       "id": null,
       "bytes": 21965,
       "sha256": "fbf446933bd47444"
-    },
-    {
-      "path": "dialogue/topics/_manifest.json",
-      "schema": "elder-souls/dialogue-topic-manifest@1",
-      "id": "topic-merge-manifest",
-      "bytes": 7332,
-      "sha256": "b89462d0e4a2989a"
     },
     {
       "path": "dialogue/topics/main-quest-argument.json",
@@ -2341,13 +2341,6 @@
       "declared_incomplete": true
     },
     {
-      "path": "progression/KNOWN-GAPS.json",
-      "schema": "elder-souls/known-gaps@1",
-      "id": "known-gaps",
-      "bytes": 4829,
-      "sha256": "a699c7fce36ac6ba"
-    },
-    {
       "path": "progression/attributes.json",
       "schema": "elder-souls/attributes@1",
       "id": "attributes",
@@ -2389,6 +2382,13 @@
       "id": "factions",
       "bytes": 3221,
       "sha256": "62dcc521574d996f"
+    },
+    {
+      "path": "progression/KNOWN-GAPS.json",
+      "schema": "elder-souls/known-gaps@1",
+      "id": "known-gaps",
+      "bytes": 4829,
+      "sha256": "a699c7fce36ac6ba"
     },
     {
       "path": "progression/levels.json",
@@ -3016,6 +3016,13 @@
       "id": null,
       "bytes": 4557,
       "sha256": "f31f2ab59a6df133"
+    },
+    {
+      "path": "world/assembled-lore.json",
+      "schema": "assembled@1",
+      "id": null,
+      "bytes": 6284,
+      "sha256": "115de5c77cb76689"
     },
     {
       "path": "world/borders.json",
@@ -4091,6 +4098,13 @@
       "id": null,
       "bytes": 5497,
       "sha256": "832fed82a63897f5"
+    },
+    {
+      "path": "world/voids.json",
+      "schema": "voids@1",
+      "id": null,
+      "bytes": 1871,
+      "sha256": "257c4d8310aacc2b"
     },
     {
       "path": "world/water.json",

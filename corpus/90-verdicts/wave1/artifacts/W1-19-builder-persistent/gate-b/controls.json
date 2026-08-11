@@ -1,0 +1,27 @@
+{
+  "schema": "elder-souls/w1-19-gate-b-controls@1",
+  "commit": "11ae120b81595c00dc7d3f56d520aab89efe8543",
+  "controls": [
+    {
+      "id": "empty-played-population-red",
+      "purpose": "Prove the Gate B observation consumer fails rather than treating missing failing/passing arms as skips.",
+      "fixture_command": "printf '{\"fixtures\":[],\"exclusive_choices\":[]}' > /tmp/w1-19-gate-b-bad.json",
+      "command": "node tools/quests/mainline-gate-b-fixtures.mjs --out /tmp/w1-19-gate-b-red --observations /tmp/w1-19-gate-b-bad.json",
+      "expected_exit": 1,
+      "observed_exit": 1,
+      "observed_failures": 181,
+      "support": {"gate_fixtures": 104, "exclusive_choice_pairs": 77},
+      "result": "EXPECTED_RED"
+    },
+    {
+      "id": "restored-manifest-clean",
+      "purpose": "Regenerate authoritative fixture population without the deliberately empty observations.",
+      "command": "node tools/quests/mainline-gate-b-fixtures.mjs --out corpus/90-verdicts/wave1/artifacts/W1-19-builder-persistent/gate-b",
+      "expected_exit": 0,
+      "observed_exit": 0,
+      "result": "PASS_MANIFEST_ONLY",
+      "note": "This proves discovery/restore only. It is not a played Gate B completion claim."
+    }
+  ],
+  "binaries": []
+}
