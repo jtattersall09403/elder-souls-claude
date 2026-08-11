@@ -13,6 +13,8 @@ const regions = JSON.parse(readFileSync(join(ROOT, 'game/data/world/regions.json
 const idir = join(ROOT, 'game/data/audio/ambience/interiors');
 const counted = readdirSync(idir).filter(f => f.endsWith('.json'))
   .map(f => JSON.parse(readFileSync(join(idir, f)))).map(b => b.id).sort();
+const exteriorBeds = Object.fromEntries(regions.map(r => [r.id,
+  JSON.parse(readFileSync(join(ROOT, 'game/data/audio/ambience', `${r.id}.json`)))]));
 const hash = s => createHash('sha256').update(s).digest('hex');
 const pcmHash = c => hash(Buffer.from(c.pcm16_interleaved_b64, 'base64'));
 const pcmStats = c => {
@@ -38,7 +40,7 @@ const report = {
     graph: 'pre-normalisation live ambience graph: L1-L4 plus every R7 emitter audible at the authoritative centroid',
     b1_b2_derivative: '-23 LUFS-I; prepare independently from these canonical recordings', alternate_arms: 'diagnostic only' },
   beds_digest: bedsDigest(), centroids: Object.fromEntries(regions.map(r => [r.id, r.centroid_m])),
-  canonical_captures: {}, counted_bed_determinism: {}, consumer: {}, independent: { B1: 'NOT_RUN', B2: 'NOT_RUN', B3: 'NOT_RUN', R6: 'NOT_RUN', M20: 'NOT_RUN' },
+  canonical_captures: {}, counted_bed_determinism: {}, emitter_pcm_coupling: {}, consumer: {}, independent: { B1: 'NOT_RUN', B2: 'NOT_RUN', B3: 'NOT_RUN', R6: 'NOT_RUN', M20: 'NOT_RUN' },
 };
 
 let handle; let failed = false;
@@ -53,6 +55,22 @@ try {
     const ha=pcmHash(a), hb=pcmHash(b), hd=pcmHash(different);
     report.canonical_captures[r.id] = { listener:opts.listener, graph_events:a.fired, sha256:ha, repeat_sha256:hb, seed_1338_sha256:hd, fixed_seed_identical:ha===hb, changed_seed_changes_pcm:ha!==hd, ...pcmStats(a) };
     if (ha !== hb || ha === hd) failed = true;
+  }
+  for (const r of regions.filter(x => ['blackwood', 'clay-moor', 'marauders-coast'].includes(x.id))) {
+    const e = exteriorBeds[r.id].emitters.filter(e => e.mode === 'strike')
+      .sort((a,b) => a.period_s*(a.phase??.15)-b.period_s*(b.phase??.15))[0];
+    const seconds=Math.max(2,Math.min(25,e.period_s*(e.phase??.15)+1.5));
+    const o={region:r.id,seconds,sampleRate:4000,tod:'day',weather:'clear',seed:1337,listener:[...e.pos_m,0]};
+    const full=await page.evaluate(x=>window.__HARNESS.ambienceCapture(x),o);
+    const deleted=await page.evaluate(x=>window.__HARNESS.ambienceCapture({...x,mute:['R7']}),o);
+    const noListener=await page.evaluate(x=>window.__HARNESS.ambienceCapture({...x,listener:null}),o);
+    const noListenerDeleted=await page.evaluate(x=>window.__HARNESS.ambienceCapture({...x,listener:null,mute:['R7']}),o);
+    const hf=pcmHash(full),hd=pcmHash(deleted),hn=pcmHash(noListener),hnd=pcmHash(noListenerDeleted);
+    const fired=(full.fired||[]).some(x=>x.layer==='emitter'&&x.id===e.id);
+    report.emitter_pcm_coupling[r.id]={emitter:e.id,listener:o.listener,seconds,full_sha256:hf,
+      delete_consumer_sha256:hd,no_listener_sha256:hn,no_listener_delete_sha256:hnd,
+      emitter_fired:fired,consumer_changes_pcm:hf!==hd,predicted_no_change:hn===hnd};
+    if(!fired||hf===hd||hn!==hnd)failed=true;
   }
   // Every bed counted toward the settlement/interior mass is rendered twice: exhaustive, not sampled.
   for (const id of counted) {

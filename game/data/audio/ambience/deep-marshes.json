@@ -244,7 +244,1064 @@
       "event_gain_db": 17.27
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "deep_marshes_landmark_01",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2412.5,
+        3462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.757,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_02",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4112.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.228,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_03",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.859,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_04",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3312.5,
+        3762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.434,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_05",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3462.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.145,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_06",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2612.5,
+        2912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.856,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_07",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2962.5,
+        3362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.519,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_08",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3712.5,
+        3462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.454,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_09",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3762.5,
+        2812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.965,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_10",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.413,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_11",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        3112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.502,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_12",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3412.5,
+        2762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.499,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_13",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2962.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.412,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_14",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3812.5,
+        3162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.337,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_15",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3262.5,
+        3412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.154,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_16",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        2712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.783,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_17",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        3362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.672,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_18",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3362.5,
+        2512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.157,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_19",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        3162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.174,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_20",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2612.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.43,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_21",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4112.5,
+        3362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.189,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_22",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        2862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.228,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_23",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3662.5,
+        3012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.859,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_24",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        3862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.258,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_25",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3562.5,
+        3312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.977,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_26",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3162.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.728,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_27",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3912.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.031,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_28",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2212.5,
+        3562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.166,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_29",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2462.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.357,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_30",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        3162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.503,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_31",
+      "text": "World-anchored marsh gas release landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2412.5,
+        3262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.056,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1
+        },
+        "env": {
+          "attack_s": 0.09,
+          "decay_s": 0.7
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "deep_marshes_landmark_32",
+      "text": "World-anchored mud settle landmark; region-native source distributed across the complete The Deep Marshes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2812.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.553,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 190,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.35,
+          "decay_s": 1.6
+        },
+        "gain_db": -12
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -3.68,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",

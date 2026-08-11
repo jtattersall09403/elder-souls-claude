@@ -230,7 +230,701 @@
     },
     "L4_note": "L4 is a DRONE grain: the dying Hist sustains rather than calls. Its interval band is still checked against §A L4 (45–180 s)."
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "stone_wastes_landmark_01",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1112.5,
+        4812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.358,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_02",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        812.5,
+        4162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.899,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_03",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        412.5,
+        4912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.396,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_04",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        812.5,
+        5262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.937,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_05",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1312.5,
+        4312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.306,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_06",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        662.5,
+        4562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.767,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_07",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1212.5,
+        5212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.6,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_08",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        762.5,
+        4912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.381,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_09",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        4412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.622,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_10",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        4612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.476,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_11",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        4962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.619,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_12",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        562.5,
+        5162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.702,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_13",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        962.5,
+        5062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.613,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_14",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        912.5,
+        4662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.872,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_15",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        462.5,
+        4662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.823,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_16",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1062.5,
+        4212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.202,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_17",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        762.5,
+        4362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.841,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_18",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        4562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.916,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_19",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        5012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.803,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_20",
+      "text": "World-anchored salt storm roar landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        5262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "weather",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.359,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 700,
+          "q": 0.5
+        },
+        "env": {
+          "attack_s": 1.8,
+          "decay_s": 5.5
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_wastes_landmark_21",
+      "text": "World-anchored cooling stone tick landmark; region-native source distributed across the complete Stone Wastes native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        612.5,
+        4762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.248,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2400,
+          "q": 8
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.045
+        },
+        "gain_db": -12
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": 2.92,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",

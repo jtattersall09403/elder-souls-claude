@@ -242,7 +242,1493 @@
       "event_gain_db": 19.07
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "stone_forest_landmark_01",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        2912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.064,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_02",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2962.5,
+        862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.801,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_03",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3462.5,
+        2312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.994,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_04",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.187,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_05",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2612.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.964,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_06",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        1662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.397,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_07",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        1162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.206,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_08",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2562.5,
+        2962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.511,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_09",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        2262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.448,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_10",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2562.5,
+        1862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.738,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_11",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.953,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_12",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.936,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_13",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3362.5,
+        1912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.687,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_14",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        1262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.654,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_15",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2312.5,
+        2612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.317,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_16",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2462.5,
+        1512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.836,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_17",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3312.5,
+        1512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.107,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_18",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2712.5,
+        2662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.506,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_19",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        1412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.673,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_20",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.161,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_21",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        2012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.314,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_22",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        3062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.495,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_23",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2812.5,
+        1462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.912,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_24",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2712.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.701,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_25",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        2312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.486,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_26",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.163,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_27",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2762.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.708,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_28",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        2362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.881,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_29",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        1912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.17,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_30",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3262.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.232,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_31",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2462.5,
+        2112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.343,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_32",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        1912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.378,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_33",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2212.5,
+        2812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.913,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_34",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.02,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_35",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2812.5,
+        1012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.203,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_36",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2462.5,
+        2762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.222,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_37",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        1712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.285,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_38",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        1462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.976,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_39",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2512.5,
+        2562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.223,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_40",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3012.5,
+        1062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.191,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_41",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        2462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.72,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_42",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        1362.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.457,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_43",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2362.5,
+        2912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.946,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_44",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        1912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.843,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "stone_forest_landmark_45",
+      "text": "World-anchored stone tick landmark; region-native source distributed across the complete The Stone Forest native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        1562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "earth",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.916,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2700,
+          "q": 9
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.05
+        },
+        "gain_db": -12
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -11.54,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",

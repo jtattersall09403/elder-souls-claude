@@ -277,7 +277,292 @@
       "event_gain_db": 7.43
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "hive_landmark_01",
+      "text": "World-anchored cell tick landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.059,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3400,
+          "q": 7
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.03
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 3,
+          "gap_s": 0.11,
+          "gap_jitter_s": 0.03
+        }
+      }
+    },
+    {
+      "id": "hive_landmark_02",
+      "text": "World-anchored chitin scrape landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1012.5,
+        3862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "fauna",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.142,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2200,
+          "q": 2.2
+        },
+        "env": {
+          "attack_s": 0.04,
+          "decay_s": 0.28
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "hive_landmark_03",
+      "text": "World-anchored cell tick landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        3512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.053,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3400,
+          "q": 7
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.03
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 3,
+          "gap_s": 0.11,
+          "gap_jitter_s": 0.03
+        }
+      }
+    },
+    {
+      "id": "hive_landmark_04",
+      "text": "World-anchored chitin scrape landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1312.5,
+        3562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "fauna",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.776,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2200,
+          "q": 2.2
+        },
+        "env": {
+          "attack_s": 0.04,
+          "decay_s": 0.28
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "hive_landmark_05",
+      "text": "World-anchored cell tick landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        3912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.519,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3400,
+          "q": 7
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.03
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 3,
+          "gap_s": 0.11,
+          "gap_jitter_s": 0.03
+        }
+      }
+    },
+    {
+      "id": "hive_landmark_06",
+      "text": "World-anchored chitin scrape landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        3762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "fauna",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.842,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2200,
+          "q": 2.2
+        },
+        "env": {
+          "attack_s": 0.04,
+          "decay_s": 0.28
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "hive_landmark_07",
+      "text": "World-anchored cell tick landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1112.5,
+        3662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "structure",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.273,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3400,
+          "q": 7
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.03
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 3,
+          "gap_s": 0.11,
+          "gap_jitter_s": 0.03
+        }
+      }
+    },
+    {
+      "id": "hive_landmark_08",
+      "text": "World-anchored chitin scrape landmark; region-native source distributed across the complete The Hive native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1162.5,
+        4012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "fauna",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.876,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2200,
+          "q": 2.2
+        },
+        "env": {
+          "attack_s": 0.04,
+          "decay_s": 0.28
+        },
+        "gain_db": -12
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": -5.36,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",

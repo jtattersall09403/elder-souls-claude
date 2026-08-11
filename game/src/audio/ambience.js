@@ -235,8 +235,10 @@ export class AmbienceDriver {
     this.emitterState = [];
     this.emitterClocks = [];
     this.emitterLogged = [];
+    this.emitterActiveUntil = [];
     this.emitterStrikes = 0;        // emitter grains actually scheduled/logged as sounded
     this.emitterSilentStrikes = 0;  // struck while the player was out of `audible_m`
+    this.emitterBudgetSuppressed = 0;
   }
 
   bedFor(id) { return this.beds[id] || null; }
@@ -257,6 +259,7 @@ export class AmbienceDriver {
     this.emitterClocks = (bed.emitters || EMPTY).map(
       (e) => (emitterMode(e) === 'strike' ? emitterClock(e, this.rng) : null));
     this.emitterLogged = (bed.emitters || EMPTY).map(() => null);
+    this.emitterActiveUntil = (bed.emitters || EMPTY).map(() => -Infinity);
   }
 
   /**
@@ -350,13 +353,12 @@ export class AmbienceDriver {
       if (!slot || slot.id !== e.id) slot = this.emitterState[i] = { id: e.id, pos_m: e.pos_m, audible_m: e.audible_m };
       slot.audible = pl.audible; slot.distance_m = pl.distance_m; slot.gain = pl.gain;
       slot.gain_db = pl.gain_db; slot.pan = pl.pan; slot.bearing_deg = pl.bearing_deg;
-      if (pl.audible) voices += 1;
-
       // CONTINUOUS emitters (the kiln): the live graph is built once on the region swap and the
       // rolloff node follows the player every frame. This is the consumption — move, and the
       // roar moves in the mix. Stand still and nothing is recomputed into the graph at all.
       const lv = this.live && this.live.emitters ? this.live.emitters[i] : null;
       if (lv) {
+        if (pl.audible) voices += 1;
         lv.gain.gain.value = pl.audible ? pl.gain : 0;
         if (lv.panner) lv.panner.pan.value = Math.max(-1, Math.min(1, pl.pan));
       }
@@ -369,8 +371,24 @@ export class AmbienceDriver {
           // there to hear it — but it is not scheduled and not logged as sounded. `audible_m`
           // is where the emitter stops, not where it fades ("audible from 600 m").
           if (!pl.audible) { this.emitterSilentStrikes++; continue; }
+          const alreadyActive = this.emitterActiveUntil.reduce(
+            (n, until, slot) => n + (slot !== i && until > this.t ? 1 : 0), 0);
+          // RI-AUD02 reserves eight ambience voices. L1/L2 and any L3/L4 events due on this
+          // frame have already been charged above, so admit only the nearest authored schedule
+          // slots that remain. A collision is postponed to the emitter's next deterministic
+          // period rather than overflowing the bus or silently wrapping the mixer's lanes.
+          if (voices + alreadyActive >= 8) { this.emitterBudgetSuppressed++; continue; }
           this.events++;
           this.emitterStrikes++;
+          // A struck landmark is a transient voice, not a continuous reservation.  Dense R7
+          // coverage would otherwise charge every nearby bell/drip/creak on every silent frame.
+          // Keep it active for the declared envelope (including repeats), matching the graph
+          // that buildGrain() actually schedules.
+          const env = e.synth && e.synth.env || EMPTY;
+          const repeats = e.synth && e.synth.repeats || EMPTY;
+          const duration = (env.attack_s || 0) + (env.decay_s || 0.1)
+            + Math.max(0, (repeats.n || 1) - 1) * (repeats.gap_s || 0);
+          this.emitterActiveUntil[i] = Math.max(this.emitterActiveUntil[i] || -Infinity, d.at + duration);
           this._emitPlacement(s.frame, e, pl, true);
           if (this.ctx && this.live) {
             buildGrain(this.ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) },
@@ -379,6 +397,7 @@ export class AmbienceDriver {
           }
         }
       }
+      if (clock && pl.audible && (this.emitterActiveUntil[i] || -Infinity) > this.t) voices += 1;
       // A placement row whenever the emitter has MOVED in the mix. B6 walks a 200 m transect and
       // asserts pan and gain vary monotonically with bearing and distance; if rows appeared only
       // on strikes, a 200 m walk past a 90-second drum would produce one row and B6 would have
@@ -444,6 +463,7 @@ export class AmbienceDriver {
       // was true while the second was false for every render this project had ever taken.
       emitter_strikes: this.emitterStrikes,
       emitter_strikes_out_of_range: this.emitterSilentStrikes,
+      emitter_strikes_budget_suppressed: this.emitterBudgetSuppressed,
       events: this.events,
       // RI-WLD08's bar is ">= 4 ambient events per 10 minutes anywhere in the world", and it is
       // one of the two items that judge `audio.ambience.region`. The L3 and L4 clocks are an

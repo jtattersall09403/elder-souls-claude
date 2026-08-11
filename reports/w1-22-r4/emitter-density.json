@@ -1,0 +1,131 @@
+{
+  "schema": "elder-souls/w1-22-emitter-density@1",
+  "pass": true,
+  "floor_per_km2": 25,
+  "area_km2": 14.52,
+  "emitters": 368,
+  "required": 363,
+  "density_per_km2": 25.344,
+  "population": [
+    {
+      "id": "blackwood",
+      "area_km2": 2.07,
+      "emitters": 52,
+      "required": 52,
+      "density_per_km2": 25.121,
+      "pass": true
+    },
+    {
+      "id": "clay-moor",
+      "area_km2": 0.81,
+      "emitters": 21,
+      "required": 21,
+      "density_per_km2": 25.926,
+      "pass": true
+    },
+    {
+      "id": "crimson-coast",
+      "area_km2": 0.63,
+      "emitters": 16,
+      "required": 16,
+      "density_per_km2": 25.397,
+      "pass": true
+    },
+    {
+      "id": "deep-marshes",
+      "area_km2": 1.26,
+      "emitters": 32,
+      "required": 32,
+      "density_per_km2": 25.397,
+      "pass": true
+    },
+    {
+      "id": "eastern-rootlands",
+      "area_km2": 1.44,
+      "emitters": 36,
+      "required": 36,
+      "density_per_km2": 25,
+      "pass": true
+    },
+    {
+      "id": "hive",
+      "area_km2": 0.31,
+      "emitters": 8,
+      "required": 8,
+      "density_per_km2": 25.806,
+      "pass": true
+    },
+    {
+      "id": "marauders-coast",
+      "area_km2": 0.49,
+      "emitters": 13,
+      "required": 13,
+      "density_per_km2": 26.531,
+      "pass": true
+    },
+    {
+      "id": "salt-hills",
+      "area_km2": 0.94,
+      "emitters": 24,
+      "required": 24,
+      "density_per_km2": 25.532,
+      "pass": true
+    },
+    {
+      "id": "stone-forest",
+      "area_km2": 1.8,
+      "emitters": 45,
+      "required": 45,
+      "density_per_km2": 25,
+      "pass": true
+    },
+    {
+      "id": "stone-wastes",
+      "area_km2": 0.81,
+      "emitters": 21,
+      "required": 21,
+      "density_per_km2": 25.926,
+      "pass": true
+    },
+    {
+      "id": "thornmarsh",
+      "area_km2": 1.08,
+      "emitters": 27,
+      "required": 27,
+      "density_per_km2": 25,
+      "pass": true
+    },
+    {
+      "id": "valus-ridge",
+      "area_km2": 1.71,
+      "emitters": 43,
+      "required": 43,
+      "density_per_km2": 25.146,
+      "pass": true
+    },
+    {
+      "id": "western-rootlands",
+      "area_km2": 1.17,
+      "emitters": 30,
+      "required": 30,
+      "density_per_km2": 25.641,
+      "pass": true
+    }
+  ],
+  "integrity": {
+    "unique_ids": 368,
+    "cluster_cell_m": 100,
+    "max_per_cluster_cell": 4,
+    "duplicate_radius_m": 4,
+    "on_land": 367,
+    "off_land": 1,
+    "max_potential_spatial_overlap": 7,
+    "max_overlap_probe_m": [
+      2162.5,
+      3562.5
+    ],
+    "content_sha256": "b97bbf93db5d3d6e387b95e0a8d8d1a12dcd906b75d03dc768c6820e18b0e71b"
+  },
+  "failures": [],
+  "warnings": []
+}
