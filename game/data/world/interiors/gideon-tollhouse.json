@@ -1,269 +1,402 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "gideon-tollhouse",
-  "name": "The Toll House",
-  "settlement": "gideon",
-  "cell_kind": "named",
-  "interior_kind": "guild",
-  "service": null,
-  "faction": "the-imperial-assize",
-  "exterior_door": [
-    446,
-    2.72,
-    2925.5
+ "schema": "elder-souls/interior@1",
+ "id": "gideon-tollhouse",
+ "name": "The Toll House",
+ "settlement": "gideon",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "the-imperial-assize",
+ "exterior_door": [
+  446,
+  2.72,
+  2925.5
+ ],
+ "continuity": {
+  "building": "gideon-tollhouse",
+  "building_offset_m": [
+   7,
+   0,
+   12
   ],
-  "continuity": {
-    "building": "gideon-tollhouse",
-    "building_offset_m": [
-      7,
-      0,
-      12
-    ],
-    "building_yaw_deg": 180,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      446,
-      2.72,
-      2927.3
-    ]
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "north",
+  "interior_spawn": [
+   0,
+   0,
+   6.47
+  ],
+  "exterior_spawn": [
+   445.871,
+   2.72,
+   2917.217
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   446,
+   2.72,
+   2927.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -4.215,
+   4.215
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.47,
+   7.47
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "gideon.fisher3.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "gideon.fisher3.r0.lamp0",
+   "pos": [
+    -0.4,
+    1.6,
+    -3.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "gideon.fisher3.r0.lamp1",
+   "pos": [
+    -2.3,
+    1.6,
+    -3.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "gideon.fisher3.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.fisher3.r0.lamp0",
-      "pos": [
-        -0.3999999999999999,
-        1.6,
-        -3.2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.fisher3.r0.lamp1",
-      "pos": [
-        -2.3,
-        1.6,
-        -3.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.fisher3.r0.lamp2",
-      "pos": [
-        3.4000000000000004,
-        1.6,
-        -3
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary7.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 1.4,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.legionary7.r1.lamp0",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        0.20000000000000018
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary7.r1.lamp1",
-      "pos": [
-        -2.1,
-        1.6,
-        0.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary7.r1.lamp2",
-      "pos": [
-        -3.4,
-        1.6,
-        0.40000000000000036
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.weaver12.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.weaver12.r1.lamp0",
-      "pos": [
-        -3.2,
-        1.6,
-        1.4000000000000004
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.weaver12.r1.lamp1",
-      "pos": [
-        1.9000000000000004,
-        1.6,
-        0.09999999999999964
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.weaver12.r1.lamp2",
-      "pos": [
-        0,
-        1.6,
-        1.2000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "desk_writing",
-    "record_press",
-    "map_table",
-    "seal_press",
-    "muster_board",
-    "chest_iron",
-    "chair_formal",
-    "shelf_deed",
-    "lamp_desk",
-    "banner_wall",
-    "key_rail",
-    "inkstand",
-    "strongbox",
-    "bench_wait",
-    "gid_timber_frame",
-    "gid_tile_roof",
-    "gid_market_cross",
-    "gid_square_arcade"
-  ],
-  "property_zones": [
-    "gideon.fisher3.r0",
-    "gideon.legionary7.r1",
-    "gideon.weaver12.r1"
-  ],
-  "containers": [
-    "gideon.fisher3.r0.0",
-    "gideon.fisher3.r0.2",
-    "gideon.fisher3.r0.4",
-    "gideon.fisher3.r0.6",
-    "gideon.weaver12.r1.0",
-    "gideon.weaver12.r1.4",
-    "gideon.weaver12.r1.8"
-  ],
-  "unique_item": {
-    "id": "gideon-tollhouse-unique",
-    "name": "a toll book with two hands in it",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:gideon-fisher-3"
+  {
+   "id": "gideon.fisher3.r0.lamp2",
+   "pos": [
+    3.4,
+    1.6,
+    -3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "gideon-tollhouse-readable",
-      "title": "Road Tolls"
-    },
-    {
-      "id": "a-receipt-and-what-is-on-the-back",
-      "title": "A receipt, and what is on the back",
-      "book": "a-receipt-and-what-is-on-the-back"
-    },
-    {
-      "id": "the-challenge-and-what-was-written-on-the-back",
-      "title": "A card delivered at Gideon",
-      "book": "the-challenge-and-what-was-written-on-the-back"
-    },
-    {
-      "id": "the-soulrest-sheet",
-      "title": "The Soulrest sheet, for the week of the ninth",
-      "book": "the-soulrest-sheet"
-    },
-    {
-      "id": "the-toll-at-gideon-gate-in-verse",
-      "title": "The toll, set out in verse for carters",
-      "book": "the-toll-at-gideon-gate-in-verse"
-    }
+  {
+   "id": "gideon.legionary7.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.legionary7.r1.lamp0",
+   "pos": [
+    -0.2,
+    1.6,
+    0.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.legionary7.r1.lamp1",
+   "pos": [
+    -2.1,
+    1.6,
+    0.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.legionary7.r1.lamp2",
+   "pos": [
+    -3.4,
+    1.6,
+    0.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.weaver12.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.weaver12.r1.lamp0",
+   "pos": [
+    -3.2,
+    1.6,
+    1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.weaver12.r1.lamp1",
+   "pos": [
+    1.9,
+    1.6,
+    0.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.weaver12.r1.lamp2",
+   "pos": [
+    0,
+    1.6,
+    1.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "gid_timber_frame",
+  "gid_tile_roof",
+  "gid_market_cross",
+  "gid_square_arcade"
+ ],
+ "property_zones": [
+  "gideon.fisher3.r0",
+  "gideon.legionary7.r1",
+  "gideon.weaver12.r1"
+ ],
+ "containers": [
+  "gideon.fisher3.r0.0",
+  "gideon.fisher3.r0.2",
+  "gideon.fisher3.r0.4",
+  "gideon.fisher3.r0.6",
+  "gideon.weaver12.r1.0",
+  "gideon.weaver12.r1.4",
+  "gideon.weaver12.r1.8"
+ ],
+ "unique_item": {
+  "id": "gideon-tollhouse-unique",
+  "name": "a toll book with two hands in it",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:gideon-fisher-3"
+ },
+ "readable": [
+  {
+   "id": "gideon-tollhouse-readable",
+   "title": "Road Tolls"
+  },
+  {
+   "id": "a-receipt-and-what-is-on-the-back",
+   "title": "A receipt, and what is on the back",
+   "book": "a-receipt-and-what-is-on-the-back"
+  },
+  {
+   "id": "the-challenge-and-what-was-written-on-the-back",
+   "title": "A card delivered at Gideon",
+   "book": "the-challenge-and-what-was-written-on-the-back"
+  },
+  {
+   "id": "the-soulrest-sheet",
+   "title": "The Soulrest sheet, for the week of the ninth",
+   "book": "the-soulrest-sheet"
+  },
+  {
+   "id": "the-toll-at-gideon-gate-in-verse",
+   "title": "The toll, set out in verse for carters",
+   "book": "the-toll-at-gideon-gate-in-verse"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.3999999999999999,
+    1.6,
+    -3.2
+   ]
+  },
+  {
+   "pos": [
+    -2.3,
+    1.6,
+    -3.1
+   ]
+  },
+  {
+   "pos": [
+    3.4000000000000004,
+    1.6,
+    -3
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    0.20000000000000018
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    0.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -3.4,
+    1.6,
+    0.40000000000000036
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -3.2,
+    1.6,
+    1.4000000000000004
+   ]
+  },
+  {
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    0.09999999999999964
+   ]
+  },
+  {
+   "pos": [
+    0,
+    1.6,
+    1.2000000000000002
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "gideon-tollhouse",
+ "door_world_pos": [
+  446,
+  2.72,
+  2917.7
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 125.94
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

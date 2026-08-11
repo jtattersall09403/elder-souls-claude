@@ -1,0 +1,626 @@
+{
+  "schema": "elder-souls/ui-forbidden@1",
+  "item": "RI-UIX01",
+  "at": "2026-08-11T08:10:49.312Z",
+  "state": "arena_champion",
+  "screen": [
+    1280,
+    720
+  ],
+  "declared": [],
+  "scanned": [
+    {
+      "where": "combat",
+      "mode": "world",
+      "elements": 6,
+      "visible_elements": 6,
+      "kinds": [
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "inventory",
+      "mode": "inventory",
+      "elements": 27,
+      "visible_elements": 27,
+      "kinds": [
+        "category",
+        "detail_panel",
+        "divider",
+        "encumbrance",
+        "equip_load",
+        "focus_bar",
+        "gold",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "scroll_extent",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "journal",
+      "mode": "journal",
+      "elements": 12,
+      "visible_elements": 12,
+      "kinds": [
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "page_count",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "sheet",
+      "mode": "sheet",
+      "elements": 48,
+      "visible_elements": 48,
+      "kinds": [
+        "attribute_row",
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "sheet_row",
+        "skill_row",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "spells",
+      "mode": "spells",
+      "elements": 13,
+      "visible_elements": 13,
+      "kinds": [
+        "detail_panel",
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "spell_row",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    },
+    {
+      "where": "map",
+      "mode": "map",
+      "elements": 13,
+      "visible_elements": 13,
+      "kinds": [
+        "divider",
+        "equip_load",
+        "focus_bar",
+        "heal_charges",
+        "health_bar",
+        "hint",
+        "map_player",
+        "map_terrain",
+        "panel",
+        "panel_header",
+        "quick_slots",
+        "stamina_bar"
+      ],
+      "rows_tested": 14
+    }
+  ],
+  "observed": [
+    {
+      "eid": "E1",
+      "screen": [
+        469,
+        358
+      ],
+      "region": [
+        268.5660759851294,
+        158.44082052632064,
+        400,
+        400
+      ],
+      "region_px": 160000,
+      "candidates": 92,
+      "digit_glyphs": 8,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          603,
+          293,
+          9,
+          10
+        ],
+        [
+          612,
+          318,
+          21,
+          19
+        ],
+        [
+          578,
+          321,
+          36,
+          32
+        ],
+        [
+          571,
+          370,
+          7,
+          9
+        ],
+        [
+          591,
+          401,
+          5,
+          14
+        ],
+        [
+          651,
+          424,
+          18,
+          26
+        ]
+      ]
+    },
+    {
+      "eid": "probe1",
+      "screen": [
+        598,
+        353
+      ],
+      "region": [
+        398.2516637522201,
+        153.49478048872254,
+        400,
+        400
+      ],
+      "region_px": 160000,
+      "candidates": 156,
+      "digit_glyphs": 17,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          679,
+          279,
+          9,
+          14
+        ],
+        [
+          710,
+          289,
+          15,
+          18
+        ],
+        [
+          729,
+          289,
+          9,
+          11
+        ],
+        [
+          603,
+          293,
+          9,
+          10
+        ],
+        [
+          612,
+          318,
+          21,
+          19
+        ],
+        [
+          578,
+          321,
+          36,
+          32
+        ]
+      ]
+    },
+    {
+      "eid": "probe2",
+      "screen": [
+        505,
+        351
+      ],
+      "region": [
+        304.8184868500772,
+        150.50796184187197,
+        400,
+        400
+      ],
+      "region_px": 160000,
+      "candidates": 110,
+      "digit_glyphs": 12,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          679,
+          279,
+          9,
+          14
+        ],
+        [
+          603,
+          293,
+          9,
+          10
+        ],
+        [
+          612,
+          318,
+          21,
+          19
+        ],
+        [
+          578,
+          321,
+          36,
+          32
+        ],
+        [
+          688,
+          331,
+          6,
+          9
+        ],
+        [
+          571,
+          370,
+          7,
+          9
+        ]
+      ]
+    },
+    {
+      "eid": "probe3",
+      "screen": [
+        211,
+        390
+      ],
+      "region": [
+        11.079852888908079,
+        190.01313818614585,
+        400,
+        400
+      ],
+      "region_px": 160000,
+      "candidates": 2,
+      "digit_glyphs": 0,
+      "nameplate_bars": 0,
+      "digit_bboxes": []
+    },
+    {
+      "eid": "probe4",
+      "screen": [
+        398,
+        500
+      ],
+      "region": [
+        197.8812010862393,
+        299.54830164225973,
+        400,
+        400
+      ],
+      "region_px": 160000.00000000003,
+      "candidates": 29,
+      "digit_glyphs": 3,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          578,
+          326,
+          20,
+          27
+        ],
+        [
+          571,
+          370,
+          7,
+          9
+        ],
+        [
+          591,
+          401,
+          5,
+          14
+        ]
+      ]
+    },
+    {
+      "eid": "probe5",
+      "screen": [
+        592,
+        489
+      ],
+      "region": [
+        392.2505512846491,
+        289.2198025034883,
+        400,
+        400
+      ],
+      "region_px": 160000.00000000003,
+      "candidates": 157,
+      "digit_glyphs": 18,
+      "nameplate_bars": 0,
+      "digit_bboxes": [
+        [
+          710,
+          289,
+          15,
+          18
+        ],
+        [
+          729,
+          289,
+          9,
+          11
+        ],
+        [
+          603,
+          293,
+          9,
+          10
+        ],
+        [
+          612,
+          318,
+          21,
+          19
+        ],
+        [
+          578,
+          321,
+          36,
+          32
+        ],
+        [
+          745,
+          330,
+          12,
+          14
+        ]
+      ]
+    }
+  ],
+  "self_test": null,
+  "buffer": [
+    1280,
+    720
+  ],
+  "frame_size": [
+    1280,
+    720
+  ],
+  "buffer_is_1to1": true,
+  "hit_frame": null,
+  "enemies_projected": 6,
+  "enemies_live": 6,
+  "declared_hits": 0,
+  "observed_digit_hits": 58,
+  "observed_bar_hits": 0,
+  "declared_samples": {
+    "surfaces": [
+      "combat",
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "map"
+    ],
+    "elements_scanned": 119,
+    "per_surface": [
+      {
+        "where": "combat",
+        "mode": "world",
+        "elements": 6,
+        "visible_elements": 6,
+        "kinds": [
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "inventory",
+        "mode": "inventory",
+        "elements": 27,
+        "visible_elements": 27,
+        "kinds": [
+          "category",
+          "detail_panel",
+          "divider",
+          "encumbrance",
+          "equip_load",
+          "focus_bar",
+          "gold",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "scroll_extent",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "journal",
+        "mode": "journal",
+        "elements": 12,
+        "visible_elements": 12,
+        "kinds": [
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "page_count",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "sheet",
+        "mode": "sheet",
+        "elements": 48,
+        "visible_elements": 48,
+        "kinds": [
+          "attribute_row",
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "sheet_row",
+          "skill_row",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "spells",
+        "mode": "spells",
+        "elements": 13,
+        "visible_elements": 13,
+        "kinds": [
+          "detail_panel",
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "spell_row",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      },
+      {
+        "where": "map",
+        "mode": "map",
+        "elements": 13,
+        "visible_elements": 13,
+        "kinds": [
+          "divider",
+          "equip_load",
+          "focus_bar",
+          "heal_charges",
+          "health_bar",
+          "hint",
+          "map_player",
+          "map_terrain",
+          "panel",
+          "panel_header",
+          "quick_slots",
+          "stamina_bar"
+        ],
+        "rows_tested": 14
+      }
+    ],
+    "surfaces_not_reached": []
+  },
+  "checks": [
+    {
+      "id": "U4",
+      "what": "no forbidden element (X1-X12, N4-N5) declared on any surface",
+      "status": "PASS",
+      "pass": true,
+      "samples": 119,
+      "sample_of": "declared elements examined",
+      "detail": "0 hits over 119 elements on [combat,inventory,journal,sheet,spells,map]",
+      "counts": {
+        "surfaces": 6,
+        "surfaces_expected": 6,
+        "per_surface": [
+          [
+            "combat",
+            6
+          ],
+          [
+            "inventory",
+            27
+          ],
+          [
+            "journal",
+            12
+          ],
+          [
+            "sheet",
+            48
+          ],
+          [
+            "spells",
+            13
+          ],
+          [
+            "map",
+            13
+          ]
+        ]
+      }
+    },
+    {
+      "id": "U5",
+      "what": "no floating damage number (X1) or enemy nameplate bar (X2) in the frame after a hit",
+      "status": "EMPTY",
+      "pass": false,
+      "samples": 0,
+      "sample_of": "enemy regions on the post-hit frame",
+      "detail": "NOT GRADED — 0 enemy regions on the post-hit frame sampled. 58 digit glyphs, 0 nameplate bars over 6 regions / 546 candidate blobs; hit_frame null, buffer 1280x720 vs viewport 1280x720 — NO HIT LANDED, so there is no post-hit frame to grade",
+      "counts": {
+        "candidates": 546,
+        "region_px": 960000,
+        "enemies_live": 6,
+        "hit_frame": null,
+        "buffer_is_1to1": true
+      }
+    }
+  ],
+  "U4": "PASS",
+  "U5": "EMPTY",
+  "sample_table": "| Tool | Check | Status | Samples | One sample is | Detail |\n|---|---|---|---|---|---|\n| `ui-forbidden.mjs` | U4 | **PASS** | 119 | declared elements examined | 0 hits over 119 elements on [combat,inventory,journal,sheet,spells,map] |\n| `ui-forbidden.mjs` | U5 | **EMPTY** | 0 | enemy regions on the post-hit frame | NOT GRADED — 0 enemy regions on the post-hit frame sampled. 58 digit glyphs, 0 nameplate bars over 6 regions / 546 candidate blobs; hit_frame null, buffer 1280x |"
+}

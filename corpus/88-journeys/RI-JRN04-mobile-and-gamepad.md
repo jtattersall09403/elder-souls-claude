@@ -428,12 +428,13 @@ Native scale: **0–100**, weighted, plus hard fails that cap the item at **2**.
 
 ## Provenance note
 
+- **Owner hardware target, user-supplied, recorded 2026-08-11** — the primary physical acceptance unit is the **GameSir X2s Type-C Mobile Gaming Controller**, wired USB-C, Amazon UK ASIN **`B0CRTMNQBL`** (`https://www.amazon.co.uk/dp/B0CRTMNQBL`). Builders and critics must name this exact variant; “GameSir X2s” alone is ambiguous with the Bluetooth model. Simulated `x2s-standard` and `x2s-hid-dualsense` descriptors are preflight evidence. Final hardware acceptance requires the browser-reported `id`, `mapping`, button/axis indices, resting noise and trigger ranges observed on this owner unit; both Xbox/Switch face-button layouts and analog/hair-trigger modes must be exercised where exposed to the browser. Then complete a pad-only calibration/rebinding round trip, cold-reload persistence check and opening/quest journey.
 - **`community-data`, confidence medium** — §A, every fact about the GameSir X2s Type-C. Sourced
   from vendor and review pages via WebSearch result summaries; **direct fetches of
   `gamesir.com`, `manuals.plus` and `w3c.github.io` returned HTTP 403 and were not read**.
   Cited: SlashGear "GameSir X2s Type-C Review" (`slashgear.com/1546147/`), the GameSir product
   page (`gamesir.com/collections/mobile-game-gamepad/products/gamesir-x2s`), the GameSir X2s
-  Type-C FAQ, the Amazon listing (`B0CRVCFJKD`), Laptop Mag and TechRadar reviews, and the
+  Type-C FAQ, the owner-supplied Amazon UK listing (`B0CRTMNQBL`), Laptop Mag and TechRadar reviews, and the
   Manuals+ X2s manual. **No threshold in this item depends on any §A row being exactly right** —
   §C/§D/§E are written against the W3C Standard Gamepad and against a declared quirk table, so a
   wrong §A fact costs us a row in a table, not a measurement.

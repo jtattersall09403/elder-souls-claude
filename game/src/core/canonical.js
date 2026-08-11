@@ -85,6 +85,10 @@ export function stateDiff(a, b, volatile = []) {
       }
       return;
     }
+    if (Array.isArray(x) && Array.isArray(y) && x.length === y.length) {
+      for (let i = 0; i < x.length; i++) rec(x[i], y[i], `${p}[${i}]`);
+      return;
+    }
     if (seen.has(p)) return;
     let ca, cb;
     try { ca = canonicalise(x === undefined ? null : x); } catch (e) { ca = 'ERR:' + e.message; }

@@ -1,0 +1,38 @@
+{
+  "task_id": "W1-19-builder-codex-persistent-20260811",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "IN_PROGRESS",
+  "base_commit": "11ae120b81595c00dc7d3f56d520aab89efe8543",
+  "branch": "codex/wave1-build-experiment",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "orchestration/status/W1-19-builder-codex-persistent-20260811.json",
+    "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/mainline-gate-b-fixtures.mjs",
+    "game/data/world/assembled-lore.json",
+    "game/data/world/voids.json",
+    "game/data/index.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder-persistent/"
+  ],
+  "files_claimed": [],
+  "next_step": "Continue the production-resumable intended chain at Q-MAIN-08 from the clean Q-MAIN-07 checkpoint, then repair through both endings before populations.",
+  "gate_accounting": {
+    "A": "INCOMPLETE: production input completes Q-MAIN-01..07 with clean road, door, book, exit, and conversation traces; Q-MAIN-08 onward remains.",
+    "B": "INCOMPLETE: complete fail-closed manifest and red control; played observations wait on Gate A",
+    "C_builder": "NOT_RUN: legacy tools prohibited; waits on production trace",
+    "C_independent": "NOT_RUN_INDEPENDENT_ONLY: fresh blind judge required by rules 22 and 25",
+    "D": "COMPLETE: WLD09 and LOR01 controls/evidence; LOR02/LOR05 text censuses retained"
+  },
+  "notes": [
+    "Successor run begins at the exact required commit and continues PR #112's production conversation seam.",
+    "Independent blind and critic judgement remains role-separated; all builder-owned rows will be completed before delivery.",
+    "Production runner now contains no forbidden direct quest advancement verbs and accepts/resolves via talkTo + conversationSay.",
+    "Gate B compiler enumerates 104 matched gate fixtures, 77 exclusive sibling pairs, and three Q-MAIN-23 crossing pairs; empty observations red with 181 failures.",
+    "Gate D authored the missing assembled-lore and void registers; full opacity audit passes and both leak controls red.",
+    "This checkpoint does not claim W1-19 completion.",
+    "Focused production runner now starts at a real Soulrest pose, reaches real talk posts, and completes Q-MAIN-01..06; q1-q6-production.json stops honestly on the bounded Blackrose approach.",
+    "Q-MAIN-07 now completes with clean production movement: the paused book surface consumes current-frame input, its simulation/UI menu state is synchronized, and the yard-book route exits through the player-facing door.",
+    "Production Q-MAIN-07 now completes with zero walk discontinuities after weather-gating the salt-storm and repairing road suffix, interior exit, schedule, and doorway footprint consumers."
+  ]
+}

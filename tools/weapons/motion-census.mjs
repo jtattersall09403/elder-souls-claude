@@ -91,11 +91,13 @@ function analyse(t) {
         let d = b - prev;
         while (d > Math.PI) d -= 2 * Math.PI;
         while (d < -Math.PI) d += 2 * Math.PI;
-        tr += Math.abs(d); n++;
+        // `arc_sweep_deg` is directed start-to-end angular sweep. Do not turn small corrective
+        // elbow/shoulder wobble into extra authored arc by summing absolute path length.
+        tr += d; n++;
       }
       prev = b;
     }
-    return { deg: +((tr * 180) / Math.PI).toFixed(1), n, near_frac: tot ? +(near / tot).toFixed(3) : 0 };
+    return { deg: +(Math.abs((tr * 180) / Math.PI)).toFixed(1), n, near_frac: tot ? +(near / tot).toFixed(3) : 0 };
   };
   const pathLen = (sel) => {
     let L = 0, prev = null;

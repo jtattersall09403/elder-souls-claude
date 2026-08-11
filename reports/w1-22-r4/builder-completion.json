@@ -1,0 +1,567 @@
+{
+  "task": "W1-22",
+  "method": "S41 completion-builder capture preparation",
+  "taken_at": "2026-08-11T07:40:57.434Z",
+  "git": {
+    "commit": "11ae120b81595c00dc7d3f56d520aab89efe8543",
+    "dirty": true
+  },
+  "generation_command": "node tools/audio/w1-22-r4-s41.mjs",
+  "binary_policy": "PCM was generated transiently in Chromium and discarded; no WAV or capture binary is committed.",
+  "canonical": {
+    "seed": 1337,
+    "weather": "clear",
+    "time": "13:00",
+    "settle": "240 frames at 60 Hz",
+    "capture_frames": [
+      240,
+      1440
+    ],
+    "seconds": 20,
+    "sample_rate_hz": 16000,
+    "graph": "pre-normalisation live ambience graph: L1-L4 plus every R7 emitter audible at the authoritative centroid",
+    "b1_b2_derivative": "-23 LUFS-I; prepare independently from these canonical recordings",
+    "alternate_arms": "diagnostic only"
+  },
+  "beds_digest": {
+    "sha256": "ea3c4f55eec0cf761cb6b30887e0164f83177f3045071289d2ad0c44976466eb",
+    "files": 28
+  },
+  "centroids": {
+    "blackwood": [
+      1118,
+      3487.5
+    ],
+    "clay-moor": [
+      3743,
+      2010.5
+    ],
+    "crimson-coast": [
+      4212,
+      2686
+    ],
+    "deep-marshes": [
+      3123.5,
+      3715
+    ],
+    "eastern-rootlands": [
+      3232,
+      4495.5
+    ],
+    "hive": [
+      1237,
+      3732.5
+    ],
+    "marauders-coast": [
+      400.5,
+      4485
+    ],
+    "salt-hills": [
+      1982.5,
+      705
+    ],
+    "stone-forest": [
+      2749,
+      2252
+    ],
+    "stone-wastes": [
+      813.5,
+      4894.5
+    ],
+    "thornmarsh": [
+      3522.5,
+      1090
+    ],
+    "valus-ridge": [
+      1209,
+      2178.5
+    ],
+    "western-rootlands": [
+      1727,
+      4716
+    ]
+  },
+  "canonical_captures": {
+    "blackwood": {
+      "listener": [
+        1118,
+        3487.5,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "distant_axe",
+          "at_s": 19.61,
+          "pan": 0.46
+        }
+      ],
+      "sha256": "cff03b2bc989ccfe37fe8600621fecb453c8ea336c6c8864b1d4c729115a72ca",
+      "repeat_sha256": "cff03b2bc989ccfe37fe8600621fecb453c8ea336c6c8864b1d4c729115a72ca",
+      "seed_1338_sha256": "f8960aa95b02948b9f5fc5412990c26a203fafa500e05a3da14d70bae360df79",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.421082,
+      "rms_dbfs": -21.007
+    },
+    "clay-moor": {
+      "listener": [
+        3743,
+        2010.5,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "emitter",
+          "id": "kiln",
+          "mode": "continuous",
+          "at_s": 0,
+          "pan": 0,
+          "gain": 1,
+          "distance_m": 1
+        }
+      ],
+      "sha256": "f42dca9c28212e9736332501d2e9e084037ec068f4355043269be3c71b74face",
+      "repeat_sha256": "f42dca9c28212e9736332501d2e9e084037ec068f4355043269be3c71b74face",
+      "seed_1338_sha256": "bc2054db1d9fb9370ddbd1c4749cd18341159072a808bf7da24faf004d94e962",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.849396,
+      "rms_dbfs": -14.812
+    },
+    "crimson-coast": {
+      "listener": [
+        4212,
+        2686,
+        0
+      ],
+      "graph_events": [],
+      "sha256": "9ab3b93f8f321f99b36f765c76f48105267bf20b353682707aa99586a4520cd8",
+      "repeat_sha256": "9ab3b93f8f321f99b36f765c76f48105267bf20b353682707aa99586a4520cd8",
+      "seed_1338_sha256": "1e9a60b912e9e951c95ec5f10db31de6bdd59964196fb18661a288da5232c187",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.228943,
+      "rms_dbfs": -21.792
+    },
+    "deep-marshes": {
+      "listener": [
+        3123.5,
+        3715,
+        0
+      ],
+      "graph_events": [],
+      "sha256": "8fb7657b2917ff17c875e57ad174fc6dd7458b2b91f586ccddf3127c44aed86f",
+      "repeat_sha256": "8fb7657b2917ff17c875e57ad174fc6dd7458b2b91f586ccddf3127c44aed86f",
+      "seed_1338_sha256": "9c4b1e7649b2cc28ffd9ffb2fd6341fd074e6985700ad62caef7042feacf20e5",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.244995,
+      "rms_dbfs": -21.975
+    },
+    "eastern-rootlands": {
+      "listener": [
+        3232,
+        4495.5,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "stilt_creak",
+          "at_s": 14.96,
+          "pan": -0.01
+        },
+        {
+          "layer": "emitter",
+          "id": "eastern_rootlands_landmark_14",
+          "at_s": 10.43,
+          "pan": -0.642,
+          "gain": 0.222,
+          "distance_m": 108
+        }
+      ],
+      "sha256": "964345d3669561777068c8e0a50db700701cedfb2dc37ed3e2f9f4c7de204028",
+      "repeat_sha256": "964345d3669561777068c8e0a50db700701cedfb2dc37ed3e2f9f4c7de204028",
+      "seed_1338_sha256": "4c023698c502a59e437fa1f1dad4e08e1f88f4eba686d91d269a3b249821f905",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.272156,
+      "rms_dbfs": -23.141
+    },
+    "hive": {
+      "listener": [
+        1237,
+        3732.5,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "cell_tick",
+          "at_s": 15.43,
+          "pan": 0.08
+        }
+      ],
+      "sha256": "24717722ef90914e0982093accb7999b9f8f45b9df14cf11bbeced76bb11e515",
+      "repeat_sha256": "24717722ef90914e0982093accb7999b9f8f45b9df14cf11bbeced76bb11e515",
+      "seed_1338_sha256": "b130a8712b6b09c16316b78da431e61b12f0341c6846fe7424dee1ff87e1a16b",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.556061,
+      "rms_dbfs": -24.652
+    },
+    "marauders-coast": {
+      "listener": [
+        400.5,
+        4485,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "rope_creak",
+          "at_s": 14.16,
+          "pan": -0.39
+        },
+        {
+          "layer": "emitter",
+          "id": "bell_buoy",
+          "at_s": 7.2,
+          "pan": -0.928,
+          "gain": 1,
+          "distance_m": 3
+        }
+      ],
+      "sha256": "29c028111d80193c5fc2aca5bfcd453ff4d79266d7bdec46274f2d69c561f1c5",
+      "repeat_sha256": "29c028111d80193c5fc2aca5bfcd453ff4d79266d7bdec46274f2d69c561f1c5",
+      "seed_1338_sha256": "9bcae9b214ac127cf13b0f65b57ab2a971ffcc8f6a5352f41786686602dc0ec2",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.820587,
+      "rms_dbfs": -20.454
+    },
+    "salt-hills": {
+      "listener": [
+        1982.5,
+        705,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "emitter",
+          "id": "legion_horn",
+          "at_s": 7.2,
+          "pan": -0.447,
+          "gain": 1,
+          "distance_m": 1
+        }
+      ],
+      "sha256": "fd3600b273ff31e57534deea8b373155c2917ed719aa7bff2437146fa9fee64b",
+      "repeat_sha256": "fd3600b273ff31e57534deea8b373155c2917ed719aa7bff2437146fa9fee64b",
+      "seed_1338_sha256": "5e8cb7a5eeacfd8028096edce33b58ad1688772951174a9debc39739a8e11f5a",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.713989,
+      "rms_dbfs": -24.996
+    },
+    "stone-forest": {
+      "listener": [
+        2749,
+        2252,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "stone_tick",
+          "at_s": 14.93,
+          "pan": 0.73
+        }
+      ],
+      "sha256": "34f6da1e522b8926bdf4952300c305ff2f7089fcf2177613e0f5c9336d42fed7",
+      "repeat_sha256": "34f6da1e522b8926bdf4952300c305ff2f7089fcf2177613e0f5c9336d42fed7",
+      "seed_1338_sha256": "50a52cd9c45d992272c393ed6c4d713a3ec429fa8fec32875b5eb52bea8039bc",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.695343,
+      "rms_dbfs": -25.133
+    },
+    "stone-wastes": {
+      "listener": [
+        813.5,
+        4894.5,
+        0
+      ],
+      "graph_events": [],
+      "sha256": "3562eaa2088fa428a103e255f5eadeba0277c72d023b42caeefcf770fc69c606",
+      "repeat_sha256": "3562eaa2088fa428a103e255f5eadeba0277c72d023b42caeefcf770fc69c606",
+      "seed_1338_sha256": "81caaf32b0ec7d9511309d88d944374542abb6fe114c06019a245e004b2dab3b",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.155823,
+      "rms_dbfs": -28.401
+    },
+    "thornmarsh": {
+      "listener": [
+        3522.5,
+        1090,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "thorn_clatter",
+          "at_s": 9.62,
+          "pan": 0.07
+        },
+        {
+          "layer": "emitter",
+          "id": "thornmarsh_landmark_26",
+          "at_s": 0,
+          "pan": 0.577,
+          "gain": 0.154,
+          "distance_m": 156
+        }
+      ],
+      "sha256": "1e8cb49c141b3fba1ba099a1fbf0c0e38e306563122d7d1517872fc55e3d8442",
+      "repeat_sha256": "1e8cb49c141b3fba1ba099a1fbf0c0e38e306563122d7d1517872fc55e3d8442",
+      "seed_1338_sha256": "ff524d8c5c34d07cd038d4dbc67b746778a3e1a42b56b62e2bd058a52d6bcae8",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.32074,
+      "rms_dbfs": -27.288
+    },
+    "valus-ridge": {
+      "listener": [
+        1209,
+        2178.5,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "rockfall",
+          "at_s": 13.64,
+          "pan": -0.15
+        }
+      ],
+      "sha256": "f78164fe3a5b6e428fd11ee68123b0701293c655db66f120adc455a4bed4bc56",
+      "repeat_sha256": "f78164fe3a5b6e428fd11ee68123b0701293c655db66f120adc455a4bed4bc56",
+      "seed_1338_sha256": "762bddd1ab9dff04cd8683dceeb98c269013167b84d066c4bac8a19a980e5380",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.198395,
+      "rms_dbfs": -25.597
+    },
+    "western-rootlands": {
+      "listener": [
+        1727,
+        4716,
+        0
+      ],
+      "graph_events": [
+        {
+          "layer": "L3",
+          "id": "shallow_slap",
+          "at_s": 9.46,
+          "pan": -0.4
+        },
+        {
+          "layer": "emitter",
+          "id": "hide_drum",
+          "at_s": 9,
+          "pan": 0,
+          "gain": 1,
+          "distance_m": 0
+        },
+        {
+          "layer": "emitter",
+          "id": "western_rootlands_landmark_25",
+          "at_s": 5.58,
+          "pan": 0.172,
+          "gain": 0.116,
+          "distance_m": 207
+        }
+      ],
+      "sha256": "d852746b0fef040a67ac7d20ae17aa2421829324e21c61c7d0f46965d3e4e962",
+      "repeat_sha256": "d852746b0fef040a67ac7d20ae17aa2421829324e21c61c7d0f46965d3e4e962",
+      "seed_1338_sha256": "f98e79b86e27b4b8a0aa6ac017baadcdb8671fb0cdc0d98a22e969465a486992",
+      "fixed_seed_identical": true,
+      "changed_seed_changes_pcm": true,
+      "peak": 0.323914,
+      "rms_dbfs": -23.785
+    }
+  },
+  "counted_bed_determinism": {
+    "barge_hold": {
+      "sha256": "7abb5035012c04b9b051d2a3b569022393a0bb8a474c2867eeaa2997f8ab0a88",
+      "repeat_sha256": "7abb5035012c04b9b051d2a3b569022393a0bb8a474c2867eeaa2997f8ab0a88",
+      "identical": true,
+      "peak": 0.376556,
+      "rms_dbfs": -19.685
+    },
+    "dungeon": {
+      "sha256": "783416af6f0b0ba15f65890f8bd5d04ca443208f4392549b2dc858798d5032c2",
+      "repeat_sha256": "783416af6f0b0ba15f65890f8bd5d04ca443208f4392549b2dc858798d5032c2",
+      "identical": true,
+      "peak": 0.354218,
+      "rms_dbfs": -21.45
+    },
+    "interior": {
+      "sha256": "19d60576fe54f2cffc9ec409a07d2ac2360a9f85d2b387539758a71eb29b0682",
+      "repeat_sha256": "19d60576fe54f2cffc9ec409a07d2ac2360a9f85d2b387539758a71eb29b0682",
+      "identical": true,
+      "peak": 0.259796,
+      "rms_dbfs": -22.185
+    },
+    "market": {
+      "sha256": "4bd9ab8f0b1c67511c218c17c790a20af316898789de6a1130e44113d91691e4",
+      "repeat_sha256": "4bd9ab8f0b1c67511c218c17c790a20af316898789de6a1130e44113d91691e4",
+      "identical": true,
+      "peak": 0.255341,
+      "rms_dbfs": -23.381
+    },
+    "settlement-archon": {
+      "sha256": "de512da4a18ea36eabde21122357e35f0913b6a82d5c34865e5847eff8ad0fdf",
+      "repeat_sha256": "de512da4a18ea36eabde21122357e35f0913b6a82d5c34865e5847eff8ad0fdf",
+      "identical": true,
+      "peak": 0.136414,
+      "rms_dbfs": -30.347
+    },
+    "settlement-blackrose": {
+      "sha256": "19c24072ca7852daca1790b989627703356b56694d623998d455341d2b7ebd8e",
+      "repeat_sha256": "19c24072ca7852daca1790b989627703356b56694d623998d455341d2b7ebd8e",
+      "identical": true,
+      "peak": 0.099152,
+      "rms_dbfs": -31.709
+    },
+    "settlement-gideon": {
+      "sha256": "beddeff3b3a6cb7d48819beb987e90063a071411493feb55da18b96201c6e0ad",
+      "repeat_sha256": "beddeff3b3a6cb7d48819beb987e90063a071411493feb55da18b96201c6e0ad",
+      "identical": true,
+      "peak": 0.148773,
+      "rms_dbfs": -28.264
+    },
+    "settlement-helstrom": {
+      "sha256": "98f91610eefd6c6eca45f32fc7c5079a92679df559072f4429090b17e710c653",
+      "repeat_sha256": "98f91610eefd6c6eca45f32fc7c5079a92679df559072f4429090b17e710c653",
+      "identical": true,
+      "peak": 0.089935,
+      "rms_dbfs": -33.006
+    },
+    "settlement-lilmoth": {
+      "sha256": "8c71c705c7fef019761588a59bef4542b4e473df290d4a78ac800555eccd60a5",
+      "repeat_sha256": "8c71c705c7fef019761588a59bef4542b4e473df290d4a78ac800555eccd60a5",
+      "identical": true,
+      "peak": 0.120544,
+      "rms_dbfs": -31.123
+    },
+    "settlement-soulrest": {
+      "sha256": "72873b3ba43b565de078d1ac8dab47f659e4167d1efa27a50d0d6b671c9442a1",
+      "repeat_sha256": "72873b3ba43b565de078d1ac8dab47f659e4167d1efa27a50d0d6b671c9442a1",
+      "identical": true,
+      "peak": 0.211426,
+      "rms_dbfs": -25.915
+    },
+    "settlement-stormhold": {
+      "sha256": "147328df2a5443370e491f49b9044522c269a1e78183c2ffda6460e9a1ae7c47",
+      "repeat_sha256": "147328df2a5443370e491f49b9044522c269a1e78183c2ffda6460e9a1ae7c47",
+      "identical": true,
+      "peak": 0.073425,
+      "rms_dbfs": -34.609
+    },
+    "settlement-thorn": {
+      "sha256": "e89902f01f7cc0dd243c7865ebac34771c5ebd8f445eae409c8741d43a28fed7",
+      "repeat_sha256": "e89902f01f7cc0dd243c7865ebac34771c5ebd8f445eae409c8741d43a28fed7",
+      "identical": true,
+      "peak": 0.09613,
+      "rms_dbfs": -32.231
+    },
+    "street": {
+      "sha256": "23de3a92f97b5cd8679f8f0fc1769db8ec91f76ec1b84b3ac688609935f04e4f",
+      "repeat_sha256": "23de3a92f97b5cd8679f8f0fc1769db8ec91f76ec1b84b3ac688609935f04e4f",
+      "identical": true,
+      "peak": 0.259033,
+      "rms_dbfs": -24.015
+    },
+    "well": {
+      "sha256": "5ba200afcacb5aa29a4b5b3d709d9563b56f205753f244a6b9a05bfd57a536ca",
+      "repeat_sha256": "5ba200afcacb5aa29a4b5b3d709d9563b56f205753f244a6b9a05bfd57a536ca",
+      "identical": true,
+      "peak": 0.163666,
+      "rms_dbfs": -21.642
+    },
+    "writ_house": {
+      "sha256": "1d34686d651bfbf48b3c75f9ef469c8c42f8f3c2e688038c82fdf08494eaa039",
+      "repeat_sha256": "1d34686d651bfbf48b3c75f9ef469c8c42f8f3c2e688038c82fdf08494eaa039",
+      "identical": true,
+      "peak": 0.300659,
+      "rms_dbfs": -22.068
+    }
+  },
+  "emitter_pcm_coupling": {
+    "blackwood": {
+      "emitter": "blackwood_landmark_05",
+      "listener": [
+        262.5,
+        3412.5,
+        0
+      ],
+      "seconds": 2,
+      "full_sha256": "a7ea3756b16fac38216c0af4b7ce3a9d3aefac551c5992fe9290e0fb3d22ce05",
+      "delete_consumer_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "no_listener_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "no_listener_delete_sha256": "34db187defe55c0ff92ed51e9b0cdcea5ff40649c0a315ad203d4620d5c0852c",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
+    },
+    "clay-moor": {
+      "emitter": "clay_moor_landmark_14",
+      "listener": [
+        3912.5,
+        1462.5,
+        0
+      ],
+      "seconds": 9.732,
+      "full_sha256": "28d2033c227b0f8be484192e28f563c0e2378dbc90248abe7c576c2c336e9f8f",
+      "delete_consumer_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "no_listener_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "no_listener_delete_sha256": "2ce01033e6b4ec5d223d6a0210e70c6508e62699c5aa2e79622123c800d495c6",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
+    },
+    "marauders-coast": {
+      "emitter": "marauders_coast_landmark_08",
+      "listener": [
+        262.5,
+        3462.5,
+        0
+      ],
+      "seconds": 7.314,
+      "full_sha256": "42dd2b106c1edd8455edce31423dbbf5608d1b548ebbb4a15896d3db14f2cc7d",
+      "delete_consumer_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "no_listener_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "no_listener_delete_sha256": "8fef7f7771793fca7a78f8a7ea5cf669d5eae098560c0798efbfb7de29d79855",
+      "emitter_fired": true,
+      "consumer_changes_pcm": true,
+      "predicted_no_change": true
+    }
+  },
+  "consumer": {
+    "perturbation": "world-derived settlement crossing: Archon centre -> Blackwood centroid",
+    "settlement_bed": "settlement-archon",
+    "fallback_bed": "blackwood",
+    "changed": true
+  },
+  "independent": {
+    "B1": "NOT_RUN",
+    "B2": "NOT_RUN",
+    "B3": "NOT_RUN",
+    "R6": "NOT_RUN",
+    "M20": "NOT_RUN"
+  },
+  "result": "PASS"
+}

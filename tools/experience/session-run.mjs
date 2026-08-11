@@ -86,7 +86,8 @@ PROFILES — each refuses CAPABILITIES; the method list is derived from the live
 
 STDIO PROTOCOL (--drive stdio)
   One JSON object per line on stdin:
-    {"op":"key","key":"w","ms":400}        a real key press
+    {"op":"key","key":"w","ms":400}        a real key press (wall-clock hold)
+    {"op":"key","key":"w","frames":600}    hold while 600 simulated frames execute
     {"op":"click","x":100,"y":200}
     {"op":"step","frames":120}
     {"op":"call","method":"listEntities","args":[]}   a harness call (subject to the profile)
@@ -330,8 +331,18 @@ async function runSession() {
         switch (op.op) {
           case 'key':
             await handle.page.keyboard.down(op.key);
-            await handle.page.waitForTimeout(Math.min(2000, Number(op.ms || 100)));
-            await handle.page.keyboard.up(op.key);
+            try {
+              if (Number(op.frames) > 0) {
+                const n = Math.min(Number(op.frames), totalFrames - stepped);
+                if (n > 0) { await handle.h('stepFrames', n); stepped += n; }
+                rec.frames = n;
+              } else {
+                await handle.page.waitForTimeout(Math.min(2000, Number(op.ms || 100)));
+              }
+            } finally {
+              // Never leave a control latched after a failed frame step.
+              await handle.page.keyboard.up(op.key);
+            }
             break;
           case 'click':
             await handle.page.mouse.click(Number(op.x || 0), Number(op.y || 0));

@@ -82,6 +82,7 @@ function inCell(npc, cell) {
   }
   return false;
 }
+const factionKey = (v) => String(v || '').toLowerCase().replace(/[_\s]+/g, '-');
 
 const docs = loadTopicDocs();
 const npcs = loadNpcs();
@@ -165,6 +166,7 @@ for (const tid of topicIds) {
     for (let i = 0; i < n; i++) {
       const info = t.infos[i];
       if (info.cell && !inCell(npc, info.cell)) continue;
+      if (info.f && factionKey(npc.faction) !== factionKey(info.f)) continue;
       const matchesActor = actor && info.a === actor;
       if (!matchesActor && info.a) continue;
       m |= (1 << i);

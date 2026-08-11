@@ -3,7 +3,7 @@
   "task_id": "W1-22",
   "brief": "docs/PLAN.md \u00a73 W1-22 (audio bed)",
   "started": "wave-1",
-  "state": "complete",
+  "state": "builder_delivery_complete",
   "latest_plan_review": "A different fresh independent reviewer-editor found the received W1-22 plan bar-sufficient and cost-effective on 2026-08-09; SATISFIED and build-ready.",
   "declared_paths": [
     "audio.ambience.region"
@@ -78,7 +78,7 @@
     "SUCCESSOR-9 (staleness detector PROVED FALSIFIABLE, not asserted): with the beds unchanged, region-axes reports beds_digest_matches. I then edited one bed and re-ran WITHOUT re-rendering, and it printed 'WARNING -- the ambience beds have changed since this spectra sidecar was rendered (beds now 1841924c, sidecar rendered from 18aab7c7). The audio axis below is scored off sound the engine no longer makes.' M18 still returned PASS through the warning, which is the required behaviour: every agent in the project runs region-axes and none of them owns the audio, so this must never fail closed.",
     "SUCCESSOR-10 (final sweep, HEAD cddddd0 \u2014 moved twice more during the run): check-data, check-quests, check-content and boot-check all PASS. ambience-census B4 PASS, 13/13 beds, 13 unique L1s, 42.6 KB total, 4 positional emitters. region-axes M18 PASS with the audio axis scored at 78/78 off the FRESH sidecar (digest matches). Spectrogram regenerated from the re-rendered spectra."
   ],
-  "next_step": "none \u2014 piece complete, handed to a critic",
+  "next_step": "Fresh independent critic/listeners may judge B1/B2/B3, R6 and M20; builder-owned density, integrity, runtime, S41, PCM identity, scheduling response, B4, budget and coupling controls are complete.",
   "notes_for_successor": "COMPLETE. Everything in the previous handoff note was already done; I re-ran the headline, fixed one bed and added two instruments.\n\nWHAT A CRITIC SHOULD DO FIRST: re-run `node tools/analysis/ambience-render.mjs --seconds 20` unchanged. It is ~10 min on a quiet box, needs one browser, and it is the whole claim. Then re-run it with the beds sabotaged \u2014 the tool's own G5 control does this automatically.\n\nTHE THING I COULD NOT ROOT-CAUSE (SUCCESSOR-8, and the most interesting open question in this piece): bed_gain_db does not behave as a scalar. A -2.06 dB trim moved loudness -1.42 LU, peak -0.92 dB, and shifted the spectral centroid \u2014 under a pure output gain all three must move by exactly -2.06 and the centroid cannot move at all. I ruled out a compressor/waveshaper (the bus is a plain gain), a clamp in dbToGain, PCM transport normalisation, an RNG reseed (the seed is bed.id only), and a neighbour's edit to synth.js. It matters because `--calibrate` computes trim = target - measured as a ONE-SHOT linear correction, so it under-corrects; it should be iterated to convergence. valus-ridge exposed it because it is the only tonal L1 with defined notes.\n\nSTILL NOT DONE, and deliberately: interior beds (RI-AUD03 R4). Interiors go SILENT and say so via getAmbienceState().suppressed rather than playing the exterior bed low-passed, which R4 forbids. B1/B2/B3 (the blind listening tests) are a critic's to run, not a builder's \u2014 and note the real weakness I found in the item's own method: with L3 at 8-40 s and L4 at 45-180 s, a 20 s clip contains 0 or 1 signature one-shots, so B1/B2 will in practice be decided almost entirely by L1 and L2. Lengthen the clip or seed the capture so the signature event is present.\n\nNEVER QUOTE separation_proxy AS B2. It is a machine proxy over 24-band spectra; B2 is 78 fresh judges answering SAME/DIFFERENT.",
   "next_plan_step": "Dispatch the next build-ready work; W1-22 may now be consumed by a fresh builder under the normal builder/critic separation.",
   "plan_critique_2026_08_09": {
@@ -110,5 +110,122 @@
     "plan_state": "satisfied",
     "summary": "Independent falsification found S41 exact, exhaustive determinism for every counted settlement/interior bed, legitimate pre-normalisation canonical-centroid M20 reuse without population loss, complete native/aggregation/CONSUMPTION controls, and no material cost waste.",
     "next_owner_action": "W1-22 is build-ready; dispatch the next build-ready work under normal fresh-builder/fresh-critic separation."
+  },
+  "current_builder_sweep": "2026-08-11 persistent production density completion builder",
+  "files_claimed": [
+    "game/data/audio/ambience/blackwood.json",
+    "game/data/audio/ambience/clay-moor.json",
+    "game/data/audio/ambience/crimson-coast.json",
+    "game/data/audio/ambience/deep-marshes.json",
+    "game/data/audio/ambience/eastern-rootlands.json",
+    "game/data/audio/ambience/hive.json",
+    "game/data/audio/ambience/marauders-coast.json",
+    "game/data/audio/ambience/salt-hills.json",
+    "game/data/audio/ambience/stone-forest.json",
+    "game/data/audio/ambience/stone-wastes.json",
+    "game/data/audio/ambience/thornmarsh.json",
+    "game/data/audio/ambience/valus-ridge.json",
+    "game/data/audio/ambience/western-rootlands.json",
+    "game/src/audio/ambience.js",
+    "orchestration/status/W1-22.json",
+    "reports/blog-feed.jsonl",
+    "reports/w1-22-r4/builder-completion.json",
+    "reports/w1-22-r4/emitter-density.json",
+    "tools/analysis/ambience-census.mjs",
+    "tools/audio/w1-22-emitter-density.mjs",
+    "tools/audio/w1-22-r4-s41.mjs"
+  ],
+  "files_touched": [
+    "game/data/audio/ambience/blackwood.json",
+    "game/data/audio/ambience/clay-moor.json",
+    "game/data/audio/ambience/crimson-coast.json",
+    "game/data/audio/ambience/deep-marshes.json",
+    "game/data/audio/ambience/eastern-rootlands.json",
+    "game/data/audio/ambience/hive.json",
+    "game/data/audio/ambience/marauders-coast.json",
+    "game/data/audio/ambience/salt-hills.json",
+    "game/data/audio/ambience/stone-forest.json",
+    "game/data/audio/ambience/stone-wastes.json",
+    "game/data/audio/ambience/thornmarsh.json",
+    "game/data/audio/ambience/valus-ridge.json",
+    "game/data/audio/ambience/western-rootlands.json",
+    "game/src/audio/ambience.js",
+    "orchestration/status/W1-22.json",
+    "reports/blog-feed.jsonl",
+    "reports/w1-22-r4/builder-completion.json",
+    "reports/w1-22-r4/emitter-density.json",
+    "tools/analysis/ambience-census.mjs",
+    "tools/audio/w1-22-emitter-density.mjs",
+    "tools/audio/w1-22-r4-s41.mjs"
+  ],
+  "builder_sweep_2026_08_10": {
+    "result": "BUILDER SWEEP COMPLETE \u2014 not independently PASS",
+    "green": [
+      "check-data",
+      "ambience-census",
+      "boot-check"
+    ],
+    "red": [
+      "B5/event calibration for new beds",
+      "emitter density",
+      "whole-item aggregation"
+    ],
+    "not_run": [
+      "independent listening rows",
+      "canonical captures",
+      "RI-MTH07 PCM coupling"
+    ],
+    "blocker": "contention gate 9 browser instances > ceiling 5"
+  },
+  "builder_completion_2026_08_10": {
+    "result": "BUILDER DELIVERY COMPLETE \u2014 not independently judged",
+    "green": [
+      "settlement-state -> settlement ambience shipping consumer reconciled alongside W1-07",
+      "13/13 canonical seed-1337 fixed-seed PCM identity",
+      "13/13 changed-seed PCM scheduling response",
+      "15/15 counted settlement/interior fixed-seed PCM identity",
+      "B4 census 13/13 and 13 unique L1",
+      "boot-check",
+      "check-data"
+    ],
+    "red": [
+      "RI-WLD08 positional-emitter density remains 4 over 14.52 km\u00b2 (0.276/km\u00b2), below >=25/km\u00b2",
+      "whole-item aggregation cannot be independently passed by this builder"
+    ],
+    "not_run": [
+      "B1/B2/B3 independent listening",
+      "R6 motif listening",
+      "M20 independent 39-clip judgement"
+    ],
+    "binary_policy": "No WAV/audio or PNG committed; PCM generated transiently and discarded. Manifest includes hashes, command, capture parameters and numeric results.",
+    "s41": "literal 1337, authoritative centroids, full pre-normalisation graph; alternate arms diagnostic only; canonical recordings remain eligible for M20 reuse."
+  },
+  "persistent_builder_completion_2026_08_11": {
+    "result": "ALL BUILDER-OWNED ROWS COMPLETE \u2014 not independently judged",
+    "density": "368 / 14.52 km\u00b2 = 25.344/km\u00b2; required 363; every one of 13 regions independently >=25/km\u00b2",
+    "integrity": "368 unique ids; 367 native land + intentional sea buoy; no invalid placement/source/range/schedule or duplicate cluster",
+    "runtime": "shipping AmbienceDriver consumes all records; struck sources reserve voices only for their envelopes and are rejected at the 8-voice ceiling",
+    "preserved": [
+      "S41 literal seed-1337 centroid/full-live graph",
+      "settlement-state -> settlement bed",
+      "13/13 fixed-seed PCM identity",
+      "13/13 changed-seed PCM response",
+      "15/15 counted settlement/interior determinism",
+      "B4 13/13 and 13 unique L1"
+    ],
+    "controls": [
+      "delete-population trips total and regional density",
+      "corrupt id/position/source trips integrity",
+      "R7 mute/delete consumer changes in-range PCM while no-listener is predicted no-change",
+      "1200 s dense-point runtime stays <=8 voices and schedules audible strikes"
+    ],
+    "independent_isolated": [
+      "B1",
+      "B2",
+      "B3",
+      "R6",
+      "M20"
+    ],
+    "critic_pass": "NOT_SELF_AWARDED"
   }
 }

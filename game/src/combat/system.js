@@ -214,6 +214,7 @@ export class CombatSystem {
       haPool: (d.poise.hyperarmour.pools[moves._classKey] || {}).one_handed || 0,
     });
     body.shieldId = shieldId;
+    body.endurance = endurance;
     // RI-CMB04 §A step 5 / RI-AI01 minimum standoff. Declared in hitgeometry.json rather than
     // baked here so a critic can read the number without reading the source.
     body.bodyRadius = (d.hitgeometry.bodies && d.hitgeometry.bodies.player_radius_m) || 0.30;
@@ -234,6 +235,9 @@ export class CombatSystem {
     this.playerCtl.magic = this.magic || null;   // seam S19: set by the engine at boot
     this.playerCtl.flaskLevel = loadout.flaskLevel || 0;
     this.playerCtl.estus = loadout.estus !== undefined ? loadout.estus : d.flask.charges.at_game_start;
+    // Keep the durable controller shape canonical before the first pool-derivation pass.
+    // Otherwise a save omits `estusMax`, while loading that save rebuilds it as five.
+    this.playerCtl.estusMax = this.playerCtl.estus;
     this.bodies = [body];
     body.evaluateRig(0);
     return body;

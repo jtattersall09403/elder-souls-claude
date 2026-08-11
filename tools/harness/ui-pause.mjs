@@ -40,6 +40,7 @@ ui-pause.mjs — RI-UIX03 §A frame arithmetic, §P5 occlusion, and gamepad-only
 
 USAGE
   node tools/harness/ui-pause.mjs [--state arena_champion] [--out <dir>] [--json]
+                                  [--control-remove-dpad-mapping]
 
 EXIT 0 = every check passes · 1 = a check fails · 2 = could not measure
 `;
@@ -88,7 +89,13 @@ try {
   await h.h('closeMenu');
   await h.h('lockOn', null);
   const enemies = (await h.h('listEntities')).filter((e) => e.archetype !== 'player');
-  for (const e of enemies) { try { await h.h('despawn', e.eid); } catch { /* */ } }
+  // `h.h()` intentionally turns a harness throw into a process exit, so a JavaScript try/catch
+  // around it cannot make a stale streamed-entity census optional. Ask and catch in-page: an
+  // entity may leave the stream between listEntities() and despawn(), which is not a pause-rule
+  // failure and previously killed this native row before it sampled a frame.
+  for (const e of enemies) {
+    await h.page.evaluate((eid) => { try { window.__HARNESS.despawn(eid); } catch { /* stale */ } }, e.eid);
+  }
   await h.h('stepFrames', 8);
   let rep = await h.h('getUIPauseReport');
   await h.h('openMenu', 'inventory');
@@ -223,7 +230,9 @@ try {
 
   // ---- P4: combat begins while the screen is open ---------------------------------------------
   await h.h('closeMenu');
-  for (const e of (await h.h('listEntities')).filter((x) => x.archetype !== 'player')) { try { await h.h('despawn', e.eid); } catch { /* */ } }
+  for (const e of (await h.h('listEntities')).filter((x) => x.archetype !== 'player')) {
+    await h.page.evaluate((eid) => { try { window.__HARNESS.despawn(eid); } catch { /* stale */ } }, e.eid);
+  }
   await h.h('lockOn', null);
   await h.h('stepFrames', 8);
   await h.h('openMenu', 'inventory');
@@ -280,6 +289,10 @@ try {
   // B goes back. If any surface needs a key or a pointer this loop cannot reach it.
   await h.h('closeMenu');
   await h.h('setMode', 'play-instrumented');
+  // Earlier automatic legs use the scripted input timeline. Clear that producer before the
+  // controller population so this section is genuinely pad-only and a due scripted event cannot
+  // overwrite the movement vector between `gamepadPoll` and the fixed-step latch.
+  await h.h('clearInputs');
   const pad = async (pressed, axes, steps) => {
     await h.h('gamepad', padState(pressed, axes));
     await h.h('gamepadPoll');
@@ -295,10 +308,44 @@ try {
   await pad([], [0, 1, 0, 0]);
   reach.push({ after: 'stick down x2', focus: (await h.h('getUIState')).elements.filter((e) => e.focused).map((e) => e.id) });
   const colBefore = (await h.h('getUIState')).focus.col;
-  await pad([PAD.DLEFT]);                          // d-pad left: change column
-  const uiAfterDpad = await h.h('getUIState');
+  const axisBeforeDpad = await h.page.evaluate(() => ({ ...window.__ENGINE.ui.axis }));
+  if (args['control-remove-dpad-mapping']) {
+    // RULES 4/6: remove the production D-pad -> movement mapping without changing the pad
+    // descriptor or bypassing its router.  The PAD row must return red in this arm.
+    await h.page.evaluate(() => { window.__ENGINE.real.pad.uiMode = false; });
+  }
+  await h.h('gamepad', padState([PAD.DLEFT]));
+  await h.h('gamepadPoll');
+  const dpadBeforeStep = await h.page.evaluate(() => ({
+    move: [window.__ENGINE.input.moveX, window.__ENGINE.input.moveY],
+    uiMove: [window.__ENGINE.input.uiMoveX, window.__ENGINE.input.uiMoveY],
+    uiMode: window.__ENGINE.real.pad.uiMode,
+  }));
+  await h.h('stepFrames', 1);                      // one fixed step: one column, no double advance
+  const uiAfterDpad = await h.h('getUIState');     // observe the production consumer while held
+  await h.h('gamepad', padState([], [0, 0, 0, 0]));
+  await h.h('gamepadPoll');
+  await h.h('stepFrames', 2);
+  const padDiag = await h.page.evaluate(() => ({
+    uiMode: !!(window.__ENGINE.real.pad && window.__ENGINE.real.pad.uiMode),
+    menuOpen: !!window.__ENGINE.real.menuOpen,
+    move: [window.__ENGINE.input.moveX, window.__ENGINE.input.moveY],
+  }));
   reach.push({ after: 'DPAD LEFT', col: uiAfterDpad.focus.col, colBefore,
-    focus: uiAfterDpad.elements.filter((e) => e.focused).map((e) => e.id) });
+    focus: uiAfterDpad.elements.filter((e) => e.focused).map((e) => e.id),
+    beforeStep: dpadBeforeStep,
+    axisBefore: axisBeforeDpad,
+    axisAfter: await h.page.evaluate(() => ({ ...window.__ENGINE.ui.axis })), pad: padDiag });
+  if (args['control-remove-dpad-mapping']) {
+    await h.page.evaluate(() => { window.__ENGINE.real.pad.uiMode = true; });
+  }
+  const irrelevantBefore = await h.h('getUIState');
+  await pad([16]);                                  // guide/reserved: must be inert
+  const irrelevantAfter = await h.h('getUIState');
+  const irrelevantStable = irrelevantAfter.mode === irrelevantBefore.mode
+    && JSON.stringify(irrelevantAfter.focus) === JSON.stringify(irrelevantBefore.focus);
+  reach.push({ after: 'GUIDE (irrelevant)', stable: irrelevantStable,
+    mode: irrelevantAfter.mode, focus: irrelevantAfter.focus });
   await pad([PAD.DDOWN]);
   await pad([PAD.A]);                              // A: confirm
   reach.push({ after: 'A', mode: (await h.h('getUIState')).mode });
@@ -308,11 +355,11 @@ try {
   out.raw.gamepad_walk = reach;
   const padOpened = reach[0].mode === 'inventory';
   const padMoved = reach[1].focus && reach[1].focus.length > 0;
-  const padColumn = reach[2].col !== reach[2].colBefore;
+  const padColumn = reach[2].col === reach[2].colBefore - 1;
   const padClosed = reach[reach.length - 1].mode === 'world';
   push('PAD', 'the interface opens, navigates, confirms and closes on a GameSir X2s alone',
-    padOpened && padMoved && padColumn && padClosed,
-    `open ${padOpened}, stick moved focus ${padMoved}, d-pad moved column ${reach[2].colBefore}->${reach[2].col}, closed ${padClosed} (final mode ${reach[reach.length-1].mode})`);
+    padOpened && padMoved && padColumn && irrelevantStable && padClosed,
+    `open ${padOpened}, stick moved focus ${padMoved}, d-pad moved exactly one column ${reach[2].colBefore}->${reach[2].col}, irrelevant input stable ${irrelevantStable}, closed ${padClosed} (final mode ${reach[reach.length-1].mode})`);
 
   // every screen openable, and each one reporting the surfaces reachable from it
   await h.h('setMode', 'harness');

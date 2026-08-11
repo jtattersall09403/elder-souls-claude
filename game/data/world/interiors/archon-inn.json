@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   6
+   1.505
   ],
   "exterior_spawn": [
+   3812.296,
+   3.42,
+   3854.737
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    3809.47,
    3.42,
    3854.37
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -6.2,
-   6.2
+   -5.87,
+   5.87
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -7.2,
-   7.2
+   -2.505,
+   2.505
   ]
  },
  "floor_area_m2": 178.6,
@@ -56,7 +67,7 @@
   "pos": [
    0,
    0.6,
-   2.88
+   1.355
   ],
   "colour_hex": "#ffb066",
   "intensity": 2.2
@@ -67,7 +78,7 @@
    "pos": [
     0,
     0.7,
-    3.4
+    1.355
    ],
    "intensity": 0.9,
    "snuffable": false,
@@ -78,7 +89,7 @@
    "pos": [
     -1.6,
     1.6,
-    -0.7999999999999998
+    -0.8
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -89,7 +100,7 @@
    "pos": [
     -3.5,
     1.6,
-    -0.7000000000000002
+    -0.7
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -98,7 +109,7 @@
   {
    "id": "archon.cook5.r0.lamp2",
    "pos": [
-    1.5999999999999996,
+    1.6,
     1.6,
     -1
    ],
@@ -111,7 +122,7 @@
    "pos": [
     0,
     0.7,
-    3.4
+    1.355
    ],
    "intensity": 0.9,
    "snuffable": false,
@@ -120,9 +131,9 @@
   {
    "id": "archon.factor9.r1.lamp0",
    "pos": [
-    2.5999999999999996,
+    2.6,
     1.6,
-    -1.2000000000000002
+    -1.2
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -131,7 +142,7 @@
   {
    "id": "archon.factor9.r1.lamp1",
    "pos": [
-    0.7000000000000002,
+    0.7,
     1.6,
     -1.1
    ],
@@ -142,7 +153,7 @@
   {
    "id": "archon.factor9.r1.lamp2",
    "pos": [
-    -1.2000000000000002,
+    -1.2,
     1.6,
     -1.4
    ],
@@ -195,5 +206,103 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 6,
- "close_h": 26
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.6,
+    1.6,
+    -0.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -3.5,
+    1.6,
+    -0.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    1.5999999999999996,
+    1.6,
+    -1
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.5999999999999996,
+    1.6,
+    -1.2000000000000002
+   ]
+  },
+  {
+   "pos": [
+    0.7000000000000002,
+    1.6,
+    -1.1
+   ]
+  },
+  {
+   "pos": [
+    -1.2000000000000002,
+    1.6,
+    -1.4
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "archon-inn",
+ "door_world_pos": [
+  3811.296,
+  3.42,
+  3854.739
+ ],
+ "door_world_bearing_deg": 40.1,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 58.82
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 58.82
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

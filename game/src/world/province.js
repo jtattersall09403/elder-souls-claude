@@ -714,7 +714,30 @@ export class Province {
   /** Build every queued tile — used by the harness so a screenshot is never of a half-built world. */
   drain(limit = 400) { let n = 0; while (this.queue.length && n < limit) n += this.pump(4); return n; }
 
-  update(x, z, budget = 2) { this.request(x, z); return this.pump(budget); }
+  update(x, z, budget = 2) {
+    this.request(x, z);
+    const built = this.pump(budget);
+    this._updateWaterMeshes();
+    return built;
+  }
+
+  /** Keep streamed water on the same live field phase used by bodies, without rebuilding tiles. */
+  _updateWaterMeshes() {
+    const phase = this.field.tidePhase;
+    if (phase === this._waterPhase) return;
+    this._waterPhase = phase;
+    for (const tile of this.tiles.values()) tile.group.traverse((mesh) => {
+      if (!mesh.userData.waterSamples) return;
+      const pos = mesh.geometry.attributes.position;
+      const samples = mesh.userData.waterSamples;
+      for (let i = 0; i < samples.length; i++) {
+        const { x, z } = samples[i];
+        pos.setY(i, this.field.waterSurfaceAt(x, z, phase) ?? this.field.heightAt(x, z));
+      }
+      pos.needsUpdate = true;
+      mesh.geometry.computeVertexNormals();
+    });
+  }
 
   /**
    * Drop a tile, disposing ONLY the geometry that tile owns.
@@ -770,8 +793,13 @@ export class Province {
       for (let ix = 0; ix < WATER_SEG; ix++) {
         const x0 = ox + ix * step, z0 = oz + iz * step;
         const corners = [[x0, z0], [x0 + step, z0], [x0 + step, z0 + step], [x0, z0 + step]];
-        const surf = corners.map(([cx, cz]) => f.waterSurfaceAt(cx, cz));
-        if (surf.some((s) => s === null)) continue;
+        // Include a shore cell when any corner is wet at either tide extreme. Dry vertices clamp
+        // to their local bank, so narrow channels meet terrain instead of disappearing merely
+        // because the 12.5 m sampling lattice straddles a shoreline.
+        const low = corners.map(([cx, cz]) => f.waterSurfaceAt(cx, cz, 0.75));
+        const high = corners.map(([cx, cz]) => f.waterSurfaceAt(cx, cz, 0.25));
+        if (![...low, ...high].some((s) => s !== null)) continue;
+        const surf = corners.map(([cx, cz]) => f.waterSurfaceAt(cx, cz) ?? f.heightAt(cx, cz));
         const ri = f.regionIndexAt(x0 + step / 2, z0 + step / 2);
         if (!byRegion.has(ri)) byRegion.set(ri, { v: [], i: [], n: 0 });
         const b = byRegion.get(ri);
@@ -787,6 +815,8 @@ export class Province {
       wg.computeVertexNormals();
       const wm = new THREE.Mesh(wg, this.regionMats[ri].water);
       wm.name = `water:${f.regions[ri].id}`;
+      wm.userData.waterSamples = [];
+      for (let i = 0; i < b.v.length; i += 3) wm.userData.waterSamples.push({ x: b.v[i], z: b.v[i + 2] });
       g.add(wm);
     }
 

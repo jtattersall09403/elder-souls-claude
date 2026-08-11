@@ -1,0 +1,23 @@
+{
+  "task_id": "W1-26-continuation",
+  "role": "builder",
+  "plan_state": "satisfied",
+  "starting_commit": "46d3c0432fceb7cf1fa622f205c4728daa8321e9",
+  "status": "builder_modalities_complete_independent_exp01_not_run",
+  "builder_complete": {
+    "opening_modality_journeys": "4/4, each 7/7",
+    "keyboard": "census.done; DOM keyboard; typed name and stamped writ persist",
+    "mouse_keyboard": "census.done; DOM mouse plus keyboard; typed name and stamped writ persist",
+    "gamepad": "census.done; released GamepadRouter/profile; ledger-only name and stamped writ persist",
+    "touch": "census.done; DOM touch PointerEvents against shipping layout; ledger-only name and stamped writ persist",
+    "delete_perturb_controls": "4/4 observed red before scene reachability",
+    "screenshots": "capturable with --shot PATH; excluded from commit because the PR transport rejects binary files"
+  },
+  "preserved_from_pr_108": ["JRN09 PASS artifact", "builder verifier PASS artifact", "keyboard no-state-mutation repair"],
+  "independent_only_not_run": [
+    "RI-EXP01 isolated 60-minute driver session",
+    "RI-EXP01 blind annotation and judgement",
+    "fresh W1-26 build criticism"
+  ],
+  "files_avoided": ["docs/index.html", "docs/progress.html", "docs/status.json", "orchestration/INDEX.md"]
+}

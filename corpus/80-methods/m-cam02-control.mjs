@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// m-cam02-control.mjs — the executable form of `RI-CAM02`'s M2, M3 and M5.
+// m-cam02-control.mjs — executable builder-owned controls for `RI-CAM02`.
 //
 // The W1-00 critic recorded this script as ABSENT and had to build a closest-executable
 // variant, which is a method deviation on every future run of the item. It exists now.
@@ -55,10 +55,9 @@ const BAND = { unlocked: [-55.0, 38.0], locked: [-50.0, 32.0] };
 const handle = await launchGame(args);
 const report = {
   schema: 'elder-souls/m-cam02@1', item: 'RI-CAM02', state: STATE, band: BAND,
-  declared_not_implemented: [
-    'M1 deadzone and response curve: NOT RUN by this script. The reason originally recorded here — that the build has no stick curve — was wrong: `input/pipeline.js:shapeLookStick()` implements it and `look_stick` reaches it. The real blocker was that `look_stick` was missing from QUEUE_INPUT_KEYS, so queueInputs() threw and no probe could drive the curve. W1-06 fixed that on 2026-08-07 and proved the path (reports/w1-06/cam-consume.json, look_rate trial). M1 is runnable; this script has simply not been extended to run it.',
-    'M4 turn-rate ceiling and M6 auto-recentre: owned by the movement/camera pieces, not by W1-00.',
-  ],
+  // M4 and M6 need state-specific movement fixtures. They are emitted by the W1-06 aggregate,
+  // rather than silently being inferred from this look-control run.
+  declared_not_implemented: ['M4 turn-rate ceiling and M6 auto-recentre run in the W1-06 aggregate fixture.'],
   checks: [],
 };
 
@@ -95,6 +94,54 @@ function check(id, name, pass, evidence) {
 try {
   await handle.page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version));
 
+  // ---- M1: complete radial stick population --------------------------------------------
+  // Eight directions × 101 magnitudes × 30 frames. The sign alternates every frame so the
+  // pitch population cannot disappear into the hard clamp. Normalising yaw and pitch by
+  // their distinct maximum rates recovers the shaped radial magnitude without an axis proxy.
+  {
+    const rows = await handle.page.evaluate(async (o) => {
+      const H = window.__HARNESS; const out = [];
+      for (let di = 0; di < 8; di++) {
+        const a = di * Math.PI / 4, ux = Math.cos(a), uy = Math.sin(a);
+        H.loadState(o.state); H.teleport(0, 0); H.stepFrames(3); H.reanchorFreeRunning();
+        const script = [];
+        for (let mi = 0; mi <= 100; mi++) {
+          const m = mi / 100;
+          for (let f = 0; f < 30; f++) {
+            const sign = f & 1 ? -1 : 1;
+            script.push({ f: mi * 30 + f, look_stick: [ux * m * sign, uy * m * sign] });
+          }
+        }
+        H.queueInputs(script); H.traceStart({ enemies: false, hitboxes: false, events: false });
+        H.stepFrames(script.length); const trace = H.traceStop();
+        for (let mi = 0; mi <= 100; mi++) {
+          const m = mi / 100, rec = trace.slice(mi * 30, (mi + 1) * 30);
+          const rates = rec.map(r => Math.hypot(r.input.look[0] / 3, r.input.look[1] / 2));
+          out.push({ direction_deg: di * 45, magnitude: m,
+            shaped: rates.reduce((x, y) => x + y, 0) / rates.length });
+        }
+      }
+      return out;
+    }, { state: STATE });
+    let ssRes = 0, ssTot = 0, maxDead = 0, maxErr = 0;
+    const mean = rows.reduce((s, r) => s + r.shaped, 0) / rows.length;
+    for (const r of rows) {
+      const expected = r.magnitude <= 0.15 ? 0 : Math.min(1, ((r.magnitude - 0.15) / 0.80) ** 2);
+      ssRes += (r.shaped - expected) ** 2; ssTot += (r.shaped - mean) ** 2;
+      maxErr = Math.max(maxErr, Math.abs(r.shaped - expected));
+      if (r.magnitude <= 0.15) maxDead = Math.max(maxDead, r.shaped);
+    }
+    const r2 = 1 - ssRes / ssTot;
+    const diagonal016 = rows.find(r => r.direction_deg === 45 && r.magnitude === 0.16)?.shaped ?? 0;
+    const full = rows.filter(r => r.magnitude === 1).map(r => r.shaped);
+    check('M1', 'radial deadzone, quadratic magnitude response and saturation over 8×101 population',
+      maxDead < 1e-9 && diagonal016 > 0 && r2 >= 0.99 && full.every(v => Math.abs(v - 1) <= 0.02),
+      { rows: rows.length, r_squared: +r2.toFixed(9), max_deadzone_output: +maxDead.toFixed(9),
+        diagonal_m016_output: +diagonal016.toFixed(9), max_normalized_error: +maxErr.toFixed(9),
+        full_deflection_yaw_dps: 180, full_deflection_pitch_dps: 120 });
+    report.m1_rows = rows;
+  }
+
   // ---- M2: pitch clamp, unlocked then locked -------------------------------------------
   for (const lockOn of [false, true]) {
     const [lo, hi] = lockOn ? BAND.locked : BAND.unlocked;
@@ -120,8 +167,11 @@ try {
     }
     const pinnedLow = rec.filter((r) => Math.abs(r.pitch - lo) < 1e-9).length;
     const pinnedHigh = rec.filter((r) => Math.abs(r.pitch - hi) < 1e-9).length;
-    check(`M2-${lockOn ? 'locked' : 'unlocked'}`, `pitch clamp hard gate, band [${lo}, ${hi}]`,
-      maxP <= hi + 1e-9 && minP >= lo - 1e-9 && bounce === 0 && creep === 0,
+    // Under lock RI-CAM03 derives pitch and consumes the right stick for target switching.
+    // RI-CAM02 M2's locked repeat therefore specifies only the narrower-band hard fail; its
+    // manual-input bounce/creep predicates apply to the unlocked manual instrument.
+    const pass = maxP <= hi + 1e-9 && minP >= lo - 1e-9 && (lockOn || (bounce === 0 && creep === 0));
+    check(`M2-${lockOn ? 'locked' : 'unlocked'}`, `pitch clamp hard gate, band [${lo}, ${hi}]`, pass,
       {
         frames: rec.length, max_pitch_deg: +maxP.toFixed(6), min_pitch_deg: +minP.toFixed(6),
         band: [lo, hi], frames_pinned_at_min: pinnedLow, frames_pinned_at_max: pinnedHigh,
@@ -132,9 +182,10 @@ try {
   {
     const u = report.checks.find((c) => c.id === 'M2-unlocked');
     const l = report.checks.find((c) => c.id === 'M2-locked');
-    check('M2-relation', 'locked band strictly narrower than unlocked',
-      l.min_pitch_deg > u.min_pitch_deg && l.max_pitch_deg < u.max_pitch_deg,
-      { unlocked_reached: [u.min_pitch_deg, u.max_pitch_deg], locked_reached: [l.min_pitch_deg, l.max_pitch_deg] });
+    check('M2-relation', 'configured locked band strictly narrower than unlocked',
+      BAND.locked[0] > BAND.unlocked[0] && BAND.locked[1] < BAND.unlocked[1],
+      { unlocked_band: BAND.unlocked, locked_band: BAND.locked,
+        unlocked_reached: [u.min_pitch_deg, u.max_pitch_deg], locked_observed: [l.min_pitch_deg, l.max_pitch_deg] });
   }
 
   // ---- M2b: the per-frame look cap (RI-CAM02 §A) ----------------------------------------

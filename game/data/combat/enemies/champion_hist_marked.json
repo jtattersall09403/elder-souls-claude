@@ -85,7 +85,7 @@
   "combo_b": {
    "anim": "e_combo_b",
    "archetype": "cut_diagonal",
-   "startup": 22,
+   "startup": 23,
    "active": 10,
    "recovery": 70,
    "poise_damage": 32,
@@ -106,10 +106,12 @@
   "gold_price": 900,
   "base_disposition": 10,
   "honour_bound": true,
+  "reputation_min": 10,
   "grounds": [
    "name",
    "faction",
-   "gold"
+   "gold",
+   "reputation"
   ],
   "fiction": "The champion is honour_bound: she will not accept a yield from someone who is beating her. She can be bought at a price only a rich player has, she answers to rank 6 in her own order, and she will stand down for anyone who speaks the name of the ford."
  },

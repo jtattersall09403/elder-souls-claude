@@ -30,17 +30,10 @@
 //   book              5        routed since W1-LIBRARY r2            (elsewhere)
 //   later_quest       3        routed since W1-19 r3                 (elsewhere)
 //
-// `eavesdrop` is NOT routed through this file even though its sources are real people, and the
-// reason is that the only conversation action the build has is `Engine.talkTo()`, which is
-// walking up to somebody and being greeted. That is the opposite of eavesdropping. Routing it
-// here would mean a player who introduces themselves gets credit for having listened unobserved,
-// which is a lie about what they did, and it would quietly make the stealth system decorative
-// for the one thing it is most obviously for. It needs a proximity-and-not-noticed reader built
-// against `sim/stealth`, and that is a real piece of work, not a line here.
-//
-// `corpse` is not routed for the same kind of reason: `discoverCorpse()` is the CRIME system's
-// event for a witness finding a body, not the player examining one, and there is no search-a-
-// body action in `game/src/` to hang it on. One row.
+// `eavesdrop` is deliberately separate from `person`: Engine.eavesdrop() checks proximity and
+// refuses while the source is noticing the player, so greeting somebody never counts as covert
+// listening. `corpse` is similarly separate from the crime system's discoverCorpse() witness
+// event: Engine.examineCorpse() requires the named actor to be present and dead.
 //
 // `ledger`, `letter` and `environment` are 52 of the 113 and they are blocked on CONTENT, not on
 // a reader. `item_the_drowned_tally` is not an object anywhere in this build; neither are the
@@ -87,6 +80,13 @@
 export const CHANNEL_READERS = {
   talk_to_target: 'person',
   rival_npc: 'person',
+  // A separate world verb consumes these rows. Engine.eavesdrop() requires the source to be
+  // present and near, and refuses while that source is noticing the player; ordinary talkTo()
+  // therefore cannot mint an eavesdropped fact.
+  eavesdrop: 'eavesdrop',
+  // Likewise, examining a body is not the crime system's discoverCorpse() event. The engine
+  // requires the named actor to be present and dead before this route is consumed.
+  corpse: 'corpse',
   // W1-READABLES round 2. `environment` says the source of the truth is a thing in the world,
   // and until this round every one of its 27 rows named a place, a station or a mark that was
   // not an object anywhere in the build. `game/data/world/readables/site-marks.json` is the

@@ -89,12 +89,11 @@ try {
   // ---- walk, on held movement keys, to a point in the room ------------------------------------
   //
   // Forward is the CAMERA's bearing, not the body's: at camera yaw θ the held `KeyW` moves the
-  // body along (sin θ, cos θ) — measured, not assumed (yaw 0 walks +z; the hold's default 351
-  // walks (-0.156, +0.988)). The first draft of this file set yaw 200 "to face her" and walked
-  // 8.6 m in the opposite direction, which is why the bearing is now computed from the target.
-  // Turning the camera is the one thing here that is not a key press: mouse-look under pointer
-  // lock does not survive headless, and RI-JRN01 O17's keyboard leg is about the ANSWERS, not
-  // about aiming. Every metre of translation below is a real held key.
+  // body along (sin θ, cos θ). Earlier versions wrote `sim.camera.yaw` from the harness to
+  // aim each burst. That made a keyboard-labelled journey depend on state mutation and therefore
+  // ineligible for RI-JRN01 M13. Resolve the target vector onto the *existing* camera's forward
+  // and right axes instead, then hold the corresponding W/S and A/D keys together. The camera is
+  // read only; every metre is now produced by the shipping keyboard path.
   const walkTo = async (tx, tz, { within = 1.2, bursts = 10, per = 24 } = {}) => {
     const log = [];
     for (let i = 0; i < bursts; i++) {
@@ -103,11 +102,17 @@ try {
       const d = Math.hypot(dx, dz);
       log.push({ pos: at.map((v) => +v.toFixed(2)), dist: +d.toFixed(2) });
       if (d <= within) break;
-      const yaw = Math.atan2(dx, dz) * 180 / Math.PI;
-      await h.page.evaluate((y) => { const e = window.__ENGINE; e.sim.camera.yaw = y; }, yaw);
-      await h.page.keyboard.down('KeyW');
+      const yaw = await h.page.evaluate(() => window.__ENGINE.sim.camera.yaw * Math.PI / 180);
+      const forward = dx * Math.sin(yaw) + dz * Math.cos(yaw);
+      const right = dx * Math.cos(yaw) - dz * Math.sin(yaw);
+      const keys = [];
+      if (Math.abs(forward) > 0.08) keys.push(forward > 0 ? 'KeyW' : 'KeyS');
+      // The pipeline's +moveX is bound to A (camera-right is negated later by the movement
+      // integrator), so this deliberately looks reversed from the labels on the keys.
+      if (Math.abs(right) > 0.08) keys.push(right > 0 ? 'KeyA' : 'KeyD');
+      for (const k of keys) await h.page.keyboard.down(k);
       await step(Math.max(6, Math.min(per, Math.round(d / 0.053))));
-      await h.page.keyboard.up('KeyW');
+      for (const k of keys) await h.page.keyboard.up(k);
       await step(2);
     }
     const end = await h.page.evaluate(() => window.__ENGINE.sim.player.pos.slice());
@@ -208,11 +213,7 @@ try {
   // ---- the picture ------------------------------------------------------------------------------
   // Third-person, the body in frame, the room it is standing in behind it. Nothing is placed:
   // this is where the walk and the answers left them.
-  await h.page.evaluate(() => {
-    const e = window.__ENGINE;
-    e.sim.camera.mode = 'follow';
-    window.__HARNESS.setRenderRate(1);
-  });
+  await h.page.evaluate(() => window.__HARNESS.setRenderRate(1));
   await step(8);
   await h.page.screenshot({ path: shotPath });
   out.shot = path.relative(REPO_ROOT, shotPath);

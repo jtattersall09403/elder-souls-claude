@@ -1,529 +1,1041 @@
 {
-  "schema": "elder-souls/settlement@2",
-  "id": "blackrose",
-  "name": "Blackrose",
-  "tier": "town",
-  "region": "western-rootlands",
-  "pos": [
-    1905.5,
+ "schema": "elder-souls/settlement@2",
+ "id": "blackrose",
+ "name": "Blackrose",
+ "tier": "town",
+ "region": "western-rootlands",
+ "pos": [
+  1905.5,
+  2.68,
+  4450
+ ],
+ "radius_m": 62,
+ "identity": "A town that exists to feed and guard a prison. The Imperial-built Blackrose Prison squats over it; the town is its outbuildings. Tension: half the townsfolk are ex-guards, half are inmates’ families, and the warden is not who the Empire thinks.",
+ "power_reading": "There is no square, only corridors between compound walls. Every street is a checkpoint.",
+ "layout": {
+  "plan": "corridor",
+  "proof": "The plan contains no open space wider than four metres except the prison yard, which is walled. Every building fronts a corridor and every corridor has a gate at each end; the prison block is the largest footprint and the only one no corridor passes."
+ },
+ "architecture_kit": {
+  "material_rule": "Everything is a wall. Imperial fortress masonry furred with fungus — the prison’s own stone is being digested. No window below three metres anywhere in the town.",
+  "silhouette": "the furred parapet — fortress crenellation so overgrown its profile has gone soft",
+  "meshes": [
+   "bla_fortress_wall",
+   "bla_furred_parapet",
+   "bla_corridor_gate",
+   "bla_prison_block",
+   "bla_warder_house",
+   "bla_visitor_shed",
+   "bla_lime_pit",
+   "bla_gallows_frame"
+  ]
+ },
+ "quarters": [
+  "prison-gate",
+  "the-warders",
+  "low-town"
+ ],
+ "targets": {
+  "buildings": 18,
+  "named_interiors": 12,
+  "enterable_pct": 67,
+  "named_npcs": 20,
+  "scheduled_npc_pct": 70,
+  "shops": 3,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 2,
+  "trainers": 2,
+  "quest_givers": 5,
+  "rumour_variants": 8,
+  "bonfire": 1,
+  "road_gates": 2,
+  "unique_architecture_kit": "required",
+  "souls_loop_dungeon_attached": 1
+ },
+ "counts": {
+  "buildings": 22,
+  "interior": 12,
+  "sealed_with_reason": 4,
+  "structure": 6,
+  "named_interiors": 12,
+  "enterable_pct": 75,
+  "property_zones": 30,
+  "shops": 3,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 2,
+  "road_gates": 2
+ },
+ "services": {
+  "inn": [
+   "blackrose-inn"
+  ],
+  "trader": [
+   "blackrose-market"
+  ],
+  "smith": [
+   "blackrose-smithy"
+  ],
+  "fence": [
+   "blackrose-pawn"
+  ],
+  "bonfire": [
+   "blackrose-shrine"
+  ],
+  "travel": [
+   "blackrose-rootpost"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "blackrose-prison",
+   "name": "Blackrose Prison",
+   "kind": "interior",
+   "building_kind": "prison",
+   "interior": "blackrose-prison",
+   "enterable": true,
+   "quarter": "the-warders",
+   "offset_m": [
+    -40,
+    0,
+    -13
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1865.5,
     2.68,
-    4450
-  ],
-  "radius_m": 62,
-  "identity": "A town that exists to feed and guard a prison. The Imperial-built Blackrose Prison squats over it; the town is its outbuildings. Tension: half the townsfolk are ex-guards, half are inmates’ families, and the warden is not who the Empire thinks.",
-  "power_reading": "There is no square, only corridors between compound walls. Every street is a checkpoint.",
-  "layout": {
-    "plan": "corridor",
-    "proof": "The plan contains no open space wider than four metres except the prison yard, which is walled. Every building fronts a corridor and every corridor has a gate at each end; the prison block is the largest footprint and the only one no corridor passes."
+    4444.8
+   ],
+   "service": null,
+   "faction": "ninth-cohort",
+   "door_declared": [
+    1865.5,
+    2.68,
+    4437
+   ],
+   "footprint_m2": 212.45,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    13.61,
+    15.61
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "prison-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "architecture_kit": {
-    "material_rule": "Everything is a wall. Imperial fortress masonry furred with fungus — the prison’s own stone is being digested. No window below three metres anywhere in the town.",
-    "silhouette": "the furred parapet — fortress crenellation so overgrown its profile has gone soft",
-    "meshes": [
-      "bla_fortress_wall",
-      "bla_furred_parapet",
-      "bla_corridor_gate",
-      "bla_prison_block",
-      "bla_warder_house",
-      "bla_visitor_shed",
-      "bla_lime_pit",
-      "bla_gallows_frame"
-    ]
+  {
+   "id": "blackrose-inn",
+   "name": "The Visitors’ House",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "blackrose-inn",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -40,
+    0,
+    4
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1864.75,
+    2.68,
+    4456.5
+   ],
+   "service": "inn",
+   "faction": null,
+   "door_declared": [
+    1865.5,
+    2.68,
+    4454
+   ],
+   "footprint_m2": 68.19,
+   "roofline_m": 6.2,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    13.61,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "tavern-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "quarters": [
-    "prison-gate",
-    "the-warders",
-    "low-town"
-  ],
-  "targets": {
-    "buildings": 18,
-    "named_interiors": 12,
-    "enterable_pct": 67,
-    "named_npcs": 20,
-    "scheduled_npc_pct": 70,
-    "shops": 3,
-    "taverns": 1,
-    "temple_shrine": 1,
-    "guild_halls": 2,
-    "trainers": 2,
-    "quest_givers": 5,
-    "rumour_variants": 8,
-    "bonfire": 1,
-    "road_gates": 2,
-    "unique_architecture_kit": "required",
-    "souls_loop_dungeon_attached": 1
+  {
+   "id": "blackrose-warders-hall",
+   "name": "The Warders' Hall",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "blackrose-warders-hall",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -40,
+    0,
+    5
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1865.5,
+    2.68,
+    4457.5
+   ],
+   "service": null,
+   "faction": "ninth-cohort",
+   "door_declared": [
+    1865.5,
+    2.68,
+    4455
+   ],
+   "footprint_m2": 68.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    13.61,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "guild-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "counts": {
-    "buildings": 22,
-    "interior": 12,
-    "sealed_with_reason": 4,
-    "structure": 6,
-    "named_interiors": 12,
-    "enterable_pct": 75,
-    "property_zones": 30,
-    "shops": 3,
-    "taverns": 1,
-    "temple_shrine": 1,
-    "guild_halls": 2,
-    "road_gates": 2
+  {
+   "id": "blackrose-market",
+   "name": "The Gate Market",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "blackrose-market",
+   "enterable": true,
+   "quarter": "the-warders",
+   "offset_m": [
+    -29,
+    0,
+    -5
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1875.75,
+    2.68,
+    4447.5
+   ],
+   "service": "trader",
+   "faction": null,
+   "door_declared": [
+    1876.5,
+    2.68,
+    4445
+   ],
+   "footprint_m2": 68.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    13.61,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "shop-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "services": {
-    "inn": [
-      "blackrose-inn"
-    ],
-    "trader": [
-      "blackrose-market"
-    ],
-    "smith": [
-      "blackrose-smithy"
-    ],
-    "fence": [
-      "blackrose-pawn"
-    ],
-    "bonfire": [
-      "blackrose-shrine"
-    ],
-    "travel": [
-      "blackrose-rootpost"
-    ]
+  {
+   "id": "blackrose-smithy",
+   "name": "The Chain Forge",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "blackrose-smithy",
+   "enterable": true,
+   "quarter": "prison-gate",
+   "offset_m": [
+    -29,
+    0,
+    -4
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1876.5,
+    2.68,
+    4448.5
+   ],
+   "service": "smith",
+   "faction": null,
+   "door_declared": [
+    1876.5,
+    2.68,
+    4446
+   ],
+   "footprint_m2": 68.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    13.61,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "shop-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "buildings": [
-    {
-      "id": "blackrose-prison",
-      "name": "Blackrose Prison",
-      "kind": "interior",
-      "building_kind": "prison",
-      "interior": "blackrose-prison",
-      "enterable": true,
-      "quarter": "the-warders",
-      "offset_m": [
-        -40,
-        0,
-        -13
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1865.5,
-        2.68,
-        4437
-      ],
-      "service": null,
-      "faction": "ninth-cohort"
-    },
-    {
-      "id": "blackrose-inn",
-      "name": "The Visitors’ House",
-      "kind": "interior",
-      "building_kind": "tavern",
-      "interior": "blackrose-inn",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -40,
-        0,
-        4
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1865.5,
-        2.68,
-        4454
-      ],
-      "service": "inn",
-      "faction": null
-    },
-    {
-      "id": "blackrose-warders-hall",
-      "name": "The Warders' Hall",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "blackrose-warders-hall",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -40,
-        0,
-        5
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1865.5,
-        2.68,
-        4455
-      ],
-      "service": null,
-      "faction": "ninth-cohort"
-    },
-    {
-      "id": "blackrose-market",
-      "name": "The Gate Market",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "blackrose-market",
-      "enterable": true,
-      "quarter": "the-warders",
-      "offset_m": [
-        -29,
-        0,
-        -5
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1876.5,
-        2.68,
-        4445
-      ],
-      "service": "trader",
-      "faction": null
-    },
-    {
-      "id": "blackrose-smithy",
-      "name": "The Chain Forge",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "blackrose-smithy",
-      "enterable": true,
-      "quarter": "prison-gate",
-      "offset_m": [
-        -29,
-        0,
-        -4
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1876.5,
-        2.68,
-        4446
-      ],
-      "service": "smith",
-      "faction": null
-    },
-    {
-      "id": "blackrose-pawn",
-      "name": "The Gate Pawn",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "blackrose-pawn",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -29,
-        0,
-        13
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1876.5,
-        2.68,
-        4463
-      ],
-      "service": "fence",
-      "faction": null
-    },
-    {
-      "id": "blackrose-shrine",
-      "name": "The Lime-Pit Hist-Shrine",
-      "kind": "interior",
-      "building_kind": "shrine",
-      "interior": "blackrose-shrine",
-      "enterable": true,
-      "quarter": "the-warders",
-      "offset_m": [
-        -18,
-        0,
-        -13
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1887.5,
-        2.68,
-        4437
-      ],
-      "service": "bonfire",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "blackrose-rootpost",
-      "name": "The Blackrose Rootpost",
-      "kind": "interior",
-      "building_kind": "travel",
-      "interior": "blackrose-rootpost",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -18,
-        0,
-        4
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1887.5,
-        2.68,
-        4454
-      ],
-      "service": "travel",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "blackrose-clerk",
-      "name": "The Committals Clerk",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "blackrose-clerk",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -18,
-        0,
-        5
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1887.5,
-        2.68,
-        4455
-      ],
-      "service": null,
-      "faction": "the-imperial-assize"
-    },
-    {
-      "id": "blackrose-house-0",
-      "name": "Livia Drusius's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "blackrose-house-0",
-      "enterable": true,
-      "quarter": "prison-gate",
-      "offset_m": [
-        -7,
-        0,
-        -5
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1898.5,
-        2.68,
-        4445
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "blackrose-house-1",
-      "name": "Vaman Sarethi's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "blackrose-house-1",
-      "enterable": true,
-      "quarter": "the-warders",
-      "offset_m": [
-        -7,
-        0,
-        -4
-      ],
-      "yaw_deg": 180,
-      "door": [
-        1898.5,
-        2.68,
-        4446
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "blackrose-house-2",
-      "name": "Lucia Nerentius's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "blackrose-house-2",
-      "enterable": true,
-      "quarter": "low-town",
-      "offset_m": [
-        -7,
-        0,
-        13
-      ],
-      "yaw_deg": 0,
-      "door": [
-        1898.5,
-        2.68,
-        4463
-      ],
-      "service": null,
-      "faction": "ninth-cohort"
-    },
-    {
-      "id": "blackrose-east-block",
-      "name": "The East Block",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        4,
-        0,
-        -13
-      ],
-      "yaw_deg": 180,
-      "seal_state": "visible",
-      "reason": "lost to the fungus; the warders lime the door every month and will not say what is behind it",
-      "told_by_trade": "warder"
-    },
-    {
-      "id": "blackrose-condemned-row",
-      "name": "The Condemned Row",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "the-warders",
-      "offset_m": [
-        4,
-        0,
-        4
-      ],
-      "yaw_deg": 0,
-      "seal_state": "visible",
-      "reason": "the Empire ordered it emptied and it was emptied, and the order did not say where to",
-      "told_by_trade": "legionary"
-    },
-    {
-      "id": "blackrose-old-gallows",
-      "name": "The Old Gallows House",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        4,
-        0,
-        5
-      ],
-      "yaw_deg": 180,
-      "seal_state": "visible",
-      "reason": "shut the year hanging stopped, and the frame outside was left standing on purpose",
-      "told_by_trade": "publican"
-    },
-    {
-      "id": "blackrose-family-row",
-      "name": "The Families’ Row",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "the-warders",
-      "offset_m": [
-        15,
-        0,
-        -5
-      ],
-      "yaw_deg": 0,
-      "seal_state": "visible",
-      "reason": "the families were moved out in one night and the doors were bricked before morning",
-      "told_by_trade": "weaver"
-    },
-    {
-      "id": "blackrose-struct-the-prison-wall",
-      "name": "The Prison Wall",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "the-warders",
-      "offset_m": [
-        15,
-        0,
-        -4
-      ],
-      "yaw_deg": 180,
-      "residential_props": false
-    },
-    {
-      "id": "blackrose-struct-the-corridor-gates",
-      "name": "The Corridor Gates",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        15,
-        0,
-        13
-      ],
-      "yaw_deg": 0,
-      "residential_props": false
-    },
-    {
-      "id": "blackrose-struct-the-lime-pit",
-      "name": "The Lime Pit",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        26,
-        0,
-        -13
-      ],
-      "yaw_deg": 180,
-      "residential_props": false
-    },
-    {
-      "id": "blackrose-struct-the-gallows-frame",
-      "name": "The Gallows Frame",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        26,
-        0,
-        4
-      ],
-      "yaw_deg": 0,
-      "residential_props": false
-    },
-    {
-      "id": "blackrose-struct-the-visitors-queue-rail",
-      "name": "The Visitors’ Queue Rail",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "the-warders",
-      "offset_m": [
-        26,
-        0,
-        5
-      ],
-      "yaw_deg": 180,
-      "residential_props": false
-    },
-    {
-      "id": "blackrose-struct-the-water-butt-line",
-      "name": "The Water Butt Line",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "low-town",
-      "offset_m": [
-        37,
-        0,
-        -5
-      ],
-      "yaw_deg": 0,
-      "residential_props": false
-    }
-  ],
-  "interiors": [
-    "blackrose-prison",
-    "blackrose-inn",
-    "blackrose-warders-hall",
-    "blackrose-market",
-    "blackrose-smithy",
-    "blackrose-pawn",
-    "blackrose-shrine",
-    "blackrose-rootpost",
-    "blackrose-clerk",
-    "blackrose-house-0",
-    "blackrose-house-1",
-    "blackrose-house-2"
-  ],
-  "generated_by": "tools/world/build-settlements.mjs"
+  {
+   "id": "blackrose-pawn",
+   "name": "The Gate Pawn",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "blackrose-pawn",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -29,
+    0,
+    13
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1876.5,
+    2.68,
+    4470.2
+   ],
+   "service": "fence",
+   "faction": null,
+   "door_declared": [
+    1876.5,
+    2.68,
+    4463
+   ],
+   "footprint_m2": 178.83,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    12.41,
+    14.41
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "shop-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-shrine",
+   "name": "The Lime-Pit Hist-Shrine",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "blackrose-shrine",
+   "enterable": true,
+   "quarter": "the-warders",
+   "offset_m": [
+    -18,
+    0,
+    -13
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1887.5,
+    2.68,
+    4444.2
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers",
+   "door_declared": [
+    1887.5,
+    2.68,
+    4437
+   ],
+   "footprint_m2": 178.83,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    12.41,
+    14.41
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "shrine-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-rootpost",
+   "name": "The Blackrose Rootpost",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "blackrose-rootpost",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -18,
+    0,
+    4
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1886.75,
+    2.68,
+    4456.5
+   ],
+   "service": "travel",
+   "faction": "rootkeepers",
+   "door_declared": [
+    1887.5,
+    2.68,
+    4454
+   ],
+   "footprint_m2": 62.17,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    12.41,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "travel-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-clerk",
+   "name": "The Committals Clerk",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "blackrose-clerk",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -18,
+    0,
+    5
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1887.5,
+    2.68,
+    4457.5
+   ],
+   "service": null,
+   "faction": "the-imperial-assize",
+   "door_declared": [
+    1887.5,
+    2.68,
+    4455
+   ],
+   "footprint_m2": 62.17,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    12.41,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "guild-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-house-0",
+   "name": "Livia Drusius's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "blackrose-house-0",
+   "enterable": true,
+   "quarter": "prison-gate",
+   "offset_m": [
+    -7,
+    0,
+    -5
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1897.75,
+    2.68,
+    4447.5
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
+    1898.5,
+    2.68,
+    4445
+   ],
+   "footprint_m2": 62.17,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    12.41,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "dwelling-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-house-1",
+   "name": "Vaman Sarethi's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "blackrose-house-1",
+   "enterable": true,
+   "quarter": "the-warders",
+   "offset_m": [
+    -7,
+    0,
+    -4
+   ],
+   "yaw_deg": 180,
+   "door": [
+    1898.5,
+    2.68,
+    4448.5
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
+    1898.5,
+    2.68,
+    4446
+   ],
+   "footprint_m2": 68.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    13.61,
+    5.01
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "dwelling-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-house-2",
+   "name": "Lucia Nerentius's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "blackrose-house-2",
+   "enterable": true,
+   "quarter": "low-town",
+   "offset_m": [
+    -7,
+    0,
+    13
+   ],
+   "yaw_deg": 0,
+   "door": [
+    1898.5,
+    2.68,
+    4470.2
+   ],
+   "service": null,
+   "faction": "ninth-cohort",
+   "door_declared": [
+    1898.5,
+    2.68,
+    4463
+   ],
+   "footprint_m2": 178.83,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    12.41,
+    14.41
+   ],
+   "grammar": "hist-bole",
+   "mesh_id": "dwelling-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-east-block",
+   "name": "The East Block",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    4,
+    0,
+    -13
+   ],
+   "yaw_deg": 180,
+   "seal_state": "visible",
+   "reason": "lost to the fungus; the warders lime the door every month and will not say what is behind it",
+   "told_by_trade": "warder",
+   "grammar": "hist-bole",
+   "mesh_id": "sealed-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-condemned-row",
+   "name": "The Condemned Row",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "the-warders",
+   "offset_m": [
+    4,
+    0,
+    4
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "the Empire ordered it emptied and it was emptied, and the order did not say where to",
+   "told_by_trade": "legionary",
+   "grammar": "hist-bole",
+   "mesh_id": "sealed-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-old-gallows",
+   "name": "The Old Gallows House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    4,
+    0,
+    5
+   ],
+   "yaw_deg": 180,
+   "seal_state": "visible",
+   "reason": "shut the year hanging stopped, and the frame outside was left standing on purpose",
+   "told_by_trade": "publican",
+   "grammar": "hist-bole",
+   "mesh_id": "sealed-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-family-row",
+   "name": "The Families’ Row",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "the-warders",
+   "offset_m": [
+    15,
+    0,
+    -5
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "the families were moved out in one night and the doors were bricked before morning",
+   "told_by_trade": "weaver",
+   "grammar": "hist-bole",
+   "mesh_id": "sealed-4",
+   "volume_m3": 75,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-prison-wall",
+   "name": "The Prison Wall",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-warders",
+   "offset_m": [
+    15,
+    0,
+    -4
+   ],
+   "yaw_deg": 180,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-5",
+   "volume_m3": 96,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-corridor-gates",
+   "name": "The Corridor Gates",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    15,
+    0,
+    13
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-6",
+   "volume_m3": 175,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-lime-pit",
+   "name": "The Lime Pit",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    26,
+    0,
+    -13
+   ],
+   "yaw_deg": 180,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-7",
+   "volume_m3": 60,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-gallows-frame",
+   "name": "The Gallows Frame",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    26,
+    0,
+    4
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-8",
+   "volume_m3": 120,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-visitors-queue-rail",
+   "name": "The Visitors’ Queue Rail",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "the-warders",
+   "offset_m": [
+    26,
+    0,
+    5
+   ],
+   "yaw_deg": 180,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-9",
+   "volume_m3": 140,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "blackrose-struct-the-water-butt-line",
+   "name": "The Water Butt Line",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "low-town",
+   "offset_m": [
+    37,
+    0,
+    -5
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "grammar": "hist-bole",
+   "mesh_id": "structure-10",
+   "volume_m3": 75,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "scarring"
+   ],
+   "local_repair": false,
+   "good_order": null
+  }
+ ],
+ "interiors": [
+  "blackrose-prison",
+  "blackrose-inn",
+  "blackrose-warders-hall",
+  "blackrose-market",
+  "blackrose-smithy",
+  "blackrose-pawn",
+  "blackrose-shrine",
+  "blackrose-rootpost",
+  "blackrose-clerk",
+  "blackrose-house-0",
+  "blackrose-house-1",
+  "blackrose-house-2"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "hist-bole",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

@@ -108,10 +108,12 @@
   "gold_price": 300,
   "base_disposition": 35,
   "honour_bound": false,
+  "reputation_min": 10,
   "grounds": [
    "yield",
    "gold",
-   "faction"
+   "faction",
+   "reputation"
   ],
   "surrender": true,
   "fiction": "A militiaman arresting you is doing a job, not settling a score. Yielding works: he takes you in. Seam S13 requires a fight with a person to have a non-lethal exit, and RI-CRM01 \u00a74 band 3 requires that exit to be a SURRENDER specifically \u2014 the arrest interaction is the parley, and the three answers (pay, resist, serve) are what it opens onto.",

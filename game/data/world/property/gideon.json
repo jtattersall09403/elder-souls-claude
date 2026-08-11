@@ -6781,6 +6781,96 @@
           ]
         }
       ]
+    },
+    {
+      "id": "gideon.faction-dockhands.r0",
+      "name": "the Dockhands hiring shelter",
+      "settlement": "gideon",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:dockhands",
+      "owner_name": "the Dockhands hiring shelter",
+      "residents": [],
+      "faction": "dockhands",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "gideon.faction-dockhands.r0.registry",
+          "id": "faction_registry",
+          "name": "the Dockhands hiring shelter membership roll",
+          "owner": "faction:dockhands",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "gideon.faction-imperial-assize.r0",
+      "name": "the Imperial Assize records room",
+      "settlement": "gideon",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:imperial-assize",
+      "owner_name": "the Imperial Assize records room",
+      "residents": [],
+      "faction": "imperial-assize",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "gideon.faction-imperial-assize.r0.registry",
+          "id": "faction_registry",
+          "name": "the Imperial Assize records room membership roll",
+          "owner": "faction:imperial-assize",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
     }
   ]
 }

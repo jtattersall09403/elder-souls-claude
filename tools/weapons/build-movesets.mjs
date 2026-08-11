@@ -133,10 +133,32 @@ const SHAPE_ARC_BAND = {
 // published column gives way is an arbitration, not a build step.
 const BAND_TOP = { light: 20, medium: 26, heavy: 32, ultra: 40, ranged: 20 };
 const SMOOTHSTEP_PEAK = 1.5;
+const ACTIVE_FRACTION_MAX = 0.16;
 const massViolations = [];
 function impliedTipSpeed(arcDeg, reachM, activeF) {
-  if (!(activeF > 0) || !(arcDeg > 0)) return 0;
+  if (!(activeF > 0) || !(Math.abs(arcDeg) > 0)) return 0;
   return SMOOTHSTEP_PEAK * (Math.abs(arcDeg) * Math.PI / 180) * reachM * 60 / activeF;
+}
+
+// ARBITRATION S36: RI-WPN02 owns each slot's geometry, so repair an over-driven slot by using
+// the legal active-window headroom before changing its arc.  The ceiling is re-derived from the
+// slot's own published arc/reach at the longest window permitted by RI-WPN02 §B.
+function s36ActiveFrames(arcDeg, reachM, startupF, activeF, recoveryF, tier) {
+  const bandTop = BAND_TOP[tier];
+  if (bandTop === undefined || !(Math.abs(arcDeg) > 0)) return activeF;
+  const activeMax = Math.max(activeF,
+    Math.floor((ACTIVE_FRACTION_MAX / (1 - ACTIVE_FRACTION_MAX)) * (startupF + recoveryF)));
+  const forced = impliedTipSpeed(arcDeg, reachM, activeMax);
+  // S36's derived ceiling does not supersede WPN05 E.2's independent 1.00 m/frame socket hard
+  // fail. At 60 Hz that is an absolute 60 m/s cap, even where a long-reach/wide-arc slot earns a
+  // higher S36 mass ceiling.
+  // The closed-form yaw estimate omits compound arm/shoulder travel; retain headroom for that
+  // measured rig contribution rather than pinning the analytic estimate to the 60 m/s edge.
+  const ceiling = Math.min(35, Math.max(1.25 * bandTop, 1.25 * forced));
+  // Pitch/extension can move a long tip even when the yaw arc is near zero (plunges and jumping
+  // thrusts). Six live frames per metre bounds that compound pose travel as well as the yaw term.
+  return Math.max(activeF, Math.ceil(reachM * 6), Math.ceil(
+    SMOOTHSTEP_PEAK * (Math.abs(arcDeg) * Math.PI / 180) * reachM * 60 / ceiling));
 }
 
 /** Which classes may be dual-wielded (RI-WPN06 §C O2). Heavy and ultra classes may not. */
@@ -238,6 +260,12 @@ function resolveProfile(famName, cls, slotArcDeg, shift, wp, twoHand) {
   const used = p.dir * Math.abs(p.arc_deg);
   p.start_deg = -used * p.center_frac;
   p.arc_deg = used;
+  // A swing plane is an unoriented geometric plane: +116° is the same plane as -64° with the
+  // travel direction reversed. Keeping it beyond vertical makes the projected tip approach the
+  // actor axis and creates an artificial, yaw-uncorrectable bearing jump. Canonicalise authored
+  // planes to the physical [-90,+90] representation before synthesis.
+  while (p.plane_deg > 90) p.plane_deg -= 180;
+  while (p.plane_deg < -90) p.plane_deg += 180;
   for (const k of ['arc_deg', 'start_deg', 'plane_deg', 'cock_frac', 'follow_frac', 'extend', 'crouch_m', 'lean_deg', 'twist_deg', 'root_scale']) {
     p[k] = Math.round(p[k] * 1000) / 1000;
   }
@@ -725,6 +753,19 @@ for (const w of ROSTER.weapons) {
         r: clamp(Math.round(spec.f.r * fk), 6, 180),
       };
     }
+    // `prof.arc_deg`, rather than `slotArc`, is what the generated slot publishes (notably after
+    // the two-handed pose transform).  Repair and audit the exact geometry downstream consumes.
+    const publishedArc = Math.min(360, Math.round(Math.abs(prof.arc_deg) * 10) / 10);
+    // S36 deliberately leaves ranged unceiled, and the bow combat consumer treats its authored
+    // live window as the projectile-release contract. Do not retime that unrelated seam.
+    if (c.tier !== 'ranged') f.a = s36ActiveFrames(publishedArc, reach, f.s, f.a, f.r, c.tier);
+    // Compound joint motion is bounded per phase, not only during the live yaw sweep. Scale each
+    // authored phase with weapon length so long tips do not turn a legal shoulder/elbow change
+    // into a one-frame socket teleport.
+    const posePhaseFloor = Math.ceil(reach * 15);
+    f.s = Math.max(f.s, posePhaseFloor);
+    if (c.tier !== 'ranged') f.a = Math.max(f.a, posePhaseFloor);
+    f.r = Math.max(f.r, posePhaseFloor);
     const rootM = clamp(Math.round(((isR1 ? spec.root : spec.root * prof.root_scale) + (d.root || 0)) * 1000) / 1000, -2.0, 6.0);
     const baseHa = !!spec.ha || (g.ha_extra || []).includes(slotId);
     const ha = haFlip.has(slotId) ? !baseHa : baseHa;
@@ -736,7 +777,7 @@ for (const w of ROSTER.weapons) {
     const capsuleLen = Math.max(0.25, reach - Math.min(Math.abs(rootM), 0.90) - 0.54);
     // RI-WPN05 §E mass guard — see §MASS GUARD above. §E.2's ceiling is 1.25x the tier band top.
     const massCeil = BAND_TOP[c.tier] * 1.25;
-    const massImplied = impliedTipSpeed(slotArc, reach, f.a);
+    const massImplied = impliedTipSpeed(publishedArc, reach, f.a);
     const massOver = massImplied > massCeil;
     if (massOver) {
       massViolations.push({
@@ -768,10 +809,10 @@ for (const w of ROSTER.weapons) {
       recovery_f: f.r,
       ...(spec.charge ? { charge_max_f: spec.charge, charge_ramp: { motion_value_at_full: 1.30, poise_damage_at_full: 1.50, hyperarmour_at_full: true } } : {}),
       stamina: Math.min(90, Math.round(spec.stam * 10) / 10),
-      motion_value: Math.min(4.0, Math.round(spec.mv * 100) / 100),
+      motion_value: Math.min(4.0, Math.round((spec.mv + (slotId === 'bow.quick' ? (w.quick_mv_delta || 0) : 0) + (slotId === 'r1.1' ? (w.r1_mv_delta || 0) : 0)) * 100) / 100),
       poise_damage: Math.min(140, Math.round(spec.poise)),
       root_dz_m: rootM,
-      arc_sweep_deg: Math.min(360, Math.round(prof.arc_deg === 0 ? 0 : Math.abs(prof.arc_deg) * 10) / 10),
+      arc_sweep_deg: publishedArc,
       shape: prof.shape,
       // Written ONLY when the slot violates RI-WPN05 §E.2, so a clean slot carries nothing and
       // a violating one carries its own indictment into every downstream tool and every critic.

@@ -72,6 +72,10 @@ def load_books(books_dir: Path):
         except Exception as exc:  # noqa: BLE001 - we want the filename with the message
             errors.append((rel, str(exc)))
             continue
+        # The RI-LOR06 registry validator requires this title index beside the
+        # shipped books.  It is an index, not a second copy of the corpus.
+        if doc.get("schema") == "elder-souls/books-manifest@1":
+            continue
         if isinstance(doc.get("books"), list):
             for b in doc["books"]:
                 b = dict(b)

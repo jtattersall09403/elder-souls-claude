@@ -1,0 +1,56 @@
+{
+  "task_id": "W1-19-builder-codex-20260810",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "builder_delivery_incomplete",
+  "base_commit": "c9603f64155c15bec8f17a09a8c9110a0a81e67e",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "orchestration/status/W1-19-builder-codex-20260810.json",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/src/sim/quest/reveal-routes.js",
+    "tools/quests/reveal-route-audit.mjs"
+  ],
+  "files_claimed": [
+    "game/data/quests/mainline.json",
+    "game/data/quests/mainline-act1.json",
+    "game/data/quests/mainline-act2.json",
+    "game/data/quests/mainline-act3.json",
+    "game/data/quests/mainline-act4.json",
+    "game/data/quests/mainline-act5.json",
+    "game/data/quests/mainline-backpath.json",
+    "game/data/quests/closure-registry.json",
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/topics/main-quest-argument.json",
+    "game/data/npcs/mainline.json",
+    "game/src/sim/quest/",
+    "tools/quests/",
+    "tools/experience/",
+    "tools/lore/",
+    "corpus/90-verdicts/wave1/artifacts/W1-19-builder/",
+    "orchestration/status/W1-19-builder-codex-20260810.json"
+  ],
+  "next_step": "Continue Gate A from reports/runs/W1-19-R3/reveal-route-audit.json: place or author the 13 remaining missing person sources, then run the honest 40-signature intended/backpath population when browser contention clears.",
+  "notes": [
+    "Production builder only; independent/blind judgement remains NOT_RUN.",
+    "W1-25 and W1-26 ownership is excluded except for a narrowly necessary W1-19 consumer seam.",
+    "Added real proximity/not-noticed eavesdrop and living/dead corpse examination consumers instead of treating talkTo/discoverCorpse as equivalent shortcuts.",
+    "Current reveal audit improved from 100/121 to 108/121, but remains RED on 13 missing NPC sources; this is ordinary production work, not an independent dependency.",
+    "Browser Gate A/C populations were not admissibly completed: contention gate reported 10 browser instances over the ceiling and two attempted chain-floor processes were terminated without evidence.",
+    "Independent blind ending comparison remains NOT_RUN by actor boundary."
+  ],
+  "gate_accounting": {
+    "A": "RED_NOT_COMPLETE: reveal routes 108/121; chain populations not completed",
+    "B": "NOT_RUN: matched failing/passing and exclusive-choice populations remain",
+    "C": "NOT_RUN: builder production protocol and independent blind landing remain",
+    "D": "RED_NOT_COMPLETE: complete lore/opacity aggregate not run; reveal audit red"
+  },
+  "checks": {
+    "mainline_census": "PASS",
+    "boot_check": "PASS",
+    "check_quests": "PASS with 12 non-demanded missing-document warnings",
+    "check_content": "PASS",
+    "reveal_route_audit": "FAIL 108/121"
+  }
+}

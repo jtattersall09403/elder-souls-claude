@@ -1,0 +1,32 @@
+{
+  "task_id": "codex-w1-09-builder-20260810",
+  "piece": "W1-09",
+  "role": "builder",
+  "state": "complete",
+  "started": "2026-08-10T00:00:00Z",
+  "base": "2b7a661",
+  "files_touched": [
+    "orchestration/status/codex-w1-09-builder-20260810.json",
+    "game/data/combat/enemies/champion_hist_marked.json",
+    "tools/harness/cmb-probe.mjs",
+    "reports/w1-09/BUILDER-SWEEP-20260810.md",
+    "reports/w1-09/builder-20260810/",
+    "docs/shots/2026-08-10-w1-09-combat-core.svg",
+    "reports/blog-feed.jsonl",
+    "reports/w1-09/BUILDER-COMPLETION-20260810.md",
+    "reports/w1-09/builder-completion-20260810/"
+  ],
+  "files_claimed": [],
+  "next_step": "Independent critic starts at reports/w1-09/BUILDER-COMPLETION-20260810.md Exact critic entry point, verifies hashes and delete-fix, then resumes fail-closed at the first NOT_RUN row when browser contention clears.",
+  "notes": [
+    "Continuation only; preserve current implementation and evidence.",
+    "S40 arithmetic is fixed authority and will not be reinterpreted.",
+    "No independent or blind verdict was issued by this builder.",
+    "RI-CMB12 M1 combo_b repaired from t_react 18 to the native 19-frame floor by one additional committed startup frame.",
+    "S40 live probe observes seven starts and canonical frame-366 denial; stale instrument declarations were corrected without changing production roll/stamina arithmetic.",
+    "The PR evidence image is a text-native SVG chart so the branch contains no unsupported binary files.",
+    "Completion continuation resumed from current HEAD; shared generated docs/progress/status/INDEX/blog files will not be regenerated.",
+    "Completion accounting covers all 31 governing items: 31 W1-09-owned/applicable, 0 sibling-reused, 0 not-applicable, and no independent PASS.",
+    "Browser hard stop: contention gate exit 3 (14 instances / ceiling 5) and boot-check closed-target failure; browser-backed rows remain explicit NOT_RUN rather than green."
+  ]
+}

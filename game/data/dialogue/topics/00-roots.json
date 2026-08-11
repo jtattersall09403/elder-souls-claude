@@ -1,20 +1,20 @@
 {
   "schema": "elder-souls/dialogue-topics@2",
   "group": "roots",
-  "owner": "W1-17. RI-DLG01 §A — 'The player begins with exactly nine topics, granted at character creation.'",
-  "provenance": "The nine keyword strings are community-data (the defaultTopics table in the Chargen Scenarios MWSE mod, cited by RI-DLG01 §Provenance). Every response text is ours.",
+  "owner": "W1-17. RI-DLG01 \u00a7A \u2014 'The player begins with exactly nine topics, granted at character creation.'",
+  "provenance": "The nine keyword strings are community-data (the defaultTopics table in the Chargen Scenarios MWSE mod, cited by RI-DLG01 \u00a7Provenance). Every response text is ours.",
   "key_legend": {
     "id": "topic keyword slug; `name` is the keyword as the player sees it",
-    "infos": "the topic's INFO list, IN AUTHORED ORDER. First-match-wins: the engine returns the first entry whose WHOLE filter conjunction passes (RI-DLG01 §A).",
-    "a": "archetype — the speaker's voice slot (game/data/dialogue/speakers.json)",
+    "infos": "the topic's INFO list, IN AUTHORED ORDER. First-match-wins: the engine returns the first entry whose WHOLE filter conjunction passes (RI-DLG01 \u00a7A).",
+    "a": "archetype \u2014 the speaker's voice slot (game/data/dialogue/speakers.json)",
     "x": "response text",
-    "to": "AddTopic edges. RI-DLG01 §A: 'The AddTopic calls in the result scripts are the edges of the graph.'",
+    "to": "AddTopic edges. RI-DLG01 \u00a7A: 'The AddTopic calls in the result scripts are the edges of the graph.'",
     "d": "Disposition >= N (filter field 10)",
     "r": "speaker race",
     "c": "speaker class",
     "f": "speaker faction",
     "fr": "speaker faction rank >= N",
-    "cell": "cell-name PREFIX match (filter field 6) — a settlement id here matches every cell inside it",
+    "cell": "cell-name PREFIX match (filter field 6) \u2014 a settlement id here matches every cell inside it",
     "pf": "player faction",
     "pr": "player rank >= N",
     "sx": "speaker sex",
@@ -22,7 +22,7 @@
     "j": "[questId, op, value] journal condition",
     "nj": "[questId, op, value] journal condition that must NOT hold",
     "act": "main-quest act gate, sugar for j on the main quest index",
-    "q": "true — this INFO is quest-bearing (it moves the journal)",
+    "q": "true \u2014 this INFO is quest-bearing (it moves the journal)",
     "res": "result script: {journal:[id,stage], flag:'name', modDisp:n, addTopic handled by `to`}"
   },
   "topics": [
@@ -407,7 +407,34 @@
           "x": "Do not put your hands in the dye vats even to point at something, dry-one, because the colour does not come off for a season and the guards in Archon have learned to read a purple hand as a confession.",
           "to": [
             "archon",
-            "the-dye-yards"
+            "the-dye-yards",
+            "what-the-warmbloods-ask",
+            "the-river-bands",
+            "the-wine",
+            "why-anyone-comes-here",
+            "the-market",
+            "the-draught",
+            "my-kingdom",
+            "the-marsh",
+            "the-count-of-forty",
+            "what-people-say-happened",
+            "the-three-previous-severances",
+            "the-clause",
+            "the-eleven-wells",
+            "the-leave-book",
+            "the-compact",
+            "the-cohorts-stormhold-does-not-have",
+            "the-hold",
+            "the-writ",
+            "my-work",
+            "lukiul",
+            "dying-far-from-the-tree",
+            "the-duskfall-count",
+            "what-the-bone-holds",
+            "enchanting",
+            "spellmaking",
+            "tidewrack",
+            "your-hatch-name"
           ]
         },
         {
@@ -474,7 +501,7 @@
           "to": []
         }
       ],
-      "note": "The rumour POOL itself is game/data/dialogue/rumours/*.json, partitioned per settlement and per main-quest act. This INFO is the last-resort catch-all for a speaker who has no rumour pool entry that passes — RI-DLG01's Greeting-9 discipline applied to a topic."
+      "note": "The rumour POOL itself is game/data/dialogue/rumours/*.json, partitioned per settlement and per main-quest act. This INFO is the last-resort catch-all for a speaker who has no rumour pool entry that passes \u2014 RI-DLG01's Greeting-9 discipline applied to a topic."
     },
     {
       "id": "little-secret",

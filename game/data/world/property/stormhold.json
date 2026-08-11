@@ -7308,6 +7308,96 @@
           ]
         }
       ]
+    },
+    {
+      "id": "stormhold.faction-deep-kin.r0",
+      "name": "the Deep Kin hollow",
+      "settlement": "stormhold",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:deep-kin",
+      "owner_name": "the Deep Kin hollow",
+      "residents": [],
+      "faction": "deep-kin",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "stormhold.faction-deep-kin.r0.registry",
+          "id": "faction_registry",
+          "name": "the Deep Kin hollow membership roll",
+          "owner": "faction:deep-kin",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
+    },
+    {
+      "id": "stormhold.faction-xul-aneekh.r0",
+      "name": "the Xul-Aneekh root gallery",
+      "settlement": "stormhold",
+      "quarter": "faction-house",
+      "class": "faction_interior",
+      "owner": "faction:xul-aneekh",
+      "owner_name": "the Xul-Aneekh root gallery",
+      "residents": [],
+      "faction": "xul-aneekh",
+      "schedule": {
+        "open_h": 6,
+        "close_h": 22
+      },
+      "bounds_m": {
+        "x": [
+          -5,
+          5
+        ],
+        "y": [
+          0,
+          3.2
+        ],
+        "z": [
+          -5,
+          5
+        ]
+      },
+      "lights": [],
+      "contents": [
+        {
+          "instance": "stormhold.faction-xul-aneekh.r0.registry",
+          "id": "faction_registry",
+          "name": "the Xul-Aneekh root gallery membership roll",
+          "owner": "faction:xul-aneekh",
+          "owner_scope": "shared",
+          "value_g": 25,
+          "weight_kg": 1,
+          "unique": true,
+          "stolen_from": null,
+          "takeable": true
+        }
+      ],
+      "locks": []
     }
   ]
 }

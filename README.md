@@ -54,11 +54,45 @@ The controls, read out of `game/data/input/profiles.json` rather than from memor
 you plug one in — the entire opening plays on a pad alone, and the sticks are analogue rather than
 on/off.
 
+### With a GameSir X2s Type-C
+
+The **wired USB-C GameSir X2s Type-C Mobile Gaming Controller** is the project's reference mobile
+pad (not the similarly named Bluetooth model). Clamp the phone in landscape, connect the pad, then
+press any pad button once so the browser exposes it to the game. On a phone it uses this layout:
+
+| GameSir control | Action |
+|---|---|
+| Left stick / right stick | Move / look |
+| **A** | Jump |
+| **B** | Tap to roll; hold to sprint |
+| **X** | Use item |
+| **Y** | Tap to interact; hold to two-hand your weapon |
+| **LB / RB** | Block / light attack |
+| **LT / RT** | Parry / heavy attack (hold RT to charge) |
+| **L3 / R3** | Interact / lock on |
+| **Back / Start** | Lock on / menu |
+| D-pad **Up / Down** | Cycle spell / crouch |
+| D-pad **Left / Right** | Swap left / right weapon |
+
+Both of the X2s browser layouts the game knows about — standard and generic HID — are normalised
+to this table. If the browser reports an unfamiliar layout, a six-press, pad-only calibration opens
+instead of leaving the buttons scrambled; its result is kept for the next session. The software
+path is tested with simulated X2s descriptors, but the exact owner unit's browser-reported mapping,
+trigger ranges and hardware modes have **not yet been verified on physical hardware**.
+
 ### On a phone or tablet
 
 Same link. **The touch controls are wired and working** — a floating stick under your left thumb,
 camera drag on the right, the same roll/sprint timing the gamepad uses, and eleven controls drawn.
 An earlier version of this file said they were not; that was wrong and this is the correction.
+
+Use the game in **landscape**. Put your left thumb down anywhere on the left half to create the
+movement stick; drag anywhere free on the right half to look. The lower-right buttons provide
+**roll (hold to sprint), block, light attack, interact, jump, parry, heavy attack (hold to charge),
+use item, crouch, and lock on**. The eleventh, drawer button opens **two-hand, swap left, swap right,
+cycle spell, and menu**. Multi-touch is supported, so movement, camera drag, and two action buttons
+can be held at the same time. When a pad is active the overlay fades after two seconds; touching the
+screen brings it back.
 
 
 ### From a clone — only if you want to change something

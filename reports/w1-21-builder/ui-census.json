@@ -1,0 +1,282 @@
+{
+  "schema": "elder-souls/ui-census@1",
+  "item": "RI-UIX01",
+  "at": "2026-08-11T07:59:57.836Z",
+  "state": "arena_duel",
+  "frames": 1800,
+  "screen": {
+    "w": 1920,
+    "h": 1080,
+    "dpr": 1
+  },
+  "in_combat": true,
+  "persistent": 6,
+  "peak_total": 7,
+  "coverage_pct": 2.0457,
+  "coverage_conditional_pct": 2.1568,
+  "coverage_center_pct": 0,
+  "world_anchored": [
+    "hud.lockon"
+  ],
+  "numeric_text": [
+    "hud.heal"
+  ],
+  "unknown_kinds": [],
+  "bar_contrasts": {
+    "health": {
+      "fill_vs_trough": 6.351
+    },
+    "stamina": {
+      "fill_vs_trough": 7.966,
+      "spent_vs_trough": 10.923,
+      "exhausted_trough_vs_trough": 10.923
+    },
+    "focus": {
+      "fill_vs_trough": 5.659
+    },
+    "boss": {
+      "fill_vs_trough": 6.351
+    },
+    "buildup_poison": {
+      "fill_vs_trough": 7.827
+    },
+    "buildup_disease": {
+      "fill_vs_trough": 6.351
+    },
+    "buildup_curse": {
+      "fill_vs_trough": 5.659
+    },
+    "buildup_frost": {
+      "fill_vs_trough": 8.826
+    }
+  },
+  "stamina": {
+    "frames": 1800,
+    "frames_with_truth": 1800,
+    "max_abs_error": 0,
+    "max_at_frame": 67,
+    "frames_out_of_tolerance": 0,
+    "pct_out_of_tolerance": 0,
+    "tween_detected": false,
+    "tween_runs": 0,
+    "spend_events": 5,
+    "spends_visible_same_frame": 5,
+    "regen_blocked_frames": 205,
+    "exhausted_frames": 0
+  },
+  "curve": null,
+  "elements": [
+    {
+      "id": "hud.health",
+      "kind": "health_bar",
+      "rect": [
+        42,
+        40,
+        400,
+        16
+      ],
+      "visible": true,
+      "text": null,
+      "fill": 1,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.stamina",
+      "kind": "stamina_bar",
+      "rect": [
+        42,
+        64,
+        400,
+        10
+      ],
+      "visible": true,
+      "text": null,
+      "fill": 1,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.focus",
+      "kind": "focus_bar",
+      "rect": [
+        42,
+        82,
+        400,
+        10
+      ],
+      "visible": true,
+      "text": null,
+      "fill": 1,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.heal",
+      "kind": "heal_charges",
+      "rect": [
+        42,
+        118,
+        110,
+        24
+      ],
+      "visible": true,
+      "text": "5",
+      "fill": 1,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.equipload",
+      "kind": "equip_load",
+      "rect": [
+        1758,
+        852,
+        120,
+        24
+      ],
+      "visible": true,
+      "text": "LIGHT",
+      "fill": 0.24,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.quickslots",
+      "kind": "quick_slots",
+      "rect": [
+        1728,
+        888,
+        150,
+        150
+      ],
+      "visible": true,
+      "text": "Spark-Dart",
+      "fill": null,
+      "worldAnchor": null
+    },
+    {
+      "id": "hud.lockon",
+      "kind": "lockon_reticle",
+      "rect": [
+        955.3,
+        470.07,
+        48,
+        48
+      ],
+      "visible": true,
+      "text": null,
+      "fill": null,
+      "worldAnchor": "E1"
+    }
+  ],
+  "checks": [
+    {
+      "id": "U1",
+      "what": "element counts (§C rows 1-2)",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared elements in the combat census",
+      "detail": "persistent 6/6, peak 7/9",
+      "counts": {
+        "visible": 7
+      }
+    },
+    {
+      "id": "U2",
+      "what": "coverage (§C rows 3-4)",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared elements in the combat census",
+      "detail": "2.0457% / 4%, with conditional 2.1568% / 6.5%"
+    },
+    {
+      "id": "U3",
+      "what": "centre 50%×50% clear of non-reticle elements",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared elements in the combat census",
+      "detail": "0%"
+    },
+    {
+      "id": "U4",
+      "what": "exactly one world-anchored element, and it is the reticle",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared elements in the combat census",
+      "detail": "[\"hud.lockon\"]",
+      "counts": {
+        "world_anchored": 1
+      }
+    },
+    {
+      "id": "U4b",
+      "what": "no forbidden kind declared (X1-X12)",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared element kinds checked against the known vocabulary",
+      "detail": "[]",
+      "counts": {
+        "distinct_kinds": 7
+      }
+    },
+    {
+      "id": "U6",
+      "what": "§D1 same-frame truth: 100% of frames within ±0.005, no tween",
+      "status": "PASS",
+      "pass": true,
+      "samples": 1800,
+      "sample_of": "trace frames with both a bar fill and a truth value",
+      "detail": "max |err| 0 at f=67, 0% out of tolerance, tween_runs 0",
+      "expected": 1800,
+      "counts": {
+        "out_of_tolerance": 0,
+        "tween_runs": 0
+      }
+    },
+    {
+      "id": "U8",
+      "what": "§D3 bar fill/trough contrast ≥ 4.5:1 on every bar",
+      "status": "PASS",
+      "pass": true,
+      "samples": 8,
+      "sample_of": "bars with a measured contrast ratio",
+      "detail": "{\"health\":{\"fill_vs_trough\":6.351},\"stamina\":{\"fill_vs_trough\":7.966,\"spent_vs_trough\":10.923,\"exhausted_trough_vs_trough\":10.923},\"focus\":{\"fill_vs_trough\":5.659},\"boss\":{\"fill_vs_trough\":6.351},\"buildup_poison\":{\"fill_vs_trough\":7.827},\"buildup_disease\":{\"fill_vs_trough\":6.351},\"buildup_curse\":{\"fill_vs_trough\":5.659},\"buildup_frost\":{\"fill_vs_trough\":8.826}}"
+    },
+    {
+      "id": "U7",
+      "what": "§D2 regen-blocked state is a ≥3:1 change in the bar",
+      "status": "PASS",
+      "pass": true,
+      "samples": 205,
+      "sample_of": "frames in which regen was blocked",
+      "detail": "spent-vs-trough 10.923, blocked on 205 frames",
+      "counts": {
+        "bars": 8
+      }
+    },
+    {
+      "id": "U10",
+      "what": "§D5 the bar falls on the frame of the spend",
+      "status": "PASS",
+      "pass": true,
+      "samples": 5,
+      "sample_of": "stamina spend events",
+      "detail": "5/5"
+    },
+    {
+      "id": "numeric",
+      "what": "§C: at most one numeric text element during combat",
+      "status": "PASS",
+      "pass": true,
+      "samples": 7,
+      "sample_of": "declared elements in the combat census",
+      "detail": "[\"hud.heal\"]",
+      "counts": {
+        "numeric": 1
+      }
+    }
+  ],
+  "ok": true,
+  "sample_table": "| Tool | Check | Status | Samples | One sample is | Detail |\n|---|---|---|---|---|---|\n| `ui-census.mjs` | U1 | **PASS** | 7 | declared elements in the combat census | persistent 6/6, peak 7/9 |\n| `ui-census.mjs` | U2 | **PASS** | 7 | declared elements in the combat census | 2.0457% / 4%, with conditional 2.1568% / 6.5% |\n| `ui-census.mjs` | U3 | **PASS** | 7 | declared elements in the combat census | 0% |\n| `ui-census.mjs` | U4 | **PASS** | 7 | declared elements in the combat census | [\"hud.lockon\"] |\n| `ui-census.mjs` | U4b | **PASS** | 7 | declared element kinds checked against the known vocabulary | [] |\n| `ui-census.mjs` | U6 | **PASS** | 1800 of 1800 | trace frames with both a bar fill and a truth value | max \\|err\\| 0 at f=67, 0% out of tolerance, tween_runs 0 |\n| `ui-census.mjs` | U8 | **PASS** | 8 | bars with a measured contrast ratio | {\"health\":{\"fill_vs_trough\":6.351},\"stamina\":{\"fill_vs_trough\":7.966,\"spent_vs_trough\":10.923,\"exhausted_trough_vs_trough\":10.923},\"focus\":{\"fill_vs_trough\":5.6 |\n| `ui-census.mjs` | U7 | **PASS** | 205 | frames in which regen was blocked | spent-vs-trough 10.923, blocked on 205 frames |\n| `ui-census.mjs` | U10 | **PASS** | 5 | stamina spend events | 5/5 |\n| `ui-census.mjs` | numeric | **PASS** | 7 | declared elements in the combat census | [\"hud.heal\"] |"
+}

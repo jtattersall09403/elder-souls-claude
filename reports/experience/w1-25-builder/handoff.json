@@ -1,0 +1,89 @@
+{
+  "schema": "elder-souls/w1-25-builder-handoff@1",
+  "dispatch_head": "c9603f64155c15bec8f17a09a8c9110a0a81e67e",
+  "tested_tree": "c9603f64155c15bec8f17a09a8c9110a0a81e67e",
+  "roles": {
+    "builder": "COMPLETE",
+    "isolated_recall": "NOT_RUN",
+    "blind_exp02_judge": "NOT_RUN",
+    "exp03_non_player_annotator": "NOT_RUN",
+    "independent_critic": "NOT_RUN"
+  },
+  "facility": {
+    "self_test": "GREEN_14_OF_14",
+    "injected_breaks": "GREEN_10_OF_10",
+    "historical_cases": "GREEN_10_OF_10",
+    "replay_twins": "GREEN_9_OF_9",
+    "external_callers": [
+      "tools/composition/matrix-probe.mjs",
+      "tools/quests/encounter-seam-probe.mjs"
+    ]
+  },
+  "cmp01": {
+    "matrix_manifest": "corpus/95-experience/RI-CMP01.cells.json",
+    "live_result": "reports/composition/w1-25-builder/matrix.json",
+    "demonstrated_crossings": 0,
+    "status": "RED",
+    "reason": "Live native aggregation completed but all 10 candidate cells were INERT or VACUOUS; no direct target mutation is accepted. Boss/roster seam defects remain owning-piece invalidations."
+  },
+  "exp02": {
+    "support": [
+      "tools/experience/recall-run.mjs",
+      "tools/experience/anecdote-trace.mjs",
+      "tools/experience/anecdote-verify.mjs"
+    ],
+    "pack_command": "node tools/experience/recall-run.mjs --session <played-session-dir> --out reports/experience/w1-25-builder/recall-pack",
+    "outcome": "NOT_RUN",
+    "thresholds": {
+      "verified_anecdotes_per_hour": ">=4.0",
+      "unpredicted_count": ">=3",
+      "blank_hours": "==0"
+    }
+  },
+  "exp03": {
+    "support": [
+      "tools/experience/classes-from-md.mjs",
+      "tools/experience/session-shape.mjs",
+      "tools/experience/shape-check.mjs",
+      "tools/experience/sag-fit.mjs",
+      "tools/experience/session-beats.mjs"
+    ],
+    "pack_command": "node tools/experience/session-shape.mjs --trace <90m-trace> --intent <intent.jsonl> --out reports/experience/w1-25-builder/session-shape-pack",
+    "matched_session": "NOT_RUN",
+    "SAB_P": "NOT_RUN",
+    "SAB_E": "NOT_RUN"
+  },
+  "exp06": {
+    "support": [
+      "tools/experience/permissiveness-live.mjs",
+      "tools/experience/breakage-probe.mjs",
+      "tools/experience/pbrule-audit.mjs"
+    ],
+    "result_command": "node tools/experience/permissiveness-live.mjs --results <four-arm-live-results.json> --out reports/experience/w1-25-builder/permissiveness-live.json",
+    "live_entries": "NOT_RUN",
+    "chain": "NOT_RUN",
+    "status": "RED"
+  },
+  "builder_green_rows": [
+    "control facility",
+    "CMP01 frozen manifest/static scan/self-tests",
+    "EXP02 recall pack protocol and boundary controls",
+    "EXP03 class/shape/sag/beat structural support",
+    "EXP06 four-arm result validator and direct-mutation rejection"
+  ],
+  "dependency_reds": [
+    "RI-CMP01: 0/4 distinct live crossings; integrated ROS/BOS consumers inert/vacuous",
+    "RI-EXP02: no admissible played chain exists at this checkout",
+    "RI-EXP03: no matched >=90-minute played A/B capture exists",
+    "RI-EXP06: no per-entry four-arm live capture exists; B-07/B-10 substrate historically absent"
+  ],
+  "handoff": [
+    "Record a real played session before dispatching isolated recall.",
+    "Give isolated recall agent only prompt/BATON.md and session identity; do not expose thresholds or trace.",
+    "Give verifier trace plus recalled lines; keep answer key separate.",
+    "Leak-gate actual text/trace excerpts, then dispatch blind judge.",
+    "For EXP03 dispatch a non-player annotator for SS proposals and blind matched comparison.",
+    "For EXP06 owning pieces must emit baseline/closure/repeat/restore arms; validator then aggregates all 15.",
+    "Finally dispatch an independent W1-25 critic; builder makes no PASS declaration."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "elder-souls/w1-25-independent-handoffs@1",
+  "quarantine_root": "reports/quarantine/w1-25/<role-id>/",
+  "common": {
+    "prohibited": [
+      "orchestration/plans/W1-25.md",
+      "corpus/95-experience/RI-EXP02-anecdote-census.md",
+      "corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md",
+      "answer keys, builder reports, source code, reveal files, prior judgements and policy thresholds"
+    ],
+    "procedure": [
+      "Copy only the listed inputs into a fresh quarantine directory.",
+      "Record a recursive SHA-256 inventory before opening an input.",
+      "Run the role command and write only the specified output schema under the quarantine directory.",
+      "Seal the output and tell-audit it before mounting the reveal directory.",
+      "A different verifier joins sealed output to reveal material; the role never revises an answer after reveal."
+    ]
+  },
+  "roles": [
+    {
+      "id": "isolated-recall",
+      "inputs": ["corpus/95-experience/prompts/recall.md", "reports/sessions/<final-chain>/BATON.md"],
+      "allowed": "The neutral recall prompt, the 500-word baton and session identifier only.",
+      "command": "node tools/experience/recall-run.mjs --prompt corpus/95-experience/prompts/recall.md --baton reports/sessions/<final-chain>/BATON.md --out reports/quarantine/w1-25/isolated-recall/recall.json",
+      "thresholds": "Not disclosed to this role; verifier applies RI-EXP02.",
+      "output_schema": "elder-souls/recall-run@1; verbatim recalled claims, confidence and source session id"
+    },
+    {
+      "id": "recall-verifier",
+      "inputs": ["reports/quarantine/w1-25/isolated-recall/recall.json", "reports/sessions/<final-chain>/trace.jsonl", "reports/sessions/<final-chain>/manifest.json"],
+      "allowed": "Sealed recall and complete trace; no builder interpretation or blind-pair reveal.",
+      "command": "node tools/experience/anecdote-verify.mjs --recall reports/quarantine/w1-25/isolated-recall/recall.json --trace reports/sessions/<final-chain>/trace.jsonl --out reports/quarantine/w1-25/recall-verifier/verified.json",
+      "thresholds": "RI-EXP02: verified anecdotes/hour >=4.0, unpredicted_count >=3, blank_hours=0, plus all T1-T5, generic, arose, hops and confabulation bounds.",
+      "output_schema": "elder-souls/anecdote-verification@1; every claim linked to exact trace offsets or rejected with reason"
+    },
+    {
+      "id": "blind-judge",
+      "inputs": ["reports/quarantine/w1-25/blind-pack/PACK.md", "the actual redacted text/trace excerpts named by PACK.md"],
+      "allowed": "Randomised A/B labels and actual excerpts only; no features-only surrogate.",
+      "command": "cp reports/quarantine/w1-25/blind-pack/JUDGEMENT.template.json reports/quarantine/w1-25/blind-judge/judgement.json",
+      "thresholds": "Not disclosed until judgement is sealed; apply the native RI-EXP02 blind threshold after reveal.",
+      "output_schema": "elder-souls/blind-anecdote-judgement@1; per-pair preference, rationale, confidence and no-tie reason"
+    },
+    {
+      "id": "non-player-annotator",
+      "inputs": ["reports/sessions/<matched-population>/trace.jsonl", "reports/quarantine/w1-25/session-annotation/BRIEF.md"],
+      "allowed": "Timestamped trace and neutral SS proposal brief only; no run labels, expected arm, thresholds or builder scoring.",
+      "command": "node tools/experience/session-beats.mjs --trace reports/sessions/<matched-population>/trace.jsonl --annotations reports/quarantine/w1-25/non-player-annotator/annotations.jsonl --out reports/quarantine/w1-25/non-player-annotator/beats.json",
+      "thresholds": "Not disclosed to annotator; scorer applies SS1-SS6 and matched comparison after sealing.",
+      "output_schema": "JSONL: session_id, beat_id, start_frame, end_frame, cited_event_offsets, confidence"
+    },
+    {
+      "id": "independent-critic",
+      "inputs": ["final committed W1-25 artifacts and the authoritative governing items"],
+      "allowed": "Entire final commit only after all other quarantined outputs are sealed.",
+      "command": "node tools/experience/critic-w1-25.mjs --a reports/experience/w1/control-a.json --b reports/experience/w1/control-b.json",
+      "thresholds": "All RI-CMP01, RI-EXP02, RI-EXP03 and RI-EXP06 native predicates; critic must falsify before verdict.",
+      "output_schema": "Repository verdict schema; PASS or exactly one actionable biggest gap. Builder makes no PASS claim."
+    }
+  ]
+}

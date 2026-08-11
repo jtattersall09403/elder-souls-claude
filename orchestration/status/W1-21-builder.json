@@ -1,0 +1,40 @@
+{
+  "task_id": "W1-21-builder",
+  "role": "builder",
+  "plan_state": "builder-automatic-complete-awaiting-independent-criticism",
+  "updated_at": "2026-08-11T08:00:00Z",
+  "files_touched": [
+    "orchestration/status/W1-21-builder.json",
+    "game/data/world/readables/site-marks.json",
+    "tools/harness/ui-pause.mjs",
+    "tools/ui/w1-21-model-consumption.mjs",
+    "reports/w1-21-builder/aggregate.md",
+    "reports/w1-21-builder/ui-comparison-packs.json",
+    "reports/w1-21-builder/ui-census.json",
+    "reports/w1-21-builder/ui-forbidden.json",
+    "reports/w1-21-builder/journal-ui.json",
+    "reports/w1-21-builder/journal-capture.json",
+    "reports/w1-21-builder/marker-diff.json",
+    "reports/w1-21-builder/ui-pause.json",
+    "reports/w1-21-builder/model-consumption.json",
+    "game/src/engine.js",
+    "game/src/input/gamepad.js",
+    "game/src/input/pipeline.js",
+    "game/src/ui/system.js",
+    "reports/w1-21-builder/marker-scan.json",
+    "reports/w1-21-builder/dpad-controls.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Independent UIX03/UIX04/UIX06 judges and a fresh critic use the preserved packs; builder automatic rows are COMPLETE and no critic PASS is self-awarded.",
+  "notes": [
+    "Start from current HEAD; do not regenerate generated docs, indexes, progress, status publication, or blog feed.",
+    "Independent UIX03/UIX04/UIX06 and fresh-judge rows received source-pack specifications and remain not_run.",
+    "No new binary capture is committed.",
+    "Automatic reruns: UIX01 census 10/10, UIX02 marker scan/differential/yaw green, UIX03 native automatic rows green, UIX04 11/11, UI model consumption 12/12.",
+    "Continuation started at required commit 11ae120b81595c00dc7d3f56d520aab89efe8543 on 2026-08-11; controller diagnosis and independent UI regression/consumption verification delegated as requested.",
+    "Exact missing GameSir assertion reproduced at 1->1. Root cause was a hidden census consumer consuming shared movement before the visible menu UI, compounded by D-pad sharing locomotion/swap semantics.",
+    "Production repair gives D-pad UI direction its own InputPipeline channel and makes a visible menu precede hidden census consumption while preserving world movement, swap actions, keyboard, stick, confirm/back/menu, pause and combat.",
+    "UIX03 automatic is 10/10: GameSir D-pad moves exactly one column 1->0; reserved guide input is inert; mapping-removal restores 1->1 red.",
+    "Independent UIX03/UIX04/UIX06 packs remain not_run and unchanged; builder does not self-award critic PASS."
+  ]
+}

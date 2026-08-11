@@ -1,0 +1,62 @@
+{
+  "schema": "elder-souls/w1-21-comparison-packs@1",
+  "binary_policy": "No new binary is committed. Paths below identify already tracked sources or future transient captures; the independent actor must verify hashes before judging.",
+  "UIX03_step_8": {
+    "status": "not_run",
+    "question": "Which opaque candidate better preserves inventory structure: density, category breadth, weight/value visibility, and the item-detail-panel relationship? Do not score art style or infer provenance.",
+    "shipped_source": {
+      "path": "docs/shots/2026-08-08-w1-21-r3-the-inventory-screen.png",
+      "sha256": "91d7f9fc575c8a9f6a73aeefdef689f81d43d26b878c8d61ea08d7eb2621213d",
+      "state": "ui-journal",
+      "viewport_css": [1920, 1080],
+      "dpr": 1
+    },
+    "reference_source": {
+      "path": "corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-inventory__mw-768107784.jpg",
+      "sha256": "c70662ba0c279bf5ef8d061ddcbf03a116e04651b57af93df44c8fba7806e9a1"
+    },
+    "preparation": [
+      "Crop only to the inventory window and its item-detail relationship.",
+      "Replace every label and proper noun with equal-length neutral blocks; retain numeric column widths but replace values.",
+      "Scale both candidates onto equal opaque 1920x1080 grounds without stretching.",
+      "Randomise A/B outside the judge context; store the sealed mapping separately; reveal only after response is final."
+    ],
+    "required_outputs": ["opaque A/B captures", "prompt", "judge response", "sealed reveal", "independent judge identity"]
+  },
+  "UIX04_JU12": {
+    "status": "not_run",
+    "question": "Which sealed journal candidate reads as a chronological record rather than a quest-management dashboard?",
+    "shipped_source": {
+      "path": "docs/shots/2026-08-08-w1-21-r3-the-journal-screen.png",
+      "sha256": "a5ff00ffd421b0fe788a966bc58d30e7dbfa16f84d3e99f32674bee63c77ac8a",
+      "state": "ui-journal",
+      "viewport_css": [1920, 1080],
+      "dpr": 1
+    },
+    "preparation": ["Use actual screenshots", "opaque provenance", "seal reveal", "do not expose automatic JU scores before judgement"]
+  },
+  "UIX06_ART_DIRECTION": {
+    "status": "not_run",
+    "declaration": "P09 ART_DIRECTION; permitted reference RI-VIS05 Morrowind section H only; RI-VIS02 and RI-VIS03 forbidden.",
+    "ordered_before": "UIX06_FIDELITY",
+    "capture": {"screens": ["inventory", "journal", "sheet", "spells", "map", "levelup"], "viewport_css": [1920, 1080], "dpr": 1, "world": "black"},
+    "tracked_source_hashes": {
+      "inventory": "91d7f9fc575c8a9f6a73aeefdef689f81d43d26b878c8d61ea08d7eb2621213d",
+      "journal": "a5ff00ffd421b0fe788a966bc58d30e7dbfa16f84d3e99f32674bee63c77ac8a",
+      "sheet": "eae4b67aaf62dcfb2dad0f4826dcbe5b43cbfad877b3986be84d2167501e78f9",
+      "spells": "cdc438a92c9f76d3f7a556fefdddea6c0ed08b8fb5463aee6e59bf7cbdc2691b",
+      "map": "17b8bd2822fb948e7ac14e49a1f93eefae4f3ede7da0cd161e8ebc73437ce98f",
+      "levelup": "a7565d2772e78b39fb30d3161804cd5eece1b64877d4bfe012a03c821aca640b"
+    },
+    "independent_population": "six fresh isolated Bootstrap judges, worst-of-six; one screen per judge; builder does not score"
+  },
+  "UIX06_FIDELITY": {
+    "status": "not_run",
+    "declaration": "F17-F19 FIDELITY; RI-VIS02 permitted; RI-VIS05 forbidden.",
+    "ordered_after": "UIX06_ART_DIRECTION",
+    "capture": {"screens": 6, "viewports_css": [[1280,720],[1920,1080],[2560,1440],[3840,2160]], "dpr": [1,2], "expected_captures": 48},
+    "required_measurements": ["stem", "layout/scaling", "alpha fringe in DeltaE2000", "known 50 percent composite", "gradient", "overdraw"],
+    "contamination": "Run CC-7 after both passes; if unavailable, manually scan the item's phrase list and record that fact.",
+    "reporting": "Report UI ART DIRECTION and UI FIDELITY separately and take min; never fuse."
+  }
+}

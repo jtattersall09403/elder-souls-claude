@@ -1,0 +1,37 @@
+{
+  "task_id": "W1-06-build",
+  "role": "builder",
+  "status": "blocked_on_authority_after_reproduction",
+  "plan": "orchestration/plans/W1-06.md",
+  "current_head": "1378e2a7372d4e3c819f81986b65979524ae08a7",
+  "files_touched": [
+    "corpus/00-doctrine/ARBITRATION.md",
+    "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+    "corpus/80-methods/m-cam02-control.mjs",
+    "evidence/W1-06/builder-ledger.md",
+    "evidence/W1-06/mechanical/cam-consume.json",
+    "evidence/W1-06/mechanical/cam02-final/cam02.json",
+    "evidence/W1-06/mechanical/collision-final.json",
+    "evidence/W1-06/mechanical/collision-reproduction-1378e2a.json",
+    "evidence/W1-06/mechanical/m-cam01-rig.json",
+    "evidence/W1-06/mechanical/rig-rerun.json",
+    "evidence/W1-06/source-pack/SHA256SUMS",
+    "game/data/camera/cells.json",
+    "game/src/sim/route.js",
+    "orchestration/status/W1-06-build.json",
+    "reports/w1-06/AMENDMENT-W1-06-01.md",
+    "reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md",
+    "tools/camera/cam-probe.mjs",
+    "tools/camera/gen-cells.mjs"
+  ],
+  "files_claimed": [],
+  "next_step": "Authority must rule AMENDMENT-W1-06-02: absolute 0.90 m boom floor versus exact zero-clip in moving-wall, backing-wall, 1.20 m pinch, and 30-degree stair populations. After ruling, implement the selected alternative and rerun every population.",
+  "hard_fails": [
+    "Starting-commit reproduction: 2456 clip frames (cistern 1716, stair 617, rig pinch 123; boardwalk 0 on this exact tree)",
+    "moving-wall fixture: 12 clipped frames",
+    "backing-wall fixture clipping"
+  ],
+  "formal_blocker": "reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md \u2014 exact blocked predicate: arm_len_m >= 0.90 and unchanged boom ray/pose cannot yield zero origin-plus-near-plane containment when prescribed solids are closer than the swept camera envelope.",
+  "independent_passes_awarded": 0,
+  "authority_resolution": "AMENDMENT-W1-06-01 granted and applied through ARBITRATION S48: crawl ceiling is 1.80 m; zero clipping unchanged."
+}

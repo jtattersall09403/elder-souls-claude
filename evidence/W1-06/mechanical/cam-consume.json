@@ -1,0 +1,137 @@
+{
+  "schema": "elder-souls/cam-consume@1",
+  "piece": "W1-06",
+  "rule": "RI-MTH07",
+  "mode": "live",
+  "generated": "2026-08-10T16:47:59.821Z",
+  "consumer": "game/src/sim/camera.js applyCameraRig(), called from Engine.loadState (engine.js)",
+  "data_file": "game/data/camera/rig.json",
+  "baseline": {
+    "pivot_y_above_feet_m": 1.55,
+    "arm_len_m": 4.015948717302052,
+    "fov_deg": 50,
+    "ndc_x_of_fixed_point": 0.22783589129662116,
+    "ndc_in_front": true,
+    "yaw_swept_deg": 180,
+    "death_pitch_deg": -20.329,
+    "death_mode": "death"
+  },
+  "trials": [
+    {
+      "id": "pivot_height",
+      "path": "rig.pivot_height_m",
+      "from": 1.55,
+      "to": 3.05,
+      "why": "RI-CAM01 §A — the pivot sits a stated height above the feet. Raise it and the camera looks down on the character from a metre and a half higher.",
+      "observable": "pivot_y_above_feet_m",
+      "baseline": 1.55,
+      "perturbed": 3.05,
+      "engine_saw_change": true,
+      "engine_changed_keys": [
+        "pivot_height_m"
+      ],
+      "pass": true,
+      "problem": null,
+      "side_effects": []
+    },
+    {
+      "id": "arm_free",
+      "path": "rig.arm_free_m",
+      "from": 4.1,
+      "to": 2,
+      "why": "RI-CAM01 §A — the unobstructed free-camera boom. Shorten it and the camera sits closer to the character's back.",
+      "observable": "arm_len_m",
+      "baseline": 4.015948717302052,
+      "perturbed": 1.994951891650523,
+      "engine_saw_change": true,
+      "engine_changed_keys": [
+        "arm_free_m"
+      ],
+      "pass": true,
+      "problem": null,
+      "side_effects": []
+    },
+    {
+      "id": "fov",
+      "path": "rig.fov_deg",
+      "from": 50,
+      "to": 90,
+      "why": "RI-CAM01 §A — a constant FOV. Widen it and a fixed world point moves toward the middle of the frame. Checked through the PROJECTION, not just the reported field.",
+      "observable": "ndc_x_of_fixed_point",
+      "baseline": 0.22783589129662116,
+      "perturbed": 0.10624162091418425,
+      "engine_saw_change": true,
+      "engine_changed_keys": [
+        "fov_deg"
+      ],
+      "pass": true,
+      "problem": null,
+      "side_effects": []
+    },
+    {
+      "id": "look_rate",
+      "path": "look.max_yaw_rate_dps",
+      "from": 180,
+      "to": 45,
+      "why": "RI-CAM02 §A and SEAM S32 — the RESPONSE CURVE above the raw stick is the camera's, and it was five literals in input/pipeline.js. Quarter the rate and a held stick turns the view a quarter as far.",
+      "observable": "yaw_swept_deg",
+      "baseline": 180,
+      "perturbed": 45,
+      "engine_saw_change": true,
+      "engine_changed_keys": [
+        "look_stick_yaw_deg_per_frame"
+      ],
+      "pass": true,
+      "problem": null,
+      "side_effects": []
+    },
+    {
+      "id": "death_pitch",
+      "path": "feel.death.pitch_to_deg",
+      "from": -22,
+      "to": -60,
+      "why": "RI-CAM06 §H — the death camera eases to a stated pitch. This one is behind a MODE branch, so it proves the file reaches code the free camera never runs.",
+      "observable": "death_pitch_deg",
+      "baseline": -20.329,
+      "perturbed": -52.9268,
+      "engine_saw_change": true,
+      "engine_changed_keys": [
+        "death_pitch_deg"
+      ],
+      "pass": true,
+      "problem": null,
+      "side_effects": []
+    }
+  ],
+  "checks": {
+    "rig_governs.pivot_height": {
+      "pass": true,
+      "note": null
+    },
+    "rig_governs.arm_free": {
+      "pass": true,
+      "note": null
+    },
+    "rig_governs.fov": {
+      "pass": true,
+      "note": null
+    },
+    "rig_governs.look_rate": {
+      "pass": true,
+      "note": null
+    },
+    "rig_governs.death_pitch": {
+      "pass": true,
+      "note": null
+    },
+    "restored": {
+      "pass": true,
+      "note": null
+    }
+  },
+  "summary": {
+    "checks": 6,
+    "failed": 0,
+    "failures": []
+  }
+}

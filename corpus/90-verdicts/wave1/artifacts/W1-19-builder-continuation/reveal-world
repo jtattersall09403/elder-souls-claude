@@ -1,0 +1,1380 @@
+{
+  "schema": "elder-souls/reveal-route-world@1",
+  "generated_by": "tools/quests/reveal-route-world.mjs",
+  "commit": "46d3c04",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 580
+  },
+  "act": "talkTo(npcId) — nothing else",
+  "declared_grants": [
+    "questOpen + learnTopic (the offer gate is not what is measured here; only the opens_by topics a refusal named)",
+    "walked into: archon, blackrose, gideon, helstrom, rootlands-hollow, stormhold — populateSettlement/populateSite, each read off the person's own record, nobody spawned from nothing"
+  ],
+  "prohibited_and_unused": [
+    "questReveal",
+    "questNote",
+    "questSetFlag",
+    "__ENGINE"
+  ],
+  "candidates_total": 45,
+  "cases": [
+    {
+      "quest": "Q-MAIN-01",
+      "npc": "gideon-court-factor",
+      "reveal": "rev_factor",
+      "journal_declared": 45,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-MAIN-01",
+        "giver": "undersexton-aveline-rell",
+        "went_to": "soulrest",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the drowned tally"
+      ],
+      "opened": true,
+      "knows_before": [],
+      "journal_entries_before": 1,
+      "talk_reported": {
+        "learned": [
+          "rev_factor"
+        ],
+        "journal": [
+          {
+            "quest": "Q-MAIN-01",
+            "index": 45
+          }
+        ]
+      },
+      "knows_after": [
+        "rev_factor"
+      ],
+      "journal_entries_after": 2,
+      "journal_indices_before": [
+        10
+      ],
+      "journal_indices_after": [
+        10,
+        45
+      ],
+      "learned_by_talking": true,
+      "journal_written": true,
+      "control_wrong_person": "antiquarian-decius-arral",
+      "control_wrong_person_learned": false,
+      "passed": true
+    },
+    {
+      "quest": "Q-STRM-01",
+      "npc": "npc-ossei",
+      "reveal": "rev_ossei",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "stormhold"
+      },
+      "travel": {
+        "quest": "Q-STRM-01",
+        "giver": "quartermaster-sedd",
+        "went_to": "stormhold",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the old quarter"
+      ],
+      "opened": true,
+      "knows_before": [],
+      "journal_entries_before": 1,
+      "talk_reported": {
+        "learned": [
+          "rev_ossei"
+        ],
+        "journal": []
+      },
+      "knows_after": [
+        "rev_ossei"
+      ],
+      "journal_entries_after": 1,
+      "journal_indices_before": [
+        10
+      ],
+      "journal_indices_after": [
+        10
+      ],
+      "learned_by_talking": true,
+      "journal_written": null,
+      "control_wrong_person": "enchanter-stormhold",
+      "control_wrong_person_learned": false,
+      "passed": true
+    },
+    {
+      "quest": "Q-MAIN-02",
+      "npc": "ojal-weeth",
+      "reveal": "rev_ojal",
+      "journal_declared": 45,
+      "npc_place": {
+        "settlement": "soulrest"
+      },
+      "travel": {
+        "quest": "Q-MAIN-02",
+        "giver": "undersexton-aveline-rell",
+        "went_to": "soulrest",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the empty boxes"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-01 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-01 first"
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "npc": "undersexton-bel-mourne",
+      "reveal": "rev_the_middle_three",
+      "journal_declared": 20,
+      "npc_place": {
+        "settlement": "soulrest"
+      },
+      "travel": {
+        "quest": "Q-MAIN-16",
+        "giver": "undersexton-aveline-rell",
+        "went_to": "soulrest",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the chapter's vote"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-15 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "npc": "rootkeeper-ashul-tei",
+      "reveal": "rev_the_eleven",
+      "journal_declared": 20,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-MAIN-18",
+        "giver": "rootkeeper-ashul-tei",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the interior's consent"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-15 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "npc": "prefect-galvus-arn",
+      "reveal": "rev_the_lever",
+      "journal_declared": 36,
+      "npc_place": {
+        "settlement": "stormhold"
+      },
+      "travel": {
+        "quest": "Q-MAIN-20",
+        "giver": "prefect-galvus-arn",
+        "went_to": "stormhold",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the writ of works"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-15 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "npc": "salt-factor-neloth-vaun",
+      "reveal": "rev_why_the_clause",
+      "journal_declared": 38,
+      "npc_place": {
+        "settlement": "archon"
+      },
+      "travel": {
+        "quest": "Q-MAIN-23",
+        "giver": "salt-factor-neloth-vaun",
+        "went_to": "archon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the salt factor"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-15 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "npc": "gallery-intake-keepers",
+      "reveal": "rev_the_keepers_accounts",
+      "journal_declared": 30,
+      "npc_place": null,
+      "travel": {
+        "quest": "Q-MAIN-25",
+        "giver": "undersexton-bel-mourne",
+        "went_to": "soulrest",
+        "present": true,
+        "why": null
+      },
+      "npc_present": false,
+      "skipped": "that person is not in the world; talkTo would throw"
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "npc": "ixtu-meer",
+      "reveal": "rev_how_the_count_opens",
+      "journal_declared": 56,
+      "npc_place": {
+        "site": "stone-wastes-count"
+      },
+      "travel": {
+        "quest": "Q-MAIN-26",
+        "giver": "ixtu-meer",
+        "went_to": "stone-wastes-count",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the steward of the count"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-MAIN-25 first",
+      "skipped": "the offer gate refused: requires Q-MAIN-25 first"
+    },
+    {
+      "quest": "Q-BLAK-01",
+      "npc": "clerk-meno",
+      "reveal": "rev_meno",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-BLAK-01",
+        "giver": "prefect-hallow",
+        "went_to": "blackrose",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the labour lease",
+        "the four hundred and eleven"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-SOUL-02 first",
+      "skipped": "the offer gate refused: requires Q-SOUL-02 first"
+    },
+    {
+      "quest": "Q-ASSZ-10",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell_was_right",
+      "journal_declared": 36,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-10",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the toll book",
+        "the assize"
+      ],
+      "opened": false,
+      "open_refusal": "the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10",
+      "skipped": "the offer gate refused: the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-14",
+      "npc": "prefect-hallow",
+      "reveal": "rev_hallow_knew",
+      "journal_declared": 50,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-14",
+        "giver": "notary-sedda-vell",
+        "went_to": "blackrose",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the removal that is not one"
+      ],
+      "opened": false,
+      "open_refusal": "notary-sedda-vell disposition 30/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90",
+      "skipped": "the offer gate refused: notary-sedda-vell disposition 30/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90"
+    },
+    {
+      "quest": "Q-LEDG-10",
+      "npc": "npc-wuleen-kus",
+      "reveal": "rev_wuleen_float",
+      "journal_declared": 36,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-10",
+        "giver": "sedd-ravano",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the wharf debt",
+        "the tolls"
+      ],
+      "opened": false,
+      "open_refusal": "sedd-ravano disposition 25/35; the_wet_ledger rank 0/1; the_wet_ledger reputation 0/10",
+      "skipped": "the offer gate refused: sedd-ravano disposition 25/35; the_wet_ledger rank 0/1; the_wet_ledger reputation 0/10"
+    },
+    {
+      "quest": "Q-LEDG-12",
+      "npc": "assizer-corvo",
+      "reveal": "rev_corvo_count",
+      "journal_declared": 48,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-12",
+        "giver": "factor-ruvela-sath",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the bond berth",
+        "the wharf debt"
+      ],
+      "opened": false,
+      "open_refusal": "the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36",
+      "skipped": "the offer gate refused: the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-10",
+      "npc": "ee-vashum",
+      "reveal": "rev_vashum_older",
+      "journal_declared": 48,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-10",
+        "giver": "speaker-teel-ashaan",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the root track",
+        "the hollow that eats"
+      ],
+      "opened": false,
+      "open_refusal": "the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10",
+      "skipped": "the offer gate refused: the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10"
+    },
+    {
+      "quest": "Q-XULA-13",
+      "npc": "speaker-teel-ashaan",
+      "reveal": "rev_teel_counted",
+      "journal_declared": 58,
+      "npc_place": {
+        "site": "rootlands-hollow"
+      },
+      "travel": {
+        "quest": "Q-XULA-13",
+        "giver": "rootkeeper-ashul-tei",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the fourth silence"
+      ],
+      "opened": false,
+      "open_refusal": "rootkeeper-ashul-tei disposition 45/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90",
+      "skipped": "the offer gate refused: rootkeeper-ashul-tei disposition 45/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90"
+    },
+    {
+      "quest": "Q-DEEP-01",
+      "npc": "cutter-ashaan-hulei",
+      "reveal": "rev_hulei",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-DEEP-01",
+        "giver": "speaker-teel-ashaan",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the cut roots",
+        "the hollow"
+      ],
+      "opened": false,
+      "open_refusal": "the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22",
+      "skipped": "the offer gate refused: the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22"
+    },
+    {
+      "quest": "Q-SAP-01",
+      "npc": "npc-eleen",
+      "reveal": "rev_eleen",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "archon"
+      },
+      "travel": {
+        "quest": "Q-SAP-01",
+        "giver": "cutter-neeth",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the phial",
+        "the sap-house"
+      ],
+      "opened": false,
+      "open_refusal": "the_ixtu_vakh rank 0/1; the_ixtu_vakh reputation 0/10",
+      "skipped": "the offer gate refused: the_ixtu_vakh rank 0/1; the_ixtu_vakh reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-01",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell",
+      "journal_declared": 48,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-01",
+        "giver": "clerk-avelia-doren",
+        "went_to": "tidewrack",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the toll book"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-00 first; the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10",
+      "skipped": "the offer gate refused: requires Q-ASSZ-00 first; the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-02",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell_daybooks",
+      "journal_declared": 50,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-02",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the lease roll",
+        "the toll book"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-01 first; the_imperial_assize rank 0/2; the_imperial_assize reputation 0/22",
+      "skipped": "the offer gate refused: requires Q-ASSZ-01 first; the_imperial_assize rank 0/2; the_imperial_assize reputation 0/22"
+    },
+    {
+      "quest": "Q-ASSZ-03",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_far_bank",
+      "journal_declared": 52,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-03",
+        "giver": "clerk-avelia-doren",
+        "went_to": "tidewrack",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the struck off notary",
+        "the lease roll"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-02 first; clerk-avelia-doren disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36",
+      "skipped": "the offer gate refused: requires Q-ASSZ-02 first; clerk-avelia-doren disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36"
+    },
+    {
+      "quest": "Q-ASSZ-04",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell_terms",
+      "journal_declared": 54,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-04",
+        "giver": "prefect-hallow",
+        "went_to": "blackrose",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the blackrose day book",
+        "the struck off notary"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-03 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52",
+      "skipped": "the offer gate refused: requires Q-ASSZ-03 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52"
+    },
+    {
+      "quest": "Q-ASSZ-05",
+      "npc": "salt-factor-neloth-vaun",
+      "reveal": "rev_receipts",
+      "journal_declared": 44,
+      "npc_place": {
+        "settlement": "archon"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-05",
+        "giver": "prefect-galvus-arn",
+        "went_to": "stormhold",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the warrant of attainder",
+        "the blackrose day book"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-04 first; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52",
+      "skipped": "the offer gate refused: requires Q-ASSZ-04 first; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52"
+    },
+    {
+      "quest": "Q-ASSZ-07",
+      "npc": "prefect-hallow",
+      "reveal": "rev_hallow",
+      "journal_declared": 56,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-07",
+        "giver": "scribe-hulen",
+        "went_to": "stormhold",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the lease vote",
+        "the prefects return"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-06 first; scribe-hulen disposition 40/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90",
+      "skipped": "the offer gate refused: requires Q-ASSZ-06 first; scribe-hulen disposition 40/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90"
+    },
+    {
+      "quest": "Q-ASSZ-08",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell_on_the_seal",
+      "journal_declared": 60,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-08",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the legates seal"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-07 first; assizer-corvo disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112",
+      "skipped": "the offer gate refused: requires Q-ASSZ-07 first; assizer-corvo disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112"
+    },
+    {
+      "quest": "Q-ASSZ-12",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_hallow_was_the_clerk",
+      "journal_declared": 60,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-12",
+        "giver": "prefect-hallow",
+        "went_to": "blackrose",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the prefects return"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-10 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36",
+      "skipped": "the offer gate refused: requires Q-ASSZ-10 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36"
+    },
+    {
+      "quest": "Q-ASSZ-13",
+      "npc": "scribe-hulen",
+      "reveal": "rev_hulen_wrote_them",
+      "journal_declared": 30,
+      "npc_place": {
+        "settlement": "stormhold"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-13",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the lease vote"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-06 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70",
+      "skipped": "the offer gate refused: requires Q-ASSZ-06 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70"
+    },
+    {
+      "quest": "Q-ASSZ-15",
+      "npc": "notary-sedda-vell",
+      "reveal": "rev_vell_in_the_yard",
+      "journal_declared": 50,
+      "npc_place": {
+        "settlement": "blackrose"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-15",
+        "giver": "prefect-galvus-arn",
+        "went_to": "stormhold",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the legates seal"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-08 first; prefect-galvus-arn disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112",
+      "skipped": "the offer gate refused: requires Q-ASSZ-08 first; prefect-galvus-arn disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112"
+    },
+    {
+      "quest": "Q-LEDG-02",
+      "npc": "npc-wuleen-kus",
+      "reveal": "rev_wuleen_counterfoil",
+      "journal_declared": 42,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-02",
+        "giver": "sedd-ravano",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-01 first; sedd-ravano disposition 25/35; the_wet_ledger rank 0/2; the_wet_ledger reputation 0/22",
+      "skipped": "the offer gate refused: requires Q-LEDG-01 first; sedd-ravano disposition 25/35; the_wet_ledger rank 0/2; the_wet_ledger reputation 0/22"
+    },
+    {
+      "quest": "Q-LEDG-03",
+      "npc": "npc-wuleen-kus",
+      "reveal": "rev_wuleen_lilmoth",
+      "journal_declared": 44,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-03",
+        "giver": "factor-ruvela-sath",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the wharf debt",
+        "the second set of weights"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-02 first; the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36",
+      "skipped": "the offer gate refused: requires Q-LEDG-02 first; the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36"
+    },
+    {
+      "quest": "Q-LEDG-04",
+      "npc": "npc-wuleen-kus",
+      "reveal": "rev_wuleen_nine_years",
+      "journal_declared": 52,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-04",
+        "giver": "factor-belliene",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the quiet partner",
+        "the wharf debt"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-03 first; factor-belliene disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52",
+      "skipped": "the offer gate refused: requires Q-LEDG-03 first; factor-belliene disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52"
+    },
+    {
+      "quest": "Q-LEDG-05",
+      "npc": "ee-vashum",
+      "reveal": "rev_vashum",
+      "journal_declared": 56,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-LEDG-05",
+        "giver": "harbourmaster-cuiro-vaneth",
+        "went_to": "archon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the water call",
+        "the quiet partner"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-04 first; harbourmaster-cuiro-vaneth disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52",
+      "skipped": "the offer gate refused: requires Q-LEDG-04 first; harbourmaster-cuiro-vaneth disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52"
+    },
+    {
+      "quest": "Q-LEDG-06",
+      "npc": "npc-wuleen-kus",
+      "reveal": "rev_fifth_vote",
+      "journal_declared": 54,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-06",
+        "giver": "harbourmistress-tesh",
+        "went_to": "lilmoth",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the underwriters gate",
+        "the water call"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-05 first; harbourmistress-tesh disposition 45/50; the_wet_ledger rank 0/5; the_wet_ledger reputation 0/70",
+      "skipped": "the offer gate refused: requires Q-LEDG-05 first; harbourmistress-tesh disposition 45/50; the_wet_ledger rank 0/5; the_wet_ledger reputation 0/70"
+    },
+    {
+      "quest": "Q-LEDG-15",
+      "npc": "assizer-corvo",
+      "reveal": "rev_corvo_will_hold_it",
+      "journal_declared": 50,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-15",
+        "giver": "factor-ruvela-sath",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the first chair"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-08 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/7; the_wet_ledger reputation 0/112",
+      "skipped": "the offer gate refused: requires Q-LEDG-08 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/7; the_wet_ledger reputation 0/112"
+    },
+    {
+      "quest": "Q-XULA-02",
+      "npc": "rootkeeper-ashul-tei",
+      "reveal": "rev_ashul_knew",
+      "journal_declared": 50,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-02",
+        "giver": "speaker-teel-ashaan",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the cut roots"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-10 first; the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22",
+      "skipped": "the offer gate refused: requires Q-XULA-10 first; the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22"
+    },
+    {
+      "quest": "Q-XULA-03",
+      "npc": "ee-vashum",
+      "reveal": "rev_vashum_wrote_it",
+      "journal_declared": 46,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-03",
+        "giver": "speaker-teel-ashaan",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the lukiul question",
+        "the root track"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-DEEP-01 first; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36",
+      "skipped": "the offer gate refused: requires Q-DEEP-01 first; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-04",
+      "npc": "ee-vashum",
+      "reveal": "rev_vashum_on_the_rim",
+      "journal_declared": 48,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-04",
+        "giver": "xul-aneekh-speaker",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the coast wound",
+        "the lukiul question"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-03 first; the_xul_aneekh rank 0/4; the_xul_aneekh reputation 0/52",
+      "skipped": "the offer gate refused: requires Q-XULA-03 first; the_xul_aneekh rank 0/4; the_xul_aneekh reputation 0/52"
+    },
+    {
+      "quest": "Q-XULA-06",
+      "npc": "ku-vastei-ixakh",
+      "reveal": "rev_ixakh",
+      "journal_declared": 36,
+      "npc_place": null,
+      "travel": {
+        "quest": "Q-XULA-06",
+        "giver": "ee-vashum",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": false,
+      "skipped": "that person is not in the world; talkTo would throw"
+    },
+    {
+      "quest": "Q-XULA-07",
+      "npc": "speaker-teel-ashaan",
+      "reveal": "rev_teel_himself",
+      "journal_declared": 52,
+      "npc_place": {
+        "site": "rootlands-hollow"
+      },
+      "travel": {
+        "quest": "Q-XULA-07",
+        "giver": "helstrom-gallery-keepers",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the consensus",
+        "the ku vastei"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90",
+      "skipped": "the offer gate refused: requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90"
+    },
+    {
+      "quest": "Q-ASSZ-06",
+      "npc": "assizer-corvo",
+      "reveal": "rev_corvo_hand",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-ASSZ-06",
+        "giver": "assizer-corvo",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the prefects return",
+        "the warrant of attainder"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-ASSZ-05 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70",
+      "skipped": "the offer gate refused: requires Q-ASSZ-05 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70"
+    },
+    {
+      "quest": "Q-LEDG-07",
+      "npc": "npc-ineve-corrano",
+      "reveal": "rev_corrano",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "gideon"
+      },
+      "travel": {
+        "quest": "Q-LEDG-07",
+        "giver": "factor-ruvela-sath",
+        "went_to": "gideon",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the veto minute",
+        "the underwriters gate"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-LEDG-06 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/6; the_wet_ledger reputation 0/90",
+      "skipped": "the offer gate refused: requires Q-LEDG-06 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/6; the_wet_ledger reputation 0/90"
+    },
+    {
+      "quest": "Q-XULA-01",
+      "npc": "npc-sorel-ithan",
+      "reveal": "rev_the_foreman",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-01",
+        "giver": "speaker-teel-ashaan",
+        "went_to": "rootlands-hollow",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the root track"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-00 first; the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10",
+      "skipped": "the offer gate refused: requires Q-XULA-00 first; the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10"
+    },
+    {
+      "quest": "Q-XULA-11",
+      "npc": "npc-uneel-vaakh-sister",
+      "reveal": "rev_his_sister",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-11",
+        "giver": "ee-vashum",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the lukiul question"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-02 first; ee-vashum disposition 35/45; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36",
+      "skipped": "the offer gate refused: requires Q-XULA-02 first; ee-vashum disposition 35/45; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-12",
+      "npc": "npc-high-hollow-speaker",
+      "reveal": "rev_the_high_hollow",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-12",
+        "giver": "helstrom-gallery-keepers",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the consensus"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/5; the_xul_aneekh reputation 0/70",
+      "skipped": "the offer gate refused: requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/5; the_xul_aneekh reputation 0/70"
+    },
+    {
+      "quest": "Q-XULA-14",
+      "npc": "npc-fourth-day-boatman",
+      "reveal": "rev_the_boat",
+      "journal_declared": null,
+      "npc_place": {
+        "settlement": "helstrom"
+      },
+      "travel": {
+        "quest": "Q-XULA-14",
+        "giver": "ee-vashum",
+        "went_to": "helstrom",
+        "present": true,
+        "why": null
+      },
+      "npc_present": true,
+      "control_quest_not_open_learned": false,
+      "topics_granted": [
+        "the speakers silence"
+      ],
+      "opened": false,
+      "open_refusal": "requires Q-XULA-08 first; ee-vashum disposition 35/55; the_xul_aneekh rank 0/7; the_xul_aneekh reputation 0/112",
+      "skipped": "the offer gate refused: requires Q-XULA-08 first; ee-vashum disposition 35/55; the_xul_aneekh rank 0/7; the_xul_aneekh reputation 0/112"
+    }
+  ],
+  "cases_run": 2,
+  "cases_skipped": [
+    {
+      "quest": "Q-MAIN-02",
+      "npc": "ojal-weeth",
+      "why": "the offer gate refused: requires Q-MAIN-01 first"
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "npc": "undersexton-bel-mourne",
+      "why": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "npc": "rootkeeper-ashul-tei",
+      "why": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "npc": "prefect-galvus-arn",
+      "why": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "npc": "salt-factor-neloth-vaun",
+      "why": "the offer gate refused: requires Q-MAIN-15 first"
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "npc": "gallery-intake-keepers",
+      "why": "that person is not in the world; talkTo would throw"
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "npc": "ixtu-meer",
+      "why": "the offer gate refused: requires Q-MAIN-25 first"
+    },
+    {
+      "quest": "Q-BLAK-01",
+      "npc": "clerk-meno",
+      "why": "the offer gate refused: requires Q-SOUL-02 first"
+    },
+    {
+      "quest": "Q-ASSZ-10",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-14",
+      "npc": "prefect-hallow",
+      "why": "the offer gate refused: notary-sedda-vell disposition 30/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90"
+    },
+    {
+      "quest": "Q-LEDG-10",
+      "npc": "npc-wuleen-kus",
+      "why": "the offer gate refused: sedd-ravano disposition 25/35; the_wet_ledger rank 0/1; the_wet_ledger reputation 0/10"
+    },
+    {
+      "quest": "Q-LEDG-12",
+      "npc": "assizer-corvo",
+      "why": "the offer gate refused: the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-10",
+      "npc": "ee-vashum",
+      "why": "the offer gate refused: the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10"
+    },
+    {
+      "quest": "Q-XULA-13",
+      "npc": "speaker-teel-ashaan",
+      "why": "the offer gate refused: rootkeeper-ashul-tei disposition 45/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90"
+    },
+    {
+      "quest": "Q-DEEP-01",
+      "npc": "cutter-ashaan-hulei",
+      "why": "the offer gate refused: the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22"
+    },
+    {
+      "quest": "Q-SAP-01",
+      "npc": "npc-eleen",
+      "why": "the offer gate refused: the_ixtu_vakh rank 0/1; the_ixtu_vakh reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-01",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-00 first; the_imperial_assize rank 0/1; the_imperial_assize reputation 0/10"
+    },
+    {
+      "quest": "Q-ASSZ-02",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-01 first; the_imperial_assize rank 0/2; the_imperial_assize reputation 0/22"
+    },
+    {
+      "quest": "Q-ASSZ-03",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-02 first; clerk-avelia-doren disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36"
+    },
+    {
+      "quest": "Q-ASSZ-04",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-03 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52"
+    },
+    {
+      "quest": "Q-ASSZ-05",
+      "npc": "salt-factor-neloth-vaun",
+      "why": "the offer gate refused: requires Q-ASSZ-04 first; the_imperial_assize rank 0/4; the_imperial_assize reputation 0/52"
+    },
+    {
+      "quest": "Q-ASSZ-07",
+      "npc": "prefect-hallow",
+      "why": "the offer gate refused: requires Q-ASSZ-06 first; scribe-hulen disposition 40/50; the_imperial_assize rank 0/6; the_imperial_assize reputation 0/90"
+    },
+    {
+      "quest": "Q-ASSZ-08",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-07 first; assizer-corvo disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112"
+    },
+    {
+      "quest": "Q-ASSZ-12",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-10 first; prefect-hallow disposition 40/45; the_imperial_assize rank 0/3; the_imperial_assize reputation 0/36"
+    },
+    {
+      "quest": "Q-ASSZ-13",
+      "npc": "scribe-hulen",
+      "why": "the offer gate refused: requires Q-ASSZ-06 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70"
+    },
+    {
+      "quest": "Q-ASSZ-15",
+      "npc": "notary-sedda-vell",
+      "why": "the offer gate refused: requires Q-ASSZ-08 first; prefect-galvus-arn disposition 45/55; the_imperial_assize rank 0/7; the_imperial_assize reputation 0/112"
+    },
+    {
+      "quest": "Q-LEDG-02",
+      "npc": "npc-wuleen-kus",
+      "why": "the offer gate refused: requires Q-LEDG-01 first; sedd-ravano disposition 25/35; the_wet_ledger rank 0/2; the_wet_ledger reputation 0/22"
+    },
+    {
+      "quest": "Q-LEDG-03",
+      "npc": "npc-wuleen-kus",
+      "why": "the offer gate refused: requires Q-LEDG-02 first; the_wet_ledger rank 0/3; the_wet_ledger reputation 0/36"
+    },
+    {
+      "quest": "Q-LEDG-04",
+      "npc": "npc-wuleen-kus",
+      "why": "the offer gate refused: requires Q-LEDG-03 first; factor-belliene disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52"
+    },
+    {
+      "quest": "Q-LEDG-05",
+      "npc": "ee-vashum",
+      "why": "the offer gate refused: requires Q-LEDG-04 first; harbourmaster-cuiro-vaneth disposition 40/45; the_wet_ledger rank 0/4; the_wet_ledger reputation 0/52"
+    },
+    {
+      "quest": "Q-LEDG-06",
+      "npc": "npc-wuleen-kus",
+      "why": "the offer gate refused: requires Q-LEDG-05 first; harbourmistress-tesh disposition 45/50; the_wet_ledger rank 0/5; the_wet_ledger reputation 0/70"
+    },
+    {
+      "quest": "Q-LEDG-15",
+      "npc": "assizer-corvo",
+      "why": "the offer gate refused: requires Q-LEDG-08 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/7; the_wet_ledger reputation 0/112"
+    },
+    {
+      "quest": "Q-XULA-02",
+      "npc": "rootkeeper-ashul-tei",
+      "why": "the offer gate refused: requires Q-XULA-10 first; the_xul_aneekh rank 0/2; the_xul_aneekh reputation 0/22"
+    },
+    {
+      "quest": "Q-XULA-03",
+      "npc": "ee-vashum",
+      "why": "the offer gate refused: requires Q-DEEP-01 first; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-04",
+      "npc": "ee-vashum",
+      "why": "the offer gate refused: requires Q-XULA-03 first; the_xul_aneekh rank 0/4; the_xul_aneekh reputation 0/52"
+    },
+    {
+      "quest": "Q-XULA-06",
+      "npc": "ku-vastei-ixakh",
+      "why": "that person is not in the world; talkTo would throw"
+    },
+    {
+      "quest": "Q-XULA-07",
+      "npc": "speaker-teel-ashaan",
+      "why": "the offer gate refused: requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/6; the_xul_aneekh reputation 0/90"
+    },
+    {
+      "quest": "Q-ASSZ-06",
+      "npc": "assizer-corvo",
+      "why": "the offer gate refused: requires Q-ASSZ-05 first; assizer-corvo disposition 45/50; the_imperial_assize rank 0/5; the_imperial_assize reputation 0/70"
+    },
+    {
+      "quest": "Q-LEDG-07",
+      "npc": "npc-ineve-corrano",
+      "why": "the offer gate refused: requires Q-LEDG-06 first; factor-ruvela-sath disposition 45/55; the_wet_ledger rank 0/6; the_wet_ledger reputation 0/90"
+    },
+    {
+      "quest": "Q-XULA-01",
+      "npc": "npc-sorel-ithan",
+      "why": "the offer gate refused: requires Q-XULA-00 first; the_xul_aneekh rank 0/1; the_xul_aneekh reputation 0/10"
+    },
+    {
+      "quest": "Q-XULA-11",
+      "npc": "npc-uneel-vaakh-sister",
+      "why": "the offer gate refused: requires Q-XULA-02 first; ee-vashum disposition 35/45; the_xul_aneekh rank 0/3; the_xul_aneekh reputation 0/36"
+    },
+    {
+      "quest": "Q-XULA-12",
+      "npc": "npc-high-hollow-speaker",
+      "why": "the offer gate refused: requires Q-XULA-06 first; helstrom-gallery-keepers disposition 30/50; the_xul_aneekh rank 0/5; the_xul_aneekh reputation 0/70"
+    },
+    {
+      "quest": "Q-XULA-14",
+      "npc": "npc-fourth-day-boatman",
+      "why": "the offer gate refused: requires Q-XULA-08 first; ee-vashum disposition 35/55; the_xul_aneekh rank 0/7; the_xul_aneekh reputation 0/112"
+    }
+  ],
+  "all_pass": true
+}

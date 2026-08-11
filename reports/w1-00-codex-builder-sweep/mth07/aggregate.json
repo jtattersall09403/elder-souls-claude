@@ -1,0 +1,30 @@
+{
+  "schema": "elder-souls/w1-00-mth07-aggregate@1",
+  "census": "tools/harness/w1-00-mth07-census.json",
+  "models": 4,
+  "evidence": [
+    {
+      "model": "seeded-prng-stream",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "sha256": "09b8aa0c082710298dd4cd0233229dc349701de5e058a1e42192cfda41afdef1"
+    },
+    {
+      "model": "fixed-step-integrator",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "sha256": "09b8aa0c082710298dd4cd0233229dc349701de5e058a1e42192cfda41afdef1"
+    },
+    {
+      "model": "catch-up-cap",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "sha256": "09b8aa0c082710298dd4cd0233229dc349701de5e058a1e42192cfda41afdef1"
+    },
+    {
+      "model": "durable-save-projection",
+      "evidence": "reports/w1-00-codex-builder-sweep/mth07/live.json",
+      "sha256": "09b8aa0c082710298dd4cd0233229dc349701de5e058a1e42192cfda41afdef1"
+    }
+  ],
+  "census_only": false,
+  "failures": [],
+  "pass": true
+}

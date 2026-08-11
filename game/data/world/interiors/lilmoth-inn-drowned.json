@@ -1,152 +1,226 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "lilmoth-inn-drowned",
-  "name": "The Drowned Bell",
-  "settlement": "lilmoth",
-  "cell_kind": "named",
-  "interior_kind": "tavern",
-  "service": "inn",
-  "faction": null,
-  "exterior_door": [
-    2768.4,
-    0.37,
-    5067.45
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-inn-drowned",
+ "name": "The Drowned Bell",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  2768.4,
+  0.37,
+  5067.45
+ ],
+ "continuity": {
+  "building": "lilmoth-inn-drowned",
+  "building_offset_m": [
+   1.9,
+   -2.4,
+   39.95
   ],
-  "continuity": {
-    "building": "lilmoth-inn-drowned",
-    "building_offset_m": [
-      1.9,
-      -2.4,
-      39.95
-    ],
-    "building_yaw_deg": 90,
-    "exterior_footprint_m": [
-      11.2,
-      13.2
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      5.4
-    ],
-    "exterior_spawn": [
-      2768.4,
-      0.37,
-      5069.25
-    ]
+  "building_yaw_deg": 90,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.27
+  ],
+  "exterior_spawn": [
+   2768.4,
+   0.37,
+   5073.55
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2768.4,
+   0.37,
+   5069.25
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.27,
+   5.27
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.27,
+   6.27
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.smith9.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -5.6,
-      5.6
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -6.6,
-      6.6
-    ]
+  {
+   "id": "lilmoth.smith9.r0.lamp0",
+   "pos": [
+    -1.9,
+    1.6,
+    -1.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 147.8,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.64
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "lilmoth.smith9.r0.lamp1",
+   "pos": [
+    0,
+    1.6,
+    -1.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.smith9.r0"
+ ],
+ "containers": [
+  "lilmoth.smith9.r0.2"
+ ],
+ "unique_item": {
+  "id": "lilmoth-inn-drowned-unique",
+  "name": "the bell from the sunk chapel",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-smith-9"
+ },
+ "readable": [
+  {
+   "id": "lilmoth-inn-drowned-readable",
+   "title": "The Bell Rang Under Water"
   },
-  "lights": [
-    {
-      "id": "lilmoth.smith9.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "lilmoth.smith9.r0.lamp0",
-      "pos": [
-        -1.9,
-        1.6,
-        -1.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "lilmoth.smith9.r0.lamp1",
-      "pos": [
-        0,
-        1.6,
-        -1.2000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "bar_long",
-    "bench_pair",
-    "table_round",
-    "barrel_row",
-    "tankard_shelf",
-    "hearth_open",
-    "bed_rentable",
-    "dice_cup",
-    "lamp_hanging",
-    "stair_narrow",
-    "keg_tap",
-    "cloak_hook",
-    "stew_pot",
-    "notice_board",
-    "lil_sunk_facade",
-    "lil_drowned_window",
-    "lil_stilt_platform",
-    "lil_reed_shack"
-  ],
-  "property_zones": [
-    "lilmoth.smith9.r0"
-  ],
-  "containers": [
-    "lilmoth.smith9.r0.2"
-  ],
-  "unique_item": {
-    "id": "lilmoth-inn-drowned-unique",
-    "name": "the bell from the sunk chapel",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:lilmoth-smith-9"
+  {
+   "id": "the-boy-who-counted-the-tide",
+   "title": "The boy who counted the tide",
+   "book": "the-boy-who-counted-the-tide"
   },
-  "readable": [
-    {
-      "id": "lilmoth-inn-drowned-readable",
-      "title": "The Bell Rang Under Water"
-    },
-    {
-      "id": "the-boy-who-counted-the-tide",
-      "title": "The boy who counted the tide",
-      "book": "the-boy-who-counted-the-tide"
-    },
-    {
-      "id": "the-eleven-strokes-of-teeja-lun",
-      "title": "The eleven strokes, as Sedd Ravano tells it",
-      "book": "the-eleven-strokes-of-teeja-lun"
-    }
+  {
+   "id": "the-eleven-strokes-of-teeja-lun",
+   "title": "The eleven strokes, as Sedd Ravano tells it",
+   "book": "the-eleven-strokes-of-teeja-lun"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 6,
-  "close_h": 26
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.9,
+    1.6,
+    -1.1
+   ]
+  },
+  {
+   "pos": [
+    0,
+    1.6,
+    -1.2000000000000002
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "lilmoth-inn-drowned",
+ "door_world_pos": [
+  2768.4,
+  0.37,
+  5073.05
+ ],
+ "door_world_bearing_deg": 270,
+ "storeys": [
+  {
+   "floor_height_m": -2.4,
+   "area_m2": 132.17
+  },
+  {
+   "floor_height_m": 0,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": true,
+ "water_plane_m": null
 }

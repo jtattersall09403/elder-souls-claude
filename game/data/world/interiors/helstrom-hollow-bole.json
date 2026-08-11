@@ -1,170 +1,251 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "helstrom-hollow-bole",
-  "name": "The Hollow Bole",
-  "settlement": "helstrom",
-  "cell_kind": "named",
-  "interior_kind": "hall",
-  "service": null,
-  "faction": "rootkeepers",
-  "exterior_door": [
-    2280.5,
-    27.22,
-    2773.5
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-hollow-bole",
+ "name": "The Hollow Bole",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "hall",
+ "service": null,
+ "faction": "rootkeepers",
+ "exterior_door": [
+  2280.5,
+  27.22,
+  2773.5
+ ],
+ "continuity": {
+  "building": "helstrom-hollow-bole",
+  "building_offset_m": [
+   18,
+   0,
+   0
   ],
-  "continuity": {
-    "building": "helstrom-hollow-bole",
-    "building_offset_m": [
-      18,
-      0,
-      0
-    ],
-    "building_yaw_deg": 270,
-    "exterior_footprint_m": [
-      11.2,
-      13.2
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      5.4
-    ],
-    "exterior_spawn": [
-      2280.5,
-      27.22,
-      2775.3
-    ]
+  "building_yaw_deg": 270,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.27
+  ],
+  "exterior_spawn": [
+   2280.5,
+   27.22,
+   2779.6
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   5.4
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2280.5,
+   27.22,
+   2775.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.27,
+   5.27
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.27,
+   6.27
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "helstrom.factor12.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -5.6,
-      5.6
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -6.6,
-      6.6
-    ]
+  {
+   "id": "helstrom.factor12.r0.lamp0",
+   "pos": [
+    -1.2,
+    1.6,
+    -0.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 147.8,
-  "light": {
-    "kind": "hearth",
-    "pos": [
-      0,
-      0.6,
-      2.64
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "helstrom.factor12.r0.lamp1",
+   "pos": [
+    -3.1,
+    1.6,
+    -2.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "helstrom.factor12.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "helstrom.factor12.r0.lamp0",
-      "pos": [
-        -1.2000000000000002,
-        1.6,
-        -0.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.factor12.r0.lamp1",
-      "pos": [
-        -3.1,
-        1.6,
-        -2.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "helstrom.factor12.r0.lamp2",
-      "pos": [
-        2,
-        1.6,
-        -1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "high_seat",
-    "long_table",
-    "bench_row",
-    "brazier_iron",
-    "banner_wall",
-    "weapon_rack",
-    "chest_large",
-    "hearth_open",
-    "lamp_hanging",
-    "floor_rush",
-    "charter_frame",
-    "drinking_horn",
-    "stair_narrow",
-    "shield_wall",
-    "hel_bole_arch",
-    "hel_grown_wall_a",
-    "hel_grown_wall_b",
-    "hel_shell_roof"
-  ],
-  "property_zones": [
-    "helstrom.factor12.r0"
-  ],
-  "containers": [
-    "helstrom.factor12.r0.0",
-    "helstrom.factor12.r0.4",
-    "helstrom.factor12.r0.8"
-  ],
-  "unique_item": {
-    "id": "helstrom-hollow-bole-unique",
-    "name": "the kneeling root",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:helstrom-factor-12"
+  {
+   "id": "helstrom.factor12.r0.lamp2",
+   "pos": [
+    2,
+    1.6,
+    -1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "high_seat",
+  "long_table",
+  "bench_row",
+  "brazier_iron",
+  "banner_wall",
+  "weapon_rack",
+  "chest_large",
+  "hearth_open",
+  "lamp_hanging",
+  "floor_rush",
+  "charter_frame",
+  "drinking_horn",
+  "stair_narrow",
+  "shield_wall",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [
+  "helstrom.factor12.r0"
+ ],
+ "containers": [
+  "helstrom.factor12.r0.0",
+  "helstrom.factor12.r0.4",
+  "helstrom.factor12.r0.8"
+ ],
+ "unique_item": {
+  "id": "helstrom-hollow-bole-unique",
+  "name": "the kneeling root",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:helstrom-factor-12"
+ },
+ "readable": [
+  {
+   "id": "helstrom-hollow-bole-readable",
+   "title": "The Root Does Not Sit"
   },
-  "readable": [
-    {
-      "id": "helstrom-hollow-bole-readable",
-      "title": "The Root Does Not Sit"
-    },
-    {
-      "id": "the-terrace-climbers",
-      "title": "Getting up a stone nest, and down again",
-      "book": "the-terrace-climbers"
-    },
-    {
-      "id": "not-being-seen-in-a-country-with-no-shadows",
-      "title": "Not being seen in a country with no shadows",
-      "book": "not-being-seen-in-a-country-with-no-shadows"
-    },
-    {
-      "id": "inscription-third-terrace",
-      "title": "The inscription on the third terrace",
-      "book": "inscription-third-terrace"
-    }
+  {
+   "id": "the-terrace-climbers",
+   "title": "Getting up a stone nest, and down again",
+   "book": "the-terrace-climbers"
+  },
+  {
+   "id": "not-being-seen-in-a-country-with-no-shadows",
+   "title": "Not being seen in a country with no shadows",
+   "book": "not-being-seen-in-a-country-with-no-shadows"
+  },
+  {
+   "id": "inscription-third-terrace",
+   "title": "The inscription on the third terrace",
+   "book": "inscription-third-terrace"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -5.6,
+   5.6
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.2000000000000002,
+    1.6,
+    -0.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -3.1,
+    1.6,
+    -2.1
+   ]
+  },
+  {
+   "pos": [
+    2,
+    1.6,
+    -1
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.64
+ ],
+ "exterior_building_id": "helstrom-hollow-bole",
+ "door_world_pos": [
+  2280.5,
+  27.22,
+  2779.1
+ ],
+ "door_world_bearing_deg": 90,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 132.17
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 132.17
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": true,
+ "water_plane_m": null
 }

@@ -57,7 +57,8 @@ for (const leg of roads.legs) {
     };
     const mid = at((sp.from_m + sp.to_m) / 2);
     spans.push({ leg: leg.id, from_m: sp.from_m, to_m: sp.to_m, kind: sp.kind || 'span',
-      half_width_m: leg.half_width_m, x: mid[0], z: mid[1], bearing: mid[2] });
+      half_width_m: leg.half_width_m, x: mid[0], z: mid[1], bearing: mid[2],
+      centreline: pts.slice(sp.from_i, sp.to_i + 1).map((q) => [q[0], q[1]]) });
   }
 }
 
@@ -86,7 +87,13 @@ try {
           E.input.reset(E.sim.frame);
           E.input.queueInputs([{ f: 0, move: [Math.sin(b - cy), Math.cos(b - cy)] }], E.sim.frame);
           E.loop.stepOnce();
-          const off = Math.abs((p.pos[0] - sp.x) * nx + (p.pos[2] - sp.z) * nz);
+          let off = Infinity;
+          for (let i = 0; i + 1 < sp.centreline.length; i++) {
+            const a = sp.centreline[i], c = sp.centreline[i + 1];
+            const dx = c[0] - a[0], dz = c[1] - a[1], l2 = dx * dx + dz * dz || 1;
+            const t = Math.max(0, Math.min(1, ((p.pos[0] - a[0]) * dx + (p.pos[2] - a[1]) * dz) / l2));
+            off = Math.min(off, Math.hypot(p.pos[0] - (a[0] + dx * t), p.pos[2] - (a[1] + dz * t)));
+          }
           if (off > worst) { worst = off; worstAt = [+p.pos[0].toFixed(2), +p.pos[2].toFixed(2), +p.pos[1].toFixed(2)]; }
           if (onDeckStart && !E.field.onDeckAt(p.pos[0], p.pos[2])) leftDeck++;
           for (let i = 0; i < E.bus.count; i++) if (E.bus.pool[i].type === 'world_fall_start') fell++;

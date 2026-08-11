@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 568,
+  "file_count": 585,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -74,6 +74,62 @@
       "id": "market",
       "bytes": 7625,
       "sha256": "a7ea782074903fea"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_archon.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-archon",
+      "bytes": 3499,
+      "sha256": "719d94c09a450aef"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_blackrose.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-blackrose",
+      "bytes": 3528,
+      "sha256": "68fd19c8b3e3d54e"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_gideon.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-gideon",
+      "bytes": 3497,
+      "sha256": "d1a971d77d8e2799"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_helstrom.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-helstrom",
+      "bytes": 3518,
+      "sha256": "a1e1e3820c037615"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_lilmoth.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-lilmoth",
+      "bytes": 3509,
+      "sha256": "c97b1f3105c2b35b"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_soulrest.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-soulrest",
+      "bytes": 3522,
+      "sha256": "92da4a30657cd1b4"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_stormhold.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-stormhold",
+      "bytes": 3534,
+      "sha256": "78041e4de626e5cb"
+    },
+    {
+      "path": "audio/ambience/interiors/settlement_thorn.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "settlement-thorn",
+      "bytes": 3489,
+      "sha256": "6305778a73c99b6f"
     },
     {
       "path": "audio/ambience/interiors/street.json",
@@ -181,6 +237,13 @@
       "sha256": "90838f2f123addb8"
     },
     {
+      "path": "books/manifest.json",
+      "schema": "elder-souls/books-manifest@1",
+      "id": null,
+      "bytes": 21410,
+      "sha256": "2452a7e2c77caaa9"
+    },
+    {
       "path": "books/quest-keys.json",
       "schema": "elder-souls/book@2",
       "id": null,
@@ -191,8 +254,8 @@
       "path": "books/scraps.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 15004,
-      "sha256": "f7feb7a45c43c271"
+      "bytes": 15003,
+      "sha256": "7f3bc97411261e76"
     },
     {
       "path": "books/the-arms-of-the-province.json",
@@ -212,8 +275,8 @@
       "path": "books/the-books-in-evidence.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 23506,
-      "sha256": "62112acc00e1e903"
+      "bytes": 23559,
+      "sha256": "c8698c3f8dda7106"
     },
     {
       "path": "books/the-casebook-of-the-assize.json",
@@ -249,7 +312,7 @@
       "schema": "elder-souls/book@2",
       "id": null,
       "bytes": 40120,
-      "sha256": "a0dd35ea94f48b2a"
+      "sha256": "2158975bde129ffe"
     },
     {
       "path": "books/the-ford-arguments.json",
@@ -263,14 +326,14 @@
       "schema": "elder-souls/book@2",
       "id": null,
       "bytes": 32956,
-      "sha256": "974024dfb356eca2"
+      "sha256": "d06b97468469e8f6"
     },
     {
       "path": "books/the-long-tail.json",
       "schema": "elder-souls/book@2",
       "id": null,
       "bytes": 40805,
-      "sha256": "84d577c5a073aeca"
+      "sha256": "3a7ddbc494e00239"
     },
     {
       "path": "books/the-occupation.json",
@@ -283,8 +346,8 @@
       "path": "books/the-papers-in-evidence.json",
       "schema": "elder-souls/books@1",
       "id": null,
-      "bytes": 62918,
-      "sha256": "e756fe6bc9103eeb"
+      "bytes": 62952,
+      "sha256": "8e5840be4bbb6aea"
     },
     {
       "path": "books/the-peoples.json",
@@ -298,7 +361,7 @@
       "schema": "elder-souls/book@2",
       "id": null,
       "bytes": 58525,
-      "sha256": "b66457c41345bd94"
+      "sha256": "5bbcc23c2694857d"
     },
     {
       "path": "books/the-short-arms.json",
@@ -318,15 +381,15 @@
       "path": "books/the-short-measures.json",
       "schema": "elder-souls/books@1",
       "id": null,
-      "bytes": 18705,
-      "sha256": "8c7083084c806b5e"
+      "bytes": 18708,
+      "sha256": "897216ca4d9b53b6"
     },
     {
       "path": "books/told-and-sung.json",
       "schema": "elder-souls/book@2",
       "id": null,
       "bytes": 15211,
-      "sha256": "377a20e336d924f5"
+      "sha256": "e453d7e93f7b3425"
     },
     {
       "path": "camera/cells.json",
@@ -360,8 +423,8 @@
       "path": "combat/ai.json",
       "schema": "elder-souls/enemy-ai@2",
       "id": "enemy-ai",
-      "bytes": 27108,
-      "sha256": "2133eeb69b262402",
+      "bytes": 28006,
+      "sha256": "de7e6dbc310868ae",
       "declared_incomplete": true
     },
     {
@@ -417,8 +480,8 @@
       "path": "combat/enemies/champion_hist_marked.json",
       "schema": "elder-souls/enemy@1",
       "id": "champion_hist_marked",
-      "bytes": 6832,
-      "sha256": "644715aa94b65192"
+      "bytes": 6873,
+      "sha256": "c26ccd9bb8a52c97"
     },
     {
       "path": "combat/enemies/cst_sap_speaker.json",
@@ -452,15 +515,15 @@
       "path": "combat/enemies/guard_legion.json",
       "schema": "elder-souls/enemy@1",
       "id": "guard_legion",
-      "bytes": 7472,
-      "sha256": "23f088487dd7a022"
+      "bytes": 7513,
+      "sha256": "b768715d8eb4914c"
     },
     {
       "path": "combat/enemies/inf_trash.json",
       "schema": "elder-souls/enemy@1",
       "id": "inf_trash",
-      "bytes": 6720,
-      "sha256": "19d87eef28d2ac43"
+      "bytes": 6761,
+      "sha256": "8458629b60d79bae"
     },
     {
       "path": "combat/enemies/mat_chitin.json",
@@ -571,8 +634,8 @@
       "path": "combat/movesets/axe_hatchet_pair.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28479,
-      "sha256": "90559bd046de899a"
+      "bytes": 28430,
+      "sha256": "cdd8f7cbca0b45bc"
     },
     {
       "path": "combat/movesets/axe_kings_bite.json",
@@ -607,14 +670,14 @@
       "schema": "elder-souls/moveset@1",
       "id": null,
       "bytes": 7493,
-      "sha256": "3919f31be841aa07"
+      "sha256": "8c0047fa3e3aed9c"
     },
     {
       "path": "combat/movesets/bow_horn_sinew.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
       "bytes": 6386,
-      "sha256": "fc18f8409fbde7d4"
+      "sha256": "e7712e9cd972b233"
     },
     {
       "path": "combat/movesets/bow_kings_horn.json",
@@ -628,14 +691,14 @@
       "schema": "elder-souls/moveset@1",
       "id": null,
       "bytes": 6564,
-      "sha256": "ec4825a3438e8446"
+      "sha256": "e8947ad7953708bd"
     },
     {
       "path": "combat/movesets/bow_reed_shortbow.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
       "bytes": 6493,
-      "sha256": "2fd316d5fbac83b6"
+      "sha256": "db49022804739801"
     },
     {
       "path": "combat/movesets/cgs_drowned_reaper.json",
@@ -683,8 +746,8 @@
       "path": "combat/movesets/csw_mangrove_hook.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28929,
-      "sha256": "ba6d1daf93d259b3"
+      "bytes": 28904,
+      "sha256": "6e1193b3a4f1a226"
     },
     {
       "path": "combat/movesets/csw_naga_sickle.json",
@@ -739,8 +802,8 @@
       "path": "combat/movesets/dgr_reed_dirk.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 26271,
-      "sha256": "c782757fcbe76562"
+      "bytes": 26276,
+      "sha256": "69f3f83634d066ab"
     },
     {
       "path": "combat/movesets/dgr_shell_knife.json",
@@ -795,8 +858,8 @@
       "path": "combat/movesets/ghm_kings_ruin.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 29253,
-      "sha256": "00645d735edf11f9"
+      "bytes": 29254,
+      "sha256": "047e0dcaff15b7fd"
     },
     {
       "path": "combat/movesets/ghm_pile_driver.json",
@@ -809,8 +872,8 @@
       "path": "combat/movesets/ghm_root_hammer.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 24779,
-      "sha256": "ad2d35e659299fef"
+      "bytes": 24799,
+      "sha256": "6a73256a1e0089e3"
     },
     {
       "path": "combat/movesets/ghm_stone_breaker.json",
@@ -844,8 +907,8 @@
       "path": "combat/movesets/gsw_memorial_blade.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25913,
-      "sha256": "44ad60d9d855984c"
+      "bytes": 25884,
+      "sha256": "42fea991f3eda497"
     },
     {
       "path": "combat/movesets/gsw_oath_of_ash.json",
@@ -858,8 +921,8 @@
       "path": "combat/movesets/gsw_reed_bastard.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25895,
-      "sha256": "f403e52ed01bc2a1"
+      "bytes": 25862,
+      "sha256": "f00656ed0e59dc2c"
     },
     {
       "path": "combat/movesets/gsw_saltwind.json",
@@ -879,8 +942,8 @@
       "path": "combat/movesets/hlb_fen_hook.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 28191,
-      "sha256": "99fe22e44b55a756"
+      "bytes": 28157,
+      "sha256": "33909fefe7533b59"
     },
     {
       "path": "combat/movesets/hlb_garrison_bill.json",
@@ -1121,18 +1184,18 @@
       "sha256": "7048fc36fabc64a9"
     },
     {
-      "path": "combat/movesets/spell-loosen_the_joint.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-loosen_the_joint",
-      "bytes": 632,
-      "sha256": "cbd674bf4bed8c0f"
-    },
-    {
       "path": "combat/movesets/spell-loosen_the_joint_touch.json",
       "schema": "elder-souls/spell-moveset@1",
       "id": "spell-loosen_the_joint_touch",
       "bytes": 684,
       "sha256": "545df0a63fbb17e7"
+    },
+    {
+      "path": "combat/movesets/spell-loosen_the_joint.json",
+      "schema": "elder-souls/spell-moveset@1",
+      "id": "spell-loosen_the_joint",
+      "bytes": 632,
+      "sha256": "cbd674bf4bed8c0f"
     },
     {
       "path": "combat/movesets/spell-make_it_whole.json",
@@ -1474,8 +1537,8 @@
       "path": "combat/movesets/spr_fishers_gig.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25088,
-      "sha256": "39dba5cfefa06497"
+      "bytes": 25113,
+      "sha256": "f17643cbfda300dd"
     },
     {
       "path": "combat/movesets/spr_marsh_lance.json",
@@ -1516,8 +1579,8 @@
       "path": "combat/movesets/ssw_barsaebic_warblade.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25873,
-      "sha256": "8e6b666302a0cd6c"
+      "bytes": 25851,
+      "sha256": "c41c2900dcaede60"
     },
     {
       "path": "combat/movesets/ssw_fen_wardens.json",
@@ -1614,8 +1677,8 @@
       "path": "combat/movesets/ugs_fen_zwei.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25075,
-      "sha256": "d615c80239c3b86b"
+      "bytes": 25069,
+      "sha256": "47096d9f714ccf61"
     },
     {
       "path": "combat/movesets/ugs_golem_sword.json",
@@ -1635,15 +1698,15 @@
       "path": "combat/movesets/ugs_saltiron_greatsword.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 25080,
-      "sha256": "e8d77cc02aa0a9bf"
+      "bytes": 25106,
+      "sha256": "4d8d195cee82f4de"
     },
     {
       "path": "combat/movesets/ugs_tomb_colossus.json",
       "schema": "elder-souls/moveset@1",
       "id": null,
-      "bytes": 24975,
-      "sha256": "34de1b3aa6de678e"
+      "bytes": 24991,
+      "sha256": "9913bfc2d57a5045"
     },
     {
       "path": "combat/movesets/whp_hide_lash.json",
@@ -1677,8 +1740,8 @@
       "path": "combat/parley.json",
       "schema": "elder-souls/parley@1",
       "id": null,
-      "bytes": 6830,
-      "sha256": "3e49155601f29148"
+      "bytes": 6678,
+      "sha256": "5f730aaad8a1887e"
     },
     {
       "path": "combat/poise.json",
@@ -1814,6 +1877,13 @@
       "sha256": "5143598af217556e"
     },
     {
+      "path": "dialogue/greetings.json",
+      "schema": "elder-souls/greetings@2",
+      "id": "greetings",
+      "bytes": 186097,
+      "sha256": "0d80d54995d5c8c6"
+    },
+    {
       "path": "dialogue/greetings/00-priority-classes.json",
       "schema": "elder-souls/greetings@2",
       "id": null,
@@ -1826,13 +1896,6 @@
       "id": null,
       "bytes": 27799,
       "sha256": "302110d92b65a44e"
-    },
-    {
-      "path": "dialogue/greetings.json",
-      "schema": "elder-souls/greetings@2",
-      "id": "greetings",
-      "bytes": 186097,
-      "sha256": "0d80d54995d5c8c6"
     },
     {
       "path": "dialogue/persuasion-gmst.json",
@@ -1877,11 +1940,18 @@
       "sha256": "1db5ebcda47ef91d"
     },
     {
+      "path": "dialogue/topics/_manifest.json",
+      "schema": "elder-souls/dialogue-topic-manifest@1",
+      "id": "topic-merge-manifest",
+      "bytes": 7332,
+      "sha256": "b89462d0e4a2989a"
+    },
+    {
       "path": "dialogue/topics/00-roots.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 20682,
-      "sha256": "391d2cd9ea070eef"
+      "bytes": 21543,
+      "sha256": "98c94a0c320c006c"
     },
     {
       "path": "dialogue/topics/05-asking-around.json",
@@ -1909,8 +1979,8 @@
       "path": "dialogue/topics/10-global.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 54681,
-      "sha256": "b3e47c7b311146e1"
+      "bytes": 55051,
+      "sha256": "52a6aba8703ac4db"
     },
     {
       "path": "dialogue/topics/20-tier-a.json",
@@ -1944,8 +2014,8 @@
       "path": "dialogue/topics/40-race-gated.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 40802,
-      "sha256": "5df741c7bf0b955d"
+      "bytes": 40444,
+      "sha256": "2181da2892b89360"
     },
     {
       "path": "dialogue/topics/45-speaker-coverage.json",
@@ -1958,29 +2028,29 @@
       "path": "dialogue/topics/50-factions.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 40054,
-      "sha256": "93e3a8ab853fc1b8"
+      "bytes": 40401,
+      "sha256": "1b78ac7ad782e60b"
     },
     {
       "path": "dialogue/topics/50-mainline.json",
       "schema": "elder-souls/dialogue-topics@1",
       "id": null,
-      "bytes": 46264,
-      "sha256": "e1ff7749aa05ae8d"
+      "bytes": 46477,
+      "sha256": "0966788166db95df"
     },
     {
       "path": "dialogue/topics/55-utility.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 36970,
-      "sha256": "3ed2b9be140906cb"
+      "bytes": 37265,
+      "sha256": "c94a4dad7f0ed388"
     },
     {
       "path": "dialogue/topics/56-writ-house-open.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 12572,
-      "sha256": "78892e05aa5ff359"
+      "bytes": 11585,
+      "sha256": "c2691a99dd1306c9"
     },
     {
       "path": "dialogue/topics/60-roads.json",
@@ -1993,8 +2063,8 @@
       "path": "dialogue/topics/70-disputes.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 10129,
-      "sha256": "417a34a7b76c2eb9"
+      "bytes": 8676,
+      "sha256": "bf43438537515194"
     },
     {
       "path": "dialogue/topics/75-tribes.json",
@@ -2004,18 +2074,11 @@
       "sha256": "fbf446933bd47444"
     },
     {
-      "path": "dialogue/topics/_manifest.json",
-      "schema": "elder-souls/dialogue-topic-manifest@1",
-      "id": "topic-merge-manifest",
-      "bytes": 6880,
-      "sha256": "86e5a9bf7a1de092"
-    },
-    {
       "path": "dialogue/topics/main-quest-argument.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": "main-quest-argument",
-      "bytes": 42208,
-      "sha256": "26281b240924ebce"
+      "bytes": 41419,
+      "sha256": "70340bbb36dda6db"
     },
     {
       "path": "dialogue/topics/thorn.json",
@@ -2040,6 +2103,13 @@
       "sha256": "7381ac02aa13f6c3"
     },
     {
+      "path": "factions/registry.json",
+      "schema": "elder-souls/faction-registry@1",
+      "id": "faction-registry",
+      "bytes": 5984,
+      "sha256": "766d005d3658e540"
+    },
+    {
       "path": "input/pad-quirks.json",
       "schema": "elder-souls/pad-quirks@1",
       "id": "pad-quirks",
@@ -2050,8 +2120,8 @@
       "path": "input/profiles.json",
       "schema": "elder-souls/input-profiles@1",
       "id": "input-profiles",
-      "bytes": 13524,
-      "sha256": "4ec4382d155a4289"
+      "bytes": 13090,
+      "sha256": "d542cb46a612d49a"
     },
     {
       "path": "items/carried.json",
@@ -2079,8 +2149,8 @@
       "path": "lore/canon.json",
       "schema": "canon@1",
       "id": "canon",
-      "bytes": 108254,
-      "sha256": "1b738ba69fa0596d"
+      "bytes": 108255,
+      "sha256": "21253936f2711d4c"
     },
     {
       "path": "magic/cast-classes.json",
@@ -2157,16 +2227,16 @@
       "path": "npcs/mainline.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 33273,
-      "sha256": "5fcc0adaafb25126",
+      "bytes": 48602,
+      "sha256": "5b89d8cbfcf025f9",
       "declared_incomplete": true
     },
     {
       "path": "npcs/named-states.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 8320,
-      "sha256": "a11b8490e70ce6e8"
+      "bytes": 8314,
+      "sha256": "9759c693938e7c5e"
     },
     {
       "path": "npcs/pop-archon.json",
@@ -2235,8 +2305,8 @@
       "path": "npcs/quest-givers.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 28763,
-      "sha256": "b7cc7128938a873e",
+      "bytes": 28801,
+      "sha256": "aa59bb1ba059f21b",
       "declared_incomplete": true
     },
     {
@@ -2251,8 +2321,8 @@
       "path": "npcs/thorn.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 2668,
-      "sha256": "56dcf2f8e95f1631",
+      "bytes": 2672,
+      "sha256": "aea11b92dc296321",
       "declared_incomplete": true
     },
     {
@@ -2271,13 +2341,6 @@
       "declared_incomplete": true
     },
     {
-      "path": "progression/KNOWN-GAPS.json",
-      "schema": "elder-souls/known-gaps@1",
-      "id": "known-gaps",
-      "bytes": 4829,
-      "sha256": "a699c7fce36ac6ba"
-    },
-    {
       "path": "progression/attributes.json",
       "schema": "elder-souls/attributes@1",
       "id": "attributes",
@@ -2289,7 +2352,7 @@
       "schema": "elder-souls/birthsigns@1",
       "id": "birthsigns",
       "bytes": 17274,
-      "sha256": "f79f302ab0d8e5bb"
+      "sha256": "b82115ddf1ee226d"
     },
     {
       "path": "progression/classes.json",
@@ -2310,8 +2373,8 @@
       "path": "progression/faction-discipline.json",
       "schema": "elder-souls/faction-discipline@1",
       "id": "faction-discipline",
-      "bytes": 4167,
-      "sha256": "55ba5174b2164545"
+      "bytes": 7088,
+      "sha256": "89a121385eb9f352"
     },
     {
       "path": "progression/factions.json",
@@ -2319,6 +2382,13 @@
       "id": "factions",
       "bytes": 3221,
       "sha256": "62dcc521574d996f"
+    },
+    {
+      "path": "progression/KNOWN-GAPS.json",
+      "schema": "elder-souls/known-gaps@1",
+      "id": "known-gaps",
+      "bytes": 4829,
+      "sha256": "a699c7fce36ac6ba"
     },
     {
       "path": "progression/levels.json",
@@ -2353,15 +2423,15 @@
       "path": "quests/blackmarsh-coast.json",
       "schema": "elder-souls/quests@1",
       "id": "blackmarsh-coast",
-      "bytes": 65583,
-      "sha256": "70333d8e429e74da"
+      "bytes": 65421,
+      "sha256": "462d0b1ecddb9226"
     },
     {
       "path": "quests/blackmarsh-core.json",
       "schema": "elder-souls/quests@1",
       "id": "blackmarsh-core",
-      "bytes": 36571,
-      "sha256": "d1ca4edc213edc75"
+      "bytes": 36348,
+      "sha256": "47ccf61514ec8dd7"
     },
     {
       "path": "quests/closure-registry.json",
@@ -2369,6 +2439,13 @@
       "id": null,
       "bytes": 4839,
       "sha256": "2e59e4471a1c698d"
+    },
+    {
+      "path": "quests/faction-continuation-wave1.json",
+      "schema": "elder-souls/quests@1",
+      "id": "faction-continuation-wave1",
+      "bytes": 338998,
+      "sha256": "ec51ef2e1db569c4"
     },
     {
       "path": "quests/faction-gates.json",
@@ -2381,85 +2458,85 @@
       "path": "quests/faction-imperial-assize.json",
       "schema": "elder-souls/quests@1",
       "id": "faction-imperial-assize",
-      "bytes": 154232,
-      "sha256": "7a582ef9e00b2b79"
+      "bytes": 152596,
+      "sha256": "ce0eafded8c9faaa"
     },
     {
       "path": "quests/faction-joining-wave1.json",
       "schema": "elder-souls/quests@1",
       "id": "faction-joining-wave1",
-      "bytes": 37647,
-      "sha256": "2d14c5b70f7bd7d8"
+      "bytes": 37449,
+      "sha256": "a6926d2b8ee9cbaa"
     },
     {
       "path": "quests/faction-wet-ledger.json",
       "schema": "elder-souls/quests@1",
       "id": "faction-wet-ledger",
-      "bytes": 154331,
-      "sha256": "c9168476649feb8d"
+      "bytes": 152259,
+      "sha256": "6d61ecb2b639b818"
     },
     {
       "path": "quests/faction-xul-aneekh.json",
       "schema": "elder-souls/quests@1",
       "id": "faction-xul-aneekh",
-      "bytes": 162254,
-      "sha256": "52824244d8b65a91"
+      "bytes": 160584,
+      "sha256": "7ea069f0307aa679"
     },
     {
       "path": "quests/hooks.json",
       "schema": "elder-souls/quest-hooks@1",
       "id": "quest-hooks",
-      "bytes": 35103,
-      "sha256": "c988f24e55724f66"
+      "bytes": 43826,
+      "sha256": "6048cd65b9fe78fb"
     },
     {
       "path": "quests/magic-utility.json",
       "schema": "elder-souls/quests@1",
       "id": "magic-utility-quests",
       "bytes": 118179,
-      "sha256": "c53d248c783ebfa8"
+      "sha256": "54219f7d28f17c12"
     },
     {
       "path": "quests/mainline-act1.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act1",
-      "bytes": 58412,
-      "sha256": "eae85b511a3458f9"
+      "bytes": 58404,
+      "sha256": "a17cac921fb7dbcc"
     },
     {
       "path": "quests/mainline-act2.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act2",
-      "bytes": 58457,
-      "sha256": "274e58472f6f3c38"
+      "bytes": 58454,
+      "sha256": "3dcc3624ac890c76"
     },
     {
       "path": "quests/mainline-act3.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act3",
-      "bytes": 57575,
-      "sha256": "a1ce6a2ae7bc5fc6"
+      "bytes": 57568,
+      "sha256": "eb32885139717957"
     },
     {
       "path": "quests/mainline-act4.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act4",
-      "bytes": 109305,
-      "sha256": "d865853db87fa5d9"
+      "bytes": 109283,
+      "sha256": "058bc05ec50d6a87"
     },
     {
       "path": "quests/mainline-act5.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act5",
-      "bytes": 59633,
-      "sha256": "9dc58d1ec0dd97c2"
+      "bytes": 59628,
+      "sha256": "9c8732bf2c4bdf76"
     },
     {
       "path": "quests/mainline-backpath.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-backpath",
-      "bytes": 43089,
-      "sha256": "5eaec3087501b74a"
+      "bytes": 43087,
+      "sha256": "1bb0c7d2931b0828"
     },
     {
       "path": "quests/mainline.json",
@@ -2481,8 +2558,8 @@
       "path": "save-manifest.json",
       "schema": "elder-souls/save-manifest@1",
       "id": null,
-      "bytes": 26581,
-      "sha256": "980b422d5ec589f9",
+      "bytes": 26847,
+      "sha256": "a97c5420f82763d8",
       "declared_incomplete": true
     },
     {
@@ -2682,6 +2759,27 @@
       "sha256": "7c9907e4ce369b2a"
     },
     {
+      "path": "states/sv2-mid-dungeon.json",
+      "schema": "elder-souls/state@1",
+      "id": "sv2-mid-dungeon",
+      "bytes": 1097,
+      "sha256": "12972e133e0c7925"
+    },
+    {
+      "path": "states/sv3-post-rank-up.json",
+      "schema": "elder-souls/state@1",
+      "id": "sv3-post-rank-up",
+      "bytes": 1076,
+      "sha256": "be7b0564a3778729"
+    },
+    {
+      "path": "states/sv4-bounty-pursuit.json",
+      "schema": "elder-souls/state@1",
+      "id": "sv4-bounty-pursuit",
+      "bytes": 1665,
+      "sha256": "8c6716fdbf0735d3"
+    },
+    {
       "path": "states/sv5-journal-bloodstain.json",
       "schema": "elder-souls/state@1",
       "id": "sv5-journal-bloodstain",
@@ -2832,8 +2930,8 @@
       "path": "stealth/detection.json",
       "schema": "elder-souls/stealth-detection@1",
       "id": "detection",
-      "bytes": 21289,
-      "sha256": "95f5195e2bb596c5"
+      "bytes": 20942,
+      "sha256": "931d38200a59dc33"
     },
     {
       "path": "stealth/locks.json",
@@ -2874,8 +2972,8 @@
       "path": "weapons/clip-registry.json",
       "schema": "elder-souls/clip-registry@1",
       "id": "clip-registry",
-      "bytes": 751894,
-      "sha256": "94fa54270bfebae2"
+      "bytes": 757892,
+      "sha256": "a75aaa5bad18aad4"
     },
     {
       "path": "weapons/fp-sd.json",
@@ -2909,15 +3007,29 @@
       "path": "weapons/roster.json",
       "schema": "elder-souls/weapon-roster@1",
       "id": "weapon-roster",
-      "bytes": 53794,
-      "sha256": "612529e3f912ab5a"
+      "bytes": 54368,
+      "sha256": "3a20b04c03944e96"
+    },
+    {
+      "path": "world/architecture.json",
+      "schema": "elder-souls/architecture@1",
+      "id": null,
+      "bytes": 4557,
+      "sha256": "f31f2ab59a6df133"
+    },
+    {
+      "path": "world/assembled-lore.json",
+      "schema": "assembled@1",
+      "id": null,
+      "bytes": 6284,
+      "sha256": "115de5c77cb76689"
     },
     {
       "path": "world/borders.json",
       "schema": "elder-souls/borders@1",
       "id": null,
-      "bytes": 222776,
-      "sha256": "692b1a2dbf1c47f3"
+      "bytes": 222783,
+      "sha256": "4e480088017cd9f7"
     },
     {
       "path": "world/encounters.json",
@@ -2951,807 +3063,807 @@
       "path": "world/interiors/archon-apothecary.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-apothecary",
-      "bytes": 3310,
-      "sha256": "5f1f0b1b8d117a9c"
+      "bytes": 4475,
+      "sha256": "075d336089b84bce"
     },
     {
       "path": "world/interiors/archon-guild-office.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-guild-office",
-      "bytes": 4853,
-      "sha256": "0df33872604efb65"
+      "bytes": 5408,
+      "sha256": "e50de93170ed6c64"
     },
     {
       "path": "world/interiors/archon-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-house-0",
-      "bytes": 3006,
-      "sha256": "5f654de75931f3c3"
+      "bytes": 3579,
+      "sha256": "c5a2bfa2f1c1a15c"
     },
     {
       "path": "world/interiors/archon-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-house-1",
-      "bytes": 2986,
-      "sha256": "7c3d875548d946f0"
+      "bytes": 3549,
+      "sha256": "6eaa1dfcc2f424d7"
     },
     {
       "path": "world/interiors/archon-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-house-2",
-      "bytes": 2958,
-      "sha256": "e1bfaedad18abb93"
+      "bytes": 3521,
+      "sha256": "8ce0208ca96dea02"
     },
     {
       "path": "world/interiors/archon-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-inn",
-      "bytes": 3015,
-      "sha256": "850209de82e3fbe3"
+      "bytes": 4127,
+      "sha256": "2727546e2b342c09"
     },
     {
       "path": "world/interiors/archon-kiln-house.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-kiln-house",
-      "bytes": 2751,
-      "sha256": "4e7de3288b75784b"
+      "bytes": 3749,
+      "sha256": "20d312223c7fddb6"
     },
     {
       "path": "world/interiors/archon-market.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-market",
-      "bytes": 3501,
-      "sha256": "d052b22d7a038841"
+      "bytes": 4713,
+      "sha256": "d348fa2c9034b8e5"
     },
     {
       "path": "world/interiors/archon-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-rootpost",
-      "bytes": 2765,
-      "sha256": "a386d91fe211f0a8"
+      "bytes": 3769,
+      "sha256": "08a11f4637af47f8"
     },
     {
       "path": "world/interiors/archon-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-shrine",
-      "bytes": 2573,
-      "sha256": "81740dc68ec8415b"
+      "bytes": 3516,
+      "sha256": "758c68486e4d8ff2"
     },
     {
       "path": "world/interiors/archon-vat-house.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-vat-house",
-      "bytes": 4316,
-      "sha256": "bf086eadefdcbb11"
+      "bytes": 4890,
+      "sha256": "d42b323ec8cc1517"
     },
     {
       "path": "world/interiors/archon-ward.json",
       "schema": "elder-souls/interior@1",
       "id": "archon-ward",
-      "bytes": 2792,
-      "sha256": "a9db6122cfea4140"
+      "bytes": 3801,
+      "sha256": "ac8a359c21fbee0b"
     },
     {
       "path": "world/interiors/barge-hold.json",
       "schema": "elder-souls/interior@1",
       "id": "barge-hold",
-      "bytes": 3735,
-      "sha256": "e0747979503807d3",
+      "bytes": 4882,
+      "sha256": "53cc1c318533923d",
       "declared_incomplete": true
     },
     {
       "path": "world/interiors/blackrose-clerk.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-clerk",
-      "bytes": 3913,
-      "sha256": "1da51dcb4aa0a681"
+      "bytes": 4408,
+      "sha256": "820fa3e2387759ad"
     },
     {
       "path": "world/interiors/blackrose-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-house-0",
-      "bytes": 3042,
-      "sha256": "f3a93ab89eb7d2e2"
+      "bytes": 3620,
+      "sha256": "9ba4cde180da8db2"
     },
     {
       "path": "world/interiors/blackrose-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-house-1",
-      "bytes": 3915,
-      "sha256": "09148c38c9e21317"
+      "bytes": 4524,
+      "sha256": "82425ca48cdf679f"
     },
     {
       "path": "world/interiors/blackrose-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-house-2",
-      "bytes": 3090,
-      "sha256": "c11d2a66787ce3e3"
+      "bytes": 3658,
+      "sha256": "7211233dbdfb561b"
     },
     {
       "path": "world/interiors/blackrose-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-inn",
-      "bytes": 4287,
-      "sha256": "0d718cb6f781bfa6"
+      "bytes": 4961,
+      "sha256": "cc42c77c2dc52eb6"
     },
     {
       "path": "world/interiors/blackrose-market.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-market",
-      "bytes": 4130,
-      "sha256": "ecb092d6780c4fde"
+      "bytes": 4720,
+      "sha256": "16a9affefac10c8b"
     },
     {
       "path": "world/interiors/blackrose-pawn.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-pawn",
-      "bytes": 3074,
-      "sha256": "151c46e842c7c038"
+      "bytes": 4111,
+      "sha256": "d592ac1d8f757385"
     },
     {
       "path": "world/interiors/blackrose-prison.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-prison",
-      "bytes": 4112,
-      "sha256": "7b8afd1b8981e936"
+      "bytes": 5308,
+      "sha256": "f92601746355a292"
     },
     {
       "path": "world/interiors/blackrose-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-rootpost",
-      "bytes": 2651,
-      "sha256": "48be40686ee26c9e"
+      "bytes": 3606,
+      "sha256": "a11dd65d01ec914b"
     },
     {
       "path": "world/interiors/blackrose-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-shrine",
-      "bytes": 3702,
-      "sha256": "6f6e66e853935a1a"
+      "bytes": 4251,
+      "sha256": "f1f155124136c511"
     },
     {
       "path": "world/interiors/blackrose-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-smithy",
-      "bytes": 4061,
-      "sha256": "41f2294ead85ed8c"
+      "bytes": 4627,
+      "sha256": "de7957fdfb57c544"
     },
     {
       "path": "world/interiors/blackrose-warders-hall.json",
       "schema": "elder-souls/interior@1",
       "id": "blackrose-warders-hall",
-      "bytes": 4992,
-      "sha256": "f6f1d60512e77543"
+      "bytes": 5559,
+      "sha256": "149b338bd0650a86"
     },
     {
       "path": "world/interiors/gideon-apothecary.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-apothecary",
-      "bytes": 3865,
-      "sha256": "5863bdcb64ecce7a"
+      "bytes": 4397,
+      "sha256": "3465340a0ec8a048"
     },
     {
       "path": "world/interiors/gideon-chapel.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-chapel",
-      "bytes": 4326,
-      "sha256": "7134aeffee929f56"
+      "bytes": 4920,
+      "sha256": "de00a60ec1903726"
     },
     {
       "path": "world/interiors/gideon-court.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-court",
-      "bytes": 5187,
-      "sha256": "18b6d71012ec0e2f"
+      "bytes": 5741,
+      "sha256": "4e627d9d2936b44b"
     },
     {
       "path": "world/interiors/gideon-grange.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-grange",
-      "bytes": 4347,
-      "sha256": "db538e32bfbbc779"
+      "bytes": 4746,
+      "sha256": "db00404e790cc0af"
     },
     {
       "path": "world/interiors/gideon-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-house-0",
-      "bytes": 3099,
-      "sha256": "55feccd7c7512b25"
+      "bytes": 3659,
+      "sha256": "d32ec0b4ac79c160"
     },
     {
       "path": "world/interiors/gideon-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-house-1",
-      "bytes": 3039,
-      "sha256": "3cc29ccce4840d6e"
+      "bytes": 3595,
+      "sha256": "ca671a6da0848c34"
     },
     {
       "path": "world/interiors/gideon-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-inn",
-      "bytes": 4106,
-      "sha256": "594b55d32bd8fd00"
+      "bytes": 4729,
+      "sha256": "79336f624e0191d2"
     },
     {
       "path": "world/interiors/gideon-lowmarket.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-lowmarket",
-      "bytes": 3819,
-      "sha256": "4ad2bcec541fb256"
+      "bytes": 4389,
+      "sha256": "641b30347bdbc426"
     },
     {
       "path": "world/interiors/gideon-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-rootpost",
-      "bytes": 2757,
-      "sha256": "ec1cff8d4acb0246"
+      "bytes": 3739,
+      "sha256": "b2251bcc532b014a"
     },
     {
       "path": "world/interiors/gideon-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-shrine",
-      "bytes": 2755,
-      "sha256": "35c2955d00f91bb7"
+      "bytes": 3742,
+      "sha256": "a8d3fbfa31bb40c7"
     },
     {
       "path": "world/interiors/gideon-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-smithy",
-      "bytes": 3658,
-      "sha256": "f1c9f542e1323d70"
+      "bytes": 4131,
+      "sha256": "d6168c52f2a0f2ae"
     },
     {
       "path": "world/interiors/gideon-tollhouse.json",
       "schema": "elder-souls/interior@1",
       "id": "gideon-tollhouse",
-      "bytes": 5119,
-      "sha256": "79a02a2cfe42b634"
+      "bytes": 5693,
+      "sha256": "2698d5a3aa44b212"
     },
     {
       "path": "world/interiors/helstrom-apothecary.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-apothecary",
-      "bytes": 1700,
-      "sha256": "f83aa0c956d6947c"
+      "bytes": 2314,
+      "sha256": "da79356afc2f3f50"
     },
     {
       "path": "world/interiors/helstrom-archive.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-archive",
-      "bytes": 2199,
-      "sha256": "bb3233b8532f2be6"
+      "bytes": 2578,
+      "sha256": "574e4a4537c1c8a3"
     },
     {
       "path": "world/interiors/helstrom-deep-market.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-deep-market",
-      "bytes": 1924,
-      "sha256": "803b947366f9632c"
+      "bytes": 2332,
+      "sha256": "ab5e41442ae0a76a"
     },
     {
       "path": "world/interiors/helstrom-hist-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-hist-shrine",
-      "bytes": 2702,
-      "sha256": "9d90a05122ac1afa"
+      "bytes": 3170,
+      "sha256": "bc6ab86483685c40"
     },
     {
       "path": "world/interiors/helstrom-hollow-bole.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-hollow-bole",
-      "bytes": 3185,
-      "sha256": "7186c471885a9e44"
+      "bytes": 3699,
+      "sha256": "1231800b90089272"
     },
     {
       "path": "world/interiors/helstrom-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-0",
-      "bytes": 3043,
-      "sha256": "97a1900a6df936cf"
+      "bytes": 3620,
+      "sha256": "ca23f0331b43330d"
     },
     {
       "path": "world/interiors/helstrom-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-1",
-      "bytes": 3086,
-      "sha256": "a34dce54225253aa"
+      "bytes": 3662,
+      "sha256": "6a1938eb873781fb"
     },
     {
       "path": "world/interiors/helstrom-house-10.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-10",
-      "bytes": 3008,
-      "sha256": "f1a3dd3f71072ae9"
+      "bytes": 3591,
+      "sha256": "7363776d90ffdcc0"
     },
     {
       "path": "world/interiors/helstrom-house-11.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-11",
-      "bytes": 3005,
-      "sha256": "3d8088771324f7ae"
+      "bytes": 3590,
+      "sha256": "fbb18ebced92a1fb"
     },
     {
       "path": "world/interiors/helstrom-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-2",
-      "bytes": 3026,
-      "sha256": "94d6f971918398fe"
+      "bytes": 3605,
+      "sha256": "5577969861746568"
     },
     {
       "path": "world/interiors/helstrom-house-3.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-3",
-      "bytes": 3075,
-      "sha256": "5c462ab2c428d59b"
+      "bytes": 3647,
+      "sha256": "3b3aafdec7d5e6ef"
     },
     {
       "path": "world/interiors/helstrom-house-4.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-4",
-      "bytes": 3064,
-      "sha256": "1045408e69ccbdf4"
+      "bytes": 3642,
+      "sha256": "72196502203c2dd8"
     },
     {
       "path": "world/interiors/helstrom-house-5.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-5",
-      "bytes": 3010,
-      "sha256": "e5a43bdfef3f060f"
+      "bytes": 3590,
+      "sha256": "f8e4c587eccecb5e"
     },
     {
       "path": "world/interiors/helstrom-house-6.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-6",
-      "bytes": 3075,
-      "sha256": "28faa75b1df634c8"
+      "bytes": 3647,
+      "sha256": "604def8d9be0ae6d"
     },
     {
       "path": "world/interiors/helstrom-house-7.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-7",
-      "bytes": 3039,
-      "sha256": "92a92706162b1f00"
+      "bytes": 3619,
+      "sha256": "aa5a471254278597"
     },
     {
       "path": "world/interiors/helstrom-house-8.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-8",
-      "bytes": 4031,
-      "sha256": "0707e0243870e90f"
+      "bytes": 4670,
+      "sha256": "6c56e6dfe12f96a5"
     },
     {
       "path": "world/interiors/helstrom-house-9.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-house-9",
-      "bytes": 2995,
-      "sha256": "e76c9c2f5f8a1d2e"
+      "bytes": 3574,
+      "sha256": "1e1488c412980933"
     },
     {
       "path": "world/interiors/helstrom-inn-egg.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-inn-egg",
-      "bytes": 1514,
-      "sha256": "2f9bcbe00bbe631d"
+      "bytes": 2185,
+      "sha256": "b37c597b31297f70"
     },
     {
       "path": "world/interiors/helstrom-inn-gate.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-inn-gate",
-      "bytes": 1524,
-      "sha256": "0304b9bfeb5c94bc"
+      "bytes": 2195,
+      "sha256": "045767426c542a9a"
     },
     {
       "path": "world/interiors/helstrom-inn-tide.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-inn-tide",
-      "bytes": 2000,
-      "sha256": "c73940904b18a995"
+      "bytes": 2446,
+      "sha256": "5f866ede91cac2d8"
     },
     {
       "path": "world/interiors/helstrom-legation.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-legation",
-      "bytes": 3008,
-      "sha256": "219e392210b83076"
+      "bytes": 3490,
+      "sha256": "8722c898acb72873"
     },
     {
       "path": "world/interiors/helstrom-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-rootpost",
-      "bytes": 1533,
-      "sha256": "27786631b0c09830"
+      "bytes": 2143,
+      "sha256": "84ae9efadee70678"
     },
     {
       "path": "world/interiors/helstrom-scriptorium.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-scriptorium",
-      "bytes": 2171,
-      "sha256": "062007b913a3bac0"
+      "bytes": 2551,
+      "sha256": "551f6524aa46b83c"
     },
     {
       "path": "world/interiors/helstrom-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-smithy",
-      "bytes": 1535,
-      "sha256": "bf34aec620c1767d"
+      "bytes": 2145,
+      "sha256": "97a1615c28825d0d"
     },
     {
       "path": "world/interiors/helstrom-undertemple.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-undertemple",
-      "bytes": 2800,
-      "sha256": "787350f19365fde0"
+      "bytes": 3597,
+      "sha256": "ffded99d63c2140d"
     },
     {
       "path": "world/interiors/helstrom-warders.json",
       "schema": "elder-souls/interior@1",
       "id": "helstrom-warders",
-      "bytes": 2178,
-      "sha256": "0e4f5212b72487b4"
+      "bytes": 2555,
+      "sha256": "c816aedd1ea39c19"
     },
     {
       "path": "world/interiors/lilmoth-apothecary.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-apothecary",
-      "bytes": 2098,
-      "sha256": "e82f5d69a3696f76"
+      "bytes": 2893,
+      "sha256": "b4e5e47bb0393831"
     },
     {
       "path": "world/interiors/lilmoth-customs.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-customs",
-      "bytes": 4340,
-      "sha256": "c553e6338055615e"
+      "bytes": 4841,
+      "sha256": "9c61b7a38e21f44b"
     },
     {
       "path": "world/interiors/lilmoth-healer.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-healer",
-      "bytes": 2793,
-      "sha256": "b637b043fa3c0d78"
+      "bytes": 3247,
+      "sha256": "cc0afef18015eb90"
     },
     {
       "path": "world/interiors/lilmoth-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-house-0",
-      "bytes": 3075,
-      "sha256": "3922be58aa8308bd"
+      "bytes": 3646,
+      "sha256": "ec5fe7cf99ac8b17"
     },
     {
       "path": "world/interiors/lilmoth-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-house-1",
-      "bytes": 3041,
-      "sha256": "f6adbe153f5bd15b"
+      "bytes": 3609,
+      "sha256": "98422d439e4d20e5"
     },
     {
       "path": "world/interiors/lilmoth-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-house-2",
-      "bytes": 3087,
-      "sha256": "3c8f0ec688916e16"
+      "bytes": 3654,
+      "sha256": "aafeb05a81457f75"
     },
     {
       "path": "world/interiors/lilmoth-house-3.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-house-3",
-      "bytes": 3118,
-      "sha256": "d4432ed6ca6cf964"
+      "bytes": 3692,
+      "sha256": "8a0b4bc787ce8a4a"
     },
     {
       "path": "world/interiors/lilmoth-house-4.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-house-4",
-      "bytes": 3069,
-      "sha256": "7d509fee822bf7c2"
+      "bytes": 3634,
+      "sha256": "db6eaecd782f31b0"
     },
     {
       "path": "world/interiors/lilmoth-inn-drowned.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-inn-drowned",
-      "bytes": 2736,
-      "sha256": "91adf6d16765b9e7"
+      "bytes": 3249,
+      "sha256": "3b8667f1256dc4c0"
     },
     {
       "path": "world/interiors/lilmoth-inn-stilt.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-inn-stilt",
-      "bytes": 2785,
-      "sha256": "8255347bcbb9447d"
+      "bytes": 3323,
+      "sha256": "e99933abeb9b64fd"
     },
     {
       "path": "world/interiors/lilmoth-ledger-house.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-ledger-house",
-      "bytes": 3855,
-      "sha256": "a94b5eb37e01b084"
+      "bytes": 4369,
+      "sha256": "18082648f1ed84af"
     },
     {
       "path": "world/interiors/lilmoth-market.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-market",
-      "bytes": 2675,
-      "sha256": "f4487b9312eac794"
+      "bytes": 3623,
+      "sha256": "a243f41ae812c56c"
     },
     {
       "path": "world/interiors/lilmoth-pawn.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-pawn",
-      "bytes": 2124,
-      "sha256": "c09c7a68ea50f59f"
+      "bytes": 2911,
+      "sha256": "b248980b479098c6"
     },
     {
       "path": "world/interiors/lilmoth-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-rootpost",
-      "bytes": 2718,
-      "sha256": "9ab3b96ad2a909e0"
+      "bytes": 3176,
+      "sha256": "283769a6eff0ac27"
     },
     {
       "path": "world/interiors/lilmoth-scribe.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-scribe",
-      "bytes": 3013,
-      "sha256": "e8369e221cf3ccdc"
+      "bytes": 3478,
+      "sha256": "e337d857443e356d"
     },
     {
       "path": "world/interiors/lilmoth-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-shrine",
-      "bytes": 2261,
-      "sha256": "ae35df3620315be7"
+      "bytes": 3099,
+      "sha256": "15925a0ae99f434c"
     },
     {
       "path": "world/interiors/lilmoth-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-smithy",
-      "bytes": 3880,
-      "sha256": "60f12f114ea536a6"
+      "bytes": 4420,
+      "sha256": "eb9d1f58b7ed11f7"
     },
     {
       "path": "world/interiors/lilmoth-yard.json",
       "schema": "elder-souls/interior@1",
       "id": "lilmoth-yard",
-      "bytes": 2770,
-      "sha256": "c0312e90e104184f"
+      "bytes": 3766,
+      "sha256": "2d8fe1b4d2dd45d3"
     },
     {
       "path": "world/interiors/soulrest-boneyard.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-boneyard",
-      "bytes": 5016,
-      "sha256": "4352be31df242857"
+      "bytes": 5668,
+      "sha256": "ce21aca9fb76f7b8"
     },
     {
       "path": "world/interiors/soulrest-court-steps.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-court-steps",
-      "bytes": 6080,
-      "sha256": "116758a63003e43e"
+      "bytes": 7448,
+      "sha256": "f8cb3cc343297597"
     },
     {
       "path": "world/interiors/soulrest-grey-hist.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-grey-hist",
-      "bytes": 4819,
-      "sha256": "b32e40c1f8a7b20f"
+      "bytes": 5444,
+      "sha256": "66b4ac456c996da4"
     },
     {
       "path": "world/interiors/soulrest-market.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-market",
-      "bytes": 4997,
-      "sha256": "b26d2f4a5d52e7f6"
+      "bytes": 5656,
+      "sha256": "621faa4647fd13c7"
     },
     {
       "path": "world/interiors/soulrest-pawn.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-pawn",
-      "bytes": 4191,
-      "sha256": "7ed8393d2c068840"
+      "bytes": 5543,
+      "sha256": "c9054834e86b6bd0"
     },
     {
       "path": "world/interiors/soulrest-quay.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-quay",
-      "bytes": 5331,
-      "sha256": "b4fa48aa67b9dc9e"
+      "bytes": 5983,
+      "sha256": "a2b9dd61df2ef5d6"
     },
     {
       "path": "world/interiors/soulrest-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "soulrest-smithy",
-      "bytes": 4980,
-      "sha256": "a92d10d7a01c66ed"
+      "bytes": 5633,
+      "sha256": "ee0fa475b89649e0"
     },
     {
       "path": "world/interiors/stormhold-archive.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-archive",
-      "bytes": 3749,
-      "sha256": "497987efd395e47e"
+      "bytes": 4228,
+      "sha256": "1424a0adad1c6da6"
     },
     {
       "path": "world/interiors/stormhold-chapel.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-chapel",
-      "bytes": 2789,
-      "sha256": "772caf290282dfef"
+      "bytes": 3244,
+      "sha256": "384103e10e6baad3"
     },
     {
       "path": "world/interiors/stormhold-customs.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-customs",
-      "bytes": 3750,
-      "sha256": "4c6be03302458e6f"
+      "bytes": 4270,
+      "sha256": "13962de75865fba1"
     },
     {
       "path": "world/interiors/stormhold-gaol.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-gaol",
-      "bytes": 2850,
-      "sha256": "a3a9acf8ccd2e3af"
+      "bytes": 3327,
+      "sha256": "30cc5bcedc1bb968"
     },
     {
       "path": "world/interiors/stormhold-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-0",
-      "bytes": 4105,
-      "sha256": "1934f49bd6bbd4a2"
+      "bytes": 4744,
+      "sha256": "af339bab067f4ef7"
     },
     {
       "path": "world/interiors/stormhold-house-1.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-1",
-      "bytes": 3021,
-      "sha256": "0c4665d7134e907b"
+      "bytes": 3597,
+      "sha256": "74479dde18ea80e5"
     },
     {
       "path": "world/interiors/stormhold-house-2.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-2",
-      "bytes": 3074,
-      "sha256": "d08cf71577458bc1"
+      "bytes": 3658,
+      "sha256": "05c9bdc3912e00ef"
     },
     {
       "path": "world/interiors/stormhold-house-3.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-3",
-      "bytes": 3853,
-      "sha256": "5023323caba26281"
+      "bytes": 4466,
+      "sha256": "ac7a524649549f00"
     },
     {
       "path": "world/interiors/stormhold-house-4.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-house-4",
-      "bytes": 4104,
-      "sha256": "2c8c392820e5afad"
+      "bytes": 4730,
+      "sha256": "c69ee6eedbc7cbd5"
     },
     {
       "path": "world/interiors/stormhold-inn-lean.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-inn-lean",
-      "bytes": 3100,
-      "sha256": "dd6ed7d8fcbbf7fe"
+      "bytes": 3627,
+      "sha256": "74c9714d30a95813"
     },
     {
       "path": "world/interiors/stormhold-inn-pass.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-inn-pass",
-      "bytes": 2824,
-      "sha256": "c821586a12cab29e"
+      "bytes": 3374,
+      "sha256": "aafa69ae7fa8f348"
     },
     {
       "path": "world/interiors/stormhold-kiln.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-kiln",
-      "bytes": 2100,
-      "sha256": "33754f48073b6a3a"
+      "bytes": 2884,
+      "sha256": "9a143ac5046f3b1e"
     },
     {
       "path": "world/interiors/stormhold-market.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-market",
-      "bytes": 2615,
-      "sha256": "e6884831255be54a"
+      "bytes": 3561,
+      "sha256": "2b7c8bfa782781be"
     },
     {
       "path": "world/interiors/stormhold-praetorium.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-praetorium",
-      "bytes": 4321,
-      "sha256": "457031b46f086d33"
+      "bytes": 4842,
+      "sha256": "35ad177c3ee53ced"
     },
     {
       "path": "world/interiors/stormhold-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-rootpost",
-      "bytes": 2134,
-      "sha256": "9a65a7b4eb86686a"
+      "bytes": 2922,
+      "sha256": "11e719ea70f43513"
     },
     {
       "path": "world/interiors/stormhold-scribe.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-scribe",
-      "bytes": 3740,
-      "sha256": "d105a549414a3596"
+      "bytes": 4265,
+      "sha256": "17eb184dc9ff6163"
     },
     {
       "path": "world/interiors/stormhold-shrine.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-shrine",
-      "bytes": 2310,
-      "sha256": "df7f2f77a6db46cb"
+      "bytes": 3158,
+      "sha256": "7c17f862ab2e4b04"
     },
     {
       "path": "world/interiors/stormhold-smithy.json",
       "schema": "elder-souls/interior@1",
       "id": "stormhold-smithy",
-      "bytes": 3705,
-      "sha256": "822813561a4b001f"
+      "bytes": 4217,
+      "sha256": "d52142cf50573660"
     },
     {
       "path": "world/interiors/thorn-apothecary.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-apothecary",
-      "bytes": 4162,
-      "sha256": "bc4dd2d5c948147c"
+      "bytes": 5581,
+      "sha256": "f0418a1e314793ba"
     },
     {
       "path": "world/interiors/thorn-gate.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-gate",
-      "bytes": 5399,
-      "sha256": "f9e175ec013bb8a8"
+      "bytes": 6042,
+      "sha256": "99d2a06c2a9e47ed"
     },
     {
       "path": "world/interiors/thorn-hall.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-hall",
-      "bytes": 5846,
-      "sha256": "8383244d3c6b4864"
+      "bytes": 6606,
+      "sha256": "06a7540d6e6cdc5c"
     },
     {
       "path": "world/interiors/thorn-house-0.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-house-0",
-      "bytes": 3000,
-      "sha256": "c82ef68218d4bca1"
+      "bytes": 3567,
+      "sha256": "3c624560e1c31735"
     },
     {
       "path": "world/interiors/thorn-inn.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-inn",
-      "bytes": 4766,
-      "sha256": "6c33bfc2197f3067"
+      "bytes": 5430,
+      "sha256": "5e28fb24f291f0a1"
     },
     {
       "path": "world/interiors/thorn-rootpost.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-rootpost",
-      "bytes": 4126,
-      "sha256": "26cba1347742d3dd"
+      "bytes": 5485,
+      "sha256": "8e5d764f08659d16"
     },
     {
       "path": "world/interiors/thorn-sapwell.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-sapwell",
-      "bytes": 4900,
-      "sha256": "853918ec0baae99a"
+      "bytes": 5518,
+      "sha256": "835c57c33f83a4b9"
     },
     {
       "path": "world/interiors/thorn-trader.json",
       "schema": "elder-souls/interior@1",
       "id": "thorn-trader",
-      "bytes": 5222,
-      "sha256": "46a0c44ebef54f12"
+      "bytes": 5846,
+      "sha256": "fbd17b22704e9067"
     },
     {
       "path": "world/interiors/writ-house.json",
       "schema": "elder-souls/interior@1",
       "id": "writ-house",
-      "bytes": 2655,
-      "sha256": "8ff8d482a113a1ea",
+      "bytes": 3587,
+      "sha256": "ddec674d8bc4e311",
       "declared_incomplete": true
     },
     {
@@ -3780,8 +3892,8 @@
       "path": "world/population-posts.json",
       "schema": "elder-souls/population-posts@1",
       "id": null,
-      "bytes": 45632,
-      "sha256": "88055be786946ec2"
+      "bytes": 45630,
+      "sha256": "d357b9d24e9c3633"
     },
     {
       "path": "world/population.json",
@@ -3809,15 +3921,15 @@
       "path": "world/property/gideon.json",
       "schema": "elder-souls/property@1",
       "id": "property-gideon",
-      "bytes": 174909,
-      "sha256": "f95fe3a95da0a9c5"
+      "bytes": 177071,
+      "sha256": "4ac6f9bf7e472ead"
     },
     {
       "path": "world/property/helstrom.json",
       "schema": "elder-souls/property@1",
       "id": "property-helstrom",
-      "bytes": 177520,
-      "sha256": "bf17c83d16b32918"
+      "bytes": 179653,
+      "sha256": "b68f61554d07fbae"
     },
     {
       "path": "world/property/lilmoth.json",
@@ -3837,8 +3949,8 @@
       "path": "world/property/stormhold.json",
       "schema": "elder-souls/property@1",
       "id": "property-stormhold",
-      "bytes": 192092,
-      "sha256": "c65cb8e074cf1057"
+      "bytes": 194200,
+      "sha256": "9d9de1545f44a1ce"
     },
     {
       "path": "world/property/thorn.json",
@@ -3851,8 +3963,8 @@
       "path": "world/readables/site-marks.json",
       "schema": "elder-souls/site-marks@1",
       "id": "site-marks",
-      "bytes": 11158,
-      "sha256": "e90eb3c62ab77ed1"
+      "bytes": 10879,
+      "sha256": "d848178d77dab58a"
     },
     {
       "path": "world/regions.json",
@@ -3879,57 +3991,57 @@
       "path": "world/settlements/archon.json",
       "schema": "elder-souls/settlement@2",
       "id": "archon",
-      "bytes": 12066,
-      "sha256": "e4a7b131fb5dca6c"
+      "bytes": 22055,
+      "sha256": "d0c324b28f916611"
     },
     {
       "path": "world/settlements/blackrose.json",
       "schema": "elder-souls/settlement@2",
       "id": "blackrose",
-      "bytes": 12045,
-      "sha256": "6ed36ad9dffd5e6c"
+      "bytes": 21828,
+      "sha256": "93598a9d0aed2dd6"
     },
     {
       "path": "world/settlements/gideon.json",
       "schema": "elder-souls/settlement@2",
       "id": "gideon",
-      "bytes": 11788,
-      "sha256": "e8a4d1217f5e403c"
+      "bytes": 21564,
+      "sha256": "1a4b04b74829358f"
     },
     {
       "path": "world/settlements/helstrom.json",
       "schema": "elder-souls/settlement@2",
       "id": "helstrom",
-      "bytes": 20800,
-      "sha256": "073e00b7db563b16"
+      "bytes": 39753,
+      "sha256": "45d66bd2ba08a940"
     },
     {
       "path": "world/settlements/lilmoth.json",
       "schema": "elder-souls/settlement@2",
       "id": "lilmoth",
-      "bytes": 17113,
-      "sha256": "26a77b57a649c8b1"
+      "bytes": 31885,
+      "sha256": "1a7ba33e8f9611ab"
     },
     {
       "path": "world/settlements/soulrest.json",
       "schema": "elder-souls/settlement@2",
       "id": "soulrest",
-      "bytes": 7861,
-      "sha256": "bb514483db3978dd"
+      "bytes": 15369,
+      "sha256": "afc3a20f3cb6c166"
     },
     {
       "path": "world/settlements/stormhold.json",
       "schema": "elder-souls/settlement@2",
       "id": "stormhold",
-      "bytes": 17001,
-      "sha256": "6eb3d7f8dcd8b5a6"
+      "bytes": 31926,
+      "sha256": "fda76725e89d1be7"
     },
     {
       "path": "world/settlements/thorn.json",
       "schema": "elder-souls/settlement@2",
       "id": "thorn",
-      "bytes": 7750,
-      "sha256": "b9c8658776c62002"
+      "bytes": 18496,
+      "sha256": "d89fdcbdfd5167c7"
     },
     {
       "path": "world/signatures.json",
@@ -3984,8 +4096,15 @@
       "path": "world/traversal.json",
       "schema": "elder-souls/traversal@1",
       "id": null,
-      "bytes": 5406,
-      "sha256": "d51a23fa3d3262b8"
+      "bytes": 5497,
+      "sha256": "832fed82a63897f5"
+    },
+    {
+      "path": "world/voids.json",
+      "schema": "voids@1",
+      "id": null,
+      "bytes": 1871,
+      "sha256": "257c4d8310aacc2b"
     },
     {
       "path": "world/water.json",
@@ -3998,8 +4117,8 @@
       "path": "world/weather.json",
       "schema": "elder-souls/weather@1",
       "id": null,
-      "bytes": 19006,
-      "sha256": "5c314ecf72e42b9b"
+      "bytes": 18081,
+      "sha256": "f5e5df8cfe3cb77b"
     }
   ]
 }

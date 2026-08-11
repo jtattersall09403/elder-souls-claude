@@ -1,234 +1,353 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "archon-vat-house",
-  "name": "The Great Vat House",
-  "settlement": "archon",
-  "cell_kind": "named",
-  "interior_kind": "shop",
-  "service": "trader",
-  "faction": "wet-ledger",
-  "exterior_door": [
-    3814.44,
-    3.42,
-    3842.42
+ "schema": "elder-souls/interior@1",
+ "id": "archon-vat-house",
+ "name": "The Great Vat House",
+ "settlement": "archon",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "trader",
+ "faction": "wet-ledger",
+ "exterior_door": [
+  3814.44,
+  3.42,
+  3842.42
+ ],
+ "continuity": {
+  "building": "archon-vat-house",
+  "building_offset_m": [
+   29.44,
+   0,
+   18.92
   ],
-  "continuity": {
-    "building": "archon-vat-house",
-    "building_offset_m": [
-      29.44,
-      0,
-      18.92
-    ],
-    "building_yaw_deg": 237.3,
-    "exterior_footprint_m": [
-      13.6,
-      15.6
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6.6
-    ],
-    "exterior_spawn": [
-      3814.44,
-      3.42,
-      3844.22
-    ]
+  "building_yaw_deg": 237.3,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.47
+  ],
+  "exterior_spawn": [
+   3814.225,
+   3.42,
+   3847.704
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6.6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   3814.44,
+   3.42,
+   3844.22
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -3.65,
+   3.65
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.47,
+   7.47
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "archon.priest3.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.8,
-      6.8
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.8,
-      7.8
-    ]
+  {
+   "id": "archon.priest3.r1.lamp0",
+   "pos": [
+    -0.2,
+    1.6,
+    0.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 212.2,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      3.12
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "archon.priest3.r1.lamp1",
+   "pos": [
+    -2.1,
+    1.6,
+    0.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "archon.priest3.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.priest3.r1.lamp0",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        0.20000000000000018
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.priest3.r1.lamp1",
-      "pos": [
-        -2.1,
-        1.6,
-        0.2999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.priest3.r1.lamp2",
-      "pos": [
-        -3.4,
-        1.6,
-        0.40000000000000036
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.scribe8.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.scribe8.r0.lamp0",
-      "pos": [
-        -3.1,
-        1.6,
-        -1.5
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.scribe8.r0.lamp1",
-      "pos": [
-        -1.2000000000000002,
-        1.6,
-        -1.6
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.legionary12.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 1.4,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "archon.legionary12.r1.lamp0",
-      "pos": [
-        0.10000000000000009,
-        1.6,
-        4.300000000000001
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "archon.legionary12.r1.lamp1",
-      "pos": [
-        2,
-        1.6,
-        4.199999999999999
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "counter_long",
-    "shelf_stack",
-    "scale_brass",
-    "crate_sealed",
-    "ledger_stand",
-    "coin_tray",
-    "sack_row",
-    "hook_rail",
-    "lamp_hanging",
-    "stool_high",
-    "strongbox",
-    "sample_board",
-    "measure_jug",
-    "sweep_broom",
-    "arc_clay_dome",
-    "arc_stain_line",
-    "arc_dye_vat",
-    "arc_drying_rack"
-  ],
-  "property_zones": [
-    "archon.priest3.r1",
-    "archon.scribe8.r0",
-    "archon.legionary12.r1"
-  ],
-  "containers": [],
-  "unique_item": {
-    "id": "archon-vat-house-unique",
-    "name": "a bolt of true imperial purple",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:archon-priest-3"
+  {
+   "id": "archon.priest3.r1.lamp2",
+   "pos": [
+    -3.3,
+    1.6,
+    0.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "archon-vat-house-readable",
-      "title": "On Boiling Lichen"
-    },
-    {
-      "id": "the-guild-denial",
-      "title": "A reply from the Dyers’ and Salters’ hall at Archon",
-      "book": "the-guild-denial"
-    },
-    {
-      "id": "the-kiln-camp-order-book",
-      "title": "Order book, kiln camp, the last four entries",
-      "book": "the-kiln-camp-order-book"
-    },
-    {
-      "id": "bill-of-lading-archon",
-      "title": "Bill of lading, third mooring",
-      "book": "bill-of-lading-archon"
-    }
+  {
+   "id": "archon.scribe8.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.scribe8.r0.lamp0",
+   "pos": [
+    -3.1,
+    1.6,
+    -1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.scribe8.r0.lamp1",
+   "pos": [
+    -1.2,
+    1.6,
+    -1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary12.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.legionary12.r1.lamp0",
+   "pos": [
+    0.1,
+    1.6,
+    4.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.legionary12.r1.lamp1",
+   "pos": [
+    2,
+    1.6,
+    4.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "arc_clay_dome",
+  "arc_stain_line",
+  "arc_dye_vat",
+  "arc_drying_rack"
+ ],
+ "property_zones": [
+  "archon.priest3.r1",
+  "archon.scribe8.r0",
+  "archon.legionary12.r1"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "archon-vat-house-unique",
+  "name": "a bolt of true imperial purple",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:archon-priest-3"
+ },
+ "readable": [
+  {
+   "id": "archon-vat-house-readable",
+   "title": "On Boiling Lichen"
+  },
+  {
+   "id": "the-guild-denial",
+   "title": "A reply from the Dyers’ and Salters’ hall at Archon",
+   "book": "the-guild-denial"
+  },
+  {
+   "id": "the-kiln-camp-order-book",
+   "title": "Order book, kiln camp, the last four entries",
+   "book": "the-kiln-camp-order-book"
+  },
+  {
+   "id": "bill-of-lading-archon",
+   "title": "Bill of lading, third mooring",
+   "book": "bill-of-lading-archon"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.8,
+   6.8
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    0.20000000000000018
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    0.2999999999999998
+   ]
+  },
+  {
+   "pos": [
+    -3.4,
+    1.6,
+    0.40000000000000036
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -3.1,
+    1.6,
+    -1.5
+   ]
+  },
+  {
+   "pos": [
+    -1.2000000000000002,
+    1.6,
+    -1.6
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    0.10000000000000009,
+    1.6,
+    4.300000000000001
+   ]
+  },
+  {
+   "pos": [
+    2,
+    1.6,
+    4.199999999999999
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.12
+ ],
+ "exterior_building_id": "archon-vat-house",
+ "door_world_pos": [
+  3812.711,
+  3.42,
+  3846.039
+ ],
+ "door_world_bearing_deg": 57.3,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 109.06
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

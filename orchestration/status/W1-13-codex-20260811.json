@@ -1,0 +1,63 @@
+{
+  "task_id": "W1-13-codex-20260811",
+  "piece": "W1-13 complete current-state continuation build",
+  "state": "done",
+  "started_at": "2026-08-11T00:00:00Z",
+  "base_branch": "codex/wave1-build-experiment",
+  "subsystem_paths": [
+    "combat.difficulty.lethality",
+    "combat.death.corpserun",
+    "combat.death.worldreset",
+    "combat.boss.arena",
+    "progression.bonfire.function",
+    "progression.bonfire.placement",
+    "journey.death.recovery"
+  ],
+  "files_claimed": [
+    "game/data/save-manifest.json",
+    "game/src/save/state.js",
+    "game/src/sim/environment.js",
+    "orchestration/evidence/W1-13-complete.md",
+    "orchestration/status/W1-13-codex-20260811.json",
+    "reports/w1-13/",
+    "tools/harness/w1-13-complete.mjs",
+    "tools/harness/w1-13-m8-roster-controls.mjs",
+    "tools/harness/w1-13-r5-save-clock.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/journey/jrn06-death.mjs"
+  ],
+  "files_touched": [
+    "orchestration/evidence/W1-13-complete.md",
+    "orchestration/status/W1-13-codex-20260811.json",
+    "tools/harness/w1-13-m8-roster-controls.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/journey/jrn06-death.mjs"
+  ],
+  "next_step": "Fresh independent critic judges the completed builder output; the native aggregate records M-D13/R1-R4 red and the exact sibling-owned missing populations.",
+  "concurrent_boundaries": [
+    "W1-04",
+    "W1-06",
+    "W1-19",
+    "W1-25"
+  ],
+  "checks": {
+    "cheap_gates": "pass",
+    "save_clock": "pass: 42 before/after; delete durability -> 57",
+    "clock_2x2": "pass: shipped equal at 96/96 boundaries; deleted unequal at 4/96",
+    "journey_aggregation": "completed once at /tmp/w1-13-final-jrn06/journey.json; the run observed M-D13 red because R1/R2 had 0/3 walkable trials and R3/R4 remain unmeasurable/zero; follow-up instrument audit makes M-D4 fail closed at 1/5 scenarios and adds top-level coverage/hard_fails/pass"
+  },
+  "browser_load": "GO: 2 nonresident instances; load 1.22/3 cores = 0.41/core; one browser used.",
+  "independence": "Builder records measurements but does not issue the independent critic verdict.",
+  "findings": [
+    "award_frames round-trips exactly; 42 souls before and after reload; deleting durability reproduces 57",
+    "source-level 2x2 passed with real cuts; shipped invariant holds at 96/96 quarter-hour boundaries and deletion differs at 4/96",
+    "native aggregation completed; M-D13 was red, and the follow-up denominator audit makes M-D4 explicitly red at 1/5 rather than allowing the RN4 result to imply 5/5; no aggregate PASS is claimed",
+    "R3 hostile roster, R4 physical shortcut geometry, PRG04 M9 current economy, and M8 timed-quest consumer populations are absent and remain unmeasurable/zero",
+    "M8 exact predicate controls pass intact and go red for empty, wrong-settlement, and mismatched-arm populations",
+    "No binary evidence committed; the complete /tmp journey JSON and 20 MB trace were inspected and reproduction is documented in orchestration/evidence/W1-13-complete.md"
+  ],
+  "redundant_with": [
+    "W1-13-r3",
+    "W1-13-r5"
+  ]
+}

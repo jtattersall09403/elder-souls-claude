@@ -28,6 +28,19 @@ import { worldRunsGate } from './world-runs-gate.mjs';
 
 const WALK_MPS = 2.0;
 
+// Exported so the mandatory empty/wrong-settlement controls can exercise the exact predicate
+// used by the browser aggregation without paying for another journey run.
+export function validateRosterPopulation(arms, expectedEids, minimum = 20) {
+  const expected = [...new Set(expectedEids || [])].sort();
+  if (expected.length < minimum || !Array.isArray(arms) || arms.length === 0) return false;
+  return arms.every((arm) => {
+    const roster = Object.keys((arm && arm.before && arm.before.roster) || {}).sort();
+    const populated = [...new Set((arm && arm.populated_eids) || [])].sort();
+    return JSON.stringify(roster) === JSON.stringify(expected)
+      && JSON.stringify(populated) === JSON.stringify(expected);
+  });
+}
+
 /** RI-JRN06 M-D4: the group excluded from the across-death diff, EXCLUDED BY NAME. */
 export const DEATH_VOLATILE = [
   // THE NAMES ARE THE SAVE'S OWN PATHS, not a guess at them. The first version of this list
@@ -68,6 +81,10 @@ export const DEATH_VOLATILE = [
   'world.entities',                // ordinary-enemy alive flags: D9 says they come back
   'world.enemies_dead_until_rest',
   'death.bloodstain',              // the stain IS the death's product
+  // Elapsed-time reward phase. It advances during the unplayable death surface specifically to
+  // keep death and equal-elapsed-time reward arms identical (AR-1); its preservation and bounded
+  // consumer are scored independently by the award-clock factorial/save probe.
+  'clock.award_frames',
   'volatile.',                     // frame index, playtime, thumbnail — declared volatile already
   'magic.focus',                   // restored at the well, and refused there for the Dry Well
   'afflictions',                   // timed effects expire on respawn (D8); diseases checked by name below
@@ -335,7 +352,12 @@ export async function runJrn06(h, args, led, ctx = {}) {
     await h.h('setRenderRate', 0);
     await h.h('stepFrames', 2);
     const wells8 = (await h.h('listHearths')).hearths || [];
-    const well8 = wells8.find((x) => x.kind === 'settlement') || wells8[0];
+    // Use the settlement that the default state actually populates. The old `find()` selected
+    // Archon while the live actors belonged to Lilmoth, leaving the control arm with zero people
+    // and allowing `0 moved` to masquerade as a valid no-rest result.
+    const well8 = wells8.find((x) => x.id === 'hearth-lilmoth')
+      || wells8.find((x) => x.kind === 'settlement') || wells8[0];
+    const settlement8 = well8.id.replace(/^hearth-/, '');
     const interiorIds = ((await h.h('listInteriors')) || [])
       .map((x) => (typeof x === 'string' ? x : x.id)).filter(Boolean);
 
@@ -375,6 +397,10 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const runArm8 = async (rests) => {
       await h.h('loadState', 'default');
       await h.h('setRenderRate', 0);
+      const populated = await h.h('populateSettlement', settlement8);
+      if (!Array.isArray(populated) || populated.length === 0) {
+        throw new Error(`RI-PRG04 M8 EMPTY/FAIL: no residents for ${settlement8}`);
+      }
       await h.h('teleport', well8.pos[0], well8.pos[2]);
       await h.h('stepFrames', 4);
       await h.h('setTimeOfDay', 17.0);
@@ -390,6 +416,7 @@ export async function runJrn06(h, args, led, ctx = {}) {
       after.souls_for_one_ordinary_kill = await ordinaryKill8();
       const d = diff8(before, after);
       return {
+        populated_eids: populated.map((x) => typeof x === 'string' ? x : x.eid).filter(Boolean).sort(),
         rests, before, after, rest_clocks: clocks,
         hours_moved: Math.round(((((after.hour - before.hour) % 24) + 24) % 24 + (after.day - before.day) * 24) * 1e6) / 1e6,
         days_moved: after.day - before.day,
@@ -407,7 +434,12 @@ export async function runJrn06(h, args, led, ctx = {}) {
 
     const c1 = Math.abs(rested8.after.hour - 23) < 0.01
       && rested8.rest_clocks.every((x) => x.hours === 6);
-    const c2 = rested8.npcs_moved_n > 0 && control8.npcs_moved_n === 0;
+    const rosterPopulation8 = rested8.populated_eids;
+    const rosterPopulationMatches8 = validateRosterPopulation(
+      [rested8, control8, four8], rosterPopulation8, 20,
+    );
+    const c2 = rosterPopulationMatches8
+      && rested8.npcs_moved_n > 0 && control8.npcs_moved_n === 0;
     const c3 = rested8.shops_closed_n > 0 && control8.shops_closed_n === 0;
     const c5 = Math.abs(four8.hours_moved - 24) < 0.02 && four8.days_moved === 1
       && four8.rest_clocks.length === 4 && four8.rest_clocks.every((x) => x.hours === 6);
@@ -417,6 +449,9 @@ export async function runJrn06(h, args, led, ctx = {}) {
 
     put('m_prg04_m8_clock_consequence', 'RI-PRG04 method 8 — rest at 17:00 and the world at 23:00', {
       rested: rested8, no_rest_control: control8, four_rests: four8,
+      settlement: settlement8,
+      roster_population_n: rosterPopulation8.length,
+      roster_population_matches_all_arms: rosterPopulationMatches8,
       c1_clock_reads_23_00: c1,
       c2_night_roster_active: c2,
       c3_merchants_closed: c3,
@@ -1019,7 +1054,16 @@ export async function runJrn06(h, args, led, ctx = {}) {
       clock_note: 'clock.time_of_day is excluded from THIS diff and charged in full to '
         + 'm_prg04_clock_not_advanced_on_death, which measures it across the dead interval '
         + 'instead of across the dead interval plus 51 frames of walking.',
-      pass: nonVolatile.length === 0,
+      scenario_population: scenarios.map((id) => id === 'RN4'
+        ? { id, status: 'measured', non_volatile_changed: nonVolatile.length, pass: nonVolatile.length === 0 }
+        : { id, status: 'unmeasurable', score: 0,
+          why: id === 'RN2'
+            ? 'the governing loop-dungeon and physical shortcut geometry do not exist at HEAD'
+            : `the ${id} state-hash pair was not produced by a distinct item-native fixture` }),
+      measured_scenarios: 1,
+      required_scenarios: 5,
+      // Fail closed. A single clean RN4 hash must never masquerade as the required 5/5.
+      pass: false,
       hard_fail_HF2: nonVolatile.length > 0,
     });
 
@@ -1314,13 +1358,28 @@ export async function runJrn06(h, args, led, ctx = {}) {
         + 'tools/harness/w1-13-consume.mjs --items; the figure here is the RUNNING inventory.',
     });
 
+    const hearthMenu = hearths.hearths.length ? (await h.h('restAt', hearths.hearths[0].id)).menu.destinations : null;
+    const stainPos = death && death.bloodstain && death.bloodstain.pos;
+    const stationRows = Array.isArray(stations) ? stations : [];
+    const nearDeath = stainPos ? stationRows.filter((s) => Number.isFinite(s.x) && Number.isFinite(s.z)
+      && Math.hypot(s.x - stainPos[0], s.z - stainPos[2]) <= WALK_MPS * 60) : [];
+    const serviceRows = travel && Array.isArray(travel.services) ? travel.services : [];
+    const stationIds = new Set(stationRows.map((s) => s.id));
+    const unresolved = serviceRows.filter((s) => !stationIds.has(s.from) || !stationIds.has(s.to));
+    const menuEmpty = Array.isArray(hearthMenu) && hearthMenu.length === 0;
+    const travelPopulationValid = !!(travel && travel.present && stationRows.length > 0 && serviceRows.length > 0);
     put('m_d18_no_fast_travel_to_the_stain', 'M-D18 / seam S7 no route that ends at the death point', {
-      hearth_menu_destinations: hearths.hearths.length ? (await h.h('restAt', hearths.hearths[0].id)).menu.destinations : null,
-      travel_services: travel && travel.services ? travel.services.length : (travel ? Object.keys(travel).length : 0),
-      stations: stations ? stations.length : 0,
+      hearth_menu_destinations: hearthMenu,
+      travel_services: serviceRows.length,
+      stations: stationRows.length,
       stations_are_hearths: stations ? stations.filter((s) => hearths.hearths.some((x) => Math.hypot(x.pos[0] - s.x, x.pos[2] - s.z) < 5)).length : null,
       travel_network_present: !!travel,
-      pass: true,
+      stain_position: stainPos || null,
+      stations_within_60_walk_seconds: nearDeath.map((s) => s.id),
+      unresolved_service_endpoints: unresolved.map((s) => s.id),
+      population_valid: travelPopulationValid,
+      pass: travelPopulationValid && menuEmpty && unresolved.length === 0,
+      hard_fail_HF6: !menuEmpty,
       note: 'Two directions, per the RI-PRG04 S7 amendment: the transport network must EXIST '
         + '(it does — RI-TRV01, 5 modes) and no route may end at or near the death point. A '
         + 'hearth exposes no destination list at all, and no station coincides with a hearth.',
@@ -1360,6 +1419,47 @@ export async function runJrn06(h, args, led, ctx = {}) {
     put('m_falsifiable', 'the instrument goes red when the thing it measures is broken', await proveFalsifiable(h));
   }
 
+  const required = {
+    'M-D1': ['m_d1_souls_conservation'],
+    'M-D2': ['m_d2_stain_placement', 'm_d2b_placement_rules_exercised'],
+    'M-D3': ['m_d3_unreachable_relocation'],
+    'M-D4': ['m_d4_across_death_diff'],
+    'M-D5': ['m_d5_respawn_scope'],
+    'M-D6': ['m_d6_named_stays_dead'],
+    'M-D7': ['m_d7_merchant_state_survives_death'],
+    'M-D8': ['m_d8_second_death'],
+    'M-D9': ['m_d9_no_compensation'],
+    'M-D10': ['m_d10_death_legibility', 'm_d10b_death_legibility_world_caused'],
+    'M-D11': ['m_d11_death_surface'],
+    'M-D12': ['m_d12_time_dead'],
+    'M-D13': ['m_d13_run_back'],
+    'M-D14': ['m_d14_stain_visibility'],
+    'M-D15': ['m_d15_recovery_robustness'],
+    'M-D16': ['m_d16_persistence'],
+    'M-D17': ['m_d17_stain_loss_rate'],
+    'M-D18': ['m_d18_no_fast_travel_to_the_stain'],
+    'M-D19': ['m_d19_marker_sweep'],
+  };
+  const rowCoverage = Object.fromEntries(Object.entries(required).map(([row, ids]) => {
+    const present = ids.every((id) => Object.hasOwn(out.checks, id));
+    const passing = present && ids.every((id) => out.checks[id] && out.checks[id].pass === true);
+    return [row, { check_ids: ids, present, pass: passing }];
+  }));
+  const hardFails = {};
+  for (let n = 1; n <= 9; n++) {
+    const key = `hard_fail_HF${n}`;
+    hardFails[`HF${n}`] = Object.values(out.checks).some((v) => v && v[key] === true);
+  }
+  out.coverage = {
+    required_rows: 19,
+    measured_rows: Object.values(rowCoverage).filter((x) => x.present).length,
+    complete: Object.values(rowCoverage).every((x) => x.present),
+    rows: rowCoverage,
+  };
+  out.hard_fails = hardFails;
+  out.pass = out.coverage.complete
+    && Object.values(rowCoverage).every((x) => x.pass)
+    && Object.values(hardFails).every((x) => x === false);
   return out;
 }
 
@@ -1821,6 +1921,9 @@ async function runBack(h) {
     R1_band: [1.5, 3.0], R2_ceiling: 4.0,
     R1_pass: median !== null && median >= 1.5 && median <= 3.0,
     R2_pass: p95 !== null && p95 <= 4.0,
+    R3_status: 'unmeasurable', R3_score: 0,
+    R4_status: 'unmeasurable', R4_score: 0,
+    pass: false,
     recovered_on_arrival: good.filter((t) => t.recovered_on_arrival).length + '/' + good.length,
     R3_note: 'encounters_on_run_back needs a placed hostile roster in the province. '
       + 'game/data/world/encounters.json exists but no roster is placed on the ground between a '

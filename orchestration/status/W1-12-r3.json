@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-12-r3",
+  "role": "builder",
+  "state": "done",
+  "started": "2026-08-10",
+  "base_commit": "07e75bd",
+  "next_step": "Fresh independent critic: orchestration/plans/W1-12.md §3, beginning with tools/combat/w1-12-r3-ai-gate.mjs",
+  "files_touched": [
+    "orchestration/status/W1-12-r3.json",
+    "game/data/combat/ai.json",
+    "game/src/combat/ai.js",
+    "game/src/combat/enemy.js",
+    "tools/combat/w1-12-r3-ai-gate.mjs",
+    "reports/w1-12-r3/DELIVERY.md"
+  ],
+  "files_claimed": [],
+  "redundant_with": [
+    "W1-12",
+    "W1-12-r2"
+  ],
+  "notes": [
+    "Started from current HEAD as instructed; target branch created from 07e75bd."
+  ],
+  "results": {
+    "cheap_probe": "PASS, discriminating control",
+    "m3": "21/21 PASS at 1800/3600/5400 f@60",
+    "browser": "shipping path run; M1 fill remains red at 0.9R",
+    "independence": "blind packs not judged by builder"
+  }
+}

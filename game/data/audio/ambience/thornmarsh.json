@@ -234,7 +234,1034 @@
       "event_gain_db": -1.16
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "thornmarsh_landmark_01",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3212.5,
+        762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.573,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_02",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4562.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.284,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_03",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3962.5,
+        1112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.331,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_04",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3812.5,
+        312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.178,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_05",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.201,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_06",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3462.5,
+        1212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.496,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_07",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2762.5,
+        912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.239,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_08",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3312.5,
+        312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.918,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_09",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3662.5,
+        762.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.829,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_10",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4062.5,
+        712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.189,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_11",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4162.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.454,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_12",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2912.5,
+        612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.355,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_13",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3562.5,
+        462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.748,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_14",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3712.5,
+        1162.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.273,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_15",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3412.5,
+        962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.81,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_16",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3812.5,
+        562.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.855,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_17",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.72,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_18",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4412.5,
+        462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.621,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_19",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3412.5,
+        662.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.254,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_20",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3862.5,
+        862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.462,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_21",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.653,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_22",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4012.5,
+        412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.796,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_23",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2962.5,
+        812.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.003,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_24",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3512.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.41,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_25",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3112.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 138,
+      "phase": 0.041,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_26",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        3612.5,
+        962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    },
+    {
+      "id": "thornmarsh_landmark_27",
+      "text": "World-anchored thorn clatter landmark; region-native source distributed across the complete Thornmarsh native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        4362.5,
+        262.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.167,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 3100,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.055
+        },
+        "gain_db": -12,
+        "repeats": {
+          "n": 7,
+          "gap_s": 0.075,
+          "gap_jitter_s": 0.045
+        }
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
   "bed_gain_db": 6.32,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run.",

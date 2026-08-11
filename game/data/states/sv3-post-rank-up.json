@@ -1,0 +1,51 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "sv3-post-rank-up",
+  "title": "RI-JRN05 SV3. Post-rank-up less than 60 seconds old, including the resulting rivalry lock, unlocked topics, and available trainer.",
+  "env": {
+    "timeOfDay": 11.5,
+    "weather": "clear",
+    "region": "thornmarsh",
+    "interior": null
+  },
+  "player": {
+    "pos": [
+      5,
+      0,
+      -2
+    ],
+    "yaw": 45,
+    "stamina": 100,
+    "hp": 455
+  },
+  "camera": {
+    "yaw": 45,
+    "pitch": -6,
+    "mode": "free"
+  },
+  "quest": {
+    "factions": {
+      "house-dres": {
+        "member": true,
+        "rank": 2,
+        "reputation": 25,
+        "expelled": false,
+        "rivalry_locked": [
+          "shadowscale-order"
+        ],
+        "rank_up_ago_frames": 1800,
+        "trainer_available": "dres-armsmaster"
+      }
+    },
+    "topicsKnown": [
+      "house-dres-rank-two",
+      "dres-training",
+      "shadowscale-rivalry"
+    ],
+    "flags": {
+      "trainer:dres-armsmaster:available": true,
+      "rank-up:house-dres:consequences-applied": true
+    }
+  },
+  "spawn": []
+}

@@ -1,0 +1,126 @@
+{
+  "schema": "elder-souls/visual-reading-selftest@1",
+  "commit": "b5850ff0e6cff4bfe26cd269fa515159e32915e4",
+  "ok": true,
+  "cases": [
+    {
+      "id": "clean--edge-density-on-the-frame",
+      "want": "OK",
+      "got": "OK",
+      "ok": true
+    },
+    {
+      "id": "failure-1--canvas-exists-nonzero-no-errors",
+      "want": "PASSES_ON_DEGENERATE",
+      "got": "PASSES_ON_DEGENERATE",
+      "ok": true
+    },
+    {
+      "id": "failure-2--distinctness-hashes-the-step-counter",
+      "want": "READS_THE_CLOCK",
+      "got": "READS_THE_CLOCK",
+      "ok": true
+    },
+    {
+      "id": "failure-3--interior-meshes-quoted-as-a-renderer-read",
+      "want": "SURFACE_INADMISSIBLE",
+      "got": "SURFACE_INADMISSIBLE",
+      "ok": true
+    },
+    {
+      "id": "failure-3b--the-same-build-record-under-an-AUTHORED-claim",
+      "want": "OK",
+      "got": "OK",
+      "ok": true
+    },
+    {
+      "id": "failure-4--luma-overshoot-graded-against-a-dE-band",
+      "want": "UNIT_MISMATCH",
+      "got": "UNIT_MISMATCH",
+      "ok": true
+    },
+    {
+      "id": "failure-5--posed-camera-never-wrote-its-yaw",
+      "want": "BLIND_TO_SUBJECT",
+      "got": "BLIND_TO_SUBJECT",
+      "ok": true
+    },
+    {
+      "id": "failure-6--the-glyph-renderer-nothing-depends-on",
+      "want": "NULL_CONTROL_FAILED",
+      "got": "NULL_CONTROL_FAILED",
+      "ok": true
+    },
+    {
+      "id": "undeclared--no-degenerate-subject",
+      "want": "UNDECLARED",
+      "got": "UNDECLARED",
+      "ok": true
+    },
+    {
+      "id": "degenerate-empty--zero-samples-is-not-a-red",
+      "want": "DEGENERATE_NOT_GRADEABLE",
+      "got": "DEGENERATE_NOT_GRADEABLE",
+      "ok": true
+    },
+    {
+      "id": "nothing-read--misspelt-field",
+      "want": "NOTHING_READ",
+      "got": "NOTHING_READ",
+      "ok": true
+    }
+  ],
+  "falsifier": [
+    {
+      "break": "admissibility",
+      "broke": 1,
+      "cases": [
+        "failure-3--interior-meshes-quoted-as-a-renderer-read(SURFACE_INADMISSIBLE->PASSES_ON_DEGENERATE)"
+      ]
+    },
+    {
+      "break": "units",
+      "broke": 1,
+      "cases": [
+        "failure-4--luma-overshoot-graded-against-a-dE-band(UNIT_MISMATCH->BLIND_TO_SUBJECT)"
+      ]
+    },
+    {
+      "break": "clock",
+      "broke": 1,
+      "cases": [
+        "failure-2--distinctness-hashes-the-step-counter(READS_THE_CLOCK->BLIND_TO_SUBJECT)"
+      ]
+    },
+    {
+      "break": "subject",
+      "broke": 1,
+      "cases": [
+        "failure-5--posed-camera-never-wrote-its-yaw(BLIND_TO_SUBJECT->NULL_CONTROL_FAILED)"
+      ]
+    },
+    {
+      "break": "degenerate",
+      "broke": 2,
+      "cases": [
+        "failure-1--canvas-exists-nonzero-no-errors(PASSES_ON_DEGENERATE->BLIND_TO_SUBJECT)",
+        "degenerate-empty--zero-samples-is-not-a-red(DEGENERATE_NOT_GRADEABLE->OK)"
+      ]
+    },
+    {
+      "break": "null",
+      "broke": 1,
+      "cases": [
+        "failure-6--the-glyph-renderer-nothing-depends-on(NULL_CONTROL_FAILED->OK)"
+      ]
+    },
+    {
+      "break": "nothing",
+      "broke": 1,
+      "cases": [
+        "nothing-read--misspelt-field(NOTHING_READ->BLIND_TO_SUBJECT)"
+      ]
+    }
+  ],
+  "inert_breaks": []
+}

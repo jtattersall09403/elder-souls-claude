@@ -410,6 +410,7 @@ function applyHitstop(sim, A, B, frame, imp) {
   if (b > (B.hitstopUntil || 0)) B.hitstopUntil = b;
   A.lastImpact = imp;
   B.lastImpactTaken = imp;
+  B.lastImpactTakenF = frame;
 }
 
 /**

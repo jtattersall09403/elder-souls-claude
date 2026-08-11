@@ -238,7 +238,11 @@ async function runProbe(name) {
           const cp = Math.cos(pr), sp = Math.sin(pr);
           const fwd = [Math.sin(yr) * cp, sp, Math.cos(yr) * cp];
           const right = [Math.cos(yr), 0, -Math.sin(yr)];
-          const up = [right[1] * fwd[2] - right[2] * fwd[1], right[2] * fwd[0] - right[0] * fwd[2], right[0] * fwd[1] - right[1] * fwd[0]];
+          // camera.js uses up = forward × right.  Using right × forward here made the
+          // instrument agree on the right-shoulder component while reporting the declared
+          // +0.10 m vertical shoulder as -0.10 m.  Keep this derivation independent, but use
+          // the same right-handed camera convention as the native item.
+          const up = [fwd[1] * right[2] - fwd[2] * right[1], fwd[2] * right[0] - fwd[0] * right[2], fwd[0] * right[1] - fwd[1] * right[0]];
           const d = [c.pos[0] - (c.pivot[0] - fwd[0] * c.arm_len_m),
             c.pos[1] - (c.pivot[1] - fwd[1] * c.arm_len_m),
             c.pos[2] - (c.pivot[2] - fwd[2] * c.arm_len_m)];

@@ -1,0 +1,81 @@
+{
+  "schema": "elder-souls/w1-19-gates-cd@1",
+  "generated_at": "2026-08-11T07:34:12.089010+00:00",
+  "commit": "11ae120b81595c00dc7d3f56d520aab89efe8543",
+  "gate_d": {
+    "RI-WLD09_builder": {
+      "state": "COMPLETE",
+      "command": "python3 corpus/80-methods/opacity-audit.py --all --game game/data --json corpus/90-verdicts/wave1/artifacts/W1-19-builder-persistent/gates-cd/baseline/opacity-positive.json",
+      "result": {
+        "seals": {
+          "sealed_in_corpus": 24,
+          "declared_in_game": 24,
+          "matched": 24,
+          "failures": []
+        },
+        "leaks": {
+          "strings_scanned": 4306,
+          "hard": [],
+          "fuzzy": []
+        },
+        "assembled": {
+          "facts": 12,
+          "failures": []
+        },
+        "voids": {
+          "tracts": 5,
+          "area_km2": 2.14,
+          "share_of_land": 0.1474,
+          "failures": []
+        }
+      },
+      "controls": [
+        {
+          "id": "assembled_claim_leak",
+          "expected_exit": 1,
+          "observed_exit": 1,
+          "artifact": "controls/assembled-leak.json"
+        },
+        {
+          "id": "sealed_answer_leak",
+          "expected_exit": 1,
+          "observed_exit": 1,
+          "artifact": "controls/sealed-leak.json"
+        }
+      ]
+    },
+    "RI-LOR01_builder": {
+      "state": "COMPLETE",
+      "commands": [
+        "python3 corpus/80-methods/canon-check.py --validate-registry",
+        "node tools/lore/canon-consumption.mjs --json"
+      ],
+      "results": {
+        "registry_facts": 84,
+        "perturbed_registered_lines_removed": "49/49",
+        "untagged_stable": "388/388",
+        "npc_holders": "385/392"
+      },
+      "artifacts": [
+        "baseline/lor01-registry.log",
+        "baseline/lor01-consumption.log"
+      ]
+    }
+  },
+  "gate_c": {
+    "state": "WAITING_FOR_PRODUCTION_CHAIN",
+    "reason": "legacy experience runners invoke prohibited direct quest APIs and are excluded from evidence"
+  },
+  "production_files": [
+    {
+      "path": "game/data/world/assembled-lore.json",
+      "sha256": "115de5c77cb76689873e410283df7398ec7a3c2012c1137035de5acc6e68011a",
+      "bytes": 6284
+    },
+    {
+      "path": "game/data/world/voids.json",
+      "sha256": "257c4d8310aacc2bf9af78cc15c7a62e85eee6d42cb24e8ab0249a658d891565",
+      "bytes": 1871
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "task_id": "W1-00-codex-builder-sweep",
+  "brief": "Production builder sweep for satisfied W1-00 continuation plan on codex/wave1-build-experiment",
+  "started": "2026-08-10",
+  "state": "builder_rows_complete_independent_rows_classified",
+  "canonical_plan": "orchestration/plans/W1-00.md",
+  "files_touched": [
+    "game/data/index.json",
+    "game/data/save-manifest.json",
+    "game/data/states/sv1-midquest.json",
+    "game/data/states/sv2-mid-dungeon.json",
+    "game/data/states/sv3-post-rank-up.json",
+    "game/data/states/sv4-bounty-pursuit.json",
+    "game/src/combat/system.js",
+    "game/src/core/canonical.js",
+    "game/src/engine.js",
+    "game/src/save/state.js",
+    "game/src/sim/state.js",
+    "orchestration/status/W1-00-codex-builder-sweep.json",
+    "reports/w1-00-codex-builder-sweep/HANDOFF.md",
+    "reports/w1-00-codex-builder-sweep/api/api-probe.json",
+    "reports/w1-00-codex-builder-sweep/determinism-final/determinism.json",
+    "reports/w1-00-codex-builder-sweep/determinism-fixed/determinism.json",
+    "reports/w1-00-codex-builder-sweep/determinism.json",
+    "reports/w1-00-codex-builder-sweep/manifest.json",
+    "reports/w1-00-codex-builder-sweep/mth07/aggregate.json",
+    "reports/w1-00-codex-builder-sweep/mth07/live.json",
+    "reports/w1-00-codex-builder-sweep/state-diff-fixed.json",
+    "reports/w1-00-codex-builder-sweep/state-diff.json",
+    "tools/harness/determinism.mjs",
+    "tools/harness/w1-00-mth07-census.json",
+    "tools/harness/w1-00-mth07-live.mjs",
+    "tools/harness/w1-00-mth07.mjs",
+    "tools/journey/state-diff.mjs",
+    "tools/persistence/w1-00-native-save.mjs"
+  ],
+  "files_claimed": [],
+  "outputs_written": [
+    "reports/w1-00-codex-builder-sweep/HANDOFF.md",
+    "reports/w1-00-codex-builder-sweep/manifest.json",
+    "reports/w1-00-codex-builder-sweep/determinism.json",
+    "reports/w1-00-codex-builder-sweep/state-diff.json"
+  ],
+  "findings": [
+    "Determinism ladder green 9/9 at 180 frames; R1/R7/R8 shared journey-stamp scenario-boundary contamination repaired; R5 now warms machinery then reconstructs the exact scenario.",
+    "Native SV1-SV5 fixtures and explicit M1-M19/CR1-CR12 population manifest present; durable prop affordances now round-trip and quest opened state is explicit.",
+    "RI-MTH07 exhaustive W1-00 census and native live producer green 4/4 with actual shipping consumers, treatment/null discrimination and VERIFY.",
+    "Hardware, fresh pointer-lock, audio-capable, and critic judgements remain independently classified; no critic PASS self-awarded."
+  ],
+  "next_step": "Fresh independent critic may enter from the satisfied W1-00 plan and committed builder artifacts; hardware/pointer-lock rows remain precisely classified.",
+  "resumed": "2026-08-11"
+}

@@ -1,197 +1,288 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "stormhold-archive",
-  "name": "The Cohort Archive",
-  "settlement": "stormhold",
-  "cell_kind": "named",
-  "interior_kind": "guild",
-  "service": null,
-  "faction": "ninth-cohort",
-  "exterior_door": [
-    2137.5,
-    141.12,
-    731
+ "schema": "elder-souls/interior@1",
+ "id": "stormhold-archive",
+ "name": "The Cohort Archive",
+ "settlement": "stormhold",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "ninth-cohort",
+ "exterior_door": [
+  2137.5,
+  141.12,
+  731
+ ],
+ "continuity": {
+  "building": "stormhold-archive",
+  "building_offset_m": [
+   -34,
+   0,
+   -30
   ],
-  "continuity": {
-    "building": "stormhold-archive",
-    "building_offset_m": [
-      -34,
-      0,
-      -30
-    ],
-    "building_yaw_deg": 0,
-    "exterior_footprint_m": [
-      12.4,
-      14.4
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6
-    ],
-    "exterior_spawn": [
-      2137.5,
-      141.12,
-      732.8
-    ]
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   3.15
+  ],
+  "exterior_spawn": [
+   2137.5,
+   141.12,
+   735.98
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   2137.5,
+   141.12,
+   732.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.87,
+   5.87
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -4.05,
+   4.05
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "stormhold.publican5.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.2,
-      6.2
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.2,
-      7.2
-    ]
+  {
+   "id": "stormhold.publican5.r0.lamp0",
+   "pos": [
+    2.5,
+    1.6,
+    1.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 178.6,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.88
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "stormhold.publican5.r0.lamp1",
+   "pos": [
+    -2.6,
+    1.6,
+    1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "stormhold.publican5.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "stormhold.publican5.r0.lamp0",
-      "pos": [
-        2.5,
-        1.6,
-        1.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.publican5.r0.lamp1",
-      "pos": [
-        -2.6,
-        1.6,
-        1.5999999999999996
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.boatwright11.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "stormhold.boatwright11.r0.lamp0",
-      "pos": [
-        -2.1,
-        1.6,
-        -4.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "stormhold.boatwright11.r0.lamp1",
-      "pos": [
-        -0.20000000000000018,
-        1.6,
-        -4.2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "desk_writing",
-    "record_press",
-    "map_table",
-    "seal_press",
-    "muster_board",
-    "chest_iron",
-    "chair_formal",
-    "shelf_deed",
-    "lamp_desk",
-    "banner_wall",
-    "key_rail",
-    "inkstand",
-    "strongbox",
-    "bench_wait",
-    "sto_legion_block",
-    "sto_bloom_course",
-    "sto_grid_barrack",
-    "sto_wall_lean"
-  ],
-  "property_zones": [
-    "stormhold.publican5.r0",
-    "stormhold.boatwright11.r0"
-  ],
-  "containers": [
-    "stormhold.publican5.r0.9",
-    "stormhold.boatwright11.r0.1"
-  ],
-  "unique_item": {
-    "id": "stormhold-archive-unique",
-    "name": "the muster roll of a cohort that does not exist",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:stormhold-publican-5"
+  {
+   "id": "stormhold.boatwright11.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "readable": [
-    {
-      "id": "stormhold-archive-readable",
-      "title": "The Cohorts Stormhold Does Not Have"
-    },
-    {
-      "id": "the-stormhold-transfer-file",
-      "title": "The transfer file, garrison archive, Stormhold",
-      "book": "the-stormhold-transfer-file"
-    },
-    {
-      "id": "the-house-built-in-fear",
-      "title": "Of the house under the Wastes, built in fear",
-      "book": "the-house-built-in-fear"
-    },
-    {
-      "id": "the-duskfall-chronicle",
-      "title": "A chronicle of the Duskfall",
-      "book": "the-duskfall-chronicle"
-    },
-    {
-      "id": "on-the-tally-stones",
-      "title": "On the tally-stones of the Blackwood",
-      "book": "on-the-tally-stones"
-    }
+  {
+   "id": "stormhold.boatwright11.r0.lamp0",
+   "pos": [
+    -2.1,
+    1.6,
+    -3.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.boatwright11.r0.lamp1",
+   "pos": [
+    -0.2,
+    1.6,
+    -3.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "sto_legion_block",
+  "sto_bloom_course",
+  "sto_grid_barrack",
+  "sto_wall_lean"
+ ],
+ "property_zones": [
+  "stormhold.publican5.r0",
+  "stormhold.boatwright11.r0"
+ ],
+ "containers": [
+  "stormhold.publican5.r0.9",
+  "stormhold.boatwright11.r0.1"
+ ],
+ "unique_item": {
+  "id": "stormhold-archive-unique",
+  "name": "the muster roll of a cohort that does not exist",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:stormhold-publican-5"
+ },
+ "readable": [
+  {
+   "id": "stormhold-archive-readable",
+   "title": "The Cohorts Stormhold Does Not Have"
+  },
+  {
+   "id": "the-stormhold-transfer-file",
+   "title": "The transfer file, garrison archive, Stormhold",
+   "book": "the-stormhold-transfer-file"
+  },
+  {
+   "id": "the-house-built-in-fear",
+   "title": "Of the house under the Wastes, built in fear",
+   "book": "the-house-built-in-fear"
+  },
+  {
+   "id": "the-duskfall-chronicle",
+   "title": "A chronicle of the Duskfall",
+   "book": "the-duskfall-chronicle"
+  },
+  {
+   "id": "on-the-tally-stones",
+   "title": "On the tally-stones of the Blackwood",
+   "book": "on-the-tally-stones"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.5,
+    1.6,
+    1.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    -2.6,
+    1.6,
+    1.5999999999999996
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.1,
+    1.6,
+    -4.1
+   ]
+  },
+  {
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -4.2
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "stormhold-archive",
+ "door_world_pos": [
+  2137.5,
+  141.12,
+  735.48
+ ],
+ "door_world_bearing_deg": 180,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 95.09
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

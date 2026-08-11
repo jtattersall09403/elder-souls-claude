@@ -1,0 +1,244 @@
+{
+  "schema": "elder-souls/ui-pause@1",
+  "item": "RI-UIX03",
+  "at": "2026-08-11T07:55:39.957Z",
+  "state": "ui-journal",
+  "checks": [
+    {
+      "id": "M-P1",
+      "what": "outside combat the inventory PAUSES the world",
+      "pass": true,
+      "detail": "frame 12 -> 12 over 120 steps (delta 0 of 120), in_combat false"
+    },
+    {
+      "id": "M-P2",
+      "what": "INSIDE combat the inventory does NOT pause the world (S14)",
+      "pass": true,
+      "detail": "frame 18 -> 138 over 120 steps (delta 120 of 120), in_combat true"
+    },
+    {
+      "id": "P8",
+      "what": "no time dilation: 37 steps advance exactly 37 frames with the menu open",
+      "pass": true,
+      "detail": "138 -> 175"
+    },
+    {
+      "id": "M-P4",
+      "what": "P5 occlusion: <=55% opacity, <=60% of screen area, and the world still reaches >=30% of the centre 40%x40%",
+      "pass": true,
+      "detail": "opacity 0.5, area 57.2%, the world moves 80.2% of centre pixels under a screen covering 100.0% of them (control, outside the screen: 80.0%)"
+    },
+    {
+      "id": "M-P3",
+      "what": "P6 input liveness: `roll` is not swallowed by the menu in combat",
+      "pass": true,
+      "detail": "player states seen: [\"IDLE\",\"BACKSTEP\"]; stamina spent 14; menu still open: inventory"
+    },
+    {
+      "id": "P4",
+      "what": "combat beginning mid-menu resumes the world, silently, with the screen still open",
+      "pass": true,
+      "detail": "0/30 before aggro, 60/60 after, mode still 'inventory'"
+    },
+    {
+      "id": "M-P5",
+      "what": "P7 equipping in a fight is an animation-committed action of ≥30 frames",
+      "pass": true,
+      "detail": "{\"item\":\"bog-iron-maul\",\"category\":\"weapon\",\"before\":286,\"equip_start\":true,\"equip_end\":true,\"commit_frames\":30}"
+    },
+    {
+      "id": "E11",
+      "what": "no transient toast on screen during an active fight (§C)",
+      "pass": true,
+      "detail": "0 toasts"
+    },
+    {
+      "id": "PAD",
+      "what": "the interface opens, navigates, confirms and closes on a GameSir X2s alone",
+      "pass": true,
+      "detail": "open true, stick moved focus true, d-pad moved exactly one column 1->0, irrelevant input stable true, closed true (final mode world)"
+    },
+    {
+      "id": "SURFACES",
+      "what": "all seven surfaces open and draw",
+      "pass": true,
+      "detail": "{\"inventory\":32,\"journal\":37,\"sheet\":49,\"spells\":14,\"levelup\":26,\"book\":14,\"container\":18}"
+    }
+  ],
+  "raw": {
+    "out_of_combat": {
+      "in_combat": false,
+      "from": 12,
+      "to": 12,
+      "delta": 0,
+      "of": 120
+    },
+    "in_combat": {
+      "in_combat": true,
+      "from": 18,
+      "to": 138,
+      "delta": 120,
+      "of": 120
+    },
+    "occlusion": {
+      "panel_area_frac": 0.5718,
+      "declared_opacity": 0.5,
+      "centre_box": [
+        384,
+        216,
+        512,
+        288
+      ],
+      "centre_under_ui_frac": 1,
+      "centre_world_responds_frac": 0.8024,
+      "control_world_responds_frac": 0.7997,
+      "perturbation": "setTimeOfDay 13 -> 1, screen open, nothing else changed"
+    },
+    "input_liveness": {
+      "rolled": false,
+      "states": [
+        "IDLE",
+        "BACKSTEP"
+      ],
+      "stamina_before": 120,
+      "stamina_min": 106,
+      "stamina_spent": 14,
+      "mode": "inventory",
+      "hp": 514.4
+    },
+    "p4": {
+      "paused_before": 0,
+      "ran_after": 60,
+      "mode_after": "inventory"
+    },
+    "equip": {
+      "item": "bog-iron-maul",
+      "category": "weapon",
+      "before": 286,
+      "equip_start": true,
+      "equip_end": true,
+      "commit_frames": 30
+    },
+    "gamepad_walk": [
+      {
+        "after": "START",
+        "mode": "inventory"
+      },
+      {
+        "after": "stick down x2",
+        "focus": [
+          "inventory.row.reed-cutter"
+        ]
+      },
+      {
+        "after": "DPAD LEFT",
+        "col": 0,
+        "colBefore": 1,
+        "focus": [
+          "inventory.cat.weapon"
+        ],
+        "beforeStep": {
+          "move": [
+            -1,
+            0
+          ],
+          "uiMove": [
+            -1,
+            0
+          ],
+          "uiMode": true
+        },
+        "axisBefore": {
+          "x": 0,
+          "y": 0,
+          "sinceX": 0,
+          "sinceY": 355
+        },
+        "axisAfter": {
+          "x": 0,
+          "y": 0,
+          "sinceX": 359,
+          "sinceY": 355
+        },
+        "pad": {
+          "uiMode": true,
+          "menuOpen": false,
+          "move": [
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "after": "GUIDE (irrelevant)",
+        "stable": true,
+        "mode": "inventory",
+        "focus": {
+          "col": 0,
+          "tagIdx": 1,
+          "rowIdx": 2,
+          "sortIdx": 0
+        }
+      },
+      {
+        "after": "A",
+        "mode": "inventory"
+      },
+      {
+        "after": "START",
+        "mode": "world"
+      }
+    ],
+    "surfaces": {
+      "inventory": {
+        "elements": 32,
+        "navigable": [
+          "world",
+          "journal",
+          "sheet",
+          "spells",
+          "map"
+        ]
+      },
+      "journal": {
+        "elements": 37,
+        "navigable": [
+          "world",
+          "inventory",
+          "sheet",
+          "spells"
+        ]
+      },
+      "sheet": {
+        "elements": 49,
+        "navigable": [
+          "world",
+          "inventory",
+          "journal",
+          "spells",
+          "map"
+        ]
+      },
+      "spells": {
+        "elements": 14,
+        "navigable": [
+          "world",
+          "inventory",
+          "journal",
+          "sheet",
+          "map"
+        ]
+      },
+      "levelup": {
+        "elements": 26
+      },
+      "book": {
+        "elements": 14
+      },
+      "container": {
+        "elements": 18
+      }
+    }
+  },
+  "ok": true
+}

@@ -13,6 +13,31 @@ build agent should re-derive rather than trust it (rule 18). Rule 12: these are 
 This plan splits into **two pieces**, deliberately, because they want different models and only
 one of them needs a browser. Their acceptances are independent and either can land alone.
 
+## Builder/critic execution allocation (binding)
+
+This piece uses the shared [builder execution contract](BUILDER-EXECUTION-CONTRACT.md). Its present
+`awaiting-remediation` state remains binding: this allocation does not authorise unresolved Piece B
+work. The original predicates and populations below remain the final critic acceptance bar.
+
+**Builder-owned now — Piece A:** finish any outstanding HUD fit implementation and instrument work.
+In one reusable browser, enumerate and render the complete 395-string A1 corpus through the real HUD
+owners, run the decisive A2 representative samples, and demonstrate one pre-fix red/null control plus
+targeted delete-the-fix behaviour. This bounded complete corpus is retained because it is cheap and is
+the implementation's central correctness check.
+
+**Builder-owned after Piece B is plan-satisfied:** implement the coupled-yardstick classifier and its
+required integrations; run exhaustive cheap unit fixtures plus one real coupled check and one real
+independent check; and demonstrate targeted red and delete-the-fix controls. Until the blocking plan
+questions are resolved, report Piece B as `dependency-blocked: plan authority` and continue all
+available Piece A work.
+
+**Critic-owned:** a fresh Piece A browser rerun; the complete 14-check `P_E` population; all four
+historical reseeds; the wide report census; independent classification/judgement; final native
+aggregation; and verdict.
+
+**Completion rule:** one builder run completes every presently authorised item above. Piece B's
+explicit plan-authority block is a valid handoff and does not permit early termination of Piece A.
+
 **BLOCKING-1, -3 and -6 folded in by the Piece A build agent at `9790db8`, before any `game/`
 source was touched, per the dispatch condition below §6.** §1 Piece A's table, §3's instrument
 list and §6 are edited in place to carry the ruled resolutions rather than the original text;

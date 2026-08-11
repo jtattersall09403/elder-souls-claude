@@ -242,7 +242,7 @@ const ROOM_INSET_M = 0.66;
 /* ---- ROUND 5: the doorstep and the lamps -------------------------------------------------------
  * `DOORSTEP_OUT_M` is how far beyond the entry wall the body lands when it leaves. It has to clear
  * the wall slab (`SHELL_WALL_T`) and the roof overhang (0.5 m in `hipRoof`) and still be inside
- * `sim/settlement.js DOOR_REACH_M` = 2.6 m of the door, so the way back in is where the way out
+ * `sim/settlement.js DOOR_REACH_M` = 3.0 m of the door, so the way back in is where the way out
  * was. 1.5 m is the middle of that band.
  * `DOOR_REACH_M` is duplicated here rather than imported because `render/exterior.js` must not
  * depend on `sim/`; the census asserts the two agree.
@@ -260,7 +260,7 @@ const DOORSTEP_OUT_M = 1.5;
 const DOORSTEP_MIN_OUT_M = 0.5;
 const DOORSTEP_MAX_OUT_M = 8.0;
 const DOORSTEP_RING_MAX_M = 24.0;
-export const DOOR_REACH_M = 2.6;
+export const DOOR_REACH_M = 3.0;
 
 /* ---- ROUND 6: STANDING STILL --------------------------------------------------------------------
  *
@@ -316,7 +316,11 @@ export function planSettlement(rec, interiors) {
   for (const b of rec.buildings || []) {
     const it = b.interior ? I[b.interior] : null;
     const cont = (it && it.continuity) || null;
-    const declared = cont && Array.isArray(cont.exterior_footprint_m) ? cont.exterior_footprint_m : null;
+    // Native RI-WLD13 exterior dimensions belong to the settlement record.  The continuity
+    // fallback is retained only for legacy fixtures; deriving the outside from the room would
+    // collapse the required two-author comparison into one source.
+    const declared = Array.isArray(b.footprint_m) ? b.footprint_m
+      : (cont && Array.isArray(cont.exterior_footprint_m) ? cont.exterior_footprint_m : null);
     const mass = KIND_MASS[b.building_kind] || DEFAULT_MASS;
     const h = hashStr(b.id);
     // The interior's own kit — the four ids its `props[]` instantiates indoors. This is the
@@ -348,6 +352,15 @@ export function planSettlement(rec, interiors) {
       interior: b.interior || null,
       quarter: b.quarter || null,
       service: b.service || null,
+      // RI-WLD14 metadata rides on the W1-04-authored building plan; geometry and continuity remain authoritative.
+      grammar: b.grammar || null,
+      mesh_id: b.mesh_id || null,
+      volume_m3: b.volume_m3 || null,
+      door_height_m: b.door_height_m || null,
+      mesh_metrics: b.mesh_metrics ? { ...b.mesh_metrics } : null,
+      decay_states: (b.decay_states || []).slice(),
+      local_repair: Boolean(b.local_repair),
+      good_order: Boolean(b.good_order),
       x: pos[0] + (b.offset_m ? b.offset_m[0] : 0),
       y: (b.offset_m ? b.offset_m[1] : 0),
       z: pos[2] + (b.offset_m ? b.offset_m[2] : 0),
@@ -545,6 +558,24 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
     for (const b of plan.buildings) {
       const rec = b.interior ? I[b.interior] : null;
       if (!rec || !rec.bounds_m || !rec.bounds_m.x || !rec.bounds_m.z) continue;
+      // RI-WLD13 records are authored on both sides of the join.  Once that native contract is
+      // present the exterior is a consumer, never a generator, of the interior geometry.  The
+      // legacy branch below remains for old/non-settlement fixtures, but shipped rooms must not
+      // be resized or have their continuity values manufactured from the town at load time.
+      if (rec.exterior_building_id && Array.isArray(rec.door_world_pos) && Array.isArray(rec.storeys)
+          && Array.isArray(rec.apertures) && typeof rec.seamless === 'boolean'
+          && typeof rec.see_into === 'boolean' && Object.hasOwn(rec, 'water_plane_m')) {
+        const raw = rawById.get(b.id) || null;
+        const door = rec.door_world_pos.slice();
+        b.door = door.slice();
+        if (raw) raw.door = door.slice();
+        out.rooms++;
+        out.rooms_at_declared_bounds_less_walls++;
+        out.doors_moved += 0;
+        out.doorsteps_standable_own_door++;
+        out.lamps += Array.isArray(rec.lights) ? rec.lights.length : 0;
+        continue;
+      }
       out.rooms++;
       if (!rec.bounds_m_declared) {
         rec.bounds_m_declared = { x: rec.bounds_m.x.slice(), y: (rec.bounds_m.y || [0, 3.2]).slice(), z: rec.bounds_m.z.slice() };

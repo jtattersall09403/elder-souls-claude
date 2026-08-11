@@ -1,208 +1,313 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "gideon-apothecary",
-  "name": "The Physick",
-  "settlement": "gideon",
-  "cell_kind": "named",
-  "interior_kind": "shop",
-  "service": "alchemist",
-  "faction": null,
-  "exterior_door": [
-    446,
-    2.72,
-    2936.5
+ "schema": "elder-souls/interior@1",
+ "id": "gideon-apothecary",
+ "name": "The Physick",
+ "settlement": "gideon",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "alchemist",
+ "faction": null,
+ "exterior_door": [
+  446,
+  2.72,
+  2936.5
+ ],
+ "continuity": {
+  "building": "gideon-apothecary",
+  "building_offset_m": [
+   7,
+   0,
+   23
   ],
-  "continuity": {
-    "building": "gideon-apothecary",
-    "building_offset_m": [
-      7,
-      0,
-      23
-    ],
-    "building_yaw_deg": 180,
-    "exterior_footprint_m": [
-      12.4,
-      14.4
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      6
-    ],
-    "exterior_spawn": [
-      446,
-      2.72,
-      2938.3
-    ]
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.87
+  ],
+  "exterior_spawn": [
+   446,
+   2.72,
+   2944.2
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   446,
+   2.72,
+   2938.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.87,
+   5.87
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.87,
+   6.87
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "gideon.publican4.r2.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -6.2,
-      6.2
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -7.2,
-      7.2
-    ]
+  {
+   "id": "gideon.publican4.r2.lamp0",
+   "pos": [
+    3.2,
+    1.6,
+    -1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 178.6,
-  "light": {
-    "kind": "lamp",
-    "pos": [
-      0,
-      0.6,
-      2.88
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "gideon.publican4.r2.lamp1",
+   "pos": [
+    1.3,
+    1.6,
+    -1.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "gideon.publican4.r2.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.publican4.r2.lamp0",
-      "pos": [
-        3.2,
-        1.6,
-        -1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.publican4.r2.lamp1",
-      "pos": [
-        1.2999999999999998,
-        1.6,
-        -1.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.publican4.r2.lamp2",
-      "pos": [
-        -0.6000000000000001,
-        1.6,
-        -2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary9.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 1.4,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "gideon.legionary9.r1.lamp0",
-      "pos": [
-        -1.8,
-        1.6,
-        0.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary9.r1.lamp1",
-      "pos": [
-        3.3,
-        1.6,
-        0.9000000000000004
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "gideon.legionary9.r1.lamp2",
-      "pos": [
-        1.4000000000000004,
-        1.6,
-        0.5999999999999996
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "counter_long",
-    "shelf_stack",
-    "scale_brass",
-    "crate_sealed",
-    "ledger_stand",
-    "coin_tray",
-    "sack_row",
-    "hook_rail",
-    "lamp_hanging",
-    "stool_high",
-    "strongbox",
-    "sample_board",
-    "measure_jug",
-    "sweep_broom",
-    "gid_timber_frame",
-    "gid_tile_roof",
-    "gid_market_cross",
-    "gid_square_arcade"
-  ],
-  "property_zones": [
-    "gideon.publican4.r2",
-    "gideon.legionary9.r1"
-  ],
-  "containers": [
-    "gideon.publican4.r2.4"
-  ],
-  "unique_item": {
-    "id": "gideon-apothecary-unique",
-    "name": "a physick for a fever they call something else",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:gideon-publican-4"
+  {
+   "id": "gideon.publican4.r2.lamp2",
+   "pos": [
+    -0.6,
+    1.6,
+    -2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "readable": [
-    {
-      "id": "gideon-apothecary-readable",
-      "title": "A Fever By Another Name"
-    },
-    {
-      "id": "a-practical-handling-of-the-marsh-fevers",
-      "title": "A practical handling of the marsh-fevers",
-      "book": "a-practical-handling-of-the-marsh-fevers"
-    },
-    {
-      "id": "of-the-beasts-of-the-southern-marsh",
-      "title": "Of the beasts of the southern marsh",
-      "book": "of-the-beasts-of-the-southern-marsh"
-    }
+  {
+   "id": "gideon.legionary9.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.legionary9.r1.lamp0",
+   "pos": [
+    -1.8,
+    1.6,
+    0.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.legionary9.r1.lamp1",
+   "pos": [
+    3.3,
+    1.6,
+    0.9
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.legionary9.r1.lamp2",
+   "pos": [
+    1.4,
+    1.6,
+    0.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "gid_timber_frame",
+  "gid_tile_roof",
+  "gid_market_cross",
+  "gid_square_arcade"
+ ],
+ "property_zones": [
+  "gideon.publican4.r2",
+  "gideon.legionary9.r1"
+ ],
+ "containers": [
+  "gideon.publican4.r2.4"
+ ],
+ "unique_item": {
+  "id": "gideon-apothecary-unique",
+  "name": "a physick for a fever they call something else",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:gideon-publican-4"
+ },
+ "readable": [
+  {
+   "id": "gideon-apothecary-readable",
+   "title": "A Fever By Another Name"
+  },
+  {
+   "id": "a-practical-handling-of-the-marsh-fevers",
+   "title": "A practical handling of the marsh-fevers",
+   "book": "a-practical-handling-of-the-marsh-fevers"
+  },
+  {
+   "id": "of-the-beasts-of-the-southern-marsh",
+   "title": "Of the beasts of the southern marsh",
+   "book": "of-the-beasts-of-the-southern-marsh"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    3.2,
+    1.6,
+    -1.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    1.2999999999999998,
+    1.6,
+    -1.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    -0.6000000000000001,
+    1.6,
+    -2
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.8,
+    1.6,
+    0.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    3.3,
+    1.6,
+    0.9000000000000004
+   ]
+  },
+  {
+   "pos": [
+    1.4000000000000004,
+    1.6,
+    0.5999999999999996
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "gideon-apothecary",
+ "door_world_pos": [
+  446,
+  2.72,
+  2943.7
+ ],
+ "door_world_bearing_deg": 0,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 161.31
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": true,
+ "water_plane_m": null
 }

@@ -1,0 +1,4154 @@
+{
+  "schema": "elder-souls/m-cam02@1",
+  "item": "RI-CAM02",
+  "state": "arena_flat",
+  "band": {
+    "unlocked": [
+      -55,
+      38
+    ],
+    "locked": [
+      -50,
+      32
+    ]
+  },
+  "declared_not_implemented": [
+    "M4 turn-rate ceiling and M6 auto-recentre run in the W1-06 aggregate fixture."
+  ],
+  "checks": [
+    {
+      "id": "M1",
+      "name": "radial deadzone, quadratic magnitude response and saturation over 8×101 population",
+      "result": "pass",
+      "rows": 808,
+      "r_squared": 0.999999999,
+      "max_deadzone_output": 0,
+      "diagonal_m016_output": 0.000141421,
+      "max_normalized_error": 0.000025,
+      "full_deflection_yaw_dps": 180,
+      "full_deflection_pitch_dps": 120
+    },
+    {
+      "id": "M2-unlocked",
+      "name": "pitch clamp hard gate, band [-55, 38]",
+      "result": "pass",
+      "frames": 1860,
+      "max_pitch_deg": 38,
+      "min_pitch_deg": -55,
+      "band": [
+        -55,
+        38
+      ],
+      "frames_pinned_at_min": 598,
+      "frames_pinned_at_max": 896,
+      "bounce_frames": 0,
+      "creep_frames": 0
+    },
+    {
+      "id": "M2-locked",
+      "name": "pitch clamp hard gate, band [-50, 32]",
+      "result": "pass",
+      "frames": 1860,
+      "max_pitch_deg": -12.2066,
+      "min_pitch_deg": -14.9819,
+      "band": [
+        -50,
+        32
+      ],
+      "frames_pinned_at_min": 0,
+      "frames_pinned_at_max": 0,
+      "bounce_frames": 797,
+      "creep_frames": 50
+    },
+    {
+      "id": "M2-relation",
+      "name": "configured locked band strictly narrower than unlocked",
+      "result": "pass",
+      "unlocked_band": [
+        -55,
+        38
+      ],
+      "locked_band": [
+        -50,
+        32
+      ],
+      "unlocked_reached": [
+        -55,
+        38
+      ],
+      "locked_observed": [
+        -14.9819,
+        -12.2066
+      ]
+    },
+    {
+      "id": "M2b",
+      "name": "per-frame look cap: 400 deg of yaw in one frame is clamped to 30 and the surplus is DISCARDED, not carried",
+      "result": "pass",
+      "yaw_delta_frame_1": 30,
+      "yaw_delta_frame_2": 0,
+      "cap_deg_per_frame": 30
+    },
+    {
+      "id": "M3",
+      "name": "zero look lag, zero output smoothing",
+      "result": "pass",
+      "first_frame_delta_deg": 3,
+      "expected": 3,
+      "nonzero_frames_in_the_still_window": 0,
+      "argmax_corr_lag_frames": 0
+    },
+    {
+      "id": "M5",
+      "name": "no auto-follow: 720 frames of rotating movement input with zero look input move the camera yaw by nothing",
+      "result": "pass",
+      "total_abs_camera_yaw_change_deg": 0,
+      "bar_deg": 0.5,
+      "frames": 720
+    }
+  ],
+  "m1_rows": [
+    {
+      "direction_deg": 0,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.16,
+      "shaped": 0.0001666666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.17,
+      "shaped": 0.0006333333333333331
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.18,
+      "shaped": 0.0013999999999999991
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.19,
+      "shaped": 0.002500000000000001
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.2,
+      "shaped": 0.0039000000000000003
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333332
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.22,
+      "shaped": 0.007666666666666663
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.23,
+      "shaped": 0.010000000000000004
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.24,
+      "shaped": 0.012666666666666661
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.25,
+      "shaped": 0.015633333333333332
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.26,
+      "shaped": 0.018900000000000014
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.27,
+      "shaped": 0.0225
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.28,
+      "shaped": 0.026399999999999986
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.29,
+      "shaped": 0.03063333333333332
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.3,
+      "shaped": 0.03516666666666667
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.31,
+      "shaped": 0.040000000000000015
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.32,
+      "shaped": 0.04516666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.33,
+      "shaped": 0.050633333333333315
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.34,
+      "shaped": 0.0564
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.35,
+      "shaped": 0.0625
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.36,
+      "shaped": 0.06889999999999998
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.37,
+      "shaped": 0.07563333333333327
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.38,
+      "shaped": 0.08266666666666662
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.39,
+      "shaped": 0.09
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.4,
+      "shaped": 0.09766666666666661
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.41,
+      "shaped": 0.10563333333333337
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.42,
+      "shaped": 0.11390000000000008
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.43,
+      "shaped": 0.12250000000000004
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.44,
+      "shaped": 0.13140000000000007
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.45,
+      "shaped": 0.14063333333333328
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.46,
+      "shaped": 0.1501666666666667
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.47,
+      "shaped": 0.16000000000000006
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.48,
+      "shaped": 0.17016666666666672
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.49,
+      "shaped": 0.18063333333333337
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.5,
+      "shaped": 0.19139999999999988
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.51,
+      "shaped": 0.20249999999999996
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.52,
+      "shaped": 0.21389999999999995
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.53,
+      "shaped": 0.22563333333333338
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.54,
+      "shaped": 0.23766666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.55,
+      "shaped": 0.25
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.56,
+      "shaped": 0.2626666666666668
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.57,
+      "shaped": 0.27563333333333334
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.58,
+      "shaped": 0.2889
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.59,
+      "shaped": 0.30250000000000016
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.6,
+      "shaped": 0.31639999999999985
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.61,
+      "shaped": 0.33063333333333317
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.62,
+      "shaped": 0.34516666666666684
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.63,
+      "shaped": 0.36
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.64,
+      "shaped": 0.3751666666666668
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.65,
+      "shaped": 0.3906333333333335
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.66,
+      "shaped": 0.40639999999999976
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.67,
+      "shaped": 0.4224999999999998
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.68,
+      "shaped": 0.4389000000000002
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.69,
+      "shaped": 0.45563333333333317
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.7,
+      "shaped": 0.4726666666666669
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.71,
+      "shaped": 0.49000000000000016
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.72,
+      "shaped": 0.5076666666666668
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.73,
+      "shaped": 0.5256333333333333
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.74,
+      "shaped": 0.5439000000000003
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.75,
+      "shaped": 0.5625
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.76,
+      "shaped": 0.5814000000000001
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.77,
+      "shaped": 0.6006333333333332
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.78,
+      "shaped": 0.6201666666666664
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.79,
+      "shaped": 0.6400000000000002
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.8,
+      "shaped": 0.6601666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.81,
+      "shaped": 0.6806333333333331
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.82,
+      "shaped": 0.7013999999999997
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.83,
+      "shaped": 0.7225
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.84,
+      "shaped": 0.7439
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.85,
+      "shaped": 0.7656333333333335
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.86,
+      "shaped": 0.7876666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.87,
+      "shaped": 0.8099999999999998
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.88,
+      "shaped": 0.8326666666666671
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.89,
+      "shaped": 0.8556333333333334
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.9,
+      "shaped": 0.8789000000000005
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.91,
+      "shaped": 0.9025
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.92,
+      "shaped": 0.9264000000000002
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.93,
+      "shaped": 0.950633333333333
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.94,
+      "shaped": 0.9751666666666666
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.95,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.96,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.97,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.98,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 0.99,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 0,
+      "magnitude": 1,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.16,
+      "shaped": 0.00014142135623730962
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.17,
+      "shaped": 0.0006247221604663774
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.18,
+      "shaped": 0.0014142135623730963
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.19,
+      "shaped": 0.0024866867738239794
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.2,
+      "shaped": 0.0039008902117906963
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333333
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.22,
+      "shaped": 0.007636753236814711
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.23,
+      "shaped": 0.009981997684721128
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.24,
+      "shaped": 0.012645431761883204
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.25,
+      "shaped": 0.015615279198414756
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.26,
+      "shaped": 0.01889153984665564
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.27,
+      "shaped": 0.022485995641732218
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.28,
+      "shaped": 0.026386870683058346
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.29,
+      "shaped": 0.030629511005637124
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.3,
+      "shaped": 0.03515499411337044
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.31,
+      "shaped": 0.04002224381515859
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.32,
+      "shaped": 0.04517233974212289
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.33,
+      "shaped": 0.050628845532956816
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.34,
+      "shaped": 0.05642712113868647
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.35,
+      "shaped": 0.06250823945689078
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.36,
+      "shaped": 0.06889577474546442
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.37,
+      "shaped": 0.07560150094042077
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.38,
+      "shaped": 0.08264899844792102
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.39,
+      "shaped": 0.09000290890360767
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.4,
+      "shaped": 0.0976632323059423
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.41,
+      "shaped": 0.10564175310927024
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.42,
+      "shaped": 0.11390311794581288
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.43,
+      "shaped": 0.12249446699522572
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.44,
+      "shaped": 0.13140401228442175
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.45,
+      "shaped": 0.14063175415878792
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.46,
+      "shaped": 0.15016591194778903
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.47,
+      "shaped": 0.16000647990350628
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.48,
+      "shaped": 0.17015346341203613
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.49,
+      "shaped": 0.1806186436790079
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.5,
+      "shaped": 0.19140202091699857
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.51,
+      "shaped": 0.20251538213182727
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.52,
+      "shaped": 0.21391158674659128
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.53,
+      "shaped": 0.22562598907139306
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.54,
+      "shaped": 0.23764680433599586
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.55,
+      "shaped": 0.2500093887125931
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.56,
+      "shaped": 0.26267838436215313
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.57,
+      "shaped": 0.27563022330651604
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.58,
+      "shaped": 0.2889238307928234
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.59,
+      "shaped": 0.30250028099160525
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.6,
+      "shaped": 0.31641849968743047
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.61,
+      "shaped": 0.3306431308828296
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.62,
+      "shaped": 0.3451506052113741
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.63,
+      "shaped": 0.3599998476079927
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.64,
+      "shaped": 0.3751672886119532
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.65,
+      "shaped": 0.3906057859274488
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.66,
+      "shaped": 0.40638605243181136
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.67,
+      "shaped": 0.4225080870363445
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.68,
+      "shaped": 0.4389129643537291
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.69,
+      "shaped": 0.45563604018022014
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.7,
+      "shaped": 0.4726537433588262
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.71,
+      "shaped": 0.4900014297031295
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.72,
+      "shaped": 0.5076437434636394
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.73,
+      "shaped": 0.5256042557011038
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.74,
+      "shaped": 0.5439065360886928
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.75,
+      "shaped": 0.5624916594443371
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.76,
+      "shaped": 0.5813831954915792
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.77,
+      "shaped": 0.6006164999398536
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.78,
+      "shaped": 0.6201562177745573
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.79,
+      "shaped": 0.6399905626474333
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.8,
+      "shaped": 0.6601548909157606
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.81,
+      "shaped": 0.6806020621071056
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.82,
+      "shaped": 0.7013910014709662
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.83,
+      "shaped": 0.7225217090164144
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.84,
+      "shaped": 0.7438999044076947
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.85,
+      "shaped": 0.7656316528055631
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.86,
+      "shaped": 0.7876580287648808
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.87,
+      "shaped": 0.8100026030479438
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.88,
+      "shaped": 0.8326653756328392
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.89,
+      "shaped": 0.8556227757864115
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.9,
+      "shaped": 0.878910159104887
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.91,
+      "shaped": 0.9024921700183582
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.92,
+      "shaped": 0.9263923792204773
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.93,
+      "shaped": 0.9506343566271945
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.94,
+      "shaped": 0.9751591768925609
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.95,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.96,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.97,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.98,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 0.99,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 45,
+      "magnitude": 1,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.16,
+      "shaped": 0.00015
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.17,
+      "shaped": 0.00065
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.18,
+      "shaped": 0.0013999999999999991
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.19,
+      "shaped": 0.002500000000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.2,
+      "shaped": 0.0039000000000000003
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.21,
+      "shaped": 0.005624999999999997
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.22,
+      "shaped": 0.007649999999999996
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.23,
+      "shaped": 0.010000000000000004
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.24,
+      "shaped": 0.012649999999999996
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.25,
+      "shaped": 0.01565
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.26,
+      "shaped": 0.018900000000000014
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.27,
+      "shaped": 0.0225
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.28,
+      "shaped": 0.026399999999999986
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.29,
+      "shaped": 0.030599999999999985
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.3,
+      "shaped": 0.03515000000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.31,
+      "shaped": 0.040000000000000015
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.32,
+      "shaped": 0.045150000000000017
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.33,
+      "shaped": 0.050650000000000014
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.34,
+      "shaped": 0.0564
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.35,
+      "shaped": 0.0625
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.36,
+      "shaped": 0.06889999999999998
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.37,
+      "shaped": 0.07565
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.38,
+      "shaped": 0.08265000000000007
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.39,
+      "shaped": 0.09
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.4,
+      "shaped": 0.09764999999999995
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.41,
+      "shaped": 0.10562499999999994
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.42,
+      "shaped": 0.11390000000000008
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.43,
+      "shaped": 0.12250000000000004
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.44,
+      "shaped": 0.13140000000000007
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.45,
+      "shaped": 0.14064999999999997
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.46,
+      "shaped": 0.15015
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.47,
+      "shaped": 0.16000000000000006
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.48,
+      "shaped": 0.1701499999999999
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.49,
+      "shaped": 0.18060000000000007
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.5,
+      "shaped": 0.19139999999999988
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.51,
+      "shaped": 0.20249999999999996
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.52,
+      "shaped": 0.21389999999999995
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.53,
+      "shaped": 0.22562499999999996
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.54,
+      "shaped": 0.2376500000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.55,
+      "shaped": 0.25
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.56,
+      "shaped": 0.2626499999999999
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.57,
+      "shaped": 0.2755999999999999
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.58,
+      "shaped": 0.2889
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.59,
+      "shaped": 0.30250000000000016
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.6,
+      "shaped": 0.31639999999999985
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.61,
+      "shaped": 0.3306000000000003
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.62,
+      "shaped": 0.3451500000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.63,
+      "shaped": 0.36
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.64,
+      "shaped": 0.3751499999999998
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.65,
+      "shaped": 0.390625
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.66,
+      "shaped": 0.40639999999999976
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.67,
+      "shaped": 0.4224999999999998
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.68,
+      "shaped": 0.4389000000000002
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.69,
+      "shaped": 0.45560000000000034
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.7,
+      "shaped": 0.47264999999999985
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.71,
+      "shaped": 0.49000000000000016
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.72,
+      "shaped": 0.50765
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.73,
+      "shaped": 0.5256250000000002
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.74,
+      "shaped": 0.5439000000000003
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.75,
+      "shaped": 0.5625
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.76,
+      "shaped": 0.5814000000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.77,
+      "shaped": 0.6006500000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.78,
+      "shaped": 0.6201500000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.79,
+      "shaped": 0.6400000000000002
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.8,
+      "shaped": 0.6601500000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.81,
+      "shaped": 0.68065
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.82,
+      "shaped": 0.7013999999999997
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.83,
+      "shaped": 0.7225
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.84,
+      "shaped": 0.7439
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.85,
+      "shaped": 0.765625
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.86,
+      "shaped": 0.7876499999999996
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.87,
+      "shaped": 0.8099999999999998
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.88,
+      "shaped": 0.83265
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.89,
+      "shaped": 0.8556250000000001
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.9,
+      "shaped": 0.8789000000000005
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.91,
+      "shaped": 0.9025
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.92,
+      "shaped": 0.9264000000000002
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.93,
+      "shaped": 0.9506499999999997
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.94,
+      "shaped": 0.9751499999999995
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.95,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.96,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.97,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.98,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 0.99,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 90,
+      "magnitude": 1,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.16,
+      "shaped": 0.00014142135623730962
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.17,
+      "shaped": 0.0006247221604663774
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.18,
+      "shaped": 0.0014142135623730963
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.19,
+      "shaped": 0.0024866867738239794
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.2,
+      "shaped": 0.0039008902117906963
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333333
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.22,
+      "shaped": 0.007636753236814711
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.23,
+      "shaped": 0.009981997684721128
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.24,
+      "shaped": 0.012645431761883204
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.25,
+      "shaped": 0.015615279198414756
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.26,
+      "shaped": 0.01889153984665564
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.27,
+      "shaped": 0.022485995641732218
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.28,
+      "shaped": 0.026386870683058346
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.29,
+      "shaped": 0.030629511005637124
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.3,
+      "shaped": 0.03515499411337044
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.31,
+      "shaped": 0.04002224381515859
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.32,
+      "shaped": 0.04517233974212289
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.33,
+      "shaped": 0.050628845532956816
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.34,
+      "shaped": 0.05642712113868647
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.35,
+      "shaped": 0.06250823945689078
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.36,
+      "shaped": 0.06889577474546442
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.37,
+      "shaped": 0.07560150094042077
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.38,
+      "shaped": 0.08264899844792102
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.39,
+      "shaped": 0.09000290890360767
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.4,
+      "shaped": 0.0976632323059423
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.41,
+      "shaped": 0.10564175310927024
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.42,
+      "shaped": 0.11390311794581288
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.43,
+      "shaped": 0.12249446699522572
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.44,
+      "shaped": 0.13140401228442175
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.45,
+      "shaped": 0.14063175415878792
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.46,
+      "shaped": 0.15016591194778903
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.47,
+      "shaped": 0.16000647990350628
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.48,
+      "shaped": 0.17015346341203613
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.49,
+      "shaped": 0.1806186436790079
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.5,
+      "shaped": 0.19140202091699857
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.51,
+      "shaped": 0.20251538213182727
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.52,
+      "shaped": 0.21391158674659128
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.53,
+      "shaped": 0.22562598907139306
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.54,
+      "shaped": 0.23764680433599586
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.55,
+      "shaped": 0.2500093887125931
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.56,
+      "shaped": 0.26267838436215313
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.57,
+      "shaped": 0.27563022330651604
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.58,
+      "shaped": 0.2889238307928234
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.59,
+      "shaped": 0.30250028099160525
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.6,
+      "shaped": 0.31641849968743047
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.61,
+      "shaped": 0.3306431308828296
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.62,
+      "shaped": 0.3451506052113741
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.63,
+      "shaped": 0.3599998476079927
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.64,
+      "shaped": 0.3751672886119532
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.65,
+      "shaped": 0.3906057859274488
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.66,
+      "shaped": 0.40638605243181136
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.67,
+      "shaped": 0.4225080870363445
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.68,
+      "shaped": 0.4389129643537291
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.69,
+      "shaped": 0.45563604018022014
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.7,
+      "shaped": 0.4726537433588262
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.71,
+      "shaped": 0.4900014297031295
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.72,
+      "shaped": 0.5076437434636394
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.73,
+      "shaped": 0.5256042557011038
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.74,
+      "shaped": 0.5439065360886928
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.75,
+      "shaped": 0.5624916594443371
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.76,
+      "shaped": 0.5813831954915792
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.77,
+      "shaped": 0.6006164999398536
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.78,
+      "shaped": 0.6201562177745573
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.79,
+      "shaped": 0.6399905626474333
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.8,
+      "shaped": 0.6601548909157606
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.81,
+      "shaped": 0.6806020621071056
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.82,
+      "shaped": 0.7013910014709662
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.83,
+      "shaped": 0.7225217090164144
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.84,
+      "shaped": 0.7438999044076947
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.85,
+      "shaped": 0.7656316528055631
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.86,
+      "shaped": 0.7876580287648808
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.87,
+      "shaped": 0.8100026030479438
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.88,
+      "shaped": 0.8326653756328392
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.89,
+      "shaped": 0.8556227757864115
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.9,
+      "shaped": 0.878910159104887
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.91,
+      "shaped": 0.9024921700183582
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.92,
+      "shaped": 0.9263923792204773
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.93,
+      "shaped": 0.9506343566271945
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.94,
+      "shaped": 0.9751591768925609
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.95,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.96,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.97,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.98,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 0.99,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 135,
+      "magnitude": 1,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.16,
+      "shaped": 0.0001666666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.17,
+      "shaped": 0.0006333333333333331
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.18,
+      "shaped": 0.0013999999999999991
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.19,
+      "shaped": 0.002500000000000001
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.2,
+      "shaped": 0.0039000000000000003
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333332
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.22,
+      "shaped": 0.007666666666666663
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.23,
+      "shaped": 0.010000000000000004
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.24,
+      "shaped": 0.012666666666666661
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.25,
+      "shaped": 0.015633333333333332
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.26,
+      "shaped": 0.018900000000000014
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.27,
+      "shaped": 0.0225
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.28,
+      "shaped": 0.026399999999999986
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.29,
+      "shaped": 0.03063333333333332
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.3,
+      "shaped": 0.03516666666666667
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.31,
+      "shaped": 0.040000000000000015
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.32,
+      "shaped": 0.04516666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.33,
+      "shaped": 0.050633333333333315
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.34,
+      "shaped": 0.0564
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.35,
+      "shaped": 0.0625
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.36,
+      "shaped": 0.06889999999999998
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.37,
+      "shaped": 0.07563333333333327
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.38,
+      "shaped": 0.08266666666666662
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.39,
+      "shaped": 0.09
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.4,
+      "shaped": 0.09766666666666661
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.41,
+      "shaped": 0.10563333333333337
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.42,
+      "shaped": 0.11390000000000008
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.43,
+      "shaped": 0.12250000000000004
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.44,
+      "shaped": 0.13140000000000007
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.45,
+      "shaped": 0.14063333333333328
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.46,
+      "shaped": 0.1501666666666667
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.47,
+      "shaped": 0.16000000000000006
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.48,
+      "shaped": 0.17016666666666672
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.49,
+      "shaped": 0.18063333333333337
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.5,
+      "shaped": 0.19139999999999988
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.51,
+      "shaped": 0.20249999999999996
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.52,
+      "shaped": 0.21389999999999995
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.53,
+      "shaped": 0.22563333333333338
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.54,
+      "shaped": 0.23766666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.55,
+      "shaped": 0.25
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.56,
+      "shaped": 0.2626666666666668
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.57,
+      "shaped": 0.27563333333333334
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.58,
+      "shaped": 0.2889
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.59,
+      "shaped": 0.30250000000000016
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.6,
+      "shaped": 0.31639999999999985
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.61,
+      "shaped": 0.33063333333333317
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.62,
+      "shaped": 0.34516666666666684
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.63,
+      "shaped": 0.36
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.64,
+      "shaped": 0.3751666666666668
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.65,
+      "shaped": 0.3906333333333335
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.66,
+      "shaped": 0.40639999999999976
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.67,
+      "shaped": 0.4224999999999998
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.68,
+      "shaped": 0.4389000000000002
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.69,
+      "shaped": 0.45563333333333317
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.7,
+      "shaped": 0.4726666666666669
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.71,
+      "shaped": 0.49000000000000016
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.72,
+      "shaped": 0.5076666666666668
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.73,
+      "shaped": 0.5256333333333333
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.74,
+      "shaped": 0.5439000000000003
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.75,
+      "shaped": 0.5625
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.76,
+      "shaped": 0.5814000000000001
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.77,
+      "shaped": 0.6006333333333332
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.78,
+      "shaped": 0.6201666666666664
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.79,
+      "shaped": 0.6400000000000002
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.8,
+      "shaped": 0.6601666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.81,
+      "shaped": 0.6806333333333331
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.82,
+      "shaped": 0.7013999999999997
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.83,
+      "shaped": 0.7225
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.84,
+      "shaped": 0.7439
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.85,
+      "shaped": 0.7656333333333335
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.86,
+      "shaped": 0.7876666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.87,
+      "shaped": 0.8099999999999998
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.88,
+      "shaped": 0.8326666666666671
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.89,
+      "shaped": 0.8556333333333334
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.9,
+      "shaped": 0.8789000000000005
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.91,
+      "shaped": 0.9025
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.92,
+      "shaped": 0.9264000000000002
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.93,
+      "shaped": 0.950633333333333
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.94,
+      "shaped": 0.9751666666666666
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.95,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.96,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.97,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.98,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 0.99,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 180,
+      "magnitude": 1,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.16,
+      "shaped": 0.00014142135623730962
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.17,
+      "shaped": 0.0006247221604663774
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.18,
+      "shaped": 0.0014142135623730963
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.19,
+      "shaped": 0.0024866867738239794
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.2,
+      "shaped": 0.0039008902117906963
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333333
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.22,
+      "shaped": 0.007636753236814711
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.23,
+      "shaped": 0.009981997684721128
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.24,
+      "shaped": 0.012645431761883204
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.25,
+      "shaped": 0.015615279198414756
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.26,
+      "shaped": 0.01889153984665564
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.27,
+      "shaped": 0.022485995641732218
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.28,
+      "shaped": 0.026386870683058346
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.29,
+      "shaped": 0.030629511005637124
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.3,
+      "shaped": 0.03515499411337044
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.31,
+      "shaped": 0.04002224381515859
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.32,
+      "shaped": 0.04517233974212289
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.33,
+      "shaped": 0.050628845532956816
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.34,
+      "shaped": 0.05642712113868647
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.35,
+      "shaped": 0.06250823945689078
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.36,
+      "shaped": 0.06889577474546442
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.37,
+      "shaped": 0.07560150094042077
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.38,
+      "shaped": 0.08264899844792102
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.39,
+      "shaped": 0.09000290890360767
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.4,
+      "shaped": 0.0976632323059423
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.41,
+      "shaped": 0.10564175310927024
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.42,
+      "shaped": 0.11390311794581288
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.43,
+      "shaped": 0.12249446699522572
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.44,
+      "shaped": 0.13140401228442175
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.45,
+      "shaped": 0.14063175415878792
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.46,
+      "shaped": 0.15016591194778903
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.47,
+      "shaped": 0.16000647990350628
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.48,
+      "shaped": 0.17015346341203613
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.49,
+      "shaped": 0.1806186436790079
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.5,
+      "shaped": 0.19140202091699857
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.51,
+      "shaped": 0.20251538213182727
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.52,
+      "shaped": 0.21391158674659128
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.53,
+      "shaped": 0.22562598907139306
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.54,
+      "shaped": 0.23764680433599586
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.55,
+      "shaped": 0.2500093887125931
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.56,
+      "shaped": 0.26267838436215313
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.57,
+      "shaped": 0.27563022330651604
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.58,
+      "shaped": 0.2889238307928234
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.59,
+      "shaped": 0.30250028099160525
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.6,
+      "shaped": 0.31641849968743047
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.61,
+      "shaped": 0.3306431308828296
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.62,
+      "shaped": 0.3451506052113741
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.63,
+      "shaped": 0.3599998476079927
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.64,
+      "shaped": 0.3751672886119532
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.65,
+      "shaped": 0.3906057859274488
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.66,
+      "shaped": 0.40638605243181136
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.67,
+      "shaped": 0.4225080870363445
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.68,
+      "shaped": 0.4389129643537291
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.69,
+      "shaped": 0.45563604018022014
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.7,
+      "shaped": 0.4726537433588262
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.71,
+      "shaped": 0.4900014297031295
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.72,
+      "shaped": 0.5076437434636394
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.73,
+      "shaped": 0.5256042557011038
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.74,
+      "shaped": 0.5439065360886928
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.75,
+      "shaped": 0.5624916594443371
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.76,
+      "shaped": 0.5813831954915792
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.77,
+      "shaped": 0.6006164999398536
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.78,
+      "shaped": 0.6201562177745573
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.79,
+      "shaped": 0.6399905626474333
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.8,
+      "shaped": 0.6601548909157606
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.81,
+      "shaped": 0.6806020621071056
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.82,
+      "shaped": 0.7013910014709662
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.83,
+      "shaped": 0.7225217090164144
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.84,
+      "shaped": 0.7438999044076947
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.85,
+      "shaped": 0.7656316528055631
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.86,
+      "shaped": 0.7876580287648808
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.87,
+      "shaped": 0.8100026030479438
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.88,
+      "shaped": 0.8326653756328392
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.89,
+      "shaped": 0.8556227757864115
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.9,
+      "shaped": 0.878910159104887
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.91,
+      "shaped": 0.9024921700183582
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.92,
+      "shaped": 0.9263923792204773
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.93,
+      "shaped": 0.9506343566271945
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.94,
+      "shaped": 0.9751591768925609
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.95,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.96,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.97,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.98,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 0.99,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 225,
+      "magnitude": 1,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.16,
+      "shaped": 0.00015
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.17,
+      "shaped": 0.00065
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.18,
+      "shaped": 0.0013999999999999991
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.19,
+      "shaped": 0.002500000000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.2,
+      "shaped": 0.0039000000000000003
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.21,
+      "shaped": 0.005624999999999997
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.22,
+      "shaped": 0.007649999999999996
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.23,
+      "shaped": 0.010000000000000004
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.24,
+      "shaped": 0.012649999999999996
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.25,
+      "shaped": 0.01565
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.26,
+      "shaped": 0.018900000000000014
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.27,
+      "shaped": 0.0225
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.28,
+      "shaped": 0.026399999999999986
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.29,
+      "shaped": 0.030599999999999985
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.3,
+      "shaped": 0.03515000000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.31,
+      "shaped": 0.040000000000000015
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.32,
+      "shaped": 0.045150000000000017
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.33,
+      "shaped": 0.050650000000000014
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.34,
+      "shaped": 0.0564
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.35,
+      "shaped": 0.0625
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.36,
+      "shaped": 0.06889999999999998
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.37,
+      "shaped": 0.07565
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.38,
+      "shaped": 0.08265000000000007
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.39,
+      "shaped": 0.09
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.4,
+      "shaped": 0.09764999999999995
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.41,
+      "shaped": 0.10562499999999994
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.42,
+      "shaped": 0.11390000000000008
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.43,
+      "shaped": 0.12250000000000004
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.44,
+      "shaped": 0.13140000000000007
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.45,
+      "shaped": 0.14064999999999997
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.46,
+      "shaped": 0.15015
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.47,
+      "shaped": 0.16000000000000006
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.48,
+      "shaped": 0.1701499999999999
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.49,
+      "shaped": 0.18060000000000007
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.5,
+      "shaped": 0.19139999999999988
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.51,
+      "shaped": 0.20249999999999996
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.52,
+      "shaped": 0.21389999999999995
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.53,
+      "shaped": 0.22562499999999996
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.54,
+      "shaped": 0.2376500000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.55,
+      "shaped": 0.25
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.56,
+      "shaped": 0.2626499999999999
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.57,
+      "shaped": 0.2755999999999999
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.58,
+      "shaped": 0.2889
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.59,
+      "shaped": 0.30250000000000016
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.6,
+      "shaped": 0.31639999999999985
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.61,
+      "shaped": 0.3306000000000003
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.62,
+      "shaped": 0.3451500000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.63,
+      "shaped": 0.36
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.64,
+      "shaped": 0.3751499999999998
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.65,
+      "shaped": 0.390625
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.66,
+      "shaped": 0.40639999999999976
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.67,
+      "shaped": 0.4224999999999998
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.68,
+      "shaped": 0.4389000000000002
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.69,
+      "shaped": 0.45560000000000034
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.7,
+      "shaped": 0.47264999999999985
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.71,
+      "shaped": 0.49000000000000016
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.72,
+      "shaped": 0.50765
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.73,
+      "shaped": 0.5256250000000002
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.74,
+      "shaped": 0.5439000000000003
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.75,
+      "shaped": 0.5625
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.76,
+      "shaped": 0.5814000000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.77,
+      "shaped": 0.6006500000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.78,
+      "shaped": 0.6201500000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.79,
+      "shaped": 0.6400000000000002
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.8,
+      "shaped": 0.6601500000000001
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.81,
+      "shaped": 0.68065
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.82,
+      "shaped": 0.7013999999999997
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.83,
+      "shaped": 0.7225
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.84,
+      "shaped": 0.7439
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.85,
+      "shaped": 0.765625
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.86,
+      "shaped": 0.7876499999999996
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.87,
+      "shaped": 0.8099999999999998
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.88,
+      "shaped": 0.83265
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.89,
+      "shaped": 0.8556250000000002
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.9,
+      "shaped": 0.8789000000000005
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.91,
+      "shaped": 0.9025
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.92,
+      "shaped": 0.9264000000000002
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.93,
+      "shaped": 0.9506499999999997
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.94,
+      "shaped": 0.9751499999999995
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.95,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.96,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.97,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.98,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 0.99,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 270,
+      "magnitude": 1,
+      "shaped": 1
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.01,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.02,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.03,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.04,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.05,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.06,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.07,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.08,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.09,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.1,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.11,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.12,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.13,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.14,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.15,
+      "shaped": 0
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.16,
+      "shaped": 0.00014142135623730962
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.17,
+      "shaped": 0.0006247221604663774
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.18,
+      "shaped": 0.0014142135623730963
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.19,
+      "shaped": 0.0024866867738239794
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.2,
+      "shaped": 0.0039008902117906963
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.21,
+      "shaped": 0.005633333333333333
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.22,
+      "shaped": 0.007636753236814711
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.23,
+      "shaped": 0.009981997684721128
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.24,
+      "shaped": 0.012645431761883204
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.25,
+      "shaped": 0.015615279198414756
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.26,
+      "shaped": 0.01889153984665564
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.27,
+      "shaped": 0.022485995641732218
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.28,
+      "shaped": 0.026386870683058346
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.29,
+      "shaped": 0.030629511005637124
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.3,
+      "shaped": 0.03515499411337044
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.31,
+      "shaped": 0.04002224381515859
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.32,
+      "shaped": 0.04517233974212289
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.33,
+      "shaped": 0.050628845532956816
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.34,
+      "shaped": 0.05642712113868647
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.35,
+      "shaped": 0.06250823945689078
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.36,
+      "shaped": 0.06889577474546442
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.37,
+      "shaped": 0.07560150094042077
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.38,
+      "shaped": 0.08264899844792102
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.39,
+      "shaped": 0.09000290890360767
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.4,
+      "shaped": 0.0976632323059423
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.41,
+      "shaped": 0.10564175310927024
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.42,
+      "shaped": 0.11390311794581288
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.43,
+      "shaped": 0.12249446699522572
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.44,
+      "shaped": 0.13140401228442175
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.45,
+      "shaped": 0.14063175415878792
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.46,
+      "shaped": 0.15016591194778903
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.47,
+      "shaped": 0.16000647990350628
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.48,
+      "shaped": 0.17015346341203613
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.49,
+      "shaped": 0.1806186436790079
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.5,
+      "shaped": 0.19140202091699857
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.51,
+      "shaped": 0.20251538213182727
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.52,
+      "shaped": 0.21391158674659128
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.53,
+      "shaped": 0.22562598907139306
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.54,
+      "shaped": 0.23764680433599586
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.55,
+      "shaped": 0.2500093887125931
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.56,
+      "shaped": 0.26267838436215313
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.57,
+      "shaped": 0.27563022330651604
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.58,
+      "shaped": 0.2889238307928234
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.59,
+      "shaped": 0.30250028099160525
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.6,
+      "shaped": 0.31641849968743047
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.61,
+      "shaped": 0.3306431308828296
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.62,
+      "shaped": 0.3451506052113741
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.63,
+      "shaped": 0.3599998476079927
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.64,
+      "shaped": 0.3751672886119532
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.65,
+      "shaped": 0.3906057859274488
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.66,
+      "shaped": 0.40638605243181136
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.67,
+      "shaped": 0.4225080870363445
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.68,
+      "shaped": 0.4389129643537291
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.69,
+      "shaped": 0.45563604018022014
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.7,
+      "shaped": 0.4726537433588262
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.71,
+      "shaped": 0.4900014297031295
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.72,
+      "shaped": 0.5076437434636394
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.73,
+      "shaped": 0.5256042557011038
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.74,
+      "shaped": 0.5439065360886928
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.75,
+      "shaped": 0.5624916594443371
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.76,
+      "shaped": 0.5813831954915792
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.77,
+      "shaped": 0.6006164999398536
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.78,
+      "shaped": 0.6201562177745573
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.79,
+      "shaped": 0.6399905626474333
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.8,
+      "shaped": 0.6601548909157606
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.81,
+      "shaped": 0.6806020621071056
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.82,
+      "shaped": 0.7013910014709662
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.83,
+      "shaped": 0.7225217090164144
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.84,
+      "shaped": 0.7438999044076947
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.85,
+      "shaped": 0.7656316528055631
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.86,
+      "shaped": 0.7876580287648808
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.87,
+      "shaped": 0.8100026030479438
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.88,
+      "shaped": 0.8326653756328392
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.89,
+      "shaped": 0.8556227757864115
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.9,
+      "shaped": 0.878910159104887
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.91,
+      "shaped": 0.9024921700183582
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.92,
+      "shaped": 0.9263923792204773
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.93,
+      "shaped": 0.9506343566271945
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.94,
+      "shaped": 0.9751591768925609
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.95,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.96,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.97,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.98,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 0.99,
+      "shaped": 0.9999904099540159
+    },
+    {
+      "direction_deg": 315,
+      "magnitude": 1,
+      "shaped": 0.9999904099540159
+    }
+  ],
+  "page_errors": [],
+  "pass": true
+}

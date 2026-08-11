@@ -110,10 +110,11 @@ const PROBES = [
     fork: ({ set }) => {
       const H = window.__HARNESS;
       H.setTimeOfDay(set ? 3 : 15);
-      H.stepFrames(120);
-      const who = (H.whereIsEveryone ? H.whereIsEveryone() : null) || {};
-      const ids = Object.keys(who).sort();
-      return { value: ids.map((k) => `${k}@${who[k]}`), support: ids.length, detail: { hour: set ? 3 : 15 } };
+      const a = alertArena(H, 'wl-fen-sentry');
+      H.stepFrames(30);
+      const members = H.getEncounterState('wl-fen-sentry').members;
+      return { value: members.map((m) => `${m.eid}:${m.role}`).sort(), support: members.length,
+        detail: { hour: set ? 3 : 15, spawned: a.spawned } };
     },
   },
   {
@@ -125,9 +126,9 @@ const PROBES = [
       const H = window.__HARNESS;
       H.setTimeOfDay(set ? 2 : 13);
       H.stepFrames(120);
-      const r = H.residentsPresent ? H.residentsPresent() : null;
-      const list = Array.isArray(r) ? r : (r && r.present) || [];
-      return { value: list.map((x) => (typeof x === 'string' ? x : x.id || x.eid)).sort(), support: list.length };
+      const places = H.whereIsEveryone ? H.whereIsEveryone() : {};
+      const rows = Object.entries(places || {}).map(([id, place]) => `${id}:${typeof place === 'string' ? place : JSON.stringify(place)}`).sort();
+      return { value: rows, support: rows.length };
     },
   },
   {
@@ -139,8 +140,9 @@ const PROBES = [
       const H = window.__HARNESS;
       const a = alertArena(H, 'wl-slitherfang-lone');
       for (const m of a.members) { try { H.aggro(m.eid); } catch (e) { /* */ } }
-      if (set) { try { H.learnSpell('calm_beast'); } catch (e) { /* */ } try { H.castNow('calm_beast'); } catch (e) { /* */ } }
-      H.stepFrames(180);
+      H.stepFrames(1);
+      if (set && a.members[0]) { try { H.castSpellAt('still_the_beast', a.members[0].eid); } catch (e) { /* */ } }
+      H.stepFrames(1);
       const m = alertArena(H, 'wl-slitherfang-lone').members;
       const use = m.length ? m : a.members;
       return { value: alertValue(use), support: use.length, detail: { spawn_error: a.error || null } };
@@ -153,12 +155,15 @@ const PROBES = [
     scenario: 'default',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const n0 = H.listEntities().length;
-      if (set) { try { H.addWitness && H.addWitness({}); } catch (e) { /* */ } try { H.commitCrime({ kind: 'assault', witnessed: true }); } catch (e) { /* */ } }
-      H.stepFrames(240);
-      const ents = H.listEntities();
-      const guards = ents.filter((e) => /guard|legion|ordinator/i.test(String(e.archetype || e.eid || '')));
-      return { value: { guards: guards.length, total: ents.length }, support: Math.max(n0, ents.length) };
+      if (set) {
+        const c = H.commitCrime('theft', { value_g: 400, jurisdiction: 'imperial', settlement: 'archon' });
+        const wi = H.addWitnessIndex(c.id, { eid: 'matrix-witness', identified: true, kind: 'sight' });
+        H.landReport(wi, 'unlawful');
+      }
+      const a = H.spawnEncounter('wl-legion-picket', 12, 0);
+      H.stepFrames(2);
+      const members = H.getEncounterState('wl-legion-picket').members;
+      return { value: members.map((m) => `${m.role}:${m.alert_state}`).sort(), support: Math.max(a.eids.length, members.length) };
     },
   },
   {
@@ -169,12 +174,12 @@ const PROBES = [
     encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      if (set) { const inv = H.getInventory(); const armour = inv.find((i) => /armour|cuirass|hauberk|uniform|legion/i.test(i.id)); if (armour) { try { H.equipItem(armour.id); } catch (e) { /* */ } } }
+      if (set) { H.grantInventoryItem('legion-greaves'); H.equipItem('legion-greaves'); }
       const a = alertArena(H, 'wl-legion-picket');
       H.stepFrames(180);
       const b = alertArena(H, 'wl-legion-picket');
       const m = b.members.length ? b.members : a.members;
-      return { value: alertValue(m), support: m.length, detail: { spawn_error: a.error || b.error || null } };
+      return { value: m.map((x) => `${x.eid}:${x.alert_state}:${x.sight_radius_m}`).sort(), support: m.length, detail: { spawn_error: a.error || b.error || null } };
     },
   },
   {
@@ -184,10 +189,13 @@ const PROBES = [
     scenario: 'arena_flat', encounter: 'wl-legion-picket',
     fork: ({ set }) => {
       const H = window.__HARNESS;
-      const a = alertArena(H, 'wl-legion-picket');
-      for (const m of a.members) { try { H.setDisposition(m.eid, set ? 95 : 5); } catch (e) { /* */ } }
+      H.setWorldKnowledge({ gold: 300, dispositions: { guard_legion: set ? 95 : 5 } });
+      const sp = H.spawnEncounter('wl-legion-picket', 0, 0, { yaw: Math.PI });
+      const a = { members: H.getEncounterState('wl-legion-picket').members, spawned: sp.eids.length };
+      if (a.members[0]) H.lockOn(a.members[0].eid);
       H.traceStart && H.traceStart();
-      H.stepFrames(180);
+      H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]);
+      H.stepFrames(120);
       const drained = H.traceDrain ? H.traceDrain() : [];
       const evs = [];
       for (const r of drained || []) for (const e of (r.events || [])) evs.push(e.type);
@@ -228,7 +236,7 @@ const PROBES = [
       H.stepFrames(180);
       const d = H.getDispositions ? H.getDispositions() : {};
       const keys = Object.keys(d || {}).sort();
-      return { value: keys.map((k) => `${k}:${d[k]}`), support: Math.min(keys.length, a.members.length || 0) || a.members.length, detail: { npcs: keys.length, encounter_members: a.members.length, spawn_error: a.error || null } };
+      return { value: keys.map((k) => `${k}:${d[k]}`), support: keys.length, detail: { npcs: keys.length, encounter_members: a.members.length, spawn_error: a.error || null } };
     },
   },
   {
@@ -240,11 +248,11 @@ const PROBES = [
     fork: ({ set }) => {
       const H = window.__HARNESS;
       try { H.setWeather(set ? 'salt_storm' : 'clear'); } catch (e) { /* */ }
-      const a = alertArena(H, 'wl-fen-sentry');
+      const a = (() => { try { return { ...H.spawnEncounter('wl-fen-sentry', 18, 0), members: H.getEncounterState('wl-fen-sentry').members }; } catch (e) { return { members: [], error: String(e) }; } })();
       H.stepFrames(180);
       const m = alertArena(H, 'wl-fen-sentry').members;
       const use = m.length ? m : a.members;
-      const seen = use.map((x) => { let l = '?'; try { l = H.losBetween ? String(!!H.losBetween('player', x.eid)) : '?'; } catch (e) { l = 'err'; } return x.eid + ':' + x.alert_state + ':' + x.dist_m + ':' + l; });
+      const seen = use.map((x) => x.eid + ':' + x.alert_state + ':' + x.dist_m + ':' + x.sight_radius_m);
       return { value: seen.sort(), support: use.length, detail: { spawn_error: a.error || null } };
     },
   },
@@ -258,13 +266,33 @@ const PROBES = [
       const H = window.__HARNESS;
       const st = H.getFactionStanding ? H.getFactionStanding() : {};
       const fid = Object.keys(st || {})[0] || 'the_drowned_court';
-      try { H.setFactionStanding(fid, set ? 3 : 0); } catch (e) { /* */ }
+      try { H.setFactionStanding(fid, { member: !!set, rank: set ? 3 : 0, reputation: set ? 100 : 0 }); } catch (e) { /* */ }
       const a = alertArena(H, 'wl-legion-picket');
       H.stepFrames(180);
       const m = alertArena(H, 'wl-legion-picket').members.length ? alertArena(H, 'wl-legion-picket').members : a.members;
-      return { value: alertValue(m), support: m.length, detail: { spawn_error: a.error || null } };
+      return { value: m.map((x) => `${x.eid}:${x.alert_state}:${x.sight_radius_m}`).sort(), support: m.length, detail: { spawn_error: a.error || null } };
     },
   },
+  ...[
+    ['BOS->WLD', 'structural', 'The Steward boss outcome changes at least eight durable world facts', 'world flags produced by the combat resolution', (H) => (H.questWorldFlags() || []).slice().sort()],
+    ['BOS->QST', 'structural', 'The Steward boss outcome closes its quest branch for the rest of the save', 'resolved quest branch and journal outcome', (H) => { const q = H.getQuestState(); const r = q.quests && q.quests['Q-MAIN-28']; return { stage: r && r.stage, branch: r && r.branch, journal: (q.journal || []).filter((x) => x.quest === 'Q-MAIN-28').map((x) => x.n) }; }],
+    ['BOS->FAC', 'structural', 'Killing the Steward shifts three faction relationships durably', 'faction standings after the boss resolution', (H) => H.getFactionStanding()],
+    ['BOS->DIS', 'mechanical', 'Province-wide reaction to the Steward outcome', 'named NPC disposition after the boss resolution', (H) => H.getDispositions()],
+    ['BOS->LOR', 'mechanical', 'The boss outcome records the truth of what happened in the journal', 'boss-resolution journal text becomes known lore', (H) => (H.getQuestState().journal || []).filter((x) => x.quest === 'Q-MAIN-28').map((x) => x.text)],
+  ].map(([cell, tier_claimed, mechanism, observable, observe]) => ({
+    cell, tier_claimed, mechanism, observable, scenario: 'default',
+    fork: ({ set }) => {
+      const H = window.__HARNESS;
+      if (set) {
+        H.questOpen('Q-MAIN-28');
+        H.questResolve('Q-MAIN-28', 'res_kill_him');
+      }
+      const value = observe(H);
+      const support = H.questBook().includes('Q-MAIN-28') ? 1 : 0;
+      return { value, support, detail: { consumer: 'QuestEngine.resolve(Q-MAIN-28,res_kill_him)' } };
+    },
+  })),
+
 ];
 
 // ---------------------------------------------------------------------------------------------
@@ -289,19 +317,25 @@ function fakeWorld(mode) {
     setWeather(w) { weather = w; },
     setRenderRate() {}, stepFrames() {}, loadState() {}, setSeed() {},
     listEntities: () => ents(),
+    spawnEncounter: () => ({ eids: ents().map((e) => e.eid) }),
+    getEncounterState: () => ({ members: ents().concat(live && hour < 6 ? [{ eid: 'night', role: 'night_watch', alert_state: 'IDLE', dist_m: 5 }] : [])
+      .map((e) => ({ ...e, role: e.role || 'infantry', dist_m: e.dist_m || 18 })) }),
     whereIsEveryone: () => (mode === 'empty' ? {} : (live && hour < 6 ? { a: 'inn', b: 'inn' } : { a: 'market', b: 'quay' })),
     residentsPresent: () => (mode === 'empty' ? [] : (live && hour < 6 ? ['a'] : ['a', 'b'])),
-    aggro() {}, learnSpell() {}, castNow() { if (live) for (const e of base) e.alert_state = 'CALM'; },
-    commitCrime() { crime = true; if (live) base.push({ eid: 'g1', id: 'g1', side: 'E', kind: 'enemy', type: 'guard_legion', alert_state: 'AGGRO' }); },
-    addWitness() {},
+    aggro() {}, learnSpell() {}, castNow() { if (live) for (const e of base) e.alert_state = 'CALM'; }, castSpellAt() { if (live) for (const e of base) e.alert_state = 'CALM'; },
+    commitCrime() { crime = true; if (live) base.push({ eid: 'g1', id: 'g1', side: 'E', kind: 'enemy', type: 'guard_legion', alert_state: 'AGGRO' }); return { id: 1 }; },
+    addWitness() {}, addWitnessIndex() { return 0; }, landReport() {},
     getInventory: () => [{ id: 'legion_cuirass' }],
-    equipItem(i) { worn = i; },
+    grantInventoryItem() {}, equipItem(i) { worn = i; },
     setDisposition(id, v) { disp[id] = v; },
-    setFactionStanding(f, v) { rank = v; },
+    setFactionStanding(f, v) { rank = Number(v && typeof v === 'object' ? v.rank : v) || 0; },
     getFactionStanding: () => ({ the_drowned_court: rank }),
+    setWorldKnowledge(p) { Object.assign(disp, p.dispositions || {}); }, lockOn() {}, queueInputs() {},
     getDispositions: () => (mode === 'empty' ? {} : { n1: live && dead.size ? 60 : 40, n2: 40, n3: 40, n4: 40, n5: 40 }),
     killEntity(id) { dead.add(id); },
-    getQuestState: () => ({ flags: mode === 'empty' ? {} : (live && dead.size ? { road_cleared: true } : { seen: true }) }),
+    getQuestState: () => ({ flags: mode === 'empty' ? {} : (live && dead.size ? { road_cleared: true } : { seen: true }), quests: live && dead.has('boss') ? { 'Q-MAIN-28': { stage: 94, branch: 'res_kill_him' } } : {}, journal: live && dead.has('boss') ? [{ quest: 'Q-MAIN-28', n: 94, text: 'The Steward is dead.' }] : [] }),
+    questBook: () => mode === 'empty' ? [] : ['Q-MAIN-28'], questPrepareOffer() {}, questOpen() {}, questResolve() { if (live) { dead.add('boss'); rank = -5; } },
+    questWorldFlags: () => live && dead.has('boss') ? ['ending_the_steward_is_dead', 'nobody_keeps_the_count'] : [],
     traceStart() {}, traceDrain: () => (mode === 'empty' ? [] : [{ events: (live && Object.values(disp).some((v) => v > 50)) ? [{ type: 'parley_accept' }] : [{ type: 'parley_refuse' }] }]),
     losBetween: (a, b) => !(live && weather === 'salt_storm'),
     getStateHash: () => `${hour}|${weather}|${rank}|${worn}|${crime}|${[...dead].join(',')}`,
@@ -380,13 +414,30 @@ async function live({ cellsPath, outPath, seed }) {
         factors: [{ id: 'source_state', what: `${p.cell.split('->')[0]} state set at the fork` }],
         measure: async (broken) => {
           const set = broken.length === 0;
-          return page.evaluate(async ({ src, helper, scenario, seed, set }) => {
+          return page.evaluate(async ({ src, helper, scenario, seed, set, cell }) => {
             const H = window.__HARNESS;
             H.setSeed(seed); H.loadState(scenario); H.setRenderRate(0);
+            // Generated BOS probes carry observer closures in Node. Function#toString cannot
+            // serialise those bindings into the page, so execute their production action and
+            // declared observable explicitly here instead of accidentally probing ReferenceError.
+            if (cell.startsWith('BOS->')) {
+              H.questPrepareOffer('Q-MAIN-28');
+              H.questOpen('Q-MAIN-28');
+              if (set) H.questResolve('Q-MAIN-28', 'res_kill_him');
+              const q = H.getQuestState();
+              let value;
+              if (cell === 'BOS->WLD') value = (H.questWorldFlags() || []).slice().sort();
+              else if (cell === 'BOS->QST') { const r = q.quests && q.quests['Q-MAIN-28']; value = { stage: r && r.stage, branch: r && r.branch, journal: (q.journal || []).filter((x) => x.quest === 'Q-MAIN-28').map((x) => x.n) }; }
+              else if (cell === 'BOS->FAC') value = H.getFactionStanding();
+              else if (cell === 'BOS->DIS') value = H.getDispositions();
+              else value = (q.journal || []).filter((x) => x.quest === 'Q-MAIN-28').map((x) => x.text);
+              return { value, support: H.questBook().includes('Q-MAIN-28') ? 1 : 0,
+                detail: { consumer: 'QuestEngine.resolve(Q-MAIN-28,res_kill_him)' } };
+            }
             // eslint-disable-next-line no-new-func
             const fn = new Function(helper + '; return (' + src + ')')();
             try { return fn({ set }); } catch (e) { return { value: { error: String(e && e.message || e) }, support: 0 }; }
-          }, { src: p.fork.toString(), helper: ALERT_HELPER, scenario: p.scenario, seed, set });
+          }, { src: p.fork.toString(), helper: ALERT_HELPER, scenario: p.scenario, seed, set, cell: p.cell });
         },
       });
       r.cell = p.cell;

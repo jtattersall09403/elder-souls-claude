@@ -33,7 +33,11 @@
 'use strict';
 
 /** How close your hand has to be to a door. Matches the sapwell's `interact_radius_m` band. */
-export const DOOR_REACH_M = 2.6;
+// Doorsteps are collision-settled before this test.  The widest authored threshold (the
+// Writ House's angled south step) rests 2.70 m from its latch, so 2.6 m made a valid exit a
+// one-way trip.  Three metres still requires the player to be visibly at the door while leaving
+// enough tolerance for the body radius and the collision solver's lateral slide.
+export const DOOR_REACH_M = 3.0;
 
 export class SettlementSystem {
   /**

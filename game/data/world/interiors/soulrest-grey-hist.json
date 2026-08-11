@@ -1,266 +1,406 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "soulrest-grey-hist",
-  "name": "The Grey Hist",
-  "settlement": "soulrest",
-  "cell_kind": "named",
-  "interior_kind": "shrine",
-  "service": "bonfire",
-  "faction": "rootkeepers",
-  "exterior_door": [
-    625.5,
-    7.91,
-    4877
+ "schema": "elder-souls/interior@1",
+ "id": "soulrest-grey-hist",
+ "name": "The Grey Hist",
+ "settlement": "soulrest",
+ "cell_kind": "named",
+ "interior_kind": "shrine",
+ "service": "bonfire",
+ "faction": "rootkeepers",
+ "exterior_door": [
+  640.5,
+  7.91,
+  4869
+ ],
+ "continuity": {
+  "building": "soulrest-grey-hist",
+  "building_offset_m": [
+   30,
+   0,
+   0
   ],
-  "continuity": {
-    "building": "soulrest-grey-hist",
-    "building_offset_m": [
-      15,
-      0,
-      0
-    ],
-    "building_yaw_deg": 270,
-    "exterior_footprint_m": [
-      14.8,
-      16.8
-    ],
-    "entry_side": "south",
-    "interior_spawn": [
-      0,
-      0,
-      7.2
-    ],
-    "exterior_spawn": [
-      625.5,
-      7.91,
-      4878.8
-    ]
+  "building_yaw_deg": 270,
+  "exterior_footprint_m": [
+   14.8,
+   16.8
+  ],
+  "entry_side": "north",
+  "interior_spawn": [
+   0,
+   0,
+   4.595
+  ],
+  "exterior_spawn": [
+   640.5,
+   7.91,
+   4867.5
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   7.2
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
+   625.5,
+   7.91,
+   4878.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -7.07,
+   7.07
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -5.595,
+   5.595
+  ]
+ },
+ "floor_area_m2": 248.6,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   3.36
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "soulrest.weaver0.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "bounds_m": {
-    "x": [
-      -7.4,
-      7.4
-    ],
-    "y": [
-      0,
-      3.2
-    ],
-    "z": [
-      -8.4,
-      8.4
-    ]
+  {
+   "id": "soulrest.weaver0.r0.lamp0",
+   "pos": [
+    -0.9,
+    1.6,
+    -4.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "floor_area_m2": 248.6,
-  "light": {
-    "kind": "hearth",
-    "pos": [
-      0,
-      0.6,
-      3.36
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.2
+  {
+   "id": "soulrest.weaver0.r0.lamp1",
+   "pos": [
+    1,
+    1.6,
+    -4.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "lights": [
-    {
-      "id": "soulrest.weaver0.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "soulrest.weaver0.r0.lamp0",
-      "pos": [
-        -0.8999999999999999,
-        1.6,
-        -4.1
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.weaver0.r0.lamp1",
-      "pos": [
-        1,
-        1.6,
-        -4.2
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.cook3.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "soulrest.cook3.r1.lamp0",
-      "pos": [
-        -0.8999999999999999,
-        1.6,
-        -1.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.cook3.r1.lamp1",
-      "pos": [
-        1,
-        1.6,
-        -1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.weaver7.r0.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "soulrest.weaver7.r0.lamp0",
-      "pos": [
-        -1.2000000000000002,
-        1.6,
-        1.5999999999999996
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.weaver7.r0.lamp1",
-      "pos": [
-        -3.1,
-        1.6,
-        1.7000000000000002
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.weaver7.r0.lamp2",
-      "pos": [
-        2.5999999999999996,
-        1.6,
-        1.7999999999999998
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.trader10.r1.hearth",
-      "pos": [
-        0,
-        0.7,
-        3.4
-      ],
-      "intensity": 0.9,
-      "snuffable": false,
-      "kind": "hearth"
-    },
-    {
-      "id": "soulrest.trader10.r1.lamp0",
-      "pos": [
-        -2.5,
-        1.6,
-        -3.3
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    },
-    {
-      "id": "soulrest.trader10.r1.lamp1",
-      "pos": [
-        -0.6000000000000001,
-        1.6,
-        -3.4
-      ],
-      "intensity": 0.55,
-      "snuffable": true,
-      "kind": "oil-lamp"
-    }
-  ],
-  "props": [
-    "sap_tap",
-    "root_kerb",
-    "kneel_root",
-    "votive_rag",
-    "offering_shelf",
-    "lamp_votive",
-    "bark_strip",
-    "tally_brass",
-    "water_stoup",
-    "bench_row",
-    "sapling_pot",
-    "ash_tray",
-    "wind_chime",
-    "stone_marker",
-    "sou_rib_frame",
-    "sou_salt_block",
-    "sou_bleached_wall",
-    "sou_bone_stack"
-  ],
-  "property_zones": [
-    "soulrest.weaver0.r0",
-    "soulrest.cook3.r1",
-    "soulrest.weaver7.r0",
-    "soulrest.trader10.r1"
-  ],
-  "containers": [
-    "soulrest.weaver0.r0.5",
-    "soulrest.weaver0.r0.7"
-  ],
-  "unique_item": {
-    "id": "soulrest-grey-hist-unique",
-    "name": "a sap-tap that draws nothing",
-    "unique": true,
-    "takeable": true,
-    "owner": "npc:soulrest-weaver-0"
+  {
+   "id": "soulrest.cook3.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "readable": [
-    {
-      "id": "soulrest-grey-hist-readable",
-      "title": "The Argument In The Street"
-    },
-    {
-      "id": "the-sap-and-the-ledger",
-      "title": "The Sap and the Ledger",
-      "book": "the-sap-and-the-ledger"
-    },
-    {
-      "id": "the-counting-rhyme",
-      "title": "A rhyme for the stair",
-      "book": "the-counting-rhyme"
-    }
+  {
+   "id": "soulrest.cook3.r1.lamp0",
+   "pos": [
+    -0.9,
+    1.6,
+    -1.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.cook3.r1.lamp1",
+   "pos": [
+    1,
+    1.6,
+    -1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.weaver7.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "soulrest.weaver7.r0.lamp0",
+   "pos": [
+    -1.2,
+    1.6,
+    1.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.weaver7.r0.lamp1",
+   "pos": [
+    -3.1,
+    1.6,
+    1.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.weaver7.r0.lamp2",
+   "pos": [
+    2.6,
+    1.6,
+    1.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.trader10.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "soulrest.trader10.r1.lamp0",
+   "pos": [
+    -2.5,
+    1.6,
+    -3.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "soulrest.trader10.r1.lamp1",
+   "pos": [
+    -0.6,
+    1.6,
+    -3.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "sap_tap",
+  "root_kerb",
+  "kneel_root",
+  "votive_rag",
+  "offering_shelf",
+  "lamp_votive",
+  "bark_strip",
+  "tally_brass",
+  "water_stoup",
+  "bench_row",
+  "sapling_pot",
+  "ash_tray",
+  "wind_chime",
+  "stone_marker",
+  "sou_rib_frame",
+  "sou_salt_block",
+  "sou_bleached_wall",
+  "sou_bone_stack"
+ ],
+ "property_zones": [
+  "soulrest.weaver0.r0",
+  "soulrest.cook3.r1",
+  "soulrest.weaver7.r0",
+  "soulrest.trader10.r1"
+ ],
+ "containers": [
+  "soulrest.weaver0.r0.5",
+  "soulrest.weaver0.r0.7"
+ ],
+ "unique_item": {
+  "id": "soulrest-grey-hist-unique",
+  "name": "a sap-tap that draws nothing",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:soulrest-weaver-0"
+ },
+ "readable": [
+  {
+   "id": "soulrest-grey-hist-readable",
+   "title": "The Argument In The Street"
+  },
+  {
+   "id": "the-sap-and-the-ledger",
+   "title": "The Sap and the Ledger",
+   "book": "the-sap-and-the-ledger"
+  },
+  {
+   "id": "the-counting-rhyme",
+   "title": "A rhyme for the stair",
+   "book": "the-counting-rhyme"
+  }
+ ],
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -7.4,
+   7.4
   ],
-  "inhabitants": [],
-  "anchor": "interior_firelit",
-  "open_h": 8,
-  "close_h": 19
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -8.4,
+   8.4
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.8999999999999999,
+    1.6,
+    -4.1
+   ]
+  },
+  {
+   "pos": [
+    1,
+    1.6,
+    -4.2
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -0.8999999999999999,
+    1.6,
+    -1.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    1,
+    1.6,
+    -1.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.2000000000000002,
+    1.6,
+    1.5999999999999996
+   ]
+  },
+  {
+   "pos": [
+    -3.1,
+    1.6,
+    1.7000000000000002
+   ]
+  },
+  {
+   "pos": [
+    2.5999999999999996,
+    1.6,
+    1.7999999999999998
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -2.5,
+    1.6,
+    -3.3
+   ]
+  },
+  {
+   "pos": [
+    -0.6000000000000001,
+    1.6,
+    -3.4
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  3.36
+ ],
+ "exterior_building_id": "soulrest-grey-hist",
+ "door_world_pos": [
+  640.5,
+  7.91,
+  4869
+ ],
+ "door_world_bearing_deg": 270,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 158.23
+  }
+ ],
+ "apertures": [],
+ "seamless": true,
+ "see_into": true,
+ "water_plane_m": null
 }

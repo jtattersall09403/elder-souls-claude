@@ -1,0 +1,98 @@
+{
+  "schema": "elder-souls/cmb-probe@1",
+  "unit": "f@60",
+  "generated": "2026-08-10T09:54:13.813Z",
+  "probes": {
+    "stamina": {
+      "regen": {
+        "stamina_after_spend": 98,
+        "frames_after_spend_to_first_increase": 43,
+        "declared_delay_f": 42,
+        "slope_per_frame": 0.75,
+        "deltas_after_resume": [
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.75,
+          0.75
+        ],
+        "sample_38_to_50": [
+          98,
+          98,
+          98,
+          98,
+          98,
+          98.75,
+          99.5,
+          100.25,
+          101,
+          101.75,
+          102.5,
+          103.25,
+          104
+        ]
+      },
+      "regen_guarded": {
+        "first_rise_index": 42,
+        "slope_per_frame": 0.15,
+        "declared": 0.15
+      },
+      "rearm": {
+        "last_spend_frame": 110,
+        "first_regen_frame": 153,
+        "delta": 43
+      },
+      "rollspam": {
+        "rolls_started": 13,
+        "first_ten_starts": [
+          2,
+          54,
+          106,
+          158,
+          210,
+          262,
+          314,
+          378,
+          450,
+          526
+        ],
+        "cadence_f": 52,
+        "rolls_before_first_denial": 7,
+        "first_denial_frame": 366,
+        "inputs_dropped_no_stamina": 38,
+        "stamina_min": 0,
+        "frames_at_exactly_zero": 43,
+        "exhausted_frames": 351,
+        "first_exhausted_frame": 450,
+        "declared": {
+          "cadence_f": 52,
+          "regen_suppression_f_inclusive": [
+            1,
+            42
+          ],
+          "regen_frames_between_starts": 9,
+          "stamina_regenerated_between_starts": 6.75,
+          "rolls_before_denial": 7,
+          "stamina_after_seventh": 6.5,
+          "stamina_at_denial": 13.25,
+          "denial_offset_f": 364,
+          "canonical_denial_frame": 366,
+          "rejected_zero_regen_arm": {
+            "rolls_before_denial": 5,
+            "canonical_denial_frame": 260
+          }
+        }
+      },
+      "zero_gate": {
+        "stamina": 14,
+        "exhausted": true,
+        "walk_distance_over_30f_m": 0.991,
+        "walking_is_free": true
+      }
+    }
+  }
+}

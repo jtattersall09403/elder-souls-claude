@@ -1,9 +1,9 @@
 {
   "schema": "elder-souls/topics@1",
   "group": "race-gated",
-  "owner": "W1-07 — race and standing",
-  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4c: '>= 90 race-filtered topic records, >= 30 of them forbids'. Round 1 shipped 0 of each.",
-  "note": "A `requires.race` info is one only that race is offered; a `forbids.race` info is one that race is NEVER offered, which is the harder and more interesting half — it is the town declining to say a thing in front of you. Every line is written to be said aloud by the speaker class named in `a`.",
+  "owner": "W1-07 \u2014 race and standing",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md \u00a74c: '>= 90 race-filtered topic records, >= 30 of them forbids'. Round 1 shipped 0 of each.",
+  "note": "A `requires.race` info is one only that race is offered; a `forbids.race` info is one that race is NEVER offered, which is the harder and more interesting half \u2014 it is the town declining to say a thing in front of you. Every line is written to be said aloud by the speaker class named in `a`.",
   "topics": [
     {
       "id": "the-hatching-pool",
@@ -1285,10 +1285,6 @@
               "bosmer"
             ]
           }
-        },
-        {
-          "a": "fisher",
-          "x": "Two a day and the second is the one that matters."
         }
       ]
     },
@@ -1348,10 +1344,6 @@
               "bosmer"
             ]
           }
-        },
-        {
-          "a": "mercenary",
-          "x": "They hire and they pay and they do not ask twice."
         }
       ]
     },
@@ -1383,10 +1375,6 @@
               "bosmer"
             ]
           }
-        },
-        {
-          "a": "rootkeeper",
-          "x": "It is the tree and it is not a god and both halves of that offend a party."
         }
       ]
     },
@@ -1431,7 +1419,7 @@
     },
     {
       "id": "the-arnesian-war",
-      "note": "W1-DLG-SHADOWS. The ungated archivist fallback that used to open this list is retired: 10-global.json also declares an ungated archivist info for this id, it is a real tie under `infoFor()`'s specificity score (neither carries `requires`/`cell`/`d`), and Map iteration order (10-global.json loads before 40-race-gated.json) made the global line win for EVERY race including the two race-gated ones below when their own requires missed — this file's own race-neutral fallback was dead text for all ten playable races. 10-global.json's line now serves as the sole race-neutral fallback for races outside {saxhleel, naga, dunmer}; the two requires-gated lines below are unaffected and still win for their races.",
+      "note": "W1-DLG-SHADOWS. The ungated archivist fallback that used to open this list is retired: 10-global.json also declares an ungated archivist info for this id, it is a real tie under `infoFor()`'s specificity score (neither carries `requires`/`cell`/`d`), and Map iteration order (10-global.json loads before 40-race-gated.json) made the global line win for EVERY race including the two race-gated ones below when their own requires missed \u2014 this file's own race-neutral fallback was dead text for all ten playable races. 10-global.json's line now serves as the sole race-neutral fallback for races outside {saxhleel, naga, dunmer}; the two requires-gated lines below are unaffected and still win for their races.",
       "infos": [
         {
           "a": "archivist",

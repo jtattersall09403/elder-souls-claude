@@ -1,0 +1,204 @@
+{
+  "schema": "elder-souls/w1-25-live-crossings@1",
+  "starting_result": {
+    "crossings": 0
+  },
+  "continuation_result": {
+    "crossings": 4,
+    "w2f": 2,
+    "f2w": 2
+  },
+  "population": {
+    "declared_cells": 342,
+    "probed_cells": 10,
+    "qualifying_cells": [
+      "TOD->ROS",
+      "ROS->WLD",
+      "ROS->DIS",
+      "WEA->ROS"
+    ]
+  },
+  "crossings": [
+    {
+      "cell": "TOD->ROS",
+      "direction": "W2F",
+      "producer": "TOD",
+      "world_side_consumer": "ROS",
+      "metric": "roster ids at hour 3 vs hour 15 on the same route",
+      "unit": "entities in the live world the observable was read from at the fork",
+      "support": {
+        "crossed": 4,
+        "baseline": 2
+      },
+      "observable": {
+        "crossed": [
+          "pop-0027-infantry-0:infantry",
+          "pop-0027-night-watch-0:night_watch",
+          "wl-fen-sentry-infantry-0:infantry",
+          "wl-fen-sentry-night-watch-0:night_watch"
+        ],
+        "baseline": [
+          "pop-0027-infantry-0:infantry",
+          "wl-fen-sentry-infantry-0:infantry"
+        ]
+      },
+      "source_perturbation_control": "PASS: matched source-state arm differs",
+      "consumer_delete_control": "not_run",
+      "irrelevant_source_control": "not_run",
+      "verdict": "OK"
+    },
+    {
+      "cell": "ROS->WLD",
+      "direction": "F2W",
+      "producer": "ROS",
+      "world_side_consumer": "WLD",
+      "metric": "world flag set; TRANSIT hazard rate drops",
+      "unit": "entities in the live world the observable was read from at the fork",
+      "support": {
+        "crossed": 1,
+        "baseline": 1
+      },
+      "observable": {
+        "crossed": [
+          "road_legion_picket_cleared",
+          "w1_25_legion_picket_consumed"
+        ],
+        "baseline": []
+      },
+      "source_perturbation_control": "PASS: matched source-state arm differs",
+      "consumer_delete_control": "not_run",
+      "irrelevant_source_control": "not_run",
+      "verdict": "OK"
+    },
+    {
+      "cell": "ROS->DIS",
+      "direction": "F2W",
+      "producer": "ROS",
+      "world_side_consumer": "DIS",
+      "metric": "disposition delta for >= 5 NPCs",
+      "unit": "entities in the live world the observable was read from at the fork",
+      "support": {
+        "crossed": 1,
+        "baseline": 1
+      },
+      "observable": {
+        "aftermath-province-npcs": {
+          "baseline": 35,
+          "crossed": 45
+        },
+        "agaceph-neekhu": {
+          "baseline": 40,
+          "crossed": 50
+        },
+        "agaceph-sheem": {
+          "baseline": 45,
+          "crossed": 55
+        },
+        "antiquarian-decius-arral": {
+          "baseline": 42,
+          "crossed": 52
+        },
+        "archein-salts-her-own-reeds": {
+          "baseline": 46,
+          "crossed": 56
+        }
+      },
+      "source_perturbation_control": "PASS: matched source-state arm differs",
+      "consumer_delete_control": "not_run",
+      "irrelevant_source_control": "not_run",
+      "verdict": "OK"
+    },
+    {
+      "cell": "WEA->ROS",
+      "direction": "W2F",
+      "producer": "WEA",
+      "world_side_consumer": "ROS",
+      "metric": "in_sight_cone / detection distance differs by weather state",
+      "unit": "entities in the live world the observable was read from at the fork",
+      "support": {
+        "crossed": 1,
+        "baseline": 1
+      },
+      "observable": {
+        "crossed": [
+          "wl-fen-sentry-infantry-0:IDLE:5712.645:15"
+        ],
+        "baseline": [
+          "wl-fen-sentry-infantry-0:IDLE:5712.645:16"
+        ]
+      },
+      "source_perturbation_control": "PASS: matched source-state arm differs",
+      "consumer_delete_control": "not_run",
+      "irrelevant_source_control": "not_run",
+      "verdict": "OK"
+    }
+  ],
+  "native_roll_up": {
+    "demonstrated_live_cells": 4,
+    "demonstrated_crossings": 4,
+    "demonstrated_structural": 0,
+    "matrix_score": 8,
+    "crossings_w2f": 2,
+    "crossings_f2w": 2,
+    "paper_cells": [
+      "SPL->ROS",
+      "STL->ROS",
+      "EQP->ROS",
+      "DIS->BOS",
+      "FAC->ROS"
+    ],
+    "vacuous_cells": [
+      "SCH->ROS"
+    ],
+    "paper_fraction": 0.5,
+    "unprobed_crossings": [
+      "FAC->BOS",
+      "DIS->ROS",
+      "GLD->ROS",
+      "GLD->BOS",
+      "SKL->ROS",
+      "SKL->BOS",
+      "SPL->BOS",
+      "SPL->DUN",
+      "LOR->ROS",
+      "LOR->BOS",
+      "STL->BOS",
+      "QST->ROS",
+      "QST->BOS",
+      "WLD->ROS",
+      "WLD->BOS",
+      "TOD->BOS",
+      "WEA->BOS",
+      "EQP->BOS",
+      "UPG->BOS",
+      "ROS->FAC",
+      "ROS->QST",
+      "ROS->SCH",
+      "BOS->FAC",
+      "BOS->DIS",
+      "BOS->LOR",
+      "BOS->QST",
+      "BOS->WLD",
+      "BOS->SCH",
+      "DUN->ROS",
+      "DUN->BOS",
+      "SCH->BOS"
+    ],
+    "w1_floor": {
+      "label": "W1 / FRAGMENT",
+      "live": 10,
+      "structural": 1,
+      "crossings": 4,
+      "score": 20
+    },
+    "floor_met": {
+      "live": false,
+      "structural": false,
+      "crossings": true,
+      "score": false
+    },
+    "hard_fail_1_fewer_than_4_crossings": false,
+    "hard_fail_2_zero_f2w": false
+  },
+  "honesty_note": "The four-crossing count clears the crossing-count and direction hard fails only. Native live/structural/score floors and consumer-delete/irrelevant controls remain red; builder completion is not claimed."
+}

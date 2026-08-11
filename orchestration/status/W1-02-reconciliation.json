@@ -1,0 +1,45 @@
+{
+  "task_id": "W1-02-reconciliation",
+  "brief": "Production reconciliation and completion builder for W1-02 against PR #88 and landed W1-04",
+  "started": "2026-08-10",
+  "state": "builder_delivery_complete_awaiting_critic",
+  "tested_head": "07e75bd",
+  "files_touched": [
+    "game/data/world/architecture.json",
+    "game/data/world/settlements/",
+    "game/src/render/exterior.js",
+    "game/src/sim/environment.js",
+    "game/data/world/weather.json",
+    "game/data/world/borders.json",
+    "game/data/world/population.json",
+    "tools/world/",
+    "orchestration/evidence/W1-02-reconciliation-builder.md",
+    "orchestration/status/W1-02-reconciliation.json",
+    "game/src/combat/actor.js",
+    "game/src/combat/rules.js",
+    "game/src/sim/combat-bridge.js"
+  ],
+  "files_claimed": [
+    "game/data/world/architecture.json",
+    "game/data/world/settlements/",
+    "game/src/render/exterior.js",
+    "game/src/sim/environment.js",
+    "game/data/world/weather.json",
+    "game/data/world/borders.json",
+    "game/data/world/population.json",
+    "tools/world/",
+    "orchestration/evidence/W1-02-reconciliation-builder.md",
+    "orchestration/status/W1-02-reconciliation.json"
+  ],
+  "redundant_with": [
+    "W1-02",
+    "W1-04-r7"
+  ],
+  "next_step": "Fresh independent critic follows orchestration/evidence/W1-02-reconciliation-builder.md",
+  "independent_only_not_run": [
+    "RI-WLD12 M68/M69",
+    "RI-WLD14 M81/M84",
+    "W1-04 browser/blind rows"
+  ],
+  "pr_creation": "BLOCKED: git push and gh pr create cannot authenticate; no GH_TOKEN/credential is installed"
+}

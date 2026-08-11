@@ -236,12 +236,16 @@ export class MovesetLibrary {
     // way the blade travels) stays with the clip, because handedness is a property of the
     // animation and not of the weapon that borrowed it.
     const sign = reg.profile.arc_deg < 0 ? -1 : 1;
-    const target = { ...reg.profile, arc_deg: sign * Math.abs(slot.arc_sweep_deg) };
+    // A zero arc still needs a nonzero corrective yaw driver to cancel compound arm/pitch drift;
+    // calibrate that driver against the slot's actual (possibly zero) declared target.
+    const drivenArc = slot.shape === 'shoot' ? Math.abs(slot.arc_sweep_deg)
+      : Math.max(30, Math.abs(slot.arc_sweep_deg));
+    const target = { ...reg.profile, arc_deg: sign * drivenArc };
     const g = calibrateYawGain(
       target,
       { startup: slot.startup_f + (slot.charge_max_f || 0), active: slot.active_f, total },
       GRIP_OFFSET_M, Math.round(b * 1000) / 1000,
-      () => new Rig(this.skeleton, this.hitGeometry));
+      () => new Rig(this.skeleton, this.hitGeometry), slot.arc_sweep_deg);
     this._gainCache.set(key, g);
     return g;
   }
@@ -453,9 +457,11 @@ export class MovesetLibrary {
     // Cached per (clip, frame triple) rather than per (weapon, slot), because most clips are
     // shared and the solve depends on nothing else.
     const gsign = reg.profile.arc_deg < 0 ? -1 : 1;
+    const drivenArc = slot.shape === 'shoot' ? Math.abs(slot.arc_sweep_deg)
+      : Math.max(30, Math.abs(slot.arc_sweep_deg));
     const gk = this._yawGain(weaponId, slotId, reg, slot, this._bladeLength(weaponId));
     let arch = buildSwing(
-      { ...reg.profile, arc_deg: gsign * Math.abs(slot.arc_sweep_deg) },
+      { ...reg.profile, arc_deg: gsign * drivenArc },
       { yawGain: gk, accGain: Math.min(1, Math.abs(gk)) });
 
     // ---- RI-CMB04 §B's peak_tip_speed_mps, enforced on THIS clip at THIS clip's frame counts --

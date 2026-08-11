@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   4.8
+   4.67
   ],
   "exterior_spawn": [
+   2244.151,
+   27.22,
+   2843.637
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   4.8
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2245.8,
    27.22,
    2839.15
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -5,
-   5
+   -4.67,
+   4.67
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -6,
-   6
+   -5.67,
+   5.67
   ]
  },
  "floor_area_m2": 120,
@@ -98,5 +109,45 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 6,
- "close_h": 26
+ "close_h": 26,
+ "bounds_m_declared": {
+  "x": [
+   -5,
+   5
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6,
+   6
+  ]
+ },
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.4
+ ],
+ "exterior_building_id": "helstrom-inn-egg",
+ "door_world_pos": [
+  2244.277,
+  27.22,
+  2843.154
+ ],
+ "door_world_bearing_deg": 345.3,
+ "storeys": [
+  {
+   "floor_height_m": 0,
+   "area_m2": 105.92
+  },
+  {
+   "floor_height_m": 2.4,
+   "area_m2": 105.92
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

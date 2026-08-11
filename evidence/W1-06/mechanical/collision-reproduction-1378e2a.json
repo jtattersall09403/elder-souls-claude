@@ -1,0 +1,527 @@
+{
+  "schema": "elder-souls/cam-probe@1",
+  "unit": "f@60",
+  "piece": "W1-06",
+  "generated": "2026-08-11T10:45:48.125Z",
+  "probes": {
+    "clip": {
+      "report": [
+        "cam-walk-cistern: 7832 frames, Σclip_through=1716, origin-in-solid=40, longest run 166 f at pivot [3.5, 2.1, -25.9] yaw 180° arm 0.9 m",
+        "cam-walk-mangrove: 10400 frames, Σclip_through=0, origin-in-solid=0, longest run 0 f",
+        "cam-walk-boardwalk: 12392 frames, Σclip_through=0, origin-in-solid=0, longest run 0 f",
+        "cam-boss-arena: 5224 frames, Σclip_through=0, origin-in-solid=0, longest run 0 f",
+        "cam-stair: 3328 frames, Σclip_through=617, origin-in-solid=35, longest run 65 f at pivot [0, 1.6, -3] yaw 270° arm 0.9 m",
+        "cam-rig-pinch: 1728 frames, Σclip_through=123, origin-in-solid=15, longest run 16 f at pivot [0, 1.6, 0.7] yaw 90° arm 0.9 m"
+      ],
+      "checks": {
+        "sum_clip_through_zero": {
+          "pass": false,
+          "note": "Σ over 6 cells x 8 yaws = 2456 (bar: exactly 0)"
+        },
+        "independent_agrees": {
+          "pass": false,
+          "note": "independent point-containment re-derivation agrees with the emitted flag"
+        }
+      },
+      "routes": {
+        "cam-walk-cistern": {
+          "frames": 7832,
+          "clip_frames": 1716,
+          "independent_origin_solid": 40,
+          "longest_run_frames": 166,
+          "longest_run_at": {
+            "pivot": [
+              3.51,
+              2.08,
+              -25.93
+            ],
+            "camera_yaw": 180,
+            "arm_len_m": 0.9,
+            "pitch_deg": -8
+          },
+          "hotspots": [
+            {
+              "yaw": 0,
+              "frames": 12,
+              "pivot_xz": [
+                0,
+                -3.95
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 0,
+              "frames": 37,
+              "pivot_xz": [
+                0,
+                -14.75
+              ],
+              "pivot_y": 5.5035,
+              "arm": 0.9
+            },
+            {
+              "yaw": 0,
+              "frames": 164,
+              "pivot_xz": [
+                3.3994,
+                -25.8328
+              ],
+              "pivot_y": 5.3501,
+              "arm": 0.9
+            },
+            {
+              "yaw": 45,
+              "frames": 9,
+              "pivot_xz": [
+                0,
+                -3.95
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 45,
+              "frames": 37,
+              "pivot_xz": [
+                0,
+                -14.75
+              ],
+              "pivot_y": 5.5035,
+              "arm": 0.9
+            },
+            {
+              "yaw": 45,
+              "frames": 164,
+              "pivot_xz": [
+                3.3994,
+                -25.8328
+              ],
+              "pivot_y": 5.3501,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 42,
+              "pivot_xz": [
+                0,
+                -3.95
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 37,
+              "pivot_xz": [
+                0,
+                -14.75
+              ],
+              "pivot_y": 5.5035,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 164,
+              "pivot_xz": [
+                3.3994,
+                -25.8328
+              ],
+              "pivot_y": 5.3501,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 31,
+              "pivot_xz": [
+                0,
+                -14.75
+              ],
+              "pivot_y": 5.5035,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 164,
+              "pivot_xz": [
+                3.3994,
+                -25.8328
+              ],
+              "pivot_y": 5.3501,
+              "arm": 0.9
+            },
+            {
+              "yaw": 180,
+              "frames": 27,
+              "pivot_xz": [
+                0,
+                -14.75
+              ],
+              "pivot_y": 5.5035,
+              "arm": 0.9
+            }
+          ],
+          "distinct_hotspots": 21
+        },
+        "cam-walk-mangrove": {
+          "frames": 10400,
+          "clip_frames": 0,
+          "independent_origin_solid": 0,
+          "longest_run_frames": 0,
+          "longest_run_at": null,
+          "hotspots": [],
+          "distinct_hotspots": 0
+        },
+        "cam-walk-boardwalk": {
+          "frames": 12392,
+          "clip_frames": 0,
+          "independent_origin_solid": 0,
+          "longest_run_frames": 0,
+          "longest_run_at": null,
+          "hotspots": [],
+          "distinct_hotspots": 0
+        },
+        "cam-boss-arena": {
+          "frames": 5224,
+          "clip_frames": 0,
+          "independent_origin_solid": 0,
+          "longest_run_frames": 0,
+          "longest_run_at": null,
+          "hotspots": [],
+          "distinct_hotspots": 0
+        },
+        "cam-stair": {
+          "frames": 3328,
+          "clip_frames": 617,
+          "independent_origin_solid": 35,
+          "longest_run_frames": 65,
+          "longest_run_at": {
+            "pivot": [
+              0,
+              1.55,
+              -3.05
+            ],
+            "camera_yaw": 270,
+            "arm_len_m": 0.9,
+            "pitch_deg": -8
+          },
+          "hotspots": [
+            {
+              "yaw": 0,
+              "frames": 22,
+              "pivot_xz": [
+                0,
+                -12.475
+              ],
+              "pivot_y": 9.4125,
+              "arm": 0.9
+            },
+            {
+              "yaw": 0,
+              "frames": 52,
+              "pivot_xz": [
+                0,
+                -3.05
+              ],
+              "pivot_y": 1.5508,
+              "arm": 0.9
+            },
+            {
+              "yaw": 45,
+              "frames": 22,
+              "pivot_xz": [
+                0,
+                -12.7
+              ],
+              "pivot_y": 9.4303,
+              "arm": 0.9
+            },
+            {
+              "yaw": 45,
+              "frames": 55,
+              "pivot_xz": [
+                0,
+                -3.05
+              ],
+              "pivot_y": 1.5508,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 23,
+              "pivot_xz": [
+                0,
+                -13.3
+              ],
+              "pivot_y": 9.4673,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 62,
+              "pivot_xz": [
+                0,
+                -3.05
+              ],
+              "pivot_y": 1.5508,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 11,
+              "pivot_xz": [
+                0,
+                -13.3
+              ],
+              "pivot_y": 9.4673,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 64,
+              "pivot_xz": [
+                0,
+                -3.5
+              ],
+              "pivot_y": 1.5511,
+              "arm": 0.9
+            },
+            {
+              "yaw": 180,
+              "frames": 63,
+              "pivot_xz": [
+                0,
+                -3.875
+              ],
+              "pivot_y": 1.5514,
+              "arm": 0.9
+            },
+            {
+              "yaw": 225,
+              "frames": 9,
+              "pivot_xz": [
+                0,
+                -13.3
+              ],
+              "pivot_y": 9.4673,
+              "arm": 0.9
+            },
+            {
+              "yaw": 225,
+              "frames": 64,
+              "pivot_xz": [
+                0,
+                -3.65
+              ],
+              "pivot_y": 1.5512,
+              "arm": 0.9
+            },
+            {
+              "yaw": 270,
+              "frames": 17,
+              "pivot_xz": [
+                0,
+                -13.3
+              ],
+              "pivot_y": 9.4673,
+              "arm": 0.9
+            }
+          ],
+          "distinct_hotspots": 15
+        },
+        "cam-rig-pinch": {
+          "frames": 1728,
+          "clip_frames": 123,
+          "independent_origin_solid": 15,
+          "longest_run_frames": 16,
+          "longest_run_at": {
+            "pivot": [
+              0,
+              1.55,
+              0.65
+            ],
+            "camera_yaw": 90,
+            "arm_len_m": 0.9,
+            "pitch_deg": -8
+          },
+          "hotspots": [
+            {
+              "yaw": 90,
+              "frames": 16,
+              "pivot_xz": [
+                0,
+                0.65
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 90,
+              "frames": 16,
+              "pivot_xz": [
+                0,
+                -0.45
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 15,
+              "pivot_xz": [
+                0,
+                0.05
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 135,
+              "frames": 15,
+              "pivot_xz": [
+                0,
+                -1.05
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 270,
+              "frames": 15,
+              "pivot_xz": [
+                0,
+                0.425
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 270,
+              "frames": 16,
+              "pivot_xz": [
+                0,
+                -0.675
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 315,
+              "frames": 15,
+              "pivot_xz": [
+                0,
+                1.025
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            },
+            {
+              "yaw": 315,
+              "frames": 15,
+              "pivot_xz": [
+                0,
+                0
+              ],
+              "pivot_y": 1.55,
+              "arm": 0.9
+            }
+          ],
+          "distinct_hotspots": 8
+        }
+      }
+    },
+    "rate": {
+      "report": [
+        "frames=2880  max pull-in 0.6667 m/f (unguarded), 0.6667 m/f incl. penetration guard",
+        "max push-out 0.05 m/f   dwell samples [7,7,7,7,7,7,7,7,7,7,7,7]"
+      ],
+      "checks": {
+        "pull_in_le_0p667": {
+          "pass": true,
+          "note": "0.6667 m/frame (40.0 m/s)"
+        },
+        "push_out_le_0p050": {
+          "pass": true,
+          "note": "0.05 m/frame (3.0 m/s)"
+        },
+        "dwell_ge_6": {
+          "pass": true,
+          "note": "min dwell 7 frames (bar ≥6)"
+        },
+        "asymmetry_ge_8to1": {
+          "pass": true,
+          "note": "measured 13.334:1 (bar ≥8.0:1; item declares 13.3:1)"
+        },
+        "no_clip_on_rig": {
+          "pass": false,
+          "note": "the wall sweeps to 0.5 m behind the character 12 times"
+        }
+      },
+      "rates": {
+        "max_pull_in_unguarded": 0.6667,
+        "max_pull_any": 0.6667,
+        "max_push_out": 0.05,
+        "ratio": 13.334,
+        "dwells": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "guard_frames": 0
+      }
+    },
+    "wall": {
+      "report": [
+        "Σ|Δyaw| = 0°  Σ|Δpitch| = 0°  over 300 frames with no look input",
+        "min arm 0.9 m; 218 frames at ≤0.91 m; opacity there = 0"
+      ],
+      "checks": {
+        "no_auto_yaw": {
+          "pass": true,
+          "note": "Σ|Δyaw| = 0° (bar ≤0.5°) — auto-wall-recovery is rejected by name in RI-CAM01 §C.3"
+        },
+        "no_pitch_drift": {
+          "pass": true,
+          "note": "Σ|Δpitch| = 0°"
+        },
+        "fov_invariant": {
+          "pass": true,
+          "note": "fov max−min = 0"
+        },
+        "no_clip": {
+          "pass": false,
+          "note": "clip_through never true while reversing into the wall"
+        },
+        "fade_at_min_arm": {
+          "pass": true,
+          "note": "max opacity at arm≤0.91 = 0"
+        }
+      },
+      "wall": {
+        "sum_yaw_deg": 0,
+        "sum_pitch_deg": 0,
+        "min_arm": 0.9,
+        "pinned_frames": 218
+      }
+    }
+  },
+  "summary": {
+    "checks": 12,
+    "failed": 4,
+    "failures": [
+      "clip.sum_clip_through_zero: Σ over 6 cells x 8 yaws = 2456 (bar: exactly 0)",
+      "clip.independent_agrees: independent point-containment re-derivation agrees with the emitted flag",
+      "rate.no_clip_on_rig: the wall sweeps to 0.5 m behind the character 12 times",
+      "wall.no_clip: clip_through never true while reversing into the wall"
+    ]
+  }
+}

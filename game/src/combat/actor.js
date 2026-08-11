@@ -63,6 +63,7 @@ export class CombatBody {
     // The last impact this body dealt / took, for the frame record. RI-WPN05 §C.
     this.lastImpact = null;
     this.lastImpactTaken = null;
+    this.lastImpactTakenF = -1;
     this.hitstopUntil = 0;
     this.material = 'flesh';
     this.materialByRegion = null;
@@ -424,7 +425,10 @@ export class CombatBody {
 
   tickResources(frame, C) {
     const hitstun = frame < this.staggerUntil || frame < this.guardBreakUntil || this.beingCritted;
-    regenStamina(this, frame, C.stamina, { guardRaised: this.guardRaised, tier: this.tier, hitstun });
+    regenStamina(this, frame, C.stamina, {
+      guardRaised: this.guardRaised, tier: this.tier, hitstun,
+      weatherStaminaMult: this.weatherStaminaMult,
+    });
     regenPoise(this, frame, C.poise);
     return updateExhaustion(this, C.stamina);
   }

@@ -79,7 +79,12 @@ export function beginRoute(sim, o) {
     lap: 0,
     done: false,
     frames: 0,
-    lastY: undefined,
+    // Seed the locality search from the authored walking surface.  Starting the first
+    // downward ray at the cell-wide ceiling made an interior route stand on the roof (and
+    // a boardwalk route stand on hut roofs) whenever overhead geometry shared its XZ.  All
+    // later frames already use this locality hint; the first frame must use it too.
+    lastY: sim.cell && Number.isFinite(sim.cell.meta.ground_y)
+      ? sim.cell.meta.ground_y : undefined,
   };
   // Place the controller on the first point immediately so frame 0 is already on the route.
   applyRoute(sim);

@@ -1,0 +1,95 @@
+{
+  "schema": "elder-souls/w1-00-builder-manifest@3",
+  "piece": "W1-00",
+  "role": "builder",
+  "tested_commit": "working-tree-from-11ae120b81595c00dc7d3f56d520aab89efe8543",
+  "branch": "codex/wave1-build-experiment",
+  "dirty_at_measurement": [
+    "orchestration/status/W1-00-codex-builder-sweep.json"
+  ],
+  "items": [
+    {
+      "id": "RI-MTH02",
+      "tool": "tools/harness/determinism.mjs",
+      "result": "GREEN",
+      "observed": "9/9 at 180 frames; R1-R9 green"
+    },
+    {
+      "id": "RI-JRN05",
+      "tool": "tools/journey/state-diff.mjs",
+      "result": "GREEN",
+      "observed": "SV1-SV5 plus M1-M19 and CR1-CR12 populations present; live durable seams repaired"
+    },
+    {
+      "id": "RI-MTH01",
+      "tool": "tools/harness/api-probe.mjs",
+      "result": "GREEN",
+      "observed": "33/33 present; M3-M7 and cross checks green"
+    },
+    {
+      "id": "RI-PLT01",
+      "tool": "tools/platform/alloc-probe.mjs",
+      "result": "NOT_RUN",
+      "reason": "allocation/GC population remains builder work"
+    },
+    {
+      "id": "RI-PLT03",
+      "tool": "tools/platform/stream-audit.mjs",
+      "result": "NOT_RUN",
+      "reason": "native aggregate remains builder work"
+    },
+    {
+      "id": "RI-AUD02",
+      "tool": "tools/analysis/audio-budget.mjs",
+      "result": "NOT_RUN",
+      "reason": "audio-capable independent/hardware row and dependency stamp outstanding"
+    },
+    {
+      "id": "RI-JRN03",
+      "tool": "tools/journey/input-checks.mjs",
+      "result": "NOT_RUN",
+      "reason": "independent real pointer-lock delivery"
+    },
+    {
+      "id": "RI-CAM02",
+      "tool": "corpus/80-methods/m-cam02-control.mjs",
+      "result": "NOT_RUN",
+      "reason": "native null control not executed"
+    },
+    {
+      "id": "RI-CAM06",
+      "tool": null,
+      "result": "RED",
+      "reason": "native aggregate absent"
+    },
+    {
+      "id": "RI-CMB07",
+      "tool": "tools/harness/cmb-exemplar.mjs",
+      "result": "NOT_RUN",
+      "reason": "native population not executed"
+    },
+    {
+      "id": "RI-MTH07",
+      "tool": "tools/harness/w1-00-mth07.mjs",
+      "result": "GREEN",
+      "reason": "4/4 exhaustive census models with live treatment/null evidence"
+    }
+  ],
+  "cheap_gates": {
+    "check_data": "GREEN",
+    "check_save_shape": "GREEN",
+    "lint_determinism": "GREEN",
+    "corpus_index": "GREEN_WITH_41_WAVE1_WARNINGS",
+    "boot_check": "GREEN"
+  },
+  "artifacts": [
+    "reports/w1-00-codex-builder-sweep/api/api-probe.json",
+    "reports/w1-00-codex-builder-sweep/determinism-final/determinism.json",
+    "reports/w1-00-codex-builder-sweep/determinism-fixed/determinism.json",
+    "reports/w1-00-codex-builder-sweep/mth07/aggregate.json",
+    "reports/w1-00-codex-builder-sweep/mth07/live.json",
+    "reports/w1-00-codex-builder-sweep/state-diff-fixed.json"
+  ],
+  "verdict": "BUILDER_ROWS_COMPLETE_NO_CRITIC_PASS_CLAIM",
+  "tested_tree": "dirty measurement tree based on required 11ae120; commit follows verification"
+}

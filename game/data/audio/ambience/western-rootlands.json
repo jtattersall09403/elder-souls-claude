@@ -352,6 +352,963 @@
       },
       "phase": 0.1,
       "mode": "strike"
+    },
+    {
+      "id": "western_rootlands_landmark_02",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2212.5,
+        3612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.027,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_03",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2862.5,
+        5112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.82,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_04",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        3962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.065,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_05",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2312.5,
+        4312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.434,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_06",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1262.5,
+        5212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.191,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_07",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2262.5,
+        4862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.024,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_08",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1862.5,
+        4062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.509,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_09",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1362.5,
+        4412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.046,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_10",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        5112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.844,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_11",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        4412.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.987,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_12",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2412.5,
+        3912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.07,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_13",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1862.5,
+        3712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.685,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_14",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1412.5,
+        4862.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.944,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_15",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1662.5,
+        4312.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 84,
+      "phase": 0.191,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_16",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1962.5,
+        5012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.274,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_17",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        3912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.209,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_18",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2012.5,
+        4712.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.988,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_19",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1612.5,
+        4012.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.171,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_20",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2312.5,
+        4612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.727,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_21",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2662.5,
+        4962.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 147,
+      "phase": 0.616,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_22",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1512.5,
+        4612.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.281,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_23",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2112.5,
+        4212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.802,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_24",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1462.5,
+        4212.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 156,
+      "phase": 0.147,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_25",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1762.5,
+        4512.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 93,
+      "phase": 0.06,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_26",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2162.5,
+        4462.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 102,
+      "phase": 0.061,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_27",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1462.5,
+        5062.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 129,
+      "phase": 0.446,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_28",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1612.5,
+        4912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 120,
+      "phase": 0.767,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_29",
+      "text": "World-anchored shallow slap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        2312.5,
+        4112.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "water",
+        "navigation"
+      ],
+      "period_s": 111,
+      "phase": 0.728,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 1.2
+        },
+        "env": {
+          "attack_s": 0.004,
+          "decay_s": 0.18
+        },
+        "gain_db": -12
+      }
+    },
+    {
+      "id": "western_rootlands_landmark_30",
+      "text": "World-anchored reed snap landmark; region-native source distributed across the complete Western Rootlands native region for navigational bearing and local acoustic identity.",
+      "pos_m": [
+        1812.5,
+        4912.5
+      ],
+      "audible_m": 210,
+      "ref_m": 24,
+      "level_db": -8,
+      "classes": [
+        "flora",
+        "navigation"
+      ],
+      "period_s": 75,
+      "phase": 0.022,
+      "mode": "strike",
+      "synth": {
+        "kind": "grain",
+        "source": "noise",
+        "colour": "white",
+        "filter": {
+          "type": "bandpass",
+          "hz": 2300,
+          "q": 6
+        },
+        "env": {
+          "attack_s": 0.001,
+          "decay_s": 0.06
+        },
+        "gain_db": -12
+      }
     }
   ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",

@@ -1,0 +1,149 @@
+{
+  "schema": "elder-souls/w1-00-mth07-live@1",
+  "rows": [
+    {
+      "id": "seeded-prng-stream",
+      "model_value_a": 1337,
+      "model_value_b": 4242,
+      "observed_a": {
+        "pos": [
+          1.354,
+          0,
+          1.294
+        ],
+        "hp": 412
+      },
+      "observed_b": {
+        "pos": [
+          0.46,
+          0,
+          1.647
+        ],
+        "hp": 412
+      },
+      "null_observed_a": null,
+      "null_observed_b": null,
+      "coupling": 1,
+      "pass": true
+    },
+    {
+      "id": "fixed-step-integrator",
+      "model_value_a": 60,
+      "model_value_b": 120,
+      "observed_a": {
+        "displacement_m": 3.146647,
+        "pos": [
+          0,
+          0,
+          3.146647
+        ]
+      },
+      "observed_b": {
+        "displacement_m": 6.346627,
+        "pos": [
+          0,
+          0,
+          6.346627
+        ]
+      },
+      "null_observed_a": {
+        "displacement_m": 0,
+        "pos": [
+          0,
+          0,
+          0
+        ]
+      },
+      "null_observed_b": {
+        "displacement_m": 0,
+        "pos": [
+          0,
+          0,
+          0
+        ]
+      },
+      "coupling": 0.05333299999999999,
+      "pass": true
+    },
+    {
+      "id": "catch-up-cap",
+      "model_value_a": 0,
+      "model_value_b": 400,
+      "observed_a": {
+        "displacement_m": 0.053333,
+        "advanced_frames": 2,
+        "pos": [
+          0,
+          0,
+          0.053333
+        ]
+      },
+      "observed_b": {
+        "displacement_m": 0.319998,
+        "advanced_frames": 7,
+        "pos": [
+          0,
+          0,
+          0.319998
+        ]
+      },
+      "null_observed_a": {
+        "displacement_m": 0,
+        "advanced_frames": 3,
+        "pos": [
+          0,
+          0,
+          0
+        ]
+      },
+      "null_observed_b": {
+        "displacement_m": 0,
+        "advanced_frames": 5,
+        "pos": [
+          0,
+          0,
+          0
+        ]
+      },
+      "coupling": 0.0006666625,
+      "cap_respected": true,
+      "pass": true
+    },
+    {
+      "id": "durable-save-projection",
+      "model_value_a": 5,
+      "model_value_b": -300,
+      "observed_a": {
+        "pos": [
+          2.941134,
+          0,
+          0.445376
+        ]
+      },
+      "observed_b": {
+        "pos": [
+          5,
+          0,
+          2
+        ]
+      },
+      "null_observed_a": {
+        "pos": [
+          2.941134,
+          0,
+          0.445376
+        ]
+      },
+      "null_observed_b": {
+        "pos": [
+          2.941134,
+          0,
+          0.445376
+        ]
+      },
+      "coupling": 1,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

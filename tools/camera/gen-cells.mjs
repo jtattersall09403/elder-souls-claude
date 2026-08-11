@@ -106,10 +106,10 @@ cells.push({
   // -- ledge on the upper level: a 2.6 m walkway with a 4 m drop on one side
   wallBox(S, 'ledge_wall', -3.5, PH_Z - 12.0, 0.5, 8.0, 4.0, 0, 4.32);
   S.push({ k: 'box', id: 'ledge_floor', c: [-2.0, 4.32 - 0.25, PH_Z - 12.0], h: [1.5, 0.25, 8.0] });
-  // -- crawl space branch: 1.40 m clear width, 1.60 m clear ceiling, 10.0 m long (§D legal)
-  wallBox(S, 'crawl_w', -0.95, -6.0, 0.25, 5.0, 1.6, 0, 0);
-  wallBox(S, 'crawl_e', 0.95, -6.0, 0.25, 5.0, 1.6, 0, 0);
-  ceiling(S, 'crawl_ceil', 0, -6.0, 2.4, 10.0, 1.6);
+  // -- crawl space branch: 1.40 m clear width, 1.80 m clear ceiling, 10.0 m long (S48 / §D legal)
+  wallBox(S, 'crawl_w', -0.95, -6.0, 0.25, 5.0, 1.8, 0, 0);
+  wallBox(S, 'crawl_e', 0.95, -6.0, 0.25, 5.0, 1.8, 0, 0);
+  ceiling(S, 'crawl_ceil', 0, -6.0, 2.4, 10.0, 1.8);
 
   cells.push({
     id: 'cam-walk-cistern', class: 'combat_interior', ground_y: 0,
@@ -117,7 +117,7 @@ cells.push({
     declared: {
       min_clear_width_m: 2.60, min_clear_ceiling_m: 3.20, doorway_clear_width_m: 1.80,
       spiral_stair_clear_radius_m: 2.40,
-      crawl_space: { clear_width_m: 1.40, clear_ceiling_m: 1.60, length_m: 10.0, encounters: 0 },
+      crawl_space: { clear_width_m: 1.40, clear_ceiling_m: 1.80, length_m: 10.0, encounters: 0 },
       conflict_note: 'RI-CAM01 M2 asks for a doorway ≤ 1.2 m clear; RI-CAM05 §D forbids an interior doorway under 1.80 m. §D governs here and the 1.2 m pinch lives in cam-rig-pinch.',
     },
     shapes: S,
@@ -201,10 +201,18 @@ cells.push({
   deck(0, 30, 0, -6, 'run1');
   deck(0, -6, 26, -6, 'run2');
   // stilt huts alongside, close enough that the arm has to work
-  for (let i = 0; i < 7; i++) {
+  // Keep the huts alongside the two legs, never across the walking spine at the elbow.
+  // The old single-axis series continued past z=-6 and put hut4 directly over run2; the
+  // route ground sampler consequently (and correctly) found its roof as the walking surface.
+  for (let i = 0; i < 4; i++) {
     const z = 26 - i * 7.5;
     const sx = i % 2 === 0 ? 4.4 : -4.4;
     S.push({ k: 'box', id: `hut${i}`, c: [sx, 2.4, z], h: [2.0, 1.6, 2.0], yaw_deg: (i * 13) % 40 });
+  }
+  for (let i = 0; i < 3; i++) {
+    const x = 8 + i * 7.5;
+    const z = i % 2 === 0 ? -10.4 : -1.6;
+    S.push({ k: 'box', id: `hut${i + 4}`, c: [x, 2.4, z], h: [2.0, 1.6, 2.0], yaw_deg: ((i + 4) * 13) % 40 });
   }
   cells.push({
     id: 'cam-walk-boardwalk', class: 'exterior', ground_y: 0.85,

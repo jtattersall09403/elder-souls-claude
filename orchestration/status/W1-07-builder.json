@@ -1,0 +1,34 @@
+{
+  "task_id": "W1-07-builder",
+  "role": "builder",
+  "state": "complete",
+  "current_step": "builder sweep complete; independent criticism pending",
+  "next_step": "fresh critic: follow reports/w1-07-r4/BUILDER.md exact handoff",
+  "files_touched": [
+    "orchestration/status/W1-07-builder.json",
+    "game/src/engine.js",
+    "game/data/progression/birthsigns.json",
+    "tools/analysis/w1-07-native.mjs",
+    "tools/harness/w1-07-birthsign-consume.mjs",
+    "reports/w1-07-r4/BUILDER.md",
+    "reports/w1-07-r4/native-census.json",
+    "reports/w1-07-r4/birthsign-consume.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "dependencies": [
+    "W1-26 opening/rendered exchange",
+    "W1-16 progression",
+    "W1-04 settlement/population",
+    "W1-17 dialogue content",
+    "W1-23 canon",
+    "W1-09 combat",
+    "RI-MTH06 full viability walk"
+  ],
+  "plan_defect": "Satisfied plan names tools/analysis/build-viability.mjs as reusable, but it is absent at current HEAD.",
+  "independent_rows": {
+    "CHR01-blind-ordinary-play-20": "NOT_RUN"
+  },
+  "builder_result": "No independent PASS claimed. See reports/w1-07-r4/BUILDER.md.",
+  "tested_commit": "b1b3230"
+}

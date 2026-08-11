@@ -336,8 +336,9 @@ export class RealInput {
         let dx = 0, dy = 0;
         if (events && events.length) { for (const ev of events) { dx += ev.movementX; dy += ev.movementY; } }
         else { dx = e.movementX; dy = e.movementY; }
-        // Inverted Y: moving the mouse down raises the camera, and moving it up lowers it.
-        this.pipe.addLook(this._look(dx, this.lookSensitivity), -this._look(dy, this.lookSensitivityY));
+        // Desktop mouse look keeps the horizontal axis inverted and uses forward/up movement
+        // to raise the camera. Touch drags and gamepad look use their own device layers.
+        this.pipe.addLook(-this._look(dx, this.lookSensitivity), this._look(dy, this.lookSensitivityY));
         return;
       }
       // PL5: the lock failed permanently. The game stays fully playable — look falls back to
@@ -345,7 +346,7 @@ export class RealInput {
       if (this.dragLook && this.dragLook.dragging) {
         const dx = e.clientX - this.dragLook.x, dy = e.clientY - this.dragLook.y;
         this.dragLook.x = e.clientX; this.dragLook.y = e.clientY;
-        this.pipe.addLook(this._look(dx, this.lookSensitivity), -this._look(dy, this.lookSensitivityY));
+        this.pipe.addLook(-this._look(dx, this.lookSensitivity), this._look(dy, this.lookSensitivityY));
       }
     });
 

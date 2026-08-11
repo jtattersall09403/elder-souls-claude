@@ -141,7 +141,7 @@ export class PlayerController {
 
     // Reaction states own the actor completely — RI-CMB05 §B "no input is accepted".
     if (b.move && (b.move.kind === 'stagger' || b.move.kind === 'guard_break')) {
-      b.advance(frame);
+      if (b.move) b.advance(frame);
       const x = b.tickResources(frame, this.d);
       if (x) emitExhaust(emit, frame, b, x);
       return;
@@ -199,13 +199,26 @@ export class PlayerController {
       } else if (m.kind === 'heal') {
         this._healTick(frame, emit);
       } else if (m.kind === 'parley') {
-        if (b.animFrame + 1 === m.resolution_frame) this._resolveParley(frame, ctx);
+        const pf = b.animFrame + 1;
+        // ES-PARLEY/1: release during f1..f12 is a genuinely free cancel. At f13 the
+        // action becomes committed and spends exactly 20 through the shared stamina model.
+        if (pf <= m.arm_until && !(held & BIT.interact)) {
+          b.endMove();
+          const e = emit(frame, 'INPUT_DROPPED'); e.button = 'parley'; e.reason = 'arm_released'; e.free_cancel = true;
+        } else if (pf === m.arm_until + 1) {
+          if (b.stamina < m.commit_stamina) {
+            b.endMove();
+            const e = emit(frame, 'INPUT_DROPPED'); e.button = 'parley'; e.reason = 'insufficient_stamina'; e.need = m.commit_stamina; e.have = round1(b.stamina);
+          } else {
+            b.spend(m.commit_stamina, frame, this.d);
+          }
+        } else if (pf === m.resolution_frame) this._resolveParley(frame, ctx);
       } else if (m.kind === 'crit') {
         if (b.animFrame + 1 === m.damage_frame) this._critDamage(frame, ctx);
       } else if (m.kind === 'cast') {
         this._castTick(frame, input, ctx);
       }
-      b.advance(frame);
+      if (b.move) b.advance(frame);
     } else {
       this._locomotion(frame, input, ctx);
     }

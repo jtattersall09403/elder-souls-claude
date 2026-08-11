@@ -28,9 +28,20 @@
   "interior_spawn": [
    0,
    0,
-   6
+   3.47
   ],
   "exterior_spawn": [
+   2799.054,
+   7.37,
+   5038.94
+  ],
+  "interior_spawn_declared": [
+   0,
+   0,
+   6
+  ],
+  "entry_side_declared": "south",
+  "exterior_spawn_declared": [
    2796.94,
    7.37,
    5035.17
@@ -38,16 +49,16 @@
  },
  "bounds_m": {
   "x": [
-   -6.2,
-   6.2
+   -5.87,
+   5.87
   ],
   "y": [
    0,
    3.2
   ],
   "z": [
-   -7.2,
-   7.2
+   -4.47,
+   4.47
   ]
  },
  "floor_area_m2": 178.6,
@@ -67,7 +78,7 @@
    "pos": [
     0,
     0.7,
-    3.4
+    3.32
    ],
    "intensity": 0.9,
    "snuffable": false,
@@ -87,7 +98,7 @@
   {
    "id": "lilmoth.cook5.r1.lamp1",
    "pos": [
-    0.3999999999999999,
+    0.4,
     1.6,
     -3.8
    ],
@@ -100,7 +111,7 @@
    "pos": [
     0,
     0.7,
-    3.4
+    3.32
    ],
    "intensity": 0.9,
    "snuffable": false,
@@ -109,7 +120,7 @@
   {
    "id": "lilmoth.apothecary12.r0.lamp0",
    "pos": [
-    2.4000000000000004,
+    2.4,
     1.6,
     3.2
    ],
@@ -131,9 +142,9 @@
   {
    "id": "lilmoth.apothecary12.r0.lamp2",
    "pos": [
-    -0.7999999999999998,
+    -0.8,
     1.6,
-    3.4000000000000004
+    3.4
    ],
    "intensity": 0.55,
    "snuffable": true,
@@ -179,5 +190,92 @@
  "inhabitants": [],
  "anchor": "interior_firelit",
  "open_h": 8,
- "close_h": 19
+ "close_h": 19,
+ "bounds_m_declared": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "lights_declared": [
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    -1.5,
+    1.6,
+    -3.7
+   ]
+  },
+  {
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    -3.8
+   ]
+  },
+  {
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ]
+  },
+  {
+   "pos": [
+    2.4000000000000004,
+    1.6,
+    3.2
+   ]
+  },
+  {
+   "pos": [
+    0.5,
+    1.6,
+    3.3
+   ]
+  },
+  {
+   "pos": [
+    -0.7999999999999998,
+    1.6,
+    3.4000000000000004
+   ]
+  }
+ ],
+ "light_declared_pos": [
+  0,
+  0.6,
+  2.88
+ ],
+ "exterior_building_id": "lilmoth-yard",
+ "door_world_pos": [
+  2796.94,
+  7.37,
+  5038.17
+ ],
+ "door_world_bearing_deg": 0,
+ "storeys": [
+  {
+   "floor_height_m": 4.6,
+   "area_m2": 104.96
+  }
+ ],
+ "apertures": [],
+ "seamless": false,
+ "see_into": false,
+ "water_plane_m": null
 }

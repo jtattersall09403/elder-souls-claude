@@ -311,6 +311,7 @@ export class GamepadRouter {
       gate: Object.create(null),     // standard index -> {pressFrame, promoted}
       trig: Object.create(null),     // standard index -> {firing, charging}
       restBias: new Array(17).fill(0), restFrames: 0,
+      restRange: STANDARD.analog_indices.map(() => ({ lo: Infinity, hi: -Infinity })),
       drift: null, lastActive: frame, snap, connectedFrame: frame,
       profileName: this.profileName,
     };
@@ -323,7 +324,7 @@ export class GamepadRouter {
     } else if (snap.mapping !== 'standard' && snap.quirk === 'generic-hid-fallback') {
       // G2.3: unknown non-standard pad. The game RUNS on the fallback while the player
       // calibrates; it does not refuse and it does not show a raw index table.
-      this._beginCalibration();
+      this._beginCalibration(snap);
     }
     this.onConnect && this.onConnect({ id: snap.id, index: snap.index, mapping: snap.mapping, quirk: snap.quirk });
     return st;
@@ -334,6 +335,13 @@ export class GamepadRouter {
     const st = this.pads.get(idx);
     if (!st) return;
     this._releasePad(st);
+    // An unfinished calibration belongs to the physical pad that started it. Keeping it after
+    // a cable drop makes a replacement device answer the old pad's remaining prompts and eats
+    // its first real button. Completed records live in `sessionProfiles` and remain untouched.
+    if (this.calibration && !this.calibration.done &&
+        this.calibration.index === idx && this.calibration.id === st.id) {
+      this.calibration = null;
+    }
     this.pads.delete(idx);
     if (this.activeIndex === idx) this.activeIndex = null;
     if (!this.pads.size) this.connected = false;
@@ -348,6 +356,7 @@ export class GamepadRouter {
     st.gate = Object.create(null);
     this.chargeIntent = 0;
     this.pipe.setMove(0, 0);
+    this.pipe.setUIMove(0, 0);
     this.pipe.chargeIntent = 0;
   }
 
@@ -368,10 +377,22 @@ export class GamepadRouter {
     const autozeroMs = this.analog.trigger.autozero_frames * STEP_MS;   // 30 f@60 = 500 ms
     if (nowMs - st.restFromMs < autozeroMs) {
       st.restFrames++;
-      for (const i of STANDARD.analog_indices) {
+      for (let k = 0; k < STANDARD.analog_indices.length; k++) {
+        const i = STANDARD.analog_indices[k];
         const v = st.snap.values[i];
-        if (v > tol && v < this.analog.trigger.t_fire) st.restBias[i] = Math.max(st.restBias[i], v);
+        const r = st.restRange[k];
+        r.lo = Math.min(r.lo, v); r.hi = Math.max(r.hi, v);
       }
+    } else if (!st.restFinalised) {
+      // Auto-zero only a stable resting signal. A trigger being pulled during the first half
+      // second spans a wide range and must not teach that pull as its neutral position.
+      for (let k = 0; k < STANDARD.analog_indices.length; k++) {
+        const i = STANDARD.analog_indices[k], r = st.restRange[k];
+        if (Number.isFinite(r.lo) && r.hi - r.lo <= tol && r.hi > tol && r.hi < this.analog.trigger.t_fire) {
+          st.restBias[i] = (r.lo + r.hi) / 2;
+        }
+      }
+      st.restFinalised = true;
     }
     // Drift guard: a stick that never leaves a 0.03 band but sits above the deadzone
     // enumerated mid-motion. Re-centre and log; do not walk the player into a wall for it.
@@ -508,6 +529,11 @@ export class GamepadRouter {
     }
     const m = Math.hypot(x, y);
     this.pipe.setMove(m > 1 ? x / m : x, m > 1 ? y / m : y);
+    // Preserve the D-pad's UI direction on its own production channel. `consumeUI()` clears
+    // locomotion deliberately, and an in-combat menu must still leave swap actions live; using
+    // the shared movement pair for all three meanings made the focus edge disappear.
+    this.pipe.setUIMove(this.uiMode ? (st.snap.values[14] > 0.5 ? -1 : st.snap.values[15] > 0.5 ? 1 : 0) : 0,
+      this.uiMode ? (st.snap.values[13] > 0.5 ? -1 : st.snap.values[12] > 0.5 ? 1 : 0) : 0);
 
     const rs = this.analog.right_stick;
     const lx = (st.snap.axes[prof.axes.look_x] || 0) - bias[prof.axes.look_x];
@@ -518,9 +544,13 @@ export class GamepadRouter {
 
   // ---- G2.3 the diegetic calibration sequence ----------------------------------------------
 
-  _beginCalibration() {
+  _beginCalibration(snap) {
     const cal = this.quirks.calibration;
-    this.calibration = { i: 0, prompts: cal.prompts, map: Object.create(null), inputs: 0, budget: cal.input_budget, done: false, seen: Object.create(null) };
+    this.calibration = {
+      id: snap.id, index: snap.index,
+      i: 0, prompts: cal.prompts, map: Object.create(null),
+      inputs: 0, budget: cal.input_budget, done: false, seen: Object.create(null),
+    };
   }
 
   /** Pad-only, six prompts, <= 8 inputs, no raw index table, never a refusal (M-P15). */
@@ -568,7 +598,7 @@ export class GamepadRouter {
 const _mv = [0, 0];
 export function shapeMoveStick(x, y, inner, outer) {
   const m = Math.hypot(x, y);
-  if (m <= inner) { _mv[0] = 0; _mv[1] = 0; return _mv; }
+  if (m <= inner + Number.EPSILON * 4) { _mv[0] = 0; _mv[1] = 0; return _mv; }
   let mm = (Math.min(m, outer) - inner) / (outer - inner);
   if (mm > 1) mm = 1;
   _mv[0] = (x / m) * mm;

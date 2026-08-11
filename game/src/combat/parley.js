@@ -62,7 +62,7 @@ export function resolveParley(player, target, world, data) {
   const detail = { disposition, gold: world.gold, ground_results: {} };
 
   // Order matters and is strongest-first: a true name beats a purse.
-  const order = ['NAME', 'FACTION', 'GOLD', 'YIELD'];
+  const order = ['NAME', 'FACTION', 'REPUTATION', 'GOLD', 'YIELD'];
   for (const key of order) {
     if (!cfg.grounds || cfg.grounds.indexOf(G[key].id) < 0) continue;
     tried.push(G[key].id);
@@ -98,10 +98,15 @@ function testGround(key, def, player, target, cfg, world, disposition) {
       return { pass: rank >= need, why: `rank ${rank} vs required ${need} in ${fac}` };
     }
     case 'GOLD': {
-      const price = cfg.gold_price || 0;
+      const price = Math.ceil((cfg.buyoff ?? cfg.gold_price ?? 0) * (cfg.buyoff != null ? 1.5 : 1));
       const enough = (world.gold || 0) >= price;
       const liked = disposition >= 20;
       return { pass: enough && liked, why: `gold ${world.gold || 0} vs ${price}, disposition ${disposition} vs 20`, spends: enough && liked ? price : 0 };
+    }
+    case 'REPUTATION': {
+      const reputation = Number(world.reputation || 0);
+      const need = Number(cfg.reputation_min || 0);
+      return { pass: reputation >= need, why: `reputation ${reputation} vs required ${need}` };
     }
     case 'YIELD': {
       if (cfg.honour_bound) return { pass: false, why: 'honour_bound: will not accept a yield' };

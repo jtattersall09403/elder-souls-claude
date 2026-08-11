@@ -1364,6 +1364,9 @@ async function journeyLegs(handle, led, o) {
     led.ok('m_jrn06_summary', 'RI-JRN06 M-D1..M-D19', {
       scenarios: r.scenarios, deaths: r.deaths_requested,
       checks: Object.fromEntries(Object.entries(r.checks).map(([k, v]) => [k, v && v.pass])),
+      coverage: r.coverage,
+      hard_fails: r.hard_fails,
+      pass: r.pass,
     });
   }
 

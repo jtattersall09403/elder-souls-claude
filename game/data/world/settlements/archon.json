@@ -1,531 +1,1051 @@
 {
-  "schema": "elder-souls/settlement@2",
-  "id": "archon",
-  "name": "Archon",
-  "tier": "town",
-  "region": "crimson-coast",
-  "pos": [
+ "schema": "elder-souls/settlement@2",
+ "id": "archon",
+ "name": "Archon",
+ "tier": "town",
+ "region": "crimson-coast",
+ "pos": [
+  3785,
+  3.42,
+  3823.5
+ ],
+ "radius_m": 62,
+ "identity": "The dye town. Crimson tide-lichen harvested, boiled and sold to the Empire as imperial purple; everything and everyone is stained. Tension: the dye is killing the harvesters and the guild denies it in writing, repeatedly.",
+ "power_reading": "The vats are at the centre and the housing is downwind. Somebody ranked the vats above the people.",
+ "layout": {
+  "plan": "downwind",
+  "proof": "The dye vats occupy the centre of the plan and every dwelling lies on the +Z side of them, which is the prevailing wind. Nothing is upwind of the vats but the guild office. The plan is a wind rose with people in the wrong quadrant."
+ },
+ "architecture_kit": {
+  "material_rule": "Kiln-fired clay domes, red as a wound, raised by naga hands and bought cheap. Every surface in the town takes the dye and none of it has been cleaned.",
+  "silhouette": "the stain line — a crimson tide-mark at vat height on every wall in the town",
+  "meshes": [
+   "arc_clay_dome",
+   "arc_stain_line",
+   "arc_dye_vat",
+   "arc_drying_rack",
+   "arc_kiln_stack",
+   "arc_naga_lintel",
+   "arc_lichen_crib",
+   "arc_guild_office"
+  ]
+ },
+ "quarters": [
+  "salvage-yard",
+  "terraces",
+  "old-quay"
+ ],
+ "targets": {
+  "buildings": 18,
+  "named_interiors": 12,
+  "enterable_pct": 67,
+  "named_npcs": 20,
+  "scheduled_npc_pct": 70,
+  "shops": 3,
+  "taverns": 1,
+  "temple_shrine": 1,
+  "guild_halls": 2,
+  "trainers": 2,
+  "quest_givers": 5,
+  "rumour_variants": 8,
+  "bonfire": 1,
+  "road_gates": 2,
+  "unique_architecture_kit": "required",
+  "souls_loop_dungeon_attached": 1
+ },
+ "counts": {
+  "buildings": 22,
+  "interior": 12,
+  "sealed_with_reason": 4,
+  "structure": 6,
+  "named_interiors": 12,
+  "enterable_pct": 75,
+  "property_zones": 28,
+  "shops": 4,
+  "taverns": 1,
+  "temple_shrine": 2,
+  "guild_halls": 1,
+  "road_gates": 2
+ },
+ "services": {
+  "trader": [
+   "archon-vat-house",
+   "archon-market",
+   "archon-kiln-house"
+  ],
+  "alchemist": [
+   "archon-apothecary"
+  ],
+  "inn": [
+   "archon-inn"
+  ],
+  "healer": [
+   "archon-ward"
+  ],
+  "bonfire": [
+   "archon-shrine"
+  ],
+  "travel": [
+   "archon-rootpost"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "archon-guild-office",
+   "name": "The Dyers’ Guild Office",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "archon-guild-office",
+   "enterable": true,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    0,
+    0,
+    -34
+   ],
+   "yaw_deg": 0,
+   "door": [
     3785,
     3.42,
-    3823.5
-  ],
-  "radius_m": 62,
-  "identity": "The dye town. Crimson tide-lichen harvested, boiled and sold to the Empire as imperial purple; everything and everyone is stained. Tension: the dye is killing the harvesters and the guild denies it in writing, repeatedly.",
-  "power_reading": "The vats are at the centre and the housing is downwind. Somebody ranked the vats above the people.",
-  "layout": {
-    "plan": "downwind",
-    "proof": "The dye vats occupy the centre of the plan and every dwelling lies on the +Z side of them, which is the prevailing wind. Nothing is upwind of the vats but the guild office. The plan is a wind rose with people in the wrong quadrant."
+    3797.3
+   ],
+   "service": null,
+   "faction": "wet-ledger",
+   "door_declared": [
+    3785,
+    3.42,
+    3789.5
+   ],
+   "footprint_m2": 212.45,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 180,
+   "footprint_m": [
+    13.61,
+    15.61
+   ],
+   "grammar": "imperial-cut-stone",
+   "mesh_id": "guild-0",
+   "volume_m3": 60,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.92,
+    "true_vertical_fraction": 0.78,
+    "silhouette_turning_rad_per_m": 0.06,
+    "opening_rectangularity": 0.94,
+    "process_visible": true
+   },
+   "decay_states": [
+    "fungal-digestion",
+    "subsidence",
+    "local-rethatch",
+    "root-jacking",
+    "local-lashed-repair"
+   ],
+   "local_repair": true,
+   "good_order": false
   },
-  "architecture_kit": {
-    "material_rule": "Kiln-fired clay domes, red as a wound, raised by naga hands and bought cheap. Every surface in the town takes the dye and none of it has been cleaned.",
-    "silhouette": "the stain line — a crimson tide-mark at vat height on every wall in the town",
-    "meshes": [
-      "arc_clay_dome",
-      "arc_stain_line",
-      "arc_dye_vat",
-      "arc_drying_rack",
-      "arc_kiln_stack",
-      "arc_naga_lintel",
-      "arc_lichen_crib",
-      "arc_guild_office"
-    ]
+  {
+   "id": "archon-vat-house",
+   "name": "The Great Vat House",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "archon-vat-house",
+   "enterable": true,
+   "quarter": "terraces",
+   "offset_m": [
+    29.44,
+    0,
+    18.92
+   ],
+   "yaw_deg": 237.3,
+   "door": [
+    3812.711,
+    3.42,
+    3846.039
+   ],
+   "service": "trader",
+   "faction": "wet-ledger",
+   "door_declared": [
+    3814.44,
+    3.42,
+    3842.42
+   ],
+   "footprint_m2": 124.41,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 57.3,
+   "footprint_m": [
+    7.97,
+    15.61
+   ],
+   "grammar": "imperial-cut-stone",
+   "mesh_id": "shop-1",
+   "volume_m3": 120,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.92,
+    "true_vertical_fraction": 0.78,
+    "silhouette_turning_rad_per_m": 0.06,
+    "opening_rectangularity": 0.94,
+    "process_visible": true
+   },
+   "decay_states": [
+    "fungal-digestion",
+    "subsidence",
+    "local-rethatch",
+    "root-jacking",
+    "local-lashed-repair"
+   ],
+   "local_repair": true,
+   "good_order": false
   },
-  "quarters": [
-    "salvage-yard",
-    "terraces",
-    "old-quay"
-  ],
-  "targets": {
-    "buildings": 18,
-    "named_interiors": 12,
-    "enterable_pct": 67,
-    "named_npcs": 20,
-    "scheduled_npc_pct": 70,
-    "shops": 3,
-    "taverns": 1,
-    "temple_shrine": 1,
-    "guild_halls": 2,
-    "trainers": 2,
-    "quest_givers": 5,
-    "rumour_variants": 8,
-    "bonfire": 1,
-    "road_gates": 2,
-    "unique_architecture_kit": "required",
-    "souls_loop_dungeon_attached": 1
+  {
+   "id": "archon-market",
+   "name": "The Stain Market",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "archon-market",
+   "enterable": true,
+   "quarter": "old-quay",
+   "offset_m": [
+    25.06,
+    0,
+    19.9
+   ],
+   "yaw_deg": 231.5,
+   "door": [
+    3807.191,
+    3.42,
+    3846.204
+   ],
+   "service": "trader",
+   "faction": null,
+   "door_declared": [
+    3810.06,
+    3.42,
+    3843.4
+   ],
+   "footprint_m2": 45.03,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 51.5,
+   "footprint_m": [
+    7.97,
+    5.65
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-2",
+   "volume_m3": 140,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "counts": {
-    "buildings": 22,
-    "interior": 12,
-    "sealed_with_reason": 4,
-    "structure": 6,
-    "named_interiors": 12,
-    "enterable_pct": 75,
-    "property_zones": 28,
-    "shops": 4,
-    "taverns": 1,
-    "temple_shrine": 2,
-    "guild_halls": 1,
-    "road_gates": 2
+  {
+   "id": "archon-apothecary",
+   "name": "The Crimson Apothecary",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "archon-apothecary",
+   "enterable": true,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    23.67,
+    0,
+    23
+   ],
+   "yaw_deg": 225.8,
+   "door": [
+    3805.013,
+    3.42,
+    3850.26
+   ],
+   "service": "alchemist",
+   "faction": null,
+   "door_declared": [
+    3808.67,
+    3.42,
+    3846.5
+   ],
+   "footprint_m2": 59.33,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 45.8,
+   "footprint_m": [
+    10.5,
+    5.65
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-3",
+   "volume_m3": 75,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "services": {
-    "trader": [
-      "archon-vat-house",
-      "archon-market",
-      "archon-kiln-house"
-    ],
-    "alchemist": [
-      "archon-apothecary"
-    ],
-    "inn": [
-      "archon-inn"
-    ],
-    "healer": [
-      "archon-ward"
-    ],
-    "bonfire": [
-      "archon-shrine"
-    ],
-    "travel": [
-      "archon-rootpost"
-    ]
+  {
+   "id": "archon-inn",
+   "name": "The Stained Hand",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "archon-inn",
+   "enterable": true,
+   "quarter": "old-quay",
+   "offset_m": [
+    24.47,
+    0,
+    29.07
+   ],
+   "yaw_deg": 220.1,
+   "door": [
+    3811.296,
+    3.42,
+    3854.739
+   ],
+   "service": "inn",
+   "faction": null,
+   "door_declared": [
+    3809.47,
+    3.42,
+    3852.57
+   ],
+   "footprint_m2": 70.49,
+   "roofline_m": 6.2,
+   "apertures": [],
+   "door_world_bearing_deg": 40.1,
+   "footprint_m": [
+    12.41,
+    5.68
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "tavern-4",
+   "volume_m3": 96,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
   },
-  "buildings": [
-    {
-      "id": "archon-guild-office",
-      "name": "The Dyers’ Guild Office",
-      "kind": "interior",
-      "building_kind": "guild",
-      "interior": "archon-guild-office",
-      "enterable": true,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        0,
-        0,
-        -34
-      ],
-      "yaw_deg": 0,
-      "door": [
-        3785,
-        3.42,
-        3789.5
-      ],
-      "service": null,
-      "faction": "wet-ledger"
-    },
-    {
-      "id": "archon-vat-house",
-      "name": "The Great Vat House",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "archon-vat-house",
-      "enterable": true,
-      "quarter": "terraces",
-      "offset_m": [
-        29.44,
-        0,
-        18.92
-      ],
-      "yaw_deg": 237.3,
-      "door": [
-        3814.44,
-        3.42,
-        3842.42
-      ],
-      "service": "trader",
-      "faction": "wet-ledger"
-    },
-    {
-      "id": "archon-market",
-      "name": "The Stain Market",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "archon-market",
-      "enterable": true,
-      "quarter": "old-quay",
-      "offset_m": [
-        25.06,
-        0,
-        19.9
-      ],
-      "yaw_deg": 231.5,
-      "door": [
-        3810.06,
-        3.42,
-        3843.4
-      ],
-      "service": "trader",
-      "faction": null
-    },
-    {
-      "id": "archon-apothecary",
-      "name": "The Crimson Apothecary",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "archon-apothecary",
-      "enterable": true,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        23.67,
-        0,
-        23
-      ],
-      "yaw_deg": 225.8,
-      "door": [
-        3808.67,
-        3.42,
-        3846.5
-      ],
-      "service": "alchemist",
-      "faction": null
-    },
-    {
-      "id": "archon-inn",
-      "name": "The Stained Hand",
-      "kind": "interior",
-      "building_kind": "tavern",
-      "interior": "archon-inn",
-      "enterable": true,
-      "quarter": "old-quay",
-      "offset_m": [
-        24.47,
-        0,
-        29.07
-      ],
-      "yaw_deg": 220.1,
-      "door": [
-        3809.47,
-        3.42,
-        3852.57
-      ],
-      "service": "inn",
-      "faction": null
-    },
-    {
-      "id": "archon-ward",
-      "name": "The Harvesters’ Ward",
-      "kind": "interior",
-      "building_kind": "temple",
-      "interior": "archon-ward",
-      "enterable": true,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        22.01,
-        0,
-        32.19
-      ],
-      "yaw_deg": 214.4,
-      "door": [
-        3807.01,
-        3.42,
-        3855.69
-      ],
-      "service": "healer",
-      "faction": "drowned-court"
-    },
-    {
-      "id": "archon-shrine",
-      "name": "The Crimson-Coast Hist-Shrine",
-      "kind": "interior",
-      "building_kind": "shrine",
-      "interior": "archon-shrine",
-      "enterable": true,
-      "quarter": "terraces",
-      "offset_m": [
-        17.25,
-        0,
-        31.6
-      ],
-      "yaw_deg": 208.6,
-      "door": [
-        3802.25,
-        3.42,
-        3855.1
-      ],
-      "service": "bonfire",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "archon-rootpost",
-      "name": "The Old Quay Rootpost",
-      "kind": "interior",
-      "building_kind": "travel",
-      "interior": "archon-rootpost",
-      "enterable": true,
-      "quarter": "old-quay",
-      "offset_m": [
-        14.4,
-        0,
-        34.08
-      ],
-      "yaw_deg": 202.9,
-      "door": [
-        3799.4,
-        3.42,
-        3857.58
-      ],
-      "service": "travel",
-      "faction": "rootkeepers"
-    },
-    {
-      "id": "archon-kiln-house",
-      "name": "The Kiln House",
-      "kind": "interior",
-      "building_kind": "shop",
-      "interior": "archon-kiln-house",
-      "enterable": true,
-      "quarter": "terraces",
-      "offset_m": [
-        7.68,
-        0,
-        24.84
-      ],
-      "yaw_deg": 197.2,
-      "door": [
-        3792.68,
-        3.42,
-        3848.34
-      ],
-      "service": "trader",
-      "faction": null
-    },
-    {
-      "id": "archon-house-0",
-      "name": "Vosh-Vastei's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "archon-house-0",
-      "enterable": true,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        5.36,
-        0,
-        26.46
-      ],
-      "yaw_deg": 191.5,
-      "door": [
-        3790.36,
-        3.42,
-        3849.96
-      ],
-      "service": null,
-      "faction": "drowned-court"
-    },
-    {
-      "id": "archon-house-1",
-      "name": "Xul-Shu's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "archon-house-1",
-      "enterable": true,
-      "quarter": "terraces",
-      "offset_m": [
-        3.29,
-        0,
-        32.84
-      ],
-      "yaw_deg": 185.7,
-      "door": [
-        3788.29,
-        3.42,
-        3856.34
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "archon-house-2",
-      "name": "Sleeps-Eggs's house",
-      "kind": "interior",
-      "building_kind": "dwelling",
-      "interior": "archon-house-2",
-      "enterable": true,
-      "quarter": "old-quay",
-      "offset_m": [
-        0,
-        0,
-        32
-      ],
-      "yaw_deg": 180,
-      "door": [
-        3785,
-        3.42,
-        3855.5
-      ],
-      "service": null,
-      "faction": null
-    },
-    {
-      "id": "archon-first-vat",
-      "name": "The First Vat House",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "old-quay",
-      "offset_m": [
-        -3.49,
-        0,
-        34.83
-      ],
-      "yaw_deg": 174.3,
-      "seal_state": "visible",
-      "reason": "the vat went through the floor with two harvesters in it and the guild sealed the building rather than recover them",
-      "told_by_trade": "apothecary"
-    },
-    {
-      "id": "archon-naga-row",
-      "name": "The Naga Row",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        -6.75,
-        0,
-        33.32
-      ],
-      "yaw_deg": 168.5,
-      "seal_state": "visible",
-      "reason": "the naga who raised this town were paid off and sent away; their row was shuttered the day they left",
-      "told_by_trade": "trader"
-    },
-    {
-      "id": "archon-old-kiln",
-      "name": "The Old Kiln",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        -10.93,
-        0,
-        35.35
-      ],
-      "yaw_deg": 162.8,
-      "seal_state": "visible",
-      "reason": "cracked through and no longer holds heat; it is used as a wall now",
-      "told_by_trade": "smith"
-    },
-    {
-      "id": "archon-quay-store",
-      "name": "The Quay Store",
-      "kind": "sealed-with-reason",
-      "building_kind": "sealed",
-      "enterable": false,
-      "quarter": "terraces",
-      "offset_m": [
-        -14.01,
-        0,
-        33.16
-      ],
-      "yaw_deg": 157.1,
-      "seal_state": "visible",
-      "reason": "the tide comes into it twice a day and has done for six years",
-      "told_by_trade": "boatwright"
-    },
-    {
-      "id": "archon-struct-the-dye-vats",
-      "name": "The Dye Vats",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "terraces",
-      "offset_m": [
-        -18.69,
-        0,
-        34.23
-      ],
-      "yaw_deg": 151.4,
-      "residential_props": false
-    },
-    {
-      "id": "archon-struct-the-drying-racks",
-      "name": "The Drying Racks",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "terraces",
-      "offset_m": [
-        -21.45,
-        0,
-        31.37
-      ],
-      "yaw_deg": 145.6,
-      "residential_props": false
-    },
-    {
-      "id": "archon-struct-the-kiln-stacks",
-      "name": "The Kiln Stacks",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "terraces",
-      "offset_m": [
-        -26.4,
-        0,
-        31.37
-      ],
-      "yaw_deg": 139.9,
-      "residential_props": false
-    },
-    {
-      "id": "archon-struct-the-lichen-cribs",
-      "name": "The Lichen Cribs",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "old-quay",
-      "offset_m": [
-        -28.69,
-        0,
-        27.88
-      ],
-      "yaw_deg": 134.2,
-      "residential_props": false
-    },
-    {
-      "id": "archon-struct-the-old-quay",
-      "name": "The Old Quay",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "terraces",
-      "offset_m": [
-        -28.19,
-        0,
-        22.39
-      ],
-      "yaw_deg": 128.5,
-      "residential_props": false
-    },
-    {
-      "id": "archon-struct-the-wind-screen",
-      "name": "The Wind Screen",
-      "kind": "structure",
-      "building_kind": "structure",
-      "enterable": false,
-      "quarter": "salvage-yard",
-      "offset_m": [
-        -31.13,
-        0,
-        20
-      ],
-      "yaw_deg": 122.7,
-      "residential_props": false
-    }
-  ],
-  "interiors": [
-    "archon-guild-office",
-    "archon-vat-house",
-    "archon-market",
-    "archon-apothecary",
-    "archon-inn",
-    "archon-ward",
-    "archon-shrine",
-    "archon-rootpost",
-    "archon-kiln-house",
-    "archon-house-0",
-    "archon-house-1",
-    "archon-house-2"
-  ],
-  "generated_by": "tools/world/build-settlements.mjs"
+  {
+   "id": "archon-ward",
+   "name": "The Harvesters’ Ward",
+   "kind": "interior",
+   "building_kind": "temple",
+   "interior": "archon-ward",
+   "enterable": true,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    22.01,
+    0,
+    32.19
+   ],
+   "yaw_deg": 214.4,
+   "door": [
+    3808.612,
+    3.42,
+    3858.029
+   ],
+   "service": "healer",
+   "faction": "drowned-court",
+   "door_declared": [
+    3807.01,
+    3.42,
+    3855.69
+   ],
+   "footprint_m2": 49.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 34.4,
+   "footprint_m": [
+    8.66,
+    5.68
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "temple-5",
+   "volume_m3": 175,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-shrine",
+   "name": "The Crimson-Coast Hist-Shrine",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "archon-shrine",
+   "enterable": true,
+   "quarter": "terraces",
+   "offset_m": [
+    17.25,
+    0,
+    31.6
+   ],
+   "yaw_deg": 208.6,
+   "door": [
+    3805.697,
+    3.42,
+    3861.421
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers",
+   "door_declared": [
+    3802.25,
+    3.42,
+    3855.1
+   ],
+   "footprint_m2": 74.79,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 28.6,
+   "footprint_m": [
+    5.19,
+    14.41
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shrine-6",
+   "volume_m3": 60,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-rootpost",
+   "name": "The Old Quay Rootpost",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "archon-rootpost",
+   "enterable": true,
+   "quarter": "old-quay",
+   "offset_m": [
+    14.4,
+    0,
+    34.08
+   ],
+   "yaw_deg": 202.9,
+   "door": [
+    3802.202,
+    3.42,
+    3864.213
+   ],
+   "service": "travel",
+   "faction": "rootkeepers",
+   "door_declared": [
+    3799.4,
+    3.42,
+    3857.58
+   ],
+   "footprint_m2": 74.79,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 22.9,
+   "footprint_m": [
+    5.19,
+    14.41
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "travel-7",
+   "volume_m3": 120,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-kiln-house",
+   "name": "The Kiln House",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "archon-kiln-house",
+   "enterable": true,
+   "quarter": "terraces",
+   "offset_m": [
+    7.68,
+    0,
+    24.84
+   ],
+   "yaw_deg": 197.2,
+   "door": [
+    3794.809,
+    3.42,
+    3855.218
+   ],
+   "service": "trader",
+   "faction": null,
+   "door_declared": [
+    3792.68,
+    3.42,
+    3848.34
+   ],
+   "footprint_m2": 72.19,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 17.2,
+   "footprint_m": [
+    5.01,
+    14.41
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "shop-8",
+   "volume_m3": 140,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-house-0",
+   "name": "Vosh-Vastei's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "archon-house-0",
+   "enterable": true,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    5.36,
+    0,
+    26.46
+   ],
+   "yaw_deg": 191.5,
+   "door": [
+    3791.516,
+    3.42,
+    3855.644
+   ],
+   "service": null,
+   "faction": "drowned-court",
+   "door_declared": [
+    3790.36,
+    3.42,
+    3849.96
+   ],
+   "footprint_m2": 58.17,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 11.5,
+   "footprint_m": [
+    5.01,
+    11.61
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-9",
+   "volume_m3": 75,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-house-1",
+   "name": "Xul-Shu's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "archon-house-1",
+   "enterable": true,
+   "quarter": "terraces",
+   "offset_m": [
+    3.29,
+    0,
+    32.84
+   ],
+   "yaw_deg": 185.7,
+   "door": [
+    3788.866,
+    3.42,
+    3862.111
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
+    3788.29,
+    3.42,
+    3856.34
+   ],
+   "footprint_m2": 69.54,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 5.7,
+   "footprint_m": [
+    5.99,
+    11.61
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-10",
+   "volume_m3": 96,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-house-2",
+   "name": "Sleeps-Eggs's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "archon-house-2",
+   "enterable": true,
+   "quarter": "old-quay",
+   "offset_m": [
+    0,
+    0,
+    32
+   ],
+   "yaw_deg": 180,
+   "door": [
+    3785,
+    3.42,
+    3862.7
+   ],
+   "service": null,
+   "faction": null,
+   "door_declared": [
+    3785,
+    3.42,
+    3855.5
+   ],
+   "footprint_m2": 115.14,
+   "roofline_m": 3.8,
+   "apertures": [],
+   "door_world_bearing_deg": 0,
+   "footprint_m": [
+    7.99,
+    14.41
+   ],
+   "grammar": "root-arch",
+   "mesh_id": "dwelling-0",
+   "volume_m3": 175,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-first-vat",
+   "name": "The First Vat House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "old-quay",
+   "offset_m": [
+    -3.49,
+    0,
+    34.83
+   ],
+   "yaw_deg": 174.3,
+   "seal_state": "visible",
+   "reason": "the vat went through the floor with two harvesters in it and the guild sealed the building rather than recover them",
+   "told_by_trade": "apothecary",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-1",
+   "volume_m3": 60,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-naga-row",
+   "name": "The Naga Row",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    -6.75,
+    0,
+    33.32
+   ],
+   "yaw_deg": 168.5,
+   "seal_state": "visible",
+   "reason": "the naga who raised this town were paid off and sent away; their row was shuttered the day they left",
+   "told_by_trade": "trader",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-2",
+   "volume_m3": 120,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-old-kiln",
+   "name": "The Old Kiln",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    -10.93,
+    0,
+    35.35
+   ],
+   "yaw_deg": 162.8,
+   "seal_state": "visible",
+   "reason": "cracked through and no longer holds heat; it is used as a wall now",
+   "told_by_trade": "smith",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-3",
+   "volume_m3": 140,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-quay-store",
+   "name": "The Quay Store",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "terraces",
+   "offset_m": [
+    -14.01,
+    0,
+    33.16
+   ],
+   "yaw_deg": 157.1,
+   "seal_state": "visible",
+   "reason": "the tide comes into it twice a day and has done for six years",
+   "told_by_trade": "boatwright",
+   "grammar": "root-arch",
+   "mesh_id": "sealed-4",
+   "volume_m3": 75,
+   "door_height_m": 1.93,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-dye-vats",
+   "name": "The Dye Vats",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "terraces",
+   "offset_m": [
+    -18.69,
+    0,
+    34.23
+   ],
+   "yaw_deg": 151.4,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-5",
+   "volume_m3": 96,
+   "door_height_m": 2.04,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-drying-racks",
+   "name": "The Drying Racks",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "terraces",
+   "offset_m": [
+    -21.45,
+    0,
+    31.37
+   ],
+   "yaw_deg": 145.6,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-6",
+   "volume_m3": 175,
+   "door_height_m": 2.15,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-kiln-stacks",
+   "name": "The Kiln Stacks",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "terraces",
+   "offset_m": [
+    -26.4,
+    0,
+    31.37
+   ],
+   "yaw_deg": 139.9,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-7",
+   "volume_m3": 60,
+   "door_height_m": 2.26,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-lichen-cribs",
+   "name": "The Lichen Cribs",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "old-quay",
+   "offset_m": [
+    -28.69,
+    0,
+    27.88
+   ],
+   "yaw_deg": 134.2,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-8",
+   "volume_m3": 120,
+   "door_height_m": 2.37,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-old-quay",
+   "name": "The Old Quay",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "terraces",
+   "offset_m": [
+    -28.19,
+    0,
+    22.39
+   ],
+   "yaw_deg": 128.5,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-9",
+   "volume_m3": 140,
+   "door_height_m": 2.48,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  },
+  {
+   "id": "archon-struct-the-wind-screen",
+   "name": "The Wind Screen",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "salvage-yard",
+   "offset_m": [
+    -31.13,
+    0,
+    20
+   ],
+   "yaw_deg": 122.7,
+   "residential_props": false,
+   "grammar": "root-arch",
+   "mesh_id": "structure-10",
+   "volume_m3": 75,
+   "door_height_m": 1.82,
+   "mesh_metrics": {
+    "right_angle_fraction": 0.08,
+    "true_vertical_fraction": 0.28,
+    "silhouette_turning_rad_per_m": 0.26,
+    "opening_rectangularity": 0.1,
+    "process_visible": true
+   },
+   "decay_states": [
+    "closes"
+   ],
+   "local_repair": false,
+   "good_order": null
+  }
+ ],
+ "interiors": [
+  "archon-guild-office",
+  "archon-vat-house",
+  "archon-market",
+  "archon-apothecary",
+  "archon-inn",
+  "archon-ward",
+  "archon-shrine",
+  "archon-rootpost",
+  "archon-kiln-house",
+  "archon-house-0",
+  "archon-house-1",
+  "archon-house-2"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs",
+ "architecture_grammar": {
+  "primary": "root-arch",
+  "mix_reason": "Local construction follows the material and weather of this region."
+ }
 }

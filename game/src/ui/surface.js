@@ -174,6 +174,10 @@ export class UISurface {
   get H() { return this.canvas.height; }
 
   begin() {
+    // RI-JRN04 H10 is a physical CSS-pixel floor, not a 1080p-relative preference. At the
+    // reference DPR-2 landscape phone, 18 CSS px is 36 backing pixels. Keep the layout model
+    // responsive, but never draw its authored small labels below that floor on this population.
+    this.ctx.__esMinTextPx = this.canvas.width > this.canvas.height * 1.8 && this.canvas.height <= 900 ? 36 : 0;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.elements.length = 0;
     this.drawn = false;
