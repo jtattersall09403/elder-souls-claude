@@ -927,6 +927,14 @@ export class Engine {
     }));
   }
 
+  _resetJourneyStamps() {
+    this._firstInputFrame = null;
+    this._firstControlFrame = null;
+    this._firstFieldFrame = null;
+    this._firstFieldNode = null;
+    this._journeyPrevPose = null;
+  }
+
   applyNamedState(name) {
     const patch = this.data.states[name];
     if (!patch) {
@@ -934,6 +942,9 @@ export class Engine {
     }
     const sim = this.sim;
     sim.reset(rng.seed, name);
+    // These one-shot journey observations belong to the world that produced them. A named
+    // state is a production scenario boundary, not merely a harness convenience.
+    this._resetJourneyStamps();
     // `SimState.reset()` replaces `sim.quest` wholesale, so a QuestEngine built at boot is left
     // holding the PREVIOUS state object and its Journal is left holding the previous entries
     // array. Every write after the first `loadState()` then lands in a detached array that
