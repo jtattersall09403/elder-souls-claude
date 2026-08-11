@@ -15,7 +15,7 @@
 
 import { armSim, disarmSim } from '../core/guards.js';
 import { quantiseSaveGrid } from './state.js';
-import { stepCamera } from './camera.js';
+import { stepCamera, triggerShake } from './camera.js';
 import { stepRoute } from './route.js';
 import { stepCombat } from './combat-bridge.js';
 import { stepWorldCollision } from './world-collision.js';
@@ -25,6 +25,27 @@ import { stepSettlement } from './settlement.js';
 import { stepSkillUse } from '../character/skilluse.js';
 import { stepDiscovery } from './discovery.js';
 import { stepSouls } from './souls.js';
+
+/** S44 AQ-02: the sole production bridge from resolved combat to camera feedback. */
+export function consumePlayerDamageShake(sim, combat, bus) {
+  const playerId = combat && combat.player && combat.player.id;
+  if (!playerId) return false;
+  for (let i = 0; i < bus.count; i++) {
+    const e = bus.pool[i];
+    if (e.type !== 'IMPACT' || e.dst !== playerId || !(e.dmg > 0)) continue;
+    // A blocked contact may carry chip damage, but CAM06/S44 explicitly forbids block shake.
+    let blocked = false;
+    for (let j = 0; j < bus.count; j++) {
+      const x = bus.pool[j];
+      if (x.f === e.f && x.type === 'BLOCK' && x.src === e.src && x.dst === e.dst) { blocked = true; break; }
+    }
+    if (blocked) continue;
+    const body = combat.player;
+    triggerShake(sim, e.dmg / Math.max(1, body.hpMax || body.hp_max || 1));
+    return true;
+  }
+  return false;
+}
 
 /**
  * S29 / seam S19. The frame the world last did violence. Read off the event bus so it cannot
@@ -106,6 +127,7 @@ export function stepOnce(sim, input, combat, bus) {
     // W1-09 owns steps 1-9 of RI-CMB04 §A's per-frame order; the bridge mirrors the result
     // into the W1-00 state the save, the renderer and elder-souls/trace@1 read.
     stepCombat(sim, input, combat, bus);
+    consumePlayerDamageShake(sim, combat, bus);
     // S29's clock. "Travel is refused ... for 300 frames after the last hostile action", so
     // there has to be a frame stamp on the last hostile action, and it has to be read off what
     // the fight actually emitted rather than off a flag someone remembered to set. Any of these
