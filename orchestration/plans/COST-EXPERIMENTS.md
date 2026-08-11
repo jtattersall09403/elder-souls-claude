@@ -7,6 +7,28 @@ plan critic. **Nothing here is built.** Reads: `orchestration/COST.md`,
 **Every number below was measured at commit `db449a5`** (rule 12), by this plan agent, from the transcript
 tree — not recalled. The scripts that produced them are named in §0.6.
 
+## Builder/critic execution allocation (binding)
+
+This plan uses the shared [builder execution contract](BUILDER-EXECUTION-CONTRACT.md). Its existing
+plan-stage gates and dependency on a satisfied `COST-INSTRUMENT` remain binding. Once those gates are
+clear, the following allocation governs a single builder run; the experiment predicates below remain
+the final critic acceptance bar.
+
+**Builder-owned after unblock:** implement the experiment flags, orchestration hooks, measurement
+harness and controlled fixtures required by the accepted experiment plan. Prove that each arm selects
+the intended production behaviour, preserves the quality guards and produces attributable cost and
+work outputs. Run exhaustive cheap configuration/schema checks, bounded paired fixtures, clean nulls,
+and targeted red and delete-the-fix controls. Repair every available builder-owned failure in the same
+run.
+
+**Critic-owned:** execute the actual matched experiments over their full accepted windows and
+populations; independently verify quality guards and attribution; analyse variance and confounders;
+draw cost-effectiveness conclusions; and issue the final verdict.
+
+**Completion rule:** an unavailable accepted `COST-INSTRUMENT` or unresolved plan ruling is recorded as
+the exact dependency. Once available, the builder completes the whole implementation and bounded arm
+proof in one run; full fleet experiments remain a critic handoff.
+
 ---
 
 ## 0. What the transcript actually says — read this before the experiments
