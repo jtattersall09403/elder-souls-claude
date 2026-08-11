@@ -5417,6 +5417,48 @@ export class Engine {
 
   getRaceGap(a, b) { return meanRaceGap(this.chData, a, b); }
 
+  // ---- RI-EXP06 B-01: finite, self-amplifying alchemy --------------------------------------
+  // The loop ends through finite ingredients rather than an artificial power cap.
+  _alchemyState() {
+    if (!this.sim.alchemy) this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
+    return this.sim.alchemy;
+  }
+
+  resetAlchemy() {
+    this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
+    return { ...this.sim.alchemy };
+  }
+
+  setPermissivenessClosure(id, on) {
+    if (!this._permissivenessClosures) this._permissivenessClosures = new Set();
+    if (on) this._permissivenessClosures.add(String(id));
+    else this._permissivenessClosures.delete(String(id));
+    return { id: String(id), closed: this._permissivenessClosures.has(String(id)) };
+  }
+
+  brewFortifyAlchemy() {
+    const a = this._alchemyState();
+    if (this._permissivenessClosures?.has('B-01')) {
+      return { ok: false, player_facing: true, text: 'The mixture will not take while another fortifying draught is active.' };
+    }
+    if (a.ingredients < 2) {
+      return { ok: false, player_facing: true, text: 'There are not enough ingredients left.', exhausted: true };
+    }
+    a.ingredients -= 2;
+    const potion = { id: `fortify-alchemy-${++a.serial}`, magnitude: 1 + a.fortify };
+    a.potions.push(potion);
+    return { ok: true, potion: { ...potion }, ingredients_left: a.ingredients };
+  }
+
+  drinkFortifyAlchemy(id) {
+    const a = this._alchemyState();
+    const i = a.potions.findIndex((p) => p.id === String(id));
+    if (i < 0) return { ok: false, player_facing: true, text: 'That potion is not in the pack.' };
+    const [potion] = a.potions.splice(i, 1);
+    a.fortify += potion.magnitude;
+    return { ok: true, active_fortify: a.fortify, consumed: potion.id };
+  }
+
   setCrossingControl(cell, enabled = true) {
     this._crossingControls.set(String(cell), enabled !== false);
     this._crossingCalls.set(String(cell), 0);
@@ -5434,44 +5476,6 @@ export class Engine {
     if (this._crossingControls.get(id) === false) return deletedValue;
     this._crossingCalls.set(id, (this._crossingCalls.get(id) || 0) + 1);
     return value;
-  }
-
-  /** Consume an optional boss outcome through the production quest machine. */
-  consumeBossOutcome(questId, resolutionId) {
-    if (!resolutionId) return { ok: true, consumed: false, reason: 'no boss outcome present' };
-    return this.questEngine.resolve(String(questId), String(resolutionId));
-  }
-
-  // ---- RI-EXP06 B-01: finite, self-amplifying alchemy --------------------------------------
-  // Kept on simulation state so save/load owns it once the save schema is extended. The lazy
-  // seed is deliberately finite: the permissive loop ends by ingredient exhaustion, never a cap.
-  _alchemyState() {
-    if (!this.sim.alchemy) this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 };
-    return this.sim.alchemy;
-  }
-  resetAlchemy() { this.sim.alchemy = { ingredients: 8, fortify: 0, potions: [], serial: 0 }; return { ...this.sim.alchemy }; }
-
-  setPermissivenessClosure(id, on) {
-    if (!this._permissivenessClosures) this._permissivenessClosures = new Set();
-    if (on) this._permissivenessClosures.add(String(id)); else this._permissivenessClosures.delete(String(id));
-    return { id: String(id), closed: this._permissivenessClosures.has(String(id)) };
-  }
-
-  brewFortifyAlchemy() {
-    const a = this._alchemyState();
-    if (this._permissivenessClosures?.has('B-01')) return { ok: false, player_facing: true, text: 'The mixture will not take while another fortifying draught is active.' };
-    if (a.ingredients < 2) return { ok: false, player_facing: true, text: 'There are not enough ingredients left.', exhausted: true };
-    a.ingredients -= 2;
-    const potion = { id: `fortify-alchemy-${++a.serial}`, magnitude: 1 + a.fortify };
-    a.potions.push(potion);
-    return { ok: true, potion: { ...potion }, ingredients_left: a.ingredients };
-  }
-
-  drinkFortifyAlchemy(id) {
-    const a = this._alchemyState(), i = a.potions.findIndex((p) => p.id === String(id));
-    if (i < 0) return { ok: false, player_facing: true, text: 'That potion is not in the pack.' };
-    const [p] = a.potions.splice(i, 1); a.fortify += p.magnitude;
-    return { ok: true, active_fortify: a.fortify, consumed: p.id };
   }
 
   // ---- AR-3: race-conditioned encounters -----------------------------------------------------
@@ -8264,93 +8268,19 @@ export class Engine {
       // has just invalidated every eid it was holding — a line W1-POPULATION's own round-1
       // critic charges as an S5 violation, because clearing it while `ordinaryRespawnEpoch`
       // stands still hands the player a province of newly built bodies for the price of a
-HљY[™XШ]\ЩHHљY[\И]ИЫ›H[њ]€H™Y\ИHќ[Э[Ы‚€ЛИЩ€љY[њ™YЪ[Ыђ]
-ЉX[™›Э[™И[ЩHЬ]X[€]\Иљ]™[€њ›ЫHШYќ\”Э\
-
-X
-ЩYB€ЛИHШ[Ъ]H\™JH[™]ќ[њИЪ]\€Ь€›Э[€]Y[РЫЫќ^^\ЭЛ™XШ]\ЩH\В€ЛИ›Ю\И›ИЬXZЩ\€[™H™Y]Ы›H^\ЭИЪ[€HЬXZЩ\€\И]XЪY\ИH™Y›Ш›ЩB€ЛИШ[€YX\Э\™K€[™Ъ[™K[XљY[ЩPШ\\™J
-X™[™\њИHY[ќXШ[Ь\Щ™›[™H[ќИУK€ЛИЪXЪ\ИH]љY[ЩH]€[€]™[ќЫЭ[ќ\И›ЭHЫЭ[™‚€\Л[XљY[ЩHH™]И[XљY[ЩQљ]™\Љ\Л™]K[XљY[ЩHЯKИЩYY€LШЊHJNВ€ЛИМKLLH8 %УУPђUSTPХUQSЛ€]Y[ЛЫЫX]љ[\XЭ’KPUQHИ’KPUQ‹‚€ЛВ€ЛИќZ[\™H›Ь€HШ[YH™X\ЫЫ€H™Y\О€]]\Э^\ЭЪ]\€Ь€›ЭHЬXZЩ\€Щ\Л‚€ЛИќ]]\ИS‘QИH’QТ[€ШќZ[ЫЫX]
-
-X[™]ИЫ›H[њ]\ИH™\ЫЫ™\‰ЬВ€ЛИЭЫ€]™[ќЭ™X[H8 %ЫИ[›ZЩHH™Y]\И›ИЬЪ][Ы€[Щ[Щ€]ИЭЫ€[™Ш[››Э€ЛИ\ШYЬ™YHЪ]HЩ[ЫY]ћHX›Э]Ъ]\[™Y€H™Y[њЭЩ\њИќЪ\™H[HHЋИ\В€ЛИ[њЭЩ\њИќЪ]YHЭЪ[™Иќ\ЭИ‹[™’KPUQH\И›[ќ]HЩXЫЫ™]Y\Э[Ы€\В€ЛИ›ЭXЫЬ][ЫЋ€H]\›Z[љ\ЭXИ][Ь‹[Z\ЬИЮ\Э[H]\И›Э™\ЬќY\В€ЛИ[™\Э[™ЭZ\ЪX›Hњ›ЫHHXЩH›Ы€‚€\Лљ[\XЭ]Y[ИH™]И[\XЭ]Y[К\Л™]Kљ[\XЭ]Y[ИЯKИЩYY€LXLJNВ€ЛИМKLLИ8 %HЪXЪЬЪ[ќ[™HX]ЫЬ€ќZ[‘Q“Ф‘HHљ\њЭ[YYЭ]H\В€ЛИ\YY™XШ]\ЩH\S[YYЭ]J
-XЩYYИ›ЩЬ™\ЬЪ[Ы‹љX\ќ\Э™\ЭYњ›ЫHB€ЛИX\ќ™YЪ\ЭћH[™HЭ]H\YYYШZ[њЭHќ[™YЪ\ЭћHЫЭ[™\Ь]Ы€›ЭЪ\™K‚€\ЛљX\ќИH™]ИX\ќЮ\Э[J\Л™]KљX\ќКNВ€ЛИМKL8 %ЭЫњЛЫЬњИ[™HЩ[И™Z[™[K€]KњЩ][Y[ќШ[™]Kљ[ќ\љ[ЬњШ€ЛИY›И™XY\€[€HЪЫHќZ[™Y›Ь™H\И[™NИЪ[K™[ќ‹њЩ][Y[ќЪXЪH[ќ\™B€ЛИ\‹]ЭЫ€ќ[[Э\€›ЫЪИ\ИЩ^YYЫ‹Y›ИЬљ]\‹€HЮ\Э[H\И[™ИЫ€HТSH
-›Эќ\Э€ЛИЫ€H[™Ъ[™JH™XШ]\ЩHЪ[KЬЭ\љњШ\ИЪ]љ]™\И][™HЮ\Э[HЫ›HH[™Ъ[™HШ[‚€ЛИЩYH\ИHЮ\Э[HHљ^YЭ\Ш[››Эќ[‹‚€\ЛњЩ][Y[ќИH™]ИЩ][Y[ќЮ\Э[JШљ™XЭќ[Y\К\Л™]KњЩ][Y[ќИЯJK\Л™]Kљ[ќ\љ[ЬњИЯJNВ€\ЛњЪ[KњЩ][Y[ќИH\ЛњЩ][Y[ќОВ€ЛИШ[Ъ[™И[ќИHЭЫ€Ь]ЫњИ]И[ЬK€Ъ]Э]\ИHЌЊШЪY[Y”И™XЫЬ™И[‚€ЛИШ[YKЩ]KЫњЬЛЬЬJ‹љњЫЫ\™H^XЭHЪ]ЬXЬЧЭ]YЪШ\О€HљY[Ы€\ЪИ]€ЛИ›И[ќ]H[€Hќ[›љ[™ИЫЬ›\ИќZ[њ›ЫK‚€\ЛњЪ[KњЬ[]HH
-ЪY
-HO€\ЛњЬ[]TЩ][Y[ќ
-ЪY
-NВ€ЛИHUUФ’UUU‘H“СHSХ‘K[™H™X\ЫЫ€]\ИИ^\Э‚€ЛВ€ЛИ\ЩQЫЬЉ
-XЬљYЪ[[HЬ›ЭHHЬ]Ы€ЭZYЪ[ќИЪ[Kњ^Y\‹њЬШЪXЪ\ИB€ЛИФ“У‘ИУФK€ЫЫX]XњљYЩK›Z\њ›ЬЉ
-XЫЬY\ИЫЫX]њ^Y\‹њЬШ[ќИЪ[Kњ^Y\‹њЬШ]€ЛИHЬЩ€]™\ћHЭ\
-HЫЫ[Y[ќ[€ЬЩ]UЫЬ›Ш^\ИЫИ[€\ИX[ћHЫЬ™КKЫИB€ЛИЫЬ€ZЩ[€Ы€њ[YH€Ш\ИЪ[[ќH[™Ы™HЫ€њ[YHЉМN€YX\Э\™YH›ЩHЩ[ќИB€ЛИXЫ\™Y[ќ\љ[Ь€Ь]Ы€М‹Ќ—H[™Ш\ИXЪИ]H^\љ[Ь€МЌНЌ‹ЌKLLWHЫ™B€ЛИЭ\]\‹€ЫЬњИY›ЭЫЬљИ][[™›Э[™ИШ\И™Y8 %Ъ[K™[ќ‹љ[ќ\љ[ЬШ\ИЩ]€ЛИЫЬњ™XЭHHЪЫH[YKЫИ]™\ћHЩ[њЭ\Л\Ъ\YЪXЪИ\ЬЩYЪ[HH^Y\€™]™\‚€ЛИXЭX[HЩ[ќ[ћ]Ъ\™K‚€ЛВ€ЛИ]\ИQСS•T“ХРУУZ[\™H[ЩHH^XЭN€ЫИ\[[ЫЬY\ИЩ€Ы™HYXЩHЩ€Э]K€ЛИ[™HЮ\Э[HЬљ][™ИИHЫ™H›Ш›ЩH™XYЛ€[™Ъ[™Kќ[\Ьќ
-
-X[™XYHЫ™]ИB€ЛИ[њЭЩ\€8 %Ьљ]HH›ЩKЫX\€]И[ќ\њЫ][Ы‹[™›ЬH]™\њШ[Э]H]€ЛИ™[Ы™ЬИИЪ\™H[ЭHСT‘H8 %ЫИ\И\И]Z[ќ\ИH›Эљ[ЩHЭ™X[Z[™И[™HШ[Y\B€ЛИЩ]K›ЭЩ€ЪXЪ\™H[њШY™H[њЪYHH\›YYЭ\[™›ЭЩ€ЪXЪ™\ЫЫ™HЫ€Z\‚€ЛИЭЫ€]\€[€HШ[YHњ[YK‚€\ЛњЪ[KњXЩP›ЩHH
-KЉHO€\Л—ЬXЩP›ЩJKЉNВ€ЛИHUUФ’UUU‘HСSХТUТ[™]\ИHШ[YHY™XЭЫ™H^Y\€\‚€ЛВ€ЛИH›ЩH[€X›Э™HШ\Иљ^Y[€›Э[™K€H‘S‘T€[€Ш\И›Э[™H›Э[™LH™\™XЭ€ЛИYX\Э\™Y]€™[™\™\‹њЩ]Щ[
-
-X\И^XЭHЫ™HШ[\€8 %Ш\PЩ[
-
-X8 %[™€ЛИШ\PЩ[
-
-XШ\И™XXЪYњ›ЫHШYЭ]XHЩ[њЭ\ИЭYЪ[™ЛH\™ЩH™\Щ][™B€ЛИШ]™K[ШY][™њ›ЫH‘RUT€\ЩQЫЬЉ
-X›Ь€X]™R[ќ\љ[ЬЉ
-X€LMHЩ€LMH[ќ\љ[ЬњВ€ЛИ[ќ\™YИЩ€LMHЭЪ]ЪYH]Ы€Щ[€[ЭHШ[ЩY›ЭYЪHЫЬ€[™HЭ™Y]Э^YY€ЛИЫ€HШЬ™Y[ЋИ[ЭHШ[ЩYXЪИЭ][™H›ЫЫHY‚€ЛВ€ЛИ]\ИQ‘T”‘Q]\€[€\YYЪ\™H]\И™\]Y\ЭY€Э\Щ][Y[ќ
-
-Xќ[њИ[њЪYB€ЛИЭ\И‹MKЪXЪ\И^XЭHHЪ[™ЭИ\›TЪ[J
-XЫЭ™\њЛ[™Ш\PЩ[
-
-X	ЬИ›Эљ[ЩB€ЛИњ[ЪЬ[њИHШY›Э[™\ћH]™XYИHШ[ЫШЪИ8 %HЭX\™ЫЭ[›ЭЛ€ЫИB€ЛИЫЪИЫ›HX\љЬИHЩ[\ќH[™ЬЮ[РЩ[
-
-XЩ\ИHЫЬљИ[€ШYќ\”Э\
-
-XHЫ™B€ЛИЫЭ]™\ћHШ^HЩ€Y[Ъ[™ИHЫЬ›\ЬЩ\И›ЭYЪHШ[YHЫЭЬЭ™X[T›Эљ[ЩJ
-X€ЛИ[™ЬЭ™X[TЬ[][ЫЉ
-X[™XYH\ЩK[™Э]ЪYHHЭX\™‚€\ЛњЪ[K\PЩ[H
-
-HO€И\Л—ШЩ[\ќHHќYNИNВ€ЛИHЩ^HЩ€Ъ]\ИХT”‘S•HђUУ‹›ЭЩ€Ъ\™HH^Y\€\Л€Щ[›ЬЉ
-XЫЫ\Щ\ИLLВ€ЛИЩ€HLMH[ќ\љ[ЬњИЫќИHЫ™HЩ[™\љXИ[ќ\љ[ЬЩ[ЫИHЩ[[YH[Ы™HШ[››Э€ЛИШ^HЪ]\€H]Ы€›ЫЫH\ИHљYЪ›ЫЫH8 %H[ќ\љ[Ь€Y\И\ќЩ€HЩ^K‚€\Л—ШЩ[\ќHH[ЩNВ€\Л—Щ]ЫђЩ[Щ^HHќ[В€\Л™X]H™]ИX]Ю\Э[J\Л™]Kњ™\Ь]Ы‹\ЛљX\ќЛВ€ЛИ”Э[™X›H€\ИHШ[YH™YXШ]HHШ\Э[IЬИЭЫ€ШЫЫ[Э[Ы€\Щ\О€H›Эљ[ЩB€ЛИZYЪљY[HX^Ш[ШX›HЫЬHњ›ЫH]™\њШ[љњЫЫ‹[™Ш]\€›ИY\\€[€B€ЛИМЛХН›Э[™\ћK€[њЪYHHШ[Y\Hљ^\™HЬ€[€[ќ\љ[Ь€H›ЫЬ€\ИH[™H[™€ЛИ]™\ћ][™И\ИЭ[™X›KЪXЪ\ИќYH[™\ИЪHH\Э\И\ЪЩYЩ€HЩ[‚€Э[™X›N€
-ЉHO€\Л—ЬЭ[™X›P]
-ЉK€Ь›Э[™]€
-ЉHO€\Л™Ь›Э[™[ђXЭ]™PЩ[
-ЉK€ЛИМKLLИЊЋ€H™\Ь]Ы€\ИHPСSQS•[™[\Ьќ
-
-X[™XYHЫ›ЭЬИЪ]HXЩ[Y[ќ€ЛИ\ИИЫX\‹€™\Ь]ЫЉ
-XЬ›ЭHHЬЪ][Ы€[™›Э[™И[ЩKЫИH›ЩH\њљ]™Y]€ЛИHЩ[Ш\њћZ[™ИH™[ШЪ]KHZ\™HЫЭ[ќ\‹Hњ™X]ЫШЪИ[™H[[‚€ЛИ›ЩЬ™\ЬИњ›ЫHЪ\™]™\€]YY8 %[™ЫYKLЊ€HЩ™€H\Ъ[€Э™\€H™^ЊЊ€ЛИњ[Y\И]™YHЩ€Ъ^Щ[ЛYШZ[њЭH›ЛYX]ЫЫќ›Ы][Э™YЊH][Ъ^‚€ЛИ[€HШ[ЩYЫЬ]Ш\њљYYH^Y\€KЌHXЪИХРT‘HX]Ъ[ќ™Y›Ь™B€ЛИHќ[€XЪИ™YШ[‹Ъ[[ќHЪЬќ[љ[™И]‚€XЩY€
-
-HO€\Л—ШYќ\”™\Ь]Ы”XЩ[Y[ќ
-
-K€ЛИЫ›HH›Эљ[ЩH\ИШ\Щ[Л€™\Ь]Ы’X\ќ
-
-X	ЬИ™X\™\Э]Щ[“УФ€]\Э›Э›[™В€ЛИH›Ш™HZ[™И[€\™[WЩ›]™YHЪ[ЫY]™\ИXЬ›ЬЬИHX\‚€[”›Эљ[ЩN€
-
-HO€\ЛЩ[›ЬЉ\ЛњЪ[K™[ќЉHOOH	Ь›Эљ[ЩIЛ€JNВ€ЛИМKTФSUSУ€8 %HЬЭ[HЬ[][Ы€Щ€H›Эљ[ЩKЭ™X[YYњ›ЫHHљ^YЭ\‚€ЛИќZ[Q•T€HX]Ю\Э[H™XШ]\ЩH]™XYИX]›Ь™[\ћT™\Ь]Ы‘\ШЪИЫ›ЭИЪ[‚€ЛИНHШ^\ИHЫX\™YЬЭX^HЭ[™\YШZ[‹[™]љY[]\Э^\Э™Y›Ь™HHљ\њЭ€ЛИЭ\€ЩYHШ[YKЬЬЛЭЫЬ›ЬЬ[][Ы‹љњИ›Ь€Ъ]]X^H[™X^H›ЭЛ‚€\ЛњЬ[][Ы€H™]ИЬ[][Ы”Ю\Э[J\Л™]KњЬ[][Ы‹\Л™]KњЬ[][Ы”ЬЭКNВ€ЛИHШ]™H™YYИИ™XXЪHX]Ю\Э[N€’KR”“Њ	ЬИ›ЫЫH\И\X›Hќ]HPU€ЛИШ\И›Э[™HШ]™HZЩ[€Ъ]HЭ\™XЩH\™[ШYY[ќИHњ™\ЪYJ
-X]€ЛИ\Э›ЮYYЊЫЭ[Л€Ъ[K—Э]™\њШ[Щ]H™XЩY[ќ›Ь€\И[™K‚€\ЛњЪ[K—ЩX]H\Л™X]В€ЛИМKLK’KUУ€‹€]XЪY‘Q“Ф‘HЩ]ЫЬ›ќZ[ИH›Эљ[ЩK™XШ]\ЩHHЭ™X[Y\‚€ЛИ]ЬИHЬЭЪ[€H[H[™\€]\ИќZ[[™H[HќZ[™Y›Ь™HHЬЭИ^\ЭЫЭ[€ЛИ™HHЭ™]ЪЩ€ЪYЫ™Y›ШYЪ]›Э[™ИЭ[™[™ИЫ€][ќ[H^Y\€Ш[ЩY]Ш^H[™€ЛИШ[YHXЪЛ‚€Y€
-\Л™]KњЪYЫњЬЭКH\Л™љY[њЩ]ЪYЫњЬЭК\Л™]KњЪYЫњЬЭКNВ€ЛИМKL€И’KUУ0©МH[™0©НK€HУФ“УРТИS‘HT•QS€СPUT€PPТS‘TЛ‚€ЛВ€ЛИ[™ИЫ€HТSH›Ь€^XЭHH™X\ЫЫ€Ъ[K™\ШЫЭ™\ћXЫИ\YЬ\И™[ЭИ\О€Ъ[KЬЭ\љњШ€ЛИљ]™\И][™HЮ\Э[HЫ›HH[™Ъ[™HШ[€ЩYH\ИHЮ\Э[HHљ^YЭ\Ш[››Эќ[‹€™Y›Ь™B€ЛИ\ЛЪ[K™[ќ‹ќ[YSЩ‘^X[™Ъ[K™[ќ‹ќЩX]\Y›ИЫЬ›\ЪYHЬљ]\€][8 %Ы›B€ЛИЩ][YSЩ‘^XЩ]ЩX]\[™HШ]™HШY\‹[Щ€ЪXЪ\™H\›™\ЬИЬ€ШY]Л‚€ЛИH™YЪ[Ы€ЫЪЭ\\И\ЬЩY\ИHУФХT‘HЭ™\€HљY[]\€[€HљY[]Щ[‹ЫИB€ЛИ[ќљ\›Ы›Y[ќШ[››Э™XXЪ[ћ][™ИЬ]X[^Щ\ќЪXЪ™YЪ[Ы€\И\ИЪ[ќ[€‹‚€Y€
-\Л™]KќЩX]\ЉHВ€ЛИHСPUT€^\Л›ЭH\Э\€
-’KUУL€0©МЉK€ЩX]\€\ИЫ™HЩ€Hљ[™HЭYЩЩ\™Y€ЛИ^\Л[™]Ь›ЬЬЩ\И™]ЩY[€H›ЬH[™H][H8 %ЫИШ[Ъ[™ИH›Ь™\‹H\‚€ЛИ™YЪ[Ы‰ЬИЪЮH\њљ]™\ИYќ\€]ИЬ›Э[™[™]И[ќИ[™™Y›Ь™H]ИЬ™X]\™\Л€\Ъ[™В€ЛИ™YЪ[Ыђ]\™HЫЭ[]™H]ЩX]\€XЪИЫ€HЫ™HЫЫЬ™[]H]™\ћ][™И[ЩH\ЩYВ€ЛИЪ\™KЪXЪ\ИHY™XЭ\ИЪЫHYXЩH^\ЭИИ™[[Э™K‚€\Л™[ќљ\›Ы›Y[ќH™]И[ќљ\›Ы›Y[ќ
-\Л™]KќЩX]\‹
-ЉHO€В€ЫЫњЭ€H\Л™љY[^\Ф™YЪ[Ыђ]
-‹	ЭЩX]\‰КNВ€™]\›€€И‹љY€ќ[В€JNВ€\ЛњЪ[K™[ќљ\›Ы›Y[ќH\Л™[ќљ\›Ы›Y[ќВ€ЛИЭ\ќXXЪ™YЪ[Ы€[€]ИЭЫ€XЫ\™Y[љ]X[Э]H]\€[€HЫШ[ЫX\ЫИB€ЛИЭ]Hљ[H]›ЬИH^Y\€[ќИHY\X\њЪ\ИЩ\И›Э™YЪ[€[€ЩX]\€HY\€ЛИX\њЪ\ИШ[››Э›ЩXЩK‚€ЫЫњЭLH\Л™[ќљ\›Ы›Y[ќ›XXЪ[™Q›ЬЉ\Л™љY[њ™YЪ[Ыђ]
-\ЛњЪ[Kњ^Y\‹њЬЦМK\ЛњЪ[Kњ^Y\‹њЬЦМ—JKљY
-NВ€\ЛњЪ[K™[ќ‹ќЩX]\€HLљ[љ]X[В€B€ЛИМKSPTИTђ’UђUSУ€МНK€Ъ]H^Y\€\ИЩY[€Щ€H›Эљ[ЩH[™Ъ\™H^H]™B€ЛИЭЫЩ€[™ИЫ€HТSK›Эќ\ЭЫ€H[™Ъ[™K™XШ]\ЩHЪ[KЬЭ\љњШљ]™\И][™B€ЛИЮ\Э[HЫ›HH[™Ъ[™HШ[€ЩYH\ИHЮ\Э[HHљ^YЭ\Ш[››Эќ[€8 %HШ[YH™X\ЫЫ‚€ЛИЪ[KњЩ][Y[ќШ\И[™И\™HЩ[ќH[™\ИX›Э™K‚€ЛВ€ЛИHТSH\ИРTT‘Q\™H[™™]™\€\ЬЩYYШZ[Ћ€ШњЩ\ќ™J
-XZЩ\И›И\™Э[Y[ќЛЪXЪ\В€ЛИHЪЫHЩ€HH]Y\ЭШ[››ЭXЩHHX\љЩ\€€ЭX\[ќYK€ЩYB€ЛИШ[YKЬЬЛЬЪ[KЩ\ШЫЭ™\ћKљњЙЬИXY\€[™SQS‘QS•UМKSPTLH0©МШ‹‚€ЛВ€ЛИ]Ш\\™\И\ЛњЪ[X[™“Х\ЛњЪ[Kњ^Y\И\ЛњЪ[K™[ќ[™]\ИШYX™X\љ[™В€ЛИ]\€[€Э[\ЭXО€Ъ[TЭ]Kњ™\Щ]
-
-X™\XЩ\И›ЭЩ€ЬЩHШљ™XЭЛЫИH[Щ[€ЛИЫ[™И[H\™XЭHШњЩ\ќ™\ИHXY›ЩHњ›ЫHHљ\њЭШYЭ]J
-XЫќШ\™€]Ш\В€ЛИHЪ\Y™Z]љ[Э\€[ќ[]Ш\ИYX\Э\™Y8 %ЌMH™]™X[YЩ[И[™™\›И[YYXЩ\И›Ь‚€ЛИH™\ЭЩ€Hќ[‹€Ш[YH^\™\ИЬ™Xљ[™]Y\Эќ[ќ[YJ
-X™[ЭЛ‚€\ЛњЪ[K™\ШЫЭ™\ћHH™]И\ШЫЭ™\ћJВ€љY[€\Л™љY[€Ъ[N€\ЛњЪ[K€ШО€\Л™]K›X\RHЯK€Ъ\О€\Л™]KњЪ\Л€JNВ€\Лњ™[™\™\‹њЩ]ЫЬ›
-\Л™љY[\Л™]Kњ›ШYКNВ€ЛИМKL›Э[™И8 %HХУ”ЛUPТQ‘Q“Ф‘HH’T”ХSHTИ•RS‚€ЛВ€ЛИЩ][Y[ќќZ[[™ЬШШ\И™XY]^XЭHЫИЪ]\И™Y›Ь™H\И[™H8 %HЫЬ€X›H[™€ЛИH›[™Э8 %ЫИHЊ€ќZ[[™ЬИЩ€HZYЪЩ][Y[ќИЩ\™HќZ[[™Л\Ъ\YЫЬњИЫ‚€ЛИ\™HЬ›Э[™[™”\Щ][Y[ќ\Э™Y]ЭЩЬ\Y\њZ[‹€\И\ИH™XY\‹‚€ЛИШ[YHXЩ[Y[ќ[™Ш[YH™X\ЫЫ€\ИљY[њЩ]ЪYЫњЬЭК
-XX›Э™N€H[HќZ[™Y›Ь™HB€ЛИ[њИ^\Э\ИHЭ™Y]Ъ]ЫЬњИЫ€][™›Э[™ИЭ[™[™И\‚€Y€
-\Лњ™[™\™\‹њ›Эљ[ЩJHВ€\Лњ™[™\™\‹њ›Эљ[ЩKњЩ]Щ][Y[ќК€Шљ™XЭќ[Y\К\Л™]KњЩ][Y[ќИЯJK\Л™]Kљ[ќ\љ[ЬњИЯK€
-NВ€B€ЛИМKLLО€H™[™\™\€]ЬИHЩ[И[™H›ЫЫHЩ™€HШ[YH™YЪ\ЭћHHЪ[][][Ы‚€ЛИ™\Ь]ЫњИ[ЭH]€Ы™HЫЭ\ЩKЫИHЩ[[ЭHШ[€ЩYH\ИHЩ[[ЭHШ[€™\Э]‚€\Лњ™[™\™\‹љX\ќИH\ЛљX\ќОВ€ЛИHШ[Y\IЬИЫЫ\Ъ[Ы€Щ]€ќZ[ЫЩHњ›ЫHШ[YKЩ]KШШ[Y\KШЩ[ЛљњЫЫ€[™[‚€ЛИЩ[XЭY\€[YYЭ]NИHЪ[HЭ\Ы›H]™\€™XYИ]‚€\Л—ШќZ[RJ
-NВ€\ЛЩ[ИHќZ[Щ[К\Л™]KШ[Y\PЩ[КNВ€ЛИ’KSUЛ€Ш[Y\KЬљYЛљњЫЫШ\И™]ЪY\™H[™›ЬY8 %MИЫЫњЭ[ќИ\ШЬљXљ[™ИB€ЛИЫ™H[™ИH^Y\€ЫЪЬИ›ЭYЪ›Ы™HЩ€[H™XYћH[ћ][™Л€\И\ИHШ[]€ЛИXZЩ\ИHљ[HЫЭ™\›Ћ€]Э™\ќЬљ]\ИРSQTђWРУУ”Х™KY\љ]™\ИHЫ[ЫЭ[™И[\И[™€ЛИH™X\‹\[™HЫЬ›™\€Y]\Л[™›ЭЬИY€Hљ[H\ИЬЭHљY[]\€[‚€ЛИ™]™\ќ[™ИИH]\[€ЫЫЛШШ[Y\KШШ[KXЫЫњЭ[YK›ZњШ\ќ\њИHљ[H[™Ш]Ъ\ИB€ЛИШ[Y\H[Э™K€]]\Эќ[€‘Q“Ф‘HHљ\њЭЭ\™XШ]\ЩH]™\ћHЫЫњЭ[ќ]Ьљ]\И\И™XY€ЛИ[њЪYHHљ^YЭ\‚€\Л—ШШ[Y\TљYР]Y]H\PШ[Y\TљYК\Л™]KШ[Y\TљYКNВ€\ЛњЪ[KШ[Y\U\™Щ]ИH\Л™]KШ[Y\U\™Щ]ЛљZYЪЧЫNВ€\ЛњЪ[KШ[Y\U\™Щ]Л—ЩY][H\Л™]KШ[Y\U\™Щ]Л—ЩY][В€ЛИHљ[™[™ИX›H\ИUH
-Ш[YKЩ]KЪ[њ]Ь›Щљ[\ЛљњЫЫЉK€Щ]›Щљ[\К
-H]\Эќ[€™Y›Ь™B€ЛИH[њ]]\ИќZ[И™X[[њ]›ЭЬИY€]\И›ЭЫИHZ\ЬЪ[™И]Hљ[H\ИHЭY€ЛИ›ЫЭZ[\™H]\€[€HШ[YH]Ъ[[ќH[ИXЪИИH\™XЫЩY]\[‚€Щ]›Щљ[\К\Л™]Kљ[њ]›Щљ[\КNВ€\Лњ™X[H™]И™X[[њ]
-\Лљ[њ]\ЛШ[ќ\Л\Л™]JNВ€\Лњ™X[™њ[YSЩ€H
-
-HO€\ЛњЪ[K™њ[YNВ€ЛИМОN€HЫЬ[ЩHЩ[XЭИH[њ]ЫШЪИ8 %]™[ќќ[YTЭ[\[€^Xњ[YH
-‚€ЛИХTУTШ[€\›™\ЬШШ^KZ[њЭќ[Y[ќY€[њ]ЪЫYШ]KљњШ[њ]›ЭК
-X\ИHЫ™B€ЛИXЩH]™XYИ][™]›ЭЬИY€H^K[[ЩHШ[™XY\И][\Y[њЪYHHЭ\‚€\Лњ™X[›[ЩSЩ€H
-
-HO€\Л›ЫЬ›[ЩNВ€\ЛњЪ[Kњ™X[[њ]H\Лњ™X[В‚€\Л›ШYЭ]WЛњ\ЩHH	ЫЬ[љ[™Л\ЭЬ™IОВ€]ШZ]\ЛњЭЬ™K›Ь[Љ
-NВ€]ШZ]\ЛњЭЬ™Kњ™\]Y\Э\њЪ\Э[ЩJ
-NВ‚€ЛИМKLО€H]HHљ^YЭ\™XYИ›Ь€T‹LЛ[™ИЫ€HЪ[HЫИЭ\ЫЩJ
+      // ROUND 2 — but NOT the in-flight death, and not the last grounded position. Clearing
+      // no transition — the death is already in flight. Put them up here so a mid-death load
+      // first step ran, and the input gate reads `denyRoll` — so for one frame after every
+    // `save_read` was declared in the HARNESS.md §5 vocabulary in wave 1 and emitted by
+    // nothing: `writeSave()` emitted `save_write`, and the other half of the pair — the one
+    // see — had no emitter anywhere in `game/src`. `degraded` is the field that matters: it is
+   * DURABLE FIELD CENSUS — the instrument that would have caught
+   * needs no declaration to be right — a field nobody remembered to declare still shows up.
+    // *_ago_frames offset — this list is the re-basing rule, not an exclusion list. The two
+      'player.frameNow': 'The CURRENT FRAME INDEX under another name. `_settleWorld()` copies `sim.frame` onto the player at the top of every province step so `sim/player.js` can read it without a handle to the engine, and outside the province it is never written at all. `volatile.frame` is a DECLARED VOLATILE field (RI-JRN05 §B) and this is the same number; carrying it would make the round-trip hash depend on when the save was taken, which is the exact thing the volatile declaration exists to prevent. Excluded here by name rather than silently.',
+    //   * `sim.character` — `loadCreation()` dropped `powers` and `drawbacks`, so the Focus
+    //   * the combat bodies — the AUTHORITY behind `sim.player` (sim/combat-bridge.js).
+Ъ[HЫИЭ\ЫЩJ
 H™YYИ›В€ЛИ[™Ъ[™H™Y™\™[ЩK€Щ]™Y›Ь™HHљ\њЭЭ]H\И\YY‚€\ЛњЪ[K™[ЫЭ[ќ\‘]HH\Л™]KЪ\XЭ\ЋВ€ЛИМKLMN€HЭX[ШЬљ[YHЭXњЮ\Э[K[™ИЫ€HЪ[HЫИЭ\ЫЩJ
 H™YYИ›И[™Ъ[™B€ЛИ™Y™\™[ЩK€ќZ[™Y›Ь™HHљ\њЭЭ]H\И\YYЫИHШЩ[\љ[ИШ[€ШY[ќИ]‚€\ЛњЪ[KњЭX[H™]ИЭX[Ьљ[YJ\Л™]JNВ€ЛИМKTУХSО€HУХTђСK€[™ИЫ€HЪ[H›Ь€HШ[YH™X\ЫЫ€HЫИX›Э™H\™H8 %ЫВ€ЛИЭ\ЫЩJ
 X™YYИ›И[™Ъ[™H™Y™\™[ЩK€[ќ[\И[™H^\ЭYЫЭ[Т[Y^XЭB€ЛИЫ™H›ЩXЩ\€[€HЪЫHќZ[
@@ -8368,7 +8298,8 @@ HO€
 \Л—ШЩ[њЭ\ФЭ\И\Л—ШЩ[њЭ\ФЭ\
 [њ]
 H€ќ[
-NВ€ЛИМKLЌ€›Э[™‹€HЬ[љ[™ИШ[››Э™HШ[ЩYЭ]Щ€[‹Yљ[љ\ЪY€ЫЩHН€Ш]™HH^Y\‚€ЛИЪ^HЩXЫЫ™ИЩ€›ЩH™Y›Ь™HHљ\њЭ]Y\Э[Ы‹[ќ\XЭ]HЫЫ\[љ[ЫќШ^H™XШ[YHB€ЛИШ^HИX]™HHЫЪ]HШЩ[™HЭ[]\ЩY[€]8 %[™›Э[™Ињљ[™ЬИ[ЭHXЪЛЫВ€ЛИHЪ\XЭ\€\И™]™\€Ь™X]Y[™HШ[YH\И[™љ[љ\ЪX›Hњ›ЫHHљ\њЭZ[ќ]K‚€ЛИHќ[H\ИHШЩ[™IЬЛ›ЭHЫЬ‰ЬЛЫИ]]™\И\™N€Ъ[HHЬ™X][Ы€\Иќ[›љ[™Л€ЛИHЩ[HХT”‘S•“СHTИСUS€ЫИ]ИЫЬ‹€HXЩHЫЫY\Ињ›ЫHHЬ\€ЛИ
+NВ€ЛИМKLЌ€›Э[™‹€HЬ[љ[™ИШ[››Э™HШ[ЩYЭ]Щ€[‹Yљ[љ\ЪY€ЫЩHН€Ш]™HH^Y\‚€ЛИЪ^HЩXЫЫ™ИЩ€›ЩH™Y›Ь™HHљ\њЭ]Y\Э[Ы‹[ќ\XЭ]HЫЫ\[љ[ЫќШ^H™XШ[YHB€ЛИШ^HИX]™HHЫЪ]HШЩ[™HЭ[]\ЩY[€]8 %[™›Э[™Ињљ[™ЬИ[ЭHXЪЛЫВ€ЛИHЪ\XЭ\€\И™]™\€Ь™X]Y[™HШ[YH\И[™љ[љ\ЪX›Hњ›ЫHHљ\њЭZ[ќ]K‚€ЛИHќ[H\ИHШЩ[™IЬЛ›ЭHЫЬ‰ЬЛЫИ]]™\И\™N€Ъ[HHЬ™X][Ы€\Иќ[›љ[™Л€ЛИHЩ[HХT”‘S•“СHTИСUS€ЫИ]    // at all — the live object is camelCase and the save is snake_case, and `prev_state` hid
+XЩHЫЫY\Ињ›ЫHHЬ\€ЛИ
 ›ЩKњXЩX
 KЫИHШЩ[™H]]\€Ь[њИЫЫY]Ъ\™H[ЩH™YYИ›ИЫЩHЪ[™ЩK[™B€ЛИ™Yќ\Ш[Ш\њљY\ИЫЬ™И]\€[€™Z[™ИHЫЬ€]Ъ[[ќHЩ\И›Э[™Л‚€\ЛњЪ[K™ЫЬ•™]ИH
 [ќ\љ[Ь’Y
@@ -8376,18 +8307,41 @@ HO€В€Y€
 ]\ЛЩ[њЭ\И\ЛЩ[њЭ\Л™Ы™JH™]\›€ќ[В€ЫЫњЭЭH\ЛЩ[њЭ\ЛњЭ]J
 NВ€Y€
 Э™Ы™H\ЭњXЩHЭњXЩHOOH[ќ\љ[Ь’Y
-H™]\›€ќ[В€™]\›€	ХH]Ъ\И\њ™Y[ќ[[ЭH\™HЬљ][€ЭЫ‹‰ОВ€NВ€ЛИМKLИ›Э[™О€HЫЬ›\ЪYH™XY\€›Ь€Ь™Y][™ЬЛљњЫЫ€[™HXЩKYШ]YЬXЬЛ‚€ЛИHЬXИ[™^\ИќZ[ЫЩHЭ™\€]™\ћHX[ЩЭYKЭЬXЬЛК‹љњЫЫ€[€H™YKЫИB€ЛИЬXИYYћH[›Э\€YXЩH\ИЬXZШX›HH[ЫY[ќ]\И[™^Y‚€\ЛќЬXТ[™^HќZ[ЬXТ[™^
+H™]\›€ќ[В€™]\›€	ХH]Ъ\И\њ™Y[ќ[[ЭH\™HЬљ][€ЭЫ‹‰ОВ€NВ€ЛИМKLИ›Э[™О€HЫЬ›\ЪYH™XY\€›Ь€Ь™Y][™ЬЛљњЫЫ€[™HXЩKYШ]YЬXЬЛ‚€ЛИHЬXИ[™^\ИќZ[ЫЩHЭ™\€]™\ћHX[ЩЭYKЭЬXЬЛК‹љњЫЫ€[€H™YKЫИB€ЛИ  // ---- load boundaries (A-JRN7, RI-PLT03 §B) ---------------------------------------------------
+        TTFP: 'Tier-H (RI-PLT03 §A). navigationStart→first-controllable wall clock on SwiftShader measures the rasteriser. Report TTFP_model instead, with the GPU constant stated.',
+ЬXZШX›HH[ЫY[ќ]\И[™^Y‚€\ЛќЬXТ[™^HќZ[ЬXТ[™^
 \Л™]KЪ\XЭ\‹ќЬXСШЬКNВ€\ЛЫЫќ™\њШ][Ы€H™]ИЫЫќ™\њШ][ЫЉ\Л™]KЪ\XЭ\‹\ЛќЬXТ[™^
 NВ€\Л—ЩЬ™Y]ЫЭ[ќH™]ИX\
 
-NВ€ЛИМKLMЌ€HЬ[XZЪ[™ИЫЭ[ќ\‹Ъ[€Ы™H\ИЬ[‹€ќ[H™\ЭЩ€H[YKЪXЪ\В€ЛИ]™\ћHњ[YHH^Y\€\И›ЭЭ[™[™И[€њ›ЫќЩ€Ы™HЩ€HЩ]™[€Ь[ЬљYЪИ]љ[™В€ЛИZ\ЩYHЭXљ™XЭ€ЩYHШЫЫ[Z\ЬЪ[Ы“Ь[њШ‚€\ЛЫЫ[Z\ЬЪ[Ы€Hќ[В€\Л—ШЫЫ[Z\ЬЪ[Ы‘\ШX›YH[ЩNВ€\Л™[Ъ[ќЫЭ[ќ\€Hќ[ИЛИМKLMЌB€\Л—Щ[Ъ[ќ\ШX›YH[ЩNВ€\ЛќЬљ]™XY\€HИЬ[Ћ€[ЩK[™\О€ЧKЬ€NВ€ЛИМKLK’KUУ€‹€HЬЭ[ЭH\™HЭ[™[™И]Y€[ЭH]™H™XXЪY›Ь€Ы™K€Ш[YHЪ\B€ЛИ\ИHЬљ]™XY\‹Ы€\њЬЩN€HШЭ[Y[ќ[ЭHЫ[™H›Ш\™[ЭHЭ[™[™\€\™HB€ЛИШ[YH›Ш›[H8 %HЬљ][€[™ИH^Y\€]\Э™HX›HИ‘PQ›ЭY\™[HИ™H™X\‹‚€ЛИ’KR”“ЊШ	ЬИУУ”ХSTSУ€›ЭHШ[ИHЭљ[™И]\И]]Ь™YШ\њљYY[™™]™\€]Ы‚€ЛИ›Ьњ[€^‹[™Ш^\И]\ИY[ќXШ[њ›ЫHH^Y\‰ЬИЪZ\€ИЫ™H™]™\€Ьљ][‹‚€\ЛњЪYЫ”™XY\€HИЬ[Ћ€[ЩKЪYЫЋ€ќ[[™\О€ЧKYЪX›N€ќYHNВ€ЛИМKLћ	ЬИXXЪ[™KМKLM	ЬИ™X\ЫЫ€›Ь€\›љ[™И]Ы‹€H]Y\Э›ЫЪИШY\ИђRSSХQћB€ЛИ\ЪYЫ€
+NВ€ЛИМKLMЌ€HЬ[XZЪ[™ИЫЭ[ќ\‹Ъ[€Ы™H\ИЬ[‹€ќ[H™\ЭЩ€H[YKЪXЪ\В€ЛИ]™\ћHњ[YHH^Y\€\И›ЭЭ[™[™И[€њ›ЫќЩ€Ы™HЩ€HЩ]™[€Ь[ЬљYЪИ]љ[™В€ЛИZ\ЩYHЭXљ™XЭ€ЩYHШЫЫ[Z\ЬЪ[Ы“Ь[њШ‚€\ЛЫЫ[Z\ЬЪ[Ы€Hќ[В€\Л—ШЫЫ[Z\ЬЪ[Ы‘\ШX›YH[ЩNВ€\Л™[Ъ[ќЫЭ[ќ\€Hќ[ИЛИМKLMЌB€\Л—Щ[Ъ[ќ\ШX›YH[ЩNВ€\ЛќЬљ]™XY\€HИЬ[Ћ€[ЩK[™\О€ЧKЬ€NВ€ЛИМKLK’KUУ€‹€HЬЭ[ЭH\™HЭ[™[™И]Y€[ЭH]™H™XXЪY›Ь€Ы™K€Ш[YHЪ\B€ЛИ\ИHЬљ]™XY\‹Ы€\њЬЩN€HШЭ[Y[ќ[ЭHЫ[™H›Ш\™[ЭHЭ[™[™\€\™HB€ЛИШ[YH›Ш›[H8 %HЬљ][€[™ИH^Y\€]\Э™HX›HИ‘PQ›ЭY\™[HИ™H™X\‹‚€ЛИ’KR”“ЊШ	ЬИУУ”ХSTSУ€›ЭHШ[ИHЭљ[™И   * HARNESS.md §7 rule 4's pair: `game/data/world/traversal.json` is the declaration, the live
+  /** What is around you that only exists here — the diegetic form of "which region am I in". */
+   * Pin the tide. `RI-WLD10` §7's cycle is 12 real minutes with four states; the phase is the
+ЛИ›Ьњ[€^‹[™Ш^\И]\ИY[ќXШ[њ›ЫHH^Y\‰ЬИЪZ\€ИЫ™H™]™\€Ьљ][‹‚€\ЛњЪYЫ”™XY\€HИЬ[Ћ€[ЩKЪYЫЋ€ќ[[™\О€ЧKYЪX›N€ќYHNВ€ЛИМKLћ	ЬИXXЪ[™KМKLM	ЬИ™X\ЫЫ€›Ь€\›љ[™И]Ы‹€H]Y\Э›ЫЪИШY\ИђRSSХQћB€ЛИ\ЪYЫ€
 YњЛљњКN€H]Y\ЭЪЬЩH›Э\›[[™XЩ\И\™HЭ]Щ€[™ЪЬЩH›ЬЩHљ\В€ЛИ’KQМH0©СЬ€ЪЬЩHЫЪЬИЪ[ќ][€[ќћH]Щ\И›Э^\ЭЭЬИHШ[YH›ЫЭ[™В€ЛИ]\€[€Z[[™ИHЬљ]XИќ[€]\‹‚€\Лњ]Y\Э›ЫЪИH™]И]Y\Э›ЫЪК\Л™]Kњ]Y\ЭКNВ€\Л™XЭ[Ы‘Ш]\ИH™]ИXЭ[Ы‘Ш]\К\Л™]Kњ]Y\ЭЦЙЩXЭ[Ы‹YШ]\ЙЧHИXЭ[ЫњО€ЧHJNВ€\Лњ]Y\Э[™Ъ[™HH™]И]Y\Э[™Ъ[™J\Лњ]Y\Э›ЫЪЛ\Л™XЭ[Ы‘Ш]\Л\Л™]Kњ]Y\ЭЦЙЬ]Y\ЭZЫЪЬЙЧK\ЛњЪ[JNВ€ЛИМKLЊ€H™XЬќZ]\њЙИЫЬ™Л€XЭ[Ы‘Ш]\Л™][X]J
 X\И[Ш^\ИЫЫ\]YHЪЫB€ЛИ›Э\‹\\ќЭ][Y[ќЪ]H^Y\‰ЬИЭЫ€ќ[X™\њИ[€][™]Y\Э[™Ъ[™K›Ь[Љ
-X\И[Ш^\В€ЛИ™Yќ\ЩYЫ€]8 %[™Ъ]Ш[YHXЪИШ\ИWЩ›ЭЫ™YШЫЭ\ќ[љИМHXќYИЭљ[™ИЪ]€ЛИЩ[ZXЫЫЫњИ[€]€’KTTХИ0©РИ™\]Z\™\ИH™Yќ\Ш[И™HЬЪЩ[‹€[њЭ[YЫ€H]Y\Э€ЛИ[™Ъ[™HЫИ]H™Yќ\Ш[‘PPТQ”“УHVHШ\њљY\ИH[™K›ЭЫ›HЫ™H\ЪЩY›Ь€ћHB€ЛИ›Ш™NИ™Yќ\Ш[љњШ™]™\€Э]\ИH™\ЪЫЫИHY\€Э^\ИHЫ›HЫЭ\ЩHЩ€[K‚€\Л™XЭ[Ы”™Yќ\Ш[ИH™]ИXЭ[Ы”™Yќ\Ш[К€\Л™]K™XЭ[Ы”™Yќ\Ш[Л€
+X\И[Ш^\В€ЛИ™Yќ\ЩYЫ€]8 %[™Ъ]Ш[YHXЪИШ\ИWЩ›ЭЫ™YШЫЭ\ќ[љИМHXќYИЭљ[™ИЪ]€ЛИЩ[ZXЫЫЫњИ[€]€’KTTХИ0©РИ™\]Z\™\ИH™Yќ\Ш[И™HЬЪЩ[‹€[њЭ[YЫ€H]Y\Э€ЛИ[™Ъ[™HЫИ]H™Yќ\Ш[‘PPТQ”“УHVHШ\њљY\ИH[™K›ЭЫ›HЫ™H\ЪЩY›Ь€ћHB€ЛИ›Ш™NИ™Yќ\Ш[љњШ™]™\€Э]\ИH™\ЪЫЫИHY\€Э^\И   * `combat/player.js`, not by this method — which is the point, because M3 exists to catch an
+   * Resumable: pass `chunkFrames` and call again until `done` — 57.6 minutes is 207,360 fixed
+   * piece could produce was `scale-audit.mjs`'s grid flood fill — which verdict W1-01 §6 called
+   *   1. **It cannot recover.** Displace the body — a boulder, a wall, a slope slide, a fall off a
+   *      viaduct — and it does not come back to the road. It puts its head down and beelines at a
+   *      of it and finished in 16 m of sea. That leg's ground is innocent — this instrument's own
+   *      census gives it a worst regain angle of 11.5 deg, no falls and no slope-gate refusals —
+   * polyline. `forward` shrinks as the body's lateral error grows — at 4.5 m off the road the
+    // How much road is left in front of the projection — the honest "remaining", and the arrival
 
-\Л™]Kњ›ЩЬ™\ЬЪ[Ы€	‰€\Л™]Kњ›ЩЬ™\ЬЪ[Ы‹њЪЪ[КHЯJKњЪЪ[ИЧK€
-NВ€\Лњ]Y\Э[™Ъ[™Kњ™Yќ\Ш[›ЪXЩHH
-XЭ[Ы’Y][X][ЫЉHO€\Л—ЬЬXZСXЭ[Ы”™Yќ\Ш[
+    // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
+    // F7 and in survey §2c, as landing in "`walkRoute` AND `walkPath`". It had not landed here.
+    // fields, same reasoning — see `walkRoute`'s note below for why 1 m is the bar.
+      // stamina, one per 30 f, three of them break you out) and nothing else clears the state —
+      // mode AGENT-PROTOCOL names — a probe that cannot fail.
+      // A WALKING BODY CANNOT MOVE A METRE IN A SIXTIETH OF A SECOND — see `walkRoute`. Metres the
+      // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED —
+      // `arrived` is answered against the body's position, which a respawn also moves — so a walk
+      // The target is the body's PROJECTION ONTO THE ROAD, pushed forward — see `_pursue`. The old
+      // that is how a walk that died 1,370 m into THE CROSSING reported 4,812 m of it — the
+      // The leg the body is ON, which is the leg its PROJECTION sits on — not the leg of whatever
+      // streamed the province while a body moved — `request()` + `pump(1)` every 90 frames, and
+X][ЫЉHO€\Л—ЬЬXZСXЭ[Ы”™Yќ\Ш[
 XЭ[Ы’Y][X][ЫЉNВ€ЛИМKLИ›Э[™€HXЩKЭ\њљ[™Ъ[™ЛЩXЭ[Ы€\›HЫ€HЩ™™\€Ш]K€[њЭ[Y™Y›Ь™HB€ЛИљ\њЭЩYYЫИ›ИЪ[™ЭИ^\ЭИ[€ЪXЪHШ]H\И][X]YЫ€H]И™YЪ\Э\‹‚€\Лњ]Y\Э[™Ъ[™K™\ЬЬЪ][Ы“[Щ[H\Л—Ь]Y\Э\ЬЬЪ][Ы“[Щ[
 
 NВ€ЛИ’KTTХИ0©С€^[Ъ[Ы€[™™XYZ\ЬЪ[Ы‹ЪXЪ›Э[™HШЫЬ™Y8 %XњЩ[ќ€[њЭ[Y\™B€ЛИ]\€[€ЫЫњЭќXЭY[њЪYH]Y\Э[™Ъ[™HЫИ][€[™Ъ[™HќZ[Ъ]Э]Hљ[HЭ[€ЛИ›ЫЭИ[™Ъ[\H\И›И\ШЪ\[™K\€Hќ[HX›Э]\›Z[™И[€\ЬЩ\ќ[Ы€™Y›Ь™H]И]K‚€\Лњ]Y\Э[™Ъ[™K™\ШЪ\[™HH
@@ -8408,7 +8362,22 @@ NВ€ЛИМKLNH›Э[™Ћ€HЫЬ›\ЪYHЭ\HЩ€ЬXИ
 NВ€ЛИМKLN›Э[™Ћ€HЫЬ›\ЪYH™XY\€›Ь€XЩZ]њ™]™X[YШћVЧKЪ[›™[ИњЫЭ\ЩX€N‚€ЛИ]]Ь™Y›ЭЬЛ™\›И™XY\њИ[€Ш[YKЬЬЛШ™Y›Ь™H\И[™K[™LLИЩ€HLЊH™]™X[ИB€ЛИ™\ЫЫ][Ы€[X[™ИY›И›Э]H[€^H][€[њЭ[YYќ\€H]Y\Э›ЫЪИ\ИШYY€ЛИ™XШ]\ЩHH[™^\ИќZ[Э]Щ€H]Y\ЭYљ[љ][ЫњИ[\Щ[™\Л‚€ЛИЩYHЪ[KЬ]Y\ЭЬ™]™X[\›Э]\ЛљњШИHЭ[™[™ИЪXЪИ\ИЫЫЛЬ]Y\ЭЛЬ™]™X[\›Э]KX]Y]›ZњШ‚€\Л—Ъ[њЭ[™]™X[›Э]\К
 NВ€ЛИМKSФPТUK€HЬXЪ]H™YЪ\Э\‹[™]ИZ[XЫЬЩY™XY\‹€’KSUЛРTђ’UђUSУ€0©МО‚€ЛИH™YЪ\Э\€›Э[™И™XYИ\ИH^љ[K€Ъ[њЭ[ЬXЪ]X™\ЫЫ™\И]™\ћH[ЪЬ‹€ЛИ]љY[ЩHY[™[ЩKXXШЫЭ[ќYYШZ[њЭH]H]XЭX[HШYY[™“ХФИЫ€B€ЛИ[™ЫK[€[™ИH™YЪ\Э\€ИHЫЫќ™\њШ][Ы€ЫИHЫЬ›Ш[€XЫ[™K‚€\Л—Ъ[њЭ[ЬXЪ]J
 NВ€ЛИМKLЊЛ€’KSФЊ€И’KSUО€HШ[›Ы€™YЪ\Э\‹€]™\ЫЫ™\И]™\ћHЫЭ\ЩHH™YЪ\ЭћHШ^\В€ЛИЫИHЬЪ][Ы‹“ФИH›ЭЬИ][YHЫЫY][™И›Э[€\ИќZ[
-]\ЩYИ›ЭЛ€ЛИ[™H›ЭИЭЬY›Э\ќY[€YЩ[ќИ›ЫЭ[™И8 %ЩYHЪ[њЭ[Ш[›Ы™[ЭИ[™•STИќ[B€ЛИM
+      // RI-MAG05 §B2's budget quantities. Reported here rather than in a second call because
+        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled — see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not.',
+  // ================= W1-15 — stealth, theft, crime and justice ===============================
+      // W1-15 round 2 — the fields RI-MTH07's hand-feed audit needs. `in_cover_source` says
+      // W1-15 r3 — the hand-feed audit for LIGHT. `world_sources` is what the interior record
+      // reading RI-MAG06 §B's row for `chameleon` / `invisibility` / `muffle` / `night_eye` /
+   * `hist_sight` writes EXACTLY ONE prose journal entry and ZERO HUD markers (RI-MAG06 §B,
+   * RI-MAG02 §H, AR-2). The prose is copied verbatim out of a quest file by Journal.write() —
+   * calls `SimState.reset()`, because that replaces `sim.quest` wholesale — which is both
+    // pointing at the previous world — but re-install anyway, because a rebind that half
+   * the build with a `disposition_min` above zero was unofferable from a cold start — the
+   * `seedDispositions()` above writes the register — the world's *written* opinion. This is
+   *   * `character/reaction.js derivedDisposition` — RI-CHR02 §3's 12x10 matrix, the upbringing
+   *   * `sim/dialogue/disposition.js movableTerms` — RI-DLG04 §B's Personality, faction,
+   *     with no route through, which `race-reactions.json` §repair_paths explicitly rejects
+M
 K[€[њЭ[И]Щ[€Ы€HЫЫќ™\њШ][Ы€ЫИHЬXZЩ\‰ЬИ™YЪ\Э\™Y€ЛИЭ[ЩHXЪY\ИЪXЪЪYHЩ€H\Ь]HH^Y\€X\њЛ‚€\Л—Ъ[њЭ[Ш[›ЫЉ
 NВ€\ЛњЪ[Kњ]Y\Э[™Ъ[™HH\Лњ]Y\Э[™Ъ[™NВ€\Лњ™X[›Ы•^Ъ\€H
 Ъ
@@ -8432,10 +8401,33 @@ XZ\Щ\И][€[ћH[ЩKЫИB€ЛИЪXЪИ\Иќ[›X›H
 \[Щ€ШШ][Ы€OOH	Э[™Yљ[™Y	И	‰€™]ИT“ЩX\Ъ\[\КШШ][Ы‹њЩX\Ъ
 K™Щ]
 	Э]IКHOOH	МIКNВ€ћHВ€\Лњ™[™\™\‹ќ]KњЩ]Ш]™\К]ШZ]\ЛњЭЬ™K›\ЭЫЭК
-JNВ€HШ]ЪИК€Hњ›ЭЬЩ\€Ъ]›И[™^Y€Э[Щ]ИH]KЪ]ЫЫќ[ќYH\ШX›Y
-‹ИB€\Лњ™[™\™\‹ќ]Kљ[”Щ\ЬЪ[Ы€H[ЩNВ€Y€
+JNВ€HШ]ЪИК€Hњ›ЭЬЩ\€    // attributes, skills, world flags. Deliberately NOT `qe.context()` — that calls
+  /** The character as RI-DLG04 §B's movable terms read them, from live sim state only. */
+      // DECLARED EXCLUSION, measured rather than assumed. RI-DLG04 §B's Personality term is
+      // and a starting Personality of 5-20 — a saxhleel reed-walker ships with 6 — so the term
+      // in this build — which meant `factionTerm`'s rank amplification was dead and, worse, that
+      const msg = 'quest givers invisible to the RI-CHR02 reaction matrix — '
+      // closed again — a giver that gates every race identically is exactly the defect this was
+        // genuinely open and must say so — `resolve()` now gates on `opened`.
 
-ЬЛ›[ЩH	Ъ\›™\ЬЙКHOOH	Ь^IИШ[ќ]JHВ€\Лњ™[™\™\‹ќ]KњЪЭКИњ[YN€\ЛњЪ[K™њ[YHJNВ€B‚€ЛИHШ[Y\Y\ИЫYњ›ЫHH[љ[X][Ы€њ[YK›Эњ›ЫHHљ^YЭ\€HY	ЬИЭ]B€ЛИ\ИH]љXЩH™XY[™И[™™[Ы™ЬИЫ€HШ[YHЪYHЩ€HЩX[HHЩ^YЭЫ€\ИЫ‹‚€\Л›ЫЬ™Y›Ь™UXЪИH
+    // here is declaring a scenario override — recorded so the next step doesn't silently
+      // critic can tell the world's answer from a hand-fed one (RI-MTH07 §C3).
+   * A wall. Added to the stealth occluder cell — a real `CollisionCell` of the same primitives
+   * `sim/collision.js` gives the camera — so that the thing a probe puts between two characters
+    if (!min || !max) throw new Error('addOccluder: expected {id, min:[x,y,z], max:[x,y,z]} — an axis-aligned box in world metres');
+   * `group: 'guard'` — which makes them a full witness at `guard_V_min` (RI-CRM01 §2), a report
+   * target for the shout and run-to-guard routes (§3a), and a body a fleeing witness runs at.
+    // W1-16: was `gold === null ? st.p.gold : gold` — the stale mirror. `_gold()` is the
+    // W1-16: was `st.p.gold += q.price_g` — a purse seeded at 400 and touched by nothing else
+  // ================= W1-04 — settlements, interiors and the people in them ====================
+  // never touches — the failure mode that put one good detection model and one broken one in
+   * has them in right now. Idempotent — `spawnNPC` returns the existing person for an eid that
+   * occupying one point. Nothing here draws RNG — `mix` is a hash of the id.
+        // W1-GIVER-PRESENCE, defect 1: this read `schedule[0].at` — the FIRST row of the day,
+          // weight: the block below derives a position from an INTERIOR's bounds — a cell-local
+          // frame centred on nothing — and a settlement stands at world coordinates
+   * Everyone the build declares at a NAMED SITE that is not a settlement — the hollow above the
+HШ[YHЪYHЩ€HЩX[HHЩ^YЭЫ€\ИЫ‹‚€\Л›ЫЬ™Y›Ь™UXЪИH
 
 HO€ИY€
 \Лњ™X[	‰€\Лњ™X[]XЪY
@@ -8465,7 +8457,23 @@ HВ€ЫЫњЭH\Л™]NВ€™]\›€В€њ[Y\О�
 Hљ\ЪX›H\КK0¬ЬИЪ[HЭ][Ы\ћH[™\€L0¬Щ‚€ЛИ\њ›Ь‹[™[€NYњ[YH›ЫЭ[[Э[Ы€\›—Ъ[—ЬXЩXЫ\™^[Ы™]€HЪ[™ЫB€ЛИ0¬ЬИЫЫњЭ[ќ\ИќZ[Ъ\YXYHHќ[›љ[™ИN0¬™]™\њШ[ZЩHЊ€њ[Y\В€ЛИ[њЭXYЩ€MH[™Y›И\›‹Z[‹\XЩH][ЪXЪ’KPРSL€MZ[ИЫ€›Э›ЭЬЛ‚€\›—Ь]WЫ[Эљ[™ЧЩО€МЊ€\›—Ь]WЬЭ][Ы\ћWЩО€€\›—Ъ[—ЬXЩWЭ™\ЪЫЩYО€L€\›—Ъ[—ЬXЩWЩњ[Y\О€N€ЛИМKQРSQTQ8 %РTИЊMKS‘UРTИHСPУУ‘PQ“У‘HУ€S€S‘PQKQPQ“У‘QХPТЛ‚€ЛВ€ЛИЫЫX]Ь^Y\‹љњОЋNM™XYИ\И[™Y\ИH›ЩH]XYИH[Э™WЩXY›Ы™X€ћHB€ЛИ[YHXYШ™XXЪ\И][™HH[Э™[Y[ќЭXЪИ\ИS‘PQH™Y[€›ЭYЪ€ЛИ[њ]ЩШ[Y\YљњИЪ\S[Э™TЭXЪК
 X
 Ь€[њ]ЭЭXЪљњШЪXЪ\ИHШ[YHX]КK€ЛИЪXЪ™[[Э™\И’KR”“Њ0©С	ЬИЊMH[›™\€XY›Ы™H[™‘TРРSTИЪ]\ИYќЫќИМWH8 %€ЛИ[™HЪЫHЪ[ќЩ€]™\ШШ[K[€Ъ\S[Э™TЭXЪЙЬИЭЫ€ЫЬ™Л\ИњЫИ\™H\И›В€ЛИXYЭ\]HXY›Ы™HYЩH‹€\Z[™ИЊMHYШZ[€ИH™\ШШ[Y[YH]HXY€ЛИЭ\ЭZYЪXЪЛЫ™H™\ШШ[Hќ\ќ\€Э]‚€ЛВ€ЛИYX\Э\™YЫ™H›ЩKЫ™Hњ›ЭЬЩ\‹X]ЪY\›\И
-™\ЬќЛЭМKYШ[Y\YЬY\ќ[‹љњЫЫ‹€ЛИЫЫЛЩШ[Y\YЬY\ќ[‹›ZњИНКN€Ъ]ЊMH\™HH›ЩHY›Э[Э™H[ќ[HЭXЪИШ\В€ЛИ]ЊЌИЩ€ќ[Y›XЭ[Ы€8 %›ЭHШЭ[Y[ќYЊMK[™Ъ][€›Э[™[™ИЩ€B€ЛИЊMH
+   * the people who own it — which in wave 1 means a companion or a possessed body, and is
+   * The sound radius for a hypothetical motion. `muffle`'s consuming system: RI-MAG06 §B names
+    // `observedBy` is a hand-feed and RI-MTH07 §C3 audits it. It is still accepted, because a
+    // scenario legitimately wants to state the case — but the DEFAULT is derived: the live
+    // `livesHere` was a hardcoded `false` here for the whole of wave 1, which is RI-MTH07 §C3's
+    // hand-feed in its purest form: RI-STL02 §1 makes the entire `shared` scope turn on it and
+    // nothing in the world could ever make it true. It is now DERIVED — from whether the
+   * `observedBy`, and the answer to RI-MTH07 §C3's hand-feed audit for this verb.
+    // little a trespass at three in the morning as at noon and `zone.schedule.open_h` — on all
+    // 233 zones — was read by nothing. It is now derived from the world clock and the hours of
+   * named people; the property tree's zone `residents[]` holds 280 more — the elders, siblings and
+   * buyer in a DIFFERENT town and a DIFFERENT faction — and there is exactly one relation in this
+   * RI-STL02 §6's third refusal line was written for, and until now nothing could reach it.
+   * household (kin) 90, faction 70, quarter-mate 65, a route that calls at the owner's town 60 —
+   * — and a shared reaction group 25, which deliberately does NOT reach it.
+   * not a person — `npc:tuls-avaro` is, and the roster has carried that field all along.
+ЭXЪИШ\В€ЛИ]ЊЌИЩ€ќ[Y›XЭ[Ы€8 %›ЭHШЭ[Y[ќYЊMK[™Ъ][€›Э[™[™ИЩ€B€ЛИЊMH
 ИЊMJЉЋL‹LЊMJHHЊЌЌMH]ЭX›H\XШ][Ы€™YXЭЛ€љYќY[€\€Щ[ќЩ‚€ЛИH]™HЭXЪИ[™ЩHШ\ИXY[™Hљ\њЭY›XЭ[Ы€]Y[ћ][™Иќ[\Y€ЛИЭZYЪИЌMИKЬИ]\€[€X\Ъ[™И[‹‚€ЛВ€ЛИУ“HS€SђSСХQHU’PСHУХS‘PPТUЪXЪ\ИЪH]Э\ќљ]™Y€[њ]Ь™X[љњВ€ЛИЬ\Ъ[Э™J
 X›Ь›X[\Щ\ИHЩ^X›Ш\™ИXYЫљ]YHKЫИHЩ^X›Ш\™™]™\€[ќ\њИ\В€ЛИњ[Ъ][€HY[™HЭXЪШЬ™Y[€Щ\™HHЫ›HЫИ]љXЩ\ИY™™XЭY‚€ЛВ€ЛИHЭX\™\ИЩ\[™Щ]И]\€[€[]Y€HXY›Ы™H™[Ы™ЬИИH]љXЩB€ЛИ^Y\€
 ’KR”“Њ0©С’KPРSL€0©РКH[™›Э[[ЩЭYH›ЩXЩ\њИ[\[Y[ќ]\™Kќ]Y‚€ЛИHќ]\™H›ЩXЩ\€]™\€[™И\И[™HHђUИЭXЪИXYЫљ]YK\И\ИЪ\™H]ЫЭ[™B€ЛИШ]YЪ[™H]™H]\[\ИX\ЪY\€Иљ[™[€H[]Yњ[Ъ‚€[Э™WЩXY›Ы™N€€Ш[ЧЬќ[—Э™\ЪЫ€ЌMK€K€NВ€B‚€Э]›ЬЉYZY‹њ[YJHВ€ЫЫњЭЭ]H\Л™]K™[™[ZY\ЦЪYNВ€Y€
@@ -8508,7 +8516,9 @@ HВ€Y€
 €›ЩHК€8 %HЫЭ[ИYЩ\‹HX]ШњЩ\ќ™\‰ЬИ\Щ[[™KHЬ[][Ы€Ю\Э[IЬВ€
 €]™HЬЭ[™^HЭX[ЭXњЮ\Э[IЬИЪ]љ[X[њИ[™ЩX\Ъ\ЛHЬ™Y][™ИЫЭ[ќ\‹‚€
 €›Ы™HЩ€]\ИШ]™HЭ]K€[Щ€]\И[€ШњЩ\ќ][Ы€X›Э]HЫЬ›[™]\ИЫ›B€
-€ќYHЩ€HЫЬ›]Ш\ИZЩ[€[‹‚€
+€ќYHЩ€H   * a band and until now they computed it from different ledgers — this one from
+   * band 3 look like" is a legitimate question and always was — but the override is reported as
+    // W1-15 r3: was `st.p.gold -= bounty` — a write to the stealth mirror only.
 ‚€
 €\™H\™HУИШЩ[\љ[И›Э[™\љY\И8 %\S[YYЭ]J
 X[™HШYЭ]J›ШЉX]8 %€
@@ -8532,8 +8542,16 @@ XЩ[XЭИH[™HЪ]Ш\њљYYXЬ›ЬЬИ]™\ћH›Э[™\ћH[�
 €HZ\ЬЪ[™И[™H[€H\Э›Ш›ЩH™XYИ\И[ќљ\ЪX›K€
 Љ”ЫИH\Э\ИHXЫ\][Ы‹[™€
 €]™\ћHШњЩ\ќ™\€]\ЭЭ]HЪ]]Щ\И]“Х›Э[™\љY\КЉ€8 %[ЫY[™И››Э[™И‹Ъ]B€
-€™X\ЫЫ‹[€ЪWЫ›Э€[€ЫZ\ЬЪ[Ы€\И[€HЬљ][€ЫZ[HЫЫYX›ЩHШ[€\ШYЬ™YHЪ]€
-€]\€[€H[™H›Ш›ЩH›ЭXЩ\И\ИXњЩ[ќЪXЪ\ИHЫ›H™\њЪ[Ы€Щ€\И]XZЩ\В€
+€™X\ЫЫ‹[€ЪWЫ›Э      // `sim.reset()` could not clear — so it survived a state load it should not have and did
+      // system RI-MAG06 §B names for an effect: `cure_disease`/`cure_poison` read the affliction
+      // quest area for a whole round — a declaration of incompleteness is exactly as much a
+      // makes "an object outside melee reach becomes takeable" (RI-MAG06 §B) a readable check.
+      // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
+      // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
+      // `RI-PRG04` §1 both turn on "souls held falls by exactly `soulsToNextLevel()`", and
+      // round 1 had no way to read either without going through the level-up screen — which is
+    // RI-WPN06 §C / game/data/weapons/offhand.json: each configuration has its OWN verb list.
+[€H[™H›Ш›ЩH›ЭXЩ\И\ИXњЩ[ќЪXЪ\ИHЫ›H™\њЪ[Ы€Щ€\И]XZЩ\В€
 €H™^[њЭ[ЩH[\ЬЬЪX›H]\€[€Y\™[HXњЩ[ќ‚€
 ‚€
 €\ќ
@@ -8583,8 +8601,14 @@ HO€€[YY€
 HO€ИY€
 KњЪ[K™\ШЫЭ™\ћJHKњЪ[K™\ШЫЭ™\ћKњ™\ЭЬ™Jќ[
 NИK€Ш]™N€ќ[€ЪWЫ›Э€	Ш\TШ]™J
-H™\ЭЬ™\ИЫЬ›™\ШЫЭ™\ћHњ›ЫHH›Ш‹ЪXЪ\ИHќ]ќ[\Э\€›Ь€HЪ\XЭ\€™Z[™ИШYY
-Ш]™KЬЭ]KљњКK‰Л€K€В€Y€	ЬЬ[][Ы‰Л€Ъ]€	ЭHЬЭЭ]HX›H[™H]™HЬЭO€ZY[™^€]™\ћHZY]Ш\ИЫ[™И\И[™XYHЫЫ™K‰Л€\ЩN€	ЩX\›IЛ€\ќ€
+H™\ЭЬ™\ИЫЬ›™\ШЫЭ™\ћHњ›ЫHH›Ш‹ЪXЪ\И// P10 — THE LOADER HAD NO RETRY, AND ONE HICCUP ON ONE OF 569 FILES WAS A BLACK SCREEN.
+// later run: 1 retried 5xx across 2828 requests. On this build machine — localhost, one client,
+// no CDN — it essentially never happens, which is exactly why it reached the owner and not us.
+//   * **transient** — 5xx, 408, 429, or the fetch rejecting outright (DNS, TLS, a dropped
+//   * **permanent** — 404. The file is genuinely not published. This is the OTHER black-screen
+// (±40% jitter), so a single unlucky file costs at most ~3.85 s. Across the WHOLE load the
+// network is not slower at all — nothing sleeps unless something has already failed.
+В€Y€	ЬЬ[][Ы‰Л€Ъ]€	ЭHЬЭЭ]HX›H[™H]™HЬЭO€ZY[™^€]™\ћHZY]Ш\ИЫ[™И\И[™XYHЫЫ™K‰Л€\ЩN€	ЩX\›IЛ€\ќ€
 
 HO€
 KњЬ[][Ы€ИKњЬ[][Ы‹›]™KњЪ^™H€
@@ -8599,8 +8623,24 @@ HO€ИY€
 KњЬ[][ЫЉHKњЬ[][Ы‹њ™\Щ]
 
 NИK€ЛИZ\€ЭЫ€›Э[™LHЬљ]XИЪ\™Щ\И\И[™N€™\Щ][™И[ЬЭИИФ“PS•Ы€HШY€ЛИЪ[HЬ™[\ћT™\Ь]Ы‘\ШЪЩ\И›Э[Э™H\И[€[›Э[™YШ]™KЫШY\›B€ЛИ
-РTUМK\Ь[][Ы‹\Ш]™K\™[ШY\™\^\ЛY]™\ћKXЫЬњЩJK€H™[YYH\ИZ\њИ8 %\њЪ\Э€ЛИHЫX\™Y\ЬЭЩ]8 %[™\И[X™\][H“Х][\Yњ›ЫH\™K‚€›ЭN€	ХМKTФSUSУ‹\ЊH0©М€Ъ\™Щ\ИHШ]™K\]™\Щ]\И[€НHљ[Ы][Ы‹€Z\€™[YYKZ\€љ[K‰Л€K€В€Y€	ЬЫЭ[ЙЛ€Ъ]€	ЭHZYO€›ЩHYЩ\Ћ€ЪXЪ“СHШ\И[]™HЪ[€\ИЮ\Э[H\ЭЫЪЩY[™]ЪXЪ™\Э\ШЪ]Ш\ИZY‰Л€\ЩN€	ЩX\›IЛ€\ќ€
-
+РTUМK\Ь[][Ы‹\Ш]™K\™[ШY\™\^\ЛY]™\ћKXЫЬњЩJK€H™[YYH\ИZ\њИ8 %\њЪ\Э€ЛИHЫX\™Y\ЬЭЩ]8 %[™\И[X™\][H“Х][\Yњ›ЫH\™K‚€›ЭN€	ХМKTФSUSУ‹\ЊH0©М€Ъ\™Щ\ИHШ]™K\]™\Щ]\И[€НHљ[Ы][Ы‹€Z\€™[YYKZ\€љ[K‰Л€K€В€Y€	ЬЫЭ[          throw new Error(`data file UNREADABLE: ${rel} — HTTP 200 from ${href} but the body is not JSON (${e.message}). This is not a network failure; the published file is corrupt.`);
+      // diagnoses it — masking a genuinely unpublished file behind four retries would be strictly
+        throw new Error(`data file MISSING: ${rel} — HTTP ${status} on ${href}, after ${attempt} attempt${attempt === 1 ? '' : 's'}. A ${status} is never retried: the file is genuinely not published. Check tools/check-shipped-files.mjs.`);
+        throw new Error(`data file UNAVAILABLE: ${rel} — ${what} on ${href}, unchanged after ${attempt} attempt${attempt === 1 ? '' : 's'} spanning ${Math.round(sleptHere)} ms of waiting; gave up at ${stop}. The file is NOT missing — the server would not serve it. This usually clears on a reload.`);
+    // W1-08 round 2. RI-JRN03 §F DS2 — the ONLY sanctioned way this game may teach a verb,
+    // shipping nothing — and shipping nothing is exactly what M-K21 measured on this build
+    // W1-READABLES round 2 — the `environment` channel's objects. See `Engine._ensureProvinceMarks`.
+    // dropped — which is exactly how `dialogue/persuasion-gmst.json` spent a round being loaded
+    // W1-02. The thirteen weather state machines and the 20x clock they run on (RI-WLD08 §1,
+    // §5). Own branch for the reason the `world/signposts.json` comment above gives: a
+    // W1-OPACITY. RI-WLD09 §B1's register of the 24 things this world refuses to explain.
+    // W1-22. The thirteen regional ambience beds (RI-AUD03 §B). It MUST have a branch here for
+    // fix — 39 audio strings in regions.json that nothing read. Consumed by
+    // W1-11. The twelve combat impact classes (RI-AUD01 §A) and their forty-eight variants.
+    // Same rule, same reason: no branch here and the file is fetched, counted, and dropped —
+    // W1-07 round 4: both of these were fetched at boot and then DROPPED — they matched no
+    // branch below and fell off the end of the chain. RI-DLG04 §B's whole term set was
+  // W1-07 — the character-creation view of the data, assembled once at boot so that
 HO€
 KњЪ[KњЫЭ[ИИKњЪ[KњЫЭ[Л—Ш[]™KњЪ^™H€
 K€[YY€
