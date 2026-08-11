@@ -242,7 +242,7 @@ const ROOM_INSET_M = 0.66;
 /* ---- ROUND 5: the doorstep and the lamps -------------------------------------------------------
  * `DOORSTEP_OUT_M` is how far beyond the entry wall the body lands when it leaves. It has to clear
  * the wall slab (`SHELL_WALL_T`) and the roof overhang (0.5 m in `hipRoof`) and still be inside
- * `sim/settlement.js DOOR_REACH_M` = 2.6 m of the door, so the way back in is where the way out
+ * `sim/settlement.js DOOR_REACH_M` = 3.0 m of the door, so the way back in is where the way out
  * was. 1.5 m is the middle of that band.
  * `DOOR_REACH_M` is duplicated here rather than imported because `render/exterior.js` must not
  * depend on `sim/`; the census asserts the two agree.
@@ -260,7 +260,7 @@ const DOORSTEP_OUT_M = 1.5;
 const DOORSTEP_MIN_OUT_M = 0.5;
 const DOORSTEP_MAX_OUT_M = 8.0;
 const DOORSTEP_RING_MAX_M = 24.0;
-export const DOOR_REACH_M = 2.6;
+export const DOOR_REACH_M = 3.0;
 
 /* ---- ROUND 6: STANDING STILL --------------------------------------------------------------------
  *
