@@ -26,3 +26,13 @@ Tested from `8a0b034830cb2f4583d26efc45b6663ec8ed7176` plus this patch.
 ## Critic handoff
 
 All full populations, fresh aggregate judgement, complete PONR/aftermath population, final-hour protocol, specificity/reaction work, and blind landing comparison remain critic-owned only after the builder chain is complete. They were not scored by this builder.
+
+## Continuation at final working tree
+
+The recorded helpless crouched walk was repaired to stand, sprint, heal, and prohibit defensive
+swings for this explicitly nonviolent trace. The bounded cold rerun again completed Q-MAIN-01
+through Q-MAIN-07, reached 3,390.4 m of the Blackrose-to-Archon journey, then died near Archon after
+73 production healing inputs while a shipped salt storm remained active. The clean route still
+fails Q-MAIN-08 and `intended-q8-block.json` retains the text-only reproduction. Builder-owned work
+is **not complete**: the runner must consume the shipped glassed-crater shelter counter during the
+storm before both chains and the remaining bounded gates can honestly run.
