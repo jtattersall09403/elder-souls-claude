@@ -296,7 +296,15 @@ export class UISystem {
     // up. So this branch takes the same shape the file already uses for `roll`: it is "back" out
     // of a fight and a dodge in one, and these two are "walk to the next screen" out of a fight
     // and equipment cycling in one. One rule, two applications, no new verb.
-    if (!inCombat) {
+    // A pad D-pad press deliberately arrives as BOTH the normalised movement axis and the
+    // profile's swap action.  The axis owns navigation inside the current surface; the action
+    // still owns keyboard/wheel peer walking (which have no movement axis), and remains live for
+    // combat below.  Without the axis guard, D-pad Left walked inventory -> world before `_move`
+    // could change the selected column, leaving the GameSir path half-working.
+    const navX = input.uiMoveX || input.moveX;
+    const navY = input.uiMoveY || input.moveY;
+    const padNavigating = Math.abs(input.uiMoveX) >= 0.5 || Math.abs(input.uiMoveY) >= 0.5;
+    if (!inCombat && !padNavigating) {
       const step = (input.pressedName('swap_right') ? 1 : 0) - (input.pressedName('swap_left') ? 1 : 0);
       if (step) {
         taken.push(step > 0 ? 'swap_right' : 'swap_left');
@@ -311,8 +319,8 @@ export class UISystem {
     // `character/scene.js` already set for the census surface ("stick up = earlier option").
     // Both surfaces therefore feel the same on the same pad, which is the whole point of there
     // being one convention rather than two.
-    const dx = this._edge('x', input.moveX, ctx.frame);
-    const dy = this._edge('y', -input.moveY, ctx.frame);
+    const dx = this._edge('x', navX, ctx.frame);
+    const dy = this._edge('y', -navY, ctx.frame);
     if (dx || dy) this._move(dx, dy, ctx);
     if (input.pressedName('interact')) this._confirm(ctx);
     if (!inCombat && input.pressedName('roll')) this.back();

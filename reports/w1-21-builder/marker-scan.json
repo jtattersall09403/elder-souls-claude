@@ -1,0 +1,74 @@
+{
+  "schema": "elder-souls/marker-scan@1",
+  "item": "RI-UIX02",
+  "detector": "F1-F5 (data)",
+  "roots": [
+    "game/data"
+  ],
+  "files_scanned": 581,
+  "parse_errors": [],
+  "hits": [],
+  "hit_count": 0,
+  "excused": [
+    {
+      "rule": "F1",
+      "file": "stealth/detection.json",
+      "jsonpath": "no_meter.hud_elements",
+      "key": "hud_elements",
+      "sample": "0",
+      "reason": "The value is the integer 0 and the key is W1-15's DECLARATION that the stealth system draws no HUD elements — RI-STL01's 'no detection meter' compliance, asserted in data. It is a count of markers, not a coordinate a marker could be drawn from, and F1's `hud_.*` branch has caught the one field in the tree that exists to say there are none.",
+      "removed_by": "W1-15 renaming the key to `hud_element_count` or `meter_elements`, at which point this entry goes STALE and fails the run until it is deleted."
+    }
+  ],
+  "excused_count": 1,
+  "stale_exceptions": [],
+  "by_rule": {
+    "F1": 0,
+    "F2": 0,
+    "F3": 0,
+    "F4": 0,
+    "F5": 0,
+    "F6": 0
+  },
+  "checks": [
+    {
+      "id": "K1",
+      "what": "F1-F6: 0 marker-shaped records across the scanned roots",
+      "status": "PASS",
+      "pass": true,
+      "samples": 396372,
+      "sample_of": "JSON nodes tested against F1-F6",
+      "detail": "0 hits, 1 declared exceptions, 0 parse errors, 0 stale exceptions, over 581 files",
+      "counts": {
+        "files": 581,
+        "rules": 6,
+        "excused": 1,
+        "biggest_files": [
+          [
+            "weapons/clip-registry.json",
+            31695
+          ],
+          [
+            "states/endgame-200q.json",
+            16549
+          ],
+          [
+            "world/roads.json",
+            10619
+          ],
+          [
+            "world/signatures.json",
+            8588
+          ],
+          [
+            "quests/faction-continuation-wave1.json",
+            8571
+          ]
+        ]
+      }
+    }
+  ],
+  "nodes_scanned": 396372,
+  "K1": "PASS",
+  "sample_table": "| Tool | Check | Status | Samples | One sample is | Detail |\n|---|---|---|---|---|---|\n| `marker-scan.mjs` | K1 | **PASS** | 396372 | JSON nodes tested against F1-F6 | 0 hits, 1 declared exceptions, 0 parse errors, 0 stale exceptions, over 581 files |"
+}

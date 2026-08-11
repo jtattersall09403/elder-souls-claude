@@ -356,6 +356,7 @@ export class GamepadRouter {
     st.gate = Object.create(null);
     this.chargeIntent = 0;
     this.pipe.setMove(0, 0);
+    this.pipe.setUIMove(0, 0);
     this.pipe.chargeIntent = 0;
   }
 
@@ -528,6 +529,11 @@ export class GamepadRouter {
     }
     const m = Math.hypot(x, y);
     this.pipe.setMove(m > 1 ? x / m : x, m > 1 ? y / m : y);
+    // Preserve the D-pad's UI direction on its own production channel. `consumeUI()` clears
+    // locomotion deliberately, and an in-combat menu must still leave swap actions live; using
+    // the shared movement pair for all three meanings made the focus edge disappear.
+    this.pipe.setUIMove(this.uiMode ? (st.snap.values[14] > 0.5 ? -1 : st.snap.values[15] > 0.5 ? 1 : 0) : 0,
+      this.uiMode ? (st.snap.values[13] > 0.5 ? -1 : st.snap.values[12] > 0.5 ? 1 : 0) : 0);
 
     const rs = this.analog.right_stick;
     const lx = (st.snap.axes[prof.axes.look_x] || 0) - bias[prof.axes.look_x];

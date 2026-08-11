@@ -52,6 +52,9 @@ export class InputPipeline {
     this.pressed = 0;
     this.released = 0;
     this.moveX = 0; this.moveY = 0;
+    // UI-only direction is kept separate from locomotion so a menu can consume navigation
+    // without erasing (or being overwritten by) the combat movement path on the same frame.
+    this.uiMoveX = 0; this.uiMoveY = 0;
     this.lookX = 0; this.lookY = 0;
 
     // RI-JRN04 M-P4 / §D `T_full`. An analog trigger held past 0.85 is a CHARGED heavy; the
@@ -103,6 +106,7 @@ export class InputPipeline {
     this.chargeIntent = 1;
     this.held = this.pressed = this.released = 0;
     this.moveX = this.moveY = this.lookX = this.lookY = 0;
+    this.uiMoveX = this.uiMoveY = 0;
     this.pendingPress = this.pendingRelease = this.deferredRelease = 0;
     this.script.length = 0; this.scriptIdx = 0; this.scriptBase = frame;
     this.bufferedAction = 0; this.bufferedAtFrame = -1;
@@ -177,6 +181,7 @@ export class InputPipeline {
   }
 
   setMove(x, y) { this.moveX = x; this.moveY = y; }
+  setUIMove(x, y) { this.uiMoveX = x; this.uiMoveY = y; }
   /** Accumulated pointer delta, consumed by the next fixed step (RI-JRN03 PL6). */
   addLook(dx, dy) { this.lookX += dx; this.lookY += dy; }
   setLook(x, y) { this.lookX = x; this.lookY = y; }
@@ -186,6 +191,7 @@ export class InputPipeline {
     this.pendingRelease |= this.held | this.pendingPress;
     this.pendingPress = 0;
     this.moveX = 0; this.moveY = 0;
+    this.uiMoveX = 0; this.uiMoveY = 0;
     return true;
   }
 
@@ -280,6 +286,7 @@ export class InputPipeline {
    */
   consumeUI(names) {
     this.moveX = 0; this.moveY = 0;
+    this.uiMoveX = 0; this.uiMoveY = 0;
     for (let i = 0; i < names.length; i++) {
       const b = bitOf(names[i]);
       this.pressed &= ~b;

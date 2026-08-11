@@ -3481,6 +3481,11 @@ export class Engine {
     // frame, so this is the one place in the engine that sees every frame's real input.
     this._inputActiveThisFrame = !!(input.held || input.pressed || input.moveX || input.moveY
       || input.lookX || input.lookY || (input.edges && input.edges.length));
+    // A carried menu can coexist with a suspended census/conversation model, but it is the
+    // visible consumer and therefore owns this frame's navigation. Letting the hidden census
+    // run first calls `consumeUI()` and zeros both movement channels before `uiDriver` sees the
+    // GameSir D-pad (the exact 1 -> 1 production failure in UIX03).
+    if (this.ui && this.ui.isMenu()) return;
     // W1-26: the title surface has the buttons before anything else does, on exactly the
     // terms the census has them — the same latched input, the same closed action set, the
     // same "commit is queued out of the fixed step" rule (activating `continue` opens a
@@ -3969,7 +3974,10 @@ export class Engine {
     // Inside the fixed step, through the same latch a swing arrives on (sim/step.js runs it
     // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
     this.sim.uiDriver = (input) => {
-      if (this.censusSurface && this.censusSurface.takesInput) return;   // the census has the input
+      // A deliberately opened menu owns navigation even if a suspended character/census
+      // surface still advertises `takesInput`. Returning unconditionally here let that hidden
+      // consumer swallow the GameSir D-pad after the UIX03 fixture's combat transitions.
+      if (this.censusSurface && this.censusSurface.takesInput && !this.ui.isMenu()) return;
       const wasMenu = this.ui.isMenu();
       const taken = this.ui.step(input, this._uiCtx());
       if (taken.length) input.consumeUI(taken);
