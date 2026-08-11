@@ -94,11 +94,6 @@ cycle spell, and menu**. Multi-touch is supported, so movement, camera drag, and
 can be held at the same time. When a pad is active the overlay fades after two seconds; touching the
 screen brings it back.
 
-**But the last time you tried, the screen was black, and I still do not know why.** It is not the
-controls and it is not a missing file. Every check passes on the build machine, and a desktop
-browser at a phone-sized window is not a phone. The page now tells you what your phone says about
-itself when it fails — **if you get a red message with a line of technical detail, that line is the
-thing I need.** An agent is testing the real link on real mobile and desktop profiles.
 
 ### From a clone — only if you want to change something
 
