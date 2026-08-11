@@ -1,0 +1,56 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "sv2-mid-dungeon",
+  "title": "RI-JRN05 SV2. Mid-dungeon without a HEARTH rest: shortcut and fog gate passed, four ordinary enemies dead, chest empty, door unlocked, ladder kicked down.",
+  "env": {
+    "timeOfDay": 21.25,
+    "weather": "rain",
+    "region": "thornmarsh",
+    "interior": "thorn-hall"
+  },
+  "player": {
+    "pos": [
+      2,
+      0,
+      6
+    ],
+    "yaw": 180,
+    "stamina": 70,
+    "hp": 380
+  },
+  "camera": {
+    "yaw": 180,
+    "pitch": -8,
+    "mode": "free"
+  },
+  "progression": {
+    "hearthsDiscovered": [
+      "hearth-thorn"
+    ],
+    "hearthLastRested": null
+  },
+  "world": {
+    "containersEmptied": [
+      "thorn-hall-chest-01"
+    ],
+    "doorsUnlocked": [
+      "thorn-hall-door-01"
+    ],
+    "shortcutsOpened": [
+      "ford-ladder"
+    ],
+    "itemsTaken": [],
+    "droppedItems": [],
+    "npcsDead": [],
+    "enemiesDeadUntilRest": [
+      "ford-sentry-01",
+      "ford-sentry-02",
+      "ford-sentry-03",
+      "ford-sentry-04"
+    ],
+    "fogGatesPassed": [
+      "ford-gate"
+    ]
+  },
+  "spawn": []
+}
