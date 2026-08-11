@@ -210,6 +210,10 @@ export class Engine {
     this.tracePerf = false;
     this.readyPromise = null;
     this.readyResolved = false;
+    // RI-CMP01 control seam. It sits below source setters and above target writes: a consumer
+    // deletion arm leaves production source state intact and cannot mutate the observed target.
+    this._crossingControls = new Map();
+    this._crossingCalls = new Map();
     // Pre-allocated ring, for the same reason as FixedLoop's: a growing [] is a per-call
     // allocation and getPerfStats() must not be the thing that makes the loop allocate.
     this.perf = {
@@ -5387,6 +5391,25 @@ export class Engine {
 
   getRaceGap(a, b) { return meanRaceGap(this.chData, a, b); }
 
+  setCrossingControl(cell, enabled = true) {
+    this._crossingControls.set(String(cell), enabled !== false);
+    this._crossingCalls.set(String(cell), 0);
+    return this.getCrossingControl(cell);
+  }
+
+  getCrossingControl(cell) {
+    const id = String(cell);
+    return { cell: id, enabled: this._crossingControls.get(id) !== false,
+      calls: this._crossingCalls.get(id) || 0 };
+  }
+
+  _consumeCrossing(cell, value, deletedValue) {
+    const id = String(cell);
+    if (this._crossingControls.get(id) === false) return deletedValue;
+    this._crossingCalls.set(id, (this._crossingCalls.get(id) || 0) + 1);
+    return value;
+  }
+
   // ---- AR-3: race-conditioned encounters -----------------------------------------------------
 
   /**
@@ -5408,6 +5431,20 @@ export class Engine {
     const factionRows = (this.sim.quest && this.sim.quest.factions) || {};
     const legionRank = Object.values(factionRows).reduce((best, row) =>
       Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
+    // A disguise is equipment, not a probe switch.  `equipItem()` lands ordinary inventory rows
+    // in their authored slot and patrols consume that state here.  Restricting the recognition to
+    // actual equipped Imperial issue keeps carrying looted armour from pacifying a patrol.
+    const legionDisguise = this._consumeCrossing('EQP->ROS', (this.sim.inventory || []).some((row) => {
+      if (!row || !row.slot) return false;
+      const authored = this.ui && this.ui.data && this.ui.data.items && this.ui.data.items.get(row.id);
+      return authored && authored.disguise_faction === 'imperial_legion';
+    }), false);
+    // Witnessed/attributed crime also reaches encounter composition.  CrimeWorld remains the
+    // authority; this consumer never invents bounty and an unreported crime therefore creates no
+    // guard.  The extra body is the player-facing consequence promised by STL->ROS.
+    const crime = this.sim.stealth && this.sim.stealth.crime;
+    const reportedBounty = this._consumeCrossing('STL->ROS', crime && typeof crime.attributedIn === 'function'
+      ? Number(crime.attributedIn('imperial') || 0) : 0, 0);
     for (const m of enc.members) {
       // AR-3, the seam. The W1-19 round-1 verdict declared this piece `seam_sterile: true`:
       // "the complete set of consequence keys across all 32 mainline quests is faction_reputation,
@@ -5438,9 +5475,10 @@ export class Engine {
         e.encAggroed = false;
         e.encHailed = false;
         if (saltHidden) e.sight_radius_m = Math.min(e.sight_radius_m, 15);
-        if (id === 'wl-legion-picket' && legionRank >= 3) {
+        if (id === 'wl-legion-picket' && (legionRank >= 3 || legionDisguise)) {
           e.sight_radius_m = 0;
           e.encounterFriendlyRank = legionRank;
+          e.encounterDisguised = legionDisguise;
         }
         if (first && m.role === 'infantry') first = false;
         eids.push(eid);
@@ -5458,6 +5496,18 @@ export class Engine {
       if (saltHidden) e.sight_radius_m = Math.min(e.sight_radius_m, 15);
       eids.push(eid);
     }
+    if (reportedBounty > 0 && id === 'wl-legion-picket' && enc.members[0]) {
+      const m = enc.members[0];
+      const eid = this.spawn(m.statblock, Number(x) + 4, Number(z) - 4,
+        { as: `${opts.tag || id}-crime-watch-0`, yaw: opts.yaw });
+      const e = this.sim.findEntity(eid);
+      e.encounterId = id; e.encounterRole = 'crime_watch'; e.encAggroed = true;
+      e.encHailed = false; e.encLeader = false; e.reportedBounty = reportedBounty;
+      e.alert = 100; e.alertState = 'AGGRO';
+      const ec = this.combat.enemies.get(e.eid);
+      if (ec) { ec.alert = 100; ec.alertState = 'AGGRO'; ec.b.aggro = true; }
+      eids.push(eid);
+    }
     return { encounter: id, eids, opening: this.sim.character ? openingFor(this.chData, enc, this.sim.character) : null };
   }
 
@@ -5467,9 +5517,17 @@ export class Engine {
     const members = this.sim.entities.filter((e) => e.encounterId === 'wl-legion-picket');
     const rank = Object.values(q.factions || {}).reduce((best, row) =>
       Math.max(best, row && row.member ? Number(row.rank || 0) : 0), 0);
+    const disguised = (this.sim.inventory || []).some((row) => {
+      if (!row || !row.slot) return false;
+      const authored = this.ui && this.ui.data && this.ui.data.items && this.ui.data.items.get(row.id);
+      return authored && authored.disguise_faction === 'imperial_legion';
+    });
     for (const e of members) {
       if (e.hp <= 0 || e.state === 'DEAD') continue;
-      if (rank < 3) { e.alert = 100; e.alertState = 'AGGRO'; e.encAggroed = true; }
+      // A crime-watch has identified the player through CrimeWorld and is not fooled by stolen
+      // uniform. Ordinary patrol members honour either earned rank or the equipped disguise.
+      const friendly = e.encounterRole !== 'crime_watch' && (rank >= 3 || disguised);
+      if (!friendly) { e.alert = 100; e.alertState = 'AGGRO'; e.encAggroed = true; }
       else { e.alert = 0; e.alertState = 'IDLE'; e.encAggroed = false; }
       const ec = this.combat.enemies.get(e.eid);
       if (ec) { ec.alert = e.alert; ec.alertState = e.alertState; ec.b.aggro = e.encAggroed; }
