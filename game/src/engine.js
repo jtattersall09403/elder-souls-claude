@@ -2582,6 +2582,30 @@ export class Engine {
     const nth = this._greetCount.get(eid) || 0;
     this._greetCount.set(eid, nth + 1);
     this.conversation.start(n, p, d.disposition, nth);
+    // W1-19: quest acceptance and resolution are ordinary conversation choices.  Until this
+    // seam existed the only callers of QuestEngine.open()/resolve() were harness methods, so a
+    // quest could be perfectly authored yet no player could accept or finish it.  Publish only
+    // choices that the production gates say are currently available; selecting one is handled
+    // by conversationSay() below and therefore follows the same input path as every other
+    // spoken topic.
+    for (const id of this.questBook.ids) {
+      const q = this.questBook.get(id);
+      if (!q || !q.giver || q.giver.npc_id !== n.eid) continue;
+      const rec = this.sim.quest.quests[id];
+      const offer = this.questEngine.offers().find((x) => x.id === id);
+      if (!rec && offer && offer.offerable) {
+        this.conversation.list.push({ id: `quest-accept:${id}`, text: q.title || id, gated: false, root: false });
+      } else if (rec && !rec.failed && !this.sim.quest.completed.includes(id)) {
+        for (const r of this.questEngine.resolutionsFor(id)) {
+          if (r.available) this.conversation.list.push({
+            id: `quest-resolve:${id}:${r.id}`,
+            text: r.outcome || r.id.replace(/^res_/, '').replaceAll('_', ' '),
+            gated: false,
+            root: false,
+          });
+        }
+      }
+    }
     for (const x of this.sim.npcs) x.speaking = (x.eid === n.eid);
     // W1-19 round 2 — `opens_by.overheard_from`, which three main quests declare and which had
     // ZERO code consumers. These are the people who are already talking about the thing. You do
@@ -2871,6 +2895,32 @@ export class Engine {
   /** Say a topic. Returns the info, or a refusal naming why there is nothing to hear. */
   conversationSay(topicId) {
     const p = this._talkPlayer();
+    const questChoice = String(topicId).match(/^quest-(accept|resolve):([^:]+)(?::([^:]+))?$/);
+    if (questChoice) {
+      const [, act, questId, resolutionId] = questChoice;
+      const q = this.questBook.get(questId);
+      const npc = this.conversation.npc;
+      if (!npc || !q || !q.giver || q.giver.npc_id !== npc.eid) {
+        return { refused: 'wrong_giver', topic: topicId, npc: npc ? npc.eid : null };
+      }
+      const result = act === 'accept'
+        ? this.questEngine.open(questId)
+        : this.questEngine.resolve(questId, resolutionId);
+      if (!result.ok) return { refused: result.reason || 'quest_gate', topic: topicId, npc: npc.eid };
+      const journal = (q.journal || []).find((j) => Number(j.index) === Number(result.journal_index));
+      this.conversation.said = {
+        topic: topicId,
+        text: journal ? journal.text : (act === 'accept' ? `I have given you ${q.title}.` : 'It is done.'),
+        gated: false,
+        source: `quest-${act}`,
+      };
+      const ev = this.bus.emit(this.sim.frame, 'topic_select');
+      ev.npc = npc.eid; ev.topic = topicId; ev.gated = false;
+      this._conversationSync();
+      const st = this.conversation.state();
+      st.quest_action = { act, quest: questId, resolution: resolutionId || null, result };
+      return st;
+    }
     // ---- W1-14 r4: THE SPELLMAKING COUNTER -------------------------------------------------
     //
     // Two branches, and both of them are on the ordinary talking path on purpose. A player
