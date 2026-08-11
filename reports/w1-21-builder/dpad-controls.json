@@ -1,0 +1,27 @@
+{
+  "schema": "elder-souls/w1-21-dpad-controls@1",
+  "required_base": "11ae120b81595c00dc7d3f56d520aab89efe8543",
+  "device": "GameSir X2s Type-C, standard mapping, synthetic browser Gamepad at navigator seam",
+  "reproduction_command": "node tools/harness/ui-pause.mjs --state ui-journal --out W1-21-FINAL-R12 --json",
+  "positive": {
+    "id": "PAD",
+    "what": "the interface opens, navigates, confirms and closes on a GameSir X2s alone",
+    "pass": true,
+    "detail": "open true, stick moved focus true, d-pad moved exactly one column 1->0, irrelevant input stable true, closed true (final mode world)"
+  },
+  "mapping_removal_command": "node tools/harness/ui-pause.mjs --state ui-journal --out W1-21-CONTROL-REMOVE --control-remove-dpad-mapping --json",
+  "mapping_removal": {
+    "id": "PAD",
+    "what": "the interface opens, navigates, confirms and closes on a GameSir X2s alone",
+    "pass": false,
+    "detail": "open true, stick moved focus true, d-pad moved exactly one column 1->1, irrelevant input stable true, closed true (final mode world)"
+  },
+  "irrelevant_input": "standard index 16 (reserved guide); positive PAD detail and raw walk record stable mode/focus",
+  "tracked_source_sha256": {
+    "game/src/engine.js": "d2a17f3cbb29e21e6120584050094c993b4a8c352396dc4b7568c599a6ffe1b0",
+    "game/src/input/gamepad.js": "7cb30d700725f34a0f79153d4213ec1e7ccb76dca225948b502b3a7a18a5b69d",
+    "game/src/input/pipeline.js": "e9f7a2821fe4c54fab4d755a2bb18b1a7bf7d1b1fae922dbb41cf7baff56aff5",
+    "game/src/ui/system.js": "cf1d43a4159bd5b9a8fa8ab18351e186fc52c3d76ba9d4201fbb51173082d356",
+    "tools/harness/ui-pause.mjs": "5b9cdb30f039209f7670f865ec153ba411f373d5d768c9ed4aa6ba81df26366b"
+  }
+}

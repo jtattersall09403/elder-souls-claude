@@ -1,4 +1,4 @@
-# W1-21 builder aggregate at `b5850ff` + builder working tree
+# W1-21 persistent builder aggregate at required base `11ae120` + builder working tree
 
 This is builder evidence, not an independent verdict. Blind and fresh-judge rows remain
 `not_run`; their reproducible source-pack specification is `ui-comparison-packs.json`.
@@ -14,9 +14,8 @@ This is builder evidence, not an independent verdict. Blind and fresh-judge rows
 - Added an exhaustive 12/12 UI-model consumption probe. Each production model/drawer changes a
   visible/actionable consequence under a separated value and returns to baseline when its
   consumer is equalised.
-- The interaction probe reports its stricter D-pad column assertion red (1 -> 1), so that row
-  is recorded red rather than hidden. A plausible button/action suppression change was tested,
-  proved inert against this observable, and removed rather than shipped.
+- Reproduced the GameSir D-pad failure exactly (inventory column 1 -> 1), traced it through the real GamepadRouter, InputPipeline, census/UI ordering, focus repeat edge and rendered inventory consumer, and repaired that production route. The complete controller row is now green: open, stick navigation, exactly one D-pad column (1 -> 0), confirm, irrelevant reserved input, and close.
+- The mapping-removal arm restores the exact 1 -> 1 red result. The reserved-guide irrelevant-input arm leaves mode and focus byte-stable, and the production mapping remains shared with a physical browser Gamepad rather than a harness-only action injection.
 
 ## Eleven-item row accounting
 
@@ -24,7 +23,7 @@ This is builder evidence, not an independent verdict. Blind and fresh-judge rows
 |---|---|---|
 | RI-UIX01 | **PARTIAL**: U1/U2/U3/U4/U4b/U6/U7/U8/U10/numeric 10/10 on 1,800 combat frames; declared X1-X12/N4-N5 0/119. | `ui-census.json`, `ui-forbidden.json`. U5 is `EMPTY` because the declared-only repair run intentionally did not invent a post-hit sample; full resolution/background population remains for the fresh critic. |
 | RI-UIX02 / S35 | **PASS for rerun owned rows**: K1 0/373,743; K3 0/10 quest/surface differentials; K4 0/20 elements across 3×24 yaw samples. | `marker-diff.json`; previous K2/K5/K6 captures require commit/config diff validation by critic. |
-| RI-UIX03 | **AUTOMATIC NATIVE 9/9, interaction row red**: 0/120 calm, 120/120 combat, 37/37 no dilation, 50% opacity, 57.2% area, 78% centre response, roll live, 30-frame equip, no combat toast, seven surfaces draw. | `ui-pause.json`. GameSir pad opens, stick-navigates, confirms and closes, but D-pad column assertion remains red. Step-8 independent comparison is `not_run` with a prepared specification. |
+| RI-UIX03 | **COMPLETE — automatic native 10/10**: 0/120 calm, 120/120 combat, 37/37 no dilation, 50% opacity, 57.2% area, 78% centre response, roll live, 30-frame equip, no combat toast, seven surfaces draw. | `ui-pause.json`. GameSir pad opens, stick-navigates, moves exactly one D-pad column, confirms, ignores reserved guide input, and closes; mapping-removal returns the row red. Step-8 independent comparison is `not_run` with a prepared specification. |
 | RI-UIX04 | **PASS 11/11 automatic**: 19 entries/5 quests, interleave 0.8889, zero forbidden/coordinate text, chronological search, S35 route zero, 0/120 pause. | `journal-ui.json`. JU12 is `not_run` and reserved for an independent judge. |
 | RI-UIX06 ART | **not_run**. | Ordered declaration, six-screen hashes, black-world capture spec, and six-judge handoff are prepared; builder did not judge. |
 | RI-UIX06 FIDELITY | **not_run at this changed tree**. | Ordered 48-capture declaration and native measurement/CC-7 specification prepared. Historical FD6 hard fail is not claimed repaired or green. |
@@ -49,7 +48,7 @@ production drawer, changed register, equalised null and restored arm. No model i
 | Marker/data mount point | repaired; rerun green |
 | Empty-population false green | repaired in canonical graders; U5 honestly EMPTY |
 | UI model with zero consumption | none in the 12-row population |
-| D-pad inventory-column interaction | **RED; fresh builder/critic must falsify or repair** |
+| D-pad inventory-column interaction | **COMPLETE 10/10 automatic; mapping-removal red; independent critic still unscored** |
 | UIX03 structure judge | `not_run` (independent) |
 | UIX04 JU12 | `not_run` (independent) |
 | UIX06 ART six-judge worst-of-six | `not_run` (independent) |
@@ -58,5 +57,4 @@ production drawer, changed register, equalised null and restored arm. No model i
 
 The next independent actors must use the prepared pack specification, verify source hashes,
 produce actual opaque screenshots transiently or in an artifact-capable channel, and score only
-their assigned native rows. A fresh critic must also rerun/falsify the remaining D-pad row and
-validate mixed-item sibling evidence before any complete eleven-item score is asserted.
+their assigned native rows. A fresh critic must rerun/falsify the repaired D-pad row and validate mixed-item sibling evidence before any complete eleven-item score is asserted.
