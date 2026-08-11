@@ -1,5 +1,9 @@
 # DECOMPOSITION-W1-AMENDMENT-01 — who owns the paths nobody owned
 
+> **Partially superseded 2026-08-11 by `DECOMPOSITION-W1-AMENDMENT-02.md`:** the 21 `render.*`
+> paths described here as Wave 4 are now Wave 1 and assigned to W1-30. Historical counts and the
+> W1-00–W1-29 ownership decisions in this document remain records of this amendment.
+
 **Author:** decomposition-architect. **Date:** 2026-08-07.
 **Referral:** `corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.md` §R7 and Condition 5 —
 *"37 of 38 `journey.*`/`input.*`/`experience.*` paths are owned by nobody."*

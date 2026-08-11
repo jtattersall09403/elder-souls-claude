@@ -1,5 +1,32 @@
 # Next dispatches, in priority order
 
+## W1-VISUAL-WIDE. Owner ruling: plan W1-30 now; build it after W1-06 + W1-24 and before W1-28
+
+`docs/DECOMPOSITION-W1-AMENDMENT-02.md` adds **W1-30 — whole-game visual foundation and fidelity**
+and promotes the 21 formerly Wave-4 `render.*` paths into Wave 1. This is a Wave-1 feasibility gate:
+the applicable modern-fidelity and art-direction results must each reach **7.0** through the fresh
+build-critic loop before any Wave-2 depth builder is dispatched.
+
+**Dispatch now:** the initial W1-30 current-state plan task. Continue the normal fresh
+reviewer-editor loop until its plan is satisfied. Planning is text/offline and may run in parallel
+with current builders.
+
+**Production dependency sequence:**
+
+```
+W1-06 → W1-24 → W1-30 → W1-28 → Wave 2
+```
+
+W1-30 consumes W1-06's stable camera/character-presentation seam and W1-24's visual bifurcation and
+measurement protocols. Its builder must therefore wait for both to land. Once W1-30 lands, W1-28's
+final first-hour integration consumes the improved whole-game visual foundation. Later visual work
+must use the shared production and validation paths W1-30 establishes.
+
+The W1-30 plan must contain the binding `Builder/critic execution allocation` required by
+`PLAN-LOOP.md` and `orchestration/plans/BUILDER-EXECUTION-CONTRACT.md`: production implementation,
+bounded representative live proof and targeted red/delete controls stay with the builder;
+full/repeated/long/fresh/blind populations and final scoring stay with the independent critic.
+
 ## BLIND-PACK-GATE. Orchestrator ruling: no judge is dispatched to an ungated pack. Three prose packs closed.
 
 **Reversible. The evidence that would overturn any of it is named at the end of each ruling.**

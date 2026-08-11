@@ -1,5 +1,13 @@
 # Build plan — waves, pieces, and how each is judged
 
+> **AMENDED 2026-08-11 by `docs/DECOMPOSITION-W1-AMENDMENT-02.md`.** Whole-game visual quality is
+> now a Wave-1 feasibility gate. **W1-30 — Whole-game visual foundation and fidelity** owns the 21
+> `render.*` paths previously deferred to Wave 4, improves the existing game across both visual
+> axes, and establishes the shared production/validation foundation future visual content must use.
+> Its plan loop starts immediately; its builder follows W1-06 and W1-24 and precedes W1-28 and every
+> Wave-2 builder. Wave 2 is blocked until a fresh build critic establishes the applicable modern-
+> fidelity and art-direction results at the Wave-1 **7.0** floor.
+
 > **AMENDED 2026-08-07 by `docs/DECOMPOSITION-W1-AMENDMENT-01.md`, closing
 > `BAR-CRITIQUE-W1-07-R1` §R7 and Condition 5** — *"37 of 38 `journey.*`/`input.*`/`experience.*`
 > paths are owned by nobody."* The figure is verified. It resolved into **four** wave-1 paths in
@@ -79,7 +87,7 @@ only *deepen* what already exists. At every wave boundary the game is playable s
 finish.
 
 This is the constraint that produces §4's shape and it is worth stating what it costs:
-**250 of 325 subsystem paths are first built in wave 1** — 77% of the taxonomy. That is not
+**276 of 330 subsystem paths are first built in wave 1** — 84% of the taxonomy. That is not
 scope creep, it is the arithmetic of the constraint. A wave-1 that builds a third of the
 taxonomy is a wave-1 that leaves regions and questlines missing, which this rule forbids.
 
@@ -94,10 +102,10 @@ mean it is at the bar.
 | Wave | Goal | Invariant at wave end |
 |---|---|---|
 | 0 | Reference corpus + measurement harness | Every subsystem has a bar; no corpus holes; `--check` blocking in CI |
-| **1** | **Skeleton of everything.** Full map traversable; all 8 settlements standing and populated; character creation, camera, combat core, weapons, magic, stealth and crime real; main quest completable end to end; every faction line present at one quest deep; UI and AR-2 enforceable; the experience instrument and its sabotage control running | You can create a character, walk Argonia, sneak, steal, be arrested, cast, fight, die, and finish the game — and every wave-1 bar can be *scored*, not merely gestured at |
+| **1** | **Skeleton of everything, including a whole-game visual foundation.** Full map traversable; all 8 settlements standing and populated; character creation, camera, combat core, weapons, magic, stealth and crime real; main quest completable end to end; every faction line present at one quest deep; UI and AR-2 enforceable; the experience instrument and its sabotage control running; existing visuals substantially improved and future visual content routed through shared high-quality production/validation paths | You can create a character, walk Argonia, sneak, steal, be arrested, cast, fight, die, and finish the game; every wave-1 bar can be scored; applicable modern-fidelity and art-direction results independently reach **7.0** before Wave 2 |
 | 2 | Combat depth, bosses and the enemy roster to the Souls bar; full faction questlines with escalation, expulsion and rivalry; weapon class differentiation across all 15; spellmaking and enchanting; build-identity composition | Every faction line completable; combat passes the frame-data critics; `RI-CMP03` build identity scoreable |
 | 3 | Density and strangeness: 250 interiors, dungeons, ~80 side quests, 112 books, ambient life, rumour networks, music and voice, alchemy | Density metrics hit; the world is strange, not generic |
-| 4 | Visual fidelity to the modern bar; art direction to the Morrowind bar | Blind visual comparisons close; `RI-VIS07` no longer capping |
+| 4 | Close the remaining visual debts and deepen the Wave-1 foundation to the ship bar | Blind visual comparisons close at 10; every visual debt is discharged |
 | 5+ | Whatever the gap ledger still holds | Ledger empty |
 
 ## 2. What makes a wave-1 piece list *sufficient* rather than merely sensible
@@ -115,14 +123,14 @@ which would have surfaced as a hard fail on a bar whose prerequisite was never a
 | `RI-WLD10` / S25 water depth | the third-person camera and the player's own silhouette — water depth is read off anatomical landmarks, so the camera is not a presentation choice deferrable to wave 4 | no camera piece | **W1-06** + **W1-03** |
 | `RI-UIX02` (AR-2 enforcement, the most-cited arbitration rule in the corpus) | `getUIState()`, `setUIVisible`, ≥14 viewpoints, ≥5 named quest states — absent, S8 compliance is **unmeasurable, which is 0** | no UI piece | **W1-21** + **W1-00** |
 
-The test applied to the list below: for each of the 138 items, does at least one wave-1 piece
-own a path it judges? **125 of 138 do.** The 13 that do not are listed in §5 with the wave
+The current test applied to the list below: for each of the 145 items, does at least one wave-1 piece
+own a path it judges? **134 of 145 do.** The 11 that do not are listed in §5 with the wave
 they first become scoreable, so "not built yet" is a declared state rather than a surprise.
 
 ## 3. Wave-1 piece decomposition
 
-**30 pieces** (was 28; `W1-26` redefined, `W1-28` and `W1-29` new — W1-AMENDMENT-01). Each is one
-builder plus one separate critic. **Together they cover all 255 wave-1 paths exactly once**, minus
+**31 pieces** (W1-AMENDMENT-01 established 30; `W1-30` is added by W1-AMENDMENT-02). Each is one
+builder plus one separate critic. **Together they cover all 276 wave-1 paths exactly once**, minus
 the two process paths in §3b — no path is in two pieces, and **no wave-1 path is in none.** The
 "Judged by" list is the `<<REFERENCE_ITEMS>>` block for both prompts and is assembled from each
 reference item's **`judges:` front-matter, never from a directory listing** — `CORPUS-CONTRACT`
@@ -377,7 +385,9 @@ RI-LOR07 conformance is run against everything the other pieces write, so the re
 
 ### W1-24 — The visual protocol and the player's body
 
-Not the fidelity pass — that is wave 4. This is the bifurcation protocol existing before any visual number is quoted, plus the one fidelity path the camera depends on.
+This is the bifurcation and repeatable-measurement foundation that must exist before W1-30 quotes a
+visual number. Player/character presentation remains coupled to W1-06's
+`render.fidelity.character`; W1-24 owns the two process paths below.
 
 **Subsystem paths (2):** `render.process.bifurcation`, `render.process.measurement`
 
@@ -482,6 +492,38 @@ The wave-end coherence agent's own surface, plus the hand-placement rule that fo
 > cannot be completed on a gamepad alone is a hard fail in `RI-JRN04` as well. Neither is fixable
 > by a piece that does not exist.
 
+### W1-30 — Whole-game visual foundation and fidelity
+
+**New in W1-AMENDMENT-02.** Visual quality is a Wave-1 feasibility question. This piece substantially
+improves the existing game's whole applicable visual surface and establishes shared render,
+material, asset and validation paths that future visual content must consume. Fidelity and art
+direction remain separately declared and judged under ARBITRATION §4.
+
+**Subsystem paths (21):** `render.fidelity.lighting`, `render.fidelity.shadows`,
+`render.fidelity.materials`, `render.fidelity.atmosphere`, `render.fidelity.vegetation`,
+`render.fidelity.animation`, `render.fidelity.postprocess`, `render.fidelity.streaming`,
+`render.fidelity.ao`, `render.fidelity.ibl`, `render.fidelity.sky`, `render.fidelity.vfx`,
+`render.art.palette`, `render.art.silhouette`, `render.art.architecture`, `render.art.creature`,
+`render.art.composition`, `render.art.weirdness`, `render.art.mood`, `render.art.flora`,
+`render.art.materials`.
+
+**Judged by (13):** RI-CAM07, RI-MAG05, RI-VIS01, RI-VIS02, RI-VIS03, RI-VIS04, RI-VIS05,
+RI-VIS06, RI-VIS07, RI-VIS08, RI-VIS09, RI-WLD03, RI-WLD05.
+
+**Depends on:** W1-06 (stable camera/character-presentation seam) and W1-24 (visual bifurcation and
+measurement protocols). **Build order:** after both have landed; before W1-28 and every Wave-2
+builder. The plan loop starts immediately and runs independently of those production dependencies.
+
+**Declared seams:** `render.fidelity.character` remains W1-06's;
+`render.fidelity.water` remains W1-03's; `render.process.bifurcation` and
+`render.process.measurement` remain W1-24's. W1-30 consumes and integrates those paths without
+reassigning them.
+
+**Wave-1 exit:** a fresh independent build critic establishes the applicable modern-fidelity and
+art-direction results at **≥7.0**, with no governing hard fail, and verifies a fail-closed route for
+future visual content through the shared foundation. Sub-10 results remain tracked debts for the
+Wave-4 consolidation pass.
+
 ## 3b. Paths that are a critic deliverable, not a builder's
 
 Four paths are owned by the **process**, not by any piece in §3. They are not unowned and they are
@@ -518,7 +560,7 @@ now a direct read of `subsystems.json`.
 |---|---:|---:|---:|---:|---:|
 | `combat.*` | 52 | 49 | 3 | 0 | 0 |
 | `world.*` | 36 | 31 | 1 | 4 | 0 |
-| `render.*` | 25 | 4 | 0 | 0 | 21 |
+| `render.*` | 25 | **25** | 0 | 0 | **0** |
 | `quests.*` | 22 | 17 | 3 | 2 | 0 |
 | `weapon.*` | 21 | 16 | 5 | 0 | 0 |
 | `magic.*` | 20 | 15 | 5 | 0 | 0 |
@@ -538,29 +580,26 @@ now a direct read of `subsystems.json`.
 | `journal.*` | 4 | 4 | 0 | 0 | 0 |
 | `audio.*` | 4 | 2 | 0 | 2 | 0 |
 | `process.*` | 2 | 0 (wave 0) | 0 | 0 | 0 |
-| **Total** | **330** | **255** | **38** | **14** | **21** |
+| **Total** | **330** | **276** | **38** | **14** | **0** |
 
-The single bolded row is the one change this amendment makes to the taxonomy:
-**`platform.mobile.viewport` is promoted from wave 2 to wave 1** and assigned to `W1-29`
-(W1-AMENDMENT-01 §2b). **Wave 1 grew by one path.** Ownership grew by five — the four orphans in
-§2a of the amendment plus this promotion — taking wave-1 paths assigned to a piece from
-**250 of 254 to 255 of 255**.
+W1-AMENDMENT-01 promoted `platform.mobile.viewport` and closed four ownership holes, taking Wave 1
+to 255 paths. **W1-AMENDMENT-02 promotes all 21 formerly Wave-4 `render.*` paths and assigns them to
+W1-30, taking Wave 1 to 276.** The taxonomy total is unchanged and all 25 `render.*` paths now begin
+in Wave 1. Wave 4 deepens them and closes their tracked visual debt.
 
-`render.*` is the one root that is overwhelmingly late, and deliberately: the visual
-bifurcation protocol and the two fidelity paths the camera and the water model depend on
-(`render.fidelity.character`, `render.fidelity.water`) are wave 1; the remaining 21 are the
-wave-4 fidelity and art-direction passes. `RI-VIS03`'s bands are also known-wrong for four of
-twelve metrics until `C5` of `BAR-CRITIQUE-02` is discharged, so scoring them earlier would
-fail a correct renderer.
+`RI-VIS03`'s known-invalid bands and any missing legal reference evidence remain authority/ruling
+work. The W1-30 planner must reconcile them through the existing mechanism and allocate valid
+builder/critic work explicitly; the promotion authorises no substitute metric or silent exclusion.
 
 ## 5. Bars that are deliberately not scoreable in wave 1
 
-**Recomputed 2026-08-07 (W1-AMENDMENT-01). The list below was wrong in both directions**: it
+**Recomputed for W1-AMENDMENT-02.** The earlier list was wrong in both directions: it
 claimed thirteen, the true figure before this amendment was **fourteen**, it named `RI-LOR06` and
 `RI-MTH05` — **both of which do own wave-1 paths** — and it omitted `RI-MTH06`, `RI-CMB12` and
-`RI-JRN09`. That is not a clerical point. `RI-CMB12` and `RI-JRN09` were each written by a bar
+`RI-JRN09`. W1-AMENDMENT-01 left twelve items without a Wave-1 path; W1-AMENDMENT-02 promotes
+`RI-VIS07`'s visual paths, leaving **eleven**. That is not a clerical point. `RI-CMB12` and `RI-JRN09` were each written by a bar
 critic against a *wave-1* failure, each registered two wave-1 paths, and each was silently
-unscoreable because nothing assigned those paths to a piece. **Twelve** items own no wave-1 path
+unscoreable because nothing assigned those paths to a piece. **Eleven** items own no wave-1 path
 after this amendment; each is deferred for a stated reason, and a wave-1 critic handed one of them
 records `not_built_yet` rather than 0.
 
@@ -574,12 +613,11 @@ records `not_built_yet` rather than 0.
 | `RI-CMP03` build-identity payoff | W2 | requires 15 differentiated weapon classes and spellmaking |
 | `RI-EXP04` novelty curve | W2 | the no-empty-90-minute-window rule needs ≥10 h of content to have a window in |
 | `RI-UIX05` books and readable text | W3 | 112 books is the wave-3 lore mass |
-| `RI-VIS07` could-this-be-Skyrim | W4 | it caps the art score; capping a placeholder look tells nobody anything |
 | `RI-MTH03`, `RI-MTH04`, `RI-MTH06` | wave 0 | process items on `process.*` — already live, and they judge every wave including this one |
 
-**Two items leave this list by being given owners rather than by waiting:** `RI-CMB12` (the
+**Three items leave this list by being given owners rather than by waiting:** `RI-CMB12` (the
 exchange) → **W1-09**, and `RI-JRN09` (the opening as an exchange) → **W1-26**. Both are wave-1
-scoreable today.
+scoreable today. W1-AMENDMENT-02 also moves `RI-VIS07` into Wave 1 through **W1-30**.
 
 **Nothing else is deferred.** In particular the whole of `95-experience` except `RI-EXP04`,
 all **nine** `88-journeys` items, all seven camera items, all six weapon items and all nine
@@ -621,7 +659,8 @@ piece has to reconcile it.
 
 Ownership was never the expensive half of this. The measured state on 2026-08-07:
 
-> **Seven of thirty wave-1 pieces have been dispatched. `W1-01` and `W1-09` have each been
+> **At the 2026-08-07 measurement, seven of thirty wave-1 pieces had been dispatched. `W1-01` and
+> `W1-09` had each been
 > round-tripped four times, `W1-10` and `W1-14` three. And 79 of the corpus's 144 reference
 > items — 55% — own no path declared by any dispatched verdict.**
 
@@ -657,8 +696,9 @@ Not yet decomposed to builder granularity — that happens at the wave boundary,
 - **Wave 3** — 250 interiors and 82 caves; ~80 side quests; 112 books and the book UI;
   alchemy; ambient life, ecology and schedules; the strangeness instances; the settlement
   wordcount targets; music and voice; the novelty long tail.
-- **Wave 4** — the 21 remaining `render.*` paths, after `BAR-CRITIQUE-02` **C5** is
-  discharged and the modern reference set has ≥3 legally-usable frames per profile.
+- **Wave 4** — deepen the 25 Wave-1 `render.*` paths from the 7.0 feasibility floor to the 10/10
+  ship bar; close all visual debt using the modern reference set and the separately judged
+  Morrowind art-direction set. Wave 4 introduces no new `render.*` path.
 
 ## 7. Rules binding on every builder
 
