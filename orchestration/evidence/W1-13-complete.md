@@ -10,7 +10,8 @@ W1-19, W1-25 branches was consumed, and none of their owned files was changed.
 The production repair required by the continuation plan is already present at this revision in
 commit `6eebb6f`: `clock.award_frames` is durable, restore reinstates the integer award clock, and the
 native JRN06 method-8 fixture populates Lilmoth and rejects an empty or mismatched roster. This run
-therefore did not duplicate those mechanisms. It re-executed their controls and began the native aggregate, then applied the plan's explicit cheap-first stop condition once the missing R3/R4/M9 populations made the aggregate unsatisfiable.
+therefore did not duplicate those mechanisms. This continuation repaired the aggregate's fail-closed
+summary and population controls, then ran the native aggregate through completion.
 
 ## Cheap gates and populations
 
@@ -70,16 +71,41 @@ forbids synthesising the missing hostile, shortcut, economy, timed-quest, audio,
 populations. All builder-owned production and instrumentation work available inside the seven W1-13
 paths is delivered; fresh independent criticism remains required.
 
+## Completed native aggregation
+
+The mandatory aggregation completed once at `/tmp/w1-13-final-jrn06/journey.json`. It recorded the
+full source commit, dirty state, seed 4711, 20 deaths, raw frame/event trace, and every M-D row. Every
+measured predicate in that run except M-D13 passed. The follow-up instrument audit found that M-D4's
+green RN4 hash had been presented as though it covered all five scenarios. It now records the
+scenario denominator explicitly and fails closed at 1/5; unavailable item-native fixtures score
+zero rather than inheriting RN4's result. `clock.award_frames` is named as the deliberately
+death-volatile AR-1 reward phase; its durability and consumer remain independently controlled rather
+than hidden by the state diff. The completed run observed HF1–HF9 false.
+
+M-D13 honestly failed: none of the three 150/220/300 m paths produced a walkable arrival from the
+selected settlement hearth, so R1/R2 had no admissible timing population; R3 lacks placed run-back
+hostiles and R4 lacks physical shortcut geometry. The aggregate therefore reports no PASS and does
+not turn missing measurements into zero observations. The M8 predicate was also exercised directly:
+the intact 20-person, three-arm population passes, while empty, wrong-settlement and mismatched-arm
+controls all go red.
+
+The journey summary now carries top-level `coverage`, `hard_fails`, and `pass` fields. Coverage maps
+all M-D1–M-D19 rows to their concrete check IDs, requires every component of compound rows, and
+cannot pass if any row is absent, red, or raises HF1–HF9. This closes the previous artifact shape in
+which a human had to infer completeness from a list of checks.
+
 ## Binary evidence policy and reproduction
 
-The native journey generated its surface manifest and a 20 MB JSONL trace under `/tmp/w1-13-jrn06`; no final `journey.json` was emitted before the run reached the long run-back leg. Because R3, R4 and PRG04 M9 were already proven unmeasurable and make the aggregate unsatisfiable, the plan's explicit stop-before-long-runtime rule was applied and only this process was interrupted after about twenty minutes. The partial trace and surface manifest were inspected as run artifacts only; no binary or trace artifact is committed. Reproduce them with:
+The completed native journey generated `journey.json`, a surface manifest and a 20 MB JSONL trace
+under `/tmp/w1-13-final-jrn06`. They were inspected as run artifacts only; no binary or trace
+artifact is committed. Reproduce them with:
 
 ```sh
 node tools/contention.mjs --gate
 node tools/journey/journey-run.mjs --journey jrn06-death --seed 4711 \
   --profile desktop-720p --input-mode real --trace-events --deaths 20 \
-  --out /tmp/w1-13-jrn06
+  --out /tmp/w1-13-final-jrn06
 ```
 
-The authoritative result is `/tmp/w1-13-jrn06/journey.json`; the image/trace payload is disposable
+The authoritative result is `/tmp/w1-13-final-jrn06/journey.json`; the image/trace payload is disposable
 evidence and must remain outside Git.
