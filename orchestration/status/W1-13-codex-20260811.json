@@ -1,0 +1,54 @@
+{
+  "task_id": "W1-13-codex-20260811",
+  "piece": "W1-13 complete current-state continuation build",
+  "state": "done",
+  "started_at": "2026-08-11T00:00:00Z",
+  "base_branch": "codex/wave1-build-experiment",
+  "subsystem_paths": [
+    "combat.difficulty.lethality",
+    "combat.death.corpserun",
+    "combat.death.worldreset",
+    "combat.boss.arena",
+    "progression.bonfire.function",
+    "progression.bonfire.placement",
+    "journey.death.recovery"
+  ],
+  "files_claimed": [
+    "game/src/sim/environment.js",
+    "game/src/save/state.js",
+    "game/data/save-manifest.json",
+    "tools/journey/jrn06-death.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/harness/w1-13-r5-save-clock.mjs",
+    "tools/harness/w1-13-complete.mjs",
+    "reports/w1-13/",
+    "orchestration/evidence/W1-13-complete.md",
+    "orchestration/status/W1-13-codex-20260811.json"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-13-codex-20260811.json",
+    "orchestration/evidence/W1-13-complete.md"
+  ],
+  "next_step": "Fresh independent critic may judge the builder evidence; missing sibling-owned R3/R4/M9 populations remain explicit zero-credit dependencies.",
+  "concurrent_boundaries": [
+    "W1-04",
+    "W1-06",
+    "W1-19",
+    "W1-25"
+  ],
+  "checks": {
+    "cheap_gates": "pass",
+    "save_clock": "pass: 42 before/after; delete durability -> 57",
+    "clock_2x2": "pass: shipped equal at 96/96 boundaries; deleted unequal at 4/96",
+    "journey_aggregation": "started once; M-D4 reported red; stopped at long run-back after ~20 minutes under the plan stop condition because R3/R4/M9 make the aggregate unsatisfiable; no journey.json claimed"
+  },
+  "browser_load": "GO: 2 nonresident instances; load 1.22/3 cores = 0.41/core; one browser used.",
+  "independence": "Builder records measurements but does not issue the independent critic verdict.",
+  "findings": [
+    "award_frames round-trips exactly; 42 souls before and after reload; deleting durability reproduces 57",
+    "source-level 2x2 passed with real cuts; shipped invariant holds at 96/96 quarter-hour boundaries and deletion differs at 4/96",
+    "native aggregation reached M-D4 and reported it red; no final aggregate score is claimed",
+    "R3 hostile roster, R4 physical shortcut geometry, PRG04 M9 current economy, and M8 timed-quest consumer populations are absent and remain unmeasurable/zero",
+    "No binary evidence committed; partial /tmp trace inspected and reproduction documented in orchestration/evidence/W1-13-complete.md"
+  ]
+}
