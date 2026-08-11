@@ -60,11 +60,6 @@ Same link. **The touch controls are wired and working** — a floating stick und
 camera drag on the right, the same roll/sprint timing the gamepad uses, and eleven controls drawn.
 An earlier version of this file said they were not; that was wrong and this is the correction.
 
-**But the last time you tried, the screen was black, and I still do not know why.** It is not the
-controls and it is not a missing file. Every check passes on the build machine, and a desktop
-browser at a phone-sized window is not a phone. The page now tells you what your phone says about
-itself when it fails — **if you get a red message with a line of technical detail, that line is the
-thing I need.** An agent is testing the real link on real mobile and desktop profiles.
 
 ### From a clone — only if you want to change something
 
