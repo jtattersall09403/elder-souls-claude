@@ -213,8 +213,10 @@ buffer every frame (or every 4th frame, recording the sampling rate in `method_d
   flag and the screenshots is a **harness-integrity failure**, reported under RI-MTH04, not
   a camera failure.
 
-**M4 — Pull-in / push-out rate law.** In `cam-collision-rig`: a wall on a rail moves from
-6.0 m behind the character to 0.5 m behind and back, on a scripted 240-frame cycle, 12 times.
+**M4 — Pull-in / push-out rate law.** In `cam-collision-rig`: the **player-facing surface** of a
+wall on a rail moves from 6.0 m behind the character to 0.5 m behind and back, on a scripted
+240-frame cycle, 12 times. Distances are surface clearances, not collider-centre coordinates;
+with the canonical 0.40 m half-depth the corresponding centre endpoints are −6.40 m and −0.90 m.
 - Compute `d[f] = arm_len[f] − arm_len[f−1]`.
 - **FAIL** if `max(−d) > 0.667 + 0.001` on any frame **that is not flagged**
   `camera.arm_penetration_guard == true`.
@@ -225,8 +227,10 @@ buffer every frame (or every 4th frame, recording the sampling rate in `method_d
   the single most common wrong answer.
 - On every below-floor frame, independently search the unchanged boom ray. **FAIL** unless no candidate in `[0.90, desired_len]` is clear, the chosen `cur_len` is the greatest clear non-negative candidate, both emergency flags are true, and `clip_through` is false.
 
-**M5 — Back-into-wall behaviour.** Place the character 3.0 m from a flat wall, camera yaw
-set so the wall is directly behind the camera. Walk backwards into it for 120 frames, hold
+**M5 — Back-into-wall behaviour.** Place the character 3.0 m from the **player-facing surface**
+of a flat wall, camera yaw set so the wall is directly behind the camera. Record the collider
+half-depth and derive its centre from that surface coordinate; independently confirm the character
+collision consumer prevents the pivot crossing the surface. Walk backwards into it for 120 frames, hold
 60, walk forward 120.
 - **FAIL** if `|Δcamera.yaw_deg|` summed over the 300 frames exceeds **0.5°** with no look
   input present (auto-yaw-on-collision).
