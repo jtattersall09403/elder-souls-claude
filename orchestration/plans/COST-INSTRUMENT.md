@@ -10,6 +10,28 @@ Everything numeric below was derived by this plan agent from
 document contradicts the orchestrator's dispatch brief or `COST.md`, the contradiction is called out
 and the file is corrected rather than worked around.
 
+## Builder/critic execution allocation (binding)
+
+This plan uses the shared [builder execution contract](BUILDER-EXECUTION-CONTRACT.md). Its existing
+`BLOCKED pending items 1–6` state remains binding. Once those plan-authority blockers are resolved,
+the following allocation governs a single builder run; the native predicates below remain the final
+critic acceptance bar.
+
+**Builder-owned after unblock:** implement `tools/cost.mjs`, request/message deduplication, all five
+priced token classes, effective-dated price selection, frozen comparison windows, attribution and the
+ledger output required by this plan. Build the null/malformed fixture set, run exhaustive cheap parser,
+deduplication, pricing, window and schema self-tests, and produce one bounded real-data snapshot when
+the canonical source is available. Run targeted red and delete-the-fix controls for each distinct
+measurement mechanism.
+
+**Critic-owned:** independent recomputation from raw records; adversarial duplication, malformed-data,
+boundary-window and price-table challenges beyond the bounded builder fixtures; independent ledger
+comparison; final measurement judgement; and verdict.
+
+**Completion rule:** before unblock, report the exact plan-authority dependency. After unblock, finish
+all builder-owned implementation and bounded proof in one run. Absence of the historical external
+transcript source is recorded as an exact data dependency and does not excuse independent fixture work.
+
 ---
 
 ## 0. Four corrections to what everyone currently believes
@@ -1089,4 +1111,3 @@ that (the pooled figure equals the overall figure, so no plausible reclassificat
 stratification), but the **critic share of 23.4 %** — and therefore the 0.719 mix factor — would move
 if `other` hides many critics. It would move *upward*, making the mix lever smaller and the 2.88×
 volume requirement larger, so the plan's conclusion is safe in the direction the error runs.
-
