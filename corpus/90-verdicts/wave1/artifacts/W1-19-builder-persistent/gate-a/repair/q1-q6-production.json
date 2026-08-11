@@ -1,0 +1,5439 @@
+{
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "schema": "elder-souls/mainline-chain-floor@1",
+  "measured_at": "2026-08-11T12:21:28.519Z",
+  "sabotage": null,
+  "state": "soulrest-quay",
+  "bootstrap_npc": "bone-ladder-carter",
+  "hand_fed_topics": false,
+  "signatures": 1,
+  "chains_run": [
+    "intended"
+  ],
+  "signatures_finishing_selected_chains": 0,
+  "signatures_finishing_both_chains": null,
+  "chain_lengths": {
+    "intended": 29,
+    "backpath": 17
+  },
+  "bootstrap_sample": {
+    "topics_before": 0,
+    "world_action": {
+      "ok": true,
+      "frames": 0,
+      "left_m": 0.5,
+      "started": [
+        624.5,
+        8.13,
+        4877
+      ],
+      "ended": [
+        624.5,
+        8.13,
+        4877
+      ],
+      "production_input": true,
+      "planned_route": [
+        [
+          625,
+          4877
+        ]
+      ],
+      "planned_clearance": [
+        {
+          "et": 0,
+          "solid": false,
+          "distance_m": 0.892920247148187
+        },
+        {
+          "et": 0.2,
+          "solid": false,
+          "distance_m": 0.8015657013839059
+        },
+        {
+          "et": 0.4,
+          "solid": false,
+          "distance_m": 0.7102111556196251
+        },
+        {
+          "et": 0.6,
+          "solid": false,
+          "distance_m": 0.6188566098554482
+        },
+        {
+          "et": 0.8,
+          "solid": false,
+          "distance_m": 0.5275020640911672
+        },
+        {
+          "et": 1,
+          "solid": false,
+          "distance_m": 0.4361475183268863
+        }
+      ],
+      "planner": {
+        "from": "soulrest",
+        "to": "soulrest",
+        "found": true,
+        "cols": 122,
+        "rows": 121,
+        "start": [
+          60,
+          60
+        ],
+        "goal": [
+          61,
+          60
+        ],
+        "open_left": 6,
+        "cost_nodes": 8,
+        "best_reachable": {
+          "d": 3,
+          "x": 61,
+          "z": 60,
+          "world": [
+            625,
+            4877
+          ]
+        }
+      },
+      "walk": {
+        "arrived": true,
+        "aborted": null,
+        "frames": 0,
+        "minutes": 0,
+        "path_m": 0,
+        "mean_speed_mps": 0,
+        "end": [
+          624.5,
+          4877
+        ],
+        "target": [
+          625,
+          4877
+        ],
+        "offset_m": 0.5,
+        "longest_stuck_frames": 0,
+        "mired_frames": 0,
+        "regions_entered": [
+          "stone-wastes"
+        ],
+        "deepest_water_on_the_walk": {
+          "depth_m": 0,
+          "at": null
+        },
+        "worst_off_path_m": 0,
+        "off_path_frames": 0,
+        "regains": 0,
+        "teleports": 0,
+        "teleported_m": 0,
+        "teleport_log": [],
+        "arrival_is_clean": true
+      }
+    },
+    "topics_after": 1
+  },
+  "gates": [
+    {
+      "quest": "Q-MAIN-08",
+      "act": 2,
+      "npc": "harbourmaster-cuiro-vaneth",
+      "min": 20,
+      "chain_floor": 23,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 3,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-09",
+      "act": 2,
+      "npc": "undersexton-bel-mourne",
+      "min": 25,
+      "chain_floor": 27.8125,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 2.8125,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-10",
+      "act": 2,
+      "npc": "rootkeeper-ashul-tei",
+      "min": 0,
+      "chain_floor": 70,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 70,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-11",
+      "act": 3,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-12",
+      "act": 3,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-13",
+      "act": 3,
+      "npc": "ledgerer-hosk-vei",
+      "min": 35,
+      "chain_floor": 50,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-14",
+      "act": 3,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 37.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 23.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-15",
+      "act": 3,
+      "npc": "rootkeeper-sesh-anaat",
+      "min": 0,
+      "chain_floor": 70,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 70,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "act": 4,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-17",
+      "act": 4,
+      "npc": "factor-ruvela-sath",
+      "min": 24,
+      "chain_floor": 28,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 4,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "act": 4,
+      "npc": "rootkeeper-ashul-tei",
+      "min": 0,
+      "chain_floor": 70,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 70,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-19",
+      "act": 4,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 37.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 23.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "act": 4,
+      "npc": "prefect-galvus-arn",
+      "min": 12,
+      "chain_floor": 23.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 11.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-21",
+      "act": 4,
+      "npc": "dockmaster-weeja-sen",
+      "min": 12,
+      "chain_floor": 47,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 35,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-22",
+      "act": 4,
+      "npc": "rootkeeper-sesh-anaat",
+      "min": 0,
+      "chain_floor": 70,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 70,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "act": 4,
+      "npc": "salt-factor-neloth-vaun",
+      "min": 8,
+      "chain_floor": 0,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": -8,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-24",
+      "act": 5,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "act": 5,
+      "npc": "undersexton-bel-mourne",
+      "min": 25,
+      "chain_floor": 27.8125,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 2.8125,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-27",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-28",
+      "act": 5,
+      "npc": "ixtu-meer",
+      "min": 0,
+      "chain_floor": 79,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 79,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-29",
+      "act": null,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 37.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 23.5,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-30",
+      "act": null,
+      "npc": "ledgerer-hosk-vei",
+      "min": 15,
+      "chain_floor": 50,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 35,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-32",
+      "act": null,
+      "npc": "keeper-teeja-lun",
+      "min": 0,
+      "chain_floor": 70,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 70,
+      "arrival_floor": null,
+      "arrival_signature": null,
+      "arrival_margin": null
+    },
+    {
+      "quest": "Q-MAIN-01",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 20,
+      "arrival_floor": 45,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 20
+    },
+    {
+      "quest": "Q-MAIN-05",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 30,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 15,
+      "arrival_floor": 51,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 21
+    },
+    {
+      "quest": "Q-MAIN-06",
+      "act": 2,
+      "npc": "ledgerer-hosk-vei",
+      "min": 30,
+      "chain_floor": 50,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 20,
+      "arrival_floor": 52.8125,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 22.8125
+    },
+    {
+      "quest": "Q-MAIN-07",
+      "act": 2,
+      "npc": "neeja-xul",
+      "min": 14,
+      "chain_floor": 37.5,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 23.5,
+      "arrival_floor": 42,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 28
+    },
+    {
+      "quest": "Q-MAIN-04",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 20,
+      "arrival_floor": 58.5,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 33.5
+    },
+    {
+      "quest": "Q-MAIN-02",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 20,
+      "arrival_floor": 64.25,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 39.25
+    },
+    {
+      "quest": "Q-MAIN-03",
+      "act": 1,
+      "npc": "undersexton-aveline-rell",
+      "min": 25,
+      "chain_floor": 45,
+      "floor_signature": "saxhleel/interior",
+      "chain_margin": 20,
+      "arrival_floor": 68.25,
+      "arrival_signature": "saxhleel/interior",
+      "arrival_margin": 43.25
+    }
+  ],
+  "priced_gates": [
+    "Q-MAIN-23 (salt-factor-neloth-vaun floor 0 vs min 8, worst saxhleel/interior)"
+  ],
+  "arrival_short": [],
+  "gates_never_short": 30,
+  "persuasion": [],
+  "failures": [
+    "saxhleel/interior intended: 6/29, blocked at Q-MAIN-07 — production movement did not reach giver: neeja-xul absent after reaching its production location"
+  ],
+  "violent_resolutions_taken": [],
+  "rows": [
+    {
+      "race": "saxhleel",
+      "upbringing": "interior",
+      "chains": {
+        "intended": {
+          "chain": "intended",
+          "completed": [
+            "Q-MAIN-01",
+            "Q-MAIN-02",
+            "Q-MAIN-03",
+            "Q-MAIN-04",
+            "Q-MAIN-05",
+            "Q-MAIN-06"
+          ],
+          "blocked_at": "Q-MAIN-07",
+          "why": "production movement did not reach giver: neeja-xul absent after reaching its production location",
+          "violent": [],
+          "journal_n": 12,
+          "floor": {
+            "dockmaster-weeja-sen": 47,
+            "factor-ruvela-sath": 28,
+            "harbourmaster-cuiro-vaneth": 23,
+            "ixtu-meer": 79,
+            "keeper-teeja-lun": 70,
+            "ledgerer-hosk-vei": 50,
+            "neeja-xul": 37.5,
+            "prefect-galvus-arn": 23.5,
+            "rootkeeper-ashul-tei": 70,
+            "rootkeeper-sesh-anaat": 70,
+            "salt-factor-neloth-vaun": 0,
+            "undersexton-aveline-rell": 45,
+            "undersexton-bel-mourne": 27.8125
+          },
+          "arrival": {
+            "Q-MAIN-01": 45,
+            "Q-MAIN-02": 64.25,
+            "Q-MAIN-03": 68.25,
+            "Q-MAIN-04": 58.5,
+            "Q-MAIN-05": 51,
+            "Q-MAIN-06": 52.8125,
+            "Q-MAIN-07": 42
+          },
+          "trace": [
+            {
+              "after": "(cold start)",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 43,
+                "harbourmaster-cuiro-vaneth": 38,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 70,
+                "ledgerer-hosk-vei": 50,
+                "neeja-xul": 45,
+                "prefect-galvus-arn": 31,
+                "rootkeeper-ashul-tei": 70,
+                "rootkeeper-sesh-anaat": 70,
+                "salt-factor-neloth-vaun": 15,
+                "undersexton-aveline-rell": 45,
+                "undersexton-bel-mourne": 45
+              }
+            },
+            {
+              "after": "Q-MAIN-01",
+              "resolution": "res_carry",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 28,
+                "harbourmaster-cuiro-vaneth": 23,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 70,
+                "ledgerer-hosk-vei": 61.25,
+                "neeja-xul": 41.25,
+                "prefect-galvus-arn": 23.5,
+                "rootkeeper-ashul-tei": 73.75,
+                "rootkeeper-sesh-anaat": 70,
+                "salt-factor-neloth-vaun": 0,
+                "undersexton-aveline-rell": 64.25,
+                "undersexton-bel-mourne": 56.25
+              }
+            },
+            {
+              "after": "Q-MAIN-02",
+              "resolution": "res_count_plain",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 28,
+                "harbourmaster-cuiro-vaneth": 23,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 70,
+                "ledgerer-hosk-vei": 61.25,
+                "neeja-xul": 41.25,
+                "prefect-galvus-arn": 23.5,
+                "rootkeeper-ashul-tei": 73.75,
+                "rootkeeper-sesh-anaat": 70,
+                "salt-factor-neloth-vaun": 0,
+                "undersexton-aveline-rell": 68.25,
+                "undersexton-bel-mourne": 56.25
+              }
+            },
+            {
+              "after": "Q-MAIN-03",
+              "resolution": "res_report_failure",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 35.5,
+                "harbourmaster-cuiro-vaneth": 30.5,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 100,
+                "ledgerer-hosk-vei": 57.5,
+                "neeja-xul": 37.5,
+                "prefect-galvus-arn": 29.125,
+                "rootkeeper-ashul-tei": 77.5,
+                "rootkeeper-sesh-anaat": 77.5,
+                "salt-factor-neloth-vaun": 0,
+                "undersexton-aveline-rell": 58.5,
+                "undersexton-bel-mourne": 52.5
+              }
+            },
+            {
+              "after": "Q-MAIN-04",
+              "resolution": "res_ledger",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 40.5,
+                "harbourmaster-cuiro-vaneth": 35.5,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 100,
+                "ledgerer-hosk-vei": 50,
+                "neeja-xul": 42.5,
+                "prefect-galvus-arn": 28.5,
+                "rootkeeper-ashul-tei": 72.5,
+                "rootkeeper-sesh-anaat": 72.5,
+                "salt-factor-neloth-vaun": 6.250000000000002,
+                "undersexton-aveline-rell": 51,
+                "undersexton-bel-mourne": 45
+              }
+            },
+            {
+              "after": "Q-MAIN-05",
+              "resolution": "res_accept_quietly",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 37.375,
+                "harbourmaster-cuiro-vaneth": 32.375,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 100,
+                "ledgerer-hosk-vei": 52.8125,
+                "neeja-xul": 42.1875,
+                "prefect-galvus-arn": 27.25,
+                "rootkeeper-ashul-tei": 72.8125,
+                "rootkeeper-sesh-anaat": 71.875,
+                "salt-factor-neloth-vaun": 4.6875,
+                "undersexton-aveline-rell": 73.8125,
+                "undersexton-bel-mourne": 27.8125
+              }
+            },
+            {
+              "after": "Q-MAIN-06",
+              "resolution": "res_the_number",
+              "standing": {
+                "dockmaster-weeja-sen": 47,
+                "factor-ruvela-sath": 35.5,
+                "harbourmaster-cuiro-vaneth": 30.5,
+                "ixtu-meer": 79,
+                "keeper-teeja-lun": 100,
+                "ledgerer-hosk-vei": 64.5,
+                "neeja-xul": 42,
+                "prefect-galvus-arn": 26.5,
+                "rootkeeper-ashul-tei": 73,
+                "rootkeeper-sesh-anaat": 71.5,
+                "salt-factor-neloth-vaun": 3.75,
+                "undersexton-aveline-rell": 75.5,
+                "undersexton-bel-mourne": 29.5
+              }
+            }
+          ],
+          "giver_journeys": [
+            {
+              "quest": "Q-MAIN-01",
+              "phase": "accept",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 26,
+                "left_m": 2.49,
+                "started": [
+                  636.103966,
+                  8.13,
+                  4895.896029
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    635.603966,
+                    4896.396029
+                  ],
+                  [
+                    635.103966,
+                    4896.896029
+                  ],
+                  [
+                    634.603966,
+                    4896.896029
+                  ],
+                  [
+                    634.103966,
+                    4896.896029
+                  ],
+                  [
+                    633.603966,
+                    4896.396029
+                  ],
+                  [
+                    633.103966,
+                    4895.896029
+                  ],
+                  [
+                    632.603966,
+                    4895.896029
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.7535375857140867
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.7028567042575335
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.6521758228006107
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.6014949413441617
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5508140598872389
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.5105539091884972
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    53,
+                    60
+                  ],
+                  "open_left": 22,
+                  "cost_nodes": 32,
+                  "best_reachable": {
+                    "d": 2.954578802130405,
+                    "x": 53,
+                    "z": 60,
+                    "world": [
+                      632.603966,
+                      4895.896029
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 26,
+                  "minutes": 0.007,
+                  "path_m": 1.4,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.6,
+                    4895.9
+                  ],
+                  "offset_m": 2.49,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.23,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 1090,
+                "left_m": 3.11,
+                "started": [
+                  624.5,
+                  8.13,
+                  4877
+                ],
+                "ended": [
+                  636.103966,
+                  8.13,
+                  4895.896029
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    624.5,
+                    4876.5
+                  ],
+                  [
+                    625,
+                    4876
+                  ],
+                  [
+                    625.5,
+                    4875.5
+                  ],
+                  [
+                    626,
+                    4875
+                  ],
+                  [
+                    626.5,
+                    4875
+                  ],
+                  [
+                    627,
+                    4875
+                  ],
+                  [
+                    627.5,
+                    4875
+                  ],
+                  [
+                    628,
+                    4875
+                  ],
+                  [
+                    628.5,
+                    4874.5
+                  ],
+                  [
+                    629,
+                    4874
+                  ],
+                  [
+                    629.5,
+                    4873.5
+                  ],
+                  [
+                    630,
+                    4873
+                  ],
+                  [
+                    630.5,
+                    4872.5
+                  ],
+                  [
+                    631,
+                    4872
+                  ],
+                  [
+                    631.5,
+                    4871.5
+                  ],
+                  [
+                    632,
+                    4871
+                  ],
+                  [
+                    632.5,
+                    4870.5
+                  ],
+                  [
+                    633,
+                    4870
+                  ],
+                  [
+                    633.5,
+                    4869.5
+                  ],
+                  [
+                    634,
+                    4869
+                  ],
+                  [
+                    634.5,
+                    4869
+                  ],
+                  [
+                    635,
+                    4868.5
+                  ],
+                  [
+                    635.5,
+                    4868.5
+                  ],
+                  [
+                    636,
+                    4868.5
+                  ],
+                  [
+                    636.5,
+                    4868.5
+                  ],
+                  [
+                    637,
+                    4868.5
+                  ],
+                  [
+                    637.5,
+                    4868.5
+                  ],
+                  [
+                    638,
+                    4868.5
+                  ],
+                  [
+                    638.5,
+                    4868.5
+                  ],
+                  [
+                    639,
+                    4868.5
+                  ],
+                  [
+                    639.5,
+                    4868.5
+                  ],
+                  [
+                    640,
+                    4868.5
+                  ],
+                  [
+                    640.5,
+                    4868.5
+                  ],
+                  [
+                    641,
+                    4868.5
+                  ],
+                  [
+                    641.5,
+                    4868.5
+                  ],
+                  [
+                    642,
+                    4868.5
+                  ],
+                  [
+                    642.5,
+                    4868.5
+                  ],
+                  [
+                    643,
+                    4868.5
+                  ],
+                  [
+                    643.5,
+                    4868.5
+                  ],
+                  [
+                    644,
+                    4868.5
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.892920247148187
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.9335939114559149
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.9742675757632728
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 1.0149412400710007
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 1.0556149043783591
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 1.096288568686087
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 132,
+                  "rows": 156,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    77,
+                    98
+                  ],
+                  "open_left": 328,
+                  "cost_nodes": 4396,
+                  "best_reachable": {
+                    "d": 3.3541019662496847,
+                    "x": 77,
+                    "z": 98,
+                    "world": [
+                      633,
+                      4896
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 1090,
+                  "minutes": 0.303,
+                  "path_m": 57.2,
+                  "mean_speed_mps": 3.1471,
+                  "end": [
+                    636.1,
+                    4895.9
+                  ],
+                  "target": [
+                    633,
+                    4896
+                  ],
+                  "offset_m": 3.11,
+                  "longest_stuck_frames": 18,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.3,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-01",
+              "phase": "resolve",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-02",
+              "phase": "accept",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-02",
+              "phase": "resolve",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-03",
+              "phase": "accept",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-03",
+              "phase": "resolve",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-04",
+              "phase": "accept",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-04",
+              "phase": "resolve",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-05",
+              "phase": "accept",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-05",
+              "phase": "resolve",
+              "giver": "undersexton-aveline-rell",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 2.69,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ],
+                  [
+                    632.973349,
+                    4896.161696
+                  ],
+                  [
+                    632.473349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    55,
+                    58
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 18,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 55,
+                    "z": 58,
+                    "world": [
+                      632.473349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632.5,
+                    4895.7
+                  ],
+                  "offset_m": 2.69,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 1.58,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    57,
+                    59
+                  ],
+                  "open_left": 7,
+                  "cost_nodes": 11,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 57,
+                    "z": 59,
+                    "world": [
+                      633.473349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    633.5,
+                    4896.2
+                  ],
+                  "offset_m": 1.58,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                630,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  630,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-06",
+              "phase": "accept",
+              "giver": "ledgerer-hosk-vei",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 27,
+                "left_m": 2.75,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  633.533358,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.661696
+                  ],
+                  [
+                    632.973349,
+                    4896.661696
+                  ],
+                  [
+                    632.473349,
+                    4896.661696
+                  ],
+                  [
+                    631.973349,
+                    4896.161696
+                  ],
+                  [
+                    631.473349,
+                    4896.161696
+                  ],
+                  [
+                    630.973349,
+                    4895.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    52,
+                    58
+                  ],
+                  "open_left": 17,
+                  "cost_nodes": 32,
+                  "best_reachable": {
+                    "d": 2.7325798931078307,
+                    "x": 52,
+                    "z": 58,
+                    "world": [
+                      630.973349,
+                      4895.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 27,
+                  "minutes": 0.007,
+                  "path_m": 1.4,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    633.5,
+                    4896.7
+                  ],
+                  "target": [
+                    631,
+                    4895.7
+                  ],
+                  "offset_m": 2.75,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 3.04,
+                "started": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  634.973349,
+                  8.13,
+                  4896.661696
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    634.473349,
+                    4896.661696
+                  ],
+                  [
+                    633.973349,
+                    4896.661696
+                  ],
+                  [
+                    633.473349,
+                    4896.661696
+                  ],
+                  [
+                    632.973349,
+                    4896.661696
+                  ],
+                  [
+                    632.473349,
+                    4896.661696
+                  ],
+                  [
+                    631.973349,
+                    4896.161696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 0.47213900111389734
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 0.47799367555334127
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 0.5040244749664108
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 0.5438409261123129
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 0.5845145904199021
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 0.6251882547274914
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 121,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    54,
+                    59
+                  ],
+                  "open_left": 12,
+                  "cost_nodes": 22,
+                  "best_reachable": {
+                    "d": 3.8503749002165093,
+                    "x": 54,
+                    "z": 59,
+                    "world": [
+                      631.973349,
+                      4896.161696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "minutes": 0,
+                  "path_m": 0,
+                  "mean_speed_mps": 0,
+                  "end": [
+                    635,
+                    4896.7
+                  ],
+                  "target": [
+                    632,
+                    4896.2
+                  ],
+                  "offset_m": 3.04,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                628.5,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  628.5,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-06",
+              "phase": "resolve",
+              "giver": "ledgerer-hosk-vei",
+              "went_to": "soulrest",
+              "present": true,
+              "reached": true,
+              "why": null,
+              "ok": true,
+              "walk": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 0.76713930193952,
+                "started": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "ended": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "production_input": true,
+                "already_in_reach": true,
+                "planned_route": [],
+                "planned_clearance": [],
+                "planner": null,
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "path_m": 0,
+                  "end": [
+                    628.028458,
+                    4893.894896
+                  ],
+                  "target": [
+                    628.5,
+                    4894.5
+                  ],
+                  "offset_m": 0.76713930193952,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "approach": {
+                "ok": true,
+                "frames": 0,
+                "left_m": 0.76713930193952,
+                "started": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "ended": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "production_input": true,
+                "already_in_reach": true,
+                "planned_route": [],
+                "planned_clearance": [],
+                "planner": null,
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 0,
+                  "path_m": 0,
+                  "end": [
+                    628.028458,
+                    4893.894896
+                  ],
+                  "target": [
+                    628.5,
+                    4894.5
+                  ],
+                  "offset_m": 0.76713930193952,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entity_pos": [
+                628.5,
+                7.91,
+                4894.5
+              ],
+              "location": {
+                "settlement": "soulrest",
+                "pos": [
+                  628.5,
+                  7.91,
+                  4894.5
+                ]
+              }
+            },
+            {
+              "quest": "Q-MAIN-07",
+              "phase": "accept",
+              "giver": "neeja-xul",
+              "went_to": "blackrose",
+              "present": false,
+              "reached": false,
+              "why": "neeja-xul absent after reaching its production location",
+              "ok": false,
+              "location": {
+                "settlement": "blackrose",
+                "pos": [
+                  1885.56,
+                  2.68,
+                  4436
+                ]
+              },
+              "approach": {
+                "ok": false,
+                "frames": 2500,
+                "left_m": 1233.53,
+                "started": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "ended": [
+                  707.198456,
+                  8.049884,
+                  4800.789065
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    630.028458,
+                    4895.894896
+                  ],
+                  [
+                    632.028458,
+                    4895.894896
+                  ],
+                  [
+                    634.028458,
+                    4897.894896
+                  ],
+                  [
+                    636.028458,
+                    4895.894896
+                  ],
+                  [
+                    638.028458,
+                    4893.894896
+                  ],
+                  [
+                    640.028458,
+                    4891.894896
+                  ],
+                  [
+                    642.028458,
+                    4889.894896
+                  ],
+                  [
+                    644.028458,
+                    4887.894896
+                  ],
+                  [
+                    646.028458,
+                    4885.894896
+                  ],
+                  [
+                    648.028458,
+                    4883.894896
+                  ],
+                  [
+                    650.028458,
+                    4881.894896
+                  ],
+                  [
+                    652.028458,
+                    4879.894896
+                  ],
+                  [
+                    654.028458,
+                    4877.894896
+                  ],
+                  [
+                    656.028458,
+                    4875.894896
+                  ],
+                  [
+                    658.028458,
+                    4873.894896
+                  ],
+                  [
+                    660.028458,
+                    4871.894896
+                  ],
+                  [
+                    660.028458,
+                    4869.894896
+                  ],
+                  [
+                    660.028458,
+                    4867.894896
+                  ],
+                  [
+                    660.028458,
+                    4865.894896
+                  ],
+                  [
+                    660.028458,
+                    4863.894896
+                  ],
+                  [
+                    660.028458,
+                    4861.894896
+                  ],
+                  [
+                    660.028458,
+                    4859.894896
+                  ],
+                  [
+                    660.028458,
+                    4857.894896
+                  ],
+                  [
+                    660.028458,
+                    4855.894896
+                  ],
+                  [
+                    660.028458,
+                    4853.894896
+                  ],
+                  [
+                    662.028458,
+                    4851.894896
+                  ],
+                  [
+                    664.028458,
+                    4849.894896
+                  ],
+                  [
+                    666.028458,
+                    4847.894896
+                  ],
+                  [
+                    668.028458,
+                    4845.894896
+                  ],
+                  [
+                    670.028458,
+                    4843.894896
+                  ],
+                  [
+                    672.028458,
+                    4841.894896
+                  ],
+                  [
+                    674.028458,
+                    4839.894896
+                  ],
+                  [
+                    676.028458,
+                    4837.894896
+                  ],
+                  [
+                    678.028458,
+                    4835.894896
+                  ],
+                  [
+                    680.028458,
+                    4833.894896
+                  ],
+                  [
+                    682.028458,
+                    4831.894896
+                  ],
+                  [
+                    684.028458,
+                    4829.894896
+                  ],
+                  [
+                    686.028458,
+                    4827.894896
+                  ],
+                  [
+                    688.028458,
+                    4825.894896
+                  ],
+                  [
+                    690.028458,
+                    4823.894896
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "blackrose",
+                  "found": true,
+                  "cols": 142,
+                  "rows": 101,
+                  "start": [
+                    50,
+                    50
+                  ],
+                  "goal": [
+                    91,
+                    0
+                  ],
+                  "open_left": 375,
+                  "cost_nodes": 809,
+                  "best_reachable": {
+                    "d": 3.6032719004506735,
+                    "x": 91,
+                    "z": 0,
+                    "world": [
+                      710.028458,
+                      4793.894896
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": false,
+                  "aborted": null,
+                  "frames": 2500,
+                  "minutes": 0.694,
+                  "path_m": 133.3,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    707.2,
+                    4800.8
+                  ],
+                  "target": [
+                    1885.6,
+                    4436
+                  ],
+                  "offset_m": 1233.53,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.3,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              }
+            }
+          ],
+          "world_actions": [
+            {
+              "reveal": "rev_the_curve_predates",
+              "channel": "ledger",
+              "source": "item_the_drowned_tally",
+              "ok": true,
+              "entry_walk": {
+                "ok": true,
+                "frames": 114,
+                "left_m": 0.35,
+                "started": [
+                  633.533358,
+                  8.13,
+                  4896.661696
+                ],
+                "ended": [
+                  628.29333,
+                  8.13,
+                  4893.892038
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    633.033358,
+                    4896.661696
+                  ],
+                  [
+                    632.533358,
+                    4896.661696
+                  ],
+                  [
+                    632.033358,
+                    4896.661696
+                  ],
+                  [
+                    631.533358,
+                    4896.161696
+                  ],
+                  [
+                    631.033358,
+                    4895.661696
+                  ],
+                  [
+                    630.533358,
+                    4895.161696
+                  ],
+                  [
+                    630.033358,
+                    4895.161696
+                  ],
+                  [
+                    629.533358,
+                    4895.161696
+                  ],
+                  [
+                    629.033358,
+                    4894.661696
+                  ],
+                  [
+                    628.533358,
+                    4894.161696
+                  ],
+                  [
+                    628.033358,
+                    4893.661696
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": 1.0075170385889411
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": 1.0481907028965303
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": 1.0888643672041194
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": 1.1295380315116625
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": 1.1702116958192519
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": 1.210885360126841
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "soulrest",
+                  "found": true,
+                  "cols": 121,
+                  "rows": 122,
+                  "start": [
+                    60,
+                    60
+                  ],
+                  "goal": [
+                    49,
+                    54
+                  ],
+                  "open_left": 85,
+                  "cost_nodes": 400,
+                  "best_reachable": {
+                    "d": 0.2541709908310339,
+                    "x": 49,
+                    "z": 54,
+                    "world": [
+                      628.033358,
+                      4893.661696
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 114,
+                  "minutes": 0.032,
+                  "path_m": 6.1,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    628.3,
+                    4893.9
+                  ],
+                  "target": [
+                    628,
+                    4893.7
+                  ],
+                  "offset_m": 0.35,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.24,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "entry_prompt": {
+                "interior": "soulrest-court-steps",
+                "name": "The Drowned Court Steps",
+                "way": "in",
+                "dist_m": 1.375
+              },
+              "entry_where": {
+                "settlement": "soulrest",
+                "interior": "soulrest-court-steps",
+                "hour": 13.12,
+                "pos": [
+                  0,
+                  0,
+                  6.805
+                ],
+                "door_in_reach": {
+                  "interior": "soulrest-court-steps",
+                  "name": null,
+                  "way": "out",
+                  "dist_m": 0
+                }
+              },
+              "entry_ui": {
+                "mode": "world",
+                "map_exists": true,
+                "map": {
+                  "exists": true,
+                  "reachable_from_journal": false,
+                  "journal_reachable_from_map": false,
+                  "markers": 0,
+                  "marker_census": {
+                    "scope": "map",
+                    "elements": 0,
+                    "derived": true,
+                    "clauses": [
+                      "m1 forbidden kind",
+                      "m2 world anchor",
+                      "m3 quest identity or destination",
+                      "m4 a place square the discovery model does not support"
+                    ],
+                    "model_available": true,
+                    "hits": []
+                  },
+                  "routes_drawn": 0,
+                  "quest_bearing_elements": [],
+                  "travel_affordances": [],
+                  "numeric_text": [],
+                  "measured": false,
+                  "elements_considered": 0,
+                  "elements_on_screen": 6,
+                  "non_map_elements": [
+                    "hud.health",
+                    "hud.stamina",
+                    "hud.focus",
+                    "hud.heal",
+                    "hud.equipload",
+                    "hud.quickslots"
+                  ],
+                  "numeric_text_screen": [
+                    "hud.heal"
+                  ],
+                  "drawn_cells": 0,
+                  "revealed_cells": 1072,
+                  "total_cells": 42846,
+                  "places_drawn": 0,
+                  "places_discovered": 1,
+                  "view": "world",
+                  "mutator_arities": {
+                    "observe": 0,
+                    "restore": 1,
+                    "resume": 0,
+                    "suspend": 0
+                  },
+                  "mutators": [
+                    {
+                      "name": "observe",
+                      "arity": 0,
+                      "member": "method"
+                    },
+                    {
+                      "name": "restore",
+                      "arity": 1,
+                      "member": "method"
+                    },
+                    {
+                      "name": "resume",
+                      "arity": 0,
+                      "member": "method"
+                    },
+                    {
+                      "name": "suspend",
+                      "arity": 0,
+                      "member": "method"
+                    }
+                  ],
+                  "mutators_enumerated": true,
+                  "zero_arity_mutators": [
+                    "observe",
+                    "resume",
+                    "suspend"
+                  ],
+                  "restore_reads": [
+                    "stood"
+                  ],
+                  "place_naming_parameters": []
+                },
+                "navigable": [
+                  "inventory",
+                  "journal",
+                  "sheet",
+                  "spells",
+                  "map"
+                ],
+                "nav": {
+                  "advertised": [
+                    "inventory",
+                    "journal",
+                    "sheet",
+                    "spells",
+                    "map"
+                  ],
+                  "walkable": [
+                    "world",
+                    "inventory",
+                    "journal",
+                    "sheet",
+                    "spells",
+                    "map"
+                  ],
+                  "walk_actions": {
+                    "prev": "swap_left",
+                    "next": "swap_right"
+                  },
+                  "walk_live": false,
+                  "refused": null
+                },
+                "at_hearth": false,
+                "at_hearth_real": false,
+                "at_hearth_overridden": false,
+                "at_hearth_id": null,
+                "screen": {
+                  "w": 1920,
+                  "h": 1080,
+                  "dpr": 1
+                },
+                "elements": [
+                  {
+                    "id": "hud.health",
+                    "kind": "health_bar",
+                    "rect": [
+                      42,
+                      40,
+                      400,
+                      16
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false
+                  },
+                  {
+                    "id": "hud.stamina",
+                    "kind": "stamina_bar",
+                    "rect": [
+                      42,
+                      64,
+                      400,
+                      10
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "regen_blocked": false,
+                      "exhausted": false
+                    }
+                  },
+                  {
+                    "id": "hud.focus",
+                    "kind": "focus_bar",
+                    "rect": [
+                      42,
+                      82,
+                      400,
+                      10
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": null,
+                    "fill": 1,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false
+                  },
+                  {
+                    "id": "hud.heal",
+                    "kind": "heal_charges",
+                    "rect": [
+                      42,
+                      118,
+                      110,
+                      24
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "6",
+                    "fill": 1.2,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "charges": 6,
+                      "max": 5
+                    }
+                  },
+                  {
+                    "id": "hud.equipload",
+                    "kind": "equip_load",
+                    "rect": [
+                      1758,
+                      852,
+                      120,
+                      24
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "LIGHT",
+                    "fill": 0.24,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "roll_class": "LIGHT",
+                      "pct": 24
+                    }
+                  },
+                  {
+                    "id": "hud.quickslots",
+                    "kind": "quick_slots",
+                    "rect": [
+                      1728,
+                      888,
+                      150,
+                      150
+                    ],
+                    "visible": true,
+                    "opacity": 1,
+                    "text": "Spark-Dart",
+                    "fill": null,
+                    "worldAnchor": null,
+                    "material": null,
+                    "focused": false,
+                    "meta": {
+                      "left": null,
+                      "right": null,
+                      "item": null,
+                      "spell": "Spark-Dart",
+                      "leftActive": false,
+                      "rightActive": false
+                    }
+                  }
+                ],
+                "coveragePct": 2.0457,
+                "hud": {
+                  "suppressed": false,
+                  "suppressed_because": null,
+                  "persistent_count": 6,
+                  "total_count": 6,
+                  "coverage_pct": 2.0457,
+                  "coverage_with_conditional_pct": 2.0457,
+                  "centre_coverage_pct": 0,
+                  "world_anchored": [],
+                  "numeric_text": [
+                    "hud.heal"
+                  ],
+                  "bar_contrasts": {
+                    "health": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "stamina": {
+                      "fill_vs_trough": 7.966,
+                      "spent_vs_trough": 10.923,
+                      "exhausted_trough_vs_trough": 10.923
+                    },
+                    "focus": {
+                      "fill_vs_trough": 5.659
+                    },
+                    "boss": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "buildup_poison": {
+                      "fill_vs_trough": 7.827
+                    },
+                    "buildup_disease": {
+                      "fill_vs_trough": 6.351
+                    },
+                    "buildup_curse": {
+                      "fill_vs_trough": 5.659
+                    },
+                    "buildup_frost": {
+                      "fill_vs_trough": 8.826
+                    }
+                  }
+                },
+                "menu": {
+                  "area_frac": 0,
+                  "opacity": 0,
+                  "paused": false
+                },
+                "book": null,
+                "focus": null,
+                "journal": null,
+                "fonts": [
+                  {
+                    "family": "Argonian Reed (project)",
+                    "size_px": 19,
+                    "weight": 1.15,
+                    "path": "game/src/ui/glyphs.js"
+                  },
+                  {
+                    "family": "Argonian Bone-cut (project)",
+                    "size_px": 15,
+                    "weight": 1.5,
+                    "path": "game/src/ui/glyphs.js"
+                  }
+                ],
+                "textRenderPath": "canvas-vector",
+                "text_raster_scale": 1,
+                "text_glyph_source": "game/src/ui/glyphs.js",
+                "materials": [],
+                "overdraw": 0.02,
+                "touch": {
+                  "controls_drawn": 0,
+                  "rotate_drawn": false,
+                  "area_frac": 0,
+                  "rotate_area_frac": 0,
+                  "labelled": []
+                },
+                "surfaces": 1,
+                "full_screen_panels": 0,
+                "hud_elements": 6,
+                "toast": null,
+                "markers": 0,
+                "marker_census": {
+                  "scope": "screen",
+                  "elements": 6,
+                  "derived": true,
+                  "clauses": [
+                    "m1 forbidden kind",
+                    "m2 world anchor",
+                    "m3 quest identity or destination",
+                    "m4 a place square the discovery model does not support"
+                  ],
+                  "model_available": true,
+                  "hits": []
+                },
+                "world_rendered_behind": true,
+                "screen_alpha": null,
+                "dialogue_surface": {
+                  "open": true,
+                  "opaque_area_frac": 0.383,
+                  "panel_height_frac": 0.4787,
+                  "rendered_text": [
+                    "Xul-Vei",
+                    "soulrest",
+                    "Approach. What is your petition?",
+                    "reading the count",
+                    "the drowned tally",
+                    "the thread is cut",
+                    "the three previous severances",
+                    "the way to curve",
+                    "the road to Blackrose",
+                    "the road to Gideon",
+                    "latest rumors"
+                  ],
+                  "option_count": 8,
+                  "options_shown": 8,
+                  "sacrificed": {
+                    "type_scale": 0.9267,
+                    "type_floor": 0.78,
+                    "option_window": 8,
+                    "option_window_from": 0,
+                    "option_columns": 1,
+                    "option_rows": 8,
+                    "record_lines": 0,
+                    "spoken_lines": 0,
+                    "content_px": 517,
+                    "max_px": 518
+                  }
+                },
+                "non_world_area_frac": 0.4035,
+                "draw_calls": 769,
+                "frame": 1267
+              },
+              "entry_dialogue_closed": true,
+              "reader_walk": {
+                "ok": true,
+                "frames": 136,
+                "left_m": 1.18,
+                "started": [
+                  0,
+                  0,
+                  6.805
+                ],
+                "ended": [
+                  -5.609048,
+                  0,
+                  2.206071
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    -6.52,
+                    1.459167
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "stormhold",
+                  "to": "stormhold"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 136,
+                  "minutes": 0.038,
+                  "path_m": 7.3,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    -5.6,
+                    2.2
+                  ],
+                  "target": [
+                    -6.5,
+                    1.5
+                  ],
+                  "offset_m": 1.18,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "valus-ridge"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 40.769,
+                    "at": [
+                      -5.6,
+                      2.2
+                    ]
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "exit_walk": {
+                "ok": true,
+                "frames": 132,
+                "left_m": 0.32,
+                "started": [
+                  -5.691534,
+                  0,
+                  2.138441
+                ],
+                "ended": [
+                  -0.247458,
+                  0,
+                  6.602105
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    0,
+                    6.805
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "stormhold",
+                  "to": "stormhold"
+                },
+                "walk": {
+                  "arrived": true,
+                  "aborted": null,
+                  "frames": 132,
+                  "minutes": 0.037,
+                  "path_m": 7,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    -0.2,
+                    6.6
+                  ],
+                  "target": [
+                    0,
+                    6.8
+                  ],
+                  "offset_m": 0.32,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "valus-ridge"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 40.771,
+                    "at": [
+                      -5.7,
+                      2.2
+                    ]
+                  },
+                  "worst_off_path_m": 0,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              },
+              "exit_prompt": {
+                "interior": "soulrest-court-steps",
+                "name": null,
+                "way": "out",
+                "dist_m": 0.32
+              }
+            }
+          ],
+          "giver_absent": [
+            {
+              "quest": "Q-MAIN-07",
+              "giver": "neeja-xul",
+              "went_to": "blackrose",
+              "present": false,
+              "reached": false,
+              "why": "neeja-xul absent after reaching its production location",
+              "ok": false,
+              "location": {
+                "settlement": "blackrose",
+                "pos": [
+                  1885.56,
+                  2.68,
+                  4436
+                ]
+              },
+              "approach": {
+                "ok": false,
+                "frames": 2500,
+                "left_m": 1233.53,
+                "started": [
+                  628.028458,
+                  8.13,
+                  4893.894896
+                ],
+                "ended": [
+                  707.198456,
+                  8.049884,
+                  4800.789065
+                ],
+                "production_input": true,
+                "planned_route": [
+                  [
+                    630.028458,
+                    4895.894896
+                  ],
+                  [
+                    632.028458,
+                    4895.894896
+                  ],
+                  [
+                    634.028458,
+                    4897.894896
+                  ],
+                  [
+                    636.028458,
+                    4895.894896
+                  ],
+                  [
+                    638.028458,
+                    4893.894896
+                  ],
+                  [
+                    640.028458,
+                    4891.894896
+                  ],
+                  [
+                    642.028458,
+                    4889.894896
+                  ],
+                  [
+                    644.028458,
+                    4887.894896
+                  ],
+                  [
+                    646.028458,
+                    4885.894896
+                  ],
+                  [
+                    648.028458,
+                    4883.894896
+                  ],
+                  [
+                    650.028458,
+                    4881.894896
+                  ],
+                  [
+                    652.028458,
+                    4879.894896
+                  ],
+                  [
+                    654.028458,
+                    4877.894896
+                  ],
+                  [
+                    656.028458,
+                    4875.894896
+                  ],
+                  [
+                    658.028458,
+                    4873.894896
+                  ],
+                  [
+                    660.028458,
+                    4871.894896
+                  ],
+                  [
+                    660.028458,
+                    4869.894896
+                  ],
+                  [
+                    660.028458,
+                    4867.894896
+                  ],
+                  [
+                    660.028458,
+                    4865.894896
+                  ],
+                  [
+                    660.028458,
+                    4863.894896
+                  ],
+                  [
+                    660.028458,
+                    4861.894896
+                  ],
+                  [
+                    660.028458,
+                    4859.894896
+                  ],
+                  [
+                    660.028458,
+                    4857.894896
+                  ],
+                  [
+                    660.028458,
+                    4855.894896
+                  ],
+                  [
+                    660.028458,
+                    4853.894896
+                  ],
+                  [
+                    662.028458,
+                    4851.894896
+                  ],
+                  [
+                    664.028458,
+                    4849.894896
+                  ],
+                  [
+                    666.028458,
+                    4847.894896
+                  ],
+                  [
+                    668.028458,
+                    4845.894896
+                  ],
+                  [
+                    670.028458,
+                    4843.894896
+                  ],
+                  [
+                    672.028458,
+                    4841.894896
+                  ],
+                  [
+                    674.028458,
+                    4839.894896
+                  ],
+                  [
+                    676.028458,
+                    4837.894896
+                  ],
+                  [
+                    678.028458,
+                    4835.894896
+                  ],
+                  [
+                    680.028458,
+                    4833.894896
+                  ],
+                  [
+                    682.028458,
+                    4831.894896
+                  ],
+                  [
+                    684.028458,
+                    4829.894896
+                  ],
+                  [
+                    686.028458,
+                    4827.894896
+                  ],
+                  [
+                    688.028458,
+                    4825.894896
+                  ],
+                  [
+                    690.028458,
+                    4823.894896
+                  ]
+                ],
+                "planned_clearance": [
+                  {
+                    "et": 0,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.2,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.4,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.6,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 0.8,
+                    "solid": false,
+                    "distance_m": null
+                  },
+                  {
+                    "et": 1,
+                    "solid": false,
+                    "distance_m": null
+                  }
+                ],
+                "planner": {
+                  "from": "soulrest",
+                  "to": "blackrose",
+                  "found": true,
+                  "cols": 142,
+                  "rows": 101,
+                  "start": [
+                    50,
+                    50
+                  ],
+                  "goal": [
+                    91,
+                    0
+                  ],
+                  "open_left": 375,
+                  "cost_nodes": 809,
+                  "best_reachable": {
+                    "d": 3.6032719004506735,
+                    "x": 91,
+                    "z": 0,
+                    "world": [
+                      710.028458,
+                      4793.894896
+                    ]
+                  }
+                },
+                "walk": {
+                  "arrived": false,
+                  "aborted": null,
+                  "frames": 2500,
+                  "minutes": 0.694,
+                  "path_m": 133.3,
+                  "mean_speed_mps": 3.2,
+                  "end": [
+                    707.2,
+                    4800.8
+                  ],
+                  "target": [
+                    1885.6,
+                    4436
+                  ],
+                  "offset_m": 1233.53,
+                  "longest_stuck_frames": 0,
+                  "mired_frames": 0,
+                  "regions_entered": [
+                    "stone-wastes"
+                  ],
+                  "deepest_water_on_the_walk": {
+                    "depth_m": 0,
+                    "at": null
+                  },
+                  "worst_off_path_m": 0.3,
+                  "off_path_frames": 0,
+                  "regains": 0,
+                  "teleports": 0,
+                  "teleported_m": 0,
+                  "teleport_log": [],
+                  "arrival_is_clean": true
+                }
+              }
+            }
+          ],
+          "blocked_offer_why": [],
+          "topics_known": 11,
+          "flags_ending": []
+        }
+      },
+      "bootstrap": {
+        "topics_before": 0,
+        "world_action": {
+          "ok": true,
+          "frames": 0,
+          "left_m": 0.5,
+          "started": [
+            624.5,
+            8.13,
+            4877
+          ],
+          "ended": [
+            624.5,
+            8.13,
+            4877
+          ],
+          "production_input": true,
+          "planned_route": [
+            [
+              625,
+              4877
+            ]
+          ],
+          "planned_clearance": [
+            {
+              "et": 0,
+              "solid": false,
+              "distance_m": 0.892920247148187
+            },
+            {
+              "et": 0.2,
+              "solid": false,
+              "distance_m": 0.8015657013839059
+            },
+            {
+              "et": 0.4,
+              "solid": false,
+              "distance_m": 0.7102111556196251
+            },
+            {
+              "et": 0.6,
+              "solid": false,
+              "distance_m": 0.6188566098554482
+            },
+            {
+              "et": 0.8,
+              "solid": false,
+              "distance_m": 0.5275020640911672
+            },
+            {
+              "et": 1,
+              "solid": false,
+              "distance_m": 0.4361475183268863
+            }
+          ],
+          "planner": {
+            "from": "soulrest",
+            "to": "soulrest",
+            "found": true,
+            "cols": 122,
+            "rows": 121,
+            "start": [
+              60,
+              60
+            ],
+            "goal": [
+              61,
+              60
+            ],
+            "open_left": 6,
+            "cost_nodes": 8,
+            "best_reachable": {
+              "d": 3,
+              "x": 61,
+              "z": 60,
+              "world": [
+                625,
+                4877
+              ]
+            }
+          },
+          "walk": {
+            "arrived": true,
+            "aborted": null,
+            "frames": 0,
+            "minutes": 0,
+            "path_m": 0,
+            "mean_speed_mps": 0,
+            "end": [
+              624.5,
+              4877
+            ],
+            "target": [
+              625,
+              4877
+            ],
+            "offset_m": 0.5,
+            "longest_stuck_frames": 0,
+            "mired_frames": 0,
+            "regions_entered": [
+              "stone-wastes"
+            ],
+            "deepest_water_on_the_walk": {
+              "depth_m": 0,
+              "at": null
+            },
+            "worst_off_path_m": 0,
+            "off_path_frames": 0,
+            "regains": 0,
+            "teleports": 0,
+            "teleported_m": 0,
+            "teleport_log": [],
+            "arrival_is_clean": true
+          }
+        },
+        "topics_after": 1
+      }
+    }
+  ]
+}

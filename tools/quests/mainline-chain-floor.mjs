@@ -79,8 +79,12 @@ const sabotage = args.sabotage ? String(args.sabotage) : null;
 // W1-19 round 3: off by default. See the long note at the direct reveal API call site.
 const handFeedReveals = false;
 if (sabotage && !['no-bootstrap', 'no-purse'].includes(sabotage)) usage(USAGE);
-const PURSE = args.purse === undefined ? 2500 : Number(args.purse);
+const PURSE = args.purse === undefined ? 0 : Number(args.purse);
 const ATTEMPTS = args.attempts === undefined ? 6 : Number(args.attempts);
+const WALK_MAX_FRAMES = Number(args['walk-max-frames'] || 100000);
+const resumeState = args['resume-state'] ? JSON.parse(fs.readFileSync(path.resolve(String(args['resume-state'])), 'utf8')) : null;
+const CHAIN_NAMES = args.chain && args.chain !== 'both' ? [String(args.chain)] : ['intended', 'backpath'];
+if (CHAIN_NAMES.some((x) => !['intended', 'backpath'].includes(x))) usage(USAGE);
 
 const QDIR = path.join(process.cwd(), 'game/data/quests');
 const defs = {};
@@ -98,7 +102,7 @@ const npcActions = {};
 for (const f of fs.readdirSync(path.join(process.cwd(), 'game/data/npcs'))) {
   if (!f.endsWith('.json')) continue;
   const d = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/npcs', f), 'utf8'));
-  for (const n of d.npcs || []) npcActions[n.id] = n.settlement ? { settlement: n.settlement } : (n.post && n.post.site ? { site: n.post.site } : null);
+  for (const n of d.npcs || []) npcActions[n.id] = n.settlement ? { settlement: n.settlement, pos: n.post && n.post.pos || null } : (n.post && n.post.site ? { site: n.post.site, pos: n.post.pos || null } : null);
 }
 
 // Resolve authored document/mark sources to their production world objects once. The resulting
@@ -112,12 +116,14 @@ for (const f of fs.readdirSync(path.join(process.cwd(), 'game/data/books'))) {
   for (const b of d.books || []) if (b.knowledge_key) knowledgeToBook[b.knowledge_key] = b.id;
 }
 const interiorsDir = path.join(process.cwd(), 'game/data/world/interiors');
+const interiorActions = {};
 for (const f of fs.readdirSync(interiorsDir)) {
   if (!f.endsWith('.json')) continue;
   const d = JSON.parse(fs.readFileSync(path.join(interiorsDir, f), 'utf8'));
+  interiorActions[d.id] = { interior:d.id, exterior_spawn:d.continuity && d.continuity.exterior_spawn, interior_spawn:d.continuity && d.continuity.interior_spawn };
   for (const r of Array.isArray(d.readable) ? d.readable : []) {
     const key = Object.keys(knowledgeToBook).find((k) => knowledgeToBook[k] === r.book);
-    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book };
+    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book, exterior_spawn: d.continuity && d.continuity.exterior_spawn, interior_spawn: d.continuity && d.continuity.interior_spawn };
   }
 }
 const markActions = {};
@@ -175,13 +181,15 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
 
     const walkTo = (x, z, reach = 1.0) => {
       const started = H.whereAmI().pos.slice();
+      const already = Math.hypot(x-started[0],z-started[2]);
+      if (already <= reach) return { ok:true, frames:0, left_m:already, started, ended:started.slice(), production_input:true, already_in_reach:true, planned_route:[], planned_clearance:[], planner:null, walk:{arrived:true,aborted:null,frames:0,path_m:0,end:[started[0],started[2]],target:[x,z],offset_m:already,teleports:0,teleported_m:0,teleport_log:[],arrival_is_clean:true} };
       // Follow the authored road graph between the nearest settlements. The short joins at
       // each end are walked too; no pose is written and walkPath reports any discontinuity.
       const here = started;
@@ -194,16 +202,56 @@ try {
         for (const leg of roads.legs.filter(l=>l.from.toLowerCase()===u||l.to.toLowerCase()===u)) { const v=(leg.from.toLowerCase()===u?leg.to:leg.from).toLowerCase(), nd=dist[u]+leg.built_path_m; if(nd<dist[v]){dist[v]=nd;prev[v]={u,leg};} }
       }
       const hops=[]; let cur=to.id; while(cur!==from.id && prev[cur]) { hops.unshift({from:prev[cur].u,to:cur,leg:prev[cur].leg});cur=prev[cur].u; }
-      const route=[];
+      const route=[]; let plannerReport={from:from.id,to:to.id};
       for (const h of hops) { const pts=h.leg.from.toLowerCase()===h.from?h.leg.points:[...h.leg.points].reverse(); for(const q of pts) if(!route.length||q[0]!==route.at(-1)[0]||q[1]!==route.at(-1)[1]) route.push([q[0],q[1]]); }
       route.push([x,z]);
+      // A resumed production walk starts from the body's saved pose, not from the station it
+      // left in an earlier bounded segment. Rejoin at the nearest authored road point rather
+      // than backtracking through already-walked ground.
+      if (route.length > 2) { let near={i:0,d:Infinity}; for(let i=0;i<route.length-1;i++){const d=Math.hypot(route[i][0]-here[0],route[i][1]-here[2]);if(d<near.d)near={i,d};} if(near.i>0&&near.d<180)route.splice(0,near.i); }
+      // Find a collision-free street egress to the provincial road. Settlement road splines
+      // begin at civic centres and can lie behind the building whose door the player just left;
+      // a beeline therefore walks through a visible wall. This A* reads the rendered footprints
+      // and emits ordinary walking waypoints. It neither places the body nor advances a quest.
+      if (route.length && Math.hypot(here[0]-from.x, here[2]-from.z) < 180) {
+        let nearestRoad={i:0,d:Infinity}; for(let ri=0;ri<route.length;ri++){const rd=Math.hypot(route[ri][0]-here[0],route[ri][1]-here[2]);if(rd<nearestRoad.d)nearestRoad={i:ri,d:rd};}
+        let join = nearestRoad.i > 0 && nearestRoad.d < 180 ? nearestRoad.i : route.findIndex(q => Math.hypot(q[0]-from.x, q[1]-from.z) >= 120);
+        if (join < 0) join = Math.min(route.length-1, 1);
+        const rawGoal = route[join]; let goal = rawGoal; const localDistance=Math.hypot(rawGoal[0]-here[0],rawGoal[1]-here[2]), grid = localDistance < 60 ? 0.5 : 2, margin = localDistance < 60 ? 30 : 100, collisionY=here[1]+0.9;
+        const blocked=(bx,bz)=>H.solidAt(bx,collisionY,bz).distance_m < 0.42;
+        if (blocked(goal[0], goal[1])) {
+          const candidates=[]; for(let rr=Math.max(1.5,reach);rr<=Math.max(6,reach+3);rr+=1.5) for(let k=0;k<24;k++){const a=k*Math.PI/12,q=[rawGoal[0]+Math.sin(a)*rr,rawGoal[1]+Math.cos(a)*rr];if(!blocked(q[0],q[1]))candidates.push(q);}
+          if(candidates.length) goal=candidates.sort((a,b)=>Math.hypot(a[0]-here[0],a[1]-here[2])-Math.hypot(b[0]-here[0],b[1]-here[2]))[0];
+          route[join]=goal;
+        }
+        const minX=here[0]-margin,maxX=Math.max(here[0],goal[0])+margin;
+        const minZ=here[2]-margin,maxZ=Math.max(here[2],goal[1])+margin;
+        const cols=Math.ceil((maxX-minX)/grid)+1, rows=Math.ceil((maxZ-minZ)/grid)+1;
+        const ix=x0=>Math.max(0,Math.min(cols-1,Math.round((x0-minX)/grid)));
+        const iz=z0=>Math.max(0,Math.min(rows-1,Math.round((z0-minZ)/grid)));
+        const key=(a,b)=>a+','+b, sx=ix(here[0]),sz=iz(here[2]); let gx=ix(goal[0]),gz=iz(goal[1]);
+        const open=[[0,sx,sz]], cost=new Map([[key(sx,sz),0]]), came=new Map();
+        const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
+        let found=false,bestReach={d:Infinity,x:sx,z:sz};
+        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz),cwx=minX+cx*grid,cwz=minZ+cz*grid,goalDist=Math.hypot(cwx-rawGoal[0],cwz-rawGoal[1]);if(goalDist<bestReach.d)bestReach={d:goalDist,x:cx,z:cz,world:[cwx,cwz]};if(goalDist<=Math.max(reach,grid*.75)&&!blocked(cwx,cwz)){found=true;gx=cx;gz=cz;goal=[cwx,cwz];route[join]=goal;break;}
+          for(const [di,dj] of dirs){const nx=cx+di,nz=cz+dj;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const wx=minX+nx*grid,wz=minZ+nz*grid,cwx=minX+cx*grid,cwz=minZ+cz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(cwx+(wx-cwx)*et,cwz+(wz-cwz)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(di,dj);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}
+        }
+        plannerReport={...plannerReport,found,cols,rows,start:[sx,sz],goal:[gx,gz],open_left:open.length,cost_nodes:cost.size,best_reachable:bestReach};
+        if(found){const cells=[];let k=key(gx,gz);while(k!==key(sx,sz)){const [a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k)break;}
+          // Keep the collision-checked grid edges. Pure pursuit may smooth a long polyline, but
+          // a settlement doorway can be narrower than that smoothing radius.
+          route.splice(0,join+1,...cells);
+        }
+      }
       const walked = H.walkPath(route, {
         fromCurrent: true,
         speed: 'jog',
-        maxFrames: 5000,
+        maxFrames: walkMaxFrames,
         arrive_m: reach,
+        lookahead_m: 0.5,
         stuckAbort: 1800,
         miredAbort: 36000,
+        survival: true,
       });
       return {
         ok: walked.arrived && walked.arrival_is_clean,
@@ -212,8 +260,50 @@ try {
         started,
         ended: H.whereAmI().pos.slice(),
         production_input: true,
+        planned_route: route.slice(0, 40),
+        planned_clearance: route.length ? [0,.2,.4,.6,.8,1].map(et=>{const q=route[0];return {et,...H.solidAt(started[0]+(q[0]-started[0])*et,started[1]+.9,started[2]+(q[1]-started[2])*et)};}) : [],
+        planner: plannerReport,
         walk: walked,
       };
+    };
+
+    const reachNpc = (npcId) => {
+      const loc = npcActions[npcId];
+      // Cross the world before asking its population consumer for an entity. A record with a
+      // post supplies the exact public destination; otherwise the settlement station is the
+      // player-facing landmark from which the scheduled population is discoverable.
+      let approach = null;
+      if (loc && loc.pos) approach = walkTo(loc.pos[0], loc.pos[2], 4.0);
+      else if (loc && loc.settlement) {
+        const station = travelStations.find((x) => x.id === loc.settlement);
+        if (station) approach = walkTo(station.x, station.z, 12.0);
+      }
+      if (approach && !approach.ok) return { ok:false, why:`production approach to ${npcId} incomplete: ${approach.walk?.aborted || approach.left_m}`, location:loc || null, approach };
+      let ent = H.listEntities().find((x) => x.eid === npcId);
+      // Site populations have no settlement boundary; this is the same production consumer
+      // `stepSettlement` calls for towns, invoked only after the body reached the authored site.
+      if (!ent && loc && loc.site && approach && approach.ok) { H.populateSite(loc.site); ent = H.listEntities().find((x) => x.eid === npcId); }
+      if (!ent || !ent.pos) return { ok:false, why:`${npcId} absent after reaching its production location`, location:loc || null, approach };
+      const walk = walkTo(ent.pos[0], ent.pos[2], 3.0);
+      return { ok:walk.ok, walk, approach, entity_pos:ent.pos, location:loc || null };
+    };
+
+    const reachGiver = (questId) => {
+      const def = H.questDef(questId), giver = def && def.giver && def.giver.npc_id;
+      if (!giver) return { quest:questId, giver:null, present:false, reached:false, why:'quest names no giver' };
+      const reached = reachNpc(giver);
+      return { quest:questId, giver, went_to:(npcActions[giver]||{}).settlement || (npcActions[giver]||{}).site || null,
+        present:!!reached.entity_pos, reached:reached.ok, why:reached.why || null, ...reached };
+    };
+
+    const evidenceSnapshot = (giver) => {
+      const where=H.whereAmI(), qs=H.getQuestState(), ui=H.getUIState();
+      const ent=giver && H.listEntities().find((x)=>x.eid===giver), pos=where.pos;
+      return { where, giver_distance_m:ent&&ent.pos?Math.hypot(ent.pos[0]-pos[0],ent.pos[2]-pos[2]):null,
+        topics_known:qs.topicsKnown.slice(), books_read:qs.booksRead.slice(), journal_n:qs.journal.length,
+        completed:qs.completed.slice(), active:qs.active.map((q)=>({id:q.id,stage:q.stage,branch:q.branch,flags:{...q.flags}})),
+        durable_flags:Object.keys(qs.flags).filter((k)=>qs.flags[k]).sort(), gold:H.getGold?H.getGold():null,
+        hour:where.hour, marker_count:ui.markers, ui_mode:ui.mode };
     };
 
     const sampleStanding = () => {
@@ -224,8 +314,9 @@ try {
     };
 
     const runChain = (name, plan) => {
+      const alreadyCompleted = new Set(H.getQuestState().completed || []);
       const out = {
-        chain: name, completed: [], blocked_at: null, why: null, violent: [], journal_n: 0,
+        chain: name, precompleted: [...alreadyCompleted], completed: [], blocked_at: null, why: null, violent: [], journal_n: 0,
         // per gate NPC: the lowest standing seen at any step of this chain
         floor: {},
         // per QUEST: the standing at this quest's own giver at the instant the chain arrives at
@@ -250,9 +341,11 @@ try {
       out.trace.push({ after: '(cold start)', standing: st });
 
       for (const step of plan) {
+        if (alreadyCompleted.has(step.id)) continue;
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
-        const offer = H.questOffers().find((o) => o.id === step.id) || null;
+        const activeRecord = H.getQuestState().active.find((q)=>q.id===step.id) || null;
+        const offer = activeRecord ? null : (H.questOffers().find((o) => o.id === step.id) || null);
         // The standing at THIS quest's own giver, at the instant the chain arrives. Sampled
         // before `direct open API`, so a gate that the purse then buys open is still recorded at the
         // standing the character actually walked up with.
@@ -276,13 +369,16 @@ try {
         // own `populateSettlement`/`populateSite` — the call walking across a town boundary
         // makes — and returns `present: false` when the person's record names no place at all,
         // which is the failure the old line could not express.
-        const trip = H.travelToGiver(step.id);
-        if (!trip.present) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
+        const trip = activeRecord ? {quest:step.id,giver:(H.questDef(step.id).giver||{}).npc_id,present:true,reached:true,resumed_active:true} : reachGiver(step.id);
+        out.giver_journeys = out.giver_journeys || []; out.giver_journeys.push({ quest: step.id, phase: 'accept', ...trip });
+        if (!trip.present || !trip.reached) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
         // Accept through the production conversation choice published by talkTo().  The runner
         // never calls QuestEngine/open or a harness quest verb: if the giver does not publish the
         // choice, play stops here.
-        let o = { ok: false, reason: 'acceptance choice absent' };
+        let o = activeRecord ? {ok:true,resumed_active:true} : (trip.reached ? { ok: false, reason: 'acceptance choice absent' } : { ok: false, reason: `production movement did not reach giver: ${trip.why || trip.walk?.walk?.aborted || trip.walk?.left_m}` });
         const giver = (H.questDef(step.id).giver || {}).npc_id;
+        const evidence = { quest:step.id, topic:step.topic, prerequisite_topics:step.prereq_topics.slice(),
+          arrival:evidenceSnapshot(giver), offer:offer ? {...offer} : null, giver_journey:trip, world_actions:[] };
         const acceptThroughConversation = () => {
           const c = H.talkTo(giver);
           const choice = (c.topics || c.list || []).find((x) => x.id === `quest-accept:${step.id}`);
@@ -292,9 +388,9 @@ try {
           const qa = said && said.quest_action;
           return qa && qa.act === 'accept' ? qa.result : { ok: false, reason: (said && said.refused) || 'production acceptance refused' };
         };
-        try { o = acceptThroughConversation(); } catch (e) { o = { ok: false, reason: String(e && e.message || e) }; }
+        if (!activeRecord && trip.reached) try { o = acceptThroughConversation(); } catch (e) { o = { ok: false, reason: String(e && e.message || e) }; }
         // Refused on standing? Go and talk them round, then retry the published choice.
-        if (!o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String((offer && offer.why) || o.reason || ''))) {
+        if (!activeRecord && !o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String((offer && offer.why) || o.reason || ''))) {
           if (giver) {
             try {
               H.talkTo(giver);
@@ -319,6 +415,7 @@ try {
           out.blocked_at = step.id;
           out.why = o.reason;
           out.blocked_offer_why = offer ? offer.why : null;
+          evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState();
           break;
         }
         // Perform every authored reveal through its shipped player-facing world action.
@@ -333,36 +430,64 @@ try {
           const a = { reveal: r.id, channel: r.channel, source: r.source, ok: false };
           try {
             if (r.channel === 'talk_to_target' || r.channel === 'rival_npc') {
-              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
               const st = H.talkTo(r.source); const learned = Array.isArray(st.learned) ? st.learned : (st.learned && st.learned.learned) || []; a.ok = learned.some((x) => x.reveal === r.id && x.ok); H.conversationClose();
             } else if (r.channel === 'eavesdrop') {
-              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
               const st = H.eavesdrop(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
             } else if (r.channel === 'corpse') {
-              const loc = npcActions[r.source]; if (loc && loc.settlement) H.populateSettlement(loc.settlement); else if (loc && loc.site) H.populateSite(loc.site);
+              a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
               const st = H.examineCorpse(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
             } else if (['book', 'ledger', 'letter'].includes(r.channel) && documentActions[r.source]) {
-              const d = documentActions[r.source]; H.enterInterior(d.interior); H.stepFrames(2);
-              const prop = H.listEntities().find((x) => x.eid === d.eid);
-              if (prop) {
-                // The ordinary book surface fires the same onBookOpened consumer as interacting
-                // with this verified, present, non-takeable prop. No knowledge flag is supplied.
-                H.openMenu('book', { id: d.book });
-                const ui = H.getUIState(); a.ok = ui.mode === 'book' && ui.book && ui.book.id === d.book;
-                if (a.ok) H.closeMenu();
+              const d = documentActions[r.source];
+              if (!d.exterior_spawn || !d.interior_spawn) throw new Error(`${d.interior} has no two-sided production doorway`);
+              a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 0.35);
+              a.entry_prompt = H.whereAmI().door_in_reach;
+              if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
+              H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
+              if (H.whereAmI().interior !== d.interior) throw new Error(`interact did not enter ${d.interior}`);
+              a.entry_where=H.whereAmI(); a.entry_ui=H.getUIState();
+              if (a.entry_ui.dialogue_surface && a.entry_ui.dialogue_surface.open) {
+                H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]); H.stepFrames(6);
+                a.entry_dialogue_closed = !(H.getUIState().dialogue_surface || {}).open;
+                if (!a.entry_dialogue_closed) throw new Error(`production dialogue held movement in ${d.interior}`);
               }
+              const prop = H.listEntities().find((x) => x.eid === d.eid);
+              if (!prop) throw new Error(`${d.eid} absent in entered interior`);
+              a.reader_walk = walkTo(prop.pos[0], prop.pos[2], Math.min(prop.reach_m || 1.6, 1.2));
+              if (!a.reader_walk.ok) throw new Error(`production movement did not reach ${d.eid}`);
+              H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
+              const ui = H.getUIState();
+              a.ok = ui.mode === 'book' && ui.book && ui.book.id === d.book && H.getQuestState().booksRead.includes(d.book);
+              if (ui.mode === 'book') H.closeMenu();
+              a.exit_walk = walkTo(d.interior_spawn[0], d.interior_spawn[2], 0.35);
+              a.exit_prompt = H.whereAmI().door_in_reach;
+              if (!a.exit_walk.ok || !a.exit_prompt || a.exit_prompt.way !== 'out') throw new Error(`production exit not reachable in ${d.interior}`);
+              H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
+              if (H.whereAmI().interior) throw new Error(`interact did not leave ${d.interior}`);
             } else if (r.channel === 'environment' && markActions[r.source]) {
-              const at = markActions[r.source];
-              if (at.interior) H.enterInterior(at.interior); else { const w=H.whereAmI(); if (w.interior) H.exitInterior(); }
+              const at = markActions[r.source]; let markInterior=null;
+              if (at.interior) {
+                markInterior=interiorActions[at.interior]; if(!markInterior || !markInterior.exterior_spawn) throw new Error(`${at.interior} has no production doorway`);
+                a.entry_walk=walkTo(markInterior.exterior_spawn[0],markInterior.exterior_spawn[2],.35);
+                a.entry_prompt=H.whereAmI().door_in_reach;
+                if(!a.entry_walk.ok||!a.entry_prompt||a.entry_prompt.interior!==at.interior)throw new Error(`production door not reachable for ${at.interior}`);
+                H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
+                const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(6);}
+                if(H.whereAmI().interior!==at.interior)throw new Error(`interact did not enter ${at.interior}`);
+              } else if (H.whereAmI().interior) throw new Error('exterior mark requested while still inside an interior');
               H.stepFrames(3);
               let prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`);
               if (!prop && at.world) { a.walk = walkTo(at.world[0], at.world[1], 2.0); H.stepFrames(3); prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`); }
-              if (prop) { a.walk = walkTo(prop.pos[0], prop.pos[2], Math.min(prop.reach_m || 1.6,1.2)); if (a.walk.ok) { H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8); a.ok = true; } }
+              if (prop) { a.walk = walkTo(prop.pos[0], prop.pos[2], Math.min(prop.reach_m || 1.6,1.2)); if (a.walk.ok) { H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8); const qr=H.getQuestState().active.find(q=>q.id===step.id); a.ok = !!(qr && qr.flags && qr.flags[`know:${r.id}`]); } }
+              if(markInterior){a.exit_walk=walkTo(markInterior.interior_spawn[0],markInterior.interior_spawn[2],.35);if(!a.exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${at.interior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${at.interior}`);}
             }
           } catch (e) { a.error = String(e && e.message || e); }
           out.world_actions.push(a);
         }
 
+        evidence.world_actions = out.world_actions.filter((wa)=>step.reveals.some((rv)=>rv.id===wa.reveal));
+        evidence.after_accept=evidenceSnapshot(giver);
         const want = prefer[name] && prefer[name][step.id];
         const ordered = [...step.resolutions].sort((a, b) => (a.id === want ? -1 : b.id === want ? 1 : 0));
         // Select an actually published shipped resolution choice in the giver's ordinary
@@ -370,7 +495,9 @@ try {
         let res;
         let pick = null;
         try {
-          H.travelToGiver(step.id);
+          const returnTrip = reachGiver(step.id);
+          out.giver_journeys.push({ quest: step.id, phase: 'resolve', ...returnTrip });
+          if (!returnTrip.reached) throw new Error(`production movement did not reach giver: ${returnTrip.why || returnTrip.walk?.walk?.aborted || returnTrip.walk?.left_m}`);
           const c = H.talkTo(giver);
           const topics = c.topics || c.list || [];
           for (const candidate of ordered) {
@@ -386,11 +513,12 @@ try {
           }
           H.conversationClose();
         } catch (e) { res = { ok: false, reason: String(e && e.message || e) }; }
-        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; break; }
+        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState(); break; }
         if (pick.violence_required) out.violent.push(step.id);
         out.completed.push(step.id);
         st = sampleStanding(); fold(st);
-        out.trace.push({ after: step.id, resolution: pick.id, standing: st });
+        evidence.after=step.id; evidence.resolution=pick.id; evidence.standing=st; evidence.after_resolution=evidenceSnapshot(giver); out.trace.push(evidence);
+        out.resume_state = H.saveState();
       }
       const qs = H.getQuestState();
       out.journal_n = qs.journal.length;
@@ -402,17 +530,26 @@ try {
     const rows = [];
     for (const [race, upbringing] of sigs) {
       const row = { race, upbringing, chains: {} };
-      for (const name of ['intended', 'backpath']) {
+      for (const name of chainNames) {
         H.setSeed(1337);
-        H.loadState(STATE);
+        if (resumeState) H.restoreState(resumeState); else {
+          H.loadState(STATE);
+          H.setGold(sabotage === 'no-purse' ? 0 : PURSE);
+          H.setCharacter({ race, upbringing, class: 'reed-walker', birthsign: 'raj-xul' });
+        }
         H.setRenderRate(0);
-        H.setGold(sabotage === 'no-purse' ? 0 : PURSE);
-        H.setCharacter({ race, upbringing, class: 'reed-walker', birthsign: 'raj-xul' });
+        // Build the same collision/population cell the first live frame builds before planning
+        // any movement; planning against EMPTY_CELL makes every street look unobstructed.
+        H.stepFrames(2);
         // THE ONLY THING GRANTED FROM OUTSIDE THE QUEST GRAPH, and it is not granted, it is
         // done: walk up to a carter on the Soulrest quay and be greeted. Everything after this
         // has to arrive through the world's own AddTopic edges.
         const boot = { topics_before: H.getQuestState().topicsKnown.length };
-        if (sabotage !== 'no-bootstrap') { H.talkTo(BOOTSTRAP_NPC); H.conversationClose(); }
+        if (!resumeState && sabotage !== 'no-bootstrap') {
+          const b = H.listEntities().find((x) => x.eid === BOOTSTRAP_NPC);
+          boot.world_action = b && b.pos ? walkTo(b.pos[0], b.pos[2], 3.0) : { ok:false, why:'bootstrap NPC absent' };
+          if (boot.world_action.ok) { H.talkTo(BOOTSTRAP_NPC); H.conversationClose(); }
+        }
         boot.topics_after = H.getQuestState().topicsKnown.length;
         row.bootstrap = boot;
         row.chains[name] = runChain(name, plans[name]);
@@ -420,7 +557,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------
@@ -458,7 +595,7 @@ const perGate = gates.map((g) => ({
   arrival_margin: arrivals[g.quest] == null ? null : arrivals[g.quest] - g.min,
 })).sort((a, b) => (a.arrival_margin ?? -1e9) - (b.arrival_margin ?? -1e9));
 
-const finished = report.rows.filter((r) => !r.chains.intended.blocked_at && !r.chains.backpath.blocked_at);
+const finished = report.rows.filter((r) => CHAIN_NAMES.every((name) => !r.chains[name].blocked_at));
 const failures = [];
 for (const r of report.rows) {
   for (const [name, ch] of Object.entries(r.chains)) {
@@ -476,7 +613,9 @@ const out = {
   bootstrap_npc: sabotage === 'no-bootstrap' ? null : BOOTSTRAP_NPC,
   hand_fed_topics: sabotage === 'hand-feed',
   signatures: SIGS.length,
-  signatures_finishing_both_chains: finished.length,
+  chains_run: CHAIN_NAMES,
+  signatures_finishing_selected_chains: finished.length,
+  signatures_finishing_both_chains: CHAIN_NAMES.length === 2 ? finished.length : null,
   chain_lengths: { intended: plans.intended.length, backpath: plans.backpath.length },
   bootstrap_sample: report.rows[0] ? report.rows[0].bootstrap : null,
   gates: perGate,
@@ -496,11 +635,15 @@ const out = {
   violent_resolutions_taken: violent,
   rows: report.rows,
 };
+for (const row of out.rows) for (const [chain,ch] of Object.entries(row.chains)) if (ch.resume_state) {
+  const statePath=path.join(outDir,`resume-${row.race}-${row.upbringing}-${chain}.json`); writeJson(statePath,ch.resume_state);
+  ch.resume_state_file=path.basename(statePath); delete ch.resume_state;
+}
 writeJson(path.join(outDir, 'mainline-chain-floor.json'), out);
 
 if (args.json) console.log(JSON.stringify(out, null, 2));
 else {
-  console.log(`\nmainline chain floor — ${SIGS.length} signatures x 2 chains, state '${STATE}'${sabotage ? `  [SABOTAGE ${sabotage}]` : ''}`);
+  console.log(`\nmainline chain floor — ${SIGS.length} signatures x ${CHAIN_NAMES.length} chain(s), state '${STATE}'${sabotage ? `  [SABOTAGE ${sabotage}]` : ''}`);
   console.log(`bootstrap: ${out.bootstrap_npc ? `greeted ${out.bootstrap_npc}, topics ${out.bootstrap_sample.topics_before} -> ${out.bootstrap_sample.topics_after}` : 'NONE'}; topics hand-fed: ${out.hand_fed_topics}\n`);
   const n2 = (v) => (v == null ? '  -  ' : (Math.round(v * 100) / 100).toFixed(2));
   console.log('  quest        act npc                          min  arrival  margin  worst signature      | chain floor  margin');
@@ -509,7 +652,7 @@ else {
   }
   const short = perGate.filter((g) => g.arrival_margin != null && g.arrival_margin < 0);
   console.log(`\n  gates some signature ARRIVES SHORT of  ${short.length}/${perGate.length}${short.length ? '  ' + short.map((g) => `${g.quest} by ${(Math.round(-g.arrival_margin * 100) / 100)}`).join(', ') : ''}`);
-  console.log(`\n  signatures completing both chains  ${finished.length}/${SIGS.length}`);
+  console.log(`\n  signatures completing selected chains  ${finished.length}/${SIGS.length}`);
   console.log(`  gates never short of their min     ${out.gates_never_short}/${perGate.length}`);
   console.log(`  PRICED gates (floor below the min, so somebody has to pay)  ${out.priced_gates.length}`);
   for (const s of out.priced_gates) console.log(`     ${s}`);

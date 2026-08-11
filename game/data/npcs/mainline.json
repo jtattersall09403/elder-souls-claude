@@ -37,12 +37,12 @@
         "at_building": "soulrest-court-steps",
         "at_building_name": "The Drowned Court Steps",
         "pos": [
-          631.56,
+          630,
           7.91,
-          4888.01
+          4894.5
         ],
         "yaw": 66,
-        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+        "note": "W1-19: production-walked Court-steps post, outside the closed footprint and reachable from the quay."
       },
       "schedule": [
         {
@@ -144,12 +144,12 @@
         "at_building": "soulrest-court-steps",
         "at_building_name": "The Drowned Court Steps",
         "pos": [
-          631.91,
+          628.5,
           7.91,
-          4888.11
+          4894.5
         ],
         "yaw": 66,
-        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+        "note": "W1-19: production-walked Court post on the open stair apron."
       },
       "schedule": [
         {
@@ -191,7 +191,19 @@
         "greeting": "Not in here. Outside, where the sound is."
       },
       "reaction_group": "RG-COURT",
-      "actor": "mudborn"
+      "actor": "mudborn",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": null,
+        "at_building_name": "the open public approach",
+        "pos": [
+          636.5,
+          7.91,
+          4896
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal post."
+      }
     },
     {
       "id": "soulrest-sexton-on-duty",
@@ -285,7 +297,19 @@
         "greeting": "She knows what is in her own quarterlies. So what did she send you for?"
       },
       "reaction_group": "RG-COURT",
-      "actor": "clerk"
+      "actor": "clerk",
+      "post": {
+        "settlement": "gideon",
+        "at_building": null,
+        "at_building_name": "the open public approach",
+        "pos": [
+          450,
+          2.72,
+          2920
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal post."
+      }
     },
     {
       "id": "sedd-ravano",
@@ -391,7 +415,7 @@
       "race": "nord",
       "class": "carter",
       "faction": null,
-      "settlement": null,
+      "settlement": "soulrest",
       "disposition": 30,
       "topics": [
         "the drowned tally",
@@ -402,7 +426,19 @@
         "greeting": "Ladder well's gone cold, and the keeper hasn't left it. I don't know any more than that, and I'd rather not."
       },
       "reaction_group": "RG-TOWN",
-      "actor": "townsman"
+      "actor": "townsman",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-quay",
+        "at_building_name": "Soulrest Quay",
+        "pos": [
+          628,
+          7.93,
+          4877
+        ],
+        "yaw": 250,
+        "note": "W1-19: the Q-MAIN-01 overheard route begins at this production quay post."
+      }
     },
     {
       "id": "neeja-xul",
@@ -990,7 +1026,19 @@
         "greeting": "There is no yard at this end of the wharf."
       },
       "reaction_group": "RG-VAKH",
-      "actor": "sapcutter"
+      "actor": "sapcutter",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": null,
+        "at_building_name": "the open public approach",
+        "pos": [
+          2810,
+          0.4,
+          5028
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal post."
+      }
     },
     {
       "id": "blackwood-company-factor",
@@ -1029,7 +1077,17 @@
         "greeting": "Our writ is out of Leyawiin and it says nothing about the Stone Wastes. You're welcome to read it from where you're standing."
       },
       "reaction_group": "RG-BWC",
-      "actor": "mercenary"
+      "actor": "mercenary",
+      "post": {
+        "site": "works-camp",
+        "pos": [
+          1188,
+          3,
+          4613
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal site in province coordinates."
+      }
     },
     {
       "id": "keeper-ei-vashan",
@@ -1048,7 +1106,17 @@
         "greeting": "Two hundred years at the fifth intake. I have worked out roughly what you have come to do."
       },
       "reaction_group": "RG-DEEP",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "site": "ash-gallery",
+        "pos": [
+          1355,
+          3,
+          4587
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal site in province coordinates."
+      }
     },
     {
       "id": "gallery-intake-keepers",
@@ -1066,7 +1134,17 @@
         "greeting": "We have been expecting a tally-reader for a hundred and forty years."
       },
       "reaction_group": "RG-DEEP",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "site": "ash-gallery",
+        "pos": [
+          1353,
+          3,
+          4587
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal site in province coordinates."
+      }
     },
     {
       "id": "ixtu-meer",
@@ -1141,7 +1219,17 @@
         "greeting": ""
       },
       "reaction_group": "RG-COURT",
-      "actor": "mudborn"
+      "actor": "mudborn",
+      "post": {
+        "site": "flooding-road",
+        "pos": [
+          641,
+          8,
+          4893
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal site in province coordinates."
+      }
     },
     {
       "id": "npc-the-thing-in-the-third-bay",
@@ -1176,7 +1264,17 @@
         "greeting": "Nothing happened. The Court made all of it up and you are the proof."
       },
       "reaction_group": "RG-TOWN",
-      "actor": "townsman"
+      "actor": "townsman",
+      "post": {
+        "site": "soulrest-aftermath",
+        "pos": [
+          638,
+          8,
+          4896
+        ],
+        "yaw": 180,
+        "note": "W1-19: production-walked mainline reveal site in province coordinates."
+      }
     },
     {
       "id": "captain-oreem",

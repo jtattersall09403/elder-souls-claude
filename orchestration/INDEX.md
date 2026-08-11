@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1378e2a`: 833 tools, 153 reference
+so it cannot drift. Generated at `6efc32c`: 834 tools, 153 reference
 items, 146 pieces in flight.
 
 Its purpose is to stop 146+ concurrent agents each paying separately to discover the
@@ -689,7 +689,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 49
+### `tools/quests/` — 50
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -725,6 +725,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/mainline-findability.mjs` — can a PLAYER reach the main quest, or only the harness?
 - `tools/quests/mainline-gate-b-fixtures.mjs` — **no header comment**
 - `tools/quests/mainline-gate-margin.mjs` — how much room does each signature have at each main-quest gate?
+- `tools/quests/mainline-production-guard.mjs` — Fail-closed W1-19 production advancement guard.
 - `tools/quests/mainline-race-trace.mjs` — CAN EVERY RACE AND UPBRINGING FINISH THE MAIN QUEST?
 - `tools/quests/mainline-trace.mjs` — W1-19's deliverable: the main quest, played end to end, in the browser, through the shipped QuestEngine, with a trace instead of a claim.
 - `tools/quests/mark-route-world.mjs` — THE WORLD-SIDE HALF OF THE ENVIRONMENT CHANNEL.
@@ -1178,6 +1179,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-19-builder-codex-persistent-20260811` | ? | Complete the production-walked Soulrest-to-Blackrose Q-MAIN-07 approach, then continue int | `orchestration/status/W1-19-builder-codex-persistent-20260811.json` `tools/quests/mainline-chain-floor.mjs` `tools/quests/mainline-gate-b-fixtures.mjs` `game/data/world/assembled-lore.json` `game/data/world/voids.json` `game/data/index.json` |
 | `W1-25-builder` | done | Owning siblings repair the zero live crossings and missing live substrates; then record ma | `orchestration/status/W1-25-builder.json` `tools/experience/lib/session-analysis.mjs` `tools/experience/classes-from-md.mjs` `tools/experience/recall-run.mjs` `tools/experience/shape-check.mjs` `tools/experience/sag-fit.mjs` |
 | `W1-25-continuation-builder` | ? | Continue production work on the remaining native red cells; do not dispatch final judges y | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` `reports/experience/w1-25-continuation-builder/independent-handoff.json` `reports/experience/w1-25-continuation-builder/matrix-live-final.json` |
 | `W1-25-persistent-builder` | ? | Continue earliest red production cell and execute all six arms; do not claim builder_compl | `game/data/items/carried.json` `game/src/engine.js` `game/src/harness/api.js` `orchestration/status/W1-25-persistent-builder.json` `reports/composition/w1-25-persistent-builder/crossing-controls.json` `reports/composition/w1-25-persistent-builder/matrix-live.json` |
@@ -1195,7 +1197,6 @@ work is the difference between resuming and starting over.
 | `W1-19-builder-codex-20260810` | ? | Continue Gate A from reports/runs/W1-19-R3/reveal-route-audit.json: place or author the 13 | `orchestration/status/W1-19-builder-codex-20260810.json` `game/src/engine.js` `game/src/harness/api.js` `game/src/sim/quest/reveal-routes.js` `tools/quests/reveal-route-audit.mjs` |
 | `W1-19-builder-codex-continuation-20260810` | ? | Replace or repair the legacy chain population so it performs the routed ledger/person/mark | `orchestration/status/W1-19-builder-codex-continuation-20260810.json` `game/data/npcs/mainline.json` `game/data/index.json` `corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/current-head-summary.json` `corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/chain-floor/mainline-chain-floor.json` `corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/reveal-world` |
 | `W1-19-builder-codex-final-20260811` | ? | node tools/quests/mainline-chain-floor.mjs --out corpus/90-verdicts/wave1/artifacts/W1-19- | `orchestration/status/W1-19-builder-codex-final-20260811.json` `game/src/engine.js` `corpus/90-verdicts/wave1/artifacts/W1-19-builder-final/production-conversation/q-main-01-smoke.json` |
-| `W1-19-builder-codex-persistent-20260811` | ? | Repair the Q-MAIN-11 environment-mark navigation/action in the production runner; then run | `orchestration/status/W1-19-builder-codex-persistent-20260811.json` `tools/quests/mainline-chain-floor.mjs` `tools/quests/mainline-gate-b-fixtures.mjs` `game/data/world/assembled-lore.json` `game/data/world/voids.json` `game/data/index.json` |
 | `W1-21-builder` | ? | Independent UIX03/UIX04/UIX06 judges and a fresh critic use the preserved packs; builder a | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` `reports/w1-21-builder/aggregate.md` `reports/w1-21-builder/ui-comparison-packs.json` |
 | `W1-23-builder-codex-20260810` | ready_for_independent_criticism | Independent critic: exhaustive 163-document live walk and RI-MTH07 coupling; semantic secr | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` `game/data/books/manifest.json` `game/data/books/scraps.json` |
 | `plan-w1-17-06-03-26-codex-20260809` | ? | Owner command: Critique the current Wave 1 plans | `orchestration/plans/W1-17.md` `orchestration/status/W1-17.json` `orchestration/plans/W1-06.md` `orchestration/status/W1-06.json` `orchestration/plans/W1-03.md` `orchestration/status/W1-03.json` |

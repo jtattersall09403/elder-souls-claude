@@ -12,7 +12,11 @@
     "interior": null
   },
   "player": {
-    "pos": [0, 0, -4.0],
+    "pos": [
+      624.5,
+      7.93,
+      4877
+    ],
     "yaw": 0.0
   },
   "camera": {
@@ -23,61 +27,29 @@
   "npcs": [
     {
       "from_record": "undersexton-aveline-rell",
-      "pos": [1.8, 0, 7.6],
+      "pos": [
+        630,
+        7.91,
+        4894.5
+      ],
       "yaw": 185,
       "behaviour": "tend",
       "notice_radius_m": 5
     },
     {
-      "from_record": "soulrest-customs-clerk",
-      "pos": [-7.4, 0, 1.2],
-      "yaw": 75,
-      "behaviour": "tend",
-      "notice_radius_m": 5
-    },
-    {
       "from_record": "bone-ladder-carter",
-      "pos": [8.1, 0, -2.4],
+      "pos": [
+        628,
+        7.93,
+        4877
+      ],
       "yaw": 250,
       "behaviour": "tend",
       "notice_radius_m": 5,
       "settlement": "soulrest"
-    },
-    {
-      "from_record": "gideon-quay-porter",
-      "pos": [-3.2, 0, -8.6],
-      "yaw": 15,
-      "behaviour": "tend",
-      "notice_radius_m": 4
-    },
-    {
-      "from_record": "ojal-weeth",
-      "pos": [5.6, 0, 4.1],
-      "yaw": 215,
-      "behaviour": "tend",
-      "notice_radius_m": 4
     }
   ],
-  "props": [
-    {
-      "eid": "soulrest-reading-room-door",
-      "name": "The reading-room door, with the Court's mark cut into the lintel",
-      "pos": [1.8, 1.2, 9.4],
-      "yaw": 180,
-      "material": "plank",
-      "shape": "tall",
-      "takeable": false
-    },
-    {
-      "eid": "soulrest-quay-crate",
-      "name": "One of the eleven, stacked where it was signed for",
-      "pos": [4.4, 0.4, -1.0],
-      "yaw": 30,
-      "material": "plank",
-      "shape": "box",
-      "takeable": false
-    }
-  ],
+  "props": [],
   "spawn": [],
   "character": {
     "race": "saxhleel",

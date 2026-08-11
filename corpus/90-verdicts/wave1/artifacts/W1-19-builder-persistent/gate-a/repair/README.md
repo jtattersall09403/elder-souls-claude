@@ -9,3 +9,13 @@ Reproduce the bounded focused arm:
 ```sh
 node tools/quests/mainline-chain-floor.mjs --signature-count 1 --out /tmp/w119-focused --timeout 900000
 ```
+
+## Production continuation
+
+`q1-q6-production.json` supersedes the earlier beeline checkpoint. It walks from a real Soulrest
+quay pose, reaches the bootstrap speaker and both relocated Court posts through fixed-step input,
+opens the Court-steps doorway with `interact`, dismisses the blocking conversation with the shipped
+`block` input, walks to and interacts with the Drowned Tally prop, and exits through the inside face
+of the same door. It completes Q-MAIN-01 through Q-MAIN-06 with zero teleport discontinuities. Its
+bounded 2,500-frame leg then stops honestly on the still-incomplete Soulrest-to-Blackrose approach
+for Q-MAIN-07; it is checkpoint evidence, not a Gate A completion claim.

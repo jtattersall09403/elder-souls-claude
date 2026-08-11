@@ -8871,7 +8871,7 @@ export class Engine {
       p.pos[1] = this.field.heightAt(route[0][0], route[0][1]);
     }
     const st = { seg: 0 };
-    let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0;
+    let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0, healsUsed = 0, sprintInputs = 0, defensiveSwings = 0;
     let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
     // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
     // (`path_m` counted a respawn as walked distance) was landed in `walkRoute` and stated, in
@@ -8905,7 +8905,17 @@ export class Engine {
       // the button. The probe must too, or it cannot succeed, which is the mirror of the failure
       // mode AGENT-PROTOCOL names — a probe that cannot fail.
       const script = [{ f: 0, move: [-Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
-      if (this.traversal && this.traversal.mired) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
+      if (o.survival && !this.sim.env.interior && this.combat && this.combat.player) {
+        const body=this.combat.player, ctl=this.combat.playerCtl;
+        if (!body.move && body.hp < body.hpMax * 0.5 && ctl && ctl.estus > 0) { script.push({f:0,press:['use_item']}); healsUsed++; }
+        else if (!body.move && frames % 48 === 0 && body.stamina > body.staminaMax * 0.3) {
+          // Long player-facing journeys cross streamed hostile patrols. Swinging while the
+          // camera is already facing the route is the ordinary-world answer; silently tanking
+          // them until a hearth respawn would turn a walking trace into a discontinuity.
+          script.push({f:0,press:['light']},{f:2,release:['light']}); defensiveSwings++;
+        } else if (!body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
+      }
+      if (this.traversal && this.traversal.mired && !this.sim.env.interior) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
       this.input.queueInputs(script, this.sim.frame);
       const x0 = p.pos[0], z0 = p.pos[2], hp0 = p.hp;
       this.loop.stepOnce();
@@ -8929,7 +8939,7 @@ export class Engine {
       // waiting for the stamina to pay for them takes more. They are counted and reported
       // separately, and a walk that spends more than `miredAbort` frames mired aborts as MIRED —
       // which is a finding about the province, not a stall.
-      if (this.traversal && this.traversal.mired) {
+      if (this.traversal && this.traversal.mired && !this.sim.env.interior) {
         miredFrames++;
         if (miredFrames >= o.miredAbort) { aborted = 'mired'; break; }
         stuck = 0;
@@ -8946,7 +8956,7 @@ export class Engine {
       mean_speed_mps: frames ? +(dist / (frames / 60)).toFixed(4) : 0,
       end: [+end[0].toFixed(1), +end[1].toFixed(1)], target: [+target[0].toFixed(1), +target[1].toFixed(1)],
       offset_m: +Math.hypot(end[0] - target[0], end[1] - target[1]).toFixed(2),
-      longest_stuck_frames: worstStuck, mired_frames: miredFrames, regions_entered: [...visited].sort(),
+      longest_stuck_frames: worstStuck, mired_frames: miredFrames, survival_inputs: { heals: healsUsed, sprint_frames: sprintInputs, defensive_swings: defensiveSwings }, regions_entered: [...visited].sort(),
       deepest_water_on_the_walk: deepest,
       // H1: how far the body ever strayed from the line it was following, how long it spent off it,
       // and how many times it got back on. A walk that never leaves the road reports 0 regains
