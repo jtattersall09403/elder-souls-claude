@@ -16,6 +16,30 @@ blind_pair: yes
 > contaminate a blind judge** — it deliberately contains no description of what any individual
 > image looks like beyond its slot label. A blind judge may read §5 and nothing else.
 
+## Current moving-reference correction — 2026-08-11
+
+The early acquisition snapshot and empty-`video/` statements retained later in this item are
+historical. The generated `refs/MANIFEST.json` is the current inventory authority. At this
+correction it records 808 files on disk, including 207 animated sequences and twelve on-disk
+moving/video files. `refs/_provenance.json` records sources, expected bytes and SHA-256 values;
+`refs/acquire.py` verifies or reacquires the registered set. The behaviour corpus includes GIF
+populations for attacks, boss moves, impact, stance and telegraph plus moving third-person
+locomotion and combat clips. Counts must be regenerated from the manifest when this item is used.
+
+A motion critic must audit and use suitable registered sources first. Suitability is action-specific:
+subject, action, camera/perspective and useful temporal interval must support the claim being made.
+For any required cell without a suitable registered source, the critic must locate a legal online
+moving reference and preregister source URL, game, action, camera/perspective, clip interval, frame
+rate, duration, resolution, acquisition date, licence/use basis and content hash before comparing
+it with our matched evidence. Missing or incomparable cells follow the owning item's native skip,
+cap, block or ruling route and are never replaced by remembered motion.
+
+Our game evidence may be captured as deterministic frame-by-frame PNG sequences with tested commit,
+fixed seed, input script, camera, resolution, capture FPS, frame range, trace alignment and hashes.
+Transient GIF/WebM/MP4 encodes may be assembled from those frames for fast human or blind viewing;
+the PNG sequence and trace remain authoritative for exact measurements. Capture binaries remain
+transient. Text evidence records commands, hashes, outcomes and reproduction instructions.
+
 ## The bar
 
 Until this item, every visual verdict in the corpus was a comparison against **remembered**
@@ -57,7 +81,7 @@ python3 -c "import json,collections,os; \
 | `modern/character_closeup/` | **1** | `BAAI-Agents/Cradle` | RDR2, Arthur Morgan from behind at Horseshoe Overlook, 1921×1081, HUD-free. |
 | `anti-generic/` | **5** | (copies of `modern/hud/`) | The negative anchor: crenellated castle, half-timbered street, pitched-roof village, thatched hamlet, birch-and-meadow woodland. |
 | `modern/exterior_daylight`, `exterior_lowlight`, `interior_darkemissive`, `combat`, `material_closeup` | **0** | — | empty |
-| `context/`, `video/` | **0** | — | empty |
+| `context/`, `video/`, `souls-behaviour/anim/` | **see generated manifest** | registered sources in `_provenance.json` | Moving locomotion/combat clips and animated attack, boss-move, impact, stance and telegraph populations are present; `context/` coverage and action-cell suitability remain separately auditable. |
 | `rejected/` | 8 | — | with per-file reasons and the failing statistic |
 
 Machine-readable: `refs/MANIFEST.json` (one record per file, provenance joined to
@@ -78,7 +102,7 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS06 Protocol A** (fidelity blind) | `refs/modern/character_closeup/` as the `--ref` side | `refs/morrowind/`, `refs/modern/hud/` |
 | **RI-VIS06 Protocol B** (art-direction blind) | `refs/morrowind/REF-A*` as the `--ref` side | `refs/modern/` |
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
-| **RI-VIS08** (character animation) | nothing — `refs/video/` is empty | — |
+| **RI-VIS08** (character animation) | suitable registered moving sources under `refs/video/` and `refs/souls-behaviour/anim/`; independently preregistered legal sources for uncovered action cells | a clip whose subject, action, camera or temporal interval cannot support the claim; remembered motion |
 
 **No render is ever scored against `refs/modern/hud/`.** §5a of
 `REFERENCE-IMAGE-REQUEST.md` is the rule and this item does not soften it: those frames are
@@ -134,9 +158,11 @@ writes there.
    acquisition's second revision; see ACQUISITION-REPORT §13.1 and §14.
 6. **`refs/context/` is empty**, so no builder has seen a depiction of Shadowfen or Murkmire. The
    "deliberately do not converge on ESO" instruction in RI-VIS05 currently has nothing behind it.
-7. **`refs/video/` is empty**, so every motion claim in RI-VIS08 — LOD pop, foliage frequency,
-   water temporal variance, foot planting — remains uncalibrated. This is a known limit, recorded
-   as such rather than as a missing deliverable.
+7. **Moving references are populated but uneven.** Registered GIFs strongly cover attacks and
+   boss motion, while locomotion has suitable moving clips. Ordinary player jump/fall/landing and
+   conventional directional-roll coverage may still be weak. The critic audits action-cell
+   suitability and uses the preregistered acquisition route above for genuine gaps; file count
+   alone never establishes calibration.
 8. **No image in the set is two-host corroborated.** Every image host except GitHub is blocked
    from the acquiring container; `corroboration: "one-host"` on every record.
 9. **`identified_by` on the Morrowind files is slot-level, not per-image**, and every record says
@@ -356,8 +382,9 @@ that RI-VIS06 §B1's degradation recipe does not neutralise a 320×320 reference
 has to be re-specified — possibly by degrading *our* shot to 320×320 square crop rather than
 meeting in the middle. Record the outcome in RI-VIS06 rather than improvising it at run time.
 
-**Known-incomplete by construction.** This item registers a set that is one-sided by a factor of
-eighty-nine to one. It is entered into the corpus in that state deliberately: a set that exists
+**Known-incomplete by construction.** The original still-image snapshot was one-sided by a factor of
+eighty-nine to one; subsequent moving-reference acquisitions improve motion coverage without
+establishing that every modern still-image profile or action-matched motion cell is filled. It is entered into the corpus in that state deliberately: a set that exists
 and is honestly bounded is auditable, and the gaps in §3 are a shot-list an external acquisition
 can work against. It is **not** evidence that the fidelity side has a reference population. It has
 one image.
