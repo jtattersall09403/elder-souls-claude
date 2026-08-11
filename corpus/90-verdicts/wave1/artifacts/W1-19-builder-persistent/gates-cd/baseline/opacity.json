@@ -1,0 +1,25 @@
+{
+ "seals": {
+  "sealed_in_corpus": 24,
+  "declared_in_game": 24,
+  "matched": 24,
+  "failures": []
+ },
+ "leaks": {
+  "strings_scanned": 4306,
+  "hard": [],
+  "fuzzy": []
+ },
+ "assembled": {
+  "facts": 0,
+  "failures": [
+   "MISSING  game/data/world/assembled-lore.json"
+  ]
+ },
+ "voids": {
+  "tracts": 0,
+  "failures": [
+   "MISSING  game/data/world/voids.json -- undeclared emptiness is unbuilt world, not designed emptiness"
+  ]
+ }
+}
