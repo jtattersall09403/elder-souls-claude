@@ -1,0 +1,64 @@
+{
+  "schema": "elder-souls/production-checkpoint-manifest@1",
+  "fixture": "fixtures/resume-saxhleel-interior-intended.json",
+  "fixture_hash": "sha256:28f0f80d7147d11ab73fd87f709733868632a96b3cd696145ba3394675191966",
+  "tested_commit": "5874627cf43178646637ded44c271e68a90a2360",
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "save_schema": {
+    "schema": "elder-souls/save@1",
+    "version": 2
+  },
+  "harness_version": 1,
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class_id": "reed-walker",
+    "birthsign": "raj-xul"
+  },
+  "completed_quests": [
+    "Q-MAIN-01",
+    "Q-MAIN-02",
+    "Q-MAIN-03",
+    "Q-MAIN-04",
+    "Q-MAIN-05",
+    "Q-MAIN-06",
+    "Q-MAIN-07"
+  ],
+  "active_quests": [],
+  "position": {
+    "pos": [
+      1904.878493,
+      2.59,
+      4449.700058
+    ],
+    "settlement": "blackrose",
+    "cell": "coast",
+    "interior": null
+  },
+  "clock": {
+    "day": 0,
+    "hour": 17.273241
+  },
+  "weather": "clear",
+  "health": {
+    "hp": 300,
+    "hp_max": 300,
+    "estus": 6
+  },
+  "provenance": {
+    "production_player_actions": true,
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "source_runs": [
+      "/tmp/w119-q7-new",
+      "/tmp/w119-q7-resume"
+    ],
+    "note": "Q-MAIN-01–06 and Q-MAIN-07 were completed through ordinary movement, world interactions, and published production conversation choices; the second bounded run resumed the first production save after a route-local Q-MAIN-07 movement abort."
+  },
+  "input_hashes": {
+    "quests": "sha256:6b2179a5ad77e335b1c020fb22dc2a43db51a1c94844556032943595104ec38c",
+    "npcs": "sha256:23104c57407c31b7d71075e899438f6515d0fc460466b983308f2113060bb2b9",
+    "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
+    "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24"
+  }
+}

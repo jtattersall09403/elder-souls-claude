@@ -7,10 +7,15 @@
   "branch": "work (latest merged codex/wave1-build-experiment state)",
   "plan": "orchestration/plans/W1-19.md",
   "files_touched": [
+    "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/validate-mainline-checkpoint.mjs",
+    "evidence/W1-19/fixtures/resume-saxhleel-interior-intended.json",
+    "evidence/W1-19/q-main-07-checkpoint.manifest.json",
+    "evidence/W1-19/builder-delivery.md",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
   "files_claimed": [],
-  "next_step": "Continue the required causal loop from the clean Q-MAIN-07 checkpoint. The Archon door-side defect is repaired, but the fresh bounded run first failed earlier: a Blackrose-to-Archon detour entered 0.62 m water and the ordinary walker aborted mired before reaching the crater or Archon. Q-MAIN-08 and active-storm crater proof remain incomplete.",
+  "next_step": "Rerun the Q-MAIN-07 checkpoint \u2192 Q-MAIN-08 proof after the newly added connected-grid fallback; the first post-repair proof rejected the original water shoulder correctly but then died because an encounter with no safe single-shoulder candidate remained on the road. The connected-grid fallback is implemented and syntax/fixture checks pass, but its long production rerun was not completed.",
   "gate_accounting": {
     "A": "INCOMPLETE: the scheduled archon-inn approach now uses its fitted public continuity spawn; the next clean rerun stopped earlier on a water-mired encounter shoulder, so Q-MAIN-08 remains incomplete",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
@@ -19,8 +24,8 @@
     "D": "MERGED EVIDENCE RETAINED"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state /tmp/w119-q7-checkpoint/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-closure --json",
-    "outcome": "FAIL before crater/Archon: no teleport or violent resolution; the route covered 2,136.2 m then aborted mired at [2949.95, 4760.84]. The trace identified a 0.621 m encounter shoulder as the first causal failure. Door-side targeting is repaired but not yet reached in this rerun; weather proof and Q-MAIN-08 completion remain incomplete.",
-    "evidence": "transient /tmp/w119-q8-closure/mainline-chain-floor.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-final",
+    "outcome": "FAIL: segment validation rejected unsafe deep-water shoulders and selected a safe segmented alternative for pop-0025; pop-0026 had no safe one-waypoint alternative, remained on-road, and the player later died/respawned. A connected 2 m grid fallback was then added, but the final long rerun is not complete.",
+    "evidence": "transient /tmp/w119-q8-final/mainline-chain-floor.json"
   }
 }
