@@ -50,3 +50,25 @@ then aborted `stuck` after 32.3 m on exit.
 
 The entire builder allocation has not yet been demonstrated at one final commit; no completion
 claim is made by this continuation evidence.
+
+## 2026-08-12 continuation diagnostic
+
+The stale pre-repair Q-MAIN-08 capture has been replaced with the current-worktree rerun from the
+Q-MAIN-07-complete resume state.  The rerun selected the shipped crater (59.95 m road detour),
+entered and exited it by ordinary movement, and named the first failure `death-respawn`: weather
+was `white_clear`, so this run is deliberately **not** claimed as active-storm shelter proof.  The
+trace shows zero estus at crater arrival and a later combat death/3,057.8 m hearth respawn after the
+outbound route had covered 4,650 m.  Reproduce with:
+
+```
+node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended \
+  --resume-state <Q-MAIN-07-complete-state.json> --stop-after Q-MAIN-08 --out <dir> --json
+```
+
+The runner now records cadence-aware shelter observations, waits out a live salt storm rather than
+using the former meaningless fixed 600-frame pause, and emits distinct names for death/respawn,
+crater entry, inactive shelter predicate, crater exit, incomplete journey, and final approach.  It
+also keeps long nonviolent travel crouched instead of sprinting into every streamed patrol.  Archon's
+harbourmaster post moved from inside the solid guild-office footprint to the public side of its
+production door; the next bounded rerun must establish the active-storm proof and then validate that
+final approach.  Gates A-D and the aggregate remain incomplete and are not claimed here.

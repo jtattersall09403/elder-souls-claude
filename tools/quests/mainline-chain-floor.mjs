@@ -264,11 +264,8 @@ try {
       let stealth=null;
       if(!H.whereAmI().interior && already>80){
         const ss=H.getStealthState();
-        // A province-length route cannot remain crouched after detection: the patrol keeps pace
-        // and eventually exhausts every heal.  Stand before the journey so the production
-        // survival controller can sprint away without fighting.
-        if(ss.crouched){H.queueInputs([{f:0,press:['crouch']},{f:2,release:['crouch']}]);H.stepFrames(4);}
-        stealth={action:ss.crouched?'stand-to-flee':'already-standing',production_input:true};
+        if(!ss.crouched){H.queueInputs([{f:0,press:['crouch']},{f:2,release:['crouch']}]);H.stepFrames(4);}
+        stealth={action:ss.crouched?'already-crouched':'crouch-to-avoid',production_input:true};
       }
       const walkOptions = {
         fromCurrent: true,
@@ -282,7 +279,10 @@ try {
         // defend when a streamed patrol catches the player.  Disabling these inputs made the
         // Q-MAIN-08 proof deliberately tank attacks until a hearth respawn, which measured a
         // helpless harness rather than the player-available route.
-        survival: true,
+        // Sprinting advertised the player to every streamed patrol and produced a combat death
+        // near Archon after all flask charges had been consumed.  The intended nonviolent route
+        // is concealment, not repeatedly healing while dragging a patrol across the province.
+        survival: false,
         // Quest-chain proof is explicitly nonviolent.  Flee and heal, but never let the generic
         // survival walker swing at a patrol (which also keeps combat open across interior doors).
         defensive: false,
@@ -300,7 +300,10 @@ try {
         const d=Math.hypot(route[i][0]-crater.x,route[i][1]-crater.z);
         if (!craterJoin || d<craterJoin.d) craterJoin={ crater, i, d };
       }
-      if (craterJoin && craterJoin.d < 90 && route.length > 2) {
+      // Roads are deliberately sparse in the wastes.  A competent traveller can see the storm
+      // shelter well beyond interaction range, so permit a bounded 300 m ordinary-movement
+      // detour rather than requiring the road spline itself to pass within 90 m of the bowl.
+      if (craterJoin && craterJoin.d < 300 && route.length > 2) {
         // The centre floor is deliberately surrounded by an unclimbable-looking glass wall.
         // The shipped shelter predicate reaches 22 m, so enter at the road-facing shoulder:
         // visibly below natural ground, but on the ordinary walkable approach back out.
@@ -313,13 +316,25 @@ try {
           && Math.hypot(atBowl[0]-bowl[0],atBowl[2]-bowl[1]) < 2;
         const before=H.getPlayerStats();
         let shelteredReport=H.getHazardReport();
-        let waited=0, recoveryHeals=0;
-        if (arrivedBowl) for (let f=0;f<600;f+=30) {
+        let waited=0, recoveryHeals=0, stormWasActive=false;
+        const shelterTrace=[];
+        // Weather transitions on a shipped 72,000-frame cadence.  The old fixed 600-frame wait
+        // had no production meaning and sent the player back into the same lethal front.  Remain
+        // in the authored counter until the live weather machine says the storm has passed.
+        if (arrivedBowl) for (let f=0;f<144060;f+=30) {
           const ps=H.getPlayerStats(), script=[{f:0,release:['sprint','light','heavy','block']}];
           if (ps.hp < ps.hp_max*.9 && ps.estus>0) { script.push({f:0,press:['use_item']},{f:2,release:['use_item']}); recoveryHeals++; }
           H.queueInputs(script); H.stepFrames(30); waited+=30;
           const hr=H.getHazardReport();
-          if ((hr.here||[]).some(h=>h.id==='salt-storm'&&h.sheltered)) shelteredReport=hr;
+          const liveSalt=(hr.here||[]).find(h=>h.id==='salt-storm')||null;
+          if (liveSalt && liveSalt.inside) stormWasActive=true;
+          if (liveSalt && liveSalt.sheltered) shelteredReport=hr;
+          if (waited===30 || waited%3600===0 || (stormWasActive && (!liveSalt || !liveSalt.inside)))
+            shelterTrace.push({ frame:waited, weather:H.getEnvironment().weather, stats:H.getPlayerStats(), salt:liveSalt });
+          if (stormWasActive && (!liveSalt || !liveSalt.inside)) break;
+          // When no storm was active on arrival, a ten-second observation is sufficient; do not
+          // manufacture one with a harness weather setter.
+          if (!stormWasActive && waited>=600) break;
         }
         const after=H.getPlayerStats();
         const salt=(shelteredReport.here||[]).find(h=>h.id==='salt-storm')||null;
@@ -328,7 +343,8 @@ try {
           : { arrived:false, arrival_is_clean:false, aborted:'crater-unreachable', frames:0, path_m:0, teleports:0, teleported_m:0, teleport_log:[], survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0}, regions_entered:[] };
         shelter={ signature:craterJoin.crater, road_detour_m:+craterJoin.d.toFixed(2), arrived:arrivedBowl,
           waited_frames:waited, hp_before:before.hp, hp_after:after.hp, recovery_heals:recoveryHeals,
-          hazard:salt, sheltered:!!(salt&&salt.sheltered), inbound, outbound };
+          hazard:salt, sheltered:!!(salt&&salt.sheltered), storm_was_active:stormWasActive,
+          trace:shelterTrace, inbound, outbound };
         walked={ ...outbound,
           arrived:inbound.arrived&&inbound.arrival_is_clean&&outbound.arrived&&outbound.arrival_is_clean,
           aborted:inbound.aborted||outbound.aborted,
@@ -345,8 +361,14 @@ try {
         };
       } else walked=H.walkPath(route,walkOptions);
       const ended=H.whereAmI().pos.slice(), actualLeft=Math.hypot(x-ended[0],z-ended[2]);
+      const namedFailure = (walked.teleports||0)>0 ? 'death-respawn'
+        : shelter && !shelter.arrived ? 'crater-entry-failed'
+        : shelter && shelter.storm_was_active && !shelter.sheltered ? 'shelter-predicate-inactive'
+        : shelter && shelter.outbound && !shelter.outbound.arrived ? 'crater-exit-failed'
+        : !walked.arrived ? (walked.aborted || 'journey-incomplete') : actualLeft>reach ? 'final-approach-failed' : null;
       return {
-        ok: walked.arrived && walked.arrival_is_clean && actualLeft<=reach,
+        ok: !namedFailure,
+        failure: namedFailure,
         frames: walked.frames,
         left_m: actualLeft,
         started,
