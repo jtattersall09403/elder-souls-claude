@@ -3,11 +3,11 @@
   "role": "builder",
   "state": "builder_delivery_complete_independent_critic_pending",
   "plan": "orchestration/plans/W1-30.md",
-  "base_commit": "09d9609865a49fb8f01d07396d66d6a67b9448f7",
+  "base_commit": "ce10b0a",
   "dependencies": { "W1-06": "236f97b", "W1-24": "302ee3e" },
   "owned_paths": 21,
-  "production_scope": ["canonical exterior", "all generated interiors", "player and actor materials", "13-region streamed province", "near/far terrain and flora LOD", "renderer census"],
+  "production_scope": ["canonical exterior", "all generated interiors", "player and actor materials", "13-region streamed province", "near/far terrain and flora LOD", "renderer census", "live styleboard loader and regional material consumption", "per-path module/observable contracts", "material cavity AO"],
   "bounded_result": "green",
-  "binary_evidence": "transient only: /tmp/w1-30-live.png",
+  "binary_evidence": "none committed; harness smoke decoded the transient shipping PNG in memory",
   "next_step": "Fresh independent critic executes the complete W1-30 populations and separate visual-axis gates."
 }

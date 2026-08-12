@@ -16,6 +16,23 @@ export const VISUAL_FEATURES = Object.freeze({
   flora: 'region-canopy-understory', artMaterials: 'wet-chitin-resin-bone-root-clay-salt',
 });
 
+// A declaration cannot earn coverage.  Each row names the shipping module and the observable
+// that a cheap gate and the live census can independently find.  Keep this table beside the
+// factory so adding a feature without a consumer fails closed.
+export const FEATURE_CONSUMERS = Object.freeze({
+  lighting: ['render/sky.js', 'sun.intensity'], shadows: ['render/sky.js', 'shadow.camera'],
+  materials: ['render/visual-foundation.js', 'visualFamily'], atmosphere: ['render/sky.js', 'scene.fog.density'],
+  vegetation: ['world/province.js', 'regionMats'], animation: ['render/actor.js', 'poseFromRig'],
+  postprocess: ['render/renderer.js', 'ACESFilmicToneMapping'], streaming: ['world/province.js', 'radiusTiles'],
+  ao: ['render/visual-foundation.js', 'aoMap'], ibl: ['render/sky.js', 'HemisphereLight'],
+  sky: ['render/sky.js', 'uSunDir'], vfx: ['render/spell-vfx.js', 'residue'],
+  palette: ['render/renderer.js', 'setVisualStyleboards'], silhouette: ['render/exterior.js', 'silhouette'],
+  architecture: ['render/exterior.js', 'architecture_kit'], creature: ['render/renderer.js', 'RACE_TINT'],
+  composition: ['world/province.js', 'SIGNATURE_KINDS'], weirdness: ['world/province.js', 'inexplicable_element'],
+  mood: ['world/province.js', 'atmosphere_response'], flora: ['world/province.js', 'props.cover.shape'],
+  artMaterials: ['world/province.js', 'dominant_materials'],
+});
+
 const FAMILY = Object.freeze({
   mud: { roughness: .91, metalness: 0, bump: .32 }, wet_mud: { roughness: .48, metalness: .05, bump: .24 },
   bark: { roughness: .88, metalness: 0, bump: .48 }, leaf: { roughness: .72, metalness: 0, bump: .28 },
@@ -52,7 +69,8 @@ export function worldMaterial(family, options={}) {
   const map=detailMap(family);
   const mat=new THREE.MeshStandardMaterial({
     color: options.color ?? 0xffffff, roughness: options.roughness ?? spec.roughness,
-    metalness: options.metalness ?? spec.metalness, bumpMap: map,
+    metalness: options.metalness ?? spec.metalness, bumpMap: map, aoMap: map,
+    aoMapIntensity: options.aoMapIntensity ?? .42,
     bumpScale: options.bumpScale ?? spec.bump, vertexColors: !!options.vertexColors,
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
     alphaTest: options.alphaTest ?? 0, side: options.side ?? THREE.FrontSide,

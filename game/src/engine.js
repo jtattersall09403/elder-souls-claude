@@ -265,6 +265,7 @@ export class Engine {
     installGuards({ replaceMathRandom: true, cosmeticSeed: 0x5eed1337 });
 
     this.renderer = new Renderer(this.canvas, 1337);
+    this.renderer.setVisualStyleboards(this.data.visualStyleboards);
     // The province (W1-01). One field answers every spatial question — ground height for
     // collision, region for identity, water depth for the band, tide, substrate — and the
     // renderer builds its meshes from the same field, so the surface you collide with and the
@@ -10706,6 +10707,9 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/terrain.json') out.terrain = doc;
     else if (entry.path === 'world/water.json') out.water = doc;
     else if (entry.path === 'world/roads.json') out.roads = doc;
+    // W1-30: this is production art direction, not catalogue metadata.  The renderer consumes
+    // the region/settlement rows and publishes the resolved board on every governed mesh.
+    else if (entry.path === 'visual/styleboards.json') out.visualStyleboards = doc;
     // W1-05. RI-WLD06 L2. Needs its own branch for the reason the comment on `world/opacity.json`
     // gives thirty lines below: a `world/*.json` that matches no branch here is fetched, counted
     // in the byte total, and then dropped, which is indistinguishable from shipping nothing.

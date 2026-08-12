@@ -1,33 +1,37 @@
 # W1-30 builder delivery
 
-Tested source: `09d9609865a49fb8f01d07396d66d6a67b9448f7` plus this delivery commit.
+Tested source: `ce10b0a` plus this delivery commit (`9f992f5` before amendment).
 Dependencies: W1-06 `236f97b`; W1-24 `302ee3e`.
 
 ## Production delivery
 
 * Added one fail-closed semantic PBR family factory, deterministic reusable non-colour detail maps,
-  explicit shadow/AO/IBL/LOD metadata, and a live scene census for all 21 owned paths.
+  actual cavity/AO sampling, explicit shadow/IBL/LOD metadata, and a live scene census for all 21
+  owned paths.
 * Routed the canonical exterior, every data-built interior, actor materials (through the canonical
   scene palette), all 13 streamed province terrain/flora/water families, and near/far LOD materials
   through the foundation. Existing bounded Basic materials remain light sources, decals, refractive
   effects, and canvas composites rather than governed opaque world fallbacks.
-* Added 13 region and eight settlement style boards. Each records dominant/contrast materials,
-  silhouette grammar, inexplicable element, atmospheric response, and forbidden generic forms.
+* Routed the 13 region and eight settlement style boards through the boot loader, renderer and
+  province material resources. Each live regional family now carries its resolved dominant
+  materials, silhouette grammar, inexplicable element and atmospheric response for perturbation.
+* Replaced key-presence coverage with 21 explicit module/observable contracts. The gate opens each
+  shipping module and refuses a missing observable; it separately proves the three-stage styleboard
+  consumer chain, so `VISUAL_FEATURES` alone cannot produce green coverage.
 * Preserved the W1-06 simulation-evaluated skinned rig, attachment sockets, attack/locomotion/action
   state presentation, camera containment, and the W1-24 capture/declaration routes. Renderer code
   remains read-only with respect to simulation.
 
 ## Bounded builder verification
 
-`node tools/render/w1-30-gate.mjs` was GREEN: 21/21 owned-path consumers, 13+8 style boards, three
-shared whole-game builder families, and 12 explicitly bounded Basic sites. An unknown
+`node tools/render/w1-30-gate.mjs` was GREEN: 21/21 verified module/observable consumers, 13+8 style
+boards, three styleboard consumer stages, three shared whole-game builder families, and 12
+explicitly bounded Basic sites. An unknown
 `generic_fantasy` family produced the intended red before material creation. `npm run
 metrics:selftest` held all 21 assertions (two legal-reference-dependent checks skipped as declared).
 
-One reusable live browser rendered a settled 960x540 exterior/gameplay frame with actual pixels and
-no page errors. The transient composite is `/tmp/w1-30-live.png` and is not committed. The frame
-showed the shipping player silhouette, layered canopy/root architecture, streamed wet ground,
-atmospheric depth and shadowed vegetation; its paired cleared-buffer null remained visibly black.
+`node tools/harness/smoke.mjs` launched Chromium 141/WebGL2, advanced rAF, decoded the shipping PNG
+and found 577 unique colours (non-blank). No capture binary is committed.
 
 ## Critic reproduction order
 
