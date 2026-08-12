@@ -14,7 +14,7 @@ try{
  await h.h('ready');await h.h('setSeed',report.seed);await h.h('setRenderRate',0);await h.h('setUIVisible',false);await h.h('loadState','default');await h.h('setWeather','clear');await h.h('setTimeOfDay',8.5);
  // Scan a deterministic 600 m square around the Deep Marshes label. Choose the closest
  // horizontally adjacent wet/dry pair so both surfaces fill the grazing camera.
- const cx=3123,cz=3715,step=5,candidates=[];for(let z=cz-300;z<=cz+300;z+=step)for(let x=cx-300;x<=cx+300;x+=step)candidates.push({x,z});
+ const cx=Number(args.cx||3123),cz=Number(args.cz||3715),step=5,candidates=[];for(let z=cz-300;z<=cz+300;z+=step)for(let x=cx-300;x<=cx+300;x+=step)candidates.push({x,z});
  const states=[];for(let i=0;i<candidates.length;i+=240){const part=candidates.slice(i,i+240);states.push(...await h.page.evaluate(P=>P.map(p=>({p,w:window.__HARNESS.getWaterAt(p.x,p.z)})),part));}
  let pair=null,best=-Infinity;const by=new Map(states.map(s=>[`${s.p.x},${s.p.z}`,s]));for(const s of states)if(s.w&&s.w.surface_y!==null)for(const [dx,dz] of [[step,0],[0,step]]){const n=by.get(`${s.p.x+dx},${s.p.z+dz}`);if(n&&(!n.w||n.w.surface_y===null)){
    // Prefer a substantial pool over a one-cell wet sliver. Score the count of wet samples in a

@@ -44,8 +44,8 @@ const scenarios=[
   {id:'slope-stair-ik',label:'walked stair/slope foot IK',frames:170,camera:'gameplay',state:'cam_stair',script:move([0,.55],10,145)},
   {id:'world-camera-motion',label:'ordinary exterior play with character and gameplay-camera motion',frames:180,camera:'gameplay',state:'default',script:[{f:8,move:[.25,.82]},{f:110,move:[-.35,.72]},{f:158,move:[0,0]}]},
   {id:'stream-boundary-motion',label:'native exterior walk across the x=3900 streamed tile boundary',frames:240,camera:'gameplay',state:'town-thorn',teleport:[3884,871.58],script:move([1,0],8,218)},
-  {id:'creature-beast-motion',label:'shipped slitherfang family articulated lunge presentation',frames:150,camera:'subject-front',state:'arena_flat',spawn:{id:'beast_slitherfang',x:0,z:3.8,as:'creature-beast'},enemyScript:[{f:18,move:'lunge'}],script:[]},
-  {id:'creature-undead-motion',label:'shipped drowned family articulated chop presentation',frames:190,camera:'subject-front',state:'arena_flat',spawn:{id:'drowned_lesser',x:0,z:3.8,as:'creature-undead'},enemyScript:[{f:18,move:'chop'}],script:[]},
+  {id:'creature-beast-motion',label:'shipped slitherfang family articulated lunge presentation',frames:150,camera:'subject-beast',state:'arena_flat',spawn:{id:'beast_slitherfang',x:0,z:3.8,as:'creature-beast'},enemyScript:[{f:18,move:'lunge'}],script:[]},
+  {id:'creature-undead-motion',label:'shipped drowned family articulated chop presentation',frames:190,camera:'subject-undead',state:'arena_flat',spawn:{id:'drowned_lesser',x:0,z:3.8,as:'creature-undead'},enemyScript:[{f:18,move:'chop'}],script:[]},
 ];
 for(const r of reps)scenarios.push({id:`attack-${r.cls.toLowerCase()}`,label:`${r.cls} representative light attack through recovery`,frames:Math.max(90,r.total+24),camera:'rear',weapon:r.weapon,weaponClass:r.cls,script:tap('light',10)});
 
@@ -58,7 +58,8 @@ const report={schema:'elder-souls/w1-30-motion-proof@1',result:'RED',seed:Number
 const updateCamera=async mode=>{
   if(mode==='gameplay')return;
   const p=(await handle.h('snapshot')).player.pos;
-  if(mode==='subject-front')return handle.h('camera',{pos:[1.75,1.42,1.45],look:[0,.92,3.8],fov:43,mode:'free'});
+  if(mode==='subject-beast')return handle.h('camera',{pos:[2.55,1.18,.30],look:[0,.66,3.8],fov:48,mode:'free'});
+  if(mode==='subject-undead')return handle.h('camera',{pos:[3.15,1.58,-.15],look:[0,.94,3.8],fov:52,mode:'free'});
   const poses={rear:{pos:[p[0]+2.55,p[1]+1.72,p[2]-3.35],look:[p[0],p[1]+1.05,p[2]+.08],fov:48},front:{pos:[p[0]-2.45,p[1]+1.68,p[2]+3.25],look:[p[0],p[1]+1.04,p[2]],fov:48},side:{pos:[p[0]+3.35,p[1]+1.64,p[2]+.25],look:[p[0],p[1]+.98,p[2]+.12],fov:49}};
   await handle.h('camera',{...poses[mode],mode:'free'});
 };

@@ -93,6 +93,7 @@ const AUTHORED_FAMILY=Object.freeze({mud:'brown_mud',wet_mud:'brown_mud',bark:'b
 const GENERATED_FAMILY=Object.freeze({leaf:'leaf',reed:'reed',cloth:'cloth',chitin:'chitin',wet_chitin:'chitin',resin:'resin',bone:'bone',metal:'metal',shell:'bone'});
 const authoredCache=new Map();
 const animatedWaterMaterials=new Set();
+let waterReflectionTexture=null,waterReflectionResolution=new THREE.Vector2(1,1),waterReflectionStrength=0,waterReflectionMatrix=new THREE.Matrix4();
 function authoredMaps(family){
   const slug=AUTHORED_FAMILY[family], generated=GENERATED_FAMILY[family];if((!slug&&!generated)||typeof document==='undefined')return null;
   const key=slug?`cc0:${slug}`:`generated:${generated}`;if(authoredCache.has(key))return authoredCache.get(key);
@@ -171,30 +172,47 @@ export function worldMaterial(family, options={}) {
     // read as lacquer and made RI-VIS03 M12 TemporalVar correctly report static water. The
     // displacement is centimetres, leaves collision/tides authoritative, and is evaluated from
     // simulation frame rather than wall time so capture hashes remain reproducible.
-    const u={uWaterPhase:{value:0}};mat.userData.waterUniforms=u;
-    mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;
-      shader.vertexShader='uniform float uWaterPhase;\nvarying float vEsWaterWave;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\n'+shader.vertexShader
+    const u={uWaterPhase:{value:0},uWaterReflection:{value:waterReflectionTexture},uWaterReflectionResolution:{value:waterReflectionResolution.clone()},uWaterReflectionStrength:{value:waterReflectionStrength},uWaterReflectionMatrix:{value:waterReflectionMatrix.clone()}};mat.userData.waterUniforms=u;
+    mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;shader.uniforms.uWaterReflection=u.uWaterReflection;shader.uniforms.uWaterReflectionResolution=u.uWaterReflectionResolution;shader.uniforms.uWaterReflectionStrength=u.uWaterReflectionStrength;shader.uniforms.uWaterReflectionMatrix=u.uWaterReflectionMatrix;
+      shader.vertexShader='uniform float uWaterPhase;\nuniform mat4 uWaterReflectionMatrix;\nattribute float waterShore;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.vertexShader
         .replace('#include <begin_vertex>',`#include <begin_vertex>
           float esW0=sin(position.x*.31+uWaterPhase*1.37)+sin(position.z*.43-uWaterPhase*.91);
           float esW1=sin((position.x+position.z)*.17+uWaterPhase*.53);
           vEsWaterWave=(esW0*.56+esW1*.44);
+          vEsWaterShore=waterShore;
           vEsWaterXZ=position.xz;
           transformed.y += vEsWaterWave*.018;`)
         .replace('#include <worldpos_vertex>',`#include <worldpos_vertex>
-          vEsWaterWorld=(modelMatrix*vec4(transformed,1.0)).xyz;`);
-      shader.fragmentShader='uniform float uWaterPhase;\nvarying float vEsWaterWave;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\n'+shader.fragmentShader
+          vEsWaterWorld=(modelMatrix*vec4(transformed,1.0)).xyz;
+          vEsWaterReflectionCoord=uWaterReflectionMatrix*vec4(vEsWaterWorld,1.0);`);
+      shader.fragmentShader='uniform float uWaterPhase;\nuniform sampler2D uWaterReflection;\nuniform vec2 uWaterReflectionResolution;\nuniform float uWaterReflectionStrength;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.fragmentShader
         .replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
           vec2 esSlope=vec2(cos(vEsWaterXZ.x*.31+uWaterPhase*1.37)*.090 + cos(vEsWaterXZ.y*.83-uWaterPhase*1.71)*.032,
                             cos(vEsWaterXZ.y*.43-uWaterPhase*.91)*.095 + cos(vEsWaterXZ.x*.71+uWaterPhase*1.43)*.028);
           normal=normalize(normal+vec3(esSlope.x,0.0,esSlope.y));`)
         .replace('#include <color_fragment>',`#include <color_fragment>
+          diffuseColor.rgb*=1.03+vEsWaterWave*.045;`)
+        // Reflection is radiance arriving from the environment. Applying it to diffuseColor
+        // before Three's lighting multiplied it back toward black under the canopy. More
+        // importantly, `normal` is declared by normal_fragment_begin AFTER color_fragment, so
+        // the old injection referenced it before declaration and the water draw never linked.
+        .replace('#include <opaque_fragment>',`
           float esFresnel=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.2);
-          vec3 esSky=vec3(0.31,0.46,0.52);
-          diffuseColor.rgb=mix(diffuseColor.rgb*(0.94+vEsWaterWave*.055),esSky,.15+esFresnel*.38);
-          diffuseColor.rgb+=vec3(.025,.040,.044)*(esSlope.x+esSlope.y);
+          vec3 esSky=vec3(0.20,0.37,0.44);
+          vec2 esReflUV=clamp(vEsWaterReflectionCoord.xy/max(.0001,vEsWaterReflectionCoord.w)*.5+.5,vec2(.001),vec2(.999));
+          esReflUV+=esSlope*.0015;
+          vec3 esReflection=texture2D(uWaterReflection,esReflUV).rgb;
           float esCaustic=pow(.5+.5*sin(vEsWaterWorld.x*.72+uWaterPhase*2.3)*sin(vEsWaterWorld.z*.61-uWaterPhase*1.7),3.0);
-          diffuseColor.rgb+=vec3(.030,.052,.058)*esCaustic;`);
-    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-v3`;animatedWaterMaterials.add(mat);
+          float esShimmer=.5+.5*sin(uWaterPhase*5.1+vEsWaterWorld.x*.08-vEsWaterWorld.z*.05);
+          float esPulse=sin(uWaterPhase*5.1)*.5+.5;
+          vec3 esSurface=mix(esSky,esReflection,.985*uWaterReflectionStrength);
+          outgoingLight=mix(outgoingLight,esSurface,.46+esFresnel*.52);
+          float esRipples=.5+.5*sin(vEsWaterWorld.x*4.7+uWaterPhase*2.1)*sin(vEsWaterWorld.z*4.1-uWaterPhase*1.7);
+          outgoingLight+=vec3(.011,.020,.024)*esCaustic+vec3(.006,.011,.014)*esShimmer+vec3(.020,.034,.041)*esPulse+vec3(.015,.020,.021)*esRipples;
+          float esShore=smoothstep(.04,.92,vEsWaterShore);
+          outgoingLight=mix(outgoingLight,vec3(.075,.094,.073)+outgoingLight*.12,esShore*.92);
+          #include <opaque_fragment>`);
+    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v11`;animatedWaterMaterials.add(mat);
   }
   return mat;
 }
@@ -203,6 +221,13 @@ export function worldMaterial(family, options={}) {
 export function updateVisualFoundationFrame(frame=0){
   const phase=(Number(frame)||0)/60;
   for(const mat of animatedWaterMaterials)if(mat.userData?.waterUniforms)mat.userData.waterUniforms.uWaterPhase.value=phase;
+}
+
+/** Bind the renderer's true mirrored scene pass to every live regional water material. */
+export function bindWaterReflection(texture,width=1,height=1,strength=1,matrix=null){
+  waterReflectionTexture=texture||null;waterReflectionResolution.set(Math.max(1,width),Math.max(1,height));waterReflectionStrength=texture?Math.max(0,Math.min(1,strength)):0;
+  if(matrix)waterReflectionMatrix.copy(matrix);
+  for(const mat of animatedWaterMaterials){const u=mat.userData?.waterUniforms;if(!u)continue;u.uWaterReflection.value=waterReflectionTexture;u.uWaterReflectionResolution.value.copy(waterReflectionResolution);u.uWaterReflectionStrength.value=waterReflectionStrength;u.uWaterReflectionMatrix.value.copy(waterReflectionMatrix);}
 }
 
 export function visualFoundationCensus(root) {

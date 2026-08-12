@@ -23,7 +23,7 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
-import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS, updateVisualFoundationFrame } from './visual-foundation.js';
+import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS, updateVisualFoundationFrame, bindWaterReflection } from './visual-foundation.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -99,6 +99,12 @@ export class Renderer {
     // 6 km of far plane: the Valus Ridge is 400 m high and must be on the horizon from the
     // Stone Forest, which is 1.6 km away. A 900 m far plane is a 900 m world.
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
+    // One bounded half-resolution mirrored scene pass is shared by every streamed water mesh.
+    // The previous IBL-only material could pass Fresnel/normal checks while reflecting none of
+    // the actual bank, trees or sky in front of the player.
+    this.waterReflectionTarget=new THREE.WebGLRenderTarget(Math.max(320,Math.floor(canvas.width/2)),Math.max(180,Math.floor(canvas.height/2)),{depthBuffer:true});
+    this.waterReflectionTarget.texture.name='w1-30-planar-water-reflection';
+    this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
     this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
     this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
@@ -219,6 +225,7 @@ export class Renderer {
       this.worldTarget.setSize(w,h);
       this.compositeMaterial.uniforms.uResolution.value.set(w,h);
     }
+    if(this.waterReflectionTarget)this.waterReflectionTarget.setSize(Math.max(320,Math.floor(w/2)),Math.max(180,Math.floor(h/2)));
     return { width: w, height: h };
   }
 
@@ -825,6 +832,7 @@ export class Renderer {
       }
 
     this.sky.followCamera(this.camera);
+    this._renderWaterReflection();
 
     // ---- seam S19: spell VFX -----------------------------------------------------------------
     // Two passes, and the second one is the frame. The prepass writes scene DEPTH (which soft
@@ -890,6 +898,28 @@ export class Renderer {
       combatDecals: this.combatDecalCount,
     };
     return true;
+  }
+
+  _renderWaterReflection(){
+    if(this.cell!=='province'||!this.field){bindWaterReflection(null);return;}
+    const points=[this.camera.position,this._look];
+    for(let i=1;i<=6;i++)points.push(this.camera.position.clone().lerp(this._look,i/7));
+    let waterY=null;for(const p of points){const y=this.field.waterSurfaceAt(p.x,p.z);if(y!==null&&y!==undefined){waterY=y;break;}}
+    if(waterY===null){bindWaterReflection(null);return;}
+    const rc=this.waterReflectionCamera;rc.copy(this.camera,false);rc.position.copy(this.camera.position);rc.position.y=waterY-(this.camera.position.y-waterY);
+    const look=this._look.clone();look.y=waterY-(look.y-waterY);rc.up.set(0,1,0);rc.lookAt(look);rc.updateMatrixWorld();
+    const hidden=[];this.scene.traverse(o=>{if(o.visible&&o.isMesh&&String(o.name||'').startsWith('water:')){hidden.push(o);o.visible=false;}});
+    const prior=this.three.getRenderTarget(),priorClips=this.three.clippingPlanes;
+    // Discard geometry below the reflecting plane. Without this oblique half-space the mirrored
+    // camera sits below the bank and renders the terrain underside over the sky/tree reflection,
+    // producing a correctly allocated but nearly black texture.
+    this.three.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,1,0),-waterY+.018)];
+    this.sky.followCamera(rc);this.three.setRenderTarget(this.waterReflectionTarget);this.three.clear();this.three.render(this.scene,rc);this.three.setRenderTarget(prior);this.three.clippingPlanes=priorClips;
+    for(const o of hidden)o.visible=true;this.sky.followCamera(this.camera);
+    // gl_FragCoord belongs to the visible full-resolution pass; texture UVs are normalised, so
+    // divide by the main viewport size even though the bounded reflection target is half size.
+    const reflectionMatrix=new THREE.Matrix4().multiplyMatrices(rc.projectionMatrix,rc.matrixWorldInverse);
+    bindWaterReflection(this.waterReflectionTarget.texture,this.canvas.width,this.canvas.height,1,reflectionMatrix);
   }
 
   _syncCombatDecals(sim) {

@@ -507,28 +507,41 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     // rig remains the one authority for pose and sockets; its arm chain drives the forelegs and
     // its leg chain drives the haunches. Local fore/aft offsets reinterpret those chains into a
     // low four-point stance while every segment still follows the evaluated animation.
-    addPresentation('spine_01',new THREE.CapsuleGeometry(.31,.66,7,14),[0,-.03,-.03],[1.10,1,.82],[Math.PI/2,0,0],'thorax');
-    addPresentation('pelvis',new THREE.SphereGeometry(.29,14,9),[0,.03,-.27],[1.02,.84,1.28],[0,0,0],'haunch');
-    addPresentation('neck',new THREE.CapsuleGeometry(.16,.30,5,10),[0,.01,.17],[.92,1,.84],[Math.PI/2,0,0],'neck');
-    addPresentation('head',new THREE.DodecahedronGeometry(.22,1),[0,.02,.18],[1.08,.78,1.34],[0,0,0],'skull');
-    addPresentation('head',new THREE.ConeGeometry(.125,.44,9),[0,-.04,.43],[1,.74,1],[Math.PI/2,0,0],'muzzle');
+    // The skeleton has spine_00/spine_02 (never spine_01). The former version attached the
+    // thorax to that nonexistent id, silently deleting the creature's defining horizontal
+    // mass and leaving a shiny pelvis with humanoid limbs. Keep the load-bearing volumes on
+    // real trunk bones and deliberately lower the head from the biped rest pose.
+    const slitherBody=tubePath([[0,.00,-.88],[-.07,.03,-.56],[.04,.06,-.16],[-.05,.05,.25],[.03,.02,.62],[0,-.02,.90]],.24,40,12);
+    addPresentation('spine_00',slitherBody,[0,-.11,.04],[1.12,.82,1],[0,0,0],'continuous-slither-body');
+    addPresentation('spine_00',new THREE.SphereGeometry(.27,16,10),[0,-.11,.38],[1.08,.74,1.16],[0,0,0],'shoulder-mass');
+    addPresentation('spine_00',tubePath([[0,0,.38],[0,-.01,.62],[0,-.05,.83]],.145,18,10),[0,-.12,.02],[1,.90,1],[0,0,0],'neck');
+    addPresentation('spine_00',new THREE.DodecahedronGeometry(.21,2),[0,-.17,.96],[1.08,.76,1.34],[0,0,0],'skull');
+    addPresentation('spine_00',new THREE.ConeGeometry(.115,.40,10),[0,-.20,1.22],[1,.70,1],[Math.PI/2,0,0],'muzzle');
     const eyeMat=mats.bone.clone();eyeMat.color.setHex(0xd3b957);eyeMat.emissive.setHex(0x5a3108);eyeMat.emissiveIntensity=.7;
-    for(const sx of [-1,1])addPresentation('head',new THREE.SphereGeometry(.030,10,7),[sx*.112,.045,.37],[1,.72,.58],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
+    for(const sx of [-1,1])addPresentation('spine_00',new THREE.SphereGeometry(.030,10,7),[sx*.110,-.12,1.14],[1,.72,.58],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
     for(const sx of [-1,1]){
-      addPresentation('head',new THREE.ConeGeometry(.026,.13,6),[sx*.065,-.11,.54],[1,1,1],[Math.PI/2,0,sx*.08],`fang-${sx<0?'l':'r'}`,mats.bone);
-      const fore=sx<0?'l':'r',hind=sx<0?'l':'r';
-      addPresentation(`upperarm_${fore}`,new THREE.CapsuleGeometry(.105,.30,5,9),[0,-.13,.24],[.95,1,.88],[0,0,sx*.10],`fore-upper-${fore}`);
-      addPresentation(`lowerarm_${fore}`,new THREE.CapsuleGeometry(.078,.27,5,9),[0,-.13,.24],[.86,1,.82],[0,0,sx*.06],`fore-lower-${fore}`);
-      addPresentation(`hand_${fore}`,new THREE.SphereGeometry(.10,10,7),[0,-.07,.31],[1.15,.58,1.45],[0,0,0],`fore-claw-${fore}`);
-      addPresentation(`thigh_${hind}`,new THREE.CapsuleGeometry(.135,.34,5,10),[0,-.14,-.25],[1.02,1,.94],[0,0,-sx*.08],`hind-upper-${hind}`);
-      addPresentation(`calf_${hind}`,new THREE.CapsuleGeometry(.09,.31,5,9),[0,-.15,-.25],[.88,1,.82],[0,0,-sx*.05],`hind-lower-${hind}`);
-      addPresentation(`foot_${hind}`,new THREE.SphereGeometry(.115,10,7),[0,-.03,-.18],[1.25,.54,1.48],[0,0,0],`hind-claw-${hind}`);
+      addPresentation('spine_00',new THREE.ConeGeometry(.026,.13,6),[sx*.065,-.30,1.37],[1,1,1],[Math.PI/2,0,sx*.08],`fang-${sx<0?'l':'r'}`,mats.bone);
+      // Short splayed legs stay on the trunk frame. This creature's authored locomotion is a
+      // slither with stabilising feet; humanoid arm animation no longer turns forelegs into
+      // waving antlers during attacks.
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.075,.26,5,9),[sx*.26,-.27,.38],[1,1,.82],[0,0,sx*.52],`foreleg-${sx<0?'l':'r'}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.085,10,7),[sx*.38,-.43,.42],[1.45,.48,1.18],[0,0,0],`foreclaw-${sx<0?'l':'r'}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.090,.30,5,10),[sx*.28,-.25,-.46],[1,1,.88],[0,0,sx*.48],`hindleg-${sx<0?'l':'r'}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.10,10,7),[sx*.41,-.44,-.48],[1.48,.50,1.24],[0,0,0],`hindclaw-${sx<0?'l':'r'}`);
     }
-    for(let i=0;i<5;i++)addPresentation('spine_02',new THREE.ConeGeometry(.055-i*.006,.20-i*.016,6),[0,.17-i*.065,-.14-i*.08],[1,1,1],[-Math.PI/2-.18,0,0],`dorsal-${i}`);
-    for(let i=0;i<4;i++)addPresentation('pelvis',new THREE.ConeGeometry(.11-i*.022,.34-i*.045,7),[0,-.02,-.47-i*.20],[1,1,1],[-Math.PI/2,0,0],`tail-${i}`);
+    for(let i=0;i<7;i++)addPresentation('spine_00',new THREE.ConeGeometry(.060-i*.005,.22-i*.014,7),[0,.12,-.48+i*.18],[1,1,1],[-Math.PI/2-.18,0,0],`dorsal-${i}`);
   }else if(artFamily==='undead'){
-    for(let i=0;i<5;i++) addPresentation('spine_01',new THREE.TorusGeometry(.18+i*.012,.018,5,12,Math.PI*1.55),[0,.15-i*.075,.015],[1,1,.62],[Math.PI/2,0,(i%2?-.12:.12)],`rib-${i}`);
+    // Use the declared upper-spine bone. A typo to spine_01 previously suppressed every rib,
+    // making this family merely a brown humanoid. The staggered open arcs, sternum, exposed
+    // long bones and faceted jaw now survive every animation while retaining a broken rhythm.
+    for(let i=0;i<6;i++) addPresentation('spine_02',new THREE.TorusGeometry(.155+i*.010,.016,6,14,Math.PI*1.58),[0,.135-i*.064,.025],[1,1,.70],[Math.PI/2,0,(i%2?-.13:.13)],`rib-${i}`);
+    addPresentation('spine_02',new THREE.BoxGeometry(.035,.34,.035),[0,-.015,.105],[1,1,1],[.10,0,.05],'sternum');
     addPresentation('head',new THREE.DodecahedronGeometry(.13,1),[0,.07,.02],[.88,1.08,.86],[0,0,.12],'skull');
+    addPresentation('head',new THREE.BoxGeometry(.115,.055,.10),[0,-.035,.035],[1,1,1],[.08,0,-.08],'jaw');
+    for(const side of ['l','r']){
+      addPresentation(`upperarm_${side}`,new THREE.CapsuleGeometry(.026,.25,4,8),[0,-.13,.012],[1,1,1],[0,0,side==='l'?.08:-.08],`humerus-${side}`);
+      addPresentation(`lowerarm_${side}`,new THREE.CapsuleGeometry(.021,.23,4,8),[0,-.12,.015],[1,1,1],[0,0,side==='l'?-.08:.08],`radius-${side}`);
+    }
   }else if(artFamily==='saxhleel'){
     const eyeMat=(mats.bone||mats.metal).clone();eyeMat.color.setHex(0xe2c46c);eyeMat.emissive?.setHex(0x352006);eyeMat.emissiveIntensity=.45;
     const pupilMat=mats.darkStone.clone();pupilMat.color.setHex(0x090b08);
@@ -623,6 +636,39 @@ function blade(width, length, thickness, y, curve = 0) {
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(f);g.computeVertexNormals();return g;
 }
 
+/** One continuous swept blade for sickles/falxes. Each ring follows the curved centreline, so
+ * no animation or camera angle can expose the detached boxes used by the old approximation. */
+function curvedBlade(width,length,thickness,haftTop,curve=.20){
+  const rings=12,pos=[],idx=[];
+  for(let r=0;r<rings;r++){
+    const t=r/(rings-1), taper=Math.max(.06,1-t*.82), cy=haftTop-length*t;
+    const cz=length*curve*t*t, hw=width*.5*taper, ht=thickness*.5*taper;
+    pos.push(-hw,cy,cz-ht, hw,cy,cz-ht, hw,cy,cz+ht, -hw,cy,cz+ht);
+  }
+  for(let r=0;r<rings-1;r++)for(let i=0;i<4;i++){
+    const q=(i+1)%4,A=r*4+i,B=r*4+q,C=(r+1)*4+i,D=(r+1)*4+q;idx.push(A,C,B,B,C,D);
+  }
+  idx.push(0,2,1,0,3,2);const e=(rings-1)*4;idx.push(e,e+1,e+2,e,e+2,e+3);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g;
+}
+
+/** An axe/halberd bit extruded across X. The irregular YZ profile gives it a heel, convex edge
+ * and narrow eye instead of scaling a box until it obscures the wielder. */
+function axeBit(height,reach,thickness,centreY,halberd=false){
+  const h=height*.5,r=reach, yz=halberd
+    ? [[h*.72,-r*.16],[h,r*.32],[h*.38,r],[-h*.62,r*.76],[-h,-r*.02],[-h*.28,-r*.18]]
+    : [[h*.72,-r*.15],[h,r*.30],[h*.58,r*.92],[-h*.52,r],[-h,r*.36],[-h*.44,-r*.16]];
+  const pos=[],idx=[],n=yz.length;
+  for(const x of [-thickness*.5,thickness*.5])for(const [y,z] of yz)pos.push(x,centreY+y,z);
+  for(let i=1;i<n-1;i++){idx.push(0,i+1,i,n,n+i,n+i+1);}
+  for(let i=0;i<n;i++){const q=(i+1)%n;idx.push(i,q,n+i,q,n+q,n+i);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g;
+}
+
+function tubePath(points,radius,segments=18,radial=7){
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),segments,radius,radial,false);
+}
+
 /**
  * The class an ENEMY's weapon belongs to.
  *
@@ -685,22 +731,8 @@ function buildWeaponGeo(w) {
       break;
     }
     case 'CSW': case 'CGS': {                       // curved: the blade is built as an arc
-      const segs = 9;
       const wide = cls === 'CGS' ? R * 1.5 : R * 1.05;
-      for (let k = 0; k < segs; k++) {
-        const t0 = k / segs, t1 = (k + 1) / segs;
-        const y0 = haftTop - span * t0, y1 = haftTop - span * t1;
-        // the curve: the tip rakes forward, which is what makes a curved sword read as one
-        const c0 = span * 0.20 * t0 * t0, c1 = span * 0.20 * t1 * t1;
-        // 1.45, not 1.12: the segments are individually ROTATED to follow the curve, so a
-        // segment only as long as its own step leaves a wedge-shaped gap at every joint and
-        // the blade reads as a chain of loose plates rather than one piece of steel. The
-        // first capture of a curved greatsword showed exactly that.
-        const seg = box(wide * (1 - 0.35 * t0), Math.abs(y1 - y0) * 1.45, R * 0.24,
-          (y0 + y1) / 2, (c0 + c1) / 2);
-        seg.rotateX(-Math.atan2(c1 - c0, Math.abs(y1 - y0)));
-        metal.push(seg);
-      }
+      metal.push(curvedBlade(wide,span,R*.28,haftTop,cls==='CGS'?.235:.19));
       metal.push(box(R * (cls === 'CGS' ? 4.2 : 3.0), 0.035, R * 0.8, haftTop));
       break;
     }
@@ -724,12 +756,9 @@ function buildWeaponGeo(w) {
       break;
     case 'WHP': {                                   // a segmented cord: span is nearly all of it
       if (haftLen > 0) wood.push(box(R * 0.9, haftLen, R * 0.9, haftTop + haftLen / 2));
-      const links = 14;
-      for (let k = 0; k < links; k++) {
-        const t = k / links;
-        metal.push(box(R * (0.55 - 0.30 * t), span / links * 0.78, R * (0.55 - 0.30 * t),
-          haftTop - span * (t + 0.5 / links), span * 0.16 * Math.sin(t * 3.1)));
-      }
+      metal.push(tubePath([[0,haftTop,0],[0,haftTop-span*.28,span*.045],[0,haftTop-span*.66,span*.135],[0,tip,span*.035]],R*.24,24,6));
+      // Weighted thorn at the live end keeps the class readable when the cord foreshortens.
+      const thorn=new THREE.ConeGeometry(R*.66,Math.max(.12,span*.10),7);thorn.translate(0,tip-span*.04,span*.035);metal.push(thorn);
       break;
     }
     case 'AXE': case 'HLB': {
@@ -737,11 +766,10 @@ function buildWeaponGeo(w) {
       // the bit hangs off ONE side of the haft — the asymmetry is the class's silhouette
       const bitH = cls === 'HLB' ? span * 0.42 : span * 0.86;
       const bitY = cls === 'HLB' ? tip + span * 0.62 : tip + span * 0.48;
-      metal.push(box(R * 0.5, bitH, R * 3.1, bitY, R * 1.7));
-      metal.push(box(R * 0.5, bitH * 0.5, R * 1.2, bitY + bitH * 0.42, R * 0.6));
+      metal.push(axeBit(bitH,R*(cls==='HLB'?3.0:3.35),R*.55,bitY,cls==='HLB'));
       if (cls === 'HLB') {
         metal.push(box(R * 0.55, span * 0.55, R * 0.55, tip + span * 0.24));   // top spike
-        metal.push(box(R * 0.45, R * 1.4, R * 1.4, bitY - bitH * 0.2, -R * 0.9)); // rear fluke
+        const fluke=new THREE.ConeGeometry(R*.72,R*2.4,6);fluke.rotateX(Math.PI/2);fluke.translate(0,bitY,-R*1.15);metal.push(fluke);
       } else {
         metal.push(box(R * 1.2, 0.035, R * 1.2, haftTop));
       }
@@ -771,13 +799,11 @@ function buildWeaponGeo(w) {
       // length, so drawing to it would give a bow half again too long. The per-weapon numbers
       // are sane here (bow_marsh_longbow solves to 1.405 m), so the stave is drawn at the
       // solved length and simply CENTRED on the grip, which is where a bow is actually held.
-      const limb = L * 0.5;
-      for (const s of [1, -1]) {
-        const g = box(R * 0.7, limb, R * 0.35, s * limb * 0.5);
-        g.rotateX(s * 0.22);
-        wood.push(g);
-      }
-      metal.push(box(0.006, limb * 1.92, 0.006, 0, -R * 0.9));
+      const limb=L*.5,curve=R*2.8;
+      wood.push(tubePath([[0,limb,0],[0,limb*.53,curve],[0,0,curve*.45],[0,-limb*.53,curve],[0,-limb,0]],R*.38,28,7));
+      metal.push(tubePath([[0,limb,0],[0,0,-R*.36],[0,-limb,0]],Math.max(.005,R*.085),18,5));
+      // Nock collars and wrapped grip give highlights to the otherwise dark wooden profile.
+      for(const y of [-limb*.90,0,limb*.90]){const ring=new THREE.TorusGeometry(R*(y===0?.66:.48),R*.10,5,9);ring.rotateX(Math.PI/2);ring.translate(0,y,y===0?curve*.45:curve*.18);metal.push(ring);}
       break;
     }
     default:
@@ -1033,7 +1059,7 @@ export function poseFromRig(group, body, water) {
   if(S.presentation){for(const p of S.presentation){const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
 
   // Offhand surface follows the evaluated left hand in every gait, guard, reaction and swap.
-  const shieldVisible=!!body.shield&&!body.twoHanded&&body.offhandKind!=='weapon'&&body.offhandKind!=='catalyst';
+  const shieldVisible=!creatureOnly&&!!body.shield&&!body.twoHanded&&body.offhandKind!=='weapon'&&body.offhandKind!=='catalyst';
   const shieldKey=shieldVisible?`${body.shieldId||'shield'}|${body.shield.class||'medium'}`:null;
   if(shieldKey!==A.shieldKey){if(A.shield)group.remove(A.shield);A.shield=shieldVisible?shieldMesh(body.shieldId,body.shield,A.mats):null;A.shieldKey=shieldKey;if(A.shield)group.add(A.shield);}
   if(A.shield){
@@ -1043,7 +1069,7 @@ export function poseFromRig(group, body, water) {
 
   // ---- the weapon ----------------------------------------------------------------------
   const w = (body.moves && body.moves._weapon) || null;
-  if (w) {
+  if (w && !creatureOnly) {
     const key = weaponKeyOf(w);
     if (key !== A.weaponKey) {
       if (A.weapon) group.remove(A.weapon);

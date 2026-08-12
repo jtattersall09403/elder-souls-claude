@@ -216,7 +216,7 @@ export class Province {
         // unreflective hole. Sky/fog intrusion is the physical ambient source at this scale.
         color: c3(r.palette_hex[0]).lerp(c3(r.fog.colour), 0.66),
         roughness: clamp(0.06 + (r.water.k || 1) * 0.03, 0.05, 0.28),
-        metalness: 0.42, transparent: true,
+        metalness: 0.42, transparent: true,vertexColors:true,
         opacity: clamp(0.62 + (r.water.k || 1) * 0.08, 0.6, 0.96),
       }),
       trunk: worldMaterial('bark',{ color: c3(r.props.canopy.trunk), roughness: 0.95 }),
@@ -1004,9 +1004,19 @@ export class Province {
         if (![...low, ...high].some((s) => s !== null)) continue;
         const surf = corners.map(([cx, cz]) => f.waterSurfaceAt(cx, cz) ?? f.heightAt(cx, cz));
         const ri = f.regionIndexAt(x0 + step / 2, z0 + step / 2);
-        if (!byRegion.has(ri)) byRegion.set(ri, { v: [], i: [], n: 0 });
+        if (!byRegion.has(ri)) byRegion.set(ri, { v: [], c: [], shore:[], i: [], n: 0 });
         const b = byRegion.get(ri);
-        for (let k = 0; k < 4; k++) b.v.push(corners[k][0], surf[k], corners[k][1]);
+        for (let k = 0; k < 4; k++) {
+          b.v.push(corners[k][0], surf[k], corners[k][1]);
+          // Dry/clamped vertices are the shallow rim of this mixed wet/dry cell. Vertex colour
+          // darkens that silty water and interpolates a depth gradient inward; unlike the
+          // separate wet-bank strip, it remains inside the object-ID water surface and follows
+          // every irregular shoreline in the shipping field.
+          const actualSurface=f.waterSurfaceAt(corners[k][0],corners[k][1]);
+          const depth=actualSurface===null?0:Math.max(0,actualSurface-f.heightAt(corners[k][0],corners[k][1]));
+          const shallow=1-clamp(depth/1.35,0,1);
+          const q=.43+.57*(1-shallow);b.c.push(q,q*.96,q*.88);b.shore.push(shallow);
+        }
         b.i.push(b.n, b.n + 2, b.n + 1, b.n, b.n + 3, b.n + 2);
         b.n += 4;
       }
@@ -1014,6 +1024,8 @@ export class Province {
     for (const [ri, b] of byRegion) {
       const wg = new THREE.BufferGeometry();
       wg.setAttribute('position', new THREE.Float32BufferAttribute(b.v, 3));
+      wg.setAttribute('color',new THREE.Float32BufferAttribute(b.c,3));
+      wg.setAttribute('waterShore',new THREE.Float32BufferAttribute(b.shore,1));
       wg.setIndex(b.i);
       wg.computeVertexNormals();
       const wm = new THREE.Mesh(wg, this.regionMats[ri].water);
@@ -1024,19 +1036,23 @@ export class Province {
       // Shoreline response must exist in the pixels, not only in depth data. Build a thin,
       // terrain-following wet edge from wet/dry cell boundaries; it gives tidal flats and
       // channels scale without an expensive screen-space foam pass.
-      const shoreMat=this.regionMats[ri].water.clone();shoreMat.color.lerp(new THREE.Color(0xb6b9a2),.42);shoreMat.opacity=.48;shoreMat.roughness=.36;shoreMat.metalness=.08;shoreMat.depthWrite=false;
+      // This is a wet-bank deposit, not another copy of the water shader. Cloning water kept
+      // the planar reflection hook and animated the shore band as if it were liquid; use the
+      // region's sediment colour with a pale mineral/silt lift instead.
+      const shoreColour=c3(f.regions[ri].palette_hex[0]).lerp(new THREE.Color(0x756b52),.54);
+      const shoreMat=worldMaterial('wet_mud',{color:shoreColour,transparent:true,opacity:.74,roughness:.72,metalness:.01,depthWrite:false});
       // Merge every band in this tile/region into one indexed geometry. The first version used
       // one PlaneGeometry/Mesh per 25 m edge and made a marsh capture exceed 2,400 draws; these
       // four-vertex quads preserve the exact same wet-edge pixels at one draw per region.
       const sv=[],si=[];
-      const band=(ax,az,bx,bz)=>{const dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz)||1,nx=-dz/len*.17,nz=dx/len*.17;
+      const band=(ax,az,bx,bz)=>{const dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz)||1,nx=-dz/len*.46,nz=dx/len*.46;
         const ay=(f.waterSurfaceAt(ax,az)??f.heightAt(ax,az))+.018,by=(f.waterSurfaceAt(bx,bz)??f.heightAt(bx,bz))+.018,n=sv.length/3;
         sv.push(ax+nx,ay,az+nz, ax-nx,ay,az-nz, bx-nx,by,bz-nz, bx+nx,by,bz+nz);si.push(n,n+2,n+1,n,n+3,n+2);};
       for(let iz=0;iz<WATER_SEG;iz+=2)for(let ix=0;ix<WATER_SEG;ix+=2){const x=ox+ix*step,z=oz+iz*step,c=f.waterSurfaceAt(x+step*.5,z+step*.5)!==null;
         if(ix+2<WATER_SEG&&(f.waterSurfaceAt(x+step*2.5,z+step*.5)!==null)!==c)band(x+step*2,z,x+step*2,z+step*2);
         if(iz+2<WATER_SEG&&(f.waterSurfaceAt(x+step*.5,z+step*2.5)!==null)!==c)band(x,z+step*2,x+step*2,z+step*2);
       }
-      if(sv.length){const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));sg.setIndex(si);sg.computeVertexNormals();const shore=new THREE.Mesh(sg,shoreMat);shore.name=`shoreline:${f.regions[ri].id}`;shore.renderOrder=3;g.add(shore);}
+      if(sv.length){const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));sg.setIndex(si);sg.computeVertexNormals();const shore=new THREE.Mesh(sg,shoreMat);shore.name=`water:shoreline:${f.regions[ri].id}`;shore.userData.waterRole='wet-bank-deposit';shore.renderOrder=3;g.add(shore);}
     }
 
     // ---- flora and rock ----------------------------------------------------------------------
