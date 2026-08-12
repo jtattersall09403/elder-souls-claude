@@ -82,6 +82,19 @@
     "violent_resolutions": 0,
     "actions": ["fixed-step locomotion", "interact input", "published conversation choices"]
   },
+  "scheduled_giver_door_control": {
+    "source": "game/data/world/interiors/soulrest-grey-hist.json",
+    "source_hash": "863691895c0c247d843c9eb2ace30bf6ee5f33c78e7a58cf770dfc6e3e8d9f41",
+    "changed_source_hash": "66b4ac456c996da45d8ef22e7d26d7eea6fa3b51cf307706132023385a88c221",
+    "changed_hash": true,
+    "consumer": "stepSettlement -> useDoor, invoked through queued interact input",
+    "consumer_calls": 5,
+    "non_zero_support": 1,
+    "support": "undersexton-bel-mourne schedule 19:00-00:00 at soulrest-grey-hist",
+    "expected_red_row": "production interact did not enter scheduled soulrest-grey-hist",
+    "red_observed": ["intended-q9-r5", "intended-q9-r6"],
+    "restored_green": "intended-q9-r7 completed Q-MAIN-09 through the same production doorway"
+  },
   "source_hashes": {
     "q8_fixture": "8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae",
     "roads": "48bf48374d1a37821a4663f42605856db11bdc70b83e733574fcbeeda5ea84d7",

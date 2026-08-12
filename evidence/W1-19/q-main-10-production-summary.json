@@ -1,0 +1,26 @@
+{
+  "schema": "elder-souls/w1-19-q-main-10-production-summary@1",
+  "checkpoint": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act2.json",
+  "checkpoint_sha256": "cae7a08111f73fc26d27c135bd933c806276abe41b9bb372a90bbfdd421ae226",
+  "manifest": "evidence/W1-19/q-main-10-checkpoint.manifest.json",
+  "completed_quests": 10,
+  "active_quests": 0,
+  "resolution": "res_hear_it_out",
+  "production_observations": {
+    "r3": { "path_m": 6388.1, "frames": 120000, "longest_stuck_frames": 0, "teleports": 0, "deaths": 0, "stable_resume": true },
+    "r4": { "path_m": 2966, "frames": 60101, "ended_m_from_old_post": 25.071218, "collision_clearance_m": 0.3501, "teleports": 0, "deaths": 0, "stable_resume": true },
+    "r5": { "giver_distance_m": 0.970918, "marker_count": 0, "violent_resolutions": 0, "teleports": 0, "deaths": 0, "stable_frames": 120 }
+  },
+  "world_actions": [
+    "ordinary movement from the Q9 checkpoint through the shipped road graph and live detours",
+    "published conversation acceptance with Ashul-Tei at his scheduled daytime post",
+    "production doorway entry to helstrom-undertemple",
+    "player-facing reading of the-stewards-letter",
+    "production doorway exit and return to Ashul-Tei",
+    "published res_hear_it_out resolution choice"
+  ],
+  "forbidden_actions_used": [],
+  "production_guard": { "forbidden_calls": 0, "clean_walk_rows": "12/12", "self_test_red_verbs": "11/11" },
+  "checkpoint_control": { "consumer_calls": 4, "support": 2, "tamper_red": true, "stale_red": true, "restored_green": true },
+  "pass": true
+}

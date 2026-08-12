@@ -75,6 +75,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'W1-19-R2-FLOOR');
 ensureDir(outDir);
+const RESUME_OUTPUT = args['resume-output'] ? path.resolve(String(args['resume-output'])) : null;
 const sabotage = args.sabotage ? String(args.sabotage) : null;
 // W1-19 round 3: off by default. See the long note at the direct reveal API call site.
 const handFeedReveals = false;
@@ -206,6 +207,20 @@ try {
     H.setRenderRate(0);
     let shelterRequired = false;
     let routeCheckpoint = null;
+
+    // One interact edge can both take a doorway and greet a body standing on the destination
+    // spawn. The transition is legitimate, but the resulting player-visible conversation owns
+    // movement until it is dismissed. Close it with the shipped block/back input before the
+    // next walk; never clear the UI or conversation object directly.
+    const closeDoorwayConversation = () => {
+      let closed = false;
+      for (let retry=0; retry<3 && H.getUIState().dialogue_surface?.open; retry++) {
+        H.queueInputs([{f:0,release:['interact']},{f:1,press:['block']},{f:3,release:['block']}]);
+        H.stepFrames(8); closed = true;
+      }
+      H.clearInputs(); H.stepFrames(2);
+      return { attempted:closed, closed:!H.getUIState().dialogue_surface?.open };
+    };
 
     const walkTo = (x, z, reach = 1.0) => {
       H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(2);
@@ -564,7 +579,11 @@ try {
         const exitWalk=walkTo(door.interior_spawn[0],door.interior_spawn[2],1.5);
         if(!exitWalk.ok||!(H.whereAmI().door_in_reach||{}).way)return {ok:false,why:`production exit from ${inside} incomplete`,exit_walk:exitWalk};
         H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
-        if(H.whereAmI().interior)return {ok:false,why:`production interact did not exit ${inside}`,exit_walk:exitWalk};H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=door.exterior_spawn,ed=door.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);
+        if(H.whereAmI().interior)return {ok:false,why:`production interact did not exit ${inside}`,exit_walk:exitWalk};
+        const exit_dialogue=closeDoorwayConversation();
+        if(!exit_dialogue.closed)return {ok:false,why:`production doorway conversation held movement after exiting ${inside}`,exit_walk:exitWalk,exit_dialogue};
+        H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=door.exterior_spawn,ed=door.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;const egress=walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);
+        if(!egress.ok)return {ok:false,why:`production egress from ${inside} incomplete: ${egress.failure}`,exit_walk:exitWalk,exit_dialogue,egress};
       }
       const loc = npcActions[npcId];
       const inferScheduledInterior = (actor) => {
@@ -803,7 +822,7 @@ try {
               const d = documentActions[r.source];
               if (!d.exterior_spawn || !d.interior_spawn) throw new Error(`${d.interior} has no two-sided production doorway`);
               const currentInterior=H.whereAmI().interior;
-              if(currentInterior){const currentDoor=interiorActions[currentInterior];if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for ${d.interior}`);H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(180);const ew=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);if(!ew.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=currentDoor.exterior_spawn,ed=currentDoor.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);}
+              if(currentInterior){const currentDoor=interiorActions[currentInterior];if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for ${d.interior}`);H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(180);const ew=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);if(!ew.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${currentInterior}`);H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=currentDoor.exterior_spawn,ed=currentDoor.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;const egress=walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);if(!egress.ok)throw new Error(`production egress incomplete after leaving ${currentInterior}`);}
               a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 1.5);
               a.entry_prompt = H.whereAmI().door_in_reach;
               if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
@@ -854,6 +873,7 @@ try {
               if (!a.exit_walk.ok || !a.exit_prompt || a.exit_prompt.way !== 'out') throw new Error(`production exit not reachable in ${d.interior}`);
               H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
               if (H.whereAmI().interior) throw new Error(`interact did not leave ${d.interior}`);
+              if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${d.interior}`);
             } else if (r.channel === 'environment' && markActions[r.source]) {
               const at = markActions[r.source]; let markInterior=null;
               if (at.interior) {
@@ -869,7 +889,7 @@ try {
               let prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`);
               if (!prop && at.world) { a.walk = walkTo(at.world[0], at.world[1], 2.0); H.stepFrames(3); prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`); }
               if (prop) { a.walk = walkTo(prop.pos[0], prop.pos[2], Math.max(1.4,Math.min(prop.reach_m || 1.6,1.8))); if (a.walk.ok) { H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8); const qr=H.getQuestState().active.find(q=>q.id===step.id); a.ok = !!(qr && qr.flags && qr.flags[`know:${r.id}`]); } }
-              if(markInterior){H.queueInputs([{f:0,release:['block','interact']}]);H.stepFrames(30);a.exit_walk=walkTo(markInterior.interior_spawn[0],markInterior.interior_spawn[2],1.5);if(!a.exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${at.interior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${at.interior}`);}
+              if(markInterior){H.queueInputs([{f:0,release:['block','interact']}]);H.stepFrames(30);a.exit_walk=walkTo(markInterior.interior_spawn[0],markInterior.interior_spawn[2],1.5);if(!a.exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${at.interior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${at.interior}`);if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${at.interior}`);}
             }
           } catch (e) { a.error = String(e && e.message || e); }
           out.world_actions.push(a);
@@ -1047,10 +1067,19 @@ const out = {
   route_checkpoint: report.routeCheckpoint || null,
   rows: report.rows,
 };
+let exportedResumeStates=0;
+let resumeOutputFailure=null;
 for (const row of out.rows) for (const [chain,ch] of Object.entries(row.chains)) if (ch.resume_state) {
+  const exportEligible=!ch.blocked_at&&(!STOP_AFTER||ch.stopped_after===STOP_AFTER);
+  if (RESUME_OUTPUT&&exportEligible) {
+    if (exportedResumeStates) resumeOutputFailure='--resume-output requires exactly one signature and one chain';
+    else { ensureDir(path.dirname(RESUME_OUTPUT)); writeJson(RESUME_OUTPUT,ch.resume_state); exportedResumeStates++; }
+  }
   const statePath=path.join(outDir,`resume-${row.race}-${row.upbringing}-${chain}.json`); writeJson(statePath,ch.resume_state);
   ch.resume_state_file=path.basename(statePath); delete ch.resume_state;
 }
+if (RESUME_OUTPUT && exportedResumeStates !== 1 && !resumeOutputFailure) resumeOutputFailure='--resume-output requested but no completed production-valid stable state was emitted';
+out.resume_output=RESUME_OUTPUT?{file:path.relative(process.cwd(),RESUME_OUTPUT),exported_states:exportedResumeStates,failure:resumeOutputFailure}:null;
 writeJson(path.join(outDir, 'mainline-chain-floor.json'), out);
 
 if (args.json) console.log(JSON.stringify(out, null, 2));
@@ -1076,5 +1105,5 @@ else {
   console.log(`\nwrote ${path.join(outDir, 'mainline-chain-floor.json')}`);
 }
 
-const ok = failures.length === 0;
+const ok = failures.length === 0 && !resumeOutputFailure;
 process.exit(ok ? 0 : 1);

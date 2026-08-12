@@ -20,17 +20,17 @@
     "evidence/W1-19/",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "next_step": "Resume from reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7/resume-saxhleel-interior-intended.json (sha256:8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d), complete Q-MAIN-10, and retain the resulting canonical Act II checkpoint before continuing the intended production chain.",
+  "next_step": "Resume from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act2.json (sha256:cae7a08111f73fc26d27c135bd933c806276abe41b9bb372a90bbfdd421ae226), complete Q-MAIN-11 through the Act III boundary, and retain the next canonical production checkpoint.",
   "gate_accounting": {
-    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-09 are complete through production movement, scheduled doorway and conversation actions with zero violence/death/respawn/teleport/direct mutation. Q9 final state is stable and Q10 onward remains.",
+    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-10 are complete through production movement, fitted/scheduled doorway, readable and conversation actions with zero violence/death/respawn/teleport/direct mutation. Canonical Act II state is stable; Q11 onward remains.",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "IN_PROGRESS: complete mainline census/topic/reveal, canon, opacity, boot/data/content/quest and corpus gates run green; final-tree rerun and remaining red controls remain"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-q9-r6/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-09 --walk-max-frames 10000 --out reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 600000",
-    "outcome": "PASS: Q-MAIN-09 accepted and completed as res_hold_both through Bel-Mourne at his actual 21:36 Grey Hist schedule location. The complete Q8-to-Q9 production journey consumed 5.8 km of fixed-step movement across bounded continuations. Zero violent resolutions, bought openings, teleports, deaths/respawns or direct mutations. Final save proved 120 consecutive production-valid stable frames; route/save deletion control passed all three exact red rows with 110 non-zero support posts.",
-    "evidence": "evidence/W1-19/{q-main-09-production-summary.json,route-detour-safety-control.json}"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-q10-r4/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-10 --walk-max-frames 120000 --resume-output evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act2.json --out reports/runs/W1-19-production-gpu-root-lf/intended-q10-r5 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 3600000",
+    "outcome": "PASS: Q-MAIN-10 accepted and completed as res_hear_it_out through Ashul-Tei at his collision-clear fitted daytime post. The Q9-to-Q10 production journey consumed 9.35 km across stable bounded continuations, entered the Undertemple, read the Steward's Letter, returned, and resolved with zero violent resolutions, bought openings, teleports, deaths/respawns or direct mutations. Final save proved 120 consecutive production-valid stable frames; checkpoint tamper/staleness, schedule-access red/restore, production guard and cheap final-tree gates are green.",
+    "evidence": "evidence/W1-19/{q-main-10-production-summary.json,q-main-10-checkpoint.manifest.json,mainline-schedule-access-control.json}"
   }
 }

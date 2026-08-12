@@ -8323,6 +8323,22 @@ export class Engine {
       // road-placement migration to idle legacy bodies before the first fixed step. Active
       // fights are deliberately left exactly where the save captured them.
       if (this.population) this.population.reconcileRestored(this);
+      // Named people are data-authored too. If a save captured an idle outdoor NPC exactly at
+      // the post embedded in that save, and a later build corrects that authored post (for
+      // example a declared doorway that fitting rotated inside its building), migrate the body
+      // to the current public-side post on load. This is deliberately narrow: people already
+      // walking, indoors, or displaced from their saved anchor retain their exact saved pose.
+      for (const n of this.sim.npcs || []) {
+        const rec=this._anyNpcRecord(n.eid),oldPost=n.post&&n.post.pos,newPost=rec&&rec.post&&rec.post.pos;
+        if(!Array.isArray(oldPost)||!Array.isArray(newPost)||n.at!==null)continue;
+        const wasAtSavedPost=Math.hypot(n.pos[0]-oldPost[0],n.pos[2]-oldPost[2])<.1;
+        const changed=Math.hypot(newPost[0]-oldPost[0],newPost[2]-oldPost[2])>.1;
+        if(!wasAtSavedPost||!changed)continue;
+        n.pos=[newPost[0],newPost[1],newPost[2]];
+        n.goal=[newPost[0],newPost[1],newPost[2]];
+        n.post={...rec.post,pos:[...newPost]};
+        if(rec.post.yaw!=null){n.yaw_deg=rec.post.yaw;n.home_yaw_deg=rec.post.yaw;}
+      }
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.

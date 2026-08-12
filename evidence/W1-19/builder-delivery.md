@@ -224,3 +224,32 @@ deleted and return green on restoration.
 
 Gate A Q10 onward, Gate B/C builder populations, remaining controls, cold final chains and the
 bounded aggregate remain open.
+
+### Q-MAIN-10 / Act II production milestone
+
+Q-MAIN-10 is complete as `res_hear_it_out` through Ashul-Tei at his actual daytime Helstrom
+post. The continuous Q9-to-Q10 route was retained across two production-valid bounded saves:
+the first segment consumed 6,388.1 m with zero stuck frames, and the second consumed 2,966 m
+before exposing an authored giver post inside the fitted Undertemple footprint. Ashul-Tei's post
+now uses the fitted doorway's public side; an idle NPC exactly at a superseded saved post migrates
+to the current authored post on load, while walking, displaced and indoor NPCs remain untouched.
+
+The accepted run reached Ashul-Tei at 0.97 m, accepted through the published conversation choice,
+entered `helstrom-undertemple` by production input, read `the-stewards-letter` through the book
+UI, exited, returned, and resolved through the player-facing choice. Q-MAIN-01 through
+Q-MAIN-10 are complete, no quest is active, marker count is zero, and there were zero violent
+resolutions, deaths, respawns, teleports, bought openings, synthetic spawns, or topic/reveal hand
+feeds. The stable Act II fixture is
+`fixtures/resume-saxhleel-interior-intended-act2.json`, SHA-256
+`cae7a08111f73fc26d27c135bd933c806276abe41b9bb372a90bbfdd421ae226`.
+
+The schedule/access audit now executes `SettlementSystem.isOpen` at 264 live half-hour samples
+over 22 scheduled rows for all 13 mainline givers. Green has 0 inaccessible rows. Restoring the
+old Grey Hist hours changes the source hash, produces the exact Bel-Mourne evening red row (six
+rows red in total), and the restored tree returns to 0. The checkpoint tamper/stale control also
+passes both exact red rows and restored green validation. `check-data`, `check-content`,
+`check-quests`, strict corpus coherence, the 11-verb mutation-scanner self-test, and the played
+trace production guard are green on this milestone tree.
+
+This remains a builder milestone, not an independent verdict. Q11 onward, both complete endings,
+Gate B/C builder populations, remaining controls, final cold chains and aggregate remain open.
