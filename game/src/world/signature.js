@@ -169,7 +169,12 @@ export function profile(kind, inst, dx, dz) {
     case 'glassed_crater': {
       // Rim at R, glassed floor at R*0.62. The floor is `inst.floor` — solved at build time so a
       // crater never digs below the local water table and quietly floods a dry region.
-      const rimW = R * 0.16, rFloor = R * 0.60;
+      // Spread the inner wall across most of the bowl.  The old 0.60R floor packed a 7--11 m
+      // rise into roughly 10 m and made the shipped weather shelter a one-way trap: a player
+      // could descend, but ordinary movement could not climb back to the road.  The broader
+      // grade preserves the flat glass floor and raised circular rim while giving every crater
+      // a continuous player-facing route in and out.
+      const rimW = R * 0.16, rFloor = R * 0.20;
       if (d >= R + rimW) return 0;
       const rim = inst.rim === undefined ? 2.2 : inst.rim;
       if (d >= R) return rim * smooth((R + rimW - d) / rimW);

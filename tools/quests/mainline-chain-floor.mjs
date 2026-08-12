@@ -270,7 +270,7 @@ try {
         if(ss.crouched){H.queueInputs([{f:0,press:['crouch']},{f:2,release:['crouch']}]);H.stepFrames(4);}
         stealth={action:ss.crouched?'stand-to-flee':'already-standing',production_input:true};
       }
-      const walked = H.walkPath(route, {
+      const walkOptions = {
         fromCurrent: true,
         speed: 'jog',
         maxFrames: walkMaxFrames,
@@ -286,7 +286,64 @@ try {
         // Quest-chain proof is explicitly nonviolent.  Flee and heal, but never let the generic
         // survival walker swing at a patrol (which also keeps combat open across interior doors).
         defensive: false,
-      });
+      };
+      // The Soulrest--Blackrose road crosses the Stone Wastes during shipped salt storms.  Its
+      // player-facing counter is not another flask: it is the bowl of a real glassed crater.
+      // Locate that shipping signature through the live consumer, leave the road by ordinary
+      // movement, descend to its authored centre, and wait there before rejoining the same road.
+      // Keeping the two walkPath results also makes a death/respawn on either half fail closed.
+      let shelter = null;
+      let walked;
+      const craters = H.getSignatures({ kind:'glassed_crater', region:'stone-wastes' });
+      let craterJoin = null;
+      for (const crater of craters) for (let i=0;i<route.length;i++) {
+        const d=Math.hypot(route[i][0]-crater.x,route[i][1]-crater.z);
+        if (!craterJoin || d<craterJoin.d) craterJoin={ crater, i, d };
+      }
+      if (craterJoin && craterJoin.d < 90 && route.length > 2) {
+        // The centre floor is deliberately surrounded by an unclimbable-looking glass wall.
+        // The shipped shelter predicate reaches 22 m, so enter at the road-facing shoulder:
+        // visibly below natural ground, but on the ordinary walkable approach back out.
+        const roadPoint=route[craterJoin.i], rdx=roadPoint[0]-craterJoin.crater.x, rdz=roadPoint[1]-craterJoin.crater.z;
+        const rdl=Math.hypot(rdx,rdz)||1, shelterRadius=15;
+        const bowl=[craterJoin.crater.x+rdx/rdl*shelterRadius,craterJoin.crater.z+rdz/rdl*shelterRadius];
+        const inbound=H.walkPath([...route.slice(0,craterJoin.i+1),bowl],walkOptions);
+        const atBowl=H.whereAmI().pos.slice();
+        const arrivedBowl=inbound.arrived && inbound.arrival_is_clean
+          && Math.hypot(atBowl[0]-bowl[0],atBowl[2]-bowl[1]) < 2;
+        const before=H.getPlayerStats();
+        let shelteredReport=H.getHazardReport();
+        let waited=0, recoveryHeals=0;
+        if (arrivedBowl) for (let f=0;f<600;f+=30) {
+          const ps=H.getPlayerStats(), script=[{f:0,release:['sprint','light','heavy','block']}];
+          if (ps.hp < ps.hp_max*.9 && ps.estus>0) { script.push({f:0,press:['use_item']},{f:2,release:['use_item']}); recoveryHeals++; }
+          H.queueInputs(script); H.stepFrames(30); waited+=30;
+          const hr=H.getHazardReport();
+          if ((hr.here||[]).some(h=>h.id==='salt-storm'&&h.sheltered)) shelteredReport=hr;
+        }
+        const after=H.getPlayerStats();
+        const salt=(shelteredReport.here||[]).find(h=>h.id==='salt-storm')||null;
+        const outbound=arrivedBowl
+          ? H.walkPath([bowl,roadPoint,...route.slice(craterJoin.i+1)],walkOptions)
+          : { arrived:false, arrival_is_clean:false, aborted:'crater-unreachable', frames:0, path_m:0, teleports:0, teleported_m:0, teleport_log:[], survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0}, regions_entered:[] };
+        shelter={ signature:craterJoin.crater, road_detour_m:+craterJoin.d.toFixed(2), arrived:arrivedBowl,
+          waited_frames:waited, hp_before:before.hp, hp_after:after.hp, recovery_heals:recoveryHeals,
+          hazard:salt, sheltered:!!(salt&&salt.sheltered), inbound, outbound };
+        walked={ ...outbound,
+          arrived:inbound.arrived&&inbound.arrival_is_clean&&outbound.arrived&&outbound.arrival_is_clean,
+          aborted:inbound.aborted||outbound.aborted,
+          frames:inbound.frames+waited+outbound.frames,
+          minutes:+((inbound.frames+waited+outbound.frames)/3600).toFixed(3),
+          path_m:+(inbound.path_m+outbound.path_m).toFixed(1),
+          teleports:inbound.teleports+outbound.teleports,
+          teleported_m:+(inbound.teleported_m+outbound.teleported_m).toFixed(1),
+          teleport_log:[...inbound.teleport_log,...outbound.teleport_log],
+          survival_inputs:{ heals:inbound.survival_inputs.heals+recoveryHeals+outbound.survival_inputs.heals,
+            sprint_frames:inbound.survival_inputs.sprint_frames+outbound.survival_inputs.sprint_frames,
+            defensive_swings:inbound.survival_inputs.defensive_swings+outbound.survival_inputs.defensive_swings },
+          regions_entered:[...new Set([...inbound.regions_entered,...outbound.regions_entered])].sort(),
+        };
+      } else walked=H.walkPath(route,walkOptions);
       const ended=H.whereAmI().pos.slice(), actualLeft=Math.hypot(x-ended[0],z-ended[2]);
       return {
         ok: walked.arrived && walked.arrival_is_clean && actualLeft<=reach,
@@ -299,6 +356,7 @@ try {
         planned_clearance: route.length ? [0,.2,.4,.6,.8,1].map(et=>{const q=route[0];return {et,...H.solidAt(started[0]+(q[0]-started[0])*et,started[1]+.9,started[2]+(q[1]-started[2])*et)};}) : [],
         planner: plannerReport,
         stealth,
+        shelter,
         hazards: H.getHazardReport(),
         walk: walked,
       };

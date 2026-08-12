@@ -1,0 +1,149 @@
+{
+  "schema": "w1-19/crater-shelter-route@1",
+  "measured_at": "2026-08-11T22:19:20.167Z",
+  "commit": "WORKTREE",
+  "fixture": "cold-created Saxhleel/interior state progressed through shipped route to glassed crater",
+  "signature": {
+    "kind": "glassed_crater",
+    "region": "stone-wastes",
+    "x": 923.32,
+    "z": 4779.96,
+    "ground_y": 2.115,
+    "natural_y": 9.935,
+    "height_m": 7.82,
+    "rot": 5.1581,
+    "scale": 0.966,
+    "landform": true,
+    "solid_r_m": 0,
+    "glows_at_night": false,
+    "region_here": "stone-wastes"
+  },
+  "shelter_target": [
+    933.5161088670152,
+    4766.7578530488545
+  ],
+  "terrain": {
+    "x": 933.5161088670152,
+    "z": 4766.7578530488545,
+    "y": 7.369,
+    "base_y": 9.614,
+    "slope_deg": 31.37,
+    "region": "stone-wastes",
+    "region_name": "Stone Wastes",
+    "region_index": 9,
+    "danger_tier": 5,
+    "land": true,
+    "ocean": false,
+    "coast_dist_m": 120.2,
+    "substrate": "FIRM",
+    "sea": "topal"
+  },
+  "inbound": {
+    "arrived": true,
+    "aborted": null,
+    "frames": 61,
+    "minutes": 0.017,
+    "path_m": 3.5,
+    "mean_speed_mps": 3.4656,
+    "end": [
+      934,
+      4767.4
+    ],
+    "target": [
+      933.5,
+      4766.8
+    ],
+    "offset_m": 0.77,
+    "longest_stuck_frames": 0,
+    "mired_frames": 0,
+    "survival_inputs": {
+      "heals": 0,
+      "sprint_frames": 9,
+      "defensive_swings": 0
+    },
+    "regions_entered": [
+      "stone-wastes"
+    ],
+    "deepest_water_on_the_walk": {
+      "depth_m": 0,
+      "at": null
+    },
+    "worst_off_path_m": 0,
+    "off_path_frames": 0,
+    "regains": 0,
+    "teleports": 0,
+    "teleported_m": 0,
+    "teleport_log": [],
+    "arrival_is_clean": true
+  },
+  "hazard_report": {
+    "id": "salt-storm",
+    "class": "ATTRITION",
+    "region": "stone-wastes",
+    "inside": false,
+    "approach_m": null,
+    "told_at_frame": null,
+    "first_damage_frame": null,
+    "damage_dealt": 0,
+    "damage_total": 0,
+    "fired": false,
+    "armed": false,
+    "spent": false,
+    "fired_at_frame": null,
+    "fires": 0,
+    "outcome": null,
+    "sheltered": false,
+    "declared": {
+      "kind": "pct_max_hp_per_s",
+      "value": 1.2
+    },
+    "suppressed_by": null
+  },
+  "outbound": {
+    "arrived": true,
+    "aborted": null,
+    "frames": 3643,
+    "minutes": 1.012,
+    "path_m": 213.8,
+    "mean_speed_mps": 3.5212,
+    "end": [
+      1099.3,
+      4700.2
+    ],
+    "target": [
+      1100,
+      4700
+    ],
+    "offset_m": 0.77,
+    "longest_stuck_frames": 0,
+    "mired_frames": 0,
+    "survival_inputs": {
+      "heals": 0,
+      "sprint_frames": 650,
+      "defensive_swings": 0
+    },
+    "regions_entered": [
+      "stone-wastes"
+    ],
+    "deepest_water_on_the_walk": {
+      "depth_m": 0,
+      "at": null
+    },
+    "worst_off_path_m": 0.29,
+    "off_path_frames": 0,
+    "regains": 0,
+    "teleports": 0,
+    "teleported_m": 0,
+    "teleport_log": [],
+    "arrival_is_clean": true
+  },
+  "controls": {
+    "pre_fix": "/tmp/w119-q8/mainline-chain-floor.json: centre descent arrived, outbound stuck after 32.3m; shipped 0.60R inner wall",
+    "negative_boundary": "radius 18m remained unsheltered while still exited continuously",
+    "changed_mechanism": "glassed_crater inner floor radius 0.60R -> 0.20R plus route target radius 15m"
+  },
+  "reproduce": [
+    "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --stop-after Q-MAIN-08 --out <tmp> --json",
+    "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain backpath --out <tmp> --json"
+  ]
+}
