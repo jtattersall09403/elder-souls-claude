@@ -375,6 +375,9 @@ async function runProbe(name) {
       setYaw(0); setPitch(0); step(30);
       const rows = [];
       const CYCLE = 240, CYCLES = 12;
+      const wallHalfDepthM = 0.40;
+      const nearWallCenterZ = -0.90;
+      const farWallCenterZ = -6.40;
       for (let n = 0; n < CYCLE * CYCLES; n++) {
         // RI-CAM01 M4 exists to bound "a 1-frame sphere-cast spike", so the wall STEPS in and
         // then withdraws on a ramp. A wall that only ever approaches at 0.046 m/frame never
@@ -382,7 +385,9 @@ async function runProbe(name) {
         // property of the fixture rather than of the rate law. The first run reported 0.918:1
         // for exactly that reason.
         const ph = (n % CYCLE) / CYCLE;
-        const z = ph < 0.5 ? -0.5 : -6.0;
+        // RI-CAM01 M4 distances are to the player-facing surface. rail_wall has 0.40 m
+        // half-depth, hence centres -0.90/-6.40 realise surface distances 0.50/6.00 m.
+        const z = ph < 0.5 ? nearWallCenterZ : farWallCenterZ;
         H.setCameraObstacle('rail_wall', 0, 3.0, z);
         step(1);
         rows.push(cam());
@@ -405,12 +410,19 @@ async function runProbe(name) {
       const ratio = maxPush > 0 ? maxPullUnguarded / maxPush : Infinity;
       R.report.push(`frames=${rows.length}  max pull-in ${r4(maxPullUnguarded)} m/f (unguarded), ${r4(maxPullAny)} m/f incl. penetration guard`);
       R.report.push(`max push-out ${r4(maxPush)} m/f   dwell samples ${JSON.stringify(dwells.slice(0, 12))}`);
-      R.rates = { max_pull_in_unguarded: r4(maxPullUnguarded), max_pull_any: r4(maxPullAny), max_push_out: r4(maxPush), ratio: r4(ratio), dwells, guard_frames: rows.filter((c) => c.arm_penetration_guard).length };
+      R.rates = { max_pull_in_unguarded: r4(maxPullUnguarded), max_pull_any: r4(maxPullAny), max_push_out: r4(maxPush), ratio: r4(ratio), dwells,
+        guard_frames: rows.filter((c) => c.arm_penetration_guard).length,
+        floor_emergency_frames: rows.filter((c) => c.arm_floor_emergency).length,
+        clip_frames: rows.filter((c) => c.clip_through).length,
+        wall_centres_z: [farWallCenterZ, nearWallCenterZ],
+        player_facing_surfaces_z: [farWallCenterZ + wallHalfDepthM, nearWallCenterZ + wallHalfDepthM] };
       chk('pull_in_le_0p667', maxPullUnguarded <= 0.667 + 0.001, `${r4(maxPullUnguarded)} m/frame (40.0 m/s)`);
       chk('push_out_le_0p050', maxPush <= 0.050 + 0.001, `${r4(maxPush)} m/frame (3.0 m/s)`);
       chk('dwell_ge_6', dwells.length > 0 && Math.min(...dwells) >= 6, `min dwell ${dwells.length ? Math.min(...dwells) : 'n/a'} frames (bar ≥6)`);
       chk('asymmetry_ge_8to1', ratio >= 8.0, `measured ${r3(ratio)}:1 (bar ≥8.0:1; item declares 13.3:1)`);
-      chk('no_clip_on_rig', rows.every((c) => !c.clip_through), 'the wall sweeps to 0.5 m behind the character 12 times');
+      chk('surface_distance_fixture', Math.abs((nearWallCenterZ + wallHalfDepthM) - (-0.5)) <= 1e-9 && Math.abs((farWallCenterZ + wallHalfDepthM) - (-6.0)) <= 1e-9,
+        '0.80 m wall centres -6.40/-0.90 m realise player-facing surfaces -6.00/-0.50 m');
+      chk('no_clip_on_rig', rows.every((c) => !c.clip_through), 'the player-facing wall surface steps between 6.0 m and 0.5 m behind the character 12 times');
       return R;
     }
 
@@ -418,7 +430,9 @@ async function runProbe(name) {
     if (name === 'wall') {
       // RI-CAM01 M5 — back into a wall. No auto-yaw, no pitch drift, no FOV change, fade+shadow.
       fresh(); place('cam-collision-rig', 0, 0);
-      H.setCameraObstacle('rail_wall', 0, 3.0, -3.0);
+      // M5 begins 3.0 m from the player-facing surface: centre = -3.0 - 0.40.
+      const wallHalfDepthM = 0.40, wallCenterZ = -3.40;
+      H.setCameraObstacle('rail_wall', 0, 3.0, wallCenterZ);
       setYaw(0); setPitch(0); step(60);
       const y0 = cam().yaw_deg, p0 = cam().pitch_deg;
       const rows = [];
@@ -430,14 +444,24 @@ async function runProbe(name) {
       for (let i = 1; i < rows.length; i++) { sumYaw += Math.abs(ang180(rows[i].yaw_deg - rows[i - 1].yaw_deg)); sumPitch += Math.abs(rows[i].pitch_deg - rows[i - 1].pitch_deg); }
       const fovs = rows.map((c) => c.fov_deg);
       const pinned = rows.filter((c) => c.arm_len_m <= 0.91);
+      const wallSurfaceZ = wallCenterZ + wallHalfDepthM;
+      const minPivotSideClearance = Math.min(...rows.map((c) => c.pivot[2] - wallSurfaceZ));
       R.report.push(`Σ|Δyaw| = ${r4(sumYaw)}°  Σ|Δpitch| = ${r4(sumPitch)}°  over ${rows.length} frames with no look input`);
       R.report.push(`min arm ${r4(Math.min(...rows.map((c) => c.arm_len_m)))} m; ${pinned.length} frames at ≤0.91 m; opacity there = ${pinned.length ? r4(Math.max(...pinned.map((c) => c.char_opacity))) : 'n/a'}`);
       chk('no_auto_yaw', sumYaw <= 0.5, `Σ|Δyaw| = ${r4(sumYaw)}° (bar ≤0.5°) — auto-wall-recovery is rejected by name in RI-CAM01 §C.3`);
       chk('no_pitch_drift', sumPitch <= 0.5, `Σ|Δpitch| = ${r4(sumPitch)}°`);
       chk('fov_invariant', Math.max(...fovs) - Math.min(...fovs) <= 0.001, `fov max−min = ${r4(Math.max(...fovs) - Math.min(...fovs))}`);
+      chk('surface_distance_fixture', Math.abs(wallSurfaceZ - (-3.0)) <= 1e-9,
+        '0.80 m wall centre -3.40 m realises the M5 player-facing surface at -3.00 m');
       chk('no_clip', rows.every((c) => !c.clip_through), 'clip_through never true while reversing into the wall');
+      chk('body_collision_keeps_pivot_playable_side', minPivotSideClearance >= -1e-6,
+        `minimum pivot z minus player-facing surface z = ${r4(minPivotSideClearance)} m (bar >= 0)`);
       chk('fade_at_min_arm', pinned.length === 0 || Math.max(...pinned.map((c) => c.char_opacity)) < 0.05, pinned.length ? `max opacity at arm≤0.91 = ${r4(Math.max(...pinned.map((c) => c.char_opacity)))}` : 'arm never reached the floor in this fixture');
-      R.wall = { sum_yaw_deg: r4(sumYaw), sum_pitch_deg: r4(sumPitch), min_arm: r4(Math.min(...rows.map((c) => c.arm_len_m))), pinned_frames: pinned.length };
+      R.wall = { sum_yaw_deg: r4(sumYaw), sum_pitch_deg: r4(sumPitch), min_arm: r4(Math.min(...rows.map((c) => c.arm_len_m))), pinned_frames: pinned.length,
+        wall_center_z: wallCenterZ, player_facing_surface_z: wallSurfaceZ, min_pivot_side_clearance_m: r4(minPivotSideClearance),
+        guard_frames: rows.filter((c) => c.arm_penetration_guard).length,
+        floor_emergency_frames: rows.filter((c) => c.arm_floor_emergency).length,
+        clip_frames: rows.filter((c) => c.clip_through).length };
       return R;
     }
 

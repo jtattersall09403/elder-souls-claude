@@ -122,3 +122,19 @@ transition matrix, full collision census and browser aggregate is canonically un
 required branch. Restoring either pre-merge parent would arbitrarily discard the other parent's
 merged engine work, so this camera builder records the exact dependency rather than inventing a
 cross-piece merge ruling. All independent visual/blind rows remain critic handoff and unscored.
+
+## Final-builder corrected-surface continuation — 2026-08-11
+
+Tested implementation commit: `2df978b`.
+
+The satisfied-plan M4/M5 instrument-only correction and its deliberate old-centre red seed are
+recorded in `reports/w1-06/AMENDMENT-W1-06-03-surface-residual.md`. Corrected coordinates and the
+new body-collision/pivot-side consumer assertion pass. The unchanged zero-clip checks remain red
+with 1,392/2,880 M4 and 133/300 M5 clip frames while both S49 flags remain absent, so the plan's
+constructive-residual arbitration stop applies. The standalone shipping S49 positive/control remains
+5/5 pass. No critic-owned population or score was performed.
+
+A proposed browser aggregate (`rig,look,world,scripted,coupling,fp`) was stopped after it crossed
+15 minutes without producing an artifact; under the owner-ratified builder execution contract that
+population is critic-owned at that cost. No result or pass is claimed. The cheap gates and the
+narrow corrected-surface/S49 runs above are the bounded builder result at this tree.
