@@ -3575,17 +3575,16 @@ export class Engine {
           }
         }
       }
-      // The writ you are carrying, opened with the verb that opens carried things. RI-JRN01
-      // M8 (amended): "the object is openable through the same input path a player has, and
-      // its rendered-text set at the open node is non-empty and contains the answers" — a
-      // hard fail if it is "present only as an API return value", which is what `readWrit()`
-      // alone was. No new action: HARNESS.md §4's set is closed and `use_item` already means
-      // this.
+      // The carried writ still has this legacy reader for explicit callers and old saves. Its
+      // player-facing route is now the inventory's readable-item path below, where carried
+      // documents belong and where it cannot collide with a combat action.
       if (this.writReader.open) { this._writReaderStep(input); return; }
       // W1-05. A post you are standing under has the buttons while you are reading it, on the
       // same terms the writ does.
       if (this.signReader.open) { this._signReaderStep(input); return; }
-      if (input.pressedName('use_item') && this._hasWrit()) { this._writPending = true; input.consumeUI(CENSUS_ACTIONS); return; }
+      // W1-19: `use_item` is the production flask verb. The writ is already player-openable
+      // through the inventory's readable-item route. Overloading the flask here opened a modal
+      // writ surface after every odd heal and that surface consumed every later movement axis.
       if (!this._propPending && !this._talkPending && !this._signPending && input.pressedName('interact')) {
         const p = this.sim.player;
         // The post first. It is the tightest reach of the three (2.6 m against a prop's own
@@ -4172,6 +4171,23 @@ export class Engine {
     const p = this.sim.player;
     const prog = this.sim.progression;
     const inCombat = this.inCombat();
+    // `stamped-writ` is a character-specific carried document, not a static corpus book. Keep
+    // its inventory reader backed by the current rendered writ after creation and save/load.
+    // This updates only the UI's read model; opening it still requires menu navigation and the
+    // ordinary confirm input, and no quest/topic state is written here.
+    const writText = this.sim.character && this.sim.character.writ_text;
+    if (writText && this.ui && this.ui.data && this.ui.data.books) {
+      const current = this.ui.data.books.get('stamped-writ');
+      if (!current || current.text !== writText) this.ui.data.books.set('stamped-writ', {
+        id: 'stamped-writ', title: 'Reed-case writ, stamped',
+        author: 'Provincial Office of Argonia', text: writText,
+      });
+      const amended = this.ui.data.books.get('amended-writ');
+      if (!amended || amended.text !== writText) this.ui.data.books.set('amended-writ', {
+        id: 'amended-writ', title: 'Reed-case writ, stamped and amended',
+        author: 'Provincial Office of Argonia', text: writText,
+      });
+    }
     // D2's spend point: the stamina level at the moment the current regen block began. Read off
     // `regenBlockUntil` changing rather than off a spend event, so it cannot disagree with the
     // simulation about whether regen is blocked.
@@ -8696,6 +8712,11 @@ export class Engine {
 
   getRegionAt(x, z) { return this.getTerrainAt(x, z).region; }
 
+  /** The production population consumer's effective centre, without spawning or moving it. */
+  getPopulationPostPlacement(id) {
+    return this.population ? this.population.placement(this, id) : null;
+  }
+
   // ---- the thirteen ONLY-HERE elements (RI-WLD04 M19) -----------------------------------------
   //
   // Round 2 measured M19 at 0/13 because the counts were integers in a build script. These three
@@ -10419,6 +10440,16 @@ export class Engine {
         weapon: p.moves._movesetId, weapon_class: p.moves._classKey,
         two_handed: !!p.twoHanded, airborne: !!p.airborne,
         pos: [p.pos[0], p.pos[1], p.pos[2]], yaw_deg: p.yaw,
+        speed_mps: p.speedMps, move_dir_deg: p.moveDirDeg,
+        stagger_until: p.staggerUntil, parried_until: p.parriedUntil,
+        pending_reaction: p.pendingReaction ? { ...p.pendingReaction } : null,
+        dead: !!p.dead, hitstop: !!p.hitstop, hitstop_until: p.hitstopUntil,
+        controller: {
+          turn_in_place_frames: c.playerCtl.turnInPlace,
+          turn_in_place_step_deg: c.playerCtl.turnInPlaceStep,
+          turn_in_place_anim: c.playerCtl.turnInPlaceAnim,
+          turn_in_place_active: c.playerCtl.turnInPlaceActive,
+        },
       },
       // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
       // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
@@ -10534,9 +10565,19 @@ export class Engine {
       pointerLocked: false, hasFocus: true, activeDevice: 'scripted', deviceClass: 'harness',
       held: this.input.heldNames().slice(), bindings: null, droppedInputs: this.input.droppedInputs,
     };
+    // Recovery diagnostics need the fixed-step edges, not only the held level. Keep these
+    // read-only observations on the shared pipeline so scripted and real input report the
+    // same state and a queued flask cannot masquerade as a locomotion failure.
+    base.held = this.input.heldNames().slice();
+    base.pressed = this.input.pressedNames().slice();
+    base.released = this.input.releasedNames().slice();
+    base.pendingPress = this.input.pendingPressNames().slice();
+    base.pendingRelease = this.input.pendingReleaseNames().slice();
+    base.move = [this.input.moveX, this.input.moveY];
     base.mode = this.mode;
     base.bufferFrames = this.data ? this.data.input.buffer_frames : null;
     base.buffered = this.input.bufferedAction || null;
+    base.bufferedAtFrame = this.input.bufferedAtFrame;
     base.violations = violations.length;
     return base;
   }

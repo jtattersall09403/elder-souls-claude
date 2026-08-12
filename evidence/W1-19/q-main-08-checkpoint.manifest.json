@@ -1,0 +1,90 @@
+{
+  "schema": "elder-souls/production-checkpoint-manifest@1",
+  "fixture": "fixtures/resume-saxhleel-interior-intended-q8.json",
+  "fixture_hash": "sha256:8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae",
+  "tested_commit": "05c5b19d45fb7ff4408d60a17262e9722c08511b",
+  "tested_tree_note": "Expected remote head plus the production repairs frozen by input_hashes below; the milestone commit is the commit containing this manifest.",
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "save_schema": { "schema": "elder-souls/save@1", "version": 2 },
+  "harness_version": 1,
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class_id": "reed-walker",
+    "birthsign": "raj-xul"
+  },
+  "completed_quests": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04",
+    "Q-MAIN-05", "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08"
+  ],
+  "active_quests": [],
+  "position": {
+    "pos": [3785, 3.42, 3797.8],
+    "settlement": "archon",
+    "cell": "coast",
+    "interior": null
+  },
+  "clock": { "day": 1, "hour": 8.777315 },
+  "weather": "clear",
+  "schedule_context": {
+    "npc": "harbourmaster-cuiro-vaneth",
+    "active_row": { "from": "07:00", "to": "19:00", "at": null, "activity": "post" },
+    "actual_entity_pos": [3785, 3.42, 3799.3],
+    "checkpoint_giver_distance_m": 1.5,
+    "nearby_production_door": "archon-guild-office"
+  },
+  "health": { "hp": 284.892008, "hp_max": 300, "estus": 5 },
+  "stability": {
+    "consecutive_clean_frames": 120,
+    "player_state": "IDLE",
+    "speed_mps": 0,
+    "in_combat": false,
+    "locked_on": null,
+    "mired": false,
+    "submerged": false,
+    "dead": false,
+    "hitstop": false,
+    "ui_mode": "world",
+    "conversation_open": false,
+    "held_inputs": [],
+    "pressed_inputs": [],
+    "pending_press": [],
+    "pending_release": [],
+    "collision_solid": false
+  },
+  "provenance": {
+    "production_player_actions": true,
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "teleports": 0,
+    "deaths_or_respawns": 0,
+    "bought_openings": 0,
+    "synthetic_spawns": 0,
+    "topic_or_reveal_hand_feeds": 0,
+    "quest_resolution": "res_ask_the_crane",
+    "quest_acceptance": "published quest-accept:Q-MAIN-08 conversation choice",
+    "reveal_route": "walked through the archon-guild-office production doorway, interacted with interior-readable:the-archon-true-manifest, and read the-archon-true-manifest",
+    "source_runs": [
+      "reports/runs/W1-19-production-gpu-root-lf/q8-after-pop0115-regen",
+      "reports/runs/W1-19-production-gpu-root-lf/q8-after-pop0119-r5",
+      "reports/runs/W1-19-production-gpu-root-lf/q8-complete-r6",
+      "reports/runs/W1-19-production-gpu-root-lf/q8-complete-r7"
+    ],
+    "source_run_hashes": {
+      "q8_complete_r6_report": "sha256:2aa446e149491d76f63ac6df4e495e8ee5cfa8b44a741416a874f097fd7ca8f1",
+      "q8_complete_r6_resume": "sha256:f8935efb1ff4e96476b87c070688e4c1f13edcf77c3a6810cc50aa029e14e461"
+    },
+    "note": "Every metre, doorway, readable, acceptance, reveal and resolution was consumed through the shipped movement/input/conversation path. No storm or crater condition participated. Large raw runs remain ignored."
+  },
+  "input_hashes": {
+    "quests": "sha256:6b2179a5ad77e335b1c020fb22dc2a43db51a1c94844556032943595104ec38c",
+    "npcs": "sha256:23104c57407c31b7d71075e899438f6515d0fc460466b983308f2113060bb2b9",
+    "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
+    "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24",
+    "production_runtime": "sha256:6036c27c4c108ba51c5a04e1075c717c5b88ae7b1a960ac99c9f991b8da7f2f9",
+    "instruments": "sha256:e0ab81aa0ca94fe17113e245794f8791ae41093d774b9dcf77b0fb7a6b659e7c"
+  },
+  "reproduction": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 120000 --out reports/runs/W1-19-production-gpu-root-lf/q8-reproduction --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 1800000",
+  "validation": "node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-08-checkpoint.manifest.json",
+  "controls": "node tools/quests/mainline-checkpoint-control.mjs --manifest evidence/W1-19/q-main-08-checkpoint.manifest.json --out reports/runs/W1-19-production-gpu-root-lf/q8-checkpoint-control.json"
+}

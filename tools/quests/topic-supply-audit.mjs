@@ -23,9 +23,10 @@
 // A quest with no `entry_topics` row at all is fine when nothing follows it — a rank-7 terminal
 // quest teaches nobody anything — so that is reported separately and is not a failure.
 //
-// Run: node tools/quests/topic-supply-audit.mjs [--strict] [--out report.json]
+// Run: node tools/quests/topic-supply-audit.mjs [--strict] [--mainline] [--out report.json]
 //   default : reports everything, exits 0 unless a topic named by a quest does not exist
 //   --strict : also fails on empty topic bodies and self-loops (the wave-2 posture)
+//   --mainline: restrict the population to Q-MAIN-* (the W1-19 plan's named instrument)
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -35,6 +36,7 @@ import { topicKey } from '../../game/src/core/topics.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const DATA = path.join(ROOT, 'game/data');
 const strict = process.argv.includes('--strict');
+const mainlineOnly = process.argv.includes('--mainline');
 const outIx = process.argv.indexOf('--out');
 const outPath = outIx >= 0 ? process.argv[outIx + 1] : null;
 
@@ -58,7 +60,9 @@ const quests = [];
 for (const f of fs.readdirSync(path.join(DATA, 'quests')).sort()) {
   if (!f.endsWith('.json') || f === 'hooks.json' || f === 'faction-gates.json' || f === 'closure-registry.json') continue;
   const doc = JSON.parse(fs.readFileSync(path.join(DATA, 'quests', f), 'utf8'));
-  for (const q of (Array.isArray(doc.quests) ? doc.quests : (doc.id && doc.journal ? [doc] : []))) quests.push({ q, file: f });
+  for (const q of (Array.isArray(doc.quests) ? doc.quests : (doc.id && doc.journal ? [doc] : []))) {
+    if (!mainlineOnly || String(q.id || '').startsWith('Q-MAIN-')) quests.push({ q, file: f });
+  }
 }
 
 const demanded = new Map(); // folded key -> [quest ids]

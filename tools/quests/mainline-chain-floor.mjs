@@ -87,6 +87,9 @@ const resumeState = args['resume-state'] ? JSON.parse(fs.readFileSync(path.resol
 const saveWaypoint = args['save-waypoint'] ? String(args['save-waypoint']).split(',').map(Number) : null;
 const waypointStatePath = args['waypoint-state'] ? path.resolve(String(args['waypoint-state'])) : null;
 const stopAtWaypoint = !!args['stop-at-waypoint'];
+// Historical route diagnostic only. The W1-19 quest contract does not require manufacturing or
+// waiting out a salt storm, and its canonical Q8 route must not be gated on a crater visit.
+const stormShelterDiagnostic = !!args['storm-shelter-diagnostic'];
 if (saveWaypoint && (saveWaypoint.length !== 2 || saveWaypoint.some((n) => !Number.isFinite(n)) || !waypointStatePath)) usage(USAGE);
 const CHAIN_NAMES = args.chain && args.chain !== 'both' ? [String(args.chain)] : ['intended', 'backpath'];
 if (CHAIN_NAMES.some((x) => !['intended', 'backpath'].includes(x))) usage(USAGE);
@@ -139,7 +142,7 @@ if (fs.existsSync(marksPath)) for (const m of JSON.parse(fs.readFileSync(marksPa
 const INTENDED = [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests];
 const BACKPATH = [
   ...mainline.acts.filter((a) => a.act <= 3).flatMap((a) => a.quests),
-  'Q-MAIN-29', 'Q-MAIN-31',
+  ...mainline.backpath.quests,
 ];
 
 // The same plan shape `mainline-race-trace.mjs` builds, MINUS the topic, so that a difference in
@@ -187,7 +190,7 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
@@ -304,19 +307,45 @@ try {
         return {safe,reason,length_m:+length.toFixed(2),samples};
       };
       const findConnectedDetour=(entry,exit,post,requiredClearance)=>{
-        const grid=2,margin=100,minX=Math.min(entry[0],exit[0],post.x)-margin,maxX=Math.max(entry[0],exit[0],post.x)+margin,minZ=Math.min(entry[1],exit[1],post.z)-margin,maxZ=Math.max(entry[1],exit[1],post.z)+margin;
+        const grid=2;
+        // A coastal post can occupy the only firm centreline while the first dry shoulder lies
+        // beyond a local inlet. Search successively larger *bounded* envelopes; 100 m remains
+        // the common case, while 300 m is still smaller than the population release radius plus
+        // its ordinary streaming hysteresis. Never make a failed search mean "walk through it".
+        for(const margin of [100,180,300]){
+        const rawMinX=Math.min(entry[0],exit[0],post.x)-margin,rawMaxX=Math.max(entry[0],exit[0],post.x)+margin,rawMinZ=Math.min(entry[1],exit[1],post.z)-margin,rawMaxZ=Math.max(entry[1],exit[1],post.z)+margin;
+        // Anchor the lattice on the exact authored entry. The Archon carriageway can be less
+        // than one grid cell wide where it crosses coastal water; rounding the exit to an
+        // arbitrary lattice point put the alleged goal in W4 even though the road itself is W3.
+        const minX=entry[0]-Math.ceil((entry[0]-rawMinX)/grid)*grid,maxX=entry[0]+Math.ceil((rawMaxX-entry[0])/grid)*grid,minZ=entry[1]-Math.ceil((entry[1]-rawMinZ)/grid)*grid,maxZ=entry[1]+Math.ceil((rawMaxZ-entry[1])/grid)*grid;
         const cols=Math.ceil((maxX-minX)/grid)+1,rows=Math.ceil((maxZ-minZ)/grid)+1,ix=x=>Math.round((x-minX)/grid),iz=z=>Math.round((z-minZ)/grid),key=(x,z)=>x+','+z;
         const sx=ix(entry[0]),sz=iz(entry[1]),gx=ix(exit[0]),gz=iz(exit[1]);
-        const blocked=(x,z)=>{const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),substrate=H.getTerrainAt(x,z).substrate;return water>.95||(substrate==='SUCK'&&water>.4)||H.solidAt(x,g+.9,z).distance_m<.42||Math.hypot(x-post.x,z-post.z)<requiredClearance;};
-        const open=[[0,sx,sz]],cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false;
-        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz);if(cx===gx&&cz===gz){found=true;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;if(blocked(x,z,nx,nz))continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}}
-        if(!found)return null;const cells=[];let k=key(gx,gz);while(k!==key(sx,sz)){const[a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k)return null;}return cells;
+        const blockedCache=new Map();
+        const blocked=(x,z)=>{const cacheKey=`${x.toFixed(3)},${z.toFixed(3)}`;if(blockedCache.has(cacheKey))return blockedCache.get(cacheKey);const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),substrate=H.getTerrainAt(x,z).substrate,value=water>.95||(substrate==='SUCK'&&water>.4)||H.solidAt(x,g+.9,z).distance_m<.42||Math.hypot(x-post.x,z-post.z)<requiredClearance;blockedCache.set(cacheKey,value);return value;};
+        const open=[],heapPush=v=>{open.push(v);let i=open.length-1;while(i){const p=(i-1)>>1;if(open[p][0]<=v[0])break;open[i]=open[p];i=p;}open[i]=v;},heapPop=()=>{const top=open[0],last=open.pop();if(open.length){let i=0;while(true){let c=i*2+1;if(c>=open.length)break;if(c+1<open.length&&open[c+1][0]<open[c][0])c++;if(open[c][0]>=last[0])break;open[i]=open[c];i=c;}open[i]=last;}return top;};
+        heapPush([0,sx,sz]);const cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false,endKey=null;
+        while(open.length){const [,cx,cz]=heapPop(),ck=key(cx,cz),x0=minX+cx*grid,z0=minZ+cz*grid;if(Math.hypot(x0-exit[0],z0-exit[1])<=grid*1.75&&sampleSegment([x0,z0],exit,post,requiredClearance).safe){found=true;endKey=ck;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(x0+(x-x0)*et,z0+(z-z0)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);heapPush([ng+Math.hypot(exit[0]-x,exit[1]-z)/grid,nx,nz]);}}}
+        if(!found)continue;const cells=[];let k=endKey;while(k!==key(sx,sz)){const[a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k){cells.length=0;break;}}if(cells.length){if(Math.hypot(cells.at(-1)[0]-exit[0],cells.at(-1)[1]-exit[1])>.01)cells.push(exit.slice());return {cells,margin};}
+        }
+        return null;
       };
-      for (const post of populationPosts) {
+      // Select against one immutable road. Selecting against a route after each insertion made
+      // a detour attract unrelated posts, which recursively grew a local bypass into a
+      // province-scale route. Work destination-to-source so higher-index splices cannot shift
+      // the still-pending baseline indices.
+      const encounterBaseline=route.map(q=>q.slice());
+      const encounterCandidates=[];
+      for (const authoredPost of populationPosts) {
+        const placement=H.getPopulationPostPlacement(authoredPost.id);
+        const post={...authoredPost,x:placement?.x??authoredPost.x,z:placement?.z??authoredPost.z,production_placement:placement};
         let near={i:-1,d:Infinity};
-        for(let i=2;i<route.length-2;i++){const d=Math.hypot(route[i][0]-post.x,route[i][1]-post.z);if(d<near.d)near={i,d};}
+        for(let i=2;i<encounterBaseline.length-2;i++){const d=Math.hypot(encounterBaseline[i][0]-post.x,encounterBaseline[i][1]-post.z);if(d<near.d)near={i,d};}
         if(near.i<0||near.d>24)continue;
-        const a=route[Math.max(0,near.i-8)],b=route[Math.min(route.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
+        encounterCandidates.push({post,near});
+      }
+      let unsafeEncounterRoute=null;
+      for (const {post,near} of encounterCandidates.sort((a,b)=>b.near.i-a.near.i)) {
+        const a=encounterBaseline[Math.max(0,near.i-8)],b=encounterBaseline[Math.min(encounterBaseline.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
         // Perception is per body (12--20 m by archetype), not multiplied by group size. Keep a
         // 35 m centreline clearance for every post: it covers the largest sight radius plus the
         // authored spawn offsets without demanding a fictitious 70 m exclusion disc that can
@@ -327,9 +356,9 @@ try {
         // back through the post and died at the authored x/z despite reporting a 70 m waypoint.
         let lo=near.i,hi=near.i;
         const replaceRadius=28;
-        while(lo>1&&Math.hypot(route[lo-1][0]-post.x,route[lo-1][1]-post.z)<replaceRadius)lo--;
-        while(hi+1<route.length-1&&Math.hypot(route[hi+1][0]-post.x,route[hi+1][1]-post.z)<replaceRadius)hi++;
-        const entry=route[lo-1],exit=route[hi+1],requiredClearance=24,tested=[];
+        while(lo>1&&Math.hypot(encounterBaseline[lo-1][0]-post.x,encounterBaseline[lo-1][1]-post.z)<replaceRadius)lo--;
+        while(hi+1<encounterBaseline.length-1&&Math.hypot(encounterBaseline[hi+1][0]-post.x,encounterBaseline[hi+1][1]-post.z)<replaceRadius)hi++;
+        const entry=encounterBaseline[lo-1],exit=encounterBaseline[hi+1],requiredClearance=24,tested=[];
         for(const side of [-1,1]) for(const shoulder of [clearance,clearance+15,clearance+30]){
           const q=[post.x+side*(-dz/dl)*shoulder,post.z+side*(dx/dl)*shoulder];
           const inbound=sampleSegment(entry,q,post,requiredClearance),outbound=sampleSegment(q,exit,post,requiredClearance);
@@ -338,15 +367,31 @@ try {
         const pick=tested.filter(c=>c.safe).sort((a,b)=>b.min_water_margin_m-a.min_water_margin_m||a.shoulder-b.shoulder)[0];
         if(!pick){
           const connected=findConnectedDetour(entry,exit,post,requiredClearance);
-          if(!connected){encounterDetours.push({post:post.id,encounter:post.encounter,rejected:true,tested});continue;}
-          route.splice(lo,hi-lo+1,...connected);
-          encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected,segment_validation:{grid_m:2,water_max_m:.95,saturated_suck_forbidden:true,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
+          if(!connected){unsafeEncounterRoute={post:post.id,encounter:post.encounter,reason:'no-connected-production-safe-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true,tested});continue;}
+          route.splice(lo,hi-lo+1,...connected.cells);
+          encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected.cells,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
           continue;
         }
         route.splice(lo,hi-lo+1,pick.q);
-        encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
+        encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
       }
       plannerReport.encounter_detours=encounterDetours;
+      plannerReport.encounter_candidates=encounterCandidates.length;
+      plannerReport.unsafe_encounter_route=unsafeEncounterRoute;
+      // A bounded checkpoint before a later rejected segment is still a valid production state.
+      // Do not walk the unsafe segment, but do permit the already-validated prefix to be consumed
+      // when the explicit stop waypoint lies before its authored entry.
+      let unsafeBeyondCheckpoint=false;
+      if(unsafeEncounterRoute&&stopAtWaypoint&&saveWaypoint){
+        let waypointI=-1,waypointD=Infinity,unsafeI=-1,unsafeD=Infinity;
+        for(let i=0;i<route.length;i++){const wd=Math.hypot(route[i][0]-saveWaypoint[0],route[i][1]-saveWaypoint[1]);if(wd<waypointD){waypointD=wd;waypointI=i;}const ud=Math.hypot(route[i][0]-unsafeEncounterRoute.authored_entry[0],route[i][1]-unsafeEncounterRoute.authored_entry[1]);if(ud<unsafeD){unsafeD=ud;unsafeI=i;}}
+        unsafeBeyondCheckpoint=waypointD<=5&&waypointI>=0&&unsafeI>waypointI;
+        plannerReport.unsafe_beyond_checkpoint=unsafeBeyondCheckpoint?{waypoint_index:waypointI,unsafe_index:unsafeI}:null;
+      }
+      if(unsafeEncounterRoute&&!unsafeBeyondCheckpoint){
+        const ended=H.whereAmI().pos.slice();
+        return {ok:false,failure:'unsafe-route-planning',frames:0,left_m:Math.hypot(x-ended[0],z-ended[2]),started,ended,production_input:true,planned_route:route.slice(0,40),planned_clearance:[],planner:plannerReport,stealth:null,recovery_heals:recoveryHeals,shelter:null,hazards:[],walk:{arrived:false,aborted:'unsafe-route-planning',frames:0,minutes:0,path_m:0,mean_speed_mps:0,end:[ended[0],ended[2]],target:[x,z],offset_m:Math.hypot(x-ended[0],z-ended[2]),longest_stuck_frames:0,mired_frames:0,survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0},regions_entered:[],deepest_water_on_the_walk:null,worst_off_path_m:0,off_path_frames:0,regains:0,teleports:0,teleported_m:0,teleport_log:[],arrival_is_clean:false}};
+      }
       // Provincial legs are crossed in the player's ordinary crouched stance. Road patrols are
       // authored encounters, not unavoidable damage volumes; lowering the detection profile is
       // the nonviolent production route and still leaves every metre to the movement consumer.
@@ -376,12 +421,27 @@ try {
         // survival walker swing at a patrol (which also keeps combat open across interior doors).
         defensive: false,
       };
+      const settleCheckpoint=()=>{
+        H.clearInputs();
+        let stableFrames=0,last=null;
+        for(let waited=0;waited<3600;waited++){
+          H.stepFrames(1);
+          const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
+          const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+          stableFrames=clean?stableFrames+1:0;
+          last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
+          if(stableFrames>=120)return {ok:true,...last};
+        }
+        return {ok:false,...last};
+      };
       const walkWithCheckpoint=(points)=>{
-        if(!shelterRequired||!saveWaypoint||routeCheckpoint)return H.walkPath(points,walkOptions);
+        if(!saveWaypoint||routeCheckpoint)return H.walkPath(points,walkOptions);
         let wi=0,wd=Infinity;for(let i=0;i<points.length;i++){const d=Math.hypot(points[i][0]-saveWaypoint[0],points[i][1]-saveWaypoint[1]);if(d<wd){wd=d;wi=i;}}
         if(wd>5)return H.walkPath(points,walkOptions);
         const first=H.walkPath([...points.slice(0,wi+1),saveWaypoint],walkOptions);
-        if(first.arrived&&first.arrival_is_clean)routeCheckpoint={declared_waypoint:saveWaypoint.slice(),route_distance_m:+wd.toFixed(2),state:H.saveState(),where:H.whereAmI(),production_movement:true};
+        const stable=first.arrived&&first.arrival_is_clean?settleCheckpoint():null;
+        if(first.arrived&&first.arrival_is_clean&&stable?.ok)routeCheckpoint={declared_waypoint:saveWaypoint.slice(),route_distance_m:+wd.toFixed(2),state:H.saveState(),where:H.whereAmI(),production_movement:true,production_valid_stable_state:stable};
+        if(stopAtWaypoint&&first.arrived&&first.arrival_is_clean&&!stable?.ok)return {...first,arrived:false,arrival_is_clean:false,aborted:'checkpoint-unstable',checkpoint_stability:stable};
         if(routeCheckpoint&&stopAtWaypoint)return {...first,arrived:false,arrival_is_clean:false,aborted:'checkpoint-captured'};
         const second=first.arrived?H.walkPath([saveWaypoint,...points.slice(wi+1)],walkOptions):{arrived:false,arrival_is_clean:false,aborted:first.aborted,frames:0,path_m:0,teleports:0,teleported_m:0,teleport_log:[],survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0},regions_entered:[]};
         return {...second,arrived:first.arrived&&first.arrival_is_clean&&second.arrived&&second.arrival_is_clean,aborted:first.aborted||second.aborted,frames:first.frames+second.frames,path_m:first.path_m+second.path_m,teleports:first.teleports+second.teleports,teleported_m:first.teleported_m+second.teleported_m,teleport_log:[...first.teleport_log,...second.teleport_log],survival_inputs:{heals:first.survival_inputs.heals+second.survival_inputs.heals,sprint_frames:first.survival_inputs.sprint_frames+second.survival_inputs.sprint_frames,defensive_swings:first.survival_inputs.defensive_swings+second.survival_inputs.defensive_swings},regions_entered:[...new Set([...first.regions_entered,...second.regions_entered])]};
@@ -564,6 +624,28 @@ try {
       return out;
     };
 
+    // A bounded run may end on the exact movement frame that consumed maxFrames. Preserve only
+    // a production-valid resume state: release player input and require 120 consecutive quiet
+    // fixed steps before serialising. This is observation plus ordinary input release, not a
+    // pose, combat, UI, quest, or world mutation.
+    const captureStableResume = () => {
+      H.clearInputs(); let stableFrames=0,last=null;
+      for(let waited=0;waited<3600;waited++){
+        H.stepFrames(1);
+        const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
+        const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+        stableFrames=clean?stableFrames+1:0;
+        last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
+        if(stableFrames>=120)return {ok:true,...last,state:H.saveState()};
+      }
+      return {ok:false,...last,state:null};
+    };
+
+    const retainResume = (out) => {
+      const checkpoint=captureStableResume(); out.resume_stability={...checkpoint};
+      if(checkpoint.state){out.resume_state=checkpoint.state;delete out.resume_stability.state;}
+    };
+
     const runChain = (name, plan) => {
       const alreadyCompleted = new Set(H.getQuestState().completed || []);
       const out = {
@@ -620,7 +702,7 @@ try {
         // own `populateSettlement`/`populateSite` — the call walking across a town boundary
         // makes — and returns `present: false` when the person's record names no place at all,
         // which is the failure the old line could not express.
-        shelterRequired = step.id === 'Q-MAIN-08';
+        shelterRequired = stormShelterDiagnostic && step.id === 'Q-MAIN-08';
         const trip = activeRecord ? {quest:step.id,giver:(H.questDef(step.id).giver||{}).npc_id,present:true,reached:true,resumed_active:true} : reachGiver(step.id);
         shelterRequired = false;
         out.giver_journeys = out.giver_journeys || []; out.giver_journeys.push({ quest: step.id, phase: 'accept', ...trip });
@@ -668,7 +750,7 @@ try {
           out.blocked_at = step.id;
           out.why = o.reason;
           out.blocked_offer_why = offer ? offer.why : null;
-          evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState();
+          evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out);
           break;
         }
         // Perform every authored reveal through its shipped player-facing world action.
@@ -794,12 +876,12 @@ try {
           }
           H.conversationClose();
         } catch (e) { res = { ok: false, reason: String(e && e.message || e) }; }
-        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState(); break; }
+        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out); break; }
         if (pick.violence_required) out.violent.push(step.id);
         out.completed.push(step.id);
         st = sampleStanding(); fold(st);
         evidence.after=step.id; evidence.resolution=pick.id; evidence.standing=st; evidence.after_resolution=evidenceSnapshot(giver); out.trace.push(evidence);
-        out.resume_state = H.saveState();
+        retainResume(out);
         if (stopAfter === step.id) { out.stopped_after=step.id; break; }
       }
       const qs = H.getQuestState();
@@ -823,6 +905,10 @@ try {
         // Build the same collision/population cell the first live frame builds before planning
         // any movement; planning against EMPTY_CELL makes every street look unobstructed.
         H.stepFrames(2);
+        if (resumeState) {
+          const entry=captureStableResume(); delete entry.state; row.resume_entry_stability=entry;
+          if(!entry.ok){row.chains[name]={chain:name,precompleted:H.getQuestState().completed||[],completed:[],blocked_at:'resume-state',why:'restored production state did not become stable after input release',violent:[],journal_n:H.getQuestState().journal.length,floor:{},arrival:{},trace:[],resume_stability:entry};continue;}
+        }
         // THE ONLY THING GRANTED FROM OUTSIDE THE QUEST GRAPH, and it is not granted, it is
         // done: walk up to a carter on the Soulrest quay and be greeted. Everything after this
         // has to arrive through the world's own AddTopic edges.
@@ -839,7 +925,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows, routeCheckpoint };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic });
 } catch (error) {
   writeJson(path.join(outDir, 'browser-failure.json'), {
     error: String(error && error.message || error),
@@ -932,6 +1018,7 @@ const out = {
   persuasion: report.rows.flatMap((r) => Object.entries(r.chains).flatMap(([n, c]) => (c.persuasion || []).map((p) => ({ sig: `${r.race}/${r.upbringing}`, chain: n, ...p })))),
   failures,
   violent_resolutions_taken: violent,
+  route_checkpoint: report.routeCheckpoint || null,
   rows: report.rows,
 };
 for (const row of out.rows) for (const [chain,ch] of Object.entries(row.chains)) if (ch.resume_state) {

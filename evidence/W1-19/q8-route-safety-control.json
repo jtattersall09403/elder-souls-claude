@@ -1,0 +1,21 @@
+{
+  "schema": "elder-souls/mainline-route-safety-control@1",
+  "method": "green consumer; isolated source deletion; same consumer red; restored green consumer",
+  "source": "game/src/world/population.js",
+  "source_hash": "sha256:061d40c3bc26c35533d18d554271e9c64feff512253d23cc04d9dcfe444974b7",
+  "changed_source_hash": "sha256:ab15610c609eb4309c1652049e13085cab4f0d07c2722892c485f342fd7aa349",
+  "changed_hash": true,
+  "consumer": "PopulationManager._routeSafeCentre via H.getPopulationPostPlacement",
+  "consumer_calls": 3,
+  "non_zero_support": 13,
+  "selected_post": "pop-0119",
+  "expected_red_row": { "id": "route_detour_safe", "expected": false },
+  "rows": [
+    { "label": "green-before", "authored_road_distance_m": 7.865, "effective_centre": [3574.770011617686, 4118.150105305403], "relocated": true, "effective_road_clearance_m": 38.653, "route_detour_safe": true },
+    { "label": "red-deleted-consumer", "authored_road_distance_m": 7.865, "effective_centre": [3567.56, 4165.06], "relocated": false, "effective_road_clearance_m": 7.865, "route_detour_safe": false },
+    { "label": "green-restored", "authored_road_distance_m": 7.865, "effective_centre": [3574.770011617686, 4118.150105305403], "relocated": true, "effective_road_clearance_m": 38.653, "route_detour_safe": true }
+  ],
+  "command": "node tools/quests/mainline-route-safety-control.mjs --out reports/runs/W1-19-production-gpu-root-lf/route-safety-control-pop0119.json --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 300000",
+  "exit": 0,
+  "pass": true
+}

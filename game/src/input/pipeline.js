@@ -274,6 +274,9 @@ export class InputPipeline {
 
   heldNames() { return maskToNames(this.held, this._names); }
   pressedNames() { return maskToNames(this.pressed, this._names2); }
+  releasedNames() { return maskToNames(this.released, []); }
+  pendingPressNames() { return maskToNames(this.pendingPress, []); }
+  pendingReleaseNames() { return maskToNames(this.pendingRelease, []); }
 
   /**
    * A UI surface has taken this frame's navigation input; the character must not also walk

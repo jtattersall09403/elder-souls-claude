@@ -68,6 +68,7 @@ export class PopulationSystem {
   reset() {
     this.state = new Map();
     this.live = new Map();          // post id -> [eid]
+    this.spawnCentres = new Map();  // post id -> production centre after route-safety placement
     this.down = new Map();          // post id -> Set(eid) that was DEAD when the post was released
     this.focus = { x: NaN, z: NaN };
     this.epochSeen = -1;
@@ -247,8 +248,9 @@ export class PopulationSystem {
     // first time the player walked a stretch of road with two marsh sentries on it. The tag is
     // the post id, which is unique by construction.
     let r;
+    const centre = this._routeSafeCentre(engine, p);
     try {
-      r = engine.spawnEncounter(p.encounter, p.x, p.z, { tag: p.id, yaw: p.yaw });
+      r = engine.spawnEncounter(p.encounter, centre.x, centre.z, { tag: p.id, yaw: p.yaw });
     } catch (err) {
       // A post that cannot be built is a data fault, not a reason to take the step down. It is
       // recorded and never retried.
@@ -275,8 +277,101 @@ export class PopulationSystem {
       live.push(eid);
     }
     this.live.set(p.id, live);
+    this.spawnCentres.set(p.id, centre);
     this.state.set(p.id, RESIDENT);
     this.stats.spawned++;
+  }
+
+  /**
+   * Keep a road encounter's actual bodies off a narrow coastal carriageway.
+   *
+   * Generated posts sit 5–14 m to one side of a road. Usually a player can take the unused
+   * shoulder. At a coast, however, the generated side can end immediately in W4 water: the
+   * post's 24 m body-clearance disc then joins the shoreline and topologically seals the only
+   * walkable road. That is what pop-0119 on Lilmoth–Archon did in the production Q-MAIN-08 run.
+   *
+   * This is a production placement consumer, not a quest-runner exemption. If the post is less
+   * than 24 m from its declared road, its own 35 m shoulder is uninhabitable, and the opposite
+   * 35 m shoulder is production-safe for the encounter's <=7 m spawn footprint, materialise on
+   * that opposite shoulder. The nearest road and both candidates are derived from shipped data;
+   * no post id, quest id, player state, or progress flag participates.
+   */
+  _routeSafeCentre(engine, p) {
+    const original = { x: p.x, z: p.z, relocated: false, reason: null };
+    if (!p || p.kind !== 'road' || !p.leg || !engine.data || !engine.data.roads) return original;
+    const leg = (engine.data.roads.legs || []).find((row) => row.id === p.leg);
+    if (!leg || !Array.isArray(leg.points) || leg.points.length < 2) return original;
+    let near = null;
+    for (let i = 1; i < leg.points.length; i++) {
+      const a = leg.points[i - 1], b = leg.points[i], dx = b[0] - a[0], dz = b[1] - a[1];
+      const d2 = dx * dx + dz * dz || 1;
+      const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.z - a[1]) * dz) / d2));
+      const x = a[0] + dx * t, z = a[1] + dz * t, d = Math.hypot(p.x - x, p.z - z);
+      if (!near || d < near.d) near = { x, z, d, dx, dz };
+    }
+    if (!near || near.d >= 24) return original;
+    const dl = Math.hypot(near.dx, near.dz) || 1, nx = near.dz / dl, nz = -near.dx / dl;
+    const side = ((p.x - near.x) * nx + (p.z - near.z) * nz) >= 0 ? 1 : -1;
+    const candidate = (sign) => ({ x: near.x + nx * 35 * sign, z: near.z + nz * 35 * sign });
+    const safe = (q) => {
+      // The shipped largest offset is 6.55 m. Sample a 7 m footprint in all directions so a
+      // safe centre cannot put one of its bodies in water or a visible collision primitive.
+      for (let i = -1; i < 16; i++) {
+        const x = i < 0 ? q.x : q.x + Math.sin(i * Math.PI / 8) * 7;
+        const z = i < 0 ? q.z : q.z + Math.cos(i * Math.PI / 8) * 7;
+        const w = engine.getWaterAt(x, z), water = Number(w.depth_m ?? w.depth ?? 0);
+        const terrain = engine.getTerrainAt(x, z);
+        if (water > .95 || (terrain.substrate === 'SUCK' && water > .4)
+          || terrain.slope_deg > 35 || engine.solidAt(x, Number(w.ground_y) + .9, z).distance_m < .42) return false;
+      }
+      return true;
+    };
+    const authoredSide = candidate(side), opposite = candidate(-side);
+    const authoredSafe = safe(authoredSide), oppositeSafe = safe(opposite);
+    // Four-body ganks use the full 35 m post envelope so their outer spawn offsets retain the
+    // 24 m hard road clearance. Smaller posts stay authored unless their chosen shoulder is
+    // itself uninhabitable, in which case the safe opposite side is the minimal repair.
+    let chosen = Number(p.bodies || 0) >= 4 && authoredSafe
+      ? authoredSide : (!authoredSafe && oppositeSafe ? opposite : null);
+    const roadDistance = (q) => {
+      let best = Infinity;
+      for (let i = 1; i < leg.points.length; i++) {
+        const a = leg.points[i - 1], b = leg.points[i], dx = b[0] - a[0], dz = b[1] - a[1];
+        const d2 = dx * dx + dz * dz || 1;
+        const t = Math.max(0, Math.min(1, ((q.x - a[0]) * dx + (q.z - a[1]) * dz) / d2));
+        best = Math.min(best, Math.hypot(q.x - (a[0] + dx * t), q.z - (a[1] + dz * t)));
+      }
+      return best;
+    };
+    if (chosen && roadDistance(chosen) < 31) chosen = null;
+    if (!chosen && Number(p.bodies || 0) >= 4) {
+      const radial = [];
+      for (const radius of [35,45,55,65,80]) for (let i = 0; i < 32; i++) {
+        const q = { x: near.x + Math.sin(i * Math.PI / 16) * radius, z: near.z + Math.cos(i * Math.PI / 16) * radius };
+        const road = roadDistance(q);
+        if (road >= 31 && safe(q)) radial.push({ ...q, road, radius, moved: Math.hypot(q.x - p.x, q.z - p.z) });
+      }
+      if (radial.length) chosen = radial.sort((a,b) => a.moved - b.moved || b.road - a.road)[0];
+    }
+    if (!chosen) return original;
+    return {
+      x: chosen.x, z: chosen.z, relocated: true,
+      reason: chosen === authoredSide
+        ? 'road-clearance: four-body post moved to its production-safe 35 m authored shoulder'
+        : chosen !== opposite
+          ? 'road-clearance: four-body post moved to nearest production-safe centre with 24 m body clearance'
+        : 'road-clearance: authored 35 m shoulder unsafe; opposite 35 m shoulder production-safe',
+      authored: [p.x, p.z], road_nearest: [near.x, near.z], road_distance_before_m: near.d,
+      post_envelope_m: 35, hard_body_clearance_m: 24, spawn_footprint_sample_m: 7,
+      road_clearance_after_m: roadDistance(chosen),
+    };
+  }
+
+  /** Read-only route-safety placement for a named post; used by production navigation evidence. */
+  placement(engine, id) {
+    const p = this.byId.get(String(id));
+    if (!p) return null;
+    return { post: p.id, authored: [p.x, p.z], ...this._routeSafeCentre(engine, p) };
   }
 
   /** What a probe reads. Never used by the simulation. */
@@ -285,7 +380,8 @@ export class PopulationSystem {
     for (const [id, eids] of this.live) {
       const p = this.byId.get(id);
       const alive = eids.filter((eid) => { const e = sim && sim.findEntity(eid); return e && e.hp > 0; }).length;
-      resident.push({ post: id, encounter: p.encounter, region: p.region, tier: p.tier, x: p.x, z: p.z, bodies: eids.length, alive });
+      const centre = this.spawnCentres.get(id) || { x: p.x, z: p.z, relocated: false };
+      resident.push({ post: id, encounter: p.encounter, region: p.region, tier: p.tier, x: centre.x, z: centre.z, authored_x: p.x, authored_z: p.z, route_safety: centre, bodies: eids.length, alive });
     }
     return {
       enabled: this.enabled,

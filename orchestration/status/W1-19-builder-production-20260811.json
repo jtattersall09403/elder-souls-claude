@@ -20,17 +20,17 @@
     "evidence/W1-19/",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "next_step": "Resume Q-MAIN-08 diagnosis from the ignored production checkpoint reports/runs/W1-19-production/after-pop-0115.json (sha256:b966acbf618cd183351ed2c2cbf2e1475d4ebcd12d4cbd89982505fddd3ef1b0). It was reached by 357.5 m ordinary movement with zero teleports/deaths and crossed the formerly blocking shallow mire, but has 11.712/300 HP. The current three-flask resume sequence reports recovery_heals=3 yet leaves walkPath at 0 m/stuck; diagnose the post-heal locomotion state first, then continue to pop-0119 and Archon. If moving to another machine, this ignored checkpoint must be copied separately or regenerate it with the recorded stop-at-waypoint command.",
+  "next_step": "Resume from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q8.json (sha256:8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae), complete the intended production chain through Q-MAIN-30/Q-MAIN-32 and its ending, retaining act-boundary and pre-PONR checkpoints.",
   "gate_accounting": {
-    "A": "INCOMPLETE: Q-MAIN-08 remains incomplete. A legitimate post-pop-0115 checkpoint now proves the connected shallow-mire route with zero death/teleport; the next causal defect is a post-flask locomotion stall from that 11.712 HP checkpoint",
+    "A": "IN_PROGRESS: Q-MAIN-08 is complete through production movement, doorway, readable and conversation actions with zero violence/death/respawn/teleport/direct mutation. Canonical Q1-Q8 checkpoint validates; Q9 onward remains.",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "MERGED EVIDENCE RETAINED"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production/after-pop-0115.json --stop-after Q-MAIN-08 --walk-max-frames 50000 --save-waypoint 3550,4150 --waypoint-state reports/runs/W1-19-production/before-pop-0119.json --stop-at-waypoint --out reports/runs/W1-19-production/q8-before-pop0119-checkpoint",
-    "outcome": "FAIL: recovery_heals=3, then walkPath moved 0 m and aborted stuck after 1800 frames at [3221.891598, 4360.163614]. This follows a successful checkpoint capture that walked 357.5 m, crossed 486 mired frames using production struggle, and recorded zero teleports, zero deaths, longest stuck 12 frames and worst off-path 0.31 m. Salt-storm/crater exercise is not a W1-19 governing-plan requirement and has been removed from this continuation's acceptance scope by owner direction.",
-    "evidence": "ignored persistent reports/runs/W1-19-production/{q8-after-pop0115-checkpoint,q8-before-pop0119-checkpoint}/mainline-chain-floor.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/q8-complete-r6/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 60000 --out reports/runs/W1-19-production-gpu-root-lf/q8-complete-r7 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 1800000",
+    "outcome": "PASS: Q-MAIN-08 accepted and completed through published production conversation choices after 350.4 m on the final leg; actual scheduled giver reached at [3785,3799.3], corrected archon-guild-office doorway consumed, true-manifest readable consumed, rev_true_tonnage learned, res_ask_the_crane completed. Zero violent resolutions, bought openings, teleports, deaths/respawns or direct mutations. Final save proved 120 consecutive production-valid stable frames.",
+    "evidence": "evidence/W1-19/{q-main-08-production-summary.json,q-main-08-checkpoint.manifest.json,fixtures/resume-saxhleel-interior-intended-q8.json,q8-recovery-diagnostic.json}"
   }
 }

@@ -367,6 +367,8 @@ export function installHarness(engine, bootPromise) {
     // RI-WLD07 M36 need in order to be measurements rather than assertions.
     getWaterAt(x, z) { return engine.getWaterAt(x, z); },
     getTerrainAt(x, z) { return engine.getTerrainAt(x, z); },
+    /** Read-only; returns the centre the production population consumer will materialise. */
+    getPopulationPostPlacement(id) { return engine.getPopulationPostPlacement(id); },
     getRegionAt(x, z) { return engine.getRegionAt(x, z); },
     // RI-WLD04 M19. `signatureAudit()` re-derives each instance's region from the region raster,
     // so it reports where the thing actually is and not what it was labelled.
@@ -1239,7 +1241,8 @@ export function installHarness(engine, bootPromise) {
      * OPEN the carried writ and draw it. RI-JRN01 M8 (amended wave 1) hard-fails an O10 object
      * that is "present only as an API return value" — which `readWrit()` alone is — and
      * requires the rendered-text set at the open node to be non-empty and to contain the
-     * player's answers. In play the same thing happens on `use_item`; this is the harness seam.
+     * player's answers. In play the same document is selected from the inventory and confirmed;
+     * this legacy method remains an explicit harness seam, not evidence of that player route.
      */
     openWrit() { return engine.openWrit(); },
     closeWrit() { return engine.closeWrit(); },
