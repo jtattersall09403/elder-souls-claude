@@ -1,9 +1,9 @@
 {
   "task_id": "W1-30-builder-20260812",
   "role": "builder",
-  "state": "continuation_builder_delivery_complete_independent_critic_pending",
+  "state": "final_builder_delivery_complete_independent_critic_pending",
   "plan": "orchestration/plans/W1-30.md",
-  "base_commit": "ce10b0a",
+  "base_commit": "f7df4df166a28c578db200761a0be8f5da330839",
   "dependencies": {
     "W1-06": "236f97b",
     "W1-24": "302ee3e"
@@ -21,10 +21,17 @@
     "8 settlement material grammars and inexplicable sculptures",
     "simulation-rig contact and action presentation",
     "per-path module/observable contracts",
-    "material cavity AO"
+    "material cavity AO",
+    "simulation-driven character/NPC/creature rig presentation",
+    "three equipment silhouettes and five visible equipment slots",
+    "terminal slope/stair foot IK and deterministic secondary motion",
+    "release/travel/impact/residue VFX with bounded pools",
+    "streaming LOD bands, hysteresis, pooling and disposal",
+    "literal RI-VIS03, RI-VIS08 and RI-MAG05 instruments",
+    "nine-scene reusable-browser live proof"
   ],
-  "bounded_result": "green: bounded compositor/IBL/shadow/material aggregate; 21/21 consumer gate; literal metric self-tests; Chromium WebGL2 smoke with 577 unique colours; live IBL defect repaired",
-  "binary_evidence": "none committed; transient province sequence remains under /tmp/w1-30-continuation",
+  "bounded_result": "green: all Package 2-4 gates; literal metric self-tests; 540-frame RI-VIS08 C1-C10 representative result; nine-scene Chromium 141/SwiftShader live proof; final builder aggregate",
+  "binary_evidence": "none committed; transient live proof under /tmp/w1-30-live-proof-final and traces/metrics under /tmp/w1-30-trace-* and /tmp/w1-30-animation-metrics.json",
   "files_touched": [
     "game/src/render/actor.js",
     "game/src/render/visual-foundation.js",
@@ -35,14 +42,26 @@
     "game/src/render/sky.js",
     "tools/render/w1-30-aggregate.mjs",
     "reports/w1-30/BUILDER-DELIVERY.md",
-    "orchestration/status/W1-30.json"
+    "orchestration/status/W1-30.json",
+    "game/src/sim/record.js",
+    "game/data/combat/clips.json",
+    "game/src/render/spell-vfx.js",
+    "corpus/80-methods/anim-metrics.mjs",
+    "tools/render/w1-30-package3.mjs",
+    "tools/render/w1-30-package4.mjs",
+    "tools/render/w1-30-live-proof.mjs",
+    "tools/render/w1-30-final.mjs"
   ],
   "files_claimed": [],
   "live_repair_cycle": [
     "capture exposed camera enclosed by centroid hero geometry",
     "offset every deterministic hero silhouette 72 m into the canonical camera middle distance",
     "reran transient province capture sequence and inspected materially distinct frames",
-    "live readiness exposed unsupported Color.addScaledVector in IBL update; replaced with explicit RGB radiance accumulation and reran readiness"
+    "live readiness exposed unsupported Color.addScaledVector in IBL update; replaced with explicit RGB radiance accumulation and reran readiness",
+    "Package 2 coverage timed out previously; completed all nine low-cost captures in one reusable SwiftShader browser",
+    "spell input proof initially produced zero VFX because tier-2 Marshfire was not attunable at the loaded skill; drove the real pressCast path with a valid production loadout and observed release, impact and residue",
+    "daylight capture initially used occluded/underwater named states; separated state placement from lighting and used the readable province state",
+    "animation trace exposed held hitstop, root-space transition and secondary-proxy aggregation errors; repaired the instrument and cross-fade, then reran to C1-C10 GREEN"
   ],
   "next_step": "Fresh independent critic executes exhaustive populations, blind comparisons and separate 7/10 visual-axis judgements."
 }
