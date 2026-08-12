@@ -100,3 +100,26 @@ The next clean Q-MAIN-08 rerun did not reach Archon and is not claimed green. It
 0.621 m water depth. Candidate encounter shoulders are now restricted to at most 0.4 m water.
 A wider speculative crater detour proved invalid from this Blackrose checkpoint and was rejected.
 Active-storm shelter proof and Q-MAIN-08 production completion remain unestablished.
+
+## 2026-08-12 production checkpoint and segment repair continuation
+
+A provenance-valid compact `H.saveState()` fixture now preserves the production state after
+Q-MAIN-01–07. Its manifest freezes the character, exact quest sets, pose, clock/weather, save and
+harness schema, zero-violence/direct-mutation provenance, and hashes of quest, NPC, world-route and
+save-schema inputs. `tools/quests/validate-mainline-checkpoint.mjs` fails closed before reuse when
+any of those compatibility predicates changes.
+
+The encounter shoulder planner now samples every inserted segment at no more than 2 m spacing and
+checks live collision, water depth, terrain grade and encounter-body clearance. It evaluates both
+sides and multiple shoulder radii. Where no single shoulder connects safely, a bounded 2 m grid
+search finds a collision-free, <=0.4 m water route around the encounter and rejoins the authored
+road. `--save-waypoint x,z --waypoint-state FILE` can capture the unmodified production save after
+ordinary movement reaches a declared route-local point within 5 m of the planned route.
+
+The first full checkpoint rerun after segment sampling correctly avoided the reported 0.621 m
+shoulder. It exposed a successive failure: all one-waypoint alternatives around `pop-0026` were
+unsafe, so the unchanged road remained live and the character later died/respawned. The connected
+safe-grid fallback was implemented in response. Its syntax and fixture validation are green, but
+the final long production rerun was interrupted before completion. Therefore the twelve-part
+Q-MAIN-08 acceptance is **not claimed green** in this delivery and the production status remains
+`INCOMPLETE_BUILDER_DEFECT`.

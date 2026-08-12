@@ -84,6 +84,9 @@ const ATTEMPTS = args.attempts === undefined ? 6 : Number(args.attempts);
 const WALK_MAX_FRAMES = Number(args['walk-max-frames'] || 100000);
 const STOP_AFTER = args['stop-after'] ? String(args['stop-after']) : null;
 const resumeState = args['resume-state'] ? JSON.parse(fs.readFileSync(path.resolve(String(args['resume-state'])), 'utf8')) : null;
+const saveWaypoint = args['save-waypoint'] ? String(args['save-waypoint']).split(',').map(Number) : null;
+const waypointStatePath = args['waypoint-state'] ? path.resolve(String(args['waypoint-state'])) : null;
+if (saveWaypoint && (saveWaypoint.length !== 2 || saveWaypoint.some((n) => !Number.isFinite(n)) || !waypointStatePath)) usage(USAGE);
 const CHAIN_NAMES = args.chain && args.chain !== 'both' ? [String(args.chain)] : ['intended', 'backpath'];
 if (CHAIN_NAMES.some((x) => !['intended', 'backpath'].includes(x))) usage(USAGE);
 
@@ -183,11 +186,12 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
     let shelterRequired = false;
+    let routeCheckpoint = null;
 
     const walkTo = (x, z, reach = 1.0) => {
       H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(2);
@@ -266,19 +270,35 @@ try {
       // around any live hostile post whose centre is within 24 m of it.  Both candidate shoulders
       // are checked against production collision/water and the body still walks every metre.
       const encounterDetours=[];
+      const sampleSegment=(p0,p1,post,requiredClearance)=>{
+        const length=Math.hypot(p1[0]-p0[0],p1[1]-p0[1]), samples=[];
+        let previousGround=null, safe=true, reason=null;
+        for(let m=0;m<=length+.001;m+=Math.min(2,Math.max(.5,length))){
+          const t=length?Math.min(1,m/length):0,x=p0[0]+(p1[0]-p0[0])*t,z=p0[1]+(p1[1]-p0[1])*t;
+          const waterReport=H.getWaterAt(x,z),water=Number(waterReport.depth_m??waterReport.depth??0),ground=Number(waterReport.ground_y);
+          const solid=H.solidAt(x,ground+.9,z).distance_m<.42;
+          const grade=previousGround==null?0:Math.atan2(Math.abs(ground-previousGround.ground),Math.hypot(x-previousGround.x,z-previousGround.z))*180/Math.PI;
+          const bodyClearance=Math.hypot(x-post.x,z-post.z);
+          samples.push({x:+x.toFixed(2),z:+z.toFixed(2),water_m:+water.toFixed(3),ground_y:+ground.toFixed(3),grade_deg:+grade.toFixed(2),solid,encounter_clearance_m:+bodyClearance.toFixed(2)});
+          if(solid||water>.4||grade>35||(t>.08&&t<.92&&bodyClearance<requiredClearance)){safe=false;reason=solid?'collision':water>.4?'water':grade>35?'grade':'encounter-clearance';break;}
+          previousGround={x,z,ground};
+        }
+        return {safe,reason,length_m:+length.toFixed(2),samples};
+      };
+      const findConnectedDetour=(entry,exit,post,requiredClearance)=>{
+        const grid=2,margin=100,minX=Math.min(entry[0],exit[0],post.x)-margin,maxX=Math.max(entry[0],exit[0],post.x)+margin,minZ=Math.min(entry[1],exit[1],post.z)-margin,maxZ=Math.max(entry[1],exit[1],post.z)+margin;
+        const cols=Math.ceil((maxX-minX)/grid)+1,rows=Math.ceil((maxZ-minZ)/grid)+1,ix=x=>Math.round((x-minX)/grid),iz=z=>Math.round((z-minZ)/grid),key=(x,z)=>x+','+z;
+        const blocked=(x,z)=>{const w=H.getWaterAt(x,z),g=Number(w.ground_y);return Number(w.depth_m??w.depth??0)>.4||H.solidAt(x,g+.9,z).distance_m<.42||Math.hypot(x-post.x,z-post.z)<requiredClearance;};
+        const sx=ix(entry[0]),sz=iz(entry[1]),gx=ix(exit[0]),gz=iz(exit[1]),open=[[0,sx,sz]],cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false;
+        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz);if(cx===gx&&cz===gz){found=true;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;if(blocked(x,z))continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}}
+        if(!found)return null;const cells=[];let k=key(gx,gz);while(k!==key(sx,sz)){const[a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k)return null;}return cells;
+      };
       for (const post of populationPosts) {
         let near={i:-1,d:Infinity};
         for(let i=2;i<route.length-2;i++){const d=Math.hypot(route[i][0]-post.x,route[i][1]-post.z);if(d<near.d)near={i,d};}
         if(near.i<0||near.d>24)continue;
         const a=route[Math.max(0,near.i-8)],b=route[Math.min(route.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
         const clearance=post.bodies>=3?70:post.bodies===2?50:35;
-        const candidates=[-1,1].map(side=>{
-          const q=[post.x+side*(-dz/dl)*clearance,post.z+side*(dx/dl)*clearance];
-          const solid=H.solidAt(q[0],here[1]+.9,q[1]).distance_m<.42,water=Number(H.getWaterAt(q[0],q[1]).depth_m??0);
-          return {q,side,solid,water};
-        }).filter(c=>!c.solid&&c.water<=.4).sort((a,b)=>a.water-b.water);
-        if(!candidates.length)continue;
-        const pick=candidates[0];
         // Replace the road points through the occupied circle.  Merely inserting the shoulder
         // left the original centreline immediately after it, so pure pursuit walked straight
         // back through the post and died at the authored x/z despite reporting a 70 m waypoint.
@@ -286,8 +306,22 @@ try {
         const replaceRadius=Math.max(25,clearance-15);
         while(lo>1&&Math.hypot(route[lo-1][0]-post.x,route[lo-1][1]-post.z)<replaceRadius)lo--;
         while(hi+1<route.length-1&&Math.hypot(route[hi+1][0]-post.x,route[hi+1][1]-post.z)<replaceRadius)hi++;
+        const entry=route[lo-1],exit=route[hi+1],requiredClearance=Math.max(18,clearance-20),tested=[];
+        for(const side of [-1,1]) for(const shoulder of [clearance,clearance+15,clearance+30]){
+          const q=[post.x+side*(-dz/dl)*shoulder,post.z+side*(dx/dl)*shoulder];
+          const inbound=sampleSegment(entry,q,post,requiredClearance),outbound=sampleSegment(q,exit,post,requiredClearance);
+          tested.push({q,side,shoulder,inbound,outbound,safe:inbound.safe&&outbound.safe,min_water_margin_m:+(.4-Math.max(...inbound.samples.concat(outbound.samples).map(s=>s.water_m))).toFixed(3)});
+        }
+        const pick=tested.filter(c=>c.safe).sort((a,b)=>b.min_water_margin_m-a.min_water_margin_m||a.shoulder-b.shoulder)[0];
+        if(!pick){
+          const connected=findConnectedDetour(entry,exit,post,requiredClearance);
+          if(!connected){encounterDetours.push({post:post.id,encounter:post.encounter,rejected:true,tested});continue;}
+          route.splice(lo,hi-lo+1,...connected);
+          encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected,segment_validation:{grid_m:2,water_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
+          continue;
+        }
         route.splice(lo,hi-lo+1,pick.q);
-        encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,side:pick.side,water_m:+pick.water.toFixed(3),waypoint:pick.q});
+        encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
       }
       plannerReport.encounter_detours=encounterDetours;
       // Provincial legs are crossed in the player's ordinary crouched stance. Road patrols are
@@ -319,6 +353,15 @@ try {
         // survival walker swing at a patrol (which also keeps combat open across interior doors).
         defensive: false,
       };
+      const walkWithCheckpoint=(points)=>{
+        if(!shelterRequired||!saveWaypoint||routeCheckpoint)return H.walkPath(points,walkOptions);
+        let wi=0,wd=Infinity;for(let i=0;i<points.length;i++){const d=Math.hypot(points[i][0]-saveWaypoint[0],points[i][1]-saveWaypoint[1]);if(d<wd){wd=d;wi=i;}}
+        if(wd>5)return H.walkPath(points,walkOptions);
+        const first=H.walkPath([...points.slice(0,wi+1),saveWaypoint],walkOptions);
+        if(first.arrived&&first.arrival_is_clean)routeCheckpoint={declared_waypoint:saveWaypoint.slice(),route_distance_m:+wd.toFixed(2),state:H.saveState(),where:H.whereAmI(),production_movement:true};
+        const second=first.arrived?H.walkPath([saveWaypoint,...points.slice(wi+1)],walkOptions):{arrived:false,arrival_is_clean:false,aborted:first.aborted,frames:0,path_m:0,teleports:0,teleported_m:0,teleport_log:[],survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0},regions_entered:[]};
+        return {...second,arrived:first.arrived&&first.arrival_is_clean&&second.arrived&&second.arrival_is_clean,aborted:first.aborted||second.aborted,frames:first.frames+second.frames,path_m:first.path_m+second.path_m,teleports:first.teleports+second.teleports,teleported_m:first.teleported_m+second.teleported_m,teleport_log:[...first.teleport_log,...second.teleport_log],survival_inputs:{heals:first.survival_inputs.heals+second.survival_inputs.heals,sprint_frames:first.survival_inputs.sprint_frames+second.survival_inputs.sprint_frames,defensive_swings:first.survival_inputs.defensive_swings+second.survival_inputs.defensive_swings},regions_entered:[...new Set([...first.regions_entered,...second.regions_entered])]};
+      };
       // The Soulrest--Blackrose road crosses the Stone Wastes during shipped salt storms.  Its
       // player-facing counter is not another flask: it is the bowl of a real glassed crater.
       // Locate that shipping signature through the live consumer, leave the road by ordinary
@@ -342,7 +385,7 @@ try {
         const roadPoint=route[craterJoin.i], rdx=roadPoint[0]-craterJoin.crater.x, rdz=roadPoint[1]-craterJoin.crater.z;
         const rdl=Math.hypot(rdx,rdz)||1, shelterRadius=15;
         const bowl=[craterJoin.crater.x+rdx/rdl*shelterRadius,craterJoin.crater.z+rdz/rdl*shelterRadius];
-        const inbound=H.walkPath([...route.slice(0,craterJoin.i+1),bowl],walkOptions);
+        const inbound=walkWithCheckpoint([...route.slice(0,craterJoin.i+1),bowl]);
         const atBowl=H.whereAmI().pos.slice();
         const arrivedBowl=inbound.arrived && inbound.arrival_is_clean
           && Math.hypot(atBowl[0]-bowl[0],atBowl[2]-bowl[1]) < 2;
@@ -391,7 +434,7 @@ try {
             defensive_swings:inbound.survival_inputs.defensive_swings+outbound.survival_inputs.defensive_swings },
           regions_entered:[...new Set([...inbound.regions_entered,...outbound.regions_entered])].sort(),
         };
-      } else walked=H.walkPath(route,walkOptions);
+      } else walked=walkWithCheckpoint(route);
       const ended=H.whereAmI().pos.slice(), actualLeft=Math.hypot(x-ended[0],z-ended[2]);
       const namedFailure = (walked.teleports||0)>0 ? 'death-respawn'
         : shelter && !shelter.arrived ? 'crater-entry-failed'
@@ -770,9 +813,16 @@ try {
       }
       rows.push(row);
     }
-    return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER });
+    return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows, routeCheckpoint };
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint });
 } finally { await handle.close(); }
+
+if (report.routeCheckpoint && waypointStatePath) {
+  ensureDir(path.dirname(waypointStatePath));
+  writeJson(waypointStatePath, report.routeCheckpoint.state);
+  report.routeCheckpoint.state_file = waypointStatePath;
+  delete report.routeCheckpoint.state;
+}
 
 // ---- reduce ---------------------------------------------------------------------------------
 const floors = {};                       // npc -> lowest standing anywhere, any signature, any chain
