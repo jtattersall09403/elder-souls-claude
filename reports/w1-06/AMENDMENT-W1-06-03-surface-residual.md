@@ -51,3 +51,20 @@ The following uncommitted JSON files were created and inspected, then left outsi
 Reproduce the red seed on a disposable worktree by changing only the three centre constants in
 `cam-probe.mjs` to -6.00/-0.50/-3.00, running the command above, and confirming both
 `surface_distance_fixture` checks fail. Do not retain that edit.
+
+
+## Canonical disposition — S50 (2026-08-12)
+
+S50 resolves this return completely. The emitted clip frames are native hard failures, not allowable
+surface-contact frames and not evidence that S49 is inapplicable. M4 establishes a production camera
+containment/telemetry defect. M5 establishes the same camera failure and, at its observed 0.3201 m
+minimum pivot clearance, a production body-collision feasibility defect because the unchanged
+camera-to-head geometry requires a 0.349857... m horizontal boom component before containment is even
+considered. The current probe's counts remain valid as hard-fail counts, but its lack of a per-frame
+complete legal-set derivation is an instrument defect for assigning each frame to ordinary guard, S49
+emergency, or no-legal-pose.
+
+The binding corrected measurement, repair sequence, controls, stop conditions and preserved bars are
+stated in ARBITRATION S50 and the satisfied plan's S50 continuation. No threshold, population, native
+zero-clip gate, S48 ceiling, S49 pinch/stair authority, pivot-side requirement, or critic allocation is
+changed.
