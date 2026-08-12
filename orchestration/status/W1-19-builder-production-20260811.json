@@ -20,17 +20,17 @@
     "evidence/W1-19/",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "next_step": "Resume from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q8.json (sha256:8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae), complete the intended production chain through Q-MAIN-30/Q-MAIN-32 and its ending, retaining act-boundary and pre-PONR checkpoints.",
+  "next_step": "Resume from reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7/resume-saxhleel-interior-intended.json (sha256:8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d), complete Q-MAIN-10, and retain the resulting canonical Act II checkpoint before continuing the intended production chain.",
   "gate_accounting": {
-    "A": "IN_PROGRESS: Q-MAIN-08 is complete through production movement, doorway, readable and conversation actions with zero violence/death/respawn/teleport/direct mutation. Canonical Q1-Q8 checkpoint validates; Q9 onward remains.",
+    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-09 are complete through production movement, scheduled doorway and conversation actions with zero violence/death/respawn/teleport/direct mutation. Q9 final state is stable and Q10 onward remains.",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
-    "D": "MERGED EVIDENCE RETAINED"
+    "D": "IN_PROGRESS: complete mainline census/topic/reveal, canon, opacity, boot/data/content/quest and corpus gates run green; final-tree rerun and remaining red controls remain"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/q8-complete-r6/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 60000 --out reports/runs/W1-19-production-gpu-root-lf/q8-complete-r7 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 1800000",
-    "outcome": "PASS: Q-MAIN-08 accepted and completed through published production conversation choices after 350.4 m on the final leg; actual scheduled giver reached at [3785,3799.3], corrected archon-guild-office doorway consumed, true-manifest readable consumed, rev_true_tonnage learned, res_ask_the_crane completed. Zero violent resolutions, bought openings, teleports, deaths/respawns or direct mutations. Final save proved 120 consecutive production-valid stable frames.",
-    "evidence": "evidence/W1-19/{q-main-08-production-summary.json,q-main-08-checkpoint.manifest.json,fixtures/resume-saxhleel-interior-intended-q8.json,q8-recovery-diagnostic.json}"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-q9-r6/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-09 --walk-max-frames 10000 --out reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 600000",
+    "outcome": "PASS: Q-MAIN-09 accepted and completed as res_hold_both through Bel-Mourne at his actual 21:36 Grey Hist schedule location. The complete Q8-to-Q9 production journey consumed 5.8 km of fixed-step movement across bounded continuations. Zero violent resolutions, bought openings, teleports, deaths/respawns or direct mutations. Final save proved 120 consecutive production-valid stable frames; route/save deletion control passed all three exact red rows with 110 non-zero support posts.",
+    "evidence": "evidence/W1-19/{q-main-09-production-summary.json,route-detour-safety-control.json}"
   }
 }

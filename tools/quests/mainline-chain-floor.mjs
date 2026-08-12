@@ -139,7 +139,17 @@ const markActions = {};
 const marksPath = path.join(process.cwd(), 'game/data/world/readables/site-marks.json');
 if (fs.existsSync(marksPath)) for (const m of JSON.parse(fs.readFileSync(marksPath, 'utf8')).marks || []) markActions[m.id] = m.at;
 
-const INTENDED = [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests];
+// Q-MAIN-30 is a mandatory parallel mainline audience opened by the Ninth Clause rather than by
+// a prerequisite quest.  It therefore is not present in mainline.acts, but W1-19 requires both
+// production chains to visit it.  Put it after Act III, when its world-routed topic and evidence
+// are available, and before the Act IV campaign/PONR so an intended completion cannot report the
+// historical false-green where Hosk-Vei's gate was never reached.
+const INTENDED = [
+  ...mainline.acts.filter((a) => a.act <= 3).flatMap((a) => a.quests),
+  'Q-MAIN-30',
+  ...mainline.acts.filter((a) => a.act >= 4).flatMap((a) => a.quests),
+  ...mainline.aftermath.quests,
+];
 const BACKPATH = [
   ...mainline.acts.filter((a) => a.act <= 3).flatMap((a) => a.quests),
   ...mainline.backpath.quests,
@@ -427,7 +437,7 @@ try {
         for(let waited=0;waited<3600;waited++){
           H.stepFrames(1);
           const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
-          const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+          const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&Number(death.deaths_this_session||0)===0&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
           stableFrames=clean?stableFrames+1:0;
           last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
           if(stableFrames>=120)return {ok:true,...last};
@@ -557,17 +567,30 @@ try {
         if(H.whereAmI().interior)return {ok:false,why:`production interact did not exit ${inside}`,exit_walk:exitWalk};H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=door.exterior_spawn,ed=door.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);
       }
       const loc = npcActions[npcId];
+      const inferScheduledInterior = (actor) => {
+        if(!actor||actor.interior||Math.abs(actor.pos?.[0]??Infinity)>=100||Math.abs(actor.pos?.[2]??Infinity)>=100||!loc?.schedule)return actor;
+        const minute=H.whereAmI().hour*60, cv=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m;};
+        const active=loc.schedule.find(s=>{const a=cv(s.from),b=cv(s.to);return b>a?minute>=a&&minute<b:minute>=a||minute<b;});
+        return active?.at&&interiorActions[active.at]?{...actor,interior:active.at}:actor;
+      };
+      // Resolve a scheduled interior before walking to the actor's daytime post. At night the
+      // list projection carries cell-local coordinates but no interior id; approaching the old
+      // exterior post first can drive straight into an unrelated fitted building and never even
+      // attempt the real public doorway (Bel-Mourne at the Grey Hist was the production case).
+      ent=inferScheduledInterior(ent);
       // Cross the world before asking its population consumer for an entity. A record with a
       // post supplies the exact public destination; otherwise the settlement station is the
       // player-facing landmark from which the scheduled population is discoverable.
       let approach = null;
-      if (loc && loc.pos) approach = walkTo(loc.pos[0], loc.pos[2], 4.0);
+      if (!ent?.interior && loc && loc.pos) approach = walkTo(loc.pos[0], loc.pos[2], 4.0);
       else if (loc && loc.settlement) {
-        const station = travelStations.find((x) => x.id === loc.settlement);
-        if (station) approach = walkTo(station.x, station.z, 12.0);
+        // A scheduled interior's canonical exterior_spawn below is the more precise public
+        // landmark; do not add a redundant settlement-centre leg in that case.
+        if(!ent?.interior){const station = travelStations.find((x) => x.id === loc.settlement);
+        if (station) approach = walkTo(station.x, station.z, 12.0);}
       }
       if (approach && !approach.ok) return { ok:false, why:`production approach to ${npcId} incomplete: ${approach.walk?.aborted || approach.left_m}`, location:loc || null, approach };
-      ent = H.listEntities().find((x) => x.eid === npcId);
+      ent = inferScheduledInterior(H.listEntities().find((x) => x.eid === npcId));
       // Site populations have no settlement boundary; this is the same production consumer
       // `stepSettlement` calls for towns, invoked only after the body reached the authored site.
       if (!ent && loc && loc.site && approach && approach.ok) { H.populateSite(loc.site); ent = H.listEntities().find((x) => x.eid === npcId); }
@@ -575,11 +598,6 @@ try {
       // Scheduled interior actors expose cell-local coordinates, but older population rows do
       // not copy the schedule's interior id onto listEntities(). Infer only from the actor's own
       // authored active schedule row; never guess an unrelated door from proximity.
-      if(!ent.interior&&Math.abs(ent.pos[0])<100&&Math.abs(ent.pos[2])<100&&loc&&loc.schedule){
-        const hour=H.whereAmI().hour, minute=hour*60;
-        const active=loc.schedule.find(s=>{const cv=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m;},a=cv(s.from),b=cv(s.to);return b>a?minute>=a&&minute<b:minute>=a||minute<b;});
-        if(active&&active.at&&interiorActions[active.at])ent={...ent,interior:active.at};
-      }
       let schedule_entry=null;
       if(ent.interior&&H.whereAmI().interior!==ent.interior){
         const door=interiorActions[ent.interior];if(!door)return {ok:false,why:`scheduled interior ${ent.interior} has no production doorway`,approach};
@@ -590,8 +608,16 @@ try {
         const doorstep=door.exterior_spawn||door.exterior_door;
         schedule_entry=walkTo(doorstep[0],doorstep[2],1.5);
         if(!schedule_entry.ok||!(H.whereAmI().door_in_reach||{}).interior)return {ok:false,why:`production door to scheduled ${npcId} unreachable`,approach,schedule_entry};
-        H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
-        const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(6);}
+        // Settle the movement release before using the doorway. A crowded frontage can consume
+        // the first interaction as a greeting even though door_in_reach selects the transition;
+        // close that player-visible conversation and repeat the ordinary key edge, as the placed
+        // document route already does for the same shipping affordance.
+        H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
+        for(let retry=0;H.whereAmI().interior!==ent.interior&&retry<3;retry++){
+          H.queueInputs([{f:0,press:['interact']},{f:2,release:['interact']}]);H.stepFrames(12);
+          const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(8);}
+          if(H.whereAmI().interior!==ent.interior){H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(30);}
+        }
         if(H.whereAmI().interior!==ent.interior)return {ok:false,why:`production interact did not enter scheduled ${ent.interior}`,approach,schedule_entry};
         ent=H.listEntities().find((x)=>x.eid===npcId)||ent;
       }
@@ -633,7 +659,7 @@ try {
       for(let waited=0;waited<3600;waited++){
         H.stepFrames(1);
         const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
-        const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+        const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&Number(death.deaths_this_session||0)===0&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
         stableFrames=clean?stableFrames+1:0;
         last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
         if(stableFrames>=120)return {ok:true,...last,state:H.saveState()};

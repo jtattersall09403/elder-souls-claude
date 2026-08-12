@@ -200,4 +200,27 @@ node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended 
 ```
 
 This is a builder milestone, not an independent verdict. Q9 onward, the second chain/ending,
-Gate B/C/D builder populations, remaining controls, cold final chains and aggregate remain open.
+### Q-MAIN-09 production continuation
+
+Q-MAIN-09 is complete as `res_hold_both` through Bel-Mourne at his actual 21:36 scheduled
+location in `soulrest-grey-hist`. The sequential Q8-to-Q9 continuation walked 5.8 km through
+production fixed-step locomotion with zero deaths, respawns, teleports, violent resolutions,
+bought openings, direct quest mutation, topic/reveal hand-feeding or synthetic spawn. The stable
+Q1-Q9 continuation state has SHA-256
+`8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d` and no active quest.
+
+The causal loop repaired three defects rather than hiding them with a larger bound: save-loaded
+population bodies now reconcile with the production placement consumer; two-body road posts use
+the same per-body perception clearance as larger groups; and scheduled interior givers are routed
+through their active authored schedule and canonical public doorway. The Grey Hist's former
+08:00-19:00 hours contradicted Bel-Mourne's 19:00-00:00 tavern schedule and silently refused every
+door input; it is now accessible for the full schedule. Compact exact results and commands are in
+`q-main-09-production-summary.json`.
+
+`route-detour-safety-control.json` records the final green/delete/restored-green control: changed
+source hash, nine consumer calls, 110 support posts, four-body `pop-0119`, two-body `pop-0111`, and
+live checkpoint migration for `pop-0115`. All three named rows go red only with the consumer
+deleted and return green on restoration.
+
+Gate A Q10 onward, Gate B/C builder populations, remaining controls, cold final chains and the
+bounded aggregate remain open.

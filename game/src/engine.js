@@ -8318,6 +8318,11 @@ export class Engine {
       // reload. That remedy is theirs and is deliberately not attempted from here; what IS
       // fixed here is that this file no longer asks the souls ledger to hide it.
       this._resetSessionObservers('save', 'early');
+      // Population bodies are durable combat entities, while the population post index is a
+      // session observer. Rebuild that index from the restored eids and apply any data-derived
+      // road-placement migration to idle legacy bodies before the first fixed step. Active
+      // fights are deliberately left exactly where the save captured them.
+      if (this.population) this.population.reconcileRestored(this);
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.

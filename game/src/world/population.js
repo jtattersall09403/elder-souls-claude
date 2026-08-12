@@ -291,10 +291,10 @@ export class PopulationSystem {
    * walkable road. That is what pop-0119 on Lilmoth–Archon did in the production Q-MAIN-08 run.
    *
    * This is a production placement consumer, not a quest-runner exemption. If the post is less
-   * than 24 m from its declared road, its own 35 m shoulder is uninhabitable, and the opposite
-   * 35 m shoulder is production-safe for the encounter's <=7 m spawn footprint, materialise on
-   * that opposite shoulder. The nearest road and both candidates are derived from shipped data;
-   * no post id, quest id, player state, or progress flag participates.
+   * than 24 m from its declared road, materialise it on the nearest production-safe centre at
+   * least 31 m from the road, starting with the authored and opposite 35 m shoulders. The nearest
+   * road and all candidates are derived from shipped data; no post id, quest id, player state, or
+   * progress flag participates.
    */
   _routeSafeCentre(engine, p) {
     const original = { x: p.x, z: p.z, relocated: false, reason: null };
@@ -328,11 +328,10 @@ export class PopulationSystem {
     };
     const authoredSide = candidate(side), opposite = candidate(-side);
     const authoredSafe = safe(authoredSide), oppositeSafe = safe(opposite);
-    // Four-body ganks use the full 35 m post envelope so their outer spawn offsets retain the
-    // 24 m hard road clearance. Smaller posts stay authored unless their chosen shoulder is
-    // itself uninhabitable, in which case the safe opposite side is the minimal repair.
-    let chosen = Number(p.bodies || 0) >= 4 && authoredSafe
-      ? authoredSide : (!authoredSafe && oppositeSafe ? opposite : null);
+    // Every road post whose authored centre lies inside the hard clearance uses the full 35 m
+    // post envelope. Body count cannot stand in for perception: a two-body drowned pair still
+    // sees far enough for its spawn offsets to seal a narrow tideway.
+    let chosen = authoredSafe ? authoredSide : (oppositeSafe ? opposite : null);
     const roadDistance = (q) => {
       let best = Infinity;
       for (let i = 1; i < leg.points.length; i++) {
@@ -344,7 +343,7 @@ export class PopulationSystem {
       return best;
     };
     if (chosen && roadDistance(chosen) < 31) chosen = null;
-    if (!chosen && Number(p.bodies || 0) >= 4) {
+    if (!chosen) {
       const radial = [];
       for (const radius of [35,45,55,65,80]) for (let i = 0; i < 32; i++) {
         const q = { x: near.x + Math.sin(i * Math.PI / 16) * radius, z: near.z + Math.cos(i * Math.PI / 16) * radius };
@@ -357,9 +356,9 @@ export class PopulationSystem {
     return {
       x: chosen.x, z: chosen.z, relocated: true,
       reason: chosen === authoredSide
-        ? 'road-clearance: four-body post moved to its production-safe 35 m authored shoulder'
+        ? 'road-clearance: road post moved to its production-safe 35 m authored shoulder'
         : chosen !== opposite
-          ? 'road-clearance: four-body post moved to nearest production-safe centre with 24 m body clearance'
+          ? 'road-clearance: road post moved to nearest production-safe centre with 24 m body clearance'
         : 'road-clearance: authored 35 m shoulder unsafe; opposite 35 m shoulder production-safe',
       authored: [p.x, p.z], road_nearest: [near.x, near.z], road_distance_before_m: near.d,
       post_envelope_m: 35, hard_body_clearance_m: 24, spawn_footprint_sample_m: 7,
@@ -372,6 +371,62 @@ export class PopulationSystem {
     const p = this.byId.get(String(id));
     if (!p) return null;
     return { post: p.id, authored: [p.x, p.z], ...this._routeSafeCentre(engine, p) };
+  }
+
+  /**
+   * Re-index population bodies restored by the save system and migrate only idle bodies whose
+   * saved centre is the superseded authored road placement. The combat bodies survive a load,
+   * while reset() deliberately clears this subsystem's live index; without reconciliation the
+   * duplicate-eid guard leaves those bodies untracked at the old centre even though route
+   * planning reads the corrected production placement.
+   *
+   * An active/alert/damaged group is never moved. A current save already centred on the safe
+   * placement is only re-indexed, so ordinary save/load fidelity remains exact.
+   */
+  reconcileRestored(engine) {
+    if (!engine || !engine.sim) return { groups:0, bodies:0, migrated_groups:0, migrated_bodies:0 };
+    const out = { groups:0, bodies:0, migrated_groups:0, migrated_bodies:0 };
+    for (const p of this.posts) {
+      const prefix = `${p.id}-`;
+      const bodies = engine.sim.entities.filter((e) => String(e.eid).startsWith(prefix));
+      if (!bodies.length) continue;
+      out.groups++; out.bodies += bodies.length;
+      this.live.set(p.id, bodies.map((e) => e.eid));
+      this.state.set(p.id, bodies.some((e) => e.hp > 0) ? RESIDENT : CLEARED);
+      const centre = this._routeSafeCentre(engine, p);
+      this.spawnCentres.set(p.id, centre);
+      if (!centre.relocated) continue;
+      const cx = bodies.reduce((n,e) => n + e.pos[0], 0) / bodies.length;
+      const cz = bodies.reduce((n,e) => n + e.pos[2], 0) / bodies.length;
+      const atAuthored = Math.hypot(cx-p.x,cz-p.z) < 20;
+      const idle = bodies.every((e) => e.hp > 0 && e.state === 'IDLE'
+        && (!e.alertState || e.alertState === 'IDLE') && !e.encAggroed);
+      if (!atAuthored || !idle) continue;
+      const dx=centre.x-p.x,dz=centre.z-p.z;
+      const shift = (v) => { if (Array.isArray(v) && v.length >= 3) { v[0]+=dx; v[2]+=dz; } };
+      for (const e of bodies) {
+        shift(e.pos); shift(e.anchor); shift(e.lkp);
+        const body=engine.combat && engine.combat.bodyOf(e.eid);
+        if (body) {
+          shift(body.pos); shift(body.anchor); shift(body.lkp); shift(body.weaponTip);
+          shift(body.socketA); shift(body.socketB); shift(body.prevA); shift(body.prevB);
+          for (const capsule of body.rig?.hurt_prev || []) for (const point of capsule || []) shift(point);
+          for (const point of body.rig?.body_cap_prev || []) shift(point);
+          // The restored SoulsAI owns a separate leash anchor. Leaving that at the legacy
+          // authored post would make a nearby, reconciled body walk back into the road on its
+          // first idle decision even though its entity and combat body were migrated safely.
+          const ctl=engine.combat.enemies?.get(e.eid);
+          if (ctl?.ai) shift(ctl.ai.anchor);
+        }
+        out.migrated_bodies++;
+      }
+      out.migrated_groups++;
+    }
+    this.stats.restored_groups = out.groups;
+    this.stats.restored_bodies = out.bodies;
+    this.stats.migrated_groups = out.migrated_groups;
+    this.stats.migrated_bodies = out.migrated_bodies;
+    return out;
   }
 
   /** What a probe reads. Never used by the simulation. */
