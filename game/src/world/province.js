@@ -9,6 +9,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { worldMaterial } from '../render/visual-foundation.js';
 import { noise2, fbm, ridged, hash2, clamp, smoothstep, lerp } from './noise.js';
 import { arrangeAt } from './arrangement.js';
 import { SIGNATURE_KINDS } from './signature.js';
@@ -118,22 +119,22 @@ export class Province {
     this.skinRadiusM = SKIN_RADIUS_M;
 
     this.mats = {
-      ground: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.94, metalness: 0.0 }),
-      far: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.97, metalness: 0.0 }),
-      farWater: new THREE.MeshStandardMaterial({ color: 0x33454a, roughness: 0.14, metalness: 0.45, transparent: true, opacity: 0.92 }),
+      ground: worldMaterial('mud',{ vertexColors:true }),
+      far: worldMaterial('mud',{ vertexColors:true,roughness:.97,bumpScale:.08,lod:'far' }),
+      farWater: worldMaterial('water',{ color:0x33454a,transparent:true,opacity:.92,lod:'far' }),
     };
     this.regionMats = field.regions.map((r) => ({
-      water: new THREE.MeshStandardMaterial({
+      water: worldMaterial('water',{
         color: c3(r.palette_hex[0]).lerp(c3(r.fog.colour), 0.30),
         roughness: clamp(0.06 + (r.water.k || 1) * 0.03, 0.05, 0.28),
         metalness: 0.42, transparent: true,
         opacity: clamp(0.62 + (r.water.k || 1) * 0.08, 0.6, 0.96),
       }),
-      trunk: new THREE.MeshStandardMaterial({ color: c3(r.props.canopy.trunk), roughness: 0.95 }),
-      crown: new THREE.MeshStandardMaterial({ color: c3(r.props.canopy.colour), roughness: 0.88 }),
-      under: new THREE.MeshStandardMaterial({ color: c3(r.props.under.colour), roughness: 0.92, side: THREE.DoubleSide }),
-      rock: new THREE.MeshStandardMaterial({ color: c3(r.props.rock.colour), roughness: 0.80 }),
-      cover: new THREE.MeshStandardMaterial({
+      trunk: worldMaterial('bark',{ color: c3(r.props.canopy.trunk), roughness: 0.95 }),
+      crown: worldMaterial('leaf',{ color: c3(r.props.canopy.colour), roughness: 0.78 }),
+      under: worldMaterial('reed',{ color: c3(r.props.under.colour), roughness: 0.86, side: THREE.DoubleSide }),
+      rock: worldMaterial('stone',{ color: c3(r.props.rock.colour), roughness: 0.80 }),
+      cover: worldMaterial(r.props.cover.shape === 'wax' ? 'resin' : 'leaf',{
         color: c3(r.props.cover.colour),
         roughness: r.props.cover.shape === 'flake' || r.props.cover.shape === 'wax' ? 0.55 : 0.95,
         side: r.props.cover.shape === 'reed' || r.props.cover.shape === 'litter' ? THREE.DoubleSide : THREE.FrontSide,

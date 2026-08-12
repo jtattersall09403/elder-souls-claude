@@ -50,6 +50,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { worldMaterial } from './visual-foundation.js';
 // W1-15 round 4. The lit set and the window aperture are POLICY, and policy that two files
 // implement is policy that drifts — RULES.md rule 10, and it cost 1,659 disagreeing floor cells.
 // Both this file and `sim/stealth/system.js` read the answer from here and neither invents one.
@@ -134,16 +135,16 @@ function makePalette(rec) {
   const base = KIND_PALETTE[rec.interior_kind] || DEFAULT_PALETTE;
   const town = TOWN_TINT[rec.settlement] || { tint: 0x000000, mix: 0 };
   const c = (k) => mixHex(base[k], town.tint, town.mix);
-  const std = (col, rough, metal) => new THREE.MeshStandardMaterial({ color: col, roughness: rough, metalness: metal || 0 });
+  const std = (col, rough, metal, family='clay') => worldMaterial(family, { color: col, roughness: rough, metalness: metal || 0 });
   return {
     wall: std(c('wall'), 0.90),
-    floor: std(c('floor'), 0.93),
-    roof: std(c('roof'), 0.95),
-    wood: std(c('wood'), 0.90),
-    cloth: std(c('cloth'), 0.94),
-    accent: std(c('accent'), 0.55, 0.35),
-    stone: std(mixHex(0x7a7a70, town.tint, town.mix * 0.7), 0.78, 0.03),
-    metal: std(0x9aa0a6, 0.35, 0.72),
+    floor: std(c('floor'), 0.93, 0, 'mud'),
+    roof: std(c('roof'), 0.95, 0, 'root'),
+    wood: std(c('wood'), 0.90, 0, 'timber'),
+    cloth: std(c('cloth'), 0.94, 0, 'cloth'),
+    accent: std(c('accent'), 0.55, 0.35, 'resin'),
+    stone: std(mixHex(0x7a7a70, town.tint, town.mix * 0.7), 0.78, 0.03, 'stone'),
+    metal: std(0x9aa0a6, 0.35, 0.72, 'metal'),
     // Anything that is meant to be SEEN as a light rather than lit by one.
     flame: new THREE.MeshBasicMaterial({ color: 0xffb066 }),
     ember: new THREE.MeshBasicMaterial({ color: 0xff8a3a }),

@@ -29,6 +29,7 @@
 import * as THREE from '../../vendor/three/three.module.js';
 import { buildPlaces } from './places.js';
 import { makeRiggedActor } from './actor.js';
+import { worldMaterial } from './visual-foundation.js';
 
 // ---- deterministic value noise (integer hash; no PRNG state, no draws) ----------------
 function hash2(x, y, s) {
@@ -93,21 +94,13 @@ export function buildScene(seed) {
   for (const g of Object.values(cells)) scene.add(g);
   for (const g of Object.values(props)) { scene.add(g); g.visible = false; }
 
+  const M=(family,color,extra={})=>worldMaterial(family,{color,...extra});
   const mats = {
-    ground: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.94, metalness: 0.0 }),
-    water: new THREE.MeshStandardMaterial({ color: 0x24352c, roughness: 0.08, metalness: 0.55, transparent: true, opacity: 0.86 }),
-    bark: new THREE.MeshStandardMaterial({ color: 0x453728, roughness: 0.95 }),
-    leaf: new THREE.MeshStandardMaterial({ color: 0x33492a, roughness: 0.84 }),
-    reed: new THREE.MeshStandardMaterial({ color: 0x6c7a3c, roughness: 0.90, side: THREE.DoubleSide }),
-    wall: new THREE.MeshStandardMaterial({ color: 0x6b5a44, roughness: 0.88 }),
-    roof: new THREE.MeshStandardMaterial({ color: 0x3d3428, roughness: 0.95 }),
-    plank: new THREE.MeshStandardMaterial({ color: 0x554634, roughness: 0.92 }),
-    stone: new THREE.MeshStandardMaterial({ color: 0x7a7a70, roughness: 0.72, metalness: 0.04 }),
-    darkStone: new THREE.MeshStandardMaterial({ color: 0x39383a, roughness: 0.88 }),
-    skin: new THREE.MeshStandardMaterial({ color: 0xb9ad8e, roughness: 0.66 }),
-    cloth: new THREE.MeshStandardMaterial({ color: 0x54341f, roughness: 0.90 }),
-    metal: new THREE.MeshStandardMaterial({ color: 0xa8adb4, roughness: 0.32, metalness: 0.75 }),
-    moss: new THREE.MeshStandardMaterial({ color: 0x4c5c36, roughness: 0.98 }),
+    ground:M('mud',0xffffff,{vertexColors:true}), water:M('water',0x24352c,{transparent:true,opacity:.86}),
+    bark:M('bark',0x453728), leaf:M('leaf',0x33492a), reed:M('reed',0x6c7a3c,{side:THREE.DoubleSide}),
+    wall:M('clay',0x6b5a44), roof:M('root',0x3d3428), plank:M('timber',0x554634),
+    stone:M('stone',0x7a7a70), darkStone:M('stone',0x39383a,{roughness:.88}),
+    skin:M('skin',0xb9ad8e), cloth:M('cloth',0x54341f), metal:M('metal',0xa8adb4), moss:M('leaf',0x4c5c36),
   };
 
   // ---- terrain -------------------------------------------------------------------------
