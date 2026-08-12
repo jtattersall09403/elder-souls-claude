@@ -187,6 +187,7 @@ try {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
+    let shelterRequired = false;
 
     const walkTo = (x, z, reach = 1.0) => {
       H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(2);
@@ -275,7 +276,7 @@ try {
           const q=[post.x+side*(-dz/dl)*clearance,post.z+side*(dx/dl)*clearance];
           const solid=H.solidAt(q[0],here[1]+.9,q[1]).distance_m<.42,water=Number(H.getWaterAt(q[0],q[1]).depth_m??0);
           return {q,side,solid,water};
-        }).filter(c=>!c.solid&&c.water<=1.05).sort((a,b)=>a.water-b.water);
+        }).filter(c=>!c.solid&&c.water<=.4).sort((a,b)=>a.water-b.water);
         if(!candidates.length)continue;
         const pick=candidates[0];
         // Replace the road points through the occupied circle.  Merely inserting the shoulder
@@ -334,7 +335,7 @@ try {
       // Roads are deliberately sparse in the wastes.  A competent traveller can see the storm
       // shelter well beyond interaction range, so permit a bounded 300 m ordinary-movement
       // detour rather than requiring the road spline itself to pass within 90 m of the bowl.
-      if (already > 500 && craterJoin && craterJoin.d < 300 && route.length > 2) {
+      if (shelterRequired && already > 500 && craterJoin && craterJoin.d < 300 && route.length > 2) {
         // The centre floor is deliberately surrounded by an unclimbable-looking glass wall.
         // The shipped shelter predicate reaches 22 m, so enter at the road-facing shoulder:
         // visibly below natural ground, but on the ordinary walkable approach back out.
@@ -454,7 +455,11 @@ try {
       let schedule_entry=null;
       if(ent.interior&&H.whereAmI().interior!==ent.interior){
         const door=interiorActions[ent.interior];if(!door)return {ok:false,why:`scheduled interior ${ent.interior} has no production doorway`,approach};
-        const doorstep=door.exterior_door||door.exterior_spawn;
+        // Approach the public-side continuity spawn, not the raw facade anchor.  Fitted
+        // production buildings can rotate/resize away from their declared geometry (Archon's
+        // inn is one such case), leaving exterior_door inside the solid footprint while
+        // exterior_spawn remains the canonical walkable side of the transition.
+        const doorstep=door.exterior_spawn||door.exterior_door;
         schedule_entry=walkTo(doorstep[0],doorstep[2],1.5);
         if(!schedule_entry.ok||!(H.whereAmI().door_in_reach||{}).interior)return {ok:false,why:`production door to scheduled ${npcId} unreachable`,approach,schedule_entry};
         H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
@@ -547,7 +552,9 @@ try {
         // own `populateSettlement`/`populateSite` — the call walking across a town boundary
         // makes — and returns `present: false` when the person's record names no place at all,
         // which is the failure the old line could not express.
+        shelterRequired = step.id === 'Q-MAIN-08';
         const trip = activeRecord ? {quest:step.id,giver:(H.questDef(step.id).giver||{}).npc_id,present:true,reached:true,resumed_active:true} : reachGiver(step.id);
+        shelterRequired = false;
         out.giver_journeys = out.giver_journeys || []; out.giver_journeys.push({ quest: step.id, phase: 'accept', ...trip });
         if (!trip.present || !trip.reached) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
         // Accept through the production conversation choice published by talkTo().  The runner
@@ -625,7 +632,19 @@ try {
               a.entry_prompt = H.whereAmI().door_in_reach;
               if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
               H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
-              H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
+              H.queueInputs([{ f: 0, press: ['interact'] }, { f: 2, release: ['interact'] }]); H.stepFrames(8);
+              // A crowded exterior can consume the first press as a nearby greeting even while
+              // the door prompt is the selected world affordance. Close that player-visible
+              // surface and press the still-live door once more; no transition state is written.
+              for (let retry=0; H.whereAmI().interior !== d.interior && retry<3; retry++) {
+                if ((H.getUIState().dialogue_surface||{}).open) {
+                  H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(8);
+                }
+                // Door transitions are fixed-step affordances; keep the body at the prompted
+                // public point and repeat the normal key press after the prior release settles.
+                H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(30);
+                H.queueInputs([{f:0,press:['interact']},{f:2,release:['interact']}]);H.stepFrames(12);
+              }
               if (H.whereAmI().interior !== d.interior) throw new Error(`interact did not enter ${d.interior}`);
               a.entry_where=H.whereAmI(); a.entry_ui=H.getUIState();
               if (a.entry_ui.dialogue_surface && a.entry_ui.dialogue_surface.open) {
