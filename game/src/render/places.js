@@ -297,7 +297,20 @@ export function buildPlaces(mats) {
   buildStormholdStreet(cells.street, mats);
   buildRootlandsWells(cells.well, mats);
   for (const [id,root] of Object.entries(cells)) {
-    root.userData.worldArt={id,grammar:placeArt(id),governed:true};
+    const grammar=placeArt(id);
+    // A governed identity has an actual visual checksum at the cell entrance.  Its grammar token
+    // selects primitive, proportions, material and asymmetric prop cadence, so token perturbation
+    // necessarily changes rendered geometry (and cannot be satisfied by names/userData alone).
+    const h=[...grammar].reduce((n,c)=>(n*33+c.charCodeAt(0))>>>0,5381);
+    const identity=new THREE.Group(); identity.name=`world-art-place-identity:${id}`;
+    const mat=[mats.bark,mats.stone,mats.metal,mats.reed][h%4];
+    const core=h%3===0?new THREE.CylinderGeometry(.22+(h%5)*.05,.42,2.2+(h%4)*.35,5+h%5)
+      :h%3===1?new THREE.ConeGeometry(.5+(h%4)*.08,2.3+(h%3)*.4,4+h%5)
+      :new THREE.TorusGeometry(.62+(h%3)*.12,.12,5,8+h%6,Math.PI*1.55);
+    const monument=new THREE.Mesh(core,mat); monument.position.y=1.15; monument.rotation.z=h%3===2?Math.PI/2:((h%7)-3)*.035;monument.castShadow=true;identity.add(monument);
+    for(let i=0;i<2+(h%4);i++) box(identity,i%2?mats.bark:mat,.11, .5+i*.16,.11,(i-(1+h%4)/2)*.28,.25+i*.08,.35,0);
+    identity.position.set(-2.8,0,-2.6); root.add(identity);
+    root.userData.worldArt={id,grammar,governed:true,visibleConsumer:identity.name};
     root.traverse(o=>{ if(o.isMesh && !o.name) o.name=`world-art-place:${id}`; });
   }
   return cells;

@@ -510,6 +510,22 @@ export function buildInterior(root, rec, opts) {
       brace.name=`world-art:${rec.settlement}:${art.support}`;
       brace.castShadow=true; root.add(brace);
     }
+    // Continue the same grammar around material junctions and across the ceiling. Imperial rooms
+    // keep an exact course; marsh rooms alternate lashings, sag and missing/damaged segments.
+    const junctionN=ordered?Math.max(4,Math.round(D/2.5)):Math.max(3,Math.round(D/3.4));
+    for(let i=0;i<junctionN;i++) {
+      if(!ordered && ((h>>(i%16))&3)===3) continue;
+      const z=bz[0]+(i+.5)*D/junctionN;
+      const tie=box(W*(ordered?.96:.82),ordered?.11:.08,ordered?.12:.16,ordered?P.stone:(i%2?P.wood:P.accent));
+      tie.position.set((bx[0]+bx[1])/2,by[1]-(ordered?.18:.28+(i%2)*.09),z);
+      tie.rotation.z=ordered?0:((i%2?1:-1)*.025);
+      tie.name=`world-art-interior:${rec.settlement}:${art.trim}`;tie.castShadow=true;root.add(tie);
+    }
+    for(const sx of [-1,1]) {
+      const sill=box(.13,.18,D*.88,ordered?P.stone:P.wood);
+      sill.position.set(sx*(W/2-.24)+(bx[0]+bx[1])/2,by[0]+.09,(bz[0]+bz[1])/2);
+      sill.name=`world-art-interior:${rec.settlement}:material-junction`;sill.receiveShadow=true;root.add(sill);
+    }
     root.userData.worldArt={settlement:rec.settlement,grammar:art.grammar,support:art.support,trim:art.trim};
     summary.world_art=root.userData.worldArt;
   }

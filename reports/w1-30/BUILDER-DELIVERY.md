@@ -72,3 +72,13 @@ The exhaustive text census, controls, rendered observation and reproduction comm
 `reports/w1-30/PACKAGE-2-CENSUS.md`. Packages 3 (animation/movement), 4 (spell VFX and streaming/LOD
 lifecycle) and 5 (final cross-package instruments and bounded aggregate) remain builder-owned and
 pending; this package does not claim their completion or the critic's final visual score.
+
+### Package 2 visible-production remediation
+
+The continuation converts the remaining metadata-only seams into geometry/material output:
+eight exterior skyline/support/aperture/street grammars, settlement ceiling and junction grammar
+for all generated interiors, terrain vertex-material variation driven by all 13 region art rows,
+grammar-derived construction in all five hand-built places, and four creature primitive/proportion/
+material families. The strengthened Package 2 gate requires the art read and render mutation in the
+same production consumer and checks distinct perturbable render profiles; mesh names and userData
+cannot independently satisfy it. Packages 3–5 remain pending.

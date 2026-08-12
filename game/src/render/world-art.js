@@ -37,8 +37,12 @@ export const PLACE_ART = Object.freeze({
 });
 
 export const CREATURE_ART = Object.freeze({
-  saxhleel:'scaled-snout-tail-asymmetry', humanoid:'equipment-led-regional-silhouette',
-  beast:'low-forward-chitin-root-silhouette', undead:'salt-bone-broken-joints',
+  // Numeric fields are deliberately renderer-facing.  Changing any one changes a mesh transform,
+  // primitive, or material; `tools/render/w1-30-package2.mjs` rejects label-only records.
+  saxhleel:{silhouette:'scaled-snout-tail-asymmetry',scale:[.94,1.06,1],shape:'crest-tail',colour:0x47735c,roughness:.62},
+  humanoid:{silhouette:'equipment-led-regional-silhouette',scale:[1,1,1],shape:'mantle-pack',colour:0x786b55,roughness:.78},
+  beast:{silhouette:'low-forward-chitin-root-silhouette',scale:[1.38,.68,1.62],shape:'carapace-horns',colour:0x47382b,roughness:.48},
+  undead:{silhouette:'salt-bone-broken-joints',scale:[.78,1.14,.82],shape:'ribs-spikes',colour:0xc4bfa7,roughness:.92},
 });
 
 export function regionArt(id) {
