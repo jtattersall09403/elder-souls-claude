@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `2231b30`: 841 tools, 153 reference
+so it cannot drift. Generated at `b06fadf`: 841 tools, 153 reference
 items, 150 pieces in flight.
 
 Its purpose is to stop 150+ concurrent agents each paying separately to discover the
@@ -1186,7 +1186,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-19-builder-production-20260811` | ? | Rerun the Q-MAIN-07 resume with crouched provincial travel; require a naturally active sal | `evidence/W1-19/` `evidence/W1-19/builder-delivery.md` `evidence/W1-19/intended-q8-block.json` `game/data/npcs/mainline.json` `game/src/engine.js` `game/src/world/signature.js` |
+| `W1-19-builder-production-20260811` | ? | Rerun true Q-MAIN-07 checkpoint through Q-MAIN-08 with body-count-scaled road encounter de | `evidence/W1-19/` `evidence/W1-19/builder-delivery.md` `evidence/W1-19/intended-q8-block.json` `game/data/npcs/mainline.json` `game/src/engine.js` `game/src/world/signature.js` |
 | `W1-06-build` | ? | Arbiter/authority must reconcile the corrected-surface M4/M5 constructive residual in repo | `corpus/00-doctrine/ARBITRATION.md` `corpus/15-camera/RI-CAM05-camera-outside-the-fight.md` `corpus/80-methods/m-cam02-control.mjs` `evidence/W1-06/builder-ledger.md` `evidence/W1-06/mechanical/cam-consume.json` `evidence/W1-06/mechanical/cam02-final/cam02.json` |
 | `W1-06-s49-authority-resolution-20260811` | ? | Owner dispatches one fresh reviewer-editor to re-criticise the materially corrected W1-06  | `orchestration/status/W1-06-s49-authority-resolution-20260811.json` `corpus/00-doctrine/ARBITRATION.md` `corpus/15-camera/RI-CAM01-rig-geometry-and-spring-arm.md` `reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md` `orchestration/plans/W1-06.md` `evidence/W1-06/builder-delivery-2026-08-11.md` |
 | `W1-06` | partial | Dispatch the final builder directly from the satisfied W1-06 plan. Begin with the instrume | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |

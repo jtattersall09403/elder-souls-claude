@@ -17,7 +17,7 @@
     "tools/quests/mainline-chain-floor.mjs"
   ],
   "files_claimed": [],
-  "next_step": "Rerun the Q-MAIN-07 resume with crouched provincial travel; require a naturally active salt storm sheltered:true proof, no death/respawn, and successful public-post approach before continuing Gates A-D.",
+  "next_step": "Rerun true Q-MAIN-07 checkpoint through Q-MAIN-08 with body-count-scaled road encounter detours; current first failure remains pop-0119 death at 3583,4161 before this latest adjustment.",
   "gate_accounting": {
     "A": "INCOMPLETE: cold production Q-MAIN-01..07 complete; Q-MAIN-08 still blocked by salt-storm death/respawn near Archon after survival/navigation repair",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
@@ -26,8 +26,8 @@
     "D": "MERGED EVIDENCE RETAINED"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state <Q7-state> --stop-after Q-MAIN-08 --out <dir> --json",
-    "outcome": "FAIL death-respawn after clean crater entry/exit in white_clear; 0 estus; active-storm proof still absent",
-    "evidence": "evidence/W1-19/intended-q8-block.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state /tmp/w119-q7-fresh2/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-detour35 --json",
+    "outcome": "FAIL death-respawn at pop-0119; 35m clearance insufficient for 4-body gank; latest code scales 3+ body clearance to 70m",
+    "evidence": "transient /tmp/w119-q8-detour35/mainline-chain-floor.json"
   }
 }

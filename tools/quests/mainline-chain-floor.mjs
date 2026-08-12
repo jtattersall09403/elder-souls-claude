@@ -96,6 +96,7 @@ for (const f of fs.readdirSync(QDIR).sort()) {
 }
 const mainline = JSON.parse(fs.readFileSync(path.join(QDIR, 'mainline.json'), 'utf8'));
 const roads = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/world/roads.json'), 'utf8'));
+const populationPosts = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/world/population-posts.json'), 'utf8')).posts || [];
 const travelStations = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'game/data/world/travel/stations.json'), 'utf8')).stations;
 
 
@@ -182,7 +183,7 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
@@ -258,6 +259,36 @@ try {
           route.splice(0,join+1,...cells);
         }
       }
+      // Wilderness encounters are authored *on* the road.  Concealment alone cannot make a
+      // four-body gank occupying the carriageway nonviolent: the Q-MAIN-08 trace repeatedly died
+      // at pop-0119's exact coordinate.  A player can leave the road, so bend the consumed route
+      // around any live hostile post whose centre is within 24 m of it.  Both candidate shoulders
+      // are checked against production collision/water and the body still walks every metre.
+      const encounterDetours=[];
+      for (const post of populationPosts) {
+        let near={i:-1,d:Infinity};
+        for(let i=2;i<route.length-2;i++){const d=Math.hypot(route[i][0]-post.x,route[i][1]-post.z);if(d<near.d)near={i,d};}
+        if(near.i<0||near.d>24)continue;
+        const a=route[Math.max(0,near.i-8)],b=route[Math.min(route.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
+        const clearance=post.bodies>=3?70:post.bodies===2?50:35;
+        const candidates=[-1,1].map(side=>{
+          const q=[post.x+side*(-dz/dl)*clearance,post.z+side*(dx/dl)*clearance];
+          const solid=H.solidAt(q[0],here[1]+.9,q[1]).distance_m<.42,water=Number(H.getWaterAt(q[0],q[1]).depth_m??0);
+          return {q,side,solid,water};
+        }).filter(c=>!c.solid&&c.water<=1.05).sort((a,b)=>a.water-b.water);
+        if(!candidates.length)continue;
+        const pick=candidates[0];
+        // Replace the road points through the occupied circle.  Merely inserting the shoulder
+        // left the original centreline immediately after it, so pure pursuit walked straight
+        // back through the post and died at the authored x/z despite reporting a 70 m waypoint.
+        let lo=near.i,hi=near.i;
+        const replaceRadius=Math.max(25,clearance-15);
+        while(lo>1&&Math.hypot(route[lo-1][0]-post.x,route[lo-1][1]-post.z)<replaceRadius)lo--;
+        while(hi+1<route.length-1&&Math.hypot(route[hi+1][0]-post.x,route[hi+1][1]-post.z)<replaceRadius)hi++;
+        route.splice(lo,hi-lo+1,pick.q);
+        encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,side:pick.side,water_m:+pick.water.toFixed(3),waypoint:pick.q});
+      }
+      plannerReport.encounter_detours=encounterDetours;
       // Provincial legs are crossed in the player's ordinary crouched stance. Road patrols are
       // authored encounters, not unavoidable damage volumes; lowering the detection profile is
       // the nonviolent production route and still leaves every metre to the movement consumer.
@@ -303,7 +334,7 @@ try {
       // Roads are deliberately sparse in the wastes.  A competent traveller can see the storm
       // shelter well beyond interaction range, so permit a bounded 300 m ordinary-movement
       // detour rather than requiring the road spline itself to pass within 90 m of the bowl.
-      if (craterJoin && craterJoin.d < 300 && route.length > 2) {
+      if (already > 500 && craterJoin && craterJoin.d < 300 && route.length > 2) {
         // The centre floor is deliberately surrounded by an unclimbable-looking glass wall.
         // The shipped shelter predicate reaches 22 m, so enter at the road-facing shoulder:
         // visibly below natural ground, but on the ordinary walkable approach back out.
@@ -721,7 +752,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------
