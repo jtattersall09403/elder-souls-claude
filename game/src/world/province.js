@@ -77,6 +77,90 @@ const SIG_LIGHT_RANGE = 160;
 
 const c3 = (hex) => new THREE.Color(hex);
 
+const COVER_CARD = Object.freeze({ litter:12, tussock:14, reed:3, tuft:8, stubble:8 });
+
+// Curved ribbon leaves authored in geometry, not billboard art.  The shared fan is deliberately
+// modest (30-90 triangles) because thousands of copies are instanced, but each blade still has a
+// tapered outline, a lifted midrib and a different radial pitch.  That gives fern, reed and grass
+// populations real parallax at walking distance instead of the former row of intersecting planes.
+function bladeLeaf(length, width, bend, azimuth, phase = 0) {
+  const segments = 6, positions = [], indices = [];
+  const dx = Math.sin(azimuth), dz = Math.cos(azimuth), tx = Math.cos(azimuth), tz = -Math.sin(azimuth);
+  for (let i = 0; i <= segments; i++) {
+    const t = i / segments, radial = length * (0.08 * t + 0.52 * t * t);
+    const lift = length * (t - bend * t * t * .56);
+    const ripple = Math.sin((t * 2.4 + phase) * Math.PI) * width * .07;
+    const half = width * Math.sin(Math.PI * Math.pow(t, .78)) * .5;
+    const cx = dx * radial, cz = dz * radial;
+    positions.push(cx - tx * half, lift + ripple, cz - tz * half, cx + tx * half, lift - ripple, cz + tz * half);
+    if (i < segments) { const a=i*2; indices.push(a,a+2,a+1,a+1,a+2,a+3); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));g.setIndex(indices);g.computeVertexNormals();
+  return g;
+}
+
+function proceduralFan(shape, width, height, cover = false) {
+  const profile = {
+    frond:[9,.92,.54], blade:[6,.76,.30], comb:[10,.88,.38], shelf:[7,1.08,.82], crust:[5,1.20,.94],
+    reed:[5,.36,.14], tuft:[7,.58,.30], tussock:[9,.72,.35], stubble:[4,.28,.08], litter:[5,.82,.96],
+  }[shape] || [cover?5:7,.70,.34];
+  const [count, spread, bend] = profile, parts=[];
+  for(let i=0;i<count;i++){
+    const a=(i/count)*Math.PI*2+(i%2)*.19, variance=.76+((i*37)%11)/28;
+    // `width` is the whole plant's declared footprint; one blade occupies only a fraction of it.
+    parts.push(bladeLeaf(height*variance,width*spread*.22*(.76+(i%3)*.12),bend,a,i*.17));
+  }
+  if(!cover && height>.7){
+    const stem=new THREE.CylinderGeometry(Math.min(.035,width*.035),Math.min(.055,width*.05),height*.48,5);
+    stem.translate(0,height*.24,0);parts.push(stem);
+  }
+  return mergeAll(parts);
+}
+
+function taperedLimb(a,b,r0,r1,sides=7){
+  const d=new THREE.Vector3().subVectors(b,a),g=new THREE.CylinderGeometry(r1,r0,d.length(),sides,1);
+  g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),d.clone().normalize()));
+  g.translate((a.x+b.x)*.5,(a.y+b.y)*.5,(a.z+b.z)*.5);return g;
+}
+
+function branchedTrunk(height,radius,crownRadius){
+  const parts=[taperedLimb(new THREE.Vector3(0,0,0),new THREE.Vector3(0,height*.72,0),radius,radius*.48,8)];
+  // Flared, asymmetrical roots visually seat the bole in wet ground and stop equipment-scale
+  // cylinders reading as utility poles. Branch phases are fixed per species geometry; instance
+  // rotation and lean provide population variation without allocating unique meshes.
+  for(let i=0;i<5;i++){
+    const a=i*Math.PI*2/5+.22*(i%2),end=new THREE.Vector3(Math.cos(a)*radius*2.5,.02,Math.sin(a)*radius*2.5);
+    parts.push(taperedLimb(new THREE.Vector3(0,height*.10,0),end,radius*.48,radius*.10,6));
+  }
+  for(let i=0;i<4;i++){
+    const a=i*Math.PI*.5+.38, y=height*(.47+i*.055), reach=Math.min(crownRadius*.62,height*.20)*(1-(i%2)*.12);
+    const elbow=new THREE.Vector3(Math.cos(a)*reach*.42,y+height*.10,Math.sin(a)*reach*.42);
+    const end=new THREE.Vector3(Math.cos(a)*reach,y+height*(.16+(i%2)*.035),Math.sin(a)*reach);
+    parts.push(taperedLimb(new THREE.Vector3(0,y,0),elbow,radius*.34,radius*.21,7));
+    parts.push(taperedLimb(elbow,end,radius*.21,radius*.055,6));
+  }
+  return mergeAll(parts);
+}
+
+// Fully geometric crown: layered whorls of curved, tapered leaf ribbons around the branch
+// endpoints. Unlike crossed alpha cards these remain permeable and three-dimensional when the
+// gameplay camera walks underneath them, which the all-region capture explicitly exercises.
+function organicCrown(shape,radius,height){
+  const parts=[],spire=shape==='spire'||shape==='cone',column=shape==='column',arch=shape==='arch';
+  const layers=arch?2:column?5:spire?5:4,perLayer=arch?7:10;
+  for(let layer=0;layer<layers;layer++)for(let i=0;i<perLayer;i++){
+    const a=i/perLayer*Math.PI*2+layer*.47,t=layers===1?0:layer/(layers-1);
+    const spread=arch?.72:spire?(1-t*.62):(column?.68:1-t*.18);
+    const len=radius*(.62+.20*((i*7+layer*3)%5)/4)*spread,width=Math.max(.10,radius*(spire?.105:.14));
+    const leaf=bladeLeaf(len,width,.44+(i%3)*.08,a,layer*.23+i*.07);
+    const ringR=arch?radius*.34:radius*(.15+.18*t),y=arch?(-.08+layer*.18)*height:height*(-.22+t*.38);
+    leaf.translate(Math.sin(a)*ringR,y,Math.cos(a)*ringR);leaf.rotateZ((i%2?1:-1)*(spire?.34:.18));parts.push(leaf);
+  }
+  if(arch)for(const s of [-1,1]){const leaf=bladeLeaf(radius*.95,radius*.16,.58,s<0?-1.15:1.15,s);leaf.translate(s*radius*.26,-height*.10,0);leaf.rotateZ(s*.72);parts.push(leaf);}
+  return mergeAll(parts);
+}
+
 export class Province {
   /** @param {import('./field.js').WorldField} field */
   constructor(field) {
@@ -128,14 +212,18 @@ export class Province {
     };
     this.regionMats = field.regions.map((r) => ({
       water: worldMaterial('water',{
-        color: c3(r.palette_hex[0]).lerp(c3(r.fog.colour), 0.30),
+        // Keep regional hue, but never let a near-black land swatch turn the water into an
+        // unreflective hole. Sky/fog intrusion is the physical ambient source at this scale.
+        color: c3(r.palette_hex[0]).lerp(c3(r.fog.colour), 0.66),
         roughness: clamp(0.06 + (r.water.k || 1) * 0.03, 0.05, 0.28),
         metalness: 0.42, transparent: true,
         opacity: clamp(0.62 + (r.water.k || 1) * 0.08, 0.6, 0.96),
       }),
       trunk: worldMaterial('bark',{ color: c3(r.props.canopy.trunk), roughness: 0.95 }),
-      crown: worldMaterial('leaf',{ color: c3(r.props.canopy.colour), roughness: 0.78 }),
-      under: worldMaterial('reed',{ color: c3(r.props.under.colour), roughness: 0.86, side: THREE.DoubleSide }),
+      crown: worldMaterial('leaf',{ color:c3(r.props.canopy.colour),roughness:.78,
+        side:THREE.DoubleSide,emissive:c3(r.props.canopy.colour).multiplyScalar(.12),emissiveIntensity:.18 }),
+      under: worldMaterial('reed',{ color: c3(r.props.under.colour), roughness: 0.86,
+        side: THREE.DoubleSide }),
       rock: worldMaterial('stone',{ color: c3(r.props.rock.colour), roughness: 0.80 }),
       cover: worldMaterial(r.props.cover.shape === 'wax' ? 'resin' : 'leaf',{
         color: c3(r.props.cover.colour),
@@ -709,13 +797,16 @@ export class Province {
         // on a 0.15 m stem and drew a mushroom.
         const bushy = p.canopy.r * 2 > p.canopy.h && p.canopy.shape !== 'arch';
         const crownY = bushy
-          ? (p.canopy.shape === 'dome' ? 0 : p.canopy.r * sc * 0.75)
+          ? Math.max(p.canopy.r*.65,p.canopy.h*.16)*sc
           : p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86);
         push('canopy', 'crown', this.regionMats[ri].crown, sc, crownY, tilt, 7797);
       }
     }
-    if (settlementClear && rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
-      push('under', 'under', this.regionMats[ri].under, 0.7 + noise2(x * 5, z * 5, 7801) * 0.8, 0, null, 7789);
+    if (settlementClear && arrivalClear && rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
+      // Tall marsh blades are accents, not walls. Clamp instance variation for declared 2–3 m
+      // aquatic plants and preserve a clear gameplay bubble just as canopy trunks do.
+      const tall=p.under.h>1.8,base=tall?.52:.68,variation=tall?.38:.62;
+      push('under', 'under', this.regionMats[ri].under, base + noise2(x * 5, z * 5, 7801) * variation, 0, null, 7789);
     }
     if (settlementClear && rolls[2] < dens.rock * cellArea / 100) {
       push('rock', 'rock', this.regionMats[ri].rock, p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1, null, 7789);
@@ -930,6 +1021,22 @@ export class Province {
       wm.userData.waterSamples = [];
       for (let i = 0; i < b.v.length; i += 3) wm.userData.waterSamples.push({ x: b.v[i], z: b.v[i + 2] });
       g.add(wm);
+      // Shoreline response must exist in the pixels, not only in depth data. Build a thin,
+      // terrain-following wet edge from wet/dry cell boundaries; it gives tidal flats and
+      // channels scale without an expensive screen-space foam pass.
+      const shoreMat=this.regionMats[ri].water.clone();shoreMat.color.lerp(new THREE.Color(0xb6b9a2),.42);shoreMat.opacity=.48;shoreMat.roughness=.36;shoreMat.metalness=.08;shoreMat.depthWrite=false;
+      // Merge every band in this tile/region into one indexed geometry. The first version used
+      // one PlaneGeometry/Mesh per 25 m edge and made a marsh capture exceed 2,400 draws; these
+      // four-vertex quads preserve the exact same wet-edge pixels at one draw per region.
+      const sv=[],si=[];
+      const band=(ax,az,bx,bz)=>{const dx=bx-ax,dz=bz-az,len=Math.hypot(dx,dz)||1,nx=-dz/len*.17,nz=dx/len*.17;
+        const ay=(f.waterSurfaceAt(ax,az)??f.heightAt(ax,az))+.018,by=(f.waterSurfaceAt(bx,bz)??f.heightAt(bx,bz))+.018,n=sv.length/3;
+        sv.push(ax+nx,ay,az+nz, ax-nx,ay,az-nz, bx-nx,by,bz-nz, bx+nx,by,bz+nz);si.push(n,n+2,n+1,n,n+3,n+2);};
+      for(let iz=0;iz<WATER_SEG;iz+=2)for(let ix=0;ix<WATER_SEG;ix+=2){const x=ox+ix*step,z=oz+iz*step,c=f.waterSurfaceAt(x+step*.5,z+step*.5)!==null;
+        if(ix+2<WATER_SEG&&(f.waterSurfaceAt(x+step*2.5,z+step*.5)!==null)!==c)band(x+step*2,z,x+step*2,z+step*2);
+        if(iz+2<WATER_SEG&&(f.waterSurfaceAt(x+step*.5,z+step*2.5)!==null)!==c)band(x,z+step*2,x+step*2,z+step*2);
+      }
+      if(sv.length){const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));sg.setIndex(si);sg.computeVertexNormals();const shore=new THREE.Mesh(sg,shoreMat);shore.name=`shoreline:${f.regions[ri].id}`;shore.renderOrder=3;g.add(shore);}
     }
 
     // ---- flora and rock ----------------------------------------------------------------------
@@ -1586,39 +1693,19 @@ export class Province {
           // photograph of bark. Real closed forest is 0.6-1.3 m at breast height; the flare at the
           // base of a buttressed hardwood is the 1.8x taper below, not a doubling of the radius.
           const rt = clamp(0.038 * h, 0.10, Math.min(0.95, p.canopy.r * 0.34));
-          geo = new THREE.CylinderGeometry(rt * 0.55, rt, h, 6, 1); geo.translate(0, h / 2, 0);
+          geo = branchedTrunk(h,rt,p.canopy.r);
         }
         break;
       }
       case 'crown': {
         const h = p.canopy.h, rr = p.canopy.r;
-        if (p.canopy.shape === 'cone') {
-          // Thornmarsh's 4 m scrub was a forest of perfect opaque pyramids.  The data label is a
-          // silhouette class, not a licence to draw a ConeGeometry as the finished plant: build a
-          // tapered, broken crown from interlocking thorn masses so light and sky cut into it.
-          const lobes=[[0,.18,0,1,.52,1],[-.62,-.18,.08,.55,.42,.48],[.48,-.12,.24,.62,.38,.55],[-.22,.04,-.5,.48,.54,.46],[.18,.5,.08,.42,.46,.4]];
-          geo=mergeAll(lobes.map(([x,y,z,sx,sy,sz],i)=>{const g=new THREE.IcosahedronGeometry(rr,1);g.scale(sx,sy,sz);g.rotateY(i*.73);g.translate(x*rr,y*h,z*rr);return g;}));
-        }
-        else if (p.canopy.shape === 'sphere') geo = mergeAll([[0,0,0,1],[rr*.58,-rr*.18,rr*.15,.63],[-rr*.48,-rr*.12,-rr*.2,.57]].map(([x,y,z,s])=>{const g=new THREE.IcosahedronGeometry(rr*s,1);g.translate(x,y,z);return g;}));
-        else if (p.canopy.shape === 'spire') geo = mergeAll([[0,0,0,1],[rr*.28,-h*.13,rr*.1,.65],[-rr*.25,-h*.18,-rr*.12,.55]].map(([x,y,z,s])=>{const g=new THREE.ConeGeometry(rr*.55*s,h*.5*s,7);g.translate(x,y,z);return g;}));
-        else if (p.canopy.shape === 'dome') geo = new THREE.SphereGeometry(rr, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2);
-        else if (p.canopy.shape === 'column') geo = new THREE.CylinderGeometry(rr * 0.7, rr * 0.9, h * 0.4, 7);
-        // 'arch' is a root arch: the TRUNK is the torus and the foliage is a small mass at the
-        // apex, not a 3.6 m boulder balanced on it, which is what `rr * 0.8` was drawing.
-        else if (p.canopy.shape === 'arch') { geo = new THREE.IcosahedronGeometry(rr * 0.30, 0); geo.scale(1.35, 0.62, 1.35); }
-        else geo = new THREE.IcosahedronGeometry(rr * 0.8, 0);
+        geo=organicCrown(p.canopy.shape,rr,h);
         break;
       }
       case 'under': {
         const h = p.under.h;
-        if (p.under.shape === 'shelf' || p.under.shape === 'comb') { geo = new THREE.CylinderGeometry(0.7, 0.7, h, 6); geo.translate(0, h / 2, 0); }
-        else if (p.under.shape === 'crust') { geo = new THREE.CircleGeometry(0.9, 6).rotateX(-Math.PI / 2); geo.translate(0, h, 0); }
-        else if (p.under.shape === 'frond') { geo=mergeAll([0,1,2,3,4].map(i=>{const g=new THREE.PlaneGeometry(.26,h);g.translate((i-2)*.11,h/2,0);g.rotateY((i-2)*.38);g.rotateZ((i-2)*.12);return g;})); }
-        else {
-          // A blade cluster is open triangles, not an opaque rectangular billboard. It keeps
-          // ground visible between stems and remains readable from every camera bearing.
-          const parts=[];for(let i=0;i<5;i++){const w=.10+i*.018,x=(i-2)*.11;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([x-w,0,0,x+w,0,0,x,h*(.72+(i%3)*.14),(i-2)*.035],3));g.setIndex([0,1,2]);g.computeVertexNormals();g.rotateY((i-2)*.44);parts.push(g);}geo=mergeAll(parts);
-        }
+        const width = p.under.shape === 'crust' ? 1.45 : p.under.shape === 'comb' ? 1.25 : Math.max(.48, h * .44);
+        geo = proceduralFan(p.under.shape,width,Math.max(.28,h),false);
         break;
       }
       // The ordinary underfoot material. Unit geometry, authored at its declared height, kept
@@ -1626,6 +1713,11 @@ export class Province {
       // is a software rasteriser.
       case 'cover': {
         const h = p.cover.h;
+        if (COVER_CARD[p.cover.shape] !== undefined) {
+          const width = p.cover.shape === 'reed' ? Math.max(.22, h * .42) : Math.max(.36, h * .82);
+          geo = proceduralFan(p.cover.shape,width,Math.max(.14,h),true);
+          break;
+        }
         switch (p.cover.shape) {
           case 'litter':  geo = new THREE.CircleGeometry(0.62, 5).rotateX(-Math.PI / 2).rotateZ(0.14); geo.translate(0, h, 0); break;
           case 'plate':   geo = new THREE.CylinderGeometry(0.60, 0.52, h, 6); geo.translate(0, h / 2, 0); break;

@@ -70,7 +70,11 @@ export function consumeStyleboard(mat, board, role='dominant', amount=1) {
     // physically plausible diffuse floor: charcoal timber is dark, but it still reflects light.
     // Contrast parts sit a little higher so openings, edges and structural rhythm remain legible.
     const hsl={h:0,s:0,l:0};mat.color.getHSL(hsl);
-    const floor=role==='contrast'?.22:role==='secondary'?.18:.16;
+    // The first hardware capture proved that the former .16/.18/.22 range collapsed whole
+    // facades and bodies into charcoal after ACES, texture modulation and fog. These are diffuse
+    // reflectance floors, not an exposure trick: dark timber remains dark while retaining grain,
+    // seams and form under the shared key/fill rig.
+    const floor=role==='contrast'?.31:role==='secondary'?.27:.235;
     if(hsl.l<floor)mat.color.setHSL(hsl.h,Math.min(hsl.s,.72),floor);
   }
   const wet = /rain|wet|beaded|gloss/i.test(board.atmosphere_response);
@@ -88,6 +92,7 @@ const mapCache = new Map();
 const AUTHORED_FAMILY=Object.freeze({mud:'brown_mud',wet_mud:'brown_mud',bark:'bark_brown_01',root:'bark_brown_01',timber:'bark_brown_01',thorn:'bark_brown_01',stone:'plastered_stone_wall',clay:'plastered_stone_wall',salt:'plastered_stone_wall'});
 const GENERATED_FAMILY=Object.freeze({leaf:'leaf',reed:'reed',cloth:'cloth',chitin:'chitin',wet_chitin:'chitin',resin:'resin',bone:'bone',metal:'metal',shell:'bone'});
 const authoredCache=new Map();
+const animatedWaterMaterials=new Set();
 function authoredMaps(family){
   const slug=AUTHORED_FAMILY[family], generated=GENERATED_FAMILY[family];if((!slug&&!generated)||typeof document==='undefined')return null;
   const key=slug?`cc0:${slug}`:`generated:${generated}`;if(authoredCache.has(key))return authoredCache.get(key);
@@ -138,14 +143,19 @@ export function worldMaterial(family, options={}) {
   const foliage=/^(leaf|reed)$/.test(family), woody=/^(bark|root|thorn)$/.test(family),baseColour=options.color ?? 0xffffff;
   const mat=new Material({
     color: baseColour, roughness: options.roughness ?? spec.roughness,
-    metalness: options.metalness ?? spec.metalness, map: options.map === false ? null : (authored?.albedo||procedural.albedo),
+    // A governed consumer may supply an admitted authored map (the foliage atlas is the first).
+    // Previously every truthy `options.map` was silently ignored and replaced by the family
+    // detail map, making manifest-routed alpha cards impossible while appearing configured.
+    metalness: options.metalness ?? spec.metalness,
+    map: options.map === false ? null : (options.map?.isTexture ? options.map : (authored?.albedo||procedural.albedo)),
     normalMap:authored?.normal||null,normalScale:new THREE.Vector2(spec.bump*.72,spec.bump*.72),
     bumpMap: authored?.normal?null:procedural.height, roughnessMap: authored?.rough||procedural.rough, aoMap: procedural.height,
     aoMapIntensity: options.aoMapIntensity ?? .42,
     bumpScale: options.bumpScale ?? spec.bump, vertexColors: !!options.vertexColors,
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
     alphaTest: options.alphaTest ?? 0, side: options.side ?? THREE.FrontSide,
-    emissive: options.emissive ?? (foliage||woody?baseColour:0x000000), emissiveIntensity: options.emissiveIntensity ?? (foliage?.24:woody?.035:1),
+    emissive: options.emissive ?? (family==='water'?baseColour:(foliage||woody?baseColour:0x000000)),
+    emissiveIntensity: options.emissiveIntensity ?? (family==='water'?.28:foliage?.24:woody?.035:1),
     envMapIntensity: options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72),
     depthWrite: options.depthWrite ?? family!=='water',
     clearcoat: family==='water'?.72:family==='wet_chitin'||family==='resin'?.38:0,
@@ -156,7 +166,43 @@ export function worldMaterial(family, options={}) {
   mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:authored?(authored.source.startsWith('cc0:')?[2,2]:[1,1]):[4,4], detail:authored?.source||'96px-albedo-height-roughness',
     wetness:Number(options.wetness||0), boundedException:options.boundedException||null,
     lod:options.lod ?? 'shared' };
+  if(family==='water'){
+    // A deterministic, presentation-only ripple field. Static texture maps made the surface
+    // read as lacquer and made RI-VIS03 M12 TemporalVar correctly report static water. The
+    // displacement is centimetres, leaves collision/tides authoritative, and is evaluated from
+    // simulation frame rather than wall time so capture hashes remain reproducible.
+    const u={uWaterPhase:{value:0}};mat.userData.waterUniforms=u;
+    mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;
+      shader.vertexShader='uniform float uWaterPhase;\nvarying float vEsWaterWave;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\n'+shader.vertexShader
+        .replace('#include <begin_vertex>',`#include <begin_vertex>
+          float esW0=sin(position.x*.31+uWaterPhase*1.37)+sin(position.z*.43-uWaterPhase*.91);
+          float esW1=sin((position.x+position.z)*.17+uWaterPhase*.53);
+          vEsWaterWave=(esW0*.56+esW1*.44);
+          vEsWaterXZ=position.xz;
+          transformed.y += vEsWaterWave*.018;`)
+        .replace('#include <worldpos_vertex>',`#include <worldpos_vertex>
+          vEsWaterWorld=(modelMatrix*vec4(transformed,1.0)).xyz;`);
+      shader.fragmentShader='uniform float uWaterPhase;\nvarying float vEsWaterWave;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\n'+shader.fragmentShader
+        .replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
+          vec2 esSlope=vec2(cos(vEsWaterXZ.x*.31+uWaterPhase*1.37)*.090 + cos(vEsWaterXZ.y*.83-uWaterPhase*1.71)*.032,
+                            cos(vEsWaterXZ.y*.43-uWaterPhase*.91)*.095 + cos(vEsWaterXZ.x*.71+uWaterPhase*1.43)*.028);
+          normal=normalize(normal+vec3(esSlope.x,0.0,esSlope.y));`)
+        .replace('#include <color_fragment>',`#include <color_fragment>
+          float esFresnel=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.2);
+          vec3 esSky=vec3(0.31,0.46,0.52);
+          diffuseColor.rgb=mix(diffuseColor.rgb*(0.94+vEsWaterWave*.055),esSky,.15+esFresnel*.38);
+          diffuseColor.rgb+=vec3(.025,.040,.044)*(esSlope.x+esSlope.y);
+          float esCaustic=pow(.5+.5*sin(vEsWaterWorld.x*.72+uWaterPhase*2.3)*sin(vEsWaterWorld.z*.61-uWaterPhase*1.7),3.0);
+          diffuseColor.rgb+=vec3(.030,.052,.058)*esCaustic;`);
+    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-v3`;animatedWaterMaterials.add(mat);
+  }
   return mat;
+}
+
+/** Drive all live water shaders from the fixed simulation frame. */
+export function updateVisualFoundationFrame(frame=0){
+  const phase=(Number(frame)||0)/60;
+  for(const mat of animatedWaterMaterials)if(mat.userData?.waterUniforms)mat.userData.waterUniforms.uWaterPhase.value=phase;
 }
 
 export function visualFoundationCensus(root) {

@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { parseArgs, wantsHelp, usage, die, log, EXIT, ensureDir, writeJson, REPORTS_DIR } from '../lib/cli.mjs';
-import { loadPlaywright, DETERMINISTIC_CHROMIUM_ARGS } from '../lib/browser.mjs';
+import { loadPlaywright, DETERMINISTIC_CHROMIUM_ARGS, HARDWARE_CHROMIUM_ARGS } from '../lib/browser.mjs';
 
 const USAGE = `
 smoke.mjs — environment self-test for the measurement harness.
@@ -50,7 +50,10 @@ check('playwright imports', true, `v${(await import('playwright/package.json', {
 
 let browser;
 try {
-  browser = await pw.chromium.launch({ headless: true, args: DETERMINISTIC_CHROMIUM_ARGS });
+  const hardware=args.hardwareGpu===true||args['hardware-gpu']===true||String(args.gpu||'').toLowerCase()==='hardware';
+  browser = await pw.chromium.launch({ headless: true,
+    executablePath:args.chromium?String(args.chromium):undefined,
+    args:hardware?HARDWARE_CHROMIUM_ARGS:DETERMINISTIC_CHROMIUM_ARGS });
 } catch (e) {
   check('chromium launches', false, e.message);
   writeJson(args.out ? path.resolve(String(args.out)) : path.join(REPORTS_DIR, 'harness-smoke.json'), report);

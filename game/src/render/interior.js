@@ -147,8 +147,11 @@ function makePalette(rec) {
     stone: std(mixHex(0x7a7a70, town.tint, town.mix * 0.7), 0.78, 0.03, 'stone'),
     metal: std(0x9aa0a6, 0.35, 0.72, 'metal'),
     // Anything that is meant to be SEEN as a light rather than lit by one.
-    flame: new THREE.MeshBasicMaterial({ color: 0xffb066 }),
-    ember: new THREE.MeshBasicMaterial({ color: 0xff8a3a }),
+    // Display-referred basic orange clipped into flat white/orange blobs under ACES. Emissive
+    // physical materials keep a coloured core while still accepting fog and tone mapping.
+    flame: new THREE.MeshStandardMaterial({ color:0x7a2607, emissive:0xf06b12, emissiveIntensity:1.14, roughness:.58, toneMapped:true }),
+    flameCore: new THREE.MeshStandardMaterial({ color:0xffb13b, emissive:0xffb11e, emissiveIntensity:1.42, roughness:.48, toneMapped:true }),
+    ember: new THREE.MeshStandardMaterial({ color:0x391208, emissive:0xa93208, emissiveIntensity:.68, roughness:.78, toneMapped:true }),
     glass: new THREE.MeshBasicMaterial({ color: 0xbcd6e0 }),
   };
 }
@@ -161,6 +164,29 @@ const box = (w, h, d, m) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
 const cyl = (rt, rb, h, seg, m) => new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m);
 const ico = (r, d, m) => new THREE.Mesh(new THREE.IcosahedronGeometry(r, d || 0), m);
 const craftedBox=(w,h,d,m,bevel=Math.min(w,h,d)*.08)=>{const s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(w/2,-h/2);s.lineTo(w/2,h/2);s.lineTo(-w/2,h/2);s.closePath();const g=new THREE.ExtrudeGeometry(s,{depth:d,steps:1,bevelEnabled:true,bevelSegments:1,bevelSize:bevel,bevelThickness:bevel});g.translate(0,0,-d/2);return new THREE.Mesh(g,m);};
+
+// A closed, asymmetrical flame blade with a broad hot root and a bent, tapered crown. It is
+// intentionally authored geometry rather than a cone: even without simulation the overlapping
+// silhouettes read as tongues of flame from a moving camera, not red traffic markers.
+function flameBlade(width=.12,height=.42,bend=.06,material){
+  const radial=7,rings=[
+    [0,width*.66,0],
+    [height*.18,width, bend*.05],
+    [height*.48,width*.72,bend*.28],
+    [height*.76,width*.43,bend*.68],
+    [height,width*.045,bend],
+  ],pos=[],idx=[];
+  for(const [y,r,zOff] of rings)for(let i=0;i<radial;i++){
+    const a=i/radial*Math.PI*2;
+    pos.push(Math.cos(a)*r,y,zOff+Math.sin(a)*r*.50);
+  }
+  for(let r=0;r<rings.length-1;r++)for(let i=0;i<radial;i++){
+    const q=(i+1)%radial,A=r*radial+i,B=r*radial+q,C=(r+1)*radial+i,D=(r+1)*radial+q;
+    idx.push(A,C,B,B,C,D);
+  }
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();
+  const mesh=new THREE.Mesh(geo,material);mesh.castShadow=false;mesh.receiveShadow=false;return mesh;
+}
 
 function part(g, mesh, x, y, z, ry) {
   mesh.position.set(x, y, z);
@@ -195,10 +221,10 @@ const B = {
   rack: (P, h = 1.7) => { const g = new THREE.Group(); for (const sx of [-0.5, 0.5]) part(g, cyl(0.045, 0.045, h, 6, P.wood), sx, h / 2, 0); for (let i = 0; i < 3; i++) part(g, box(1.1, 0.05, 0.05, P.wood), 0, 0.5 + i * 0.55, 0); return g; },
   post: (P, h = 2.2, r = 0.14) => { const g = new THREE.Group(); part(g, cyl(r, r * 1.15, h, 8, P.wood), 0, h / 2, 0); return g; },
   board: (P, w = 1.2, h = 0.9) => { const g = new THREE.Group(); part(g, box(w, h, 0.06, P.wood), 0, 1.35, 0); for (let i = 0; i < 3; i++) part(g, box(w * 0.28, h * 0.24, 0.02, P.cloth), (i - 1) * w * 0.3, 1.35 + ((i % 2) - 0.5) * 0.2, 0.04); return g; },
-  hearth: (P) => { const g = new THREE.Group(); part(g, cyl(0.95, 1.1, 0.34, 12, P.stone), 0, 0.17, 0); const f = ico(0.36, 1, P.flame); part(g, f, 0, 0.52, 0); for (let i = 0; i < 5; i++) { const a = i * 1.257; part(g, cyl(0.05, 0.05, 0.5, 5, P.wood), Math.cos(a) * 0.2, 0.42, Math.sin(a) * 0.2); } return g; },
+  hearth: (P) => { const g = new THREE.Group(); part(g, cyl(0.95, 1.1, 0.34, 12, P.stone), 0, 0.17, 0); for(let i=0;i<6;i++){const a=i*Math.PI/3,h=.30+(i%3)*.105,f=flameBlade(.075+(i%2)*.018,h,(i%2?-.05:.06),i%3===0?P.flameCore:(i%2?P.ember:P.flame));f.rotation.y=a;f.rotation.z=(i-2.5)*.055;part(g,f,Math.cos(a)*.12,.34,Math.sin(a)*.12);} const core=flameBlade(.10,.52,-.035,P.flameCore);part(g,core,0,.34,0,.65); for (let i = 0; i < 5; i++) { const a = i * 1.257; const log=cyl(0.05,0.06,0.5,7,P.wood);log.rotation.z=Math.PI/2;log.rotation.y=a;part(g,log,Math.cos(a)*0.2,0.38,Math.sin(a)*0.2); } return g; },
   brazier: (P) => { const g = new THREE.Group(); part(g, cyl(0.05, 0.05, 0.85, 6, P.metal), 0, 0.42, 0); part(g, cyl(0.3, 0.16, 0.22, 9, P.metal), 0, 0.95, 0); part(g, ico(0.16, 0, P.ember), 0, 1.04, 0); return g; },
-  lampHung: (P) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, 0.7, 4, P.metal), 0, -0.35, 0); part(g, cyl(0.13, 0.09, 0.2, 8, P.metal), 0, -0.78, 0); part(g, ico(0.09, 0, P.flame), 0, -0.8, 0); return g; },
-  lampStand: (P) => { const g = new THREE.Group(); part(g, cyl(0.11, 0.13, 0.04, 8, P.metal), 0, 0.02, 0); part(g, cyl(0.03, 0.03, 0.5, 6, P.metal), 0, 0.27, 0); part(g, ico(0.09, 0, P.flame), 0, 0.56, 0); return g; },
+  lampHung: (P) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, 0.7, 4, P.metal), 0, -0.35, 0); part(g, cyl(0.13, 0.09, 0.2, 8, P.metal), 0, -0.78, 0); part(g, flameBlade(.055,.18,.025,P.flameCore), 0, -0.78, 0); return g; },
+  lampStand: (P) => { const g = new THREE.Group(); part(g, cyl(0.11, 0.13, 0.04, 8, P.metal), 0, 0.02, 0); part(g, cyl(0.03, 0.03, 0.5, 6, P.metal), 0, 0.27, 0); const bowl=cyl(.14,.085,.075,9,P.metal);part(g,bowl,0,.53,0);const f=flameBlade(.043,.18,.025,P.flameCore);f.rotation.z=.05;part(g,f,0,.57,0); return g; },
   altar: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.85, 0.7, P.stone), 0, 0.42, 0); part(g, box(1.7, 0.1, 0.85, P.stone), 0, 0.9, 0); part(g, box(0.5, 0.12, 0.3, P.accent), 0, 1.01, 0); return g; },
   root: (P, h = 2.6) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const a = i * 2.094; const s = cyl(0.1, 0.24, h, 6, P.wood); s.rotation.z = Math.cos(a) * 0.16; s.rotation.x = Math.sin(a) * 0.16; part(g, s, Math.cos(a) * 0.22, h / 2, Math.sin(a) * 0.22); } return g; },
   grate: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.1, 0.1, P.metal), 0, 2.1, 0); for (let i = 0; i < 7; i++) part(g, cyl(0.035, 0.035, 2.1, 5, P.metal), -0.6 + i * 0.2, 1.05, 0); return g; },
@@ -464,6 +490,15 @@ export function buildInterior(root, rec, opts) {
   floor.name = 'roomshell';
   floor.position.set((bx[0] + bx[1]) / 2, by[0] - 0.15, (bz[0] + bz[1]) / 2);
   floor.receiveShadow = true; root.add(floor);
+  // Floor construction at player scale: long irregular boards or stone flags provide a depth
+  // and direction read that a single textured plane cannot. Kept low and deterministic so all
+  // 115 rooms share the repair without covering interactable placements.
+  const floorOrdered=rec.settlement&&['gideon','stormhold','blackrose'].includes(rec.settlement);
+  const floorCourses=Math.max(4,Math.min(18,Math.ceil(D/(floorOrdered?1.8:.85))));
+  for(let i=0;i<floorCourses;i++){
+    const z=bz[0]+(i+.5)*D/floorCourses,strip=box(W-.35,.025,Math.max(.18,D/floorCourses-.055),floorOrdered?P.stone:(i%3===0?P.wood:P.floor));
+    strip.position.set((bx[0]+bx[1])/2,by[0]+.018,z);strip.rotation.y=floorOrdered?0:(((h+i*13)%7)-3)*.003;strip.receiveShadow=true;strip.name='interior-floor-course';root.add(strip);
+  }
   const ceil = box(W, 0.3, D, P.roof);
   ceil.name = 'roomshell';
   ceil.position.set((bx[0] + bx[1]) / 2, by[1] + 0.15, (bz[0] + bz[1]) / 2);
@@ -703,13 +738,30 @@ export function buildInterior(root, rec, opts) {
     root.add(fitting);
     summary.lamps_built++;
     const colour = L.hearth ? 0xffa050 : 0xffc890;
-    const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 22 : 9), L.hearth ? 22 : 11, 2);
+    const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 16 : 6.2), L.hearth ? 18 : 8, 2);
     pl.position.set(L.emit_pos[0], L.emit_pos[1], L.emit_pos[2]);
     if (L.shadow) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
     root.add(pl);
   }
   summary.lights_lit = lamps.length;
   summary.lights_synthesized = lamps.filter((L) => L.synthesized).length;
+
+  // Practical lamps provide direction, but their inverse-square falloff left most characters
+  // and material junctions as black cut-outs in the shipping third-person camera.  A bounded
+  // indirect term stands in for light bounced by the room's own walls and for diffuse daylight
+  // arriving through the aperture plan above.  It is intentionally an actual scene light (not
+  // exposure or a full-screen lift), so normals, roughness and occlusion continue to describe
+  // the room. Windowless holds stay substantially darker than glazed shops and halls.
+  const apertureFill=Math.min(.55,summary.aperture_ratio*14);
+  const indirect=new THREE.HemisphereLight(
+    summary.windows ? 0x9eacc0 : 0x665c58,
+    rec.settlement==='lilmoth'||rec.settlement==='helstrom' ? 0x24372d : 0x32251d,
+    .95+apertureFill,
+  );
+  indirect.position.set((bx[0]+bx[1])/2,by[1]-.25,(bz[0]+bz[1])/2);
+  indirect.name=`interior-bounced-fill:${rec.id}`;
+  root.add(indirect);
+  summary.indirect_fill={intensity:+(.95+apertureFill).toFixed(3),source:summary.windows?'aperture-and-practicals':'practicals-only'};
 
   // ---- containers and the unique item -----------------------------------------------------------
   // RI-QST08: thirty unique items declared, none of them reachable through a door. They are in
@@ -847,8 +899,8 @@ export function buildGenericHall(root) {
   const ceiling = box(12, 0.3, 18, P.roof); ceiling.position.y = 4.4; root.add(ceiling);
   for (let i = 0; i < 5; i++) part(root, box(12, 0.34, 0.34, P.wood), 0, 4.05, -7 + i * 3.5);
   const hearth = cyl(1.0, 1.15, 0.5, 12, P.stone); hearth.position.set(0, 0.25, 3.0); hearth.receiveShadow = true; root.add(hearth);
-  const fire = ico(0.45, 1, P.flame); fire.position.set(0, 0.72, 3.0); root.add(fire);
-  const light = new THREE.PointLight(0xffa050, 26, 26, 2);
+  const fire = new THREE.Mesh(new THREE.ConeGeometry(.13,.48,8,2),P.flame); fire.position.set(0, 0.60, 3.0); root.add(fire);
+  const light = new THREE.PointLight(0xffa050, 18, 22, 2);
   light.position.set(0, 1.0, 3.0);
   light.castShadow = true; light.shadow.mapSize.set(512, 512); light.shadow.bias = -0.004;
   root.add(light);

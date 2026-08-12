@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 'use strict';
-import fs from 'node:fs'; import {execFileSync} from 'node:child_process';
+import fs from 'node:fs'; import {execFileSync} from 'node:child_process'; import {fileURLToPath} from 'node:url';
 const root=new URL('../../',import.meta.url), read=p=>fs.readFileSync(new URL(p,root),'utf8');
 const renderer=read('game/src/render/renderer.js'), sky=read('game/src/render/sky.js'), foundation=read('game/src/render/visual-foundation.js'),province=read('game/src/world/province.js'),actor=read('game/src/render/actor.js'),vfx=read('game/src/render/spell-vfx.js');
-const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[new URL(p,root).pathname],{encoding:'utf8'}));}catch{return{result:'RED'};}};
+const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[fileURLToPath(new URL(p,root))],{encoding:'utf8'}));}catch{return{result:'RED'};}};
 const assetGate=run('tools/render/w1-30-assets.mjs'),populationGate=run('tools/render/w1-30-visual-populations.mjs');
 const predicates={
   boundedCompositor:['WebGLRenderTarget','DepthTexture','worldBeforeUI:true'].every(x=>renderer.includes(x)),

@@ -24,6 +24,21 @@ export const DETERMINISTIC_CHROMIUM_ARGS = [
   '--use-angle=swiftshader',
 ];
 
+/**
+ * Hardware-backed counterpart used only when a caller explicitly requests `--hardware-gpu`.
+ * Keep the deterministic presentation flags, but remove every software-backend request and pin
+ * ANGLE to Windows D3D11. The page-side renderer string is still independently attested by the
+ * W1-30 live tools; these flags request hardware but are not, by themselves, evidence of it.
+ */
+export const HARDWARE_CHROMIUM_ARGS = [
+  ...DETERMINISTIC_CHROMIUM_ARGS.filter((arg) =>
+    arg !== '--enable-unsafe-swiftshader' && arg !== '--use-angle=swiftshader'),
+  '--enable-gpu',
+  '--ignore-gpu-blocklist',
+  '--use-angle=d3d11',
+  '--force_high_performance_gpu',
+];
+
 export async function loadPlaywright() {
   try {
     return await import('playwright');
@@ -79,7 +94,10 @@ export async function launchGame(args = {}) {
   // patching `getParameter` turned SwiftShader into an RTX 4070. `--use-angle=swiftshader` lives
   // here, Node-side, where nothing running in the page can reach it. A gate that consults this
   // cannot be spoofed from inside the browser.
-  const launchArgs = Array.isArray(args.chromiumArgs) ? args.chromiumArgs.map(String) : DETERMINISTIC_CHROMIUM_ARGS.slice();
+  const hardwareGpuRequested = args.hardwareGpu === true || args['hardware-gpu'] === true
+    || String(args.gpu || '').toLowerCase() === 'hardware';
+  const launchArgs = Array.isArray(args.chromiumArgs) ? args.chromiumArgs.map(String)
+    : (hardwareGpuRequested ? HARDWARE_CHROMIUM_ARGS : DETERMINISTIC_CHROMIUM_ARGS).slice();
 
   let browser;
   try {
@@ -134,6 +152,7 @@ export async function launchGame(args = {}) {
     page, browser, context, server, url,
     /** Node-side truth about how this browser was launched. See the comment at the launch call. */
     chromiumArgs: launchArgs,
+    hardwareGpuRequested,
     console: consoleLog, errors,
     async close() {
       try { await context.close(); } catch { /* ignore */ }

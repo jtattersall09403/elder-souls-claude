@@ -1287,6 +1287,17 @@ export function buildBuilding(b, town) {
     post.rotation.z=((hash>>(sx>0?2:4))&1?1:-1)*.025;
     part(g,post,sx*(w*.5-.11),h*.46,sz*(d*.5-.11));
   }
+  // Break the broad wall planes into buildable bays. The previous shell technically had trim,
+  // but at play distance it still read as one extruded box. These recessed panels, diagonal
+  // braces and imperfect lower courses give the light real edges to describe without changing
+  // the authority-owned footprint or doorway aperture.
+  const bayN=Math.max(2,Math.min(6,Math.round(w/2.6)));
+  for(const s of [-1,1]) for(let i=0;i<bayN;i++){
+    const x=-w*.5+(i+.5)*(w/bayN), front=s*d*.5+s*.045;
+    part(g,box(Math.max(.5,w/bayN-.34),Math.max(.7,h*.34),.055,(i+hash)%3===0?P.stone:P.wall),x,h*.24,front);
+    const brace=box(.10,Math.max(.8,h*.36),.09,P.wood);brace.rotation.z=((i+hash)&1?.32:-.32);
+    part(g,brace,x,h*.34,front+s*.035);
+  }
 
   // ---- windows, on the walls that are not the door -------------------------------------------
   const WINDOWLESS = new Set(['prison', 'sealed', 'structure']);
@@ -1303,6 +1314,26 @@ export function buildBuilding(b, town) {
           part(g, box(.10,1.08,.17,P.wood),x-.53,1.7+st*2.4,s*(d/2));
           part(g, box(.10,1.08,.17,P.wood),x+.53,1.7+st*2.4,s*(d/2));
           part(g, box(.08,.82,.13,P.wood),x,1.7+st*2.4,s*(d/2)+s*.03);
+        }
+      }
+    }
+    // The side elevations occupy most of a gameplay camera when the player follows a street.
+    // Leaving them blank made otherwise detailed fronts become warehouse-sized wall slabs as
+    // soon as the camera moved. Use the same aperture hierarchy on x-facing walls, excluding
+    // the actual entry wall exactly as above. These are shallow facade layers and do not alter
+    // collision, footprint or the authority-owned doorway opening.
+    const sideN=Math.max(1,Math.min(3,Math.round(d/4.5)));
+    for(const s of [-1,1]){
+      const xside=s<0?'-x':'+x';if(xside===side)continue;
+      for(let i=0;i<sideN;i++){
+        const z=-d/2+(i+.5)*(d/sideN);
+        for(let st=0;st<b.storeys;st++){
+          const y=1.7+st*2.4,x=s*(w/2);
+          part(g,box(.10,.90,.95,P.glass),x,y,z);
+          part(g,box(.16,.14,1.15,P.wood),x,y+.55,z);
+          part(g,box(.17,1.08,.10,P.wood),x,y,z-.53);
+          part(g,box(.17,1.08,.10,P.wood),x,y,z+.53);
+          part(g,box(.13,.82,.08,P.wood),x+s*.03,y,z);
         }
       }
     }
@@ -1341,6 +1372,20 @@ export function buildBuilding(b, town) {
 
   // ---- the roof ------------------------------------------------------------------------------
   const roof = roofFor(town, P, w, d, h, hash);
+  // A ridge cap and uneven eave ends stop pitched roofs reading as two featureless rectangles.
+  // Extra rafters belong only to the two genuinely pitched roof grammars. Applying them to
+  // Lilmoth reed decks, Archon domes, Helstrom shells and Soulrest ribs put an uncovered timber
+  // construction cage above every finished roof — the dominant unfinished silhouette in the
+  // native Lilmoth frame.
+  if(town==='gideon'||town==='thorn'){
+    const ridge=cyl(.10,.13,w+.45,7,P.wood);ridge.rotation.z=Math.PI/2;
+    part(roof,ridge,0,h+Math.max(.26,d*.31),0);
+    const ribN=Math.max(3,Math.min(8,Math.round(w/1.25)));
+    for(let i=0;i<ribN;i++){
+      const x=-w*.47+i*(w*.94/Math.max(1,ribN-1));
+      for(const s of [-1,1]){const rib=box(.075,.09,d*.56,P.wood);rib.rotation.x=s*.62;part(roof,rib,x,h+d*.18,s*d*.25);}
+    }
+  }
   roof.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
   g.add(roof);
 
@@ -1374,6 +1419,9 @@ export function buildSettlementExterior(root, plan, groundY) {
     doorways: 0,
   };
   const kitSeen = new Set();
+  let centreX=0,centreZ=0;
+  for(const b of plan.buildings){centreX+=b.x;centreZ+=b.z;}
+  if(plan.buildings.length){centreX/=plan.buildings.length;centreZ/=plan.buildings.length;}
   for (const b of plan.buildings) {
     const { group, summary } = buildBuilding(b, plan.id);
     // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
@@ -1434,6 +1482,60 @@ export function buildSettlementExterior(root, plan, groundY) {
       meshes: summary.meshes, triangles: summary.triangles, doorway: summary.doorway,
     });
   }
+  // Shared public realm. The authored plans supply building positions but previously left the
+  // entire negative space as bare terrain. A town needs a traversable street hierarchy and a
+  // reason for bodies to occupy it: causeways from each doorstep to a central court, market
+  // tables, covered work bays, lamps, water barrels, benches and planting pockets. These are
+  // deterministic Three.js assemblies built from the town's own palette and support grammar.
+  const P=paletteFor({interior_kind:'hall',settlement:plan.id});
+  const street=new THREE.Group();street.name=`settlement-public-realm:${plan.id}`;
+  const add=(mesh,x,y,z,ry=0,label='street')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-street:${plan.id}:${label}`;street.add(mesh);out.meshes++;};
+  const cy=Number.isFinite(groundY(centreX,centreZ))?groundY(centreX,centreZ):0;
+  const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8;
+  // Terrain-following pavers. One large disc clipped through the deliberately rough ground and
+  // looked like a decal; small founded stones preserve relief while reading as a made place.
+  for(let gx=-2;gx<=2;gx++)for(let gz=-2;gz<=2;gz++){
+    const x=centreX+gx*courtR*.36,z=centreZ+gz*courtR*.36;
+    if(Math.hypot(gx,gz)>2.45)continue;
+    const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
+    const p=box(courtR*.34,.22,courtR*.34,(gx+gz)&1?P.stone:P.wood);
+    p.rotation.y=((hashStr(plan.id)+gx*7+gz*13)%9-4)*.012;
+    add(p,x,y+.13,z,0,'court-paver');
+  }
+  const stride=Math.max(1,Math.ceil(plan.buildings.length/12));
+  for(let i=0;i<plan.buildings.length;i+=stride){
+    const b=plan.buildings[i],dx=b.x-centreX,dz=b.z-centreZ,len=Math.hypot(dx,dz);if(len<2)continue;
+    const pieces=Math.max(2,Math.ceil((len-2.2)/3.2)),yaw=Math.atan2(dx,dz);
+    for(let k=1;k<pieces;k++){
+      const t=k/pieces,x=centreX+dx*t,z=centreZ+dz*t,y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
+      const walk=box(2.05,.20,Math.min(3.4,len/pieces+.18),(k+i)&1?P.stone:P.wood);
+      walk.rotation.z=((hashStr(b.id)+k)%5-2)*.008;
+      add(walk,x,y+.13,z,yaw,'causeway-paver');
+    }
+  }
+  const featureCount=Math.min(8,Math.max(4,Math.round(plan.buildings.length/5)));
+  for(let i=0;i<featureCount;i++){
+    const a=i/featureCount*Math.PI*2+(hashStr(plan.id)%17)*.03,r=courtR+2.0+(i%2)*1.4,x=centreX+Math.sin(a)*r,z=centreZ+Math.cos(a)*r,y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
+    if(i%4===0){
+      // roofed work/market bay with two structural uprights and a visibly occupied counter
+      add(box(2.4,.18,1.1,P.wood),x,y+.82,z,a,'market-counter');
+      for(const s of [-1,1])add(cyl(.08,.12,2.1,7,P.wood),x+Math.cos(a)*s*.95,y+1.05,z-Math.sin(a)*s*.95,a,'market-support');
+      const awning=box(2.7,.12,1.8,P.cloth);awning.rotation.z=(i&1)?.08:-.08;add(awning,x,y+2.15,z,a,'market-awning');
+      for(let k=0;k<4;k++){const wa=ico(.16+(k%2)*.05,1,k%2?P.accent:P.stone);add(wa,x+Math.cos(a)*(k-1.5)*.42,y+1.04,z-Math.sin(a)*(k-1.5)*.42,a,'market-goods');}
+    }else if(i%4===1){
+      add(box(2.2,.18,.52,P.wood),x,y+.48,z,a,'bench');
+      for(const s of [-1,1])add(cyl(.08,.10,.75,6,P.wood),x+Math.cos(a)*s*.78,y+.32,z-Math.sin(a)*s*.78,a,'bench-leg');
+    }else if(i%4===2){
+      add(cyl(.11,.16,2.8,7,P.wood),x,y+1.4,z,0,'lamp-post');
+      add(new THREE.Mesh(new THREE.TorusGeometry(.30,.055,5,10,Math.PI),P.metal),x,y+2.72,z,a,'lamp-arm');
+      add(ico(.15,1,P.ember),x+Math.sin(a)*.28,y+2.55,z+Math.cos(a)*.28,0,'street-lamp');
+    }else{
+      add(cyl(.44,.50,.82,10,P.wood),x,y+.41,z,a,'water-barrel');
+      for(let k=0;k<3;k++)add(ico(.13+k*.03,1,k===1?P.accent:P.stone),x+(k-1)*.35,y+.12,z+.42,0,'street-clutter');
+    }
+  }
+  root.add(street);
+  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
   return out;
 }

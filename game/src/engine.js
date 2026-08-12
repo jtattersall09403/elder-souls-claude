@@ -952,6 +952,11 @@ export class Engine {
     }
     const sim = this.sim;
     sim.reset(rng.seed, name);
+    // A posed capture camera is an instrument, never named-state data.  Carrying its world-space
+    // override across a load made the province streamer abandon the newly loaded town for the
+    // previous scene's eye position during the settle frames; Thorn then rendered people on bare
+    // terrain while its centre tile sat queued.  Reset the instrument at the scenario boundary.
+    sim.camera.override = null;
     // These one-shot journey observations belong to the world that produced them. A named
     // state is a production scenario boundary, not merely a harness convenience.
     this._resetJourneyStamps();
@@ -7484,6 +7489,10 @@ export class Engine {
     const flags = (this.data.respawn && this.data.respawn.rules
       && this.data.respawn.rules.never_respawn_entity_flags) || [];
     const stat = this.data.enemies[statId] || {};
+    // Runtime eids are intentionally caller-controlled; retain the immutable shipped
+    // archetype key so rendering, diagnostics and save tooling do not have to guess a
+    // creature family from names such as `E1` or `creature-undead`.
+    e.statId = statId;
     const sources = { statblock: [], world_map: [], spawn_opts: [] };
     for (const f of flags) {
       if (stat[f]) { e[f] = true; sources.statblock.push(f); }
@@ -7658,6 +7667,15 @@ export class Engine {
       if (opts.yaw !== undefined) b.yaw = p.yaw;
       b.hasPrev = false;
       b.evaluateRig(0);
+    }
+    // `province.request()` above used the previous vertical focus, because ground height is only
+    // known after the tile is resident.  The horizontal streamer was correct, but the renderer's
+    // culling/fitted-light focus could retain the old cell until the next fixed step.  Re-request
+    // once with the complete placed body so a teleport capture is never a town with its centre
+    // tile present but its settlement group omitted.
+    if (this.renderer && this.renderer.province && this.cellFor(this.sim.env) === 'province') {
+      this.renderer.province.request(p.pos[0], p.pos[2]);
+      this.renderer.province.drain();
     }
     this._settleCamera();
     quantiseColdState(this.sim);
@@ -9767,8 +9785,11 @@ export class Engine {
           const d = cell ? this.settlements.interior(cell) : null;
           const bx = d ? d.bounds_m.x[1] - 1.2 : 3;
           const bz = d ? d.bounds_m.z[1] - 1.2 : 4;
+          let px=(((h % 200) / 100) - 1) * bx;
+          const corridor=Math.min(1.45,bx*.48);
+          if(corridor>.35&&Math.abs(px)<corridor)px=(px<0?-1:1)*corridor;
           pos = [
-            Math.round((((h % 200) / 100) - 1) * bx * 100) / 100,
+            Math.round(px * 100) / 100,
             0,
             Math.round(((((h >>> 8) % 200) / 100) - 1) * bz * 100) / 100,
           ];

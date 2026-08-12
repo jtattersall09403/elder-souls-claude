@@ -23,7 +23,7 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
-import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS } from './visual-foundation.js';
+import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS, updateVisualFoundationFrame } from './visual-foundation.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -72,7 +72,7 @@ export class Renderer {
     this.three.toneMapping = THREE.ACESFilmicToneMapping;
     // Preserve dark interiors while keeping shaded armour readable on SDR displays.  ACES still
     // owns highlight roll-off; this is a modest scene exposure, not a per-shot compensation.
-    this.three.toneMappingExposure = 1.15;
+    this.three.toneMappingExposure = 1.34;
 
     const built = buildScene(seed);
     this.seed = seed;
@@ -251,12 +251,12 @@ export class Renderer {
       void main(){vec2 p=1./uResolution; vec3 c=texture2D(tWorld,vUv).rgb; float d=texture2D(tDepth,vUv).r;
         float dx=abs(d-texture2D(tDepth,vUv+vec2(p.x,0.)).r),dy=abs(d-texture2D(tDepth,vUv+vec2(0.,p.y)).r);
         float edge=clamp((dx+dy)*180.,0.,1.); if(uAA>.5&&edge>.08){vec3 n=(texture2D(tWorld,vUv+vec2(p.x,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y)).rgb)*.25;c=mix(c,n,edge*.38);}
-        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*28.,0.,.18);} c*=occ;
+        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*22.,0.,.12);} c*=occ;
         if(uPost>.5){
           vec3 b=texture2D(tWorld,vUv+vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y*2.)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y*2.)).rgb;
           b=max(b*.25-vec3(.72),0.);c+=b*.075;
           float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.035);c=mix(c,c*c*(3.-2.*c),.08);c=(c-.5)*1.015+.5;
-          float vignette=1.-smoothstep(.38,.82,length(vUv-.5))*.12;c*=vignette;
+          float vignette=1.-smoothstep(.40,.84,length(vUv-.5))*.075;c*=vignette;
         } gl_FragColor=vec4(c,1.);}`});
     this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
@@ -269,6 +269,23 @@ export class Renderer {
     if(['shadows','ibl','atmosphere','sky','lighting'].includes(name)) this.sky.setFeature(name,enabled);
     if(name==='shadows') this.three.shadowMap.enabled=!!enabled;
     return this.quality[name];
+  }
+
+  /** Literal RI-VIS03 M12 object-id pass. The scene is rendered with one unlit solid colour
+   * only on meshes whose shipping name is `water:*`; everything else is black. Materials,
+   * visibility and background are restored before returning, so this is an observational
+   * capture path and never a second world/material implementation. */
+  waterMaskDataURL() {
+    const saved=[],background=this.scene.background,override=this.scene.overrideMaterial;
+    const black=new THREE.MeshBasicMaterial({color:0x000000,toneMapped:false,fog:false});
+    const white=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false,fog:false});
+    this.scene.background=new THREE.Color(0x000000);
+    this.scene.traverse(o=>{if(!o.isMesh&&!o.isInstancedMesh)return;saved.push([o,o.material,o.visible]);o.material=String(o.name||'').startsWith('water:')?white:black;});
+    this.three.setRenderTarget(null);this.three.render(this.scene,this.camera);
+    const url=this.canvas.toDataURL('image/png');
+    for(const [o,mat,visible] of saved){o.material=mat;o.visible=visible;}
+    this.scene.background=background;this.scene.overrideMaterial=override;black.dispose();white.dispose();
+    return url;
   }
 
   /**
@@ -434,7 +451,10 @@ export class Renderer {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
       if (!mesh) {
-        const family=e.archetype==='BEAST'?'beast':/drowned/i.test(e.eid)?'undead':'humanoid';
+        // Family classification is keyed by the shipped statblock id as well as the runtime eid:
+        // harness/world spawns commonly rename `drowned_lesser` to E1, which previously erased
+        // the undead family and rendered it as the generic humanoid.
+        const family=e.archetype==='BEAST'?'beast':/drowned/i.test(`${e.statId||''}|${e.id||''}|${e.eid||''}`)?'undead':'humanoid';
         mesh = makeRiggedActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c, 0x7d8460, family);
         mesh.name = 'enemy:' + e.eid;
         this.scene.add(mesh);
@@ -474,6 +494,10 @@ export class Renderer {
         // skin and cloth materials per actor, so a Dunmer and an Imperial in the same room are
         // not the same colour and no caller has to reach into the child list to fix it.
         mesh = makeRiggedActor(this.mats, tint[1], tint[0], (n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid');
+        // Non-combat townspeople wear the tinted skinned cloth body. Combat equipment sets are
+        // selected from equip-load, a field civilians do not own; showing a guessed armour set
+        // made every hall look like a formation of identical helmeted soldiers.
+        mesh.userData.actor.civilian = true;
         mesh.scale.setScalar(n.height_scale || 1);
         mesh.name = 'npc:' + n.eid;
         this.scene.add(mesh);
@@ -743,6 +767,7 @@ export class Renderer {
     // Every string painted from here on belongs to this simulation frame, so a critic can
     // ask the register what the frame said at the node it screenshotted.
     textRegister.setFrame(sim.frame);
+    updateVisualFoundationFrame(sim.frame);
     const c = sim.camera;
     // ---- the player, posed from the fight's own rig ----------------------------------------
     // `sim._combat` is hung on the sim by Engine.loadState (engine.js). The combat body is the

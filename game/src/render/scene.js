@@ -276,28 +276,31 @@ export function buildScene(seed) {
 
   // ---- arena: an authored, layered combat bowl (VP12) -------------------------------------------
   const arenaFloor = new THREE.Mesh(new THREE.CircleGeometry(30, 56).rotateX(-Math.PI / 2),
-    M('wet_mud',0x302d28,{roughness:.68}));
+    M('wet_mud',0x4a4740,{roughness:.62}));
   arenaFloor.receiveShadow = true;
   arenaFloor.name='arena-wet-stone-floor';
   cells.arena.add(arenaFloor);
-  const arenaFill=new THREE.HemisphereLight(0xc3d1d4,0x514238,1.08);
+  const arenaFill=new THREE.HemisphereLight(0xd2dde0,0x665548,1.48);
   arenaFill.name='arena-bounded-readable-fill';cells.arena.add(arenaFill);
-  const arenaAmbient=new THREE.AmbientLight(0x7f8988,.28);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
+  const arenaAmbient=new THREE.AmbientLight(0x929d9b,.40);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
   // Broken inlay rings give movement scale and keep the player from floating on an empty disc.
   for(const [radius,tube,colour] of [[7.2,.12,0x877353],[13.5,.18,0x554c3c],[21,.24,0x45443d]]){
     const ring=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,6,96),M('stone',colour,{roughness:.74}));
     ring.rotation.x=Math.PI/2;ring.position.y=.035;ring.receiveShadow=true;ring.name='arena-weathered-inlay';cells.arena.add(ring);
   }
   const rockGeo=[new THREE.DodecahedronGeometry(1,1),new THREE.IcosahedronGeometry(1,1)];
-  const arenaRock=[M('stone',0x59605f,{roughness:.78,emissive:0x171c1d,emissiveIntensity:.34}),M('stone',0x716e62,{roughness:.84,emissive:0x1c1a16,emissiveIntensity:.28}),M('stone',0x464d4f,{roughness:.72,emissive:0x121719,emissiveIntensity:.36})];
+  const arenaRock=[M('stone',0x717b78,{roughness:.78,emissive:0x171c1d,emissiveIntensity:.22}),M('stone',0x898376,{roughness:.84,emissive:0x1c1a16,emissiveIntensity:.18}),M('stone',0x606b6d,{roughness:.72,emissive:0x121719,emissiveIntensity:.24})];
   for (let i = 0; i < 18; i++) {
     const a = (i / 18) * Math.PI * 2;
     const radius=25.5+hash2(i,301,seed)*4;
     const cliff=new THREE.Group();cliff.position.set(Math.cos(a)*radius,0,Math.sin(a)*radius);cliff.rotation.y=-a;
-    for(let k=0;k<4;k++){
+    // Six modest, overlapping strata form a broken bowl.  The former four oversized boulders
+    // per sector read as identical blobs and erased the combat silhouette against black.
+    for(let k=0;k<6;k++){
       const r=new THREE.Mesh(rockGeo[(i+k)&1],arenaRock[(i+k)%arenaRock.length]);
-      const sc=.75+hash2(i*7+k,307,seed)*1.45;r.scale.set(sc*(.75+hash2(i,k,seed)*.6),sc*(1.2+hash2(i,k+3,seed)*1.4),sc);
-      r.position.set((k-1.5)*.85,Math.max(.35,r.scale.y*.72),hash2(i,k+11,seed)*1.4-.7);r.rotation.set(hash2(i,k+19,seed)*.35,hash2(i,k+23,seed)*Math.PI,.12*(k-1.5));r.castShadow=r.receiveShadow=true;cliff.add(r);
+      const sc=.52+hash2(i*7+k,307,seed)*.82;
+      r.scale.set(sc*(.82+hash2(i,k,seed)*.45),sc*(1.05+hash2(i,k+3,seed)*1.05),sc*(.72+hash2(i,k+5,seed)*.46));
+      r.position.set((k-2.5)*.67,Math.max(.28,r.scale.y*.70),hash2(i,k+11,seed)*1.65-.82);r.rotation.set(hash2(i,k+19,seed)*.42,hash2(i,k+23,seed)*Math.PI,.08*(k-2.5));r.castShadow=r.receiveShadow=true;cliff.add(r);
     }
     // Only some uprights survive: repetition becomes history rather than a fence of cylinders.
     if(i%3===0){const pil=new THREE.Mesh(new THREE.CylinderGeometry(.45,.7,3.2+(i%4),10),mats.stone);pil.position.set(0,1.6+(i%4)*.5,0);pil.rotation.z=(hash2(i,331,seed)-.5)*.18;pil.castShadow=true;cliff.add(pil);}
@@ -400,13 +403,13 @@ function buildHall(root, mats) {
   for(const sx of [-1,1]){const trim=new THREE.Mesh(new THREE.BoxGeometry(.12,.08,16.4),mats.metal);trim.position.set(sx*1.22,.07,0);root.add(trim);}
   const hearth = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.15, 0.5, 12), mats.stone);
   hearth.position.set(0, 0.25, 3.0); hearth.receiveShadow = true; root.add(hearth);
-  const fire = new THREE.Mesh(new THREE.IcosahedronGeometry(0.38, 2), mats.ember);
-  fire.scale.set(.75,1.55,.75);fire.position.set(0, 0.78, 3.0); root.add(fire);
+  const fire = new THREE.Mesh(new THREE.ConeGeometry(0.13, 0.48, 8, 2), mats.ember);
+  fire.position.set(0, 0.60, 3.0); root.add(fire);
   for(let i=0;i<12;i++){
     const coal=new THREE.Mesh(new THREE.DodecahedronGeometry(.11+(i%3)*.025,0),mats.ember);
     coal.position.set(Math.cos(i*2.4)*(.25+(i%4)*.055),.54,3+Math.sin(i*2.4)*(.22+(i%3)*.05));root.add(coal);
   }
-  const light = new THREE.PointLight(0xffa050, 26, 26, 2);
+  const light = new THREE.PointLight(0xffa050, 18, 22, 2);
   light.position.set(0, 1.0, 3.0);
   light.castShadow = true; light.shadow.mapSize.set(512, 512); light.shadow.bias = -0.004;
   root.add(light);

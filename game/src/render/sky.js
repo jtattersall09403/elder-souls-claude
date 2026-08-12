@@ -22,7 +22,9 @@ export const WEATHER = {
   // named states it will transition between, and setWeather() stays a closed set.
   cold_rain:    { fogDensity: 0.0098, sunIntensity: 0.40, ambient: 0.80, tint: [0.70, 0.78, 0.90], overcast: 0.90, rain: 0.7 },
   warm_rain:    { fogDensity: 0.0125, sunIntensity: 0.55, ambient: 0.95, tint: [0.82, 0.86, 0.74], overcast: 0.82, rain: 0.6 },
-  heavy_rain:   { fogDensity: 0.0165, sunIntensity: 0.32, ambient: 0.78, tint: [0.66, 0.76, 0.68], overcast: 0.96, rain: 1.0 },
+  // Dense canopy rain stays sombre, but must retain bark/leaf value separation in motion.  The
+  // previous 0.32/0.78 pair collapsed every material below the canopy into one near-black mass.
+  heavy_rain:   { fogDensity: 0.0145, sunIntensity: 0.46, ambient: 0.96, tint: [0.70, 0.80, 0.72], overcast: 0.94, rain: 1.0 },
   dawn_mist:    { fogDensity: 0.0280, sunIntensity: 0.80, ambient: 1.00, tint: [0.90, 0.92, 0.86], overcast: 0.45, rain: 0.0 },
   sea_fog:      { fogDensity: 0.0360, sunIntensity: 0.60, ambient: 1.05, tint: [0.84, 0.88, 0.92], overcast: 0.62, rain: 0.0 },
   sea_squall:   { fogDensity: 0.0210, sunIntensity: 0.30, ambient: 0.66, tint: [0.62, 0.68, 0.76], overcast: 1.00, rain: 0.9 },
@@ -97,9 +99,16 @@ void main() {
   col += uSunColour * (disc * 1.6 + glow) * (1.0 - uOvercast * 0.92);
   // Static high cloud structure breaks the flat colour dome while remaining a pure function of
   // direction and weather. It is deliberately subtle in clear weather and broad when overcast.
-  float cloudField=sin(d.x*19.0+d.z*7.0)+sin(d.z*31.0-d.x*11.0)*.55+sin((d.x+d.z)*53.0)*.20;
-  float cloud=smoothstep(.48-uOvercast*.58,1.28-uOvercast*.25,cloudField)*smoothstep(-.04,.25,d.y);
-  col=mix(col,mix(uHorizon,uSunColour,.28),cloud*(.12+uOvercast*.24));
+  // Warped multi-octave cloud bands. Using only sine sums made the dome read as three broad
+  // vertical blue stripes; domain warping produces bounded cellular banks with soft bases.
+  vec2 p=d.xz/max(.18,d.y+.42);
+  float warp=sin(p.x*3.7+p.y*2.1)+cos(p.y*4.6-p.x*1.8);
+  float cloudField=sin(p.x*5.1+p.y*2.7+warp*.42)*.50
+    +sin(p.y*9.4-p.x*4.3+warp*.24)*.28
+    +cos((p.x+p.y)*17.0-warp*.15)*.14;
+  float cloud=smoothstep(.13-uOvercast*.30,.55-uOvercast*.14,cloudField)*smoothstep(-.03,.28,d.y);
+  float veil=smoothstep(-.30,.32,cloudField)*uOvercast*.38;
+  col=mix(col,mix(uHorizon,uSunColour,.24),cloud*(.20+uOvercast*.34)+veil*.18);
   col += uSunColour * pow(max(0.0,1.0-abs(d.y)*4.2),3.0) * (1.0-uOvercast) * .035;
   gl_FragColor = vec4(col, 1.0);
 }`;
