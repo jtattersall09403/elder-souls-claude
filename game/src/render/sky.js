@@ -99,6 +99,7 @@ void main() {
 
 export class Sky {
   constructor(scene) {
+    this.features = { shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
     this.uniforms = {
       uZenith: { value: new THREE.Color(0x2f5f95) },
       uHorizon: { value: new THREE.Color(0xbfc6b4) },
@@ -142,6 +143,24 @@ export class Sky {
     this.hemi = new THREE.HemisphereLight(0xbfd0e0, 0x3a3527, 0.5);
     scene.add(this.hemi);
 
+    // The moon is not a second, unrelated art light. It is the exact inverse of the one
+    // celestial direction used by the dome and sun, and only contributes after sunset.
+    this.moon = new THREE.DirectionalLight(0x8ca9d8, 0);
+    this.moon.castShadow = false; // one fitted directional shadow atlas is the bounded policy
+    scene.add(this.moon); scene.add(this.moon.target);
+
+    // A small, deterministic equirectangular radiance map gives Standard/Physical materials
+    // genuine specular environment sampling. It is recoloured in-place with sky/weather rather
+    // than allocating a texture every frame. This deliberately is not a background substitute:
+    // the procedural dome remains the visible sky and the texture is lighting-only.
+    this.environmentBytes = new Uint8Array(16 * 8 * 4);
+    this.environment = new THREE.DataTexture(this.environmentBytes,16,8,THREE.RGBAFormat);
+    this.environment.mapping = THREE.EquirectangularReflectionMapping;
+    this.environment.colorSpace = THREE.SRGBColorSpace;
+    this.environment.name = 'w1-30-dynamic-environment-ibl';
+    this.environment.needsUpdate = true;
+    scene.environment = this.environment;
+
     this.scene = scene;
     this.scene.fog = new THREE.FogExp2(0x9aa79a, 0.0022);
   }
@@ -183,12 +202,22 @@ export class Sky {
     this.uniforms.uSunColour.value.setRGB(
       lerp(0.55, 1.00, day) + dusk * 0.35, lerp(0.42, 0.94, day) + dusk * 0.10, lerp(0.62, 0.82, day));
 
-    this.sun.intensity = w.sunIntensity * Math.max(0.02, day);
+    this.sun.intensity = this.features.lighting ? w.sunIntensity * Math.max(0.02, day) : 0;
     this.sun.color.copy(this.uniforms.uSunColour.value);
     this.sun.position.copy(dir).multiplyScalar(120);
-    if (focus) { this.sun.position.add(focus); this.sun.target.position.copy(focus); }
+    if (focus) {
+      // Snap the fitted 120 m shadow volume to its 2048-map texel. Slow camera motion can no
+      // longer swim the shadow projection across stationary geometry.
+      const texel=120/this.sun.shadow.mapSize.x;
+      const sx=Math.round(focus.x/texel)*texel, sz=Math.round(focus.z/texel)*texel;
+      this.sun.position.x+=sx; this.sun.position.y+=focus.y; this.sun.position.z+=sz;
+      this.sun.target.position.set(sx,focus.y,sz);
+    }
     else this.sun.target.position.set(0, 0, 0);
     this.sun.target.updateMatrixWorld();
+    this.sun.castShadow = this.features.shadows;
+    this.moon.position.copy(dir).multiplyScalar(-120).add(this.sun.target.position);
+    this.moon.target.position.copy(this.sun.target.position); this.moon.target.updateMatrixWorld();
 
     // ---- night ---------------------------------------------------------------------------------
     // `RI-WLD04` M17 step 6: the sample is repeated at night and **night accuracy >= 70% is
@@ -204,6 +233,7 @@ export class Sky {
     //   * the floors rise (ambient 0.10 -> 0.30, fog 0.34 -> 0.62). Morrowind's nights are dark and
     //     READABLE; a frame a judge cannot classify is not a dark frame, it is a missing frame.
     const night = 1 - Math.max(0, Math.min(1, day * 2.2));
+    this.moon.intensity = this.features.lighting ? night * (0.24 + (1-w.overcast)*0.18) : 0;
     // W1-01 round 3. `ours_night` leave-one-out was 33.3% against M17 step 6's explicit >= 70%.
     // Two thirds of the DAY separability was tint, and at night there was not even that: every
     // region rendered as the same near-black. A region's night hue is now taken from the thing it
@@ -213,7 +243,7 @@ export class Sky {
     // is making when it says a region must be identifiable at night.
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
-    this.hemi.intensity = w.ambient * Math.max(0.30, day * 0.9 + 0.10);
+    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.30, day * 0.9 + 0.10) : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
     this.hemi.groundColor.setRGB(0.227, 0.208, 0.153).lerp(regionNight, night * 0.55);
 
@@ -243,13 +273,33 @@ export class Sky {
       // Adding them keeps S24 intact: the region still owns the hue and still sets the floor, and
       // weather can only ever make the air thicker, never clearer than the region's own.
       const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
-      this.scene.fog.density = sightline > 0 ? base + 1.978 / sightline : base;
+      this.scene.fog.density = this.features.atmosphere ? (sightline > 0 ? base + 1.978 / sightline : base) : 0;
     } else {
-      this.scene.fog.density = w.fogDensity;
+      this.scene.fog.density = this.features.atmosphere ? w.fogDensity : 0;
       this.scene.fog.color.copy(hor).multiplyScalar(0.92);
     }
 
+    // Encode the same zenith/horizon and celestial direction into the IBL. The bright sample
+    // follows uSunDir, so moving time changes both diffuse atmosphere and physical reflections.
+    for(let y=0;y<8;y++) for(let x=0;x<16;x++) {
+      const i=(y*16+x)*4, t=1-y/7, c=hor.clone().lerp(zen,t);
+      const a=x/16*Math.PI*2, sy=(.5-y/7)*Math.PI;
+      const sample=new THREE.Vector3(Math.cos(a)*Math.cos(sy),Math.sin(sy),Math.sin(a)*Math.cos(sy));
+      const hot=Math.pow(Math.max(0,sample.dot(dir)),48)*(1-w.overcast)*2.2;
+      const sc=this.uniforms.uSunColour.value; c.r+=sc.r*hot; c.g+=sc.g*hot; c.b+=sc.b*hot;
+      this.environmentBytes[i]=Math.min(255,Math.round(c.r*255));
+      this.environmentBytes[i+1]=Math.min(255,Math.round(c.g*255));
+      this.environmentBytes[i+2]=Math.min(255,Math.round(c.b*255)); this.environmentBytes[i+3]=255;
+    }
+    this.environment.needsUpdate=true;
+    this.scene.environment=this.features.ibl?this.environment:null;
+    this.mesh.visible=this.features.sky;
     return weatherId;
+  }
+
+  setFeature(name,enabled) {
+    if(!(name in this.features)) throw new Error(`unknown sky sabotage '${name}'`);
+    this.features[name]=!!enabled; return this.features[name];
   }
 
   /** The dome is drawn at the far plane, so it must be centred on the camera every frame. */

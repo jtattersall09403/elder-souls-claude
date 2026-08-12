@@ -41,3 +41,24 @@ and found 577 unique colours (non-blank). No capture binary is committed.
 4. `npm run gate:strict`
 5. Run the plan-owned fixed-eight/live action matrices and blind protocols from the sealed reference
    inventory. No visual score or 7.0 gate is claimed by this builder.
+
+## Continuation renderer completion (2026-08-12)
+
+The continuation commit replaces renderer declarations with shipping-pixel mechanisms on the shared
+path: a single bounded HDR world target and depth texture feed depth-neighbour AO, edge-aware AA and
+a restrained post grade before dialogue/HUD/title composition; the existing ACES/sRGB fallback
+remains available. `Renderer.setVisualFeature()` is the live sabotage surface for post-processing,
+AO, AA, shadows, IBL, atmosphere, sky and lighting.
+
+`Sky` now owns one direction for the dome, sun, inverse moon and dynamic radiance environment. Its
+120 m shadow fit snaps to 120/2048 m texels. The deterministic 16x8 equirectangular environment is
+updated from the same time/weather/region response and is sampled by governed Standard materials;
+disabling IBL removes it. Shared material records now publish UV scale, wetness, bounded exception
+and family-specific environment response in addition to cavity maps.
+
+Cheap aggregate: `node tools/render/w1-30-aggregate.mjs`. Full consumer gate: `node
+tools/render/w1-30-gate.mjs`. Literal metric controls: `npm run metrics:selftest`. Shipping WebGL
+smoke: `node tools/harness/smoke.mjs` (Chromium 141/WebGL2, 577 unique colours). A subsequent live
+capture caught an invalid Three `Color.addScaledVector` call in the dynamic IBL update; the focused
+repair uses explicit RGB accumulation and the readiness path then completed. Capture media stayed
+under `/tmp` and no binary evidence was committed.

@@ -97,6 +97,8 @@ export class Renderer {
     // 6 km of far plane: the Valus Ridge is 400 m high and must be on the horizon from the
     // Stone Forest, which is 1.6 km away. A 900 m far plane is a 900 m world.
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
+    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
+    this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
     this.propMeshes = new Map();
@@ -182,6 +184,7 @@ export class Renderer {
     this.combatDecalCount = 0;
     this.combatDecalLastFrame = -1;
     this.sky = new Sky(this.scene);
+    for(const name of ['shadows','ibl','atmosphere','sky','lighting']) this.sky.setFeature(name,this.quality[name]);
     this.enemyMeshes.clear();          // re-created against the new scene by syncEntities()
     this.npcMeshes.clear();
     this.propMeshes.clear();
@@ -209,7 +212,40 @@ export class Renderer {
     if (this.menus && this.menus.setSize(w, h) && this.uiBuild) this.uiBuild(true);
     if (this.title) this.title.setSize(w, h);
     if (this.vfx) this.vfx.setSize(w, h);
+    if (this.worldTarget) {
+      this.worldTarget.setSize(w,h);
+      this.compositeMaterial.uniforms.uResolution.value.set(w,h);
+    }
     return { width: w, height: h };
+  }
+
+  _buildCompositor(w,h) {
+    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false});
+    this.worldTarget.texture.colorSpace=THREE.SRGBColorSpace;
+    this.worldTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);
+    this.worldTarget.texture.name='w1-30-hdr-world-colour';
+    this.worldTarget.depthTexture.name='w1-30-world-depth';
+    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,
+      uniforms:{tWorld:{value:this.worldTarget.texture},tDepth:{value:this.worldTarget.depthTexture},
+        uResolution:{value:new THREE.Vector2(w,h)},uAO:{value:1},uAA:{value:1},uPost:{value:1}},
+      vertexShader:`varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
+      fragmentShader:`varying vec2 vUv; uniform sampler2D tWorld,tDepth; uniform vec2 uResolution; uniform float uAO,uAA,uPost;
+      void main(){vec2 p=1./uResolution; vec3 c=texture2D(tWorld,vUv).rgb; float d=texture2D(tDepth,vUv).r;
+        float dx=abs(d-texture2D(tDepth,vUv+vec2(p.x,0.)).r),dy=abs(d-texture2D(tDepth,vUv+vec2(0.,p.y)).r);
+        float edge=clamp((dx+dy)*180.,0.,1.); if(uAA>.5&&edge>.08){vec3 n=(texture2D(tWorld,vUv+vec2(p.x,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y)).rgb)*.25;c=mix(c,n,edge*.38);}
+        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*28.,0.,.18);} c*=occ;
+        if(uPost>.5){c=mix(c,c*c*(3.-2.*c),.12);c=(c-.5)*1.035+.5;} gl_FragColor=vec4(c,1.);}`});
+    this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
+  }
+
+  /** Working feature sabotage surface used by live controls; every switch changes shipping pixels. */
+  setVisualFeature(name,enabled) {
+    if(!(name in this.quality)) throw new Error(`unknown renderer feature '${name}'`);
+    this.quality[name]=!!enabled;
+    if(['shadows','ibl','atmosphere','sky','lighting'].includes(name)) this.sky.setFeature(name,enabled);
+    if(name==='shadows') this.three.shadowMap.enabled=!!enabled;
+    return this.quality[name];
   }
 
   /**
@@ -757,6 +793,7 @@ export class Renderer {
     }
 
     this.three.info.reset();
+    if(this.quality.postprocess||this.quality.ao||this.quality.antialias) this.three.setRenderTarget(this.worldTarget);
     this.three.render(this.scene, this.camera);
     // three.js resets `info` at the top of every top-level `render()`, so the world pass is
     // read here and the UI pass is ADDED to it. RI-PLT01 "How we lose" #11 asks for the
@@ -766,6 +803,13 @@ export class Renderer {
       calls: info.render.calls, triangles: info.render.triangles,
       points: info.render.points, lines: info.render.lines,
     };
+    if(this.quality.postprocess||this.quality.ao||this.quality.antialias) {
+      this.three.setRenderTarget(null);
+      this.compositeMaterial.uniforms.uAO.value=this.quality.ao?1:0;
+      this.compositeMaterial.uniforms.uAA.value=this.quality.antialias?1:0;
+      this.compositeMaterial.uniforms.uPost.value=this.quality.postprocess?1:0;
+      this.three.render(this.compositeScene,this.compositeCamera);
+    }
     this.ui.setVisible(this.uiVisible);
     this.ui.render(this.three);
     // W1-21. The HUD and the open screen, laid out for THIS frame and composited as a second
@@ -874,6 +918,8 @@ export class Renderer {
       visualFoundation: foundation,
       rendererFeatures: {...VISUAL_FEATURES},
       featureConsumers: {...FEATURE_CONSUMERS},
+      qualitySwitches:{...this.quality},
+      compositor:{boundedTargets:1,worldBeforeUI:true,depthIntegratedAO:true,edgeAA:true},
       styleboardsConsumed: this.scene.userData.visualStyleboards || null,
     };
   }

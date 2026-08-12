@@ -104,9 +104,12 @@ export function worldMaterial(family, options={}) {
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
     alphaTest: options.alphaTest ?? 0, side: options.side ?? THREE.FrontSide,
     emissive: options.emissive ?? 0x000000, emissiveIntensity: options.emissiveIntensity ?? 1,
+    envMapIntensity: options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72),
   });
   mat.name=`visual-family:${family}`; mat.userData.visualFamily=family;
-  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, lod:options.lod ?? 'shared' };
+  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:[4,4],
+    wetness:Number(options.wetness||0), boundedException:options.boundedException||null,
+    lod:options.lod ?? 'shared' };
   return mat;
 }
 
