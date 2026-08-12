@@ -19,6 +19,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { placeArt } from './world-art.js';
 
 /** Warm interior lamplight. One point light per room; interiors are dark by default. */
 function lamp(root, x, y, z, colour, intensity, dist) {
@@ -295,6 +296,10 @@ export function buildPlaces(mats) {
   buildMarket(cells.market, mats);
   buildStormholdStreet(cells.street, mats);
   buildRootlandsWells(cells.well, mats);
+  for (const [id,root] of Object.entries(cells)) {
+    root.userData.worldArt={id,grammar:placeArt(id),governed:true};
+    root.traverse(o=>{ if(o.isMesh && !o.name) o.name=`world-art-place:${id}`; });
+  }
   return cells;
 }
 

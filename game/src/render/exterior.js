@@ -61,6 +61,7 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 import { KIT_MESHES, paletteFor, PRIMS } from './interior.js';
+import { settlementArt } from './world-art.js';
 
 const { box, cyl, ico, part, hashStr } = PRIMS;
 
@@ -1352,6 +1353,8 @@ export function buildBuilding(b, town) {
  * @param {(x:number,z:number)=>number} groundY  the SAME surface the player walks on
  */
 export function buildSettlementExterior(root, plan, groundY) {
+  const art=settlementArt(plan.id);
+  root.userData.worldArt={settlement:plan.id,grammar:art.grammar,support:art.support,trim:art.trim,imperial:art.imperial};
   const out = {
     settlement: plan.id, buildings: 0, drawn: [], meshes: 0, triangles: 0,
     kit_meshes: 0, kit_ids: [], declared_footprints: 0, derived_footprints: 0, shrunk: 0,

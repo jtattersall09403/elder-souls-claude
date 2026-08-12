@@ -51,6 +51,7 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 import { worldMaterial } from './visual-foundation.js';
+import { settlementArt } from './world-art.js';
 // W1-15 round 4. The lit set and the window aperture are POLICY, and policy that two files
 // implement is policy that drifts — RULES.md rule 10, and it cost 1,659 disagreeing floor cells.
 // Both this file and `sim/stealth/system.js` read the answer from here and neither invents one.
@@ -446,6 +447,7 @@ export function buildInterior(root, rec, opts) {
   if (!rec) { summary.error = 'no record'; return summary; }
 
   const P = paletteFor(rec);
+  const art = rec.settlement ? settlementArt(rec.settlement) : null;
   const bounds = rec.bounds_m || { x: [-6, 6], y: [0, 3.2], z: [-9, 9] };
   const bx = bounds.x, by = bounds.y, bz = bounds.z;
   const W = bx[1] - bx[0], H = by[1] - by[0], D = bz[1] - bz[0];
@@ -494,6 +496,22 @@ export function buildInterior(root, rec, opts) {
   const beams = Math.max(2, Math.min(9, Math.round(D / 3)));
   for (let i = 0; i < beams; i++) {
     part(root, box(W, 0.28, 0.28, P.wood), (bx[0] + bx[1]) / 2, by[1] - 0.32, bz[0] + (i + 0.5) * (D / beams));
+  }
+  // Settlement grammar remains visible after the door closes: asymmetric braces at the shell
+  // junction use the town's own structural material and cadence rather than generic decoration.
+  if (art) {
+    const ordered = art.imperial;
+    const braceN = ordered ? 4 : 3 + (h % 3);
+    for (let i=0;i<braceN;i++) {
+      const x=bx[0]+(i+1)*W/(braceN+1);
+      const brace=box(.14,H*.78,.18,ordered?P.stone:P.wood);
+      brace.position.set(x,by[0]+H*.39,bz[0]+.18);
+      brace.rotation.z=ordered?0:(((h>>i)&1)?-.16:.16);
+      brace.name=`world-art:${rec.settlement}:${art.support}`;
+      brace.castShadow=true; root.add(brace);
+    }
+    root.userData.worldArt={settlement:rec.settlement,grammar:art.grammar,support:art.support,trim:art.trim};
+    summary.world_art=root.userData.worldArt;
   }
 
   // ---- windows — RI-WLD13 N4, which had no field and now has a rule --------------------------

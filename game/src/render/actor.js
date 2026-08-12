@@ -28,6 +28,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { creatureArt } from './world-art.js';
 
 // ---------------------------------------------------------------------------------------
 // Geometry helpers. Everything is authored directly into typed arrays with skin indices and
@@ -626,15 +627,17 @@ function weaponMesh(w, mats) {
  * with a live rig — so an NPC that has no combat body still gets a proper humanoid, standing
  * in the rest pose, driven by the group transform as before.
  */
-export function makeRiggedActor(mats, tintHex, skinHex) {
+export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
   const g = new THREE.Group();
+  const art=creatureArt(artFamily);
   // Contact grounding and action readability are renderer-owned presentation. They never feed
   // back into the fixed-step rig, sockets, hit windows or camera.
   const shadow=new THREE.Mesh(new THREE.CircleGeometry(.42,20),new THREE.MeshBasicMaterial({color:0x080b09,transparent:true,opacity:.34,depthWrite:false}));
   shadow.name='actor-contact-shadow'; shadow.rotation.x=-Math.PI/2; shadow.renderOrder=2; g.add(shadow);
   const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.025,5,24,Math.PI*1.35),new THREE.MeshBasicMaterial({color:0xa8d8b0,transparent:true,opacity:.0,depthWrite:false}));
   action.name='actor-action-silhouette'; action.rotation.x=Math.PI/2; action.visible=false; g.add(action);
-  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action };
+  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, artFamily, art };
+  g.userData.worldArt={creature:artFamily,silhouette:art};
   return g;
 }
 

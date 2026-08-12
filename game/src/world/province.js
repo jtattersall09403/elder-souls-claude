@@ -16,6 +16,7 @@ import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
 import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
 import { planSettlement, buildSettlementExterior, settlementSolids, insideBuilding, applyInteriorBounds } from '../render/exterior.js';
+import { regionArt } from '../render/world-art.js';
 
 const TILE_M = 300;
 // 5.36 m per quad. Raised from 40 (7.5 m) in round 4 for one reason, and it is a Nyquist reason
@@ -609,6 +610,7 @@ export class Province {
     const f = this.field;
     const r = f.regions[ri];
     const p = r.props;
+    const art = regionArt(r.id);
     const depth = f.depthAt(x, z);
     const m = this._m || (this._m = new THREE.Matrix4());
     const q = this._q || (this._q = new THREE.Quaternion());
@@ -624,9 +626,11 @@ export class Province {
       if (b.xf.length >= cap[kind]) return false;
       q.setFromAxisAngle(up, noise2(x, z, rotSeed) * Math.PI * 2);
       if (tilt) { side.set(Math.cos(tilt.a), 0, Math.sin(tilt.a)); qt.setFromAxisAngle(side, tilt.t); q.multiply(qt); }
-      v.set(x, y + yOff, z); s.setScalar(scale);
+      const layer = kind === 'canopy' ? art.flora[0] : kind === 'under' ? art.flora[1] : art.flora[2];
+      v.set(x, y + yOff, z); s.set(scale * layer, scale * (0.82 + layer * .18), scale / Math.sqrt(layer));
       m.compose(v, q, s);
       b.xf.push(m.clone());
+      b.geo.userData.worldArt={region:r.id,terrain:art.terrain,depth:art.depth,layer};
       return true;
     };
     // EMERGENT VEGETATION. The depth a plant will stand in is a property of the plant, not a
@@ -634,14 +638,18 @@ export class Province {
     // in none. Round 4 gated both at a flat 0.9 m and 0.6 m, which is why the Deep Marshes — 86%
     // wet, the region whose whole identity is a reed bed over black water — rendered as an empty
     // sheet of water with the reeds standing on whatever dry ground it could find.
-    if (p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
+    // Keep the arrival/camera footprint legible when a tile is first streamed. The capture audit
+    // found a valid walkable sample completely enclosed by a trunk; vegetation may frame a path,
+    // but production composition cannot put opaque canopy geometry on the active arrival point.
+    const arrivalClear=Math.hypot(x-this.focus[0],z-this.focus[1])>=2.4;
+    if (arrivalClear && p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
       // Height variance and the occasional emergent: the vertical-structure axis, in data.
       const hv = p.canopy.h_var || 0;
       let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
       sc *= 1 + hv * (noise2(x * 1.7, z * 1.7, 7799) - 0.5) * 2;
       const em = p.canopy.emergent;
       if (em && rolls[3] < em.share) sc *= em.h_mult;
-      const lean = (p.canopy.lean_deg || 0) * Math.PI / 180;
+      const lean = (p.canopy.lean_deg || 0) * art.lean * Math.PI / 180;
       const tilt = lean > 0
         ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
         : null;
