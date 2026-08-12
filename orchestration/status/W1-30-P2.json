@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-30-P2",
+  "role": "builder",
+  "status": "complete",
+  "plan_state": "building",
+  "summary": "W1-30 Package 2 whole-game world-art breadth complete; Packages 3-5 remain builder-owned and pending.",
+  "files_touched": [
+    "orchestration/status/W1-30-P2.json",
+    "game/src/render/world-art.js",
+    "game/src/render/actor.js",
+    "game/src/world/province.js",
+    "game/src/render/exterior.js",
+    "game/src/render/interior.js",
+    "game/src/render/places.js",
+    "tools/render/w1-30-package2.mjs",
+    "reports/w1-30/PACKAGE-2-CENSUS.md",
+    "reports/w1-30/BUILDER-DELIVERY.md",
+    "orchestration/status/W1-30.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Dispatch Package 3 for substantive character rigging and animation; Packages 4 and 5 remain pending after it."
+}

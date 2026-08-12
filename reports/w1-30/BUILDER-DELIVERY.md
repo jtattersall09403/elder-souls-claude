@@ -62,3 +62,13 @@ smoke: `node tools/harness/smoke.mjs` (Chromium 141/WebGL2, 577 unique colours).
 capture caught an invalid Three `Color.addScaledVector` call in the dynamic IBL update; the focused
 repair uses explicit RGB accumulation and the readiness path then completed. Capture media stayed
 under `/tmp` and no binary evidence was committed.
+
+## Package 2 — whole-game world-art breadth (2026-08-12)
+
+Package 2 is complete. The production registry and consumers now add region-specific flora
+proportion/lean/depth composition across all 13 regions, settlement-specific structural grammar
+inside and outside all eight settlements, and governed identities for every hand-built place.
+The exhaustive text census, controls, rendered observation and reproduction commands are in
+`reports/w1-30/PACKAGE-2-CENSUS.md`. Packages 3 (animation/movement), 4 (spell VFX and streaming/LOD
+lifecycle) and 5 (final cross-package instruments and bounded aggregate) remain builder-owned and
+pending; this package does not claim their completion or the critic's final visual score.
