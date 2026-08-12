@@ -147,3 +147,35 @@ production hard failures and identifies an incomplete diagnostic instrument: M4 
 same-frame camera containment repair; M5 requires body-collision legal-pose clearance before the same
 camera repair can be evaluated. The next builder follows the instrument → M5 body feasibility → camera
 guard sequence in the satisfied plan. All critic-owned populations and final scoring remain `NOT_RUN`.
+
+## S50 recovery production build — 2026-08-12
+
+Tested worktree identity: starting commit `b9543dd`; the compact implementation/evidence commit is
+this ledger's containing commit. The existing production camera now searches the unchanged boom ray
+at 0.005 m, refines the pivot-connected boundary below 0.001 m, preserves the exact head-derived
+minimum, and emits S49 flags on every valid below-floor frame. Player world clearance is 0.350 m
+(0.030 m from the authoritative 0.320 m combat radius, within the existing 0.05 m tolerance).
+The existing `rate,wall` probe consumes exact live pose and collision-primitive transforms and
+independently classifies the origin plus four near-plane corners.
+
+Final command: `node tools/camera/cam-probe.mjs --probe rate,wall --out
+/tmp/w1-06-s50-rate-wall.json`. Result: 18/18; M4 clipping 0/2,880; M5 clipping 0/300;
+M5 infeasible 0/300; classifier/emitted disagreements 0/3,180. SHA-256:
+`d3fb89f74e5c38cc313316d445cc7e5e8e793d5c0bda748e699588a4054d6126`.
+
+Transient red controls (same command plus `--s50-control NAME`) exited non-zero:
+`old-surface` failed both surface gates (SHA-256
+`bf9c729633134b9e3d7df3ed8911db495673e9b2d1152ab98779ec220ea4c0e3`);
+`suppress-search` produced 2,880/2,880 M4 and 300/300 M5 diagnostic disagreements
+(`16107bbbc02071bbcef5d5b218cf8d3d99326710eeda4bf013119127c5506aee`);
+`force-m5-0p3201` made 300/300 M5 frames infeasible. The body-repair delete arm returned native
+clipping and exactly 113/300 infeasible M5 frames
+(`/tmp/w1-06-s50-delete-body.json`, `689c6691eb515daf6290fc58e157d7dc0ec0181109ac1c126ef5c7512a646439`).
+The camera-guard delete arm returned native M4/M5 clipping and classifier/telemetry diagnostic
+failure (`/tmp/w1-06-s50-delete-camera.json`). Delete arms were disposable worktree substitutions;
+production files were restored byte-for-byte. No raw frame trace is committed.
+
+Reproduce from the containing commit with the final command above and the three named control
+values. For delete arms, replace only `world-collision.js` or `camera.js` with its starting-commit
+blob in a disposable worktree, run the same narrow probe into `/tmp`, then restore it. No critic-owned
+exhaustive, repeated, blind, rendered, or final-scoring population was run.

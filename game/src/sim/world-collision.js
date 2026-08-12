@@ -45,9 +45,12 @@ import { mirror } from './combat-bridge.js';
  * the argument, which is why it is stated here in the file that broke it.
  *
  * `PLAYER_RADIUS_M` survives as a named export because `engine.js` reports it on the harness
- * surface, and it is now the same 0.32 m the fight uses, not a second opinion.
+ * surface, and S50 now raises only player world clearance to 0.35 m, within the 0.05 m tolerance of the 0.32 m fight radius.
  */
-export const PLAYER_RADIUS_M = 0.32;
+// S50 requires enough backing-wall clearance for the unchanged camera/head geometry
+// (0.349857... m horizontally).  0.35 m is still within RI-CMB04 M8.5's 0.05 m tolerance of
+// the combat body's authoritative 0.32 m hit radius.
+export const PLAYER_RADIUS_M = 0.35;
 const ENEMY_RADIUS_DEFAULT_M = 0.32;
 
 /**
@@ -69,7 +72,7 @@ export function stepWorldCollision(sim, combat) {
   const b = combat && combat.player;
   if (b) {
     _p[0] = b.pos[0]; _p[1] = b.pos[1] + 0.90; _p[2] = b.pos[2];
-    if (cell.resolveSphere(_p, worldCollisionRadiusOf(b), 6)) {
+    if (cell.resolveSphere(_p, Math.max(worldCollisionRadiusOf(b), PLAYER_RADIUS_M), 6)) {
       b.pos[0] = _p[0]; b.pos[2] = _p[2];
       moved = true;
     }

@@ -867,33 +867,42 @@ function solveArm(sim, c, cell) {
   // smoothing. Every frame it fires is flagged, which is the flag RI-CAM01 M4 already names.
   c.armGuard = false;
   c.armFloorEmergency = false;
+  c.armLegalConnectedMax = c.armDesired;
+  c.armLegalNormalExists = true;
   desiredPoint(c, c.armLen, sr, su, _pt, _castRef);
-  if (cell !== EMPTY_CELL && !cameraEnvelopeClear(c, cell, c.armLen, sr, su, _castRef)) {
-    // S49 keeps 0.90 m as the ordinary target but permits the same-frame guard to cross it
-    // only when the unchanged boom ray has no clear origin-plus-four-corner pose at/above it.
-    // Search the complete non-negative ray rather than trusting the spring sphere cast: the
-    // near-plane corners, not the guard sphere, define clipping and narrow geometry need not
-    // be monotone along the ray.
+  if (cell !== EMPTY_CELL) {
+    // S50: derive the complete pivot-connected legal set every frame.  The ordinary sphere
+    // cast is deliberately retained above (it owns feel/rate), but it is not a containment
+    // proof: a near-plane corner can enter a moving wall without the cast target changing.
     const top = Math.max(0, c.armDesired);
     const floor = Math.min(CAMERA_CONST.arm_min_m, top);
-    const normal = greatestClearArm(c, cell, floor, top, sr, su, c.armDesired);
-    let g = -1;
-    if (normal < 0) {
-      const dyHead = CAMERA_CONST.head_height_m - CAMERA_CONST.pivot_height_m - su;
-      const headMin = Math.sqrt(Math.max(0,
-        CAMERA_CONST.camera_to_head_min_m ** 2 - dyHead * dyHead));
-      g = greatestClearArm(c, cell, headMin, floor, sr, su, c.armDesired);
-      c.armFloorEmergency = g >= 0 && g < CAMERA_CONST.arm_min_m;
-    } else {
-      // Ordinary obstruction: retain the established pivot-outward sphere cast so the camera
-      // cannot teleport through a wall to a disconnected clear interval beyond it.
-      desiredPoint(c, c.armDesired, sr, su, _to, c.armDesired);
-      const tg = cell.sphereCast(_from, _to, CAMERA_CONST.guard_radius_m);
-      g = clamp(c.armDesired * tg - 0.005, CAMERA_CONST.arm_min_m, c.armLen);
-    }
-    if (g >= 0 && g < c.armLen) {
-      c.armLen = g;
+    const dyHead = CAMERA_CONST.head_height_m - CAMERA_CONST.pivot_height_m - su;
+    const headMin = Math.sqrt(Math.max(0,
+      CAMERA_CONST.camera_to_head_min_m ** 2 - dyHead * dyHead));
+    const connectedTop = pivotConnectedClearTop(c, cell, top, sr, su, c.armDesired);
+    const normal = connectedTop >= floor ? connectedTop : -1;
+    const emergency = normal < 0 && connectedTop >= headMin ? connectedTop : -1;
+    const selected = normal >= 0 ? normal : emergency;
+    c.armLegalConnectedMax = connectedTop;
+    c.armLegalNormalExists = normal >= 0;
+    // A below-floor exception is legal only at the greatest connected candidate; unlike the
+    // ordinary spring it may therefore move outward immediately as the boundary recedes.
+    if (normal < 0 && emergency >= 0 && Math.abs(c.armLen - emergency) > 1e-9) {
+      c.armLen = emergency;
       c.armGuard = true;
+      c.armFloorEmergency = true;
+    }
+    if (selected >= 0 && (!cameraEnvelopeClear(c, cell, c.armLen, sr, su, _castRef)
+        || c.armLen > selected)) {
+      c.armLen = selected;
+      c.armGuard = true;
+      c.armFloorEmergency = normal < 0;
+    }
+    // S49/S50 flags describe the emitted pose, not merely the transition into it.  A valid
+    // below-floor pose must carry both flags on every frame for independent auditability.
+    if (c.armLen < floor - 1e-9 && normal < 0 && emergency >= 0) {
+      c.armGuard = true;
+      c.armFloorEmergency = true;
     }
   }
   c.dist = c.armLen;
@@ -923,7 +932,7 @@ function greatestClearArm(c, cell, lo, hi, sr, su, castRef) {
   if (hi < lo) return -1;
   // Authored collision features are no thinner than 5 cm. Half that width cannot skip a
   // complete authored clear interval, while keeping the exceptional same-frame search bounded.
-  const step = 0.025;
+  const step = 0.005;
   let blockedAbove = hi + step;
   for (let len = hi; len >= lo; len -= step) {
     const candidate = len < lo ? lo : len;
@@ -941,6 +950,28 @@ function greatestClearArm(c, cell, lo, hi, sr, su, castRef) {
     return Math.max(lo, a - 1e-5);
   }
   return cameraEnvelopeClear(c, cell, lo, sr, su, castRef) ? lo : -1;
+}
+
+/** Greatest point in the clear interval connected to the pivot.  A blocked sample terminates
+ * the interval; the camera is never allowed to teleport to a clear pocket beyond a wall. */
+function pivotConnectedClearTop(c, cell, hi, sr, su, castRef) {
+  const step = 0.005;
+  let last = 0;
+  if (!cameraEnvelopeClear(c, cell, 0, sr, su, castRef)) return -1;
+  for (let len = step; len <= hi + 1e-12; len += step) {
+    const candidate = Math.min(len, hi);
+    if (!cameraEnvelopeClear(c, cell, candidate, sr, su, castRef)) {
+      let a = last, b = candidate;
+      while (b - a > 0.001) {
+        const mid = (a + b) * 0.5;
+        if (cameraEnvelopeClear(c, cell, mid, sr, su, castRef)) a = mid; else b = mid;
+      }
+      return Math.max(0, a - 1e-5);
+    }
+    last = candidate;
+    if (candidate === hi) break;
+  }
+  return hi;
 }
 
 /** The camera point for a boom of `len`, with the shoulder offset applied at the camera end.
