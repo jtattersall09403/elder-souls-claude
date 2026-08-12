@@ -29,7 +29,7 @@ export const FEATURE_CONSUMERS = Object.freeze({
   palette: ['render/renderer.js', 'setVisualStyleboards'], silhouette: ['render/exterior.js', 'silhouette'],
   architecture: ['render/exterior.js', 'architecture_kit'], creature: ['render/renderer.js', 'RACE_TINT'],
   composition: ['world/province.js', 'SIGNATURE_KINDS'], weirdness: ['world/province.js', 'inexplicable_element'],
-  mood: ['world/province.js', 'atmosphere_response'], flora: ['world/province.js', 'props.cover.shape'],
+  mood: ['render/visual-foundation.js', 'board.atmosphere_response'], flora: ['world/province.js', 'props.cover.shape'],
   artMaterials: ['world/province.js', 'dominant_materials'],
 });
 
@@ -43,7 +43,36 @@ const FAMILY = Object.freeze({
   resin: { roughness: .34, metalness: .04, bump: .18 }, cloth: { roughness: .89, metalness: 0, bump: .16 },
   skin: { roughness: .57, metalness: 0, bump: .14 }, metal: { roughness: .31, metalness: .78, bump: .12 },
   water: { roughness: .12, metalness: .38, bump: .08 },
+  shell: { roughness: .55, metalness: .03, bump: .38 }, thorn: { roughness: .82, metalness: 0, bump: .45 },
+  wet_chitin: { roughness: .26, metalness: .14, bump: .28 },
 });
+
+const FAMILY_COLOUR = Object.freeze({
+  mud:0x443b31, wet_mud:0x253b37, bark:0x453326, leaf:0x3f6549, reed:0x71805b,
+  root:0x4c3028, timber:0x694936, clay:0x98523f, stone:0x62666a, salt:0xc5c4aa,
+  bone:0xd2c39c, chitin:0x654858, resin:0x5b9a78, cloth:0x725f55, skin:0x75875f,
+  metal:0x75828b, water:0x244e58, shell:0xa39172, thorn:0x50372e, wet_chitin:0x3e4d4d,
+});
+
+/** Apply a styleboard to pixels, not metadata. The semantic board controls the material's
+ * dominant/contrast colour, wet/cavity response and shader identity. `amount=0` is the live
+ * sabotage arm used by the W1-30 visual-consumption check. */
+export function consumeStyleboard(mat, board, role='dominant', amount=1) {
+  if (!mat || !board) throw new Error('consumeStyleboard requires a rendered material and board');
+  const family = role === 'contrast' ? board.contrast_material : board.dominant_materials[role === 'secondary' ? 1 : 0];
+  const target = new THREE.Color(FAMILY_COLOUR[family] ?? 0xff00ff);
+  if (!mat.userData.preStyleColour) mat.userData.preStyleColour = mat.color?.getHex();
+  if (mat.color) mat.color.set(mat.userData.preStyleColour).lerp(target, Math.max(0,Math.min(1,amount)) * .62);
+  const wet = /rain|wet|beaded|gloss/i.test(board.atmosphere_response);
+  if (Number.isFinite(mat.roughness)) mat.roughness = Math.max(.18, mat.roughness * (wet ? .62 : .9));
+  if (Number.isFinite(mat.aoMapIntensity)) mat.aoMapIntensity = wet ? .78 : .58;
+  mat.userData.styleboard = { id:board.id, family, role, silhouette_motif:board.silhouette_motif,
+    inexplicable_element:board.inexplicable_element, atmosphere_response:board.atmosphere_response,
+    visibleMix:+amount };
+  mat.name += `:style-${board.id}-${family}`;
+  mat.needsUpdate = true;
+  return mat;
+}
 
 const mapCache = new Map();
 function hash(x, y, seed) {

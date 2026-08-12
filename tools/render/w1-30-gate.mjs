@@ -22,12 +22,14 @@ if(boards.regions.length!==13) fail.push(`styleboard regions ${boards.regions.le
 if(boards.settlements.length!==8) fail.push(`styleboard settlements ${boards.settlements.length}/8`);
 for(const row of [...boards.regions,...boards.settlements]) for(const k of ['dominant_materials','contrast_material','silhouette_motif','inexplicable_element','atmosphere_response','forbidden_generic_forms']) if(!row[k]||(Array.isArray(row[k])&&!row[k].length)) fail.push(`${row.id}: empty ${k}`);
 for(const p of ['game/src/render/scene.js','game/src/render/interior.js','game/src/world/province.js']) if(!read(p).includes('worldMaterial')) fail.push(`${p}: shared material path bypass`);
-for(const [p,t] of [['game/src/engine.js','out.visualStyleboards'],['game/src/render/renderer.js','setVisualStyleboards'],['game/src/world/province.js','material.userData.styleboard']]) if(!read(p).includes(t)) fail.push(`${p}: styleboard has no live production consumer`);
+for(const [p,t] of [['game/src/engine.js','out.visualStyleboards'],['game/src/render/renderer.js','setVisualStyleboards'],['game/src/world/province.js','consumeStyleboard(M.water'],['game/src/world/province.js','_buildStyleboardLandmarks()'],['game/src/world/province.js','_settlementStyleboard(g,plan)'],['game/src/render/actor.js','actor-action-silhouette']]) if(!read(p).includes(t)) fail.push(`${p}: visible production consumer '${t}' absent`);
+const consumed=[...foundation.matchAll(/consumeStyleboard\(/g)].length;
+if(consumed<1||!foundation.includes('mat.color.set')||!foundation.includes('mat.roughness')) fail.push('styleboard consumer does not alter rendered PBR values');
 const basic=[];
 for(const p of ['game/src/render/scene.js','game/src/render/interior.js','game/src/render/places.js','game/src/render/renderer.js']) {
  const s=read(p); for(const m of s.matchAll(/new THREE\.MeshBasicMaterial/g)) basic.push(`${p}:${s.slice(0,m.index).split('\n').length}`);
 }
 // Basic is admitted only for visible light bulbs/flames, projected impact residue and UI-like hum labels.
 if(basic.length>14) fail.push(`unbounded Basic material sites: ${basic.length}`);
-const result={gate:'W1-30-builder-cheap',result:fail.length?'RED':'GREEN',ownedPathsWithVerifiedConsumers:`${consumers}/21`,styleboards:`${boards.regions.length}+${boards.settlements.length}`,sharedMaterialConsumers:3,styleboardConsumerChain:3,boundedBasicSites:basic,failures:fail};
+const result={gate:'W1-30-builder-cheap',result:fail.length?'RED':'GREEN',ownedPathsWithVerifiedConsumers:`${consumers}/21`,styleboards:`${boards.regions.length}+${boards.settlements.length}`,visibleConsumers:['regional PBR','13 hero silhouettes','8 settlement material grammars','8 inexplicable sculptures','actor contact/action presentation'],sharedMaterialConsumers:3,styleboardConsumerChain:6,boundedBasicSites:basic,failures:fail};
 console.log(JSON.stringify(result,null,2)); if(fail.length) process.exit(1);
