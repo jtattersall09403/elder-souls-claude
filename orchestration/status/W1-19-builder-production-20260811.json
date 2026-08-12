@@ -2,9 +2,9 @@
   "task_id": "W1-19-builder-production-20260811",
   "piece_id": "W1-19",
   "role": "builder",
-  "status": "INCOMPLETE_BUILDER_DEFECT",
-  "base_commit": "ce10b0a",
-  "branch": "work (latest merged codex/wave1-build-experiment state)",
+  "status": "IN_PROGRESS",
+  "base_commit": "ff295fdd76eab3f50e298f0b392510c6ed292101",
+  "branch": "codex/w1-19-final-production",
   "plan": "orchestration/plans/W1-19.md",
   "files_touched": [
     "tools/quests/mainline-chain-floor.mjs",
@@ -14,18 +14,23 @@
     "evidence/W1-19/builder-delivery.md",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "files_claimed": [],
-  "next_step": "Rerun the Q-MAIN-07 checkpoint \u2192 Q-MAIN-08 proof after the newly added connected-grid fallback; the first post-repair proof rejected the original water shoulder correctly but then died because an encounter with no safe single-shoulder candidate remained on the road. The connected-grid fallback is implemented and syntax/fixture checks pass, but its long production rerun was not completed.",
+  "files_claimed": [
+    "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/validate-mainline-checkpoint.mjs",
+    "evidence/W1-19/",
+    "orchestration/status/W1-19-builder-production-20260811.json"
+  ],
+  "next_step": "Resume Q-MAIN-08 diagnosis from the ignored production checkpoint reports/runs/W1-19-production/after-pop-0115.json (sha256:b966acbf618cd183351ed2c2cbf2e1475d4ebcd12d4cbd89982505fddd3ef1b0). It was reached by 357.5 m ordinary movement with zero teleports/deaths and crossed the formerly blocking shallow mire, but has 11.712/300 HP. The current three-flask resume sequence reports recovery_heals=3 yet leaves walkPath at 0 m/stuck; diagnose the post-heal locomotion state first, then continue to pop-0119 and Archon. If moving to another machine, this ignored checkpoint must be copied separately or regenerate it with the recorded stop-at-waypoint command.",
   "gate_accounting": {
-    "A": "INCOMPLETE: the scheduled archon-inn approach now uses its fitted public continuity spawn; the next clean rerun stopped earlier on a water-mired encounter shoulder, so Q-MAIN-08 remains incomplete",
+    "A": "INCOMPLETE: Q-MAIN-08 remains incomplete. A legitimate post-pop-0115 checkpoint now proves the connected shallow-mire route with zero death/teleport; the next causal defect is a post-flask locomotion stall from that 11.712 HP checkpoint",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "MERGED EVIDENCE RETAINED"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-final",
-    "outcome": "FAIL: segment validation rejected unsafe deep-water shoulders and selected a safe segmented alternative for pop-0025; pop-0026 had no safe one-waypoint alternative, remained on-road, and the player later died/respawned. A connected 2 m grid fallback was then added, but the final long rerun is not complete.",
-    "evidence": "transient /tmp/w119-q8-final/mainline-chain-floor.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production/after-pop-0115.json --stop-after Q-MAIN-08 --walk-max-frames 50000 --save-waypoint 3550,4150 --waypoint-state reports/runs/W1-19-production/before-pop-0119.json --stop-at-waypoint --out reports/runs/W1-19-production/q8-before-pop0119-checkpoint",
+    "outcome": "FAIL: recovery_heals=3, then walkPath moved 0 m and aborted stuck after 1800 frames at [3221.891598, 4360.163614]. This follows a successful checkpoint capture that walked 357.5 m, crossed 486 mired frames using production struggle, and recorded zero teleports, zero deaths, longest stuck 12 frames and worst off-path 0.31 m. Salt-storm/crater exercise is not a W1-19 governing-plan requirement and has been removed from this continuation's acceptance scope by owner direction.",
+    "evidence": "ignored persistent reports/runs/W1-19-production/{q8-after-pop0115-checkpoint,q8-before-pop0119-checkpoint}/mainline-chain-floor.json"
   }
 }
