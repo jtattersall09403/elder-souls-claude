@@ -10,17 +10,17 @@
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
   "files_claimed": [],
-  "next_step": "Resume from the clean Q-MAIN-07 checkpoint and complete the active-storm Q-MAIN-08 rerun; the current 70 m detour reached Archon without the prior pop-0119 death, but after the long journey the harbourmaster was scheduled inside archon-inn and the production door approach stuck 12.38 m away.",
+  "next_step": "Continue the required causal loop from the clean Q-MAIN-07 checkpoint. The Archon door-side defect is repaired, but the fresh bounded run first failed earlier: a Blackrose-to-Archon detour entered 0.62 m water and the ordinary walker aborted mired before reaching the crater or Archon. Q-MAIN-08 and active-storm crater proof remain incomplete.",
   "gate_accounting": {
-    "A": "INCOMPLETE: current 70 m detour avoided the recorded pop-0119 death, but Q-MAIN-08 stopped at the scheduled archon-inn door approach",
+    "A": "INCOMPLETE: the scheduled archon-inn approach now uses its fitted public continuity spawn; the next clean rerun stopped earlier on a water-mired encounter shoulder, so Q-MAIN-08 remains incomplete",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "MERGED EVIDENCE RETAINED"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state /tmp/w119-current-q7c/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-70 --json",
-    "outcome": "FAIL at Archon: no death/respawn at pop-0119 under the shipped 70 m detour; elapsed production time placed harbourmaster-cuiro-vaneth on the archon-inn schedule, whose door approach aborted stuck at 12.38 m. Weather proof and Q-MAIN-08 completion remain incomplete.",
-    "evidence": "transient /tmp/w119-q8-70/mainline-chain-floor.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state /tmp/w119-q7-checkpoint/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-closure --json",
+    "outcome": "FAIL before crater/Archon: no teleport or violent resolution; the route covered 2,136.2 m then aborted mired at [2949.95, 4760.84]. The trace identified a 0.621 m encounter shoulder as the first causal failure. Door-side targeting is repaired but not yet reached in this rerun; weather proof and Q-MAIN-08 completion remain incomplete.",
+    "evidence": "transient /tmp/w119-q8-closure/mainline-chain-floor.json"
   }
 }

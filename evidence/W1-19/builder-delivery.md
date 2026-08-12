@@ -82,3 +82,21 @@ schedule, and ordinary movement toward that interior's production door stopped a
 12.38 m from the target. The active-storm shelter predicate and Q-MAIN-08 completion therefore
 remain unproven; Gates A–C remain incomplete. The compact reproduction command and exact outcome
 are recorded in the W1-19 production status; large traces remain transient under `/tmp`.
+
+## 2026-08-12 Archon door repair and next causal failure
+
+The scheduled harbourmaster diagnosis was confirmed against shipped data: Cuiro Vaneth is at his
+public guild-office post from 07:00–19:00 and in `archon-inn` otherwise. The inn's fitted exterior
+door is `[3811.296, 3.42, 3854.739]`; its public continuity spawn is
+`[3812.296, 3.42, 3854.737]`, while the old runner targeted the pre-fit facade anchor
+`[3809.47, 3.42, 3852.57]` inside collision. Scheduled entry now approaches the public continuity
+spawn and only then uses the shipped 1.5 m interaction reach. The same production-input doorway
+path also now retries an exterior press only after closing a legitimately opened nearby dialogue
+surface; it never invokes the harness transition verb.
+
+The next clean Q-MAIN-08 rerun did not reach Archon and is not claimed green. It ordinary-walked
+2,136.2 m with zero teleports and zero defensive swings, then aborted `mired` at
+`[2949.95, 0.255, 4760.84]`; the first causal defect was an encounter detour shoulder accepted at
+0.621 m water depth. Candidate encounter shoulders are now restricted to at most 0.4 m water.
+A wider speculative crater detour proved invalid from this Blackrose checkpoint and was rejected.
+Active-storm shelter proof and Q-MAIN-08 production completion remain unestablished.
