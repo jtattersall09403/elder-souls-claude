@@ -9,7 +9,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
-import { worldMaterial } from '../render/visual-foundation.js';
+import { worldMaterial, consumeStyleboard } from '../render/visual-foundation.js';
 import { noise2, fbm, ridged, hash2, clamp, smoothstep, lerp } from './noise.js';
 import { arrangeAt } from './arrangement.js';
 import { SIGNATURE_KINDS } from './signature.js';
@@ -151,20 +151,57 @@ export class Province {
    * the board supplies material/silhouette/weirdness intent for census and live perturbation.
    */
   setVisualStyleboards(boards) {
+    this.visualStyleboards = boards;
     const used = new Set();
     for (let i = 0; i < this.field.regions.length; i++) {
       const region = this.field.regions[i], board = boards.regions.get(region.id);
       if (!board) throw new Error(`W1-30 styleboard has no production region '${region.id}'`);
       used.add(region.id);
-      for (const material of Object.values(this.regionMats[i])) material.userData.styleboard = {
-        id: board.id, dominant_materials: board.dominant_materials.slice(),
-        silhouette_motif: board.silhouette_motif,
-        inexplicable_element: board.inexplicable_element,
-        atmosphere_response: board.atmosphere_response,
-      };
+      const M=this.regionMats[i];
+      consumeStyleboard(M.water,board,'dominant'); consumeStyleboard(M.trunk,board,'secondary');
+      consumeStyleboard(M.crown,board,'contrast'); consumeStyleboard(M.under,board,'secondary');
+      consumeStyleboard(M.rock,board,'contrast'); consumeStyleboard(M.cover,board,'dominant');
     }
+    this._buildStyleboardLandmarks();
     this.group.userData.visualStyleboards = { regions: [...used].sort(), settlements: [...boards.settlements.keys()].sort() };
     return this.group.userData.visualStyleboards;
+  }
+
+  /** One unmistakable authored silhouette per region, readable in the far mesh and made only
+   * from pooled procedural geometry. Its branching, lean, crown and material are board-driven. */
+  _buildStyleboardLandmarks() {
+    if (this.styleboardLandmarks) this.group.remove(this.styleboardLandmarks);
+    const root=new THREE.Group(); root.name='w1-30-styleboard-landmarks';
+    for (let i=0;i<this.field.regions.length;i++) {
+      const r=this.field.regions[i], b=this.visualStyleboards.regions.get(r.id);
+      const [cx,cz]=r.centroid_m, seed=[...b.silhouette_motif].reduce((a,c)=>a+c.charCodeAt(0),0);
+      // Canonical region cameras sit on the centroid. Place the hero in their middle distance,
+      // never around the lens (the first live capture correctly exposed that concrete defect).
+      const a=(seed%360)*Math.PI/180, x=cx+Math.cos(a)*72, z=cz+Math.sin(a)*72, y=this.field.heightAt(x,z);
+      const g=new THREE.Group(); g.name=`style-landmark:${r.id}:${b.silhouette_motif}`;
+      const main=worldMaterial(b.dominant_materials[1],{color:0xffffff});
+      const accent=worldMaterial(b.contrast_material,{color:0xffffff,emissive:seed%3===0?0x183f32:0x000000,emissiveIntensity:.55});
+      consumeStyleboard(main,b,'secondary'); consumeStyleboard(accent,b,'contrast');
+      const height=16+(seed%13), arms=3+(seed%4);
+      for(let n=0;n<arms;n++) {
+        const h=height*(.58+n/arms*.42), stem=new THREE.Mesh(new THREE.CylinderGeometry(.28+.08*n,1.25-n*.09,h,6),main);
+        stem.position.set((n-arms/2)*1.15,h/2,Math.sin(seed+n)*1.5); stem.rotation.z=(n-arms/2)*.075; stem.castShadow=stem.receiveShadow=true; g.add(stem);
+        const crown=new THREE.Mesh(new THREE.IcosahedronGeometry(1.5+n*.22,1),accent);
+        crown.scale.set(1.8,.38+((seed+n)%4)*.13,1); crown.position.set(stem.position.x,h,stem.position.z); crown.castShadow=true; g.add(crown);
+      }
+      g.position.set(x,y,z); g.userData.styleboard={id:b.id,inexplicable_element:b.inexplicable_element,visible:true}; root.add(g);
+    }
+    this.styleboardLandmarks=root; this.group.add(root);
+  }
+
+  _settlementStyleboard(g, plan) {
+    const b=this.visualStyleboards?.settlements.get(plan.id); if(!b) return;
+    let index=0; g.traverse(o=>{ if(!o.isMesh||!o.material)return; o.material=o.material.clone(); consumeStyleboard(o.material,b,index++%5===0?'contrast':index%2?'dominant':'secondary',.72); });
+    const mat=worldMaterial(b.contrast_material,{emissive:0x24180f,emissiveIntensity:.45}); consumeStyleboard(mat,b,'contrast');
+    const weird=new THREE.Group(); weird.name=`inexplicable:${plan.id}:${b.inexplicable_element}`;
+    const seed=[...b.inexplicable_element].reduce((a,c)=>a+c.charCodeAt(0),0), H=9+seed%8;
+    for(let i=0;i<5;i++){ const m=new THREE.Mesh(new THREE.TorusGeometry(1.2+i*.34,.16+i*.025,6,12),mat); m.position.y=1.4+i*H/5; m.rotation.set(Math.PI/2,(seed%7)*.09,i*.47); m.castShadow=true; weird.add(m); }
+    const [x,,z]=plan.pos; weird.position.set(x,this._meshY(x,z),z); weird.userData.styleboard={id:b.id,visible:true}; g.add(weird);
   }
 
   // ---- the whole province, coarse ------------------------------------------------------------
@@ -927,6 +964,7 @@ export class Province {
       const g = new THREE.Group();
       g.name = `settlement:${plan.id}`;
       const summary = buildSettlementExterior(g, plan, (x, z) => this._meshY(x, z));
+      this._settlementStyleboard(g,plan);
       // The plan's own inconsistencies, carried on the summary rather than swallowed: a town
       // whose offsets place buildings closer together than the shrink floor allows still
       // interpenetrates, and a probe should be able to see how often.

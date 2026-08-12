@@ -628,7 +628,13 @@ function weaponMesh(w, mats) {
  */
 export function makeRiggedActor(mats, tintHex, skinHex) {
   const g = new THREE.Group();
-  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false };
+  // Contact grounding and action readability are renderer-owned presentation. They never feed
+  // back into the fixed-step rig, sockets, hit windows or camera.
+  const shadow=new THREE.Mesh(new THREE.CircleGeometry(.42,20),new THREE.MeshBasicMaterial({color:0x080b09,transparent:true,opacity:.34,depthWrite:false}));
+  shadow.name='actor-contact-shadow'; shadow.rotation.x=-Math.PI/2; shadow.renderOrder=2; g.add(shadow);
+  const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.025,5,24,Math.PI*1.35),new THREE.MeshBasicMaterial({color:0xa8d8b0,transparent:true,opacity:.0,depthWrite:false}));
+  action.name='actor-action-silhouette'; action.rotation.x=Math.PI/2; action.visible=false; g.add(action);
+  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action };
   return g;
 }
 
@@ -658,6 +664,14 @@ export function poseFromRig(group, body, water) {
     group.add(A.built.group);
   }
   const S = A.built;
+  const root=body.rig.world[0], groundY=(body.pos&&body.pos[1])||0;
+  if(A.shadow&&root){ const air=Math.max(0,root[10]-groundY); A.shadow.position.set(root[9],groundY+.018,root[11]); A.shadow.scale.setScalar(Math.max(.42,1-air*.22)); A.shadow.material.opacity=Math.max(.08,.34-air*.12); }
+  if(A.action&&root){
+    const attacking=!!body.move && (body.hitboxActive || /ROLL|BLOCK|STAGGER|RECOVERY/.test(body.state));
+    A.action.visible=attacking; A.action.material.opacity=body.hitboxActive ? .42 : .18;
+    A.action.position.set(root[9],root[10]+.82,root[11]); A.action.rotation.z=(body.animFrame||0)*.085;
+    A.action.scale.setScalar(body.airborne?1.3:1);
+  }
   if (S.waterU) {
     S.waterU.uWaterY.value = water ? water.y : -9999;
     S.waterU.uWetness.value = water ? water.wetness : 0;
