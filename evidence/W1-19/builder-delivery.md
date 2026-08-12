@@ -36,3 +36,17 @@ through Q-MAIN-07, reached 3,390.4 m of the Blackrose-to-Archon journey, then di
 fails Q-MAIN-08 and `intended-q8-block.json` retains the text-only reproduction. Builder-owned work
 is **not complete**: the runner must consume the shipped glassed-crater shelter counter during the
 storm before both chains and the remaining bounded gates can honestly run.
+
+## Crater shelter continuation
+
+The production route now discovers the live Stone Wastes `glassed_crater` population, leaves the
+road through ordinary movement, descends below natural terrain, records the live salt-storm row,
+waits 600 frames with player healing input available, and rejoins the authored road without combat.
+The crater terrain's former 0.60R floor made the counter a one-way trap; the widened 0.20R grade
+preserves its glass floor and rim while making the shipped counter continuously walkable. The
+bounded route probe walked into and back out of the changed crater with zero discontinuities and
+`defensive_swings: 0`. The earlier retained run is the delete-fix arm: it reached the old centre,
+then aborted `stuck` after 32.3 m on exit.
+
+The entire builder allocation has not yet been demonstrated at one final commit; no completion
+claim is made by this continuation evidence.
