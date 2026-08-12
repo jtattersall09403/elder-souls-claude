@@ -7,19 +7,27 @@
   "branch": "codex/wave1-build-experiment",
   "plan": "orchestration/plans/W1-19.md",
   "files_touched": [
-    "orchestration/status/W1-19-builder-production-20260811.json",
-    "game/src/engine.js",
-    "tools/quests/mainline-chain-floor.mjs",
     "evidence/W1-19/",
-    "game/src/world/signature.js"
+    "evidence/W1-19/builder-delivery.md",
+    "evidence/W1-19/intended-q8-block.json",
+    "game/data/npcs/mainline.json",
+    "game/src/engine.js",
+    "game/src/world/signature.js",
+    "orchestration/status/W1-19-builder-production-20260811.json",
+    "tools/quests/mainline-chain-floor.mjs"
   ],
   "files_claimed": [],
-  "next_step": "Rerun Q-MAIN-08 with the walkable radius-15 crater shelter, then finish intended/backpath chains and all remaining bounded builder gates; the full allocation is not yet proven.",
+  "next_step": "Rerun true Q-MAIN-07 checkpoint through Q-MAIN-08 with body-count-scaled road encounter detours; current first failure remains pop-0119 death at 3583,4161 before this latest adjustment.",
   "gate_accounting": {
     "A": "INCOMPLETE: cold production Q-MAIN-01..07 complete; Q-MAIN-08 still blocked by salt-storm death/respawn near Archon after survival/navigation repair",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "MERGED EVIDENCE RETAINED"
+  },
+  "latest_diagnostic": {
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state /tmp/w119-q7-fresh2/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 220000 --out /tmp/w119-q8-detour35 --json",
+    "outcome": "FAIL death-respawn at pop-0119; 35m clearance insufficient for 4-body gank; latest code scales 3+ body clearance to 70m",
+    "evidence": "transient /tmp/w119-q8-detour35/mainline-chain-floor.json"
   }
 }
