@@ -145,6 +145,7 @@ export class Renderer {
     textRegister.instrument(this.title.ctx, 'title');
     textRegister.instrument(this.menus.ctx, 'menus');
     this.lastStats = { drawCalls: 0, triangles: 0, programs: 0, geometries: 0, textures: 0 };
+    this.prewarmState = { requested: false, completed: false, outsideCombat: true, error: null };
     this._look = new THREE.Vector3();
     this._focus = new THREE.Vector3();
     this.setSize(canvas.width, canvas.height);
@@ -217,6 +218,21 @@ export class Renderer {
       this.compositeMaterial.uniforms.uResolution.value.set(w,h);
     }
     return { width: w, height: h };
+  }
+
+  /** Compile the currently reachable production programs during load/settle, never on an attack
+   * frame.  WebGL has no retained temporal history in this renderer; resize/cell/teleport state
+   * therefore has no stale accumulation to invalidate, while render targets are resized here. */
+  prewarmShaders() {
+    this.prewarmState.requested = true;
+    try {
+      this.three.compile(this.scene, this.camera);
+      this.prewarmState.completed = true;
+      this.prewarmState.error = null;
+    } catch (e) {
+      this.prewarmState.error = String(e && e.message || e);
+    }
+    return { ...this.prewarmState };
   }
 
   _buildCompositor(w,h) {
@@ -703,11 +719,12 @@ export class Renderer {
       }
     }
     const remain = W.wetUntil - frame;
-    if (remain <= 0) return null;
+    const groundAt = (x, z) => this.groundResolver ? this.groundResolver(x, z) : this.groundAt(x, z, undefined, this.cell);
+    if (remain <= 0) return { y: -9999, wetness: 0, groundAt };
     // Once ashore the band follows the body rather than remaining at its old world elevation;
     // otherwise stepping up a bank makes every vertex instantly clear the supposedly wet band.
     const y = band === 'W0' ? sim.player.pos[1] + W.bodyOffset : W.y;
-    return { y, wetness: remain >= FADE_FRAMES ? 1 : remain / FADE_FRAMES };
+    return { y, wetness: remain >= FADE_FRAMES ? 1 : remain / FADE_FRAMES, groundAt };
   }
 
   /**
@@ -920,6 +937,8 @@ export class Renderer {
       featureConsumers: {...FEATURE_CONSUMERS},
       qualitySwitches:{...this.quality},
       compositor:{boundedTargets:1,worldBeforeUI:true,depthIntegratedAO:true,edgeAA:true},
+      prewarm:{...this.prewarmState},
+      temporalHistory:{retained:false,invalidation:'not applicable; compositor is spatial'},
       styleboardsConsumed: this.scene.userData.visualStyleboards || null,
     };
   }

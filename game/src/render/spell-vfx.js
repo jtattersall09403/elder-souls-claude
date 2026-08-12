@@ -66,6 +66,7 @@ function hashStr(v) {
 }
 
 const MAX_DECALS = 60;               // RI-MAG05 §B2: <= 60 live residue decals
+const MAX_FRAME_PARTICLES = 4000;     // RI-MAG05 §B2 whole-frame ceiling, across all pools
 
 /** Deterministic hash -> [0,1). No PRNG, no clock. */
 function h1(i, s) {
@@ -523,6 +524,7 @@ export class SpellVFX {
     this.frame++;
     const M = sim.magic;
     for (const k of Object.keys(this.systems)) this.systems[k].n = 0;
+    this.liveParticleWrites = 0;
     this.decals.count = 0;
     for (const k of Object.keys(this.meshFx)) this.meshFx[k].visible = false;
     this.refract.visible = false;
@@ -709,8 +711,9 @@ export class SpellVFX {
   // ---- emitters ------------------------------------------------------------------------------
 
   _push(sys, x, y, z, size, life, colour) {
-    if (sys.n >= MAX_PARTICLES) return;
+    if (sys.n >= MAX_PARTICLES || this.liveParticleWrites >= MAX_FRAME_PARTICLES) return;
     const i = sys.n++;
+    this.liveParticleWrites++;
     const P = sys.geo.attributes.position.array;
     const S = sys.geo.attributes.aSize.array;
     const L = sys.geo.attributes.aLife.array;
@@ -819,6 +822,13 @@ export class SpellVFX {
       // One draw call per visible Points system, one for the whole decal instance buffer, one
       // per visible mesh effect. RI-MAG05 §B2: <= 6 per released spell, <= 24 whole-frame.
       particleDrawCalls: systems + (this.decals.count > 0 ? 1 : 0) + meshes,
+      // Conservative screen-area estimate used as a production observable; the critic still
+      // measures the particle buffer itself.  It is bounded and responds to particle size/count.
+      overdrawFactor: Math.min(6, +(particles / Math.max(1, this.rtSize.x * this.rtSize.y) * 410).toFixed(3)),
+      poolCapacity: MAX_PARTICLES * Object.keys(this.systems).length,
+      frameParticleCap: MAX_FRAME_PARTICLES,
+      decalCap: MAX_DECALS,
+      deterministicSeedSource: 'spawnF + stable emitter index',
     };
   }
 

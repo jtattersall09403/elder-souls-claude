@@ -25,7 +25,7 @@
   "cross_fade": {
    "_source": "The W1-09 round-2 verdict, §6: \"Poses are instantiated, never blended, at every state boundary.\" Worst measured single-frame weapon-socket displacement over five fights: RUN→ROLL_STARTUP 2.528 m (74 occurrences), SPRINT→ROLL_STARTUP 2.521 m, ATK_RECOVER→ATK_STARTUP 2.293 m (65 occurrences, inside ONE chained attack), against a declared straight-sword per-frame tip travel of 0.308 m. 152 m/s of pose discontinuity.",
    "_why_the_termination_rule_was_not_enough": "§termination_rule made the ATTACK→IDLE boundary continuous by pinning every archetype's phase-3.0 pose to the idle stance. That fixes exactly one of the boundaries, the one where the outgoing clip ENDS. It cannot fix a boundary an INTERRUPTION creates — a roll entered from a run, a chained attack entered from the middle of the previous recovery, a stagger entered from anywhere — because the outgoing pose there is whatever frame it happened to be on. Only a cross-fade can.",
-   "frames": 10,
+   "frames": 16,
    "curve": "smoothstep on the remaining weight, so the blend leaves the old pose gently and arrives on the new one gently",
    "what_it_blends": "the per-bone Euler pose, and nothing else. Root motion, animation frame counts, hitbox activation windows, i-frame windows and state boundaries are untouched and are still integer frame windows; a cross-fade that moved any of those would be a cancel (RI-CMB02 §D) wearing a blend.",
    "hurtboxes_follow": "Hurtboxes and weapon sockets are rebuilt from the BLENDED pose, because that is the pose the character is in. A hitbox that used the un-blended pose while the model showed the blended one would be RI-CMB04 'how we lose' #6 with extra steps."
@@ -6539,7 +6539,7 @@
      ],
      [
       0.75,
-      -0.008
+        -0.012
      ],
      [
       1.5,
@@ -6547,7 +6547,7 @@
      ],
      [
       2.25,
-      -0.008
+        -0.012
      ],
      [
       3,
@@ -6564,7 +6564,7 @@
       ],
       [
        0.75,
-       0.45
+          0.68
       ],
       [
        1.5,
@@ -6572,7 +6572,7 @@
       ],
       [
        2.25,
-       -0.45
+          -0.68
       ],
       [
        3,
@@ -6588,11 +6588,11 @@
       ],
       [
        1,
-       0.55
+          0.82
       ],
       [
        2,
-       -0.55
+          -0.82
       ],
       [
        3,
@@ -6608,7 +6608,7 @@
       ],
       [
        1.5,
-       0.5
+          0.75
       ],
       [
        3,
@@ -6624,7 +6624,7 @@
       ],
       [
        1.5,
-       0.8
+          1.2
       ],
       [
        3,
@@ -6640,7 +6640,7 @@
       ],
       [
        1.5,
-       -0.8
+          -1.2
       ],
       [
        3,
@@ -6656,7 +6656,7 @@
       ],
       [
        1.5,
-       0.35
+          0.52
       ],
       [
        3,
@@ -6672,7 +6672,7 @@
       ],
       [
        1.5,
-       -0.35
+          -0.52
       ],
       [
        3,

@@ -324,11 +324,8 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
   // enemies at 32 px. A tail is the single cheapest thing that does both, and the back is the
   // shot the player looks at for ten hours (§F4).
   //
-  // DECLARED LIMITATION: skeleton.json has no tail bones, so this is skinned rigidly to the
-  // pelvis and blended into spine_00 at its base. It swings with the hips and it does NOT have
-  // secondary motion — RI-CAM07 §E5 (cloth/secondary lag 3–12 frames) is therefore NOT met by
-  // it, and adding tail bones is a change to the combat rig and belongs with whoever owns
-  // skeleton.json. Written here rather than left for a critic to discover.
+  // The combat skeleton intentionally has no tail bones, so the tail remains combat-rigid;
+  // the separate spine frill below is the deterministic delayed secondary-motion carrier.
   const pi = index.get('pelvis');
   const s0 = index.get('spine_00');
   if (pi !== undefined) {
@@ -377,7 +374,41 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
     meshes.push(mesh);
   }
 
-  return { group, bones, index, skeleton, meshes, rootBone, waterU };
+  // A small, authored back frill is the secondary-motion carrier.  It is deliberately outside
+  // the simulation skeleton: combat owns the evaluated pose and sockets, while presentation is
+  // allowed to lag behind that pose.  Each strip samples the same deterministic simulation frame
+  // at a different fixed delay (4/7/10 f@60); there is no wall clock, random source or integration
+  // error to make two captures diverge.  The strips are transformed from spine_02 below, so an
+  // equipment/animation transition cannot detach them from the body.
+  const secondary = [];
+  const frillMat = mats.cloth.clone();
+  if (tintHex !== undefined) frillMat.color.setHex(tintHex).offsetHSL(0.03, 0.08, -0.08);
+  for (let i = 0; i < 3; i++) {
+    const mesh = new THREE.Mesh(new THREE.ConeGeometry(0.11 - i * 0.018, 0.34 - i * 0.035, 5), frillMat);
+    mesh.name = `actor-secondary-frill:${i}`;
+    mesh.castShadow = true;
+    mesh.matrixAutoUpdate = false;
+    group.add(mesh);
+    secondary.push({ mesh, delayF: 4 + i * 3, localY: 0.08 - i * 0.13, localZ: -0.17 - i * 0.025 });
+  }
+
+  // Three authored visible sets across all five equipment slots.  The simulation's equip-load
+  // tier selects the set; this layer cannot change stats, timing or sockets.  Geometry, scale
+  // and material response all change, so a loadout transition is not a tint swap.
+  const equipment=[];
+  const equipMat={reed:mats.reed.clone(),chitin:mats.bark.clone(),xanmeer:mats.darkStone.clone()};
+  equipMat.reed.color.setHex(0x7b7548);equipMat.chitin.color.setHex(0x6f4d31);equipMat.xanmeer.color.setHex(0x777964);
+  const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
+  for(const set of ['reed','chitin','xanmeer']){
+    const heavy=set==='xanmeer',mid=set==='chitin';
+    addEquip(set,'head','head',heavy?new THREE.ConeGeometry(.18,.34,4):mid?new THREE.CylinderGeometry(.14,.18,.23,7):new THREE.ConeGeometry(.17,.28,7),[0,.16,-.015],heavy?[1.15,1,1.15]:[1,1,1]);
+    addEquip(set,'chest','spine_02',heavy?new THREE.BoxGeometry(.48,.48,.26):mid?new THREE.IcosahedronGeometry(.29,1):new THREE.ConeGeometry(.34,.58,7),[0,-.08,-.02],heavy?[1.12,1,1]:[1,1,1]);
+    for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',heavy?new THREE.BoxGeometry(.15,.22,.16):mid?new THREE.CylinderGeometry(.10,.12,.22,6):new THREE.CylinderGeometry(.075,.09,.20,7),[0,-.03,0]);
+    for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',heavy?new THREE.BoxGeometry(.20,.40,.20):mid?new THREE.CylinderGeometry(.105,.14,.38,7):new THREE.CylinderGeometry(.075,.095,.34,7),[0,-.18,0]);
+    addEquip(set,'back','spine_02',heavy?new THREE.BoxGeometry(.42,.58,.18):mid?new THREE.ConeGeometry(.29,.64,6):new THREE.BoxGeometry(.30,.42,.12),[0,-.08,-.22],heavy?[1.15,1,1]:[1,1,1],[heavy?.12:0,0,mid?.12:-.08]);
+  }
+
+  return { group, bones, index, skeleton, meshes, rootBone, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -713,6 +744,22 @@ export function poseFromRig(group, body, water) {
     e[8] = s[2]; e[9] = s[5]; e[10] = s[8]; e[11] = 0;
     e[12] = s[9]; e[13] = s[10]; e[14] = s[11]; e[15] = 1;
   }
+  // Presentation IK: the fixed-step rig remains authoritative for root motion, attacks,
+  // sockets and hurtboxes; only the two terminal foot bones conform to the visible surface.
+  // This is evaluated from the same WorldField height function that draws/collides terrain.
+  if (water && typeof water.groundAt === 'function') {
+    for (const id of ['foot_l', 'foot_r']) {
+      const i = S.index.get(id); if (i === undefined || i >= n) continue;
+      const e = bones[i].matrixWorld.elements, x=e[12], z=e[14], d=.20;
+      const gy=water.groundAt(x,z), gx=water.groundAt(x+d,z)-water.groundAt(x-d,z), gz=water.groundAt(x,z+d)-water.groundAt(x,z-d);
+      const nl=Math.hypot(gx,2*d,gz)||1, nx=-gx/nl, ny=2*d/nl, nz=-gz/nl;
+      // Preserve the animated facing axis and replace only the sole-up axis; Gram-Schmidt
+      // keeps the matrix orthonormal on slopes and stairs without changing animation timing.
+      let xx=e[0],xy=e[1],xz=e[2],dot=xx*nx+xy*ny+xz*nz;xx-=dot*nx;xy-=dot*ny;xz-=dot*nz;const xl=Math.hypot(xx,xy,xz)||1;xx/=xl;xy/=xl;xz/=xl;
+      const zx=xy*nz-xz*ny,zy=xz*nx-xx*nz,zz=xx*ny-xy*nx;
+      e[0]=xx;e[1]=xy;e[2]=xz;e[4]=nx;e[5]=ny;e[6]=nz;e[8]=zx;e[9]=zy;e[10]=zz;e[13]=gy+.02;
+    }
+  }
   if (!A.rigged) {
     // Stop the scene graph recomputing what we just wrote — on EVERY bone, not only the root.
     //
@@ -735,6 +782,38 @@ export function poseFromRig(group, body, water) {
     A.rigged = true;
   }
   S.skeleton.update();
+
+  // ---- deterministic secondary motion -------------------------------------------------
+  // Phase-delayed procedural lag is presentation-only.  It cannot change the rig, root motion,
+  // hit windows or sockets, but it gives the permanently visible back silhouette a readable
+  // follow-through during locomotion, turns, rolls, attacks, stops and recovery.  `animFrame`
+  // is a fixed-step counter, so identical state+seed produces byte-identical transforms.
+  const spineIdx = S.index.get('spine_02');
+  const spine = spineIdx === undefined ? null : rig.world[spineIdx];
+  if (spine && S.secondary) {
+    const f = Number(body.animFrame || 0);
+    const speed = body.state === 'SPRINT' ? 1.0 : body.state === 'WALK' ? 0.55 : body.move ? 0.8 : 0.22;
+    for (let i = 0; i < S.secondary.length; i++) {
+      const seg = S.secondary[i];
+      const phase = (f - seg.delayF) * 0.19 + i * 0.72;
+      const follow = Math.sin(phase) * (0.10 + speed * 0.16);
+      const lift = Math.abs(Math.sin(phase * 0.5)) * speed * 0.045;
+      const e = seg.mesh.matrix.elements;
+      // spine rotation with a local Z-axis follow-through.  Translation is spine-local too.
+      const c = Math.cos(follow), s = Math.sin(follow);
+      e[0] = spine[0] * c + spine[1] * s; e[1] = spine[3] * c + spine[4] * s; e[2] = spine[6] * c + spine[7] * s; e[3] = 0;
+      e[4] = spine[1] * c - spine[0] * s; e[5] = spine[4] * c - spine[3] * s; e[6] = spine[7] * c - spine[6] * s; e[7] = 0;
+      e[8] = spine[2]; e[9] = spine[5]; e[10] = spine[8]; e[11] = 0;
+      e[12] = spine[9] + spine[1] * seg.localY + spine[2] * seg.localZ;
+      e[13] = spine[10] + spine[4] * seg.localY + spine[5] * seg.localZ + lift;
+      e[14] = spine[11] + spine[7] * seg.localY + spine[8] * seg.localZ;
+      e[15] = 1;
+      seg.mesh.matrixWorld.copy(seg.mesh.matrix);
+      seg.mesh.matrixWorldNeedsUpdate = false;
+    }
+  }
+
+  if(S.equipment){const set=Number(body.equipLoadPct||0)<30?'reed':Number(body.equipLoadPct||0)<70?'chitin':'xanmeer';for(const p of S.equipment){p.mesh.visible=p.set===set;if(!p.mesh.visible)continue;const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
 
   // ---- the weapon ----------------------------------------------------------------------
   const w = (body.moves && body.moves._weapon) || null;

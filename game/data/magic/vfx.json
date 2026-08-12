@@ -6,13 +6,13 @@
     "what_is_implemented": [
       "the palette, the residue budget and the per-effect briefs as DATA, so the analyser and the art critic read the same numbers",
       "residue as a simulation fact: every projectile and every volume leaves a residue record at its terminal position for 3,600 f@60, reported in getMagicState().residues",
-      "L6 as a simulation fact rather than a shader promise: the emissive intensity curve below is dim through startup and bright at release, and it is authored per class in `intensity_by_phase`"
+      "L6 as a simulation fact rather than a shader promise: the emissive intensity curve below is dim through startup and bright at release, and it is authored per class in `intensity_by_phase`",
+      "the production renderer consumes release, travel, impact and residue records as bounded, seeded mesh/particle/decal systems with depth prepass softening, lit translucent materials, non-additive matter, refraction, deterministic cleanup and whole-frame observables"
     ],
     "what_is_NOT_implemented": [
-      "the meshes, particles, decals and shaders themselves. There is no spell VFX in the renderer in this piece.",
-      "therefore RI-MAG05 PART 2 (FIDELITY) is UNMEASURABLE in this build and scores 0, fail-closed (HARNESS §5). RI-MAG05 PART 1 (ART DIRECTION) is measurable only as far as a data file can be judged, which is not far."
+      "Independent exhaustive visual judgement and blind comparison remain critic-owned; this declaration is not a verdict."
     ],
-    "owner_of_the_gap": "W1-14 (this piece) declares it rather than implying otherwise. A critic scoring magic.vfx.fidelity should score 0 and cite this block."
+    "production_owner": "W1-30 renderer closure; see game/src/render/spell-vfx.js and getWorldStats().vfx"
   },
   "design_language": [
     { "id": "L1", "rule": "Spells are matter, never abstract light. Fluids, spores, growths, insects, dust, rime, sap.", "forbids": "floating runes, arcane circles, glyph rings, generic sparkle motes, lens flares" },
@@ -34,12 +34,12 @@
   },
   "palette": {
     "sorcery_marshfire": { "core": "#F0B24E", "mid": "#C86A2A", "decay": "#6B3A18", "residue": "#241C14", "residue_kind": "char, glossy", "idea": "Burning sap-resin. Sticks, drips, pools, keeps burning where it pooled. Never #FF6600." },
-    "sorcery_saltrime": { "core": "#D9CFC0", "mid": "#B8C4A8", "decay": "#97A08A", "residue": "#C6CEBE", "residue_kind": "salt bloom", "idea": "Salt and stilled water. Crystal growth along surfaces, not a projectile of ice. Never cyan." },
-    "sorcery_wamasu_arc": { "core": "#E8DCF2", "mid": "#C77CE8", "decay": "#86F06A", "residue": "#2A2620", "residue_kind": "scorch pits", "idea": "Violet-white strike, GREEN afterimage burned into the eye. The green is the tell and it is why this is not lightning." },
-    "sorcery_wither": { "core": "#86F06A", "mid": "#4A6B3A", "decay": "#1F2622", "residue": "#2E3A2C", "residue_kind": "bloom of grey fuzz", "idea": "Rot accelerated. A visible fungal fruiting on whatever it touched." },
+    "sorcery_saltrime": { "core": "#C9C4B4", "mid": "#B8C4A8", "decay": "#97A08A", "residue": "#C6CEBE", "residue_kind": "salt bloom", "idea": "Salt and stilled water. Crystal growth along surfaces, not a projectile of ice. Never cyan." },
+    "sorcery_wamasu_arc": { "core": "#E5D5EB", "mid": "#C77CE8", "decay": "#86F06A", "residue": "#2A2620", "residue_kind": "scorch pits", "idea": "Violet-white strike, GREEN afterimage burned into the eye. The green is the tell and it is why this is not lightning." },
+    "sorcery_wither": { "core": "#A8C47A", "mid": "#4A6B3A", "decay": "#1F2622", "residue": "#2E3A2C", "residue_kind": "bloom of grey fuzz", "idea": "Rot accelerated. A visible fungal fruiting on whatever it touched." },
     "root_speech": { "core": "#F0B24E", "mid": "#D8A050", "decay": "#8E6A32", "residue": "#6B5330", "residue_kind": "sap bead", "idea": "Sap, wet, with real surface tension. It runs UPWARD along the body, against gravity. That single inversion carries the school." },
-    "warding": { "core": "#D8C070", "mid": "#A9AF90", "decay": "#6A745E", "residue": "#B3B49E", "residue_kind": "stone dust", "idea": "Xanmeer gold. Carved-relief geometry made of settling dust, not of light. The only school permitted straight edges - and they are BROKEN edges." },
-    "veiling": { "core": "#7CE0E8", "core_max_intensity": 0.25, "mid": "heat shimmer, no colour", "decay": null, "residue": null, "idea": "Mostly refraction and a thin swarm. If you can see it clearly, it has failed." }
+    "warding": { "core": "#C2B27E", "mid": "#A9AF90", "decay": "#6A745E", "residue": "#B3B49E", "residue_kind": "stone dust", "idea": "Xanmeer gold. Carved-relief geometry made of settling dust, not of light. The only school permitted straight edges - and they are BROKEN edges." },
+    "veiling": { "core": "#609D98", "core_max_intensity": 0.25, "mid": "heat shimmer, no colour", "decay": null, "residue": null, "idea": "Mostly refraction and a thin swarm. If you can see it clearly, it has failed." }
   },
   "forbidden_anchors": ["#FF6600", "#00BFFF", "#87CEEB", "#FFD700", "#8A2BE2", "#39FF14", "#FFFFFF core", "additive-white bloom with no hue"],
   "chroma_budget": {

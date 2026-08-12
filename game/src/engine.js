@@ -470,6 +470,7 @@ export class Engine {
     // selected per named state; the sim step only ever reads it.
     this._buildUI();
     this.cells = buildCells(this.data.cameraCells);
+    this.renderer.groundResolver = (x, z) => this.groundAt(x, z);
     // RI-MTH07. `camera/rig.json` was fetched here and dropped — 97 constants describing the
     // one thing the player looks through, none of them read by anything. This is the call that
     // makes the file govern: it overwrites `CAMERA_CONST`, re-derives the smoothing alphas and
@@ -626,6 +627,10 @@ export class Engine {
     this._applyStartingBody();
     this.applyNamedState(opts.state || 'default');
     this._travelInit();
+    // W1-30: compile the currently reachable material/program set during the load boundary,
+    // before play mode and before any combat frame can begin.  A compile failure is observable
+    // through the renderer census and does not turn boot into an unrecoverable blank screen.
+    this.renderer.prewarmShaders();
     this.loadState_.phase = 'ready';
     this.loadState_.regionsResident = [this.sim.env.region];
     this._boundaryEnd('initial');
@@ -5708,6 +5713,7 @@ export class Engine {
   }
 
   groundAt(x, z) {
+    if (this.sim && this.sim.cellId && this.sim.cell) return groundYInCell(this.sim.cell, Number(x), Number(z));
     if (!this.renderer) return 0;
     return this.renderer.groundAt(x, z, undefined, this.cellFor(this.sim.env));
   }
@@ -7432,6 +7438,20 @@ export class Engine {
 
   // ---- world manipulation ----------------------------------------------------------------
 
+  /** W1-30 production visual-mechanism control; exposed so red proofs perturb live pixels. */
+  setVisualFeature(name, enabled) {
+    return this.renderer.setVisualFeature(String(name), !!enabled);
+  }
+
+  /** Read back the exact renderer mechanisms used by the current frame. */
+  getVisualFeatureState() {
+    return {
+      ...this.renderer.quality,
+      shader_prewarm: { ...this.renderer.shaderPrewarm },
+      history_retained: this.renderer.historyRetained === true,
+    };
+  }
+
   /**
    * WHO IS THIS, as far as seam S5 is concerned. W1-13 round 2, `RI-JRN06` M-D5.
    *
@@ -7654,6 +7674,7 @@ export class Engine {
   setWeather(id) {
     if (!WEATHER[id]) throw new Error(`setWeather('${id}'): unknown state. Named states: ${Object.keys(WEATHER).join(', ')}`);
     this.sim.env.weather = String(id);
+    if (this.environment) this.environment.pinnedWeather = String(id);
     return this.sim.env.weather;
   }
 
@@ -8151,7 +8172,7 @@ export class Engine {
   // ---- trace ------------------------------------------------------------------------------
 
   traceStart(opts = {}) {
-    this.trace = { records: [], opts: Object.assign({ enemies: true, hitboxes: true, events: true }, opts || {}), startedAtFrame: this.sim.frame };
+    this.trace = { records: [], opts: Object.assign({ enemies: true, hitboxes: true, events: true }, opts || {}, { groundAt: (x, z) => this.groundAt(x, z) }), startedAtFrame: this.sim.frame };
     this.tracePerf = !!(opts && opts.perf);
     return `trace-${this.sim.frame}`;
   }
@@ -8178,7 +8199,7 @@ export class Engine {
    */
   snapshot(opts) {
     const wantPerf = (opts && opts.perf) || this.tracePerf;
-    return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true, character: true }, wantPerf ? this._perfBlock() : null);
+    return makeRecord(this.sim, this.input, this.bus, { enemies: true, hitboxes: true, events: true, character: true, groundAt: (x, z) => this.groundAt(x, z) }, wantPerf ? this._perfBlock() : null);
   }
 
   // ---- perf (A-JRN5) -----------------------------------------------------------------------
