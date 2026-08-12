@@ -69,9 +69,9 @@ Package 2 is complete. The production registry and consumers now add region-spec
 proportion/lean/depth composition across all 13 regions, settlement-specific structural grammar
 inside and outside all eight settlements, and governed identities for every hand-built place.
 The exhaustive text census, controls, rendered observation and reproduction commands are in
-`reports/w1-30/PACKAGE-2-CENSUS.md`. Packages 3 (animation/movement), 4 (spell VFX and streaming/LOD
-lifecycle) and 5 (final cross-package instruments and bounded aggregate) remain builder-owned and
-pending; this package does not claim their completion or the critic's final visual score.
+`reports/w1-30/PACKAGE-2-CENSUS.md`. At that checkpoint Packages 3–5 remained pending; their final
+delivery is recorded below. Package 2 did not and the final builder still does not claim the
+critic's visual scores.
 
 ### Package 2 visible-production remediation
 
@@ -81,4 +81,74 @@ for all generated interiors, terrain vertex-material variation driven by all 13 
 grammar-derived construction in all five hand-built places, and four creature primitive/proportion/
 material families. The strengthened Package 2 gate requires the art read and render mutation in the
 same production consumer and checks distinct perturbable render profiles; mesh names and userData
-cannot independently satisfy it. Packages 3–5 remain pending.
+cannot independently satisfy it. The later Packages 3–5 closure follows.
+
+## Packages 3–5 — final production builder closure (2026-08-12)
+
+All remaining builder-owned work is complete. Critic-owned complete populations, blind comparison,
+independent visual judgement, final aggregation and the two 7/10 verdicts remain explicitly unclaimed.
+
+### Character, equipment and animation
+
+The W1-06 simulation rig remains authoritative for combat timing, root translation, hurtboxes and
+weapon sockets. The renderer now consumes that evaluated pose for a skinned player and NPC, adds
+three deterministic 4/7/10 f@60 secondary-motion layers, three visibly distinct five-slot equipment
+sets selected from the authoritative equip-load band, and terminal foot IK against the active
+collision-cell ground. Cross-fades were lengthened to 16 frames without changing state or hit
+windows, and the idle breathing/weight shift was strengthened so it remains continuous at 60 Hz.
+
+The shared trace now records the RI-VIS08 authority block (clip time/length/sample rate, blend
+weights, root/controller, named bones, attachment, surface normals, IK, secondary proxies and an
+8x8-equivalent locality-sensitive silhouette/rest hash). Three deterministic representative traces
+(`attack_chain`, `locomotion_slope20`, `hit_reactions`; seed 3030; 180 frames each; 60 f@60) produced
+a GREEN literal C1–C10 report at `/tmp/w1-30-animation-metrics.json`. Complete action-matched motion
+populations remain critic-owned.
+
+### VFX, streaming and LOD
+
+The shipping spell renderer now has bounded release, travel, impact and long residue paths with
+school palettes, lit particles, depth prepass/soft intersection, mesh/refraction effects, controlled
+blending, a 4,000-particle whole-frame cap, 60-decal cap and deterministic spawn-frame seeds. The
+live Marshfire proof observed one release system, three impact systems/612 particles/two decals,
+then a surviving late decal. Corrected spell core colours pass the literal strict ΔE2000 > 13
+forbidden-anchor gate.
+
+Province streaming publishes near/detailed/far bands, one-tile release hysteresis, shared geometry
+pools and final-reference disposal. Renderer resize/history policy, shader prewarm and draw,
+triangle, program, geometry, texture and VFX observables are production-readable. Time/weather pins
+now survive deterministic captures, and the sky has a restrained region-coloured fill light for
+readable shadowed forms.
+
+### Bounded live proof and controls
+
+One reusable Chromium 141/SwiftShader WebGL browser completed all nine required observations at
+320x180 under `/tmp/w1-30-live-proof-final`: exterior day, low-light exterior, emissive interior,
+street/interior transition, combat, character close-up, vegetation/atmosphere, spell
+release-impact-residue and a 27 m/525-frame walked streamed boundary. The manifest is GREEN, all
+frames have deterministic SHA-256 provenance, the missing-spell case refuses cleanly, the walked
+route reports zero teleports, and no page errors occurred. Frames and browser caches are transient
+and intentionally not committed.
+
+Targeted controls were executed and observed RED:
+
+* `node tools/render/w1-30-package3.mjs --break actor-secondary-frill`
+* `node tools/render/w1-30-package4.mjs --break 'MAX_FRAME_PARTICLES = 4000'`
+* `node corpus/80-methods/palette-selfcheck.mjs --json --break-core sorcery_marshfire`
+* live `setVisualFeature('postprocess', false)` changed the shipping frame hash and was restored.
+
+No binary production assets were added. All new visual content is deterministic code/data-native
+geometry, material and motion work; therefore no third-party asset provenance or LFS change is
+required.
+
+### Exact fresh-critic reproduction order
+
+1. `node tools/boot-check.mjs`
+2. `npm run gate:strict && npm run metrics:selftest`
+3. `node tools/analysis/data-index.mjs --check`
+4. `node tools/render/w1-30-package2.mjs && node tools/render/w1-30-package3.mjs && node tools/render/w1-30-package4.mjs`
+5. Run the three trace commands above (and the registered flat/stair scenarios), then run
+   `node corpus/80-methods/anim-metrics.mjs <trace.jsonl...> --json <fresh-output.json>`.
+6. `node tools/render/w1-30-live-proof.mjs --out <fresh-transient-dir> --width 320 --height 180 --timeout 180000`
+7. `W130_LIVE_MANIFEST=<fresh-transient-dir>/manifest.json node tools/render/w1-30-final.mjs`
+8. Run the plan's complete native reference, visual, action-matched motion and blind populations;
+   independently aggregate and issue the modern-fidelity and art-direction verdicts.

@@ -101,6 +101,7 @@ export class Environment {
     this.allStates = new Map();
     for (const r of data.regions) for (const s of r.states) if (!this.allStates.has(s.id)) this.allStates.set(s.id, s);
     this.paused = false;          // A-W1-02: `pauseClock()` for a critic who needs the sun still
+    this.pinnedWeather = null;    // deterministic capture pin; Engine.setWeather is its only writer
   }
 
   /** The machine for the region the player is standing in, falling back to the first declared. */
@@ -234,6 +235,7 @@ export class Environment {
     const m = this.machineFor(rid);
     const regionChanged = env.weatherRegion !== m.region;
     env.weatherRegion = m.region;
+    if (this.pinnedWeather !== null && env.weather !== this.pinnedWeather) env.weather = this.pinnedWeather;
 
     // A weather id written from outside (setWeather, a loaded save) is adopted rather than
     // overwritten, so a critic who pins the sky keeps it until the next tick.
@@ -256,7 +258,7 @@ export class Environment {
     // border case and it is deliberately NOT instantaneous: it rolls at the next tick unless the
     // state is foreign, in which case it rolls on arrival — otherwise walking into the Stone
     // Wastes in a Blackwood downpour leaves it raining on a salt pan for twenty real minutes.
-    if (dueTick || (regionChanged && !inSet) || !inSet) {
+    if (this.pinnedWeather === null && (dueTick || (regionChanged && !inSet) || !inSet)) {
       env._lastTick = tick;
       const next = this._roll(m, env, tick);
       if (next !== env.weather) {

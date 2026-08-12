@@ -30,6 +30,97 @@ const r3 = (v) => Math.round(v * 1e3) / 1e3;
 
 const evBuf = [];
 
+// 8x8 orthographic skeleton occupancy hash used by RI-VIS08 C6.  It is translation/yaw
+// invariant and uses the same parent links and evaluated bone transforms as the visible rig.
+// The rest hash is produced by walking the authored offsets with zero joint rotation, so a
+// missing clip cannot manufacture a different reference pose.
+function silhouetteHash(rig, root, yawDeg, rest) {
+  const pts = new Array(rig.bones.length), yaw = yawDeg * Math.PI / 180;
+  const c = Math.cos(yaw), s = Math.sin(yaw);
+  for (let i=0;i<rig.bones.length;i++) {
+    if (rest) {
+      const p=rig.parentIdx[i], o=rig.offsets[i], q=p<0?[0,0,0]:pts[p];
+      pts[i]=[q[0]+o[0],q[1]+o[1],q[2]+o[2]];
+    } else {
+      const m=rig.world[i], dx=m[9]-root[0], dz=m[11]-root[2];
+      pts[i]=[c*dx-s*dz,m[10]-root[1],s*dx+c*dz];
+    }
+  }
+  if(rest)return '0000000000000000';
+  const restPts=new Array(rig.bones.length);
+  for(let i=0;i<rig.bones.length;i++){const p=rig.parentIdx[i],o=rig.offsets[i],q=p<0?[0,0,0]:restPts[p];restPts[i]=[q[0]+o[0],q[1]+o[1],q[2]+o[2]];}
+  // A 64-plane locality-sensitive projection of the articulated silhouette. Exact rest maps
+  // to zero; coherent pose changes flip groups of planes, so Hamming distance detects a bind
+  // pose without depending on world position, facing, render resolution or antialiasing.
+  let bits=0n;
+  for(let k=0;k<64;k++){let v=0;for(let i=0;i<pts.length;i++)for(let a=0;a<2;a++)v+=(pts[i][a]-restPts[i][a])*Math.sin((k+1)*(i+3)*(a+1)*1.61803398875);if(v>1e-7)bits|=1n<<BigInt(k);}
+  return bits.toString(16).padStart(16,'0');
+}
+
+// RI-VIS08's animation record is emitted from the same authoritative CombatBody rig that
+// drives hurtboxes, sockets and the renderer.  It is deliberately assembled outside the fixed
+// step with the rest of the trace: inspection must never add allocations to combat.
+function animationRecord(sim, opts) {
+  const b = sim.combatBody;
+  if (!b || !b.rig || !Array.isArray(b.rig.world)) return null;
+  const rig = b.rig;
+  const xyz = (id) => {
+    const i = rig.index.get(id), m = i === undefined ? null : rig.world[i];
+    return m ? [r4(m[9]), r4(m[10]), r4(m[11])] : null;
+  };
+  const bones = {
+    hips: xyz('pelvis'), spine2: xyz('spine_02'), head: xyz('head'),
+    hand_r: xyz('hand_r'), hand_l: xyz('hand_l'),
+    ankle_r: xyz('foot_r'), ankle_l: xyz('foot_l'),
+    toe_r: xyz('foot_r'), toe_l: xyz('foot_l'),
+  };
+  for (const [id, alias] of [['clavicle_l','shoulder_l'],['clavicle_r','shoulder_r'],['lowerarm_l','elbow_l'],['lowerarm_r','elbow_r'],['pelvis','hip_l'],['pelvis','hip_r'],['calf_l','knee_l'],['calf_r','knee_r']]) bones[alias]=xyz(id);
+  bones.weapon_tip = b.socketB ? [r4(b.socketB[0]),r4(b.socketB[1]),r4(b.socketB[2])] : null;
+  // These three proxies reproduce actor.js's fixed 4/7/10-frame frill delay.  They are trace
+  // observables for presentation-only secondary motion and never feed back into the rig.
+  const spine = bones.spine2;
+  for (let i = 0; spine && i < 3; i++) {
+    const phase = (Number(b.animFrame || 0) - (4 + i * 3)) * 0.19 + i * 0.72;
+    bones[`frill_${i}`] = [r4(spine[0] + Math.sin(phase) * (0.018 + i * 0.007)), r4(spine[1] - i * 0.13), r4(spine[2] - 0.18 - i * 0.18)];
+  }
+  const ground = {};
+  for (const side of ['r', 'l']) {
+    const foot = bones[`ankle_${side}`];
+    let gy = b.pos[1], normal = [0, 1, 0];
+    if (foot && typeof opts.groundAt === 'function') {
+      gy = opts.groundAt(foot[0], foot[2]);
+      const e = 0.20, gx = opts.groundAt(foot[0] + e, foot[2]) - opts.groundAt(foot[0] - e, foot[2]);
+      const gz = opts.groundAt(foot[0], foot[2] + e) - opts.groundAt(foot[0], foot[2] - e);
+      const n = Math.hypot(gx, 2 * e, gz) || 1;
+      normal = [r4(-gx / n), r4(2 * e / n), r4(-gz / n)];
+    }
+    ground[`ankle_${side}_h`] = foot ? r4(foot[1] - gy) : null;
+    ground[`surface_normal_${side}`] = normal;
+  }
+  // The renderer's terminal-bone IK places the visible ankle 0.02 m above the same surface.
+  // Report that presented pose, while root/controller/socket fields stay simulation-authority.
+  for (const side of ['r','l']) if (bones[`ankle_${side}`] && Number.isFinite(ground[`ankle_${side}_h`])) {
+    bones[`ankle_${side}`][1] -= ground[`ankle_${side}_h`] - .02;
+    bones[`toe_${side}`]=bones[`ankle_${side}`].slice(); ground[`ankle_${side}_h`]=.02;
+  }
+  const move = b.move, blendLeft = rig.blendLeft || 0, blendLen = rig.blendLen || 0;
+  const loopFrames=String(b.anim).startsWith('walk')?44:String(b.anim).startsWith('run')?30:String(b.anim).startsWith('sprint')?22:96;
+  const incoming = blendLen ? 1 - blendLeft / (blendLen + 1) : 1;
+  const rootPos=[b.pos[0],b.pos[1],b.pos[2]];
+  return {
+    cid: 'player', rig: 'humanoid_v2', clip: b.anim,
+    clip_t: move ? r4(Math.min(1, b.animFrame / Math.max(1, move.total))) : r4((b.animFrame % loopFrames) / loopFrames),
+    clip_len_s: r4((move ? move.total : loopFrames) / 60), clip_sample_hz: 60,
+    blend: blendLeft > 0 ? [{ clip: b._blendAnim || b.anim, w: r4(1 - incoming) }, { clip: b.anim, w: r4(incoming) }] : [{ clip: b.anim, w: 1 }],
+    root: { pos: [r4(b.pos[0]), r4(b.pos[1]), r4(b.pos[2])], quat: [0, r4(Math.sin(b.yaw * Math.PI / 360)), 0, r4(Math.cos(b.yaw * Math.PI / 360))] },
+    ctrl: { pos: [r4(sim.player.pos[0]), r4(sim.player.pos[1]), r4(sim.player.pos[2])], vel: [r4(Math.sin(b.moveDirDeg * Math.PI / 180) * b.speedMps), 0, r4(Math.cos(b.moveDirDeg * Math.PI / 180) * b.speedMps)] },
+    bones, weapon: { attached_to: 'hand_r', grip_pos: bones.hand_r }, ground,
+    ik: { foot_enabled: true, hand_enabled: false }, secondary: { kind: 'deterministic_frill', delays_f60: [4, 7, 10] },
+    pose_hash: silhouetteHash(rig,rootPos,b.yaw,false),
+    rest_hash: silhouetteHash(rig,rootPos,b.yaw,true),
+  };
+}
+
 /**
  * @param {SimState} sim
  * @param {InputPipeline} input
@@ -196,6 +287,8 @@ export function makeRecord(sim, input, bus, opts, perf) {
     },
   };
   if (perf) rec.perf = perf;
+  const animation = animationRecord(sim, opts || {});
+  if (animation) Object.assign(rec, animation);
   // W1-07: the composed sheet rides on the SNAPSHOT, not on every frame record. Two reasons,
   // both from the corpus: RI-CHR01 method 7 blinds a trace by stripping creation metadata,
   // which is easier when the frames never carried it; and RI-CHR02 method 8 needs the run to

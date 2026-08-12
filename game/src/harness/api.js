@@ -147,6 +147,8 @@ export function installHarness(engine, bootPromise) {
     lockOn(eid) { return engine.lockOn(eid === undefined ? null : eid); },
     setTimeOfDay(h) { return engine.setTimeOfDay(h); },
     setWeather(id) { return engine.setWeather(id); },
+    setVisualFeature(name, enabled) { return engine.setVisualFeature(name, enabled); },
+    getVisualFeatureState() { return engine.getVisualFeatureState(); },
 
     /**
      * getEnvConditions() — READ BACK the conditions the world is actually in.

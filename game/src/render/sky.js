@@ -143,6 +143,12 @@ export class Sky {
     this.hemi = new THREE.HemisphereLight(0xbfd0e0, 0x3a3527, 0.5);
     scene.add(this.hemi);
 
+    // A low, colour-bearing fill keeps vertical and back-facing forms readable when the fitted
+    // sun shadow covers them.  It is deliberately weaker than either celestial key and follows
+    // the region/weather colour below; this is scene lighting, not an exposure lift or UI grade.
+    this.fill = new THREE.AmbientLight(0x8b9488, 0.24);
+    scene.add(this.fill);
+
     // The moon is not a second, unrelated art light. It is the exact inverse of the one
     // celestial direction used by the dome and sun, and only contributes after sunset.
     this.moon = new THREE.DirectionalLight(0x8ca9d8, 0);
@@ -246,6 +252,8 @@ export class Sky {
     this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.30, day * 0.9 + 0.10) : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
     this.hemi.groundColor.setRGB(0.227, 0.208, 0.153).lerp(regionNight, night * 0.55);
+    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.28, 0.62, day) : 0;
+    this.fill.color.copy(hor).lerp(regionNight, night * 0.70);
 
     if (regionFog) {
       // The region owns the hue and the extinction; the weather multiplies the extinction and

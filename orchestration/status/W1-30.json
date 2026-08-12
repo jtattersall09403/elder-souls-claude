@@ -1,7 +1,7 @@
 {
   "task_id": "W1-30",
-  "role": "fresh independent reviewer-editor",
-  "state": "plan-review-complete",
+  "role": "builder",
+  "state": "builder-delivery-complete-independent-critic-pending",
   "plan_state": "satisfied",
   "piece": "W1-30 \u2014 whole-game visual foundation and fidelity",
   "plan_path": "orchestration/plans/W1-30.md",
@@ -54,7 +54,7 @@
   ],
   "files_claimed": [],
   "plan_summary": "Fresh independent recriticism satisfied the complete amended W1-30 plan without a material edit; the plan covers the populated motion corpus, action-matched preregistration, deterministic frame evidence, transient moving review, whole-game fidelity/art populations and role-separated execution.",
-  "next_action": "Run a fresh independent W1-30 build critic at the continuation commit; keep W1-28 and Wave 2 blocked through both 7.0 visual-axis gates.",
+  "next_action": "Run a fresh independent W1-30 build critic at the final builder commit; keep W1-28 and Wave 2 blocked through both 7.0 visual-axis gates.",
   "build_dependencies": [
     "W1-06 builder work landed",
     "W1-24 builder work landed"
@@ -78,16 +78,30 @@
     "W1-HUD-TOAST"
   ],
   "owner_next_short_command": "Remediate the current Wave 1 plan critiques (W1-HUD-TOAST), then Critique the current Wave 1 plans with fresh reviewers for W1-00, W1-09 and W1-24.",
-  "build_state": "package-2-complete-packages-3-5-pending",
+  "build_state": "all-builder-owned-packages-complete-independent-critic-pending",
   "builder_report": "reports/w1-30/BUILDER-DELIVERY.md",
   "package_2": {
     "state": "complete",
     "report": "reports/w1-30/PACKAGE-2-CENSUS.md",
     "coverage": "13 regions, 8 settlements, 115 generated interiors, 5 places, shared flora and creature art direction"
   },
-  "builder_packages_pending": [
-    3,
-    4,
-    5
+  "builder_packages_complete": [1, 2, 3, 4, 5],
+  "builder_packages_pending": [],
+  "builder_bounded_proof": {
+    "live_manifest": "/tmp/w1-30-live-proof-final/manifest.json",
+    "live_scenes": 9,
+    "animation_frames": 540,
+    "animation_metrics": "C1-C10 GREEN",
+    "final_aggregate": "GREEN",
+    "renderer": "Chromium 141 / SwiftShader WebGL2"
+  },
+  "critic_owned_remaining": [
+    "complete native populations",
+    "blind comparison",
+    "independent visual judgement",
+    "exhaustive action-matched motion assessment",
+    "final aggregation",
+    "modern-fidelity 7/10 verdict",
+    "art-direction 7/10 verdict"
   ]
 }

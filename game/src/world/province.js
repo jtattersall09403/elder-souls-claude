@@ -118,6 +118,7 @@ export class Province {
     this.tileM = TILE_M;
     this.radiusTiles = RADIUS;
     this.skinRadiusM = SKIN_RADIUS_M;
+    this.lodBands = Object.freeze({ nearM: NEAR_RADIUS_M, detailedTileM: TILE_M * (RADIUS + 0.5), farM: 6400, hysteresisTiles: 1 });
 
     this.mats = {
       ground: worldMaterial('mud',{ vertexColors:true }),
@@ -1683,6 +1684,9 @@ export class Province {
       tilesResident: this.tiles.size, tilesQueued: this.queue.length, tilesBuiltTotal: this.built,
       tileSizeM: this.tileM, residentRadiusTiles: this.radiusTiles, meshes, instances,
       groundCoverInstances: this.coverCount || 0, groundCoverRadiusM: COVER_RADIUS_M,
+      lodBands: this.lodBands,
+      lodTransition: 'near/far geometry and PBR material overlap; one-tile release hysteresis',
+      sharedGeometryPool: this.geoCache.size,
       // W1-04 r3. `settlementsPlanned` is what was READ; `buildingGroups` is what is in the
       // scene graph right now. They differ whenever a town's tile is not resident, and they
       // differ by everything when `drawBuildings` is cut.
@@ -1694,5 +1698,16 @@ export class Province {
       }, 0),
       drawBuildings: !!this.drawBuildings,
     };
+  }
+
+  /** Final-reference teardown. Shared geometry/materials are released exactly once here, never
+   * while a resident tile or camera-following detail disc may still reference them. */
+  dispose() {
+    for (const [k, t] of [...this.tiles]) this._release(k, t);
+    for (const g of this.geoCache.values()) g.dispose();
+    this.geoCache.clear();
+    const materials = new Set([...Object.values(this.mats), ...this.regionMats.flatMap((r) => Object.values(r))]);
+    for (const m of materials) if (m && typeof m.dispose === 'function') m.dispose();
+    this.group.removeFromParent();
   }
 }

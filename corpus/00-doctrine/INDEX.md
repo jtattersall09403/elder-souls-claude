@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-11T18:17:55Z
+Generated: 2026-08-12T13:45:49Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **324**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
-- Front-matter problems: 0 error(s), 36 warning(s)
+- Front-matter problems: 0 error(s), 30 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -915,8 +915,6 @@ _None._
 
 | Level | File | Problem |
 |---|---|---|
-| WARN | `corpus/70-visual/RI-VIS08-character-animation-fidelity.md` | names phantom tool `corpus/80-methods/anim-metrics.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/70-visual/RI-VIS08-character-animation-fidelity.md` | names phantom tool `corpus/80-methods/capture-trace.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md` | names phantom tool `corpus/80-methods/m-cmb01-roll-iframes.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/10-combat/RI-CMB02-attack-frame-data.md` | names phantom tool `corpus/80-methods/m-cmb02-frame-data.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/10-combat/RI-CMB03-stamina-economy.md` | names phantom tool `corpus/80-methods/m-cmb03-stamina.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
@@ -933,10 +931,6 @@ _None._
 | WARN | `corpus/12-weapons/RI-WPN05-weapon-feel-impact.md` | names phantom tool `corpus/80-methods/m-wpn05-impact.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md` | names phantom tool `corpus/80-methods/m-wpn06-stance-offhand.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/12-weapons/RI-WPN07-weapon-character-and-wrongness.md` | names phantom tool `corpus/80-methods/m-wpn07-character.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/70-visual/RI-VIS03-fidelity-image-metrics.md` | names phantom tool `corpus/80-methods/make-anti-ref.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md, corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md` | names phantom tool `corpus/80-methods/palette-conformance.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/25-magic/RI-MAG05-magic-vfx.md` | names phantom tool `corpus/80-methods/palette-selfcheck.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/70-visual/RI-VIS03-fidelity-image-metrics.md` | names phantom tool `corpus/80-methods/vis-metrics.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md` | names phantom tool `tools/analysis/economy-model.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG09-the-parley.md` | names phantom tool `tools/analysis/pacifist-in-fight.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | names phantom tool `tools/composition/emergence-probe.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
