@@ -145,6 +145,28 @@ export class Province {
     this._buildFar();
   }
 
+  /**
+   * Bind art-direction boards to the actual regional material sets.  This deliberately annotates
+   * render resources rather than copying colours: regions.json remains spatial authority while
+   * the board supplies material/silhouette/weirdness intent for census and live perturbation.
+   */
+  setVisualStyleboards(boards) {
+    const used = new Set();
+    for (let i = 0; i < this.field.regions.length; i++) {
+      const region = this.field.regions[i], board = boards.regions.get(region.id);
+      if (!board) throw new Error(`W1-30 styleboard has no production region '${region.id}'`);
+      used.add(region.id);
+      for (const material of Object.values(this.regionMats[i])) material.userData.styleboard = {
+        id: board.id, dominant_materials: board.dominant_materials.slice(),
+        silhouette_motif: board.silhouette_motif,
+        inexplicable_element: board.inexplicable_element,
+        atmosphere_response: board.atmosphere_response,
+      };
+    }
+    this.group.userData.visualStyleboards = { regions: [...used].sort(), settlements: [...boards.settlements.keys()].sort() };
+    return this.group.userData.visualStyleboards;
+  }
+
   // ---- the whole province, coarse ------------------------------------------------------------
   _buildFar() {
     const f = this.field;

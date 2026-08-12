@@ -23,7 +23,7 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
-import { visualFoundationCensus, VISUAL_FEATURES } from './visual-foundation.js';
+import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS } from './visual-foundation.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -318,11 +318,26 @@ export class Renderer {
     this.field = field;
     if (roads) field.setRoads(roads);
     this.province = new Province(field);
+    if (this.visualStyleboards) this.province.setVisualStyleboards(this.visualStyleboards);
     this.cells.province = this.province.group;
     this.scene.add(this.province.group);
     this.province.group.visible = false;
     for (const [id, s] of Object.entries(this.provinceAnchors(field))) this.anchors[id] = s;
     return this.province;
+  }
+
+  /** Consume the registered boards on the live renderer; unknown/missing ids fail closed. */
+  setVisualStyleboards(doc) {
+    if (!doc || doc.schema !== 'elder-souls/w1-30-styleboards@1') {
+      throw new Error('W1-30 visual styleboards are missing or use an unknown schema');
+    }
+    const regions = new Map(doc.regions.map((r) => [r.id, r]));
+    const settlements = new Map(doc.settlements.map((r) => [r.id, r]));
+    if (regions.size !== 13 || settlements.size !== 8) throw new Error('W1-30 styleboard population must be 13 regions + 8 settlements');
+    this.visualStyleboards = { regions, settlements, reference_routes: doc.reference_routes };
+    this.scene.userData.visualStyleboards = { regions: regions.size, settlements: settlements.size };
+    if (this.province) this.province.setVisualStyleboards(this.visualStyleboards);
+    return this.scene.userData.visualStyleboards;
   }
 
   provinceAnchors(field) {
@@ -858,6 +873,8 @@ export class Renderer {
       atlasCount: 0,
       visualFoundation: foundation,
       rendererFeatures: {...VISUAL_FEATURES},
+      featureConsumers: {...FEATURE_CONSUMERS},
+      styleboardsConsumed: this.scene.userData.visualStyleboards || null,
     };
   }
 
