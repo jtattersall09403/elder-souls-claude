@@ -272,7 +272,7 @@ export const DOOR_REACH_M = 3.0;
  * `insideBuilding()` tests the FOOTPRINT. The thing the body is actually solved against is
  * `settlementSolids()`, whose wall slabs are `SHELL_WALL_T` thick and centred ON the footprint
  * edge — so a slab reaches `SHELL_WALL_T / 2` = 0.18 m OUTSIDE the footprint. And the body is a
- * sphere of `BODY_RADIUS_M` = 0.32 m, depenetrated by `sim/world-collision.js#stepWorldCollision()`
+ * sphere of `BODY_RADIUS_M` = 0.35 m, depenetrated by `sim/world-collision.js#stepWorldCollision()`
  * through `CollisionCell.resolveSphere()`, which pushes until `distance >= r`. So a point that
  * clears the footprint by less than 0.50 m is a point the solver MOVES — down the steepest-ascent
  * gradient, which between two close buildings points at the neighbour, and through a doorway gap
@@ -290,7 +290,7 @@ export const DOOR_REACH_M = 3.0;
  * `tools/check-building-fits-room.mjs` imports all four and exits non-zero if any mirror has
  * drifted from its source. An unchecked copy is the shape this project has now found five times.
  */
-export const BODY_RADIUS_M = 0.32;
+export const BODY_RADIUS_M = 0.35;
 /** The margin above the body radius. The solver stops at `d >= r`; this keeps float noise out. */
 const BODY_CLEAR_EPS_M = 0.05;
 /** How far inside its own wall a lamp's CENTRE is kept. A hearth is a 1.1 m stone ring. */

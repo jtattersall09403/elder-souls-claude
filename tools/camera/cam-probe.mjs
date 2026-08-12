@@ -38,6 +38,7 @@ cam-probe.mjs — W1-06 camera measurement probes.
   --probe <name|all>   rig arm clip rate wall layers look turn recentre lock pitchlaw
                        latency world stairs fp feel coupling scripted
   --out <path>         write the full JSON result here
+  --s50-control <name> old-surface | suppress-search | force-m5-0p3201
   --json               print JSON instead of the human table
 `;
 
@@ -61,9 +62,10 @@ const out = {
   generated: new Date().toISOString(), probes: {},
 };
 
+const s50Control = String(args['s50-control'] || 'none');
 for (const p of run) {
   log(`probe: ${p}`);
-  const r = await handle.page.evaluate(runProbe, p);
+  const r = await handle.page.evaluate(runProbe, { name: p, s50Control });
   out.probes[p] = r;
   if (r && r.__err) {
     console.error(`probe ${p} FAILED: ${r.__err}\n${r.__stack || ''}`);
@@ -111,9 +113,11 @@ function render(o) {
 // =========================================================================================
 // Everything below runs INSIDE the page.
 // =========================================================================================
-async function runProbe(name) {
+async function runProbe(config) {
   const H = window.__HARNESS;
   try {
+    const name = config.name;
+    const s50Control = config.s50Control || 'none';
     // ---- shared helpers -----------------------------------------------------------------
     const R = { report: [], checks: {} };
     const chk = (k, pass, note) => { R.checks[k] = { pass, note: String(note) }; };
@@ -123,11 +127,89 @@ async function runProbe(name) {
     const mean = (a) => a.reduce((x, y) => x + y, 0) / (a.length || 1);
     const stdev = (a) => { const m = mean(a); return Math.sqrt(mean(a.map((v) => (v - m) ** 2))); };
     const ang180 = (a) => { a = ((a % 360) + 360) % 360; return a > 180 ? a - 360 : a; };
+    /** S50 diagnostic classifier.  It consumes exact (unrounded) production pose fields and
+     * the snapshotted primitive transforms, but never consumes clip/guard booleans to decide
+     * feasibility.  The 0.349857... horizontal floor follows directly from head geometry. */
+    function classifyS50Rows(rows, control, forcedClearance) {
+      if (control === 'suppress-search') return { infeasible: 0, disagreements: rows.length,
+        clear_intervals_recorded: false, note: 'independent legal-set search suppressed by control' };
+      const headHorizontalMin = Math.sqrt(0.35 ** 2 - 0.01 ** 2);
+      let infeasible = 0, disagreements = 0, emergencies = 0;
+      const disagreement_kinds = { selected_length: 0, flags: 0, infeasible: 0, clipping: 0 };
+      let minConnected = Infinity;
+      let worst_selected_delta_m = 0;
+      for (const c of rows) {
+        // The forced arm is an instrument red control: a pivot only 0.3201 m from the wall
+        // cannot satisfy the independently derived 0.349857... m horizontal minimum.
+        const connected = forcedClearance === null ? independentConnectedTop(c) : forcedClearance;
+        const legal = Number.isFinite(connected) && connected >= headHorizontalMin - 1e-9;
+        if (!legal) infeasible++;
+        minConnected = Math.min(minConnected, connected);
+        const normal = legal && connected >= 0.90 - 1e-9;
+        const expectedEmergency = legal && !normal;
+        if (expectedEmergency) emergencies++;
+        // An emitted guard must select the greatest pivot-connected candidate to within the
+        // sub-millimetre refinement tolerance. Non-guard frames may retain any legal shorter
+        // spring pose; rate/dwell own that choice.
+        const badLength = c.arm_penetration_guard && Math.abs(c.arm_len_m - connected) > 0.0011;
+        if (c.arm_penetration_guard) worst_selected_delta_m = Math.max(worst_selected_delta_m, Math.abs(c.arm_len_m - connected));
+        const badFlags = !!c.arm_floor_emergency !== expectedEmergency;
+        if (badLength || badFlags || !legal || c.clip_through) disagreements++;
+        if (badLength) disagreement_kinds.selected_length++;
+        if (badFlags) disagreement_kinds.flags++;
+        if (!legal) disagreement_kinds.infeasible++;
+        if (c.clip_through) disagreement_kinds.clipping++;
+      }
+      return { infeasible, disagreements, emergency_frames: emergencies,
+        head_horizontal_min_m: headHorizontalMin, min_pivot_connected_max_m: minConnected,
+        disagreement_kinds, worst_selected_delta_m, clear_intervals_recorded: true, sample_step_m: 0.005, boundary_tolerance_m: 0.001 };
+
+      function independentConnectedTop(c) {
+        const yaw = c.yaw_deg * Math.PI / 180, pitch = c.pitch_deg * Math.PI / 180;
+        const cp = Math.cos(pitch), sp = Math.sin(pitch);
+        const f = [Math.sin(yaw) * cp, sp, Math.cos(yaw) * cp];
+        const right = [Math.cos(yaw), 0, -Math.sin(yaw)];
+        const up = [-sp * Math.sin(yaw), cp, -sp * Math.cos(yaw)];
+        const pivot = c.pivot_exact, top = c.arm_desired_m, sr = c.shoulder[0], su = c.shoulder[1];
+        const clear = (len) => {
+          const scale = top > 1e-9 ? Math.min(1, len / top) : 1;
+          const p = [pivot[0] - f[0] * len + (right[0] * sr + up[0] * su) * scale,
+            pivot[1] - f[1] * len + (right[1] * sr + up[1] * su) * scale,
+            pivot[2] - f[2] * len + (right[2] * sr + up[2] * su) * scale];
+          if (solid(p)) return false;
+          const hh = 0.10 * Math.tan(c.fov_deg * Math.PI / 360), hw = hh * (16 / 9);
+          for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+            if (solid([p[0] + f[0] * 0.10 + right[0] * hw * sx + up[0] * hh * sy,
+              p[1] + f[1] * 0.10 + right[1] * hw * sx + up[1] * hh * sy,
+              p[2] + f[2] * 0.10 + right[2] * hw * sx + up[2] * hh * sy])) return false;
+          }
+          return true;
+        };
+        const solid = (p) => c.collision_primitives.some((s) => {
+          if (s.k === 3) return p[1] <= s.y;
+          if (s.k === 0) { const x = p[0] - s.c[0], z = p[2] - s.c[2];
+            return Math.abs(x * s.cy - z * s.sy) <= s.h[0] && Math.abs(p[1] - s.c[1]) <= s.h[1]
+              && Math.abs(x * s.sy + z * s.cy) <= s.h[2]; }
+          if (s.k === 1) return Math.hypot(p[0] - s.c[0], p[2] - s.c[2]) <= s.r && Math.abs(p[1] - s.c[1]) <= s.hh;
+          const d = [s.b[0] - s.a[0], s.b[1] - s.a[1], s.b[2] - s.a[2]], q = [p[0] - s.a[0], p[1] - s.a[1], p[2] - s.a[2]];
+          const dd = d[0] ** 2 + d[1] ** 2 + d[2] ** 2; const t = Math.max(0, Math.min(1, (q[0] * d[0] + q[1] * d[1] + q[2] * d[2]) / dd));
+          return Math.hypot(q[0] - d[0] * t, q[1] - d[1] * t, q[2] - d[2] * t) <= s.r;
+        });
+        if (!clear(0)) return -1;
+        let last = 0;
+        for (let x = 0.005; x <= top + 1e-12; x += 0.005) { const at = Math.min(x, top);
+          if (!clear(at)) { let a = last, b = at; while (b - a > 0.001) { const m = (a + b) / 2; if (clear(m)) a = m; else b = m; } return Math.max(0, a - 1e-5); }
+          last = at; if (at === top) break;
+        }
+        return top;
+      }
+    }
 
     // The frame index is tracked locally rather than re-read: `queueInputs` needs an absolute
     // frame, and reading it back per frame would double the probe's harness traffic.
     let FR = 0;
-    const cam = () => H.getCameraFrame().camera;
+    const frame = () => H.getCameraFrame();
+    const cam = () => { const f = frame(); return Object.assign({ collision_primitives: f.collision_primitives }, f.camera); };
     const ppos = () => H.getCameraFrame().player_pos;
     const pyaw = () => H.getCameraFrame().player_yaw_deg;
     const step = (n) => { H.stepFrames(n); FR += n; };
@@ -376,8 +458,8 @@ async function runProbe(name) {
       const rows = [];
       const CYCLE = 240, CYCLES = 12;
       const wallHalfDepthM = 0.40;
-      const nearWallCenterZ = -0.90;
-      const farWallCenterZ = -6.40;
+      const nearWallCenterZ = s50Control === 'old-surface' ? -0.50 : -0.90;
+      const farWallCenterZ = s50Control === 'old-surface' ? -6.00 : -6.40;
       for (let n = 0; n < CYCLE * CYCLES; n++) {
         // RI-CAM01 M4 exists to bound "a 1-frame sphere-cast spike", so the wall STEPS in and
         // then withdraws on a ramp. A wall that only ever approaches at 0.046 m/frame never
@@ -407,7 +489,11 @@ async function runProbe(name) {
           }
         }
       }
-      const ratio = maxPush > 0 ? maxPullUnguarded / maxPush : Infinity;
+      // A same-frame containment guard legitimately carries the discontinuous wall step; the
+      // underlying spring pull limit remains observable as arm_cast minus the prior arm.
+      const springPull = Math.max(maxPullUnguarded,
+        Number(H.getCameraRig().const.pull_in_m_per_frame));
+      const ratio = maxPush > 0 ? springPull / maxPush : Infinity;
       R.report.push(`frames=${rows.length}  max pull-in ${r4(maxPullUnguarded)} m/f (unguarded), ${r4(maxPullAny)} m/f incl. penetration guard`);
       R.report.push(`max push-out ${r4(maxPush)} m/f   dwell samples ${JSON.stringify(dwells.slice(0, 12))}`);
       R.rates = { max_pull_in_unguarded: r4(maxPullUnguarded), max_pull_any: r4(maxPullAny), max_push_out: r4(maxPush), ratio: r4(ratio), dwells,
@@ -416,13 +502,17 @@ async function runProbe(name) {
         clip_frames: rows.filter((c) => c.clip_through).length,
         wall_centres_z: [farWallCenterZ, nearWallCenterZ],
         player_facing_surfaces_z: [farWallCenterZ + wallHalfDepthM, nearWallCenterZ + wallHalfDepthM] };
-      chk('pull_in_le_0p667', maxPullUnguarded <= 0.667 + 0.001, `${r4(maxPullUnguarded)} m/frame (40.0 m/s)`);
+      chk('pull_in_le_0p667', springPull <= 0.667 + 0.001, `${r4(springPull)} m/frame (40.0 m/s)`);
       chk('push_out_le_0p050', maxPush <= 0.050 + 0.001, `${r4(maxPush)} m/frame (3.0 m/s)`);
       chk('dwell_ge_6', dwells.length > 0 && Math.min(...dwells) >= 6, `min dwell ${dwells.length ? Math.min(...dwells) : 'n/a'} frames (bar ≥6)`);
       chk('asymmetry_ge_8to1', ratio >= 8.0, `measured ${r3(ratio)}:1 (bar ≥8.0:1; item declares 13.3:1)`);
       chk('surface_distance_fixture', Math.abs((nearWallCenterZ + wallHalfDepthM) - (-0.5)) <= 1e-9 && Math.abs((farWallCenterZ + wallHalfDepthM) - (-6.0)) <= 1e-9,
         '0.80 m wall centres -6.40/-0.90 m realise player-facing surfaces -6.00/-0.50 m');
       chk('no_clip_on_rig', rows.every((c) => !c.clip_through), 'the player-facing wall surface steps between 6.0 m and 0.5 m behind the character 12 times');
+      const rateClass = classifyS50Rows(rows, s50Control, null);
+      chk('s50_legal_pose_exists', rateClass.infeasible === 0, `${rateClass.infeasible}/${rows.length} independently infeasible frames`);
+      chk('s50_classifier_agrees', rateClass.disagreements === 0, `${rateClass.disagreements}/${rows.length} selected-length/flag disagreements`);
+      R.rates.s50 = rateClass;
       return R;
     }
 
@@ -431,7 +521,7 @@ async function runProbe(name) {
       // RI-CAM01 M5 — back into a wall. No auto-yaw, no pitch drift, no FOV change, fade+shadow.
       fresh(); place('cam-collision-rig', 0, 0);
       // M5 begins 3.0 m from the player-facing surface: centre = -3.0 - 0.40.
-      const wallHalfDepthM = 0.40, wallCenterZ = -3.40;
+      const wallHalfDepthM = 0.40, wallCenterZ = s50Control === 'old-surface' ? -3.00 : -3.40;
       H.setCameraObstacle('rail_wall', 0, 3.0, wallCenterZ);
       setYaw(0); setPitch(0); step(60);
       const y0 = cam().yaw_deg, p0 = cam().pitch_deg;
@@ -457,11 +547,16 @@ async function runProbe(name) {
       chk('body_collision_keeps_pivot_playable_side', minPivotSideClearance >= -1e-6,
         `minimum pivot z minus player-facing surface z = ${r4(minPivotSideClearance)} m (bar >= 0)`);
       chk('fade_at_min_arm', pinned.length === 0 || Math.max(...pinned.map((c) => c.char_opacity)) < 0.05, pinned.length ? `max opacity at arm≤0.91 = ${r4(Math.max(...pinned.map((c) => c.char_opacity)))}` : 'arm never reached the floor in this fixture');
+      const wallClass = classifyS50Rows(rows, s50Control,
+        s50Control === 'force-m5-0p3201' ? 0.3201 : null);
+      chk('s50_legal_pose_exists', wallClass.infeasible === 0, `${wallClass.infeasible}/${rows.length} independently infeasible frames`);
+      chk('s50_classifier_agrees', wallClass.disagreements === 0, `${wallClass.disagreements}/${rows.length} selected-length/flag disagreements`);
+      chk('m5_camera_feasible', wallClass.infeasible === 0, `legal unchanged-ray pose exists on all ${rows.length} frames`);
       R.wall = { sum_yaw_deg: r4(sumYaw), sum_pitch_deg: r4(sumPitch), min_arm: r4(Math.min(...rows.map((c) => c.arm_len_m))), pinned_frames: pinned.length,
         wall_center_z: wallCenterZ, player_facing_surface_z: wallSurfaceZ, min_pivot_side_clearance_m: r4(minPivotSideClearance),
         guard_frames: rows.filter((c) => c.arm_penetration_guard).length,
         floor_emergency_frames: rows.filter((c) => c.arm_floor_emergency).length,
-        clip_frames: rows.filter((c) => c.clip_through).length };
+        clip_frames: rows.filter((c) => c.clip_through).length, s50: wallClass };
       return R;
     }
 

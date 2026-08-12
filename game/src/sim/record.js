@@ -130,7 +130,12 @@ export function makeRecord(sim, input, bus, opts, perf) {
     // items say in as many words that without it "every check scores 0, fail-closed".
     camera: {
       pos: [r4(c.pos[0]), r4(c.pos[1]), r4(c.pos[2])],
+      // S50 independent containment uses these live values, never the presentation-rounded
+      // trace fields above.  Millimetre boundary classification cannot be reproduced from
+      // four-decimal coordinates.
+      pos_exact: [c.pos[0], c.pos[1], c.pos[2]],
       pivot: [r4(c.pivot[0]), r4(c.pivot[1]), r4(c.pivot[2])],
+      pivot_exact: [c.pivot[0], c.pivot[1], c.pivot[2]],
       yaw_deg: r4(c.yaw),
       pitch_deg: r4(c.pitch),
       roll_deg: 0,                                  // RI-CAM06 §E: exactly 0, everywhere
@@ -146,6 +151,8 @@ export function makeRecord(sim, input, bus, opts, perf) {
       arm_hit: c.armHit,
       arm_penetration_guard: c.armGuard,
       arm_floor_emergency: c.armFloorEmergency,
+      arm_legal_connected_max_m: c.armLegalConnectedMax,
+      arm_legal_normal_exists: c.armLegalNormalExists,
       arm_clear_frames: c.clearFrames,
       shoulder: [r4(c.shoulderR), r4(c.shoulderU)],
       char_opacity: r4(c.charOpacity),

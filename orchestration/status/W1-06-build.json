@@ -1,56 +1,26 @@
 {
   "task_id": "W1-06-build",
-  "role": "canonical-authority-arbiter",
-  "status": "authority_resolved_needs_fresh_builder",
+  "role": "recovery-production-builder",
+  "status": "builder_complete_awaiting_criticism",
   "plan": "orchestration/plans/W1-06.md",
-  "current_head": "2df978b (tested implementation; evidence-stamp follow-up is text-only)",
+  "current_head": "containing compact S50 recovery commit (started at b9543dd)",
   "files_touched": [
-    "corpus/00-doctrine/ARBITRATION.md",
-    "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
-    "corpus/80-methods/m-cam02-control.mjs",
-    "evidence/W1-06/builder-ledger.md",
-    "evidence/W1-06/mechanical/cam-consume.json",
-    "evidence/W1-06/mechanical/cam02-final/cam02.json",
-    "evidence/W1-06/mechanical/collision-final.json",
-    "evidence/W1-06/mechanical/collision-reproduction-1378e2a.json",
-    "evidence/W1-06/mechanical/m-cam01-rig.json",
-    "evidence/W1-06/mechanical/rig-rerun.json",
-    "evidence/W1-06/source-pack/SHA256SUMS",
-    "game/data/camera/cells.json",
-    "game/src/sim/route.js",
-    "orchestration/status/W1-06-build.json",
-    "reports/w1-06/AMENDMENT-W1-06-01.md",
-    "reports/w1-06/AMENDMENT-W1-06-02-arm-floor-zero-clip.md",
-    "tools/camera/cam-probe.mjs",
-    "tools/camera/gen-cells.mjs",
-    "game/src/save/state.js",
+    "game/src/engine.js",
+    "game/src/render/exterior.js",
     "game/src/sim/camera.js",
     "game/src/sim/record.js",
-    "game/src/sim/state.js",
-    "tools/camera/s49-penetration-guard.mjs",
-    "reports/blog-feed.jsonl",
-    "reports/w1-06/AMENDMENT-W1-06-03-surface-residual.md",
-    "orchestration/plans/W1-06.md"
+    "game/src/sim/world-collision.js",
+    "tools/camera/cam-probe.mjs",
+    "orchestration/status/W1-06-build.json",
+    "evidence/W1-06/builder-ledger.md"
   ],
   "files_claimed": [],
-  "next_step": "Dispatch a fresh builder to execute orchestration/plans/W1-06.md S50 in order: repair the existing rate/wall classifier, make every M5 body pose camera-legal, then repair same-frame production camera containment; rerun rate,wall before the bounded aggregate. Critic populations/final scoring remain not_run.",
+  "next_step": "Dispatch a fresh independent build critic; critic-owned exhaustive, blind and final-scoring populations remain NOT_RUN.",
   "hard_fails": [],
   "formal_blocker": null,
   "independent_passes_awarded": 0,
   "authority_resolution": "S50: corrected M4/M5 clip_through frames are native production hard failures. The current count is valid, but per-frame classification is instrument-incomplete. M4 requires a production camera guard repair. M5 additionally requires body collision to preserve existence of a legal unchanged-ray pose, not merely pivot-side non-crossing. All native bars remain unchanged.",
-  "canonical_dependency_blocks": [
-    {
-      "dependency": "A valid merged game/src/engine.js on codex/wave1-build-experiment",
-      "observed": "Required HEAD blob is 300062 bytes, SHA-256 9777c138f6fd210815a9a8d594ccb4df24ed3921e9501eb93e4a48f012bad7d2; node --check fails at byte 1 and Chromium reports SyntaxError for /src/engine.js before window.__HARNESS exists.",
-      "blocked_work": [
-        "browser-backed native camera methods",
-        "all rendered samples",
-        "full collision/mode/transition populations",
-        "browser builder aggregate"
-      ],
-      "recovery": "Authoritatively reconstruct the e0b0313 engine merge; choosing either parent locally would discard the other parent's production work."
-    }
-  ],
+  "canonical_dependency_blocks": [],
   "builder_results": {
     "s49_instrument": "5/5 pass",
     "delete_fix": "exit 1 with clip_through true and missing emergency telemetry",
@@ -60,7 +30,8 @@
     "surface_fixture": "M4 centres -6.40/-0.90 and M5 centre -3.40 pass exact surface assertions; M5 pivot-side clearance minimum 0.3201 m.",
     "surface_red_seed": "Old centre-coordinate arm exits 1 and makes both surface_distance_fixture checks red.",
     "surface_residual": "S50-resolved hard fail: M4 is production camera containment/telemetry; M5 is body-feasibility first, then camera containment. Existing probe must add the exact independent legal-set classifier before tuning.",
-    "bounded_aggregate": "Attempted rig,look,world,scripted,coupling,fp; exceeded the contract 15-minute critic boundary without producing output and was stopped. Individual cheap/S49/surface checks are recorded; no pass claimed."
+    "bounded_aggregate": "Attempted rig,look,world,scripted,coupling,fp; exceeded the contract 15-minute critic boundary without producing output and was stopped. Individual cheap/S49/surface checks are recorded; no pass claimed.",
+    "s50_recovery": "18/18 rate,wall checks; M4 0/2880 clips; M5 0/300 clips and infeasible; 0 classifier/emitted disagreements. All raw outputs transient under /tmp."
   },
   "redundant_with": [
     "W1-06",

@@ -8081,7 +8081,16 @@ export class Engine {
    */
   getCameraFrame() {
     const rec = makeRecord(this.sim, this.input, this.bus, { enemies: false, hitboxes: false, events: false });
-    return { f: rec.f, camera: rec.camera, player_pos: rec.player.pos, player_yaw_deg: rec.player.yaw_deg };
+    const cell = this.sim.cell || EMPTY_CELL;
+    // Exact live primitive transforms.  These are copied because the moving-wall fixture
+    // mutates them on the next frame; an independent classifier must reproduce this frame.
+    const collision_primitives = cell.shapes.map((s) => s.k === 0
+      ? { k: 0, c: [...s.c], h: [...s.h], cy: s.cy, sy: s.sy, id: s.id }
+      : s.k === 1 ? { k: 1, c: [...s.c], hh: s.hh, r: s.r, id: s.id }
+      : s.k === 2 ? { k: 2, a: [...s.a], b: [...s.b], r: s.r, id: s.id }
+      : { k: 3, y: s.y, id: s.id });
+    return { f: rec.f, camera: rec.camera, player_pos: rec.player.pos,
+      player_yaw_deg: rec.player.yaw_deg, collision_primitives };
   }
 
   /** RI-CAM06 M7's fixture: fire the damage shake at a stated fraction of hp_max. */
