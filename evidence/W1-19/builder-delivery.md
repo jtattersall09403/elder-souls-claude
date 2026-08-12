@@ -123,3 +123,27 @@ safe-grid fallback was implemented in response. Its syntax and fixture validatio
 the final long production rerun was interrupted before completion. Therefore the twelve-part
 Q-MAIN-08 acceptance is **not claimed green** in this delivery and the production status remains
 `INCOMPLETE_BUILDER_DEFECT`.
+
+## 2026-08-12 GPU-machine handoff
+
+Owner review established that an active salt storm and glassed-crater shelter exercise came from a
+historical Q8 diagnostic, not from `orchestration/plans/W1-19.md` or its governing requirements.
+Those extra acceptance clauses are no longer used to gate W1-19. Q8 remains responsible for its
+canonical Blackrose–Lilmoth–Archon flow, legitimate doorway/schedule handling and player-facing
+harbourmaster interaction.
+
+The connected detour now evaluates production traversal semantics instead of treating the coastal
+W3 carriageway as impassable. It rejects W4 water and the previously observed 0.621 m wet-SUCK
+shoulder, permits only <=0.4 m wet SUCK, and records substrate in every segment sample. Encounter
+clearance is based on the production 12–20 m per-body perception radii plus authored spawn offsets,
+not a fictitious body-count-scaled 70 m exclusion disc.
+
+From the ignored `archon-road-75.json` save, the bounded waypoint run reached
+`[3221.9, 4360.2]`: 357.5 m ordinary movement, zero death/respawn, zero teleport, 486 mired frames
+resolved by the shipped struggle input, 0.31 m worst off-path and a 12-frame longest stall. Its
+ignored state is `reports/runs/W1-19-production/after-pop-0115.json`, SHA-256
+`b966acbf618cd183351ed2c2cbf2e1475d4ebcd12d4cbd89982505fddd3ef1b0`. It has only 11.712/300 HP.
+The immediate resume consumed three production flask inputs but then moved 0 m and aborted `stuck`
+after 1,800 frames. That post-heal locomotion state is the first unresolved causal defect. The
+ignored state and raw reports are machine-local and must be copied to a new host or regenerated;
+no completed Q8, Gate A or Gate C claim is made.
