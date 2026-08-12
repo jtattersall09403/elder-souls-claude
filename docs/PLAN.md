@@ -367,6 +367,17 @@ RI-UIX02 is the enforcement point for the most-cited arbitration rule in the cor
 
 **Judged by (11):** RI-CAM03, RI-CAM05, RI-PRG01, RI-PRG02, RI-UIX01, RI-UIX02, RI-UIX03, RI-UIX04, RI-UIX06, RI-VIS05, RI-WLD06
 
+
+**Wave-1 visual closure:** W1-21 owns the production UI surfaces and consumes W1-30's shared visual
+foundation after W1-30 lands. Its required screen population includes HUD, inventory, journal,
+book, dialogue, level-up, character/attributes, skills, spells, map, containers/trade,
+rebinding/refusal, touch and controller calibration, plus any new player-facing screen present at
+the tested commit. Structural comparisons use `REF-A12`; visible art, hierarchy, density and
+material comparisons use the 33 rendered `REF-A12b` Morrowind UI captures. The builder implements
+the complete UI-wide visual upgrade and performs bounded live checks. Fresh critics own exhaustive
+state/resolution/modality populations, blind comparisons, independent judgements and final scoring.
+W1-21 visual closure and criticism must complete before Wave-2 depth work.
+
 ### W1-22 — The audio bed
 
 Four `audio.*` paths, no builder in the old plan. RI-AUD01 requires a parry ring identifiable with the screen off; RI-WLD12 M70 requires the bed to change at a border.
@@ -682,6 +693,9 @@ nothing else — each is a piece whose absence a player notices inside sixty sec
 3. **`W1-00` round 3** — the save round trip, now declared.
 4. **`W1-13`** — death and recovery, now declared.
 5. **`W1-04`, `W1-21`, `W1-19`** — settlements, the UI, and the main quest end to end.
+
+After W1-30 lands, dispatch the W1-21 UI visual-closure builder and critic before Wave-2. If W1-28
+has already landed, rerun only its cheap opening/UI smoke rows after UI closure.
 
 ## 6. Wave-2, -3 and -4 pieces, in outline
 
