@@ -30,6 +30,7 @@ const WATER_SEG = 24;
 const RADIUS = 2;                 // 5 x 5 tiles resident => 1.5 km of detailed ground
 const FAR_SEG_X = 96, FAR_SEG_Z = 110;
 const MAX_INSTANCES = { canopy: 700, under: 2600, rock: 420 };
+const STYLE_MATERIAL_CACHE=new WeakMap();
 // The region's own lamps at night (RI-WLD04 M17 step 6). TWO, not six, and the number is a
 // measurement rather than a taste: on the software rasteriser the M17 night pass ran at 11 s per
 // frame with none and 3.75 MINUTES per frame with six, because every extra dynamic light multiplies
@@ -198,11 +199,24 @@ export class Province {
 
   _settlementStyleboard(g, plan) {
     const b=this.visualStyleboards?.settlements.get(plan.id); if(!b) return;
-    let index=0; g.traverse(o=>{ if(!o.isMesh||!o.material)return; o.material=o.material.clone(); consumeStyleboard(o.material,b,index++%5===0?'contrast':index%2?'dominant':'secondary',.72); });
+    let index=0; g.traverse(o=>{ if(!o.isMesh||!o.material)return;const role=index++%5===0?'contrast':index%2?'dominant':'secondary';let rows=STYLE_MATERIAL_CACHE.get(o.material);if(!rows){rows=new Map();STYLE_MATERIAL_CACHE.set(o.material,rows);}const key=`${b.id}:${role}`;if(!rows.has(key)){const styled=o.material.clone();consumeStyleboard(styled,b,role,.72);rows.set(key,styled);}o.material=rows.get(key); });
     const mat=worldMaterial(b.contrast_material,{emissive:0x24180f,emissiveIntensity:.45}); consumeStyleboard(mat,b,'contrast');
+    const main=worldMaterial(b.dominant_materials[1],{color:0xffffff});consumeStyleboard(main,b,'secondary');
     const weird=new THREE.Group(); weird.name=`inexplicable:${plan.id}:${b.inexplicable_element}`;
-    const seed=[...b.inexplicable_element].reduce((a,c)=>a+c.charCodeAt(0),0), H=9+seed%8;
-    for(let i=0;i<5;i++){ const m=new THREE.Mesh(new THREE.TorusGeometry(1.2+i*.34,.16+i*.025,6,12),mat); m.position.y=1.4+i*H/5; m.rotation.set(Math.PI/2,(seed%7)*.09,i*.47); m.castShadow=true; weird.add(m); }
+    const seed=[...b.inexplicable_element].reduce((a,c)=>a+c.charCodeAt(0),0), H=6+seed%5;
+    // A landmark needs mass, attachment and a silhouette. Five floating toruses were metadata
+    // visualised as debug geometry. This rooted reliquary keeps the deterministic board-derived
+    // identity, but reads as an object built by the settlement.
+    const plinth=new THREE.Mesh(new THREE.CylinderGeometry(1.15,1.55,.7,10),main);plinth.position.y=.35;plinth.castShadow=plinth.receiveShadow=true;weird.add(plinth);
+    for(let i=0;i<3;i++){
+      const stem=new THREE.Mesh(new THREE.CylinderGeometry(.16+i*.035,.42-i*.045,H*(.74+i*.10),8),main);
+      stem.position.set((i-1)*.42,H*(.37+i*.05),Math.sin(seed+i)*.28);stem.rotation.z=(i-1)*-.07;stem.castShadow=true;weird.add(stem);
+    }
+    for(let i=0;i<3;i++){
+      const y=1.5+i*H*.23,w=.72+i*.28,curve=new THREE.CubicBezierCurve3(new THREE.Vector3(-w,y,0),new THREE.Vector3(-w*.52,y+1.15+i*.12,.25*(i-1)),new THREE.Vector3(w*.38,y+1.35,-.18*(i-1)),new THREE.Vector3(w,y+.12,0));
+      const rib=new THREE.Mesh(new THREE.TubeGeometry(curve,14,.075+i*.015,7,false),mat);rib.rotation.y=(seed%7)*.06+i*.22;rib.castShadow=true;weird.add(rib);
+    }
+    const crown=new THREE.Mesh(new THREE.DodecahedronGeometry(.65,1),mat);crown.position.set(0,H+.25,0);crown.scale.set(.72,1.35,.72);crown.castShadow=true;weird.add(crown);
     const [x,,z]=plan.pos; weird.position.set(x,this._meshY(x,z),z); weird.userData.styleboard={id:b.id,visible:true}; g.add(weird);
   }
 
@@ -223,6 +237,11 @@ export class Province {
       col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
     }
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    // World-space texel density keeps the 96px material frequency continuous across 300 m
+    // tiles. Default 0..1 plane UVs magnified broad cells into giant contour bands.
+    const uv=geo.attributes.uv;
+    for(let i=0;i<pos.count;i++) uv.setXY(i,pos.getX(i)/3,pos.getZ(i)/3);
+    uv.needsUpdate=true;
     geo.computeVertexNormals();
     const mesh = new THREE.Mesh(geo, this.mats.far);
     mesh.name = 'province-far';
@@ -271,7 +290,10 @@ export class Province {
     const amp = (r.terrain.micro && r.terrain.micro.amp_m) || 0;
     if (amp > 0) {
       const t = clamp(f.micro.at(x, z) / (amp * 1.7), -1, 1);
-      out.offsetHSL(0, -0.09 * t, 0.155 * t);
+      // Relief already changes normals and shadows. A 31%-wide albedo swing turned valid paddy
+      // bunds into fluorescent contour stripes; retain drained/wet material response at a scale
+      // found in soil rather than exposing the scalar field as false colour.
+      out.offsetHSL(0, -0.045 * t, 0.065 * t);
     }
     // Slope strips the cover off and shows what is underneath. The comment this replaces promised
     // "rock exposed by slope" and nothing did it.
@@ -279,6 +301,9 @@ export class Province {
     if (sl > 20) out.lerp(c3(r.props.rock.colour), clamp((sl - 20) / 34, 0, 0.62));
     const d = f.depthAt(x, z);
     if (d > 0) out.lerp(c3(r.palette_hex[0]).multiplyScalar(0.42), clamp(0.30 + d * 0.55, 0, 0.88));
+    // Region hue remains authoritative, but production soil is not an emissive false-colour map.
+    // Bound saturation/value after all semantic blends so daylight retains material information.
+    const hsl={h:0,s:0,l:0};out.getHSL(hsl);out.setHSL(hsl.h,Math.min(.34,hsl.s*.66),Math.min(.38,hsl.l*.88));
     return out;
   }
 
@@ -406,6 +431,10 @@ export class Province {
         if (d > COVER_RADIUS_M) continue;
         if (px < 0 || pz < 0 || px >= f.sizeX || pz >= f.sizeZ) continue;
         if (!f.isLandAt(px, pz)) continue;
+        // Streets, yards and threshold approaches need negative space.  Previously the regional
+        // carpet was stamped through the complete settlement plan, so doors and roads vanished
+        // under the same wilderness density as the surrounding marsh.
+        if (this.settlementAt(px,pz,8)) continue;
         considered++;
         const ri = f.regionIndexAt(px, pz);
         const r = f.regions[ri];
@@ -520,6 +549,7 @@ export class Province {
     };
     const pos = new Float32Array(V * V * 3);
     const col = new Float32Array(V * V * 3);
+    const skinUv = new Float32Array(V * V * 2);
     const rgb = [0, 0, 0];
     const cH = new THREE.Color();
     let live = 0;
@@ -545,11 +575,12 @@ export class Province {
           if (rise > 0.004) live++;
         }
         pos[k] = px; pos[k + 1] = this._meshY(cx, cz) + 0.012 + rise; pos[k + 2] = pz;
+        skinUv[(j*V+i)*2]=px/3;skinUv[(j*V+i)*2+1]=pz/3;
         cH.setRGB(rgb[0], rgb[1], rgb[2]);
         // The material's own response to its own shape. A normal alone is not enough: 0.2 m over
         // 1 m under an overcast sky moves Lambert shading by a couple of per cent, which is how
         // the micro-relief came to be in the collision surface and invisible in the frame.
-        if (tone !== 0) cH.offsetHSL(0, -0.06 * tone, 0.24 * tone);
+        if (tone !== 0) cH.offsetHSL(0, -0.025 * tone, 0.065 * tone);
         col[k] = cH.r; col[k + 1] = cH.g; col[k + 2] = cH.b;
       }
     }
@@ -566,12 +597,11 @@ export class Province {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    geo.setAttribute('uv',new THREE.BufferAttribute(skinUv,2));
     geo.setIndex(new THREE.BufferAttribute(idx, 1));
     geo.computeVertexNormals();
-    this.skinMats = this.skinMats || new THREE.MeshStandardMaterial({
-      vertexColors: true, roughness: 0.95, metalness: 0.0,
-      polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1,
-    });
+    this.skinMats = this.skinMats || worldMaterial('mud',{vertexColors:true,roughness:.95,bumpScale:.06});
+    this.skinMats.polygonOffset=true;this.skinMats.polygonOffsetFactor=-1;this.skinMats.polygonOffsetUnits=-1;
     const mesh = new THREE.Mesh(geo, this.skinMats);
     mesh.name = 'ground-skin';
     mesh.receiveShadow = true;
@@ -652,7 +682,8 @@ export class Province {
     // found a valid walkable sample completely enclosed by a trunk; vegetation may frame a path,
     // but production composition cannot put opaque canopy geometry on the active arrival point.
     const arrivalClear=Math.hypot(x-this.focus[0],z-this.focus[1])>=2.4;
-    if (arrivalClear && p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
+    const settlementClear=!this.settlementAt(x,z,8);
+    if (settlementClear && arrivalClear && p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
       // Height variance and the occasional emergent: the vertical-structure axis, in data.
       const hv = p.canopy.h_var || 0;
       let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
@@ -683,10 +714,10 @@ export class Province {
         push('canopy', 'crown', this.regionMats[ri].crown, sc, crownY, tilt, 7797);
       }
     }
-    if (rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
+    if (settlementClear && rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
       push('under', 'under', this.regionMats[ri].under, 0.7 + noise2(x * 5, z * 5, 7801) * 0.8, 0, null, 7789);
     }
-    if (rolls[2] < dens.rock * cellArea / 100) {
+    if (settlementClear && rolls[2] < dens.rock * cellArea / 100) {
       push('rock', 'rock', this.regionMats[ri].rock, p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1, null, 7789);
     }
   }
@@ -856,6 +887,9 @@ export class Province {
       col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
     }
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const tileUv=geo.attributes.uv;
+    for(let i=0;i<pos.count;i++) tileUv.setXY(i,pos.getX(i)/3,pos.getZ(i)/3);
+    tileUv.needsUpdate=true;
     geo.computeVertexNormals();
     const ground = new THREE.Mesh(geo, this.mats.ground);
     ground.receiveShadow = true;
@@ -1537,7 +1571,13 @@ export class Province {
     switch (kind) {
       case 'trunk': {
         const h = p.canopy.h;
-        if (p.canopy.shape === 'arch') { geo = new THREE.TorusGeometry(p.canopy.r, 0.35, 6, 10, Math.PI); geo.rotateY(Math.PI / 2); }
+        if (p.canopy.shape === 'arch') {
+          // Organic root arch: an asymmetric Bezier tube rather than a repeated perfect torus.
+          const rr=p.canopy.r, tube=Math.min(.17,rr*.043);
+          const curve=new THREE.QuadraticBezierCurve3(new THREE.Vector3(0,0,-rr),new THREE.Vector3(rr*.24,rr*1.18,rr*.08),new THREE.Vector3(0,0,rr));
+          const fork=new THREE.QuadraticBezierCurve3(new THREE.Vector3(0,0,-rr*.25),new THREE.Vector3(-rr*.72,rr*.58,0),new THREE.Vector3(-rr*.48,rr*.95,rr*.12));
+          geo=mergeAll([new THREE.TubeGeometry(curve,12,tube,7,false),new THREE.TubeGeometry(fork,7,tube*.58,6,false)]);
+        }
         else {
           // A TRUNK IS SIZED BY THE TREE'S HEIGHT, NOT BY ITS CROWN. Deriving it from the crown
           // radius — which is what this did — gave Blackwood a 4.4 m thick bole every six metres,
@@ -1552,9 +1592,15 @@ export class Province {
       }
       case 'crown': {
         const h = p.canopy.h, rr = p.canopy.r;
-        if (p.canopy.shape === 'cone') geo = new THREE.ConeGeometry(rr, h * 0.65, 7);
-        else if (p.canopy.shape === 'sphere') geo = new THREE.IcosahedronGeometry(rr, 1);
-        else if (p.canopy.shape === 'spire') geo = new THREE.ConeGeometry(rr * 0.55, h * 0.5, 5);
+        if (p.canopy.shape === 'cone') {
+          // Thornmarsh's 4 m scrub was a forest of perfect opaque pyramids.  The data label is a
+          // silhouette class, not a licence to draw a ConeGeometry as the finished plant: build a
+          // tapered, broken crown from interlocking thorn masses so light and sky cut into it.
+          const lobes=[[0,.18,0,1,.52,1],[-.62,-.18,.08,.55,.42,.48],[.48,-.12,.24,.62,.38,.55],[-.22,.04,-.5,.48,.54,.46],[.18,.5,.08,.42,.46,.4]];
+          geo=mergeAll(lobes.map(([x,y,z,sx,sy,sz],i)=>{const g=new THREE.IcosahedronGeometry(rr,1);g.scale(sx,sy,sz);g.rotateY(i*.73);g.translate(x*rr,y*h,z*rr);return g;}));
+        }
+        else if (p.canopy.shape === 'sphere') geo = mergeAll([[0,0,0,1],[rr*.58,-rr*.18,rr*.15,.63],[-rr*.48,-rr*.12,-rr*.2,.57]].map(([x,y,z,s])=>{const g=new THREE.IcosahedronGeometry(rr*s,1);g.translate(x,y,z);return g;}));
+        else if (p.canopy.shape === 'spire') geo = mergeAll([[0,0,0,1],[rr*.28,-h*.13,rr*.1,.65],[-rr*.25,-h*.18,-rr*.12,.55]].map(([x,y,z,s])=>{const g=new THREE.ConeGeometry(rr*.55*s,h*.5*s,7);g.translate(x,y,z);return g;}));
         else if (p.canopy.shape === 'dome') geo = new THREE.SphereGeometry(rr, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2);
         else if (p.canopy.shape === 'column') geo = new THREE.CylinderGeometry(rr * 0.7, rr * 0.9, h * 0.4, 7);
         // 'arch' is a root arch: the TRUNK is the torus and the foliage is a small mass at the
@@ -1567,8 +1613,12 @@ export class Province {
         const h = p.under.h;
         if (p.under.shape === 'shelf' || p.under.shape === 'comb') { geo = new THREE.CylinderGeometry(0.7, 0.7, h, 6); geo.translate(0, h / 2, 0); }
         else if (p.under.shape === 'crust') { geo = new THREE.CircleGeometry(0.9, 6).rotateX(-Math.PI / 2); geo.translate(0, h, 0); }
-        else if (p.under.shape === 'frond') { geo = new THREE.ConeGeometry(0.55, h, 4, 1, true); geo.translate(0, h / 2, 0); }
-        else { geo = new THREE.PlaneGeometry(0.8, h); geo.translate(0, h / 2, 0); }
+        else if (p.under.shape === 'frond') { geo=mergeAll([0,1,2,3,4].map(i=>{const g=new THREE.PlaneGeometry(.26,h);g.translate((i-2)*.11,h/2,0);g.rotateY((i-2)*.38);g.rotateZ((i-2)*.12);return g;})); }
+        else {
+          // A blade cluster is open triangles, not an opaque rectangular billboard. It keeps
+          // ground visible between stems and remains readable from every camera bearing.
+          const parts=[];for(let i=0;i<5;i++){const w=.10+i*.018,x=(i-2)*.11;const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute([x-w,0,0,x+w,0,0,x,h*(.72+(i%3)*.14),(i-2)*.035],3));g.setIndex([0,1,2]);g.computeVertexNormals();g.rotateY((i-2)*.44);parts.push(g);}geo=mergeAll(parts);
+        }
         break;
       }
       // The ordinary underfoot material. Unit geometry, authored at its declared height, kept

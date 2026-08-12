@@ -375,6 +375,10 @@ export class SpellVFX {
     // ---- V10: the four mesh-based effects ----------------------------------------------------
     this.meshFx = this._makeMeshEffects();
 
+    // Two bounded practicals let release/impact colour strike actors and nearby architecture.
+    // They are pooled with the VFX group and reset every frame; no spell can allocate a light.
+    this.practicals=[0,1].map(i=>{const l=new THREE.PointLight(0xffffff,0,i?7:4.5,2);l.name=`spell-vfx:practical:${i}`;l.visible=false;this.group.add(l);return l;});
+
     // ---- V8: the refraction shell ------------------------------------------------------------
     this.refractMat = new THREE.ShaderMaterial({
       vertexShader: REFRACT_VERT, fragmentShader: REFRACT_FRAG,
@@ -528,6 +532,7 @@ export class SpellVFX {
     this.decals.count = 0;
     for (const k of Object.keys(this.meshFx)) this.meshFx[k].visible = false;
     this.refract.visible = false;
+    for(const l of this.practicals){l.visible=false;l.intensity=0;}
     if (!M) { this._flush(); return this.stats; }
 
     // ---- V4: the live scene light, straight off the Sky this frame ---------------------------
@@ -556,6 +561,7 @@ export class SpellVFX {
       const p = sim.player.pos;
       const pal = this.paletteFor(cast.spell);
       this._emitCore(p[0], p[1] + 1.15, p[2], pal, intensity, 26, 0.10, this.frame);
+      const l=this.practicals[0];l.position.set(p[0],p[1]+1.15,p[2]);l.color.set(pal.core);l.intensity=3.2*intensity;l.visible=l.intensity>.03;
     }
     for (const k of Object.keys(this.systems)) this.systems[k].mat.uniforms.uIntensity.value = intensity;
 
@@ -613,6 +619,7 @@ export class SpellVFX {
       // and the bloom on the floor beneath it, from the first frame — L5's ragged mask, not a
       // radial mandala, and it is IN FRAME because it is under the thing that just exploded.
       this._pushDecal([im.at[0], 0, im.at[2]], burstR * (0.9 + t * 0.7), pal, 0.85 * (1 - t * 0.5), im.spawnF);
+      const l=this.practicals[1];l.position.set(im.at[0],im.at[1]+.55,im.at[2]);l.color.set(pal.core);l.intensity=Math.max(l.intensity,10*punch);l.visible=true;
     }
 
     // ---- L7: residue. Every spell leaves a stain for 3,600 f@60, and it is finally drawn. -----
@@ -828,6 +835,7 @@ export class SpellVFX {
       poolCapacity: MAX_PARTICLES * Object.keys(this.systems).length,
       frameParticleCap: MAX_FRAME_PARTICLES,
       decalCap: MAX_DECALS,
+      practicalLights:this.practicals.filter(l=>l.visible).length,
       deterministicSeedSource: 'spawnF + stable emitter index',
     };
   }

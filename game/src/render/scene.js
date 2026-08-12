@@ -101,6 +101,8 @@ export function buildScene(seed) {
     wall:M('clay',0x6b5a44), roof:M('root',0x3d3428), plank:M('timber',0x554634),
     stone:M('stone',0x7a7a70), darkStone:M('stone',0x39383a,{roughness:.88}),
     skin:M('skin',0xb9ad8e), cloth:M('cloth',0x54341f), metal:M('metal',0xa8adb4), moss:M('leaf',0x4c5c36),
+    chitin:M('chitin',0x684c36), wet_chitin:M('wet_chitin',0x354945), bone:M('bone',0xc5b98e),
+    ember:M('resin',0xff7a2e,{emissive:0xff4a12,emissiveIntensity:3.2,roughness:.28}),
   };
 
   // ---- terrain -------------------------------------------------------------------------
@@ -122,6 +124,9 @@ export function buildScene(seed) {
     colours[i * 3 + 2] = lerp(lerp(0.075, 0.125, wet), 0.235, high) + mottle * 0.42;
   }
   geo.setAttribute('color', new THREE.BufferAttribute(colours, 3));
+  const terrainUV=geo.attributes.uv;
+  for(let i=0;i<pos.count;i++) terrainUV.setXY(i,pos.getX(i)/3,pos.getZ(i)/3);
+  terrainUV.needsUpdate=true;
   geo.computeVertexNormals();
   const terrain = new THREE.Mesh(geo, mats.ground);
   terrain.receiveShadow = true;
@@ -137,9 +142,9 @@ export function buildScene(seed) {
   // ---- canopy ---------------------------------------------------------------------------
   const TREES = 320;
   const trunkGeo = new THREE.CylinderGeometry(0.24, 0.46, 8.0, 6, 1); trunkGeo.translate(0, 4.0, 0);
-  const canopyGeo = new THREE.IcosahedronGeometry(3.6, 1);
+  const canopyGeo = new THREE.DodecahedronGeometry(2.65, 1);
   const trunks = new THREE.InstancedMesh(trunkGeo, mats.bark, TREES);
-  const canopies = new THREE.InstancedMesh(canopyGeo, mats.leaf, TREES);
+  const canopies = [0,1,2].map(i=>{const im=new THREE.InstancedMesh(canopyGeo,mats.leaf,TREES);im.name=`canopy-lobe:${i}`;return im;});
   const m = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), s = new THREE.Vector3();
   const up = new THREE.Vector3(0, 1, 0);
   let placed = 0;
@@ -157,15 +162,17 @@ export function buildScene(seed) {
     q.setFromAxisAngle(up, hash2(i, 17, seed) * Math.PI * 2);
     v.set(x, y, z); s.set(sc, sc * (0.85 + hash2(i, 19, seed) * 0.55), sc);
     m.compose(v, q, s); trunks.setMatrixAt(placed, m);
-    v.set(x, y + 7.0 * s.y, z); s.setScalar(sc * (0.9 + hash2(i, 23, seed) * 0.5));
-    m.compose(v, q, s); canopies.setMatrixAt(placed, m);
+    const crownY=y+7.0*s.y, crownSc=sc*(0.9+hash2(i,23,seed)*0.5);
+    for(let l=0;l<canopies.length;l++){
+      const a=hash2(i,l+71,seed)*Math.PI*2,rad=l===0?0:crownSc*(1.25+l*.22);
+      v.set(x+Math.cos(a)*rad,crownY-(l===0?0:crownSc*.35),z+Math.sin(a)*rad);
+      s.set(crownSc*(l===0?1.15:.72),crownSc*(l===0?.84:.68),crownSc*(l===0?1.05:.78));m.compose(v,q,s);canopies[l].setMatrixAt(placed,m);
+    }
     placed++;
   }
-  trunks.count = canopies.count = placed;
-  trunks.castShadow = canopies.castShadow = true;
-  canopies.receiveShadow = true;
-  trunks.name = 'trunks'; canopies.name = 'canopies';
-  cells.exterior.add(trunks, canopies);
+  trunks.count=placed;trunks.castShadow=true;trunks.name='trunks';
+  for(const c of canopies){c.count=placed;c.castShadow=true;c.receiveShadow=true;}
+  cells.exterior.add(trunks,...canopies);
 
   // ---- reeds at the shoreline ---------------------------------------------------------------
   const REEDS = 1100;
@@ -209,13 +216,19 @@ export function buildScene(seed) {
     if (Math.hypot(bx, zz) < 6.5) continue;
     const base = Math.max(walkY, terrainHeight(bx, zz, seed));
     const house = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats.wall);
-    house.position.set(bx, base + h / 2 + 0.4, zz);
-    house.castShadow = true; house.receiveShadow = true;
+    house.position.set(bx, base + h / 2 + 0.4, zz);house.castShadow=true;house.receiveShadow=true;
     const roof = new THREE.Mesh(new THREE.ConeGeometry(Math.max(w, d) * 0.80, 1.8, 4), mats.roof);
     roof.position.set(bx, base + h + 1.3, zz);
     roof.rotation.y = Math.PI / 4;
     roof.castShadow = true;
     settlement.add(house, roof);
+    // Layered public facade: foundation, corner posts, recessed door and framed windows. The
+    // original single box/cone pair read as a blockout even at street distance.
+    const front=zz-side*d*.52;
+    const foundation=new THREE.Mesh(new THREE.BoxGeometry(w+.34,.42,d+.34),mats.stone);foundation.position.set(bx,base+.20,zz);foundation.receiveShadow=true;settlement.add(foundation);
+    for(const sx of [-1,1]){const post=new THREE.Mesh(new THREE.CylinderGeometry(.10,.17,h*.9,7),mats.bark);post.position.set(bx+sx*w*.43,base+h*.49,front);post.rotation.z=sx*.035;post.castShadow=true;settlement.add(post);}
+    const door=new THREE.Mesh(new THREE.BoxGeometry(.86,1.72,.10),mats.plank);door.position.set(bx,base+1.27,front);door.rotation.y=side<0?0:Math.PI;door.castShadow=true;settlement.add(door);
+    for(const sx of [-1,1]){const pane=new THREE.Mesh(new THREE.BoxGeometry(.54,.60,.07),mats.resin||mats.chitin);pane.position.set(bx+sx*w*.27,base+h*.58,front);settlement.add(pane);const sill=new THREE.Mesh(new THREE.BoxGeometry(.70,.09,.13),mats.bone);sill.position.set(pane.position.x,pane.position.y-.35,front);settlement.add(sill);}
     for (let k = 0; k < 4; k++) {
       const st = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 2.2, 5), mats.plank);
       st.position.set(bx + (k % 2 ? 1 : -1) * w * 0.4, base - 0.5, zz + (k < 2 ? 1 : -1) * d * 0.4);
@@ -261,17 +274,52 @@ export function buildScene(seed) {
     scene.add(group);
   }
 
-  // ---- arena: flat ground for the combat scenarios (VP12) ---------------------------------------
+  // ---- arena: an authored, layered combat bowl (VP12) -------------------------------------------
   const arenaFloor = new THREE.Mesh(new THREE.CircleGeometry(30, 56).rotateX(-Math.PI / 2),
-    new THREE.MeshStandardMaterial({ color: 0x494236, roughness: 0.95 }));
+    M('wet_mud',0x302d28,{roughness:.68}));
   arenaFloor.receiveShadow = true;
+  arenaFloor.name='arena-wet-stone-floor';
   cells.arena.add(arenaFloor);
+  const arenaFill=new THREE.HemisphereLight(0xc3d1d4,0x514238,1.08);
+  arenaFill.name='arena-bounded-readable-fill';cells.arena.add(arenaFill);
+  const arenaAmbient=new THREE.AmbientLight(0x7f8988,.28);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
+  // Broken inlay rings give movement scale and keep the player from floating on an empty disc.
+  for(const [radius,tube,colour] of [[7.2,.12,0x877353],[13.5,.18,0x554c3c],[21,.24,0x45443d]]){
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,6,96),M('stone',colour,{roughness:.74}));
+    ring.rotation.x=Math.PI/2;ring.position.y=.035;ring.receiveShadow=true;ring.name='arena-weathered-inlay';cells.arena.add(ring);
+  }
+  const rockGeo=[new THREE.DodecahedronGeometry(1,1),new THREE.IcosahedronGeometry(1,1)];
+  const arenaRock=[M('stone',0x59605f,{roughness:.78,emissive:0x171c1d,emissiveIntensity:.34}),M('stone',0x716e62,{roughness:.84,emissive:0x1c1a16,emissiveIntensity:.28}),M('stone',0x464d4f,{roughness:.72,emissive:0x121719,emissiveIntensity:.36})];
   for (let i = 0; i < 18; i++) {
     const a = (i / 18) * Math.PI * 2;
-    const pil = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.65, 5.6, 8), mats.stone);
-    pil.position.set(Math.cos(a) * 28, 2.8, Math.sin(a) * 28);
-    pil.castShadow = true;
-    cells.arena.add(pil);
+    const radius=25.5+hash2(i,301,seed)*4;
+    const cliff=new THREE.Group();cliff.position.set(Math.cos(a)*radius,0,Math.sin(a)*radius);cliff.rotation.y=-a;
+    for(let k=0;k<4;k++){
+      const r=new THREE.Mesh(rockGeo[(i+k)&1],arenaRock[(i+k)%arenaRock.length]);
+      const sc=.75+hash2(i*7+k,307,seed)*1.45;r.scale.set(sc*(.75+hash2(i,k,seed)*.6),sc*(1.2+hash2(i,k+3,seed)*1.4),sc);
+      r.position.set((k-1.5)*.85,Math.max(.35,r.scale.y*.72),hash2(i,k+11,seed)*1.4-.7);r.rotation.set(hash2(i,k+19,seed)*.35,hash2(i,k+23,seed)*Math.PI,.12*(k-1.5));r.castShadow=r.receiveShadow=true;cliff.add(r);
+    }
+    // Only some uprights survive: repetition becomes history rather than a fence of cylinders.
+    if(i%3===0){const pil=new THREE.Mesh(new THREE.CylinderGeometry(.45,.7,3.2+(i%4),10),mats.stone);pil.position.set(0,1.6+(i%4)*.5,0);pil.rotation.z=(hash2(i,331,seed)-.5)*.18;pil.castShadow=true;cliff.add(pil);}
+    cells.arena.add(cliff);
+  }
+  // Broken root screens, puddles and debris provide parallax and surface contacts without
+  // changing the collision ring. They share materials/geometries and stay outside combat space.
+  const rootGeo=new THREE.CylinderGeometry(.10,.20,2.6,7);rootGeo.translate(0,1.3,0);
+  const shardGeo=new THREE.DodecahedronGeometry(.18,0);
+  for(let i=0;i<32;i++){
+    const a=i*.91,r=15.5+(i%5)*1.45,x=Math.cos(a)*r,z=Math.sin(a)*r;
+    const root=new THREE.Mesh(rootGeo,mats.bark);root.position.set(x,0,z);root.rotation.set((hash2(i,401,seed)-.5)*.35,a,(hash2(i,409,seed)-.5)*.48);root.scale.y=.65+hash2(i,411,seed)*.8;root.castShadow=true;cells.arena.add(root);
+    const shard=new THREE.Mesh(shardGeo,arenaRock[i%3]);shard.position.set(x+Math.sin(a)*.8,.14,z-Math.cos(a)*.8);shard.scale.set(.7+hash2(i,419,seed),.35+hash2(i,421,seed)*.65,.8);shard.rotation.y=a*.7;shard.castShadow=true;cells.arena.add(shard);
+  }
+  for(const [x,z,s] of [[-5,4,2.2],[7,-4,1.7],[-11,-2,1.3]]){const puddle=new THREE.Mesh(new THREE.CircleGeometry(s,28).rotateX(-Math.PI/2),M('water',0x263f43,{transparent:true,opacity:.72,roughness:.22}));puddle.position.set(x,.045,z);puddle.name='arena-depth-integrated-puddle';cells.arena.add(puddle);}
+  // Warm practicals against the cool sky reproduce the reference composition without a global
+  // orange grade.  The point lights are bounded and do not affect simulation or hit readability.
+  for(const [x,z] of [[-8,-9],[9,7]]){
+    const brazier=new THREE.Group();brazier.position.set(x,0,z);
+    const bowl=new THREE.Mesh(new THREE.CylinderGeometry(.42,.27,.34,10),mats.metal);bowl.position.y=.58;bowl.castShadow=true;
+    const coal=new THREE.Mesh(new THREE.DodecahedronGeometry(.25,1),mats.ember);coal.position.y=.86;
+    const light=new THREE.PointLight(0xff7b38,7.5,12,2);light.position.y=1.05;brazier.add(bowl,coal,light);cells.arena.add(brazier);
   }
 
   // ---- showcase props ------------------------------------------------------------------------
@@ -329,31 +377,51 @@ export function buildScene(seed) {
 function buildHall(root, mats) {
   const floor = new THREE.Mesh(new THREE.BoxGeometry(12, 0.3, 18), mats.plank);
   floor.position.y = -0.15; floor.receiveShadow = true; root.add(floor);
-  for (const [w, h, d, px, py, pz] of [[12, 4.4, 0.35, 0, 2.2, -9], [12, 4.4, 0.35, 0, 2.2, 9], [0.35, 4.4, 18, -6, 2.2, 0], [0.35, 4.4, 18, 6, 2.2, 0]]) {
+  for (const [w, h, d, px, py, pz] of [[12, 5.7, 0.35, 0, 2.85, -9], [12, 5.7, 0.35, 0, 2.85, 9], [0.35, 5.7, 18, -6, 2.85, 0], [0.35, 5.7, 18, 6, 2.85, 0]]) {
     const wall = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats.wall);
     wall.position.set(px, py, pz); wall.castShadow = true; wall.receiveShadow = true; root.add(wall);
   }
   const ceiling = new THREE.Mesh(new THREE.BoxGeometry(12, 0.3, 18), mats.roof);
-  ceiling.position.y = 4.4; root.add(ceiling);
-  for (let i = 0; i < 5; i++) {
-    const beam = new THREE.Mesh(new THREE.BoxGeometry(12, 0.34, 0.34), mats.bark);
-    beam.position.set(0, 4.05, -7 + i * 3.5); beam.castShadow = true; root.add(beam);
+  ceiling.position.y = 5.65; root.add(ceiling);
+  // Stone ribs, timber cross-members and wall pilasters turn the test box into a readable hall.
+  for (let i = 0; i < 6; i++) {
+    const z=-8+i*3.2;
+    const rib = new THREE.Mesh(new THREE.TorusGeometry(5.72,.16,8,40,Math.PI), mats.stone);
+    rib.position.set(0,.10,z);rib.castShadow=true;root.add(rib);
+    const beam = new THREE.Mesh(new THREE.BoxGeometry(11.1, 0.20, 0.24), mats.bark);
+    beam.position.set(0, 4.65, z); beam.castShadow = true; root.add(beam);
+    for(const sx of [-1,1]){
+      const pier=new THREE.Mesh(new THREE.CylinderGeometry(.24,.34,4.2,8),mats.stone);
+      pier.position.set(sx*5.55,2.1,z);pier.castShadow=true;root.add(pier);
+    }
   }
+  // An inset processional path and side runners establish depth toward the throne.
+  const runner=new THREE.Mesh(new THREE.BoxGeometry(2.35,.035,15.6),mats.cloth);runner.position.set(0,.025,0);runner.receiveShadow=true;root.add(runner);
+  for(const sx of [-1,1]){const trim=new THREE.Mesh(new THREE.BoxGeometry(.12,.08,16.4),mats.metal);trim.position.set(sx*1.22,.07,0);root.add(trim);}
   const hearth = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.15, 0.5, 12), mats.stone);
   hearth.position.set(0, 0.25, 3.0); hearth.receiveShadow = true; root.add(hearth);
-  const fire = new THREE.Mesh(new THREE.IcosahedronGeometry(0.45, 1), new THREE.MeshBasicMaterial({ color: 0xffb066 }));
-  fire.position.set(0, 0.72, 3.0); root.add(fire);
+  const fire = new THREE.Mesh(new THREE.IcosahedronGeometry(0.38, 2), mats.ember);
+  fire.scale.set(.75,1.55,.75);fire.position.set(0, 0.78, 3.0); root.add(fire);
+  for(let i=0;i<12;i++){
+    const coal=new THREE.Mesh(new THREE.DodecahedronGeometry(.11+(i%3)*.025,0),mats.ember);
+    coal.position.set(Math.cos(i*2.4)*(.25+(i%4)*.055),.54,3+Math.sin(i*2.4)*(.22+(i%3)*.05));root.add(coal);
+  }
   const light = new THREE.PointLight(0xffa050, 26, 26, 2);
   light.position.set(0, 1.0, 3.0);
   light.castShadow = true; light.shadow.mapSize.set(512, 512); light.shadow.bias = -0.004;
   root.add(light);
-  for (let i = 0; i < 6; i++) {
-    const t = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.8, 2.8), mats.wall);
-    t.position.set(-3.4 + (i % 3) * 3.4, 0.4, -5.5 + Math.floor(i / 3) * 2.4);
-    t.castShadow = true; t.receiveShadow = true; root.add(t);
+  for (let i = 0; i < 8; i++) {
+    const side=i%2?1:-1, z=-6.8+Math.floor(i/2)*3.1;
+    const bench = new THREE.Mesh(new THREE.BoxGeometry(2.5, 0.18, .58), mats.plank);
+    bench.position.set(side*3.55,.62,z);bench.rotation.z=side*.025;bench.castShadow=true;bench.receiveShadow=true;root.add(bench);
+    for(const dx of [-.95,.95]){const leg=new THREE.Mesh(new THREE.CylinderGeometry(.08,.11,.62,7),mats.bark);leg.position.set(side*3.55+dx,.31,z);leg.castShadow=true;root.add(leg);}
   }
-  const throne = new THREE.Mesh(new THREE.BoxGeometry(1.4, 2.2, 1.2), mats.bark);
-  throne.position.set(0, 1.1, 7.4); throne.castShadow = true; root.add(throne);
+  const throne = new THREE.Group();throne.position.set(0,0,7.35);
+  const seat=new THREE.Mesh(new THREE.BoxGeometry(1.35,.28,1.15),mats.bark);seat.position.y=.78;
+  const back=new THREE.Mesh(new THREE.CapsuleGeometry(.68,1.05,6,12),mats.chitin);back.position.set(0,1.52,.36);back.scale.z=.34;
+  const crest=new THREE.Mesh(new THREE.TorusGeometry(.72,.09,7,24,Math.PI),mats.bone);crest.position.set(0,2.05,.28);crest.rotation.x=.08;
+  for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.CylinderGeometry(.1,.14,1.15,8),mats.bark);arm.position.set(sx*.72,.72,0);arm.rotation.x=Math.PI/2;throne.add(arm);}
+  throne.add(seat,back,crest);throne.traverse(o=>{if(o.isMesh)o.castShadow=true;});root.add(throne);
   root.visible = false;
 }
 

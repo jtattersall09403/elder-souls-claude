@@ -41,11 +41,14 @@ const _v = new THREE.Vector3();
 const _u = new THREE.Vector3();
 const _w = new THREE.Vector3();
 const _m = new THREE.Matrix4();
+const _directionMaterialCache=new WeakMap();
+const _equipmentMaterialCache=new WeakMap();
 
 class MeshBuilder {
   constructor() {
     this.pos = [];
     this.nrm = [];
+    this.uv = [];
     this.si = [];
     this.sw = [];
     this.idx = [];
@@ -53,11 +56,12 @@ class MeshBuilder {
 
   get count() { return this.pos.length / 3; }
 
-  vert(p, n, bones, weights) {
+  vert(p, n, bones, weights, uv=[0,0]) {
     this.pos.push(p.x, p.y, p.z);
     this.nrm.push(n.x, n.y, n.z);
     this.si.push(bones[0], bones[1], 0, 0);
     this.sw.push(weights[0], weights[1], 0, 0);
+    this.uv.push(uv[0],uv[1]);
   }
 
   tri(a, b, c) { this.idx.push(a, b, c); }
@@ -98,7 +102,7 @@ class MeshBuilder {
           const s = t / blend;
           wp = 0.5 * (1 - s * s * (3 - 2 * s));
         }
-        this.vert(p, n, [bone, parent < 0 ? bone : parent], [1 - wp, wp]);
+        this.vert(p, n, [bone, parent < 0 ? bone : parent], [1 - wp, wp],[i/radial,t*2]);
       }
     }
     for (let j = 0; j < rings; j++) {
@@ -121,7 +125,7 @@ class MeshBuilder {
         const th = (i / (seg * 2)) * Math.PI * 2;
         const nx = sp * Math.cos(th), ny = cp, nz = sp * Math.sin(th);
         const p = new THREE.Vector3(c.x + nx * r, c.y + ny * r * squash, c.z + nz * r + (nz > 0 ? nz * fwd : 0));
-        this.vert(p, new THREE.Vector3(nx, ny, nz), [bone, bone], [1, 0]);
+        this.vert(p, new THREE.Vector3(nx, ny, nz), [bone, bone], [1, 0],[i/(seg*2),j/seg]);
       }
     }
     const ring = seg * 2;
@@ -139,6 +143,7 @@ class MeshBuilder {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(this.pos, 3));
     g.setAttribute('normal', new THREE.Float32BufferAttribute(this.nrm, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(this.uv, 2));
     g.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(this.si, 4));
     g.setAttribute('skinWeight', new THREE.Float32BufferAttribute(this.sw, 4));
     g.setIndex(this.idx);
@@ -254,7 +259,7 @@ const JOINTS = [
  * drawn character cannot be built against a different bone list than the fight is using — the
  * arrays are the same length, in the same order, by construction.
  */
-function buildSkeleton(rig, mats, tintHex, skinHex) {
+function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   const defs = rig.def.bones;
   const bones = [];
   const index = new Map();
@@ -396,19 +401,47 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
   // tier selects the set; this layer cannot change stats, timing or sockets.  Geometry, scale
   // and material response all change, so a loadout transition is not a tint swap.
   const equipment=[];
-  const equipMat={reed:mats.reed.clone(),chitin:mats.bark.clone(),xanmeer:mats.darkStone.clone()};
-  equipMat.reed.color.setHex(0x7b7548);equipMat.chitin.color.setHex(0x6f4d31);equipMat.xanmeer.color.setHex(0x777964);
+  let equipMat=_equipmentMaterialCache.get(mats);
+  if(!equipMat){equipMat={reed:mats.reed.clone(),chitin:(mats.chitin||mats.bark).clone(),xanmeer:mats.darkStone.clone()};equipMat.reed.color.setHex(0x7b7548);equipMat.chitin.color.setHex(0x6f4d31);equipMat.xanmeer.color.setHex(0x777964);_equipmentMaterialCache.set(mats,equipMat);}
   const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
   for(const set of ['reed','chitin','xanmeer']){
     const heavy=set==='xanmeer',mid=set==='chitin';
-    addEquip(set,'head','head',heavy?new THREE.ConeGeometry(.18,.34,4):mid?new THREE.CylinderGeometry(.14,.18,.23,7):new THREE.ConeGeometry(.17,.28,7),[0,.16,-.015],heavy?[1.15,1,1.15]:[1,1,1]);
-    addEquip(set,'chest','spine_02',heavy?new THREE.BoxGeometry(.48,.48,.26):mid?new THREE.IcosahedronGeometry(.29,1):new THREE.ConeGeometry(.34,.58,7),[0,-.08,-.02],heavy?[1.12,1,1]:[1,1,1]);
+    addEquip(set,'head','head',heavy?new THREE.CylinderGeometry(.145,.17,.20,10):mid?new THREE.SphereGeometry(.155,12,7,0,Math.PI*2,0,Math.PI*.58):new THREE.TorusGeometry(.145,.022,5,12,Math.PI*1.55),[0,.14,-.015],heavy?[1.08,1,1.08]:[1,1,1],heavy?[0,0,0]:[Math.PI/2,0,.35]);
+    // Chest plates follow the torso as a tapered shell. A capsule transformed by the live spine
+    // read as one horizontal log from shoulder to shoulder in the canonical rear camera.
+    addEquip(set,'chest','spine_02',heavy?new THREE.DodecahedronGeometry(.235,1):mid?new THREE.IcosahedronGeometry(.225,1):new THREE.CylinderGeometry(.205,.245,.40,10),[0,-.08,-.015],heavy?[.90,1.18,.58]:mid?[.92,1.12,.56]:[1,1,.62]);
+    // Layered gorget and shoulder shells keep armour readable without obscuring the pose.
+    addEquip(set,'chest','spine_02',new THREE.TorusGeometry(.205,.027,5,14,Math.PI*1.65),[0,.15,.015],[1,1,.78],[Math.PI/2,0,.28]);
+    for(const s of [-1,1])addEquip(set,'chest',s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(heavy?.105:.082,10,6,0,Math.PI*2,0,Math.PI*.58),[0,.005,0],[1.05,.60,.82],[0,0,s*.22]);
     for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',heavy?new THREE.BoxGeometry(.15,.22,.16):mid?new THREE.CylinderGeometry(.10,.12,.22,6):new THREE.CylinderGeometry(.075,.09,.20,7),[0,-.03,0]);
     for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',heavy?new THREE.BoxGeometry(.20,.40,.20):mid?new THREE.CylinderGeometry(.105,.14,.38,7):new THREE.CylinderGeometry(.075,.095,.34,7),[0,-.18,0]);
-    addEquip(set,'back','spine_02',heavy?new THREE.BoxGeometry(.42,.58,.18):mid?new THREE.ConeGeometry(.29,.64,6):new THREE.BoxGeometry(.30,.42,.12),[0,-.08,-.22],heavy?[1.15,1,1]:[1,1,1],[heavy?.12:0,0,mid?.12:-.08]);
+    addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.245,.245,.065,12):mid?new THREE.DodecahedronGeometry(.215,1):new THREE.CapsuleGeometry(.13,.24,4,8),[0,-.07,-.19],heavy?[1,.72,1]:mid?[.82,1,.38]:[.82,1,.42],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
   }
 
-  return { group, bones, index, skeleton, meshes, rootBone, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat };
+  // Family-specific articulated presentation pieces. These ride evaluated bones just like
+  // equipment, so quadruped mass, plated Saxhleel features and undead ribs participate in every
+  // locomotion/combat pose instead of being a static metadata ornament around a humanoid rig.
+  const presentation=[];
+  const familyMat=artFamily==='beast'?(mats.wet_chitin||mats.chitin):artFamily==='undead'?mats.bone:mats.skin;
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form')=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,familyMat);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);presentation.push({bi,mesh,local});};
+  if(artFamily==='beast'){
+    addPresentation('spine_01',new THREE.CapsuleGeometry(.30,.52,6,12),[0,-.02,-.08],[1.15,1,.78],[Math.PI/2,0,0],'thorax');
+    addPresentation('head',new THREE.DodecahedronGeometry(.24,1),[0,.04,.10],[1.05,.76,1.42],[0,0,0],'skull');
+    addPresentation('head',new THREE.ConeGeometry(.13,.42,8),[0,-.02,.31],[1,.72,1],[Math.PI/2,0,0],'muzzle');
+    for(const [id,s] of [['upperarm_l',-1],['upperarm_r',1],['thigh_l',-1],['thigh_r',1]]) addPresentation(id,new THREE.ConeGeometry(.13,.38,7),[0,-.12,.02],[1,.9,1],[0,0,s*.12],'limb-plate');
+  }else if(artFamily==='undead'){
+    for(let i=0;i<5;i++) addPresentation('spine_01',new THREE.TorusGeometry(.18+i*.012,.018,5,12,Math.PI*1.55),[0,.15-i*.075,.015],[1,1,.62],[Math.PI/2,0,(i%2?-.12:.12)],`rib-${i}`);
+    addPresentation('head',new THREE.DodecahedronGeometry(.13,1),[0,.07,.02],[.88,1.08,.86],[0,0,.12],'skull');
+  }else if(artFamily==='saxhleel'){
+    addPresentation('head',new THREE.SphereGeometry(.022,8,5),[-.052,.09,.105],[1,.65,.55],[0,0,0],'eye-l');
+    addPresentation('head',new THREE.SphereGeometry(.022,8,5),[ .052,.09,.105],[1,.65,.55],[0,0,0],'eye-r');
+    for(const s of [-1,1]) addPresentation(s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(.10,10,5,0,Math.PI*2,0,Math.PI*.58),[0,.02,0],[1.15,.58,1],[0,0,s*.16],'shoulder-scale');
+  }else{
+    addPresentation('spine_02',new THREE.CapsuleGeometry(.21,.30,5,10),[0,-.07,-.025],[1.02,1,.62],[0,0,0],'surcoat');
+    addPresentation('head',new THREE.SphereGeometry(.12,12,8,0,Math.PI*2,0,Math.PI*.48),[0,.13,-.015],[1,1,.9],[0,0,0],'hair-cap');
+  }
+
+  return { group, bones, index, skeleton, meshes, rootBone, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -427,6 +460,19 @@ function box(w, h, d, y, z = 0, x = 0) {
   const g = new THREE.BoxGeometry(w, h, d);
   g.translate(x, y, z);
   return g;
+}
+
+/** A faceted, tapered blade with a raised medial ridge. Unlike a scaled box this preserves a
+ * readable point, edge and cross-section in silhouette and in specular light. */
+function blade(width, length, thickness, y, curve = 0) {
+  const hw=width*.5, ht=thickness*.5, y0=y+length*.5, y1=y-length*.5;
+  const p=[-hw,y0,-ht, hw,y0,-ht, hw,y0,ht, -hw,y0,ht,
+    -hw*.72,y1+length*.12,-ht*.35, hw*.72,y1+length*.12,-ht*.35,
+    hw*.72,y1+length*.12,ht*.35, -hw*.72,y1+length*.12,ht*.35,
+    curve,y1,0];
+  const f=[0,1,2,0,2,3, 0,4,5,0,5,1, 1,5,6,1,6,2, 2,6,7,2,7,3, 3,7,4,3,4,0,
+    4,8,5,5,8,6,6,8,7,7,8,4];
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(f);g.computeVertexNormals();return g;
 }
 
 /**
@@ -478,7 +524,7 @@ function buildWeaponGeo(w) {
 
   switch (cls) {
     case 'DGR':
-      metal.push(box(R * 0.9, span, R * 0.30, tip + span / 2));
+      metal.push(blade(R * 1.35, span, R * 0.46, tip + span / 2));
       metal.push(box(R * 2.0, 0.028, R * 0.9, haftTop));
       break;
     case 'FST': {                                   // claw: three short blades off a knuckle bar
@@ -511,21 +557,21 @@ function buildWeaponGeo(w) {
       break;
     }
     case 'TSW':                                     // thrusting: narrow, long, a swept guard
-      metal.push(box(R * 0.55, span, R * 0.30, tip + span / 2));
+      metal.push(blade(R * 0.72, span, R * 0.34, tip + span / 2));
       metal.push(box(R * 2.2, 0.030, R * 2.2, haftTop));
       metal.push(box(R * 0.30, 0.16, R * 2.0, haftTop + 0.08));
       break;
     case 'SSW': case 'GSW': case 'UGS': {
       const wide = cls === 'UGS' ? R * 1.9 : cls === 'GSW' ? R * 1.5 : R * 1.0;
-      metal.push(box(wide, span, R * 0.26, tip + span / 2));
-      metal.push(box(wide * 0.55, span * 0.9, R * 0.34, tip + span / 2));   // the fuller ridge
+      metal.push(blade(wide, span, R * 0.34, tip + span / 2));
+      metal.push(box(wide * 0.22, span * 0.82, R * 0.40, tip + span * 0.47)); // medial ridge
       metal.push(box(wide * 3.0, 0.042, R * 0.9, haftTop));                 // crossguard
       metal.push(box(R * 0.9, 0.06, R * 0.9, 0.075));                       // pommel
       break;
     }
     case 'SPR':                                     // long haft, small leaf head at the tip
       if (haftLen > 0) wood.push(box(R * 0.7, haftLen, R * 0.7, haftTop + haftLen / 2));
-      metal.push(box(R * 1.5, span * 0.55, R * 0.30, tip + span * 0.28));
+      metal.push(blade(R * 2.0, span * 0.55, R * 0.42, tip + span * 0.28));
       metal.push(box(R * 0.8, span * 0.5, R * 0.5, tip + span * 0.72));
       break;
     case 'WHP': {                                   // a segmented cord: span is nearly all of it
@@ -663,17 +709,27 @@ export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
   const art=creatureArt(artFamily);
   const direction=new THREE.Group();
   direction.name=`world-art-creature:${artFamily}:${art.shape}`;
-  const directionMat=new THREE.MeshStandardMaterial({color:art.colour,roughness:art.roughness,metalness:artFamily==='beast'?.18:0});
+  const sourceMat=artFamily==='beast' && mats.wet_chitin ? mats.wet_chitin : mats.bark;
+  let byFamily=_directionMaterialCache.get(sourceMat);if(!byFamily){byFamily=new Map();_directionMaterialCache.set(sourceMat,byFamily);}
+  let directionMat=byFamily.get(artFamily);
+  if(!directionMat){directionMat=new THREE.MeshStandardMaterial({color:art.colour,roughness:art.roughness,
+    metalness:artFamily==='beast'?.16:0,bumpMap:sourceMat.bumpMap,bumpScale:sourceMat.bumpScale,
+    aoMap:sourceMat.aoMap,aoMapIntensity:sourceMat.aoMapIntensity,envMapIntensity:sourceMat.envMapIntensity});
+    directionMat.name=`visual-family:${sourceMat.userData.visualFamily||'bark'}:creature-accent`;
+    directionMat.userData={...sourceMat.userData,visualFamily:sourceMat.userData.visualFamily||'bark'};byFamily.set(artFamily,directionMat);}
   const add=(geo,x,y,z,rx=0,rz=0)=>{const m=new THREE.Mesh(geo,directionMat);m.position.set(x,y,z);m.rotation.set(rx,0,rz);m.castShadow=true;direction.add(m);};
   if(artFamily==='saxhleel') {
-    add(new THREE.ConeGeometry(.09,.34,5),0,1.82,-.08,-.35);
-    for(let i=0;i<4;i++) add(new THREE.ConeGeometry(.085-i*.012,.28,5),0,1.03-i*.13,-.18-i*.18,-Math.PI/2-.18);
+    // Species accents stay inside the animated anatomy instead of drawing a second body.
+    add(new THREE.ConeGeometry(.045,.16,7),-.055,1.80,-.06,-.30,-.10);
+    add(new THREE.ConeGeometry(.045,.16,7), .055,1.80,-.06,-.30, .10);
+    for(let i=0;i<4;i++) add(new THREE.ConeGeometry(.045-i*.006,.16-i*.018,6),0,1.05-i*.13,-.16-i*.14,-Math.PI/2-.18);
   } else if(artFamily==='humanoid') {
-    add(new THREE.ConeGeometry(.5,.7,6),0,1.42,-.05,0);
-    add(new THREE.BoxGeometry(.42,.62,.18),0,1.18,-.24);
+    // The old half-metre cone and box hid the rig as an enormous wizard hat and rigid cloak.
+    add(new THREE.CylinderGeometry(.125,.145,.16,10),0,1.73,-.01);
+    add(new THREE.TorusGeometry(.15,.025,5,12,Math.PI*1.45),0,1.48,-.01,Math.PI/2,.35);
+    add(new THREE.DodecahedronGeometry(.13,0),-.24,1.39,-.015,0,-.18);
   } else if(artFamily==='beast') {
-    add(new THREE.IcosahedronGeometry(.48,1),0,.76,0);
-    for(const sx of [-1,1]) add(new THREE.ConeGeometry(.09,.55,5),sx*.28,.75,.42,Math.PI/2,sx*.2);
+    for(const sx of [-1,1]) add(new THREE.ConeGeometry(.045,.30,7),sx*.17,.82,.25,Math.PI/2,sx*.2);
   } else {
     for(const sx of [-1,1]) for(let i=0;i<3;i++) add(new THREE.CylinderGeometry(.025,.045,.48,5),sx*(.15+i*.04),1.25-i*.12,0,Math.PI/2,sx*.22);
     add(new THREE.ConeGeometry(.1,.4,5),.22,1.7,0,0,.55);
@@ -712,7 +768,7 @@ export function poseFromRig(group, body, water) {
   if (!A || !body || !body.rig) return false;
   const rig = body.rig;
   if (!A.built) {
-    A.built = buildSkeleton(rig, A.mats, A.tintHex, A.skinHex);
+    A.built = buildSkeleton(rig, A.mats, A.tintHex, A.skinHex, A.artFamily);
     group.add(A.built.group);
   }
   const S = A.built;
@@ -814,6 +870,7 @@ export function poseFromRig(group, body, water) {
   }
 
   if(S.equipment){const set=Number(body.equipLoadPct||0)<30?'reed':Number(body.equipLoadPct||0)<70?'chitin':'xanmeer';for(const p of S.equipment){p.mesh.visible=p.set===set;if(!p.mesh.visible)continue;const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
+  if(S.presentation){for(const p of S.presentation){const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
 
   // ---- the weapon ----------------------------------------------------------------------
   const w = (body.moves && body.moves._weapon) || null;
@@ -852,7 +909,7 @@ export function poseStatic(group, rigDefSource, pos, yawDeg) {
   if (!A) return false;
   if (!A.built) {
     if (!rigDefSource || !rigDefSource.def) return false;
-    A.built = buildSkeleton(rigDefSource, A.mats, A.tintHex, A.skinHex);
+    A.built = buildSkeleton(rigDefSource, A.mats, A.tintHex, A.skinHex, A.artFamily);
     group.add(A.built.group);
   }
   if (A.rigged) return false;                 // already world-driven; do not fight it

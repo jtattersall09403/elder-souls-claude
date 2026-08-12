@@ -340,11 +340,19 @@ export class UILayer {
     // --- vellum
     c.save();
     roundRect(c, x0, y0, panelW, panelH, Math.round(6 * s));
-    c.fillStyle = VELLUM;
+    const vellum=c.createLinearGradient(x0,y0,x0,y0+panelH);
+    vellum.addColorStop(0,'rgba(37, 30, 22, 0.92)');vellum.addColorStop(.18,VELLUM);vellum.addColorStop(1,'rgba(12, 11, 10, 0.90)');
+    c.fillStyle = vellum;
     c.fill();
     c.lineWidth = Math.max(1, Math.round(2 * s));
     c.strokeStyle = RULE;
     c.stroke();
+    // An inset inked rule and small corner knots make the interface an object from this world,
+    // while retaining the same footprint and gamepad-only interaction contract.
+    c.beginPath();roundRect(c,x0+Math.round(7*s),y0+Math.round(7*s),panelW-Math.round(14*s),panelH-Math.round(14*s),Math.round(3*s));
+    c.strokeStyle='rgba(214, 176, 111, 0.22)';c.lineWidth=Math.max(1,Math.round(s));c.stroke();
+    c.fillStyle='rgba(205, 169, 104, 0.38)';
+    for(const [cx,cy] of [[x0+14*s,y0+14*s],[x0+panelW-14*s,y0+14*s],[x0+14*s,y0+panelH-14*s],[x0+panelW-14*s,y0+panelH-14*s]]){c.save();c.translate(cx,cy);c.rotate(Math.PI/4);c.fillRect(-3*s,-3*s,6*s,6*s);c.restore();}
     c.clip();
 
     let y = y0 + pad + nameSize * 0.82;

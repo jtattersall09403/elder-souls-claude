@@ -160,6 +160,7 @@ function makePalette(rec) {
 const box = (w, h, d, m) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
 const cyl = (rt, rb, h, seg, m) => new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m);
 const ico = (r, d, m) => new THREE.Mesh(new THREE.IcosahedronGeometry(r, d || 0), m);
+const craftedBox=(w,h,d,m,bevel=Math.min(w,h,d)*.08)=>{const s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(w/2,-h/2);s.lineTo(w/2,h/2);s.lineTo(-w/2,h/2);s.closePath();const g=new THREE.ExtrudeGeometry(s,{depth:d,steps:1,bevelEnabled:true,bevelSegments:1,bevelSize:bevel,bevelThickness:bevel});g.translate(0,0,-d/2);return new THREE.Mesh(g,m);};
 
 function part(g, mesh, x, y, z, ry) {
   mesh.position.set(x, y, z);
@@ -179,12 +180,12 @@ function part(g, mesh, x, y, z, ry) {
 
 /** Shorthand builders, so the table stays readable at 148 rows. */
 const B = {
-  counter: (P) => { const g = new THREE.Group(); part(g, box(2.6, 0.12, 0.7, P.wood), 0, 1.0, 0); for (const sx of [-1.1, 1.1]) part(g, box(0.14, 1.0, 0.6, P.wood), sx, 0.5, 0); part(g, box(2.5, 0.5, 0.1, P.wood), 0, 0.55, -0.28); return g; },
+  counter: (P) => { const g = new THREE.Group(); part(g, craftedBox(2.6, 0.12, 0.7, P.wood), 0, 1.0, 0); for (const sx of [-1.1, 1.1]) part(g, craftedBox(0.14, 1.0, 0.6, P.wood), sx, 0.5, 0); part(g, craftedBox(2.5, 0.5, 0.1, P.wood), 0, 0.55, -0.28); return g; },
   shelves: (P, n = 4, w = 2.0) => { const g = new THREE.Group(); for (let i = 0; i < n; i++) part(g, box(w, 0.07, 0.34, P.wood), 0, 0.5 + i * 0.55, 0); for (const sx of [-w / 2 + 0.06, w / 2 - 0.06]) part(g, box(0.1, 0.5 + n * 0.55, 0.34, P.wood), sx, (0.5 + n * 0.55) / 2, 0); return g; },
-  table: (P, w = 1.6, d = 1.0, h = 0.78) => { const g = new THREE.Group(); part(g, box(w, 0.1, d, P.wood), 0, h, 0); for (const sx of [-1, 1]) for (const sz of [-1, 1]) part(g, box(0.1, h, 0.1, P.wood), sx * (w / 2 - 0.14), h / 2, sz * (d / 2 - 0.14)); return g; },
-  bench: (P, w = 1.8) => { const g = new THREE.Group(); part(g, box(w, 0.09, 0.42, P.wood), 0, 0.45, 0); for (const sx of [-1, 1]) part(g, box(0.1, 0.45, 0.38, P.wood), sx * (w / 2 - 0.15), 0.22, 0); return g; },
+  table: (P, w = 1.6, d = 1.0, h = 0.78) => { const g = new THREE.Group(); part(g, craftedBox(w, 0.1, d, P.wood), 0, h, 0); for (const sx of [-1, 1]) for (const sz of [-1, 1]) part(g, craftedBox(0.1, h, 0.1, P.wood), sx * (w / 2 - 0.14), h / 2, sz * (d / 2 - 0.14)); return g; },
+  bench: (P, w = 1.8) => { const g = new THREE.Group(); part(g, craftedBox(w, 0.09, 0.42, P.wood), 0, 0.45, 0); for (const sx of [-1, 1]) part(g, craftedBox(0.1, 0.45, 0.38, P.wood), sx * (w / 2 - 0.15), 0.22, 0); return g; },
   stool: (P, h = 0.46) => { const g = new THREE.Group(); part(g, cyl(0.19, 0.19, 0.07, 8, P.wood), 0, h, 0); for (let i = 0; i < 3; i++) { const a = i * 2.094; part(g, cyl(0.03, 0.03, h, 5, P.wood), Math.cos(a) * 0.12, h / 2, Math.sin(a) * 0.12); } return g; },
-  chest: (P, w = 0.9, h = 0.55, m) => { const g = new THREE.Group(); part(g, box(w, h, 0.5, m || P.wood), 0, h / 2, 0); part(g, box(w * 1.02, 0.07, 0.52, P.metal), 0, h, 0); part(g, box(0.1, 0.12, 0.06, P.metal), 0, h * 0.6, 0.26); return g; },
+  chest: (P, w = 0.9, h = 0.55, m) => { const g = new THREE.Group(); part(g, craftedBox(w, h, 0.5, m || P.wood), 0, h / 2, 0); const lid=cyl(.27,.27,w,10,m||P.wood);lid.rotation.z=Math.PI/2;part(g,lid,0,h+.02,0);for(const sx of [-1,1])part(g,box(.045,h*.92,.54,P.metal),sx*w*.34,h*.52,0);part(g, box(0.1, 0.12, 0.06, P.metal), 0, h * 0.6, 0.26); return g; },
   barrel: (P, r = 0.32, h = 0.86) => { const g = new THREE.Group(); part(g, cyl(r * 0.9, r, h, 10, P.wood), 0, h / 2, 0); part(g, cyl(r * 1.02, r * 1.02, 0.06, 10, P.metal), 0, h * 0.75, 0); part(g, cyl(r * 1.02, r * 1.02, 0.06, 10, P.metal), 0, h * 0.25, 0); return g; },
   sack: (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const s = ico(0.24 + (i % 2) * 0.05, 0, P.cloth); s.scale.set(1, 1.35, 1); part(g, s, (i - 1) * 0.42, 0.3, (i % 2) * 0.16); } return g; },
   basket: (P) => { const g = new THREE.Group(); part(g, cyl(0.24, 0.18, 0.34, 9, P.cloth), 0, 0.17, 0); return g; },
@@ -492,6 +493,15 @@ export function buildInterior(root, rec, opts) {
   addWall(bx[0], (bz[0] + bz[1]) / 2, 0.3, D, 'west');
   addWall(bx[1], (bz[0] + bz[1]) / 2, 0.3, D, 'east');
 
+  // Continuous base and cornice courses give every room a readable wall/floor/ceiling junction;
+  // settlement palettes make these masonry in ordered towns and lashed timber elsewhere.
+  for(const y of [by[0]+.12,by[1]-.16]){
+    part(root,box(W-.34,.18,.16,y<by[0]+1?P.stone:P.wood),(bx[0]+bx[1])/2,y,bz[0]+.19);
+    part(root,box(W-.34,.18,.16,y<by[0]+1?P.stone:P.wood),(bx[0]+bx[1])/2,y,bz[1]-.19);
+    part(root,box(.16,.18,D-.34,y<by[0]+1?P.stone:P.wood),bx[0]+.19,y,(bz[0]+bz[1])/2);
+    part(root,box(.16,.18,D-.34,y<by[0]+1?P.stone:P.wood),bx[1]-.19,y,(bz[0]+bz[1])/2);
+  }
+
   // Beams. Count follows the room's depth, so a long hall reads as a long hall.
   const beams = Math.max(2, Math.min(9, Math.round(D / 3)));
   for (let i = 0; i < beams; i++) {
@@ -544,6 +554,8 @@ export function buildInterior(root, rec, opts) {
   for (const pane of wplan.panes) {
     part(root, box(PANE_W_M, PANE_H_M, 0.06, P.glass), pane.x, pane.y, pane.z);
     part(root, box(PANE_W_M + 0.16, 0.12, 0.12, P.wood), pane.x, pane.y + 0.45, pane.z);
+    part(root, box(.07,PANE_H_M+.12,.10,P.wood),pane.x,pane.y,pane.z+.015);
+    part(root, box(PANE_W_M+.12,.07,.10,P.wood),pane.x,pane.y,pane.z+.015);
     summary.windows++;
   }
   summary.glazed_area_m2 = +wplan.glazed_area_m2.toFixed(3);

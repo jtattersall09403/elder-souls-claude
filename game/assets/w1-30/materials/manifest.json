@@ -1,0 +1,91 @@
+{
+  "schema": "elder-souls/production-asset-manifest@1",
+  "licence": {
+    "id": "CC0-1.0",
+    "source": "https://polyhaven.com/license",
+    "note": "Poly Haven states that all library assets are released under CC0 and may be used and redistributed commercially."
+  },
+  "transformation": "Official 1K JPEG diffuse, roughness and OpenGL-normal derivatives downloaded unchanged from the Poly Haven public asset API. Each runtime detail map is derived from diffuse with ffmpeg `format=gray,lut=y='clip(238+(val-128)*0.10,226,252)'`, retaining scanned frequency while neutralising colour so Elder Souls regional tint remains authoritative.",
+  "assets": [
+    {
+      "id": "brown_mud",
+      "source": "https://polyhaven.com/a/brown_mud",
+      "author": "Rob Tuytel",
+      "format": "JPEG",
+      "dimensions": [1024, 1024],
+      "maps": {
+        "diff": {"sha256": "df3f135c899f10a3b018738343b222cbc67d13e7c76c5d8da834a3d34c984417"},
+        "detail": {"sha256": "9588d28c77349f2c4caa22b503da68da879cdbe1c3774686d37db267e1e7399d"},
+        "rough": {"sha256": "ae9fb57c1173ccb4579f40edf8321a30bdca815042ffd72015a2a707c7e2e7ba"},
+        "nor_gl": {"sha256": "ac517ca39eb507ae0f27e2b3db431c60888f9b5c3c52bec49d2c0775da0920cb"}
+      },
+      "consumers": ["mud", "wet_mud", "province terrain", "arena ground", "interior floors"]
+    },
+    {
+      "id": "bark_brown_01",
+      "source": "https://polyhaven.com/a/bark_brown_01",
+      "author": "Rob Tuytel",
+      "format": "JPEG",
+      "dimensions": [1024, 1024],
+      "maps": {
+        "diff": {"sha256": "4213441aebcb72b9911f5a860e9ce74a61a8f6ce3b9c23d1f204173e7e7f6066"},
+        "detail": {"sha256": "a13ac234c57bcb44559bb277ebfec14529e7383ce068ad5530b77c4e1b1098d0"},
+        "rough": {"sha256": "4e7f62508cf77faebfeee15ffb571ff02c45c18d5174aa19fcb8b98506359c5c"},
+        "nor_gl": {"sha256": "9d1537b3429579436a62890bb7c5050a0172a15ce768787eacde81c5ccefc9cc"}
+      },
+      "consumers": ["bark", "root", "timber", "thorn", "flora trunks", "architecture", "props", "weapon hafts"]
+    },
+    {
+      "id": "plastered_stone_wall",
+      "source": "https://polyhaven.com/a/plastered_stone_wall",
+      "author": "Rob Tuytel",
+      "format": "JPEG",
+      "dimensions": [1024, 1024],
+      "maps": {
+        "diff": {"sha256": "b86e9a408aac5b493c31a4ec221e5022b0b704d2f51596006f7d6840a6a3300a"},
+        "detail": {"sha256": "6caabe7b6090b79c0eb045081112b837443b195f75cd0a56342d8e2cddba9cfd"},
+        "rough": {"sha256": "978bd1d9f8d4132564d40375f705975e897ca588c2d756e6257f68946651bab0"},
+        "nor_gl": {"sha256": "c64dc8d1ad382b8832e430e738f099343ed959b7ae7d9390919a497536d1191e"}
+      },
+      "consumers": ["stone", "clay", "salt", "settlement shells", "interior shells", "rocks", "bridges"]
+    }
+  ],
+  "generated_asset": {
+    "id": "black_marsh_surface_atlas_01",
+    "source": "OpenAI built-in image generation, generated for this repository on 2026-08-12",
+    "source_sha256": "8a5ff48b67b1b47b708078fdcf8982b5ba656c5802e940733b6616d1bd5feb3b",
+    "licence": "project-owned generated production asset; no third-party input image",
+    "prompt": "Square 4-by-4 orthographic, neutral-lit Black Marsh material atlas: leaf, reed, woven reed cloth, leather, reptile skin, chitin, resin, bone, iron, weapon grip, bronze, volcanic stone, roots, clay, salt limestone and muddy cobbles; no labels, objects, perspective, baked shadows or watermark.",
+    "transformation": "Generated 1254x1254 PNG resized to 1024x1024 with ffmpeg, split on the exact 4x4 grid into 16 256x256 JPEG source tiles (`scale=1024:1024,crop=256:256:x:y`, q:v 3). Seven admitted consumers receive a neutral detail derivative (`format=gray,lut=y='clip(232+(val-128)*0.16,218,252)'`) so regional colour remains authoritative. Runtime height, roughness and AO remain independent.",
+    "production_consumer": "semantic material registry; generated albedo is admitted only for leaf, reed, cloth, chitin/wet_chitin, resin, bone/shell and metal",
+    "format": "JPEG",
+    "dimensions": [256, 256],
+    "maps": {
+      "bone": "def781cd32c6be94451493607add5ac01dabbd704506cc9bf56ec871875c1198",
+      "bronze": "5a81c7357969839368deffebf1b8c053007fd416e90e85b8e1257807319a07be",
+      "chitin": "684c56fa345f5a7b01ca7056d6af3c536daca79436d1a6906315663cc57e9be8",
+      "clay": "e7216e16817b4ecee056446bbfa8d6c860173290e8986f0a36c4d32a10bfbe78",
+      "cloth": "24098d4d7a27d61cb49005ce6a3298953977698cf6081187fce06a50e5f75e24",
+      "cobble": "987228a28cec135375c66080be10a6509537c41a464d2142e9335be31df586a7",
+      "grip": "53b29d045b91ccc5eb654c4b4e12d6f741c02130a1ff6a60f268d731e8fb84e7",
+      "leaf": "340768f1632c280266a5a72fa956d16d6e9df2903fa7a958bb4663ccc2494b4d",
+      "leather": "dcca06d8c382c7458dc1e18d4a9e17cdd95e7ae179eadacbde0def7a8773830d",
+      "metal": "0e61a90da6fe4dc9a4106cb42a069571115396e36c847a9c30d2ebfdc9acc787",
+      "reed": "90dd13b5808e358840d64b57b09e3131f6e90a250b151ff02d030fa8c155c40c",
+      "resin": "bbb2b33d568babad810666631739cd9766eb62f7c0dd68d62604e2b48f5a527b",
+      "root": "22f632f5d1051edd467fc20be2e608703a1c2cb707277fe4363109e32b15848a",
+      "salt": "f531aa81cc31cff1bc269bdf80fd113f950545c2bbad506876e1c4fe04e19868",
+      "skin": "9bcc0120298010893046acab5457ac121da5e65c3bfc03f242fb3806207d683b",
+      "volcanic_stone": "773ba98cd76f036a8e483b009ee153f49bc05d700d07357c493a16d2e1c879b9"
+    },
+    "runtime_detail_maps": {
+      "bone": "4a78f4ccf64f4c288782103600833a727f33a8817ff55ba9e342262b59971148",
+      "chitin": "0297a0430e17c1f28929f7839148dd94be0f89f31d70c9d5fb8047609a34386a",
+      "cloth": "3b8610554b015251422cdb710cb61a5134631c45397d1af97422b581d5c0b67a",
+      "leaf": "05cc7ab4975a2f49eb1c19f409971d990171ce29ff7ef120c82373c50187abc7",
+      "metal": "1151d1bc19d5e4704b9702a1bd84ae9de0ba734407d610b4ca1f75ee2e2c9add",
+      "reed": "46b32f81d47335b449f95e497f3d46230858cd392c618fb92654661a043dd420",
+      "resin": "16857bf3e5caec72129eff60e755901a8479f7b4fee9f30087036fa8b9b45af1"
+    }
+  }
+}
