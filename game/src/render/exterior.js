@@ -1363,6 +1363,33 @@ export function buildSettlementExterior(root, plan, groundY) {
   const kitSeen = new Set();
   for (const b of plan.buildings) {
     const { group, summary } = buildBuilding(b, plan.id);
+    // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
+    // existing building owns mass/door continuity; these town-specific junctions alter its
+    // skyline, apertures, support rhythm, damage and inexplicable street-facing element.
+    const P=paletteFor({interior_kind:b.building_kind||b.kind,settlement:plan.id});
+    const W=summary.w,D=summary.d,H=summary.h, ordered=art.imperial, seed=hashStr(b.id);
+    const artPart=(mesh,x,y,z,ry=0,rz=0,label='trim')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.rotation.z=rz;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-exterior:${plan.id}:${label}`;group.add(mesh);};
+    const cadence=ordered?3:2+(seed%3);
+    for(let i=0;i<cadence;i++) {
+      const x=-W*.38+i*(W*.76/Math.max(1,cadence-1));
+      const support=ordered?box(.18,H*.92,.22,P.stone):cyl(.10,.22,H*.94,6,P.wood);
+      artPart(support,x,H*.46,D*.51,0,ordered?0:((seed>>i)&1?-.12:.12),art.support);
+    }
+    // Town-specific skyline primitive: kiln teeth, prison crenels, Imperial pediment, shell sail,
+    // reed crown, harbour ribs, root tier, or thorn spiral.
+    if(plan.id==='archon') for(let i=0;i<3;i++) artPart(cyl(.16,.3,1+i*.35,7,P.roof),-W*.25+i*W*.25,H+.5+i*.15,0,0,0,'kiln-skyline');
+    else if(plan.id==='blackrose') for(let i=0;i<5;i++) artPart(box(W*.12,.55,.35,P.metal),-W*.4+i*W*.2,H+.25,0,0,(i%2?-.08:.08),'broken-crenel');
+    else if(plan.id==='gideon') artPart(new THREE.Mesh(new THREE.ConeGeometry(W*.55,1.25,3),P.stone),0,H+.55,0,0,0,'ordered-pediment');
+    else if(plan.id==='helstrom') {const sail=ico(Math.min(W,D)*.42,1,P.accent);sail.scale.set(1,.35,.65);artPart(sail,W*.18,H+.35,0,.3,0,'shell-sail');}
+    else if(plan.id==='lilmoth') artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.32,.12,5,12,Math.PI),P.roof),0,H+.2,0,0,0,'reed-crown');
+    else if(plan.id==='soulrest') for(const sx of [-1,1]) artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.25,.11,5,10,Math.PI),P.stone),sx*W*.2,H+.15,0,0,0,'salt-rib');
+    else if(plan.id==='stormhold') {artPart(box(W*.72,.2,D*.72,P.metal),0,H+.18,0,0,0,'legion-course');artPart(cyl(.18,.42,1.5,6,P.wood),W*.3,H+.55,0,0,0,'root-breach');}
+    else {for(let i=0;i<4;i++){const t=cyl(.07,.16,1.4+i*.25,5,P.wood);artPart(t,-W*.3+i*W*.2,H+.45,0,0,(i-1.5)*.22,'thorn-spiral');}}
+    // Aperture surround and street offering integrate trim/weathering at the public face.
+    artPart(box(Math.min(1.4,W*.28),.14,.12,P.accent),0,H*.58,D*.515,0,ordered?0:.08,art.trim);
+    const offering=ico(.18+(seed%4)*.04,0,(seed&1)?P.accent:P.stone);
+    artPart(offering,(seed&1?-.36:.36)*W,.22,D*.62,0,0,'street-offering');
+    summary.world_art_meshes=cadence+3;
     // Founded on the ground at the building's own four corners, so a building on a slope sits
     // in the hill rather than on a hover. The plinth is 1.6 m deep and absorbs the difference.
     const w = summary.w, d = summary.d;

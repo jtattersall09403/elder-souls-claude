@@ -630,14 +630,32 @@ function weaponMesh(w, mats) {
 export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
   const g = new THREE.Group();
   const art=creatureArt(artFamily);
+  const direction=new THREE.Group();
+  direction.name=`world-art-creature:${artFamily}:${art.shape}`;
+  const directionMat=new THREE.MeshStandardMaterial({color:art.colour,roughness:art.roughness,metalness:artFamily==='beast'?.18:0});
+  const add=(geo,x,y,z,rx=0,rz=0)=>{const m=new THREE.Mesh(geo,directionMat);m.position.set(x,y,z);m.rotation.set(rx,0,rz);m.castShadow=true;direction.add(m);};
+  if(artFamily==='saxhleel') {
+    add(new THREE.ConeGeometry(.09,.34,5),0,1.82,-.08,-.35);
+    for(let i=0;i<4;i++) add(new THREE.ConeGeometry(.085-i*.012,.28,5),0,1.03-i*.13,-.18-i*.18,-Math.PI/2-.18);
+  } else if(artFamily==='humanoid') {
+    add(new THREE.ConeGeometry(.5,.7,6),0,1.42,-.05,0);
+    add(new THREE.BoxGeometry(.42,.62,.18),0,1.18,-.24);
+  } else if(artFamily==='beast') {
+    add(new THREE.IcosahedronGeometry(.48,1),0,.76,0);
+    for(const sx of [-1,1]) add(new THREE.ConeGeometry(.09,.55,5),sx*.28,.75,.42,Math.PI/2,sx*.2);
+  } else {
+    for(const sx of [-1,1]) for(let i=0;i<3;i++) add(new THREE.CylinderGeometry(.025,.045,.48,5),sx*(.15+i*.04),1.25-i*.12,0,Math.PI/2,sx*.22);
+    add(new THREE.ConeGeometry(.1,.4,5),.22,1.7,0,0,.55);
+  }
+  direction.scale.set(...art.scale); g.add(direction);
   // Contact grounding and action readability are renderer-owned presentation. They never feed
   // back into the fixed-step rig, sockets, hit windows or camera.
   const shadow=new THREE.Mesh(new THREE.CircleGeometry(.42,20),new THREE.MeshBasicMaterial({color:0x080b09,transparent:true,opacity:.34,depthWrite:false}));
   shadow.name='actor-contact-shadow'; shadow.rotation.x=-Math.PI/2; shadow.renderOrder=2; g.add(shadow);
   const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.025,5,24,Math.PI*1.35),new THREE.MeshBasicMaterial({color:0xa8d8b0,transparent:true,opacity:.0,depthWrite:false}));
   action.name='actor-action-silhouette'; action.rotation.x=Math.PI/2; action.visible=false; g.add(action);
-  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, artFamily, art };
-  g.userData.worldArt={creature:artFamily,silhouette:art};
+  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, direction, artFamily, art };
+  g.userData.worldArt={creature:artFamily,silhouette:art.silhouette,visibleConsumer:direction.name};
   return g;
 }
 
@@ -668,6 +686,7 @@ export function poseFromRig(group, body, water) {
   }
   const S = A.built;
   const root=body.rig.world[0], groundY=(body.pos&&body.pos[1])||0;
+  if(A.direction&&root) A.direction.position.set(root[9],groundY,root[11]);
   if(A.shadow&&root){ const air=Math.max(0,root[10]-groundY); A.shadow.position.set(root[9],groundY+.018,root[11]); A.shadow.scale.setScalar(Math.max(.42,1-air*.22)); A.shadow.material.opacity=Math.max(.08,.34-air*.12); }
   if(A.action&&root){
     const attacking=!!body.move && (body.hitboxActive || /ROLL|BLOCK|STAGGER|RECOVERY/.test(body.state));

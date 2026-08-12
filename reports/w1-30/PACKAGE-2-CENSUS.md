@@ -22,6 +22,22 @@ admission controls were observed red. The nine art rows map to live consumers: a
 
 ## Controls and observations
 
+### Visible-production remediation (2026-08-12)
+
+The former label-only seams are now rendered consumers.  Every exterior building receives a
+settlement-specific support cadence, material junction, aperture trim, street offering and one of
+eight skyline constructions.  Every governed interior extends its settlement grammar through
+ceiling ties and floor/wall junctions.  Region terrain/depth records now select vertex-colour
+frequency, hue and saturation response in addition to three flora proportions and lean.  The five
+places build grammar-derived entrance monuments, and the four creature rows build different
+primitive assemblies, proportions and Standard-material responses around the rig; Package 3 still
+owns animation quality.
+
+The Package 2 gate now refuses a row without geometry/material controls and refuses production
+functions lacking an art read plus a mesh/material mutation.  Its profile perturbation control
+also requires 13 distinct region, eight settlement and four creature render signatures; names and
+`userData` do not participate in those predicates.
+
 * `node tools/render/w1-30-package2.mjs` — GREEN: 13/13, 8/8, 115/115, 5/5, nine mapped rows,
   and 4/4 unknown-id red controls.
 * `node tools/render/w1-30-gate.mjs` — GREEN: all 21 W1-30 paths retain real consumers and all
@@ -34,6 +50,11 @@ admission controls were observed red. The nine art rows map to live consumers: a
 * The multi-region capture command hit its bounded 180-second timeout during the next screenshot
   under SwiftShader. It is not represented as a completed beauty population; Package 5 and the
   fresh critic retain the complete aggregate/population.
+* The remediation reran that capture at 320x180 with one private reusable browser. One Blackwood
+  frame completed and was inspected (the near/far trunks and triangular understory were legible,
+  but the nominal day exposure remained very dark); the second frame again exceeded a bounded
+  240-second process limit and Chromium was closed by `timeout`. No binary was retained. This is a
+  capture-infrastructure limitation, not claimed representative visual proof.
 
 ## Reproduction
 

@@ -249,9 +249,18 @@ export class Province {
     // under your feet changes tens of metres before anything standing on it does.
     const ri = f.axisRegionIndexAt(x, z, 'palette');
     const r = f.regions[ri];
+    const art = regionArt(r.id);
     out.set(r.ground.albedo);
-    const mottle = (noise2(x / 21, z / 21, 4111) - 0.5) * 0.16 + (noise2(x / 5.5, z / 5.5, 4127) - 0.5) * 0.08;
+    // Each REGION_ART terrain/depth row drives a different two-scale surface frequency and
+    // material response.  This is visible on every terrain vertex, including flora-free views;
+    // replacing a terrain/depth token changes the rendered colour buffer rather than userData.
+    const terrainKey=[...art.terrain].reduce((n,c)=>(n*33+c.charCodeAt(0))>>>0,5381);
+    const depthKey=[...art.depth].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,7);
+    const coarse=10+(terrainKey%29), fine=2.8+(depthKey%47)/10;
+    const mottle = (noise2(x / coarse, z / coarse, 4111+(terrainKey%997)) - 0.5) * (0.12+(terrainKey%7)*.012)
+      + (noise2(x / fine, z / fine, 4127+(depthKey%991)) - 0.5) * (0.055+(depthKey%5)*.012);
     out.offsetHSL(0, 0, mottle);
+    out.offsetHSL(((terrainKey%13)-6)*.0025,((depthKey%9)-4)*.012,0);
     // MATERIAL FOLLOWS LANDFORM. A crest drains and a hollow holds water, so the ground is paler
     // on the one and darker on the other — in every real landscape, and now in this one. Without
     // this the micro-relief is only a normal, and a 0.8 m bank over 5 m changes Lambert shading by
