@@ -7,6 +7,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+const hash1=(n)=>{let h=Math.imul(n|0,0x45d9f3b);h=Math.imul(h^(h>>>16),0x45d9f3b);return((h^(h>>>16))>>>0)/4294967295;};
 
 /** The named weather states. Closed set — `setWeather` throws on anything else. */
 export const WEATHER = {
@@ -94,6 +95,12 @@ void main() {
   float disc = smoothstep(1.0 - uSunSize, 1.0 - uSunSize * 0.35, sd);
   float glow = pow(sd, 24.0) * 0.55 + pow(sd, 6.0) * 0.18;
   col += uSunColour * (disc * 1.6 + glow) * (1.0 - uOvercast * 0.92);
+  // Static high cloud structure breaks the flat colour dome while remaining a pure function of
+  // direction and weather. It is deliberately subtle in clear weather and broad when overcast.
+  float cloudField=sin(d.x*19.0+d.z*7.0)+sin(d.z*31.0-d.x*11.0)*.55+sin((d.x+d.z)*53.0)*.20;
+  float cloud=smoothstep(.48-uOvercast*.58,1.28-uOvercast*.25,cloudField)*smoothstep(-.04,.25,d.y);
+  col=mix(col,mix(uHorizon,uSunColour,.28),cloud*(.12+uOvercast*.24));
+  col += uSunColour * pow(max(0.0,1.0-abs(d.y)*4.2),3.0) * (1.0-uOvercast) * .035;
   gl_FragColor = vec4(col, 1.0);
 }`;
 
@@ -149,6 +156,13 @@ export class Sky {
     this.fill = new THREE.AmbientLight(0x8b9488, 0.24);
     scene.add(this.fill);
 
+    // Bounded deterministic precipitation. Geometry is allocated once; apply() rewrites the
+    // streak endpoints from simulation frame and weather intensity, never from wall time.
+    this.rainPos=new Float32Array(320*2*3);this.rainSeed=new Float32Array(320*3);
+    for(let i=0;i<320;i++){this.rainSeed[i*3]=hash1(i*17+3);this.rainSeed[i*3+1]=hash1(i*29+7);this.rainSeed[i*3+2]=hash1(i*43+11);}
+    const rainGeo=new THREE.BufferGeometry();rainGeo.setAttribute('position',new THREE.BufferAttribute(this.rainPos,3));
+    this.rain=new THREE.LineSegments(rainGeo,new THREE.LineBasicMaterial({color:0xb8c8cf,transparent:true,opacity:.34,depthWrite:false,toneMapped:false}));this.rain.name='weather-precipitation-bounded-320';this.rain.frustumCulled=false;this.rain.visible=false;scene.add(this.rain);
+
     // The moon is not a second, unrelated art light. It is the exact inverse of the one
     // celestial direction used by the dome and sun, and only contributes after sunset.
     this.moon = new THREE.DirectionalLight(0x8ca9d8, 0);
@@ -176,9 +190,11 @@ export class Sky {
    * @param {string} weatherId a key of WEATHER
    * @param {THREE.Vector3} focus where the shadow frustum should sit
    */
-  apply(hours, weatherId, focus, regionFog, env) {
+  apply(hours, weatherId, focus, regionFog, env, frame=0) {
     const w = WEATHER[weatherId];
     if (!w) throw new Error(`unknown weather '${weatherId}'. Named states: ${Object.keys(WEATHER).join(', ')}`);
+    this.rain.visible=this.features.atmosphere&&w.rain>0.02;
+    if(this.rain.visible&&focus){const fall=(frame*.31)%22,n=Math.max(1,Math.round(320*w.rain));for(let i=0;i<n;i++){const x=(this.rainSeed[i*3]-.5)*28,z=(this.rainSeed[i*3+1]-.5)*28,y=((this.rainSeed[i*3+2]*22-fall+22)%22)-5,k=i*6;this.rainPos[k]=x;this.rainPos[k+1]=y;this.rainPos[k+2]=z;this.rainPos[k+3]=x+.12;this.rainPos[k+4]=y-(.9+w.rain*.8);this.rainPos[k+5]=z+.05;}this.rain.geometry.setDrawRange(0,n*2);this.rain.geometry.attributes.position.needsUpdate=true;this.rain.position.copy(focus);this.rain.material.opacity=.18+w.rain*.28;}
 
     // Sun elevation: noon is up, midnight is down. Pure arithmetic, deterministic.
     const ang = ((hours - 6) / 24) * Math.PI * 2;
@@ -249,10 +265,10 @@ export class Sky {
     // is making when it says a region must be identifiable at night.
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
-    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.30, day * 0.9 + 0.10) : 0;
+    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.58, 1.18 + day * 0.72) : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
-    this.hemi.groundColor.setRGB(0.227, 0.208, 0.153).lerp(regionNight, night * 0.55);
-    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.28, 0.62, day) : 0;
+    this.hemi.groundColor.setRGB(0.34, 0.31, 0.24).lerp(regionNight, night * 0.55);
+    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.48, 1.34, day) : 0;
     this.fill.color.copy(hor).lerp(regionNight, night * 0.70);
 
     if (regionFog) {

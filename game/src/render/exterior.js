@@ -1278,6 +1278,16 @@ export function buildBuilding(b, town) {
     part(g, box(w + 0.3, 0.22, d + 0.3, P.wood), 0, h - 2.4, 0);
   }
 
+  // Material junctions and corner structure. These are deliberately part of the shared shell
+  // grammar: every one of the 202 facades receives a founded base course, an eave course and
+  // supports whose cadence follows scale, while the town palette keeps them region-specific.
+  for (const y of [0.16, Math.max(.45,h-.26)]) part(g, box(w+.34,.22,d+.34,y<1?P.stone:P.wood),0,y,0);
+  for (const sx of [-1,1]) for (const sz of [-1,1]) {
+    const post=box(.20,h*.92,.20,(hash&1)?P.wood:P.stone);
+    post.rotation.z=((hash>>(sx>0?2:4))&1?1:-1)*.025;
+    part(g,post,sx*(w*.5-.11),h*.46,sz*(d*.5-.11));
+  }
+
   // ---- windows, on the walls that are not the door -------------------------------------------
   const WINDOWLESS = new Set(['prison', 'sealed', 'structure']);
   if (!WINDOWLESS.has(b.building_kind) && b.kind !== 'sealed-with-reason') {
@@ -1290,6 +1300,9 @@ export function buildBuilding(b, town) {
         for (let st = 0; st < b.storeys; st++) {
           part(g, box(0.95, 0.9, 0.1, P.glass), x, 1.7 + st * 2.4, s * (d / 2));
           part(g, box(1.15, 0.14, 0.16, P.wood), x, 2.25 + st * 2.4, s * (d / 2));
+          part(g, box(.10,1.08,.17,P.wood),x-.53,1.7+st*2.4,s*(d/2));
+          part(g, box(.10,1.08,.17,P.wood),x+.53,1.7+st*2.4,s*(d/2));
+          part(g, box(.08,.82,.13,P.wood),x,1.7+st*2.4,s*(d/2)+s*.03);
         }
       }
     }

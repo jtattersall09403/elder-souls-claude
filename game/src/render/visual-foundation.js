@@ -62,7 +62,17 @@ export function consumeStyleboard(mat, board, role='dominant', amount=1) {
   const family = role === 'contrast' ? board.contrast_material : board.dominant_materials[role === 'secondary' ? 1 : 0];
   const target = new THREE.Color(FAMILY_COLOUR[family] ?? 0xff00ff);
   if (!mat.userData.preStyleColour) mat.userData.preStyleColour = mat.color?.getHex();
-  if (mat.color) mat.color.set(mat.userData.preStyleColour).lerp(target, Math.max(0,Math.min(1,amount)) * .62);
+  if (mat.color) {
+    mat.color.set(mat.userData.preStyleColour).lerp(target, Math.max(0,Math.min(1,amount)) * .62);
+    // Several Blackwood boards intentionally specify near-black wet materials.  Applied to an
+    // already dark semantic base those values multiplied down until a clear noon frame had no
+    // facade information left at all. Preserve the hue/saturation distinction while enforcing a
+    // physically plausible diffuse floor: charcoal timber is dark, but it still reflects light.
+    // Contrast parts sit a little higher so openings, edges and structural rhythm remain legible.
+    const hsl={h:0,s:0,l:0};mat.color.getHSL(hsl);
+    const floor=role==='contrast'?.22:role==='secondary'?.18:.16;
+    if(hsl.l<floor)mat.color.setHSL(hsl.h,Math.min(hsl.s,.72),floor);
+  }
   const wet = /rain|wet|beaded|gloss/i.test(board.atmosphere_response);
   if (Number.isFinite(mat.roughness)) mat.roughness = Math.max(.18, mat.roughness * (wet ? .62 : .9));
   if (Number.isFinite(mat.aoMapIntensity)) mat.aoMapIntensity = wet ? .78 : .58;
@@ -75,39 +85,75 @@ export function consumeStyleboard(mat, board, role='dominant', amount=1) {
 }
 
 const mapCache = new Map();
+const AUTHORED_FAMILY=Object.freeze({mud:'brown_mud',wet_mud:'brown_mud',bark:'bark_brown_01',root:'bark_brown_01',timber:'bark_brown_01',thorn:'bark_brown_01',stone:'plastered_stone_wall',clay:'plastered_stone_wall',salt:'plastered_stone_wall'});
+const GENERATED_FAMILY=Object.freeze({leaf:'leaf',reed:'reed',cloth:'cloth',chitin:'chitin',wet_chitin:'chitin',resin:'resin',bone:'bone',metal:'metal',shell:'bone'});
+const authoredCache=new Map();
+function authoredMaps(family){
+  const slug=AUTHORED_FAMILY[family], generated=GENERATED_FAMILY[family];if((!slug&&!generated)||typeof document==='undefined')return null;
+  const key=slug?`cc0:${slug}`:`generated:${generated}`;if(authoredCache.has(key))return authoredCache.get(key);
+  const loader=new THREE.TextureLoader(),setup=(t,role,repeat=2)=>{t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat,repeat);t.anisotropy=4;t.name=`w1-30-authored:${key}:${role}`;return t;};
+  let maps;
+  if(slug){const load=(role,colourSpace)=>{const t=setup(loader.load(new URL(`../../assets/w1-30/materials/${slug}/${slug}_${role}_1k.jpg`,import.meta.url).href),role);t.colorSpace=colourSpace;return t;};maps={albedo:load('detail',THREE.SRGBColorSpace),rough:load('rough',THREE.NoColorSpace),normal:load('nor_gl',THREE.NoColorSpace),source:key};}
+  else {const albedo=setup(loader.load(new URL(`../../assets/w1-30/materials/generated/${generated}_detail_256.jpg`,import.meta.url).href),'neutral-detail-256',1);albedo.colorSpace=THREE.SRGBColorSpace;maps={albedo,rough:null,normal:null,source:key};}
+  authoredCache.set(key,maps);return maps;
+}
 function hash(x, y, seed) {
   let h = Math.imul(x + seed, 374761393) ^ Math.imul(y - seed, 668265263);
   h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967295;
 }
-function detailMap(family) {
+function detailMaps(family) {
   if (mapCache.has(family)) return mapCache.get(family);
-  const N = 32, bytes = new Uint8Array(N * N * 4), seed = [...family].reduce((a,c)=>a+c.charCodeAt(0), 0);
+  // 32px white noise read as video-game static at character distance and dissolved into a
+  // uniform grey at vista distance.  A small 96px multi-scale field is still shared by every
+  // consumer of a family, but carries broad material structure as well as pores/grain.
+  const N = 96, height = new Uint8Array(N * N * 4), albedo = new Uint8Array(N * N * 4);
+  const rough = new Uint8Array(N * N * 4), seed = [...family].reduce((a,c)=>a+c.charCodeAt(0), 0);
   for (let y=0;y<N;y++) for (let x=0;x<N;x++) {
-    const grain = hash(x, y, seed), broad = hash(x>>2, y>>2, seed+17);
-    const v = Math.round(92 + grain * 54 + broad * 74), i=(y*N+x)*4;
-    bytes[i]=bytes[i+1]=bytes[i+2]=v; bytes[i+3]=255;
+    const grain = hash(x, y, seed), medium = hash(x>>2, y>>2, seed+17);
+    const broad = hash(x>>4, y>>4, seed+37);
+    const directional = /bark|root|timber|reed|cloth/.test(family)
+      ? Math.sin((x + hash(y>>3, 0, seed) * 12) * .38) * 13 : 0;
+    const cellular = /stone|clay|mud|salt/.test(family)
+      ? Math.abs(hash(x>>3,y>>3,seed+61)-.5)*24 : 0;
+    const v = Math.max(12,Math.min(244,Math.round(58 + grain * 28 + medium * 56 + broad * 92 + directional + cellular)));
+    // Keep multiplicative pigment detail near white. Height and roughness carry the stronger
+    // structure; a mid-grey sRGB map would decode dark and crush the marsh palette to black.
+    const a = Math.max(226,Math.min(255,Math.round(241 + (broad-.5)*18 + (medium-.5)*9 + directional*.08)));
+    const q = Math.max(70,Math.min(248,Math.round(170 + (1-medium)*42 + cellular*.8 - directional*.25)));
+    const i=(y*N+x)*4;
+    height[i]=height[i+1]=height[i+2]=v; height[i+3]=255;
+    albedo[i]=albedo[i+1]=albedo[i+2]=a; albedo[i+3]=255;
+    rough[i]=rough[i+1]=rough[i+2]=q; rough[i+3]=255;
   }
-  const t = new THREE.DataTexture(bytes, N, N, THREE.RGBAFormat);
-  t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(4,4); t.colorSpace=THREE.NoColorSpace;
-  t.needsUpdate=true; t.name=`w1-30-detail:${family}`; mapCache.set(family,t); return t;
+  const texture=(bytes,role,colourSpace)=>{const t=new THREE.DataTexture(bytes,N,N,THREE.RGBAFormat);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(4,4);t.colorSpace=colourSpace;t.anisotropy=4;t.needsUpdate=true;t.name=`w1-30-${role}:${family}:96px-multiscale`;return t;};
+  const maps={height:texture(height,'height',THREE.NoColorSpace),albedo:texture(albedo,'albedo',THREE.SRGBColorSpace),rough:texture(rough,'roughness',THREE.NoColorSpace)};
+  mapCache.set(family,maps); return maps;
 }
 
 export function worldMaterial(family, options={}) {
   const spec=FAMILY[family];
   if (!spec) throw new Error(`W1-30 unknown visual material family '${family}'`);
-  const map=detailMap(family);
-  const mat=new THREE.MeshStandardMaterial({
-    color: options.color ?? 0xffffff, roughness: options.roughness ?? spec.roughness,
-    metalness: options.metalness ?? spec.metalness, bumpMap: map, aoMap: map,
+  const procedural=detailMaps(family), authored=options.authored===false?null:authoredMaps(family);
+  const Material=family==='water'||family==='wet_chitin'||family==='resin'?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial;
+  const foliage=/^(leaf|reed)$/.test(family), woody=/^(bark|root|thorn)$/.test(family),baseColour=options.color ?? 0xffffff;
+  const mat=new Material({
+    color: baseColour, roughness: options.roughness ?? spec.roughness,
+    metalness: options.metalness ?? spec.metalness, map: options.map === false ? null : (authored?.albedo||procedural.albedo),
+    normalMap:authored?.normal||null,normalScale:new THREE.Vector2(spec.bump*.72,spec.bump*.72),
+    bumpMap: authored?.normal?null:procedural.height, roughnessMap: authored?.rough||procedural.rough, aoMap: procedural.height,
     aoMapIntensity: options.aoMapIntensity ?? .42,
     bumpScale: options.bumpScale ?? spec.bump, vertexColors: !!options.vertexColors,
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
     alphaTest: options.alphaTest ?? 0, side: options.side ?? THREE.FrontSide,
-    emissive: options.emissive ?? 0x000000, emissiveIntensity: options.emissiveIntensity ?? 1,
+    emissive: options.emissive ?? (foliage||woody?baseColour:0x000000), emissiveIntensity: options.emissiveIntensity ?? (foliage?.24:woody?.035:1),
     envMapIntensity: options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72),
+    depthWrite: options.depthWrite ?? family!=='water',
+    clearcoat: family==='water'?.72:family==='wet_chitin'||family==='resin'?.38:0,
+    clearcoatRoughness: family==='water'?.16:.34,
+    ior: family==='water'?1.333:1.48,
   });
   mat.name=`visual-family:${family}`; mat.userData.visualFamily=family;
-  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:[4,4],
+  mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:authored?(authored.source.startsWith('cc0:')?[2,2]:[1,1]):[4,4], detail:authored?.source||'96px-albedo-height-roughness',
     wetness:Number(options.wetness||0), boundedException:options.boundedException||null,
     lod:options.lod ?? 'shared' };
   return mat;

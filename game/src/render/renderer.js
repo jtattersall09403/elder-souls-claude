@@ -70,7 +70,9 @@ export class Renderer {
     this.three.shadowMap.type = THREE.PCFSoftShadowMap;
     this.three.outputColorSpace = THREE.SRGBColorSpace;
     this.three.toneMapping = THREE.ACESFilmicToneMapping;
-    this.three.toneMappingExposure = 1.0;
+    // Preserve dark interiors while keeping shaded armour readable on SDR displays.  ACES still
+    // owns highlight roll-off; this is a modest scene exposure, not a per-shot compensation.
+    this.three.toneMappingExposure = 1.15;
 
     const built = buildScene(seed);
     this.seed = seed;
@@ -250,7 +252,12 @@ export class Renderer {
         float dx=abs(d-texture2D(tDepth,vUv+vec2(p.x,0.)).r),dy=abs(d-texture2D(tDepth,vUv+vec2(0.,p.y)).r);
         float edge=clamp((dx+dy)*180.,0.,1.); if(uAA>.5&&edge>.08){vec3 n=(texture2D(tWorld,vUv+vec2(p.x,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y)).rgb)*.25;c=mix(c,n,edge*.38);}
         float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*28.,0.,.18);} c*=occ;
-        if(uPost>.5){c=mix(c,c*c*(3.-2.*c),.12);c=(c-.5)*1.035+.5;} gl_FragColor=vec4(c,1.);}`});
+        if(uPost>.5){
+          vec3 b=texture2D(tWorld,vUv+vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y*2.)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y*2.)).rgb;
+          b=max(b*.25-vec3(.72),0.);c+=b*.075;
+          float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.035);c=mix(c,c*c*(3.-2.*c),.08);c=(c-.5)*1.015+.5;
+          float vignette=1.-smoothstep(.38,.82,length(vUv-.5))*.12;c*=vignette;
+        } gl_FragColor=vec4(c,1.);}`});
     this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
   }
@@ -427,7 +434,8 @@ export class Renderer {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
       if (!mesh) {
-        mesh = makeRiggedActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c, 0x7d8460);
+        const family=e.archetype==='BEAST'?'beast':/drowned/i.test(e.eid)?'undead':'humanoid';
+        mesh = makeRiggedActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c, 0x7d8460, family);
         mesh.name = 'enemy:' + e.eid;
         this.scene.add(mesh);
         this.enemyMeshes.set(e.eid, mesh);
@@ -465,7 +473,7 @@ export class Renderer {
         // Race tint is now handed to the actor at build time — `makeRiggedActor` clones the
         // skin and cloth materials per actor, so a Dunmer and an Imperial in the same room are
         // not the same colour and no caller has to reach into the child list to fix it.
-        mesh = makeRiggedActor(this.mats, tint[1], tint[0]);
+        mesh = makeRiggedActor(this.mats, tint[1], tint[0], (n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid');
         mesh.scale.setScalar(n.height_scale || 1);
         mesh.name = 'npc:' + n.eid;
         this.scene.add(mesh);
@@ -781,7 +789,7 @@ export class Renderer {
     // W1-02: `sim.env` carries the environment's own derived terms - the blended sightline the
     // front is currently at, and the weather's light class. The sky reads them off the LIVE
     // env rather than off weather.json, so what is drawn is what the fixed step computed.
-    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env);
+    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the
       // welkynd pillars, the kiln flues, the comb cells and the drifting jellies are what a region
       // is legible BY. RI-WLD04 M17 step 6: "a region that is only identifiable in clear daylight
@@ -895,7 +903,7 @@ export class Renderer {
    * drawn is not a shadow caster this frame and reporting it would overstate the budget.
    */
   sceneCensus() {
-    const materials = new Set();
+    const materials = new Set(),materialObjects=new Map(),textures=new Map();
     let skinned = 0, shadowLights = 0, meshes = 0, instancedTris = 0;
     const visit = (root, fn) => {
       if (!root.visible) return;
@@ -906,13 +914,17 @@ export class Renderer {
       if (o.isMesh || o.isInstancedMesh) {
         meshes++;
         const mm = Array.isArray(o.material) ? o.material : [o.material];
-        for (const mat of mm) if (mat) materials.add(mat.uuid);
+        for (const mat of mm) if(mat){materials.add(mat.uuid);materialObjects.set(mat.uuid,mat);for(const v of Object.values(mat))if(v?.isTexture)textures.set(v.uuid,v);}
         if (o.isSkinnedMesh) skinned++;
         if (o.isInstancedMesh && o.geometry.index) instancedTris += (o.geometry.index.count / 3) * o.count;
       }
       if (o.isLight && o.castShadow) shadowLights++;
     });
     let textureBytes = 0, geometryBytes = 0;
+    for(const t of textures.values()){
+      let bytes=0;const images=Array.isArray(t.image)?t.image:[t.image];for(const im of images){if(!im)continue;if(im.data?.byteLength)bytes+=im.data.byteLength;else if(Number.isFinite(im.width)&&Number.isFinite(im.height))bytes+=im.width*im.height*4;}
+      textureBytes+=bytes*(t.generateMipmaps?4/3:1);
+    }
     visit(this.scene, (o) => {
       if (!o.geometry) return;
       for (const name of Object.keys(o.geometry.attributes)) {
@@ -930,6 +942,7 @@ export class Renderer {
       instancedTriangles: Math.round(instancedTris),
       geometryMB: +(geometryBytes / 1048576).toFixed(3),
       textureMB: +(textureBytes / 1048576).toFixed(3),
+      textureCount:textures.size,
       programs: (this.three.info.programs || []).length,
       atlasCount: 0,
       visualFoundation: foundation,

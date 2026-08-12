@@ -140,6 +140,9 @@ No binary production assets were added. All new visual content is deterministic 
 geometry, material and motion work; therefore no third-party asset provenance or LFS change is
 required.
 
+That statement applied to the superseded closure commit only. The rendered-evidence remediation
+below adds governed production assets and replaces it as the current asset declaration.
+
 ### Exact fresh-critic reproduction order
 
 1. `node tools/boot-check.mjs`
@@ -152,3 +155,52 @@ required.
 7. `W130_LIVE_MANIFEST=<fresh-transient-dir>/manifest.json node tools/render/w1-30-final.mjs`
 8. Run the plan's complete native reference, visual, action-matched motion and blind populations;
    independently aggregate and issue the modern-fidelity and art-direction verdicts.
+
+## Rendered-evidence remediation (2026-08-12)
+
+The previous builder-complete claim is superseded. Inspection of the ordinary shipping frames
+showed prototype geometry, crushed values, repeated cones/boxes, buried settlements, tubular
+characters and weak effect integration even though mechanism gates were green. The complete
+population and reference-led diagnosis is tracked in `VISUAL-REMEDIATION-MATRIX.md`.
+
+This pass implemented the shared terrain/material, vegetation, settlement, architecture, interior,
+actor/equipment/weapon, weather, VFX-light, streaming-observable and UI changes recorded there. A
+concrete consumption defect found during inspection was fixed: full wilderness density was stamped
+through settlement plans, so Thorn's 18 buildings were hidden by scrub. Plan-aware negative space
+now applies to tile, near and cover populations. Material pooling reduces the default representative
+from 2,429 live materials to 390 without removing regional styles.
+
+### Production assets and provenance
+
+Three official Poly Haven 1K PBR packs (`brown_mud`, `bark_brown_01`,
+`plastered_stone_wall`) are CC0 by Rob Tuytel. A project-owned Black Marsh 4×4 surface atlas was
+created with the built-in OpenAI image generator, split to 256² sources, and seven admitted runtime
+maps were neutralised to preserve regional colour authority. The exact source/licence, prompt,
+transform, dimensions, consumers and SHA-256 for all 35 files are in
+`game/assets/w1-30/materials/manifest.json`; `node tools/render/w1-30-assets.mjs` verifies them.
+Total committed asset bytes are 6,681,570. Individual files are below GitHub limits. Git LFS is
+installed locally but the repository has no active LFS routing for these paths; it was not added or
+reconfigured.
+
+### Latest bounded result and honest handoff state
+
+`/tmp/w1-30-remediation-final2/manifest.json` is the latest complete GREEN nine-scene SwiftShader
+run with pinned seed, frames, action labels and frame hashes. Inspection then found that the named
+`swamp_canopy` fixture had zero vegetation instances under its proof pose despite satisfying the
+luma gate. The current tree replaces it with the real Thornmarsh population and requires >1,000
+vegetation plus >100 ground-cover instances; the focused replacement at
+`/tmp/w1-30-remediation-vegetation2` observed 34,312 and 405 respectively. A fresh complete current-tree
+run is deliberately left to the GPU continuation rather than spending another software-raster pass
+after the user requested immediate handoff. Structural gates do not constitute either 7/10 verdict.
+
+This machine has no GPU. The following are not claimed: native 1024²/1280×720 material and AA
+inspection; full-speed action-matched moving review; temporal water/foliage/rain stability; repeated
+native walked LOD seams; representative GPU frame budgets. Run these in this order on the GPU
+instance after checking out the PR head:
+
+1. `node tools/render/w1-30-aggregate.mjs`
+2. `node tools/render/w1-30-live-proof.mjs --out /tmp/w1-30-gpu-proof --width 1280 --height 720 --timeout 180000`
+3. run RI-VIS03 M1–M12 at the plan-native windows, including stationary water and displacement-gated sequences;
+4. render the registered locomotion/combat action cells at 60 f@60 and inspect attachments, IK and secondary motion;
+5. repeat the streamed-boundary walk and record GPU frame time, draw/triangle/program/geometry/texture/VFX budgets;
+6. only then dispatch the fresh critic for complete populations, blind comparison, independent judgement, final aggregation and the two 7/10 verdicts.
