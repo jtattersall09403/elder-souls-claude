@@ -72,3 +72,13 @@ also keeps long nonviolent travel crouched instead of sprinting into every strea
 harbourmaster post moved from inside the solid guild-office footprint to the public side of its
 production door; the next bounded rerun must establish the active-storm proof and then validate that
 final approach.  Gates A-D and the aggregate remain incomplete and are not claimed here.
+
+## 2026-08-12 continuation rerun
+
+The current 70 m body-count-scaled detour was exercised from a newly produced Q-MAIN-07
+checkpoint. It did not repeat the recorded pop-0119 death/respawn. The next first causal failure
+occurred at Archon: production travel advanced the clock into the harbourmaster's `archon-inn`
+schedule, and ordinary movement toward that interior's production door stopped against collision
+12.38 m from the target. The active-storm shelter predicate and Q-MAIN-08 completion therefore
+remain unproven; Gates A–C remain incomplete. The compact reproduction command and exact outcome
+are recorded in the W1-19 production status; large traces remain transient under `/tmp`.
