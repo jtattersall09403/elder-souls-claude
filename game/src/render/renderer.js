@@ -23,6 +23,7 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
+import { visualFoundationCensus, VISUAL_FEATURES } from './visual-foundation.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -844,6 +845,7 @@ export class Renderer {
       }
       if (o.geometry.index) geometryBytes += o.geometry.index.array.byteLength;
     });
+    const foundation=visualFoundationCensus(this.scene);
     return {
       meshes,
       materials: materials.size,
@@ -854,6 +856,8 @@ export class Renderer {
       textureMB: +(textureBytes / 1048576).toFixed(3),
       programs: (this.three.info.programs || []).length,
       atlasCount: 0,
+      visualFoundation: foundation,
+      rendererFeatures: {...VISUAL_FEATURES},
     };
   }
 
