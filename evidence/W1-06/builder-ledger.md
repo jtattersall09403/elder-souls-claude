@@ -138,3 +138,12 @@ A proposed browser aggregate (`rig,look,world,scripted,coupling,fp`) was stopped
 15 minutes without producing an artifact; under the owner-ratified builder execution contract that
 population is critic-owned at that cost. No result or pass is claimed. The cheap gates and the
 narrow corrected-surface/S49 runs above are the bounded builder result at this tree.
+
+
+## S50 authority disposition — 2026-08-12
+
+The authority block is resolved, not passed. ARBITRATION S50 classifies the corrected-surface counts as
+production hard failures and identifies an incomplete diagnostic instrument: M4 requires a shipping
+same-frame camera containment repair; M5 requires body-collision legal-pose clearance before the same
+camera repair can be evaluated. The next builder follows the instrument → M5 body feasibility → camera
+guard sequence in the satisfied plan. All critic-owned populations and final scoring remain `NOT_RUN`.

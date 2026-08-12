@@ -1,7 +1,7 @@
 {
   "task_id": "W1-06-build",
-  "role": "builder",
-  "status": "builder_available_work_complete_authority_blocked",
+  "role": "canonical-authority-arbiter",
+  "status": "authority_resolved_needs_fresh_builder",
   "plan": "orchestration/plans/W1-06.md",
   "current_head": "2df978b (tested implementation; evidence-stamp follow-up is text-only)",
   "files_touched": [
@@ -29,14 +29,15 @@
     "game/src/sim/state.js",
     "tools/camera/s49-penetration-guard.mjs",
     "reports/blog-feed.jsonl",
-    "reports/w1-06/AMENDMENT-W1-06-03-surface-residual.md"
+    "reports/w1-06/AMENDMENT-W1-06-03-surface-residual.md",
+    "orchestration/plans/W1-06.md"
   ],
   "files_claimed": [],
-  "next_step": "Arbiter/authority must reconcile the corrected-surface M4/M5 constructive residual in reports/w1-06/AMENDMENT-W1-06-03-surface-residual.md. After an authoritative repair seam is stated, rerun rate,wall first, then the bounded representative aggregate. Critic-owned full populations and scoring remain not_run.",
+  "next_step": "Dispatch a fresh builder to execute orchestration/plans/W1-06.md S50 in order: repair the existing rate/wall classifier, make every M5 body pose camera-legal, then repair same-frame production camera containment; rerun rate,wall before the bounded aggregate. Critic populations/final scoring remain not_run.",
   "hard_fails": [],
-  "formal_blocker": "Corrected native M4/M5 surface fixtures satisfy coordinate and body-consumer assertions but retain 1392/2880 and 133/300 clip frames respectively, with zero arm_penetration_guard and arm_floor_emergency flags; satisfied plan requires this residual to return to arbitration before any production-camera edit.",
+  "formal_blocker": null,
   "independent_passes_awarded": 0,
-  "authority_resolution": "S48 crawl ceiling 1.80 m remains binding. Merged S49 authorises only the same-frame greatest-clear non-negative below-0.90 m penetration guard when an independent origin-plus-four-near-plane-corners search proves no clear candidate at or above 0.90 m; zero clipping and all fixtures remain unchanged.",
+  "authority_resolution": "S50: corrected M4/M5 clip_through frames are native production hard failures. The current count is valid, but per-frame classification is instrument-incomplete. M4 requires a production camera guard repair. M5 additionally requires body collision to preserve existence of a legal unchanged-ray pose, not merely pivot-side non-crossing. All native bars remain unchanged.",
   "canonical_dependency_blocks": [
     {
       "dependency": "A valid merged game/src/engine.js on codex/wave1-build-experiment",
@@ -58,7 +59,7 @@
     "critic_owned": "not_run by builder",
     "surface_fixture": "M4 centres -6.40/-0.90 and M5 centre -3.40 pass exact surface assertions; M5 pivot-side clearance minimum 0.3201 m.",
     "surface_red_seed": "Old centre-coordinate arm exits 1 and makes both surface_distance_fixture checks red.",
-    "surface_residual": "Authority-blocked: M4 1392/2880 clip frames and M5 133/300; both guard flag counts zero. No threshold/population changed.",
+    "surface_residual": "S50-resolved hard fail: M4 is production camera containment/telemetry; M5 is body-feasibility first, then camera containment. Existing probe must add the exact independent legal-set classifier before tuning.",
     "bounded_aggregate": "Attempted rig,look,world,scripted,coupling,fp; exceeded the contract 15-minute critic boundary without producing output and was stopped. Individual cheap/S49/surface checks are recorded; no pass claimed."
   },
   "redundant_with": [
