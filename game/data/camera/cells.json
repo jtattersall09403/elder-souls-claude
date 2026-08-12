@@ -5672,7 +5672,7 @@
      "c": [
       0,
       3,
-      -6
+      -6.4
      ],
      "h": [
       8,
@@ -5681,12 +5681,19 @@
      ]
     }
    ],
+   "declared": {
+    "wall_half_depth_m": 0.4,
+    "surface_distance_from_pivot_m": {
+     "from": 6,
+     "to": 0.5
+    }
+   },
    "movers": [
     {
      "id": "rail_wall",
      "axis": "z",
-     "from": -6,
-     "to": -0.5,
+     "from": -6.4,
+     "to": -0.9,
      "period_frames": 240
     }
    ],

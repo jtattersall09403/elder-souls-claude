@@ -253,9 +253,12 @@ cells.push({
   title: 'Flat ground plus one wall on a rail. The rate law (RI-CAM01 M4) is measured here.',
   shapes: [
     { k: 'plane_y', y: 0, id: 'floor' },
-    { k: 'box', id: 'rail_wall', c: [0, 3.0, -6.0], h: [8.0, 3.0, 0.4] },
+    // M4/M5 specify clearance to the player-facing wall surface, not its centre.  The wall
+    // is 0.80 m thick, so a surface at -6.00 m has its centre at -6.40 m.
+    { k: 'box', id: 'rail_wall', c: [0, 3.0, -6.4], h: [8.0, 3.0, 0.4] },
   ],
-  movers: [{ id: 'rail_wall', axis: 'z', from: -6.0, to: -0.5, period_frames: 240 }],
+  declared: { wall_half_depth_m: 0.40, surface_distance_from_pivot_m: { from: 6.0, to: 0.5 } },
+  movers: [{ id: 'rail_wall', axis: 'z', from: -6.4, to: -0.9, period_frames: 240 }],
   spine: null,
 });
 
