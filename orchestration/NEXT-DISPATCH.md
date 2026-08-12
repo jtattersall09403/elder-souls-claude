@@ -14,13 +14,15 @@ with current builders.
 **Production dependency sequence:**
 
 ```
-W1-06 → W1-24 → W1-30 → W1-28 → Wave 2
+W1-06 → W1-24 → W1-30 → W1-21 UI visual closure → W1-28 UI smoke → Wave 2
 ```
 
 W1-30 consumes W1-06's stable camera/character-presentation seam and W1-24's visual bifurcation and
-measurement protocols. Its builder must therefore wait for both to land. Once W1-30 lands, W1-28's
-final first-hour integration consumes the improved whole-game visual foundation. Later visual work
-must use the shared production and validation paths W1-30 establishes.
+measurement protocols. Its builder must therefore wait for both to land. Once W1-30 lands, dispatch
+W1-21's UI visual-closure builder across every production screen, then its fresh independent critic.
+If W1-28 has already landed, rerun only its cheap opening/UI smoke rows. W1-30 world/character
+criticism and W1-21 UI criticism both precede Wave-2 depth work. Later visual work must use the
+shared production and validation paths W1-30 establishes.
 
 The W1-30 plan must contain the binding `Builder/critic execution allocation` required by
 `PLAN-LOOP.md` and `orchestration/plans/BUILDER-EXECUTION-CONTRACT.md`: production implementation,
