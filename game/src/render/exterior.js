@@ -1844,17 +1844,23 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     if(regionalRealm&&wetTown){
       for(let lane=-1;lane<=1;lane++){
         const across=lane*.68+(((hashStr(plan.id+i)>>(lane+2))&3)-1.5)*.035;
-        const board=box(.55+(i+lane+3)%3*.055,.12,Math.max(1.62,approachR/14-.28+(lane&1)*.12),(i+lane)&1?P.wood:P.stone);
+        // Each bay overlaps the next slightly. At the former sub-spacing length these read as
+        // isolated picnic tables from eye height rather than one lashed marsh causeway.
+        const board=box(.55+(i+lane+3)%3*.055,.12,Math.max(1.86,approachR/14+.18+(lane&1)*.08),(i+lane)&1?P.wood:P.stone);
         board.rotation.z=(lane*2+i%3-1)*.009;
         add(board,x+Math.cos(yaw)*across,y+.10+((i+lane+3)%3)*.012,z-Math.sin(yaw)*across,yaw,'arrival-board');
       }
       if(i%2===0)add(box(2.28,.10,.11,P.stone),x,y+.19,z,yaw,'arrival-lashing');
     }else if(regionalRealm){
-      for(let lane=-1;lane<=1;lane++){
-        const along=(lane===0?0:(i&1?.44:-.44)),across=lane*.52;
-        const stone=ico(.52+((i+lane+3)%3)*.055,1,(i+lane)&1?P.stone:P.wood);
-        stone.scale.set(1.22,.14,.78+((i+lane+3)&1)*.10);
-        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.08,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+(lane*.13),'arrival-cobble');
+      // Fifteen hand-scale founded stones make a dense 2.2 m lane bay. The earlier three
+      // 1.2 m stones were structurally distinct from the deleted slabs but looked like giant
+      // lily pads in the hardware capture. Small staggered courses read as laid cobble instead.
+      for(let row=-1;row<=1;row++)for(let lane=-2;lane<=2;lane++){
+        const jitter=((hashStr(`${plan.id}:${i}:${row}:${lane}`)&15)-7.5)*.008;
+        const along=row*(approachR/42),across=lane*.43+(row&1)*.16;
+        const stone=ico(.235+((i+lane+row+9)%3)*.018,1,(i+lane+row)&1?P.stone:P.wood);
+        stone.scale.set(1.28+(lane&1)*.08,.19,1.18+((i+row)&1)*.10);
+        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.055,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+jitter,'arrival-cobble');
       }
     }else{
       const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
@@ -1884,9 +1890,14 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     for(let k=1;k<pieces;k++){
       const t=k/pieces,x=centreX+dx*t,z=centreZ+dz*t,y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
       if(regionalRealm&&wetTown){
-        for(const lane of [-1,0,1])add(box(.52,.11,Math.min(2.8,len/pieces-.16),(k+i+lane)&1?P.wood:P.stone),x+Math.cos(yaw)*lane*.62,y+.09,z-Math.sin(yaw)*lane*.62,yaw,'causeway-board');
+        for(const lane of [-1,0,1])add(box(.52,.11,Math.min(3.0,len/pieces+.12),(k+i+lane)&1?P.wood:P.stone),x+Math.cos(yaw)*lane*.62,y+.09,z-Math.sin(yaw)*lane*.62,yaw,'causeway-board');
       }else if(regionalRealm){
-        for(const lane of [-1,0,1]){const walk=ico(.47+((k+i+lane+3)%3)*.04,1,(k+i+lane)&1?P.stone:P.wood);walk.scale.set(1.18,.13,.78);add(walk,x+Math.cos(yaw)*lane*.48,y+.08,z-Math.sin(yaw)*lane*.48,yaw+lane*.11,'causeway-cobble');}
+        for(let row=-1;row<=1;row++)for(let lane=-2;lane<=2;lane++){
+          const walk=ico(.225+((k+i+lane+row+8)%3)*.017,1,(k+i+lane+row)&1?P.stone:P.wood);
+          walk.scale.set(1.28,.18,1.18);
+          const along=row*Math.min(.72,len/pieces*.25),across=lane*.41+(row&1)*.14;
+          add(walk,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.055,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+lane*.018,'causeway-cobble');
+        }
       }else{
         const walk=box(2.05,.20,Math.min(3.4,len/pieces+.18),(k+i)&1?P.stone:P.wood);
         walk.rotation.z=((hashStr(b.id)+k)%5-2)*.008;

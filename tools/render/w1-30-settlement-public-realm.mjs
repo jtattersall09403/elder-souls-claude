@@ -18,14 +18,15 @@ for(const f of list('game/data/world/settlements')){
   const a=counts(live),b=counts(deleted),route=wet.has(doc.id)?(a['arrival-board']||0):(a['arrival-cobble']||0);
   check(summary.public_realm.regional_route===true,`${doc.id}: regional route not exposed`);
   check(summary.public_realm.approach_occupation===4,`${doc.id}: approach occupation ${summary.public_realm.approach_occupation}/4`);
-  check(route===42,`${doc.id}: regional arrival pieces ${route}/42`);
+  const expectedRoute=wet.has(doc.id)?42:210;
+  check(route===expectedRoute,`${doc.id}: regional arrival pieces ${route}/${expectedRoute}`);
   check((a['arrival-spine']||0)===0,`${doc.id}: retained ${(a['arrival-spine']||0)} runway slabs`);
   check(deletedSummary.public_realm.regional_route===false,`${doc.id}: delete arm still reports regional route`);
   check((b['arrival-spine']||0)===14,`${doc.id}: delete arm restored ${(b['arrival-spine']||0)}/14 slabs`);
   check((a['approach-workpost']||0)===4&&(a['approach-marker']||0)===4&&(a['approach-vessel']||0)===4&&(a['approach-goods']||0)===8,
     `${doc.id}: approach occupation consumers incomplete`);
   occupations+=summary.public_realm.approach_occupation;regionalRouteParts+=route;deletedSlabs+=b['arrival-spine']||0;
-  perSettlement.push({id:doc.id,route:wet.has(doc.id)?'board-and-lashing':'offset-cobble',arrivalParts:route,
+  perSettlement.push({id:doc.id,route:wet.has(doc.id)?'continuous-board-and-lashing':'dense-laid-cobble',arrivalParts:route,
     approachOccupation:summary.public_realm.approach_occupation,causeways:summary.public_realm.causeways,features:summary.public_realm.features});
 }
 check(perSettlement.length===8,`settlement population ${perSettlement.length}/8`);
