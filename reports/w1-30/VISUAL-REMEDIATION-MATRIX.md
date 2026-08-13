@@ -232,3 +232,29 @@ delta from the prior A4500 atlas. Manifest SHA-256:
 `llq48pkpzwxrrb` and template `th50i5zqyy` were deletion-confirmed after retrieval; cleanup found
 no managed orphan. The earlier A5000/Xvfb bootstrap failure was definite, retrieved and cleaned,
 and is not counted as game evidence.
+
+## Shared ordinary-facade relief / native L4 delta (2026-08-13)
+
+The shipping renderer now constructs projecting courses, piers, panels, connected braces and
+non-door-overlapping entry apertures on all four faces of every ordinary settlement building.
+The focused census observes 149/149 relieved buildings, 10,884 modules and 398 entry apertures
+across all eight towns; deleting only the repair removes all 149 relief groups. Civic structures
+retain their semantic construction. Settlement batching remains causal and GREEN, compressing
+the former 19,673 building-local render meshes to 782 final render meshes with 40,213 instances.
+
+The first GPU variant (`bb5ed80f`, run `20260813-194635Z-170664`) was rejected because direct
+inspection found Blackrose's black diagonal members visually detached. The accepted clean source
+`b93c3bd2`, run `20260813-195102Z-172165`, replaces them with attached timber and rendered all
+eight 1280x720 DPR-1 frames on a Secure NVIDIA L4 with Chromium 141.0.7390.37 and NVIDIA Vulkan.
+All frames were inspected at original resolution. Near-wall depth is materially clearer in
+Archon, Soulrest and Stormhold, Thorn gains readable apertures, and Blackrose no longer has the
+rejected black-stick defect.
+
+This remains builder-red. Helstrom and Soulrest retain excessive empty foreground, Gideon's
+roof/building scale and fog remain weak, distant Lilmoth detail is hard to read, and the common
+facade grammar is still procedural rather than hero-quality. Draw calls are 429–897 (4,957
+aggregate), triangles are 523,892–1,209,172, and all eight scenes exceed the intended 350-call
+budget. Manifest SHA-256:
+`727670e167c368ea3ae90a2326ebcf59a7cd2e8fe101943731ea95c6dbd2bec3`. Pod
+`5qg18f4uuz7a7f` and template `oeg5oaejdl` were deletion-confirmed after retrieval; cleanup found
+no managed orphan.

@@ -539,3 +539,58 @@ Rough planning estimates after this phase: settlement arrival routing about 90%;
 occupation/composition about 62–65%; settlement visible fidelity about 58–62%; settlement
 performance repair about 60–65%; whole-W1-30 builder progress roughly 57–61%. These are builder
 work estimates only; neither critic-owned 7/10 verdict is claimed.
+
+## Final-builder shared facade-relief phase (2026-08-13)
+
+Every ordinary shipping settlement building now receives a face-local construction pass rather
+than ending at a textured box. All four walls gain projecting lower and upper courses, structural
+piers, dado panels and attached braces; the entrance face also gains shallow hooded apertures in
+bays that do not overlap the record-derived doorway. Archon, Helstrom and Lilmoth add regional
+boss/reed details. Semantic civic structures keep their purpose-built construction and are not
+covered over by this pass.
+
+`node tools/render/w1-30-settlement-facades.mjs` is GREEN across all 8 settlements: 149/149
+ordinary buildings are relieved with 10,884 modules and 398 entry apertures, while the complete
+205-building census remains present. Its targeted delete arm removes all 149 relief groups. The
+shipping batching gate remains GREEN: the former 19,673 building-local render meshes become 782
+final render meshes holding 40,213 instances (96.0% render-mesh reduction); disabling only the
+batching repair restores the former graph.
+
+The first clean GPU candidate, `bb5ed80f` (run `20260813-194635Z-170664`), was rejected after
+direct pixel review because Blackrose's dark diagonal members read as detached sticks. Candidate
+`b93c3bd22a25a66791dab9ad341ad2a3bb6e6a14` changes those members to the attached timber family.
+Its source snapshot SHA-256 is
+`fd7ff7e4fd94ebfb58d5e0880b8ba157f793088bb9c8cd54b4d20f132af809d5`.
+
+Accepted RunPod run `20260813-195102Z-172165` selected Secure Cloud Pod `5qg18f4uuz7a7f`, an
+NVIDIA L4 at an actual $0.49/hour. The host reported driver 580.159.04 and 23,034 MiB. Chromium
+141.0.7390.37 reported `ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)`
+with no software markers. The native window was 1280x720 at DPR 1, seed 3030, frame 2, using the
+bounded settlement-atlas command recorded above.
+
+All eight returned frames were opened at original resolution. Archon, Soulrest and Stormhold now
+show visible bay framing across formerly uninterrupted near walls; Thorn exposes hooded openings;
+Blackrose's revised braces read as connected timber rather than the rejected floating black
+members. The row remains builder-red: Helstrom and Soulrest retain large empty foregrounds,
+Gideon remains over-scaled and fog-heavy, Lilmoth's distant facade detail is weak, and the shared
+construction grammar remains visibly procedural rather than hero-quality architecture.
+
+Native draw calls are Archon 429, Blackrose 682, Gideon 740, Helstrom 897, Lilmoth 473, Soulrest
+754, Stormhold 547 and Thorn 435 (4,957 aggregate). Triangles range from 523,892 to 1,209,172.
+Every representative remains over the intended 350-call budget; this still atlas contains no
+frame-time distribution and the L4 counters are named-hardware evidence only.
+
+Evidence SHA-256 values: run ledger
+`c491cc66f0a497d6e6a8ffb16ee71b3116e73b26b51531c00eb86f299b327d44`, lifecycle log
+`be8ddcb65913bba9a5e153e3b1dea52644fb0c5f0f288add4c92ce0e42f3a252`, worker result
+`72cc9ec5a633c7fbd126fea70cfcd0739cd2023b0b96a2abb87c6aaace682fd9`, and manifest
+`727670e167c368ea3ae90a2326ebcf59a7cd2e8fe101943731ea95c6dbd2bec3`. The manifest contains all
+eight frame hashes. Artifact retrieval completed before Pod and ephemeral template `oeg5oaejdl`
+deletion were confirmed; the subsequent cleanup dry-run found no managed orphan. Bulk evidence
+remains outside Git under
+`/tmp/w1-30-final-8c1d4f7a/runpod/settlement-facades-b93c3bd2-l4`.
+
+Rough planning estimates after this phase: ordinary settlement facade construction about 65%;
+settlement occupation/composition about 62–65%; settlement visible fidelity about 62–66%;
+settlement performance repair about 60–65%; whole-W1-30 builder progress roughly 58–62%. These
+are builder work estimates only; neither critic-owned 7/10 verdict is claimed.
