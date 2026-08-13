@@ -1701,6 +1701,77 @@ export function buildBuilding(b, town, opts = {}) {
 }
 
 /**
+ * Pick a deterministic, building-clear bearing from the edge of a settlement to its civic focus.
+ *
+ * The original public-realm pass always approached from southwest. Stormhold places Old Customs
+ * on that line, so both the visible route and the audit camera ran through its wall. Score sixteen
+ * bearings against the actual oriented, shrunk shipping footprints and retain the widest minimum
+ * clearance. The first candidate is the former southwest bearing, preserving it where it is
+ * genuinely clear. `clearance=false` is the targeted delete arm.
+ */
+export function settlementApproach(plan, clearance = true) {
+  // Preserve the former southwest route's physical length: that code subtracted `approachR`
+  // independently from X and Z, so its actual radial distance was approachR * sqrt(2).
+  const reach=Math.min(plan.radius_m*.58,48)*Math.SQRT2, routeHalfWidth=1.32;
+  const candidates=[];
+  for(let i=0;i<16;i++){
+    const a=Math.PI*.25+i*Math.PI/8;
+    const direction=[Math.sin(a),Math.cos(a)];
+    for(const bend of [0,-4,4,-8,8,-12,12,-16,16,-20,20,-24,24,-28,28,-32,32])candidates.push({direction,bend,bearing:i});
+  }
+  const signedClearance=(x,z,b,margin=routeHalfWidth)=>{
+    const yaw=(b.yaw_deg||0)*Math.PI/180,c=Math.cos(yaw),s=Math.sin(yaw),dx=x-b.x,dz=z-b.z;
+    const lx=dx*c-dz*s,lz=dx*s+dz*c,fp=b.drawn_footprint_m||b.footprint_m||[5,5];
+    const qx=Math.abs(lx)-fp[0]*.5,qz=Math.abs(lz)-fp[1]*.5;
+    if(qx<=0&&qz<=0)return Math.max(qx,qz)-margin;
+    return Math.hypot(Math.max(qx,0),Math.max(qz,0))-margin;
+  };
+  // Several plans intentionally put their seat of power at the authored origin. A public court
+  // centred there was therefore hidden under the hall. Search outward in four-metre rings for
+  // the nearest point with enough open radius for the town-specific court construction.
+  const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8,focusCandidates=[[plan.pos[0],plan.pos[2]]];
+  for(const radius of [4,8,12,16,20,24,28])for(let i=0;i<16;i++){
+    const a=i*Math.PI/8;focusCandidates.push([plan.pos[0]+Math.sin(a)*radius,plan.pos[2]+Math.cos(a)*radius]);
+  }
+  const focusRanked=focusCandidates.map((p,index)=>{
+    const open=Math.min(...plan.buildings.map(b=>signedClearance(p[0],p[1],b,courtR)));
+    const distance=Math.hypot(p[0]-plan.pos[0],p[1]-plan.pos[2]);
+    return {p,index,open,distance};
+  });
+  // Two metres beyond the court edge leaves room for bodies, markers and the first causeway bay;
+  // merely touching a footprint still produced camera and traversal pinches in dense plans.
+  const focusAdmissible=focusRanked.filter(x=>x.open>=2);
+  const focus=(focusAdmissible.length?focusAdmissible.sort((a,b)=>a.distance-b.distance||b.open-a.open||a.index-b.index)
+    :focusRanked.sort((a,b)=>b.open-a.open||a.distance-b.distance||a.index-b.index))[0];
+  const point=(candidate,t)=>{
+    const [dx,dz]=candidate.direction,px=Math.cos(Math.atan2(dx,dz)),pz=-Math.sin(Math.atan2(dx,dz));
+    const curve=candidate.bend*Math.sin(Math.PI*t);
+    return [focus.p[0]-dx*reach*(1-t)+px*curve,focus.p[1]-dz*reach*(1-t)+pz*curve];
+  };
+  const score=(candidate)=>{
+    let min=Infinity;
+    // Include the camera/start point and the same fourteen bay centres consumed by the renderer.
+    // The exact civic centre is deliberately omitted: it is the separate constructed court, not
+    // an arrival bay, and several authored plans place a civic mass beside/over that origin.
+    const samples=[0,...Array.from({length:14},(_,i)=>(i+.5)/14)];
+    for(const t of samples){
+      const [x,z]=point(candidate,t);
+      for(const b of plan.buildings)min=Math.min(min,signedClearance(x,z,b));
+    }
+    return min;
+  };
+  const ranked=candidates.map((candidate,index)=>({...candidate,index,clearance:score(candidate)}));
+  const admissible=ranked.filter(x=>x.clearance>=.15);
+  const selected=clearance?(admissible.length?admissible.sort((a,b)=>Math.abs(a.bend)-Math.abs(b.bend)||a.bearing-b.bearing||b.clearance-a.clearance||a.index-b.index)
+    :ranked.sort((a,b)=>b.clearance-a.clearance||Math.abs(a.bend)-Math.abs(b.bend)||a.index-b.index))[0]:ranked[0];
+  const [dx,dz]=selected.direction,yaw=Math.atan2(dx,dz);
+  const start=point(selected,0),look=point(selected,.55);
+  return {start,look,focus:focus.p,direction:[dx,dz],yaw,reach,bend:selected.bend,
+    clearance:+selected.clearance.toFixed(3),focus_clearance:+focus.open.toFixed(3),focus_offset:+focus.distance.toFixed(3),
+    candidate:selected.bearing,consumer:'settlement-approach-clearance'};
+}
+
+/**
  * Build a whole settlement's exterior into `root`.
  *
  * @param {THREE.Object3D} root
@@ -1716,9 +1787,6 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     doorways: 0,
   };
   const kitSeen = new Set();
-  // The authored plan origin is the civic centre/arrival focus. Averaging building coordinates
-  // displaced Archon's public realm 26 m downwind, leaving the actual town centre as empty mud.
-  const centreX=plan.pos[0],centreZ=plan.pos[2];
   for (const b of plan.buildings) {
     // Shipping uses one heterogeneous batch pass after final world placement. Offline continuity
     // probes keep the established building-local graph unless they explicitly request that path.
@@ -1801,6 +1869,10 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const P=paletteFor({interior_kind:'hall',settlement:plan.id});
   const street=new THREE.Group();street.name=`settlement-public-realm:${plan.id}`;
   const add=(mesh,x,y,z,ry=0,label='street')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-street:${plan.id}:${label}`;street.add(mesh);out.meshes++;};
+  // Keep the civic focus near the authored power centre, but never under the hall or another
+  // footprint. This same result drives the shipping route and the native street-height camera.
+  const approach=settlementApproach(plan,opts.clearSettlementApproach!==false);
+  const centreX=approach.focus[0],centreZ=approach.focus[1];
   const cy=Number.isFinite(groundY(centreX,centreZ))?groundY(centreX,centreZ):0;
   const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8;
   const regionalRealm=opts.regionalPublicRealm!==false;
@@ -1834,17 +1906,22 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // became the dominant object in all eight town frames. These bays keep a readable route while
   // exposing the ground between construction units and using the town's darker structural
   // palette rather than a generic road surface.
-  const approachR=Math.min(plan.radius_m*.58,48);
+  const approachR=approach.reach;
   // The authored approach advances by the same amount in X and Z, so its world-space step is
   // sqrt(2) longer than either component. Route parts sized from one component left conspicuous
   // gaps even when their local lengths nominally matched the sampling interval.
-  const approachStep=approachR*Math.SQRT2/14;
+  const approachStep=approachR/14;
   let approachOccupation=0;
   for(let i=0;i<14;i++){
-    const t=(i+.5)/14,meander=Math.sin(i*.83+(hashStr(plan.id)%11))*.32;
-    const x=centreX-approachR*(1-t)+meander,z=centreZ-approachR*(1-t)-meander;
+    const t=(i+.5)/14;
+    const [dirX,dirZ]=approach.direction,baseYaw=approach.yaw,curve=approach.bend*Math.sin(Math.PI*t);
+    const x=centreX-dirX*approachR*(1-t)+Math.cos(baseYaw)*curve;
+    const z=centreZ-dirZ*approachR*(1-t)-Math.sin(baseYaw)*curve;
+    const tx=dirX*approachR+Math.cos(baseYaw)*approach.bend*Math.PI*Math.cos(Math.PI*t);
+    const tz=dirZ*approachR-Math.sin(baseYaw)*approach.bend*Math.PI*Math.cos(Math.PI*t);
+    const yaw=Math.atan2(tx,tz);
     const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
-    const yaw=-Math.PI*.25+((hashStr(plan.id)>>i)&3)*.012;
+    const pieceYaw=yaw+((hashStr(plan.id)>>i)&3)*.012;
     if(regionalRealm&&wetTown){
       for(let lane=-1;lane<=1;lane++){
         const across=lane*.68+(((hashStr(plan.id+i)>>(lane+2))&3)-1.5)*.035;
@@ -1852,9 +1929,9 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
         // isolated picnic tables from eye height rather than one lashed marsh causeway.
         const board=box(.55+(i+lane+3)%3*.055,.12,approachStep+.14+(lane&1)*.08,(i+lane)&1?P.wood:P.stone);
         board.rotation.z=(lane*2+i%3-1)*.009;
-        add(board,x+Math.cos(yaw)*across,y+.10+((i+lane+3)%3)*.012,z-Math.sin(yaw)*across,yaw,'arrival-board');
+        add(board,x+Math.cos(yaw)*across,y+.10+((i+lane+3)%3)*.012,z-Math.sin(yaw)*across,pieceYaw,'arrival-board');
       }
-      if(i%2===0)add(box(2.28,.10,.11,P.stone),x,y+.19,z,yaw,'arrival-lashing');
+      if(i%2===0)add(box(2.28,.10,.11,P.stone),x,y+.19,z,yaw+Math.PI*.5,'arrival-lashing');
     }else if(regionalRealm){
       // Twenty-five hand-scale founded stones make a dense 2.2 m lane bay. The earlier three
       // 1.2 m stones were structurally distinct from the deleted slabs but looked like giant
@@ -1867,16 +1944,16 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
         const radius=.205+((h>>13)&7)*.009;
         const stone=ico(radius,1,(h&7)===0?P.wall:P.stone);
         stone.scale.set(.98+((h>>16)&7)*.075,.17,1.02+((h>>20)&7)*.065);
-        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.05,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+turn,'arrival-cobble');
+        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.05,z-Math.sin(yaw)*across+Math.cos(yaw)*along,pieceYaw+turn,'arrival-cobble');
       }
     }else{
       const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
       slab.rotation.z=(i%3-1)*.008;
-      add(slab,x,y+.13,z,yaw,'arrival-spine');
-      if(wetTown||i%4===0)add(box(2.62,.12,.13,wetTown?P.stone:P.wood),x,y+.25,z,-Math.PI*.25,'arrival-tie');
+      add(slab,x,y+.13,z,pieceYaw,'arrival-spine');
+      if(wetTown||i%4===0)add(box(2.62,.12,.13,wetTown?P.stone:P.wood),x,y+.25,z,yaw+Math.PI*.5,'arrival-tie');
     }
     if(i%3===1){
-      const edgeX=x+2.15,edgeZ=z-2.15,ey=Number.isFinite(groundY(edgeX,edgeZ))?groundY(edgeX,edgeZ):y;
+      const edgeX=x+Math.cos(yaw)*2.15,edgeZ=z-Math.sin(yaw)*2.15,ey=Number.isFinite(groundY(edgeX,edgeZ))?groundY(edgeX,edgeZ):y;
       add(ico(.18+(i%2)*.04,1,i%2?P.accent:P.wood),edgeX,ey+.17,edgeZ,0,'arrival-edge');
     }
     if(regionalRealm&&[2,5,8,11].includes(i)){
@@ -1934,7 +2011,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
   }
   root.add(street);
-  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,consumer:'settlement-public-realm'};
+  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,approach,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
   if(opts.settlementBatch){
     out.logical_meshes=out.meshes;
