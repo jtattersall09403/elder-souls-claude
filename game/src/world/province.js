@@ -186,12 +186,15 @@ function organicCrown(shape,radius,height,variant=0){
   // the instanced triangle budget bounded. Conifers, root arches and reed-like crowns retain
   // tapered leaves because their radial silhouette is the species cue.
   if(!spire&&!column&&!arch){
-    const dome=shape==='dome',lobes=dome?9:8;
+    const dome=shape==='dome',lobes=dome?7:6;
     for(let i=0;i<lobes;i++){
-      const a=i/lobes*Math.PI*2+variant*.57,ring=i===0?0:radius*(.18+.30*((i*5+variant)%4)/3);
-      const y=(dome?.14:.02)*height+(i===0?.12:((i*7+variant)%5-2)*.055)*height;
-      const g=new THREE.IcosahedronGeometry(1,0),sx=radius*(i===0?.70:.42+.07*((i+variant)%3)),sy=(dome?height*.20:radius*.42)*(i===0?1.08:.72+.10*((i*3+variant)%3)),sz=sx*(.76+.11*((i*2+variant)%3));
-      g.scale(sx,sy,sz);g.rotateY(a*.37);g.translate(Math.sin(a)*ring,y,Math.cos(a)*ring);parts.push(g);
+      const a=i/lobes*Math.PI*2+variant*.67+(i%2)*.15,ring=i===0?0:radius*(.25+.10*((i*5+variant)%3));
+      const y=(dome?.12:.02)*height+(i===0?.10:((i*7+variant)%5-2)*.048)*height;
+      // A low-ring ellipsoid has a continuous crown profile and directional facets, unlike an
+      // icosahedron's identical crystalline lump. Rotated, unequal lobes leave deliberate sky
+      // holes between branch endpoints and keep the crown legible from below.
+      const g=new THREE.SphereGeometry(1,6,4),sx=radius*(i===0?.68:.44+.055*((i+variant)%3)),sy=(dome?height*.19:radius*.38)*(i===0?1.06:.76+.08*((i*3+variant)%3)),sz=sx*(.70+.13*((i*2+variant)%3));
+      g.scale(sx,sy,sz);g.rotateY(a*.43);g.rotateZ(((i+variant)%3-1)*.13);g.translate(Math.sin(a)*ring,y,Math.cos(a)*ring);parts.push(g);
     }
     // Sparse edge sprays break the poly-lobe outline at close range without returning to the
     // old uniform wheel. Their lengths and levels differ between the three cached variants.
@@ -205,18 +208,18 @@ function organicCrown(shape,radius,height,variant=0){
   // Each tier has an off-centre core and small satellite lobes, so rotation and the three cached
   // variants change both the voids and the outline rather than merely spinning one wheel.
   if(spire||column){
-    const layers=column?5:6;
+    const layers=column?4:5;
     for(let layer=0;layer<layers;layer++){
       const t=layer/(layers-1), taper=column?(.78-.10*t):(1-.70*t);
-      const y=height*(-.25+t*.50),phase=variant*.71+layer*1.17;
-      const core=new THREE.IcosahedronGeometry(1,0);
-      core.scale(radius*.56*taper,height*(column?.10:.085),radius*.50*taper);
-      core.rotateY(phase*.31);core.translate(Math.sin(phase)*radius*.07,y,Math.cos(phase)*radius*.07);parts.push(core);
-      for(let i=0;i<3;i++){
-        const a=phase+i*Math.PI*2/3, satellite=new THREE.IcosahedronGeometry(1,0);
-        const rr=radius*(.28+.035*((layer+i+variant)%3))*taper;
-        satellite.scale(rr,height*(.052+.008*((i+variant)%2)),rr*.72);
-        satellite.rotateY(a*.43);satellite.translate(Math.sin(a)*radius*.38*taper,y+height*((i-1)*.018),Math.cos(a)*radius*.38*taper);parts.push(satellite);
+      const y=height*(-.24+t*.48),phase=variant*.79+layer*1.31;
+      const core=new THREE.SphereGeometry(1,7,4);
+      core.scale(radius*.54*taper,height*(column?.105:.088),radius*.45*taper);
+      core.rotateY(phase*.37);core.rotateZ(((layer+variant)%3-1)*.10);core.translate(Math.sin(phase)*radius*.09,y,Math.cos(phase)*radius*.09);parts.push(core);
+      for(let i=0;i<2;i++){
+        const a=phase+i*Math.PI+layer*.29, satellite=new THREE.SphereGeometry(1,6,4);
+        const rr=radius*(.29+.04*((layer+i+variant)%3))*taper;
+        satellite.scale(rr,height*(.057+.009*((i+variant)%2)),rr*.66);
+        satellite.rotateY(a*.47);satellite.rotateZ((i?1:-1)*.17);satellite.translate(Math.sin(a)*radius*.40*taper,y+height*((i-.5)*.025),Math.cos(a)*radius*.40*taper);parts.push(satellite);
       }
       if(layer<layers-1)for(let i=0;i<2;i++){
         const a=phase+(i+.35)*Math.PI,leaf=bladeLeaf(radius*(.25+.05*(layer%2))*taper,Math.max(.035,radius*.045),.50,a,layer*.2+i);
