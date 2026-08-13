@@ -420,3 +420,68 @@ Rough estimates after this phase: settlement graph compression 90%; settlement p
 about 60–65%; settlement visible fidelity remains 55–60%; whole-W1-30 builder progress remains
 roughly 55–60% because this phase improves runtime cost rather than the still-red pixels. No
 critic-owned score is assigned.
+
+## Final-builder occupied settlement-route phase (2026-08-13)
+
+This bounded phase replaces the visually dominant pale runway slabs in all eight settlement
+approaches with terrain-following regional construction and adds four deterministic occupation
+clusters beside every arrival route. Helstrom, Lilmoth and Thorn receive overlapping three-board
+marsh causeways with lashings; the five firmer-ground towns receive smaller, irregular founded
+cobble courses. Each cluster contributes a work post, settlement marker, vessel and goods. Court
+and doorstep causeways use the same wet/dry grammar, so the repair is part of ordinary shipping
+traversal rather than a capture-only prop.
+
+`node tools/render/w1-30-settlement-public-realm.mjs` is GREEN across 8/8 settlements. It observes
+32/32 occupation clusters and 1,876 arrival-route parts (350 cobbles in each of five dry towns and
+42 boards in each of three wet towns). Its targeted delete arm removes every occupation cluster
+and restores exactly 112 former runway slabs. The settlement batching gate remains GREEN after the
+added close detail: 18,345 logical meshes compress to 753 render meshes (95.9%), with 669 batches,
+28,169 instances and preserved building/kit/door identities, triangles and rendered bounds. The
+aggregate consumes both gates.
+
+Pixel review rejected two intermediate committed variants. `c3bae3b7` removed the old slabs but
+made its three large cobbles read as lily pads and its boards as isolated tables. `13cbc377`
+reduced the stone scale, but the repeated packets exposed that the route sampler advances in both
+X and Z while part lengths used only one component. The accepted production tree
+`930cd7146baa6f5045366e23f8360ccd6fbb118a` sizes construction from the true diagonal world-space
+step and adds bounded stone variation. This sequence is recorded because green counts alone did
+not establish visual adequacy.
+
+The accepted hardware reproduction used clean snapshot SHA-256
+`b11c461b7de7f1fedb332b951a9ed3fb9f9395e07e1c7f347146c783e0e86bba`, RunPod run
+`20260813-190041Z-151469`, Secure Cloud Pod `7y1zit3m7vvx0u`, and an NVIDIA RTX A4500 at an actual
+$0.25/hour. The host reported driver 550.127.05 and 20,470 MiB. Chromium 141.0.7390.37 reported
+`ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)` with no software
+renderer markers. The native window was 1280x720 at DPR 1, seed 3030, frame 2, using:
+
+```text
+node tools/render/w1-30-population-atlas.mjs --hardware-gpu --only settlements --width 1280 --height 720 --out "$RUNPOD_ARTIFACT_DIR/settlements"
+```
+
+All eight returned frames were opened at original resolution. Archon, Blackrose and Gideon now
+show a narrower constructed route and roadside markers instead of a foreground-wide pale runway;
+Helstrom, Lilmoth and Thorn show a connected board-and-lashing route. This is a genuine approach
+hierarchy improvement, not settlement-row closure. Cobble packing remains visibly procedural,
+occupation is still too sparse at street scale, broad blank facade planes and oversized roofs
+remain, Soulrest's near wall dominates, and Stormhold's approach is still occluded by architecture.
+
+Native draw calls are Archon 423, Blackrose 622, Gideon 662, Helstrom 837, Lilmoth 466, Soulrest
+584, Stormhold 703 and Thorn 432 (4,729 aggregate). The 14-call aggregate increase versus the
+preceding L4 atlas is attributable to the extra regional route material/batch families; every
+representative remains above the intended 350-call budget. Triangles range from 513,988 to
+1,041,522. This atlas contains no frame-time distribution, and A4500 counters are not lower-tier
+consumer timing evidence.
+
+Evidence SHA-256 values: run ledger
+`c54d46aae02b1ee50213de1c865f82aeed899352192b3338d041215a6d5c4805`, lifecycle log
+`bbdfefb0c4272747db4df44e8b10217eea8a74fef3cbc82a66acd30ff932ed9b`, worker result
+`2b1e9ce7236fb7bcde790ff4b9735549268a63b299ea236e58db6941ea89c45b`, and manifest
+`fe0f2eb8bd287562bd58acb4f52d5fdb09fe36a308c016403a5a3b926d14fa74`. Frame hashes remain in the
+manifest. Artifact retrieval completed before Pod and ephemeral template `y4u9j1v77h` deletion
+were confirmed; the subsequent cleanup dry-run found no managed orphan. Bulk evidence remains
+outside Git under `/tmp/w1-30-final-8c1d4f7a/runpod/settlement-public-realm-930cd714`.
+
+Rough planning estimates after this phase: regional approach construction about 75%; settlement
+occupation/composition about 60–65%; settlement visible fidelity about 58–62%; settlement
+performance repair about 60–65%; whole-W1-30 builder progress roughly 56–60%. These are builder
+work estimates, not either critic-owned 7/10 verdict.

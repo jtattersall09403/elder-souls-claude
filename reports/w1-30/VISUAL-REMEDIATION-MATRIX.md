@@ -191,3 +191,22 @@ The optimization does not change the honest beauty assessment. Empty foregrounds
 paths, shallow/blank facade planes, sparse occupation and blocked focal composition remain visible.
 Manifest SHA-256: `339048e2ede5c659fe54f5cd9ab53bc77909d431e21f420abc4a86464f57398f`.
 Pod `r9q8df84xy5ila` and ephemeral template `d7z52f2pv7` were deletion-confirmed after retrieval.
+
+## Occupied settlement-route / native A4500 delta (2026-08-13)
+
+The eight shipping approaches now use wet-town board-and-lashing causeways or dry-town founded
+cobble courses, plus four occupied roadside clusters per town. The focused gate observes 1,876
+regional route parts and 32 clusters; deleting only the repair restores all 112 former runway
+slabs and removes the clusters. Settlement batching still compresses 18,345 logical meshes to 753
+render meshes (95.9%).
+
+Native hardware review used clean `930cd714`, RunPod `20260813-190041Z-151469`, Secure RTX A4500,
+Chromium 141.0.7390.37, NVIDIA Vulkan, 1280x720 DPR 1. All eight frames were inspected directly.
+The previous pale slab runway no longer dominates, and the wet board routes now overlap in true
+world-space distance. The row remains builder-red: dry cobbles retain procedural packing, street
+occupation is sparse, blank facade/roof masses remain, and Stormhold's approach view is occluded.
+
+Draw calls are 423–837 (4,729 aggregate), so the extra route detail adds 14 aggregate calls over
+the prior L4 atlas and every town still exceeds the 350-call target. Manifest SHA-256:
+`fe0f2eb8bd287562bd58acb4f52d5fdb09fe36a308c016403a5a3b926d14fa74`. Pod `7y1zit3m7vvx0u`
+and template `y4u9j1v77h` were deletion-confirmed; the cleanup dry-run found no managed orphan.

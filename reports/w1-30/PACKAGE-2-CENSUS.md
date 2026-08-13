@@ -108,3 +108,18 @@ all eight 1280x720 frames GREEN. Direct inspection found no missing settlement p
 scene draw calls fell from 14,558 to 4,715 in aggregate (67.6%), but the 421–836 per-frame range
 still exceeds the intended 350-call budget. Package 2 breadth remains complete; performance and
 visible settlement quality remain in progress.
+
+## Occupied settlement-route continuation (2026-08-13)
+
+Package 2's eight settlement identities now extend into the ordinary approach surface: five dry
+towns build dense founded-cobble courses, three wet towns build overlapping board-and-lashing
+causeways, and every town adds four deterministic work/marker/vessel/goods clusters. The focused
+census reports 8/8 towns, 32 clusters and 1,876 route parts. Disabling the repair restores exactly
+112 generic runway slabs and removes all 32 clusters.
+
+The clean `930cd714` native atlas on a Secure RTX A4500/Vulkan renderer returned all eight 1280x720
+frames. Direct inspection confirms that the broad pale slab runway is gone, while also keeping the
+row honestly open for procedural cobble packing, sparse occupation, facade massing and Stormhold
+occlusion. Static batching holds at 753 render meshes from 18,345 logical meshes; actual scene
+draws are 423–837, still above budget. Run `20260813-190041Z-151469` and its ephemeral resources
+were deletion-confirmed after artifact retrieval.
