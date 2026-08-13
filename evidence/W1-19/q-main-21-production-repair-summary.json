@@ -1,0 +1,40 @@
+{
+  "schema": "elder-souls/w1-19-q-main-21-production-repair-summary@1",
+  "measured_at": "2026-08-13T22:07:00Z",
+  "base_commit": "7fbe6fd80699ca86d19b9dd594fb61a47d151fd7",
+  "scope": "Focused production diagnosis and repair before the authoritative Q17-to-Q23 replay",
+  "command": "node tools/quests/mainline-chain-floor.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-continuation/act4/q21-resume-suffix-r9/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-21 --walk-max-frames 12000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/act4/q21-giver-post-r11 --resume-output reports/runs/W1-19-production-continuation/act4/q21-giver-post-save-r11.json --timeout 300000",
+  "exit_code": 0,
+  "result": {
+    "quest": "Q-MAIN-21",
+    "resolution": "res_the_eleven",
+    "world_reveal": "loc_lilmoth_rotting_quarter",
+    "giver": "dockmaster-weeja-sen",
+    "giver_present": true,
+    "giver_reached": true,
+    "giver_final_distance_m": 1.1640517760802227,
+    "journal_entries_after": 14,
+    "selected_chains_completed": "1/1",
+    "violent_resolutions": 0,
+    "bought_openings": 0,
+    "teleports": 0,
+    "direct_state_or_quest_mutation": 0
+  },
+  "repairs_proved": {
+    "oscillating_terrain_lip": "walkPath now treats 1,800 frames without meaningful monotonic route progress as the existing observable stuck condition, even when the capsule is pacing rather than stationary",
+    "bounded_resume_mid_leg": "the runner retains the unwalked suffix of the live road leg when the nearest settlement changes before the player reaches it",
+    "local_route_loops": "bounded loop cleanup may bridge only collision-, water-, slope-, grade-, and 35 m encounter-clearance-safe edges",
+    "giver_placement": "Weeja-Sen's daytime post is on the production-safe public side of the fitted Customs Hall rather than behind its facade"
+  },
+  "artifact_sha256": {
+    "ignored_report": "9ee2a7e2e7c70edc67f409b14c49518787e7320356f6085890d3fb1c066487df",
+    "ignored_save": "052e822045286e362ab8708730cfa6b2ce93132e6a24a2685a8e7301f45f9a7d",
+    "game_src_engine_js": "ea6bf97ddb3e8513feb0c11d2dd4d981c0d552ea66a45751a01f16adff03164d",
+    "mainline_chain_floor_mjs": "124438d8636b6cbd38e04d9fbf16e596fa32429410c382ad5eabf675fc08d4fb",
+    "mainline_npcs_json": "dcf00d084eb6005f52736fe23222f42bb94b946db245238a269ef8c63de064ff"
+  },
+  "limitations": [
+    "This is a focused diagnostic continuation from an ignored pre-runtime-fix Q20 lineage and is not the authoritative Act IV checkpoint.",
+    "The authoritative production replay must start from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q17.json and continue through Q23."
+  ]
+}

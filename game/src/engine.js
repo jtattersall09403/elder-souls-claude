@@ -9110,7 +9110,7 @@ export class Engine {
       p.pos[1] = this.field.heightAt(route[0][0], route[0][1]);
     }
     const st = { seg: 0 };
-    let frames = 0, dist = 0, stuck = 0, worstStuck = 0, aborted = null, miredFrames = 0, healsUsed = 0, sprintInputs = 0, defensiveSwings = 0;
+    let frames = 0, dist = 0, stuck = 0, worstStuck = 0, progressStall = 0, worstProgressStall = 0, bestRemaining = Infinity, aborted = null, miredFrames = 0, healsUsed = 0, sprintInputs = 0, defensiveSwings = 0;
     let worstOff = 0, offRoadFrames = 0, regains = 0, off = false;
     // W1-CROSSING round 1, §A3 — THE BIGGEST GAP IN THAT ROUND. The round's own headline finding
     // (`path_m` counted a respawn as walked distance) was landed in `walkRoute` and stated, in
@@ -9184,8 +9184,21 @@ export class Engine {
       if (this.traversal && this.traversal.mired && !this.sim.env.interior) {
         miredFrames++;
         if (miredFrames >= o.miredAbort) { aborted = 'mired'; break; }
-        stuck = 0;
-      } else if (step < 0.01) { stuck++; worstStuck = Math.max(worstStuck, stuck); if (stuck >= o.stuckAbort) { aborted = 'stuck'; break; } } else stuck = 0;
+        stuck = 0; progressStall = 0; bestRemaining = pur.remaining_m;
+      } else {
+        if (step < 0.01) stuck++; else stuck = 0;
+        // Collision lips can make the capsule pace back and forth without ever producing a
+        // motionless frame.  That is still a stalled route: on Stormhold--Lilmoth the body walked
+        // 6.2 km inside a two-metre envelope while remaining at the same road join.  Count
+        // progress against the monotonic pursuit remainder, resetting only after a meaningful
+        // quarter-metre gain.  This preserves real detours and animation commitments while making
+        // an oscillating body reach the same `stuckAbort` contract as a stationary one.
+        if (pur.remaining_m < bestRemaining - 0.25) { bestRemaining = pur.remaining_m; progressStall = 0; }
+        else progressStall++;
+        worstStuck = Math.max(worstStuck, stuck);
+        worstProgressStall = Math.max(worstProgressStall, progressStall);
+        if (stuck >= o.stuckAbort || progressStall >= o.stuckAbort) { aborted = 'stuck'; break; }
+      }
       visited.add(this.field.regionAt(p.pos[0], p.pos[2]).id);
       const dep = this.field.depthAt(p.pos[0], p.pos[2]);
       if (dep > deepest.depth_m) { deepest.depth_m = +dep.toFixed(3); deepest.at = [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)]; }
@@ -9198,7 +9211,8 @@ export class Engine {
       mean_speed_mps: frames ? +(dist / (frames / 60)).toFixed(4) : 0,
       end: [+end[0].toFixed(1), +end[1].toFixed(1)], target: [+target[0].toFixed(1), +target[1].toFixed(1)],
       offset_m: +Math.hypot(end[0] - target[0], end[1] - target[1]).toFixed(2),
-      longest_stuck_frames: worstStuck, mired_frames: miredFrames, survival_inputs: { heals: healsUsed, sprint_frames: sprintInputs, defensive_swings: defensiveSwings }, regions_entered: [...visited].sort(),
+      longest_stuck_frames: Math.max(worstStuck,worstProgressStall), stationary_stuck_frames: worstStuck,
+      progress_stall_frames: worstProgressStall, mired_frames: miredFrames, survival_inputs: { heals: healsUsed, sprint_frames: sprintInputs, defensive_swings: defensiveSwings }, regions_entered: [...visited].sort(),
       deepest_water_on_the_walk: deepest,
       // H1: how far the body ever strayed from the line it was following, how long it spent off it,
       // and how many times it got back on. A walk that never leaves the road reports 0 regains
