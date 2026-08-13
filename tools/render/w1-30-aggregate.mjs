@@ -12,7 +12,10 @@ const predicates={
   stableShadows:['Math.round(focus.x/texel)','shadow.camera.updateProjectionMatrix'].every(x=>sky.includes(x)),
   genuineIBL:['EquirectangularReflectionMapping','scene.environment=this.features.ibl'].every(x=>sky.includes(x)),
   physicalFamilies:['MeshStandardMaterial','MeshPhysicalMaterial','aoMap: procedural.height','normalMap:authored?.normal','roughnessMap: authored?.rough','envMapIntensity','wetness:'].every(x=>foundation.includes(x)),
-  ownedConsumers:(foundation.slice(foundation.indexOf('FEATURE_CONSUMERS'),foundation.indexOf('const FAMILY')).match(/\b\w+: \[/g)||[]).length===21,
+  // The original 21 governed paths plus the literal interior-dressing sabotage seam added by the
+  // native remediation pass. Keep this exact so an omitted or accidentally duplicated consumer
+  // fails the final aggregate instead of silently weakening coverage.
+  ownedConsumers:(foundation.slice(foundation.indexOf('FEATURE_CONSUMERS'),foundation.indexOf('const FAMILY')).match(/\b\w+: \[/g)||[]).length===22,
   authoredAssets:assetGate.result==='GREEN'&&assetGate.assets===4&&assetGate.files===35&&assetGate.bytes>6_000_000,
   visualPopulation:populationGate.references?.manifestRecords===808&&populationGate.world?.regions?.length===13&&populationGate.world?.settlements?.length===8&&populationGate.world?.interiors?.count===115,
   productionPooling:province.includes('STYLE_MATERIAL_CACHE')&&actor.includes('_equipmentMaterialCache'),
