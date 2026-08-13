@@ -1363,7 +1363,7 @@ export class Province {
       if (!(px >= ox && px < ox + TILE_M && pz >= oz && pz < oz + TILE_M)) continue;
       const g = new THREE.Group();
       g.name = `settlement:${plan.id}`;
-      const summary = buildSettlementExterior(g, plan, (x, z) => this._meshY(x, z));
+      const summary = buildSettlementExterior(g, plan, (x, z) => this._meshY(x, z), {settlementBatch:true});
       this._settlementStyleboard(g,plan);
       // The plan's own inconsistencies, carried on the summary rather than swallowed: a town
       // whose offsets place buildings closer together than the shrink floor allows still
