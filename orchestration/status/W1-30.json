@@ -93,9 +93,9 @@
   ],
   "latest_builder_phase": {
     "date": "2026-08-13",
-    "scope": "seven alternating approach work areas per settlement across marker, handcart, drying-rack and vendor families, with founded dry/wet surfaces and an occupation-only delete control",
+    "scope": "footprint-cleared placement for all seven approach work areas per settlement, searching both road sides and bounded tangent offsets with a conservative 1.45 m feature envelope",
     "gate": "node tools/render/w1-30-settlement-occupation.mjs; node tools/render/w1-30-settlement-public-realm.mjs; node tools/render/w1-30-settlement-batching.mjs; node tools/render/w1-30-aggregate.mjs",
-    "result": "GREEN structural/causal coverage: 56 clusters and 810 occupation modules across 8 settlements; occupation delete arm removes all 810 modules while retaining 1876 route parts; 20323 building-local meshes compress to 782 final render meshes with 40863 instances (96.2%)",
+    "result": "GREEN structural/causal coverage: all 56 clusters clear the 205 oriented building footprints with at least 0.623 m remaining after a 1.45 m feature radius; six choose the safer opposite side; delete arm removes all 810 modules while retaining 1876 route parts",
     "hardware_state": "Initial A5000 pixels showed stronger work silhouettes but were rejected for landing-pad-like dry bases; clean 5ad11d22 repairs those bases, but revised hardware review is open after three locally terminated bootstrap sessions whose unique Pods/templates were exact-cleaned and deletion-confirmed"
   },
   "latest_hardware_attempts": {

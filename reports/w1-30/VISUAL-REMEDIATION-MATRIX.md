@@ -276,3 +276,8 @@ then deleted and absence-confirmed using the repository recovery command. A prec
 A5000 request was definite no-capacity and created nothing. No revised pixels or timing evidence
 are claimed. The most recent accepted hardware row therefore remains the prior facade-relief L4
 capture, and a post-hardening rerun is required.
+
+The follow-up footprint audit found one Soulrest cluster 0.192 m inside its conservative work-area
+envelope. Shipping placement now searches both sides and bounded along-route offsets. All 56 sites
+are clear after a 1.45 m feature radius, with 0.623 m minimum remaining clearance and six safer-side
+selections. This closes the placement collision defect but not the pending revised GPU pixel row.

@@ -642,3 +642,14 @@ Rough planning estimates after this phase: approach occupation construction abou
 occupation/composition about 68–72%; settlement visible fidelity about 63–66% pending revised
 hardware review; settlement performance repair about 60–65%; whole-W1-30 builder progress roughly
 59–63%. These are builder work estimates only; neither critic-owned 7/10 verdict is claimed.
+
+## Final-builder collision-cleared work-area phase (2026-08-13)
+
+The route clearance envelope did not by itself prove that the larger carts, racks and stalls beside
+it cleared architecture. A new deterministic site selector searches both road sides, four lateral
+offsets and bounded tangent offsets against the actual oriented shipping footprints with a
+conservative 1.45 m work-area radius. Six of 56 clusters switch to their safer side. The focused
+gate is GREEN with a 0.623 m worst-case remaining clearance after that radius; its independent
+recomputation matches the shipping metadata for every site. Deleting occupation still removes all
+810 modules while retaining all 1,876 road parts. Revised native pixels remain open as recorded
+above; this phase is traversal/placement safety, not a visual verdict.

@@ -168,3 +168,8 @@ dry-town bases. Clean `5ad11d22` replaces them with hand-scale cobbles and gappe
 Revised native review remains pending because three locally attached RunPod processes terminated
 during bootstrap; exact repository cleanup deletion-confirmed every associated Pod and template.
 Package 2 coverage is structurally GREEN, but the revised visual row remains builder-red/open.
+
+The occupation population is now footprint-safe as well as complete. All 56 work-area centres are
+recomputed against the 205 oriented shipping building bounds with a 1.45 m feature envelope; the
+minimum remaining clearance is 0.623 m, and six clusters choose the opposite side of the approach
+to avoid construction. The 810-module delete control and 1,876 retained route parts remain GREEN.
