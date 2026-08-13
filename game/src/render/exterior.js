@@ -1943,6 +1943,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const cy=Number.isFinite(groundY(centreX,centreZ))?groundY(centreX,centreZ):0;
   const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8;
   const regionalRealm=opts.regionalPublicRealm!==false;
+  const occupiedRealm=regionalRealm&&opts.settlementOccupation!==false;
   const wetTown=['helstrom','lilmoth','thorn'].includes(plan.id);
   // Terrain-following pavers. One large disc clipped through the deliberately rough ground and
   // looked like a decal; small founded stones preserve relief while reading as a made place.
@@ -1978,6 +1979,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // sqrt(2) longer than either component. Route parts sized from one component left conspicuous
   // gaps even when their local lengths nominally matched the sampling interval.
   const approachStep=approachR/14;
+  const occupiedBays=[1,3,5,7,9,11,13];
   let approachOccupation=0;
   for(let i=0;i<14;i++){
     const t=(i+.5)/14;
@@ -2023,14 +2025,52 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
       const edgeX=x+Math.cos(yaw)*2.15,edgeZ=z-Math.sin(yaw)*2.15,ey=Number.isFinite(groundY(edgeX,edgeZ))?groundY(edgeX,edgeZ):y;
       add(ico(.18+(i%2)*.04,1,i%2?P.accent:P.wood),edgeX,ey+.17,edgeZ,0,'arrival-edge');
     }
-    if(regionalRealm&&[2,5,8,11].includes(i)){
-      const side=i%2?1:-1,ox=x+Math.cos(yaw)*side*2.25,oz=z-Math.sin(yaw)*side*2.25;
+    const occupationIndex=occupiedBays.indexOf(i);
+    if(occupiedRealm&&occupationIndex>=0){
+      const side=occupationIndex%2?1:-1,role=occupationIndex%4;
+      const ox=x+Math.cos(yaw)*side*2.35,oz=z-Math.sin(yaw)*side*2.35;
       const oy=Number.isFinite(groundY(ox,oz))?groundY(ox,oz):y;
-      add(cyl(.07,.11,1.65+(i%3)*.18,6,P.wood),ox,oy+.83,oz,0,'approach-workpost');
-      const flag=box(.62,.48,.045,(i&1)?P.cloth:P.accent);flag.rotation.z=side*.08;
-      add(flag,ox+side*.34,oy+1.25,oz+.03,yaw,'approach-marker');
-      add(cyl(.25,.31,.44,8,(i&1)?P.wood:P.stone),ox-side*.42,oy+.22,oz+.26,yaw,'approach-vessel');
-      for(let k=0;k<2;k++)add(ico(.13+k*.035,1,k?P.accent:P.stone),ox+side*(.16+k*.28),oy+.12,oz-.38-k*.08,0,'approach-goods');
+      // Give each occupied bay a founded work mat. It prevents carts, racks and goods from
+      // reading as scattered primitives on an otherwise untouched terrain sheet.
+      const mat=wetTown?box(2.8,.09,2.0,P.wood):ico(1.05,1,P.stone);
+      if(!wetTown)mat.scale.set(1.6,.07,1.05);
+      add(mat,ox,oy+.035,oz,yaw,'approach-work-mat');
+      if(role===0){
+        // Wayfinding/work marker: two of the seven bays retain the established town marker, but
+        // it now belongs to a larger hierarchy rather than repeating at every occupied point.
+        add(cyl(.07,.11,1.72+(i%3)*.16,6,P.wood),ox,oy+.86,oz,0,'approach-workpost');
+        const flag=box(.68,.50,.045,(i&1)?P.cloth:P.accent);flag.rotation.z=side*.08;
+        add(flag,ox+side*.37,oy+1.30,oz+.03,yaw,'approach-marker');
+        add(cyl(.25,.31,.44,8,(i&1)?P.wood:P.stone),ox-side*.46,oy+.24,oz+.30,yaw,'approach-vessel');
+        for(let k=0;k<2;k++)add(ico(.14+k*.035,1,k?P.accent:P.stone),ox+side*(.18+k*.30),oy+.14,oz-.42-k*.09,0,'approach-goods');
+      }else if(role===1){
+        // A real handcart silhouette: deck, raised rails, axle/wheels and projecting handles.
+        add(box(1.65,.20,.92,P.wood),ox,oy+.36,oz,yaw,'approach-cart-deck');
+        for(const rail of [-1,1])add(box(.10,.38,.92,P.wood),ox+Math.cos(yaw)*rail*.75,oy+.58,oz-Math.sin(yaw)*rail*.75,yaw,'approach-cart-rail');
+        for(const wheel of [-1,1]){
+          const w=cyl(.31,.31,.10,10,P.stone);w.rotation.z=Math.PI*.5;
+          add(w,ox+Math.cos(yaw)*wheel*.88,oy+.31,oz-Math.sin(yaw)*wheel*.88,yaw,'approach-cart-wheel');
+        }
+        for(const handle of [-1,1])add(box(.08,.08,1.28,P.wood),ox+Math.cos(yaw)*handle*.54+Math.sin(yaw)*1.00,oy+.43,oz-Math.sin(yaw)*handle*.54+Math.cos(yaw)*1.00,yaw,'approach-cart-handle');
+        for(let k=0;k<3;k++)add(ico(.15+(k&1)*.04,1,k===1?P.accent:P.stone),ox+Math.cos(yaw)*(k-1)*.36,oy+.57,oz-Math.sin(yaw)*(k-1)*.36,0,'approach-cart-load');
+      }else if(role===2){
+        // Drying/work rack: a broad readable frame with deterministic cloth strips and baskets.
+        for(const post of [-1,1])add(cyl(.065,.10,1.85,6,P.wood),ox+Math.cos(yaw)*post*.78,oy+.93,oz-Math.sin(yaw)*post*.78,0,'approach-rack-post');
+        add(box(1.82,.10,.10,P.wood),ox,oy+1.74,oz,yaw+Math.PI*.5,'approach-rack-beam');
+        for(let k=-1;k<=1;k++){
+          const textile=box(.38,.76,.045,(k&1)?P.accent:P.cloth);textile.rotation.z=k*.055;
+          add(textile,ox+Math.cos(yaw)*k*.49,oy+1.28,oz-Math.sin(yaw)*k*.49,yaw,'approach-rack-textile');
+        }
+        for(const k of [-1,1])add(cyl(.24,.31,.28,8,P.wood),ox+Math.cos(yaw)*k*.58+Math.sin(yaw)*.52,oy+.18,oz-Math.sin(yaw)*k*.58+Math.cos(yaw)*.52,yaw,'approach-rack-basket');
+      }else{
+        // Compact vendor bay: counter and canopy make one foreground focal rather than another
+        // lonely signpost, with wares deliberately above the ground plane.
+        add(box(1.95,.20,.72,P.wood),ox,oy+.74,oz,yaw,'approach-vendor-counter');
+        for(const post of [-1,1])add(cyl(.065,.10,1.92,6,P.wood),ox+Math.cos(yaw)*post*.82,oy+.96,oz-Math.sin(yaw)*post*.82,0,'approach-vendor-post');
+        const awning=box(2.28,.10,1.30,P.cloth);awning.rotation.z=side*.055;
+        add(awning,ox,oy+1.93,oz,yaw,'approach-vendor-awning');
+        for(let k=0;k<4;k++)add(ico(.14+(k&1)*.04,1,k&1?P.accent:P.stone),ox+Math.cos(yaw)*(k-1.5)*.38,oy+.94,oz-Math.sin(yaw)*(k-1.5)*.38,0,'approach-vendor-wares');
+      }
       approachOccupation++;
     }
   }
@@ -2078,7 +2118,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
   }
   root.add(street);
-  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,approach,consumer:'settlement-public-realm'};
+  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,occupation_enabled:occupiedRealm,approach,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
   if(opts.settlementBatch){
     out.logical_meshes=out.meshes;
