@@ -178,9 +178,12 @@ export function worldMaterial(family, options={}) {
     mat.onBeforeCompile=(shader)=>{shader.uniforms.uWaterPhase=u.uWaterPhase;shader.uniforms.uWaterReflection=u.uWaterReflection;shader.uniforms.uWaterReflectionResolution=u.uWaterReflectionResolution;shader.uniforms.uWaterReflectionStrength=u.uWaterReflectionStrength;shader.uniforms.uWaterReflectionMatrix=u.uWaterReflectionMatrix;
       shader.vertexShader='uniform float uWaterPhase;\nuniform mat4 uWaterReflectionMatrix;\nattribute float waterShore;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.vertexShader
         .replace('#include <begin_vertex>',`#include <begin_vertex>
-          float esW0=sin(position.x*.31+uWaterPhase*1.37)+sin(position.z*.43-uWaterPhase*.91);
-          float esW1=sin((position.x+position.z)*.17+uWaterPhase*.53);
-          vEsWaterWave=(esW0*.56+esW1*.44);
+          // Crossed, incommensurate waves avoid the axis-aligned 20 m light/dark lanes produced
+          // by the former independent X and Z sines. Displacement remains centimetre-scale.
+          float esA=position.x*.23+position.z*.17+uWaterPhase*1.37;
+          float esB=-position.x*.19+position.z*.31-uWaterPhase*.91;
+          float esC=position.x*.73-position.z*.61+uWaterPhase*1.83;
+          vEsWaterWave=sin(esA)*.48+sin(esB)*.36+sin(esC)*.16;
           vEsWaterShore=waterShore;
           vEsWaterXZ=position.xz;
           transformed.y += vEsWaterWave*.018;`)
@@ -189,11 +192,15 @@ export function worldMaterial(family, options={}) {
           vEsWaterReflectionCoord=uWaterReflectionMatrix*vec4(vEsWaterWorld,1.0);`);
       shader.fragmentShader='uniform float uWaterPhase;\nuniform sampler2D uWaterReflection;\nuniform vec2 uWaterReflectionResolution;\nuniform float uWaterReflectionStrength;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.fragmentShader
         .replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
-          vec2 esSlope=vec2(cos(vEsWaterXZ.x*.31+uWaterPhase*1.37)*.105 + cos(vEsWaterXZ.y*.83-uWaterPhase*1.71)*.046 + cos(vEsWaterXZ.x*2.7+vEsWaterXZ.y*1.9-uWaterPhase*2.4)*.022,
-                            cos(vEsWaterXZ.y*.43-uWaterPhase*.91)*.110 + cos(vEsWaterXZ.x*.71+uWaterPhase*1.43)*.042 + cos(vEsWaterXZ.y*2.4-vEsWaterXZ.x*2.1+uWaterPhase*2.0)*.020);
+          float esA=vEsWaterXZ.x*.23+vEsWaterXZ.y*.17+uWaterPhase*1.37;
+          float esB=-vEsWaterXZ.x*.19+vEsWaterXZ.y*.31-uWaterPhase*.91;
+          float esC=vEsWaterXZ.x*.73-vEsWaterXZ.y*.61+uWaterPhase*1.83;
+          float esD=vEsWaterXZ.x*2.7+vEsWaterXZ.y*1.9-uWaterPhase*2.4;
+          vec2 esSlope=vec2(cos(esA)*.030-cos(esB)*.019+cos(esC)*.012+cos(esD)*.010,
+                            cos(esA)*.022+cos(esB)*.031-cos(esC)*.010+cos(esD)*.007);
           normal=normalize(normal+vec3(esSlope.x,0.0,esSlope.y));`)
         .replace('#include <color_fragment>',`#include <color_fragment>
-          diffuseColor.rgb*=1.03+vEsWaterWave*.045;`)
+          diffuseColor.rgb*=1.015+vEsWaterWave*.008;`)
         // Reflection is radiance arriving from the environment. Applying it to diffuseColor
         // before Three's lighting multiplied it back toward black under the canopy. More
         // importantly, `normal` is declared by normal_fragment_begin AFTER color_fragment, so
@@ -231,7 +238,7 @@ export function worldMaterial(family, options={}) {
           outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
           outgoingLight+=vec3(.095,.105,.082)*esFoam;
           #include <opaque_fragment>`);
-    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v13`;animatedWaterMaterials.add(mat);
+    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v14`;animatedWaterMaterials.add(mat);
   }
   return mat;
 }
