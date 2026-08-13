@@ -20,6 +20,11 @@
     "hooks:install": "git config core.hooksPath .githooks && echo 'hooks installed: .githooks/pre-commit'",
     "weapons:frames": "node tools/weapons/verify-frames.mjs --gate",
     "weapons:measure": "node tools/weapons/measure.mjs --gate",
-    "weapons:build": "node tools/weapons/build-movesets.mjs --check"
+    "weapons:build": "node tools/weapons/build-movesets.mjs --check",
+    "gpu:list": "node tools/runpod/cli.mjs list",
+    "gpu:doctor": "node tools/runpod/cli.mjs doctor",
+    "gpu:test": "node tools/runpod/cli.mjs run",
+    "gpu:cleanup": "node tools/runpod/cli.mjs cleanup",
+    "gpu:selftest": "node --test tools/runpod/test/*.test.mjs"
   }
 }

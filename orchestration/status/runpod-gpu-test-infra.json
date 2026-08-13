@@ -1,0 +1,46 @@
+{
+  "task_id": "runpod-gpu-test-infra",
+  "role": "builder",
+  "status": "in_progress",
+  "started_at": "2026-08-13T10:12:00Z",
+  "updated_at": "2026-08-13T10:42:00Z",
+  "goal": "Add and end-to-end verify safe repo-local RunPod GPU browser testing infrastructure for Codex and Claude Code.",
+  "files_touched": [
+    "orchestration/status/runpod-gpu-test-infra.json",
+    "tools/runpod/config.json",
+    "tools/runpod/cli.mjs",
+    "tools/runpod/lib/api.mjs",
+    "tools/runpod/lib/local.mjs",
+    "tools/runpod/worker/bootstrap.sh",
+    "tools/runpod/worker/smoke.mjs",
+    "tools/runpod/worker/Dockerfile",
+    "tools/runpod/test/runpod.test.mjs",
+    "docs/RUNPOD-GPU-TESTING.md",
+    "README.md",
+    "package.json",
+    ".gitignore"
+  ],
+  "files_claimed": [
+    "tools/runpod/",
+    "docs/RUNPOD-GPU-TESTING.md",
+    "README.md",
+    "package.json",
+    ".gitignore",
+    "orchestration/status/runpod-gpu-test-infra.json",
+    "reports/runpod-gpu/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-13-runpod-gpu-browser-smoke.png"
+  ],
+  "observations": [
+    "Worktree was clean at task start on codex/wave1-build-experiment.",
+    "The project already uses Node >=20, Playwright 1.56.1 under tools/, and deterministic SwiftShader browser helpers; hardware-GPU runs must use a separate launch path.",
+    "Existing reports explicitly defer native visual captures and Tier-H performance evidence because the local container uses SwiftShader.",
+    "RunPod rejected the configured 50-character rpa_ API credential with HTTP 401 through both documented REST Bearer and GraphQL api_key authentication. No Pod was created and no spend occurred.",
+    "Local self-tests pass 6/6: allowlist/price/capacity selection, idempotent deletion, ambiguous-create no-retry, orphan cleanup scope, dirty-worktree snapshot fidelity, and ephemeral SSH key generation.",
+    "A fail-closed one-minute CLI run recorded the authentication failure, created no Pod, and correctly recorded cleanup as unnecessary."
+  ],
+  "blockers": [
+    "Live end-to-end verification requires the Codespace to receive a valid RUNPOD_API_KEY with GPU/template read and Pod create/read/delete permissions. The owner has been given the exact required change."
+  ],
+  "next_step": "Complete adversarial code review and aggregate local gates; then, when the replacement key is visible, run doctor/list and a real minimal-cost smoke through verified termination."
+}
