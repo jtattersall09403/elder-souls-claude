@@ -1591,8 +1591,70 @@ export function buildBuilding(b, town, opts = {}) {
     porch.position.set(px,0,pz);porch.rotation.y=yaw;g.add(porch);
   }
 
-  // ---- windows, on the walls that are not the door -------------------------------------------
+  // The native street atlas still exposed warehouse-sized entry walls after the structural pass:
+  // windows deliberately skipped the doorway elevation, while the shallow shared courses were
+  // almost coplanar at play distance. Build every ordinary elevation as a sequence of founded
+  // bays. A face-local group keeps the same construction arithmetic on all four sides; its +z
+  // axis points out of the wall and its +x axis runs along it.
   const WINDOWLESS = new Set(['prison', 'sealed', 'structure']);
+  if(opts.facadeRelief!==false){
+    const relief=new THREE.Group();relief.name=`facade-relief:${b.id}`;
+    let modules=0,entryApertures=0;
+    const along=doorAlongLocal(b),faces=[
+      {side:'+z',span:w,pos:[0,0,d*.5],yaw:0,doorU:along},
+      {side:'-z',span:w,pos:[0,0,-d*.5],yaw:Math.PI,doorU:-along},
+      {side:'+x',span:d,pos:[w*.5,0,0],yaw:Math.PI*.5,doorU:-along},
+      {side:'-x',span:d,pos:[-w*.5,0,0],yaw:-Math.PI*.5,doorU:along},
+    ];
+    for(const face of faces){
+      const fg=new THREE.Group();fg.position.set(...face.pos);fg.rotation.y=face.yaw;
+      const facePart=(mesh,x,y,z,rz=0)=>{mesh.position.set(x,y,z);mesh.rotation.z+=rz;mesh.castShadow=mesh.receiveShadow=true;fg.add(mesh);modules++;};
+      const bays=Math.max(2,Math.min(5,Math.round(face.span/2.7))),step=face.span/bays,isEntry=face.side===side;
+      // Projecting sill/cornice lines keep the whole elevation legible even in haze. Vertical
+      // piers and lower panels then break it into construction-scale bays without changing the
+      // authority-owned footprint or collision shell.
+      for(const yy of [.48,Math.max(1.15,h-.62)])facePart(box(face.span-.34,.16,.20,yy<1?P.stone:P.wood),0,yy,.10);
+      for(let i=0;i<=bays;i++){
+        const x=-face.span*.5+i*step;
+        if(isEntry&&Math.abs(x-face.doorU)<DOOR_W*.62)continue;
+        facePart(box(.18,Math.max(1.1,h*.76),.22,(i+hash)&1?P.wood:P.stone),x,h*.45,.11,((hash>>(i+2))&1?1:-1)*.012);
+      }
+      for(let i=0;i<bays;i++){
+        const x=-face.span*.5+(i+.5)*step;
+        if(isEntry&&Math.abs(x-face.doorU)<DOOR_W*.72+step*.28)continue;
+        facePart(box(Math.max(.42,step-.38),.62,.075,(i+hash)%3===0?P.accent:P.stone),x,.63,.14);
+        const braceMat=town==='blackrose'?P.metal:(town==='soulrest'?P.stone:P.wood);
+        const brace=box(.105,Math.max(.72,Math.min(1.55,h*.31)),.105,braceMat);
+        facePart(brace,x,Math.min(h-.82,1.42),.19,(i+hash)&1?.42:-.42);
+        if(town==='archon'||town==='helstrom'||town==='lilmoth'){
+          const boss=town==='lilmoth'?cyl(.055,.075,.72,5,P.roof):ico(.16,1,town==='archon'?P.roof:P.accent);
+          if(town==='lilmoth')boss.rotation.z=Math.PI*.5;
+          facePart(boss,x,Math.min(h-.55,2.18),.20);
+        }
+      }
+      // The entry wall needs apertures too. Place them only in bays that do not overlap the
+      // record-derived doorway; these remain shallow facade layers, never collision holes.
+      if(isEntry&&!WINDOWLESS.has(b.building_kind)&&b.kind!=='sealed-with-reason'){
+        for(let i=0;i<bays;i++){
+          const x=-face.span*.5+(i+.5)*step;
+          if(Math.abs(x-face.doorU)<DOOR_W*.75+step*.22)continue;
+          for(let st=0;st<b.storeys;st++){
+            const y=1.72+st*2.4;if(y+.55>h-.15)continue;
+            facePart(box(Math.min(.86,step*.48),.82,.10,P.glass),x,y,.18);
+            facePart(box(Math.min(1.12,step*.64),.13,.25,P.wood),x,y+.52,.22);
+            facePart(box(Math.min(1.02,step*.58),.11,.36,P.roof),x,y+.67,.29,((hash>>(i+st+5))&1?-.035:.035));
+            entryApertures++;
+          }
+        }
+      }
+      relief.add(fg);
+    }
+    relief.userData.facadeRelief={faces:4,modules,entryApertures,consumer:'shared-settlement-facade-relief'};
+    summary.facade_relief={faces:4,modules,entry_apertures:entryApertures,consumer:'shared-settlement-facade-relief'};
+    g.add(relief);
+  }
+
+  // ---- windows, on the walls that are not the door -------------------------------------------
   if (!WINDOWLESS.has(b.building_kind) && b.kind !== 'sealed-with-reason') {
     const n = Math.max(1, Math.min(3, Math.round(w / 4.5)));
     for (const s of [-1, 1]) {
@@ -1784,13 +1846,16 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const out = {
     settlement: plan.id, buildings: 0, drawn: [], meshes: 0, triangles: 0,
     kit_meshes: 0, kit_ids: [], declared_footprints: 0, derived_footprints: 0, shrunk: 0,
-    doorways: 0,
+    doorways: 0, facade_relief_buildings: 0, facade_relief_modules: 0,
   };
   const kitSeen = new Set();
   for (const b of plan.buildings) {
     // Shipping uses one heterogeneous batch pass after final world placement. Offline continuity
     // probes keep the established building-local graph unless they explicitly request that path.
-    const { group, summary } = buildBuilding(b, plan.id, {batch:opts.settlementBatch?false:opts.buildingBatch!==false});
+    const { group, summary } = buildBuilding(b, plan.id, {
+      batch:opts.settlementBatch?false:opts.buildingBatch!==false,
+      facadeRelief:opts.facadeRelief!==false,
+    });
     // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
     // existing building owns mass/door continuity; these town-specific junctions alter its
     // skyline, apertures, support rhythm, damage and inexplicable street-facing element.
@@ -1846,6 +1911,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     out.meshes += summary.meshes;
     out.triangles += summary.triangles;
     out.kit_meshes += summary.kit_drawn;
+    if(summary.facade_relief){out.facade_relief_buildings++;out.facade_relief_modules+=summary.facade_relief.modules;}
     if (summary.doorway) out.doorways++;
     if (b.footprint_source === 'declared') out.declared_footprints++; else out.derived_footprints++;
     if (b.shrink < 0.999) out.shrunk++;
@@ -1857,6 +1923,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
       footprint_source: b.footprint_source, shrink: b.shrink,
       kit: summary.kit, interior_kit: b.interior_kit, exterior_kit: b.exterior_kit,
       structure_feature: !!summary.structure_feature, structure_kit: b.structure_kit || null,
+      facade_relief: summary.facade_relief || null,
       mesh_compression: group.userData.meshCompression || {batches:0,instances:0,drawsSaved:0},
       meshes: summary.meshes, triangles: summary.triangles, doorway: summary.doorway,
     });
