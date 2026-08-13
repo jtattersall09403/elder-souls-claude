@@ -303,19 +303,26 @@ export class UISystem {
     // up. So this branch takes the same shape the file already uses for `roll`: it is "back" out
     // of a fight and a dodge in one, and these two are "walk to the next screen" out of a fight
     // and equipment cycling in one. One rule, two applications, no new verb.
-    // A pad D-pad press deliberately arrives as BOTH the normalised movement axis and the
-    // profile's swap action.  The axis owns navigation inside the current surface; the action
-    // still owns keyboard/wheel peer walking (which have no movement axis), and remains live for
-    // combat below.  Without the axis guard, D-pad Left walked inventory -> world before `_move`
-    // could change the selected column, leaving the GameSir path half-working.
+    // A horizontal pad D-pad press deliberately arrives as BOTH the normalised movement axis
+    // and the profile's swap action.  The ACTION owns that horizontal chord out of combat: it
+    // walks the pause ring, which otherwise has no reachable pad binding at all.  Vertical
+    // D-pad remains ordinary surface navigation (including choosing Wait hours), and the left
+    // stick remains available for horizontal controls inside inventory/container/journal.  In
+    // combat the swap action is not consumed here, so the offhand chord below keeps its meaning.
     const navX = input.uiMoveX || input.moveX;
     const navY = input.uiMoveY || input.moveY;
-    const padNavigating = Math.abs(input.uiMoveX) >= 0.5 || Math.abs(input.uiMoveY) >= 0.5;
-    if (!inCombat && !padNavigating) {
+    if (!inCombat) {
       const step = (input.pressedName('swap_right') ? 1 : 0) - (input.pressedName('swap_left') ? 1 : 0);
       if (step) {
         taken.push(step > 0 ? 'swap_right' : 'swap_left');
         this._walkPeer(step, ctx);
+        this._resetAxis();
+        return taken;
+      }
+      // The physical D-pad is held for more than its pressed edge.  Consume the remaining
+      // horizontal hold frames too; otherwise the first frame walks into Wait and the second
+      // frame silently increments its duration (or changes an inventory column).
+      if (Math.abs(input.uiMoveX) >= 0.5) {
         this._resetAxis();
         return taken;
       }

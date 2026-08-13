@@ -68,7 +68,24 @@ if (manifest.clock && (state.clock?.day_count !== manifest.clock.day
 if (manifest.health && (state.fight?.player?.hp !== manifest.health.hp
   || state.fight?.player?.hpMax !== manifest.health.hp_max
   || state.fight?.player_ctl?.estus !== manifest.health.estus)) fail('health/flask mismatch');
-if (manifest.provenance.violent_resolutions !== 0 || manifest.provenance.direct_progression_mutations !== 0 || !manifest.provenance.production_player_actions) fail('provenance declaration is not production-valid');
+if (!manifest.provenance?.production_player_actions) fail('provenance declaration is not production-valid');
+for (const field of [
+  'violent_resolutions',
+  'direct_progression_mutations',
+  'teleports',
+  'deaths_or_respawns',
+  'bought_openings',
+  'synthetic_spawns',
+  'topic_or_reveal_hand_feeds',
+  'direct_pose_mutations',
+  'file_side_progress_injection',
+]) {
+  // The first checkpoint predates the expanded provenance vocabulary. Every field a manifest
+  // declares is nevertheless consumed fail-closed, and current manifests declare the full set.
+  if (Object.hasOwn(manifest.provenance, field) && manifest.provenance[field] !== 0) {
+    fail(`provenance ${field} is not zero`);
+  }
+}
 const expectedNonviolentNpcDeaths = [...(manifest.provenance.allowed_nonviolent_npcs_dead || [])].sort();
 const actualNpcDeaths = [...(state.world?.npcs_dead || [])].sort();
 if (JSON.stringify(actualNpcDeaths) !== JSON.stringify(expectedNonviolentNpcDeaths)) fail('checkpoint NPC death set differs from declared nonviolent consequences');
