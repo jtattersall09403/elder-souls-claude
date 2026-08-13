@@ -253,3 +253,27 @@ trace production guard are green on this milestone tree.
 
 This remains a builder milestone, not an independent verdict. Q11 onward, both complete endings,
 Gate B/C builder populations, remaining controls, final cold chains and aggregate remain open.
+
+### Q-MAIN-15 / Act III production milestone
+
+Q-MAIN-11 through Q-MAIN-15 are complete through ordinary production movement, door/readable
+actions and published conversation choices. The last segment waited 36,540 fixed production
+frames for Sesh-Anaat's authored 07:00 exterior shift, then walked 16.8 m to her real post and
+completed `res_heard_it`. The run recorded zero session deaths/respawns, teleports, violent
+resolutions, bought openings, synthetic spawns, direct progression mutations or reveal hand-feeds.
+
+The canonical Act III state is `fixtures/resume-saxhleel-interior-intended-act3.json`, SHA-256
+`0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb`. It has Q1-Q15
+complete, no active quest, marker count zero and a 120-frame stable window. Its single dead NPC,
+Sesh-Weth, is the authored nonviolent consequence of the chosen Q12 full-test resolution; the
+validator now compares NPC deaths to an exact manifest allow-list instead of conflating that
+quest consequence with a violent resolution. Enemy deaths remain an unconditional rejection.
+
+The final Thorn approach also exposed a presentation seam: after an interior-to-exterior schedule
+transition, `listEntities` retained Sesh-Anaat's cell-local `[0.06,0,-0.03]` projection even though
+the live schedule had correctly switched to exterior. The runner now uses the same actor record's
+authored exterior post for navigation only; it never moves or respawns the actor. The final trace
+reached `[3825.141495,13.28,878.848169]`, 1.18 m from the authored post.
+
+This remains a builder milestone, not an independent verdict. Q16 onward, Q30, both endings and
+the backpath, Gate B/C builder populations, remaining controls, cold chains and aggregate remain open.

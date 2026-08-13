@@ -9054,7 +9054,7 @@ export class Engine {
           // camera is already facing the route is the ordinary-world answer; silently tanking
           // them until a hearth respawn would turn a walking trace into a discontinuity.
           script.push({f:0,press:['light']},{f:2,release:['light']}); defensiveSwings++;
-        } else if (!body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
+        } else if (o.sprint !== false && !body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
       }
       if (this.traversal && this.traversal.mired && !this.sim.env.interior
           && (!this.combat || !this.combat.player || this.combat.player.stamina >= 25)) {

@@ -1,0 +1,75 @@
+{
+  "schema": "elder-souls/production-checkpoint-manifest@1",
+  "fixture": "fixtures/resume-saxhleel-interior-intended-act3.json",
+  "fixture_hash": "sha256:0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb",
+  "tested_commit": "3ce9e8ea33ca79031fd24489a66a578e0b3a7e69",
+  "tested_tree_note": "Q10 milestone plus the production locomotion, survival, fitted-door and scheduled-giver repairs frozen by input_hashes; the milestone commit is the commit containing this manifest.",
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "save_schema": { "schema": "elder-souls/save@1", "version": 2 },
+  "harness_version": 1,
+  "character": { "race": "saxhleel", "upbringing": "interior", "class_id": "reed-walker", "birthsign": "raj-xul" },
+  "completed_quests": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+    "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09", "Q-MAIN-10",
+    "Q-MAIN-11", "Q-MAIN-12", "Q-MAIN-13", "Q-MAIN-14", "Q-MAIN-15"
+  ],
+  "active_quests": [],
+  "position": { "pos": [3824.780648, 13.28, 878.581144], "settlement": "thorn", "cell": "coast", "interior": null },
+  "clock": { "day": 4, "hour": 7.206574 },
+  "weather": "ashfall",
+  "schedule_context": {
+    "npc": "rootkeeper-sesh-anaat",
+    "active_row": { "from": "07:00", "to": "19:00", "at": null, "activity": "post" },
+    "authored_exterior_post": [3824.71, 13.31, 877.75],
+    "checkpoint_giver_distance_m": 0.834141,
+    "waited_production_frames": 36540,
+    "stale_cell_projection_observed": [0.06, 0, -0.03]
+  },
+  "health": { "hp": 58.502752, "hp_max": 92, "estus": 4 },
+  "stability": {
+    "consecutive_clean_frames": 120, "player_state": "IDLE", "speed_mps": 0,
+    "in_combat": false, "locked_on": null, "mired": false, "submerged": false,
+    "dead": false, "hitstop": false, "ui_mode": "world", "conversation_open": false,
+    "held_inputs": [], "pressed_inputs": [], "pending_press": [], "pending_release": [],
+    "collision_solid": false, "collision_clearance_m": 0.891644
+  },
+  "provenance": {
+    "production_player_actions": true,
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "teleports": 0,
+    "deaths_or_respawns": 0,
+    "bought_openings": 0,
+    "synthetic_spawns": 0,
+    "topic_or_reveal_hand_feeds": 0,
+    "allowed_nonviolent_npcs_dead": ["npc-sesh-weth"],
+    "allowed_nonviolent_death_source": "Q-MAIN-12 res_full_test authored consequence",
+    "quest_15_resolution": "res_heard_it",
+    "quest_15_acceptance": "published quest-accept:Q-MAIN-15 conversation choice with Sesh-Anaat at her live exterior post",
+    "schedule_route": "production fixed-frame wait from the inaccessible night interior row to the authored 07:00 exterior post, followed by ordinary movement and player-facing conversation",
+    "source_runs": [
+      "reports/runs/W1-19-production-gpu-root-lf/intended-act3-r5",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q14-r1",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q15-r1",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q15-r6",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q15-r17",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q15-r19"
+    ],
+    "source_run_hashes": {
+      "q15_r17_resume": "sha256:e70bdf630946a427ace1c373b0ad5a36be1951b4d09ac26eebcfe2af9d386b84",
+      "q15_r19_report": "sha256:93717e01d42d377db4b0d1831251fb7ccf42c3541cfdd1d5963cc1868656d0c8",
+      "q15_r19_resume": "sha256:0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb"
+    }
+  },
+  "input_hashes": {
+    "quests": "sha256:6b2179a5ad77e335b1c020fb22dc2a43db51a1c94844556032943595104ec38c",
+    "npcs": "sha256:b5b0f5a11050ef63da75047592d3d9fdb5f9b84c3edec7460d9014f33e40745e",
+    "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
+    "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24",
+    "production_runtime": "sha256:94cc4554a0c26559ded74e2e12d525564ec3ab05f20533c8e86074b6e6f8326d",
+    "instruments": "sha256:d36bf0a1155b702e0eeebfbd684dad1f35cea4b60290f64576cc41ed0cf1cd8b"
+  },
+  "reproduction": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act2.json --stop-after Q-MAIN-15 --walk-max-frames 120000 --resume-output evidence/W1-19/fixtures/reproduced-act3.json --out reports/runs/W1-19-production-gpu-root-lf/q15-reproduction --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 7200000",
+  "validation": "node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-15-checkpoint.manifest.json",
+  "controls": "node tools/quests/mainline-checkpoint-control.mjs --manifest evidence/W1-19/q-main-15-checkpoint.manifest.json --out reports/runs/W1-19-production-gpu-root-lf/q15-checkpoint-control.json"
+}

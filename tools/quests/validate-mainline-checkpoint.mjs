@@ -69,7 +69,10 @@ if (manifest.health && (state.fight?.player?.hp !== manifest.health.hp
   || state.fight?.player?.hpMax !== manifest.health.hp_max
   || state.fight?.player_ctl?.estus !== manifest.health.estus)) fail('health/flask mismatch');
 if (manifest.provenance.violent_resolutions !== 0 || manifest.provenance.direct_progression_mutations !== 0 || !manifest.provenance.production_player_actions) fail('provenance declaration is not production-valid');
-if ((state.world?.npcs_dead || []).length || (state.world?.enemies_dead_until_rest || []).length) fail('checkpoint contains a violent world resolution');
+const expectedNonviolentNpcDeaths = [...(manifest.provenance.allowed_nonviolent_npcs_dead || [])].sort();
+const actualNpcDeaths = [...(state.world?.npcs_dead || [])].sort();
+if (JSON.stringify(actualNpcDeaths) !== JSON.stringify(expectedNonviolentNpcDeaths)) fail('checkpoint NPC death set differs from declared nonviolent consequences');
+if ((state.world?.enemies_dead_until_rest || []).length) fail('checkpoint contains a violent enemy resolution');
 const fixtureHash = `sha256:${crypto.createHash('sha256').update(fs.readFileSync(fixturePath)).digest('hex')}`;
 if (fixtureHash !== manifest.fixture_hash) fail('fixture hash mismatch');
 console.log(`checkpoint valid: ${path.relative(root, fixturePath)} (${fixtureHash})`);
