@@ -1,9 +1,9 @@
 {
   "schema": "elder-souls/production-checkpoint-manifest@1",
   "fixture": "fixtures/resume-saxhleel-interior-intended-q17.json",
-  "fixture_hash": "sha256:b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471",
-  "tested_commit": "c387c5e4ce77a65e5260495cb0f85aa10016af8b",
-  "tested_tree_note": "Successor worktree based on c387c5e4; production inputs and instruments are frozen by input_hashes, and the milestone commit containing this manifest freezes the continuation changes.",
+  "fixture_hash": "sha256:46d9b5a7f139aa7667ae7d3c1ec4414d172d7df8af65c1b34be7d0144d191761",
+  "tested_commit": "b4e5b538d0f83246e1d298a269c442adc056aeed",
+  "tested_tree_note": "Successor worktree based on b4e5b538 after inspecting the intervening W1-30 commits; production inputs and instruments are frozen by input_hashes, and the milestone commit containing this manifest freezes the save-runtime repair and regenerated continuation.",
   "tool": "tools/quests/mainline-chain-floor.mjs",
   "save_schema": { "schema": "elder-souls/save@1", "version": 2 },
   "harness_version": 1,
@@ -16,7 +16,7 @@
   ],
   "active_quests": [],
   "position": { "pos": [403.212325, 2.709221, 2906.428333], "settlement": "gideon", "cell": "coast", "interior": null },
-  "clock": { "day": 6, "hour": 8.795 },
+  "clock": { "day": 6, "hour": 8.627963 },
   "weather": "downpour",
   "schedule_context": {
     "document": "the-compact-share-book",
@@ -24,8 +24,8 @@
     "door_hours": { "open": 8, "close": 19 },
     "wait_reason": "door closes within one world hour",
     "wait_hours_selected": 14,
-    "wait_start": { "day": 5, "hour": 18.71 },
-    "wait_end": { "day": 6, "hour": 8.71 },
+    "wait_start": { "day": 5, "hour": 18.54 },
+    "wait_end": { "day": 6, "hour": 8.54 },
     "wait_menu_path": ["inventory", "journal", "sheet", "spells", "map", "wait"],
     "wait_position_delta_m": 0,
     "door_open_after_wait": true,
@@ -33,6 +33,14 @@
     "checkpoint_giver_distance_m": 1.001108
   },
   "health": { "hp": 92, "hp_max": 92, "estus": 5 },
+  "journal": {
+    "entries_before_continuation": 12,
+    "entries_after_continuation": 17,
+    "persisted_post_load_entries": 5,
+    "tail_quests": ["Q-MAIN-16", "Q-MAIN-16", "Q-MAIN-16", "Q-MAIN-17", "Q-MAIN-17"],
+    "save_runtime_smoke": "tools/quests/save-quest-runtime-smoke.mjs",
+    "save_runtime_smoke_result_hash": "sha256:dbdd81f7986706e6cddf78e005e58356d0c4c1632f79f3599ebb6ab933e58571"
+  },
   "stability": {
     "consecutive_clean_frames": 120,
     "player_state": "IDLE",
@@ -70,9 +78,9 @@
     "quest_17_resolution": "res_whole_arithmetic",
     "purse_gold": 0,
     "production_wait": true,
-    "source_report": "reports/runs/W1-19-production-continuation/q17/from-q30-r2/mainline-chain-floor.json",
-    "source_report_hash": "sha256:1454c6de39cfb023b3d8c7d34d1a45bdfe4279669435fd4230a01ff610ef1971",
-    "source_save_hash": "sha256:b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471",
+    "source_report": "reports/runs/W1-19-production-continuation/q17/from-q30-r4-journal-fix/mainline-chain-floor.json",
+    "source_report_hash": "sha256:9e6bff02cee1e36d4de5271cf2e93f88a902fec9bbae59dd8be52aee7209c655",
+    "source_save_hash": "sha256:46d9b5a7f139aa7667ae7d3c1ec4414d172d7df8af65c1b34be7d0144d191761",
     "chain_browser_execution": {
       "browser": "Chromium 141.0.7390.37",
       "renderer_class": "deterministic software",
@@ -82,9 +90,9 @@
     },
     "native_gpu_execution": {
       "summary": "evidence/W1-19/native-gpu-smoke-production-summary.json",
-      "summary_hash": "sha256:d2203b3c8049ce082df587aad601f5b8f33f78bfe06e9bf03d03718b702539f3",
-      "run_id": "20260813-174804Z-121223",
-      "pod_id": "eryjj6r2xxtaf1",
+      "summary_hash": "sha256:7072bfa7a91c57e6c3c8589961fc96b848732461cf01b6cb50e4151476a6a83e",
+      "run_id": "20260813-183101Z-141779",
+      "pod_id": "kux0h6xgo7nj67",
       "gpu": "NVIDIA RTX A5000",
       "renderer": "ANGLE NVIDIA Vulkan 1.4.312",
       "swiftshader_absent": true,
@@ -94,12 +102,12 @@
     }
   },
   "input_hashes": {
-    "quests": "sha256:5a8ee62617d15fd9c0251d8b6ba984accc4024eeaa9d0507690695fb0456f487",
+    "quests": "sha256:a73fca91f5a780a7891a67f3cc0b17bd653817eeee32eebf7c1e4aa03cbb8f43",
     "npcs": "sha256:c2e7bac54487c84d06bfe70f2f8fbed627d33ca522b5e9837a649109e222be8a",
     "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
     "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24",
-    "production_runtime": "sha256:88e2fb4eab2d8971ba4d770137226fe5d20fe7b30424807afce5e0a350470322",
-    "instruments": "sha256:02dc35e73e671e5a3a016e1e9bdd3396e7930a40f079e875a74d84ed76bfab3c"
+    "production_runtime": "sha256:d1bb1b6139c75e6cdce7dc88cbef511d4f0ea9ea5e7f7c8b94c4437381b8de36",
+    "instruments": "sha256:54e7849ca5486be1584f19b0c94ee4086a6096d129f541c1ab49aba237d1d565"
   },
   "reproduction": "node tools/quests/mainline-chain-floor.mjs --chromium <chromium> --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30 --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save.json --timeout 1800000",
   "validation": "node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-17-checkpoint.manifest.json",

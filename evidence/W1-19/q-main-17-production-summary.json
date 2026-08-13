@@ -1,8 +1,8 @@
 {
   "schema": "elder-souls/w1-19-production-summary@1",
   "quest": "Q-MAIN-17",
-  "measured_at": "2026-08-13T17:50:17.008Z",
-  "command": "node tools/quests/mainline-chain-floor.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30-r2 --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save-r2.json --timeout 1800000",
+  "measured_at": "2026-08-13T21:00:47.761Z",
+  "command": "node tools/quests/mainline-chain-floor.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30-r4-journal-fix --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save-r4-journal-fix.json --timeout 1800000",
   "exit": 0,
   "inputs": {
     "q30_fixture": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json",
@@ -10,14 +10,14 @@
     "canonical_regeneration_command": "node tools/quests/mainline-chain-floor.mjs --chromium <chromium> --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30 --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save.json --timeout 1800000"
   },
   "ignored_outputs": {
-    "report": "reports/runs/W1-19-production-continuation/q17/from-q30-r2/mainline-chain-floor.json",
-    "report_sha256": "1454c6de39cfb023b3d8c7d34d1a45bdfe4279669435fd4230a01ff610ef1971",
-    "resume": "reports/runs/W1-19-production-continuation/q17/q17-current-save-r2.json",
-    "resume_sha256": "b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471"
+    "report": "reports/runs/W1-19-production-continuation/q17/from-q30-r4-journal-fix/mainline-chain-floor.json",
+    "report_sha256": "9e6bff02cee1e36d4de5271cf2e93f88a902fec9bbae59dd8be52aee7209c655",
+    "resume": "reports/runs/W1-19-production-continuation/q17/q17-current-save-r4-journal-fix.json",
+    "resume_sha256": "46d9b5a7f139aa7667ae7d3c1ec4414d172d7df8af65c1b34be7d0144d191761"
   },
   "checkpoint": {
     "fixture": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q17.json",
-    "fixture_sha256": "b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471",
+    "fixture_sha256": "46d9b5a7f139aa7667ae7d3c1ec4414d172d7df8af65c1b34be7d0144d191761",
     "manifest": "evidence/W1-19/q-main-17-checkpoint.manifest.json",
     "validation_exit": 0,
     "control_exit": 0,
@@ -53,8 +53,8 @@
     "door_open_hours": [8, 19],
     "wait_reason": "door closes within one world hour",
     "wait_hours_selected": 14,
-    "clock_before": 18.71,
-    "clock_after": 8.71,
+    "clock_before": 18.54,
+    "clock_after": 8.54,
     "day_before": 5,
     "day_after": 6,
     "menu_path": ["inventory", "journal", "sheet", "spells", "map", "wait"],
@@ -66,6 +66,19 @@
     "door_open_after_wait": true,
     "entered_interior": true,
     "book_read": true
+  },
+  "save_runtime_repair": {
+    "defect": "A save-blob load replaced sim.quest but left QuestEngine.journal attached to the discarded array; the existing full rebind also re-seeded cold NPC dispositions and would overwrite earned save values.",
+    "repair": "Blob loads now rebind the complete quest runtime without reseeding dispositions; named-state resets retain authored base seeding.",
+    "journal_entries_before": 12,
+    "journal_entries_after": 17,
+    "persisted_q16_q17_entries": 5,
+    "tail_quests": ["Q-MAIN-16", "Q-MAIN-16", "Q-MAIN-16", "Q-MAIN-17", "Q-MAIN-17"],
+    "focused_command": "node tools/quests/save-quest-runtime-smoke.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --out reports/runs/W1-19-production-continuation/q17/save-runtime-smoke-r1",
+    "focused_exit": 0,
+    "focused_result_sha256": "dbdd81f7986706e6cddf78e005e58356d0c4c1632f79f3599ebb6ab933e58571",
+    "focused_journal_delta": "12->13",
+    "focused_disposition_preserved": "77/77"
   },
   "provenance": {
     "production_input_wait": true,

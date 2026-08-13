@@ -194,6 +194,9 @@ export function canResolve(res, ctx) {
   for (const [s, v] of Object.entries(req.skills || {})) {
     if (num((ctx.skills || {})[s]) < v) why.push(`${s} ${num((ctx.skills || {})[s])}/${v}`);
   }
+  if (req.elapsed_days_since_open != null && num(ctx.daysSinceQuestOpened) < num(req.elapsed_days_since_open)) {
+    why.push(`elapsed days ${num(ctx.daysSinceQuestOpened)}/${num(req.elapsed_days_since_open)}`);
+  }
   for (const [a, v] of Object.entries(req.attributes || {})) {
     if (LEVEL_WORDS.test(a)) throw new Error(`resolution ${res.id}: attribute gate ${JSON.stringify(a)} is forbidden (RI-QST03 §B)`);
     if (num((ctx.attributes || {})[a]) < v) why.push(`${a} ${num((ctx.attributes || {})[a])}/${v}`);
