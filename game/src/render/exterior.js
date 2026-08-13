@@ -1390,6 +1390,71 @@ function compressBuildingMeshes(root) {
 }
 
 /**
+ * Collapse the shipping settlement after every building has its final world transform.
+ *
+ * Building-local batches still leave one batch per material per building, plus the named kit,
+ * roof and public-realm meshes.  At settlement scale that was 1,102--2,989 draw calls in the
+ * native eight-town atlas.  BatchedMesh accepts heterogeneous geometries, so one batch per
+ * compatible material is sufficient for the static town.  The record-derived building/kit/door
+ * groups remain in place as lightweight named markers; physics never reads render children.
+ */
+function compressSettlementMeshes(root) {
+  root.updateMatrixWorld(true);
+  const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert(),groups=new Map();
+  root.traverse(o=>{
+    if(!o.isMesh||o.isInstancedMesh||o.isBatchedMesh||Array.isArray(o.material)||!o.material||!o.geometry)return;
+    if(o.userData?.w130SettlementNoBatch)return;
+    const attrs=Object.keys(o.geometry.attributes).sort().map(n=>`${n}:${o.geometry.attributes[n].itemSize}:${o.geometry.attributes[n].normalized}`).join(',');
+    const morph=Object.keys(o.geometry.morphAttributes||{}).sort().join(',');
+    const k=`${o.material.uuid}|${o.geometry.index?'i':'n'}|${attrs}|${morph}`;
+    if(!groups.has(k))groups.set(k,[]);groups.get(k).push(o);
+  });
+  let batches=0,instances=0,drawsSaved=0;
+  for(const [signature,meshes] of groups){
+    if(meshes.length<2)continue;
+    const unique=new Map();
+    for(const m of meshes){
+      const key=m.geometry.userData.w130BatchKey||`geometry:${m.geometry.uuid}`;
+      if(!unique.has(key))unique.set(key,m.geometry);
+    }
+    let vertices=0,indices=0;
+    for(const geo of unique.values()){
+      vertices+=geo.attributes.position.count;
+      indices+=geo.index?geo.index.count:0;
+    }
+    const batch=new THREE.BatchedMesh(meshes.length,vertices,indices||vertices,meshes[0].material);
+    batch.name=`settlement-batch:${batches}:${signature.split('|').slice(1,3).join(':')}`;
+    batch.castShadow=meshes.some(m=>m.castShadow);batch.receiveShadow=meshes.some(m=>m.receiveShadow);
+    const geometryIds=new Map();
+    for(const [key,geo] of unique)geometryIds.set(key,batch.addGeometry(geo));
+    for(const m of meshes){
+      const key=m.geometry.userData.w130BatchKey||`geometry:${m.geometry.uuid}`;
+      const instance=batch.addInstance(geometryIds.get(key));
+      batch.setMatrixAt(instance,new THREE.Matrix4().multiplyMatrices(inverse,m.matrixWorld));
+      // Scene-graph censuses identify authority-owned doors and kit consumers by name. Preserve
+      // those identities without retaining another render submission.
+      if(m.name){
+        const marker=new THREE.Group();marker.name=m.name;
+        marker.userData={...m.userData,w130BatchedMarker:true};
+        marker.position.copy(m.position);marker.quaternion.copy(m.quaternion);marker.scale.copy(m.scale);
+        m.parent?.add(marker);
+      }
+    }
+    batch.userData.logicalTriangles=meshes.reduce((n,m)=>n+(m.geometry.index?m.geometry.index.count/3:m.geometry.attributes.position.count/3),0);
+    batch.userData.w130SettlementBatch={instances:meshes.length,geometries:unique.size};
+    batch.computeBoundingBox();batch.computeBoundingSphere();root.add(batch);
+    const dispose=new Set();
+    for(const m of meshes){dispose.add(m.geometry);m.parent?.remove(m);}
+    for(const geo of dispose)geo.dispose();
+    batches++;instances+=meshes.length;drawsSaved+=meshes.length-1;
+  }
+  let renderMeshes=0;
+  root.traverse(o=>{if(o.isMesh)renderMeshes++;});
+  root.userData.settlementMeshCompression={batches,instances,drawsSaved,renderMeshes};
+  return root.userData.settlementMeshCompression;
+}
+
+/**
  * Build ONE building into a group of its own, in local coordinates (centre at the origin, +z is
  * the building's own front before yaw).
  *
@@ -1642,7 +1707,7 @@ export function buildBuilding(b, town, opts = {}) {
  * @param {object} plan  from `planSettlement`
  * @param {(x:number,z:number)=>number} groundY  the SAME surface the player walks on
  */
-export function buildSettlementExterior(root, plan, groundY) {
+export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const art=settlementArt(plan.id);
   root.userData.worldArt={settlement:plan.id,grammar:art.grammar,support:art.support,trim:art.trim,imperial:art.imperial};
   const out = {
@@ -1655,7 +1720,9 @@ export function buildSettlementExterior(root, plan, groundY) {
   // displaced Archon's public realm 26 m downwind, leaving the actual town centre as empty mud.
   const centreX=plan.pos[0],centreZ=plan.pos[2];
   for (const b of plan.buildings) {
-    const { group, summary } = buildBuilding(b, plan.id);
+    // Shipping uses one heterogeneous batch pass after final world placement. Offline continuity
+    // probes keep the established building-local graph unless they explicitly request that path.
+    const { group, summary } = buildBuilding(b, plan.id, {batch:opts.settlementBatch?false:opts.buildingBatch!==false});
     // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
     // existing building owns mass/door continuity; these town-specific junctions alter its
     // skyline, apertures, support rhythm, damage and inexplicable street-facing element.
@@ -1807,6 +1874,11 @@ export function buildSettlementExterior(root, plan, groundY) {
   root.add(street);
   out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
+  if(opts.settlementBatch){
+    out.logical_meshes=out.meshes;
+    out.mesh_compression=compressSettlementMeshes(root);
+    out.meshes=out.mesh_compression.renderMeshes;
+  }
   return out;
 }
 
