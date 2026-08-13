@@ -804,6 +804,12 @@ export class Renderer {
     this.camera.up.set(0, 1, 0);              // roll is exactly 0 (RI-CAM06 §E)
     if (this.camera.fov !== c.fov) { this.camera.fov = c.fov; this.camera.updateProjectionMatrix(); }
 
+    // Dense vegetation must never become an opaque third-person camera collider. Province keeps
+    // immutable instance transforms and temporarily collapses only stems/crowns intersecting the
+    // eye or actor bubble; this call therefore preserves deterministic streaming and restores
+    // exact silhouettes as soon as the camera clears them.
+    if(this.province)this.province.updateOcclusion(c.pos[0],c.pos[2],sim.player.pos[0],sim.player.pos[2]);
+
     this._focus.set(sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]);
     // Region fog. RI-WLD04 counts fog as ONE of nine axes and never more than one, but it is the
     // axis Morrowind leans on hardest — an Ashlands frame is red because the fog is red — so it is

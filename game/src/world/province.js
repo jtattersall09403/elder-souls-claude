@@ -124,17 +124,17 @@ function taperedLimb(a,b,r0,r1,sides=7){
   g.translate((a.x+b.x)*.5,(a.y+b.y)*.5,(a.z+b.z)*.5);return g;
 }
 
-function branchedTrunk(height,radius,crownRadius){
+function branchedTrunk(height,radius,crownRadius,variant=0){
   const parts=[taperedLimb(new THREE.Vector3(0,0,0),new THREE.Vector3(0,height*.72,0),radius,radius*.48,8)];
   // Flared, asymmetrical roots visually seat the bole in wet ground and stop equipment-scale
   // cylinders reading as utility poles. Branch phases are fixed per species geometry; instance
   // rotation and lean provide population variation without allocating unique meshes.
   for(let i=0;i<5;i++){
-    const a=i*Math.PI*2/5+.22*(i%2),end=new THREE.Vector3(Math.cos(a)*radius*2.5,.02,Math.sin(a)*radius*2.5);
+    const a=i*Math.PI*2/5+.22*(i%2)+variant*.31,end=new THREE.Vector3(Math.cos(a)*radius*(2.15+variant*.22),.02,Math.sin(a)*radius*(2.15+variant*.22));
     parts.push(taperedLimb(new THREE.Vector3(0,height*.10,0),end,radius*.48,radius*.10,6));
   }
   for(let i=0;i<4;i++){
-    const a=i*Math.PI*.5+.38, y=height*(.47+i*.055), reach=Math.min(crownRadius*.62,height*.20)*(1-(i%2)*.12);
+    const a=i*Math.PI*.5+.38+variant*.43, y=height*(.45+i*.058+(variant-1)*.012), reach=Math.min(crownRadius*.62,height*.20)*(1-(i%2)*.12);
     const elbow=new THREE.Vector3(Math.cos(a)*reach*.42,y+height*.10,Math.sin(a)*reach*.42);
     const end=new THREE.Vector3(Math.cos(a)*reach,y+height*(.16+(i%2)*.035),Math.sin(a)*reach);
     parts.push(taperedLimb(new THREE.Vector3(0,y,0),elbow,radius*.34,radius*.21,7));
@@ -143,14 +143,91 @@ function branchedTrunk(height,radius,crownRadius){
   return mergeAll(parts);
 }
 
+// Thornmarsh is an interlocking six-metre labyrinth, not a conifer forest.  Its stems fork low,
+// hook back across the walking line and carry hard needle tips.  Tube paths provide continuous
+// elbows (no floating branch cylinders) while a handful of cones catch the silhouette in motion.
+function thornGeometry(height,radius,variant=0,crown=false){
+  const parts=[],phase=variant*.83;
+  if(!crown){
+    parts.push(taperedLimb(new THREE.Vector3(0,0,0),new THREE.Vector3(.08*(variant-1),height*.72,0),radius,radius*.35,8));
+    for(let i=0;i<4;i++){
+      const a=phase+i*Math.PI*.5+.18*(i%2),reach=radius*(2.2+.35*((i+variant)%3));
+      const curve=new THREE.QuadraticBezierCurve3(
+        new THREE.Vector3(0,height*(.18+i*.10),0),
+        new THREE.Vector3(Math.sin(a)*reach*.52,height*(.40+i*.07),Math.cos(a)*reach*.52),
+        new THREE.Vector3(Math.sin(a)*reach,height*(.31+i*.09),Math.cos(a)*reach));
+      parts.push(new THREE.TubeGeometry(curve,7,radius*(.26-.025*i),6,false));
+    }
+  }else{
+    for(let i=0;i<9;i++){
+      const a=phase+i*2.399963,reach=radius*(.48+.48*((i*7+variant)%5)/4),y=height*(-.28+.07*(i%5));
+      const start=new THREE.Vector3(Math.sin(a)*radius*.08,y,Math.cos(a)*radius*.08);
+      const mid=new THREE.Vector3(Math.sin(a)*reach*.72,y+height*(.14+.025*(i%3)),Math.cos(a)*reach*.72);
+      const end=new THREE.Vector3(Math.sin(a+.28*(i%2?1:-1))*reach,y+height*(.03+.035*(i%4)),Math.cos(a+.28*(i%2?1:-1))*reach);
+      parts.push(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(start,mid,end),8,radius*(.070-.004*(i%3)),5,false));
+      const tip=new THREE.ConeGeometry(radius*.095,radius*.42,5);
+      tip.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),end.clone().sub(mid).normalize()));
+      tip.translate(end.x,end.y,end.z);parts.push(tip);
+      if(i%2===0){
+        const bud=new THREE.IcosahedronGeometry(1,0);bud.scale(radius*.18,height*.055,radius*.13);bud.translate(mid.x,mid.y,mid.z);parts.push(bud);
+      }
+    }
+  }
+  return mergeAll(parts);
+}
+
 // Fully geometric crown: layered whorls of curved, tapered leaf ribbons around the branch
 // endpoints. Unlike crossed alpha cards these remain permeable and three-dimensional when the
 // gameplay camera walks underneath them, which the all-region capture explicitly exercises.
-function organicCrown(shape,radius,height){
+function organicCrown(shape,radius,height,variant=0){
   const parts=[],spire=shape==='spire'||shape==='cone',column=shape==='column',arch=shape==='arch';
-  const layers=arch?2:column?5:spire?5:4,perLayer=arch?7:10;
+  // Broadleaf trees are volumes, not radial stars. A small hierarchy of irregular low-poly
+  // foliage masses gives a crown a core, broken perimeter and holes between lobes while keeping
+  // the instanced triangle budget bounded. Conifers, root arches and reed-like crowns retain
+  // tapered leaves because their radial silhouette is the species cue.
+  if(!spire&&!column&&!arch){
+    const dome=shape==='dome',lobes=dome?9:8;
+    for(let i=0;i<lobes;i++){
+      const a=i/lobes*Math.PI*2+variant*.57,ring=i===0?0:radius*(.18+.30*((i*5+variant)%4)/3);
+      const y=(dome?.14:.02)*height+(i===0?.12:((i*7+variant)%5-2)*.055)*height;
+      const g=new THREE.IcosahedronGeometry(1,0),sx=radius*(i===0?.70:.42+.07*((i+variant)%3)),sy=(dome?height*.20:radius*.42)*(i===0?1.08:.72+.10*((i*3+variant)%3)),sz=sx*(.76+.11*((i*2+variant)%3));
+      g.scale(sx,sy,sz);g.rotateY(a*.37);g.translate(Math.sin(a)*ring,y,Math.cos(a)*ring);parts.push(g);
+    }
+    // Sparse edge sprays break the poly-lobe outline at close range without returning to the
+    // old uniform wheel. Their lengths and levels differ between the three cached variants.
+    for(let i=0;i<5;i++){const a=i/5*Math.PI*2+variant*.81,leaf=bladeLeaf(radius*(.38+.05*((i+variant)%3)),radius*.09,.52,a,i*.19+variant);leaf.translate(Math.sin(a)*radius*.35,height*(.03+.045*(i%3)),Math.cos(a)*radius*.35);parts.push(leaf);}
+    return mergeAll(parts);
+  }
+  // Needle and thorn crowns used to be forty-five full-length ribbons radiating from five
+  // perfectly level whorls.  At gameplay distance that collapsed to a repeated black star —
+  // especially damaging in Thornmarsh, where 5.4 plants/100 m2 put hundreds of those stars in
+  // one frame.  Build the mass first, then use only a few tapered sprays to articulate its edge.
+  // Each tier has an off-centre core and small satellite lobes, so rotation and the three cached
+  // variants change both the voids and the outline rather than merely spinning one wheel.
+  if(spire||column){
+    const layers=column?5:6;
+    for(let layer=0;layer<layers;layer++){
+      const t=layer/(layers-1), taper=column?(.78-.10*t):(1-.70*t);
+      const y=height*(-.25+t*.50),phase=variant*.71+layer*1.17;
+      const core=new THREE.IcosahedronGeometry(1,0);
+      core.scale(radius*.56*taper,height*(column?.10:.085),radius*.50*taper);
+      core.rotateY(phase*.31);core.translate(Math.sin(phase)*radius*.07,y,Math.cos(phase)*radius*.07);parts.push(core);
+      for(let i=0;i<3;i++){
+        const a=phase+i*Math.PI*2/3, satellite=new THREE.IcosahedronGeometry(1,0);
+        const rr=radius*(.28+.035*((layer+i+variant)%3))*taper;
+        satellite.scale(rr,height*(.052+.008*((i+variant)%2)),rr*.72);
+        satellite.rotateY(a*.43);satellite.translate(Math.sin(a)*radius*.38*taper,y+height*((i-1)*.018),Math.cos(a)*radius*.38*taper);parts.push(satellite);
+      }
+      if(layer<layers-1)for(let i=0;i<2;i++){
+        const a=phase+(i+.35)*Math.PI,leaf=bladeLeaf(radius*(.25+.05*(layer%2))*taper,Math.max(.035,radius*.045),.50,a,layer*.2+i);
+        leaf.translate(Math.sin(a)*radius*.42*taper,y,Math.cos(a)*radius*.42*taper);parts.push(leaf);
+      }
+    }
+    return mergeAll(parts);
+  }
+  const layers=arch?2:5,perLayer=arch?7:8;
   for(let layer=0;layer<layers;layer++)for(let i=0;i<perLayer;i++){
-    const a=i/perLayer*Math.PI*2+layer*.47,t=layers===1?0:layer/(layers-1);
+    const a=i/perLayer*Math.PI*2+layer*.47+variant*.39,t=layers===1?0:layer/(layers-1);
     const spread=arch?.72:spire?(1-t*.62):(column?.68:1-t*.18);
     const len=radius*(.62+.20*((i*7+layer*3)%5)/4)*spread,width=Math.max(.10,radius*(spire?.105:.14));
     const leaf=bladeLeaf(len,width,.44+(i%3)*.08,a,layer*.23+i*.07);
@@ -769,9 +846,13 @@ export class Province {
     // Keep the arrival/camera footprint legible when a tile is first streamed. The capture audit
     // found a valid walkable sample completely enclosed by a trunk; vegetation may frame a path,
     // but production composition cannot put opaque canopy geometry on the active arrival point.
-    const arrivalClear=Math.hypot(x-this.focus[0],z-this.focus[1])>=2.4;
-    const settlementClear=!this.settlementAt(x,z,8);
-    if (settlementClear && arrivalClear && p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
+  const arrivalDistance=Math.hypot(x-this.focus[0],z-this.focus[1]);
+  // Third-person cameras orbit up to roughly five metres behind the player. Keep the immediate
+  // gameplay bubble free of opaque trunks and crown hooks so a streamed rebuild cannot place a
+  // branch between camera and actor. Low plants retain the smaller clearance and frame the feet.
+  const arrivalClear=arrivalDistance>=2.4,canopyClear=arrivalDistance>=6.2;
+  const settlementClear=!this.settlementAt(x,z,8);
+    if (settlementClear && canopyClear && p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
       // Height variance and the occasional emergent: the vertical-structure axis, in data.
       const hv = p.canopy.h_var || 0;
       let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
@@ -782,7 +863,8 @@ export class Province {
       const tilt = lean > 0
         ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
         : null;
-      if (push('canopy', 'trunk', this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
+      const form=Math.floor(noise2(x*2.17,z*1.73,7829)*3);
+      if (push('canopy', `trunk:${form}`, this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
         // WHERE THE CROWN SITS. A crown parked at 0.86 of the plant's height is right for a tree
         // and wrong for a bush: the Clay Moor declares a 4 m dome of 3.2 m radius — wider than it
         // is tall, which is what clay scrub IS — and lifting it to 3.4 m over a stem sized off the
@@ -796,10 +878,10 @@ export class Province {
         // does. Lifting either to 0.86 of the plant's height — the tree rule — put a 3.2 m cap
         // on a 0.15 m stem and drew a mushroom.
         const bushy = p.canopy.r * 2 > p.canopy.h && p.canopy.shape !== 'arch';
-        const crownY = bushy
+        const crownY = r.id==='thornmarsh' ? p.canopy.h*sc*.60 : bushy
           ? Math.max(p.canopy.r*.65,p.canopy.h*.16)*sc
           : p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86);
-        push('canopy', 'crown', this.regionMats[ri].crown, sc, crownY, tilt, 7797);
+        push('canopy', `crown:${form}`, this.regionMats[ri].crown, sc, crownY, tilt, 7797);
       }
     }
     if (settlementClear && arrivalClear && rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
@@ -890,6 +972,7 @@ export class Province {
       im.castShadow = b.kind !== 'under';
       im.receiveShadow = true;
       im.name = `near-${b.kind}:${f.regions[b.ri].id}`;
+      if(b.kind==='canopy')this._registerOccludable(im,b.xf);
       g.add(im);
       total += b.xf.length;
     }
@@ -897,6 +980,38 @@ export class Province {
     this.nearGroup = g;
     this.nearCount = total;
     return total;
+  }
+
+  _registerOccludable(im,matrices){
+    const base=new Float32Array(matrices.length*16);
+    for(let i=0;i<matrices.length;i++)matrices[i].toArray(base,i*16);
+    im.userData.w130Occlusion={base,hidden:new Uint8Array(matrices.length)};
+  }
+
+  /**
+   * Third-person camera foliage rejection. Dense procedural populations are scenery, not opaque
+   * camera colliders: if a camera enters the branch radius, hide that whole authored instance
+   * pair until it is clear again. The base matrices are retained verbatim, so this cannot drift,
+   * accumulate scale, or detach crowns from trunks. A small player bubble also prevents a retained
+   * streamed tile (built around an earlier focus) from placing a bole through the actor.
+   */
+  updateOcclusion(cameraX,cameraZ,playerX,playerZ){
+    const last=this._occlusionAt;
+    if(last&&Math.hypot(cameraX-last[0],cameraZ-last[1])<.32&&Math.hypot(playerX-last[2],playerZ-last[3])<.32)return 0;
+    this._occlusionAt=[cameraX,cameraZ,playerX,playerZ];
+    const cm2=5.6*5.6,pm2=2.7*2.7,m=this._occlusionMatrix||(this._occlusionMatrix=new THREE.Matrix4()),tiny=new THREE.Vector3(.001,.001,.001);
+    let changed=0;
+    this.group.traverse(o=>{
+      const rec=o.userData&&o.userData.w130Occlusion;if(!rec||!o.isInstancedMesh)return;
+      for(let i=0;i<o.count;i++){
+        const k=i*16,ix=rec.base[k+12],iz=rec.base[k+14];
+        const hide=(ix-cameraX)*(ix-cameraX)+(iz-cameraZ)*(iz-cameraZ)<cm2||(ix-playerX)*(ix-playerX)+(iz-playerZ)*(iz-playerZ)<pm2;
+        if(Number(hide)===rec.hidden[i])continue;
+        m.fromArray(rec.base,k);if(hide)m.scale(tiny);o.setMatrixAt(i,m);rec.hidden[i]=Number(hide);changed++;
+      }
+      if(changed)o.instanceMatrix.needsUpdate=true;
+    });
+    return changed;
   }
 
   /** Build at most `budget` queued tiles. Returns how many were built. */
@@ -1691,7 +1806,8 @@ export class Province {
     if (this.geoCache.has(key)) return this.geoCache.get(key);
     const p = r.props;
     let geo;
-    switch (kind) {
+    const [baseKind,variantText]=kind.split(':'),variant=Number(variantText||0)%3;
+    switch (baseKind) {
       case 'trunk': {
         const h = p.canopy.h;
         if (p.canopy.shape === 'arch') {
@@ -1708,14 +1824,17 @@ export class Province {
           // per cent of the region's ground was inside a trunk and a random eye-height frame was a
           // photograph of bark. Real closed forest is 0.6-1.3 m at breast height; the flare at the
           // base of a buttressed hardwood is the 1.8x taper below, not a doubling of the radius.
-          const rt = clamp(0.038 * h, 0.10, Math.min(0.95, p.canopy.r * 0.34));
-          geo = branchedTrunk(h,rt,p.canopy.r);
+          // Slender marsh spires and thorn trees need a stronger lower taper than hardwoods;
+          // otherwise their dense populations read as utility poles below a floating crown.
+          const trunkRatio=p.canopy.shape==='cone'?.068:p.canopy.shape==='spire'?.052:.038;
+          const rt = clamp(trunkRatio * h, 0.10, Math.min(0.95, p.canopy.r * 0.34));
+          geo = r.id==='thornmarsh' ? thornGeometry(h,rt,variant,false) : branchedTrunk(h,rt,p.canopy.r,variant);
         }
         break;
       }
       case 'crown': {
         const h = p.canopy.h, rr = p.canopy.r;
-        geo=organicCrown(p.canopy.shape,rr,h);
+        geo=r.id==='thornmarsh' ? thornGeometry(h,rr,variant,true) : organicCrown(p.canopy.shape,rr,h,variant);
         break;
       }
       case 'under': {
@@ -1740,8 +1859,12 @@ export class Province {
           case 'flag':    geo = new THREE.BoxGeometry(1.15, h, 0.82); geo.translate(0, h / 2, 0); break;
           case 'cobble':  geo = new THREE.SphereGeometry(0.38, 6, 3, 0, Math.PI * 2, 0, Math.PI / 2); geo.scale(1, h / 0.38, 1); break;
           case 'shell':   geo = new THREE.SphereGeometry(0.26, 5, 2, 0, Math.PI * 2, 0, Math.PI / 2); geo.scale(1.5, h / 0.26, 1); break;
-          case 'tussock': geo = new THREE.ConeGeometry(0.46, h, 5); geo.translate(0, h / 2, 0); break;
-          case 'tuft':    geo = new THREE.ConeGeometry(0.24, h, 4); geo.translate(0, h / 2, 0); break;
+          case 'tussock': {
+            const fans=[];for(let i=0;i<3;i++){const a=i*Math.PI*2/3+.31,g=proceduralFan('tussock',.52,h*(.82+.12*i),true);g.translate(Math.sin(a)*.24,0,Math.cos(a)*.24);fans.push(g);}geo=mergeAll(fans);break;
+          }
+          case 'tuft': {
+            const fans=[];for(let i=0;i<2;i++){const a=i*Math.PI+.47,g=proceduralFan('tuft',.34,h*(.88+.16*i),true);g.translate(Math.sin(a)*.12,0,Math.cos(a)*.12);fans.push(g);}geo=mergeAll(fans);break;
+          }
           case 'flake':   geo = new THREE.ConeGeometry(0.15, h, 3); geo.translate(0, h / 2, 0); break;
           case 'gravel':  geo = new THREE.IcosahedronGeometry(0.21, 0); geo.scale(1, h / 0.21, 1); break;
           case 'stubble': geo = new THREE.CylinderGeometry(0.05, 0.07, h, 4); geo.translate(0, h / 2, 0); break;
@@ -1783,8 +1906,11 @@ export class Province {
     const N = 46;
     for (let iz = 0; iz < N; iz++) {
       for (let ix = 0; ix < N; ix++) {
-        const jx = noise2(ix * 1.7 + ox, iz * 2.3 + oz, 7717);
-        const jz = noise2(ix * 2.9 + ox, iz * 1.3 + oz, 7723);
+        // Independent cell hashes, not interpolated value noise. Smooth noise correlates adjacent
+        // offsets and leaves the underlying 6.5 m lattice plainly visible while the camera walks.
+        const tcx=Math.round(ox/TILE_M),tcz=Math.round(oz/TILE_M);
+        const jx = hash2(ix+tcx*47,iz+tcz*53,7717);
+        const jz = hash2(ix+tcx*59,iz+tcz*43,7723);
         const x = ox + (ix + jx) * (TILE_M / N), z = oz + (iz + jz) * (TILE_M / N);
         if (!f.isLandAt(x, z)) continue;
         // W1-02 / RI-WLD12 §2. The FLORA axis. It crosses just after the palette and well before
@@ -1830,6 +1956,7 @@ export class Province {
       im.castShadow = b.kind !== 'under' && b.kind !== 'cover';
       im.receiveShadow = true;
       im.name = `${b.kind}:${this.field.regions[b.ri].id}`;
+      if(b.kind==='canopy')this._registerOccludable(im,b.xf);
       im.frustumCulled = true;
       group.add(im);
     }

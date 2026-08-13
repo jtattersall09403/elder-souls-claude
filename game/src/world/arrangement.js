@@ -120,10 +120,11 @@ export const ARRANGEMENT_NORM = NORM;
 /** The lattice `province._scatter` places on, exposed so an audit measures the same points. */
 export function latticePoints(ox, oz, tileM, n) {
   const out = [];
+  const tcx=Math.round(ox/tileM),tcz=Math.round(oz/tileM);
   for (let iz = 0; iz < n; iz++) {
     for (let ix = 0; ix < n; ix++) {
-      const jx = noise2(ix * 1.7 + ox, iz * 2.3 + oz, 7717);
-      const jz = noise2(ix * 2.9 + ox, iz * 1.3 + oz, 7723);
+      const jx = hash2(ix+tcx*47,iz+tcz*53,7717);
+      const jz = hash2(ix+tcx*59,iz+tcz*43,7723);
       out.push([ox + (ix + jx) * (tileM / n), oz + (iz + jz) * (tileM / n)]);
     }
   }
