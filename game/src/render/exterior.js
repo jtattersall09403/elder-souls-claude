@@ -1623,7 +1623,7 @@ export function buildBuilding(b, town, opts = {}) {
         const x=-face.span*.5+(i+.5)*step;
         if(isEntry&&Math.abs(x-face.doorU)<DOOR_W*.72+step*.28)continue;
         facePart(box(Math.max(.42,step-.38),.62,.075,(i+hash)%3===0?P.accent:P.stone),x,.63,.14);
-        const braceMat=town==='blackrose'?P.metal:(town==='soulrest'?P.stone:P.wood);
+        const braceMat=town==='soulrest'?P.stone:P.wood;
         const brace=box(.105,Math.max(.72,Math.min(1.55,h*.31)),.105,braceMat);
         facePart(brace,x,Math.min(h-.82,1.42),.19,(i+hash)&1?.42:-.42);
         if(town==='archon'||town==='helstrom'||town==='lilmoth'){
