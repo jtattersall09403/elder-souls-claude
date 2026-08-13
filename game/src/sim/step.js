@@ -18,7 +18,7 @@ import { quantiseSaveGrid } from './state.js';
 import { stepCamera, triggerShake } from './camera.js';
 import { stepRoute } from './route.js';
 import { stepCombat } from './combat-bridge.js';
-import { stepWorldCollision } from './world-collision.js';
+import { stepWorldCollision, stepNPCWorldCollision } from './world-collision.js';
 import { stepEncounters } from '../character/encounter.js';
 import { stepNPCs } from './npc.js';
 import { stepSettlement } from './settlement.js';
@@ -178,7 +178,12 @@ export function stepOnce(sim, input, combat, bus) {
     if (sim.settlements) stepSettlement(sim, input, bus);
     // W1-07: the people. After physics so a person turns to face the position the trace
     // reports this frame, before the camera so a dialogue-facing turn is not one frame late.
-    if (sim.npcs.length) stepNPCs(sim, bus);
+    if (sim.npcs.length) {
+      stepNPCs(sim, bus);
+      // Scheduled people do not have CombatBody entries. Resolve their just-updated positions
+      // here so player, enemies and ordinary NPCs all consume the same interior/street shell.
+      stepNPCWorldCollision(sim);
+    }
     // W1-15: stealth and crime. AFTER the fight and after physics, so V, the sound radius and
     // every civilian's suspicion are computed from the same positions the trace reports on this
     // frame; BEFORE the camera, so a CHALLENGE latched on frame N appears in frame N's record.

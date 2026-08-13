@@ -79,7 +79,13 @@ export function stepWorldCollision(sim, combat) {
     // Vertical: stand on whatever solid is under the feet, so the boardwalk deck and the
     // stair treads are walkable rather than decorative.
     const g = groundUnder(cell, b.pos[0], b.pos[2], b.pos[1]);
-    if (g !== null && Math.abs(g - b.pos[1]) < 1.0) { if (g !== b.pos[1]) { b.pos[1] = g; moved = true; } }
+    // The committed jump clip owns world Y during its declared airborne window. The old ground
+    // snap ran after combat and flattened every 0.62 m jump because it accepts a surface within
+    // 1 m. Horizontal wall resolution still runs above, and landing frames resume this support
+    // probe normally.
+    if (!b.airborne && g !== null && Math.abs(g - b.pos[1]) < 1.0) {
+      if (g !== b.pos[1]) { b.pos[1] = g; moved = true; }
+    }
   }
 
   if (combat) {
@@ -99,6 +105,27 @@ export function stepWorldCollision(sim, combat) {
   }
 
   if (moved && combat) mirror(sim, combat);
+  return moved;
+}
+
+/** Resolve scheduled, non-combat people against the same room/street cell as the player.
+ * NPC schedules move their visible `pos` directly and therefore do not have CombatBody entries;
+ * without this pass they were the one character family still able to walk through a generated
+ * room shell. Only people present in the player's current cell participate. */
+export function stepNPCWorldCollision(sim) {
+  const cell = sim && sim.cell;
+  if (!cell || cell === EMPTY_CELL || !sim.npcs || !sim.npcs.length) return false;
+  let moved = false;
+  for (let i = 0; i < sim.npcs.length; i++) {
+    const n = sim.npcs[i];
+    if (!n.present) continue;
+    _p[0] = n.pos[0]; _p[1] = n.pos[1] + 0.90; _p[2] = n.pos[2];
+    if (cell.resolveSphere(_p, ENEMY_RADIUS_DEFAULT_M, 4)) {
+      n.pos[0] = _p[0]; n.pos[2] = _p[2]; moved = true;
+    }
+    const g = groundUnder(cell, n.pos[0], n.pos[2], n.pos[1]);
+    if (g !== null && Math.abs(g - n.pos[1]) < 1.0) n.pos[1] = g;
+  }
   return moved;
 }
 

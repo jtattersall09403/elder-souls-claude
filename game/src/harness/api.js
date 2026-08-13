@@ -619,6 +619,11 @@ export function installHarness(engine, bootPromise) {
     /** RI-VIS03 M12 WATER_MASK from the live scene's water object ids. */
     async screenshotWaterMask() { engine.loop.renderNow(); return engine.renderer.waterMaskDataURL(); },
 
+    /** W1-30 interior containment: report the live shared shell consumer and expose one literal
+     * delete-the-fix arm. The false arm retains rendered walls while removing their CollisionCell. */
+    getInteriorContainment() { return engine.interiorContainmentReport(); },
+    setInteriorContainment(enabled) { return engine.setInteriorContainment(enabled !== false); },
+
     // ================= amendments requested by the journey and platform items =================
     // JOURNEY-CRITIC-FLEET.md §7. Each item that needs one says "until it lands this is
     // unmeasurable and scores 0, fail-closed". They are implemented here so the items this

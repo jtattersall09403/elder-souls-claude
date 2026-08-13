@@ -122,3 +122,14 @@ SwiftShader evidence is not used for the observations below.
 Current builder estimate: about **50-55%** toward the requested whole-game visual bar. This estimate
 weights actual pixels and moving output more heavily than green structural gates. Complete blind
 comparison and both 7/10 judgements remain exclusively critic-owned and are not claimed here.
+
+## Final-builder traversal/containment delta (2026-08-13)
+
+| Population | Production repair | Focused evidence | Remaining visual work |
+|---|---|---|---|
+| Jump, fall and landing | Jump height is launch-floor-relative; collision and province traversal preserve the declared airborne root-motion window; teardown returns to the launch floor instead of world Y=0 | 46 f@60 at launch Y=8.75; peak Y=9.3681; landing Y=8.75; launch-base deletion ends at Y=0 | Hardware normal-speed side/rear clips on terrain, stairs and interior floors; pose/weight/landing polish remains builder-red |
+| Interior walls and thresholds | One record-derived shell plan drives rendered walls, visible closed door and CollisionCell primitives | 115/115 rooms; 460 wall approaches and 115 threshold approaches contained; door-only and whole-shell deletions release 115/115 | Door opening animation, deeper threshold construction and furniture collision are not yet claimed; room repetition/occlusion remain red |
+| NPC interior containment | Scheduled non-combat NPCs resolve after their same-frame schedule walk against the shared active room/street cell | 115/115 representative NPC threshold approaches contained; absent/non-current-cell people excluded | Broader navigation around props/crowds and representative moving pixels remain |
+
+Reproduction: `node tools/render/w1-30-traversal-controls.mjs`, then the six checkpoint commands in
+`BUILDER-DELIVERY.md`. The W1-30 aggregate fails closed if this focused gate is red.

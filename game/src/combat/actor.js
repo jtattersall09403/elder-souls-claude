@@ -43,6 +43,10 @@ export class CombatBody {
     this.animFrame = 0;
     this.move = null;
     this.airborne = false;
+    // The jump clip stores an OFFSET, while `pos[1]` is a world-space elevation. Keeping the
+    // launch floor explicitly prevents an elevated room, boardwalk or province tile from
+    // being replaced by the clip's 0..apex range for the duration of the action.
+    this.jumpBaseY = 0;
     this.twoHanded = false;
     this.actionableAt = 0;
     this.iframe = false;
@@ -177,6 +181,7 @@ export class CombatBody {
     this.rollDirDeg = (opts && opts.dirDeg !== undefined) ? opts.dirDeg : this.yaw;
     this.moveStartFrame = frame;
     this.moveOpts = opts || {};
+    if (move.kind === 'jump') this.jumpBaseY = this.pos[1];
   }
 
   /**
@@ -216,9 +221,10 @@ export class CombatBody {
       // `jumpApexMult` is seam S19's `leap`: RI-MAG06 §B judges it by "`pos[1]` peak strictly
       // greater than the unbuffed jump", so it has to scale the SAME root-motion arc the
       // unbuffed jump uses rather than adding a second vertical of its own. Default 1.
-      this.pos[1] = Math.max(0, m.clip.rootOffsetYAt(f) * m.apex_m * (this.jumpApexMult || 1));
+      this.pos[1] = this.jumpBaseY
+        + Math.max(0, m.clip.rootOffsetYAt(f) * m.apex_m * (this.jumpApexMult || 1));
       this.airborne = f >= m.airborne[0] && f <= m.airborne[1];
-    } else if (this.airborne) { this.airborne = false; this.pos[1] = 0; }
+    } else if (this.airborne) { this.airborne = false; this.pos[1] = this.jumpBaseY; }
 
     // step 5: root motion. The clip's delta, along the direction latched at frame 1 for a
     // roll, or the actor's facing for everything else. The controller adds NOTHING of its own.
@@ -338,7 +344,10 @@ export class CombatBody {
   }
 
   endMove() {
-    if (this.move && this.move.kind === 'jump') { this.airborne = false; this.pos[1] = 0; }
+    if (this.move && this.move.kind === 'jump') {
+      this.airborne = false;
+      this.pos[1] = this.jumpBaseY;
+    }
     // RI-CMB05 §A: poise resets to full on the frame the stagger animation ENDS. Doing it on
     // the frame the stagger STARTS would let a second hit during the stagger begin eating a
     // fresh pool, which is the stagger-lock chain the reset exists to prevent.
