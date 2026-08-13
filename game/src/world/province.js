@@ -719,17 +719,17 @@ export class Province {
 
     const f=this.field,step=GEOLOGY_LATTICE_M,n=Math.ceil(GEOLOGY_RADIUS_M/step);
     const gx0=Math.floor((x-GEOLOGY_RADIUS_M)/step),gz0=Math.floor((z-GEOLOGY_RADIUS_M)/step);
-    const buckets=new Map(),m=new THREE.Matrix4(),q=new THREE.Quaternion(),v=new THREE.Vector3(),s=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);
+    const buckets=new Map(),m=new THREE.Matrix4(),q=new THREE.Quaternion(),yaw=new THREE.Quaternion(),v=new THREE.Vector3(),s=new THREE.Vector3(),up=new THREE.Vector3(0,1,0),normal=new THREE.Vector3();
     // density, horizontal grammar scale, vertical scale, admitted water depth, cluster scale.
     // The first hardware atlas rejected the original small/dense values: they read as repeated
     // trinkets (especially wind shells) rather than a landform hierarchy. Fewer, broader founded
     // clusters carry the same instance budget with clearer negative space and regional rhythm.
     const profiles={
-      'root-hummocks':[.34,1.55,.72,.16,1.30],'kiln-shelves':[.27,1.70,.72,.03,1.28],'tidal-ridges':[.34,1.82,.62,.12,1.34],
-      'drowned-hollows':[.31,1.55,.68,.42,1.25],'sap-fan-rises':[.29,1.76,.62,.14,1.30],'wax-cell-mounds':[.35,1.45,.78,.04,1.26],
-      'wreck-dunes':[.25,1.90,.60,.10,1.36],'salt-tusks':[.31,1.65,.88,.02,1.38],'basalt-steps':[.33,1.54,.78,.01,1.28],
+      'root-hummocks':[.34,1.55,.72,.20,1.30],'kiln-shelves':[.27,1.70,.72,.03,1.28],'tidal-ridges':[.42,1.82,.62,.68,1.34],
+      'drowned-hollows':[.36,1.55,.68,.86,1.25],'sap-fan-rises':[.34,1.76,.62,.72,1.30],'wax-cell-mounds':[.35,1.45,.78,.04,1.26],
+      'wreck-dunes':[.34,1.90,.60,.64,1.36],'salt-tusks':[.38,1.65,.88,.02,1.38],'basalt-steps':[.33,1.54,.78,.01,1.28],
       'wind-shells':[.18,1.82,.62,.01,1.46],'thorn-islands':[.32,1.62,.70,.20,1.28],'cliff-buttresses':[.29,1.62,.78,.01,1.30],
-      'braided-channels':[.34,1.92,.58,.18,1.34],
+      'braided-channels':[.40,1.92,.58,.74,1.34],
     };
     for(let iz=0;iz<=n*2;iz++)for(let ix=0;ix<=n*2;ix++){
       const cx=gx0+ix,cz=gz0+iz,px=(cx+hash2(cx,cz,6413))*step,pz=(cz+hash2(cx,cz,6419))*step;
@@ -746,8 +746,17 @@ export class Province {
       if(!b){b={ri,art,xf:[]};buckets.set(ri,b);}
       if(b.xf.length>=MAX_GEOLOGY)continue;
       const fade=1-smoothstep(GEOLOGY_RADIUS_M-18,GEOLOGY_RADIUS_M,d),scale=cluster*(.72+hash2(cx,cz,6431)*.28)*(.70+.30*fade);
-      q.setFromAxisAngle(up,hash2(cx,cz,6433)*Math.PI*2);
-      v.set(px,this._meshY(px,pz)+.018+this._skinLift(px,pz),pz);
+      // Broad shelves laid flat against a 20-degree slope disappear into it. Derive the normal
+      // from the same drawn mesh interpolation that supplies the founded Y, align local up to it,
+      // then apply deterministic yaw in local space. Clamp near verticals for stable transforms.
+      const nd=1.35,dx=this._meshY(px-nd,pz)-this._meshY(px+nd,pz),dz=this._meshY(px,pz-nd)-this._meshY(px,pz+nd);
+      normal.set(dx,nd*2,dz).normalize();if(normal.y<.55)normal.lerp(up,.55).normalize();
+      q.setFromUnitVectors(up,normal);yaw.setFromAxisAngle(up,hash2(cx,cz,6433)*Math.PI*2);q.multiply(yaw);
+      const groundY=this._meshY(px,pz)+.018+this._skinLift(px,pz),surface=f.waterSurfaceAt(px,pz);
+      // Water-bearing grammars articulate the wet/dry junction rather than remaining buried on
+      // the bed. Keep their base just below the surface so the lower mass is visibly water-rooted.
+      const foundedY=surface!==null&&f.depthAt(px,pz)>.04?Math.max(groundY,surface-.10):groundY;
+      v.set(px,foundedY,pz);
       s.set(scale*wide,scale*tall,scale/Math.sqrt(wide));m.compose(v,q,s);b.xf.push(m.clone());
     }
     for(const b of buckets.values()){
