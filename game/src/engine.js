@@ -58,6 +58,7 @@ import { InputPipeline } from './input/pipeline.js';
 import { RealInput } from './input/real.js';
 import { setProfiles } from './input/bindings.js';
 import { Renderer } from './render/renderer.js';
+import { interiorCollisionShapes } from './render/interior.js';
 import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
@@ -5797,6 +5798,11 @@ export class Engine {
       this._furnishInterior(null);
     }
     this.renderer.setCell(cell);
+    // Generated interiors used to stop at pixels: the same `bounds_m` wall shell was never
+    // installed in `sim.cell`, so the camera, player and every actor could leave the room into
+    // the clear colour. Build one cell from render/interior.js's shared shell plan. Camera
+    // fixtures still take precedence through `sim.cellId`; releasing one restores this cell.
+    this._syncInteriorCollisionCell();
     this._drawnCellKey = cell === 'interior' ? `interior:${this.sim.env.interior}` : cell;
     this._cellDirty = false;
     if (cell === 'province' && this.renderer.province) {
@@ -5813,6 +5819,40 @@ export class Engine {
     if (cell === 'province') this._ensureProvinceMarks(); else this._clearProvinceMarks();
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
+  }
+
+  _syncInteriorCollisionCell() {
+    const id = this.sim && this.sim.env ? this.sim.env.interior : null;
+    const rec = id && this.settlements ? this.settlements.interior(id) : null;
+    this._interiorCell = null;
+    if (rec && !this._w130InteriorContainmentOff) {
+      const shapes = interiorCollisionShapes(rec);
+      this._interiorCell = new CollisionCell(`interior:${id}`, shapes, {
+        class: 'interior', title: rec.name || id, interior_id: id,
+        bounds_m: rec.bounds_m || null,
+      });
+    }
+    if (!this.sim.cellId) this.sim.cell = this._interiorCell || EMPTY_CELL;
+    return this.interiorContainmentReport();
+  }
+
+  interiorContainmentReport() {
+    const c = this._interiorCell;
+    return {
+      enabled: !this._w130InteriorContainmentOff,
+      interior: this.sim && this.sim.env ? this.sim.env.interior : null,
+      cell_id: c ? c.id : null,
+      shapes: c ? c.shapes.length : 0,
+      active: !!(c && this.sim.cell === c && !this.sim.cellId),
+      camera_fixture: this.sim.cellId || null,
+    };
+  }
+
+  /** Harness-only delete-the-fix arm. It removes the complete shipping consumer while keeping
+   * the drawn room and record unchanged, so a boundary walk must become red. */
+  setInteriorContainment(enabled) {
+    this._w130InteriorContainmentOff = enabled === false;
+    return this._syncInteriorCollisionCell();
   }
 
   /**
@@ -6264,7 +6304,11 @@ export class Engine {
 
   /** Select the static collision cell the spring arm casts against. */
   setCameraCell(id) {
-    if (id === null || id === undefined) { this.sim.cell = EMPTY_CELL; this.sim.cellId = null; return null; }
+    if (id === null || id === undefined) {
+      this.sim.cellId = null;
+      this.sim.cell = this._interiorCell || EMPTY_CELL;
+      return null;
+    }
     const cell = this.cells.get(String(id));
     if (!cell) {
       throw new Error(`setCameraCell('${id}'): no such cell. Known: ${[...this.cells.keys()].sort().join(', ')}`);

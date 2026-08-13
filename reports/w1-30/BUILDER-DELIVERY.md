@@ -257,3 +257,40 @@ Important populations are `motion-phase43-full`, `atlas-phase74-interiors-produc
 The latest measured boundary sequence recorded GPU frame time around 17.99 ms p50 and 26.96 ms
 p99; several settlement representatives also exceed the intended draw budget. Performance is
 therefore not closed and will be repaired without reducing required population coverage.
+
+## Final-builder continuation: traversal and room containment (2026-08-13)
+
+This is a bounded production phase, not W1-30 closure. It repairs two ordinary-play failures that
+the prior motion/census checkpoint exposed but did not solve:
+
+* Jump root motion is now relative to the launch floor. The former action replaced world Y with a
+  `0..0.62 m` clip value and then reset Y to zero, which made an actor on elevated terrain or in an
+  elevated room disappear below the scene and reappear at action teardown. The declared 46 f@60
+  action, stamina cost, no-i-frame rule, contextual attack window and simulation rig remain the
+  authorities.
+* Every one of the 115 shipped generated interiors now installs a `CollisionCell` from the exact
+  record-derived shell plan used to render its walls. A visible closed door leaf fills the entry
+  aperture; the existing `interact` action remains the only cell transition. Player, combat enemy,
+  spring camera and scheduled non-combat NPC paths consume the same room shell.
+
+`node tools/render/w1-30-traversal-controls.mjs` is the focused production control. At this tree it
+reports GREEN over one elevated jump, 460 wall approaches, 115 door approaches and 115 scheduled-NPC
+approaches. The jump rises from Y=8.75 to Y=9.3681 and returns to Y=8.75 after exactly 46 frames. A
+launch-floor deletion drops the action to Y=0. Removing only each door releases all 115 thresholds;
+removing every shell releases all 115 wall controls. The W1-30 aggregate now consumes this gate.
+
+The six inherited checkpoint commands are GREEN in this continuation. They are structural and
+causal evidence, not a visual-quality verdict. Native moving pixels remain required to confirm the
+door construction, camera response and jump silhouette from ordinary UI-visible play.
+
+The repository-native RunPod smoke attempted six allowlisted candidates from the clean production
+target before this repair. Each readiness failure was deletion-confirmed, and the bounded run ended
+without one of its Pods remaining. Later cleanup dry-runs saw differently named Pods owned by other
+parallel builders; those Pods were deliberately left untouched. A committed hardware continuation
+must use a unique artifact root and the full committed $1.00/hour ceiling.
+
+Rough builder estimates for this phase only: jump/traversal correctness 85% (hardware moving review
+and broader slope/stair combinations remain); generated-interior boundary containment 90% (door
+opening animation and furniture collision are not claimed); generated-interior visible production
+quality remains approximately 55% and still needs the matrix's composition/prop/lighting work. No
+modern-fidelity or art-direction score is assigned.

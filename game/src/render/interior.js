@@ -165,6 +165,77 @@ const cyl = (rt, rb, h, seg, m) => new THREE.Mesh(new THREE.CylinderGeometry(rt,
 const ico = (r, d, m) => new THREE.Mesh(new THREE.IcosahedronGeometry(r, d || 0), m);
 const craftedBox=(w,h,d,m,bevel=Math.min(w,h,d)*.08)=>{const s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(w/2,-h/2);s.lineTo(w/2,h/2);s.lineTo(-w/2,h/2);s.closePath();const g=new THREE.ExtrudeGeometry(s,{depth:d,steps:1,bevelEnabled:true,bevelSegments:1,bevelSize:bevel,bevelThickness:bevel});g.translate(0,0,-d/2);return new THREE.Mesh(g,m);};
 
+export const INTERIOR_SHELL_WALL_T = 0.30;
+export const INTERIOR_DOOR_W = 1.40;
+export const INTERIOR_DOOR_H = 2.10;
+
+/**
+ * One record-derived shell plan, consumed by both pixels and physics.
+ *
+ * Keeping the wall split here prevents the rendered doorway and CollisionCell doorway from
+ * drifting into two different openings. The room is closed during ordinary play: the visible
+ * leaf fills the portal and the existing `interact` door action performs the cell transition.
+ */
+export function interiorShellPlan(rec) {
+  if (!rec) return null;
+  const bounds = rec.bounds_m || { x: [-6, 6], y: [0, 3.2], z: [-9, 9] };
+  const bx = bounds.x, by = bounds.y, bz = bounds.z;
+  const W = bx[1] - bx[0], H = by[1] - by[0], D = bz[1] - bz[0];
+  const entry = (rec.continuity && rec.continuity.entry_side) || 'south';
+  const parts = [];
+  const add = (id, role, c, size, side = null) => parts.push({ id, role, c, size, side });
+  const wall = (cx, cz, w, d, side) => {
+    if (side !== entry) {
+      add(`wall:${side}`, 'wall', [cx, by[0] + H / 2, cz], [w, H, d], side);
+      return;
+    }
+    const alongX = w > d;
+    const span = alongX ? w : d;
+    const seg = Math.max(0, (span - INTERIOR_DOOR_W) / 2);
+    for (const sign of [-1, 1]) {
+      const off = sign * (INTERIOR_DOOR_W / 2 + seg / 2);
+      add(`wall:${side}:${sign < 0 ? 'left' : 'right'}`, 'wall',
+        [cx + (alongX ? off : 0), by[0] + H / 2, cz + (alongX ? 0 : off)],
+        [alongX ? seg : w, H, alongX ? d : seg], side);
+    }
+    const lintelH = Math.max(0.05, H - INTERIOR_DOOR_H);
+    add(`wall:${side}:lintel`, 'wall',
+      [cx, by[0] + INTERIOR_DOOR_H + lintelH / 2, cz],
+      [alongX ? INTERIOR_DOOR_W : w, lintelH, alongX ? d : INTERIOR_DOOR_W], side);
+    // The leaf is deliberately a distinct part so delete controls can remove only containment
+    // at the threshold while retaining the record-derived wall split.
+    add(`door:${side}`, 'door', [cx, by[0] + (INTERIOR_DOOR_H - 0.08) / 2, cz],
+      [alongX ? INTERIOR_DOOR_W - 0.10 : 0.12, INTERIOR_DOOR_H - 0.08,
+        alongX ? 0.12 : INTERIOR_DOOR_W - 0.10], side);
+  };
+  wall((bx[0] + bx[1]) / 2, bz[0], W, INTERIOR_SHELL_WALL_T, 'north');
+  wall((bx[0] + bx[1]) / 2, bz[1], W, INTERIOR_SHELL_WALL_T, 'south');
+  wall(bx[0], (bz[0] + bz[1]) / 2, INTERIOR_SHELL_WALL_T, D, 'west');
+  wall(bx[1], (bz[0] + bz[1]) / 2, INTERIOR_SHELL_WALL_T, D, 'east');
+  return { bounds, bx, by, bz, W, H, D, entry, parts };
+}
+
+/** Collision primitives for the exact shell plan drawn below. Furniture remains non-solid in
+ * this bounded repair; walls, closed door, floor and ceiling are the containment contract. */
+export function interiorCollisionShapes(rec, opts = {}) {
+  const plan = interiorShellPlan(rec);
+  if (!plan) return [];
+  const shapes = [{ k: 'plane_y', y: plan.by[0], id: 'interior:floor' }];
+  for (const p of plan.parts) {
+    if (p.role === 'door' && opts.door === false) continue;
+    shapes.push({
+      k: 'box', c: p.c.slice(), h: [p.size[0] / 2, p.size[1] / 2, p.size[2] / 2],
+      id: `interior:${p.id}`,
+    });
+  }
+  shapes.push({
+    k: 'box',
+    c: [(plan.bx[0] + plan.bx[1]) / 2, plan.by[1] + 0.15, (plan.bz[0] + plan.bz[1]) / 2],
+    h: [plan.W / 2, 0.15, plan.D / 2], id: 'interior:ceiling',
+  });
+  return shapes;
+}
+
 // A closed, asymmetrical flame blade with a broad hot root and a bent, tapered crown. It is
 // intentionally authored geometry rather than a cone: even without simulation the overlapping
 // silhouettes read as tongues of flame from a moving camera, not red traffic markers.
@@ -479,9 +550,8 @@ export function buildInterior(root, rec, opts) {
 
   const P = paletteFor(rec);
   const art = rec.settlement ? settlementArt(rec.settlement) : null;
-  const bounds = rec.bounds_m || { x: [-6, 6], y: [0, 3.2], z: [-9, 9] };
-  const bx = bounds.x, by = bounds.y, bz = bounds.z;
-  const W = bx[1] - bx[0], H = by[1] - by[0], D = bz[1] - bz[0];
+  const shellPlan = interiorShellPlan(rec);
+  const { bounds, bx, by, bz, W, H, D } = shellPlan;
   summary.bounds = { w: +W.toFixed(2), h: +H.toFixed(2), d: +D.toFixed(2) };
   const h = hashStr(rec.id || 'interior');
 
@@ -510,27 +580,29 @@ export function buildInterior(root, rec, opts) {
 
   // The doorway goes in the wall `continuity.entry_side` names, which is the same field
   // `interior_spawn` is derived from — so the door you came in by is the door you can see.
-  const entry = (rec.continuity && rec.continuity.entry_side) || 'south';
-  const DOOR_W = 1.4;
-  const shell = (m) => { m.name = 'roomshell'; return m; };
-  const addWall = (cx, cz, w, d, side) => {
-    if (side !== entry) { part(root, shell(box(w, H, d, P.wall)), cx, by[0] + H / 2, cz); return; }
-    // Split, and put a lintel over the gap.
-    const along = w > d;
-    const span = along ? w : d;
-    const seg = (span - DOOR_W) / 2;
-    for (const s of [-1, 1]) {
-      const off = s * (DOOR_W / 2 + seg / 2);
-      part(root, shell(box(along ? seg : w, H, along ? d : seg, P.wall)), cx + (along ? off : 0), by[0] + H / 2, cz + (along ? 0 : off));
+  const entry = shellPlan.entry;
+  const DOOR_W = INTERIOR_DOOR_W;
+  for (const p of shellPlan.parts) {
+    const mat = p.role === 'door' ? P.wood : P.wall;
+    const mesh = box(p.size[0], p.size[1], p.size[2], mat);
+    mesh.name = p.role === 'door' ? 'interior-door-leaf' : 'roomshell';
+    mesh.position.set(p.c[0], p.c[1], p.c[2]);
+    mesh.castShadow = p.role === 'door'; mesh.receiveShadow = true; root.add(mesh);
+    if (p.role === 'door') {
+      // Cross-bracing and a metal latch make the required closed surface read as a constructed
+      // threshold rather than a wall-coloured collision patch.
+      const alongX = p.size[0] > p.size[2];
+      for (const y of [by[0] + 0.48, by[0] + 1.48]) {
+        const brace = box(alongX ? p.size[0] * 0.84 : 0.055, 0.10,
+          alongX ? 0.055 : p.size[2] * 0.84, P.accent);
+        brace.position.set(p.c[0], y, p.c[2]); brace.name = 'interior-door-brace'; root.add(brace);
+      }
+      const latch = box(alongX ? 0.10 : 0.07, 0.12, alongX ? 0.07 : 0.10, P.metal);
+      latch.position.set(p.c[0] + (alongX ? p.size[0] * 0.28 : 0), by[0] + 1.05,
+        p.c[2] + (alongX ? 0 : p.size[2] * 0.28));
+      latch.name = 'interior-door-latch'; root.add(latch);
     }
-    part(root, shell(box(along ? DOOR_W : w, H - 2.1, along ? d : DOOR_W, P.wall)), cx, by[0] + 2.1 + (H - 2.1) / 2, cz);
-    const frame = P.wood;
-    part(root, box(along ? DOOR_W + 0.3 : d + 0.1, 0.18, along ? d + 0.1 : DOOR_W + 0.3, frame), cx, by[0] + 2.1, cz);
-  };
-  addWall((bx[0] + bx[1]) / 2, bz[0], W, 0.3, 'north');
-  addWall((bx[0] + bx[1]) / 2, bz[1], W, 0.3, 'south');
-  addWall(bx[0], (bz[0] + bz[1]) / 2, 0.3, D, 'west');
-  addWall(bx[1], (bz[0] + bz[1]) / 2, 0.3, D, 'east');
+  }
 
   // A single flat cuboid shell made all 115 rooms read as the same generated box even when the
   // declared furniture differed. Build shallow architectural bays on the inside face instead:

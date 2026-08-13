@@ -182,6 +182,11 @@ export class Traversal {
     const sub = f.substrateAt(x, z);
     this.substrate = sub;
     const swimming = this.band === 'W5';
+    // A combat jump is a declared root-motion action, not an accidental fall. Its clip owns the
+    // vertical offset until JUMP_LAND while Traversal continues to own horizontal terrain,
+    // water and substrate consequences. Treating the 0.62 m apex as a ledge fall made this
+    // system overwrite the action one frame after it began.
+    const authoredJump = !!(body && body.move && body.move.kind === 'jump');
 
     // ---- 2. retraction: water, substrate, burden ----------------------------------------------
     // A retraction can only change where you ended up. It cannot reach a frame number (S25).
@@ -207,7 +212,7 @@ export class Traversal {
     this.onDeck = f.onDeckAt ? f.onDeckAt(x, z) : null;
     this.onRoad = f.onRoadAt ? f.onRoadAt(x, z) : false;
     this.blockedBySlope = false;
-    if (!this.airborne && !swimming && !this.onDeck && !this.onRoad && (dx !== 0 || dz !== 0)) {
+    if (!this.airborne && !authoredJump && !swimming && !this.onDeck && !this.onRoad && (dx !== 0 || dz !== 0)) {
       const run = Math.hypot(dx, dz);
       const ux = dx / run, uz = dz / run;
       // THE GATE IS THE SLOPE IN FRONT OF YOU, over a 1.5 m baseline.
@@ -277,7 +282,10 @@ export class Traversal {
     const ground = f.heightAt(x, z);
     const surf = f.waterSurfaceAt(x, z);
     const groundOrFloat = swimming && surf !== null ? surf - SWIM_FLOAT_M : ground;
-    if (swimming) {
+    if (authoredJump) {
+      // `combat-bridge.mirror()` already supplied the floor-relative clip height. Do not create
+      // a second gravity arc or snap it back to the field surface.
+    } else if (swimming) {
       // Swimming: the body floats with the waterline at chest, so its Y is the surface minus the
       // submerged fraction of a 1.8 m body. There is no fall while swimming.
       //
@@ -309,7 +317,7 @@ export class Traversal {
 
     // ---- 6. sliding ---------------------------------------------------------------------------
     // Above `slide_deg` the body is not supported; it goes downhill whether it was asked to or not.
-    if (!this.airborne && !swimming && !this.onDeck && !this.onRoad) {
+    if (!this.airborne && !authoredJump && !swimming && !this.onDeck && !this.onRoad) {
       const deg = f.slopeAt(x, z, 1.5);
       this.slopeDeg = deg;
       if (deg > C.slope.slide_deg) {
@@ -451,7 +459,7 @@ export class Traversal {
     // ---- 10. the state the player is in -------------------------------------------------------
     if (p.state !== 'DEATH') {
       if (this.mired) this._setState(p, 'MIRED');
-      else if (this.airborne) this._setState(p, 'FALL');
+      else if (!authoredJump && this.airborne) this._setState(p, 'FALL');
       else if (swimming) this._setState(p, this.submerged ? 'SUBMERGED' : 'SWIM');
     }
     return this;
