@@ -4,7 +4,7 @@ import fs from 'node:fs'; import {execFileSync} from 'node:child_process'; impor
 const root=new URL('../../',import.meta.url), read=p=>fs.readFileSync(new URL(p,root),'utf8');
 const renderer=read('game/src/render/renderer.js'), sky=read('game/src/render/sky.js'), foundation=read('game/src/render/visual-foundation.js'),province=read('game/src/world/province.js'),actor=read('game/src/render/actor.js'),vfx=read('game/src/render/spell-vfx.js');
 const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[fileURLToPath(new URL(p,root))],{encoding:'utf8'}));}catch{return{result:'RED'};}};
-const assetGate=run('tools/render/w1-30-assets.mjs'),populationGate=run('tools/render/w1-30-visual-populations.mjs'),traversalGate=run('tools/render/w1-30-traversal-controls.mjs');
+const assetGate=run('tools/render/w1-30-assets.mjs'),populationGate=run('tools/render/w1-30-visual-populations.mjs'),traversalGate=run('tools/render/w1-30-traversal-controls.mjs'),settlementGate=run('tools/render/w1-30-settlement-construction.mjs');
 const predicates={
   boundedCompositor:['WebGLRenderTarget','DepthTexture','worldBeforeUI:true'].every(x=>renderer.includes(x)),
   workingSabotage:['setVisualFeature','uAO.value=this.quality.ao','shadowMap.enabled=!!enabled'].every(x=>renderer.includes(x)),
@@ -21,8 +21,9 @@ const predicates={
   productionPooling:province.includes('STYLE_MATERIAL_CACHE')&&actor.includes('_equipmentMaterialCache'),
   familyFormsAndVfxLight:actor.includes('actor-family-form:')&&vfx.includes('spell-vfx:practical:'),
   traversalAndInteriorContainment:traversalGate.result==='GREEN'&&traversalGate.interiors?.population===115&&traversalGate.jump?.frames===46,
+  semanticSettlementConstruction:settlementGate.result==='GREEN'&&settlementGate.population?.structures===56&&settlementGate.production?.shellWalls===0,
 };
 const redControls={}; for(const token of ['WebGLRenderTarget','DepthTexture','setVisualFeature','EquirectangularReflectionMapping','Math.round(focus.x/texel)','normalMap:authored?.normal','STYLE_MATERIAL_CACHE','actor-family-form:','spell-vfx:practical:']) {const s=[renderer,sky,foundation,province,actor,vfx].find(x=>x.includes(token));redControls[token]=!!s&&!s.replaceAll(token,'__SABOTAGED__').includes(token);}
 let testedCommit='unknown';try{testedCommit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();}catch{}
 const green=Object.values(predicates).every(Boolean)&&Object.values(redControls).every(Boolean);
-console.log(JSON.stringify({schema:'elder-souls/w1-30-builder-aggregate@2',testedCommit,predicates,uniqueRedControls:redControls,assets:{result:assetGate.result,files:assetGate.files,bytes:assetGate.bytes},population:{references:populationGate.references?.manifestRecords,regions:populationGate.world?.regions?.length,settlements:populationGate.world?.settlements?.length,interiors:populationGate.world?.interiors?.count},traversal:traversalGate,result:green?'GREEN':'RED'},null,2));if(!green)process.exit(1);
+console.log(JSON.stringify({schema:'elder-souls/w1-30-builder-aggregate@2',testedCommit,predicates,uniqueRedControls:redControls,assets:{result:assetGate.result,files:assetGate.files,bytes:assetGate.bytes},population:{references:populationGate.references?.manifestRecords,regions:populationGate.world?.regions?.length,settlements:populationGate.world?.settlements?.length,interiors:populationGate.world?.interiors?.count},traversal:traversalGate,settlements:settlementGate,result:green?'GREEN':'RED'},null,2));if(!green)process.exit(1);

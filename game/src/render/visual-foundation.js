@@ -144,7 +144,7 @@ export function worldMaterial(family, options={}) {
   const procedural=detailMaps(family), authored=options.authored===false?null:authoredMaps(family);
   const Material=family==='water'||family==='wet_chitin'||family==='resin'?THREE.MeshPhysicalMaterial:THREE.MeshStandardMaterial;
   const foliage=/^(leaf|reed)$/.test(family), woody=/^(bark|root|thorn)$/.test(family),baseColour=options.color ?? 0xffffff;
-  const mat=new Material({
+  const materialOptions={
     color: baseColour, roughness: options.roughness ?? spec.roughness,
     // A governed consumer may supply an admitted authored map (the foliage atlas is the first).
     // Previously every truthy `options.map` was silently ignored and replaced by the family
@@ -161,10 +161,17 @@ export function worldMaterial(family, options={}) {
     emissiveIntensity: options.emissiveIntensity ?? (family==='water'?.28:foliage?.24:woody?.035:1),
     envMapIntensity: options.envMapIntensity ?? (family==='metal'||family==='water'||family==='wet_chitin'?1.25:.72),
     depthWrite: options.depthWrite ?? family!=='water',
-    clearcoat: family==='water'?.72:family==='wet_chitin'||family==='resin'?.38:0,
-    clearcoatRoughness: family==='water'?.16:.34,
-    ior: family==='water'?1.333:1.48,
-  });
+  };
+  // `clearcoat`, `clearcoatRoughness` and `ior` belong to MeshPhysicalMaterial. Passing them to
+  // every Standard material emitted three warnings per material while building a town and made
+  // browser/Pod logs enormous. More importantly, it disguised which families really pay for the
+  // physical shader. Keep that cost and response on the three admitted physical families only.
+  if(Material===THREE.MeshPhysicalMaterial){
+    materialOptions.clearcoat=family==='water'?.72:.38;
+    materialOptions.clearcoatRoughness=family==='water'?.16:.34;
+    materialOptions.ior=family==='water'?1.333:1.48;
+  }
+  const mat=new Material(materialOptions);
   mat.name=`visual-family:${family}`; mat.userData.visualFamily=family;
   mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true, uvScale:authored?(authored.source.startsWith('cc0:')?[2,2]:[1,1]):[4,4], detail:authored?.source||'96px-albedo-height-roughness',
     wetness:Number(options.wetness||0), boundedException:options.boundedException||null,
