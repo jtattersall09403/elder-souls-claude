@@ -258,3 +258,21 @@ budget. Manifest SHA-256:
 `727670e167c368ea3ae90a2326ebcf59a7cd2e8fe101943731ea95c6dbd2bec3`. Pod
 `5qg18f4uuz7a7f` and template `oeg5oaejdl` were deletion-confirmed after retrieval; cleanup found
 no managed orphan.
+
+## Hierarchical approach occupation / hardware review open (2026-08-13)
+
+All eight approaches now alternate seven work areas across four readable families: marker,
+handcart, drying rack and vendor bay. The focused gate observes 56 clusters and 810 founded
+modules. Deleting only occupation removes all 810 modules while retaining all 1,876 route parts,
+so road population cannot mask this repair. Batching remains GREEN at 782 final render meshes
+holding 40,863 instances versus 20,323 building-local meshes.
+
+The first clean A5000 atlas (`aa493c69`, run `20260813-200518Z-178407`) was opened frame by frame
+and rejected: work silhouettes improved foreground hierarchy, but one flattened dry-town base
+looked like a pale landing pad. The revised clean `5ad11d22` candidate replaces it with founded
+cobbles or gapped wet boards. Its revised GPU row remains open because three attached runner
+processes were externally terminated during remote bootstrap; each unique Pod and template was
+then deleted and absence-confirmed using the repository recovery command. A preceding narrowed
+A5000 request was definite no-capacity and created nothing. No revised pixels or timing evidence
+are claimed. The most recent accepted hardware row therefore remains the prior facade-relief L4
+capture, and a post-hardening rerun is required.

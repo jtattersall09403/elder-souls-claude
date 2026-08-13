@@ -93,10 +93,18 @@
   ],
   "latest_builder_phase": {
     "date": "2026-08-13",
-    "scope": "shared four-face relief for every ordinary settlement building, including projecting courses, piers, panels, attached braces and entry apertures, with targeted deletion controls and native NVIDIA/Vulkan pixel review",
-    "gate": "node tools/render/w1-30-settlement-facades.mjs; node tools/render/w1-30-settlement-batching.mjs; node tools/render/w1-30-aggregate.mjs",
-    "result": "GREEN structural/causal coverage: all 149 ordinary buildings across 8 settlements consume 10884 relief modules and 398 entry apertures; delete arm removes all 149 relief groups; the former 19673 building-local render meshes compress to 782 final render meshes with 40213 instances (96.0%)",
-    "hardware_state": "GREEN L4/Vulkan attestation and 8/8 directly inspected captures; revised Blackrose timber is attached and Archon/Soulrest/Stormhold gain visible near-wall depth, but empty foreground, Gideon scale/fog, procedural facade grammar and the 429-897 draw range remain builder-red"
+    "scope": "seven alternating approach work areas per settlement across marker, handcart, drying-rack and vendor families, with founded dry/wet surfaces and an occupation-only delete control",
+    "gate": "node tools/render/w1-30-settlement-occupation.mjs; node tools/render/w1-30-settlement-public-realm.mjs; node tools/render/w1-30-settlement-batching.mjs; node tools/render/w1-30-aggregate.mjs",
+    "result": "GREEN structural/causal coverage: 56 clusters and 810 occupation modules across 8 settlements; occupation delete arm removes all 810 modules while retaining 1876 route parts; 20323 building-local meshes compress to 782 final render meshes with 40863 instances (96.2%)",
+    "hardware_state": "Initial A5000 pixels showed stronger work silhouettes but were rejected for landing-pad-like dry bases; clean 5ad11d22 repairs those bases, but revised hardware review is open after three locally terminated bootstrap sessions whose unique Pods/templates were exact-cleaned and deletion-confirmed"
+  },
+  "latest_hardware_attempts": {
+    "accepted_run_remains": "20260813-195102Z-172165 (prior facade-relief phase)",
+    "rejected_visual_run": "20260813-200518Z-178407 on Secure RTX A5000: all eight frames inspected; landing-pad-like dry work bases rejected",
+    "revised_revision": "5ad11d224fafe27696437013316f0a44aab70d6c",
+    "revised_source_snapshot_sha256": "e630f7536be50105cbab82cbf40a436ebaa28b41e707de347054ffe6c16dfd4e",
+    "revised_state": "hardware review pending; one definite no-capacity non-creation and three local attached-process terminations during bootstrap",
+    "cleanup": "all three created Pods and private ephemeral templates deleted with the repository-native exact-Pod recovery command and subsequent absence confirmed; final dry-run found no managed orphan"
   },
   "latest_hardware_run": {
     "run_id": "20260813-195102Z-172165",
