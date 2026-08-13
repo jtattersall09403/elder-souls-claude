@@ -1803,15 +1803,29 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   const add=(mesh,x,y,z,ry=0,label='street')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-street:${plan.id}:${label}`;street.add(mesh);out.meshes++;};
   const cy=Number.isFinite(groundY(centreX,centreZ))?groundY(centreX,centreZ):0;
   const courtR=plan.id==='lilmoth'||plan.id==='helstrom'?5.8:4.8;
+  const regionalRealm=opts.regionalPublicRealm!==false;
+  const wetTown=['helstrom','lilmoth','thorn'].includes(plan.id);
   // Terrain-following pavers. One large disc clipped through the deliberately rough ground and
   // looked like a decal; small founded stones preserve relief while reading as a made place.
   for(let gx=-2;gx<=2;gx++)for(let gz=-2;gz<=2;gz++){
     const x=centreX+gx*courtR*.36,z=centreZ+gz*courtR*.36;
     if(Math.hypot(gx,gz)>2.45)continue;
     const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
-    const p=box(courtR*.34,.22,courtR*.34,(gx+gz)&1?P.stone:P.wood);
-    p.rotation.y=((hashStr(plan.id)+gx*7+gz*13)%9-4)*.012;
-    add(p,x,y+.13,z,0,'court-paver');
+    if(regionalRealm){
+      if(wetTown){
+        const p=box(courtR*.31,.13,courtR*.22,(gx+gz)&1?P.wood:P.stone);
+        p.rotation.z=((gx*5+gz*3)&3)*.008-.012;
+        add(p,x+((gz&1)?-.12:.12),y+.10,z,((hashStr(plan.id)+gx*7+gz*13)%9-4)*.018,'court-board');
+      }else{
+        const p=ico(courtR*.19,1,(gx+gz)&1?P.stone:P.wood);
+        p.scale.set(1.25+((gx-gz)&1)*.08,.16,.86+((gx+gz)&1)*.09);
+        add(p,x+((gz&1)?-.14:.08),y+.08,z+((gx&1)?.11:-.09),((hashStr(plan.id)+gx*7+gz*13)%9-4)*.08,'court-cobble');
+      }
+    }else{
+      const p=box(courtR*.34,.22,courtR*.34,(gx+gz)&1?P.stone:P.wood);
+      p.rotation.y=((hashStr(plan.id)+gx*7+gz*13)%9-4)*.012;
+      add(p,x,y+.13,z,0,'court-paver');
+    }
   }
   // A clearly authored arrival spine joins the southwest approach to the civic focus—the native
   // gameplay approach used by ordinary traversal, not a camera-only decal. Narrow, offset
@@ -1820,23 +1834,47 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // became the dominant object in all eight town frames. These bays keep a readable route while
   // exposing the ground between construction units and using the town's darker structural
   // palette rather than a generic road surface.
-  const approachR=Math.min(plan.radius_m*.58,48),wetTown=['helstrom','lilmoth','thorn'].includes(plan.id);
+  const approachR=Math.min(plan.radius_m*.58,48);
+  let approachOccupation=0;
   for(let i=0;i<14;i++){
     const t=(i+.5)/14,meander=Math.sin(i*.83+(hashStr(plan.id)%11))*.32;
     const x=centreX-approachR*(1-t)+meander,z=centreZ-approachR*(1-t)-meander;
     const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
-    const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
-    slab.rotation.z=(i%3-1)*.008;
-    add(slab,x,y+.13,z,-Math.PI*.25+((hashStr(plan.id)>>i)&3)*.009,'arrival-spine');
-    // Wet settlements lash transverse wear strips across their boardwalk; dry settlements use
-    // the same member as an occasional repaired joint. It adds scale without filling the gap.
-    if(wetTown||i%4===0){
-      const tie=box(2.62,.12,.13,wetTown?P.stone:P.wood);
-      add(tie,x,y+.25,z,-Math.PI*.25,'arrival-tie');
+    const yaw=-Math.PI*.25+((hashStr(plan.id)>>i)&3)*.012;
+    if(regionalRealm&&wetTown){
+      for(let lane=-1;lane<=1;lane++){
+        const across=lane*.68+(((hashStr(plan.id+i)>>(lane+2))&3)-1.5)*.035;
+        const board=box(.55+(i+lane+3)%3*.055,.12,Math.max(1.62,approachR/14-.28+(lane&1)*.12),(i+lane)&1?P.wood:P.stone);
+        board.rotation.z=(lane*2+i%3-1)*.009;
+        add(board,x+Math.cos(yaw)*across,y+.10+((i+lane+3)%3)*.012,z-Math.sin(yaw)*across,yaw,'arrival-board');
+      }
+      if(i%2===0)add(box(2.28,.10,.11,P.stone),x,y+.19,z,yaw,'arrival-lashing');
+    }else if(regionalRealm){
+      for(let lane=-1;lane<=1;lane++){
+        const along=(lane===0?0:(i&1?.44:-.44)),across=lane*.52;
+        const stone=ico(.52+((i+lane+3)%3)*.055,1,(i+lane)&1?P.stone:P.wood);
+        stone.scale.set(1.22,.14,.78+((i+lane+3)&1)*.10);
+        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.08,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+(lane*.13),'arrival-cobble');
+      }
+    }else{
+      const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
+      slab.rotation.z=(i%3-1)*.008;
+      add(slab,x,y+.13,z,yaw,'arrival-spine');
+      if(wetTown||i%4===0)add(box(2.62,.12,.13,wetTown?P.stone:P.wood),x,y+.25,z,-Math.PI*.25,'arrival-tie');
     }
     if(i%3===1){
       const edgeX=x+2.15,edgeZ=z-2.15,ey=Number.isFinite(groundY(edgeX,edgeZ))?groundY(edgeX,edgeZ):y;
       add(ico(.18+(i%2)*.04,1,i%2?P.accent:P.wood),edgeX,ey+.17,edgeZ,0,'arrival-edge');
+    }
+    if(regionalRealm&&[2,5,8,11].includes(i)){
+      const side=i%2?1:-1,ox=x+Math.cos(yaw)*side*2.25,oz=z-Math.sin(yaw)*side*2.25;
+      const oy=Number.isFinite(groundY(ox,oz))?groundY(ox,oz):y;
+      add(cyl(.07,.11,1.65+(i%3)*.18,6,P.wood),ox,oy+.83,oz,0,'approach-workpost');
+      const flag=box(.62,.48,.045,(i&1)?P.cloth:P.accent);flag.rotation.z=side*.08;
+      add(flag,ox+side*.34,oy+1.25,oz+.03,yaw,'approach-marker');
+      add(cyl(.25,.31,.44,8,(i&1)?P.wood:P.stone),ox-side*.42,oy+.22,oz+.26,yaw,'approach-vessel');
+      for(let k=0;k<2;k++)add(ico(.13+k*.035,1,k?P.accent:P.stone),ox+side*(.16+k*.28),oy+.12,oz-.38-k*.08,0,'approach-goods');
+      approachOccupation++;
     }
   }
   const stride=Math.max(1,Math.ceil(plan.buildings.length/12));
@@ -1845,9 +1883,15 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     const pieces=Math.max(2,Math.ceil((len-2.2)/3.2)),yaw=Math.atan2(dx,dz);
     for(let k=1;k<pieces;k++){
       const t=k/pieces,x=centreX+dx*t,z=centreZ+dz*t,y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
-      const walk=box(2.05,.20,Math.min(3.4,len/pieces+.18),(k+i)&1?P.stone:P.wood);
-      walk.rotation.z=((hashStr(b.id)+k)%5-2)*.008;
-      add(walk,x,y+.13,z,yaw,'causeway-paver');
+      if(regionalRealm&&wetTown){
+        for(const lane of [-1,0,1])add(box(.52,.11,Math.min(2.8,len/pieces-.16),(k+i+lane)&1?P.wood:P.stone),x+Math.cos(yaw)*lane*.62,y+.09,z-Math.sin(yaw)*lane*.62,yaw,'causeway-board');
+      }else if(regionalRealm){
+        for(const lane of [-1,0,1]){const walk=ico(.47+((k+i+lane+3)%3)*.04,1,(k+i+lane)&1?P.stone:P.wood);walk.scale.set(1.18,.13,.78);add(walk,x+Math.cos(yaw)*lane*.48,y+.08,z-Math.sin(yaw)*lane*.48,yaw+lane*.11,'causeway-cobble');}
+      }else{
+        const walk=box(2.05,.20,Math.min(3.4,len/pieces+.18),(k+i)&1?P.stone:P.wood);
+        walk.rotation.z=((hashStr(b.id)+k)%5-2)*.008;
+        add(walk,x,y+.13,z,yaw,'causeway-paver');
+      }
     }
   }
   const featureCount=Math.min(8,Math.max(4,Math.round(plan.buildings.length/5)));
@@ -1872,7 +1916,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
   }
   root.add(street);
-  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,consumer:'settlement-public-realm'};
+  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
   if(opts.settlementBatch){
     out.logical_meshes=out.meshes;
