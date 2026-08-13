@@ -1184,16 +1184,16 @@ function roofFor(town, P, w, d, h, hash) {
   g.name = 'roof';
   if (town === 'archon') {                      // kiln-fired clay dome, on a clay hip
     part(g, hipRoof(P, w, d, Math.min(w, d) * 0.22, P.roof), 0, h + Math.min(w, d) * 0.11, 0);
-    const dome = ico(Math.min(w, d) * 0.62, 1, P.roof);
-    dome.scale.set(w / (Math.min(w, d) * 1.24), 0.52, d / (Math.min(w, d) * 1.24));
-    part(g, dome, 0, h + Math.min(w, d) * 0.16, 0);
+    const dome = ico(Math.min(w, d) * 0.49, 2, P.roof);
+    dome.scale.set(w / (Math.min(w, d) * 1.16), 0.58, d / (Math.min(w, d) * 1.16));
+    part(g, dome, 0, h + Math.min(w, d) * 0.14, 0);
     part(g, cyl(Math.min(w, d) * 0.2, Math.min(w, d) * 0.26, 0.5, 9, P.stone), 0, h + Math.min(w, d) * 0.46, 0);
   } else if (town === 'helstrom') {             // grown shell over a lashed deck
     part(g, hipRoof(P, w, d, Math.min(w, d) * 0.16, P.wood, 0.7), 0, h + Math.min(w, d) * 0.08, 0);
-    const sh = ico(Math.min(w, d) * 0.72, 1, P.roof);
-    sh.scale.set(w / (Math.min(w, d) * 1.44), 0.4, d / (Math.min(w, d) * 1.44));
+    const sh = ico(Math.min(w, d) * 0.53, 2, P.roof);
+    sh.scale.set(w / (Math.min(w, d) * 1.18), 0.46, d / (Math.min(w, d) * 1.18));
     part(g, sh, 0, h + 0.2 + Math.min(w, d) * 0.12, 0);
-    for (let i = 0; i < 4; i++) { const a = i * 1.571; const r = cyl(0.14, 0.3, h * 0.8, 5, P.wood); r.rotation.z = Math.cos(a) * 0.3; r.rotation.x = Math.sin(a) * 0.3; part(g, r, Math.cos(a) * w * 0.42, h * 0.6, Math.sin(a) * d * 0.42); }
+    for (let i = 0; i < 4; i++) { const a = i * 1.571; const r = cyl(0.12, 0.25, h * 0.72, 7, P.wood); r.rotation.z = Math.cos(a) * 0.22; r.rotation.x = Math.sin(a) * 0.22; part(g, r, Math.cos(a) * w * 0.40, h * 0.55, Math.sin(a) * d * 0.40); }
   } else if (town === 'stormhold') {            // legion slab, flat, and a bloom course under it
     part(g, box(w + 0.6, 0.4, d + 0.6, P.roof), 0, h + 0.2, 0);
     for (let i = 0; i < Math.max(3, Math.round(w / 1.6)); i++) part(g, box(0.5, 0.22, 0.34, P.accent), -w / 2 + 0.6 + i * 1.6, h - 0.3, d / 2 + 0.1);
@@ -1206,8 +1206,10 @@ function roofFor(town, P, w, d, h, hash) {
     part(g, box(w + 0.8, 0.2, 0.22, P.wood), 0, h + d * 0.31, 0);
     part(g, cyl(0.24, 0.3, 1.1, 6, P.stone), w * 0.3, h + d * 0.3, -d * 0.2);
   } else if (town === 'soulrest') {             // bone ribs, salt-bleached
-    for (let i = 0; i < 4; i++) { const r = new THREE.Mesh(new THREE.TorusGeometry(Math.min(w, d) * 0.5, 0.13, 4, 9, Math.PI), P.stone); r.rotation.y = Math.PI / 2; part(g, r, 0, h, -d / 2 + 0.6 + i * ((d - 1.2) / 3)); }
-    part(g, box(w * 0.96, 0.12, d * 0.96, P.cloth), 0, h + Math.min(w, d) * 0.24, 0);
+    for (let i = 0; i < 4; i++) { const r = new THREE.Mesh(new THREE.TorusGeometry(Math.min(w, d) * 0.48, 0.15, 7, 14, Math.PI), P.stone); r.rotation.y = Math.PI / 2; part(g, r, 0, h, -d / 2 + 0.6 + i * ((d - 1.2) / 3)); }
+    // Three overlapping pitched salt-cloth panels turn the former flat ceiling plus bare cage
+    // into a continuous weather skin while leaving the bone ribs readable at the eaves.
+    for(const s of [-1,0,1]){const skin=box(w*.52,.13,d*.94,P.cloth);skin.rotation.z=s*.34;part(g,skin,s*w*.23,h+Math.min(w,d)*(.25-Math.abs(s)*.035),0);}
   } else if (town === 'lilmoth') {              // reed above the waterline, stone below it
     for (let i = 0; i < 9; i++) { const rd = cyl(0.05, 0.07, w + 0.6, 4, P.cloth); rd.rotation.z = Math.PI / 2; part(g, rd, 0, h + 0.5 - Math.abs(i - 4) * 0.09, -d / 2 + 0.4 + i * ((d - 0.8) / 8)); }
     part(g, box(w + 0.5, 0.14, d + 0.5, P.roof), 0, h + 0.06, 0);
@@ -1297,6 +1299,26 @@ export function buildBuilding(b, town) {
     part(g,box(Math.max(.5,w/bayN-.34),Math.max(.7,h*.34),.055,(i+hash)%3===0?P.stone:P.wall),x,h*.24,front);
     const brace=box(.10,Math.max(.8,h*.36),.09,P.wood);brace.rotation.z=((i+hash)&1?.32:-.32);
     part(g,brace,x,h*.34,front+s*.035);
+  }
+
+  // The entrance must read as a constructed threshold from every authority-owned entry side.
+  // Previously the leaf was the only cue, while the later settlement pass put trim on +z even
+  // when the actual door was on -x.  Build this assembly in a +z-facing local frame and rotate it
+  // onto the named wall, keeping every support physically connected to the ground and canopy.
+  if(b.enterable){
+    const u=doorAlongLocal(b), porch=new THREE.Group();
+    porch.name=`entry-porch:${b.id}`;
+    let px=0,pz=0,yaw=0;
+    if(side==='+z'){px=u;pz=d*.5;yaw=0;}
+    else if(side==='-z'){px=u;pz=-d*.5;yaw=Math.PI;}
+    else if(side==='+x'){px=w*.5;pz=u;yaw=Math.PI*.5;}
+    else {px=-w*.5;pz=u;yaw=-Math.PI*.5;}
+    const porchPart=(mesh,x,y,z,rz=0)=>{mesh.position.set(x,y,z);mesh.rotation.z=rz;mesh.castShadow=mesh.receiveShadow=true;porch.add(mesh);};
+    porchPart(box(2.35,.22,1.18,P.stone),0,.08,.44);
+    for(const sx of [-1,1]) porchPart(box(.18,2.12,.18,P.wood),sx*.92,1.06,.68,sx*.018);
+    const canopy=box(2.65,.20,1.45,P.roof);canopy.rotation.x=-.10;porchPart(canopy,0,2.20,.42);
+    porchPart(box(2.05,.19,.20,P.wood),0,2.05,.70);
+    porch.position.set(px,0,pz);porch.rotation.y=yaw;g.add(porch);
   }
 
   // ---- windows, on the walls that are not the door -------------------------------------------
@@ -1430,7 +1452,11 @@ export function buildSettlementExterior(root, plan, groundY) {
     const P=paletteFor({interior_kind:b.building_kind||b.kind,settlement:plan.id});
     const W=summary.w,D=summary.d,H=summary.h, ordered=art.imperial, seed=hashStr(b.id);
     const artPart=(mesh,x,y,z,ry=0,rz=0,label='trim')=>{mesh.position.set(x,y,z);mesh.rotation.y=ry;mesh.rotation.z=rz;mesh.castShadow=true;mesh.receiveShadow=true;mesh.name=`world-art-exterior:${plan.id}:${label}`;group.add(mesh);};
-    const cadence=ordered?3:2+(seed%3);
+    // Skyline and facade grammar should identify important buildings, not stamp the same crown
+    // onto every roof.  Reserve the expensive silhouette pass for tall/hero records; ordinary
+    // houses already receive the shared foundation, porch, aperture and roof construction above.
+    const hero=b.storeys>1||seed%5===0;
+    const cadence=hero?(ordered?3:2+(seed%2)):0;
     for(let i=0;i<cadence;i++) {
       const x=-W*.38+i*(W*.76/Math.max(1,cadence-1));
       const support=ordered?box(.18,H*.92,.22,P.stone):cyl(.10,.22,H*.94,6,P.wood);
@@ -1438,19 +1464,20 @@ export function buildSettlementExterior(root, plan, groundY) {
     }
     // Town-specific skyline primitive: kiln teeth, prison crenels, Imperial pediment, shell sail,
     // reed crown, harbour ribs, root tier, or thorn spiral.
-    if(plan.id==='archon') for(let i=0;i<3;i++) artPart(cyl(.16,.3,1+i*.35,7,P.roof),-W*.25+i*W*.25,H+.5+i*.15,0,0,0,'kiln-skyline');
-    else if(plan.id==='blackrose') for(let i=0;i<5;i++) artPart(box(W*.12,.55,.35,P.metal),-W*.4+i*W*.2,H+.25,0,0,(i%2?-.08:.08),'broken-crenel');
-    else if(plan.id==='gideon') artPart(new THREE.Mesh(new THREE.ConeGeometry(W*.55,1.25,3),P.stone),0,H+.55,0,0,0,'ordered-pediment');
-    else if(plan.id==='helstrom') {const sail=ico(Math.min(W,D)*.42,1,P.accent);sail.scale.set(1,.35,.65);artPart(sail,W*.18,H+.35,0,.3,0,'shell-sail');}
-    else if(plan.id==='lilmoth') artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.32,.12,5,12,Math.PI),P.roof),0,H+.2,0,0,0,'reed-crown');
-    else if(plan.id==='soulrest') for(const sx of [-1,1]) artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.25,.11,5,10,Math.PI),P.stone),sx*W*.2,H+.15,0,0,0,'salt-rib');
-    else if(plan.id==='stormhold') {artPart(box(W*.72,.2,D*.72,P.metal),0,H+.18,0,0,0,'legion-course');artPart(cyl(.18,.42,1.5,6,P.wood),W*.3,H+.55,0,0,0,'root-breach');}
-    else {for(let i=0;i<4;i++){const t=cyl(.07,.16,1.4+i*.25,5,P.wood);artPart(t,-W*.3+i*W*.2,H+.45,0,0,(i-1.5)*.22,'thorn-spiral');}}
-    // Aperture surround and street offering integrate trim/weathering at the public face.
-    artPart(box(Math.min(1.4,W*.28),.14,.12,P.accent),0,H*.58,D*.515,0,ordered?0:.08,art.trim);
-    const offering=ico(.18+(seed%4)*.04,0,(seed&1)?P.accent:P.stone);
-    artPart(offering,(seed&1?-.36:.36)*W,.22,D*.62,0,0,'street-offering');
-    summary.world_art_meshes=cadence+3;
+    if(hero){
+      if(plan.id==='archon') for(let i=0;i<3;i++) artPart(cyl(.16,.3,1+i*.35,7,P.roof),-W*.25+i*W*.25,H+.5+i*.15,0,0,0,'kiln-skyline');
+      else if(plan.id==='blackrose') for(let i=0;i<5;i++) artPart(box(W*.12,.55,.35,P.metal),-W*.4+i*W*.2,H+.25,0,0,(i%2?-.08:.08),'broken-crenel');
+      else if(plan.id==='gideon') artPart(new THREE.Mesh(new THREE.ConeGeometry(W*.55,1.25,3),P.stone),0,H+.55,0,0,0,'ordered-pediment');
+      else if(plan.id==='helstrom') {const sail=ico(Math.min(W,D)*.42,1,P.accent);sail.scale.set(1,.35,.65);artPart(sail,W*.18,H+.35,0,.3,0,'shell-sail');}
+      else if(plan.id==='lilmoth') artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.32,.12,5,12,Math.PI),P.roof),0,H+.2,0,0,0,'reed-crown');
+      else if(plan.id==='soulrest') for(const sx of [-1,1]) artPart(new THREE.Mesh(new THREE.TorusGeometry(W*.25,.11,5,10,Math.PI),P.stone),sx*W*.2,H+.15,0,0,0,'salt-rib');
+      else if(plan.id==='stormhold') {artPart(box(W*.72,.2,D*.72,P.metal),0,H+.18,0,0,0,'legion-course');artPart(cyl(.18,.42,1.5,6,P.wood),W*.3,H+.55,0,0,0,'root-breach');}
+      else {for(let i=0;i<4;i++){const t=cyl(.07,.16,1.4+i*.25,5,P.wood);artPart(t,-W*.3+i*W*.2,H+.45,0,0,(i-1.5)*.22,'thorn-spiral');}}
+    }
+    // A restrained grounded offering gives street-scale identity without another floating facade
+    // ornament. The entrance surround itself is constructed on the correct wall in buildBuilding.
+    if(hero){const offering=ico(.18+(seed%4)*.04,0,(seed&1)?P.accent:P.stone);artPart(offering,(seed&1?-.36:.36)*W,.22,D*.58,0,0,'street-offering');}
+    summary.world_art_meshes=cadence+(hero?3:0);
     // Founded on the ground at the building's own four corners, so a building on a slope sits
     // in the hill rather than on a hover. The plinth is 1.6 m deep and absorbs the difference.
     const w = summary.w, d = summary.d;
@@ -1590,6 +1617,13 @@ export function settlementSolids(plan, x, z, radius, groundY) {
         else push(W.cx, W.cz + seg.c, W.hx, seg.len / 2, `${b.id}:${W.side}${sgn > 0 ? '+' : '-'}`);
       }
     }
+    // Camera, player and LOS all consume this same cell. The visible roofs used to be absent from
+    // it, allowing the spring arm and near plane to pass beneath eaves or through pitched roofs.
+    // A conservative oriented roof volume begins above standing-body height, so ordinary doorway
+    // traversal is unchanged while the camera is rejected from the rendered mass.
+    const roofRise=Math.max(.42,Math.min(w,d)*(['gideon','thorn','archon','helstrom','soulrest'].includes(plan.id)?.34:.16));
+    const wx=b.x, wz=b.z;
+    shapes.push({k:'box',c:[wx,base+h+roofRise*.5,wz],h:[w*.5+.55,roofRise*.5,d*.5+.55],yaw_deg:yaw,id:`${b.id}:roof-camera-solid`});
   }
   return shapes;
 }

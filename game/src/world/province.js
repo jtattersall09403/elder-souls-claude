@@ -364,7 +364,43 @@ export class Province {
 
   _settlementStyleboard(g, plan) {
     const b=this.visualStyleboards?.settlements.get(plan.id); if(!b) return;
-    let index=0; g.traverse(o=>{ if(!o.isMesh||!o.material)return;const role=index++%5===0?'contrast':index%2?'dominant':'secondary';let rows=STYLE_MATERIAL_CACHE.get(o.material);if(!rows){rows=new Map();STYLE_MATERIAL_CACHE.set(o.material,rows);}const key=`${b.id}:${role}`;if(!rows.has(key)){const styled=o.material.clone();consumeStyleboard(styled,b,role,.72);rows.set(key,styled);}o.material=rows.get(key); });
+    // Style is a material hierarchy, not a traversal-order colour wash.  The old modulo assignment
+    // could turn two pieces made from the same timber into unrelated dominant/contrast colours,
+    // while clay, glass and iron sometimes collapsed into one broad town-coloured slab.  Preserve
+    // the authored material family and use the board to grade it consistently.  This also makes a
+    // building stable when an unrelated mesh is inserted earlier in the scene graph.
+    const semanticRole=(material)=>{
+      const family=material?.userData?.visualFamily||material?.userData?.materialFamily||'';
+      if(['metal','resin','glass','bone','salt','wet_chitin'].includes(family)) return 'contrast';
+      if(['timber','root','bark','stone','cloth','shell','chitin','thorn'].includes(family)) return 'secondary';
+      return 'dominant';
+    };
+    g.traverse(o=>{
+      if(!o.isMesh||!o.material)return;
+      const role=semanticRole(o.material), family=o.material.userData?.visualFamily||'unclassified';
+      let rows=STYLE_MATERIAL_CACHE.get(o.material);
+      if(!rows){rows=new Map();STYLE_MATERIAL_CACHE.set(o.material,rows);}
+      const key=`${b.id}:${role}:${family}`;
+      if(!rows.has(key)){
+        const styled=o.material.clone();
+        // Keep enough of the source clay/wood/stone response for construction to remain legible;
+        // the board still controls the coherent settlement cast and its high-value accents.
+        consumeStyleboard(styled,b,role,.46);
+        // Construction families need a deliberate value hierarchy after the regional grade.
+        // A wall, roof and post all inheriting the same dark board value made the geometry exist
+        // but disappear as one silhouette in noon shadow. These are diffuse reflectance floors,
+        // applied to the physical materials rather than a camera/exposure exception.
+        const floorByFamily={clay:.32,stone:.36,salt:.43,bone:.42,timber:.27,root:.235,bark:.25,thorn:.22,cloth:.29,metal:.34,resin:.36,glass:.40,shell:.34,chitin:.30,wet_chitin:.31};
+        const floor=floorByFamily[family];
+        if(styled.color&&Number.isFinite(floor)){
+          const hsl={h:0,s:0,l:0};styled.color.getHSL(hsl);
+          if(hsl.l<floor)styled.color.setHSL(hsl.h,Math.min(hsl.s,.68),floor);
+        }
+        styled.userData={...styled.userData,styleboard:b.id,styleRole:role,sourceFamily:family};
+        rows.set(key,styled);
+      }
+      o.material=rows.get(key);
+    });
     const mat=worldMaterial(b.contrast_material,{emissive:0x24180f,emissiveIntensity:.45}); consumeStyleboard(mat,b,'contrast');
     const main=worldMaterial(b.dominant_materials[1],{color:0xffffff});consumeStyleboard(main,b,'secondary');
     const weird=new THREE.Group(); weird.name=`inexplicable:${plan.id}:${b.inexplicable_element}`;
@@ -381,6 +417,11 @@ export class Province {
       const y=1.5+i*H*.23,w=.72+i*.28,curve=new THREE.CubicBezierCurve3(new THREE.Vector3(-w,y,0),new THREE.Vector3(-w*.52,y+1.15+i*.12,.25*(i-1)),new THREE.Vector3(w*.38,y+1.35,-.18*(i-1)),new THREE.Vector3(w,y+.12,0));
       const rib=new THREE.Mesh(new THREE.TubeGeometry(curve,14,.075+i*.015,7,false),mat);rib.rotation.y=(seed%7)*.06+i*.22;rib.castShadow=true;weird.add(rib);
     }
+    // Join the crown to the rooted stems with a visible load-bearing neck and collar.  At street
+    // distance the three original stems terminated below a dark gap, making the hero read as a
+    // floating debug polyhedron even though their bounds barely overlapped.
+    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.30,.47,H*.30,9),main);neck.position.y=H*.88;neck.castShadow=neck.receiveShadow=true;weird.add(neck);
+    const collar=new THREE.Mesh(new THREE.TorusGeometry(.58,.105,7,18),mat);collar.rotation.x=Math.PI/2;collar.position.y=H+.02;collar.castShadow=true;weird.add(collar);
     const crown=new THREE.Mesh(new THREE.DodecahedronGeometry(.65,1),mat);crown.position.set(0,H+.25,0);crown.scale.set(.72,1.35,.72);crown.castShadow=true;weird.add(crown);
     const [x,,z]=plan.pos; weird.position.set(x,this._meshY(x,z),z); weird.userData.styleboard={id:b.id,visible:true}; g.add(weird);
   }
