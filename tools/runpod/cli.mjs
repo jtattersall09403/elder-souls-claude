@@ -19,7 +19,6 @@ import {
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '../..');
 const CONFIG_PATH = path.join(HERE, 'config.json');
-const SSH_ENTRYPOINT = fs.readFileSync(path.join(HERE, 'worker', 'ssh-entrypoint.sh'), 'utf8');
 const HELP = `
 Safe, temporary RunPod GPU browser test runner.
 
@@ -407,7 +406,7 @@ export async function runCommand(args, config, dependencies = {}) {
     });
     const candidates = chooseOffers(allOffers, { allowedGpuTypes: allowedGpus, cloudTypes: clouds, maxPricePerHourUsd: maxPrice });
     if (!candidates.length) throw new Error(`no allowed one-GPU offers have capacity at or below $${maxPrice.toFixed(3)}/hr`);
-    state.provisioning.strategy = 'REST gpuTypeIds with gpuTypePriority=availability, grouped by cloud';
+    state.provisioning.strategy = 'GraphQL podFindAndDeployOnDemand with startSsh=true, one explicit GPU/cloud candidate at a time';
     state.provisioning.candidates = candidates.map(compactOffer);
     save();
     log(`Eligible live one-GPU candidates: ${candidates.map((offer) => `${offer.displayName}/${offer.cloudType} $${offer.pricePerHourUsd.toFixed(3)}/hr counts=${offer.availableGpuCounts?.join(',') || 'omitted'} maxUnreserved=${offer.maxUnreservedGpuCount ?? 'omitted'}`).join('; ')}`);
@@ -415,25 +414,23 @@ export async function runCommand(args, config, dependencies = {}) {
     let provisioningSequence = 0;
     let remainingCandidates = [...candidates];
     podName = `${config.podNamePrefix}${id}`;
+    log('SSH bootstrap: GraphQL startSsh, image-default ENTRYPOINT/CMD, and per-run public key');
     const createInput = (batch) => ({
       name: podName,
       templateId,
       computeType: 'GPU',
       cloudType: batch.cloudType,
       gpuCount: 1,
-      gpuTypeIds: batch.gpuTypeIds,
-      gpuTypePriority: 'availability',
+      gpuTypeId: batch.gpuTypeIds[0],
       interruptible: false,
       supportPublicIp: true,
       ports: [...new Set([...(template.ports || []), '22/tcp'])],
-      dockerEntrypoint: ['bash', '-lc'],
-      dockerStartCmd: [SSH_ENTRYPOINT],
       containerDiskInGb: config.containerDiskInGb,
       volumeInGb: 0,
       minVCPUPerGPU: config.minVcpuPerGpu,
       minRAMPerGPU: config.minRamPerGpu,
-      // Current RunPod base images use SSH_PUBLIC_KEY for a per-Pod override. PUBLIC_KEY is
-      // retained for older/custom templates that follow RunPod's documented sshd snippet.
+      // SSH_PUBLIC_KEY is RunPod's per-Pod override. Official image startup scripts consume the
+      // platform-provided PUBLIC_KEY, so set both names to the same ephemeral key.
       env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
     });
     while (remainingCandidates.length) {
@@ -446,7 +443,9 @@ export async function runCommand(args, config, dependencies = {}) {
           candidates: remainingCandidates,
           podName,
           createInput,
+          createPod: (input) => client.createGpuPodWithSsh(input),
           cloudPriority: clouds,
+          individualOffers: true,
           recoverPodByName: (attempts) => recoverPodByName(client, podName, log, attempts),
           log,
           onAttempt: (attempt) => {
