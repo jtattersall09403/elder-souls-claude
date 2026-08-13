@@ -311,6 +311,57 @@ export class Province {
     this.geoCache = new Map();
 
     this._buildFar();
+    this._buildWorldLandmarks();
+  }
+
+  /** Build the named landmark sites from the same terrain authority used by collision.  Until
+   * W1-30 these records flattened the ground and appeared in censuses, but had no render consumer:
+   * walking to The Drowned Xanmeer produced an ordinary forest. */
+  _buildWorldLandmarks() {
+    const root=new THREE.Group();root.name='province-named-landmarks';
+    const stone=worldMaterial('stone',{color:0x737b70,roughness:.76});
+    const dark=worldMaterial('stone',{color:0x343d39,roughness:.82});
+    const bone=worldMaterial('bone',{color:0xc1b68f,roughness:.70});
+    const glow=worldMaterial('resin',{color:0x5ccdb1,emissive:0x33d4aa,emissiveIntensity:2.2,roughness:.30});
+    const addMesh=(g,geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=m.receiveShadow=true;g.add(m);return m;};
+    for(const site of this.field.sites.filter(s=>s.kind==='landmark')){
+      const id=site.id||'',g=new THREE.Group();g.name=`landmark:${id}`;g.position.set(site.x,this.field.heightAt(site.x,site.z),site.z);
+      if(id.includes('xanmeer')){
+        // Stepped, water-rooted Argonian mass: broad battered courses, a split stair and a
+        // luminous crown. The two Xanmeer records vary deterministically in height and yaw.
+        const seed=Math.abs([...id].reduce((n,c)=>n*31+c.charCodeAt(0),7)),levels=5;
+        for(let i=0;i<levels;i++){
+          const w=14-i*2.05,h=.95+i*.08,course=addMesh(g,new THREE.BoxGeometry(w,h,w*.78),i%2?dark:stone,0,.48+i*1.08,0);
+          course.rotation.y=(seed%9-4)*.006+i*.012;
+        }
+        for(const sx of [-1,1]){
+          const stair=addMesh(g,new THREE.BoxGeometry(2.15,.34,8.5),stone,sx*1.35,1.25,5.4);stair.rotation.x=-.25;
+          const fang=addMesh(g,new THREE.ConeGeometry(.62,4.6,7),dark,sx*4.0,7.2,-.7);fang.rotation.z=-sx*.10;
+        }
+        const sanctum=addMesh(g,new THREE.CylinderGeometry(2.25,2.8,3.2,8),dark,0,7.0,0);sanctum.rotation.y=Math.PI/8;
+        const crown=addMesh(g,new THREE.OctahedronGeometry(1.15,1),glow,0,9.35,0);crown.scale.set(.72,1.8,.72);
+      }else if(id.includes('counting-obelisk')||id.includes('leaning-stone')){
+        const shaft=addMesh(g,new THREE.BoxGeometry(2.0,13,1.7),stone,0,6.5,0);shaft.rotation.z=id.includes('leaning')?.16:.025;
+        addMesh(g,new THREE.CylinderGeometry(2.15,2.7,.8,8),dark,0,.4,0);
+        for(let i=0;i<4;i++){const band=addMesh(g,new THREE.TorusGeometry(1.05,.11,6,18),glow,0,3.3+i*2.05,0);band.rotation.x=Math.PI/2;}
+      }else if(id.includes('wayshrine')||id.includes('vault')){
+        for(const sx of [-1,1])addMesh(g,new THREE.CylinderGeometry(.65,1.0,7.2,8),stone,sx*3,3.6,0);
+        const lintel=addMesh(g,new THREE.BoxGeometry(7.6,1.0,1.35),dark,0,7.1,0);lintel.rotation.z=.03;
+        const halo=addMesh(g,new THREE.TorusGeometry(1.55,.18,8,28),glow,0,5.2,-.75);halo.rotation.y=.04;
+      }else if(id.includes('border-falls')){
+        for(const sx of [-1,1]){const cliff=addMesh(g,new THREE.DodecahedronGeometry(4.8,1),stone,sx*3.5,5.0,0);cliff.scale.set(.75,1.6,.85);}
+        const fall=addMesh(g,new THREE.PlaneGeometry(3.2,10,12,28),worldMaterial('water',{color:0x78aeb5,transparent:true,opacity:.78,roughness:.14}),0,5.1,.5);fall.rotation.y=Math.PI;
+      }else if(id.includes('glassed-crater')){
+        const rim=addMesh(g,new THREE.TorusGeometry(9.5,1.15,8,48),dark,0,.55,0);rim.rotation.x=Math.PI/2;
+        for(let i=0;i<9;i++){const a=i*Math.PI*2/9,s=addMesh(g,new THREE.ConeGeometry(.42,3.8+i%3,6),glow,Math.cos(a)*8.3,1.8,Math.sin(a)*8.3);s.rotation.z=Math.cos(a)*.25;}
+      }else{
+        // Bloodmarl Isle: a ribbed whale-bone frame, visibly rooted in its low coastal pad.
+        for(let i=0;i<7;i++){const a=-1.25+i*.42,rib=addMesh(g,new THREE.TorusGeometry(4.2,.20,7,24,Math.PI),bone,(i-3)*1.05,3.6,0);rib.rotation.set(0,a,Math.PI/2);}
+        addMesh(g,new THREE.CylinderGeometry(.38,.62,10,8),dark,0,.55,0).rotation.z=Math.PI/2;
+      }
+      g.userData.landmark={id,name:site.name,source:'terrain.sites'};root.add(g);
+    }
+    this.worldLandmarks=root;this.group.add(root);
   }
 
   /**

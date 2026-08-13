@@ -274,10 +274,10 @@ export class Sky {
     // is making when it says a region must be identifiable at night.
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
-    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.58, 1.18 + day * 0.72) : 0;
+    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.82, 1.18 + day * 0.72) : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
     this.hemi.groundColor.setRGB(0.34, 0.31, 0.24).lerp(regionNight, night * 0.55);
-    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.48, 1.34, day) : 0;
+    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.68, 1.34, day) : 0;
     this.fill.color.copy(hor).lerp(regionNight, night * 0.70);
 
     if (regionFog) {
