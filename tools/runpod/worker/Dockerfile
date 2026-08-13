@@ -17,5 +17,5 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# The CLI deliberately supplies worker/ssh-entrypoint.sh at Pod creation time, so this image does
-# not need to bake an API key, SSH public key, or template-specific startup command into a layer.
+# The CLI supplies worker/ssh-entrypoint.sh and SSH_PUBLIC_KEY per Pod, so this image does not bake
+# an API key, SSH public key, or template-specific startup command into a layer.

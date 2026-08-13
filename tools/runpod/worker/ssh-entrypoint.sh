@@ -3,8 +3,8 @@ set -Eeuo pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 if ! command -v sshd >/dev/null 2>&1; then
-  apt-get update
-  apt-get install -y --no-install-recommends openssh-server ca-certificates
+  timeout 90s apt-get update
+  timeout 90s apt-get install -y --no-install-recommends openssh-server ca-certificates
 fi
 
 ssh_public_key=${SSH_PUBLIC_KEY:-${PUBLIC_KEY:-}}

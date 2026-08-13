@@ -4,6 +4,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { RunPodClient, RunPodError, chooseOffers, isManagedPod } from './lib/api.mjs';
+import { provisionPod } from './lib/provision.mjs';
 import {
   commandExists,
   createSnapshot,
@@ -30,7 +31,7 @@ USAGE
 
 RUN OPTIONS
   --command <shell>       Command in the worker (default: GPU/game smoke test)
-  --max-price <USD/hr>   Price ceiling, capped by config (default: 0.40)
+  --max-price <USD/hr>   Price ceiling, capped by config (default: 1.00)
   --max-runtime <min>    Whole lifecycle deadline, capped by config (default: 20)
   --gpu <RunPod GPU ID>  Restrict to an allowed type; repeat for fallbacks
   --cloud <type>         all, community, or secure (default: all)
@@ -135,6 +136,7 @@ function compactOffer(offer) {
     stockStatus: offer.stockStatus,
     pricePerHourUsd: offer.pricePerHourUsd,
     availableGpuCounts: offer.availableGpuCounts,
+    maxUnreservedGpuCount: offer.maxUnreservedGpuCount,
   };
 }
 
@@ -145,7 +147,11 @@ async function listCommand(args, config) {
   if (maxPrice > config.absoluteMaxPricePerHourUsd) throw new Error(`--max-price exceeds hard cap $${config.absoluteMaxPricePerHourUsd}/hr`);
   const allowed = resolveGpus(args.gpu, config);
   const clouds = resolveClouds(args.cloud, config);
-  const offers = await client.listGpuOffers();
+  const offers = await client.listGpuOffers({
+    minVcpuPerGpu: config.minVcpuPerGpu,
+    minRamPerGpu: config.minRamPerGpu,
+    minDiskInGb: config.containerDiskInGb,
+  });
   const rows = offers.filter((offer) => allowed.includes(offer.gpuTypeId) && clouds.includes(offer.cloudType))
     .sort((left, right) => (Number.isFinite(left.pricePerHourUsd) ? left.pricePerHourUsd : Infinity) - (Number.isFinite(right.pricePerHourUsd) ? right.pricePerHourUsd : Infinity));
   console.table(rows.map((offer) => ({
@@ -155,7 +161,9 @@ async function listCommand(args, config) {
     VRAM_GB: offer.memoryInGb,
     USD_hr: Number.isFinite(offer.pricePerHourUsd) ? offer.pricePerHourUsd.toFixed(3) : 'n/a',
     stock: offer.stockStatus,
-    one_GPU: offer.availableGpuCounts === null ? 'unknown' : (offer.availableGpuCounts.includes(1) ? 'yes' : 'no'),
+    one_GPU: offer.availableGpuCounts?.includes(1) || offer.maxUnreservedGpuCount >= 1
+      ? 'counted'
+      : (Number.isFinite(offer.pricePerHourUsd) && offer.stockStatus !== 'None' ? 'priced' : 'no'),
     eligible: chooseOffers([offer], { allowedGpuTypes: allowed, cloudTypes: clouds, maxPricePerHourUsd: maxPrice }).length ? 'yes' : 'no',
   })));
 }
@@ -221,12 +229,15 @@ async function waitForReady(client, podId, deadline, log, signal) {
   throw new Error(`Pod ${podId} did not expose SSH before the readiness deadline`);
 }
 
-async function waitForSsh(connection, deadline, log, signal) {
+async function waitForSsh(connection, deadline, log, signal, {
+  runProcessImpl = runProcess,
+  sshArgsImpl = sshArgs,
+} = {}) {
   let attempt = 0;
   while (Date.now() < deadline) {
     if (signal.aborted) throw signal.reason || new Error('run cancelled');
     attempt++;
-    const result = await runProcess('ssh', [...sshArgs(connection), 'true'], { allowFailure: true, signal });
+    const result = await runProcessImpl('ssh', [...sshArgsImpl(connection), 'true'], { allowFailure: true, signal });
     if (result.code === 0) {
       log(`SSH ready after ${attempt} attempt(s)`);
       return;
@@ -250,6 +261,18 @@ async function recoverPodByName(client, podName, log, attempts = 5) {
   return null;
 }
 
+async function confirmPodDeleted(client, podId, log, attempts = 5) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const found = await client.getPod(podId);
+    if (!found) {
+      log(`Deletion confirmed: subsequent API lookup for Pod ${podId} returned not found`);
+      return true;
+    }
+    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
+  }
+  return false;
+}
+
 function sourcePaths(args, config) {
   const selected = args.onlyPath.length ? args.onlyPath : [...config.snapshotPaths, ...args.include];
   for (const value of selected) {
@@ -258,15 +281,26 @@ function sourcePaths(args, config) {
   return [...new Set(selected)];
 }
 
-async function runCommand(args, config) {
-  const { apiKey, templateId } = requireEnvironment();
+export async function runCommand(args, config, dependencies = {}) {
+  const environment = dependencies.environment || requireEnvironment();
+  const { apiKey, templateId } = environment;
+  const commandExistsImpl = dependencies.commandExists || commandExists;
+  const createSnapshotImpl = dependencies.createSnapshot || createSnapshot;
+  const makeTempDirImpl = dependencies.makeTempDir || makeTempDir;
+  const removeTempDirImpl = dependencies.removeTempDir || removeTempDir;
+  const runProcessImpl = dependencies.runProcess || runProcess;
+  const scpArgsImpl = dependencies.scpArgs || scpArgs;
+  const sshArgsImpl = dependencies.sshArgs || sshArgs;
+  const sshKeyMaterialImpl = dependencies.sshKeyMaterial || sshKeyMaterial;
+  const waitForReadyImpl = dependencies.waitForReady || waitForReady;
+  const waitForSshImpl = dependencies.waitForSsh || waitForSsh;
   const maxPrice = numberOption(args.maxPrice, config.maxPricePerHourUsd, '--max-price');
   const maxRuntime = numberOption(args.maxRuntime, config.maxRuntimeMinutes, '--max-runtime');
   if (maxPrice > config.absoluteMaxPricePerHourUsd) throw new Error(`--max-price exceeds hard cap $${config.absoluteMaxPricePerHourUsd}/hr`);
   if (maxRuntime > config.absoluteMaxRuntimeMinutes) throw new Error(`--max-runtime exceeds hard cap ${config.absoluteMaxRuntimeMinutes} minutes`);
   const allowedGpus = resolveGpus(args.gpu, config);
   const clouds = resolveClouds(args.cloud, config);
-  for (const command of ['git', 'tar', 'ssh', 'scp', 'ssh-keygen']) if (!await commandExists(command)) throw new Error(`required local command not found: ${command}`);
+  for (const command of ['git', 'tar', 'ssh', 'scp', 'ssh-keygen']) if (!await commandExistsImpl(command)) throw new Error(`required local command not found: ${command}`);
 
   const id = runId();
   const outputDir = path.resolve(REPO_ROOT, args.artifactDir || path.join(config.artifactRoot, id));
@@ -275,7 +309,6 @@ async function runCommand(args, config) {
   const statePath = path.join(outputDir, 'run.json');
   const startedAt = new Date();
   const deadline = startedAt.getTime() + maxRuntime * 60_000;
-  const readyDeadline = Math.min(deadline - 60_000, startedAt.getTime() + config.readyTimeoutMinutes * 60_000);
   const abortController = new AbortController();
   let caughtSignal = null;
   let pod = null;
@@ -286,10 +319,10 @@ async function runCommand(args, config) {
   let cleanup = { attempted: false, terminated: false };
   let podName = null;
   let provisionWasUncertain = false;
-  const tempDir = makeTempDir();
-  const keyMaterial = await sshKeyMaterial(args.sshKey, tempDir);
+  const tempDir = makeTempDirImpl();
+  const keyMaterial = await sshKeyMaterialImpl(args.sshKey, tempDir);
   const sshKey = keyMaterial.keyPath;
-  const client = new RunPodClient({ apiKey });
+  const client = dependencies.client || new RunPodClient({ apiKey });
   const state = {
     schema: 'elder-souls/runpod-run@1',
     runId: id,
@@ -299,6 +332,7 @@ async function runCommand(args, config) {
     limits: { maxPricePerHourUsd: maxPrice, maxRuntimeMinutes: maxRuntime, allowedGpuTypes: allowedGpus, cloudTypes: clouds },
     templateId,
     source: null,
+    provisioning: { strategy: null, candidates: [], attempts: [], readinessFailures: [] },
     selectedOffer: null,
     pod: null,
     command: args.command || 'node tools/runpod/worker/smoke.mjs',
@@ -315,8 +349,8 @@ async function runCommand(args, config) {
     const transferController = new AbortController();
     const transferBudgetMs = Math.max(5_000, Math.min(120_000, deadline - Date.now()));
     const transferTimer = setTimeout(() => transferController.abort(new Error('artifact retrieval deadline reached')), transferBudgetMs);
-    const retrieved = await runProcess('scp', [
-      ...scpArgs(connection),
+    const retrieved = await runProcessImpl('scp', [
+      ...scpArgsImpl(connection),
       '-r',
       `root@${connection.host}:${remoteArtifacts}/.`,
       path.join(outputDir, 'artifacts'),
@@ -349,14 +383,16 @@ async function runCommand(args, config) {
   log(`SSH identity: ${keyMaterial.ephemeral ? 'per-run ephemeral key (injected as SSH_PUBLIC_KEY/PUBLIC_KEY)' : sshKey}`);
   try {
     const template = await client.getTemplate(templateId);
+    if (template?.id !== templateId) throw new Error(`template lookup did not return configured template ${templateId}`);
     if (template?.isServerless === true) throw new Error(`RUNPOD_GPU_TEMPLATE_ID ${templateId} is a Serverless template, not a Pod template`);
+    if (!template?.imageName) throw new Error(`template ${templateId} does not declare a container image`);
     if (!(template?.ports || []).includes('22/tcp')) throw new Error(`template ${templateId} does not expose 22/tcp; SSH transfer cannot be made safe`);
     if (Number(template?.volumeInGb || 0) !== 0) log(`Template declares ${template.volumeInGb} GB volume; run request overrides it to 0 GB`);
     log(`Template ${template.id}: ${template.name} (${template.imageName}), container disk=${template.containerDiskInGb} GB, volume=0 GB`);
 
     state.status = 'snapshotting';
     save();
-    const snapshot = await createSnapshot({ repoRoot: REPO_ROOT, revision: args.revision, paths: sourcePaths(args, config), tempDir, log });
+    const snapshot = await createSnapshotImpl({ repoRoot: REPO_ROOT, revision: args.revision, paths: sourcePaths(args, config), tempDir, log });
     state.source = { ...snapshot };
     delete state.source.archivePath;
     save();
@@ -364,98 +400,149 @@ async function runCommand(args, config) {
 
     state.status = 'selecting';
     save();
-    const allOffers = await client.listGpuOffers();
+    const allOffers = await client.listGpuOffers({
+      minVcpuPerGpu: config.minVcpuPerGpu,
+      minRamPerGpu: config.minRamPerGpu,
+      minDiskInGb: config.containerDiskInGb,
+    });
     const candidates = chooseOffers(allOffers, { allowedGpuTypes: allowedGpus, cloudTypes: clouds, maxPricePerHourUsd: maxPrice });
     if (!candidates.length) throw new Error(`no allowed one-GPU offers have capacity at or below $${maxPrice.toFixed(3)}/hr`);
-    log(`Eligible offers: ${candidates.map((offer) => `${offer.displayName}/${offer.cloudType} $${offer.pricePerHourUsd.toFixed(3)}/hr ${offer.stockStatus}`).join('; ')}`);
+    state.provisioning.strategy = 'REST gpuTypeIds with gpuTypePriority=availability, grouped by cloud';
+    state.provisioning.candidates = candidates.map(compactOffer);
+    save();
+    log(`Eligible live one-GPU candidates: ${candidates.map((offer) => `${offer.displayName}/${offer.cloudType} $${offer.pricePerHourUsd.toFixed(3)}/hr counts=${offer.availableGpuCounts?.join(',') || 'omitted'} maxUnreserved=${offer.maxUnreservedGpuCount ?? 'omitted'}`).join('; ')}`);
 
+    let provisioningSequence = 0;
+    let remainingCandidates = [...candidates];
     podName = `${config.podNamePrefix}${id}`;
-    for (const offer of candidates) {
-      if (abortController.signal.aborted) throw abortController.signal.reason;
-      log(`Provision attempt: ${offer.gpuTypeId} ${offer.cloudType} at advertised $${offer.pricePerHourUsd.toFixed(3)}/hr`);
+    const createInput = (batch) => ({
+      name: podName,
+      templateId,
+      computeType: 'GPU',
+      cloudType: batch.cloudType,
+      gpuCount: 1,
+      gpuTypeIds: batch.gpuTypeIds,
+      gpuTypePriority: 'availability',
+      interruptible: false,
+      supportPublicIp: true,
+      ports: [...new Set([...(template.ports || []), '22/tcp'])],
+      dockerEntrypoint: ['bash', '-lc'],
+      dockerStartCmd: [SSH_ENTRYPOINT],
+      containerDiskInGb: config.containerDiskInGb,
+      volumeInGb: 0,
+      minVCPUPerGPU: config.minVcpuPerGpu,
+      minRAMPerGPU: config.minRamPerGpu,
+      // Current RunPod base images use SSH_PUBLIC_KEY for a per-Pod override. PUBLIC_KEY is
+      // retained for older/custom templates that follow RunPod's documented sshd snippet.
+      env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
+    });
+    while (remainingCandidates.length) {
+      provisioningSequence++;
+      podName = `${config.podNamePrefix}${id}${provisioningSequence === 1 ? '' : `-${provisioningSequence}`}`;
+      let provisioned;
       try {
-        pod = await client.createPod({
-          name: podName,
-          templateId,
-          computeType: 'GPU',
-          cloudType: offer.cloudType,
-          gpuCount: 1,
-          gpuTypeIds: [offer.gpuTypeId],
-          gpuTypePriority: 'custom',
-          interruptible: false,
-          supportPublicIp: true,
-          ports: [...new Set([...(template.ports || []), '22/tcp'])],
-          dockerEntrypoint: ['bash', '-lc'],
-          dockerStartCmd: [SSH_ENTRYPOINT],
-          containerDiskInGb: config.containerDiskInGb,
-          volumeInGb: 0,
-          minVCPUPerGPU: config.minVcpuPerGpu,
-          minRAMPerGPU: config.minRamPerGpu,
-          // Current RunPod base images use SSH_PUBLIC_KEY for a per-Pod override. PUBLIC_KEY is
-          // retained for older/custom templates that follow RunPod's documented sshd snippet.
-          env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
+        provisioned = await provisionPod({
+          client,
+          candidates: remainingCandidates,
+          podName,
+          createInput,
+          cloudPriority: clouds,
+          recoverPodByName: (attempts) => recoverPodByName(client, podName, log, attempts),
+          log,
+          onAttempt: (attempt) => {
+            attempt.podName = podName;
+            state.provisioning.attempts.push(attempt);
+            save();
+          },
+          signal: abortController.signal,
         });
       } catch (createError) {
-        // A lost POST response can still have created a billable Pod. Adopt it by its unique name.
-        pod = await recoverPodByName(client, podName, log, createError.uncertain ? 5 : 1);
-        if (!pod) {
-          if (createError.uncertain) {
-            provisionWasUncertain = true;
-            throw new Error(`Pod create outcome is uncertain; refusing another create and entering name-based cleanup: ${createError.message}`);
-          }
-          log(`Offer failed without a Pod: ${createError.message}`, 'stderr');
-          continue;
+        // A post-create validation or hydration failure carries the known Pod so finally can delete
+        // it even though provisioning did not return normally.
+        pod = createError.pod || pod;
+        provisionWasUncertain = createError.uncertain === true;
+        throw createError;
+      }
+      pod = provisioned.pod;
+      provisionWasUncertain = false;
+      state.selectedOffer = compactOffer(provisioned.offer);
+      if (Number(pod.volumeInGb || 0) !== 0 || pod.networkVolume || pod.networkVolumeId) {
+        throw new Error(`created Pod ${pod.id} unexpectedly has persistent storage attached`);
+      }
+      if (typeof pod.machine?.secureCloud === 'boolean') {
+        const actualCloud = pod.machine.secureCloud ? 'SECURE' : 'COMMUNITY';
+        if (actualCloud !== state.selectedOffer.cloudType) {
+          throw new Error(`created Pod ${pod.id} cloud ${actualCloud} differs from requested ${state.selectedOffer.cloudType}`);
         }
-        log(`Provision response was uncertain; recovered Pod ${pod.id} by unique name`, 'stderr');
       }
-      if (!pod?.id) {
-        pod = await recoverPodByName(client, podName, log, 5);
-        if (!pod) {
-          provisionWasUncertain = true;
-          throw new Error('Pod create returned no ID; refusing another create and entering name-based cleanup');
-        }
-      }
-      if (pod?.id) {
-        state.selectedOffer = compactOffer(offer);
-        break;
-      }
-      log(`Offer returned no Pod ID and no uniquely named Pod was recoverable; trying the next allowed offer`, 'stderr');
-    }
-    if (!pod?.id) throw new Error('every eligible GPU offer failed to provision');
-    const actualPrice = Number(pod.costPerHr ?? pod.adjustedCostPerHr ?? state.selectedOffer.pricePerHourUsd);
-    state.pod = { id: pod.id, name: pod.name || podName, gpuTypeId: state.selectedOffer.gpuTypeId, cloudType: state.selectedOffer.cloudType, pricePerHourUsd: actualPrice };
-    state.status = 'provisioned';
-    save();
-    log(`Pod ${pod.id} created: ${state.selectedOffer.gpuTypeId}, ${state.selectedOffer.cloudType}, $${actualPrice.toFixed(3)}/hr`);
-    if (!Number.isFinite(actualPrice) || actualPrice > maxPrice) throw new Error(`actual Pod price $${actualPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
+      const actualPrice = Number(pod.costPerHr ?? pod.adjustedCostPerHr ?? state.selectedOffer.pricePerHourUsd);
+      state.pod = { id: pod.id, name: pod.name || podName, gpuTypeId: state.selectedOffer.gpuTypeId, cloudType: state.selectedOffer.cloudType, pricePerHourUsd: actualPrice };
+      state.status = 'provisioned';
+      save();
+      log(`Pod ${pod.id} created: ${state.selectedOffer.gpuTypeId}, ${state.selectedOffer.cloudType}, $${actualPrice.toFixed(3)}/hr`);
+      if (!Number.isFinite(actualPrice) || actualPrice > maxPrice) throw new Error(`actual Pod price $${actualPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
 
-    pod = await waitForReady(client, pod.id, readyDeadline, log, abortController.signal);
-    const readyPrice = Number(pod.costPerHr ?? pod.adjustedCostPerHr ?? state.pod.pricePerHourUsd);
-    if (!Number.isFinite(readyPrice) || readyPrice > maxPrice) {
-      throw new Error(`running Pod price $${readyPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
+      const readyDeadline = Math.min(deadline - 60_000, Date.now() + config.readyTimeoutMinutes * 60_000);
+      try {
+        pod = await waitForReadyImpl(client, pod.id, readyDeadline, log, abortController.signal);
+        const readyPrice = Number(pod.costPerHr ?? pod.adjustedCostPerHr ?? state.pod.pricePerHourUsd);
+        if (!Number.isFinite(readyPrice) || readyPrice > maxPrice) {
+          throw new Error(`running Pod price $${readyPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
+        }
+        state.pod.pricePerHourUsd = readyPrice;
+        save();
+        log(`Pod ${pod.id} ready; API-confirmed running price $${readyPrice.toFixed(3)}/hr`);
+        connection = { host: pod.publicIp, port: pod.portMappings['22'], keyPath: sshKey, knownHostsPath: path.join(tempDir, 'known_hosts') };
+        await waitForSshImpl(connection, readyDeadline, log, abortController.signal, { runProcessImpl, sshArgsImpl });
+        break;
+      } catch (readinessError) {
+        if (abortController.signal.aborted) throw readinessError;
+        const failedPodId = pod.id;
+        const failedOffer = state.selectedOffer;
+        log(`Pod ${failedPodId} readiness failed for ${failedOffer.gpuTypeId}/${failedOffer.cloudType}: ${readinessError.message}`, 'stderr');
+        log(`Terminating unready Pod ${failedPodId}; no replacement will be created until deletion is confirmed`, 'stderr');
+        await client.deletePod(failedPodId);
+        if (!await confirmPodDeleted(client, failedPodId, log)) {
+          throw new Error(`unready Pod ${failedPodId} remained visible; refusing a replacement create`);
+        }
+        state.provisioning.readinessFailures.push({
+          podId: failedPodId,
+          podName,
+          gpuTypeId: failedOffer.gpuTypeId,
+          cloudType: failedOffer.cloudType,
+          reason: readinessError.message,
+          deletionConfirmed: true,
+        });
+        remainingCandidates = remainingCandidates.filter((candidate) => !(
+          candidate.gpuTypeId === failedOffer.gpuTypeId && candidate.cloudType === failedOffer.cloudType
+        ));
+        pod = null;
+        connection = null;
+        state.pod = null;
+        state.selectedOffer = null;
+        save();
+        if (!remainingCandidates.length) throw new Error('all eligible GPU/cloud candidates failed bounded Pod readiness checks; no Pod remains');
+        if (Date.now() >= deadline - 60_000) throw new Error('runtime deadline leaves no safe time for another Pod readiness attempt');
+        log(`Deletion confirmed; retrying with ${remainingCandidates.length} different eligible GPU/cloud candidate(s)`);
+      }
     }
-    state.pod.pricePerHourUsd = readyPrice;
-    save();
-    log(`Pod ${pod.id} ready; API-confirmed running price $${readyPrice.toFixed(3)}/hr`);
-    connection = { host: pod.publicIp, port: pod.portMappings['22'], keyPath: sshKey, knownHostsPath: path.join(tempDir, 'known_hosts') };
-    await waitForSsh(connection, readyDeadline, log, abortController.signal);
     state.status = 'transferring';
     save();
     const remoteRoot = `/workspace/elder-souls-${id}`;
     const remoteArtifacts = `/workspace/elder-souls-artifacts-${id}`;
-    await runProcess('ssh', [...sshArgs(connection), `mkdir -p '${remoteRoot}' '${remoteArtifacts}'`], { signal: abortController.signal, log });
-    await runProcess('scp', [...scpArgs(connection), snapshot.archivePath, `root@${connection.host}:/tmp/elder-souls-${id}.tar.gz`], { signal: abortController.signal, log });
-    await runProcess('ssh', [...sshArgs(connection), `tar -xzf '/tmp/elder-souls-${id}.tar.gz' -C '${remoteRoot}' && rm -f '/tmp/elder-souls-${id}.tar.gz'`], { signal: abortController.signal, log });
+    await runProcessImpl('ssh', [...sshArgsImpl(connection), `mkdir -p '${remoteRoot}' '${remoteArtifacts}'`], { signal: abortController.signal, log });
+    await runProcessImpl('scp', [...scpArgsImpl(connection), snapshot.archivePath, `root@${connection.host}:/tmp/elder-souls-${id}.tar.gz`], { signal: abortController.signal, log });
+    await runProcessImpl('ssh', [...sshArgsImpl(connection), `tar -xzf '/tmp/elder-souls-${id}.tar.gz' -C '${remoteRoot}' && rm -f '/tmp/elder-souls-${id}.tar.gz'`], { signal: abortController.signal, log });
     // Controller files are deliberately overlaid after extraction. This lets --revision target a
     // commit older than this infrastructure without changing any game/tool bytes under test.
-    await runProcess('scp', [
-      ...scpArgs(connection),
+    await runProcessImpl('scp', [
+      ...scpArgsImpl(connection),
       path.join(HERE, 'worker', 'bootstrap.sh'),
       `root@${connection.host}:/tmp/elder-souls-bootstrap-${id}.sh`,
     ], { signal: abortController.signal, log });
-    await runProcess('ssh', [...sshArgs(connection), `mkdir -p '${remoteRoot}/tools/runpod/worker'`], { signal: abortController.signal, log });
-    await runProcess('scp', [
-      ...scpArgs(connection),
+    await runProcessImpl('ssh', [...sshArgsImpl(connection), `mkdir -p '${remoteRoot}/tools/runpod/worker'`], { signal: abortController.signal, log });
+    await runProcessImpl('scp', [
+      ...scpArgsImpl(connection),
       path.join(HERE, 'worker', 'smoke.mjs'),
       `root@${connection.host}:${remoteRoot}/tools/runpod/worker/smoke.mjs`,
     ], { signal: abortController.signal, log });
@@ -469,8 +556,8 @@ async function runCommand(args, config) {
     state.status = 'running';
     save();
     log(`Running on Pod ${pod.id} with ${secondsRemaining}s command deadline: ${command}`);
-    commandResult = await runProcess('ssh', [
-      ...sshArgs(connection),
+    commandResult = await runProcessImpl('ssh', [
+      ...sshArgsImpl(connection),
       `bash '/tmp/elder-souls-bootstrap-${id}.sh' '${remoteRoot}' '${remoteArtifacts}' '${commandB64}' '${secondsRemaining}' '${id}' '${sourceB64}'`,
     ], { allowFailure: true, capture: false, signal: abortController.signal, log });
     state.commandExitCode = commandResult.code;
@@ -509,8 +596,9 @@ async function runCommand(args, config) {
       log(`Terminating Pod ${pod.id} in mandatory cleanup`);
       try {
         await client.deletePod(pod.id);
-        cleanup.terminated = true;
-        log(`Pod ${pod.id} terminated`);
+        cleanup.terminated = await confirmPodDeleted(client, pod.id, log);
+        if (!cleanup.terminated) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
+        log(`Pod ${pod.id} terminated and deletion confirmed`);
       } catch (cleanupError) {
         cleanup.error = cleanupError.message;
         state.status = 'cleanup_failed';
@@ -527,7 +615,7 @@ async function runCommand(args, config) {
     state.cleanup = cleanup;
     state.finishedAt = new Date().toISOString();
     save();
-    removeTempDir(tempDir);
+    removeTempDirImpl(tempDir);
     process.off('SIGINT', onSigint);
     process.off('SIGTERM', onSigterm);
   }
@@ -547,8 +635,10 @@ async function main() {
   throw new Error(`unknown command: ${command}\n${HELP}`);
 }
 
-main().catch((error) => {
-  const prefix = error instanceof RunPodError ? 'RunPod error' : 'GPU runner error';
-  console.error(`${prefix}: ${error.message}`);
-  process.exitCode = error.message === 'SIGINT' ? 130 : 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    const prefix = error instanceof RunPodError ? 'RunPod error' : 'GPU runner error';
+    console.error(`${prefix}: ${error.message}`);
+    process.exitCode = error.message === 'SIGINT' ? 130 : 1;
+  });
+}

@@ -1,17 +1,17 @@
 {
   "schema": "elder-souls/runpod-config@1",
   "podNamePrefix": "elder-souls-gpu-",
-  "maxPricePerHourUsd": 0.4,
+  "maxPricePerHourUsd": 1.0,
   "absoluteMaxPricePerHourUsd": 1.0,
   "maxRuntimeMinutes": 20,
   "absoluteMaxRuntimeMinutes": 120,
-  "readyTimeoutMinutes": 8,
+  "readyTimeoutMinutes": 2,
   "containerDiskInGb": 30,
   "minVcpuPerGpu": 4,
   "minRamPerGpu": 16,
   "cloudTypes": [
-    "COMMUNITY",
-    "SECURE"
+    "SECURE",
+    "COMMUNITY"
   ],
   "allowedGpuTypes": [
     "NVIDIA RTX A2000",

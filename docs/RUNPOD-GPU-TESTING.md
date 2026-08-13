@@ -18,8 +18,9 @@ export RUNPOD_GPU_TEMPLATE_ID='...'
 The API key needs permission to read GPU inventory and templates and to create, read, and delete
 Pods. The configured template must be a Pod template which exposes `22/tcp`, uses an Ubuntu 24.04
 NVIDIA-compatible image, has at least a 30 GB container disk, and has no persistent volume. The
-runner supplies its own minimal `sshd` entrypoint, so a generic base image does not need to start
-SSH itself.
+runner supplies its own minimal, time-bounded `sshd` entrypoint, so the existing generic base image
+does not need to start SSH itself. A Pod that misses the bounded readiness window is deleted and
+confirmed absent before a different eligible GPU/cloud candidate is attempted.
 
 The runner injects a unique, ephemeral SSH public key into RunPod's current `SSH_PUBLIC_KEY` and
 the legacy/custom-template `PUBLIC_KEY` alias for every run, then deletes the private key locally
@@ -80,8 +81,14 @@ npm run gpu:test -- --only-path game --only-path tools/render \
 The committed policy is in `tools/runpod/config.json`:
 
 - one on-demand (non-interruptible) GPU from an explicit allowlist;
-- cheapest live one-GPU offer first, with the remaining allowed types as fallbacks;
-- advertised and actual Pod price must both be at or below **$0.40/hour** by default;
+- concrete live one-GPU on-demand offers queried for the runner's CPU, RAM, ephemeral-disk, and
+  public-IP requirements, with a finite current price and non-`None` stock; numeric
+  `availableGpuCounts` / `maxUnreservedGpuCount` are recorded when RunPod supplies them, while a
+  qualitative stock label without a matching priced offer is never sufficient by itself;
+- Secure Cloud first for more predictable host startup, with Community Cloud retained as a capacity
+  fallback; all capped/allowlisted GPU types in each cloud are sent in one REST create request using
+  RunPod's availability priority, cheapest first within that cloud;
+- advertised and actual Pod price must both be at or below **$1.00/hour** by default;
 - **20 minutes** maximum for the entire provision/install/test/retrieve lifecycle by default;
 - absolute caps of $1.00/hour and 120 minutes, even if larger CLI values are supplied;
 - 30 GB ephemeral container disk and `volumeInGb: 0`;
@@ -98,6 +105,14 @@ npm run gpu:test -- --max-price 0.25 --max-runtime 12
 enter the same `finally` deletion path. A second signal forces immediate local exit and can leave a
 Pod behind, as can `SIGKILL`, a dead Codespace, or a network partition during deletion. Recovery is
 API-backed and restricted to this tool's name prefix and configured template:
+
+Create failures are deliberately asymmetric. RunPod's explicit capacity messages (including
+`This machine does not have the resources to deploy your pod`) are classified as definite
+non-creation, logged against every candidate in that cloud batch, and may advance to the next
+eligible cloud. Unknown 5xx responses, rate limits, timeouts, lost connections, and malformed
+success responses are ambiguous: the runner issues no second create, performs repeated API lookup
+by the unique Pod name, adopts and cleans up a recovered Pod, and otherwise fails with cleanup
+unconfirmed. Each cloud batch is submitted at most once.
 
 ```sh
 npm run gpu:cleanup -- --dry-run
@@ -127,13 +142,13 @@ SHA-256 so results cannot silently drift from the tested bytes.
 
 The existing generic Ubuntu template is supported by `worker/ssh-entrypoint.sh` and
 `worker/bootstrap.sh`, which install OpenSSH, Node 22, the repo's pinned Playwright 1.56.1,
-Chromium, Xvfb, and required libraries on each ephemeral Pod. That is the cleanest
-zero-infrastructure starting point but spends several minutes installing.
+Chromium, Xvfb, Vulkan diagnostics, and required libraries on each ephemeral Pod. That is the
+cleanest zero-infrastructure starting point but spends several minutes installing.
 
 For repeated runs, build `tools/runpod/worker/Dockerfile`, push it to the owner's container
 registry, and point a no-volume, 30 GB RunPod Pod template at it. The image extends RunPod's Ubuntu
 24.04 CUDA base and preinstalls the browser stack. The CLI still supplies its repo-owned SSH
-entrypoint at Pod creation, so the image never contains an SSH credential. Keep
+entrypoint and ephemeral public key at Pod creation. Keep
 `RUNPOD_GPU_TEMPLATE_ID` on the generic template until the purpose-built image passes
 `npm run gpu:test`; switching the environment variable is the complete rollback.
 
@@ -150,10 +165,18 @@ selected screenshot is `docs/shots/2026-08-13-runpod-gpu-browser-smoke.png`.
 The generic template is therefore correct and needs no infrastructure change. A purpose-built
 image is only a speed optimization if these runs become frequent.
 
+The capacity/readiness hardening was re-verified on 2026-08-13 with the current live inventory.
+One Secure availability-priority request selected an RTX A4500 at $0.25/hour, SSH answered on the
+first probe, and Chromium reported `ANGLE (NVIDIA, Vulkan 1.3.277 (NVIDIA NVIDIA RTX A4500 ...),
+NVIDIA)`. The game, PNG, WebM, console log, Vulkan summary, and JSON results returned locally. The
+157.8-second lifecycle cost under $0.011; deletion was confirmed by a subsequent 404 and the orphan
+scan was empty.
+
 ## Local self-test
 
-The API client, price/capacity selection, no-retry create behavior, exact dirty-worktree archive,
-and ephemeral SSH key generation have offline tests:
+The API client, concrete inventory selection, multi-GPU availability batching, capacity fallback,
+ambiguous no-retry recovery, price/allowlist invariants, full mocked lifecycle, exact dirty-worktree
+archive, and ephemeral SSH key generation have offline tests:
 
 ```sh
 npm run gpu:selftest
