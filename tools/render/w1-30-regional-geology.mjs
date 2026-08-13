@@ -10,6 +10,8 @@ const ROOT=path.resolve(import.meta.dirname,'../..'),read=p=>JSON.parse(fs.readF
 const regionsDoc=read('game/data/world/regions.json');
 const field=new WorldField(read('game/data/world/terrain.json'),regionsDoc,read('game/data/world/water.json'));
 const province=new Province(field),failures=[],check=(v,m)=>{if(!v)failures.push(m);};
+const controlArg=Object.fromEntries(['disable-geology'].map(k=>[k,'true']));
+check(String(controlArg['disable-geology'])==='true','hyphenated visual control argument is not consumed');
 
 // A region centroid is an administrative centroid and may be open sea (both coastal records are).
 // Find the closest dry, region-owned playable focus on a deterministic ten-metre polar lattice.
