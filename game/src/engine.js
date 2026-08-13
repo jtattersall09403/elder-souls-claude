@@ -8385,13 +8385,12 @@ export class Engine {
       // as it shipped, and the delete-the-fix arm.
       const purseHook = this._purseHookBlind ? undefined : { setGold: (n) => this._setGold(n) };
       const r = applySave(this.sim, arg, moveTable, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f), purseHook);
-      // RI-UIX05 T5. `applySave` calls `sim.reset()`, which replaces `sim.quest` WHOLESALE —
-      // the same hazard `_rebindQuestRuntime` exists for on the named-state path, and the blob
-      // path had no equivalent. Without this line the reading position was restored correctly
-      // into the new quest state while `UISystem.bookPages` went on holding the discarded one,
-      // and the probe measured a book that had been left on spread 29 reopening at 1 after a
-      // load, with `dialogue.book_pages` present and correct in the blob the whole time.
-      this._bindReadingPosition();
+      // RI-UIX05 T5 / W1-19. `applySave` calls `sim.reset()`, which replaces `sim.quest`
+      // WHOLESALE. Rebind the complete quest runtime, not only the reading cursor: otherwise
+      // QuestEngine.journal keeps the discarded pre-load entries array and every quest journal
+      // write after a blob restore vanishes from the live state and the next save. The named-
+      // state path already uses this same complete boundary repair.
+      this._rebindQuestRuntime({ seedDispositions: false });
       this._applyCell();
       // THE FIGHT. `applySave` restores `sim.*`, which is a VIEW of the combat bodies
       // (sim/combat-bridge.js). Rebuilding the fight from the save's own loadout and pushing
@@ -9455,7 +9454,7 @@ export class Engine {
     return this.ui ? this.ui.bookPages : null;
   }
 
-  _rebindQuestRuntime() {
+  _rebindQuestRuntime({ seedDispositions = true } = {}) {
     this._bindReadingPosition();
     if (!this.questEngine) return null;
     this.questEngine.sim = this.sim;
@@ -9464,7 +9463,10 @@ export class Engine {
     // pointing at the previous world — but re-install anyway, because a rebind that half
     // survives is exactly the contamination W1-15 round 2 found in the stealth subsystem.
     this.questEngine.dispositionModel = this._questDispositionModel();
-    this.seedDispositions();
+    // A named-state reset has a new empty register and needs authored bases. A save blob has
+    // already restored its durable register, including every quest consequence; reseeding that
+    // case would overwrite earned deltas with cold NPC values.
+    if (seedDispositions) this.seedDispositions();
     return true;
   }
 

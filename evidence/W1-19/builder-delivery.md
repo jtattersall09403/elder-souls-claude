@@ -330,3 +330,26 @@ Compact exact results, hashes, commands and the canonical-Q30 regeneration comma
 `q-main-17-production-summary.json`. This is a builder continuation, not an independent verdict.
 Q18 onward, the first ending, the backpath/alternative ending, remaining controls, cold chains and
 the final builder aggregate remain open.
+
+### Save-runtime journal repair and corrected Q17 checkpoint
+
+The first Act IV continuation audit found that the committed Q17 save had eighteen completed
+quests but its player journal stopped at Q6. `applySave()` replaces `sim.quest`; the save-blob
+load path re-bound the book cursor but left `QuestEngine.journal` pointing at the discarded array.
+Calling the existing full rebind naively exposed a second failure: it re-seeded cold NPC bases and
+overwrote the save's earned disposition register. Blob loads now rebind the quest engine and
+journal without reseeding; named-state resets still seed their new empty register.
+
+The focused disposable regression smoke restored the real Q30 fixture, preserved Aveline's
+serialized disposition at 77/77, and proved a post-load Q16 journal write reached both live state
+and a fresh `H.saveState()` (12 to 13 entries). The canonical production replay from Q30 then
+completed Q16 as `res_persuade_chapter` and Q17 as `res_whole_arithmetic` with five persisted
+player-journal entries (12 to 17), routed conversation/ledger reveals, no active quest, marker
+count zero, gold zero, no enemy deaths, no session death/respawn, no teleport and no violence.
+
+The corrected fixture is `fixtures/resume-saxhleel-interior-intended-q17.json`, SHA-256
+`46d9b5a7f139aa7667ae7d3c1ec4414d172d7df8af65c1b34be7d0144d191761`. Its validator is green;
+the checkpoint control executed four consumer calls with two supported mutations, produced the
+exact fixture-tamper and quest-input-staleness red rows, and returned to green. Exact commands and
+ignored report hashes are in `q-main-17-production-summary.json`. Q18 onward and all later builder
+gates remain open; this is not an independent critic verdict.

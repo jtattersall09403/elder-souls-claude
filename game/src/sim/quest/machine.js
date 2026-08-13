@@ -362,6 +362,7 @@ export class QuestEngine {
       knownSpellEffects: new Set(this.sim.magic ? [...(this.sim.magic.knownEffects || [])] : []),
       magicWorld: this.sim.magic ? this.sim.magic.world : null,
       gold: this.sim.progression.gold || 0,
+      dayCount: Math.floor(this.sim.env.dayCount || 0),
     };
   }
 
@@ -446,6 +447,8 @@ export class QuestEngine {
   resolutionsFor(id) {
     const def = this.book.get(id);
     const ctx = this.context();
+    const openedDay = this.rec(id)?.flags?.opened_day;
+    ctx.daysSinceQuestOpened = openedDay == null ? 0 : Math.max(0, ctx.dayCount - Number(openedDay));
     ctx.disposition = this._dispositionToward(def.giver && def.giver.npc_id);
     return (def.resolutions || []).map((r) => {
       const c = canResolve(r, ctx);
@@ -588,6 +591,8 @@ export class QuestEngine {
     const gate = canOffer(def, ctx, this.gates);
     if (!gate.offerable) return { ok: false, reason: gate.why.join('; '), gate: gate.gate, refused_by: 'offer_gate' };
     ctx.disposition = this._dispositionToward(def.giver && def.giver.npc_id);
+    const openedDay = r.flags?.opened_day;
+    ctx.daysSinceQuestOpened = openedDay == null ? 0 : Math.max(0, ctx.dayCount - Number(openedDay));
     const c = canResolve(res, ctx);
     if (!c.available) return { ok: false, reason: c.why.join('; ') };
     for (const x of res.exclusive_with || []) {

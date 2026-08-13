@@ -1348,7 +1348,7 @@
         {
           "index": 92,
           "state": "success",
-          "text": "I put the Court's arithmetic in front of the Assize as evidence in the ordinary way and got the writ as a finding of fact rather than a favour. It took six weeks and three clerks and it is the only piece of paper in this whole business that would survive being read out by an enemy.",
+          "text": "I put the Court's arithmetic in front of the Assize as evidence in the ordinary way and got the writ as a finding of fact rather than a favour. It took eleven days and three clerks and it is the only piece of paper in this whole business that would survive being read out by an enemy.",
           "records_belief": false
         },
         {
@@ -1414,9 +1414,7 @@
           "outcome": "The writ is issued on the evidence, as a finding. Slowest route, no political debt, and the only document in Act IV that stands up in Act V when somebody challenges the player's standing.",
           "morally_better": true,
           "requires": {
-            "skills": {
-              "speechcraft": 40
-            }
+            "elapsed_days_since_open": 11
           },
           "requires_knowing": [
             "rev_the_lever"

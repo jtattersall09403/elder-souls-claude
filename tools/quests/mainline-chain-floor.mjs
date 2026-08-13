@@ -176,7 +176,7 @@ const planFor = (ids) => ids.map((id) => {
     reveals: ((q.deceit || {}).revealed_by || []).map((r) => ({ id: r.id, channel: r.channel, source: r.source })),
     notes: (q.journal || []).filter((e) => e.state === 'active' || e.state === 'branch')
       .map((e) => e.index).filter((i) => i > 10),
-    resolutions: (q.resolutions || []).filter((r) => !r.violence_required).map((r) => ({ id: r.id, requires_knowing: r.requires_knowing || [] })),
+    resolutions: (q.resolutions || []).filter((r) => !r.violence_required).map((r) => ({ id: r.id, requires: r.requires || {}, requires_knowing: r.requires_knowing || [] })),
   };
 });
 const PREFER = {
@@ -218,6 +218,28 @@ const BOOTSTRAP_NPC = 'bone-ladder-carter';
 const STATE = 'soulrest-quay';
 
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
+// A production journey can spend tens of wall-clock minutes inside one synchronous browser
+// evaluation.  The terminal report is still the evidence, but an ignored heartbeat lets the
+// owner distinguish a long walk from a hung shell and names the current quest/phase before a
+// browser timeout.  Console delivery is observational only: it cannot call back into the game,
+// and the production guard continues to scan the runner for every forbidden advancement verb.
+const PROGRESS_PREFIX = '__W119_PROGRESS__:';
+const progressPath = path.join(outDir, 'progress.json');
+const progressEvents = [];
+handle.page.on('console', (message) => {
+  const text = message.text();
+  if (!text.startsWith(PROGRESS_PREFIX)) return;
+  try {
+    const event = JSON.parse(text.slice(PROGRESS_PREFIX.length));
+    progressEvents.push({ sequence: progressEvents.length + 1, observed_at: new Date().toISOString(), ...event });
+    writeJson(progressPath, {
+      schema: 'elder-souls/mainline-chain-floor-progress@1',
+      terminal_evidence: false,
+      latest: progressEvents.at(-1),
+      events: progressEvents,
+    });
+  } catch { /* malformed page console is retained by launchGame and cannot affect progression */ }
+});
 // Process-side renderer provenance.  A page can monkey-patch WebGL strings; Chromium's browser
 // target cannot.  Preserve the exact launch request and the compact SystemInfo GPU report so a
 // GPU-pod run can distinguish an intentional deterministic SwiftShader chain from a native-GPU
@@ -246,12 +268,20 @@ try {
 }
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic, progressPrefix }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
     let shelterRequired = false;
     let routeCheckpoint = null;
+    let progressQuest = null;
+    const progress = (event, detail = {}) => {
+      const where = H.whereAmI();
+      console.log(progressPrefix + JSON.stringify({
+        event, frame: H.getFrame(), settlement: where.settlement || null,
+        interior: where.interior || null, hour: where.hour, ...detail,
+      }));
+    };
 
     // One interact edge can both take a doorway and greet a body standing on the destination
     // spawn. The transition is legitimate, but the resulting player-visible conversation owns
@@ -553,6 +583,35 @@ try {
         while(lo>1&&Math.hypot(encounterBaseline[lo-1][0]-post.x,encounterBaseline[lo-1][1]-post.z)<replaceRadius)lo--;
         while(hi+1<encounterBaseline.length-1&&Math.hypot(encounterBaseline[hi+1][0]-post.x,encounterBaseline[hi+1][1]-post.z)<replaceRadius)hi++;
         const entry=encounterBaseline[lo-1],exit=encounterBaseline[hi+1],requiredClearance=24,tested=[];
+        // A relocated single post can be close enough to enter the 60 m patrol-observation
+        // window while its shipped road already stays outside the independently required 24 m
+        // body clearance.  The old single-post arm nevertheless forced a new shoulder waypoint.
+        // On the narrow elevated Stormhold road that meant descending an impassable cliff to
+        // avoid pop-0003/pop-0011 even though their production centres were 35 m off the road.
+        // Validate exact point-to-segment body clearance across the complete nearby baseline.
+        // The baseline is the shipped road and remains governed by walkPath's production
+        // traversal consumer; applying the off-road shoulder's grade predicate to it mislabels
+        // authored engineered grades 42--51 m from a body as encounter failures. Only a road
+        // segment that actually enters the 24 m body disc needs the terrain-checked detour below.
+        // This changes no envelope or clearance threshold and walks the same authored road
+        // through ordinary player input.
+        // Limit this validation to the same 60 m observation envelope that made the post a
+        // candidate.  A fixed +/- eight road samples can span well over 100 m on sparse rural
+        // splines and was rejecting an unrelated engineered road grade 76--96 m from the body.
+        let singleSegmentStart=near.i,singleSegmentEnd=near.i;
+        while(singleSegmentStart>0&&Math.hypot(encounterBaseline[singleSegmentStart-1][0]-post.x,encounterBaseline[singleSegmentStart-1][1]-post.z)<=60)singleSegmentStart--;
+        while(singleSegmentEnd+1<encounterBaseline.length&&Math.hypot(encounterBaseline[singleSegmentEnd+1][0]-post.x,encounterBaseline[singleSegmentEnd+1][1]-post.z)<=60)singleSegmentEnd++;
+        const pointSegmentDistance=(q,a,b)=>{const dx=b[0]-a[0],dz=b[1]-a[1],d2=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((q.x-a[0])*dx+(q.z-a[1])*dz)/d2));return Math.hypot(q.x-(a[0]+dx*t),q.z-(a[1]+dz*t));};
+        let baselineAlreadyClear=true,baselineFailure=null,baselineMinClearance=Infinity;
+        for(let bi=singleSegmentStart;bi<singleSegmentEnd;bi++){
+          const clearanceHere=pointSegmentDistance(post,encounterBaseline[bi],encounterBaseline[bi+1]);
+          baselineMinClearance=Math.min(baselineMinClearance,clearanceHere);
+          if(clearanceHere<requiredClearance){baselineAlreadyClear=false;baselineFailure={index:bi,from:encounterBaseline[bi],to:encounterBaseline[bi+1],reason:'encounter-clearance',clearance_m:+clearanceHere.toFixed(3)};break;}
+        }
+        if(baselineAlreadyClear){
+          encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),side:'authored-route-already-clear',waypoints:[],required_body_clearance_m:requiredClearance,post_observation_envelope_m:60,encounter_envelope_m:35,segment_validation:{baseline_segment_start:singleSegmentStart,baseline_segment_end:singleSegmentEnd,all_segments_clear:true,min_body_clearance_m:+baselineMinClearance.toFixed(3),terrain_consumer:'production walkPath on shipped road'}});
+          continue;
+        }
         for(const side of [-1,1]) for(const shoulder of [clearance,clearance+15,clearance+30]){
           const q=[post.x+side*(-dz/dl)*shoulder,post.z+side*(dx/dl)*shoulder];
           const inbound=sampleSegment(entry,q,post,requiredClearance),outbound=sampleSegment(q,exit,post,requiredClearance);
@@ -561,7 +620,7 @@ try {
         const pick=tested.filter(c=>c.safe).sort((a,b)=>b.min_water_margin_m-a.min_water_margin_m||a.shoulder-b.shoulder)[0];
         if(!pick){
           const connected=findConnectedDetour(entry,exit,post,requiredClearance);
-          if(!connected){unsafeEncounterRoute={post:post.id,encounter:post.encounter,reason:'no-connected-production-safe-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true,tested});continue;}
+          if(!connected){unsafeEncounterRoute={post:post.id,encounter:post.encounter,reason:'no-connected-production-safe-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true,baseline_validation:{segment_start:singleSegmentStart,segment_end:singleSegmentEnd,first_failure:baselineFailure},tested});continue;}
           route.splice(lo,hi-lo+1,...connected.cells);
           encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected.cells,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
           continue;
@@ -652,6 +711,7 @@ try {
       // Keeping the two walkPath results also makes a death/respawn on either half fail closed.
       let shelter = null;
       let walked;
+      progress('walk-start', { quest:progressQuest, from:[+started[0].toFixed(3),+started[2].toFixed(3)], target:[+x.toFixed(3),+z.toFixed(3)], straight_line_m:+already.toFixed(1), route_points:route.length, encounter_candidates:encounterCandidates.length });
       const craters = H.getSignatures({ kind:'glassed_crater', region:'stone-wastes' });
       let craterJoin = null;
       for (const crater of craters) for (let i=0;i<route.length;i++) {
@@ -717,7 +777,54 @@ try {
             defensive_swings:inbound.survival_inputs.defensive_swings+outbound.survival_inputs.defensive_swings },
           regions_entered:[...new Set([...inbound.regions_entered,...outbound.regions_entered])].sort(),
         };
-      } else walked=walkWithCheckpoint(route);
+      } else {
+        walked=walkWithCheckpoint(route);
+        // Static slope sampling can call a terrain lip walkable even when the production capsule
+        // cannot step over it. A stuck abort is local even when the body walked kilometres before
+        // reaching that lip, so recover from the nearest remaining waypoint rather than keying the
+        // safety action to the whole walk's accumulated distance. Back away through ordinary
+        // movement and retry the unchanged authored route from that point. Every failed radial
+        // attempt is a real input attempt; no state is restored, no pose is written, and
+        // discontinuities remain fatal.
+        if(!walked.arrived&&walked.aborted==='stuck'&&(walked.longest_stuck_frames||0)>=1800&&(walked.teleports||0)===0&&route.length){
+          const stuckAt=H.whereAmI().pos.slice();
+          let nearest=0,nearestD=Infinity;
+          for(let i=0;i<route.length;i++){const d=Math.hypot(route[i][0]-stuckAt[0],route[i][1]-stuckAt[2]);if(d<nearestD){nearestD=d;nearest=i;}}
+          const remaining=route.slice(nearest);
+          const first=remaining[0],toward=Math.atan2(first[0]-stuckAt[0],first[1]-stuckAt[2]);
+          const attempts=[];let egress=null;
+          for(const turn of [Math.PI,Math.PI*.75,-Math.PI*.75,Math.PI*.5,-Math.PI*.5]){
+            const a=toward+turn,q=[stuckAt[0]+Math.sin(a)*2,stuckAt[2]+Math.cos(a)*2];
+            const terrain=H.getTerrainAt(q[0],q[1]),water=H.getWaterAt(q[0],q[1]),solid=H.solidAt(q[0],terrain.y+.9,q[1]);
+            if(terrain.slope_deg>40||Number(water.depth_m??water.depth??0)>1.05||solid.distance_m<.42){attempts.push({q,rejected:'static-production-safety',slope_deg:terrain.slope_deg,water_m:Number(water.depth_m??water.depth??0),clearance_m:solid.distance_m});continue;}
+            const trial=H.walkPath([q],{fromCurrent:true,speed:'walk',maxFrames:900,arrive_m:.2,lookahead_m:.25,stuckAbort:300,miredAbort:900,survival:false,defensive:false,sprint:false});
+            attempts.push({q,walk:trial});if(trial.arrived&&trial.arrival_is_clean){egress=trial;break;}
+          }
+          let retry=null,dogleg=null;
+          if(egress){
+            const back=[-Math.sin(toward),-Math.cos(toward)],perp=[back[1],-back[0]];
+            const safePoint=(q)=>{const t=H.getTerrainAt(q[0],q[1]),w=H.getWaterAt(q[0],q[1]),s=H.solidAt(q[0],t.y+.9,q[1]);return t.slope_deg<=40&&Number(w.depth_m??w.depth??0)<=1.05&&s.distance_m>=.42;};
+            const plans=[-1,1].map(side=>{const p1=[stuckAt[0]+back[0]*6,stuckAt[2]+back[1]*6],p2=[p1[0]+perp[0]*8*side,p1[1]+perp[1]*8*side],p3=[p2[0]-back[0]*10,p2[1]-back[1]*10];return {side,points:[p1,p2,p3],safe:[p1,p2,p3].every(safePoint),route_distance_m:Math.min(...remaining.map(q=>Math.hypot(q[0]-p3[0],q[1]-p3[1])))};}).filter(p=>p.safe).sort((a,b)=>a.route_distance_m-b.route_distance_m);
+            const selected=plans[0]||null,legs=[];
+            if(selected)for(const q of selected.points){const leg=H.walkPath([q],{fromCurrent:true,speed:'walk',maxFrames:2400,arrive_m:.2,lookahead_m:.25,stuckAbort:900,miredAbort:1800,survival:false,defensive:false,sprint:false});legs.push({q,walk:leg});if(!leg.arrived||!leg.arrival_is_clean)break;}
+            dogleg={production_input:true,candidates:plans,selected:selected?.side??null,legs};
+            if(selected&&legs.length===selected.points.length&&legs.every(l=>l.walk.arrived&&l.walk.arrival_is_clean))retry=walkWithCheckpoint(remaining);
+          }
+          const add=(a,b,key)=>(a?.[key]||0)+(b?.[key]||0);
+          walked=retry?{...retry,
+            arrived:!!retry.arrived&&!!retry.arrival_is_clean,
+            aborted:retry.aborted,
+            frames:add(walked,egress,'frames')+(retry.frames||0),
+            path_m:+(add(walked,egress,'path_m')+(retry.path_m||0)).toFixed(1),
+            teleports:add(walked,egress,'teleports')+(retry.teleports||0),
+            teleported_m:+(add(walked,egress,'teleported_m')+(retry.teleported_m||0)).toFixed(1),
+            teleport_log:[...(walked.teleport_log||[]),...(egress.teleport_log||[]),...(retry.teleport_log||[])],
+            survival_inputs:{heals:(walked.survival_inputs?.heals||0)+(retry.survival_inputs?.heals||0),sprint_frames:0,defensive_swings:0},
+            local_stuck_recovery:{production_input:true,stuck_at:stuckAt,nearest_route_index:nearest,remaining_route_points:remaining.length,attempts,selected:attempts.at(-1)?.q||null,dogleg,retried_authored_route:true}
+          }:{...walked,local_stuck_recovery:{production_input:true,stuck_at:stuckAt,nearest_route_index:nearest,remaining_route_points:remaining.length,attempts,selected:egress?attempts.at(-1)?.q||null:null,dogleg,retried_authored_route:false}};
+        }
+      }
+      progress('walk-end', { quest:progressQuest, arrived:!!walked.arrived, aborted:walked.aborted||null, path_m:walked.path_m||0, frames:walked.frames||0, teleports:walked.teleports||0 });
       const ended=H.whereAmI().pos.slice(), actualLeft=Math.hypot(x-ended[0],z-ended[2]);
       const namedFailure = (walked.teleports||0)>0 ? 'death-respawn'
         : shelter && !shelter.arrived ? 'crater-entry-failed'
@@ -768,6 +875,19 @@ try {
         const active=loc.schedule.find(s=>{const a=cv(s.from),b=cv(s.to);return b>a?minute>=a&&minute<b:minute>=a||minute<b;});
         return active?.at&&interiorActions[active.at]?{...actor,interior:active.at}:actor;
       };
+      const waitForExteriorSchedule = (actor) => {
+        if(!actor?.interior||!Array.isArray(loc?.schedule))return {actor,wait:null};
+        const now=H.whereAmI().hour*60, cv=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m;};
+        const starts=loc.schedule.filter((s)=>!s.at).map((s)=>{
+          let delta=(cv(s.from)-now+1440)%1440;if(delta<.01)delta=1440;return delta;
+        }).sort((a,b)=>a-b);
+        if(!starts.length)return {actor,wait:null};
+        const hours=Math.max(1,Math.min(24,Math.ceil(starts[0]/60)));
+        const wait={...productionWait(hours),reason:'scheduled actor moves to exterior post',actor_interior_before:actor.interior};
+        const refreshed=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId));
+        wait.actor_interior_after=refreshed?.interior||null;
+        return {actor:refreshed,wait};
+      };
       // Resolve a scheduled interior before walking to the actor's daytime post. At night the
       // list projection carries cell-local coordinates but no interior id; approaching the old
       // exterior post first can drive straight into an unrelated fitted building and never even
@@ -813,7 +933,34 @@ try {
           approach={ok:legs.length===2&&legs.every(l=>l.ok),production_door_staging:true,side_options:sideOptions,selected_side:side,near_corner:nearCorner,outer_corner:outerCorner,legs,walk:{path_m:legs.reduce((n,l)=>n+(l.walk?.path_m||0),0),teleports:legs.reduce((n,l)=>n+(l.walk?.teleports||0),0),aborted:legs.find(l=>!l.ok)?.walk?.aborted||null}};
         } else if (station && !ent?.interior) approach = walkTo(station.x, station.z, 12.0);
       }
-      if (approach && !approach.ok) return { ok:false, why:`production approach to ${npcId} incomplete: ${approach.walk?.aborted || approach.left_m}`, location:loc || null, approach };
+      // If the night doorway staging itself is blocked by its fitted building, wait through the
+      // player's pause-menu Wait screen until this actor's authored exterior shift.  The earlier
+      // runner discarded a body already inside Blackrose because it could not round the inn at
+      // 23:14, even though Neeja-Xul walks back to her yard at 07:00. Waiting changes only the
+      // world clock/schedule and is independently checked for zero movement/healing/flasks.
+      if(approach&&!approach.ok&&ent?.interior){
+        const scheduled=waitForExteriorSchedule(ent);ent=scheduled.actor;
+        approach={...approach,schedule_wait:scheduled.wait,door_staging_incomplete:true,
+          ok:!!(scheduled.wait&&!ent?.interior),production_target_streamed:!!ent?.pos};
+      }
+      if (approach && !approach.ok) {
+        // A settlement station is a streaming landmark, not the giver.  A long provincial walk
+        // can legitimately enter the target town and stream the actor before dense public-realm
+        // collision stops the last few metres to the station itself.  The Q19 production return
+        // reached Blackrose, stopped 34.27 m short of its station, and left Neeja-Xul alive and
+        // talkable only 13.75 m behind the player; rejecting that as if the town were absent
+        // threw away real movement and launched the same province crossing again on resume.
+        // Accept the streamed town boundary only when the live target exists nearby.  The final
+        // walk to the actor below is still required and can independently fail.
+        const arrivedWhere=H.whereAmI();
+        const arrivedEntity=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId));
+        const entityDistance=arrivedEntity?.pos
+          ? Math.hypot(arrivedEntity.pos[0]-arrivedWhere.pos[0],arrivedEntity.pos[2]-arrivedWhere.pos[2]) : Infinity;
+        const targetTownReached=!!(loc?.settlement&&arrivedWhere.settlement===loc.settlement&&arrivedEntity?.pos&&entityDistance<=80);
+        if(!targetTownReached)return { ok:false, why:`production approach to ${npcId} incomplete: ${approach.walk?.aborted || approach.left_m}`, location:loc || null, approach };
+        approach={...approach,station_approach_incomplete:true,production_target_streamed:true,streamed_entity_distance_m:entityDistance};
+        ent=arrivedEntity;
+      }
       ent = inferScheduledInterior(H.listEntities().find((x) => x.eid === npcId));
       // Site populations have no settlement boundary; this is the same production consumer
       // `stepSettlement` calls for towns, invoked only after the body reached the authored site.
@@ -835,8 +982,8 @@ try {
           // A giver's authored schedule is also a production route. If dense fitted buildings
           // make the night doorway unreachable, wait in the world until that same actor's live
           // schedule brings them to their exterior post; never rewrite the clock or actor cell.
-          let waited=0;for(;waited<43200&&ent?.interior;waited+=60){H.clearInputs();H.stepFrames(60);ent=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId));}
-          schedule_entry={...schedule_entry,schedule_wait:{production_wait:true,frames:waited,hour:H.whereAmI().hour,actor_interior:ent?.interior||null}};
+          const scheduled=waitForExteriorSchedule(ent);ent=scheduled.actor;
+          schedule_entry={...schedule_entry,schedule_wait:scheduled.wait};
           if(!ent||ent.interior)return {ok:false,why:`production door to scheduled ${npcId} unreachable and schedule did not move exterior`,approach,schedule_entry};
         } else {
         // Settle the movement release before using the doorway. A crowded frontage can consume
@@ -944,6 +1091,8 @@ try {
 
       for (const step of plan) {
         if (alreadyCompleted.has(step.id)) continue;
+        progressQuest=step.id;
+        progress('quest-start', { chain: name, quest: step.id, completed_in_run: out.completed.length });
         // Q-MAIN-30 is the mandatory parallel audience. Its opening phrase is not awarded by
         // Q15: the authored world route is Lilmoth's act-three-closed wharf rumour. Walk to a
         // real Lilmoth rootkeeper and ask through the published `latest rumors` choice until that
@@ -972,6 +1121,7 @@ try {
               : 'player-facing Lilmoth rumor route did not teach the-thread-is-cut';
             out.trace.push({quest:step.id,topic:step.topic,prerequisite_topics:step.prereq_topics.slice(),opening_topic_action:openingTopicAction,failure:{phase:'opening-topic',reason:out.why},after:evidenceSnapshot((H.questDef(step.id).giver||{}).npc_id)});
             retainResume(out);
+            progress('quest-blocked', { chain:name, quest:step.id, phase:'opening-topic', reason:out.why });
             break;
           }
         }
@@ -1006,6 +1156,7 @@ try {
         const trip = activeRecord ? {quest:step.id,giver:(H.questDef(step.id).giver||{}).npc_id,present:true,reached:true,resumed_active:true} : reachGiver(step.id);
         shelterRequired = false;
         out.giver_journeys = out.giver_journeys || []; out.giver_journeys.push({ quest: step.id, phase: 'accept', ...trip });
+        progress('giver-journey', { chain:name, quest:step.id, phase:'accept', reached:!!trip.reached, reason:trip.why || null });
         if (!trip.present || !trip.reached) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
         // Accept through the production conversation choice published by talkTo().  The runner
         // never calls QuestEngine/open or a harness quest verb: if the giver does not publish the
@@ -1051,6 +1202,7 @@ try {
           out.why = o.reason;
           out.blocked_offer_why = offer ? offer.why : null;
           evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out);
+          progress('quest-blocked', { chain:name, quest:step.id, phase:'accept', reason:o.reason });
           break;
         }
         // Perform every authored reveal through its shipped player-facing world action.
@@ -1063,13 +1215,32 @@ try {
         const neededReveals = new Set((preferredResolution && preferredResolution.requires_knowing) || []);
         for (const r of step.reveals.filter((x) => neededReveals.has(x.id))) {
           const a = { reveal: r.id, channel: r.channel, source: r.source, ok: false };
+          const activeForReveal=H.getQuestState().active.find((q)=>q.id===step.id);
+          // A stable resume may start after the player already performed this world action. The
+          // durable `know:<reveal>` flag is QuestEngine's own consumer record; repeating a
+          // province crossing merely to rediscover it is neither player behaviour nor stronger
+          // evidence. Preserve that provenance explicitly and continue to the unresolved phase.
+          if(activeForReveal?.flags?.[`know:${r.id}`]){
+            a.ok=true;a.already_known_from_production_state=true;
+            out.world_actions.push(a);
+            progress('reveal-action', { chain:name, quest:step.id, reveal:r.id, channel:r.channel, ok:true, resumed_known:true });
+            continue;
+          }
           try {
             if (r.channel === 'talk_to_target' || r.channel === 'rival_npc') {
               a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
-              const st = H.talkTo(r.source); const learned = Array.isArray(st.learned) ? st.learned : (st.learned && st.learned.learned) || []; a.ok = learned.some((x) => x.reveal === r.id && x.ok); H.conversationClose();
+              const st = H.talkTo(r.source);
+              const learned = Array.isArray(st.learned) ? st.learned
+                : Array.isArray(st.learned?.learned) ? st.learned.learned : [];
+              const durable=H.getQuestState().active.find(q=>q.id===step.id)?.flags?.[`know:${r.id}`];
+              a.ok = learned.some((x) => x.reveal === r.id && x.ok)||!!durable; H.conversationClose();
             } else if (r.channel === 'eavesdrop') {
               a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
-              const st = H.eavesdrop(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
+              const st = H.eavesdrop(r.source);
+              const learned = Array.isArray(st) ? st
+                : Array.isArray(st.learned) ? st.learned
+                : Array.isArray(st.learned?.learned) ? st.learned.learned : [];
+              a.ok = learned.some((x) => x.reveal === r.id && x.ok);
             } else if (r.channel === 'corpse') {
               a.reach = reachNpc(r.source); if (!a.reach.ok) throw new Error(a.reach.why || 'source unreachable');
               const st = H.examineCorpse(r.source); const learned = Array.isArray(st) ? st : (st.learned || []); a.ok = learned.some((x) => x.reveal === r.id && x.ok);
@@ -1174,12 +1345,24 @@ try {
             }
           } catch (e) { a.error = String(e && e.message || e); }
           out.world_actions.push(a);
+          progress('reveal-action', { chain:name, quest:step.id, reveal:r.id, channel:r.channel, ok:!!a.ok, error:a.error || null });
         }
 
         evidence.world_actions = out.world_actions.filter((wa)=>step.reveals.some((rv)=>rv.id===wa.reveal));
         evidence.after_accept=evidenceSnapshot(giver);
         const want = prefer[name] && prefer[name][step.id];
         const ordered = [...step.resolutions].sort((a, b) => (a.id === want ? -1 : b.id === want ? 1 : 0));
+        // Q20's finding-of-fact route costs what its journal and outcome say it costs: eleven
+        // days while the Assize's clerks process the evidence. Advance those days only through
+        // the player's Wait screen. The live resolution gate below reads the quest's authored
+        // opening day, so skipping even one wait leaves the choice unpublished.
+        const intended=ordered[0],elapsedDays=Number(intended?.requires?.elapsed_days_since_open||0);
+        if(elapsedDays>0){
+          const active=H.getQuestState().active.find(q=>q.id===step.id),env=H.getEnvironment();
+          const openedDay=Number(active?.flags?.opened_day??env.day),startDay=Number(env.day),waits=[];
+          for(let remaining=Math.max(0,elapsedDays-(startDay-openedDay));remaining>0;remaining--)waits.push(productionWait(24));
+          evidence.resolution_wait={production_wait:true,required_elapsed_days:elapsedDays,opened_day:openedDay,start_day:startDay,end_day:Number(H.getEnvironment().day),waits};
+        }
         // Select an actually published shipped resolution choice in the giver's ordinary
         // conversation. Absence is a production gate refusal, not something the runner repairs.
         let res;
@@ -1187,6 +1370,7 @@ try {
         try {
           const returnTrip = reachGiver(step.id);
           out.giver_journeys.push({ quest: step.id, phase: 'resolve', ...returnTrip });
+          progress('giver-journey', { chain:name, quest:step.id, phase:'resolve', reached:!!returnTrip.reached, reason:returnTrip.why || null });
           if (!returnTrip.reached) throw new Error(`production movement did not reach giver: ${returnTrip.why || returnTrip.walk?.walk?.aborted || returnTrip.walk?.left_m}`);
           const c = H.talkTo(giver);
           const topics = c.topics || c.list || [];
@@ -1203,12 +1387,13 @@ try {
           }
           H.conversationClose();
         } catch (e) { res = { ok: false, reason: String(e && e.message || e) }; }
-        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out); break; }
+        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out); progress('quest-blocked', { chain:name, quest:step.id, phase:'resolve', reason:res.reason }); break; }
         if (pick.violence_required) out.violent.push(step.id);
         out.completed.push(step.id);
         st = sampleStanding(); fold(st);
         evidence.after=step.id; evidence.resolution=pick.id; evidence.standing=st; evidence.after_resolution=evidenceSnapshot(giver); out.trace.push(evidence);
         retainResume(out);
+        progress('quest-completed', { chain:name, quest:step.id, resolution:pick.id, completed_in_run:out.completed.length });
         if (stopAfter === step.id) { out.stopped_after=step.id; break; }
       }
       const qs = H.getQuestState();
@@ -1252,7 +1437,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows, routeCheckpoint };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic, progressPrefix: PROGRESS_PREFIX });
 } catch (error) {
   writeJson(path.join(outDir, 'browser-failure.json'), {
     error: String(error && error.message || error),
@@ -1321,6 +1506,7 @@ const out = {
   schema: 'elder-souls/mainline-chain-floor@1',
   measured_at: new Date().toISOString(),
   browser_execution: browserExecution,
+  progress: { schema:'elder-souls/mainline-chain-floor-progress@1', file:path.relative(process.cwd(), progressPath), events:progressEvents.length, terminal_evidence:false },
   sabotage,
   state: STATE,
   bootstrap_npc: sabotage === 'no-bootstrap' ? null : BOOTSTRAP_NPC,

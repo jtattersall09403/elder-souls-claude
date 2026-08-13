@@ -158,6 +158,10 @@ export class QuestBook {
         const je = (q.journal || []).find((e) => e.index === r.journal_index);
         if (je && je.state !== 'success') P.push(at(`resolution ${r.id} points at journal ${r.journal_index}, which is state ${je.state}`));
         if (r.violence_required === false && r.method === 'combat') P.push(at(`resolution ${r.id} is method combat and violence_required false`));
+        if (r.requires && r.requires.elapsed_days_since_open != null
+          && (!Number.isInteger(r.requires.elapsed_days_since_open) || r.requires.elapsed_days_since_open < 1)) {
+          P.push(at(`${r.id}.requires.elapsed_days_since_open must be a positive whole simulated-day count`));
+        }
         // GAP-FCT-02: the vocabulary is closed. An unrecognised method is reported HERE, before
         // the membership test below, because a membership test cannot say no to a word it does
         // not know — which is exactly how 38 resolutions became invisible to this guard.
