@@ -887,15 +887,16 @@ function shieldMesh(id,row,mats){
   const w=great?.86:small?.46:.68,h=great?1.42:small?.54:1.02,d=great?.085:.060;
   const shape=new THREE.Shape();shape.moveTo(0,h*.52);shape.lineTo(w*.48,h*.34);shape.lineTo(w*.44,-h*.23);shape.lineTo(0,-h*.52);shape.lineTo(-w*.44,-h*.23);shape.lineTo(-w*.48,h*.34);shape.closePath();
   const boardGeo=new THREE.ExtrudeGeometry(shape,{depth:d,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.025,bevelThickness:.018});boardGeo.translate(0,-h*.12,-d*.5);
+  const panelGeo=new THREE.ShapeGeometry(shape,10);panelGeo.translate(0,-h*.12,0);
   const g=new THREE.Group();g.name=`actor-shield:${id||cls}`;g.matrixAutoUpdate=false;
   const rimMat=mats.metal.clone();rimMat.color.setHex(great?0x8b9495:0xb09665);rimMat.roughness=.38;rimMat.emissive.setHex(0x100d08);rimMat.emissiveIntensity=.10;rimMat.side=THREE.DoubleSide;rimMat.name='visual-family:metal:shield-rim';
   const faceMat=(great?mats.darkStone:mats.bark).clone();faceMat.color.setHex(great?0x686e70:0x926846);faceMat.roughness=.72;faceMat.emissive.setHex(great?0x090b0c:0x100b07);faceMat.emissiveIntensity=.10;faceMat.side=THREE.DoubleSide;faceMat.name=`visual-family:${great?'stone':'bark'}:shield-face`;
   const rim=new THREE.Mesh(boardGeo,rimMat);rim.castShadow=true;rim.receiveShadow=true;g.add(rim);
-  const face=new THREE.Mesh(boardGeo.clone(),faceMat);face.scale.set(.88,.88,.82);face.position.z=d*.72;face.castShadow=true;face.receiveShadow=true;g.add(face);
+  const face=new THREE.Mesh(panelGeo,faceMat);face.scale.set(.88,.88,1);face.position.z=d*.67;face.castShadow=true;face.receiveShadow=true;g.add(face);
   // The inner face is what the ordinary chase camera sees. It needs authored construction too;
   // otherwise even a detailed exterior collapses to the shadowed extrusion silhouette in play.
   const innerMat=faceMat.clone();innerMat.color.offsetHSL(0,-.04,.075);innerMat.name=`${faceMat.name}:inner`;
-  const inner=new THREE.Mesh(boardGeo.clone(),innerMat);inner.scale.set(.86,.86,.78);inner.position.z=-d*.72;inner.castShadow=true;inner.receiveShadow=true;g.add(inner);
+  const inner=new THREE.Mesh(panelGeo.clone(),innerMat);inner.scale.set(.86,.86,1);inner.position.z=-d*.67;inner.castShadow=true;inner.receiveShadow=true;g.add(inner);
   const boss=new THREE.Mesh(new THREE.SphereGeometry(small?.13:.16,18,10,0,Math.PI*2,0,Math.PI*.52),rimMat);boss.scale.z=.45;boss.position.set(0,0,d*.66);boss.castShadow=true;g.add(boss);
   for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.BoxGeometry(.035,h*.62,d*.32),rimMat);rib.position.set(sx*w*.25,-h*.10,d*.82);rib.rotation.z=-sx*.13;rib.castShadow=true;g.add(rib);}
   for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,h*.72,7),rimMat);rib.position.set(sx*w*.32,-h*.05,d*.62);rib.rotation.z=sx*.13;rib.castShadow=true;g.add(rib);}
