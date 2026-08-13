@@ -29,6 +29,7 @@ const scenarios=[
   {id:'idle-rear',label:'idle variant and deterministic secondary motion',frames:90,camera:'rear',script:[]},
   {id:'idle-orbit',label:'continuous close orbit proving head, armour and body attachment continuity',frames:120,camera:'orbit',script:[]},
   {id:'walk',label:'walk, acceleration and full stop',frames:150,camera:'rear',script:move([0,.45],12,118)},
+  {id:'walk-side',label:'side-profile walk proving stride, foot clearance and contact',frames:150,camera:'side',script:move([0,.45],12,118)},
   {id:'run',label:'run, acceleration and full stop',frames:150,camera:'rear',script:move([0,.90],12,118)},
   {id:'sprint',label:'sprint, acceleration and full stop',frames:170,camera:'rear',script:[...move([0,1],12,132),{f:12,press:['sprint']},{f:132,release:['sprint']}]},
   {id:'ordinary-turn',label:'ordinary directional turn',frames:120,camera:'rear',script:[{f:8,move:[0,.75]},{f:45,move:[.75,.35]},{f:92,move:[0,0]}]},
@@ -81,7 +82,7 @@ try{
     if(spec.weapon)await handle.h('setLoadout',{weapon:spec.weapon});
     await handle.h('stepFrames',8);if(spec.camera==='gameplay')await handle.h('camera',null);else await updateCamera(spec.camera);
     await handle.h('queueInputs',spec.script);
-    const start=await handle.h('getFrame'),frames=[];let attachmentMax=0,bodyOpaque=true,staticDirectionEmpty=true;
+    const start=await handle.h('getFrame'),frames=[];let attachmentMax=0,guardAttachmentMax=0,bodyOpaque=true,staticDirectionEmpty=true;
     for(let i=0;i<spec.frames;i++){
       if(spec.hook&&i===spec.hook.frame)await handle.h(spec.hook.method,...spec.hook.args);
       await handle.h('stepFrames',1);if(spec.camera==='orbit')await orbitCamera(i,spec.frames);else if(spec.camera!=='gameplay')await updateCamera(spec.camera);await handle.h('renderFrame');
@@ -94,13 +95,14 @@ try{
       bodyOpaque=bodyOpaque&&visibleSurfaces.length>0&&visibleSurfaces.every(m=>!m.transparent&&m.opacity===1&&m.depthWrite);
       staticDirectionEmpty=staticDirectionEmpty&&actor.static_direction_children===0;
       if(actor.tip_vs_socket_b_mm!==undefined)attachmentMax=Math.max(attachmentMax,actor.tip_vs_socket_b_mm);
+      if(actor.guard_vs_socket_a_mm!==undefined)guardAttachmentMax=Math.max(guardAttachmentMax,actor.guard_vs_socket_a_mm);
       const subjectCombat=spec.spawn?(combat.enemies||[]).find(e=>e.id===spec.spawn.as):combat.player;
-      frames.push({i,simFrame:await handle.h('getFrame'),sha256:sha(b),subject:subjectId,state:subjectCombat&&subjectCombat.state||null,move:subjectCombat&&subjectCombat.move?(typeof subjectCombat.move==='string'?subjectCombat.move:subjectCombat.move.id):null,animFrame:subjectCombat&&subjectCombat.anim_frame||null,bones:actor.bones||null,presentation:actor.presentation||[],bodyMaterials:actor.body_materials||[],staticDirectionChildren:actor.static_direction_children,tipVsSocketBmm:actor.tip_vs_socket_b_mm??null});
+      frames.push({i,simFrame:await handle.h('getFrame'),sha256:sha(b),subject:subjectId,state:subjectCombat&&subjectCombat.state||null,move:subjectCombat&&subjectCombat.move?(typeof subjectCombat.move==='string'?subjectCombat.move:subjectCombat.move.id):null,animFrame:subjectCombat&&subjectCombat.anim_frame||null,bones:actor.bones||null,presentation:actor.presentation||[],bodyMaterials:actor.body_materials||[],staticDirectionChildren:actor.static_direction_children,tipVsSocketBmm:actor.tip_vs_socket_b_mm??null,guardVsSocketAmm:actor.guard_vs_socket_a_mm??null});
     }
     const tracePath=path.join(dir,'frames.json');fs.writeFileSync(tracePath,JSON.stringify({schema:'elder-souls/w1-30-motion-frames@1',id:spec.id,seed:report.seed,startFrame:start,playbackRate:'60 f@60',camera:spec.camera,input:spec.script,frames},null,2)+'\n');
     const video=path.join(out,`${spec.id}.mp4`),ffargs=['-y','-loglevel','error','-framerate','60','-i',path.join(dir,'f%04d.png'),'-c:v','libx264','-crf','18','-pix_fmt','yuv420p',video];
     const enc=spawnSync('ffmpeg',ffargs,{encoding:'utf8'});if(enc.status!==0)throw new Error(`ffmpeg ${spec.id}: ${enc.stderr}`);
-    const row={id:spec.id,label:spec.label,state:spec.state||'arena_flat',weapon:spec.weapon||null,weaponClass:spec.weaponClass||null,frameRange:[start+1,start+spec.frames],frameCount:spec.frames,camera:spec.camera,input:spec.script,trace:tracePath,traceSha256:sha(fs.readFileSync(tracePath)),video,videoSha256:sha(fs.readFileSync(video)),encoderCommand:['ffmpeg',...ffargs].join(' '),controls:{bodyOpaque,staticDirectionEmpty,attachmentMaxMm:+attachmentMax.toFixed(4),attachmentPass:attachmentMax<=20}};
+    const row={id:spec.id,label:spec.label,state:spec.state||'arena_flat',weapon:spec.weapon||null,weaponClass:spec.weaponClass||null,frameRange:[start+1,start+spec.frames],frameCount:spec.frames,camera:spec.camera,input:spec.script,trace:tracePath,traceSha256:sha(fs.readFileSync(tracePath)),video,videoSha256:sha(fs.readFileSync(video)),encoderCommand:['ffmpeg',...ffargs].join(' '),controls:{bodyOpaque,staticDirectionEmpty,attachmentMaxMm:+attachmentMax.toFixed(4),guardAttachmentMaxMm:+guardAttachmentMax.toFixed(4),attachmentPass:attachmentMax<=20&&guardAttachmentMax<=20}};
     report.scenarios.push(row);fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify(report,null,2)+'\n');console.log(`${spec.id}: ${spec.frames}f video=${row.videoSha256.slice(0,12)} opaque=${bodyOpaque} attachment=${row.controls.attachmentMaxMm}mm`);
   }
   const allClasses=new Set(report.scenarios.filter(s=>s.weaponClass).map(s=>s.weaponClass));

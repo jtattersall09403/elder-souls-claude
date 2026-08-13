@@ -712,14 +712,18 @@ function buildWeaponGeo(w) {
 
   // The grip: always present, always above the guard, always the same 0.10 m the rig uses.
   const gripLen = Math.max(0.10, Math.min(0.42, L * 0.13));
-  wood.push(box(R * 0.55, gripLen, R * 0.45, -gripLen * 0.5 + 0.06));
+  wood.push(box(R * 0.72, gripLen, R * 0.62, -gripLen * 0.5 + 0.06));
 
   const haftLen = Math.max(0, -haftTop - 0.06);
 
   switch (cls) {
     case 'DGR':
+      // The data-defined unedged length is still physical weapon: tang, grip and guard shoulder.
+      // Leaving it empty made the blade hover 20-35 cm beyond the closed hand while the far tip
+      // remained perfectly socket-accurate, a defect the old tip-only control could not see.
+      if(haftTop<.06-gripLen)wood.push(box(R*.68,(.06-gripLen)-haftTop,R*.58,(haftTop+.06-gripLen)*.5));
       metal.push(blade(R * 1.35, span, R * 0.46, tip + span / 2));
-      metal.push(box(R * 2.0, 0.028, R * 0.9, haftTop));
+      metal.push(box(R * 3.0, 0.045, R * 1.15, haftTop));
       break;
     case 'FST': {                                   // claw: three short blades off a knuckle bar
       metal.push(box(R * 2.6, 0.045, R * 1.1, -0.06));
@@ -731,22 +735,25 @@ function buildWeaponGeo(w) {
       break;
     }
     case 'CSW': case 'CGS': {                       // curved: the blade is built as an arc
+      if(haftTop<.06-gripLen)wood.push(box(R*.72,(.06-gripLen)-haftTop,R*.62,(haftTop+.06-gripLen)*.5));
       const wide = cls === 'CGS' ? R * 1.5 : R * 1.05;
       metal.push(curvedBlade(wide,span,R*.28,haftTop,cls==='CGS'?.235:.19));
       metal.push(box(R * (cls === 'CGS' ? 4.2 : 3.0), 0.035, R * 0.8, haftTop));
       break;
     }
     case 'TSW':                                     // thrusting: narrow, long, a swept guard
+      if(haftTop<.06-gripLen)wood.push(box(R*.68,(.06-gripLen)-haftTop,R*.58,(haftTop+.06-gripLen)*.5));
       metal.push(blade(R * 0.72, span, R * 0.34, tip + span / 2));
       metal.push(box(R * 2.2, 0.030, R * 2.2, haftTop));
       metal.push(box(R * 0.30, 0.16, R * 2.0, haftTop + 0.08));
       break;
     case 'SSW': case 'GSW': case 'UGS': {
-      const wide = cls === 'UGS' ? R * 1.9 : cls === 'GSW' ? R * 1.5 : R * 1.0;
+      if(haftTop<.06-gripLen)wood.push(box(R*.76,(.06-gripLen)-haftTop,R*.66,(haftTop+.06-gripLen)*.5));
+      const wide = cls === 'UGS' ? R * 2.15 : cls === 'GSW' ? R * 1.75 : R * 1.42;
       metal.push(blade(wide, span, R * 0.34, tip + span / 2));
       metal.push(box(wide * 0.22, span * 0.82, R * 0.40, tip + span * 0.47)); // medial ridge
-      metal.push(box(wide * 3.0, 0.042, R * 0.9, haftTop));                 // crossguard
-      metal.push(box(R * 0.9, 0.06, R * 0.9, 0.075));                       // pommel
+      metal.push(box(wide * 3.15, 0.055, R * 1.25, haftTop));                // crossguard
+      metal.push(box(R * 1.15, 0.085, R * 1.15, 0.085));                     // pommel
       break;
     }
     case 'SPR':                                     // long haft, small leaf head at the tip
@@ -863,8 +870,12 @@ function weaponMesh(w, mats) {
     _weaponCache.set(key, entry);
   }
   const g = new THREE.Group();
-  if (entry.metal) { const m = new THREE.Mesh(entry.metal, mats.metal); m.castShadow = true; g.add(m); }
-  if (entry.wood) { const m = new THREE.Mesh(entry.wood, mats.bark); m.castShadow = true; g.add(m); }
+  // Held equipment must remain readable on the shadowed side of the body. These are bounded
+  // material variants on the weapon itself, not a full-scene exposure lift.
+  const metal=mats.metal.clone();metal.color.setHex(0xb7bec3);metal.roughness=.29;metal.emissive.setHex(0x101316);metal.emissiveIntensity=.13;metal.name='visual-family:metal:held-weapon';
+  const grip=mats.bark.clone();grip.color.setHex(0x765237);grip.roughness=.76;grip.name='visual-family:bark:held-grip';
+  if (entry.metal) { const m = new THREE.Mesh(entry.metal, metal); m.castShadow = true; m.receiveShadow=true; g.add(m); }
+  if (entry.wood) { const m = new THREE.Mesh(entry.wood, grip); m.castShadow = true; m.receiveShadow=true; g.add(m); }
   g.matrixAutoUpdate = false;
   return g;
 }
@@ -877,10 +888,21 @@ function shieldMesh(id,row,mats){
   const shape=new THREE.Shape();shape.moveTo(0,h*.52);shape.lineTo(w*.48,h*.34);shape.lineTo(w*.44,-h*.23);shape.lineTo(0,-h*.52);shape.lineTo(-w*.44,-h*.23);shape.lineTo(-w*.48,h*.34);shape.closePath();
   const boardGeo=new THREE.ExtrudeGeometry(shape,{depth:d,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.025,bevelThickness:.018});boardGeo.translate(0,-h*.12,-d*.5);
   const g=new THREE.Group();g.name=`actor-shield:${id||cls}`;g.matrixAutoUpdate=false;
-  const board=new THREE.Mesh(boardGeo,great?mats.darkStone:mats.bark);board.castShadow=true;board.receiveShadow=true;g.add(board);
-  const boss=new THREE.Mesh(new THREE.SphereGeometry(small?.13:.16,14,8,0,Math.PI*2,0,Math.PI*.52),mats.metal);boss.scale.z=.45;boss.position.set(0,0,d*.66);boss.castShadow=true;g.add(boss);
-  for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,h*.72,7),mats.metal);rib.position.set(sx*w*.32,-h*.05,d*.62);rib.rotation.z=sx*.13;rib.castShadow=true;g.add(rib);}
-  const cross=new THREE.Mesh(new THREE.CylinderGeometry(.018,.024,w*.68,7),mats.metal);cross.position.set(0,h*.25,d*.62);cross.rotation.z=Math.PI/2;cross.castShadow=true;g.add(cross);
+  const rimMat=mats.metal.clone();rimMat.color.setHex(great?0x8b9495:0xb09665);rimMat.roughness=.38;rimMat.emissive.setHex(0x100d08);rimMat.emissiveIntensity=.10;rimMat.side=THREE.DoubleSide;rimMat.name='visual-family:metal:shield-rim';
+  const faceMat=(great?mats.darkStone:mats.bark).clone();faceMat.color.setHex(great?0x686e70:0x926846);faceMat.roughness=.72;faceMat.emissive.setHex(great?0x090b0c:0x100b07);faceMat.emissiveIntensity=.10;faceMat.side=THREE.DoubleSide;faceMat.name=`visual-family:${great?'stone':'bark'}:shield-face`;
+  const rim=new THREE.Mesh(boardGeo,rimMat);rim.castShadow=true;rim.receiveShadow=true;g.add(rim);
+  const face=new THREE.Mesh(boardGeo.clone(),faceMat);face.scale.set(.88,.88,.82);face.position.z=d*.72;face.castShadow=true;face.receiveShadow=true;g.add(face);
+  // The inner face is what the ordinary chase camera sees. It needs authored construction too;
+  // otherwise even a detailed exterior collapses to the shadowed extrusion silhouette in play.
+  const innerMat=faceMat.clone();innerMat.color.offsetHSL(0,-.04,.075);innerMat.name=`${faceMat.name}:inner`;
+  const inner=new THREE.Mesh(boardGeo.clone(),innerMat);inner.scale.set(.86,.86,.78);inner.position.z=-d*.72;inner.castShadow=true;inner.receiveShadow=true;g.add(inner);
+  const boss=new THREE.Mesh(new THREE.SphereGeometry(small?.13:.16,18,10,0,Math.PI*2,0,Math.PI*.52),rimMat);boss.scale.z=.45;boss.position.set(0,0,d*.66);boss.castShadow=true;g.add(boss);
+  for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.BoxGeometry(.035,h*.62,d*.32),rimMat);rib.position.set(sx*w*.25,-h*.10,d*.82);rib.rotation.z=-sx*.13;rib.castShadow=true;g.add(rib);}
+  for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,h*.72,7),rimMat);rib.position.set(sx*w*.32,-h*.05,d*.62);rib.rotation.z=sx*.13;rib.castShadow=true;g.add(rib);}
+  const cross=new THREE.Mesh(new THREE.CylinderGeometry(.018,.024,w*.68,7),rimMat);cross.position.set(0,h*.25,d*.62);cross.rotation.z=Math.PI/2;cross.castShadow=true;g.add(cross);
+  const strapMat=mats.bark.clone();strapMat.color.setHex(0x4c2f20);strapMat.roughness=.9;strapMat.side=THREE.DoubleSide;strapMat.name='visual-family:bark:shield-straps';
+  for(const y of [-h*.17,h*.19]){const strap=new THREE.Mesh(new THREE.BoxGeometry(w*.58,.052,.022),strapMat);strap.position.set(0,y,-d*.96);strap.rotation.z=y>0?.10:-.08;strap.castShadow=true;g.add(strap);}
+  const grip=new THREE.Mesh(new THREE.CylinderGeometry(.026,.032,w*.32,8),rimMat);grip.position.set(0,.01,-d*1.25);grip.rotation.z=Math.PI/2;grip.castShadow=true;g.add(grip);
   return g;
 }
 
