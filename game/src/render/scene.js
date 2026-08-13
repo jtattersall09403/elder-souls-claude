@@ -275,14 +275,32 @@ export function buildScene(seed) {
   }
 
   // ---- arena: an authored, layered combat bowl (VP12) -------------------------------------------
-  const arenaFloor = new THREE.Mesh(new THREE.CircleGeometry(30, 56).rotateX(-Math.PI / 2),
-    M('wet_mud',0x4a4740,{roughness:.62}));
+  const arenaFloor = new THREE.Mesh(new THREE.CircleGeometry(30, 72).rotateX(-Math.PI / 2),
+    M('wet_mud',0x625b4e,{roughness:.66}));
   arenaFloor.receiveShadow = true;
   arenaFloor.name='arena-wet-stone-floor';
   cells.arena.add(arenaFloor);
-  const arenaFill=new THREE.HemisphereLight(0xd2dde0,0x665548,1.48);
+  const arenaFill=new THREE.HemisphereLight(0xdce6e5,0x756250,2.05);
   arenaFill.name='arena-bounded-readable-fill';cells.arena.add(arenaFill);
-  const arenaAmbient=new THREE.AmbientLight(0x929d9b,.40);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
+  const arenaAmbient=new THREE.AmbientLight(0xa3aca7,.62);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
+  const arenaKey=new THREE.DirectionalLight(0xffe0b2,2.2);arenaKey.position.set(-9,14,-7);
+  arenaKey.name='arena-warm-raking-key';arenaKey.castShadow=true;arenaKey.shadow.mapSize.set(1024,1024);cells.arena.add(arenaKey);
+  // Radial courses, irregular in value and material, carry scale through combat-camera motion.
+  // These lie under actors and retain the original flat collision surface.
+  const courseMats=[
+    M('stone',0x77766c,{roughness:.82}),M('wet_mud',0x514c41,{roughness:.72}),
+    M('stone',0x656b67,{roughness:.76}),M('wet_mud',0x6c5a47,{roughness:.69})
+  ];
+  for(let band=0;band<4;band++){
+    const inner=2.2+band*5.15,outer=inner+4.55;
+    for(let sector=0;sector<16;sector++){
+      if((sector+band*3)%11===0)continue;
+      const a0=sector*Math.PI/8+.018,a1=(sector+1)*Math.PI/8-.024;
+      const patch=new THREE.Mesh(new THREE.RingGeometry(inner,outer,7,1,a0,a1-a0).rotateX(-Math.PI/2),courseMats[(sector+band)%courseMats.length]);
+      patch.position.y=.022+band*.002;patch.rotation.y=(hash2(sector,band+700,seed)-.5)*.018;
+      patch.receiveShadow=true;patch.name='arena-radial-weathered-course';cells.arena.add(patch);
+    }
+  }
   // Broken inlay rings give movement scale and keep the player from floating on an empty disc.
   for(const [radius,tube,colour] of [[7.2,.12,0x877353],[13.5,.18,0x554c3c],[21,.24,0x45443d]]){
     const ring=new THREE.Mesh(new THREE.TorusGeometry(radius,tube,6,96),M('stone',colour,{roughness:.74}));
@@ -314,6 +332,21 @@ export function buildScene(seed) {
     const a=i*.91,r=15.5+(i%5)*1.45,x=Math.cos(a)*r,z=Math.sin(a)*r;
     const root=new THREE.Mesh(rootGeo,mats.bark);root.position.set(x,0,z);root.rotation.set((hash2(i,401,seed)-.5)*.35,a,(hash2(i,409,seed)-.5)*.48);root.scale.y=.65+hash2(i,411,seed)*.8;root.castShadow=true;cells.arena.add(root);
     const shard=new THREE.Mesh(shardGeo,arenaRock[i%3]);shard.position.set(x+Math.sin(a)*.8,.14,z-Math.cos(a)*.8);shard.scale.set(.7+hash2(i,419,seed),.35+hash2(i,421,seed)*.65,.8);shard.rotation.y=a*.7;shard.castShadow=true;cells.arena.add(shard);
+  }
+  // Root-and-stone portals make the enclosing bowl read as an authored place instead of a ring
+  // of repeated rocks. Their openings remain outside the combat collision radius.
+  for(const a of [-2.32,-.34,1.63]){
+    const portal=new THREE.Group();const px=Math.cos(a)*24.6,pz=Math.sin(a)*24.6;
+    portal.position.set(px,0,pz);portal.rotation.y=-a+Math.PI/2;
+    for(const sx of [-1,1]){
+      const pier=new THREE.Mesh(new THREE.CylinderGeometry(.48,.78,5.8,9),arenaRock[sx>0?1:0]);
+      pier.position.set(sx*2.05,2.8,0);pier.rotation.z=-sx*.10;pier.castShadow=true;portal.add(pier);
+      const root=new THREE.Mesh(new THREE.CylinderGeometry(.16,.34,5.3,7),mats.bark);
+      root.position.set(sx*1.55,4.15,0);root.rotation.z=sx*.68;root.castShadow=true;portal.add(root);
+    }
+    const lintel=new THREE.Mesh(new THREE.BoxGeometry(4.9,.72,.92),arenaRock[2]);lintel.position.y=5.35;lintel.rotation.z=.035;lintel.castShadow=true;portal.add(lintel);
+    const sigil=new THREE.Mesh(new THREE.TorusGeometry(.68,.11,7,18),mats.bone);sigil.position.set(0,4.1,-.52);sigil.castShadow=true;portal.add(sigil);
+    cells.arena.add(portal);
   }
   for(const [x,z,s] of [[-5,4,2.2],[7,-4,1.7],[-11,-2,1.3]]){const puddle=new THREE.Mesh(new THREE.CircleGeometry(s,28).rotateX(-Math.PI/2),M('water',0x263f43,{transparent:true,opacity:.72,roughness:.22}));puddle.position.set(x,.045,z);puddle.name='arena-depth-integrated-puddle';cells.arena.add(puddle);}
   // Warm practicals against the cool sky reproduce the reference composition without a global
@@ -429,17 +462,18 @@ function buildHall(root, mats) {
 }
 
 function buildDungeon(root, mats) {
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(6, 0.3, 46), mats.darkStone);
+  const dungeonStone=mats.darkStone.clone();dungeonStone.color.setHex(0x505352);dungeonStone.roughness=.82;
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(6, 0.3, 46), dungeonStone);
   floor.position.set(0, -0.15, 12); floor.receiveShadow = true; root.add(floor);
-  const ceil = new THREE.Mesh(new THREE.BoxGeometry(6, 0.3, 46), mats.darkStone);
+  const ceil = new THREE.Mesh(new THREE.BoxGeometry(6, 0.3, 46), dungeonStone);
   ceil.position.set(0, 3.6, 12); root.add(ceil);
   for (const sx of [-1, 1]) {
-    const wall = new THREE.Mesh(new THREE.BoxGeometry(0.35, 3.6, 46), mats.darkStone);
+    const wall = new THREE.Mesh(new THREE.BoxGeometry(0.35, 3.6, 46), dungeonStone);
     wall.position.set(sx * 3, 1.8, 12); wall.castShadow = true; wall.receiveShadow = true; root.add(wall);
   }
-  const endWall = new THREE.Mesh(new THREE.BoxGeometry(6, 3.6, 0.35), mats.darkStone);
+  const endWall = new THREE.Mesh(new THREE.BoxGeometry(6, 3.6, 0.35), dungeonStone);
   endWall.position.set(0, 1.8, 34); root.add(endWall);
-  const backWall = new THREE.Mesh(new THREE.BoxGeometry(6, 3.6, 0.35), mats.darkStone);
+  const backWall = new THREE.Mesh(new THREE.BoxGeometry(6, 3.6, 0.35), dungeonStone);
   backWall.position.set(0, 1.8, -10); root.add(backWall);
   for (let i = 0; i < 7; i++) {
     const arch = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.5, 0.55), mats.stone);
@@ -447,12 +481,32 @@ function buildDungeon(root, mats) {
     const rubble = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5 + (i % 3) * 0.2, 0), mats.stone);
     rubble.position.set((i % 2 ? 1 : -1) * 1.9, 0.3, -4 + i * 5.6); rubble.castShadow = true; root.add(rubble);
   }
-  // One torch. A dark dungeon is measured by how little light it has, so there is one.
-  const torch = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 0), new THREE.MeshBasicMaterial({ color: 0xffc080 }));
-  torch.position.set(2.5, 2.2, 9); root.add(torch);
-  const tl = new THREE.PointLight(0xff9a4a, 10, 16, 2);
-  tl.position.set(2.4, 2.2, 9); tl.castShadow = true; tl.shadow.mapSize.set(512, 512); tl.shadow.bias = -0.004;
-  root.add(tl);
+  // Broken floor courses prevent the corridor becoming one enormous black plane at native size.
+  const slabMats=[mats.stone,dungeonStone,mats.moss];
+  for(let iz=0;iz<18;iz++)for(let ix=0;ix<3;ix++){
+    if((ix+iz*2)%13===0)continue;
+    const slab=new THREE.Mesh(new THREE.BoxGeometry(1.72,.075,2.08),slabMats[(ix+iz)%slabMats.length]);
+    slab.position.set(-1.82+ix*1.82,.02,-7.7+iz*2.32);slab.rotation.y=(hash2(ix,iz+820,3030)-.5)*.08;slab.receiveShadow=true;root.add(slab);
+  }
+  // Root buttresses and glowing fungus identify this as an Argonian rootway rather than a test box.
+  for(let i=0;i<11;i++)for(const sx of [-1,1]){
+    const z=-7+i*4.0;
+    const rootRib=new THREE.Mesh(new THREE.CylinderGeometry(.08,.20,3.7,7),mats.bark);
+    rootRib.position.set(sx*2.68,1.78,z);rootRib.rotation.z=-sx*.21;rootRib.castShadow=true;root.add(rootRib);
+    if((i+(sx>0?1:0))%3===0){
+      const cap=new THREE.Mesh(new THREE.SphereGeometry(.18,10,7),new THREE.MeshBasicMaterial({color:i%2?0x66d9b8:0x91c7ff}));
+      cap.scale.set(1.5,.42,1.15);cap.position.set(sx*2.52,.62,z+.35);root.add(cap);
+    }
+  }
+  const dungeonFill=new THREE.HemisphereLight(0x8098a0,0x22201d,.48);dungeonFill.name='rootway-bounded-fill';root.add(dungeonFill);
+  // Three spaced practical pools preserve darkness while keeping player, wall relief and the far
+  // destination readable during a walk. Only the nearest casts a shadow to bound GPU cost.
+  for(const [i,z] of [[0,-2],[1,9],[2,22]]){
+    const torch = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 0), new THREE.MeshBasicMaterial({ color: i===1?0x79d5bf:0xffb060 }));
+    torch.position.set(i%2?2.45:-2.45,2.15,z);root.add(torch);
+    const tl = new THREE.PointLight(i===1?0x69cbb7:0xff9848,i===1?8:13,14,2);
+    tl.position.copy(torch.position);tl.castShadow=i===0;if(tl.castShadow){tl.shadow.mapSize.set(512,512);tl.shadow.bias=-0.004;}root.add(tl);
+  }
   root.visible = false;
 }
 
