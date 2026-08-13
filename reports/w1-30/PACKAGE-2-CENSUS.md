@@ -67,3 +67,27 @@ node tools/harness/smoke.mjs --out /tmp/w1-30-p2-smoke.json
 npm run metrics:selftest
 node tools/world/province-shots.mjs --out /tmp/w1-30-p2-regions --per 1 --passes day --width 640 --height 360 --direct
 ```
+
+## Semantic settlement-construction continuation (2026-08-13)
+
+Package 2's eight-settlement census now has a stronger visible consumer. All 56 shipped civic
+structure records resolve to purpose-specific feature construction instead of the former generic
+house shell, while all 205 buildings retain the settlement grammar and receive the strengthened
+facade/threshold/public-realm route. The focused census reports 56/56 semantic feature groups,
+zero generic civic shell walls, 43 collision solids and 19 walkable structures. Independent
+semantic-mapping, visible-consumption and collision deletions each make the result red:
+
+```text
+node tools/render/w1-30-settlement-construction.mjs
+```
+
+All eight settlements were also captured at 1280x720, DPR 1 from clean commit `1124b3e4` in one
+persistent Chromium 141.0.7390.37 browser on a Secure Cloud NVIDIA RTX A5000. WebGL reported NVIDIA
+Vulkan, not SwiftShader, llvmpipe or Mesa. The RunPod run was `20260813-181711Z-137426`; its Pod and
+ephemeral template were deletion-confirmed after retrieval. Manifest SHA-256:
+`f91ed47cf6d257e8906b2bb4b3b6cda1b0ca4d4275af0cddaeb4fd29767404a3`.
+
+The native pixels confirm improved semantic identity, not final adequacy. Large empty foregrounds,
+blank facade sides, generic large roofs, regular path slabs, sparse occupation and blocked focal
+views remain builder-red. Draw calls range from 1,102 to 2,989, so Package 2 coverage is preserved
+while settlement visual and performance remediation continues.

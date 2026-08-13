@@ -294,3 +294,68 @@ and broader slope/stair combinations remain); generated-interior boundary contai
 opening animation and furniture collision are not claimed); generated-interior visible production
 quality remains approximately 55% and still needs the matrix's composition/prop/lighting work. No
 modern-fidelity or art-direction score is assigned.
+
+## Final-builder settlement construction and native Vulkan phase (2026-08-13)
+
+This bounded phase repairs civic structures that still rendered as blank house-like shells and
+then recaptures every shipped settlement on an attested NVIDIA/Vulkan renderer. It does not close
+the settlement rows or W1-30:
+
+* All 56 civic records now construct their declared purpose—walls, vats, quays, racks, pits,
+  yards, bridges, gates and regional variants—rather than borrowing the generic house shell.
+  Structure collision follows those feature groups: 43 records contribute physical solids and 19
+  declared walkable structures retain traversable surfaces.
+* All 205 exterior buildings consume the strengthened shared facade, foundation, aperture,
+  threshold, support/roof rhythm and plan-origin public-realm route. Settlement approaches use
+  less regular arrival/causeway placement. Physical-material-only clearcoat and IOR controls no
+  longer produce Standard-material warnings.
+* `node tools/render/w1-30-settlement-construction.mjs` is GREEN over eight settlements, 205
+  buildings and 56 structures. It observes 56 semantic feature groups, zero generic civic shell
+  walls, 43 collision solids and 19 walkable records. Removing the semantic mapping, its visible
+  consumption or its collision construction independently turns the gate red. The aggregate now
+  consumes this focused gate.
+* Native Linux hardware capture is fail-closed on Vulkan rather than the prior Windows-only D3D11
+  arguments. The aggregate has a literal Linux `--use-angle=vulkan` deletion control. A first
+  hardware attempt correctly returned RED when Chromium exposed llvmpipe; the repaired committed
+  launcher then returned GREEN on NVIDIA Vulkan.
+
+The successful committed reproduction tree is
+`1124b3e4b4786993772ed9ba44bd0336b4edbfd4` (clean snapshot hash
+`fe6565937112c702179412edae2f98639cc06ff18e6bf491cf3b5a0b429355ea`). RunPod run
+`20260813-181711Z-137426` selected Secure Cloud Pod `e9aowzkz4k3tjq`, an NVIDIA RTX A5000 at an
+actual $0.27/hour. The host reported Linux 6.8.0-124-generic, NVIDIA driver 580.159.04 and 24,564
+MiB GPU memory; Chromium 141.0.7390.37 reported
+`ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)`. The native window
+was 1280x720 at DPR 1, seed 3030, using:
+
+```text
+node tools/render/w1-30-population-atlas.mjs --hardware-gpu --only settlements --width 1280 --height 720 --out "$RUNPOD_ARTIFACT_DIR/settlements"
+```
+
+All eight returned frames were opened and inspected in the Codespace. Helstrom's grown civic
+arches, Lilmoth's quays and Soulrest's rib structures now have distinct purpose, so the former
+blank-shell failure is repaired. The frames also keep the broader row honestly red: Archon and
+Blackrose have broad empty foregrounds; Gideon retains blank side walls and generic large pitched
+roofs; path pieces read as regular slabs/ties; Stormhold's near wall blocks the focal composition;
+street occupation and facade depth remain sparse throughout.
+
+This atlas records no representative frame-time distribution. It does expose excessive draws:
+1,102–2,989 calls across the eight scenes, with 509,792–955,055 triangles, 55–56 programs and about
+51.3 MiB decoded textures. These measurements belong specifically to the RTX A5000 run and are not
+evidence for lower-tier consumer performance. Settlement rendering therefore remains materially
+red for performance as well as for composition.
+
+Returned lifecycle and evidence hashes are: run ledger
+`f2299823c6c5b839796a631d1aad1fcbfb2773a3a01c82f472746a04d6411427`, settlement manifest
+`f91ed47cf6d257e8906b2bb4b3b6cda1b0ca4d4275af0cddaeb4fd29767404a3`, and worker result
+`0a8278ada9e351efeaa1db17a89ae780f81b9824ccc871ac9116cd5f8491fe2e`. Artifact retrieval completed,
+then both the Pod and ephemeral template `fo42qhykvn` were deletion-confirmed. The transient root is
+`/tmp/w1-30-final-8c1d4f7a/runpod/settlement-phase2-1124b3e4`; no frame or cloud cache is committed.
+The following cleanup dry-run showed only differently named resources owned by a parallel builder,
+which were deliberately not modified.
+
+Rough production estimates after this phase: semantic civic construction 100%; shared exterior
+facade/threshold construction about 70%; street occupation and composition about 55–60%; visible
+settlement fidelity about 55–60%; settlement performance repair about 35%. Whole-W1-30 builder
+progress is roughly 55–60%. These are planning estimates, not modern-fidelity or art-direction
+scores, and neither critic-owned 7/10 verdict is claimed.

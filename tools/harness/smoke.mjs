@@ -51,7 +51,9 @@ check('playwright imports', true, `v${(await import('playwright/package.json', {
 let browser;
 try {
   const hardware=args.hardwareGpu===true||args['hardware-gpu']===true||String(args.gpu||'').toLowerCase()==='hardware';
-  browser = await pw.chromium.launch({ headless: true,
+  // Hardware mode follows the same headed-Xvfb path as launchGame(); deterministic software
+  // smoke remains headless and unchanged.
+  browser = await pw.chromium.launch({ headless:hardware?false:true,
     executablePath:args.chromium?String(args.chromium):undefined,
     args:hardware?HARDWARE_CHROMIUM_ARGS:DETERMINISTIC_CHROMIUM_ARGS });
 } catch (e) {

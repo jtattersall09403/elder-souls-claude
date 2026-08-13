@@ -29,10 +29,10 @@ not evidence or committed assets.
 | Canopy and trees | 7 canopy shapes across 13 regions; near/mid instancing | modern forest/day/low-light; REF-A4/A10/A11 | Primitive crowns, perfect arch repetition, bare poles and hard intersections; no branch hierarchy or leaf-scale breakup | Trunk/branch families, alpha-tested leaf clusters, asymmetric crowns, per-instance bend/hue, near/mid/far bands | in progress |
 | Understorey and aquatic flora | 5 understorey shapes, reeds, fungal/aquatic/xeric layers | modern foliage; REF-A10/A11/A18 | Single planes/cones repeat visibly and have no wind, leaf thickness, cluster logic or species-level silhouette | Crossed/clustered alpha-tested geometry, deterministic wind, local density patches and region-specific hybrids | pending |
 | Regional landmarks | 13 signatures plus 13 styleboard hero silhouettes | modern vista; REF-A1/A5/A9/A17 | Several are visibly constructed from toruses, boxes and columns; scale overwhelms the camera without believable structure | Re-author every silhouette as rooted, load-bearing layered geometry with readable mid/far profile and material hierarchy | in progress |
-| Roads, crossings and signposts | 25.1 km roads, 6.7 km crossings, bridges/piers/sign system | modern exterior/settlement; REF-A8/A11/A19 | Flat slabs and repeated posts lack edge wear, drainage, supports, junction dressing and traffic composition | Road material blend, shoulders/ruts, bridge module detail, settlement approach dressing, bounded roadside props | pending |
-| Settlement composition | 8 settlements, 8 plans and skyline grammars | modern exterior daylight; REF-A8/A9/A19; anti-generic | Counts and layouts exist, but repeated block masses, empty streets and implausible spacing dominate | Authored street hierarchy, foreground/midground landmarks, clutter, vegetation incursions, occupation and focal lighting | pending |
-| Exterior architecture | 8 kits and their doors/apertures; Imperial exception | modern exterior/architecture; REF-A8/A9/A16/A19 | Buildings remain obvious boxes/cones with paper-thin add-ons; no wall thickness, trim, roof construction or material ageing | Modular wall/roof/foundation/trim/aperture kits, bevel/profile depth, structural supports, weathering and regional asymmetry | pending |
-| Doors, windows and thresholds | every enterable building and continuity seam | modern exterior/interior; material close-up | Openings often read as markings or thin rectangles; threshold and interior light do not sell inhabitable depth | Recessed frames, lintels/sills, door hardware, glass/emissive interiors, visible thickness and transition lighting | pending |
+| Roads, crossings and signposts | 25.1 km roads, 6.7 km crossings, bridges/piers/sign system | modern exterior/settlement; REF-A8/A11/A19 | Flat slabs and repeated posts lack edge wear, drainage, supports, junction dressing and traffic composition | Road material blend, shoulders/ruts, bridge module detail, settlement approach dressing, bounded roadside props | in progress — native settlement approaches remain red |
+| Settlement composition | 8 settlements, 8 plans and skyline grammars | modern exterior daylight; REF-A8/A9/A19; anti-generic | Counts and layouts exist, but repeated block masses, empty streets and implausible spacing dominate | Authored street hierarchy, foreground/midground landmarks, clutter, vegetation incursions, occupation and focal lighting | in progress — all eight inspected; foreground occupation remains red |
+| Exterior architecture | 8 kits and their doors/apertures; Imperial exception | modern exterior/architecture; REF-A8/A9/A16/A19 | Buildings remain obvious boxes/cones with paper-thin add-ons; no wall thickness, trim, roof construction or material ageing | Modular wall/roof/foundation/trim/aperture kits, bevel/profile depth, structural supports, weathering and regional asymmetry | in progress — semantic civic construction landed; facade depth remains red |
+| Doors, windows and thresholds | every enterable building and continuity seam | modern exterior/interior; material close-up | Openings often read as markings or thin rectangles; threshold and interior light do not sell inhabitable depth | Recessed frames, lintels/sills, door hardware, glass/emissive interiors, visible thickness and transition lighting | in progress — shared frames/thresholds landed; inhabitable depth remains red |
 | Interior shells | 115 interiors, 12 kinds, 8 settlement families | 22 modern interior frames; REF-A2/A3/A7 | Generated rooms are cuboids with flat ceilings and weak structural rhythm | Vault/rib/beam/column families, floor and wall segmentation, recesses, ceiling hierarchy and settlement-specific shells | in progress |
 | Interior composition and lighting | all 115 rooms; day/night/see-through states | modern dark/emissive interior; REF-A2/A7 | Props can become evenly scattered mannequins; one bright primitive and ambient fill do not create local value hierarchy | Practical-light zones, emissive fixtures, foreground occlusion, focal paths, dark adaptation and exposure-safe local contrast | in progress |
 | Props and clutter | 148 unique prop ids plus five bespoke place scenes | modern interior/material close-up; REF-A3/A7/A14 | Props are recognisable icons assembled from boxes/cylinders but lack thickness, joins, wear and material specificity | Shared detailed prop modules, hardware, small-object atlases, coherent placement clusters and surface contact | pending |
@@ -133,3 +133,41 @@ comparison and both 7/10 judgements remain exclusively critic-owned and are not 
 
 Reproduction: `node tools/render/w1-30-traversal-controls.mjs`, then the six checkpoint commands in
 `BUILDER-DELIVERY.md`. The W1-30 aggregate fails closed if this focused gate is red.
+
+## Settlement semantic-construction / native Vulkan delta (2026-08-13)
+
+This phase replaces the last generic civic shells with record-specific construction and then
+checks the entire shipped settlement population on a committed NVIDIA/Vulkan tree. A GREEN atlas
+means the capture and hardware attestations passed; it is not a visual-quality verdict.
+
+| Population | Shared production repair | Native observation | Current builder state |
+|---|---|---|---|
+| 56 civic structures across eight settlements | Every shipped structure record now selects an explicit construction kit: walls, vats, quays, racks, pits, yards, bridges, gates and settlement-specific variants. Walkable structures and collision solids follow that semantic construction instead of receiving a windowless house shell. | Helstrom's grown arches, Lilmoth's quays and Soulrest's rib work now read as different civic purposes. No civic record renders through the former generic shell route. | semantic coverage complete; individual modelling/detail polish remains in progress |
+| 205 exterior buildings | Shared facade courses, foundations, roof/support rhythm, recessed apertures, thresholds and plan-origin public realm were strengthened. Physical-only material controls no longer leak onto Standard materials. | The settlement identity is clearer at street height, but Gideon's blank side walls and large generic roofs remain conspicuous. | shared construction about 70%; architecture still builder-red |
+| Streets and approaches | Arrival/causeway composition and plan-aware public-realm dressing now use irregular placement and settlement kit materials. | Archon and Blackrose still devote too much foreground to empty ground and blank perimeter walls. Regular slab/tie repetition remains visible; Stormhold's near wall blocks the focal read. | occupation/composition about 55–60%; builder-red |
+| Hardware/render budget | Native 1280x720, DPR 1 frames were rendered for all eight settlements in one persistent Chromium browser. | Draws/triangles: Archon 1102/525610; Blackrose 2989/737754; Gideon 1777/879382; Helstrom 2199/955055; Lilmoth 1850/576812; Soulrest 1177/509792; Stormhold 2039/699480; Thorn 1425/512008. | coverage GREEN; draw-call budget materially red and frame timing not measured by this atlas |
+
+Focused control: `node tools/render/w1-30-settlement-construction.mjs` is GREEN for all eight
+settlements, 205 buildings and 56 civic structures. It observes 56/56 semantic feature groups,
+zero generic civic shell walls, 43 collision solids and 19 walkable records. Separate semantic,
+visual-consumption and collision deletions each turn the focused result red. The aggregate consumes
+this result and also deletes the Linux `--use-angle=vulkan` hardware launch requirement.
+
+Hardware reproduction used committed tree
+`1124b3e4b4786993772ed9ba44bd0336b4edbfd4`, RunPod run
+`20260813-181711Z-137426`, Pod `e9aowzkz4k3tjq`, Secure Cloud RTX A5000 at $0.27/hour and:
+
+```text
+node tools/render/w1-30-population-atlas.mjs --hardware-gpu --only settlements --width 1280 --height 720 --out "$RUNPOD_ARTIFACT_DIR/settlements"
+```
+
+Chromium 141.0.7390.37 reported
+`ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)` with driver
+580.159.04. The Pod and ephemeral template `fo42qhykvn` were both deletion-confirmed after artifact
+retrieval. All eight returned frames were inspected directly. The manifest hash is
+`f91ed47cf6d257e8906b2bb4b3b6cda1b0ca4d4275af0cddaeb4fd29767404a3`; the run ledger hash is
+`f2299823c6c5b839796a631d1aad1fcbfb2773a3a01c82f472746a04d6411427`. Bulk frames and cloud
+lifecycle evidence remain transient under `/tmp/w1-30-final-8c1d4f7a/` and are not committed.
+
+The whole W1-30 builder estimate is now roughly 55–60%. This is a production-planning estimate,
+not either critic-owned 7/10 verdict.

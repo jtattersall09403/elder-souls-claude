@@ -26,17 +26,28 @@ export const DETERMINISTIC_CHROMIUM_ARGS = [
 
 /**
  * Hardware-backed counterpart used only when a caller explicitly requests `--hardware-gpu`.
- * Keep the deterministic presentation flags, but remove every software-backend request and pin
- * ANGLE to Windows D3D11. The page-side renderer string is still independently attested by the
+ * Keep the deterministic presentation flags, but remove every software-backend request. Linux
+ * Pods use the same ANGLE/Vulkan feature gates as the repository-native RunPod smoke; Windows
+ * retains D3D11. The old unconditional D3D11 flag made Linux Chromium fall back to llvmpipe even
+ * on a healthy NVIDIA Pod. The page-side renderer string is still independently attested by the
  * W1-30 live tools; these flags request hardware but are not, by themselves, evidence of it.
  */
+const PLATFORM_HARDWARE_ARGS = process.platform === 'win32'
+  ? ['--use-angle=d3d11', '--force_high_performance_gpu']
+  : [
+    '--use-angle=vulkan',
+    '--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE',
+    '--ozone-platform=x11',
+  ];
 export const HARDWARE_CHROMIUM_ARGS = [
   ...DETERMINISTIC_CHROMIUM_ARGS.filter((arg) =>
     arg !== '--enable-unsafe-swiftshader' && arg !== '--use-angle=swiftshader'),
   '--enable-gpu',
   '--ignore-gpu-blocklist',
-  '--use-angle=d3d11',
-  '--force_high_performance_gpu',
+  '--enable-gpu-rasterization',
+  '--enable-zero-copy',
+  '--disable-software-rasterizer',
+  ...PLATFORM_HARDWARE_ARGS,
 ];
 
 export async function loadPlaywright() {
@@ -102,7 +113,9 @@ export async function launchGame(args = {}) {
   let browser;
   try {
     browser = await chromium.launch({
-      headless: true,
+      // Linux Vulkan needs a real X11 surface. RunPod's bounded bootstrap provides Xvfb; keeping
+      // hardware capture headed also matches the already verified worker smoke path.
+      headless: hardwareGpuRequested ? false : true,
       args: launchArgs,
       executablePath: args.chromium ? String(args.chromium) : undefined,
     });
@@ -133,10 +146,10 @@ export async function launchGame(args = {}) {
 
   // Freeze wall-clock sources the simulation must never read anyway; if the game *does*
   // read them, this makes the resulting non-determinism loud instead of subtle.
-  await page.addInitScript(() => {
+  await page.addInitScript((headless) => {
     window.__HARNESS_EXPECTED = true;
-    window.__HARNESS_ENV = { headless: true, fixedStepHz: 60 };
-  });
+    window.__HARNESS_ENV = { headless, fixedStepHz: 60 };
+  }, !hardwareGpuRequested);
 
   // `args.initScripts` — source strings installed BEFORE the goto, so they are in place before
   // the game's own scripts run. Added in tool round 2: gamepad-shim.mjs needs to replace

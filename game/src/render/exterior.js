@@ -63,7 +63,15 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { KIT_MESHES, paletteFor, PRIMS } from './interior.js';
 import { settlementArt } from './world-art.js';
 
-const { box, cyl, ico, part, hashStr } = PRIMS;
+const { part, hashStr } = PRIMS;
+// Tag the simple primitives created by this module with their dimensions.  Thousands of facade
+// boxes used to arrive as thousands of distinct Geometry objects and draw calls even when their
+// shape/material were identical.  The tag lets `compressBuildingMeshes()` instance only exact
+// matches; kit meshes and named measurement surfaces remain untouched.
+const tagged=(mesh,key)=>{mesh.geometry.userData.w130BatchKey=key;return mesh;};
+const box=(w,h,d,m)=>tagged(PRIMS.box(w,h,d,m),`box:${w}:${h}:${d}`);
+const cyl=(rt,rb,h,seg,m)=>tagged(PRIMS.cyl(rt,rb,h,seg,m),`cyl:${rt}:${rb}:${h}:${seg}`);
+const ico=(r,d,m)=>tagged(PRIMS.ico(r,d,m),`ico:${r}:${d||0}`);
 
 /* ================================================================================================
  * THE 37 EXTERIOR-ONLY KIT MESHES — RI-WLD03 R5.
@@ -162,6 +170,85 @@ function kitMesh(id, P) {
     if (inner) return inner[1](P);
   } catch { return null; }
   return null;
+}
+
+/*
+ * Civic structures are not houses.  The settlement records name vats, quays, root gates,
+ * gallows, salt pans and walls, but the old plan assigned them a random kit item and then sent
+ * them through the windowless house shell.  That is how "the wall itself" became a blank cube
+ * with a market prop parked beside it.  This table binds every shipped structure to the closest
+ * declared item in its own town kit.  It is intentionally exhaustive and fail-closed in the
+ * census below: a future structure must be authored here before it can ship as a civic feature.
+ */
+const STRUCTURE_KIT = Object.freeze({
+  'archon-struct-the-dye-vats': 'arc_dye_vat',
+  'archon-struct-the-drying-racks': 'arc_drying_rack',
+  'archon-struct-the-kiln-stacks': 'arc_kiln_stack',
+  'archon-struct-the-lichen-cribs': 'arc_lichen_crib',
+  'archon-struct-the-old-quay': 'arc_naga_lintel',
+  'archon-struct-the-wind-screen': 'arc_stain_line',
+  'blackrose-struct-the-prison-wall': 'bla_fortress_wall',
+  'blackrose-struct-the-corridor-gates': 'bla_corridor_gate',
+  'blackrose-struct-the-lime-pit': 'bla_lime_pit',
+  'blackrose-struct-the-gallows-frame': 'bla_gallows_frame',
+  'blackrose-struct-the-visitors-queue-rail': 'bla_furred_parapet',
+  'blackrose-struct-the-water-butt-line': 'bla_visitor_shed',
+  'gideon-struct-the-market-cross': 'gid_market_cross',
+  'gideon-struct-the-square-arcade': 'gid_square_arcade',
+  'gideon-struct-the-toll-gate': 'gid_toll_house',
+  'gideon-struct-the-barge-dock': 'gid_timber_frame',
+  'gideon-struct-the-grain-weighbridge': 'gid_grain_barn',
+  'gideon-struct-the-chapel-wall': 'gid_chapel_porch',
+  'helstrom-struct-the-mound-itself': 'hel_hollow_bole',
+  'helstrom-struct-the-four-rootgates': 'hel_rootgate',
+  'helstrom-struct-the-egg-terraces': 'hel_egg_terrace',
+  'helstrom-struct-the-sap-gutters': 'hel_sap_gutter',
+  'helstrom-struct-the-kneeling-wall': 'hel_grown_wall_a',
+  'helstrom-struct-the-deep-cistern': 'hel_shell_roof',
+  'helstrom-struct-the-ring-causeway': 'hel_lashed_stair',
+  'helstrom-struct-the-root-bridge': 'hel_bole_arch',
+  'lilmoth-struct-the-boom-chain': 'lil_boom_chain',
+  'lilmoth-struct-the-landing-quay': 'lil_stilt_platform',
+  'lilmoth-struct-the-tide-mark-wall': 'lil_tide_mark',
+  'lilmoth-struct-the-pile-field': 'lil_pile_cluster',
+  'lilmoth-struct-the-sunk-arcade': 'lil_wet_arcade',
+  'lilmoth-struct-the-sea-stair': 'lil_salvage_stair',
+  'lilmoth-struct-the-cistern-cap': 'lil_sunk_facade',
+  'lilmoth-struct-the-old-mole': 'lil_customs_hall',
+  'lilmoth-struct-the-fish-racks': 'lil_reed_shack',
+  'lilmoth-struct-the-customs-bollards': 'lil_pile_cluster',
+  'soulrest-struct-the-grey-hist': 'sou_grey_hist',
+  'soulrest-struct-the-silt-quay': 'sou_silt_quay',
+  'soulrest-struct-the-salt-pans': 'sou_salt_pan',
+  'soulrest-struct-the-bone-stacks': 'sou_bone_stack',
+  'soulrest-struct-the-court-steps': 'sou_drowned_court_step',
+  'stormhold-struct-the-wall-itself': 'sto_wall_lean',
+  'stormhold-struct-the-pass-gate': 'sto_pass_gate',
+  'stormhold-struct-the-watch-towers': 'sto_watch_tower',
+  'stormhold-struct-the-muster-yard': 'sto_muster_yard',
+  'stormhold-struct-the-salt-kilns': 'sto_salt_kiln',
+  'stormhold-struct-the-cistern': 'sto_legion_block',
+  'stormhold-struct-the-outside-ditch': 'sto_bloom_course',
+  'stormhold-struct-the-bollard-line': 'sto_customs_shed',
+  'stormhold-struct-the-bloom-course': 'sto_bloom_course',
+  'stormhold-struct-the-signal-post': 'sto_watch_tower',
+  'thorn-struct-the-charter-post': 'tho_charter_post',
+  'thorn-struct-the-needle-stacks': 'tho_needle_stack',
+  'thorn-struct-the-bow-racks': 'tho_bow_rack',
+  'thorn-struct-the-sapwell-kerb': 'tho_sapwell_kerb',
+  'thorn-struct-the-thicket-wall': 'tho_rotted_hall',
+});
+
+export function structureKitFor(id, declaredKit, semantic = true) {
+  const ids = Array.isArray(declaredKit) ? declaredKit : [];
+  if (!ids.length) return null;
+  if (semantic) {
+    const chosen = STRUCTURE_KIT[String(id)];
+    return chosen && ids.includes(chosen) ? chosen : null;
+  }
+  // The targeted delete-control is the former production rule: stable, but unrelated to what the
+  // structure record says it is.  Keeping it callable makes the visible repair falsifiable.
+  return ids[hashStr(String(id)) % ids.length];
 }
 
 /** Can this kit id be constructed at all, by either table? Used to size the defect above. */
@@ -309,7 +396,7 @@ const LAMP_INSET_M = 0.35;
 /** The footprint the building's own interior record declares, or null. */
 function declaredOf(b) { return b.declared_footprint_m || null; }
 
-export function planSettlement(rec, interiors) {
+export function planSettlement(rec, interiors, opts = {}) {
   const I = interiors || {};
   const kitIds = (rec.architecture_kit && rec.architecture_kit.meshes) || [];
   const pos = rec.pos || [0, 0, 0];
@@ -332,7 +419,12 @@ export function planSettlement(rec, interiors) {
     // silhouette but is unmistakably one town's silhouette.
     const extIds = kitIds.filter((k) => EXT_KIT[k]);
     const extKit = [];
-    if (extIds.length) {
+    const structureKit = b.kind === 'structure'
+      ? structureKitFor(b.id, kitIds, opts.semanticStructures !== false)
+      : null;
+    if (b.kind === 'structure') {
+      if (structureKit) extKit.push(structureKit);
+    } else if (extIds.length) {
       extKit.push(extIds[h % extIds.length]);
       if (extIds.length > 1 && (h >>> 5) % 3 === 0) {
         const second = extIds[((h >>> 9) % (extIds.length - 1) + (h % extIds.length) + 1) % extIds.length];
@@ -388,9 +480,10 @@ export function planSettlement(rec, interiors) {
       // derivation had already moved. Found by a counter that read 0 doors moved after moving 112.
       door_declared: (b.door_declared || b.door || (it ? it.exterior_door : null) || null) ? (b.door_declared || b.door || it.exterior_door).slice() : null,
       seal_state: b.seal_state || null,
+      structure_kit: structureKit,
       interior_kit: innerKit,
       exterior_kit: extKit,
-      kit: innerKit.concat(extKit),
+      kit: b.kind === 'structure' ? extKit.slice() : innerKit.concat(extKit),
     });
   }
 
@@ -1222,12 +1315,87 @@ function roofFor(town, P, w, d, h, hash) {
 }
 
 /**
+ * Render a named public/civic structure as that feature, rather than as an empty house.
+ *
+ * Each kit builder already carries the town-specific silhouette.  The small founded apron and
+ * edge markers here make the object meet rough terrain and read at player scale without wrapping
+ * it in the old four blank walls.  There is deliberately no roof or window pass: a quay, vat or
+ * root gate should preserve its negative space.
+ */
+function buildNamedStructure(g, b, P, w, d, hash) {
+  const id = b.structure_kit;
+  const feature = id ? kitMesh(id, P) : null;
+  if (!feature) return false;
+  const apron = box(w * 0.92, 0.18, d * 0.92, P.stone);
+  apron.name = `structure-apron:${b.id}`;
+  part(g, apron, 0, 0.02, 0);
+  const scale = Math.max(0.82, Math.min(1.45, Math.max(w, d) / 5.2));
+  feature.name = `structure-feature:${b.id}:${id}`;
+  feature.scale.setScalar(scale);
+  feature.rotation.y = ((hash >>> 4) % 5 - 2) * 0.018;
+  feature.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  g.add(feature);
+
+  // Four irregular edge markers show the feature's occupied footprint and give contact shadows.
+  // They are low enough to step over and use the town materials, never generic fence posts.
+  for (let i = 0; i < 4; i++) {
+    const sx = i < 2 ? -1 : 1, sz = i % 2 ? -1 : 1;
+    const marker = ico(0.12 + ((hash >>> (i * 3)) & 3) * 0.025, 0, i & 1 ? P.accent : P.stone);
+    marker.scale.set(1.4, 0.55, 1.1);
+    marker.name = `structure-edge:${b.id}`;
+    part(g, marker, sx * w * 0.38, 0.16, sz * d * 0.38);
+  }
+  g.userData.structureFeature = { id: b.id, kit: id, semantic: true };
+  return true;
+}
+
+/** Collapse anonymous facade primitives into heterogeneous, per-material multi-draw batches. */
+function compressBuildingMeshes(root) {
+  root.updateMatrixWorld(true);
+  const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert(),groups=new Map();
+  root.traverse(o=>{
+    if(!o.isMesh||o.isInstancedMesh||o.name||o.userData?.w130NoBatch)return;
+    const key=o.geometry?.userData?.w130BatchKey;if(!key||!o.material)return;
+    const attrs=Object.keys(o.geometry.attributes).sort().map(n=>`${n}:${o.geometry.attributes[n].itemSize}:${o.geometry.attributes[n].normalized}`).join(',');
+    const k=`${o.material.uuid}|${o.geometry.index?'i':'n'}|${attrs}`;
+    if(!groups.has(k))groups.set(k,[]);groups.get(k).push(o);
+  });
+  let batches=0,instances=0,drawsSaved=0;
+  for(const [signature,meshes] of groups){
+    if(meshes.length<2)continue;
+    const unique=new Map();
+    for(const m of meshes){const key=m.geometry.userData.w130BatchKey;if(!unique.has(key))unique.set(key,m.geometry);}
+    let vertices=0,indices=0;
+    for(const geo of unique.values()){
+      vertices+=geo.attributes.position.count;
+      indices+=geo.index?geo.index.count:0;
+    }
+    const batch=new THREE.BatchedMesh(meshes.length,vertices,indices||vertices,meshes[0].material);
+    batch.name=`building-batch:${signature.split('|').slice(1,3).join(':')}`;
+    batch.castShadow=meshes.some(m=>m.castShadow);batch.receiveShadow=meshes.some(m=>m.receiveShadow);
+    const geometryIds=new Map();
+    for(const [key,geo] of unique)geometryIds.set(key,batch.addGeometry(geo));
+    for(const m of meshes){
+      const instance=batch.addInstance(geometryIds.get(m.geometry.userData.w130BatchKey));
+      batch.setMatrixAt(instance,new THREE.Matrix4().multiplyMatrices(inverse,m.matrixWorld));
+    }
+    batch.userData.logicalTriangles=meshes.reduce((n,m)=>n+(m.geometry.index?m.geometry.index.count/3:m.geometry.attributes.position.count/3),0);
+    batch.computeBoundingBox();batch.computeBoundingSphere();root.add(batch);
+    for(const m of meshes)m.parent?.remove(m);
+    for(const geo of unique.values())geo.dispose();
+    batches++;instances+=meshes.length;drawsSaved+=meshes.length-1;
+  }
+  root.userData.meshCompression={batches,instances,drawsSaved};
+  return root.userData.meshCompression;
+}
+
+/**
  * Build ONE building into a group of its own, in local coordinates (centre at the origin, +z is
  * the building's own front before yaw).
  *
  * @returns {object} what was read: footprint, kit ids drawn, meshes, triangles.
  */
-export function buildBuilding(b, town) {
+export function buildBuilding(b, town, opts = {}) {
   const P = paletteFor({ interior_kind: b.building_kind, settlement: town });
   const g = new THREE.Group();
   g.name = `building:${b.id}`;
@@ -1237,6 +1405,23 @@ export function buildBuilding(b, town) {
   const hash = hashStr(b.id);
   const side = entrySideLocal(b);
   const summary = { id: b.id, w, d, h, kit: [], kit_drawn: 0, doorway: false, meshes: 0, triangles: 0 };
+
+  // Named public works used to enter the windowless-house path below.  Retain that old path only
+  // as a targeted delete-the-fix arm for the offline census.
+  if (b.kind === 'structure' && b.structure_kit && opts.structureFeatures !== false) {
+    if (!buildNamedStructure(g, b, P, w, d, hash)) throw new Error(`W1-30 structure '${b.id}' cannot build '${b.structure_kit}'`);
+    summary.kit = [b.structure_kit];
+    summary.kit_drawn = 1;
+    summary.structure_feature = true;
+    g.traverse((m) => {
+      if (!m.isMesh || !m.geometry) return;
+      summary.meshes++;
+      const gg = m.geometry;
+      summary.triangles += gg.index ? gg.index.count / 3 : (gg.attributes.position ? gg.attributes.position.count / 3 : 0);
+    });
+    summary.triangles = Math.round(summary.triangles);
+    return { group: g, summary };
+  }
 
   // ---- the shell, and the doorway cut in the side the record names ---------------------------
   // A wall is not a face of a solid box: it is a slab, and the entry wall is TWO slabs with a
@@ -1300,6 +1485,19 @@ export function buildBuilding(b, town) {
     const brace=box(.10,Math.max(.8,h*.36),.09,P.wood);brace.rotation.z=((i+hash)&1?.32:-.32);
     part(g,brace,x,h*.34,front+s*.035);
   }
+  // Ground-scale accretion breaks the last uninterrupted wall metre.  Ordered towns receive
+  // founded buttresses; marsh towns receive swelling clay/root/shell masses.  These sit proud of
+  // all four elevations, catch contact shadow, and are small enough not to alter collision.
+  const orderedTown=town==='gideon'||town==='stormhold'||town==='blackrose';
+  for(const sideSign of [-1,1])for(let i=0;i<2;i++){
+    const along=(i?-.27:.27),yy=.28+((hash>>(i+3))&3)*.045;
+    const zMass=orderedTown?box(.42,.72,.32,(i&1)?P.stone:P.wood):ico(.32+(hash%3)*.035,1,(i&1)?P.stone:P.wood);
+    if(!orderedTown)zMass.scale.set(1.25,1.1,.72);
+    part(g,zMass,along*w,yy,sideSign*(d*.5+.10));
+    const xMass=orderedTown?box(.32,.72,.42,(i&1)?P.wood:P.stone):ico(.30+((hash>>2)%3)*.035,1,(i&1)?P.wood:P.stone);
+    if(!orderedTown)xMass.scale.set(.72,1.1,1.25);
+    part(g,xMass,sideSign*(w*.5+.10),yy,along*d);
+  }
 
   // The entrance must read as a constructed threshold from every authority-owned entry side.
   // Previously the leaf was the only cue, while the later settlement pass put trim on +z even
@@ -1318,6 +1516,13 @@ export function buildBuilding(b, town) {
     for(const sx of [-1,1]) porchPart(box(.18,2.12,.18,P.wood),sx*.92,1.06,.68,sx*.018);
     const canopy=box(2.65,.20,1.45,P.roof);canopy.rotation.x=-.10;porchPart(canopy,0,2.20,.42);
     porchPart(box(2.05,.19,.20,P.wood),0,2.05,.70);
+    // A used threshold: a worn landing, paired vessels and a drain stone. These are deliberately
+    // asymmetrical and use the town palette, so the doorway reads as an occupied transition rather
+    // than trim pasted onto a wall.
+    porchPart(box(1.55,.055,.72,P.cloth),-.16,.15,1.02,.018);
+    porchPart(cyl(.16,.22,.48,8,P.wood),-.72,.35,.92,-.035);
+    porchPart(ico(.18,1,P.accent),.70,.28,.88,.025);
+    porchPart(box(.34,.12,.58,P.stone),.58,.08,1.14,-.08);
     porch.position.set(px,0,pz);porch.rotation.y=yaw;g.add(porch);
   }
 
@@ -1386,7 +1591,7 @@ export function buildBuilding(b, town) {
     m.scale.setScalar(kitScale);
     m.position.set(s.x, s.roof ? h + 0.2 : 0, s.z);
     m.rotation.y = s.ry + ((hash >>> (i * 3)) % 4) * 0.02;
-    m.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    m.traverse((o) => { o.userData.w130NoBatch=true; if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     g.add(m);
     summary.kit.push(ids[i]);
     summary.kit_drawn++;
@@ -1408,17 +1613,22 @@ export function buildBuilding(b, town) {
       for(const s of [-1,1]){const rib=box(.075,.09,d*.56,P.wood);rib.rotation.x=s*.62;part(roof,rib,x,h+d*.18,s*d*.25);}
     }
   }
-  roof.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  // Roof coverage/join probes and camera-solid diagnostics inspect this subtree directly.  Keep
+  // its meshes under `roof` instead of hoisting them into the facade instance batches.
+  roof.traverse((o) => { o.userData.w130NoBatch=true; if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
   g.add(roof);
 
   g.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+
+  if(opts.batch!==false)compressBuildingMeshes(g);
 
   let meshes = 0, tris = 0;
   g.traverse((m) => {
     if (!m.isMesh || !m.geometry) return;
     meshes++;
     const gg = m.geometry;
-    tris += gg.index ? gg.index.count / 3 : (gg.attributes.position ? gg.attributes.position.count / 3 : 0);
+    const per=gg.index ? gg.index.count / 3 : (gg.attributes.position ? gg.attributes.position.count / 3 : 0);
+    tris += m.userData.logicalTriangles ?? per*(m.isInstancedMesh?m.count:1);
   });
   summary.meshes = meshes;
   summary.triangles = Math.round(tris);
@@ -1441,9 +1651,9 @@ export function buildSettlementExterior(root, plan, groundY) {
     doorways: 0,
   };
   const kitSeen = new Set();
-  let centreX=0,centreZ=0;
-  for(const b of plan.buildings){centreX+=b.x;centreZ+=b.z;}
-  if(plan.buildings.length){centreX/=plan.buildings.length;centreZ/=plan.buildings.length;}
+  // The authored plan origin is the civic centre/arrival focus. Averaging building coordinates
+  // displaced Archon's public realm 26 m downwind, leaving the actual town centre as empty mud.
+  const centreX=plan.pos[0],centreZ=plan.pos[2];
   for (const b of plan.buildings) {
     const { group, summary } = buildBuilding(b, plan.id);
     // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
@@ -1455,7 +1665,7 @@ export function buildSettlementExterior(root, plan, groundY) {
     // Skyline and facade grammar should identify important buildings, not stamp the same crown
     // onto every roof.  Reserve the expensive silhouette pass for tall/hero records; ordinary
     // houses already receive the shared foundation, porch, aperture and roof construction above.
-    const hero=b.storeys>1||seed%5===0;
+    const hero=b.kind!=='structure'&&(b.storeys>1||seed%5===0);
     const cadence=hero?(ordered?3:2+(seed%2)):0;
     for(let i=0;i<cadence;i++) {
       const x=-W*.38+i*(W*.76/Math.max(1,cadence-1));
@@ -1489,6 +1699,11 @@ export function buildSettlementExterior(root, plan, groundY) {
       if (Number.isFinite(gy) && gy < y) y = gy;
     }
     if (!Number.isFinite(y)) y = 0;
+    // `buildBuilding()` measures its own shell, but this outer pass adds the settlement grammar.
+    // Recount the final group so the published draw/triangle budget includes what is on screen.
+    let finalMeshes=0,finalTriangles=0;
+    group.traverse((m)=>{if(!m.isMesh||!m.geometry)return;finalMeshes++;const gg=m.geometry,per=gg.index?gg.index.count/3:(gg.attributes.position?gg.attributes.position.count/3:0);finalTriangles+=m.userData.logicalTriangles??per*(m.isInstancedMesh?m.count:1);});
+    summary.meshes=finalMeshes;summary.triangles=Math.round(finalTriangles);
     group.position.set(b.x, y + (b.y || 0), b.z);
     group.rotation.y = (b.yaw_deg || 0) * Math.PI / 180;
     root.add(group);
@@ -1506,6 +1721,8 @@ export function buildSettlementExterior(root, plan, groundY) {
       footprint_m: [summary.w, summary.d], height_m: summary.h, storeys: b.storeys,
       footprint_source: b.footprint_source, shrink: b.shrink,
       kit: summary.kit, interior_kit: b.interior_kit, exterior_kit: b.exterior_kit,
+      structure_feature: !!summary.structure_feature, structure_kit: b.structure_kit || null,
+      mesh_compression: group.userData.meshCompression || {batches:0,instances:0,drawsSaved:0},
       meshes: summary.meshes, triangles: summary.triangles, doorway: summary.doorway,
     });
   }
@@ -1528,6 +1745,32 @@ export function buildSettlementExterior(root, plan, groundY) {
     const p=box(courtR*.34,.22,courtR*.34,(gx+gz)&1?P.stone:P.wood);
     p.rotation.y=((hashStr(plan.id)+gx*7+gz*13)%9-4)*.012;
     add(p,x,y+.13,z,0,'court-paver');
+  }
+  // A clearly authored arrival spine joins the southwest approach to the civic focus—the native
+  // gameplay approach used by ordinary traversal, not a camera-only decal. Narrow, offset
+  // causeway bays follow terrain and leave drainage gaps. The first implementation used 3.8 m
+  // near-square pale slabs; from eye height they fused into a ruler-straight concrete runway and
+  // became the dominant object in all eight town frames. These bays keep a readable route while
+  // exposing the ground between construction units and using the town's darker structural
+  // palette rather than a generic road surface.
+  const approachR=Math.min(plan.radius_m*.58,48),wetTown=['helstrom','lilmoth','thorn'].includes(plan.id);
+  for(let i=0;i<14;i++){
+    const t=(i+.5)/14,meander=Math.sin(i*.83+(hashStr(plan.id)%11))*.32;
+    const x=centreX-approachR*(1-t)+meander,z=centreZ-approachR*(1-t)-meander;
+    const y=Number.isFinite(groundY(x,z))?groundY(x,z):cy;
+    const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
+    slab.rotation.z=(i%3-1)*.008;
+    add(slab,x,y+.13,z,-Math.PI*.25+((hashStr(plan.id)>>i)&3)*.009,'arrival-spine');
+    // Wet settlements lash transverse wear strips across their boardwalk; dry settlements use
+    // the same member as an occasional repaired joint. It adds scale without filling the gap.
+    if(wetTown||i%4===0){
+      const tie=box(2.62,.12,.13,wetTown?P.stone:P.wood);
+      add(tie,x,y+.25,z,-Math.PI*.25,'arrival-tie');
+    }
+    if(i%3===1){
+      const edgeX=x+2.15,edgeZ=z-2.15,ey=Number.isFinite(groundY(edgeX,edgeZ))?groundY(edgeX,edgeZ):y;
+      add(ico(.18+(i%2)*.04,1,i%2?P.accent:P.wood),edgeX,ey+.17,edgeZ,0,'arrival-edge');
+    }
   }
   const stride=Math.max(1,Math.ceil(plan.buildings.length/12));
   for(let i=0;i<plan.buildings.length;i+=stride){
@@ -1577,6 +1820,29 @@ export function buildSettlementExterior(root, plan, groundY) {
  * ==============================================================================================*/
 
 /**
+ * Coarse collision envelopes for the named feature kits, in building-local coordinates.
+ * Walkable civic floors intentionally return no obstacle.  Gates preserve a central passage;
+ * walls block only where a wall is visible; compact vertical works use a central envelope.
+ */
+export function structureCollisionLocal(b) {
+  const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+  const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+  const h = b.height_m;
+  const id = String(b.id || '');
+  if (/(yard|court-steps|quay|dock|weighbridge|terrace|causeway|bridge|sea-stair|old-mole|salt-pans|lime-pit|cistern|ditch|mound-itself)/.test(id)) return [];
+  if (/(gate|arcade)/.test(id)) {
+    return [
+      { cx: -w * 0.39, cz: 0, hx: w * 0.11, hz: d * 0.22, h: Math.max(2.4, h) },
+      { cx: w * 0.39, cz: 0, hx: w * 0.11, hz: d * 0.22, h: Math.max(2.4, h) },
+    ];
+  }
+  if (/(wall|course|screen|queue-rail|bollard-line|butt-line)/.test(id)) {
+    return [{ cx: 0, cz: 0, hx: w * 0.48, hz: Math.min(0.32, d * 0.16), h: Math.max(1.4, h * 0.72) }];
+  }
+  return [{ cx: 0, cz: 0, hx: Math.min(w * 0.3, 1.2), hz: Math.min(d * 0.3, 1.2), h: Math.max(1.0, h * 0.72) }];
+}
+
+/**
  * The collision shapes for every building within `radius` of (x, z).
  * @returns {Array} `game/src/sim/collision.js` shape specs
  */
@@ -1593,6 +1859,16 @@ export function settlementSolids(plan, x, z, radius, groundY) {
     const c = Math.cos(yaw * Math.PI / 180), s = Math.sin(yaw * Math.PI / 180);
     const gy = groundY ? groundY(b.x, b.z) : 0;
     const base = (Number.isFinite(gy) ? gy : 0) + (b.y || 0);
+    const push = (cx, cz, hx, hz, tag, ph = h) => {
+      const wx = b.x + cx * c + cz * s, wz = b.z - cx * s + cz * c;
+      shapes.push({ k: 'box', c: [wx, base + ph / 2, wz], h: [hx, ph / 2, hz], yaw_deg: yaw, id: tag });
+    };
+    if (b.kind === 'structure') {
+      for (const [i, q] of structureCollisionLocal(b).entries()) {
+        push(q.cx, q.cz, q.hx, q.hz, `${b.id}:feature-${i}`, q.h);
+      }
+      continue;
+    }
     const side = entrySideLocal(b);
     // Local wall centres and half-extents, then rotated into the world by the building's yaw.
     const walls = [
@@ -1601,10 +1877,6 @@ export function settlementSolids(plan, x, z, radius, groundY) {
       { cx: -w / 2, cz: 0, hx: WALL_T / 2, hz: d / 2, side: '-x', along: false },
       { cx: w / 2, cz: 0, hx: WALL_T / 2, hz: d / 2, side: '+x', along: false },
     ];
-    const push = (cx, cz, hx, hz, tag) => {
-      const wx = b.x + cx * c + cz * s, wz = b.z - cx * s + cz * c;
-      shapes.push({ k: 'box', c: [wx, base + h / 2, wz], h: [hx, h / 2, hz], yaw_deg: yaw, id: tag });
-    };
     for (const W of walls) {
       if (!(b.enterable && W.side === side)) { push(W.cx, W.cz, W.hx, W.hz, `${b.id}:${W.side}`); continue; }
       // The entry wall, in two pieces with a doorway between them — at `doorAlongLocal(b)` along
