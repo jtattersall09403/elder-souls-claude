@@ -264,7 +264,7 @@ export class Sky {
     //   * the floors rise (ambient 0.10 -> 0.30, fog 0.34 -> 0.62). Morrowind's nights are dark and
     //     READABLE; a frame a judge cannot classify is not a dark frame, it is a missing frame.
     const night = 1 - Math.max(0, Math.min(1, day * 2.2));
-    this.moon.intensity = this.features.lighting ? night * (0.24 + (1-w.overcast)*0.18) : 0;
+    this.moon.intensity = this.features.lighting ? night * (0.80 + (1-w.overcast)*0.35) : 0;
     // W1-01 round 3. `ours_night` leave-one-out was 33.3% against M17 step 6's explicit >= 70%.
     // Two thirds of the DAY separability was tint, and at night there was not even that: every
     // region rendered as the same near-black. A region's night hue is now taken from the thing it
@@ -274,10 +274,10 @@ export class Sky {
     // is making when it says a region must be identifiable at night.
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
-    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.82, 1.18 + day * 0.72) : 0;
+    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(1.15, 1.18 + day * 0.72) : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
     this.hemi.groundColor.setRGB(0.34, 0.31, 0.24).lerp(regionNight, night * 0.55);
-    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.68, 1.34, day) : 0;
+    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.95, 1.34, day) : 0;
     this.fill.color.copy(hor).lerp(regionNight, night * 0.70);
 
     if (regionFog) {
