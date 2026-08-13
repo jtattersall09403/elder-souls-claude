@@ -44,6 +44,8 @@ export const KINDS = new Set([
   'attribute_preview', 'souls_held', 'souls_to_next', 'level_value', 'skill_row',
   'spell_row', 'sheet_row', 'search_field', 'scroll_extent', 'selection', 'divider',
   'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph',
+  // Player wait: a duration, its physical hour marks and the before/after world clock.
+  'wait_duration', 'hour_pip', 'clock_change',
   // W1-29 / RI-JRN04 §G and H1. Added deliberately, and they are here rather than in a
   // separate surface because RI-UIX01's sixth "how we lose" is "everything drawn straight to
   // canvas is invisible": the touch controls are non-world UI on a phone, they occupy frame

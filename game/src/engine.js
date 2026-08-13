@@ -3575,17 +3575,16 @@ export class Engine {
           }
         }
       }
-      // The writ you are carrying, opened with the verb that opens carried things. RI-JRN01
-      // M8 (amended): "the object is openable through the same input path a player has, and
-      // its rendered-text set at the open node is non-empty and contains the answers" — a
-      // hard fail if it is "present only as an API return value", which is what `readWrit()`
-      // alone was. No new action: HARNESS.md §4's set is closed and `use_item` already means
-      // this.
+      // The carried writ still has this legacy reader for explicit callers and old saves. Its
+      // player-facing route is now the inventory's readable-item path below, where carried
+      // documents belong and where it cannot collide with a combat action.
       if (this.writReader.open) { this._writReaderStep(input); return; }
       // W1-05. A post you are standing under has the buttons while you are reading it, on the
       // same terms the writ does.
       if (this.signReader.open) { this._signReaderStep(input); return; }
-      if (input.pressedName('use_item') && this._hasWrit()) { this._writPending = true; input.consumeUI(CENSUS_ACTIONS); return; }
+      // W1-19: `use_item` is the production flask verb. The writ is already player-openable
+      // through the inventory's readable-item route. Overloading the flask here opened a modal
+      // writ surface after every odd heal and that surface consumed every later movement axis.
       if (!this._propPending && !this._talkPending && !this._signPending && input.pressedName('interact')) {
         const p = this.sim.player;
         // The post first. It is the tightest reach of the three (2.6 m against a prop's own
@@ -4172,6 +4171,23 @@ export class Engine {
     const p = this.sim.player;
     const prog = this.sim.progression;
     const inCombat = this.inCombat();
+    // `stamped-writ` is a character-specific carried document, not a static corpus book. Keep
+    // its inventory reader backed by the current rendered writ after creation and save/load.
+    // This updates only the UI's read model; opening it still requires menu navigation and the
+    // ordinary confirm input, and no quest/topic state is written here.
+    const writText = this.sim.character && this.sim.character.writ_text;
+    if (writText && this.ui && this.ui.data && this.ui.data.books) {
+      const current = this.ui.data.books.get('stamped-writ');
+      if (!current || current.text !== writText) this.ui.data.books.set('stamped-writ', {
+        id: 'stamped-writ', title: 'Reed-case writ, stamped',
+        author: 'Provincial Office of Argonia', text: writText,
+      });
+      const amended = this.ui.data.books.get('amended-writ');
+      if (!amended || amended.text !== writText) this.ui.data.books.set('amended-writ', {
+        id: 'amended-writ', title: 'Reed-case writ, stamped and amended',
+        author: 'Provincial Office of Argonia', text: writText,
+      });
+    }
     // D2's spend point: the stamina level at the moment the current regen block began. Read off
     // `regenBlockUntil` changing rather than off a spend event, so it cannot disagree with the
     // simulation about whether regen is blocked.
@@ -4272,6 +4288,7 @@ export class Engine {
       placeName: this.sim.env.interior || this.sim.env.region || null,
       journal: this.sim.quest.journal,
       dateLabel: this.sim.quest.journal.length ? this.sim.quest.journal[this.sim.quest.journal.length - 1].date : null,
+      clock: { hour: this.sim.env.timeOfDay, day: this.sim.env.dayCount | 0 },
       attributes: prog.attributes,
       skills: prog.skills,
       spells: this._uiSpells(),
@@ -5074,7 +5091,41 @@ export class Engine {
       this._transferItem(act.item, act.to);
     } else if (act.kind === 'level') {
       this._spendSouls(act.attribute);
+    } else if (act.kind === 'wait') {
+      this._waitHours(act.hours);
     }
+  }
+
+  /** Player wait: calendar passage without the healing, respawn or taint effects of a hearth. */
+  _waitHours(rawHours) {
+    if (this.inCombat()) return { waited: false, refused: 'combat' };
+    const hours = Math.max(1, Math.min(24, Math.floor(Number(rawHours) || 1)));
+    const beforeHour = Number(this.sim.env.timeOfDay) || 0;
+    const beforeDay = this.sim.env.dayCount | 0;
+    const total = beforeHour + hours;
+    const afterDay = beforeDay + Math.floor(total / 24);
+    const afterHour = ((total % 24) + 24) % 24;
+
+    this.sim.env.dayCount = afterDay;
+    this.sim.env.timeOfDay = afterHour;
+    const elapsedFrames = Math.round(hours * 3600 * FIXED_HZ);
+    for (const a of this.sim.quest.afflictions || []) {
+      if (a.incubation_in_frames != null) {
+        a.incubation_in_frames = Math.max(0, Number(a.incubation_in_frames) - elapsedFrames);
+      }
+    }
+    const deadlines = [];
+    for (let day = beforeDay + 1; day <= afterDay; day++) deadlines.push(...this.questEngine.onDay(day));
+
+    const ev = this.bus.emit(this.sim.frame, 'wait');
+    ev.hours = hours; ev.clock_before = beforeHour; ev.clock_after = afterHour;
+    ev.day_before = beforeDay; ev.day_after = afterDay; ev.deadlines_fired = deadlines.length;
+    this.ui.close();
+    this.sim.menuOpen = false;
+    cameraCloseUI(this.sim);
+    this.ui._surfaceChanged(this.real);
+    return { waited: true, hours, clock_before: beforeHour, clock_after: afterHour,
+      day_before: beforeDay, day_after: afterDay, deadlines_fired: deadlines.length };
   }
 
   /**
@@ -8302,6 +8353,29 @@ export class Engine {
       // reload. That remedy is theirs and is deliberately not attempted from here; what IS
       // fixed here is that this file no longer asks the souls ledger to hide it.
       this._resetSessionObservers('save', 'early');
+      // Population bodies are durable combat entities, while the population post index is a
+      // session observer. Rebuild that index from the restored eids and apply any data-derived
+      // road-placement migration to idle legacy bodies before the first fixed step. Active
+      // fights are deliberately left exactly where the save captured them.
+      if (this.population) this.population.reconcileRestored(this);
+      // Named people are data-authored too. If a save captured an idle outdoor NPC exactly at
+      // the post embedded in that save, and a later build corrects that authored post (for
+      // example a declared doorway that fitting rotated inside its building), migrate the body
+      // to the current public-side post on load. This is deliberately narrow: people already
+      // walking, indoors, or displaced from their saved anchor retain their exact saved pose.
+      for (const n of this.sim.npcs || []) {
+        const rec=this._anyNpcRecord(n.eid),oldPost=n.post&&n.post.pos,newPost=rec&&rec.post&&rec.post.pos;
+        // Older outdoor saves omit `at`; newer ones serialise it as null. Both mean the named
+        // actor is at the exterior post. Any explicit interior/site id remains ineligible.
+        if(!Array.isArray(oldPost)||!Array.isArray(newPost)||n.at!=null)continue;
+        const wasAtSavedPost=Math.hypot(n.pos[0]-oldPost[0],n.pos[2]-oldPost[2])<.1;
+        const changed=Math.hypot(newPost[0]-oldPost[0],newPost[2]-oldPost[2])>.1;
+        if(!wasAtSavedPost||!changed)continue;
+        n.pos=[newPost[0],newPost[1],newPost[2]];
+        n.goal=[newPost[0],newPost[1],newPost[2]];
+        n.post={...rec.post,pos:[...newPost]};
+        if(rec.post.yaw!=null){n.yaw_deg=rec.post.yaw;n.home_yaw_deg=rec.post.yaw;}
+      }
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
@@ -8696,6 +8770,11 @@ export class Engine {
 
   getRegionAt(x, z) { return this.getTerrainAt(x, z).region; }
 
+  /** The production population consumer's effective centre, without spawning or moving it. */
+  getPopulationPostPlacement(id) {
+    return this.population ? this.population.placement(this, id) : null;
+  }
+
   // ---- the thirteen ONLY-HERE elements (RI-WLD04 M19) -----------------------------------------
   //
   // Round 2 measured M19 at 0/13 because the counts were integers in a build script. These three
@@ -9012,7 +9091,7 @@ export class Engine {
           // camera is already facing the route is the ordinary-world answer; silently tanking
           // them until a hearth respawn would turn a walking trace into a discontinuity.
           script.push({f:0,press:['light']},{f:2,release:['light']}); defensiveSwings++;
-        } else if (!body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
+        } else if (o.sprint !== false && !body.move && body.stamina > body.staminaMax * 0.45) { script.push({f:0,press:['sprint']}); sprintInputs++; }
       }
       if (this.traversal && this.traversal.mired && !this.sim.env.interior
           && (!this.combat || !this.combat.player || this.combat.player.stamina >= 25)) {
@@ -10419,6 +10498,16 @@ export class Engine {
         weapon: p.moves._movesetId, weapon_class: p.moves._classKey,
         two_handed: !!p.twoHanded, airborne: !!p.airborne,
         pos: [p.pos[0], p.pos[1], p.pos[2]], yaw_deg: p.yaw,
+        speed_mps: p.speedMps, move_dir_deg: p.moveDirDeg,
+        stagger_until: p.staggerUntil, parried_until: p.parriedUntil,
+        pending_reaction: p.pendingReaction ? { ...p.pendingReaction } : null,
+        dead: !!p.dead, hitstop: !!p.hitstop, hitstop_until: p.hitstopUntil,
+        controller: {
+          turn_in_place_frames: c.playerCtl.turnInPlace,
+          turn_in_place_step_deg: c.playerCtl.turnInPlaceStep,
+          turn_in_place_anim: c.playerCtl.turnInPlaceAnim,
+          turn_in_place_active: c.playerCtl.turnInPlaceActive,
+        },
       },
       // `menu` opens a UI surface and does NOT pause the fixed step — frames.json
       // §actions.menu, and AR-1 probe A3. `frame` above is the proof: it keeps advancing.
@@ -10534,9 +10623,19 @@ export class Engine {
       pointerLocked: false, hasFocus: true, activeDevice: 'scripted', deviceClass: 'harness',
       held: this.input.heldNames().slice(), bindings: null, droppedInputs: this.input.droppedInputs,
     };
+    // Recovery diagnostics need the fixed-step edges, not only the held level. Keep these
+    // read-only observations on the shared pipeline so scripted and real input report the
+    // same state and a queued flask cannot masquerade as a locomotion failure.
+    base.held = this.input.heldNames().slice();
+    base.pressed = this.input.pressedNames().slice();
+    base.released = this.input.releasedNames().slice();
+    base.pendingPress = this.input.pendingPressNames().slice();
+    base.pendingRelease = this.input.pendingReleaseNames().slice();
+    base.move = [this.input.moveX, this.input.moveY];
     base.mode = this.mode;
     base.bufferFrames = this.data ? this.data.input.buffer_frames : null;
     base.buffered = this.input.bufferedAction || null;
+    base.bufferedAtFrame = this.input.bufferedAtFrame;
     base.violations = violations.length;
     return base;
   }

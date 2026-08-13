@@ -1,0 +1,113 @@
+{
+  "schema": "elder-souls/w1-19-q-main-09-production-summary@1",
+  "tested_parent": "bee8d846eedcadd177fb1cdfb726529e2b8a1d4c",
+  "result": "PASS",
+  "quest": "Q-MAIN-09",
+  "resolution": "res_hold_both",
+  "precompleted": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+    "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08"
+  ],
+  "completed_after": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+    "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09"
+  ],
+  "active_after": [],
+  "final_checkpoint": {
+    "ignored_source": "reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7/resume-saxhleel-interior-intended.json",
+    "sha256": "8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d",
+    "pose": [0.726439, 0, 0.553116],
+    "interior": "soulrest-grey-hist",
+    "hour": 21.36,
+    "hp": 284.892008,
+    "hp_max": 300,
+    "estus": 5,
+    "stable_frames": 120
+  },
+  "sequential_runs": [
+    {
+      "id": "r3",
+      "out": "reports/runs/W1-19-production-gpu-root-lf/intended-q9-r3",
+      "outcome": "bounded continuation at 120000 frames, 351.4 m short",
+      "movement_m": 5315.1,
+      "deaths": 0,
+      "teleports": 0,
+      "mired_frames": 0,
+      "longest_stall_frames": 0,
+      "worst_off_path_m": 0.31,
+      "resume_sha256": "976b7e1468858b207c158dc5a1b41f28a4ea8f3eeb90943ed15f52862799bca8"
+    },
+    {
+      "id": "r4",
+      "out": "reports/runs/W1-19-production-gpu-root-lf/intended-q9-r4",
+      "outcome": "diagnostic red: obsolete exterior post approach stuck 17.41 m short",
+      "movement_m": 504.9,
+      "deaths": 0,
+      "teleports": 0,
+      "mired_frames": 0,
+      "longest_stall_frames": 1800,
+      "resume_sha256": "f8d0181c481b6baf885eb5ec45339d001b7612168a2237acd15c06d761c2a2c2"
+    },
+    {
+      "id": "r5-r6",
+      "out": "reports/runs/W1-19-production-gpu-root-lf/intended-q9-r5 and intended-q9-r6",
+      "outcome": "diagnostic red: actual scheduled Grey Hist door refused because the actor schedule was 19:00-00:00 while the public interior closed at 19:00",
+      "deaths": 0,
+      "teleports": 0,
+      "resume_sha256": "667edc8f1ae25f92a1e7f77962d6efd3dc4027fa7069f0eef99d6926602286b8"
+    },
+    {
+      "id": "r7",
+      "out": "reports/runs/W1-19-production-gpu-root-lf/intended-q9-r7",
+      "outcome": "Q-MAIN-09 accepted and completed through scheduled interior doorway and published conversation choices",
+      "deaths": 0,
+      "teleports": 0,
+      "violent_resolutions": 0,
+      "bought_openings": 0,
+      "marker_count": 0,
+      "resume_sha256": "8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d"
+    }
+  ],
+  "causes_and_repairs": [
+    "Restored combat bodies survived save/load while the population session index did not; reconcile restored post bodies and migrate only idle legacy road placements.",
+    "Two-body road posts had been excluded from production clearance despite their perception radius; apply the data-derived road-safe centre to every road post inside hard clearance.",
+    "The scheduled giver exposed cell-local coordinates without an interior id; infer only the actor's active authored schedule row before approaching an obsolete daytime post.",
+    "The Grey Hist was closed for every frame of Bel-Mourne's 19:00-00:00 tavern schedule; keep this public mainline shrine/location accessible for the complete schedule."
+  ],
+  "production_provenance": {
+    "direct_quest_mutations": 0,
+    "direct_topic_or_reveal_feeds": 0,
+    "synthetic_spawns": 0,
+    "teleports": 0,
+    "violent_resolutions": 0,
+    "actions": ["fixed-step locomotion", "interact input", "published conversation choices"]
+  },
+  "scheduled_giver_door_control": {
+    "source": "game/data/world/interiors/soulrest-grey-hist.json",
+    "source_hash": "863691895c0c247d843c9eb2ace30bf6ee5f33c78e7a58cf770dfc6e3e8d9f41",
+    "changed_source_hash": "66b4ac456c996da45d8ef22e7d26d7eea6fa3b51cf307706132023385a88c221",
+    "changed_hash": true,
+    "consumer": "stepSettlement -> useDoor, invoked through queued interact input",
+    "consumer_calls": 5,
+    "non_zero_support": 1,
+    "support": "undersexton-bel-mourne schedule 19:00-00:00 at soulrest-grey-hist",
+    "expected_red_row": "production interact did not enter scheduled soulrest-grey-hist",
+    "red_observed": ["intended-q9-r5", "intended-q9-r6"],
+    "restored_green": "intended-q9-r7 completed Q-MAIN-09 through the same production doorway"
+  },
+  "source_hashes": {
+    "q8_fixture": "8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae",
+    "roads": "48bf48374d1a37821a4663f42605856db11bdc70b83e733574fcbeeda5ea84d7",
+    "population_posts": "d357b9d24e9c36333127a1550f5803f63222829d564edd45d87c973e9ced69d7",
+    "mainline_npcs": "819106d4b3df410835fe6751a27d84cdbe1d50300d565c199035302003bc92e4",
+    "grey_hist": "863691895c0c247d843c9eb2ace30bf6ee5f33c78e7a58cf770dfc6e3e8d9f41",
+    "act2_quests": "3dcc3624ac890c76b15972ba39eb3cc60be35019b905d372f4d757495b2b3ba2",
+    "production_runner": "03e0ffb4817ec213d76aa8180fc4d2806eb66a175edc3bd06348159328169cdd",
+    "population_consumer": "80c1fc924b764544f48cf1b32f3b4937d022b02cfab28b41815b554f04ea61ee",
+    "engine": "ea6e31fb0348cbafb2821a9055f6203d362043f65f3d4394d38c2216eeca4268"
+  },
+  "reproduction": [
+    "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q8.json --stop-after Q-MAIN-09 --walk-max-frames 120000 --out reports/runs/W1-19-production-gpu-root-lf/q9-reproduction --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 3600000",
+    "node tools/quests/mainline-route-safety-control.mjs --out reports/runs/W1-19-production-gpu-root-lf/q9-route-control.json --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 300000"
+  ]
+}

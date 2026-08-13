@@ -26,13 +26,13 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const has = (f) => args.includes(f);
 
-const EX = await import(path.join(ROOT, 'game/src/render/exterior.js'));
+const EX = await import(pathToFileURL(path.join(ROOT, 'game/src/render/exterior.js')).href);
 
 function load(dir) {
   const out = {};
@@ -159,8 +159,8 @@ function run(join, opts) {
  * generator's second doorstep. So they are checked here, in the gate, and this exits non-zero if
  * either has drifted.
  */
-const WC = await import(path.join(ROOT, 'game/src/sim/world-collision.js'));
-const SETT = await import(path.join(ROOT, 'game/src/sim/settlement.js'));
+const WC = await import(pathToFileURL(path.join(ROOT, 'game/src/sim/world-collision.js')).href);
+const SETT = await import(pathToFileURL(path.join(ROOT, 'game/src/sim/settlement.js')).href);
 const mirrors = [];
 if (EX.BODY_RADIUS_M !== WC.PLAYER_RADIUS_M) mirrors.push(`exterior.js BODY_RADIUS_M = ${EX.BODY_RADIUS_M} but world-collision.js PLAYER_RADIUS_M = ${WC.PLAYER_RADIUS_M}`);
 if (EX.DOOR_REACH_M !== SETT.DOOR_REACH_M) mirrors.push(`exterior.js DOOR_REACH_M = ${EX.DOOR_REACH_M} but settlement.js DOOR_REACH_M = ${SETT.DOOR_REACH_M}`);

@@ -1,0 +1,24 @@
+{
+  "schema": "elder-souls/w1-19-route-detour-safety-control-summary@1",
+  "result": "PASS",
+  "raw_report": "reports/runs/W1-19-production-gpu-root-lf/q9-route-safety-control-final/report.json",
+  "source": "game/src/world/population.js",
+  "source_hash": "80c1fc924b764544f48cf1b32f3b4937d022b02cfab28b41815b554f04ea61ee",
+  "changed_source_hash": "698328aaa6806bdf765f28fa1416c1cd0f7ee84dbdbf58c37feb1749416fb54a",
+  "changed_hash": true,
+  "consumer_calls": 9,
+  "non_zero_support": 110,
+  "expected_red_rows": [
+    {"post": "pop-0119", "row": "route_detour_safe", "green": true, "red_deleted_consumer": false, "restored_green": true, "green_clearance_m": 38.653, "red_clearance_m": 7.865},
+    {"post": "pop-0111", "row": "route_detour_safe", "green": true, "red_deleted_consumer": false, "restored_green": true, "green_clearance_m": 40.551, "red_clearance_m": 9.994},
+    {"post": "pop-0115", "row": "restored_checkpoint_safe", "green": true, "red_deleted_consumer": false, "restored_green": true, "green_clearance_m": 34.003, "red_clearance_m": 8.568}
+  ],
+  "save_load_observation": {
+    "restored_bodies": 4,
+    "safe_centroid": [3154.2238, 4484.1775],
+    "legacy_red_centroid": [3194.38, 4498.3125],
+    "bodies_after_two_steps": 0,
+    "note": "Distant restored bodies release normally after reconciliation; later materialisation consumes the safe centre."
+  },
+  "command": "node tools/quests/mainline-route-safety-control.mjs --out reports/runs/W1-19-production-gpu-root-lf/q9-route-safety-control-final/report.json --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 300000"
+}

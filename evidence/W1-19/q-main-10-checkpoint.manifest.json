@@ -1,0 +1,94 @@
+{
+  "schema": "elder-souls/production-checkpoint-manifest@1",
+  "fixture": "fixtures/resume-saxhleel-interior-intended-act2.json",
+  "fixture_hash": "sha256:cae7a08111f73fc26d27c135bd933c806276abe41b9bb372a90bbfdd421ae226",
+  "tested_commit": "320a7ed4a3de81ccef04d0ec0ed26bfd3ca3c9eb",
+  "tested_tree_note": "Q9 milestone plus the schedule, doorway-dismissal and fitted-giver-placement production repairs frozen by input_hashes; the milestone commit is the commit containing this manifest.",
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "save_schema": { "schema": "elder-souls/save@1", "version": 2 },
+  "harness_version": 1,
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class_id": "reed-walker",
+    "birthsign": "raj-xul"
+  },
+  "completed_quests": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+    "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09", "Q-MAIN-10"
+  ],
+  "active_quests": [],
+  "position": {
+    "pos": [2294.429072, 27.2, 2787.836768],
+    "settlement": "helstrom",
+    "cell": "coast",
+    "interior": null
+  },
+  "clock": { "day": 2, "hour": 14.293981 },
+  "weather": "high_clear",
+  "schedule_context": {
+    "npc": "rootkeeper-ashul-tei",
+    "active_row": { "from": "07:00", "to": "19:00", "at": null, "activity": "post" },
+    "actual_entity_pos": [2294.17, 27.22, 2788.86],
+    "checkpoint_giver_distance_m": 1.05552,
+    "nearby_production_door": "helstrom-undertemple",
+    "door_distance_m": 2.451
+  },
+  "health": { "hp": 284.892008, "hp_max": 300, "estus": 5 },
+  "stability": {
+    "consecutive_clean_frames": 120,
+    "player_state": "IDLE",
+    "speed_mps": 0,
+    "in_combat": false,
+    "locked_on": null,
+    "mired": false,
+    "submerged": false,
+    "dead": false,
+    "hitstop": false,
+    "ui_mode": "world",
+    "conversation_open": false,
+    "held_inputs": [],
+    "pressed_inputs": [],
+    "pending_press": [],
+    "pending_release": [],
+    "collision_solid": false,
+    "collision_clearance_m": 2.415075
+  },
+  "provenance": {
+    "production_player_actions": true,
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "teleports": 0,
+    "deaths_or_respawns": 0,
+    "bought_openings": 0,
+    "synthetic_spawns": 0,
+    "topic_or_reveal_hand_feeds": 0,
+    "quest_resolution": "res_hear_it_out",
+    "quest_acceptance": "published quest-accept:Q-MAIN-10 conversation choice with Ashul-Tei at his live daytime post",
+    "reveal_route": "walked through the helstrom-undertemple production doorway, interacted with interior-readable:the-stewards-letter, paged through the-stewards-letter, exited, and returned to Ashul-Tei",
+    "source_runs": [
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q10-r3",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q10-r4",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q10-r5"
+    ],
+    "source_run_hashes": {
+      "q10_r3_report": "sha256:440baefda6a244d4ea92a55d46c532edc54f6f82413e389a58e8c07e5aed320a",
+      "q10_r3_resume": "sha256:13affa73ca013ff9ea80e785930ad40941eb5ff5888be0e320e6c372345e587b",
+      "q10_r4_report": "sha256:09159ae0c0bf88202eaa316cb5dc8d483df5396ac6c1cd78f1cfc63489bfd31e",
+      "q10_r4_resume": "sha256:d25b54434b2a2cb97acf5169ad00d2d49779200cbacfbbde0c2c01afd81c4017",
+      "q10_r5_report": "sha256:55812963f106861c5e1b73ad806adb5aa0246107d46d7c49ba7b3abb13f9b99c"
+    },
+    "note": "The r3 and r4 states are stable production continuations of one route: r3 consumed 6,388.1 m with no stuck frames, r4 consumed 2,966 m and exposed the fitted-post defect, and r5 migrated the idle authored post then completed the player-facing interaction. Large raw runs remain ignored."
+  },
+  "input_hashes": {
+    "quests": "sha256:6b2179a5ad77e335b1c020fb22dc2a43db51a1c94844556032943595104ec38c",
+    "npcs": "sha256:b5b0f5a11050ef63da75047592d3d9fdb5f9b84c3edec7460d9014f33e40745e",
+    "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
+    "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24",
+    "production_runtime": "sha256:ae0f495466e3179aea09ebcfbf93f05fd4280c549e27793b7b04d341d76a4084",
+    "instruments": "sha256:a2d3eeb479448370ac2d5f8157932fcdaeaf517374cf893ebd0bbf89f5d0db9e"
+  },
+  "reproduction": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q8.json --stop-after Q-MAIN-10 --walk-max-frames 480000 --resume-output evidence/W1-19/fixtures/reproduced-act2.json --out reports/runs/W1-19-production-gpu-root-lf/q10-reproduction --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 7200000",
+  "validation": "node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-10-checkpoint.manifest.json",
+  "controls": "node tools/quests/mainline-checkpoint-control.mjs --manifest evidence/W1-19/q-main-10-checkpoint.manifest.json --out reports/runs/W1-19-production-gpu-root-lf/q10-checkpoint-control.json"
+}

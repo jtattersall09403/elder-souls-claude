@@ -68,6 +68,7 @@ export class PopulationSystem {
   reset() {
     this.state = new Map();
     this.live = new Map();          // post id -> [eid]
+    this.spawnCentres = new Map();  // post id -> production centre after route-safety placement
     this.down = new Map();          // post id -> Set(eid) that was DEAD when the post was released
     this.focus = { x: NaN, z: NaN };
     this.epochSeen = -1;
@@ -247,8 +248,9 @@ export class PopulationSystem {
     // first time the player walked a stretch of road with two marsh sentries on it. The tag is
     // the post id, which is unique by construction.
     let r;
+    const centre = this._routeSafeCentre(engine, p);
     try {
-      r = engine.spawnEncounter(p.encounter, p.x, p.z, { tag: p.id, yaw: p.yaw });
+      r = engine.spawnEncounter(p.encounter, centre.x, centre.z, { tag: p.id, yaw: p.yaw });
     } catch (err) {
       // A post that cannot be built is a data fault, not a reason to take the step down. It is
       // recorded and never retried.
@@ -275,8 +277,156 @@ export class PopulationSystem {
       live.push(eid);
     }
     this.live.set(p.id, live);
+    this.spawnCentres.set(p.id, centre);
     this.state.set(p.id, RESIDENT);
     this.stats.spawned++;
+  }
+
+  /**
+   * Keep a road encounter's actual bodies off a narrow coastal carriageway.
+   *
+   * Generated posts sit 5–14 m to one side of a road. Usually a player can take the unused
+   * shoulder. At a coast, however, the generated side can end immediately in W4 water: the
+   * post's 24 m body-clearance disc then joins the shoreline and topologically seals the only
+   * walkable road. That is what pop-0119 on Lilmoth–Archon did in the production Q-MAIN-08 run.
+   *
+   * This is a production placement consumer, not a quest-runner exemption. If the post is less
+   * than 24 m from its declared road, materialise it on the nearest production-safe centre at
+   * least 31 m from the road, starting with the authored and opposite 35 m shoulders. The nearest
+   * road and all candidates are derived from shipped data; no post id, quest id, player state, or
+   * progress flag participates.
+   */
+  _routeSafeCentre(engine, p) {
+    const original = { x: p.x, z: p.z, relocated: false, reason: null };
+    if (!p || p.kind !== 'road' || !p.leg || !engine.data || !engine.data.roads) return original;
+    const leg = (engine.data.roads.legs || []).find((row) => row.id === p.leg);
+    if (!leg || !Array.isArray(leg.points) || leg.points.length < 2) return original;
+    let near = null;
+    for (let i = 1; i < leg.points.length; i++) {
+      const a = leg.points[i - 1], b = leg.points[i], dx = b[0] - a[0], dz = b[1] - a[1];
+      const d2 = dx * dx + dz * dz || 1;
+      const t = Math.max(0, Math.min(1, ((p.x - a[0]) * dx + (p.z - a[1]) * dz) / d2));
+      const x = a[0] + dx * t, z = a[1] + dz * t, d = Math.hypot(p.x - x, p.z - z);
+      if (!near || d < near.d) near = { x, z, d, dx, dz };
+    }
+    if (!near || near.d >= 24) return original;
+    const dl = Math.hypot(near.dx, near.dz) || 1, nx = near.dz / dl, nz = -near.dx / dl;
+    const side = ((p.x - near.x) * nx + (p.z - near.z) * nz) >= 0 ? 1 : -1;
+    const candidate = (sign) => ({ x: near.x + nx * 35 * sign, z: near.z + nz * 35 * sign });
+    const safe = (q) => {
+      // The shipped largest offset is 6.55 m. Sample a 7 m footprint in all directions so a
+      // safe centre cannot put one of its bodies in water or a visible collision primitive.
+      for (let i = -1; i < 16; i++) {
+        const x = i < 0 ? q.x : q.x + Math.sin(i * Math.PI / 8) * 7;
+        const z = i < 0 ? q.z : q.z + Math.cos(i * Math.PI / 8) * 7;
+        const w = engine.getWaterAt(x, z), water = Number(w.depth_m ?? w.depth ?? 0);
+        const terrain = engine.getTerrainAt(x, z);
+        if (water > .95 || (terrain.substrate === 'SUCK' && water > .4)
+          || terrain.slope_deg > 35 || engine.solidAt(x, Number(w.ground_y) + .9, z).distance_m < .42) return false;
+      }
+      return true;
+    };
+    const authoredSide = candidate(side), opposite = candidate(-side);
+    const authoredSafe = safe(authoredSide), oppositeSafe = safe(opposite);
+    // Every road post whose authored centre lies inside the hard clearance uses the full 35 m
+    // post envelope. Body count cannot stand in for perception: a two-body drowned pair still
+    // sees far enough for its spawn offsets to seal a narrow tideway.
+    let chosen = authoredSafe ? authoredSide : (oppositeSafe ? opposite : null);
+    const roadDistance = (q) => {
+      let best = Infinity;
+      for (let i = 1; i < leg.points.length; i++) {
+        const a = leg.points[i - 1], b = leg.points[i], dx = b[0] - a[0], dz = b[1] - a[1];
+        const d2 = dx * dx + dz * dz || 1;
+        const t = Math.max(0, Math.min(1, ((q.x - a[0]) * dx + (q.z - a[1]) * dz) / d2));
+        best = Math.min(best, Math.hypot(q.x - (a[0] + dx * t), q.z - (a[1] + dz * t)));
+      }
+      return best;
+    };
+    if (chosen && roadDistance(chosen) < 31) chosen = null;
+    if (!chosen) {
+      const radial = [];
+      for (const radius of [35,45,55,65,80]) for (let i = 0; i < 32; i++) {
+        const q = { x: near.x + Math.sin(i * Math.PI / 16) * radius, z: near.z + Math.cos(i * Math.PI / 16) * radius };
+        const road = roadDistance(q);
+        if (road >= 31 && safe(q)) radial.push({ ...q, road, radius, moved: Math.hypot(q.x - p.x, q.z - p.z) });
+      }
+      if (radial.length) chosen = radial.sort((a,b) => a.moved - b.moved || b.road - a.road)[0];
+    }
+    if (!chosen) return original;
+    return {
+      x: chosen.x, z: chosen.z, relocated: true,
+      reason: chosen === authoredSide
+        ? 'road-clearance: road post moved to its production-safe 35 m authored shoulder'
+        : chosen !== opposite
+          ? 'road-clearance: road post moved to nearest production-safe centre with 24 m body clearance'
+        : 'road-clearance: authored 35 m shoulder unsafe; opposite 35 m shoulder production-safe',
+      authored: [p.x, p.z], road_nearest: [near.x, near.z], road_distance_before_m: near.d,
+      post_envelope_m: 35, hard_body_clearance_m: 24, spawn_footprint_sample_m: 7,
+      road_clearance_after_m: roadDistance(chosen),
+    };
+  }
+
+  /** Read-only route-safety placement for a named post; used by production navigation evidence. */
+  placement(engine, id) {
+    const p = this.byId.get(String(id));
+    if (!p) return null;
+    return { post: p.id, authored: [p.x, p.z], ...this._routeSafeCentre(engine, p) };
+  }
+
+  /**
+   * Re-index population bodies restored by the save system and migrate only idle bodies whose
+   * saved centre is the superseded authored road placement. The combat bodies survive a load,
+   * while reset() deliberately clears this subsystem's live index; without reconciliation the
+   * duplicate-eid guard leaves those bodies untracked at the old centre even though route
+   * planning reads the corrected production placement.
+   *
+   * An active/alert/damaged group is never moved. A current save already centred on the safe
+   * placement is only re-indexed, so ordinary save/load fidelity remains exact.
+   */
+  reconcileRestored(engine) {
+    if (!engine || !engine.sim) return { groups:0, bodies:0, migrated_groups:0, migrated_bodies:0 };
+    const out = { groups:0, bodies:0, migrated_groups:0, migrated_bodies:0 };
+    for (const p of this.posts) {
+      const prefix = `${p.id}-`;
+      const bodies = engine.sim.entities.filter((e) => String(e.eid).startsWith(prefix));
+      if (!bodies.length) continue;
+      out.groups++; out.bodies += bodies.length;
+      this.live.set(p.id, bodies.map((e) => e.eid));
+      this.state.set(p.id, bodies.some((e) => e.hp > 0) ? RESIDENT : CLEARED);
+      const centre = this._routeSafeCentre(engine, p);
+      this.spawnCentres.set(p.id, centre);
+      if (!centre.relocated) continue;
+      const cx = bodies.reduce((n,e) => n + e.pos[0], 0) / bodies.length;
+      const cz = bodies.reduce((n,e) => n + e.pos[2], 0) / bodies.length;
+      const atAuthored = Math.hypot(cx-p.x,cz-p.z) < 20;
+      const idle = bodies.every((e) => e.hp > 0 && e.state === 'IDLE'
+        && (!e.alertState || e.alertState === 'IDLE') && !e.encAggroed);
+      if (!atAuthored || !idle) continue;
+      const dx=centre.x-p.x,dz=centre.z-p.z;
+      const shift = (v) => { if (Array.isArray(v) && v.length >= 3) { v[0]+=dx; v[2]+=dz; } };
+      for (const e of bodies) {
+        shift(e.pos); shift(e.anchor); shift(e.lkp);
+        const body=engine.combat && engine.combat.bodyOf(e.eid);
+        if (body) {
+          shift(body.pos); shift(body.anchor); shift(body.lkp); shift(body.weaponTip);
+          shift(body.socketA); shift(body.socketB); shift(body.prevA); shift(body.prevB);
+          for (const capsule of body.rig?.hurt_prev || []) for (const point of capsule || []) shift(point);
+          for (const point of body.rig?.body_cap_prev || []) shift(point);
+          // The restored SoulsAI owns a separate leash anchor. Leaving that at the legacy
+          // authored post would make a nearby, reconciled body walk back into the road on its
+          // first idle decision even though its entity and combat body were migrated safely.
+          const ctl=engine.combat.enemies?.get(e.eid);
+          if (ctl?.ai) shift(ctl.ai.anchor);
+        }
+        out.migrated_bodies++;
+      }
+      out.migrated_groups++;
+    }
+    this.stats.restored_groups = out.groups;
+    this.stats.restored_bodies = out.bodies;
+    this.stats.migrated_groups = out.migrated_groups;
+    this.stats.migrated_bodies = out.migrated_bodies;
+    return out;
   }
 
   /** What a probe reads. Never used by the simulation. */
@@ -285,7 +435,8 @@ export class PopulationSystem {
     for (const [id, eids] of this.live) {
       const p = this.byId.get(id);
       const alive = eids.filter((eid) => { const e = sim && sim.findEntity(eid); return e && e.hp > 0; }).length;
-      resident.push({ post: id, encounter: p.encounter, region: p.region, tier: p.tier, x: p.x, z: p.z, bodies: eids.length, alive });
+      const centre = this.spawnCentres.get(id) || { x: p.x, z: p.z, relocated: false };
+      resident.push({ post: id, encounter: p.encounter, region: p.region, tier: p.tier, x: centre.x, z: centre.z, authored_x: p.x, authored_z: p.z, route_safety: centre, bodies: eids.length, alive });
     }
     return {
       enabled: this.enabled,

@@ -1,0 +1,52 @@
+{
+  "schema": "elder-souls/mainline-recovery-diagnostic-summary@1",
+  "command": "node tools/quests/mainline-recovery-diagnostic.mjs --resume-state reports/runs/W1-19-production-gpu-root-lf/after-pop-0115.json --flasks 3 --out reports/runs/W1-19-production-gpu-root-lf/recovery-diagnostic-r4.json --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe",
+  "input": {
+    "file": "reports/runs/W1-19-production-gpu-root-lf/after-pop-0115.json",
+    "sha256": "b27480e076b0eb38052ea6449b6a60730c734c05e2d43be1b870ba44cd8e3dad",
+    "bytes": 563421
+  },
+  "ignored_raw_report": {
+    "file": "reports/runs/W1-19-production-gpu-root-lf/recovery-diagnostic-r4.json",
+    "sha256": "051e2c22bbd80138c835ab7ea343349d4bd900aa67e2bb9d62503cd434c745f0",
+    "bytes": 1486217
+  },
+  "method": "resume genuine H.saveState; production use_item edges; fixed steps; production movement axis; read-only observations",
+  "declared_heal_frames": { "total": 130, "startup": [1, 42], "active": [43, 104], "recovery": [105, 130] },
+  "cause": {
+    "red_observation": "use_item began the production heal and also armed the legacy writ surface; the resulting modal consumed later movement input",
+    "repair": "use_item remains exclusively the production flask verb; the carried writ now opens through production inventory navigation and confirm input",
+    "direct_state_or_progress_mutation": false
+  },
+  "flasks": [
+    {
+      "flask": 1,
+      "before": { "frame": 4, "state": "IDLE", "move": null, "hp": 300, "estus": 6, "input": [], "buffered": null, "traversal": "W1/FIRM", "mired": false, "in_combat": false, "ui": "world", "conversation": false },
+      "pressed": { "frame": 5, "state": "HEAL_STARTUP", "anim": "heal_drink", "anim_frame": 1, "move": "heal", "remaining": 129, "hp": 300, "estus": 5, "held": ["use_item"], "pressed": ["use_item"], "buffered": null, "modal": false },
+      "committed": { "frame": 134, "state": "HEAL_RECOVER", "anim_frame": 130, "move": "heal", "remaining": 0, "input": [], "buffered": null, "modal": false },
+      "actionable": { "frame": 135, "state": "IDLE", "move": null, "input": [], "buffered": null, "modal": false },
+      "after_clear_two_fixed_steps": { "frame": 137, "state": "IDLE", "move": null, "held": [], "pressed": [], "released": [], "pending_press": [], "pending_release": [], "buffered": null, "mired": false, "dead": false },
+      "production_locomotion_m": 0.22633592869237687
+    },
+    {
+      "flask": 2,
+      "before": { "frame": 146, "state": "IDLE", "move": null, "hp": 300, "estus": 5, "input": [], "buffered": null, "traversal": "W1/FIRM", "mired": false, "in_combat": false, "ui": "world", "conversation": false },
+      "pressed": { "frame": 147, "state": "HEAL_STARTUP", "anim": "heal_drink", "anim_frame": 1, "move": "heal", "remaining": 129, "hp": 300, "estus": 4, "held": ["use_item"], "pressed": ["use_item"], "buffered": null, "modal": false },
+      "committed": { "frame": 276, "state": "HEAL_RECOVER", "anim_frame": 130, "move": "heal", "remaining": 0, "input": [], "buffered": null, "modal": false },
+      "actionable": { "frame": 277, "state": "IDLE", "move": null, "input": [], "buffered": null, "modal": false },
+      "after_clear_two_fixed_steps": { "frame": 279, "state": "IDLE", "move": null, "held": [], "pressed": [], "released": [], "pending_press": [], "pending_release": [], "buffered": null, "mired": false, "dead": false },
+      "production_locomotion_m": 0.22633592869237687
+    },
+    {
+      "flask": 3,
+      "before": { "frame": 288, "state": "IDLE", "move": null, "hp": 300, "estus": 4, "input": [], "buffered": null, "traversal": "W1/FIRM", "mired": false, "in_combat": false, "ui": "world", "conversation": false },
+      "pressed": { "frame": 289, "state": "HEAL_STARTUP", "anim": "heal_drink", "anim_frame": 1, "move": "heal", "remaining": 129, "hp": 300, "estus": 3, "held": ["use_item"], "pressed": ["use_item"], "buffered": null, "modal": false },
+      "committed": { "frame": 418, "state": "HEAL_RECOVER", "anim_frame": 130, "move": "heal", "remaining": 0, "input": [], "buffered": null, "modal": false },
+      "actionable": { "frame": 419, "state": "IDLE", "move": null, "input": [], "buffered": null, "modal": false },
+      "after_clear_two_fixed_steps": { "frame": 421, "state": "IDLE", "move": null, "held": [], "pressed": [], "released": [], "pending_press": [], "pending_release": [], "buffered": null, "mired": false, "dead": false },
+      "production_locomotion_m": 0.22633592869237687
+    }
+  ],
+  "denominators": { "flasks": 3, "heals_started": 3, "exact_130_frame_commitments": 3, "actionable_on_frame_131": 3, "inputs_cleared": 3, "locomotion_restored": 3, "modal_surfaces": 0, "buffered_repeats": 0, "deaths_or_respawns": 0 },
+  "pass": true
+}

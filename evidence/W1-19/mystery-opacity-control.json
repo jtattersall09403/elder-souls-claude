@@ -1,0 +1,22 @@
+{
+  "schema": "elder-souls/mainline-opacity-control@1",
+  "method": "authoritative consumer green; isolated ending leak; exact red rows; restored green",
+  "result": "PASS",
+  "source": "game/data/quests/mainline-act5.json",
+  "source_hash": "sha256:9c8732bf2c4bdf761bbc6172f02a47962a08c78452f38586d8b6c5379a322b54",
+  "changed_source_hash": "sha256:7f3699178ef37f7ab1afd97a7a0bc938580f1298366c0589db759f2d68bd8f87",
+  "changed_hash": true,
+  "consumer": "corpus/80-methods/opacity-audit.py --leak-scan --assembled",
+  "consumer_calls": 3,
+  "non_zero_support": {"sealed_mysteries": 24, "assembled_facts": 12},
+  "expected_red_rows": [
+    {"id": "sealed mystery explained in ending text", "expected": "LEAK M-01", "observed": true},
+    {"id": "assembled fact stated in ending text", "expected": "STATED A-01", "observed": true}
+  ],
+  "arms": [
+    {"label": "opacity-green-before", "exit": 0, "green": true},
+    {"label": "opacity-red-leaked-ending", "exit": 1, "red": true},
+    {"label": "opacity-green-restored", "exit": 0, "green": true}
+  ],
+  "command": "node tools/quests/mainline-opacity-control.mjs --out reports/runs/W1-19-production-gpu-root-lf/mainline-opacity-control-r3.json"
+}

@@ -8,10 +8,20 @@
   "plan": "orchestration/plans/W1-19.md",
   "files_touched": [
     "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/player-wait-smoke.mjs",
     "tools/quests/validate-mainline-checkpoint.mjs",
+    "tools/gamepad/pad-run.mjs",
+    "game/src/ui/screens/wait.js",
+    "game/src/ui/system.js",
+    "game/src/ui/surface.js",
+    "game/src/sim/events.js",
+    "game/src/engine.js",
+    "game/data/npcs/mainline.json",
+    "game/data/quests/mainline-act4.json",
     "evidence/W1-19/fixtures/resume-saxhleel-interior-intended.json",
     "evidence/W1-19/q-main-07-checkpoint.manifest.json",
     "evidence/W1-19/builder-delivery.md",
+    "evidence/W1-19/q-main-17-production-summary.json",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
   "files_claimed": [
@@ -20,17 +30,17 @@
     "evidence/W1-19/",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "next_step": "Resume Q-MAIN-08 diagnosis from the ignored production checkpoint reports/runs/W1-19-production/after-pop-0115.json (sha256:b966acbf618cd183351ed2c2cbf2e1475d4ebcd12d4cbd89982505fddd3ef1b0). It was reached by 357.5 m ordinary movement with zero teleports/deaths and crossed the formerly blocking shallow mire, but has 11.712/300 HP. The current three-flask resume sequence reports recovery_heals=3 yet leaves walkPath at 0 m/stuck; diagnose the post-heal locomotion state first, then continue to pop-0119 and Archon. If moving to another machine, this ignored checkpoint must be copied separately or regenerate it with the recorded stop-at-waypoint command.",
+  "next_step": "Regenerate or use the hash-pinned local Q17 continuation described in evidence/W1-19/q-main-17-production-summary.json, complete Q-MAIN-18 onward, and retain the Act IV and pre-PONR checkpoints.",
   "gate_accounting": {
-    "A": "INCOMPLETE: Q-MAIN-08 remains incomplete. A legitimate post-pop-0115 checkpoint now proves the connected shallow-mire route with zero death/teleport; the next causal defect is a post-flask locomotion stall from that 11.712 HP checkpoint",
+    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-17 and mandatory Q-MAIN-30 have passed the representative production continuation with zero violent resolution/session death/respawn/teleport/direct mutation. Canonical post-Q30 state remains the committed regeneration point; Q18 onward remains.",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
-    "D": "MERGED EVIDENCE RETAINED"
+    "D": "IN_PROGRESS: complete mainline census/topic/reveal, canon, opacity, boot/data/content/quest and corpus gates run green; final-tree rerun and remaining red controls remain"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production/after-pop-0115.json --stop-after Q-MAIN-08 --walk-max-frames 50000 --save-waypoint 3550,4150 --waypoint-state reports/runs/W1-19-production/before-pop-0119.json --stop-at-waypoint --out reports/runs/W1-19-production/q8-before-pop0119-checkpoint",
-    "outcome": "FAIL: recovery_heals=3, then walkPath moved 0 m and aborted stuck after 1800 frames at [3221.891598, 4360.163614]. This follows a successful checkpoint capture that walked 357.5 m, crossed 486 mired frames using production struggle, and recorded zero teleports, zero deaths, longest stuck 12 frames and worst off-path 0.31 m. Salt-storm/crater exercise is not a W1-19 governing-plan requirement and has been removed from this continuation's acceptance scope by owner direction.",
-    "evidence": "ignored persistent reports/runs/W1-19-production/{q8-after-pop0115-checkpoint,q8-before-pop0119-checkpoint}/mainline-chain-floor.json"
+    "command": "node tools/quests/mainline-chain-floor.mjs --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-act4-q23-r8-no-purse/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-gpu-root-lf/intended-q17-wait-r12d",
+    "outcome": "PASS: Q-MAIN-17 completed as res_whole_arithmetic with zero purse openings and violent resolutions. The production wait menu advanced the closed Grange from 19:46/day 5 to 08:46/day 6, moved the body 0 m and preserved 92 HP/five flasks; the player then entered and read the real ledger. The focused wait input/combat-refusal smoke passed 9/9.",
+    "evidence": "evidence/W1-19/q-main-17-production-summary.json"
   }
 }

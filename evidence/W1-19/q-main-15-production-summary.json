@@ -1,0 +1,26 @@
+{
+  "schema": "elder-souls/w1-19-q-main-15-production-summary@1",
+  "checkpoint": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act3.json",
+  "checkpoint_sha256": "0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb",
+  "manifest": "evidence/W1-19/q-main-15-checkpoint.manifest.json",
+  "completed_quests": 15,
+  "active_quests": 0,
+  "resolution": "res_heard_it",
+  "production_observations": {
+    "q15_final": { "arrival_hour": 7.04, "giver_distance_m": 1.1799, "schedule_wait_frames": 36540, "post_transition_path_m": 16.8, "longest_stuck_frames": 0, "marker_count": 0, "teleports": 0, "deaths_or_respawns": 0, "stable_frames": 120 },
+    "checkpoint": { "hp": 58.502752, "hp_max": 92, "estus": 4, "collision_clearance_m": 0.891644 }
+  },
+  "world_actions": [
+    "ordinary production movement across the sequential Q11-Q15 route",
+    "production flask input during the Thornmarsh crossing with sprint and defensive attacks disabled",
+    "production doorway and readable interactions for required reveals",
+    "fixed-frame production waiting for Sesh-Anaat's authored 07:00 exterior schedule",
+    "published conversation acceptance and res_heard_it resolution at the live exterior post"
+  ],
+  "forbidden_actions_used": [],
+  "authored_nonviolent_consequence": { "npc": "npc-sesh-weth", "source": "Q-MAIN-12 res_full_test", "violent_resolution": false },
+  "checkpoint_control": { "consumer_calls": 4, "non_zero_support": 2, "tamper_red": true, "stale_red": true, "restored_green": true },
+  "production_guard": { "forbidden_calls": 0, "clean_walk_rows": "12/12", "self_test_red_verbs": "11/11" },
+  "cheap_checks": { "check_data": true, "check_content": true, "check_quests": true, "corpus_strict": true },
+  "pass": true
+}

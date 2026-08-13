@@ -1,0 +1,21 @@
+{
+  "schema": "elder-souls/w1-19-mainline-schedule-access-control@1",
+  "command_green": "node tools/quests/mainline-schedule-access.mjs --out reports/runs/W1-19-production-gpu-root-lf/mainline-schedule-access-green-final.json",
+  "command_red": "node tools/quests/mainline-schedule-access.mjs --break grey-hist-hours --out reports/runs/W1-19-production-gpu-root-lf/mainline-schedule-access-red-final.json",
+  "consumer": "SettlementSystem.isOpen",
+  "consumer_calls_per_arm": 264,
+  "non_zero_support": 264,
+  "population": { "mainline_quests": 32, "unique_givers": 13, "scheduled_interior_rows": 22 },
+  "source_hash": "sha256:62fd3031e0b90f9fa6d07842803267c5dd51c1b8ff359bee5276e301bfe5e98c",
+  "changed_source_hash": "sha256:b37b9728b1164029745b852b1a84d762e01c7da683cac2798e520f0d115375d4",
+  "hash_changed": true,
+  "red": {
+    "exit": 1,
+    "failed_rows": 6,
+    "expected_exact_row": "undersexton-bel-mourne 19:00-00:00@soulrest-grey-hist",
+    "expected_row_observed": true
+  },
+  "green_before": { "exit": 0, "failed_rows": 0 },
+  "green_restored": { "exit": 0, "failed_rows": 0 },
+  "pass": true
+}

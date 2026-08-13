@@ -1,0 +1,79 @@
+{
+  "schema": "elder-souls/q-main-08-production-summary@1",
+  "checkpoint": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q8.json",
+  "checkpoint_sha256": "8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae",
+  "result": {
+    "quest": "Q-MAIN-08",
+    "accepted": true,
+    "completed": true,
+    "resolution": "res_ask_the_crane",
+    "journal_success_index": 90,
+    "durable_flags": [
+      "archon_quay_friendly",
+      "gem_trade_measured",
+      "nobody_at_archon_was_exposed",
+      "player_knows_the_gem_trade_cannot_account_for_the_curve"
+    ],
+    "marker_count": 0
+  },
+  "canonical_navigation": {
+    "start": "Q-MAIN-07 production checkpoint at Blackrose",
+    "end": [3785, 3.42, 3797.8],
+    "actual_giver_position": [3785, 3.42, 3799.3],
+    "arrival_hour": 8.71,
+    "active_schedule": "07:00-19:00 public post",
+    "ordinary_movement_m": 6543,
+    "deaths_or_respawns": 0,
+    "teleports": 0,
+    "violent_resolutions": 0,
+    "defensive_swings": 0,
+    "worst_off_path_m": 0.31,
+    "longest_stall_frames": 18,
+    "mire_frames_resolved": 2106,
+    "storm_or_crater_gate": false
+  },
+  "corrected_doorway_and_reveal": {
+    "door": "archon-guild-office",
+    "entered_by_interact_input": true,
+    "readable_entity": "interior-readable:the-archon-true-manifest",
+    "book": "the-archon-true-manifest",
+    "reader_walk_m": 9,
+    "reader_distance_m": 0.49588385697661097,
+    "book_ui_opened": true,
+    "book_recorded_read": true,
+    "reveal": "rev_true_tonnage",
+    "revealed_by_world_action": true
+  },
+  "final_leg": {
+    "from": [3632.762583, 1.09, 4033.490188],
+    "to": [3784.999993, 3.42, 3800.069258],
+    "frames": 7939,
+    "path_m": 350.4,
+    "mired_frames": 0,
+    "longest_stall_frames": 18,
+    "deepest_water_m": 0.853,
+    "teleports": 0,
+    "arrival_is_clean": true,
+    "production_recovery_heals": 1
+  },
+  "stable_capture": {
+    "clean_frames": 120,
+    "state": "IDLE",
+    "speed_mps": 0,
+    "hp": 284.892008,
+    "estus": 5,
+    "in_combat": false,
+    "mired": false,
+    "ui": "world",
+    "conversation_open": false,
+    "inputs_clear": true,
+    "collision_solid": false
+  },
+  "commands": [
+    "node tools/quests/validate-mainline-checkpoint.mjs",
+    "node tools/quests/mainline-recovery-diagnostic.mjs --resume-state reports/runs/W1-19-production-gpu-root-lf/after-pop-0115.json --flasks 3 --out reports/runs/W1-19-production-gpu-root-lf/recovery-diagnostic-r4.json --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe",
+    "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/q8-complete-r6/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-08 --walk-max-frames 60000 --out reports/runs/W1-19-production-gpu-root-lf/q8-complete-r7 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 1800000"
+  ],
+  "forbidden_actions_used": [],
+  "pass": true
+}

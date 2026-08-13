@@ -75,6 +75,7 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'W1-19-R2-FLOOR');
 ensureDir(outDir);
+const RESUME_OUTPUT = args['resume-output'] ? path.resolve(String(args['resume-output'])) : null;
 const sabotage = args.sabotage ? String(args.sabotage) : null;
 // W1-19 round 3: off by default. See the long note at the direct reveal API call site.
 const handFeedReveals = false;
@@ -87,6 +88,9 @@ const resumeState = args['resume-state'] ? JSON.parse(fs.readFileSync(path.resol
 const saveWaypoint = args['save-waypoint'] ? String(args['save-waypoint']).split(',').map(Number) : null;
 const waypointStatePath = args['waypoint-state'] ? path.resolve(String(args['waypoint-state'])) : null;
 const stopAtWaypoint = !!args['stop-at-waypoint'];
+// Historical route diagnostic only. The W1-19 quest contract does not require manufacturing or
+// waiting out a salt storm, and its canonical Q8 route must not be gated on a crater visit.
+const stormShelterDiagnostic = !!args['storm-shelter-diagnostic'];
 if (saveWaypoint && (saveWaypoint.length !== 2 || saveWaypoint.some((n) => !Number.isFinite(n)) || !waypointStatePath)) usage(USAGE);
 const CHAIN_NAMES = args.chain && args.chain !== 'both' ? [String(args.chain)] : ['intended', 'backpath'];
 if (CHAIN_NAMES.some((x) => !['intended', 'backpath'].includes(x))) usage(USAGE);
@@ -126,20 +130,38 @@ const interiorActions = {};
 for (const f of fs.readdirSync(interiorsDir)) {
   if (!f.endsWith('.json')) continue;
   const d = JSON.parse(fs.readFileSync(path.join(interiorsDir, f), 'utf8'));
-  interiorActions[d.id] = { interior:d.id, exterior_door:d.exterior_door, exterior_spawn:d.continuity && d.continuity.exterior_spawn, interior_spawn:d.continuity && d.continuity.interior_spawn };
+  interiorActions[d.id] = { interior:d.id, exterior_door:d.exterior_door, exterior_spawn:d.continuity && d.continuity.exterior_spawn, interior_spawn:d.continuity && d.continuity.interior_spawn, exterior_footprint_m:d.continuity && d.continuity.exterior_footprint_m };
   for (const r of Array.isArray(d.readable) ? d.readable : []) {
     const key = Object.keys(knowledgeToBook).find((k) => knowledgeToBook[k] === r.book);
-    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book, exterior_spawn: d.continuity && d.continuity.exterior_spawn, interior_spawn: d.continuity && d.continuity.interior_spawn };
+    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book, exterior_spawn: d.continuity && d.continuity.exterior_spawn, interior_spawn: d.continuity && d.continuity.interior_spawn, open_h:d.open_h, close_h:d.close_h };
   }
+}
+// Door interaction reads the fitted settlement building table, not the interior record's
+// historical declared facade anchor. Keep the continuity spawn from the interior, but derive
+// navigation normals from the same fitted door coordinate SettlementSystem.doorAt consumes.
+const settlementsDir=path.join(process.cwd(),'game/data/world/settlements');
+for(const f of fs.readdirSync(settlementsDir)){
+  if(!f.endsWith('.json'))continue;const s=JSON.parse(fs.readFileSync(path.join(settlementsDir,f),'utf8'));
+  for(const b of s.buildings||[])if(b.interior&&Array.isArray(b.door)&&interiorActions[b.interior])interiorActions[b.interior].exterior_door=b.door;
 }
 const markActions = {};
 const marksPath = path.join(process.cwd(), 'game/data/world/readables/site-marks.json');
 if (fs.existsSync(marksPath)) for (const m of JSON.parse(fs.readFileSync(marksPath, 'utf8')).marks || []) markActions[m.id] = m.at;
 
-const INTENDED = [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests];
+// Q-MAIN-30 is a mandatory parallel mainline audience opened by the Ninth Clause rather than by
+// a prerequisite quest.  It therefore is not present in mainline.acts, but W1-19 requires both
+// production chains to visit it.  Put it after Act III, when its world-routed topic and evidence
+// are available, and before the Act IV campaign/PONR so an intended completion cannot report the
+// historical false-green where Hosk-Vei's gate was never reached.
+const INTENDED = [
+  ...mainline.acts.filter((a) => a.act <= 3).flatMap((a) => a.quests),
+  'Q-MAIN-30',
+  ...mainline.acts.filter((a) => a.act >= 4).flatMap((a) => a.quests),
+  ...mainline.aftermath.quests,
+];
 const BACKPATH = [
   ...mainline.acts.filter((a) => a.act <= 3).flatMap((a) => a.quests),
-  'Q-MAIN-29', 'Q-MAIN-31',
+  ...mainline.backpath.quests,
 ];
 
 // The same plan shape `mainline-race-trace.mjs` builds, MINUS the topic, so that a difference in
@@ -158,7 +180,18 @@ const planFor = (ids) => ids.map((id) => {
   };
 });
 const PREFER = {
-  intended: { 'Q-MAIN-14': 'res_give_it_back', 'Q-MAIN-28': 'res_open_the_count' },
+  intended: {
+    'Q-MAIN-14': 'res_give_it_back',
+    'Q-MAIN-16': 'res_persuade_chapter',
+    'Q-MAIN-17': 'res_whole_arithmetic',
+    'Q-MAIN-18': 'res_walk_the_eleven',
+    'Q-MAIN-19': 'res_expose_the_yard',
+    'Q-MAIN-20': 'res_finding_of_fact',
+    'Q-MAIN-21': 'res_the_eleven',
+    'Q-MAIN-22': 'res_true_reason',
+    'Q-MAIN-23': 'res_sign_the_clause',
+    'Q-MAIN-28': 'res_open_the_count',
+  },
   backpath: { 'Q-MAIN-14': 'res_take_the_skei', 'Q-MAIN-31': 'res_drain_past_the_roots' },
 };
 const plans = { intended: planFor(INTENDED), backpath: planFor(BACKPATH) };
@@ -187,15 +220,94 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
     let shelterRequired = false;
     let routeCheckpoint = null;
 
+    // One interact edge can both take a doorway and greet a body standing on the destination
+    // spawn. The transition is legitimate, but the resulting player-visible conversation owns
+    // movement until it is dismissed. Close it with the shipped block/back input before the
+    // next walk; never clear the UI or conversation object directly.
+    const closeDoorwayConversation = () => {
+      let closed = false;
+      for (let retry=0; retry<3 && H.getUIState().dialogue_surface?.open; retry++) {
+        H.queueInputs([{f:0,release:['interact']},{f:1,press:['block']},{f:3,release:['block']}]);
+        H.stepFrames(8); closed = true;
+      }
+      H.clearInputs(); H.stepFrames(2);
+      return { attempted:closed, closed:!H.getUIState().dialogue_surface?.open };
+    };
+
+    // Advance the authored world clock through the same pause-menu surface and input actions a
+    // player uses. The simulation frame is intentionally paused while the menu is open, so each
+    // down/up edge is queued at f:0 and consumed on a separate render tick.
+    const productionWait = (hours) => {
+      const wanted=Math.max(1,Math.min(24,Math.floor(Number(hours)||1)));
+      const before={where:H.whereAmI(),stats:H.getPlayerStats(),env:H.getEnvironment(),ui:H.getUIState()};
+      const pos=before.where.pos.slice(),modes=[];
+      const tap=(action)=>{
+        H.queueInputs([{f:0,press:[action]}]);H.stepFrames(1);
+        H.queueInputs([{f:0,release:[action]}]);H.stepFrames(1);
+      };
+      H.clearInputs();H.stepFrames(2);
+      tap('menu');modes.push(H.getUIState().mode);
+      for(let i=0;i<8&&H.getUIState().mode!=='wait';i++){tap('swap_right');modes.push(H.getUIState().mode);}
+      if(H.getUIState().mode!=='wait')throw new Error(`production wait menu unreachable: ${modes.join(' -> ')}`);
+      for(let i=1;i<wanted;i++){
+        H.queueInputs([{f:0,move:[0,-1]}]);H.stepFrames(1);
+        H.queueInputs([{f:0,move:[0,0]}]);H.stepFrames(1);
+      }
+      const selected=H.getUIState();
+      if(selected.focus?.hours!==wanted)throw new Error(`production wait selected ${selected.focus?.hours}, expected ${wanted}`);
+      tap('interact');H.clearInputs();H.stepFrames(2);
+      const after={where:H.whereAmI(),stats:H.getPlayerStats(),env:H.getEnvironment(),ui:H.getUIState()};
+      const moved=Math.hypot(after.where.pos[0]-pos[0],after.where.pos[1]-pos[1],after.where.pos[2]-pos[2]);
+      if(after.ui.mode!=='world')throw new Error(`production wait did not return to world (${after.ui.mode})`);
+      if(moved>1e-6)throw new Error(`production wait moved the body ${moved} m`);
+      if(after.stats.hp!==before.stats.hp||after.stats.estus!==before.stats.estus)throw new Error('production wait restored combat resources');
+      return {production_wait:true,hours:wanted,menu_modes:modes,selected_hours:selected.focus.hours,
+        start_hour:before.where.hour,end_hour:after.where.hour,start_day:before.env.day,end_day:after.env.day,
+        clock_frames_before:before.env.clock_frames,clock_frames_after:after.env.clock_frames,
+        position_delta_m:moved,hp_before:before.stats.hp,hp_after:after.stats.hp,
+        estus_before:before.stats.estus,estus_after:after.stats.estus};
+    };
+
     const walkTo = (x, z, reach = 1.0) => {
       H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(2);
+      let boundaryEgress=null;
+      const boundaryStart=H.whereAmI().pos.slice(),boundaryClearance=H.solidAt(boundaryStart[0],boundaryStart[1]+.9,boundaryStart[2]).distance_m;
+      if(boundaryClearance>=.35&&boundaryClearance<.42){
+        const candidates=[];
+        for(let k=0;k<32;k++){const a=k*Math.PI/16,tx=boundaryStart[0]+Math.sin(a)*2,tz=boundaryStart[2]+Math.cos(a)*2;let min=Infinity,monotonic=true,prev=boundaryClearance;
+          for(let et=.125;et<=1;et+=.125){const cx=boundaryStart[0]+(tx-boundaryStart[0])*et,cz=boundaryStart[2]+(tz-boundaryStart[2])*et,c=H.solidAt(cx,boundaryStart[1]+.9,cz).distance_m,w=H.getWaterAt(cx,cz);if(c<prev-.001||Number(w.depth_m??w.depth??0)>1.05)monotonic=false;prev=c;min=Math.min(min,c);}
+          if(monotonic&&prev>.42)candidates.push({tx,tz,min,end:prev});
+        }
+        const pick=candidates.sort((a,b)=>b.end-a.end||b.min-a.min)[0];
+        if(pick){boundaryEgress=H.walkPath([[pick.tx,pick.tz]],{fromCurrent:true,speed:'walk',maxFrames:1200,arrive_m:.2,lookahead_m:.25,stuckAbort:600,miredAbort:1200,survival:false,defensive:false,sprint:false});
+          if(!boundaryEgress.arrived||!boundaryEgress.arrival_is_clean)return {ok:false,failure:'boundary-egress-failed',frames:boundaryEgress.frames,left_m:Math.hypot(x-H.whereAmI().pos[0],z-H.whereAmI().pos[2]),started:boundaryStart,ended:H.whereAmI().pos.slice(),production_input:true,boundary_egress:boundaryEgress,planned_route:[],planned_clearance:[],planner:null,walk:boundaryEgress};
+        }
+      }
+      // The production traversal controller rejects slopes above 40 degrees. A long detour can
+      // stop with its capsule on the last sub-step of that boundary (the Salt Hills checkpoint
+      // measured 44.36 degrees), where asking for the next downhill waypoint repeats zero
+      // movement. Step by ordinary input onto the nearest sampled standable shelf before
+      // replanning, and retain the egress as explicit evidence.
+      let slopeEgress=null;
+      const slopeStart=H.whereAmI().pos.slice(),slopeAtStart=H.getTerrainAt(slopeStart[0],slopeStart[2]).slope_deg;
+      if(slopeAtStart>40){
+        const candidates=[];
+        for(const rr of [4,6,8])for(let k=0;k<32;k++){const a=k*Math.PI/16,tx=slopeStart[0]+Math.sin(a)*rr,tz=slopeStart[2]+Math.cos(a)*rr,t=H.getTerrainAt(tx,tz),w=H.getWaterAt(tx,tz),c=H.solidAt(tx,t.y+.9,tz).distance_m;
+          if(t.slope_deg<=35&&Number(w.depth_m??w.depth??0)<=1.05&&(c==null||c>=.42))candidates.push({tx,tz,r:rr,slope_deg:t.slope_deg,clearance_m:c});
+        }
+        const pick=candidates.sort((a,b)=>a.r-b.r||a.slope_deg-b.slope_deg||Math.hypot(a.tx-x,a.tz-z)-Math.hypot(b.tx-x,b.tz-z))[0];
+        if(pick){slopeEgress=H.walkPath([[pick.tx,pick.tz]],{fromCurrent:true,speed:'walk',maxFrames:1800,arrive_m:.2,lookahead_m:.25,stuckAbort:900,miredAbort:1200,survival:false,defensive:false,sprint:false});
+          slopeEgress={...slopeEgress,from_slope_deg:slopeAtStart,target_slope_deg:pick.slope_deg};
+          if(!slopeEgress.arrived||!slopeEgress.arrival_is_clean)return {ok:false,failure:'slope-egress-failed',frames:slopeEgress.frames,left_m:Math.hypot(x-H.whereAmI().pos[0],z-H.whereAmI().pos[2]),started:boundaryStart,ended:H.whereAmI().pos.slice(),production_input:true,boundary_egress:boundaryEgress,slope_egress:slopeEgress,planned_route:[],planned_clearance:[],planner:null,walk:slopeEgress};
+        }
+      }
       const started = H.whereAmI().pos.slice();
       const already = Math.hypot(x-started[0],z-started[2]);
       if (already <= reach) return { ok:true, frames:0, left_m:already, started, ended:started.slice(), production_input:true, already_in_reach:true, planned_route:[], planned_clearance:[], planner:null, walk:{arrived:true,aborted:null,frames:0,path_m:0,end:[started[0],started[2]],target:[x,z],offset_m:already,teleports:0,teleported_m:0,teleport_log:[],arrival_is_clean:true} };
@@ -204,7 +316,7 @@ try {
       // The former 120-frame probe began locomotion during HEAL_RECOVER and therefore measured
       // an animation lock as a stuck road. clearInputs also makes the recovery edge self-contained.
       let recoveryHeals=0;
-      if (!H.whereAmI().interior && already>80) for(let i=0;i<3;i++) {
+      if (!H.whereAmI().interior && already>80) for(let i=0;i<8;i++) {
         const ps=H.getPlayerStats();
         if(ps.hp>=ps.hp_max*.9||ps.estus<=0)break;
         H.queueInputs([{f:0,move:[0,0],press:['use_item']},{f:2,release:['use_item']}]);
@@ -247,14 +359,21 @@ try {
         let nearestRoad={i:0,d:Infinity}; for(let ri=0;ri<route.length;ri++){const rd=Math.hypot(route[ri][0]-here[0],route[ri][1]-here[2]);if(rd<nearestRoad.d)nearestRoad={i:ri,d:rd};}
         let join = nearestRoad.i > 0 && nearestRoad.d < 180 ? nearestRoad.i : route.findIndex(q => Math.hypot(q[0]-from.x, q[1]-from.z) >= 120);
         if (join < 0) join = Math.min(route.length-1, 1);
-        const rawGoal = route[join]; let goal = rawGoal; const localDistance=Math.hypot(rawGoal[0]-here[0],rawGoal[1]-here[2]), grid = localDistance < 60 ? 0.5 : localDistance < 300 ? 2 : 5, margin = localDistance < 60 ? 30 : 100, collisionY=here[1]+0.9;
+        const rawGoal = route[join]; let goal = rawGoal; const localDistance=Math.hypot(rawGoal[0]-here[0],rawGoal[1]-here[2]), grid = localDistance < 60 ? 0.5 : localDistance < 300 ? 1 : 5, margin = localDistance < 60 ? 30 : 100, collisionY=here[1]+0.9;
+        const startClearance=H.solidAt(here[0],collisionY,here[2]).distance_m;
         const blocked=(bx,bz)=>{
-          if(H.solidAt(bx,collisionY,bz).distance_m < .42)return true;
-          const w=H.getWaterAt(bx,bz); return Number(w.depth_m??w.depth??0)>1.05;
+          const clearance=H.solidAt(bx,collisionY,bz).distance_m;
+          // A production-valid body may settle at capsule clearance 0.3501 m. Permit only a
+          // monotonic two-metre egress from that exact saved boundary pose; accepting a tighter
+          // sample or carrying the lower threshold beyond the start envelope remains forbidden.
+          const startEgress=startClearance>=.35&&startClearance<.42
+            && Math.hypot(bx-here[0],bz-here[2])<=2.01&&clearance>=startClearance-.001;
+          if(clearance < .42&&!startEgress)return true;
+          const w=H.getWaterAt(bx,bz),terrain=H.getTerrainAt(bx,bz); return Number(w.depth_m??w.depth??0)>1.05||terrain.slope_deg>40;
         };
         if (blocked(goal[0], goal[1])) {
           const candidates=[]; for(let rr=Math.max(1.5,reach);rr<=Math.max(6,reach+3);rr+=1.5) for(let k=0;k<24;k++){const a=k*Math.PI/12,q=[rawGoal[0]+Math.sin(a)*rr,rawGoal[1]+Math.cos(a)*rr];if(!blocked(q[0],q[1]))candidates.push(q);}
-          if(candidates.length) goal=candidates.sort((a,b)=>Math.hypot(a[0]-here[0],a[1]-here[2])-Math.hypot(b[0]-here[0],b[1]-here[2]))[0];
+          if(candidates.length) goal=candidates.sort((a,b)=>Math.hypot(a[0]-rawGoal[0],a[1]-rawGoal[1])-Math.hypot(b[0]-rawGoal[0],b[1]-rawGoal[1])||Math.hypot(a[0]-here[0],a[1]-here[2])-Math.hypot(b[0]-here[0],b[1]-here[2]))[0];
           route[join]=goal;
         }
         const minX=Math.min(here[0],goal[0])-margin,maxX=Math.max(here[0],goal[0])+margin;
@@ -266,8 +385,8 @@ try {
         const open=[[0,sx,sz]], cost=new Map([[key(sx,sz),0]]), came=new Map();
         const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
         let found=false,bestReach={d:Infinity,x:sx,z:sz};
-        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz),cwx=minX+cx*grid,cwz=minZ+cz*grid,goalDist=Math.hypot(cwx-rawGoal[0],cwz-rawGoal[1]);if(goalDist<bestReach.d)bestReach={d:goalDist,x:cx,z:cz,world:[cwx,cwz]};if(goalDist<=Math.max(Math.min(reach*.35,.6),grid*.75)&&!blocked(cwx,cwz)){found=true;gx=cx;gz=cz;goal=[cwx,cwz];route[join]=goal;break;}
-          for(const [di,dj] of dirs){const nx=cx+di,nz=cz+dj;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const wx=minX+nx*grid,wz=minZ+nz*grid,cwx=minX+cx*grid,cwz=minZ+cz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(cwx+(wx-cwx)*et,cwz+(wz-cwz)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(di,dj);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}
+        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz),atStart=cx===sx&&cz===sz,cwx=atStart?here[0]:minX+cx*grid,cwz=atStart?here[2]:minZ+cz*grid,goalDist=Math.hypot(cwx-rawGoal[0],cwz-rawGoal[1]);if(goalDist<bestReach.d)bestReach={d:goalDist,x:cx,z:cz,world:[cwx,cwz]};if(goalDist<=Math.max(Math.min(reach*.35,.6),grid*.75)&&!blocked(cwx,cwz)){found=true;gx=cx;gz=cz;goal=[cwx,cwz];route[join]=goal;break;}
+          for(const [di,dj] of dirs){const nx=cx+di,nz=cz+dj;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const wx=minX+nx*grid,wz=minZ+nz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(cwx+(wx-cwx)*et,cwz+(wz-cwz)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(di,dj);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}
         }
         plannerReport={...plannerReport,found,cols,rows,start:[sx,sz],goal:[gx,gz],open_left:open.length,cost_nodes:cost.size,best_reachable:bestReach};
         if(found){const cells=[];let k=key(gx,gz);while(k!==key(sx,sz)){const [a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k)break;}
@@ -287,36 +406,114 @@ try {
         let previousGround=null, safe=true, reason=null;
         for(let m=0;m<=length+.001;m+=Math.min(2,Math.max(.5,length))){
           const t=length?Math.min(1,m/length):0,x=p0[0]+(p1[0]-p0[0])*t,z=p0[1]+(p1[1]-p0[1])*t;
-          const waterReport=H.getWaterAt(x,z),water=Number(waterReport.depth_m??waterReport.depth??0),ground=Number(waterReport.ground_y),substrate=H.getTerrainAt(x,z).substrate;
+          const waterReport=H.getWaterAt(x,z),water=Number(waterReport.depth_m??waterReport.depth??0),ground=Number(waterReport.ground_y),terrain=H.getTerrainAt(x,z),substrate=terrain.substrate;
           const solid=H.solidAt(x,ground+.9,z).distance_m<.42;
           const grade=previousGround==null?0:Math.atan2(Math.abs(ground-previousGround.ground),Math.hypot(x-previousGround.x,z-previousGround.z))*180/Math.PI;
           const bodyClearance=Math.hypot(x-post.x,z-post.z);
-          samples.push({x:+x.toFixed(2),z:+z.toFixed(2),water_m:+water.toFixed(3),substrate,ground_y:+ground.toFixed(3),grade_deg:+grade.toFixed(2),solid,encounter_clearance_m:+bodyClearance.toFixed(2)});
+          samples.push({x:+x.toFixed(2),z:+z.toFixed(2),water_m:+water.toFixed(3),substrate,ground_y:+ground.toFixed(3),slope_deg:terrain.slope_deg,grade_deg:+grade.toFixed(2),solid,encounter_clearance_m:+bodyClearance.toFixed(2)});
           // The coastal carriageway and its shoulders deliberately include walkable W3 water.
           // The production discontinuities are W4 depth and deep saturated SUCK. Shallow SUCK is
           // deliberately traversable: the movement consumer pays the mire/struggle cost and its
           // refractory window permits a crossing. Keep the previously observed 0.621 m shoulder
           // rejected while allowing the <=0.4 m connected-grid route a player can actually use.
           const unsafeWater=water>.95||(substrate==='SUCK'&&water>.4);
-          if(solid||unsafeWater||grade>35||(t>.08&&t<.92&&bodyClearance<requiredClearance)){safe=false;reason=solid?'collision':unsafeWater?(water>.95?'water':'saturated-suck'):grade>35?'grade':'encounter-clearance';break;}
+          if(solid||unsafeWater||terrain.slope_deg>40||grade>35||(t>.08&&t<.92&&bodyClearance<requiredClearance)){safe=false;reason=solid?'collision':unsafeWater?(water>.95?'water':'saturated-suck'):terrain.slope_deg>40?'slope':grade>35?'grade':'encounter-clearance';break;}
           previousGround={x,z,ground};
         }
         return {safe,reason,length_m:+length.toFixed(2),samples};
       };
-      const findConnectedDetour=(entry,exit,post,requiredClearance)=>{
-        const grid=2,margin=100,minX=Math.min(entry[0],exit[0],post.x)-margin,maxX=Math.max(entry[0],exit[0],post.x)+margin,minZ=Math.min(entry[1],exit[1],post.z)-margin,maxZ=Math.max(entry[1],exit[1],post.z)+margin;
+      const findConnectedDetour=(entry,exit,postOrPosts,requiredClearance)=>{
+        const posts=Array.isArray(postOrPosts)?postOrPosts:[postOrPosts];
+        const grid=2;
+        // A coastal post can occupy the only firm centreline while the first dry shoulder lies
+        // beyond a local inlet. Search successively larger *bounded* envelopes; 100 m remains
+        // the common case, while 300 m is still smaller than the population release radius plus
+        // its ordinary streaming hysteresis. Never make a failed search mean "walk through it".
+        for(const margin of [100,180,300]){
+        const rawMinX=Math.min(entry[0],exit[0],...posts.map(p=>p.x))-margin,rawMaxX=Math.max(entry[0],exit[0],...posts.map(p=>p.x))+margin,rawMinZ=Math.min(entry[1],exit[1],...posts.map(p=>p.z))-margin,rawMaxZ=Math.max(entry[1],exit[1],...posts.map(p=>p.z))+margin;
+        // Anchor the lattice on the exact authored entry. The Archon carriageway can be less
+        // than one grid cell wide where it crosses coastal water; rounding the exit to an
+        // arbitrary lattice point put the alleged goal in W4 even though the road itself is W3.
+        const minX=entry[0]-Math.ceil((entry[0]-rawMinX)/grid)*grid,maxX=entry[0]+Math.ceil((rawMaxX-entry[0])/grid)*grid,minZ=entry[1]-Math.ceil((entry[1]-rawMinZ)/grid)*grid,maxZ=entry[1]+Math.ceil((rawMaxZ-entry[1])/grid)*grid;
         const cols=Math.ceil((maxX-minX)/grid)+1,rows=Math.ceil((maxZ-minZ)/grid)+1,ix=x=>Math.round((x-minX)/grid),iz=z=>Math.round((z-minZ)/grid),key=(x,z)=>x+','+z;
         const sx=ix(entry[0]),sz=iz(entry[1]),gx=ix(exit[0]),gz=iz(exit[1]);
-        const blocked=(x,z)=>{const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),substrate=H.getTerrainAt(x,z).substrate;return water>.95||(substrate==='SUCK'&&water>.4)||H.solidAt(x,g+.9,z).distance_m<.42||Math.hypot(x-post.x,z-post.z)<requiredClearance;};
-        const open=[[0,sx,sz]],cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false;
-        while(open.length){open.sort((a,b)=>a[0]-b[0]);const [,cx,cz]=open.shift(),ck=key(cx,cz);if(cx===gx&&cz===gz){found=true;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;if(blocked(x,z,nx,nz))continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);open.push([ng+Math.hypot(gx-nx,gz-nz),nx,nz]);}}}
-        if(!found)return null;const cells=[];let k=key(gx,gz);while(k!==key(sx,sz)){const[a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k)return null;}return cells;
+        const blockedCache=new Map();
+        const blocked=(x,z)=>{const cacheKey=`${x.toFixed(3)},${z.toFixed(3)}`;if(blockedCache.has(cacheKey))return blockedCache.get(cacheKey);const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),terrain=H.getTerrainAt(x,z),substrate=terrain.substrate,value=water>.95||(substrate==='SUCK'&&water>.4)||terrain.slope_deg>40||H.solidAt(x,g+.9,z).distance_m<.42||posts.some(post=>Math.hypot(x-post.x,z-post.z)<requiredClearance);blockedCache.set(cacheKey,value);return value;};
+        const open=[],heapPush=v=>{open.push(v);let i=open.length-1;while(i){const p=(i-1)>>1;if(open[p][0]<=v[0])break;open[i]=open[p];i=p;}open[i]=v;},heapPop=()=>{const top=open[0],last=open.pop();if(open.length){let i=0;while(true){let c=i*2+1;if(c>=open.length)break;if(c+1<open.length&&open[c+1][0]<open[c][0])c++;if(open[c][0]>=last[0])break;open[i]=open[c];i=c;}open[i]=last;}return top;};
+        heapPush([0,sx,sz]);const cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false,endKey=null;
+        while(open.length){const [,cx,cz]=heapPop(),ck=key(cx,cz),x0=minX+cx*grid,z0=minZ+cz*grid;if(Math.hypot(x0-exit[0],z0-exit[1])<=grid*1.75&&posts.every(post=>sampleSegment([x0,z0],exit,post,requiredClearance).safe)){found=true;endKey=ck;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(x0+(x-x0)*et,z0+(z-z0)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);heapPush([ng+Math.hypot(exit[0]-x,exit[1]-z)/grid,nx,nz]);}}}
+        if(!found)continue;const cells=[];let k=endKey;while(k!==key(sx,sz)){const[a,b]=k.split(',').map(Number);cells.unshift([minX+a*grid,minZ+b*grid]);k=came.get(k);if(!k){cells.length=0;break;}}if(cells.length){if(Math.hypot(cells.at(-1)[0]-exit[0],cells.at(-1)[1]-exit[1])>.01)cells.push(exit.slice());return {cells,margin};}
+        }
+        return null;
       };
-      for (const post of populationPosts) {
+      // Select against one immutable road. Selecting against a route after each insertion made
+      // a detour attract unrelated posts, which recursively grew a local bypass into a
+      // province-scale route. Work destination-to-source so higher-index splices cannot shift
+      // the still-pending baseline indices.
+      const encounterBaseline=route.map(q=>q.slice());
+      const encounterCandidates=[];
+      for (const authoredPost of populationPosts) {
+        const placement=H.getPopulationPostPlacement(authoredPost.id);
+        const post={...authoredPost,x:placement?.x??authoredPost.x,z:placement?.z??authoredPost.z,production_placement:placement};
         let near={i:-1,d:Infinity};
-        for(let i=2;i<route.length-2;i++){const d=Math.hypot(route[i][0]-post.x,route[i][1]-post.z);if(d<near.d)near={i,d};}
-        if(near.i<0||near.d>24)continue;
-        const a=route[Math.max(0,near.i-8)],b=route[Math.min(route.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
+        for(let i=2;i<encounterBaseline.length-2;i++){const d=Math.hypot(encounterBaseline[i][0]-post.x,encounterBaseline[i][1]-post.z);if(d<near.d)near={i,d};}
+        // Posts are origins, not leashes: a streamed patrol can move tens of metres before the
+        // player reaches it. The Stormhold--Thorn road proved the old 24 m candidate envelope
+        // false by reporting zero candidates, then dying at [3541.7,995.1] beside pop-0037/38/39.
+        // Observe posts within 60 m so their moving bodies are considered; the detour itself
+        // retains the independently validated 24 m hard body clearance below.
+        if(near.i<0||near.d>60)continue;
+        encounterCandidates.push({post,near});
+      }
+      let unsafeEncounterRoute=null;
+      // Adjacent road posts stream as one moving patrol field. Independent shoulders can leave
+      // one post's validated circle directly inside its neighbour's perception, as the seven-post
+      // Stormhold--Thorn chain demonstrated twice. Group candidates that are no more than twenty
+      // authored road samples apart and route once around the union of their 35 m envelopes.
+      const encounterClusters=[];
+      for(const c of encounterCandidates.slice().sort((a,b)=>a.near.i-b.near.i)){
+        const last=encounterClusters.at(-1);
+        const prior=last&&last.at(-1),physicallyAdjacent=prior&&Math.hypot(c.post.x-prior.post.x,c.post.z-prior.post.z)<=90;
+        // Sparse long-road splines can put twenty authored samples hundreds of metres apart.
+        // Cluster only when both the sample spans and the two 35 m perception envelopes (plus
+        // 20 m of ordinary patrol drift) can actually overlap.
+        if(prior&&c.near.i-prior.near.i<=20&&physicallyAdjacent)last.push(c);else encounterClusters.push([c]);
+      }
+      for (const cluster of encounterClusters.sort((a,b)=>b.at(-1).near.i-a.at(-1).near.i)) {
+        if(cluster.length>1){
+          let lo=Infinity,hi=-Infinity;
+          for(const {post,near} of cluster){let a=near.i,b=near.i;while(a>1&&Math.hypot(encounterBaseline[a-1][0]-post.x,encounterBaseline[a-1][1]-post.z)<35)a--;while(b+1<encounterBaseline.length-1&&Math.hypot(encounterBaseline[b+1][0]-post.x,encounterBaseline[b+1][1]-post.z)<35)b++;lo=Math.min(lo,a);hi=Math.max(hi,b);}
+          const posts=cluster.map(c=>c.post);
+          let replaceLo=lo,entry=encounterBaseline[lo-1];
+          // A bounded resume may begin at the exact safe endpoint of the connected detour that
+          // produced its checkpoint. The local settlement join omits the current pose, so its
+          // first retained road sample can fall a few centimetres back inside the 35 m envelope
+          // and leave the new grid search with no legal first edge. Reuse the *observed body
+          // pose* only when it independently clears every post by the full 35 m; walkPath still
+          // consumes every subsequent metre and no exclusion threshold is relaxed.
+          const entryInside=posts.some(post=>Math.hypot(entry[0]-post.x,entry[1]-post.z)<35);
+          const bodyAnchor=[here[0],here[2]],bodyAnchorSafe=posts.every(post=>Math.hypot(bodyAnchor[0]-post.x,bodyAnchor[1]-post.z)>=35);
+          if(entryInside&&bodyAnchorSafe){entry=bodyAnchor;replaceLo=0;}
+          const exit=encounterBaseline[hi+1];
+          // The 60 m candidate radius accounts for ordinary patrol drift; it does not mean the
+          // authored road necessarily enters the fixed 35 m production placement envelope. On
+          // a resumed Lilmoth approach both relocated posts were candidates at 36.88 m/45.08 m,
+          // and every retained segment stayed outside them. Requiring a bypass around a circle
+          // the route never crosses produced an impossible one-metre entry/exit search. Keep the
+          // baseline only after checking every involved segment against every post at the full
+          // 35 m clearance (plus the existing water, slope, grade and collision predicates).
+          const clusterSegmentStart=Math.max(0,lo-1),clusterSegmentEnd=Math.min(encounterBaseline.length-1,hi+1);
+          let baselineAlreadyClear=true;
+          for(let bi=clusterSegmentStart;bi<clusterSegmentEnd&&baselineAlreadyClear;bi++)for(const post of posts)if(!sampleSegment(encounterBaseline[bi],encounterBaseline[bi+1],post,35).safe){baselineAlreadyClear=false;break;}
+          if(baselineAlreadyClear){encounterDetours.push({posts:posts.map(p=>p.id),encounters:posts.map(p=>p.encounter),production_placements:posts.map(p=>p.production_placement),side:'authored-route-already-clear',waypoints:[],required_body_clearance_m:35,segment_validation:{baseline_segment_start:clusterSegmentStart,baseline_segment_end:clusterSegmentEnd,all_segments_safe:true,all_cluster_posts_checked:true}});continue;}
+          const connected=findConnectedDetour(entry,exit,posts,35);
+          if(!connected){unsafeEncounterRoute={posts:posts.map(p=>p.id),reason:'no-connected-production-safe-cluster-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:cluster[0].near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true});continue;}
+          route.splice(replaceLo,hi-replaceLo+1,...connected.cells);
+          encounterDetours.push({posts:posts.map(p=>p.id),encounters:posts.map(p=>p.encounter),production_placements:posts.map(p=>p.production_placement),side:'connected-cluster-grid',waypoints:connected.cells,resumed_body_anchor:replaceLo===0?{at:bodyAnchor,min_clearance_m:+Math.min(...posts.map(post=>Math.hypot(bodyAnchor[0]-post.x,bodyAnchor[1]-post.z))).toFixed(2)}:null,required_body_clearance_m:35,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true,all_cluster_posts_checked:true}});
+          continue;
+        }
+        const {post,near}=cluster[0];
+        const a=encounterBaseline[Math.max(0,near.i-8)],b=encounterBaseline[Math.min(encounterBaseline.length-1,near.i+8)],dx=b[0]-a[0],dz=b[1]-a[1],dl=Math.hypot(dx,dz)||1;
         // Perception is per body (12--20 m by archetype), not multiplied by group size. Keep a
         // 35 m centreline clearance for every post: it covers the largest sight radius plus the
         // authored spawn offsets without demanding a fictitious 70 m exclusion disc that can
@@ -327,9 +524,9 @@ try {
         // back through the post and died at the authored x/z despite reporting a 70 m waypoint.
         let lo=near.i,hi=near.i;
         const replaceRadius=28;
-        while(lo>1&&Math.hypot(route[lo-1][0]-post.x,route[lo-1][1]-post.z)<replaceRadius)lo--;
-        while(hi+1<route.length-1&&Math.hypot(route[hi+1][0]-post.x,route[hi+1][1]-post.z)<replaceRadius)hi++;
-        const entry=route[lo-1],exit=route[hi+1],requiredClearance=24,tested=[];
+        while(lo>1&&Math.hypot(encounterBaseline[lo-1][0]-post.x,encounterBaseline[lo-1][1]-post.z)<replaceRadius)lo--;
+        while(hi+1<encounterBaseline.length-1&&Math.hypot(encounterBaseline[hi+1][0]-post.x,encounterBaseline[hi+1][1]-post.z)<replaceRadius)hi++;
+        const entry=encounterBaseline[lo-1],exit=encounterBaseline[hi+1],requiredClearance=24,tested=[];
         for(const side of [-1,1]) for(const shoulder of [clearance,clearance+15,clearance+30]){
           const q=[post.x+side*(-dz/dl)*shoulder,post.z+side*(dx/dl)*shoulder];
           const inbound=sampleSegment(entry,q,post,requiredClearance),outbound=sampleSegment(q,exit,post,requiredClearance);
@@ -338,15 +535,31 @@ try {
         const pick=tested.filter(c=>c.safe).sort((a,b)=>b.min_water_margin_m-a.min_water_margin_m||a.shoulder-b.shoulder)[0];
         if(!pick){
           const connected=findConnectedDetour(entry,exit,post,requiredClearance);
-          if(!connected){encounterDetours.push({post:post.id,encounter:post.encounter,rejected:true,tested});continue;}
-          route.splice(lo,hi-lo+1,...connected);
-          encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected,segment_validation:{grid_m:2,water_max_m:.95,saturated_suck_forbidden:true,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
+          if(!connected){unsafeEncounterRoute={post:post.id,encounter:post.encounter,reason:'no-connected-production-safe-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true,tested});continue;}
+          route.splice(lo,hi-lo+1,...connected.cells);
+          encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:'connected-grid',waypoints:connected.cells,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
           continue;
         }
         route.splice(lo,hi-lo+1,pick.q);
-        encounterDetours.push({post:post.id,encounter:post.encounter,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
+        encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
       }
       plannerReport.encounter_detours=encounterDetours;
+      plannerReport.encounter_candidates=encounterCandidates.length;
+      plannerReport.unsafe_encounter_route=unsafeEncounterRoute;
+      // A bounded checkpoint before a later rejected segment is still a valid production state.
+      // Do not walk the unsafe segment, but do permit the already-validated prefix to be consumed
+      // when the explicit stop waypoint lies before its authored entry.
+      let unsafeBeyondCheckpoint=false;
+      if(unsafeEncounterRoute&&stopAtWaypoint&&saveWaypoint){
+        let waypointI=-1,waypointD=Infinity,unsafeI=-1,unsafeD=Infinity;
+        for(let i=0;i<route.length;i++){const wd=Math.hypot(route[i][0]-saveWaypoint[0],route[i][1]-saveWaypoint[1]);if(wd<waypointD){waypointD=wd;waypointI=i;}const ud=Math.hypot(route[i][0]-unsafeEncounterRoute.authored_entry[0],route[i][1]-unsafeEncounterRoute.authored_entry[1]);if(ud<unsafeD){unsafeD=ud;unsafeI=i;}}
+        unsafeBeyondCheckpoint=waypointD<=5&&waypointI>=0&&unsafeI>waypointI;
+        plannerReport.unsafe_beyond_checkpoint=unsafeBeyondCheckpoint?{waypoint_index:waypointI,unsafe_index:unsafeI}:null;
+      }
+      if(unsafeEncounterRoute&&!unsafeBeyondCheckpoint){
+        const ended=H.whereAmI().pos.slice();
+        return {ok:false,failure:'unsafe-route-planning',frames:0,left_m:Math.hypot(x-ended[0],z-ended[2]),started,ended,production_input:true,planned_route:route.slice(0,40),planned_clearance:[],planner:plannerReport,stealth:null,recovery_heals:recoveryHeals,shelter:null,hazards:[],walk:{arrived:false,aborted:'unsafe-route-planning',frames:0,minutes:0,path_m:0,mean_speed_mps:0,end:[ended[0],ended[2]],target:[x,z],offset_m:Math.hypot(x-ended[0],z-ended[2]),longest_stuck_frames:0,mired_frames:0,survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0},regions_entered:[],deepest_water_on_the_walk:null,worst_off_path_m:0,off_path_frames:0,regains:0,teleports:0,teleported_m:0,teleport_log:[],arrival_is_clean:false}};
+      }
       // Provincial legs are crossed in the player's ordinary crouched stance. Road patrols are
       // authored encounters, not unavoidable damage volumes; lowering the detection profile is
       // the nonviolent production route and still leaves every metre to the movement consumer.
@@ -371,17 +584,37 @@ try {
         // Sprinting advertised the player to every streamed patrol and produced a combat death
         // near Archon after all flask charges had been consumed.  The intended nonviolent route
         // is concealment, not repeatedly healing while dragging a patrol across the province.
-        survival: false,
+        survival: true,
+        // Healing is an ordinary production action, and a damaged nonviolent traveller must be
+        // allowed to use it. Sprint remains off: it raises the detection profile and previously
+        // turned a concealed route into a province-long pursuit. Engine.walkPath reports both
+        // counters, so the zero-sprint/zero-attack claim is observable.
+        sprint: false,
         // Quest-chain proof is explicitly nonviolent.  Flee and heal, but never let the generic
         // survival walker swing at a patrol (which also keeps combat open across interior doors).
         defensive: false,
       };
+      const settleCheckpoint=()=>{
+        H.clearInputs();
+        let stableFrames=0,last=null;
+        for(let waited=0;waited<3600;waited++){
+          H.stepFrames(1);
+          const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
+          const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&Number(death.deaths_this_session||0)===0&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+          stableFrames=clean?stableFrames+1:0;
+          last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
+          if(stableFrames>=120)return {ok:true,...last};
+        }
+        return {ok:false,...last};
+      };
       const walkWithCheckpoint=(points)=>{
-        if(!shelterRequired||!saveWaypoint||routeCheckpoint)return H.walkPath(points,walkOptions);
+        if(!saveWaypoint||routeCheckpoint)return H.walkPath(points,walkOptions);
         let wi=0,wd=Infinity;for(let i=0;i<points.length;i++){const d=Math.hypot(points[i][0]-saveWaypoint[0],points[i][1]-saveWaypoint[1]);if(d<wd){wd=d;wi=i;}}
         if(wd>5)return H.walkPath(points,walkOptions);
         const first=H.walkPath([...points.slice(0,wi+1),saveWaypoint],walkOptions);
-        if(first.arrived&&first.arrival_is_clean)routeCheckpoint={declared_waypoint:saveWaypoint.slice(),route_distance_m:+wd.toFixed(2),state:H.saveState(),where:H.whereAmI(),production_movement:true};
+        const stable=first.arrived&&first.arrival_is_clean?settleCheckpoint():null;
+        if(first.arrived&&first.arrival_is_clean&&stable?.ok)routeCheckpoint={declared_waypoint:saveWaypoint.slice(),route_distance_m:+wd.toFixed(2),state:H.saveState(),where:H.whereAmI(),production_movement:true,production_valid_stable_state:stable};
+        if(stopAtWaypoint&&first.arrived&&first.arrival_is_clean&&!stable?.ok)return {...first,arrived:false,arrival_is_clean:false,aborted:'checkpoint-unstable',checkpoint_stability:stable};
         if(routeCheckpoint&&stopAtWaypoint)return {...first,arrived:false,arrival_is_clean:false,aborted:'checkpoint-captured'};
         const second=first.arrived?H.walkPath([saveWaypoint,...points.slice(wi+1)],walkOptions):{arrived:false,arrival_is_clean:false,aborted:first.aborted,frames:0,path_m:0,teleports:0,teleported_m:0,teleport_log:[],survival_inputs:{heals:0,sprint_frames:0,defensive_swings:0},regions_entered:[]};
         return {...second,arrived:first.arrived&&first.arrival_is_clean&&second.arrived&&second.arrival_is_clean,aborted:first.aborted||second.aborted,frames:first.frames+second.frames,path_m:first.path_m+second.path_m,teleports:first.teleports+second.teleports,teleported_m:first.teleported_m+second.teleported_m,teleport_log:[...first.teleport_log,...second.teleport_log],survival_inputs:{heals:first.survival_inputs.heals+second.survival_inputs.heals,sprint_frames:first.survival_inputs.sprint_frames+second.survival_inputs.sprint_frames,defensive_swings:first.survival_inputs.defensive_swings+second.survival_inputs.defensive_swings},regions_entered:[...new Set([...first.regions_entered,...second.regions_entered])]};
@@ -473,6 +706,8 @@ try {
         started,
         ended,
         production_input: true,
+        boundary_egress: boundaryEgress,
+        slope_egress: slopeEgress,
         planned_route: route.slice(0, 40),
         planned_clearance: route.length ? [0,.2,.4,.6,.8,1].map(et=>{const q=route[0];return {et,...H.solidAt(started[0]+(q[0]-started[0])*et,started[1]+.9,started[2]+(q[1]-started[2])*et)};}) : [],
         planner: plannerReport,
@@ -494,20 +729,66 @@ try {
         const exitWalk=walkTo(door.interior_spawn[0],door.interior_spawn[2],1.5);
         if(!exitWalk.ok||!(H.whereAmI().door_in_reach||{}).way)return {ok:false,why:`production exit from ${inside} incomplete`,exit_walk:exitWalk};
         H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
-        if(H.whereAmI().interior)return {ok:false,why:`production interact did not exit ${inside}`,exit_walk:exitWalk};H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=door.exterior_spawn,ed=door.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);
+        if(H.whereAmI().interior)return {ok:false,why:`production interact did not exit ${inside}`,exit_walk:exitWalk};
+        const exit_dialogue=closeDoorwayConversation();
+        if(!exit_dialogue.closed)return {ok:false,why:`production doorway conversation held movement after exiting ${inside}`,exit_walk:exitWalk,exit_dialogue};
+        H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=door.exterior_spawn,ed=door.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;const egress=walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);
+        if(!egress.ok)return {ok:false,why:`production egress from ${inside} incomplete: ${egress.failure}`,exit_walk:exitWalk,exit_dialogue,egress};
       }
       const loc = npcActions[npcId];
+      const inferScheduledInterior = (actor) => {
+        if(!actor||actor.interior||Math.abs(actor.pos?.[0]??Infinity)>=100||Math.abs(actor.pos?.[2]??Infinity)>=100||!loc?.schedule)return actor;
+        const minute=H.whereAmI().hour*60, cv=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m;};
+        const active=loc.schedule.find(s=>{const a=cv(s.from),b=cv(s.to);return b>a?minute>=a&&minute<b:minute>=a||minute<b;});
+        return active?.at&&interiorActions[active.at]?{...actor,interior:active.at}:actor;
+      };
+      // Resolve a scheduled interior before walking to the actor's daytime post. At night the
+      // list projection carries cell-local coordinates but no interior id; approaching the old
+      // exterior post first can drive straight into an unrelated fitted building and never even
+      // attempt the real public doorway (Bel-Mourne at the Grey Hist was the production case).
+      ent=inferScheduledInterior(ent);
       // Cross the world before asking its population consumer for an entity. A record with a
       // post supplies the exact public destination; otherwise the settlement station is the
       // player-facing landmark from which the scheduled population is discoverable.
       let approach = null;
-      if (loc && loc.pos) approach = walkTo(loc.pos[0], loc.pos[2], 4.0);
+      const currentPos=H.whereAmI().pos,provincial=Math.hypot((loc?.pos?.[0]??currentPos[0])-currentPos[0],(loc?.pos?.[2]??currentPos[2])-currentPos[2])>80;
+      // A provincial journey advances the production clock by hours. Target the public town
+      // station first, then refresh the entity's live schedule below; targeting the daytime post
+      // at departure can end at a wall after the giver has legitimately moved indoors en route.
+      if (!ent?.interior && loc && loc.pos && !provincial) approach = walkTo(loc.pos[0], loc.pos[2], 4.0);
       else if (loc && loc.settlement) {
         const station = travelStations.find((x) => x.id === loc.settlement);
-        if (station) approach = walkTo(station.x, station.z, 12.0);
+        // Stream the fitted frontage before planning the final doorway approach. solidAt is a
+        // production collision query, so a remote fitted building is intentionally absent until
+        // its settlement cell is live. Going straight from the Sixth Intake to the Grey Hist
+        // therefore planned through the still-unstreamed footprint and stopped at its south wall.
+        // The public travel station is ordinary player navigation and puts the body close enough
+        // for the following doorway A* to observe the real facade. Nearby/resumed actors retain
+        // the precise doorway-only route.
+        const scheduledDoor=ent?.interior&&interiorActions[ent.interior];
+        const doorDistance=scheduledDoor?.exterior_spawn
+          ? Math.hypot(scheduledDoor.exterior_spawn[0]-currentPos[0],scheduledDoor.exterior_spawn[2]-currentPos[2])
+          : Infinity;
+        const rearOfScheduledDoor=scheduledDoor?.exterior_spawn&&scheduledDoor?.exterior_door
+          ? (currentPos[0]-scheduledDoor.exterior_door[0])*(scheduledDoor.exterior_spawn[0]-scheduledDoor.exterior_door[0])
+            +(currentPos[2]-scheduledDoor.exterior_door[2])*(scheduledDoor.exterior_spawn[2]-scheduledDoor.exterior_door[2])<0
+          : false;
+        if(scheduledDoor?.exterior_spawn&&scheduledDoor?.exterior_door&&(doorDistance>60||rearOfScheduledDoor)){
+          const sp=scheduledDoor.exterior_spawn,dp=scheduledDoor.exterior_door;
+          const nx=sp[0]-dp[0],nz=sp[2]-dp[2],nl=Math.hypot(nx,nz)||1,ox=nx/nl,oz=nz/nl,tx=-oz,tz=ox;
+          const footprint=scheduledDoor.exterior_footprint_m||[16,16],clear=Math.max(...footprint)/2+10;
+          const sideOptions=[-1,1].map(side=>{const near=[dp[0]+tx*side*clear-ox*clear,dp[2]+tz*side*clear-oz*clear],outer=[dp[0]+tx*side*clear+ox*clear,dp[2]+tz*side*clear+oz*clear];let corridor=Infinity;for(let et=0;et<=1;et+=.05){const cx=outer[0]+(sp[0]-outer[0])*et,cz=outer[1]+(sp[2]-outer[1])*et;corridor=Math.min(corridor,H.solidAt(cx,currentPos[1]+.9,cz).distance_m);}return{side,near,outer,corridor,travel:Math.hypot(near[0]-currentPos[0],near[1]-currentPos[2])};}).sort((a,b)=>b.corridor-a.corridor||a.side-b.side);
+          const selectedSide=sideOptions[0],side=selectedSide.side;
+          // First reach the nearer facade corner, then walk around the end of the wall to its
+          // public side. These targets are derived from the fitted footprint and doorway normal;
+          // no body pose is written and each leg is independently checked by walkPath.
+          const nearCorner=selectedSide.near,outerCorner=selectedSide.outer;
+          const legs=[];for(const q of [nearCorner,outerCorner]){const leg=walkTo(q[0],q[1],2);legs.push(leg);if(!leg.ok)break;}
+          approach={ok:legs.length===2&&legs.every(l=>l.ok),production_door_staging:true,side_options:sideOptions,selected_side:side,near_corner:nearCorner,outer_corner:outerCorner,legs,walk:{path_m:legs.reduce((n,l)=>n+(l.walk?.path_m||0),0),teleports:legs.reduce((n,l)=>n+(l.walk?.teleports||0),0),aborted:legs.find(l=>!l.ok)?.walk?.aborted||null}};
+        } else if (station && !ent?.interior) approach = walkTo(station.x, station.z, 12.0);
       }
       if (approach && !approach.ok) return { ok:false, why:`production approach to ${npcId} incomplete: ${approach.walk?.aborted || approach.left_m}`, location:loc || null, approach };
-      ent = H.listEntities().find((x) => x.eid === npcId);
+      ent = inferScheduledInterior(H.listEntities().find((x) => x.eid === npcId));
       // Site populations have no settlement boundary; this is the same production consumer
       // `stepSettlement` calls for towns, invoked only after the body reached the authored site.
       if (!ent && loc && loc.site && approach && approach.ok) { H.populateSite(loc.site); ent = H.listEntities().find((x) => x.eid === npcId); }
@@ -515,11 +796,6 @@ try {
       // Scheduled interior actors expose cell-local coordinates, but older population rows do
       // not copy the schedule's interior id onto listEntities(). Infer only from the actor's own
       // authored active schedule row; never guess an unrelated door from proximity.
-      if(!ent.interior&&Math.abs(ent.pos[0])<100&&Math.abs(ent.pos[2])<100&&loc&&loc.schedule){
-        const hour=H.whereAmI().hour, minute=hour*60;
-        const active=loc.schedule.find(s=>{const cv=t=>{const [h,m]=String(t).split(':').map(Number);return h*60+m;},a=cv(s.from),b=cv(s.to);return b>a?minute>=a&&minute<b:minute>=a||minute<b;});
-        if(active&&active.at&&interiorActions[active.at])ent={...ent,interior:active.at};
-      }
       let schedule_entry=null;
       if(ent.interior&&H.whereAmI().interior!==ent.interior){
         const door=interiorActions[ent.interior];if(!door)return {ok:false,why:`scheduled interior ${ent.interior} has no production doorway`,approach};
@@ -527,14 +803,41 @@ try {
         // production buildings can rotate/resize away from their declared geometry (Archon's
         // inn is one such case), leaving exterior_door inside the solid footprint while
         // exterior_spawn remains the canonical walkable side of the transition.
-        const doorstep=door.exterior_spawn||door.exterior_door;
-        schedule_entry=walkTo(doorstep[0],doorstep[2],1.5);
-        if(!schedule_entry.ok||!(H.whereAmI().door_in_reach||{}).interior)return {ok:false,why:`production door to scheduled ${npcId} unreachable`,approach,schedule_entry};
-        H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
-        const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(6);}
+        const doorstep=door.exterior_door||door.exterior_spawn;
+        schedule_entry=walkTo(doorstep[0],doorstep[2],2.7);
+        if(!schedule_entry.ok||!(H.whereAmI().door_in_reach||{}).interior){
+          // A giver's authored schedule is also a production route. If dense fitted buildings
+          // make the night doorway unreachable, wait in the world until that same actor's live
+          // schedule brings them to their exterior post; never rewrite the clock or actor cell.
+          let waited=0;for(;waited<43200&&ent?.interior;waited+=60){H.clearInputs();H.stepFrames(60);ent=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId));}
+          schedule_entry={...schedule_entry,schedule_wait:{production_wait:true,frames:waited,hour:H.whereAmI().hour,actor_interior:ent?.interior||null}};
+          if(!ent||ent.interior)return {ok:false,why:`production door to scheduled ${npcId} unreachable and schedule did not move exterior`,approach,schedule_entry};
+        } else {
+        // Settle the movement release before using the doorway. A crowded frontage can consume
+        // the first interaction as a greeting even though door_in_reach selects the transition;
+        // close that player-visible conversation and repeat the ordinary key edge, as the placed
+        // document route already does for the same shipping affordance.
+        H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
+        for(let retry=0;H.whereAmI().interior!==ent.interior&&retry<3;retry++){
+          H.queueInputs([{f:0,press:['interact']},{f:2,release:['interact']}]);H.stepFrames(12);
+          const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(8);}
+          if(H.whereAmI().interior!==ent.interior){H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(30);}
+        }
         if(H.whereAmI().interior!==ent.interior)return {ok:false,why:`production interact did not enter scheduled ${ent.interior}`,approach,schedule_entry};
-        ent=H.listEntities().find((x)=>x.eid===npcId)||ent;
+        // Entering a scheduled cell refreshes the population projection. Some named actors
+        // still omit `interior` from that fresh list row even though their cell-local pose and
+        // active authored schedule are unambiguous. Re-apply the same schedule inference here;
+        // otherwise the generic stale-cell repair below mistakes the local pose for an exterior
+        // projection and sends an inside player toward the actor's kilometre-scale world post.
+        ent=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId))||ent;
+        }
       }
+      // Scheduled actors leaving an interior can retain their cell-local list projection for one
+      // exterior schedule row ([0.06,0,-0.03] for Sesh-Anaat), despite the row itself correctly
+      // switching to `at:null`. Navigation uses the same actor record's authored exterior post;
+      // this repairs only the read projection and never moves or respawns the entity.
+      if(ent&&!ent.interior&&loc?.pos&&Math.abs(ent.pos?.[0]??Infinity)<100&&Math.abs(ent.pos?.[2]??Infinity)<100)
+        ent={...ent,pos:loc.pos.slice(),projection_repaired_from:ent.pos.slice()};
       const walk = walkTo(ent.pos[0], ent.pos[2], 3.0);
       return { ok:walk.ok, walk, approach, schedule_entry, entity_pos:ent.pos, location:loc || null };
     };
@@ -562,6 +865,28 @@ try {
       const out = {};
       for (const n of gateNpcs) out[n] = v[n] ?? null;
       return out;
+    };
+
+    // A bounded run may end on the exact movement frame that consumed maxFrames. Preserve only
+    // a production-valid resume state: release player input and require 120 consecutive quiet
+    // fixed steps before serialising. This is observation plus ordinary input release, not a
+    // pose, combat, UI, quest, or world mutation.
+    const captureStableResume = () => {
+      H.clearInputs(); let stableFrames=0,last=null;
+      for(let waited=0;waited<3600;waited++){
+        H.stepFrames(1);
+        const combat=H.getCombatState(),player=combat.player||{},stats=H.getPlayerStats(),input=H.getInputState(),traversal=H.getTraversalReport().observed,death=H.getDeathState(),ui=H.getUIState(),conversation=H.getConversationState(),where=H.whereAmI(),collision=H.solidAt(where.pos[0],where.pos[1]+.9,where.pos[2]);
+        const clean=player.state==='IDLE'&&!player.move&&Number(player.speed_mps||0)<.01&&!stats.in_combat&&!stats.locked_on&&!stats.mired&&!traversal.mired&&!traversal.sinking&&!traversal.submerged&&!player.pending_reaction&&!player.dead&&!player.hitstop&&!death.surface_active&&Number(death.deaths_this_session||0)===0&&(death.frames_since_last_damage==null||death.frames_since_last_damage>=180)&&ui.mode==='world'&&!ui.dialogue_surface?.open&&!conversation.open&&!collision.solid&&input.held.length===0&&input.pressed.length===0&&input.pendingPress.length===0&&input.pendingRelease.length===0&&Math.hypot(...input.move)<.001;
+        stableFrames=clean?stableFrames+1:0;
+        last={waited_frames:waited+1,stable_frames:stableFrames,clean,player:{state:player.state,move:player.move||null,speed_mps:player.speed_mps,pending_reaction:player.pending_reaction,dead:player.dead,hitstop:player.hitstop},stats:{hp:stats.hp,hp_max:stats.hp_max,estus:stats.estus,in_combat:stats.in_combat,locked_on:stats.locked_on,mired:stats.mired},traversal:{band:traversal.band,depth_m:traversal.depth_m,substrate:traversal.substrate,mired:traversal.mired,sinking:traversal.sinking,submerged:traversal.submerged},death:{surface_active:death.surface_active,frames_since_last_damage:death.frames_since_last_damage,deaths_this_session:death.deaths_this_session},ui:{mode:ui.mode,dialogue_surface_open:!!ui.dialogue_surface?.open},conversation_open:!!conversation.open,input:{held:input.held,pressed:input.pressed,pending_press:input.pendingPress,pending_release:input.pendingRelease,move:input.move},where,collision};
+        if(stableFrames>=120)return {ok:true,...last,state:H.saveState()};
+      }
+      return {ok:false,...last,state:null};
+    };
+
+    const retainResume = (out) => {
+      const checkpoint=captureStableResume(); out.resume_stability={...checkpoint};
+      if(checkpoint.state){out.resume_state=checkpoint.state;delete out.resume_stability.state;}
     };
 
     const runChain = (name, plan) => {
@@ -593,6 +918,37 @@ try {
 
       for (const step of plan) {
         if (alreadyCompleted.has(step.id)) continue;
+        // Q-MAIN-30 is the mandatory parallel audience. Its opening phrase is not awarded by
+        // Q15: the authored world route is Lilmoth's act-three-closed wharf rumour. Walk to a
+        // real Lilmoth rootkeeper and ask through the published `latest rumors` choice until that
+        // finite local deck supplies it. This is conversation input, not a topic API or reveal
+        // hand-feed, and every draw is retained in evidence.
+        let openingTopicAction=null;
+        if(step.id==='Q-MAIN-30'&&!H.getQuestState().topicsKnown.includes('the-thread-is-cut')){
+          const source='rootkeeper-under-the-temple',reached=reachNpc(source),draws=[];
+          if(reached.ok)for(let draw=0;draw<32&&!H.getQuestState().topicsKnown.includes('the-thread-is-cut');draw++){
+            const convo=H.talkTo(source),choice=(convo.topics||convo.list||[]).find(t=>t.id==='latest rumors');
+            if(!choice){H.conversationClose();break;}
+            const said=H.conversationSay(choice.id);H.conversationClose();draws.push({draw:draw+1,text:said?.said||null,source:said?.said_source||null,learned_thread:H.getQuestState().topicsKnown.includes('the-thread-is-cut')});
+          }
+          openingTopicAction={quest:step.id,target:'the-thread-is-cut',source,production_route:'Lilmoth latest rumors',reached,draws,learned:H.getQuestState().topicsKnown.includes('the-thread-is-cut')};
+          out.opening_topic_actions=out.opening_topic_actions||[];out.opening_topic_actions.push(openingTopicAction);
+          // Do not continue to the giver after a bounded source walk stops short or after the
+          // published local rumour deck fails to supply the authored opening topic. The former
+          // behaviour launched another province-scale walk with a topic that was observably
+          // still absent, obscuring the real failure and wasting the closest legitimate resume
+          // state. Preserve that production-valid state so the next bounded run can continue
+          // from the exact body pose without granting either movement or knowledge.
+          if(!reached.ok||!openingTopicAction.learned){
+            out.blocked_at=step.id;
+            out.why=!reached.ok
+              ? `production movement did not reach opening-topic source: ${reached.why||'source unreachable'}`
+              : 'player-facing Lilmoth rumor route did not teach the-thread-is-cut';
+            out.trace.push({quest:step.id,topic:step.topic,prerequisite_topics:step.prereq_topics.slice(),opening_topic_action:openingTopicAction,failure:{phase:'opening-topic',reason:out.why},after:evidenceSnapshot((H.questDef(step.id).giver||{}).npc_id)});
+            retainResume(out);
+            break;
+          }
+        }
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
         const activeRecord = H.getQuestState().active.find((q)=>q.id===step.id) || null;
@@ -620,7 +976,7 @@ try {
         // own `populateSettlement`/`populateSite` — the call walking across a town boundary
         // makes — and returns `present: false` when the person's record names no place at all,
         // which is the failure the old line could not express.
-        shelterRequired = step.id === 'Q-MAIN-08';
+        shelterRequired = stormShelterDiagnostic && step.id === 'Q-MAIN-08';
         const trip = activeRecord ? {quest:step.id,giver:(H.questDef(step.id).giver||{}).npc_id,present:true,reached:true,resumed_active:true} : reachGiver(step.id);
         shelterRequired = false;
         out.giver_journeys = out.giver_journeys || []; out.giver_journeys.push({ quest: step.id, phase: 'accept', ...trip });
@@ -630,7 +986,7 @@ try {
         // choice, play stops here.
         let o = activeRecord ? {ok:true,resumed_active:true} : (trip.reached ? { ok: false, reason: 'acceptance choice absent' } : { ok: false, reason: `production movement did not reach giver: ${trip.why || trip.walk?.walk?.aborted || trip.walk?.left_m}` });
         const giver = (H.questDef(step.id).giver || {}).npc_id;
-        const evidence = { quest:step.id, topic:step.topic, prerequisite_topics:step.prereq_topics.slice(),
+        const evidence = { quest:step.id, topic:step.topic, prerequisite_topics:step.prereq_topics.slice(), opening_topic_action:openingTopicAction,
           arrival:evidenceSnapshot(giver), offer:offer ? {...offer} : null, giver_journey:trip, world_actions:[] };
         const acceptThroughConversation = () => {
           const c = H.talkTo(giver);
@@ -668,7 +1024,7 @@ try {
           out.blocked_at = step.id;
           out.why = o.reason;
           out.blocked_offer_why = offer ? offer.why : null;
-          evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState();
+          evidence.failure={phase:'accept',reason:o.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out);
           break;
         }
         // Perform every authored reveal through its shipped player-facing world action.
@@ -695,10 +1051,25 @@ try {
               const d = documentActions[r.source];
               if (!d.exterior_spawn || !d.interior_spawn) throw new Error(`${d.interior} has no two-sided production doorway`);
               const currentInterior=H.whereAmI().interior;
-              if(currentInterior){const currentDoor=interiorActions[currentInterior];if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for ${d.interior}`);H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(180);const ew=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);if(!ew.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=currentDoor.exterior_spawn,ed=currentDoor.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);}
+              if(currentInterior){const currentDoor=interiorActions[currentInterior];if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for ${d.interior}`);H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(180);const ew=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);if(!ew.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${currentInterior}`);H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(180);const ev=currentDoor.exterior_spawn,ed=currentDoor.exterior_door||ev,dx=ev[0]-ed[0],dz=ev[2]-ed[2],dl=Math.hypot(dx,dz)||1;const egress=walkTo(ev[0]+dx/dl*3,ev[2]+dz/dl*3,1.0);if(!egress.ok)throw new Error(`production egress incomplete after leaving ${currentInterior}`);}
               a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 1.5);
               a.entry_prompt = H.whereAmI().door_in_reach;
               if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
+              // A closed guild still publishes its door prompt, and useDoor then emits an
+              // ordinary `closed` refusal. Q17 reaches Gideon's Grange after its 19:00 close.
+              // Use the shipped wait screen at the real prompted doorstep instead of burning a
+              // simulated day one fixed frame at a time or hammering the locked interaction.
+              if(Number.isFinite(d.open_h)&&Number.isFinite(d.close_h)){
+                const isOpenHour=h=>d.close_h>d.open_h?h>=d.open_h&&h<d.close_h:h>=d.open_h||h<d.close_h;
+                const startHour=H.whereAmI().hour;
+                if(!isOpenHour(startHour)){
+                  let hours=Math.ceil(((d.open_h-startHour)%24+24)%24-1e-9);
+                  if(hours<1)hours=24;
+                  a.entry_schedule_wait={...productionWait(hours),open_h:d.open_h,close_h:d.close_h};
+                }else a.entry_schedule_wait={production_wait:false,hours:0,start_hour:startHour,end_hour:startHour,open_h:d.open_h,close_h:d.close_h};
+                a.entry_schedule_wait.opened=isOpenHour(H.whereAmI().hour);
+                if(!a.entry_schedule_wait.opened)throw new Error(`${d.interior} did not open within one production day`);
+              }
               H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
               H.queueInputs([{ f: 0, press: ['interact'] }, { f: 2, release: ['interact'] }]); H.stepFrames(8);
               // A crowded exterior can consume the first press as a nearby greeting even while
@@ -746,6 +1117,7 @@ try {
               if (!a.exit_walk.ok || !a.exit_prompt || a.exit_prompt.way !== 'out') throw new Error(`production exit not reachable in ${d.interior}`);
               H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8);
               if (H.whereAmI().interior) throw new Error(`interact did not leave ${d.interior}`);
+              if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${d.interior}`);
             } else if (r.channel === 'environment' && markActions[r.source]) {
               const at = markActions[r.source]; let markInterior=null;
               if (at.interior) {
@@ -756,12 +1128,21 @@ try {
                 H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
                 const dui=H.getUIState();if(dui.dialogue_surface&&dui.dialogue_surface.open){H.queueInputs([{f:1,press:['block']},{f:3,release:['block']}]);H.stepFrames(6);}
                 if(H.whereAmI().interior!==at.interior)throw new Error(`interact did not enter ${at.interior}`);
-              } else if (H.whereAmI().interior) throw new Error('exterior mark requested while still inside an interior');
+              } else if (H.whereAmI().interior) {
+                const currentInterior=H.whereAmI().interior,currentDoor=interiorActions[currentInterior];
+                if(!currentDoor)throw new Error(`cannot production-exit ${currentInterior} for exterior mark`);
+                H.queueInputs([{f:0,release:['block','interact','use_item','light','sprint']}]);H.stepFrames(30);
+                a.pre_mark_exit_walk=walkTo(currentDoor.interior_spawn[0],currentDoor.interior_spawn[2],1.5);
+                if(!a.pre_mark_exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${currentInterior}`);
+                H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);
+                if(H.whereAmI().interior)throw new Error(`interact did not leave ${currentInterior}`);
+                if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${currentInterior}`);
+              }
               H.stepFrames(3);
               let prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`);
               if (!prop && at.world) { a.walk = walkTo(at.world[0], at.world[1], 2.0); H.stepFrames(3); prop = H.listEntities().find((x) => x.eid === `mark:${r.source}` || x.eid === `mark:${r.source}#0`); }
               if (prop) { a.walk = walkTo(prop.pos[0], prop.pos[2], Math.max(1.4,Math.min(prop.reach_m || 1.6,1.8))); if (a.walk.ok) { H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]); H.stepFrames(8); const qr=H.getQuestState().active.find(q=>q.id===step.id); a.ok = !!(qr && qr.flags && qr.flags[`know:${r.id}`]); } }
-              if(markInterior){H.queueInputs([{f:0,release:['block','interact']}]);H.stepFrames(30);a.exit_walk=walkTo(markInterior.interior_spawn[0],markInterior.interior_spawn[2],1.5);if(!a.exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${at.interior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${at.interior}`);}
+              if(markInterior){H.queueInputs([{f:0,release:['block','interact']}]);H.stepFrames(30);a.exit_walk=walkTo(markInterior.interior_spawn[0],markInterior.interior_spawn[2],1.5);if(!a.exit_walk.ok||!(H.whereAmI().door_in_reach||{}).way)throw new Error(`production exit not reachable in ${at.interior}`);H.queueInputs([{f:1,press:['interact']},{f:3,release:['interact']}]);H.stepFrames(8);if(H.whereAmI().interior)throw new Error(`interact did not leave ${at.interior}`);if(!closeDoorwayConversation().closed)throw new Error(`doorway conversation held movement after leaving ${at.interior}`);}
             }
           } catch (e) { a.error = String(e && e.message || e); }
           out.world_actions.push(a);
@@ -794,12 +1175,12 @@ try {
           }
           H.conversationClose();
         } catch (e) { res = { ok: false, reason: String(e && e.message || e) }; }
-        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); out.resume_state=H.saveState(); break; }
+        if (!res.ok) { out.blocked_at = step.id; out.why = 'resolve refused — ' + res.reason; evidence.failure={phase:'resolve',reason:res.reason}; evidence.after=evidenceSnapshot(giver); out.trace.push(evidence); retainResume(out); break; }
         if (pick.violence_required) out.violent.push(step.id);
         out.completed.push(step.id);
         st = sampleStanding(); fold(st);
         evidence.after=step.id; evidence.resolution=pick.id; evidence.standing=st; evidence.after_resolution=evidenceSnapshot(giver); out.trace.push(evidence);
-        out.resume_state = H.saveState();
+        retainResume(out);
         if (stopAfter === step.id) { out.stopped_after=step.id; break; }
       }
       const qs = H.getQuestState();
@@ -823,6 +1204,10 @@ try {
         // Build the same collision/population cell the first live frame builds before planning
         // any movement; planning against EMPTY_CELL makes every street look unobstructed.
         H.stepFrames(2);
+        if (resumeState) {
+          const entry=captureStableResume(); delete entry.state; row.resume_entry_stability=entry;
+          if(!entry.ok){row.chains[name]={chain:name,precompleted:H.getQuestState().completed||[],completed:[],blocked_at:'resume-state',why:'restored production state did not become stable after input release',violent:[],journal_n:H.getQuestState().journal.length,floor:{},arrival:{},trace:[],resume_stability:entry};continue;}
+        }
         // THE ONLY THING GRANTED FROM OUTSIDE THE QUEST GRAPH, and it is not granted, it is
         // done: walk up to a carter on the Soulrest quay and be greeted. Everything after this
         // has to arrive through the world's own AddTopic edges.
@@ -839,7 +1224,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows, routeCheckpoint };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames: CHAIN_NAMES, walkMaxFrames: WALK_MAX_FRAMES, interiorActions, resumeState, stopAfter: STOP_AFTER, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic });
 } catch (error) {
   writeJson(path.join(outDir, 'browser-failure.json'), {
     error: String(error && error.message || error),
@@ -932,12 +1317,22 @@ const out = {
   persuasion: report.rows.flatMap((r) => Object.entries(r.chains).flatMap(([n, c]) => (c.persuasion || []).map((p) => ({ sig: `${r.race}/${r.upbringing}`, chain: n, ...p })))),
   failures,
   violent_resolutions_taken: violent,
+  route_checkpoint: report.routeCheckpoint || null,
   rows: report.rows,
 };
+let exportedResumeStates=0;
+let resumeOutputFailure=null;
 for (const row of out.rows) for (const [chain,ch] of Object.entries(row.chains)) if (ch.resume_state) {
+  const exportEligible=!ch.blocked_at&&(!STOP_AFTER||ch.stopped_after===STOP_AFTER);
+  if (RESUME_OUTPUT&&exportEligible) {
+    if (exportedResumeStates) resumeOutputFailure='--resume-output requires exactly one signature and one chain';
+    else { ensureDir(path.dirname(RESUME_OUTPUT)); writeJson(RESUME_OUTPUT,ch.resume_state); exportedResumeStates++; }
+  }
   const statePath=path.join(outDir,`resume-${row.race}-${row.upbringing}-${chain}.json`); writeJson(statePath,ch.resume_state);
   ch.resume_state_file=path.basename(statePath); delete ch.resume_state;
 }
+if (RESUME_OUTPUT && exportedResumeStates !== 1 && !resumeOutputFailure) resumeOutputFailure='--resume-output requested but no completed production-valid stable state was emitted';
+out.resume_output=RESUME_OUTPUT?{file:path.relative(process.cwd(),RESUME_OUTPUT),exported_states:exportedResumeStates,failure:resumeOutputFailure}:null;
 writeJson(path.join(outDir, 'mainline-chain-floor.json'), out);
 
 if (args.json) console.log(JSON.stringify(out, null, 2));
@@ -963,5 +1358,5 @@ else {
   console.log(`\nwrote ${path.join(outDir, 'mainline-chain-floor.json')}`);
 }
 
-const ok = failures.length === 0;
+const ok = failures.length === 0 && !resumeOutputFailure;
 process.exit(ok ? 0 : 1);

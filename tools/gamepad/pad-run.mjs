@@ -29,7 +29,7 @@
 // LEGS
 //   opening   title -> New -> the hold -> the whole census -> name -> out into the world
 //   locomote  walk, sprint (index 1 held past the gate), roll (index 1 tapped inside it)
-//   screens   all six screens opened AND closed on the pad, each held open across many frames,
+//   screens   every pause-menu screen opened AND closed on the pad, each held across many frames,
 //             under three different button patterns, with an unbound-index control that goes red
 //   curve     the left-stick response curve at ten deflections on two bearings, distance AND
 //             direction, sampled at three instants inside every hold
@@ -384,7 +384,7 @@ try {
   // =============================================================================== screens ==
   if (want('screens')) {
     say('\n-- LEG: every screen, opened AND closed on the pad ----------------------------------');
-    const RING = ['inventory', 'journal', 'sheet', 'spells', 'map', 'levelup'];
+    const RING = ['inventory', 'journal', 'sheet', 'spells', 'map', 'wait', 'levelup'];
     // `levelup` is in the ring only at a hearth. Declared, not hidden — the other five need no
     // world state at all, and this is the same declaration the W1-21 r2 critic made.
     await h.page.evaluate(() => { try { window.__HARNESS.setAtHearth(true); } catch { /* not at a hearth; levelup will simply not be advertised */ } });
@@ -459,7 +459,7 @@ try {
     const missing = RING.filter((r) => !seen.has(r));
     out.screens_reached = Array.from(seen);
     out.screens_missing = missing;
-    if (!missing.length) pass('S1', `all six screens opened on the pad across three different button patterns: ${RING.join(', ')}`, { reached: Array.from(seen) });
+    if (!missing.length) pass('S1', `all ${RING.length} screens opened on the pad across three different button patterns: ${RING.join(', ')}`, { reached: Array.from(seen) });
     else fail('S1', `screens never reached on a pad: [${missing.join(', ')}] (reached ${Array.from(seen).join(', ')})`, { missing });
 
     // -- CLOSING, per screen, and it is a separate claim from opening -------------------------
@@ -468,7 +468,7 @@ try {
     // 14 from `inventory` steps to `world`, both of which are the ring behaving correctly, so a
     // "close" measured at the end of a walk is measuring the wrap. Each of the six is therefore
     // opened from the world on its own, held for 45 frames, and then closed — twice, once with
-    // index 9 (`menu`) and once with index 1 (`roll` = "back"). Two close buttons x six screens.
+    // index 9 (`menu`) and once with index 1 (`roll` = "back"). Two close buttons per screen.
     const closes = [];
     for (const closeIdx of [B.menu, B.roll]) {
       for (let n = 0; n < RING.length; n++) {
@@ -487,7 +487,7 @@ try {
     out.screen_closes = closes;
     const badClose = closes.filter((c) => !c.ok);
     if (!badClose.length) {
-      pass('S2', `all six screens CLOSE on the pad, on both close buttons — 12 of 12 open-hold-close cycles ended back in the world (index ${B.menu} 'menu' and index ${B.roll} 'roll'/back)`, { cycles: closes.length });
+      pass('S2', `all ${RING.length} screens CLOSE on the pad, on both close buttons — ${closes.length} of ${closes.length} open-hold-close cycles ended back in the world (index ${B.menu} 'menu' and index ${B.roll} 'roll'/back)`, { cycles: closes.length });
     } else {
       fail('S2', `a screen would not open or close on the pad: ${badClose.map((c) => `${c.want}: opened=${c.opened} after45f=${c.still_open_after_45f} close(${c.close_index})->${c.after}`).join('; ')}`, { bad: badClose });
     }

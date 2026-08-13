@@ -147,3 +147,186 @@ The immediate resume consumed three production flask inputs but then moved 0 m a
 after 1,800 frames. That post-heal locomotion state is the first unresolved causal defect. The
 ignored state and raw reports are machine-local and must be copied to a new host or regenerated;
 no completed Q8, Gate A or Gate C claim is made.
+
+## 2026-08-12 final-production Q-MAIN-08 milestone
+
+Q-MAIN-08 is complete through player-facing production actions. Starting at the validated Q1â€“Q7
+fixture, the Saxhleel/interior character continuously navigated to Archon without a death,
+respawn, teleport, violent resolution, defensive swing, bought opening, direct progression
+mutation, synthetic spawn, or topic/reveal hand-feed. The accepted route did not require or
+manufacture a salt storm or crater visit. Shallow wet SUCK was crossed through the shipped
+mire/struggle/refractory mechanic; W4 and the previously observed 0.621 m wet-SUCK shoulder
+remain rejected.
+
+The flask defect was a real input collision: `use_item` began the declared 130-frame heal and also
+armed the legacy carried-writ modal, which then consumed locomotion. `use_item` is now exclusively
+the production flask verb, and the writ remains player-readable through inventory navigation and
+confirm input. The focused diagnostic proves 3/3 heals begin on frame 1, remain committed through
+frame 130, return to IDLE on frame 131, clear every held/pressed/pending/buffered edge, open no
+modal, and restore ordinary movement. See `q8-recovery-diagnostic.json`.
+
+The road diagnosis proved pop-0119's authored four-body centre and shoreline made its 24 m
+body-clearance disc topologically seal the only walkable causeway. The production population
+consumer now derives a safe effective centre from the declared road, shipped
+terrain/water/collision, 7 m spawn footprint, 35 m post envelope, and 24 m hard body clearance.
+No post id, quest id, player pose, or progress flag participates.
+
+The Q8 traversal reached Cuiro Vaneth at his actual 07:00â€“19:00 public schedule position, entered
+`archon-guild-office` through its production doorway, read
+`interior-readable:the-archon-true-manifest`, learned `rev_true_tonnage`, returned to the giver,
+and completed `res_ask_the_crane` through the published conversation choice. Marker count was 0.
+
+The canonical state is `fixtures/resume-saxhleel-interior-intended-q8.json`, SHA-256
+`8dba7d1fd844f550f6d67c041fd416f95948a974d07b66eb7f2bf7602808c3ae`. Its manifest freezes
+Q1â€“Q8 complete / no active quests, pose, clock, actual giver schedule, health/flasks, a
+120-consecutive-frame production-valid stability window, zero-violence/direct-mutation
+provenance, production runtime/instrument hashes, and exact reproduction.
+
+```
+node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-08-checkpoint.manifest.json
+# exit 0; Q-MAIN-01 through Q-MAIN-08 complete; active (none)
+
+node tools/quests/mainline-checkpoint-control.mjs \
+  --manifest evidence/W1-19/q-main-08-checkpoint.manifest.json \
+  --out reports/runs/W1-19-production-gpu-root-lf/q8-checkpoint-control.json
+# exit 0; both exact red rows observed; both restored green validations pass
+
+node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended \
+  --resume-state reports/runs/W1-19-production-gpu-root-lf/q8-complete-r6/resume-saxhleel-interior-intended.json \
+  --stop-after Q-MAIN-08 --walk-max-frames 60000 \
+  --out reports/runs/W1-19-production-gpu-root-lf/q8-complete-r7 \
+  --chromium C:\PROGRA~1\Google\Chrome\Application\chrome.exe --timeout 1800000
+# exit 0; 1/1 segment, Q8 complete, violent resolutions 0
+```
+
+This is a builder milestone, not an independent verdict. Q9 onward, the second chain/ending,
+### Q-MAIN-09 production continuation
+
+Q-MAIN-09 is complete as `res_hold_both` through Bel-Mourne at his actual 21:36 scheduled
+location in `soulrest-grey-hist`. The sequential Q8-to-Q9 continuation walked 5.8 km through
+production fixed-step locomotion with zero deaths, respawns, teleports, violent resolutions,
+bought openings, direct quest mutation, topic/reveal hand-feeding or synthetic spawn. The stable
+Q1-Q9 continuation state has SHA-256
+`8b055184539d4a310907adbe617aa9d92a7a62c924d0c641ec51e6a740140c6d` and no active quest.
+
+The causal loop repaired three defects rather than hiding them with a larger bound: save-loaded
+population bodies now reconcile with the production placement consumer; two-body road posts use
+the same per-body perception clearance as larger groups; and scheduled interior givers are routed
+through their active authored schedule and canonical public doorway. The Grey Hist's former
+08:00-19:00 hours contradicted Bel-Mourne's 19:00-00:00 tavern schedule and silently refused every
+door input; it is now accessible for the full schedule. Compact exact results and commands are in
+`q-main-09-production-summary.json`.
+
+`route-detour-safety-control.json` records the final green/delete/restored-green control: changed
+source hash, nine consumer calls, 110 support posts, four-body `pop-0119`, two-body `pop-0111`, and
+live checkpoint migration for `pop-0115`. All three named rows go red only with the consumer
+deleted and return green on restoration.
+
+Gate A Q10 onward, Gate B/C builder populations, remaining controls, cold final chains and the
+bounded aggregate remain open.
+
+### Q-MAIN-10 / Act II production milestone
+
+Q-MAIN-10 is complete as `res_hear_it_out` through Ashul-Tei at his actual daytime Helstrom
+post. The continuous Q9-to-Q10 route was retained across two production-valid bounded saves:
+the first segment consumed 6,388.1 m with zero stuck frames, and the second consumed 2,966 m
+before exposing an authored giver post inside the fitted Undertemple footprint. Ashul-Tei's post
+now uses the fitted doorway's public side; an idle NPC exactly at a superseded saved post migrates
+to the current authored post on load, while walking, displaced and indoor NPCs remain untouched.
+
+The accepted run reached Ashul-Tei at 0.97 m, accepted through the published conversation choice,
+entered `helstrom-undertemple` by production input, read `the-stewards-letter` through the book
+UI, exited, returned, and resolved through the player-facing choice. Q-MAIN-01 through
+Q-MAIN-10 are complete, no quest is active, marker count is zero, and there were zero violent
+resolutions, deaths, respawns, teleports, bought openings, synthetic spawns, or topic/reveal hand
+feeds. The stable Act II fixture is
+`fixtures/resume-saxhleel-interior-intended-act2.json`, SHA-256
+`cae7a08111f73fc26d27c135bd933c806276abe41b9bb372a90bbfdd421ae226`.
+
+The schedule/access audit now executes `SettlementSystem.isOpen` at 264 live half-hour samples
+over 22 scheduled rows for all 13 mainline givers. Green has 0 inaccessible rows. Restoring the
+old Grey Hist hours changes the source hash, produces the exact Bel-Mourne evening red row (six
+rows red in total), and the restored tree returns to 0. The checkpoint tamper/stale control also
+passes both exact red rows and restored green validation. `check-data`, `check-content`,
+`check-quests`, strict corpus coherence, the 11-verb mutation-scanner self-test, and the played
+trace production guard are green on this milestone tree.
+
+This remains a builder milestone, not an independent verdict. Q11 onward, both complete endings,
+Gate B/C builder populations, remaining controls, final cold chains and aggregate remain open.
+
+### Q-MAIN-15 / Act III production milestone
+
+Q-MAIN-11 through Q-MAIN-15 are complete through ordinary production movement, door/readable
+actions and published conversation choices. The last segment waited 36,540 fixed production
+frames for Sesh-Anaat's authored 07:00 exterior shift, then walked 16.8 m to her real post and
+completed `res_heard_it`. The run recorded zero session deaths/respawns, teleports, violent
+resolutions, bought openings, synthetic spawns, direct progression mutations or reveal hand-feeds.
+
+The canonical Act III state is `fixtures/resume-saxhleel-interior-intended-act3.json`, SHA-256
+`0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb`. It has Q1-Q15
+complete, no active quest, marker count zero and a 120-frame stable window. Its single dead NPC,
+Sesh-Weth, is the authored nonviolent consequence of the chosen Q12 full-test resolution; the
+validator now compares NPC deaths to an exact manifest allow-list instead of conflating that
+quest consequence with a violent resolution. Enemy deaths remain an unconditional rejection.
+
+The final Thorn approach also exposed a presentation seam: after an interior-to-exterior schedule
+transition, `listEntities` retained Sesh-Anaat's cell-local `[0.06,0,-0.03]` projection even though
+the live schedule had correctly switched to exterior. The runner now uses the same actor record's
+authored exterior post for navigation only; it never moves or respawns the actor. The final trace
+reached `[3825.141495,13.28,878.848169]`, 1.18 m from the authored post.
+
+This remains a builder milestone, not an independent verdict. Q16 onward, Q30, both endings and
+the backpath, Gate B/C builder populations, remaining controls, cold chains and aggregate remain open.
+
+### Q-MAIN-30 mandatory audience milestone
+
+Q-MAIN-30 is complete as `res_carry_on` through Hosk-Vei at his actual 07:00-19:00 Soulrest
+exterior post. Its opening phrase was not granted by the runner: the character walked to the real
+Lilmoth rootkeeper and selected the published `latest rumors` conversation choice eleven times.
+The finite local deck's eleventh response supplied `the-thread-is-cut`; the subsequent accept and
+resolution were both published player-facing conversation choices.
+
+The causal loop repaired bounded-resume evidence rather than hiding it with direct state. The
+initial Act III-to-Lilmoth run consumed 5,653.7 m and stopped 650.1 m short; a second clean leg
+retained a stable pose. The runner now fails closed when an opening-topic source or topic remains
+absent. A paired encounter resume exposed a planner false red: both relocated posts were within
+the 60 m observation radius, but the retained route stayed at least 36.88 m away and never entered
+their 35 m envelopes. The planner now records `authored-route-already-clear` only after validating
+every involved segment against both full 35 m clearances plus collision, water, substrate, slope
+and grade. It never lowers the 24 m hard-body or 35 m route thresholds.
+
+The final production continuation used the ordinary monotonic boundary egress from a measured
+0.3501 m capsule-clearance pose, reached Hosk-Vei, and completed Q30. The canonical checkpoint is
+`fixtures/resume-saxhleel-interior-intended-q30.json`, SHA-256
+`6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d`. It contains Q1-Q15
+plus Q30 complete, no active quest, HP 92/92, five flasks, marker count zero and a 120-frame stable
+window. Across the accepted legs there were zero session deaths/respawns, teleports, violent
+resolutions, bought openings, synthetic spawns, direct progression mutations, sprint frames,
+attacks or topic/reveal hand-feeds.
+
+This remains a builder milestone, not an independent verdict. Q16 onward, both endings and the
+backpath, Gate B/C builder observations, remaining controls, cold chains and aggregate remain open.
+
+### Q-MAIN-16/Q-MAIN-17 and player wait continuation
+
+Q-MAIN-16 is retained in the legitimate local continuation and Q-MAIN-17 is now complete as
+`res_whole_arithmetic`. The no-purse character arrived at Ruvela Sath's gate with 14.263 standing
+against the recalibrated minimum 12, leaving 2.263 reserve; no conversation opening was bought.
+The run walked to the fitted Grange doorway, entered after its authored opening time, read
+`the-compact-share-book` through the book UI, returned to the giver, and selected the published
+nonviolent resolution. There were zero session deaths/respawns, teleports, violent resolutions,
+synthetic spawns, direct progression mutations or topic/reveal hand-feeds.
+
+The closed 19:00 Grange exposed that the runner was spending up to 259,200 ordinary fixed frames
+merely to reach morning. The game now has a player-facing `Wait` surface in the existing pause-menu
+ring. Directional input selects 1-24 hours and confirm advances the world calendar; it does not
+move the body, heal, refill flasks, respawn enemies or apply hearth taint. It is absent from the
+combat navigation ring and explicitly refuses a direct combat open. The focused production-input
+smoke passed 9/9 assertions. The Q17 continuation then selected 13 hours through that surface,
+advanced 19:46/day 5 to 08:46/day 6, moved 0 m, and preserved 92 HP and five flasks before the
+Grange admitted the player.
+
+Compact exact results, hashes, commands and the canonical-Q30 regeneration command are in
+`q-main-17-production-summary.json`. This is a builder continuation, not an independent verdict.
+Q18 onward, the first ending, the backpath/alternative ending, remaining controls, cold chains and
+the final builder aggregate remain open.
