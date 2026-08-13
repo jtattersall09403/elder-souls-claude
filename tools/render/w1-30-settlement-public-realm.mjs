@@ -18,13 +18,15 @@ for(const f of list('game/data/world/settlements')){
   const approach=settlementApproach(plan),legacyApproach=settlementApproach(plan,false),builtApproach=summary.public_realm.approach;
   const a=counts(live),b=counts(deleted),route=wet.has(doc.id)?(a['arrival-board']||0):(a['arrival-cobble']||0);
   check(summary.public_realm.regional_route===true,`${doc.id}: regional route not exposed`);
-  check(summary.public_realm.approach_occupation===4,`${doc.id}: approach occupation ${summary.public_realm.approach_occupation}/4`);
+  check(summary.public_realm.approach_occupation===7,`${doc.id}: approach occupation ${summary.public_realm.approach_occupation}/7`);
   const expectedRoute=wet.has(doc.id)?42:350;
   check(route===expectedRoute,`${doc.id}: regional arrival pieces ${route}/${expectedRoute}`);
   check((a['arrival-spine']||0)===0,`${doc.id}: retained ${(a['arrival-spine']||0)} runway slabs`);
   check(deletedSummary.public_realm.regional_route===false,`${doc.id}: delete arm still reports regional route`);
   check((b['arrival-spine']||0)===14,`${doc.id}: delete arm restored ${(b['arrival-spine']||0)}/14 slabs`);
-  check((a['approach-workpost']||0)===4&&(a['approach-marker']||0)===4&&(a['approach-vessel']||0)===4&&(a['approach-goods']||0)===8,
+  const expectedMats=wet.has(doc.id)?21:63;
+  check((a['approach-work-mat']||0)===expectedMats&&(a['approach-workpost']||0)===2&&(a['approach-marker']||0)===2&&
+    (a['approach-cart-deck']||0)===2&&(a['approach-rack-beam']||0)===2&&(a['approach-vendor-counter']||0)===1,
     `${doc.id}: approach occupation consumers incomplete`);
   check(approach.focus_clearance>=2,`${doc.id}: civic focus clearance ${approach.focus_clearance}m`);
   check(approach.clearance>=.15,`${doc.id}: route clearance ${approach.clearance}m`);

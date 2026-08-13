@@ -594,3 +594,51 @@ Rough planning estimates after this phase: ordinary settlement facade constructi
 settlement occupation/composition about 62–65%; settlement visible fidelity about 62–66%;
 settlement performance repair about 60–65%; whole-W1-30 builder progress roughly 58–62%. These
 are builder work estimates only; neither critic-owned 7/10 verdict is claimed.
+
+## Final-builder hierarchical settlement-occupation phase (2026-08-13)
+
+The four repeated post/flag/vessel clusters on each settlement approach have been replaced with
+seven alternating-side work areas. Each town now receives two wayfinding/work markers, two
+constructed handcarts, two drying racks and one roofed vendor bay, with goods and containers
+raised onto founded surfaces rather than scattered directly across bare terrain. The occupation
+pass has its own switch, independent of road construction.
+
+`node tools/render/w1-30-settlement-occupation.mjs` is GREEN across all eight towns: 56 clusters
+and 810 occupation modules. Its targeted delete arm removes all 810 modules while retaining all
+1,876 regional route parts. The public-realm gate retains 8/8 collision-cleared approaches and
+the fixed-southwest control still collides in exactly 6/8 towns. Static settlement compression is
+also GREEN: the former 20,323 building-local meshes become 782 final render meshes containing
+40,863 instances (96.2% render-mesh reduction).
+
+Hardware review was intentionally iterative. Clean `aa493c691f8e5fb1d1dab36fd01a7ecb088cc844`
+(snapshot SHA-256 `8f3cff368ec3e86d7dcfb33e7490b46a4475b8becff114f28c69ff22543a0822`)
+completed RunPod run `20260813-200518Z-178407` on Secure Cloud Pod `x8yoyu3zx75w4i`, an NVIDIA RTX
+A5000 at $0.27/hour. Driver 580.159.04, Chromium 141.0.7390.37 and NVIDIA Vulkan rendered all
+eight 1280x720 DPR-1 frames. Direct inspection confirmed that carts, racks and vendor bays make
+the approaches more legible, but rejected the candidate because each dry work area used one
+flattened pale mesh that read as an oversized landing pad.
+
+Commit `5ad11d224fafe27696437013316f0a44aab70d6c` repairs that observed defect: dry work areas use
+nine hand-scale founded stones and wet work areas use three gapped boards. Its source snapshot
+SHA-256 is `e630f7536be50105cbab82cbf40a436ebaa28b41e707de347054ffe6c16dfd4e`.
+No revised hardware pixels are claimed yet. A narrowed A5000 request
+`20260813-200955Z-180378` found no capacity and created nothing. Three subsequent default-policy
+attempts (`20260813-201010Z-180511`, `20260813-201129Z-180978` and
+`20260813-201309Z-181545`) created our unique A4500/A4500/L4 Pods but the local attached runner
+process was externally terminated during bootstrap. In each case the repository-native exact-Pod
+recovery command deleted and lookup-confirmed both our Pod and private ephemeral template. Final
+cleanup reports no managed orphan. These are lifecycle records, not visual evidence.
+
+Rejected-run evidence SHA-256 values: run ledger
+`7c1b7e188385b1bcfe99a335356e735757abbb7689c1f306ebc537fac01b0f12`, lifecycle log
+`62ebef0186d1b98c72835e6a8ef3fbbc15c39e35172024855c05b643a5d19985`, worker result
+`245098423080f3b9ec63da515984ab8bbe727cc28602a547b504e1f833e36fb9`, and manifest
+`759012c95198789a35edd4ce8fc510f2bdfcdb7f03b53abf5dbd210f96539fbc`. That rejected atlas had
+429–897 draw calls (4,957 aggregate) and 524,832–1,210,748 triangles. Its Pod and template were
+deletion-confirmed after artifact retrieval. Bulk evidence remains outside Git under
+`/tmp/w1-30-final-8c1d4f7a/runpod/`.
+
+Rough planning estimates after this phase: approach occupation construction about 75%; settlement
+occupation/composition about 68–72%; settlement visible fidelity about 63–66% pending revised
+hardware review; settlement performance repair about 60–65%; whole-W1-30 builder progress roughly
+59–63%. These are builder work estimates only; neither critic-owned 7/10 verdict is claimed.

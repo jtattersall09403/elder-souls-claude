@@ -155,3 +155,16 @@ a Secure NVIDIA L4/Vulkan renderer at 1280x720 DPR 1. Direct inspection confirms
 in Blackrose and stronger near-wall depth in Archon, Soulrest and Stormhold. Package 2 remains
 visually open for empty foreground, Gideon scale/fog, distant Lilmoth readability and procedural
 shared facade grammar. Actual scene draws remain above budget at 429–897.
+
+## Hierarchical settlement-occupation continuation (2026-08-13)
+
+The eight-town Package 2 consumer now builds 56 approach work areas from 810 founded modules:
+two markers, two handcarts, two drying racks and one vendor bay per town. The occupation-only
+delete arm removes every module while preserving all 1,876 regional route parts. Expanded
+construction remains compressed to 782 final render meshes and 40,863 instances.
+
+The initial clean A5000 atlas showed clearer work silhouettes but was rejected for oversized pale
+dry-town bases. Clean `5ad11d22` replaces them with hand-scale cobbles and gapped wet boards.
+Revised native review remains pending because three locally attached RunPod processes terminated
+during bootstrap; exact repository cleanup deletion-confirmed every associated Pod and template.
+Package 2 coverage is structurally GREEN, but the revised visual row remains builder-red/open.
