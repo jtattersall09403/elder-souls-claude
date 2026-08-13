@@ -108,7 +108,7 @@ export class Renderer {
     this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
     this.waterReflectionFrame=-99;
     this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
-    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true };
+    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
     this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
@@ -283,6 +283,11 @@ export class Renderer {
     this.quality[name]=!!enabled;
     if(['shadows','ibl','atmosphere','sky','lighting'].includes(name)) this.sky.setFeature(name,enabled);
     if(name==='shadows') this.three.shadowMap.enabled=!!enabled;
+    if(name==='interiorDressing'&&this.interiorRecord) {
+      const rec=this.interiorRecord;
+      this.interiorId=null;this.interiorKey=null;
+      this.setInteriorRecord(rec);
+    }
     return this.quality[name];
   }
 
@@ -382,7 +387,7 @@ export class Renderer {
     this.interiorRecord = rec;
     const root = this.cells.interior;
     clearInterior(root);
-    this.interiorSummary = buildInterior(root, rec);
+    this.interiorSummary = buildInterior(root, rec, { productionDressing:this.quality.interiorDressing });
     return this.interiorSummary;
   }
 

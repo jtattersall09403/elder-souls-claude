@@ -12,6 +12,7 @@ export const VISUAL_FEATURES = Object.freeze({
   ao: 'material-cavity', ibl: 'sky-hemisphere-environment', sky: 'coupled-sun-weather',
   vfx: 'depth-lit-residue', palette: 'black-marsh-styleboards', silhouette: 'asymmetric-kits',
   architecture: 'settlement-grammars', creature: 'saxhleel-and-region-forms',
+  interiorDressing: 'room-kind-bays-coffers-and-focal-zones',
   composition: 'landmark-depth-layers', weirdness: 'inexplicable-hybrids', mood: 'weather-material-response',
   flora: 'region-canopy-understory', artMaterials: 'wet-chitin-resin-bone-root-clay-salt',
 });
@@ -28,6 +29,7 @@ export const FEATURE_CONSUMERS = Object.freeze({
   sky: ['render/sky.js', 'uSunDir'], vfx: ['render/spell-vfx.js', 'residue'],
   palette: ['render/renderer.js', 'setVisualStyleboards'], silhouette: ['render/exterior.js', 'silhouette'],
   architecture: ['render/exterior.js', 'architecture_kit'], creature: ['render/renderer.js', 'RACE_TINT'],
+  interiorDressing: ['render/interior.js', 'interior-focal-zone'],
   composition: ['world/province.js', 'SIGNATURE_KINDS'], weirdness: ['world/province.js', 'inexplicable_element'],
   mood: ['render/visual-foundation.js', 'board.atmosphere_response'], flora: ['world/province.js', 'props.cover.shape'],
   artMaterials: ['world/province.js', 'dominant_materials'],

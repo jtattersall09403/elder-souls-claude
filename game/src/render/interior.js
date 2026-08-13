@@ -456,6 +456,10 @@ export function buildInterior(root, rec, opts) {
   // can delete that leg on a copy without editing this file. Optional third argument; every
   // existing caller passes two and gets the shipped behaviour.
   const PROP_INSET = !(opts && opts.propInset === false);
+  // Literal delete-the-fix arm for the complete W1-30 room-shell/composition repair. The
+  // renderer exposes this through `setVisualFeature('interiorDressing', false)`, rebuilds the
+  // live room, and therefore produces real shipping pixels with only these additions removed.
+  const PRODUCTION_DRESSING = !(opts && opts.productionDressing === false);
   const summary = {
     id: rec && rec.id ? rec.id : null, name: (rec && rec.name) || null,
     kind: (rec && rec.interior_kind) || null, settlement: (rec && rec.settlement) || null,
@@ -528,6 +532,35 @@ export function buildInterior(root, rec, opts) {
   addWall(bx[0], (bz[0] + bz[1]) / 2, 0.3, D, 'west');
   addWall(bx[1], (bz[0] + bz[1]) / 2, 0.3, D, 'east');
 
+  // A single flat cuboid shell made all 115 rooms read as the same generated box even when the
+  // declared furniture differed. Build shallow architectural bays on the inside face instead:
+  // a lower wainscot, vertical piers and recessed upper panels. They stay inside `bounds_m`, do
+  // not alter collision/stealth volumes, and use the room-kind/settlement palette already chosen
+  // above. Entry walls keep a clear central door lane.
+  if(PRODUCTION_DRESSING){
+  const wallOrdered=!!art?.imperial,bayStep=wallOrdered?2.35:2.8;
+  const dressWall=(axis,side,min,max,fixed)=>{
+    const len=max-min,n=Math.max(2,Math.min(8,Math.floor(len/bayStep))),step=len/n;
+    for(let i=0;i<n;i++){
+      const at=min+(i+.5)*step;
+      if(side===entry&&Math.abs(at-(min+max)/2)<DOOR_W*.72)continue;
+      const x=axis==='x'?at:fixed,z=axis==='x'?fixed:at;
+      const panel=box(axis==='x'?step-.30:.065,Math.min(1.18,H*.36),axis==='x'?.065:step-.30,i%3===0?P.cloth:P.wood);
+      panel.position.set(x,by[0]+.70,z);panel.name=`interior-wall-bay:${rec.interior_kind||'room'}`;panel.receiveShadow=true;root.add(panel);
+      const pier=box(axis==='x'?.09:.12,H*.64,axis==='x'?.12:.09,wallOrdered?P.stone:P.wood);
+      pier.position.set(axis==='x'?min+i*step:fixed,by[0]+H*.42,axis==='x'?fixed:min+i*step);pier.name='interior-wall-pier';pier.castShadow=true;root.add(pier);
+      if(i%2===((h>>>3)&1)){
+        const inset=box(axis==='x'?Math.min(.72,step*.42):.045,Math.min(.52,H*.17),axis==='x'?.045:Math.min(.72,step*.42),P.accent);
+        inset.position.set(x,by[0]+H*.69,z);inset.name='interior-upper-inset';root.add(inset);
+      }
+    }
+  };
+  dressWall('x','north',bx[0]+.22,bx[1]-.22,bz[0]+.18);
+  dressWall('x','south',bx[0]+.22,bx[1]-.22,bz[1]-.18);
+  dressWall('z','west',bz[0]+.22,bz[1]-.22,bx[0]+.18);
+  dressWall('z','east',bz[0]+.22,bz[1]-.22,bx[1]-.18);
+  }
+
   // Continuous base and cornice courses give every room a readable wall/floor/ceiling junction;
   // settlement palettes make these masonry in ordered towns and lashed timber elsewhere.
   for(const y of [by[0]+.12,by[1]-.16]){
@@ -541,6 +574,12 @@ export function buildInterior(root, rec, opts) {
   const beams = Math.max(2, Math.min(9, Math.round(D / 3)));
   for (let i = 0; i < beams; i++) {
     part(root, box(W, 0.28, 0.28, P.wood), (bx[0] + bx[1]) / 2, by[1] - 0.32, bz[0] + (i + 0.5) * (D / beams));
+  }
+  // Recessed ceiling fields between the structural beams break the flat lid and give practical
+  // light a readable sequence of highlights/shadows while preserving full head clearance.
+  if(PRODUCTION_DRESSING)for(let i=0;i<beams-1;i++){
+    const z=bz[0]+(i+1)*(D/beams),coffer=box(W*.76,.055,Math.max(.24,D/beams*.54),i%2?P.roof:P.cloth);
+    coffer.position.set((bx[0]+bx[1])/2,by[1]-.205,z);coffer.name='interior-ceiling-coffer';coffer.receiveShadow=true;root.add(coffer);
   }
   // Settlement grammar remains visible after the door closes: asymmetric braces at the shell
   // junction use the town's own structural material and cadence rather than generic decoration.
@@ -682,6 +721,48 @@ export function buildInterior(root, rec, opts) {
     root.add(obj);
     summary.props_built++;
     ci++;
+  }
+
+  // Room-kind focal composition. Authored prop lists supply the interactable/semantic objects;
+  // these bounded architectural groupings give them a place to belong instead of scattering
+  // every room around the same central hearth. They are presentation-only construction using
+  // existing materials, fully inside the declared bounds, deterministic from the record id.
+  if(PRODUCTION_DRESSING){
+  const focal=new THREE.Group();focal.name=`interior-focal-zone:${rec.interior_kind||'dwelling'}`;
+  const fx=(bx[0]+bx[1])/2,fz=bz[0]+Math.min(D*.22,2.25),fy=by[0];
+  const put=(m,x,y,z,ry=0)=>part(focal,m,x,y,z,ry);
+  if(['shop','guild','travel'].includes(rec.interior_kind)){
+    put(craftedBox(Math.min(3.6,W*.48),.14,.82,P.wood),0,.92,0);
+    for(const sx of [-1,1])put(craftedBox(.16,.92,.68,P.wood),sx*Math.min(1.55,W*.20),.46,0);
+    put(box(Math.min(3.3,W*.44),.10,.12,P.accent),0,1.13,-.34);
+    for(let i=-2;i<=2;i++)put(i%2?ico(.10,1,P.accent):cyl(.09,.12,.22,8,P.stone),i*Math.min(.46,W*.065),1.12,.06);
+    const canopy=box(Math.min(4.1,W*.57),.10,.76,P.cloth);canopy.rotation.z=((h&1)?1:-1)*.035;put(canopy,0,Math.min(H-.45,2.45),-.05);
+  }else if(['temple','shrine','hall'].includes(rec.interior_kind)){
+    for(let s=0;s<3;s++){const step=box(Math.min(W*.48,3.8)-s*.35,.16,.72-s*.10,s===2?P.accent:P.stone);put(step,0,.08+s*.14,s*.25);}
+    put(craftedBox(Math.min(1.55,W*.22),.82,.70,P.stone),0,.72,.26);
+    const icon=ico(.34,2,P.accent);icon.scale.set(.72,1.35,.55);put(icon,0,1.42,.23);
+    for(const sx of [-1,1]){put(cyl(.055,.075,1.18,8,P.metal),sx*Math.min(1.15,W*.17),.59,.22);put(flameBlade(.055,.22,sx*.035,P.flameCore),sx*Math.min(1.15,W*.17),1.17,.22);}
+  }else if(rec.interior_kind==='tavern'){
+    const bar=B.counter(P);bar.scale.set(Math.min(1.32,W/4.2),1,1);put(bar,0,0,0);
+    for(let i=-2;i<=2;i++)put(cyl(.07,.09,.18,8,P.metal),i*.28,1.10,.08);
+    for(const sx of [-1,1])put(B.stool(P,.50),sx*.95,0,.95,sx*.12);
+    put(B.shelves(P,3,Math.min(2.8,W*.40)),0,.35,-.48);
+  }else if(['prison','hold','gate'].includes(rec.interior_kind)){
+    put(box(Math.min(W*.44,3.2),.18,.72,P.stone),0,.09,.15);
+    for(let i=-2;i<=2;i++)put(cyl(.035,.035,Math.min(H*.62,2.15),6,P.metal),i*Math.min(.56,W*.075),Math.min(H*.31,1.08),-.18);
+    put(box(Math.min(W*.42,3.0),.10,.10,P.metal),0,Math.min(H*.58,1.95),-.18);
+    for(const sx of [-1,1])put(B.sack(P),sx*Math.min(1.15,W*.17),0,.68,sx*.24);
+  }else{
+    const textile=box(Math.min(2.7,W*.40),Math.min(1.28,H*.37),.055,P.cloth);put(textile,0,1.35,-.42);
+    put(B.bed(P,Math.min(1.18,W*.22),Math.min(2.05,D*.22)),0,0,.46,Math.PI/2);
+    for(const sx of [-1,1]){put(B.chest(P,.62,.42),sx*Math.min(1.22,W*.18),0,.10);put(B.tiny(P),sx*Math.min(1.22,W*.18),.48,.10);}
+  }
+  focal.position.set(fx,fy,fz);focal.rotation.y=((h>>>9)%5-2)*.025;focal.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});root.add(focal);
+  summary.focal_zone=rec.interior_kind||'dwelling';
+
+  // A secondary loose cluster near the opposite wall stops long rooms becoming empty runways.
+  // It deliberately avoids creating simulation containers or lights.
+  if(D>7.5&&W>5.4){const cluster=new THREE.Group();cluster.name='interior-secondary-cluster';const cz=bz[1]-Math.min(1.65,D*.18),cx=bx[0]+Math.min(1.55,W*.20);cluster.position.set(cx,by[0],cz);cluster.rotation.y=((h>>>13)&1)?-.28:.34;const basket=B.basket(P),sacks=B.sack(P);basket.position.set(-.32,0,0);sacks.position.set(.30,0,.12);cluster.add(basket,sacks);cluster.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});root.add(cluster);}
   }
 
   // ---- verticality — RI-WLD07 and RI-WLD13 N5 -------------------------------------------------
