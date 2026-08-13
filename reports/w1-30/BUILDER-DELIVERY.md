@@ -653,3 +653,46 @@ gate is GREEN with a 0.623 m worst-case remaining clearance after that radius; i
 recomputation matches the shipping metadata for every site. Deleting occupation still removes all
 810 modules while retaining all 1,876 road parts. Revised native pixels remain open as recorded
 above; this phase is traversal/placement safety, not a visual verdict.
+
+## Final-builder regional geology hierarchy (2026-08-13)
+
+The shipping province now carries a camera-following, world-lattice-anchored geology layer rather
+than relying only on sparse ordinary rock scatter. Each of the 13 regions builds its own authored
+construction grammar—talus, weathered slabs, root buttresses, salt fins, basalt or wetland forms—
+with broader irregular clusters, terrain-normal alignment, shoreline seating and settlement
+clearance. The focused construction census is GREEN with 13 distinct region signatures and 788
+instances across the full population. Each region costs at most one additional instanced draw.
+Deleting only this layer returns zero geology instances without removing ordinary terrain or cover.
+
+Direct hardware review drove three corrections. The initial atlas exposed oversized polyhedral
+rocks, repetitive rings and nearly empty Salt Hills and Stone Wastes frames; ordinary rocks were
+re-founded as low talus and cluster profiles were widened and reduced. A later control exposed
+steep-slope boxes in Valus Ridge, so all geology now follows the drawn mesh normal and coastal forms
+seat against the water/ground junction. Finally, coastal administrative centroids had produced
+misleading open-water views. The atlas now finds a nearby region-owned dry focus and composes
+coastal cameras from the water side looking landward.
+
+The final accepted causal pair is clean commit `4ce230384df35f5dfcb49fafad8a4e6eea5170a6`
+(source snapshot SHA-256 `87d6ecbe51ac11125706e7c27bec2f28c5a3dfd6e5ced3bbc391e7d976c06dc5`),
+RunPod run `20260813-210549Z-206782`, Secure Cloud Pod `o1bl26l7lrxcm7`, NVIDIA RTX A5000 at
+$0.27/hour, driver 580.159.04, Chromium 141.0.7390.37 and hardware NVIDIA Vulkan 1.4.312. Both
+1280x720 DPR-1 Crimson Coast frames use seed 3030 and the same water-side-looking-landward camera.
+The live frame has 23 geology instances and SHA-256
+`85da4911c58741981924dfd506a61db9a742cddacace549805e78e5f145ff3b3`; the delete frame reports
+zero and hashes to `5670bbda6f109a727b60e1daf6d8611ad8a51a98896a8d430a0005e1ed7e55f4`.
+Run ledger, lifecycle, worker, live-manifest and delete-manifest SHA-256 values are respectively
+`4c0f066e0849a63928312f1015c611a9b7cb9b53f013f80ac233979ba690f880`,
+`0fe3f509d3475235c1f1d0581f8cba35d84f05a8b9d96adabe3e229d90f1220d`,
+`356915afec3f604b072cf641f2befc56615d6d4ff2604854b87a5230cd0f78df`,
+`f5e9aa23b88a89af445eb0bd2287ff2cc7e09bcf82f3ad5a788b2061178884d7` and
+`6204e683c8576c201668d911ce1b749e17eedc86a704614f2e26ad2ade64379f`.
+Artifacts were retrieved before Pod and ephemeral-template deletion were lookup-confirmed; the
+subsequent cleanup dry-run found no managed orphan.
+
+This remains builder-red. The final pair makes the geology contribution visible but subtle;
+Crimson Coast retains broad directional water bands, hard terrain/water junctions and a large
+smooth background hill. Salt Hills and Stone Wastes remain under-composed, and the low-poly flora
+and terrain silhouettes do not yet approach the modern reference bar. Rough builder planning
+estimates: regional geology construction about 65%, atlas truthfulness about 85%, regional visible
+fidelity about 55–60%, and whole-W1-30 builder progress roughly 60–64%. These are work estimates,
+not either critic-owned 7/10 verdict.

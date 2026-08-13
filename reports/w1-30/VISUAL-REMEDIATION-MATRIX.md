@@ -281,3 +281,23 @@ The follow-up footprint audit found one Soulrest cluster 0.192 m inside its cons
 envelope. Shipping placement now searches both sides and bounded along-route offsets. All 56 sites
 are clear after a 1.45 m feature radius, with 0.623 m minimum remaining clearance and six safer-side
 selections. This closes the placement collision defect but not the pending revised GPU pixel row.
+
+## Regional geology hierarchy / native causal control (2026-08-13)
+
+All 13 shipped regions now consume distinct medium-scale geology construction through one bounded
+instanced draw per region. The focused census builds 788 instances, observes 13 distinct geometry
+signatures and returns zero when the geology-only repair is deleted. Placement is world-lattice
+anchored, terrain-normal aligned, settlement-cleared and shoreline-seated. Ordinary scatter rocks
+are now low founded talus instead of the oversized polyhedral units rejected during the first
+hardware atlas.
+
+The final clean native control is commit `4ce23038`, RunPod `20260813-210549Z-206782`, Secure
+NVIDIA RTX A5000 at $0.27/hour, driver 580.159.04, Chromium 141.0.7390.37 and NVIDIA Vulkan
+1.4.312. At 1280x720 DPR 1 and seed 3030, the matched Crimson Coast live/delete frames use the
+same water-side-looking-landward camera. Live records 23 geology instances and pixel SHA-256
+`85da4911c58741981924dfd506a61db9a742cddacace549805e78e5f145ff3b3`; delete records zero and
+hashes to `5670bbda6f109a727b60e1daf6d8611ad8a51a98896a8d430a0005e1ed7e55f4`.
+The pair was inspected directly at native size. It proves consumption but remains builder-red:
+the visible delta is subtle, the coast still reads as broad bands, the terrain/water junction is
+hard, and the background hill is too smooth. Pod and template deletion were confirmed after
+artifact retrieval, and the final cleanup dry-run found no managed orphan.
