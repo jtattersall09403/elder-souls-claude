@@ -284,7 +284,10 @@ export class TouchInput {
       // the next fixed step. Never per rendered frame (PL6 / M-P8).
       const dx = x - p.lx, dy = y - p.ly;
       p.lx = x; p.ly = y;
-      this.pipe.addLook(dx * this.cfg.camera.deg_per_css_px_yaw, -dy * this.cfg.camera.deg_per_css_px_pitch);
+      // Camera input uses the opposite sign to screen coordinates: dragging the view right
+      // turns right, and dragging it up raises the view. Keep both axes explicit here so the
+      // touch gesture and the right analogue stick share the same direction contract.
+      this.pipe.addLook(-dx * this.cfg.camera.deg_per_css_px_yaw, dy * this.cfg.camera.deg_per_css_px_pitch);
     }
   }
 

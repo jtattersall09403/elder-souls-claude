@@ -539,7 +539,12 @@ export class GamepadRouter {
     const lx = (st.snap.axes[prof.axes.look_x] || 0) - bias[prof.axes.look_x];
     const ly = (st.snap.axes[prof.axes.look_y] || 0) - bias[prof.axes.look_y];
     const d = shapeRightStick(lx, ly, rs);
-    if (d[0] || d[1]) this.pipe.addLook(d[0], this.invertPitch ? -d[1] : d[1]);
+    if (d[0] || d[1]) {
+      // The camera contract matches a direct touch drag: right turns right and up looks up.
+      // Gamepad axes use +y down, hence the default (non-inverted) path reverses both of the
+      // old signs. `invertPitch` remains available as an accessibility preference.
+      this.pipe.addLook(-d[0], this.invertPitch ? -d[1] : d[1]);
+    }
   }
 
   // ---- G2.3 the diegetic calibration sequence ----------------------------------------------

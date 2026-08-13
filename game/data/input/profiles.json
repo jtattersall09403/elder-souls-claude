@@ -276,7 +276,7 @@
       "curve_exponent": 2.0,
       "deg_per_frame_yaw_at_full": 3.0,
       "deg_per_frame_pitch_at_full": 2.0,
-      "invert_pitch_default": true,
+      "invert_pitch_default": false,
       "deadzone_conflict_note": "RI-JRN04 \u00a7D binds the right-stick inner deadzone at 0.10 and the curve at m'^2.0. RI-CAM02 \u00a7A binds 0.15/0.95/^2.0 fully, including the rescale band; RI-JRN04's row gives an inner deadzone but no outer and no rescale band for this stick, and RI-JRN04's own header cedes camera behaviour to RI-CAM02. The exponent, which is the part RI-JRN04 \u00a7D calls 'the curve', agrees. RI-CAM02's fully specified band is used and RI-JRN04 M-P8's threshold (monotonic, matches sign*m'^2 within 5%) is met against the same m' the build computes. Recorded as corpus debt."
     },
     "trigger": {

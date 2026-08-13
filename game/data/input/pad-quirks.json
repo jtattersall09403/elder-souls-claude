@@ -33,9 +33,9 @@
         "16": 12
       },
       "dpad_from_hat_axis": 9,
-      "axis_permutation": { "0": 0, "1": 1, "2": 2, "3": 5 },
-      "analog_trigger_axes": { "6": 3, "7": 4 },
-      "note": "The DirectInput/HID report order every DualSense-like pad uses: raw 0 is the WEST face button (Square), raw 1 SOUTH (Cross), raw 2 EAST (Circle), raw 3 NORTH (Triangle). Standard index 0 is SOUTH, 1 EAST, 2 WEST, 3 NORTH, so the face cluster is permuted and nothing else on the shoulder row is. Raw 12 is the PS/Guide key and lands on standard 16, which is unbound always. The D-pad arrives as a hat axis in [-1,1] with 8 detents rather than as buttons 12-15. Triggers additionally report on axes 3 and 4 in [-1,1]; the button `.value` is preferred and the axes are the fallback for a descriptor whose trigger buttons are digital.",
+      "axis_permutation": { "0": 0, "1": 1, "2": 2, "3": 3 },
+      "analog_trigger_axes": { "6": 4, "7": 5 },
+      "note": "The GameSir HID report exposes the two sticks as raw axes 0/1 and 2/3, with the analogue triggers following on axes 4/5. Keeping those channels separate is essential: treating raw right-stick Y as the left trigger makes vertical camera movement fire parry. Raw 0 is the WEST face button, raw 1 SOUTH, raw 2 EAST and raw 3 NORTH, so the face cluster is permuted to the W3C order. Raw button 12 is Guide and lands on standard 16, which is always unbound. The D-pad arrives as a hat axis in [-1,1] with 8 detents rather than as buttons 12-15.",
       "provenance": "canonical-recall, confidence medium. RI-JRN04 §A's rows came from vendor and review pages that 403'd to direct fetch; this permutation is the standard HID gamepad report order, not a measurement of this pad. RI-JRN04 §C G2.3 is the guard: an id that does not match, or one that matches and still produces a map the player disagrees with, reaches the calibration sequence."
     },
     {
