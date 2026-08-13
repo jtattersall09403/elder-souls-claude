@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import * as THREE from '../../game/vendor/three/three.module.js';
-import {buildSettlementExterior,planSettlement} from '../../game/src/render/exterior.js';
+import {buildSettlementExterior,planSettlement,settlementFootprintClearance} from '../../game/src/render/exterior.js';
 
 const ROOT=path.resolve(import.meta.dirname,'../..');
 const read=p=>JSON.parse(fs.readFileSync(path.join(ROOT,p),'utf8'));
@@ -31,7 +31,7 @@ const counts=root=>{
   return out;
 };
 const occupationModules=c=>[...occupationLabels].reduce((n,k)=>n+(c[k]||0),0);
-let liveClusters=0,liveModules=0,deletedModules=0,retainedRouteParts=0;
+let liveClusters=0,liveModules=0,deletedModules=0,retainedRouteParts=0,minimumClearance=Infinity,oppositeSideSelections=0;
 for(const f of list('game/data/world/settlements')){
   const doc=read(`game/data/world/settlements/${f}`),plan=planSettlement(doc,interiors);
   const live=new THREE.Group(),deleted=new THREE.Group();
@@ -43,6 +43,14 @@ for(const f of list('game/data/world/settlements')){
   const deletedRoute=wet?(b['arrival-board']||0):(b['arrival-cobble']||0);
   check(summary.public_realm.occupation_enabled===true,`${doc.id}: occupation consumer disabled`);
   check(summary.public_realm.approach_occupation===7,`${doc.id}: clusters ${summary.public_realm.approach_occupation}/7`);
+  check(summary.public_realm.occupation_sites?.length===7,`${doc.id}: occupation sites ${summary.public_realm.occupation_sites?.length||0}/7`);
+  for(let siteIndex=0;siteIndex<(summary.public_realm.occupation_sites||[]).length;siteIndex++){
+    const site=summary.public_realm.occupation_sites[siteIndex],recomputed=settlementFootprintClearance(plan,site.x,site.z,1.45);
+    check(site.clearance>=.15,`${doc.id}: occupation site ${siteIndex} clearance ${site.clearance}m`);
+    check(Math.abs(recomputed-site.clearance)<.002,`${doc.id}: occupation site ${siteIndex} clearance metadata drift`);
+    minimumClearance=Math.min(minimumClearance,site.clearance);
+    const preferred=siteIndex%2?1:-1;if(site.side!==preferred)oppositeSideSelections++;
+  }
   const expectedMats=wet?21:63,expectedModules=wet?75:117;
   check(modules===expectedModules,`${doc.id}: occupation modules ${modules}/${expectedModules}`);
   check((a['approach-work-mat']||0)===expectedMats,`${doc.id}: founded work mat parts ${(a['approach-work-mat']||0)}/${expectedMats}`);
@@ -55,7 +63,7 @@ for(const f of list('game/data/world/settlements')){
   check(occupationModules(b)===0,`${doc.id}: delete arm retained occupation modules`);
   check(liveRoute===deletedRoute,`${doc.id}: occupation delete arm changed route population`);
   liveClusters+=summary.public_realm.approach_occupation;liveModules+=modules;deletedModules+=removed;retainedRouteParts+=deletedRoute;
-  perSettlement.push({id:doc.id,clusters:summary.public_realm.approach_occupation,modules,
+  perSettlement.push({id:doc.id,clusters:summary.public_realm.approach_occupation,modules,minimumClearance:summary.public_realm.occupation_clearance,
     families:{markers:a['approach-marker']||0,carts:a['approach-cart-deck']||0,racks:a['approach-rack-beam']||0,vendors:a['approach-vendor-counter']||0},
     routePartsAfterDelete:deletedRoute});
 }
@@ -65,7 +73,7 @@ check(liveModules===810,`occupation modules ${liveModules}/810`);
 check(deletedModules===810,`delete arm removed ${deletedModules}/810 modules`);
 check(retainedRouteParts===1876,`delete arm route population ${retainedRouteParts}/1876`);
 const report={schema:'elder-souls/w1-30-settlement-occupation@1',result:failures.length?'RED':'GREEN',
-  population:{settlements:perSettlement.length,clusters:liveClusters,modules:liveModules,families:['marker','handcart','drying-rack','vendor-bay']},
+  population:{settlements:perSettlement.length,clusters:liveClusters,modules:liveModules,families:['marker','handcart','drying-rack','vendor-bay'],minimumClearance:+minimumClearance.toFixed(3),oppositeSideSelections},
   deleteControl:{occupationModulesRemoved:deletedModules,regionalRoutePartsRetained:retainedRouteParts},perSettlement,failures};
 console.log(JSON.stringify(report,null,2));
 if(failures.length)process.exit(1);

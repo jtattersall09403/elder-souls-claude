@@ -1833,6 +1833,19 @@ export function settlementApproach(plan, clearance = true) {
     candidate:selected.bearing,consumer:'settlement-approach-clearance'};
 }
 
+/** Conservative clearance from a point-sized public-realm feature to shipping building bounds. */
+export function settlementFootprintClearance(plan,x,z,margin=0){
+  let min=Infinity;
+  for(const b of plan.buildings){
+    const yaw=(b.yaw_deg||0)*Math.PI/180,c=Math.cos(yaw),s=Math.sin(yaw),dx=x-b.x,dz=z-b.z;
+    const lx=dx*c-dz*s,lz=dx*s+dz*c,fp=b.drawn_footprint_m||b.footprint_m||[5,5];
+    const qx=Math.abs(lx)-fp[0]*.5,qz=Math.abs(lz)-fp[1]*.5;
+    const d=qx<=0&&qz<=0?Math.max(qx,qz)-margin:Math.hypot(Math.max(qx,0),Math.max(qz,0))-margin;
+    min=Math.min(min,d);
+  }
+  return min;
+}
+
 /**
  * Build a whole settlement's exterior into `root`.
  *
@@ -1980,6 +1993,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // gaps even when their local lengths nominally matched the sampling interval.
   const approachStep=approachR/14;
   const occupiedBays=[1,3,5,7,9,11,13];
+  const occupationSites=[];
   let approachOccupation=0;
   for(let i=0;i<14;i++){
     const t=(i+.5)/14;
@@ -2027,8 +2041,19 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
     const occupationIndex=occupiedBays.indexOf(i);
     if(occupiedRealm&&occupationIndex>=0){
-      const side=occupationIndex%2?1:-1,role=occupationIndex%4;
-      const ox=x+Math.cos(yaw)*side*2.35,oz=z-Math.sin(yaw)*side*2.35;
+      const preferredSide=occupationIndex%2?1:-1,role=occupationIndex%4;
+      // The route itself is footprint-clear, but a cart or rack beside it has a larger envelope.
+      // Search near-to-far on the alternating side first, then its opposite, and retain the first
+      // 1.45 m-radius site with real air around authored construction. Dense towns fall back to
+      // the widest available site and expose the negative clearance to the fail-closed gate.
+      const sites=[];
+      for(const along of [0,-1.5,1.5,-3,3])for(const offset of [2.35,3.10,3.85,4.60])for(const side of [preferredSide,-preferredSide]){
+        const sx=x+Math.cos(yaw)*side*offset+Math.sin(yaw)*along,sz=z-Math.sin(yaw)*side*offset+Math.cos(yaw)*along;
+        sites.push({x:sx,z:sz,side,offset,along,clearance:settlementFootprintClearance(plan,sx,sz,1.45)});
+      }
+      const admissible=sites.filter(s=>s.clearance>=.15).sort((a,b)=>Math.abs(a.along)-Math.abs(b.along)||a.offset-b.offset||(a.side===preferredSide?-1:1)-(b.side===preferredSide?-1:1)||b.clearance-a.clearance);
+      const site=admissible[0]||sites.sort((a,b)=>b.clearance-a.clearance||Math.abs(a.along)-Math.abs(b.along)||a.offset-b.offset)[0];
+      const side=site.side,ox=site.x,oz=site.z;
       const oy=Number.isFinite(groundY(ox,oz))?groundY(ox,oz):y;
       // Give each occupied bay a founded work mat. It prevents carts, racks and goods from
       // reading as scattered primitives on an otherwise untouched terrain sheet.
@@ -2084,6 +2109,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
         add(awning,ox,oy+1.93,oz,yaw,'approach-vendor-awning');
         for(let k=0;k<4;k++)add(ico(.14+(k&1)*.04,1,k&1?P.accent:P.stone),ox+Math.cos(yaw)*(k-1.5)*.38,oy+.94,oz-Math.sin(yaw)*(k-1.5)*.38,0,'approach-vendor-wares');
       }
+      occupationSites.push({bay:i,role:['marker','handcart','drying-rack','vendor'][role],x:+ox.toFixed(3),z:+oz.toFixed(3),side,offset:site.offset,along:site.along,clearance:+site.clearance.toFixed(3)});
       approachOccupation++;
     }
   }
@@ -2131,7 +2157,7 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     }
   }
   root.add(street);
-  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,regional_route:regionalRealm,occupation_enabled:occupiedRealm,approach,consumer:'settlement-public-realm'};
+  out.public_realm={centre:[+centreX.toFixed(2),+cy.toFixed(2),+centreZ.toFixed(2)],causeways:Math.ceil(plan.buildings.length/stride),features:featureCount,approach_occupation:approachOccupation,occupation_sites:occupationSites,occupation_clearance:occupationSites.length?+Math.min(...occupationSites.map(s=>s.clearance)).toFixed(3):null,regional_route:regionalRealm,occupation_enabled:occupiedRealm,approach,consumer:'settlement-public-realm'};
   out.kit_ids = [...kitSeen].sort();
   if(opts.settlementBatch){
     out.logical_meshes=out.meshes;
