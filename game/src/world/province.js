@@ -919,7 +919,7 @@ export class Province {
     const push = (kind, geoKind, mat, scale, yOff, tilt, rotSeed) => {
       const key = `${tag}:${kind}:${geoKind}:${ri}`;
       let b = buckets.get(key);
-      if (!b) { b = { kind, ri, mat, geo: this._geo(geoKind, r), xf: [] }; buckets.set(key, b); }
+      if (!b) { b = { kind, geoKind, ri, mat, geo: this._geo(geoKind, r), xf: [] }; buckets.set(key, b); }
       if (b.xf.length >= cap[kind]) return false;
       q.setFromAxisAngle(up, noise2(x, z, rotSeed) * Math.PI * 2);
       if (tilt) { side.set(Math.cos(tilt.a), 0, Math.sin(tilt.a)); qt.setFromAxisAngle(side, tilt.t); q.multiply(qt); }
@@ -1062,7 +1062,11 @@ export class Province {
       const im = new THREE.InstancedMesh(b.geo, b.mat, b.xf.length);
       for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
       im.instanceMatrix.needsUpdate = true;
-      im.castShadow = b.kind !== 'under';
+      // Vegetation receives the fitted sun shadow but does not submit its branch/leaf population
+      // into that atlas. Actors, architecture, landmarks, rocks and structural props remain
+      // casters, preserving contact and terrain grounding without a second 800k-triangle plant
+      // render. This only changes the shadow pass; visible near plants retain full geometry.
+      im.castShadow = false;
       im.receiveShadow = true;
       im.name = `near-${b.kind}:${f.regions[b.ri].id}`;
       if(b.kind==='canopy')this._registerOccludable(im,b.xf);
@@ -2073,7 +2077,12 @@ export class Province {
       const im = new THREE.InstancedMesh(b.geo, b.mat, b.xf.length);
       for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
       im.instanceMatrix.needsUpdate = true;
-      im.castShadow = b.kind !== 'under' && b.kind !== 'cover';
+      // Tile scatter begins outside the rebuilt 70 m near disc and extends over the full 5x5
+      // resident set. Submitting its tens of thousands of distant instances to a fitted 120 m
+      // sun atlas cost 18 ms on the T4 while resolving no stable silhouette at that distance.
+      // The near disc below carries the same regional canopy forms as real casters; architecture,
+      // actors and landmarks remain casters through their own production builders.
+      im.castShadow = false;
       im.receiveShadow = true;
       im.name = `${b.kind}:${this.field.regions[b.ri].id}`;
       if(b.kind==='canopy')this._registerOccludable(im,b.xf);

@@ -108,7 +108,7 @@ export class Renderer {
     this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
     this.waterReflectionFrame=-99;
     this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
-    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
+    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true };
     this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
@@ -860,8 +860,14 @@ export class Renderer {
       this.vfx.setSize(this.canvas.width, this.canvas.height);
     }
     if (this.vfx) {
-      this.vfx.prepass(this.camera);
       this.vfx.update(sim, this.sky, this.camera);
+      // Build the live effect buffers before deciding whether their depth/refraction source is
+      // needed. The former order rendered the entire province into the VFX target every frame,
+      // even when update() subsequently reported zero particles, systems, decals and meshes.
+      // Active spells retain the exact native depth/colour prepass; idle ordinary play no longer
+      // pays a second full-scene render for an empty group.
+      const v=this.vfx.stats;
+      if(v.particles>0||v.decals>0||v.meshes>0)this.vfx.prepass(this.camera);
     }
 
     this.three.info.reset();
@@ -915,7 +921,7 @@ export class Renderer {
   }
 
   _renderWaterReflection(frame=0){
-    if(this.cell!=='province'||!this.field){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
+    if(!this.quality.waterReflection||this.cell!=='province'||!this.field){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
     const points=[this.camera.position,this._look];
     for(let i=1;i<=6;i++)points.push(this.camera.position.clone().lerp(this._look,i/7));
     let waterY=null;for(const p of points){const y=this.field.waterSurfaceAt(p.x,p.z);if(y!==null&&y!==undefined){waterY=y;break;}}
