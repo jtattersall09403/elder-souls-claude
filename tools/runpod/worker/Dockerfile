@@ -17,5 +17,5 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# The CLI supplies worker/ssh-entrypoint.sh and SSH_PUBLIC_KEY per Pod, so this image does not bake
-# an API key, SSH public key, or template-specific startup command into a layer.
+# Preserve the inherited /start.sh CMD: it starts the image's SSH service when PUBLIC_KEY is set.
+# The CLI injects a per-run key, so this image does not bake credentials into a layer.

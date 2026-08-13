@@ -144,6 +144,56 @@ test('RunPod REST uses bearer auth and delete treats 404 as already cleaned', as
   assert.equal(calls[0].options.headers.Authorization, 'Bearer unit-test-secret');
 });
 
+test('GraphQL GPU create explicitly requests managed SSH without retrying the mutation', async () => {
+  const calls = [];
+  const client = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    fetchImpl: async (url, options) => {
+      calls.push({ url, options });
+      return new Response(JSON.stringify({
+        data: { podFindAndDeployOnDemand: { id: 'pod-gql', costPerHr: 0.19, desiredStatus: 'RUNNING' } },
+      }), { status: 200, headers: { 'content-type': 'application/json' } });
+    },
+  });
+  const pod = await client.createGpuPodWithSsh({
+    name: 'managed-ssh', templateId: 'template-test', cloudType: 'COMMUNITY',
+    gpuCount: 1, gpuTypeId: 'NVIDIA RTX A4500', supportPublicIp: true,
+    ports: ['22/tcp'], containerDiskInGb: 30, volumeInGb: 0,
+    minVCPUPerGPU: 4, minRAMPerGPU: 16,
+    env: { SSH_PUBLIC_KEY: 'ssh-ed25519 fixture', PUBLIC_KEY: 'ssh-ed25519 fixture' },
+  });
+  assert.equal(calls.length, 1);
+  assert.match(calls[0].url, /^https:\/\/api\.runpod\.io\/graphql\?api_key=/);
+  const request = JSON.parse(calls[0].options.body);
+  assert.equal(request.variables.input.startSsh, true);
+  assert.equal(request.variables.input.gpuTypeId, 'NVIDIA RTX A4500');
+  assert.equal(request.variables.input.ports, '22/tcp');
+  assert.equal(request.variables.input.dockerArgs, undefined);
+  assert.deepEqual(request.variables.input.env, [
+    { key: 'SSH_PUBLIC_KEY', value: 'ssh-ed25519 fixture' },
+    { key: 'PUBLIC_KEY', value: 'ssh-ed25519 fixture' },
+  ]);
+  assert.equal(pod.id, 'pod-gql');
+  assert.equal(pod.gpu.id, 'NVIDIA RTX A4500');
+});
+
+test('GraphQL managed-SSH capacity errors are definite non-creation', async () => {
+  const client = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    fetchImpl: async () => new Response(JSON.stringify({
+      errors: [{ message: 'There are no longer any instances available with the requested specifications.' }],
+    }), { status: 200, headers: { 'content-type': 'application/json' } }),
+  });
+  await assert.rejects(() => client.createGpuPodWithSsh({
+    gpuTypeId: 'NVIDIA RTX A4500', gpuCount: 1, cloudType: 'COMMUNITY',
+    containerDiskInGb: 30, volumeInGb: 0,
+  }), (error) => (
+    error.uncertain === false
+    && error.creationOutcome === 'definite-non-creation'
+    && error.creationFailureKind === 'capacity'
+  ));
+});
+
 test('ambiguous create failures are marked uncertain and are never automatically retried', async () => {
   let calls = 0;
   const client = new RunPodClient({
@@ -338,7 +388,7 @@ test('successful provision completes SSH, bootstrap, artifact, deletion, and con
   const client = {
     async getTemplate() { return { id: 'template-test', name: 'fixture', imageName: 'runpod/base:test', ports: ['22/tcp'], volumeInGb: 0, containerDiskInGb: 30 }; },
     async listGpuOffers() { return [offer('first', 'COMMUNITY', 0.14), offer('allowed', 'COMMUNITY', 0.15)]; },
-    async createPod(input) {
+    async createGpuPodWithSsh(input) {
       createRequest = input;
       creates.push(input);
       return createdPods[creates.length - 1];
@@ -379,10 +429,10 @@ test('successful provision completes SSH, bootstrap, artifact, deletion, and con
   assert.deepEqual([...deleted].sort(), ['pod-lifecycle', 'pod-unready']);
   assert.equal(creates.length, 2);
   assert.notEqual(creates[0].name, creates[1].name);
-  assert.deepEqual(creates[1].gpuTypeIds, ['allowed']);
-  assert.deepEqual(createRequest.dockerEntrypoint, ['bash', '-lc']);
-  assert.match(createRequest.dockerStartCmd[0], /exec \/usr\/sbin\/sshd -D -e/);
+  assert.equal(creates[1].gpuTypeId, 'allowed');
+  assert.equal(createRequest.dockerArgs, undefined);
   assert.equal(createRequest.env.SSH_PUBLIC_KEY, 'ssh-ed25519 fixture');
+  assert.equal(createRequest.env.PUBLIC_KEY, 'ssh-ed25519 fixture');
   assert.equal(processCalls.some(([command]) => command === 'ssh'), true);
   assert.equal(processCalls.some(([command]) => command === 'scp'), true);
   assert.match(fs.readFileSync(path.join(scratch, 'lifecycle.log'), 'utf8'), /deletion confirmed/i);
