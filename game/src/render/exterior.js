@@ -2032,9 +2032,22 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
       const oy=Number.isFinite(groundY(ox,oz))?groundY(ox,oz):y;
       // Give each occupied bay a founded work mat. It prevents carts, racks and goods from
       // reading as scattered primitives on an otherwise untouched terrain sheet.
-      const mat=wetTown?box(2.8,.09,2.0,P.wood):ico(1.05,1,P.stone);
-      if(!wetTown)mat.scale.set(1.6,.07,1.05);
-      add(mat,ox,oy+.035,oz,yaw,'approach-work-mat');
+      if(wetTown){
+        for(const lane of [-1,0,1]){
+          const mat=box(.72,.09,2.0,(lane&1)?P.stone:P.wood);
+          add(mat,ox+Math.cos(yaw)*lane*.76,oy+.045,oz-Math.sin(yaw)*lane*.76,yaw,'approach-work-mat');
+        }
+      }else{
+        // The first hardware variant flattened one icosahedron into a broad pale disc. It read as
+        // a landing pad. Nine hand-scale founded stones keep an occupied surface without reviving
+        // either that disc or the deleted settlement runway slabs.
+        for(let row=-1;row<=1;row++)for(let lane=-1;lane<=1;lane++){
+          const h=hashStr(`${plan.id}:work-mat:${i}:${row}:${lane}`),mat=ico(.27+((h>>3)&3)*.018,1,(h&3)?P.stone:P.wood);
+          mat.scale.set(1.22+((h>>6)&3)*.05,.15,1.04+((h>>8)&3)*.04);
+          const along=row*.56,across=lane*.58+(row&1)*.16;
+          add(mat,ox+Math.cos(yaw)*across+Math.sin(yaw)*along,oy+.045,oz-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+((h&15)-7.5)*.025,'approach-work-mat');
+        }
+      }
       if(role===0){
         // Wayfinding/work marker: two of the seven bays retain the established town marker, but
         // it now belongs to a larger hierarchy rather than repeating at every occupied point.

@@ -43,8 +43,9 @@ for(const f of list('game/data/world/settlements')){
   const deletedRoute=wet?(b['arrival-board']||0):(b['arrival-cobble']||0);
   check(summary.public_realm.occupation_enabled===true,`${doc.id}: occupation consumer disabled`);
   check(summary.public_realm.approach_occupation===7,`${doc.id}: clusters ${summary.public_realm.approach_occupation}/7`);
-  check(modules===61,`${doc.id}: occupation modules ${modules}/61`);
-  check((a['approach-work-mat']||0)===7,`${doc.id}: founded work mats ${(a['approach-work-mat']||0)}/7`);
+  const expectedMats=wet?21:63,expectedModules=wet?75:117;
+  check(modules===expectedModules,`${doc.id}: occupation modules ${modules}/${expectedModules}`);
+  check((a['approach-work-mat']||0)===expectedMats,`${doc.id}: founded work mat parts ${(a['approach-work-mat']||0)}/${expectedMats}`);
   check((a['approach-workpost']||0)===2&&(a['approach-marker']||0)===2,`${doc.id}: marker family incomplete`);
   check((a['approach-cart-deck']||0)===2&&(a['approach-cart-wheel']||0)===4,`${doc.id}: cart family incomplete`);
   check((a['approach-rack-beam']||0)===2&&(a['approach-rack-textile']||0)===6,`${doc.id}: rack family incomplete`);
@@ -60,8 +61,8 @@ for(const f of list('game/data/world/settlements')){
 }
 check(perSettlement.length===8,`settlement population ${perSettlement.length}/8`);
 check(liveClusters===56,`occupied clusters ${liveClusters}/56`);
-check(liveModules===488,`occupation modules ${liveModules}/488`);
-check(deletedModules===488,`delete arm removed ${deletedModules}/488 modules`);
+check(liveModules===810,`occupation modules ${liveModules}/810`);
+check(deletedModules===810,`delete arm removed ${deletedModules}/810 modules`);
 check(retainedRouteParts===1876,`delete arm route population ${retainedRouteParts}/1876`);
 const report={schema:'elder-souls/w1-30-settlement-occupation@1',result:failures.length?'RED':'GREEN',
   population:{settlements:perSettlement.length,clusters:liveClusters,modules:liveModules,families:['marker','handcart','drying-rack','vendor-bay']},

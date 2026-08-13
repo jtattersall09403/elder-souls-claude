@@ -24,7 +24,8 @@ for(const f of list('game/data/world/settlements')){
   check((a['arrival-spine']||0)===0,`${doc.id}: retained ${(a['arrival-spine']||0)} runway slabs`);
   check(deletedSummary.public_realm.regional_route===false,`${doc.id}: delete arm still reports regional route`);
   check((b['arrival-spine']||0)===14,`${doc.id}: delete arm restored ${(b['arrival-spine']||0)}/14 slabs`);
-  check((a['approach-work-mat']||0)===7&&(a['approach-workpost']||0)===2&&(a['approach-marker']||0)===2&&
+  const expectedMats=wet.has(doc.id)?21:63;
+  check((a['approach-work-mat']||0)===expectedMats&&(a['approach-workpost']||0)===2&&(a['approach-marker']||0)===2&&
     (a['approach-cart-deck']||0)===2&&(a['approach-rack-beam']||0)===2&&(a['approach-vendor-counter']||0)===1,
     `${doc.id}: approach occupation consumers incomplete`);
   check(approach.focus_clearance>=2,`${doc.id}: civic focus clearance ${approach.focus_clearance}m`);
