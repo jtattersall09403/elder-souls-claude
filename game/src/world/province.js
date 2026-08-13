@@ -1229,8 +1229,12 @@ export class Province {
           // every irregular shoreline in the shipping field.
           const actualSurface=f.waterSurfaceAt(corners[k][0],corners[k][1]);
           const depth=actualSurface===null?0:Math.max(0,actualSurface-f.heightAt(corners[k][0],corners[k][1]));
-          const shallow=1-clamp(depth/1.35,0,1);
-          const q=.43+.57*(1-shallow);b.c.push(q,q*.96,q*.88);b.shore.push(shallow);
+          // `waterShore` is an edge mask, not a depth ramp. Applying it across the first 1.35 m
+          // of every marsh pool painted normal bed undulation as 12.5 m silt/foam stripes. Only
+          // the dry/clamped vertices of mixed cells seed the shoreline interpolation; submerged
+          // vertices retain uninterrupted regional water, including naturally shallow flats.
+          const shore=actualSurface===null?1:0;
+          const q=.43+.57*clamp(depth/1.35,0,1);b.c.push(q,q*.96,q*.88);b.shore.push(shore);
         }
         b.i.push(b.n, b.n + 2, b.n + 1, b.n, b.n + 3, b.n + 2);
         b.n += 4;
@@ -1242,7 +1246,13 @@ export class Province {
       wg.setAttribute('color',new THREE.Float32BufferAttribute(b.c,3));
       wg.setAttribute('waterShore',new THREE.Float32BufferAttribute(b.shore,1));
       wg.setIndex(b.i);
-      wg.computeVertexNormals();
+      // Each water cell deliberately owns four vertices so different regional/shallow samples
+      // cannot weld across an irregular shore. `computeVertexNormals()` consequently produced
+      // one hard plane normal per 12.5 m cell: at a grazing camera those normals became broad,
+      // alternating specular lanes. The physical water table is horizontal; animated crossed
+      // wave normals are added in the material shader, while shore height still shapes the rim.
+      const wn=new Float32Array(b.v.length);for(let n=1;n<wn.length;n+=3)wn[n]=1;
+      wg.setAttribute('normal',new THREE.BufferAttribute(wn,3));
       const wm = new THREE.Mesh(wg, this.regionMats[ri].water);
       wm.name = `water:${f.regions[ri].id}`;
       wm.userData.waterSamples = [];
