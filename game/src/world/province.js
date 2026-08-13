@@ -44,6 +44,16 @@ const COVER_RADIUS_M = 70;
 const COVER_LATTICE_M = 1.7;
 const COVER_REBUILD_M = 14;
 const MAX_COVER = 6000;
+// Medium-scale ground composition. The skin below carries 0.6-3.2 m surface relief and the
+// ordinary rock scatter carries isolated stones; neither supplies the shelves, hummock chains,
+// salt tusks and basalt steps that make a regional middle ground. This disc fills that missing
+// scale with one bounded instanced draw per region. It is world-lattice anchored (no swimming),
+// clears settlements, and remains low step-scale dressing rather than an unreported collision
+// wall. There is deliberately no camera-centred hole: that would make geology vanish on approach.
+const GEOLOGY_RADIUS_M = 76;
+const GEOLOGY_LATTICE_M = 8.5;
+const GEOLOGY_REBUILD_M = 14;
+const MAX_GEOLOGY = 180;
 // The ground skin: a fine surface mesh that follows the camera. 15,625 vertices in ONE draw call
 // — cheaper on the software rasteriser than the 2-5k separate-instance ground cover already is,
 // and it is the only way to get sub-metre relief into the picture at all: the tile mesh is 5.36 m
@@ -241,6 +251,49 @@ function organicCrown(shape,radius,height,variant=0){
   return mergeAll(parts);
 }
 
+/**
+ * One founded, production geometry for each registered regional terrain grammar. The forms are
+ * intentionally asymmetric and low: they articulate material junctions and middle-ground
+ * silhouette without pretending that a visual-only instance is a collision cliff.
+ */
+function terrainGeologyGeometry(kind){
+  const parts=[];
+  const ico=(x,y,z,sx,sy,sz,detail=0)=>{const g=new THREE.IcosahedronGeometry(1,detail);g.scale(sx,sy,sz);g.translate(x,y+sy*.72,z);parts.push(g);};
+  const box=(x,y,z,sx,sy,sz,ry=0)=>{const g=new THREE.BoxGeometry(sx,sy,sz,2,1,2);g.rotateY(ry);g.translate(x,y+sy*.5,z);parts.push(g);};
+  const cyl=(x,y,z,rt,rb,h,sides=7,ry=0,rz=0)=>{const g=new THREE.CylinderGeometry(rt,rb,h,sides,1);g.rotateY(ry);g.rotateZ(rz);g.translate(x,y+h*.5,z);parts.push(g);};
+  const torus=(x,y,z,r,tube,arc=Math.PI*2,ry=0)=>{const g=new THREE.TorusGeometry(r,tube,5,12,arc);g.rotateX(Math.PI*.5);g.rotateY(ry);g.translate(x,y+tube*.72,z);parts.push(g);};
+  switch(kind){
+    case 'root-hummocks':
+      ico(-.42,0,.04,.92,.32,.70);ico(.34,.02,-.12,.78,.27,.94);ico(.06,.05,.48,.62,.22,.55);break;
+    case 'kiln-shelves':
+      cyl(0,0,0,1.02,1.18,.20,9,.12);cyl(-.12,.18,.02,.73,.88,.18,9,-.08);cyl(.09,.34,-.04,.45,.56,.16,8,.18);break;
+    case 'tidal-ridges':
+      ico(-.36,0,-.25,1.18,.17,.30);ico(.12,.01,.18,1.36,.21,.34);ico(.55,0,-.48,.77,.13,.24);break;
+    case 'drowned-hollows':
+      torus(0,0,0,.78,.19,Math.PI*1.72,.32);ico(-.62,0,.47,.48,.19,.38);ico(.58,0,-.35,.40,.16,.52);break;
+    case 'sap-fan-rises':
+      for(let i=0;i<4;i++){const a=-.72+i*.48;box(Math.sin(a)*.40,0,Math.cos(a)*.20,1.22-i*.12,.14+i*.025,.28,a);}break;
+    case 'wax-cell-mounds':
+      cyl(-.43,0,.05,.57,.70,.25,6,.05);cyl(.38,0,-.16,.68,.80,.31,6,.28);cyl(.08,0,.54,.44,.55,.20,6,-.18);break;
+    case 'wreck-dunes':
+      ico(0,0,0,1.42,.22,.62);box(-.28,.13,.02,1.72,.16,.18,.18);box(.46,.08,-.16,.84,.13,.14,-.28);break;
+    case 'salt-tusks':
+      ico(0,0,0,.76,.18,.58);cyl(-.30,.10,.02,.03,.21,.78,6,0,-.23);cyl(.28,.08,-.12,.025,.16,.58,6,0,.31);break;
+    case 'basalt-steps':
+      cyl(-.32,0,.05,.61,.70,.28,6,.08);cyl(.28,0,-.12,.55,.63,.42,6,.20);cyl(.06,0,.46,.38,.46,.22,6,-.11);break;
+    case 'wind-shells':
+      torus(0,0,0,.72,.16,Math.PI*1.35,.44);torus(.18,.03,-.12,.43,.11,Math.PI*1.12,-.28);break;
+    case 'thorn-islands':
+      ico(0,0,0,1.02,.25,.82);cyl(-.34,.12,.04,.018,.12,.48,5,0,-.42);cyl(.29,.10,-.18,.018,.10,.39,5,0,.38);break;
+    case 'cliff-buttresses':
+      box(-.34,0,0,.72,.30,1.28,-.10);box(.28,0,.05,.55,.46,.88,.17);box(.02,.27,-.08,.48,.21,.68,.06);break;
+    case 'braided-channels':
+      for(let i=0;i<3;i++){const a=-.22+i*.23;box((i-1)*.34,0,(i%2-.5)*.42,1.62-i*.16,.12+i*.025,.20,a);}break;
+    default: throw new Error(`W1-30 unknown terrain geology '${kind}'`);
+  }
+  const geo=mergeAll(parts);geo.computeBoundingSphere();geo.userData.terrainGrammar=kind;return geo;
+}
+
 export class Province {
   /** @param {import('./field.js').WorldField} field */
   constructor(field) {
@@ -267,6 +320,10 @@ export class Province {
      * measuring its own optimism.
      */
     this.drawBuildings = true;
+    // W1-30 terrain-composition control. This is deliberately public and consumed by the live
+    // builder so the census can delete only the regional geology while leaving skin, cover,
+    // vegetation and terrain intact.
+    this.drawGeology = true;
     this.buildingsDrawn = 0;
     this.buildingSummary = null;
 
@@ -574,6 +631,7 @@ export class Province {
   request(x, z) {
     this.focus = [x, z];
     this.updateSkin(x, z);
+    this.updateGeology(x, z);
     this.updateNear(x, z);
     this.updateCover(x, z);
     if (this.nightFactor > 0) this.updateSignatureLights(x, z);
@@ -641,6 +699,63 @@ export class Province {
     const a = at(i, j) + (at(i + 1, j) - at(i, j)) * tx;
     const b = at(i, j + 1) + (at(i + 1, j + 1) - at(i, j + 1)) * tx;
     return a + (b - a) * tz;
+  }
+
+  /**
+   * REGIONAL GEOLOGY — the missing middle scale between the continuous ground skin and isolated
+   * prop scatter. Every accepted point consumes the registered region terrain grammar and uses
+   * its own constructed form. Positions are tied to world cells; the fade changes size only at
+   * the distant rim, so rebuilding cannot slide a rock under the camera.
+   */
+  updateGeology(x, z) {
+    if (this.geologyAt && Math.hypot(x - this.geologyAt[0], z - this.geologyAt[1]) < GEOLOGY_REBUILD_M) return 0;
+    this.geologyAt = [x, z];
+    if (this.geologyGroup) this.group.remove(this.geologyGroup);
+    const root = new THREE.Group(); root.name = 'regional-geology';
+    this.geologyGroup = root;
+    this.geologyCount = 0;
+    this.geologyRegions = [];
+    if (!this.drawGeology) { this.group.add(root); return 0; }
+
+    const f=this.field,step=GEOLOGY_LATTICE_M,n=Math.ceil(GEOLOGY_RADIUS_M/step);
+    const gx0=Math.floor((x-GEOLOGY_RADIUS_M)/step),gz0=Math.floor((z-GEOLOGY_RADIUS_M)/step);
+    const buckets=new Map(),m=new THREE.Matrix4(),q=new THREE.Quaternion(),v=new THREE.Vector3(),s=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);
+    const profiles={
+      'root-hummocks':[.72,1.08,.88,.16],'kiln-shelves':[.54,1.10,.90,.03],'tidal-ridges':[.64,1.22,.82,.12],
+      'drowned-hollows':[.58,1.05,.88,.42],'sap-fan-rises':[.57,1.18,.78,.14],'wax-cell-mounds':[.68,.92,1.05,.04],
+      'wreck-dunes':[.48,1.28,.82,.10],'salt-tusks':[.44,.96,1.08,.02],'basalt-steps':[.62,.98,1.10,.01],
+      'wind-shells':[.38,1.08,.82,.01],'thorn-islands':[.63,1.08,.94,.20],'cliff-buttresses':[.56,1.02,1.06,.01],
+      'braided-channels':[.66,1.24,.75,.18],
+    };
+    for(let iz=0;iz<=n*2;iz++)for(let ix=0;ix<=n*2;ix++){
+      const cx=gx0+ix,cz=gz0+iz,px=(cx+hash2(cx,cz,6413))*step,pz=(cz+hash2(cx,cz,6419))*step;
+      const d=Math.hypot(px-x,pz-z);
+      if(d>GEOLOGY_RADIUS_M||px<0||pz<0||px>=f.sizeX||pz>=f.sizeZ||!f.isLandAt(px,pz))continue;
+      if(this.settlementAt(px,pz,10))continue;
+      const ri=f.regionIndexAt(px,pz),r=f.regions[ri],art=regionArt(r.id),profile=profiles[art.terrain];
+      if(!profile)throw new Error(`W1-30 missing geology profile '${art.terrain}'`);
+      const [density,wide,tall,waterM]=profile;
+      if(f.depthAt(px,pz)>waterM)continue;
+      const patch=.52+.78*smoothstep(.32,.69,fbm(px/31,pz/31,6421,3));
+      if(hash2(cx,cz,6427)>=density*patch)continue;
+      let b=buckets.get(ri);
+      if(!b){b={ri,art,xf:[]};buckets.set(ri,b);}
+      if(b.xf.length>=MAX_GEOLOGY)continue;
+      const fade=1-smoothstep(GEOLOGY_RADIUS_M-18,GEOLOGY_RADIUS_M,d),scale=(.55+hash2(cx,cz,6431)*.30)*(.70+.30*fade);
+      q.setFromAxisAngle(up,hash2(cx,cz,6433)*Math.PI*2);
+      v.set(px,this._meshY(px,pz)+.018+this._skinLift(px,pz),pz);
+      s.set(scale*wide,scale*tall,scale/Math.sqrt(wide));m.compose(v,q,s);b.xf.push(m.clone());
+    }
+    for(const b of buckets.values()){
+      if(!b.xf.length)continue;
+      const geo=this._geologyGeo(b.art.terrain),im=new THREE.InstancedMesh(geo,this.regionMats[b.ri].rock,b.xf.length);
+      for(let i=0;i<b.xf.length;i++)im.setMatrixAt(i,b.xf[i]);
+      im.instanceMatrix.needsUpdate=true;im.castShadow=false;im.receiveShadow=true;im.frustumCulled=true;
+      im.name=`geology:${f.regions[b.ri].id}:${b.art.terrain}`;
+      im.userData.worldArt={region:f.regions[b.ri].id,terrain:b.art.terrain,instances:b.xf.length};
+      root.add(im);this.geologyCount+=b.xf.length;this.geologyRegions.push(f.regions[b.ri].id);
+    }
+    this.group.add(root);this.geologyRegions.sort();return this.geologyCount;
   }
 
   /**
@@ -1912,6 +2027,14 @@ export class Province {
     return this.sigMats.get(kind);
   }
 
+  _geologyGeo(kind) {
+    const key=`geology:${kind}`;
+    if(!this.geoCache.has(key)){
+      const geo=terrainGeologyGeometry(kind);geo.userData.shared=true;this.geoCache.set(key,geo);
+    }
+    return this.geoCache.get(key);
+  }
+
   _geo(kind, r) {
     const key = `${kind}:${r.id}`;
     if (this.geoCache.has(key)) return this.geoCache.get(key);
@@ -2112,6 +2235,8 @@ export class Province {
       tilesResident: this.tiles.size, tilesQueued: this.queue.length, tilesBuiltTotal: this.built,
       tileSizeM: this.tileM, residentRadiusTiles: this.radiusTiles, meshes, instances,
       groundCoverInstances: this.coverCount || 0, groundCoverRadiusM: COVER_RADIUS_M,
+      geologyInstances: this.geologyCount || 0, geologyRadiusM: GEOLOGY_RADIUS_M,
+      geologyRegions: this.geologyRegions || [], drawGeology: !!this.drawGeology,
       lodBands: this.lodBands,
       lodTransition: 'near/far geometry and PBR material overlap; one-tile release hysteresis',
       sharedGeometryPool: this.geoCache.size,
