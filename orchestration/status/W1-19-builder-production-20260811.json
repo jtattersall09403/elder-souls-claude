@@ -20,17 +20,17 @@
     "evidence/W1-19/",
     "orchestration/status/W1-19-builder-production-20260811.json"
   ],
-  "next_step": "Resume from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act3.json (sha256:0bf35e4686b5ed9b335dffce52fd4f17818a641d6fd656d2dff820e491707acb), complete Q-MAIN-16 onward including mandatory Q-MAIN-30, and retain the next act/pre-PONR checkpoints.",
+  "next_step": "Resume from evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json (sha256:6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d), complete Q-MAIN-16 onward, and retain the Act IV and pre-PONR checkpoints.",
   "gate_accounting": {
-    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-15 are complete through production movement, fitted/scheduled doorway, readable and conversation actions with zero violent resolution/session death/respawn/teleport/direct mutation. Canonical Act III state is stable; Q16 onward remains.",
+    "A": "IN_PROGRESS: Q-MAIN-01 through Q-MAIN-15 and mandatory Q-MAIN-30 are complete through production movement, fitted/scheduled doorway, readable, rumor and conversation actions with zero violent resolution/session death/respawn/teleport/direct mutation. Canonical post-Q30 state is stable; Q16 onward remains.",
     "B": "PARTIAL: exhaustive manifest complete; played observations incomplete",
     "C_builder": "NOT_RUN: waits on Gate A",
     "C_independent": "CRITIC_HANDOFF",
     "D": "IN_PROGRESS: complete mainline census/topic/reveal, canon, opacity, boot/data/content/quest and corpus gates run green; final-tree rerun and remaining red controls remain"
   },
   "latest_diagnostic": {
-    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-q15-r17/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-15 --walk-max-frames 120000 --resume-output reports/runs/W1-19-production-gpu-root-lf/intended-q15-r19/resume-saxhleel-interior-intended.json --out reports/runs/W1-19-production-gpu-root-lf/intended-q15-r19 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe",
-    "outcome": "PASS: Q-MAIN-15 completed as res_heard_it through Sesh-Anaat at her actual 07:00 exterior post after 36,540 production wait frames. Q1-Q15 are complete with no active quest, marker count zero, stable 120-frame capture, zero violent resolutions, session deaths/respawns, teleports, bought openings or direct mutations. The exact authored nonviolent Sesh-Weth consequence from Q12 is manifest-declared and validator-checked.",
-    "evidence": "evidence/W1-19/{q-main-15-production-summary.json,q-main-15-checkpoint.manifest.json,fixtures/resume-saxhleel-interior-intended-act3.json}"
+    "command": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-q30-r7/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-30 --walk-max-frames 120000 --resume-output reports/runs/W1-19-production-gpu-root-lf/intended-q30-r8/resume-saxhleel-interior-intended.json --out reports/runs/W1-19-production-gpu-root-lf/intended-q30-r8 --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe",
+    "outcome": "PASS: Q-MAIN-30 completed as res_carry_on through Hosk-Vei at his actual daytime exterior post. The opening topic came from eleven published Lilmoth latest-rumors conversation choices. Q1-Q15 plus Q30 are complete with no active quest, marker count zero, stable 120-frame capture, zero violent resolutions, session deaths/respawns, teleports, bought openings, topic/reveal hand-feeds or direct mutations.",
+    "evidence": "evidence/W1-19/{q-main-30-production-summary.json,q-main-30-checkpoint.manifest.json,fixtures/resume-saxhleel-interior-intended-q30.json}"
   }
 }

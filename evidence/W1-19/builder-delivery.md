@@ -277,3 +277,32 @@ reached `[3825.141495,13.28,878.848169]`, 1.18 m from the authored post.
 
 This remains a builder milestone, not an independent verdict. Q16 onward, Q30, both endings and
 the backpath, Gate B/C builder populations, remaining controls, cold chains and aggregate remain open.
+
+### Q-MAIN-30 mandatory audience milestone
+
+Q-MAIN-30 is complete as `res_carry_on` through Hosk-Vei at his actual 07:00-19:00 Soulrest
+exterior post. Its opening phrase was not granted by the runner: the character walked to the real
+Lilmoth rootkeeper and selected the published `latest rumors` conversation choice eleven times.
+The finite local deck's eleventh response supplied `the-thread-is-cut`; the subsequent accept and
+resolution were both published player-facing conversation choices.
+
+The causal loop repaired bounded-resume evidence rather than hiding it with direct state. The
+initial Act III-to-Lilmoth run consumed 5,653.7 m and stopped 650.1 m short; a second clean leg
+retained a stable pose. The runner now fails closed when an opening-topic source or topic remains
+absent. A paired encounter resume exposed a planner false red: both relocated posts were within
+the 60 m observation radius, but the retained route stayed at least 36.88 m away and never entered
+their 35 m envelopes. The planner now records `authored-route-already-clear` only after validating
+every involved segment against both full 35 m clearances plus collision, water, substrate, slope
+and grade. It never lowers the 24 m hard-body or 35 m route thresholds.
+
+The final production continuation used the ordinary monotonic boundary egress from a measured
+0.3501 m capsule-clearance pose, reached Hosk-Vei, and completed Q30. The canonical checkpoint is
+`fixtures/resume-saxhleel-interior-intended-q30.json`, SHA-256
+`6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d`. It contains Q1-Q15
+plus Q30 complete, no active quest, HP 92/92, five flasks, marker count zero and a 120-frame stable
+window. Across the accepted legs there were zero session deaths/respawns, teleports, violent
+resolutions, bought openings, synthetic spawns, direct progression mutations, sprint frames,
+attacks or topic/reveal hand-feeds.
+
+This remains a builder milestone, not an independent verdict. Q16 onward, both endings and the
+backpath, Gate B/C builder observations, remaining controls, cold chains and aggregate remain open.

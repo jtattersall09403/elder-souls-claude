@@ -1,0 +1,51 @@
+{
+  "schema": "elder-souls/w1-19-production-summary@1",
+  "quest": "Q-MAIN-30",
+  "result": "PASS",
+  "resolution": "res_carry_on",
+  "completed_set": "Q-MAIN-01 through Q-MAIN-15 plus Q-MAIN-30",
+  "active_quests": [],
+  "opening_topic": {
+    "id": "the-thread-is-cut",
+    "source_npc": "rootkeeper-under-the-temple",
+    "production_choice": "latest rumors",
+    "draws": 11,
+    "source_walk_m": 624.5,
+    "source_walk_frames": 14650
+  },
+  "production_movement": {
+    "q30_r7_source_walk_m": 624.5,
+    "q30_r7_soulrest_walk_m": 3289.9,
+    "q30_r8_accept_approach_m": 157.2,
+    "q30_r8_resolve_approach_m": 106.9,
+    "longest_stall_before_clean_resume_frames": 1800,
+    "final_longest_stall_frames": 0,
+    "teleports": 0,
+    "deaths_or_respawns": 0,
+    "sprint_frames": 0,
+    "defensive_swings": 0
+  },
+  "final": {
+    "position": [618.972387, 8.13, 4876.694531],
+    "settlement": "soulrest",
+    "hour": 13.767778,
+    "giver_distance_m": 1.019239,
+    "hp": 92,
+    "hp_max": 92,
+    "estus": 5,
+    "marker_count": 0,
+    "stable_frames": 120
+  },
+  "provenance": {
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "topic_or_reveal_hand_feeds": 0,
+    "synthetic_spawns": 0,
+    "bought_openings": 0
+  },
+  "checkpoint": {
+    "file": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json",
+    "sha256": "6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d",
+    "manifest": "evidence/W1-19/q-main-30-checkpoint.manifest.json"
+  }
+}

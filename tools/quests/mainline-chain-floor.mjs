@@ -245,6 +245,24 @@ try {
           if(!boundaryEgress.arrived||!boundaryEgress.arrival_is_clean)return {ok:false,failure:'boundary-egress-failed',frames:boundaryEgress.frames,left_m:Math.hypot(x-H.whereAmI().pos[0],z-H.whereAmI().pos[2]),started:boundaryStart,ended:H.whereAmI().pos.slice(),production_input:true,boundary_egress:boundaryEgress,planned_route:[],planned_clearance:[],planner:null,walk:boundaryEgress};
         }
       }
+      // The production traversal controller rejects slopes above 40 degrees. A long detour can
+      // stop with its capsule on the last sub-step of that boundary (the Salt Hills checkpoint
+      // measured 44.36 degrees), where asking for the next downhill waypoint repeats zero
+      // movement. Step by ordinary input onto the nearest sampled standable shelf before
+      // replanning, and retain the egress as explicit evidence.
+      let slopeEgress=null;
+      const slopeStart=H.whereAmI().pos.slice(),slopeAtStart=H.getTerrainAt(slopeStart[0],slopeStart[2]).slope_deg;
+      if(slopeAtStart>40){
+        const candidates=[];
+        for(const rr of [4,6,8])for(let k=0;k<32;k++){const a=k*Math.PI/16,tx=slopeStart[0]+Math.sin(a)*rr,tz=slopeStart[2]+Math.cos(a)*rr,t=H.getTerrainAt(tx,tz),w=H.getWaterAt(tx,tz),c=H.solidAt(tx,t.y+.9,tz).distance_m;
+          if(t.slope_deg<=35&&Number(w.depth_m??w.depth??0)<=1.05&&(c==null||c>=.42))candidates.push({tx,tz,r:rr,slope_deg:t.slope_deg,clearance_m:c});
+        }
+        const pick=candidates.sort((a,b)=>a.r-b.r||a.slope_deg-b.slope_deg||Math.hypot(a.tx-x,a.tz-z)-Math.hypot(b.tx-x,b.tz-z))[0];
+        if(pick){slopeEgress=H.walkPath([[pick.tx,pick.tz]],{fromCurrent:true,speed:'walk',maxFrames:1800,arrive_m:.2,lookahead_m:.25,stuckAbort:900,miredAbort:1200,survival:false,defensive:false,sprint:false});
+          slopeEgress={...slopeEgress,from_slope_deg:slopeAtStart,target_slope_deg:pick.slope_deg};
+          if(!slopeEgress.arrived||!slopeEgress.arrival_is_clean)return {ok:false,failure:'slope-egress-failed',frames:slopeEgress.frames,left_m:Math.hypot(x-H.whereAmI().pos[0],z-H.whereAmI().pos[2]),started:boundaryStart,ended:H.whereAmI().pos.slice(),production_input:true,boundary_egress:boundaryEgress,slope_egress:slopeEgress,planned_route:[],planned_clearance:[],planner:null,walk:slopeEgress};
+        }
+      }
       const started = H.whereAmI().pos.slice();
       const already = Math.hypot(x-started[0],z-started[2]);
       if (already <= reach) return { ok:true, frames:0, left_m:already, started, ended:started.slice(), production_input:true, already_in_reach:true, planned_route:[], planned_clearance:[], planner:null, walk:{arrived:true,aborted:null,frames:0,path_m:0,end:[started[0],started[2]],target:[x,z],offset_m:already,teleports:0,teleported_m:0,teleport_log:[],arrival_is_clean:true} };
@@ -306,7 +324,7 @@ try {
           const startEgress=startClearance>=.35&&startClearance<.42
             && Math.hypot(bx-here[0],bz-here[2])<=2.01&&clearance>=startClearance-.001;
           if(clearance < .42&&!startEgress)return true;
-          const w=H.getWaterAt(bx,bz); return Number(w.depth_m??w.depth??0)>1.05;
+          const w=H.getWaterAt(bx,bz),terrain=H.getTerrainAt(bx,bz); return Number(w.depth_m??w.depth??0)>1.05||terrain.slope_deg>40;
         };
         if (blocked(goal[0], goal[1])) {
           const candidates=[]; for(let rr=Math.max(1.5,reach);rr<=Math.max(6,reach+3);rr+=1.5) for(let k=0;k<24;k++){const a=k*Math.PI/12,q=[rawGoal[0]+Math.sin(a)*rr,rawGoal[1]+Math.cos(a)*rr];if(!blocked(q[0],q[1]))candidates.push(q);}
@@ -343,18 +361,18 @@ try {
         let previousGround=null, safe=true, reason=null;
         for(let m=0;m<=length+.001;m+=Math.min(2,Math.max(.5,length))){
           const t=length?Math.min(1,m/length):0,x=p0[0]+(p1[0]-p0[0])*t,z=p0[1]+(p1[1]-p0[1])*t;
-          const waterReport=H.getWaterAt(x,z),water=Number(waterReport.depth_m??waterReport.depth??0),ground=Number(waterReport.ground_y),substrate=H.getTerrainAt(x,z).substrate;
+          const waterReport=H.getWaterAt(x,z),water=Number(waterReport.depth_m??waterReport.depth??0),ground=Number(waterReport.ground_y),terrain=H.getTerrainAt(x,z),substrate=terrain.substrate;
           const solid=H.solidAt(x,ground+.9,z).distance_m<.42;
           const grade=previousGround==null?0:Math.atan2(Math.abs(ground-previousGround.ground),Math.hypot(x-previousGround.x,z-previousGround.z))*180/Math.PI;
           const bodyClearance=Math.hypot(x-post.x,z-post.z);
-          samples.push({x:+x.toFixed(2),z:+z.toFixed(2),water_m:+water.toFixed(3),substrate,ground_y:+ground.toFixed(3),grade_deg:+grade.toFixed(2),solid,encounter_clearance_m:+bodyClearance.toFixed(2)});
+          samples.push({x:+x.toFixed(2),z:+z.toFixed(2),water_m:+water.toFixed(3),substrate,ground_y:+ground.toFixed(3),slope_deg:terrain.slope_deg,grade_deg:+grade.toFixed(2),solid,encounter_clearance_m:+bodyClearance.toFixed(2)});
           // The coastal carriageway and its shoulders deliberately include walkable W3 water.
           // The production discontinuities are W4 depth and deep saturated SUCK. Shallow SUCK is
           // deliberately traversable: the movement consumer pays the mire/struggle cost and its
           // refractory window permits a crossing. Keep the previously observed 0.621 m shoulder
           // rejected while allowing the <=0.4 m connected-grid route a player can actually use.
           const unsafeWater=water>.95||(substrate==='SUCK'&&water>.4);
-          if(solid||unsafeWater||grade>35||(t>.08&&t<.92&&bodyClearance<requiredClearance)){safe=false;reason=solid?'collision':unsafeWater?(water>.95?'water':'saturated-suck'):grade>35?'grade':'encounter-clearance';break;}
+          if(solid||unsafeWater||terrain.slope_deg>40||grade>35||(t>.08&&t<.92&&bodyClearance<requiredClearance)){safe=false;reason=solid?'collision':unsafeWater?(water>.95?'water':'saturated-suck'):terrain.slope_deg>40?'slope':grade>35?'grade':'encounter-clearance';break;}
           previousGround={x,z,ground};
         }
         return {safe,reason,length_m:+length.toFixed(2),samples};
@@ -375,7 +393,7 @@ try {
         const cols=Math.ceil((maxX-minX)/grid)+1,rows=Math.ceil((maxZ-minZ)/grid)+1,ix=x=>Math.round((x-minX)/grid),iz=z=>Math.round((z-minZ)/grid),key=(x,z)=>x+','+z;
         const sx=ix(entry[0]),sz=iz(entry[1]),gx=ix(exit[0]),gz=iz(exit[1]);
         const blockedCache=new Map();
-        const blocked=(x,z)=>{const cacheKey=`${x.toFixed(3)},${z.toFixed(3)}`;if(blockedCache.has(cacheKey))return blockedCache.get(cacheKey);const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),substrate=H.getTerrainAt(x,z).substrate,value=water>.95||(substrate==='SUCK'&&water>.4)||H.solidAt(x,g+.9,z).distance_m<.42||posts.some(post=>Math.hypot(x-post.x,z-post.z)<requiredClearance);blockedCache.set(cacheKey,value);return value;};
+        const blocked=(x,z)=>{const cacheKey=`${x.toFixed(3)},${z.toFixed(3)}`;if(blockedCache.has(cacheKey))return blockedCache.get(cacheKey);const w=H.getWaterAt(x,z),g=Number(w.ground_y),water=Number(w.depth_m??w.depth??0),terrain=H.getTerrainAt(x,z),substrate=terrain.substrate,value=water>.95||(substrate==='SUCK'&&water>.4)||terrain.slope_deg>40||H.solidAt(x,g+.9,z).distance_m<.42||posts.some(post=>Math.hypot(x-post.x,z-post.z)<requiredClearance);blockedCache.set(cacheKey,value);return value;};
         const open=[],heapPush=v=>{open.push(v);let i=open.length-1;while(i){const p=(i-1)>>1;if(open[p][0]<=v[0])break;open[i]=open[p];i=p;}open[i]=v;},heapPop=()=>{const top=open[0],last=open.pop();if(open.length){let i=0;while(true){let c=i*2+1;if(c>=open.length)break;if(c+1<open.length&&open[c+1][0]<open[c][0])c++;if(open[c][0]>=last[0])break;open[i]=open[c];i=c;}open[i]=last;}return top;};
         heapPush([0,sx,sz]);const cost=new Map([[key(sx,sz),0]]),came=new Map(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];let found=false,endKey=null;
         while(open.length){const [,cx,cz]=heapPop(),ck=key(cx,cz),x0=minX+cx*grid,z0=minZ+cz*grid;if(Math.hypot(x0-exit[0],z0-exit[1])<=grid*1.75&&posts.every(post=>sampleSegment([x0,z0],exit,post,requiredClearance).safe)){found=true;endKey=ck;break;}for(const[dix,diz]of dirs){const nx=cx+dix,nz=cz+diz;if(nx<0||nz<0||nx>=cols||nz>=rows)continue;const x=minX+nx*grid,z=minZ+nz*grid;let edgeBlocked=false;for(let et=.2;et<=1;et+=.2)if(blocked(x0+(x-x0)*et,z0+(z-z0)*et)){edgeBlocked=true;break;}if(edgeBlocked)continue;const nk=key(nx,nz),ng=cost.get(ck)+Math.hypot(dix,diz);if(ng<(cost.get(nk)??Infinity)){cost.set(nk,ng);came.set(nk,ck);heapPush([ng+Math.hypot(exit[0]-x,exit[1]-z)/grid,nx,nz]);}}}
@@ -410,16 +428,43 @@ try {
       const encounterClusters=[];
       for(const c of encounterCandidates.slice().sort((a,b)=>a.near.i-b.near.i)){
         const last=encounterClusters.at(-1);
-        if(last&&c.near.i-last.at(-1).near.i<=20)last.push(c);else encounterClusters.push([c]);
+        const prior=last&&last.at(-1),physicallyAdjacent=prior&&Math.hypot(c.post.x-prior.post.x,c.post.z-prior.post.z)<=90;
+        // Sparse long-road splines can put twenty authored samples hundreds of metres apart.
+        // Cluster only when both the sample spans and the two 35 m perception envelopes (plus
+        // 20 m of ordinary patrol drift) can actually overlap.
+        if(prior&&c.near.i-prior.near.i<=20&&physicallyAdjacent)last.push(c);else encounterClusters.push([c]);
       }
       for (const cluster of encounterClusters.sort((a,b)=>b.at(-1).near.i-a.at(-1).near.i)) {
         if(cluster.length>1){
           let lo=Infinity,hi=-Infinity;
           for(const {post,near} of cluster){let a=near.i,b=near.i;while(a>1&&Math.hypot(encounterBaseline[a-1][0]-post.x,encounterBaseline[a-1][1]-post.z)<35)a--;while(b+1<encounterBaseline.length-1&&Math.hypot(encounterBaseline[b+1][0]-post.x,encounterBaseline[b+1][1]-post.z)<35)b++;lo=Math.min(lo,a);hi=Math.max(hi,b);}
-          const entry=encounterBaseline[lo-1],exit=encounterBaseline[hi+1],posts=cluster.map(c=>c.post),connected=findConnectedDetour(entry,exit,posts,35);
+          const posts=cluster.map(c=>c.post);
+          let replaceLo=lo,entry=encounterBaseline[lo-1];
+          // A bounded resume may begin at the exact safe endpoint of the connected detour that
+          // produced its checkpoint. The local settlement join omits the current pose, so its
+          // first retained road sample can fall a few centimetres back inside the 35 m envelope
+          // and leave the new grid search with no legal first edge. Reuse the *observed body
+          // pose* only when it independently clears every post by the full 35 m; walkPath still
+          // consumes every subsequent metre and no exclusion threshold is relaxed.
+          const entryInside=posts.some(post=>Math.hypot(entry[0]-post.x,entry[1]-post.z)<35);
+          const bodyAnchor=[here[0],here[2]],bodyAnchorSafe=posts.every(post=>Math.hypot(bodyAnchor[0]-post.x,bodyAnchor[1]-post.z)>=35);
+          if(entryInside&&bodyAnchorSafe){entry=bodyAnchor;replaceLo=0;}
+          const exit=encounterBaseline[hi+1];
+          // The 60 m candidate radius accounts for ordinary patrol drift; it does not mean the
+          // authored road necessarily enters the fixed 35 m production placement envelope. On
+          // a resumed Lilmoth approach both relocated posts were candidates at 36.88 m/45.08 m,
+          // and every retained segment stayed outside them. Requiring a bypass around a circle
+          // the route never crosses produced an impossible one-metre entry/exit search. Keep the
+          // baseline only after checking every involved segment against every post at the full
+          // 35 m clearance (plus the existing water, slope, grade and collision predicates).
+          const clusterSegmentStart=Math.max(0,lo-1),clusterSegmentEnd=Math.min(encounterBaseline.length-1,hi+1);
+          let baselineAlreadyClear=true;
+          for(let bi=clusterSegmentStart;bi<clusterSegmentEnd&&baselineAlreadyClear;bi++)for(const post of posts)if(!sampleSegment(encounterBaseline[bi],encounterBaseline[bi+1],post,35).safe){baselineAlreadyClear=false;break;}
+          if(baselineAlreadyClear){encounterDetours.push({posts:posts.map(p=>p.id),encounters:posts.map(p=>p.encounter),production_placements:posts.map(p=>p.production_placement),side:'authored-route-already-clear',waypoints:[],required_body_clearance_m:35,segment_validation:{baseline_segment_start:clusterSegmentStart,baseline_segment_end:clusterSegmentEnd,all_segments_safe:true,all_cluster_posts_checked:true}});continue;}
+          const connected=findConnectedDetour(entry,exit,posts,35);
           if(!connected){unsafeEncounterRoute={posts:posts.map(p=>p.id),reason:'no-connected-production-safe-cluster-detour',authored_entry:entry.slice(),authored_exit:exit.slice(),baseline_index:cluster[0].near.i};encounterDetours.push({...unsafeEncounterRoute,rejected:true});continue;}
-          route.splice(lo,hi-lo+1,...connected.cells);
-          encounterDetours.push({posts:posts.map(p=>p.id),encounters:posts.map(p=>p.encounter),production_placements:posts.map(p=>p.production_placement),side:'connected-cluster-grid',waypoints:connected.cells,required_body_clearance_m:35,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true,all_cluster_posts_checked:true}});
+          route.splice(replaceLo,hi-replaceLo+1,...connected.cells);
+          encounterDetours.push({posts:posts.map(p=>p.id),encounters:posts.map(p=>p.encounter),production_placements:posts.map(p=>p.production_placement),side:'connected-cluster-grid',waypoints:connected.cells,resumed_body_anchor:replaceLo===0?{at:bodyAnchor,min_clearance_m:+Math.min(...posts.map(post=>Math.hypot(bodyAnchor[0]-post.x,bodyAnchor[1]-post.z))).toFixed(2)}:null,required_body_clearance_m:35,segment_validation:{grid_m:2,search_margin_m:connected.margin,water_max_m:.95,saturated_suck_max_m:.4,collision_clearance_m:.42,connected_to_authored_road:true,all_cluster_posts_checked:true}});
           continue;
         }
         const {post,near}=cluster[0];
@@ -617,6 +662,7 @@ try {
         ended,
         production_input: true,
         boundary_egress: boundaryEgress,
+        slope_egress: slopeEgress,
         planned_route: route.slice(0, 40),
         planned_clearance: route.length ? [0,.2,.4,.6,.8,1].map(et=>{const q=route[0];return {et,...H.solidAt(started[0]+(q[0]-started[0])*et,started[1]+.9,started[2]+(q[1]-started[2])*et)};}) : [],
         planner: plannerReport,
@@ -822,6 +868,37 @@ try {
 
       for (const step of plan) {
         if (alreadyCompleted.has(step.id)) continue;
+        // Q-MAIN-30 is the mandatory parallel audience. Its opening phrase is not awarded by
+        // Q15: the authored world route is Lilmoth's act-three-closed wharf rumour. Walk to a
+        // real Lilmoth rootkeeper and ask through the published `latest rumors` choice until that
+        // finite local deck supplies it. This is conversation input, not a topic API or reveal
+        // hand-feed, and every draw is retained in evidence.
+        let openingTopicAction=null;
+        if(step.id==='Q-MAIN-30'&&!H.getQuestState().topicsKnown.includes('the-thread-is-cut')){
+          const source='rootkeeper-under-the-temple',reached=reachNpc(source),draws=[];
+          if(reached.ok)for(let draw=0;draw<32&&!H.getQuestState().topicsKnown.includes('the-thread-is-cut');draw++){
+            const convo=H.talkTo(source),choice=(convo.topics||convo.list||[]).find(t=>t.id==='latest rumors');
+            if(!choice){H.conversationClose();break;}
+            const said=H.conversationSay(choice.id);H.conversationClose();draws.push({draw:draw+1,text:said?.said||null,source:said?.said_source||null,learned_thread:H.getQuestState().topicsKnown.includes('the-thread-is-cut')});
+          }
+          openingTopicAction={quest:step.id,target:'the-thread-is-cut',source,production_route:'Lilmoth latest rumors',reached,draws,learned:H.getQuestState().topicsKnown.includes('the-thread-is-cut')};
+          out.opening_topic_actions=out.opening_topic_actions||[];out.opening_topic_actions.push(openingTopicAction);
+          // Do not continue to the giver after a bounded source walk stops short or after the
+          // published local rumour deck fails to supply the authored opening topic. The former
+          // behaviour launched another province-scale walk with a topic that was observably
+          // still absent, obscuring the real failure and wasting the closest legitimate resume
+          // state. Preserve that production-valid state so the next bounded run can continue
+          // from the exact body pose without granting either movement or knowledge.
+          if(!reached.ok||!openingTopicAction.learned){
+            out.blocked_at=step.id;
+            out.why=!reached.ok
+              ? `production movement did not reach opening-topic source: ${reached.why||'source unreachable'}`
+              : 'player-facing Lilmoth rumor route did not teach the-thread-is-cut';
+            out.trace.push({quest:step.id,topic:step.topic,prerequisite_topics:step.prereq_topics.slice(),opening_topic_action:openingTopicAction,failure:{phase:'opening-topic',reason:out.why},after:evidenceSnapshot((H.questDef(step.id).giver||{}).npc_id)});
+            retainResume(out);
+            break;
+          }
+        }
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
         const activeRecord = H.getQuestState().active.find((q)=>q.id===step.id) || null;
@@ -859,7 +936,7 @@ try {
         // choice, play stops here.
         let o = activeRecord ? {ok:true,resumed_active:true} : (trip.reached ? { ok: false, reason: 'acceptance choice absent' } : { ok: false, reason: `production movement did not reach giver: ${trip.why || trip.walk?.walk?.aborted || trip.walk?.left_m}` });
         const giver = (H.questDef(step.id).giver || {}).npc_id;
-        const evidence = { quest:step.id, topic:step.topic, prerequisite_topics:step.prereq_topics.slice(),
+        const evidence = { quest:step.id, topic:step.topic, prerequisite_topics:step.prereq_topics.slice(), opening_topic_action:openingTopicAction,
           arrival:evidenceSnapshot(giver), offer:offer ? {...offer} : null, giver_journey:trip, world_actions:[] };
         const acceptThroughConversation = () => {
           const c = H.talkTo(giver);

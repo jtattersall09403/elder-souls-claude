@@ -1,0 +1,75 @@
+{
+  "schema": "elder-souls/production-checkpoint-manifest@1",
+  "fixture": "fixtures/resume-saxhleel-interior-intended-q30.json",
+  "fixture_hash": "sha256:6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d",
+  "tested_commit": "cc1f0585",
+  "tested_tree_note": "Act III milestone plus the Q30 bounded-resume, encounter-detour and world-routed Lilmoth rumour repairs frozen by input_hashes; the milestone commit is the commit containing this manifest.",
+  "tool": "tools/quests/mainline-chain-floor.mjs",
+  "save_schema": { "schema": "elder-souls/save@1", "version": 2 },
+  "harness_version": 1,
+  "character": { "race": "saxhleel", "upbringing": "interior", "class_id": "reed-walker", "birthsign": "raj-xul" },
+  "completed_quests": [
+    "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+    "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09", "Q-MAIN-10",
+    "Q-MAIN-11", "Q-MAIN-12", "Q-MAIN-13", "Q-MAIN-14", "Q-MAIN-15",
+    "Q-MAIN-30"
+  ],
+  "active_quests": [],
+  "position": { "pos": [618.972387, 8.13, 4876.694531], "settlement": "soulrest", "cell": "coast", "interior": null },
+  "clock": { "day": 5, "hour": 13.767778 },
+  "weather": "white_clear",
+  "schedule_context": {
+    "opening_topic_source": "rootkeeper-under-the-temple",
+    "opening_topic_route": "eleven published Lilmoth 'latest rumors' conversation choices",
+    "opening_topic": "the-thread-is-cut",
+    "giver": "ledgerer-hosk-vei",
+    "active_row": { "from": "07:00", "to": "19:00", "at": null, "activity": "post" },
+    "authored_exterior_post": [618, 8.13, 4877],
+    "checkpoint_giver_distance_m": 1.019239
+  },
+  "health": { "hp": 92, "hp_max": 92, "estus": 5 },
+  "stability": {
+    "consecutive_clean_frames": 120, "player_state": "IDLE", "speed_mps": 0,
+    "in_combat": false, "locked_on": null, "mired": false, "submerged": false,
+    "dead": false, "hitstop": false, "ui_mode": "world", "conversation_open": false,
+    "held_inputs": [], "pressed_inputs": [], "pending_press": [], "pending_release": [],
+    "collision_solid": false, "collision_clearance_m": 0.97701, "marker_count": 0
+  },
+  "provenance": {
+    "production_player_actions": true,
+    "violent_resolutions": 0,
+    "direct_progression_mutations": 0,
+    "teleports": 0,
+    "deaths_or_respawns": 0,
+    "bought_openings": 0,
+    "synthetic_spawns": 0,
+    "topic_or_reveal_hand_feeds": 0,
+    "allowed_nonviolent_npcs_dead": ["npc-sesh-weth"],
+    "allowed_nonviolent_death_source": "Q-MAIN-12 res_full_test authored consequence",
+    "quest_30_resolution": "res_carry_on",
+    "quest_30_acceptance": "published quest-accept:Q-MAIN-30 conversation choice with Hosk-Vei at his live exterior post",
+    "opening_topic_production_route": "walk to a real Lilmoth rootkeeper and select the published latest-rumors topic until the finite local deck supplied lil-act3-thread",
+    "source_runs": [
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q30-r4",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q30-r7",
+      "reports/runs/W1-19-production-gpu-root-lf/intended-q30-r8"
+    ],
+    "source_run_hashes": {
+      "q30_r7_report": "sha256:3055374367510a55d285fe19aebf4f67e3e5038ece7c4022d5e484d4b07a4bcc",
+      "q30_r7_resume": "sha256:7e2a7566049e85d4b178ae89208d3d70b58cd5d93f4e23afd6026f3dd1214894",
+      "q30_r8_report": "sha256:9a8cdfaca2a8139ab194a14c31d35f2928f26e7dde6ce56f987d1387f54536ea",
+      "q30_r8_resume": "sha256:6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d"
+    }
+  },
+  "input_hashes": {
+    "quests": "sha256:6b2179a5ad77e335b1c020fb22dc2a43db51a1c94844556032943595104ec38c",
+    "npcs": "sha256:b5b0f5a11050ef63da75047592d3d9fdb5f9b84c3edec7460d9014f33e40745e",
+    "world_route": "sha256:b5b207be8330daecda7f6d2c103f6edb1a00350cddf21f1add4bfd00cee8793b",
+    "save_schema": "sha256:a33dfa9a37229f79154bdd1e56b6c1c6e4bea02d6cbd033a772fd8038dad1b24",
+    "production_runtime": "sha256:94cc4554a0c26559ded74e2e12d525564ec3ab05f20533c8e86074b6e6f8326d",
+    "instruments": "sha256:913c1b85d95daa7ce55e74653047b69bb502ea4390f3f168bb35794f7e5826bd"
+  },
+  "reproduction": "node tools/quests/mainline-chain-floor.mjs --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-act3.json --stop-after Q-MAIN-30 --walk-max-frames 120000 --resume-output evidence/W1-19/fixtures/reproduced-q30.json --out reports/runs/W1-19-production-gpu-root-lf/q30-reproduction --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --timeout 7200000",
+  "validation": "node tools/quests/validate-mainline-checkpoint.mjs evidence/W1-19/q-main-30-checkpoint.manifest.json",
+  "controls": "node tools/quests/mainline-checkpoint-control.mjs --manifest evidence/W1-19/q-main-30-checkpoint.manifest.json --out reports/runs/W1-19-production-gpu-root-lf/q30-checkpoint-control.json"
+}
