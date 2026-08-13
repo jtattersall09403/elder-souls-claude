@@ -247,19 +247,19 @@ function installWaterline(mat, sharedUniforms) {
 /** bone id -> { to, r0, r1, mat, blend } ; `to` is the child bone whose offset gives length. */
 const PLAN = {
   pelvis: { to: 'spine_00', r0: 0.185, r1: 0.170, mat: 'cloth', blend: 0 },
-  spine_00: { to: 'spine_02', r0: 0.170, r1: 0.205, mat: 'cloth', blend: 0.4 },
-  spine_02: { to: 'neck', r0: 0.205, r1: 0.135, mat: 'cloth', blend: 0.4 },
+  spine_00: { to: 'spine_02', r0: 0.178, r1: 0.218, mat: 'cloth', blend: 0.4 },
+  spine_02: { to: 'neck', r0: 0.218, r1: 0.142, mat: 'cloth', blend: 0.4 },
   neck: { to: 'head', r0: 0.072, r1: 0.070, mat: 'skin', blend: 0.5 },
-  clavicle_l: { to: 'upperarm_l', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
-  clavicle_r: { to: 'upperarm_r', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
-  upperarm_l: { to: 'lowerarm_l', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
-  upperarm_r: { to: 'lowerarm_r', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
-  lowerarm_l: { to: 'hand_l', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
-  lowerarm_r: { to: 'hand_r', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
-  thigh_l: { to: 'calf_l', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
-  thigh_r: { to: 'calf_r', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
-  calf_l: { to: 'foot_l', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
-  calf_r: { to: 'foot_r', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
+  clavicle_l: { to: 'upperarm_l', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  clavicle_r: { to: 'upperarm_r', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  upperarm_l: { to: 'lowerarm_l', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
+  upperarm_r: { to: 'lowerarm_r', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
+  lowerarm_l: { to: 'hand_l', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
+  lowerarm_r: { to: 'hand_r', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
+  thigh_l: { to: 'calf_l', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
+  thigh_r: { to: 'calf_r', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
+  calf_l: { to: 'foot_l', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
+  calf_r: { to: 'foot_r', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
   // Leaf bones: no child to measure against, so these carry an authored local extent.
   hand_l: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
   hand_r: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
@@ -338,9 +338,9 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // They are emitted into the same sealed, skinned surfaces, so they cannot lag behind motion
   // or recreate the translucent-overlap defect that separate transparent shells produced.
   const pelvisI=index.get('pelvis');
-  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.17,.12,.125],pelvisI,12);
+  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185,.13,.135],pelvisI,12);
   const chestI=index.get('spine_02');
-  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.205,.19,.13],chestI,14);
+  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228,.20,.142],chestI,14);
 
   // ---- the head ------------------------------------------------------------------------
   // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
