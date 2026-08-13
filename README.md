@@ -108,6 +108,10 @@ step. `./play.sh --port 9000` if 8080 is taken; `./play.sh --host 0.0.0.0` to re
 on the same wifi. The only reason to prefer this over the link is that it serves your working copy,
 so it shows uncommitted work.
 
+Maintainers and coding agents can run temporary hardware-GPU browser checks through RunPod; see
+[`docs/RUNPOD-GPU-TESTING.md`](docs/RUNPOD-GPU-TESTING.md). The runner snapshots the exact selected
+worktree, retrieves its artifacts, and terminates the Pod automatically.
+
 ## What to expect
 
 A title screen, then **New**. You wake in a barge hold with someone on the other bench. Nothing

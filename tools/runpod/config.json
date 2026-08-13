@@ -1,0 +1,33 @@
+{
+  "schema": "elder-souls/runpod-config@1",
+  "podNamePrefix": "elder-souls-gpu-",
+  "maxPricePerHourUsd": 0.4,
+  "absoluteMaxPricePerHourUsd": 1.0,
+  "maxRuntimeMinutes": 20,
+  "absoluteMaxRuntimeMinutes": 120,
+  "readyTimeoutMinutes": 8,
+  "containerDiskInGb": 30,
+  "minVcpuPerGpu": 4,
+  "minRamPerGpu": 16,
+  "cloudTypes": [
+    "COMMUNITY",
+    "SECURE"
+  ],
+  "allowedGpuTypes": [
+    "NVIDIA RTX A2000",
+    "NVIDIA GeForce RTX 3070",
+    "NVIDIA RTX A4000",
+    "NVIDIA GeForce RTX 3080",
+    "NVIDIA RTX A4500",
+    "NVIDIA RTX A5000",
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA L4"
+  ],
+  "snapshotPaths": [
+    "game",
+    "tools",
+    "package.json",
+    "play.sh"
+  ],
+  "artifactRoot": "reports/runpod-gpu/runs"
+}
