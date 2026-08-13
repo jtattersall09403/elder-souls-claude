@@ -28,7 +28,7 @@ require(registry.clip_count===Object.keys(registry.clips).length,'clip registry 
 require(registry.clip_count>=1000,`weapon animation population unexpectedly small: ${registry.clip_count}`);
 const classIds=Array.isArray(classes.classes)?classes.classes.map(x=>x.id):Object.keys(classes.classes||classes);
 require(new Set(Object.values(registry.clips).map(x=>x.class)).size>=15,'representative shipped weapon classes absent from animation registry');
-for(const token of ['poseFromRig','weaponKeyOf','actor-secondary-frill','delayF: 4 + i * 3','matrixWorld.copy']) require(actor.includes(token),`actor production seam absent: ${token}`);
+for(const token of ['poseFromRig','weaponKeyOf','actor-secondary-frill','delayF: 4 + i * 3','matrixWorld.copy','brow-horn-']) require(actor.includes(token),`actor production seam absent: ${token}`);
 for(const token of ['actor-equipment:','equipLoadPct','groundAt','foot_l','foot_r','Gram-Schmidt']) require(actor.includes(token),`equipment/IK seam absent: ${token}`);
 for(const token of ['clip_sample_hz','clip_len_s','weapon_tip','surface_normal_${side}','deterministic_frill','groundAt']) require(record.includes(token),`RI-VIS08 trace field absent: ${token}`);
 for(const file of ['corpus/80-methods/capture-trace.mjs','corpus/80-methods/anim-metrics.mjs','corpus/80-methods/m-cam07-presentation.mjs'])require(fs.existsSync(new URL(file,root)),`authority method absent: ${file}`);

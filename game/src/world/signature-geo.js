@@ -23,14 +23,23 @@ function weld(parts) {
   let vcount = 0, icount = 0;
   for (const g of parts) { vcount += g.attributes.position.count; icount += g.index ? g.index.count : g.attributes.position.count; }
   const pos = new Float32Array(vcount * 3), nrm = new Float32Array(vcount * 3);
+  // Preserve texture coordinates whenever any source contributes them.  This merger is shared
+  // by the instanced regional silhouettes and vegetation; dropping UVs made alpha-tested foliage
+  // sample a single texel and disappear even though its instances were alive and counted.
+  const hasUv = parts.some((g) => !!g.attributes.uv);
+  const uv = hasUv ? new Float32Array(vcount * 2) : null;
   const idx = vcount > 65535 ? new Uint32Array(icount) : new Uint16Array(icount);
   let vo = 0, io = 0;
   for (const g of parts) {
     g.computeVertexNormals();
-    const p = g.attributes.position, n = g.attributes.normal;
+    const p = g.attributes.position, n = g.attributes.normal, t = g.attributes.uv;
     for (let i = 0; i < p.count; i++) {
       pos[(vo + i) * 3] = p.getX(i); pos[(vo + i) * 3 + 1] = p.getY(i); pos[(vo + i) * 3 + 2] = p.getZ(i);
       nrm[(vo + i) * 3] = n.getX(i); nrm[(vo + i) * 3 + 1] = n.getY(i); nrm[(vo + i) * 3 + 2] = n.getZ(i);
+      if (uv) {
+        uv[(vo + i) * 2] = t ? t.getX(i) : 0;
+        uv[(vo + i) * 2 + 1] = t ? t.getY(i) : 0;
+      }
     }
     if (g.index) { for (let i = 0; i < g.index.count; i++) idx[io + i] = g.index.array[i] + vo; io += g.index.count; }
     else { for (let i = 0; i < p.count; i++) idx[io + i] = i + vo; io += p.count; }
@@ -40,6 +49,7 @@ function weld(parts) {
   const out = new THREE.BufferGeometry();
   out.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   out.setAttribute('normal', new THREE.BufferAttribute(nrm, 3));
+  if (uv) out.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
   out.setIndex(new THREE.BufferAttribute(idx, 1));
   return out;
 }

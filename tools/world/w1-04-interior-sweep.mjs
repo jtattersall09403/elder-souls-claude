@@ -79,7 +79,16 @@ try {
 
     async function sweep(label, cut) {
       let restore = null;
-      if (cut) { const s = E.renderer.setInteriorRecord.bind(E.renderer); E.renderer.setInteriorRecord = () => null; restore = () => { E.renderer.setInteriorRecord = s; }; }
+      if (cut) {
+        const s = E.renderer.setInteriorRecord.bind(E.renderer);
+        // Delete the consumer AND establish the pre-consumer generic hall. A bare no-op left the
+        // final live-arm room resident, then attributed 115 changing environment/cell frames to
+        // that stale room. The control is the build before setInteriorRecord existed: every named
+        // door resolves to one generic hall, so put that hall in place before cutting the setter.
+        s(null);
+        E.renderer.setInteriorRecord = () => E.renderer.interiorSummary;
+        restore = () => { E.renderer.setInteriorRecord = s; };
+      }
       const rows = [];
       const seen = new Map();
       try {

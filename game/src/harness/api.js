@@ -510,6 +510,25 @@ export function installHarness(engine, bootPromise) {
             const e = A.built.bones[i].matrixWorld.elements;
             rec.bones[body && body.rig ? body.rig.def.bones[i].id : String(i)] = [e[12], e[13], e[14]];
           }
+          // W1-30 motion-review controls. These are read back from the actual rendered
+          // objects, not inferred from the CombatBody: the prior Saxhleel horns lived in the
+          // actor-level `direction` group and visibly stayed behind when the head turned.
+          // A clip ledger can now prove that every family form rides a live bone, and that the
+          // skinned body materials are genuinely opaque/depth-writing throughout the clip.
+          rec.presentation = (A.built.presentation || []).map((p) => {
+            const e = p.mesh.matrixWorld.elements;
+            const mat=p.mesh.material;
+            return { name: p.mesh.name, bone: body && body.rig ? body.rig.def.bones[p.bi].id : String(p.bi), pos: [e[12], e[13], e[14]], visible: p.mesh.visible,
+              transparent:!!(mat&&mat.transparent),opacity:mat&&Number.isFinite(mat.opacity)?mat.opacity:1,depthWrite:!(mat&&mat.depthWrite===false) };
+          });
+          rec.body_materials = (A.built.meshes || []).map((mesh) => ({
+            name: mesh.material && mesh.material.name || mesh.name || 'actor-body',
+            transparent: !!(mesh.material && mesh.material.transparent),
+            opacity: mesh.material && Number.isFinite(mesh.material.opacity) ? mesh.material.opacity : 1,
+            depthWrite: !(mesh.material && mesh.material.depthWrite === false),
+            visible: mesh.visible,
+          }));
+          rec.static_direction_children = A.direction ? A.direction.children.length : null;
         }
         if (A.weapon && A.weapon.visible) {
           const m = A.weapon.matrixWorld.elements;
@@ -597,6 +616,8 @@ export function installHarness(engine, bootPromise) {
 
     renderFrame() { engine.loop.renderNow(); return true; },
     async screenshot() { engine.loop.renderNow(); return engine.renderer.screenshotDataURL(); },
+    /** RI-VIS03 M12 WATER_MASK from the live scene's water object ids. */
+    async screenshotWaterMask() { engine.loop.renderNow(); return engine.renderer.waterMaskDataURL(); },
 
     // ================= amendments requested by the journey and platform items =================
     // JOURNEY-CRITIC-FLEET.md §7. Each item that needs one says "until it lands this is

@@ -70,7 +70,7 @@ class MeshBuilder {
    * A tapered tube from `a` to `b` in world (rest) space, skinned to `bone` and blended into
    * `parent` over the first `blend` of its length so an elbow bends rather than shears.
    */
-  tube(a, b, r0, r1, bone, parent, blend, radial = 10, rings = 4) {
+  tube(a, b, r0, r1, bone, parent, blend, radial = 12, rings = 5) {
     _w.copy(b).sub(a);
     const len = _w.length();
     if (len < 1e-6) return;
@@ -113,6 +113,19 @@ class MeshBuilder {
         this.tri(A, C, B); this.tri(B, C, D);
       }
     }
+    // Close both ends. Open limb tubes expose their back faces at elbows, wrists and armour
+    // junctions during motion; against the sky that reads as a translucent or hollow body even
+    // though the material itself is opaque. The caps carry the same terminal skin weights as
+    // their rings, so they remain sealed through deformation.
+    const start=this.count, end=this.count+1;
+    const startParent=(blend>0&&parent>=0) ? .5 : 0;
+    this.vert(a.clone(),_w.clone().multiplyScalar(-1),[bone,parent<0?bone:parent],[1-startParent,startParent],[.5,.5]);
+    this.vert(b.clone(),_w.clone(),[bone,bone],[1,0],[.5,.5]);
+    for(let i=0;i<radial;i++){
+      const i2=(i+1)%radial, first=base+i, last=base+rings*radial+i;
+      this.tri(start,base+i2,first);
+      this.tri(end,last,base+rings*radial+i2);
+    }
   }
 
   /** A ball at a joint, rigidly skinned — shoulders, elbows, knees, skulls. */
@@ -136,6 +149,25 @@ class MeshBuilder {
         const C = base + (j + 1) * ring + i, D = base + (j + 1) * ring + i2;
         this.tri(A, C, B); this.tri(B, C, D);
       }
+    }
+  }
+
+  /** Ellipsoidal terminal mass, emitted into the sealed skinned surface. */
+  ellipsoid(c, radii, bone, seg = 14) {
+    const [rx,ry,rz]=radii,base=this.count,ring=seg*2;
+    for(let j=0;j<=seg;j++){
+      const phi=(j/seg)*Math.PI,sp=Math.sin(phi),cp=Math.cos(phi);
+      for(let i=0;i<ring;i++){
+        const th=(i/ring)*Math.PI*2,ct=Math.cos(th),st=Math.sin(th);
+        const x=sp*ct,y=cp,z=sp*st;
+        const p=new THREE.Vector3(c.x+x*rx,c.y+y*ry,c.z+z*rz);
+        const n=new THREE.Vector3(x/rx,y/ry,z/rz).normalize();
+        this.vert(p,n,[bone,bone],[1,0],[i/ring,j/seg]);
+      }
+    }
+    for(let j=0;j<seg;j++)for(let i=0;i<ring;i++){
+      const i2=(i+1)%ring,A=base+j*ring+i,B=base+j*ring+i2,C=base+(j+1)*ring+i,D=base+(j+1)*ring+i2;
+      this.tri(A,C,B);this.tri(B,C,D);
     }
   }
 
@@ -215,19 +247,19 @@ function installWaterline(mat, sharedUniforms) {
 /** bone id -> { to, r0, r1, mat, blend } ; `to` is the child bone whose offset gives length. */
 const PLAN = {
   pelvis: { to: 'spine_00', r0: 0.185, r1: 0.170, mat: 'cloth', blend: 0 },
-  spine_00: { to: 'spine_02', r0: 0.170, r1: 0.205, mat: 'cloth', blend: 0.4 },
-  spine_02: { to: 'neck', r0: 0.205, r1: 0.135, mat: 'cloth', blend: 0.4 },
+  spine_00: { to: 'spine_02', r0: 0.178, r1: 0.218, mat: 'cloth', blend: 0.4 },
+  spine_02: { to: 'neck', r0: 0.218, r1: 0.142, mat: 'cloth', blend: 0.4 },
   neck: { to: 'head', r0: 0.072, r1: 0.070, mat: 'skin', blend: 0.5 },
-  clavicle_l: { to: 'upperarm_l', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
-  clavicle_r: { to: 'upperarm_r', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
-  upperarm_l: { to: 'lowerarm_l', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
-  upperarm_r: { to: 'lowerarm_r', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
-  lowerarm_l: { to: 'hand_l', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
-  lowerarm_r: { to: 'hand_r', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
-  thigh_l: { to: 'calf_l', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
-  thigh_r: { to: 'calf_r', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
-  calf_l: { to: 'foot_l', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
-  calf_r: { to: 'foot_r', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
+  clavicle_l: { to: 'upperarm_l', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  clavicle_r: { to: 'upperarm_r', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  upperarm_l: { to: 'lowerarm_l', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
+  upperarm_r: { to: 'lowerarm_r', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
+  lowerarm_l: { to: 'hand_l', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
+  lowerarm_r: { to: 'hand_r', r0: 0.075, r1: 0.058, mat: 'skin', blend: 0.45 },
+  thigh_l: { to: 'calf_l', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
+  thigh_r: { to: 'calf_r', r0: 0.126, r1: 0.098, mat: 'cloth', blend: 0.4 },
+  calf_l: { to: 'foot_l', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
+  calf_r: { to: 'foot_r', r0: 0.098, r1: 0.068, mat: 'cloth', blend: 0.4 },
   // Leaf bones: no child to measure against, so these carry an authored local extent.
   hand_l: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
   hand_r: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
@@ -299,8 +331,16 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   for (const [id, r, mat] of JOINTS) {
     const bi = index.get(id);
     if (bi === undefined) continue;
-    B[mat].ball(originOf(id), r, bi, 8);
+    B[mat].ball(originOf(id), r, bi, 10);
   }
+
+  // Anatomical volumes bridge the mechanically useful skeleton tubes into a readable body.
+  // They are emitted into the same sealed, skinned surfaces, so they cannot lag behind motion
+  // or recreate the translucent-overlap defect that separate transparent shells produced.
+  const pelvisI=index.get('pelvis');
+  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185,.13,.135],pelvisI,12);
+  const chestI=index.get('spine_02');
+  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228,.20,.142],chestI,14);
 
   // ---- the head ------------------------------------------------------------------------
   // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
@@ -312,15 +352,43 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   if (hi !== undefined) {
     const hm = restWorld[hi];
     const P = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(hm);
-    B.skin.ball(P(0, 0.085, 0.005), 0.115, hi, 9, 1.06, 0.03);          // skull
-    B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.235), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
-    B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.205), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
-    // the crest: three low spines back over the skull, the silhouette cue that reads at range
-    for (let k = 0; k < 3; k++) {
-      const t = k / 3;
-      B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
-        P(0, 0.215 - t * 0.055, -0.010 - t * 0.090), 0.030, 0.008, hi, hi, 0, 6, 2);
+    if(artFamily==='saxhleel'){
+      B.skin.ellipsoid(P(0,0.085,0.005),[.108,.132,.126],hi,12);          // skull
+      B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.235), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
+      B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.205), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
+      for (let k = 0; k < 3; k++) {
+        const t = k / 3;
+        B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
+          P(0, 0.215 - t * 0.055, -0.010 - t * 0.090), 0.030, 0.008, hi, hi, 0, 6, 2);
+      }
+    }else if(artFamily==='humanoid'){
+      B.skin.ellipsoid(P(0,.080,.004),[.100,.132,.098],hi,14);
+      B.skin.ellipsoid(P(0,.045,.096),[.025,.040,.034],hi,9);             // nose
+      B.skin.ellipsoid(P(0,.002,.071),[.072,.040,.070],hi,10);            // jaw/chin
+      B.skin.ellipsoid(P(-.105,.076,0),[.018,.038,.014],hi,8);
+      B.skin.ellipsoid(P( .105,.076,0),[.018,.038,.014],hi,8);
+    }else if(artFamily==='undead'){
+      // A narrow corpse volume supports the separate bone skull/ribs without smuggling the
+      // player's reptile snout and crest underneath them.
+      B.skin.ellipsoid(P(0,.072,.006),[.083,.116,.079],hi,10);
     }
+  }
+
+  // Hands and feet need terminal anatomy. A tapered forearm ending in one capped tube was the
+  // canonical "rubber hose" failure in the hardware close-up. Three splayed digits and forward
+  // toes remain rigid to their terminal bones, so they cannot disturb hit volumes or IK.
+  for (const [id, sideSign] of [['hand_l',-1],['hand_r',1]]) {
+    const bi=index.get(id); if (bi===undefined) continue;
+    const hm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(hm);
+    B.skin.ellipsoid(P(0,-.055,.025),[.070,.090,.048],bi,10);
+    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.025,-.084,.022),P(k*.038,-.174,.045+Math.abs(k)*.012),.016,.006,bi,bi,0,7,3);
+    B.skin.tube(P(sideSign*.052,-.060,.018),P(sideSign*.098,-.132,.060),.015,.006,bi,bi,0,7,3);
+  }
+  for (const id of ['foot_l','foot_r']) {
+    const bi=index.get(id); if (bi===undefined) continue;
+    const fm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(fm);
+    B.skin.ellipsoid(P(0,-.035,.115),[.075,.052,.135],bi,10);
+    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.030,-.038,.155),P(k*.045,-.040,.275-Math.abs(k)*.018),.018,.006,bi,bi,0,7,3);
   }
 
   // ---- the tail ------------------------------------------------------------------------
@@ -333,7 +401,7 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // the separate spine frill below is the deterministic delayed secondary-motion carrier.
   const pi = index.get('pelvis');
   const s0 = index.get('spine_00');
-  if (pi !== undefined) {
+  if (pi !== undefined && artFamily==='saxhleel') {
     const pm = restWorld[pi];
     const T = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(pm);
     const spine = [
@@ -389,12 +457,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   const frillMat = mats.cloth.clone();
   if (tintHex !== undefined) frillMat.color.setHex(tintHex).offsetHSL(0.03, 0.08, -0.08);
   for (let i = 0; i < 3; i++) {
-    const mesh = new THREE.Mesh(new THREE.ConeGeometry(0.11 - i * 0.018, 0.34 - i * 0.035, 5), frillMat);
+    const mesh = new THREE.Mesh(new THREE.ConeGeometry(0.082 - i * 0.014, 0.25 - i * 0.025, 7), frillMat);
     mesh.name = `actor-secondary-frill:${i}`;
     mesh.castShadow = true;
     mesh.matrixAutoUpdate = false;
     group.add(mesh);
-    secondary.push({ mesh, delayF: 4 + i * 3, localY: 0.08 - i * 0.13, localZ: -0.17 - i * 0.025 });
+    secondary.push({ mesh, delayF: 4 + i * 3, localY: 0.10 - i * 0.105, localZ: -0.145 - i * 0.018 });
   }
 
   // Three authored visible sets across all five equipment slots.  The simulation's equip-load
@@ -402,46 +470,147 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // and material response all change, so a loadout transition is not a tint swap.
   const equipment=[];
   let equipMat=_equipmentMaterialCache.get(mats);
-  if(!equipMat){equipMat={reed:mats.reed.clone(),chitin:(mats.chitin||mats.bark).clone(),xanmeer:mats.darkStone.clone()};equipMat.reed.color.setHex(0x7b7548);equipMat.chitin.color.setHex(0x6f4d31);equipMat.xanmeer.color.setHex(0x777964);_equipmentMaterialCache.set(mats,equipMat);}
+  if(!equipMat){equipMat={reed:mats.reed.clone(),chitin:(mats.chitin||mats.bark).clone(),xanmeer:mats.darkStone.clone()};equipMat.reed.color.setHex(0x91885b);equipMat.chitin.color.setHex(0x805d42);equipMat.xanmeer.color.setHex(0x969987);equipMat.reed.roughness=.78;equipMat.chitin.roughness=.48;equipMat.xanmeer.roughness=.38;_equipmentMaterialCache.set(mats,equipMat);}
   const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
   for(const set of ['reed','chitin','xanmeer']){
     const heavy=set==='xanmeer',mid=set==='chitin';
     addEquip(set,'head','head',heavy?new THREE.CylinderGeometry(.145,.17,.20,10):mid?new THREE.SphereGeometry(.155,12,7,0,Math.PI*2,0,Math.PI*.58):new THREE.TorusGeometry(.145,.022,5,12,Math.PI*1.55),[0,.14,-.015],heavy?[1.08,1,1.08]:[1,1,1],heavy?[0,0,0]:[Math.PI/2,0,.35]);
     // Chest plates follow the torso as a tapered shell. A capsule transformed by the live spine
     // read as one horizontal log from shoulder to shoulder in the canonical rear camera.
-    addEquip(set,'chest','spine_02',heavy?new THREE.DodecahedronGeometry(.235,1):mid?new THREE.IcosahedronGeometry(.225,1):new THREE.CylinderGeometry(.205,.245,.40,10),[0,-.08,-.015],heavy?[.90,1.18,.58]:mid?[.92,1.12,.56]:[1,1,.62]);
+    addEquip(set,'chest','spine_02',torsoShellGeometry(set),[0,-.04,-.012],[1,1,1]);
     // Layered gorget and shoulder shells keep armour readable without obscuring the pose.
-    addEquip(set,'chest','spine_02',new THREE.TorusGeometry(.205,.027,5,14,Math.PI*1.65),[0,.15,.015],[1,1,.78],[Math.PI/2,0,.28]);
-    for(const s of [-1,1])addEquip(set,'chest',s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(heavy?.105:.082,10,6,0,Math.PI*2,0,Math.PI*.58),[0,.005,0],[1.05,.60,.82],[0,0,s*.22]);
-    for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',heavy?new THREE.BoxGeometry(.15,.22,.16):mid?new THREE.CylinderGeometry(.10,.12,.22,6):new THREE.CylinderGeometry(.075,.09,.20,7),[0,-.03,0]);
-    for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',heavy?new THREE.BoxGeometry(.20,.40,.20):mid?new THREE.CylinderGeometry(.105,.14,.38,7):new THREE.CylinderGeometry(.075,.095,.34,7),[0,-.18,0]);
-    addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.245,.245,.065,12):mid?new THREE.DodecahedronGeometry(.215,1):new THREE.CapsuleGeometry(.13,.24,4,8),[0,-.07,-.19],heavy?[1,.72,1]:mid?[.82,1,.38]:[.82,1,.42],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
+    addEquip(set,'chest','spine_02',new THREE.TorusGeometry(.176,.018,5,14,Math.PI*1.65),[0,.142,.015],[1,1,.74],[Math.PI/2,0,.28]);
+    for(const s of [-1,1])addEquip(set,'chest',s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(heavy?.078:.064,12,7,0,Math.PI*2,0,Math.PI*.55),[0,.002,0],[1.02,.48,.72],[0,0,s*.22]);
+    for(const s of [-1,1])addEquip(set,'hands',s<0?'hand_l':'hand_r',taperedGuardGeometry(heavy?.105:mid?.095:.078,heavy?.088:mid?.078:.062,heavy?.22:.19,heavy?.86:.76),[0,-.055,0],[1,1,1]);
+    for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',taperedGuardGeometry(heavy?.13:mid?.115:.095,heavy?.10:mid?.09:.072,heavy?.38:.34,heavy?.86:.78),[0,-.17,0],[1,1,1]);
+    // A belt, hanging front panel and oblique bindings integrate the set across the torso and
+    // pelvis. Without these junctions every slot read as an unrelated primitive glued to a rig.
+    addEquip(set,'chest','spine_00',new THREE.TorusGeometry(.205,heavy?.035:.024,6,18),[0,-.04,0],[1,.72,1],[Math.PI/2,0,0]);
+    addEquip(set,'legs','pelvis',garmentTabGeometry(heavy?.25:.215,heavy?.42:.36,.025),[0,-.20,.105],[1,1,1],[0,0,0]);
+    for(const s of [-1,1]) addEquip(set,'chest','spine_02',new THREE.BoxGeometry(.035,.40,.025),[s*.105,-.06,.125],[1,1,1],[0,0,s*.24]);
+    addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.205,.205,.050,14):mid?new THREE.DodecahedronGeometry(.18,1):new THREE.CapsuleGeometry(.105,.20,4,8),[0,-.07,-.178],heavy?[1,.66,1]:mid?[.78,1,.32]:[.76,1,.34],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
   }
 
   // Family-specific articulated presentation pieces. These ride evaluated bones just like
   // equipment, so quadruped mass, plated Saxhleel features and undead ribs participate in every
   // locomotion/combat pose instead of being a static metadata ornament around a humanoid rig.
   const presentation=[];
-  const familyMat=artFamily==='beast'?(mats.wet_chitin||mats.chitin):artFamily==='undead'?mats.bone:mats.skin;
-  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form')=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,familyMat);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);presentation.push({bi,mesh,local});};
+  let familyMat=artFamily==='beast'?(mats.wet_chitin||mats.chitin):artFamily==='undead'?mats.bone:mats.skin;
   if(artFamily==='beast'){
-    addPresentation('spine_01',new THREE.CapsuleGeometry(.30,.52,6,12),[0,-.02,-.08],[1.15,1,.78],[Math.PI/2,0,0],'thorax');
-    addPresentation('head',new THREE.DodecahedronGeometry(.24,1),[0,.04,.10],[1.05,.76,1.42],[0,0,0],'skull');
-    addPresentation('head',new THREE.ConeGeometry(.13,.42,8),[0,-.02,.31],[1,.72,1],[Math.PI/2,0,0],'muzzle');
-    for(const [id,s] of [['upperarm_l',-1],['upperarm_r',1],['thigh_l',-1],['thigh_r',1]]) addPresentation(id,new THREE.ConeGeometry(.13,.38,7),[0,-.12,.02],[1,.9,1],[0,0,s*.12],'limb-plate');
+    familyMat=familyMat.clone();const hsl={h:0,s:0,l:0};familyMat.color.getHSL(hsl);
+    familyMat.color.setHSL(hsl.h,Math.min(.58,hsl.s+.08),Math.max(.31,hsl.l+.12));
+    familyMat.roughness=.36;familyMat.envMapIntensity=1.35;familyMat.name='actor-beast-wet-chitin';
+  }
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
+  if(artFamily==='beast'){
+    // The slitherfang is a low, weight-bearing animal with different widths at ribcage, loin,
+    // neck and tail. A constant-radius TubeGeometry made it a glossy capsule. Overlapping closed
+    // masses give it scapulae, a tapered waist and a descending tail, while the combat rig remains
+    // the sole pose authority. Limb pieces below ride upper/lower/terminal bones separately so a
+    // lunge bends at shoulder, wrist, hip and hock rather than translating four glued pegs.
+    addPresentation('spine_00',new THREE.SphereGeometry(.30,18,12),[0,-.10,.28],[1.18,.78,1.42],[0,0,0],'ribcage');
+    addPresentation('pelvis',new THREE.SphereGeometry(.27,16,10),[0,.03,-.20],[1.02,.80,1.30],[0,0,0],'haunch-mass');
+    addPresentation('spine_00',new THREE.SphereGeometry(.22,14,9),[0,-.11,-.10],[.90,.72,1.32],[0,0,0],'tapered-loin');
+    addPresentation('spine_02',new THREE.CapsuleGeometry(.135,.34,6,12),[0,-.18,.27],[1,.80,1],[Math.PI/2,0,0],'neck');
+    addPresentation('spine_02',new THREE.DodecahedronGeometry(.20,2),[0,-.19,.60],[1.12,.80,1.40],[0,0,0],'wedge-skull');
+    addPresentation('spine_02',new THREE.SphereGeometry(.145,14,9),[0,-.245,.79],[.78,.55,1.42],[0,0,0],'muzzle-mass');
+    addPresentation('spine_02',new THREE.BoxGeometry(.19,.045,.32),[0,-.32,.78],[1,1,1],[.08,0,0],'lower-jaw');
+    // Three diminishing, slightly offset tail sections avoid the pipe silhouette and carry the
+    // pelvis motion through a heavy base into a narrow terminal whip.
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.16,.36,6,11),[.015,.00,-.49],[1,.84,1],[Math.PI/2-.10,0,.03],'tail-base');
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.105,.40,6,10),[-.025,-.055,-.80],[1,.82,1],[Math.PI/2-.20,.05,-.06],'tail-mid');
+    addPresentation('pelvis',new THREE.ConeGeometry(.082,.48,9),[.035,-.13,-1.11],[1,1,1],[-Math.PI/2+.28,.04,.08],'tail-whip');
+    const eyeMat=mats.bone.clone();eyeMat.color.setHex(0xd3b957);eyeMat.emissive.setHex(0x5a3108);eyeMat.emissiveIntensity=.7;
+    for(const sx of [-1,1])addPresentation('spine_02',new THREE.SphereGeometry(.032,10,7),[sx*.118,-.145,.715],[1,.78,.62],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
+    for(const sx of [-1,1]){
+      const side=sx<0?'l':'r';
+      addPresentation('spine_02',new THREE.ConeGeometry(.025,.14,7),[sx*.070,-.31,.94],[1,1,1],[Math.PI/2,0,sx*.08],`fang-${side}`,mats.bone);
+      // These segments share the trunk bone intentionally. The biped's shoulder/hip rest
+      // offsets are metres above the beast's low body and produced disconnected feet even when
+      // transformed coherently. Connected local chains supply the quadruped's true attachment
+      // points while the bounded lunge deformation below moves the complete chain together.
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.070,.20,5,9),[sx*.235,-.255,.40],[1,.92,.86],[0,0,sx*.52],`fore-upper-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.052,.17,5,9),[sx*.345,-.405,.43],[1,.96,.84],[0,0,-sx*.16],`fore-lower-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.076,11,7),[sx*.37,-.515,.50],[1.42,.42,1.30],[0,0,0],`fore-paw-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.115,12,8),[sx*.225,-.22,-.35],[1.12,1.32,1.18],[0,0,0],`hind-haunch-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.065,.22,5,9),[sx*.365,-.39,-.43],[1,.96,.88],[0,0,sx*.22],`hind-hock-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.085,11,7),[sx*.42,-.515,-.50],[1.55,.45,1.48],[0,0,0],`hind-paw-${side}`);
+      for(let toe=-1;toe<=1;toe++)addPresentation('spine_00',new THREE.ConeGeometry(.016,.12,6),[sx*.42+toe*.032,-.525,-.39-Math.abs(toe)*.018],[1,1,1],[Math.PI/2,0,0],`hind-toe-${side}-${toe+1}`,mats.bone);
+    }
+    for(let i=0;i<7;i++)addPresentation(i<3?'pelvis':'spine_00',new THREE.ConeGeometry(.062-i*.005,.21-i*.013,7),[(i%2?1:-1)*.018,.13,-.40+i*.17],[1,.72,1],[-Math.PI/2-.18,0,(i%2?1:-1)*.12],`dorsal-${i}`);
   }else if(artFamily==='undead'){
-    for(let i=0;i<5;i++) addPresentation('spine_01',new THREE.TorusGeometry(.18+i*.012,.018,5,12,Math.PI*1.55),[0,.15-i*.075,.015],[1,1,.62],[Math.PI/2,0,(i%2?-.12:.12)],`rib-${i}`);
+    // Use the declared upper-spine bone. A typo to spine_01 previously suppressed every rib,
+    // making this family merely a brown humanoid. The staggered open arcs, sternum, exposed
+    // long bones and faceted jaw now survive every animation while retaining a broken rhythm.
+    for(let i=0;i<6;i++) addPresentation('spine_02',new THREE.TorusGeometry(.155+i*.010,.016,6,14,Math.PI*1.58),[0,.135-i*.064,.025],[1,1,.70],[Math.PI/2,0,(i%2?-.13:.13)],`rib-${i}`);
+    addPresentation('spine_02',new THREE.BoxGeometry(.035,.34,.035),[0,-.015,.105],[1,1,1],[.10,0,.05],'sternum');
     addPresentation('head',new THREE.DodecahedronGeometry(.13,1),[0,.07,.02],[.88,1.08,.86],[0,0,.12],'skull');
+    addPresentation('head',new THREE.BoxGeometry(.115,.055,.10),[0,-.035,.035],[1,1,1],[.08,0,-.08],'jaw');
+    for(const side of ['l','r']){
+      addPresentation(`upperarm_${side}`,new THREE.CapsuleGeometry(.026,.25,4,8),[0,-.13,.012],[1,1,1],[0,0,side==='l'?.08:-.08],`humerus-${side}`);
+      addPresentation(`lowerarm_${side}`,new THREE.CapsuleGeometry(.021,.23,4,8),[0,-.12,.015],[1,1,1],[0,0,side==='l'?-.08:.08],`radius-${side}`);
+    }
   }else if(artFamily==='saxhleel'){
-    addPresentation('head',new THREE.SphereGeometry(.022,8,5),[-.052,.09,.105],[1,.65,.55],[0,0,0],'eye-l');
-    addPresentation('head',new THREE.SphereGeometry(.022,8,5),[ .052,.09,.105],[1,.65,.55],[0,0,0],'eye-r');
+    const eyeMat=(mats.bone||mats.metal).clone();eyeMat.color.setHex(0xe2c46c);eyeMat.emissive?.setHex(0x352006);eyeMat.emissiveIntensity=.45;
+    const pupilMat=mats.darkStone.clone();pupilMat.color.setHex(0x090b08);
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[-.052,.09,.112],[1,.72,.58],[0,0,0],'eye-l',eyeMat);
+    addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat);
+    addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .052,.09,.132],[.62,1,.40],[0,0,0],'pupil-r',pupilMat);
+    for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045,.16,7),[s*.055,.18,-.055],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`);
+    for(let i=0;i<4;i++) addPresentation('spine_02',new THREE.ConeGeometry(.045-i*.006,.16-i*.018,6),[0,.12-i*.13,-.16-i*.11],[1,1,1],[-Math.PI/2-.18,0,0],`spine-scale-${i}`);
     for(const s of [-1,1]) addPresentation(s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(.10,10,5,0,Math.PI*2,0,Math.PI*.58),[0,.02,0],[1.15,.58,1],[0,0,s*.16],'shoulder-scale');
   }else{
-    addPresentation('spine_02',new THREE.CapsuleGeometry(.21,.30,5,10),[0,-.07,-.025],[1.02,1,.62],[0,0,0],'surcoat');
+    // Civilian clothing needs the same shoulder/chest/waist hierarchy as armour. The old
+    // horizontally compressed capsule made every unarmoured NPC read as an egg with limbs,
+    // especially in the room census. This lighter tailored shell remains distinct from an
+    // equipment chest piece while following the evaluated spine bone in every action.
+    addPresentation('spine_02',torsoShellGeometry('reed'),[0,-.045,-.014],[1.05,1.08,1.02],[0,0,0],'tailored-tunic');
     addPresentation('head',new THREE.SphereGeometry(.12,12,8,0,Math.PI*2,0,Math.PI*.48),[0,.13,-.015],[1,1,.9],[0,0,0],'hair-cap');
   }
 
-  return { group, bones, index, skeleton, meshes, rootBone, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
+  return { group, bones, index, skeleton, meshes, rootBone, restWorld, waterU, secondary, secondaryMat: frillMat, equipment, equipmentMat:equipMat, presentation };
+}
+
+/** Closed elliptical ring shell used by all three equipment families. The profile creates a
+ * shoulder/chest/waist hierarchy instead of wrapping the torso in a cylinder or box. */
+function torsoShellGeometry(kind='reed') {
+  const profiles={
+    reed:[[-.22,.14,.10],[-.14,.17,.12],[.01,.192,.128],[.13,.202,.132],[.21,.158,.108]],
+    chitin:[[-.23,.15,.11],[-.14,.181,.132],[.02,.205,.145],[.14,.218,.150],[.22,.168,.12]],
+    xanmeer:[[-.24,.16,.12],[-.14,.195,.145],[.03,.222,.16],[.16,.232,.168],[.23,.18,.13]],
+  };
+  const rings=profiles[kind]||profiles.reed,radial=18,pos=[],nrm=[],uv=[],idx=[];
+  for(let r=0;r<rings.length;r++){
+    const [y,rx,rz]=rings[r];
+    for(let i=0;i<radial;i++){
+      const a=i/radial*Math.PI*2,c=Math.cos(a),s=Math.sin(a);
+      pos.push(c*rx,y,s*rz);const n=new THREE.Vector3(c/rx,0,s/rz).normalize();nrm.push(n.x,n.y,n.z);uv.push(i/radial,r/(rings.length-1));
+    }
+  }
+  for(let r=0;r<rings.length-1;r++)for(let i=0;i<radial;i++){
+    const q=(i+1)%radial,A=r*radial+i,B=r*radial+q,C=(r+1)*radial+i,D=(r+1)*radial+q;idx.push(A,C,B,B,C,D);
+  }
+  // cap with separate centres, preventing a visible hollow at neck and waist in extreme poses
+  for(const [r,flip] of [[0,true],[rings.length-1,false]]){
+    const centre=pos.length/3,[y]=rings[r];pos.push(0,y,0);nrm.push(0,flip?-1:1,0);uv.push(.5,.5);
+    for(let i=0;i<radial;i++){const q=(i+1)%radial;if(flip)idx.push(centre,r*radial+q,r*radial+i);else idx.push(centre,r*radial+i,r*radial+q);}
+  }
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nrm,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);return g;
+}
+
+function taperedGuardGeometry(top=.105,bottom=.078,length=.30,depth=.78,radial=12){
+  const g=new THREE.CylinderGeometry(bottom,top,length,radial,2,false);g.scale(1,1,depth);return g;
+}
+
+/** Closed, tapered garment/armour tab.  The old one-sided plane vanished edge-on and read as a
+ * floating rectangular UI plate when front-lit.  This shallow wedge keeps a textile thickness
+ * and narrows toward the knees, while remaining rigidly attached to the pelvis socket. */
+function garmentTabGeometry(width=.22,height=.38,depth=.025){
+  const w=width/2,t=width*.34,y0=height/2,y1=-height/2,z=depth/2;
+  const p=[-w,y0,-z,w,y0,-z,t,y1,-z,-t,y1,-z,-w,y0,z,w,y0,z,t,y1,z,-t,y1,z];
+  const i=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,3,7,6,3,6,2,0,4,7,0,7,3,1,2,6,1,6,5];
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(i);g.computeVertexNormals();return g;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -473,6 +642,39 @@ function blade(width, length, thickness, y, curve = 0) {
   const f=[0,1,2,0,2,3, 0,4,5,0,5,1, 1,5,6,1,6,2, 2,6,7,2,7,3, 3,7,4,3,4,0,
     4,8,5,5,8,6,6,8,7,7,8,4];
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setIndex(f);g.computeVertexNormals();return g;
+}
+
+/** One continuous swept blade for sickles/falxes. Each ring follows the curved centreline, so
+ * no animation or camera angle can expose the detached boxes used by the old approximation. */
+function curvedBlade(width,length,thickness,haftTop,curve=.20){
+  const rings=12,pos=[],idx=[];
+  for(let r=0;r<rings;r++){
+    const t=r/(rings-1), taper=Math.max(.06,1-t*.82), cy=haftTop-length*t;
+    const cz=length*curve*t*t, hw=width*.5*taper, ht=thickness*.5*taper;
+    pos.push(-hw,cy,cz-ht, hw,cy,cz-ht, hw,cy,cz+ht, -hw,cy,cz+ht);
+  }
+  for(let r=0;r<rings-1;r++)for(let i=0;i<4;i++){
+    const q=(i+1)%4,A=r*4+i,B=r*4+q,C=(r+1)*4+i,D=(r+1)*4+q;idx.push(A,C,B,B,C,D);
+  }
+  idx.push(0,2,1,0,3,2);const e=(rings-1)*4;idx.push(e,e+1,e+2,e,e+2,e+3);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g;
+}
+
+/** An axe/halberd bit extruded across X. The irregular YZ profile gives it a heel, convex edge
+ * and narrow eye instead of scaling a box until it obscures the wielder. */
+function axeBit(height,reach,thickness,centreY,halberd=false){
+  const h=height*.5,r=reach, yz=halberd
+    ? [[h*.72,-r*.16],[h,r*.32],[h*.38,r],[-h*.62,r*.76],[-h,-r*.02],[-h*.28,-r*.18]]
+    : [[h*.72,-r*.15],[h,r*.30],[h*.58,r*.92],[-h*.52,r],[-h,r*.36],[-h*.44,-r*.16]];
+  const pos=[],idx=[],n=yz.length;
+  for(const x of [-thickness*.5,thickness*.5])for(const [y,z] of yz)pos.push(x,centreY+y,z);
+  for(let i=1;i<n-1;i++){idx.push(0,i+1,i,n,n+i,n+i+1);}
+  for(let i=0;i<n;i++){const q=(i+1)%n;idx.push(i,q,n+i,q,n+q,n+i);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g;
+}
+
+function tubePath(points,radius,segments=18,radial=7){
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p))),segments,radius,radial,false);
 }
 
 /**
@@ -518,14 +720,18 @@ function buildWeaponGeo(w) {
 
   // The grip: always present, always above the guard, always the same 0.10 m the rig uses.
   const gripLen = Math.max(0.10, Math.min(0.42, L * 0.13));
-  wood.push(box(R * 0.55, gripLen, R * 0.45, -gripLen * 0.5 + 0.06));
+  wood.push(box(R * 0.72, gripLen, R * 0.62, -gripLen * 0.5 + 0.06));
 
   const haftLen = Math.max(0, -haftTop - 0.06);
 
   switch (cls) {
     case 'DGR':
+      // The data-defined unedged length is still physical weapon: tang, grip and guard shoulder.
+      // Leaving it empty made the blade hover 20-35 cm beyond the closed hand while the far tip
+      // remained perfectly socket-accurate, a defect the old tip-only control could not see.
+      if(haftTop<.06-gripLen)wood.push(box(R*.68,(.06-gripLen)-haftTop,R*.58,(haftTop+.06-gripLen)*.5));
       metal.push(blade(R * 1.35, span, R * 0.46, tip + span / 2));
-      metal.push(box(R * 2.0, 0.028, R * 0.9, haftTop));
+      metal.push(box(R * 3.0, 0.045, R * 1.15, haftTop));
       break;
     case 'FST': {                                   // claw: three short blades off a knuckle bar
       metal.push(box(R * 2.6, 0.045, R * 1.1, -0.06));
@@ -537,36 +743,25 @@ function buildWeaponGeo(w) {
       break;
     }
     case 'CSW': case 'CGS': {                       // curved: the blade is built as an arc
-      const segs = 9;
+      if(haftTop<.06-gripLen)wood.push(box(R*.72,(.06-gripLen)-haftTop,R*.62,(haftTop+.06-gripLen)*.5));
       const wide = cls === 'CGS' ? R * 1.5 : R * 1.05;
-      for (let k = 0; k < segs; k++) {
-        const t0 = k / segs, t1 = (k + 1) / segs;
-        const y0 = haftTop - span * t0, y1 = haftTop - span * t1;
-        // the curve: the tip rakes forward, which is what makes a curved sword read as one
-        const c0 = span * 0.20 * t0 * t0, c1 = span * 0.20 * t1 * t1;
-        // 1.45, not 1.12: the segments are individually ROTATED to follow the curve, so a
-        // segment only as long as its own step leaves a wedge-shaped gap at every joint and
-        // the blade reads as a chain of loose plates rather than one piece of steel. The
-        // first capture of a curved greatsword showed exactly that.
-        const seg = box(wide * (1 - 0.35 * t0), Math.abs(y1 - y0) * 1.45, R * 0.24,
-          (y0 + y1) / 2, (c0 + c1) / 2);
-        seg.rotateX(-Math.atan2(c1 - c0, Math.abs(y1 - y0)));
-        metal.push(seg);
-      }
+      metal.push(curvedBlade(wide,span,R*.28,haftTop,cls==='CGS'?.235:.19));
       metal.push(box(R * (cls === 'CGS' ? 4.2 : 3.0), 0.035, R * 0.8, haftTop));
       break;
     }
     case 'TSW':                                     // thrusting: narrow, long, a swept guard
+      if(haftTop<.06-gripLen)wood.push(box(R*.68,(.06-gripLen)-haftTop,R*.58,(haftTop+.06-gripLen)*.5));
       metal.push(blade(R * 0.72, span, R * 0.34, tip + span / 2));
       metal.push(box(R * 2.2, 0.030, R * 2.2, haftTop));
       metal.push(box(R * 0.30, 0.16, R * 2.0, haftTop + 0.08));
       break;
     case 'SSW': case 'GSW': case 'UGS': {
-      const wide = cls === 'UGS' ? R * 1.9 : cls === 'GSW' ? R * 1.5 : R * 1.0;
+      if(haftTop<.06-gripLen)wood.push(box(R*.76,(.06-gripLen)-haftTop,R*.66,(haftTop+.06-gripLen)*.5));
+      const wide = cls === 'UGS' ? R * 2.15 : cls === 'GSW' ? R * 1.75 : R * 1.42;
       metal.push(blade(wide, span, R * 0.34, tip + span / 2));
       metal.push(box(wide * 0.22, span * 0.82, R * 0.40, tip + span * 0.47)); // medial ridge
-      metal.push(box(wide * 3.0, 0.042, R * 0.9, haftTop));                 // crossguard
-      metal.push(box(R * 0.9, 0.06, R * 0.9, 0.075));                       // pommel
+      metal.push(box(wide * 3.15, 0.055, R * 1.25, haftTop));                // crossguard
+      metal.push(box(R * 1.15, 0.085, R * 1.15, 0.085));                     // pommel
       break;
     }
     case 'SPR':                                     // long haft, small leaf head at the tip
@@ -576,12 +771,9 @@ function buildWeaponGeo(w) {
       break;
     case 'WHP': {                                   // a segmented cord: span is nearly all of it
       if (haftLen > 0) wood.push(box(R * 0.9, haftLen, R * 0.9, haftTop + haftLen / 2));
-      const links = 14;
-      for (let k = 0; k < links; k++) {
-        const t = k / links;
-        metal.push(box(R * (0.55 - 0.30 * t), span / links * 0.78, R * (0.55 - 0.30 * t),
-          haftTop - span * (t + 0.5 / links), span * 0.16 * Math.sin(t * 3.1)));
-      }
+      metal.push(tubePath([[0,haftTop,0],[0,haftTop-span*.28,span*.045],[0,haftTop-span*.66,span*.135],[0,tip,span*.035]],R*.24,24,6));
+      // Weighted thorn at the live end keeps the class readable when the cord foreshortens.
+      const thorn=new THREE.ConeGeometry(R*.66,Math.max(.12,span*.10),7);thorn.translate(0,tip-span*.04,span*.035);metal.push(thorn);
       break;
     }
     case 'AXE': case 'HLB': {
@@ -589,11 +781,10 @@ function buildWeaponGeo(w) {
       // the bit hangs off ONE side of the haft — the asymmetry is the class's silhouette
       const bitH = cls === 'HLB' ? span * 0.42 : span * 0.86;
       const bitY = cls === 'HLB' ? tip + span * 0.62 : tip + span * 0.48;
-      metal.push(box(R * 0.5, bitH, R * 3.1, bitY, R * 1.7));
-      metal.push(box(R * 0.5, bitH * 0.5, R * 1.2, bitY + bitH * 0.42, R * 0.6));
+      metal.push(axeBit(bitH,R*(cls==='HLB'?3.0:3.35),R*.55,bitY,cls==='HLB'));
       if (cls === 'HLB') {
         metal.push(box(R * 0.55, span * 0.55, R * 0.55, tip + span * 0.24));   // top spike
-        metal.push(box(R * 0.45, R * 1.4, R * 1.4, bitY - bitH * 0.2, -R * 0.9)); // rear fluke
+        const fluke=new THREE.ConeGeometry(R*.72,R*2.4,6);fluke.rotateX(Math.PI/2);fluke.translate(0,bitY,-R*1.15);metal.push(fluke);
       } else {
         metal.push(box(R * 1.2, 0.035, R * 1.2, haftTop));
       }
@@ -623,13 +814,11 @@ function buildWeaponGeo(w) {
       // length, so drawing to it would give a bow half again too long. The per-weapon numbers
       // are sane here (bow_marsh_longbow solves to 1.405 m), so the stave is drawn at the
       // solved length and simply CENTRED on the grip, which is where a bow is actually held.
-      const limb = L * 0.5;
-      for (const s of [1, -1]) {
-        const g = box(R * 0.7, limb, R * 0.35, s * limb * 0.5);
-        g.rotateX(s * 0.22);
-        wood.push(g);
-      }
-      metal.push(box(0.006, limb * 1.92, 0.006, 0, -R * 0.9));
+      const limb=L*.5,curve=R*2.8;
+      wood.push(tubePath([[0,limb,0],[0,limb*.53,curve],[0,0,curve*.45],[0,-limb*.53,curve],[0,-limb,0]],R*.38,28,7));
+      metal.push(tubePath([[0,limb,0],[0,0,-R*.36],[0,-limb,0]],Math.max(.005,R*.085),18,5));
+      // Nock collars and wrapped grip give highlights to the otherwise dark wooden profile.
+      for(const y of [-limb*.90,0,limb*.90]){const ring=new THREE.TorusGeometry(R*(y===0?.66:.48),R*.10,5,9);ring.rotateX(Math.PI/2);ring.translate(0,y,y===0?curve*.45:curve*.18);metal.push(ring);}
       break;
     }
     default:
@@ -689,9 +878,43 @@ function weaponMesh(w, mats) {
     _weaponCache.set(key, entry);
   }
   const g = new THREE.Group();
-  if (entry.metal) { const m = new THREE.Mesh(entry.metal, mats.metal); m.castShadow = true; g.add(m); }
-  if (entry.wood) { const m = new THREE.Mesh(entry.wood, mats.bark); m.castShadow = true; g.add(m); }
+  // Held equipment must remain readable on the shadowed side of the body. These are bounded
+  // material variants on the weapon itself, not a full-scene exposure lift.
+  // Broad weapon faces cross the key light several times during an attack. Preserve their
+  // construction on the shadow half of the sweep with a bounded, material-local floor; the
+  // former near-black response erased axe bits, hammer heads and great-blade ridges in motion.
+  const metal=mats.metal.clone();metal.color.setHex(0xd0d6d9);metal.metalness=.68;metal.roughness=.32;metal.emissive.setHex(0x30363a);metal.emissiveIntensity=.24;metal.flatShading=true;metal.needsUpdate=true;metal.name='visual-family:metal:held-weapon';
+  const grip=mats.bark.clone();grip.color.setHex(0x765237);grip.roughness=.76;grip.name='visual-family:bark:held-grip';
+  if (entry.metal) { const m = new THREE.Mesh(entry.metal, metal); m.castShadow = true; m.receiveShadow=true; g.add(m); }
+  if (entry.wood) { const m = new THREE.Mesh(entry.wood, grip); m.castShadow = true; m.receiveShadow=true; g.add(m); }
   g.matrixAutoUpdate = false;
+  return g;
+}
+
+/** Authored body for the resolved offhand taxonomy. A shield participates in combat resolution
+ * as both a verb and a material surface; without this body, guard was only an arm pose. */
+function shieldMesh(id,row,mats){
+  const cls=String(row&&row.class||'medium'),great=cls==='great'||cls==='greatshield',small=cls==='small'||cls==='buckler';
+  const w=great?.86:small?.46:.68,h=great?1.42:small?.54:1.02,d=great?.085:.060;
+  const shape=new THREE.Shape();shape.moveTo(0,h*.52);shape.lineTo(w*.48,h*.34);shape.lineTo(w*.44,-h*.23);shape.lineTo(0,-h*.52);shape.lineTo(-w*.44,-h*.23);shape.lineTo(-w*.48,h*.34);shape.closePath();
+  const boardGeo=new THREE.ExtrudeGeometry(shape,{depth:d,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.025,bevelThickness:.018});boardGeo.translate(0,-h*.12,-d*.5);
+  const panelGeo=new THREE.ShapeGeometry(shape,10);panelGeo.translate(0,-h*.12,0);
+  const g=new THREE.Group();g.name=`actor-shield:${id||cls}`;g.matrixAutoUpdate=false;
+  const rimMat=mats.metal.clone();rimMat.color.setHex(great?0x8b9495:0xb09665);rimMat.roughness=.38;rimMat.emissive.setHex(0x100d08);rimMat.emissiveIntensity=.10;rimMat.side=THREE.DoubleSide;rimMat.name='visual-family:metal:shield-rim';
+  const faceMat=(great?mats.darkStone:mats.bark).clone();faceMat.color.setHex(great?0x686e70:0x926846);faceMat.roughness=.72;faceMat.emissive.setHex(great?0x090b0c:0x100b07);faceMat.emissiveIntensity=.10;faceMat.side=THREE.DoubleSide;faceMat.name=`visual-family:${great?'stone':'bark'}:shield-face`;
+  const rim=new THREE.Mesh(boardGeo,rimMat);rim.castShadow=true;rim.receiveShadow=true;g.add(rim);
+  const face=new THREE.Mesh(panelGeo,faceMat);face.scale.set(.88,.88,1);face.position.z=d*.67;face.castShadow=true;face.receiveShadow=true;g.add(face);
+  // The inner face is what the ordinary chase camera sees. It needs authored construction too;
+  // otherwise even a detailed exterior collapses to the shadowed extrusion silhouette in play.
+  const innerMat=faceMat.clone();innerMat.color.offsetHSL(0,-.04,.075);innerMat.name=`${faceMat.name}:inner`;
+  const inner=new THREE.Mesh(panelGeo.clone(),innerMat);inner.scale.set(.86,.86,1);inner.position.z=-d*.67;inner.castShadow=true;inner.receiveShadow=true;g.add(inner);
+  const boss=new THREE.Mesh(new THREE.SphereGeometry(small?.13:.16,18,10,0,Math.PI*2,0,Math.PI*.52),rimMat);boss.scale.z=.45;boss.position.set(0,0,d*.66);boss.castShadow=true;g.add(boss);
+  for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.BoxGeometry(.035,h*.62,d*.32),rimMat);rib.position.set(sx*w*.25,-h*.10,d*.82);rib.rotation.z=-sx*.13;rib.castShadow=true;g.add(rib);}
+  for(const sx of [-1,1]){const rib=new THREE.Mesh(new THREE.CylinderGeometry(.018,.025,h*.72,7),rimMat);rib.position.set(sx*w*.32,-h*.05,d*.62);rib.rotation.z=sx*.13;rib.castShadow=true;g.add(rib);}
+  const cross=new THREE.Mesh(new THREE.CylinderGeometry(.018,.024,w*.68,7),rimMat);cross.position.set(0,h*.25,d*.62);cross.rotation.z=Math.PI/2;cross.castShadow=true;g.add(cross);
+  const strapMat=mats.bark.clone();strapMat.color.setHex(0x4c2f20);strapMat.roughness=.9;strapMat.side=THREE.DoubleSide;strapMat.name='visual-family:bark:shield-straps';
+  for(const y of [-h*.17,h*.19]){const strap=new THREE.Mesh(new THREE.BoxGeometry(w*.58,.052,.022),strapMat);strap.position.set(0,y,-d*.96);strap.rotation.z=y>0?.10:-.08;strap.castShadow=true;g.add(strap);}
+  const grip=new THREE.Mesh(new THREE.CylinderGeometry(.026,.032,w*.32,8),rimMat);grip.position.set(0,.01,-d*1.25);grip.rotation.z=Math.PI/2;grip.castShadow=true;g.add(grip);
   return g;
 }
 
@@ -717,32 +940,19 @@ export function makeRiggedActor(mats, tintHex, skinHex, artFamily='saxhleel') {
     aoMap:sourceMat.aoMap,aoMapIntensity:sourceMat.aoMapIntensity,envMapIntensity:sourceMat.envMapIntensity});
     directionMat.name=`visual-family:${sourceMat.userData.visualFamily||'bark'}:creature-accent`;
     directionMat.userData={...sourceMat.userData,visualFamily:sourceMat.userData.visualFamily||'bark'};byFamily.set(artFamily,directionMat);}
-  const add=(geo,x,y,z,rx=0,rz=0)=>{const m=new THREE.Mesh(geo,directionMat);m.position.set(x,y,z);m.rotation.set(rx,0,rz);m.castShadow=true;direction.add(m);};
-  if(artFamily==='saxhleel') {
-    // Species accents stay inside the animated anatomy instead of drawing a second body.
-    add(new THREE.ConeGeometry(.045,.16,7),-.055,1.80,-.06,-.30,-.10);
-    add(new THREE.ConeGeometry(.045,.16,7), .055,1.80,-.06,-.30, .10);
-    for(let i=0;i<4;i++) add(new THREE.ConeGeometry(.045-i*.006,.16-i*.018,6),0,1.05-i*.13,-.16-i*.14,-Math.PI/2-.18);
-  } else if(artFamily==='humanoid') {
-    // The old half-metre cone and box hid the rig as an enormous wizard hat and rigid cloak.
-    add(new THREE.CylinderGeometry(.125,.145,.16,10),0,1.73,-.01);
-    add(new THREE.TorusGeometry(.15,.025,5,12,Math.PI*1.45),0,1.48,-.01,Math.PI/2,.35);
-    add(new THREE.DodecahedronGeometry(.13,0),-.24,1.39,-.015,0,-.18);
-  } else if(artFamily==='beast') {
-    for(const sx of [-1,1]) add(new THREE.ConeGeometry(.045,.30,7),sx*.17,.82,.25,Math.PI/2,sx*.2);
-  } else {
-    for(const sx of [-1,1]) for(let i=0;i<3;i++) add(new THREE.CylinderGeometry(.025,.045,.48,5),sx*(.15+i*.04),1.25-i*.12,0,Math.PI/2,sx*.22);
-    add(new THREE.ConeGeometry(.1,.4,5),.22,1.7,0,0,.55);
-  }
+  // This marker group deliberately carries no geometry. The previous species accents lived
+  // here at actor level, so head horns stayed behind while the evaluated head turned and every
+  // beast/undead ornament had the same defect. All visible family forms now live in
+  // `buildSkeleton().presentation` and consume a live bone matrix each rendered frame.
   direction.scale.set(...art.scale); g.add(direction);
   // Contact grounding and action readability are renderer-owned presentation. They never feed
   // back into the fixed-step rig, sockets, hit windows or camera.
   const shadow=new THREE.Mesh(new THREE.CircleGeometry(.42,20),new THREE.MeshBasicMaterial({color:0x080b09,transparent:true,opacity:.34,depthWrite:false}));
   shadow.name='actor-contact-shadow'; shadow.rotation.x=-Math.PI/2; shadow.renderOrder=2; g.add(shadow);
-  const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.025,5,24,Math.PI*1.35),new THREE.MeshBasicMaterial({color:0xa8d8b0,transparent:true,opacity:.0,depthWrite:false}));
+  const action=new THREE.Mesh(new THREE.TorusGeometry(.48,.014,5,36,Math.PI*1.18),new THREE.MeshBasicMaterial({color:0xd6a65f,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));
   action.name='actor-action-silhouette'; action.rotation.x=Math.PI/2; action.visible=false; g.add(action);
   g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false, shadow, action, direction, artFamily, art };
-  g.userData.worldArt={creature:artFamily,silhouette:art.silhouette,visibleConsumer:direction.name};
+  g.userData.worldArt={creature:artFamily,silhouette:art.silhouette,visibleConsumer:`actor-family-form:${artFamily}`};
   return g;
 }
 
@@ -772,12 +982,19 @@ export function poseFromRig(group, body, water) {
     group.add(A.built.group);
   }
   const S = A.built;
+  const creatureOnly=A.artFamily==='beast';
+  // The beast's presentation is its entire authored skin. Showing the shared humanoid surface
+  // beneath it is the exact "humanoid wearing creature accents" defect this body plan replaces.
+  for(const mesh of S.meshes||[])mesh.visible=!creatureOnly;
   const root=body.rig.world[0], groundY=(body.pos&&body.pos[1])||0;
   if(A.direction&&root) A.direction.position.set(root[9],groundY,root[11]);
   if(A.shadow&&root){ const air=Math.max(0,root[10]-groundY); A.shadow.position.set(root[9],groundY+.018,root[11]); A.shadow.scale.setScalar(Math.max(.42,1-air*.22)); A.shadow.material.opacity=Math.max(.08,.34-air*.12); }
   if(A.action&&root){
-    const attacking=!!body.move && (body.hitboxActive || /ROLL|BLOCK|STAGGER|RECOVERY/.test(body.state));
-    A.action.visible=attacking; A.action.material.opacity=body.hitboxActive ? .42 : .18;
+    // This is an understated weapon-motion accent, not a state/debug indicator. In review
+    // clips the old bright green ring wrapped around rolls, blocks and hit reactions and read
+    // as prototype UI embedded in the world. Only a live damaging window now earns the arc.
+    const attacking=!!body.move && !!body.hitboxActive;
+    A.action.visible=attacking; A.action.material.opacity=attacking ? .16 : 0;
     A.action.position.set(root[9],root[10]+.82,root[11]); A.action.rotation.z=(body.animFrame||0)*.085;
     A.action.scale.setScalar(body.airborne?1.3:1);
   }
@@ -803,7 +1020,9 @@ export function poseFromRig(group, body, water) {
   // Presentation IK: the fixed-step rig remains authoritative for root motion, attacks,
   // sockets and hurtboxes; only the two terminal foot bones conform to the visible surface.
   // This is evaluated from the same WorldField height function that draws/collides terrain.
-  if (water && typeof water.groundAt === 'function') {
+  // Never pin an airborne foot to the terrain. That made the torso rise while both legs
+  // stretched back to ground through the whole jump, destroying the jump/fall silhouette.
+  if (!body.airborne && water && typeof water.groundAt === 'function') {
     for (const id of ['foot_l', 'foot_r']) {
       const i = S.index.get(id); if (i === undefined || i >= n) continue;
       const e = bones[i].matrixWorld.elements, x=e[12], z=e[14], d=.20;
@@ -851,6 +1070,7 @@ export function poseFromRig(group, body, water) {
     const speed = body.state === 'SPRINT' ? 1.0 : body.state === 'WALK' ? 0.55 : body.move ? 0.8 : 0.22;
     for (let i = 0; i < S.secondary.length; i++) {
       const seg = S.secondary[i];
+      seg.mesh.visible=A.artFamily==='saxhleel';
       const phase = (f - seg.delayF) * 0.19 + i * 0.72;
       const follow = Math.sin(phase) * (0.10 + speed * 0.16);
       const lift = Math.abs(Math.sin(phase * 0.5)) * speed * 0.045;
@@ -869,12 +1089,34 @@ export function poseFromRig(group, body, water) {
     }
   }
 
-  if(S.equipment){const set=Number(body.equipLoadPct||0)<30?'reed':Number(body.equipLoadPct||0)<70?'chitin':'xanmeer';for(const p of S.equipment){p.mesh.visible=p.set===set;if(!p.mesh.visible)continue;const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
-  if(S.presentation){for(const p of S.presentation){const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
+  if(S.equipment){const set=Number(body.equipLoadPct||0)<30?'reed':Number(body.equipLoadPct||0)<70?'chitin':'xanmeer';for(const p of S.equipment){p.mesh.visible=!creatureOnly&&p.set===set;if(!p.mesh.visible)continue;const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
+  if(S.presentation){
+    const beastRoot=creatureOnly?rig.world[0]:null,beastBaseY=creatureOnly?((body.pos&&body.pos[1])||beastRoot[10]):0;
+    // Beast animation is presentation deformation of one coherent quadruped, not a reuse of the
+    // biped limb arcs. Root/yaw/translation and fixed-step action timing still come directly from
+    // the combat rig. A lunge compresses the body then extends head/tail/feet by bounded local
+    // offsets; every part remains in the same root frame, so no foot or dorsal plate can detach.
+    const attackPhase=creatureOnly&&body.move?Math.sin(Math.min(1,Math.max(0,Number(body.animFrame||0)/Math.max(1,Number(body.move.total||body.move.total_frames||60))))*Math.PI):0;
+    for(const p of S.presentation){
+      const s=beastRoot||rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=creatureOnly?beastBaseY:s[10];e[14]=s[11];e[15]=1;
+      p.mesh.matrix.multiply(creatureOnly?p.rootLocal:p.local);
+      if(creatureOnly){const label=p.mesh.name,front=/skull|muzzle|jaw|eye|fang|neck/.test(label),tail=/tail/.test(label),paw=/paw|toe|hock|upper|lower|haunch/.test(label),forward=(front?.38:tail?-.18:paw?.08:0)*attackPhase,down=(front?.06:0)*attackPhase;p.mesh.matrix.elements[12]+=s[2]*forward-s[1]*down;p.mesh.matrix.elements[13]+=s[5]*forward-s[4]*down;p.mesh.matrix.elements[14]+=s[8]*forward-s[7]*down;}
+      p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;
+    }
+  }
+
+  // Offhand surface follows the evaluated left hand in every gait, guard, reaction and swap.
+  const shieldVisible=!creatureOnly&&!!body.shield&&!body.twoHanded&&body.offhandKind!=='weapon'&&body.offhandKind!=='catalyst';
+  const shieldKey=shieldVisible?`${body.shieldId||'shield'}|${body.shield.class||'medium'}`:null;
+  if(shieldKey!==A.shieldKey){if(A.shield)group.remove(A.shield);A.shield=shieldVisible?shieldMesh(body.shieldId,body.shield,A.mats):null;A.shieldKey=shieldKey;if(A.shield)group.add(A.shield);}
+  if(A.shield){
+    const li=rig.index.get('hand_l'),hm=li===undefined?null:rig.world[li];
+    if(hm){const e=A.shield.matrix.elements;e[0]=hm[0];e[1]=hm[3];e[2]=hm[6];e[3]=0;e[4]=hm[1];e[5]=hm[4];e[6]=hm[7];e[7]=0;e[8]=hm[2];e[9]=hm[5];e[10]=hm[8];e[11]=0;e[12]=hm[9];e[13]=hm[10]-.12;e[14]=hm[11]+.08;e[15]=1;A.shield.matrixWorld.copy(A.shield.matrix);A.shield.matrixWorldNeedsUpdate=false;for(const c of A.shield.children){c.updateMatrix();c.matrixWorld.multiplyMatrices(A.shield.matrixWorld,c.matrix);c.matrixWorldNeedsUpdate=false;}A.shield.visible=true;}else A.shield.visible=false;
+  }
 
   // ---- the weapon ----------------------------------------------------------------------
   const w = (body.moves && body.moves._weapon) || null;
-  if (w) {
+  if (w && !creatureOnly) {
     const key = weaponKeyOf(w);
     if (key !== A.weaponKey) {
       if (A.weapon) group.remove(A.weapon);
@@ -915,5 +1157,31 @@ export function poseStatic(group, rigDefSource, pos, yawDeg) {
   if (A.rigged) return false;                 // already world-driven; do not fight it
   group.position.set(pos[0], pos[1], pos[2]);
   group.rotation.y = (yawDeg * Math.PI) / 180;
+  // Non-combat people use the rig's authored rest pose, but their equipment/species forms are
+  // separate bone-bound presentation meshes. Previously only poseFromRig() evaluated those
+  // bindings: a static NPC left every helmet, shoulder shell, horn and garment at actor origin,
+  // stacking them into the giant bulbous silhouettes visible in populated interiors. Bind once
+  // against the stored actor-local rest matrices; the outer group still supplies position/yaw.
+  if (!A.staticPresentationBound) {
+    const S=A.built;
+    const apply=(item)=>{
+      const bone=S.restWorld&&S.restWorld[item.bi];if(!bone)return;
+      item.mesh.matrix.copy(bone).multiply(item.local);
+      item.mesh.matrixWorldNeedsUpdate=true;
+    };
+    // Civilians have no combat equip-load field. Give them the light reed set and explicitly
+    // suppress the other two authored sets; leaving all three visible stacked three helmets,
+    // three breastplates and three greaves on every NPC even after their sockets were fixed.
+    for(const item of S.equipment||[]){item.mesh.visible=!A.civilian&&item.set==='reed';apply(item);}
+    for(const item of S.presentation||[])apply(item);
+    const spineI=S.index.get('spine_02'),spine=spineI===undefined?null:S.restWorld[spineI];
+    for(const item of S.secondary||[]){
+      if(!spine)continue;
+      const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2,0,0));
+      const local=new THREE.Matrix4().compose(new THREE.Vector3(0,item.localY,item.localZ),q,new THREE.Vector3(1,1,1));
+      item.mesh.matrix.copy(spine).multiply(local);item.mesh.matrixWorldNeedsUpdate=true;
+    }
+    A.staticPresentationBound=true;
+  }
   return true;
 }

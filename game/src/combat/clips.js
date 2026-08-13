@@ -131,15 +131,16 @@ export class Clip {
  * two visually different poses").
  */
 export class LoopClip {
-  constructor(id, archetype, period) {
+  constructor(id, archetype, period, amplitude = 1) {
     this.id = id;
     this.arch = archetype;
     this.period = Math.max(1, period | 0);
+    this.amplitude = Number.isFinite(amplitude) ? amplitude : 1;
     this.tracks = closeLoop(archetype.tracks || {});
     this.rootOffsetY = closeCurve((archetype.root_offset && archetype.root_offset.y) || [[0, 0], [3, 0]]);
   }
   phaseAt(f) { return 3 * ((f % this.period) / this.period); }
-  rootOffsetYAt(f) { return sampleCurve(this.rootOffsetY, this.phaseAt(f)); }
+  rootOffsetYAt(f) { return sampleCurve(this.rootOffsetY, this.phaseAt(f)) * this.amplitude; }
   rootDeltaAt() { return 0; }
   applyPose(rig, f) {
     rig.clearPose();
@@ -148,9 +149,9 @@ export class LoopClip {
       const idx = rig.index.get(boneId);
       if (idx === undefined) continue;
       const t = this.tracks[boneId];
-      if (t.rx) rig.rx[idx] = sampleCurve(t.rx, p);
-      if (t.ry) rig.ry[idx] = sampleCurve(t.ry, p);
-      if (t.rz) rig.rz[idx] = sampleCurve(t.rz, p);
+      if (t.rx) rig.rx[idx] = sampleCurve(t.rx, p) * this.amplitude;
+      if (t.ry) rig.ry[idx] = sampleCurve(t.ry, p) * this.amplitude;
+      if (t.rz) rig.rz[idx] = sampleCurve(t.rz, p) * this.amplitude;
     }
   }
 }

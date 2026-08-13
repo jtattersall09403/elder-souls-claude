@@ -107,7 +107,13 @@ const CAP = DIRECT ? await (async () => {
       await handle.h('streamAround', x, z);
       await handle.h('setTimeOfDay', hours);
       await handle.h('setWeather', weather);
-      await handle.h('camera', { pos: [x, y + 1.7, z], look: [x + Math.sin(yaw) * 40, y + 1.7 - 3.0, z + Math.cos(yaw) * 40], fov: 70 });
+      // The shipped camera is permanently third person. Placing a posed eye exactly on the
+      // player's capsule photographed the inside of the always-visible head/armour in most of
+      // this region census. Preserve the requested 1.7 m sightline, but construct it from a
+      // gameplay-like shoulder position behind the body so the character and world can both be
+      // inspected instead of hiding the province with the near plane.
+      const sx=Math.sin(yaw),sz=Math.cos(yaw);
+      await handle.h('camera', { pos:[x-sx*4.2,y+2.25,z-sz*4.2],look:[x+sx*36,y+1.42,z+sz*36],fov:70,mode:'free' });
       await handle.h('stepFrames', 24);
       await handle.h('renderFrame');
       await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });

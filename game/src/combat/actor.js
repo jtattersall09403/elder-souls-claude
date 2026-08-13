@@ -363,6 +363,30 @@ export class CombatBody {
     this._loopFrame++;
     loop.applyPose(this.rig, this._loopFrame);
     addPose(this.rig, this.guardRaised ? this.moves._blockPose : this.moves._idlePose, 0, 1.0);
+    // A locomotion action needs a whole-body silhouette, not only a faster leg metronome.
+    // These deterministic leans/lifts are written into the same authoritative rig consumed by
+    // hurtboxes, sockets and rendering, so the faster visible pose cannot diverge from combat.
+    const spine=this.rig.index.get('spine_00'),chest=this.rig.index.get('spine_02');
+    if(state==='RUN'||state==='SPRINT'){
+      const sprint=state==='SPRINT';
+      if(spine!==undefined)this.rig.rx[spine]+=sprint?11:6;
+      if(chest!==undefined)this.rig.rx[chest]+=sprint?5:2;
+    }
+    if(state==='WALK'||state==='RUN'||state==='SPRINT'){
+      // Layer whole-body weight transfer over the leg cycle. The prior loop moved knees but
+      // left pelvis, shoulders and feet nearly level, so walk and sprint read as one rigid
+      // figure translating at different speeds. This is the authoritative rig: hurtboxes,
+      // attachments and rendering consume the same final rotations.
+      const phase=(this._loopFrame/loop.period)*Math.PI*2;
+      const power=state==='SPRINT'?1.65:state==='RUN'?1.28:.9;
+      const pelvis=this.rig.index.get('pelvis'),head=this.rig.index.get('head');
+      const footL=this.rig.index.get('foot_l'),footR=this.rig.index.get('foot_r');
+      if(pelvis!==undefined){this.rig.rz[pelvis]+=Math.sin(phase)*3.8*power;this.rig.ry[pelvis]+=Math.sin(phase)*2.2*power;}
+      if(chest!==undefined){this.rig.rz[chest]-=Math.sin(phase)*2.8*power;this.rig.ry[chest]-=Math.sin(phase)*3.0*power;}
+      if(head!==undefined)this.rig.rz[head]+=Math.sin(phase)*.9*power;
+      if(footL!==undefined)this.rig.rx[footL]+=Math.max(0,Math.sin(phase))*14*power;
+      if(footR!==undefined)this.rig.rx[footR]+=Math.max(0,-Math.sin(phase))*14*power;
+    }
     this.anim = loop.id + (this.guardRaised ? '_guard' : '');
     this.animFrame = this._loopFrame % loop.period;
     this.evaluateRig(loop.rootOffsetYAt(this._loopFrame));

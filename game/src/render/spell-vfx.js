@@ -75,6 +75,28 @@ function h1(i, s) {
   return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
 }
 
+function phaseFilamentGeometry(){
+  const curves=[];
+  // Four unequal root/sap tendrils share a swollen seed but leave asymmetric voids.  Unlike a
+  // torus knot, no loop is mathematically perfect and no line crosses itself as a neon scribble.
+  const seed=new THREE.IcosahedronGeometry(.22,1);seed.scale(.78,1.2,.72);curves.push(seed);
+  for(let i=0;i<4;i++){
+    const a=.35+i*1.47,endA=a+(i%2?.78:-.46),len=.42+.09*i;
+    const path=new THREE.CatmullRomCurve3([
+      new THREE.Vector3(Math.sin(a)*.08,-.03,Math.cos(a)*.08),
+      new THREE.Vector3(Math.sin(a)*len*.46,.10+.035*(i%2),Math.cos(a)*len*.46),
+      new THREE.Vector3(Math.sin(endA)*len,.01+.06*(i%3),Math.cos(endA)*len),
+    ]);
+    curves.push(new THREE.TubeGeometry(path,10,.034-.003*i,6,false));
+    const tip=new THREE.SphereGeometry(.055+.008*(i%2),6,4);const e=path.getPoint(1);tip.translate(e.x,e.y,e.z);curves.push(tip);
+  }
+  // Merge locally without adding another runtime dependency; every attribute layout is standard.
+  let vertices=0,indices=0;for(const g of curves){vertices+=g.attributes.position.count;indices+=g.index?g.index.count:g.attributes.position.count;}
+  const pos=new Float32Array(vertices*3),nor=new Float32Array(vertices*3),idx=new Uint32Array(indices);let vo=0,io=0;
+  for(const g of curves){pos.set(g.attributes.position.array,vo*3);nor.set(g.attributes.normal.array,vo*3);if(g.index)for(let j=0;j<g.index.count;j++)idx[io++]=vo+g.index.getX(j);else for(let j=0;j<g.attributes.position.count;j++)idx[io++]=vo+j;vo+=g.attributes.position.count;g.dispose();}
+  const out=new THREE.BufferGeometry();out.setAttribute('position',new THREE.BufferAttribute(pos,3));out.setAttribute('normal',new THREE.BufferAttribute(nor,3));out.setIndex(new THREE.BufferAttribute(idx,1));return out;
+}
+
 // =================================================================================================
 // Sprite textures. L1: MATTER, not light. Each is generated from the hash above, so there are no
 // external assets and no soft radial gradients.
@@ -375,6 +397,13 @@ export class SpellVFX {
     // ---- V10: the four mesh-based effects ----------------------------------------------------
     this.meshFx = this._makeMeshEffects();
 
+    // A continuous, palette-driven filament gives release, travel, impact and young residue a
+    // readable middle-distance construction. Particles remain the matter/atmosphere layer; this
+    // is one pooled draw call whose changing pose ties the four phases together.
+    this.phaseMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.46,metalness:.02,transparent:true,opacity:.74,depthWrite:false,emissive:0xffffff,emissiveIntensity:.22});
+    this.phaseMesh=new THREE.Mesh(phaseFilamentGeometry(),this.phaseMat);
+    this.phaseMesh.name='spell-vfx:phase-filament';this.phaseMesh.visible=false;this.phaseMesh.renderOrder=4;this.group.add(this.phaseMesh);
+
     // Two bounded practicals let release/impact colour strike actors and nearby architecture.
     // They are pooled with the VFX group and reset every frame; no spell can allocate a light.
     this.practicals=[0,1].map(i=>{const l=new THREE.PointLight(0xffffff,0,i?7:4.5,2);l.name=`spell-vfx:practical:${i}`;l.visible=false;this.group.add(l);return l;});
@@ -531,6 +560,7 @@ export class SpellVFX {
     this.liveParticleWrites = 0;
     this.decals.count = 0;
     for (const k of Object.keys(this.meshFx)) this.meshFx[k].visible = false;
+    this.phaseMesh.visible=false;
     this.refract.visible = false;
     for(const l of this.practicals){l.visible=false;l.intensity=0;}
     if (!M) { this._flush(); return this.stats; }
@@ -561,6 +591,13 @@ export class SpellVFX {
       const p = sim.player.pos;
       const pal = this.paletteFor(cast.spell);
       this._emitCore(p[0], p[1] + 1.15, p[2], pal, intensity, 26, 0.10, this.frame);
+      // Readable hand construction through windup/release. It swells and opens with the live
+      // phase intensity, then the same authored seed moves into the projectile path below.
+      const yaw=sim.player.yaw*Math.PI/180;
+      // The casting hand is on the actor's right, not on the root centreline. A root-forward
+      // offset hid the seed behind the torso for the entire rear-view release animation.
+      const hand=[p[0]+Math.sin(yaw)*.54-Math.cos(yaw)*.48,p[1]+1.18,p[2]+Math.cos(yaw)*.54+Math.sin(yaw)*.48];
+      this._phasePose(hand,pal,[.58+.26*intensity,.58+.26*intensity,.58+.26*intensity],this.frame*.065,.54+.34*intensity,.12+.22*intensity);
       const l=this.practicals[0];l.position.set(p[0],p[1]+1.15,p[2]);l.color.set(pal.core);l.intensity=3.2*intensity;l.visible=l.intensity>.03;
     }
     for (const k of Object.keys(this.systems)) this.systems[k].mat.uniforms.uIntensity.value = intensity;
@@ -568,13 +605,17 @@ export class SpellVFX {
     // ---- projectiles: a core, a stringing trail (L2), and scene-lit spore drift ---------------
     for (const pr of M.projectiles) {
       const pal = this.paletteFor(pr.spell);
-      this._emitCore(pr.pos[0], pr.pos[1] + 1.0, pr.pos[2], pal, 1.0, 110, 0.16, pr.spawnF);
+      this._emitCore(pr.pos[0], pr.pos[1] + 1.0, pr.pos[2], pal, 0.82, 54, 0.13, pr.spawnF);
       this._emitTrail(pr, pal);
       // The THIRD system, and it is a floor not a flourish: RI-MAG05 §B2 requires >= 3 distinct
       // systems per released spell ("a spell that is one sprite is a fidelity failure, not a
       // performance saving"). This is the matter the bolt SHEDS — spore and grit falling out of
       // the trail and taking scene light, which is also L1 in its plainest form.
       this._emitImpact([pr.pos[0], pr.pos[1] + 0.55, pr.pos[2]], 0.42, pal, 70, pr.spawnF + 7);
+      if(!this.phaseMesh.visible){
+        const dx=pr.pos[0]-pr.prev[0],dz=pr.pos[2]-pr.prev[2],speed=Math.hypot(dx,dz);
+        this._phasePose([pr.pos[0],pr.pos[1]+1,pr.pos[2]],pal,[.58,.58,.90+Math.min(.55,speed*3)],pr.spawnF*.07+this.frame*.09,.78,.30);
+      }
     }
 
     // ---- volumes and contact: the impact system, plus the ground pool (L4) --------------------
@@ -600,6 +641,9 @@ export class SpellVFX {
     // all three systems, for 36 f@60.
     for (const im of M.impacts) {
       const pal = this.paletteFor(im.spell);
+      // Projectile contact is reported at body height.  Surface residue belongs under that
+      // body, at the same walkable elevation as the caster, not wrapped around its waist.
+      const groundY = Math.min(Number(im.at[1]) || 0, Number(sim.player.pos[1]) || 0);
       const t = 1 - im.remaining_f / im.total_f;          // 0 at contact, 1 at the end
       const punch = Math.max(0, 1 - t * t);                // fast in, slow out
       // THE BURST IS NOT THE COLLISION SPHERE. Every radius below was scaled from `im.r`, which
@@ -618,15 +662,19 @@ export class SpellVFX {
       this._emitImpact([im.at[0], im.at[1], im.at[2]], r, pal, Math.round(90 + 210 * punch), im.spawnF);
       // and the bloom on the floor beneath it, from the first frame — L5's ragged mask, not a
       // radial mandala, and it is IN FRAME because it is under the thing that just exploded.
-      this._pushDecal([im.at[0], 0, im.at[2]], burstR * (0.9 + t * 0.7), pal, 0.85 * (1 - t * 0.5), im.spawnF);
-      const l=this.practicals[1];l.position.set(im.at[0],im.at[1]+.55,im.at[2]);l.color.set(pal.core);l.intensity=Math.max(l.intensity,10*punch);l.visible=true;
+      this._pushDecal([im.at[0], groundY, im.at[2]], burstR * (0.72 + t * 0.45), pal, 0.78 * (1 - t * 0.5), im.spawnF);
+      this._phasePose([im.at[0],groundY+.12,im.at[2]],pal,[burstR*(.55+t*.35),.48+.12*(1-t),burstR*(.55+t*.35)],im.spawnF*.11+t*.9,Math.max(.20,.68-t*.50),.24,'impact',true);
+      const l=this.practicals[1];l.position.set(im.at[0],groundY+.72,im.at[2]);l.color.set(pal.core);l.intensity=Math.max(l.intensity,6*punch);l.visible=true;
     }
 
     // ---- L7: residue. Every spell leaves a stain for 3,600 f@60, and it is finally drawn. -----
     for (const r of M.residues) {
       const pal = this.paletteFor(r.spell);
       const age = 1 - r.remaining_f / 3600;
-      this._pushDecal(r.at, 0.9 + age * 0.5, pal, Math.max(0.12, 1 - age * 0.85), r.spawnF);
+      const groundY = Math.min(Number(r.at[1]) || 0, Number(sim.player.pos[1]) || 0);
+      this._pushDecal([r.at[0],groundY,r.at[2]], 0.9 + age * 0.5, pal, Math.max(0.12, 1 - age * 0.85), r.spawnF);
+      const ageF=3600-r.remaining_f;
+      if(!this.phaseMesh.visible&&ageF<105)this._phasePose([r.at[0],groundY+.045,r.at[2]],pal,[.82+ageF/260,.10,.82+ageF/260],r.spawnF*.11+ageF*.012,Math.max(.10,.48-ageF/260),.035,'residue',true);
     }
 
     // ---- V10: the mesh effects, each driven by a live effect ---------------------------------
@@ -660,7 +708,9 @@ export class SpellVFX {
     // 250-particle release a COLOURED mass instead of a white disc. Computed from the count
     // this frame, so it is a function of the frame's own state and never a tuned constant.
     const coreN = this.systems.core.n;
-    this.systems.core.mat.uniforms.uCoreGain.value = coreN > 0 ? Math.min(1, 9 / Math.sqrt(coreN)) : 1;
+    // Additive coverage must preserve the resin orange rather than converge to white.  The
+    // authored filament now carries the silhouette; particles provide matter and breakup.
+    this.systems.core.mat.uniforms.uCoreGain.value = coreN > 0 ? Math.min(1, 1.8 / Math.sqrt(coreN)) : 1;
 
     this._flush();
     return this.stats;
@@ -717,6 +767,15 @@ export class SpellVFX {
 
   // ---- emitters ------------------------------------------------------------------------------
 
+  _phasePose(at,pal,scale,rotation,opacity,emissive,style='active',grounded=false){
+    this.phaseMesh.position.set(at[0],at[1],at[2]);
+    this.phaseMesh.scale.set(scale[0],scale[1],scale[2]);
+    this.phaseMesh.rotation.set(grounded?0:.18+rotation*.23,rotation,grounded?0:.12-rotation*.17);
+    this.phaseMat.color.set(style==='residue'?(pal.residue||pal.decay||pal.mid):(pal.mid||pal.core));
+    this.phaseMat.emissive.set(style==='residue'?(pal.decay||pal.mid):pal.core);
+    this.phaseMat.opacity=opacity;this.phaseMat.emissiveIntensity=emissive;this.phaseMesh.visible=true;
+  }
+
   _push(sys, x, y, z, size, life, colour) {
     if (sys.n >= MAX_PARTICLES || this.liveParticleWrites >= MAX_FRAME_PARTICLES) return;
     const i = sys.n++;
@@ -738,7 +797,7 @@ export class SpellVFX {
       const r = h1(i, seed + 1) * spread;
       const yy = (h1(i, seed + 2) - 0.5) * spread * 1.6;
       this._push(sys, x + Math.cos(a) * r, y + yy, z + Math.sin(a) * r,
-        (0.30 + h1(i, seed + 3) * 0.52) * (0.5 + intensity), 0.35 + intensity * 0.65, c);
+        (0.22 + h1(i, seed + 3) * 0.30) * (0.55 + intensity * 0.55), 0.35 + intensity * 0.65, c);
     }
   }
 
@@ -823,6 +882,7 @@ export class SpellVFX {
     this.decals.visible = this.decals.count > 0;
     let meshes = 0;
     for (const k of Object.keys(this.meshFx)) if (this.meshFx[k].visible) meshes++;
+    if(this.phaseMesh.visible)meshes++;
     if (this.refract.visible) meshes++;
     this.stats = {
       particles, systems, decals: this.decals.count, meshes,
@@ -862,6 +922,7 @@ export class SpellVFX {
     this.rt.dispose();
     for (const k of Object.keys(this.systems)) { this.systems[k].geo.dispose(); this.systems[k].mat.dispose(); }
     this.decalGeo.dispose(); this.decalMat.dispose();
+    this.phaseMesh.geometry.dispose();this.phaseMat.dispose();
     this.scene.remove(this.group);
   }
 }

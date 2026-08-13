@@ -173,8 +173,14 @@ function anchorFor(sim, n, at, activity) {
   const cx = (bx[0] + bx[1]) / 2, cz = (bz[0] + bz[1]) / 2;
   const fx = ((h % 2000) / 1000) - 1;
   const fz = (((h >>> 11) % 2000) / 1000) - 1;
+  let x=cx+fx*ix;
+  // Keep a human-width navigation/sight corridor through the centre of generated rooms. The
+  // prior unconstrained hash regularly placed several inhabitants directly in the doorway and
+  // third-person camera arm; this is deterministic layout hygiene, not a capture exception.
+  const corridor=Math.min(1.45,ix*.48);
+  if(corridor>.35&&Math.abs(x-cx)<corridor)x=cx+(fx<0?-1:1)*corridor;
   return [
-    Math.round((cx + fx * ix) * 100) / 100,
+    Math.round(x * 100) / 100,
     d.bounds_m.y ? d.bounds_m.y[0] : 0,
     Math.round((cz + fz * iz) * 100) / 100,
   ];

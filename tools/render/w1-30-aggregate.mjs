@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 'use strict';
-import fs from 'node:fs'; import {execFileSync} from 'node:child_process';
+import fs from 'node:fs'; import {execFileSync} from 'node:child_process'; import {fileURLToPath} from 'node:url';
 const root=new URL('../../',import.meta.url), read=p=>fs.readFileSync(new URL(p,root),'utf8');
 const renderer=read('game/src/render/renderer.js'), sky=read('game/src/render/sky.js'), foundation=read('game/src/render/visual-foundation.js'),province=read('game/src/world/province.js'),actor=read('game/src/render/actor.js'),vfx=read('game/src/render/spell-vfx.js');
-const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[new URL(p,root).pathname],{encoding:'utf8'}));}catch{return{result:'RED'};}};
+const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[fileURLToPath(new URL(p,root))],{encoding:'utf8'}));}catch{return{result:'RED'};}};
 const assetGate=run('tools/render/w1-30-assets.mjs'),populationGate=run('tools/render/w1-30-visual-populations.mjs');
 const predicates={
   boundedCompositor:['WebGLRenderTarget','DepthTexture','worldBeforeUI:true'].every(x=>renderer.includes(x)),
@@ -12,7 +12,10 @@ const predicates={
   stableShadows:['Math.round(focus.x/texel)','shadow.camera.updateProjectionMatrix'].every(x=>sky.includes(x)),
   genuineIBL:['EquirectangularReflectionMapping','scene.environment=this.features.ibl'].every(x=>sky.includes(x)),
   physicalFamilies:['MeshStandardMaterial','MeshPhysicalMaterial','aoMap: procedural.height','normalMap:authored?.normal','roughnessMap: authored?.rough','envMapIntensity','wetness:'].every(x=>foundation.includes(x)),
-  ownedConsumers:(foundation.slice(foundation.indexOf('FEATURE_CONSUMERS'),foundation.indexOf('const FAMILY')).match(/\b\w+: \[/g)||[]).length===21,
+  // The original 21 governed paths plus the literal interior-dressing sabotage seam added by the
+  // native remediation pass. Keep this exact so an omitted or accidentally duplicated consumer
+  // fails the final aggregate instead of silently weakening coverage.
+  ownedConsumers:(foundation.slice(foundation.indexOf('FEATURE_CONSUMERS'),foundation.indexOf('const FAMILY')).match(/\b\w+: \[/g)||[]).length===22,
   authoredAssets:assetGate.result==='GREEN'&&assetGate.assets===4&&assetGate.files===35&&assetGate.bytes>6_000_000,
   visualPopulation:populationGate.references?.manifestRecords===808&&populationGate.world?.regions?.length===13&&populationGate.world?.settlements?.length===8&&populationGate.world?.interiors?.count===115,
   productionPooling:province.includes('STYLE_MATERIAL_CACHE')&&actor.includes('_equipmentMaterialCache'),

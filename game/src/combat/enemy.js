@@ -237,7 +237,12 @@ export class EnemyController {
     }
 
     // ---- start a scripted action ------------------------------------------------------------
-    if (!b.move && this.stat.ai === 'scripted') {
+    // `resolveBehaviour()` deliberately lets a deterministic Mode-A script win for any
+    // shipped body handed one, including normally inert summons.  Gating this on the
+    // statblock's original `ai` value contradicted that resolver and made the script a
+    // silent no-op for drowned_lesser.  Gate on the resolved controller behaviour so the
+    // same shipped rig and attack table can be reviewed in motion without inventing AI.
+    if (!b.move && this.behaviour === 'scripted') {
       while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f < frame) this.scriptIdx++;
       if (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f === frame) {
         const ev = this.script[this.scriptIdx++];

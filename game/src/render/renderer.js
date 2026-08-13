@@ -23,7 +23,7 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
-import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS } from './visual-foundation.js';
+import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS, updateVisualFoundationFrame, bindWaterReflection } from './visual-foundation.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -70,9 +70,10 @@ export class Renderer {
     this.three.shadowMap.type = THREE.PCFSoftShadowMap;
     this.three.outputColorSpace = THREE.SRGBColorSpace;
     this.three.toneMapping = THREE.ACESFilmicToneMapping;
-    // Preserve dark interiors while keeping shaded armour readable on SDR displays.  ACES still
-    // owns highlight roll-off; this is a modest scene exposure, not a per-shot compensation.
-    this.three.toneMappingExposure = 1.15;
+    // Apply photographic exposure once in the final HDR composite. Earlier values compensated
+    // for a compositor which wrote scene-linear values straight to the display; with the display
+    // transform restored they bleach daylight and erase material separation.
+    this.three.toneMappingExposure = 0.72;
 
     const built = buildScene(seed);
     this.seed = seed;
@@ -99,7 +100,15 @@ export class Renderer {
     // 6 km of far plane: the Valus Ridge is 400 m high and must be on the horizon from the
     // Stone Forest, which is 1.6 km away. A 900 m far plane is a 900 m world.
     this.camera = new THREE.PerspectiveCamera(60, canvas.width / canvas.height, 0.1, 6400);
-    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
+    // One bounded half-resolution mirrored scene pass is shared by every streamed water mesh.
+    // The previous IBL-only material could pass Fresnel/normal checks while reflecting none of
+    // the actual bank, trees or sky in front of the player.
+    this.waterReflectionTarget=new THREE.WebGLRenderTarget(Math.max(320,Math.floor(canvas.width/2)),Math.max(180,Math.floor(canvas.height/2)),{depthBuffer:true});
+    this.waterReflectionTarget.texture.name='w1-30-planar-water-reflection';
+    this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
+    this.waterReflectionFrame=-99;
+    this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
+    this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
     this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
@@ -219,6 +228,7 @@ export class Renderer {
       this.worldTarget.setSize(w,h);
       this.compositeMaterial.uniforms.uResolution.value.set(w,h);
     }
+    if(this.waterReflectionTarget)this.waterReflectionTarget.setSize(Math.max(320,Math.floor(w/2)),Math.max(180,Math.floor(h/2)));
     return { width: w, height: h };
   }
 
@@ -238,12 +248,14 @@ export class Renderer {
   }
 
   _buildCompositor(w,h) {
-    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false});
-    this.worldTarget.texture.colorSpace=THREE.SRGBColorSpace;
+    // Preserve scene-linear HDR until the final composite. An sRGB 8-bit target clipped the
+    // highlights before bloom and the fullscreen ShaderMaterial then bypassed ACES entirely.
+    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false,type:THREE.HalfFloatType});
+    this.worldTarget.texture.colorSpace=THREE.LinearSRGBColorSpace;
     this.worldTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);
     this.worldTarget.texture.name='w1-30-hdr-world-colour';
     this.worldTarget.depthTexture.name='w1-30-world-depth';
-    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,
+    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:true,
       uniforms:{tWorld:{value:this.worldTarget.texture},tDepth:{value:this.worldTarget.depthTexture},
         uResolution:{value:new THREE.Vector2(w,h)},uAO:{value:1},uAA:{value:1},uPost:{value:1}},
       vertexShader:`varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
@@ -251,13 +263,16 @@ export class Renderer {
       void main(){vec2 p=1./uResolution; vec3 c=texture2D(tWorld,vUv).rgb; float d=texture2D(tDepth,vUv).r;
         float dx=abs(d-texture2D(tDepth,vUv+vec2(p.x,0.)).r),dy=abs(d-texture2D(tDepth,vUv+vec2(0.,p.y)).r);
         float edge=clamp((dx+dy)*180.,0.,1.); if(uAA>.5&&edge>.08){vec3 n=(texture2D(tWorld,vUv+vec2(p.x,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y)).rgb)*.25;c=mix(c,n,edge*.38);}
-        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*28.,0.,.18);} c*=occ;
+        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*22.,0.,.12);} c*=occ;
         if(uPost>.5){
           vec3 b=texture2D(tWorld,vUv+vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y*2.)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y*2.)).rgb;
           b=max(b*.25-vec3(.72),0.);c+=b*.075;
           float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.035);c=mix(c,c*c*(3.-2.*c),.08);c=(c-.5)*1.015+.5;
-          float vignette=1.-smoothstep(.38,.82,length(vUv-.5))*.12;c*=vignette;
-        } gl_FragColor=vec4(c,1.);}`});
+          float vignette=1.-smoothstep(.40,.84,length(vUv-.5))*.075;c*=vignette;
+        } gl_FragColor=vec4(c,1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`});
     this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
   }
@@ -268,7 +283,29 @@ export class Renderer {
     this.quality[name]=!!enabled;
     if(['shadows','ibl','atmosphere','sky','lighting'].includes(name)) this.sky.setFeature(name,enabled);
     if(name==='shadows') this.three.shadowMap.enabled=!!enabled;
+    if(name==='interiorDressing'&&this.interiorRecord) {
+      const rec=this.interiorRecord;
+      this.interiorId=null;this.interiorKey=null;
+      this.setInteriorRecord(rec);
+    }
     return this.quality[name];
+  }
+
+  /** Literal RI-VIS03 M12 object-id pass. The scene is rendered with one unlit solid colour
+   * only on meshes whose shipping name is `water:*`; everything else is black. Materials,
+   * visibility and background are restored before returning, so this is an observational
+   * capture path and never a second world/material implementation. */
+  waterMaskDataURL() {
+    const saved=[],background=this.scene.background,override=this.scene.overrideMaterial;
+    const black=new THREE.MeshBasicMaterial({color:0x000000,toneMapped:false,fog:false});
+    const white=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false,fog:false});
+    this.scene.background=new THREE.Color(0x000000);
+    this.scene.traverse(o=>{if(!o.isMesh&&!o.isInstancedMesh)return;saved.push([o,o.material,o.visible]);o.material=/^water:[^:]+$/.test(String(o.name||''))?white:black;});
+    this.three.setRenderTarget(null);this.three.render(this.scene,this.camera);
+    const url=this.canvas.toDataURL('image/png');
+    for(const [o,mat,visible] of saved){o.material=mat;o.visible=visible;}
+    this.scene.background=background;this.scene.overrideMaterial=override;black.dispose();white.dispose();
+    return url;
   }
 
   /**
@@ -350,7 +387,7 @@ export class Renderer {
     this.interiorRecord = rec;
     const root = this.cells.interior;
     clearInterior(root);
-    this.interiorSummary = buildInterior(root, rec);
+    this.interiorSummary = buildInterior(root, rec, { productionDressing:this.quality.interiorDressing });
     return this.interiorSummary;
   }
 
@@ -434,7 +471,10 @@ export class Renderer {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
       if (!mesh) {
-        const family=e.archetype==='BEAST'?'beast':/drowned/i.test(e.eid)?'undead':'humanoid';
+        // Family classification is keyed by the shipped statblock id as well as the runtime eid:
+        // harness/world spawns commonly rename `drowned_lesser` to E1, which previously erased
+        // the undead family and rendered it as the generic humanoid.
+        const family=e.archetype==='BEAST'?'beast':/drowned/i.test(`${e.statId||''}|${e.id||''}|${e.eid||''}`)?'undead':'humanoid';
         mesh = makeRiggedActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c, 0x7d8460, family);
         mesh.name = 'enemy:' + e.eid;
         this.scene.add(mesh);
@@ -474,6 +514,10 @@ export class Renderer {
         // skin and cloth materials per actor, so a Dunmer and an Imperial in the same room are
         // not the same colour and no caller has to reach into the child list to fix it.
         mesh = makeRiggedActor(this.mats, tint[1], tint[0], (n.race==='saxhleel'||n.race==='naga')?'saxhleel':'humanoid');
+        // Non-combat townspeople wear the tinted skinned cloth body. Combat equipment sets are
+        // selected from equip-load, a field civilians do not own; showing a guessed armour set
+        // made every hall look like a formation of identical helmeted soldiers.
+        mesh.userData.actor.civilian = true;
         mesh.scale.setScalar(n.height_scale || 1);
         mesh.name = 'npc:' + n.eid;
         this.scene.add(mesh);
@@ -743,6 +787,7 @@ export class Renderer {
     // Every string painted from here on belongs to this simulation frame, so a critic can
     // ask the register what the frame said at the node it screenshotted.
     textRegister.setFrame(sim.frame);
+    updateVisualFoundationFrame(sim.frame);
     const c = sim.camera;
     // ---- the player, posed from the fight's own rig ----------------------------------------
     // `sim._combat` is hung on the sim by Engine.loadState (engine.js). The combat body is the
@@ -772,6 +817,12 @@ export class Renderer {
     this.camera.up.set(0, 1, 0);              // roll is exactly 0 (RI-CAM06 §E)
     if (this.camera.fov !== c.fov) { this.camera.fov = c.fov; this.camera.updateProjectionMatrix(); }
 
+    // Dense vegetation must never become an opaque third-person camera collider. Province keeps
+    // immutable instance transforms and temporarily collapses only stems/crowns intersecting the
+    // eye or actor bubble; this call therefore preserves deterministic streaming and restores
+    // exact silhouettes as soon as the camera clears them.
+    if(this.province)this.province.updateOcclusion(c.pos[0],c.pos[2],sim.player.pos[0],sim.player.pos[2]);
+
     this._focus.set(sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]);
     // Region fog. RI-WLD04 counts fog as ONE of nine axes and never more than one, but it is the
     // axis Morrowind leans on hardest — an Ashlands frame is red because the fog is red — so it is
@@ -800,6 +851,7 @@ export class Renderer {
       }
 
     this.sky.followCamera(this.camera);
+    this._renderWaterReflection(sim.frame);
 
     // ---- seam S19: spell VFX -----------------------------------------------------------------
     // Two passes, and the second one is the frame. The prepass writes scene DEPTH (which soft
@@ -813,8 +865,14 @@ export class Renderer {
       this.vfx.setSize(this.canvas.width, this.canvas.height);
     }
     if (this.vfx) {
-      this.vfx.prepass(this.camera);
       this.vfx.update(sim, this.sky, this.camera);
+      // Build the live effect buffers before deciding whether their depth/refraction source is
+      // needed. The former order rendered the entire province into the VFX target every frame,
+      // even when update() subsequently reported zero particles, systems, decals and meshes.
+      // Active spells retain the exact native depth/colour prepass; idle ordinary play no longer
+      // pays a second full-scene render for an empty group.
+      const v=this.vfx.stats;
+      if(v.particles>0||v.decals>0||v.meshes>0)this.vfx.prepass(this.camera);
     }
 
     this.three.info.reset();
@@ -865,6 +923,34 @@ export class Renderer {
       combatDecals: this.combatDecalCount,
     };
     return true;
+  }
+
+  _renderWaterReflection(frame=0){
+    if(!this.quality.waterReflection||this.cell!=='province'||!this.field){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
+    const points=[this.camera.position,this._look];
+    for(let i=1;i<=6;i++)points.push(this.camera.position.clone().lerp(this._look,i/7));
+    let waterY=null;for(const p of points){const y=this.field.waterSurfaceAt(p.x,p.z);if(y!==null&&y!==undefined){waterY=y;break;}}
+    if(waterY===null){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
+    // Reproject the last planar view until either the camera has moved enough for the error to
+    // resolve or six simulation frames have elapsed. This is spatially gated, not a blind
+    // every-third-frame stutter: stationary water remains stable and traversal updates before a
+    // quarter-metre parallax error accumulates.
+    const moved=this.waterReflectionFocus.distanceToSquared(this.camera.position)>.24*.24,stale=frame-this.waterReflectionFrame>=6;
+    if(!moved&&!stale&&this.waterReflectionTarget.texture.userData.valid){bindWaterReflection(this.waterReflectionTarget.texture,this.canvas.width,this.canvas.height,1,this.waterReflectionMatrix);return;}
+    const rc=this.waterReflectionCamera;rc.copy(this.camera,false);rc.position.copy(this.camera.position);rc.position.y=waterY-(this.camera.position.y-waterY);
+    const look=this._look.clone();look.y=waterY-(look.y-waterY);rc.up.set(0,1,0);rc.lookAt(look);rc.updateMatrixWorld();
+    const hidden=[];this.scene.traverse(o=>{if(o.visible&&o.isMesh&&String(o.name||'').startsWith('water:')){hidden.push(o);o.visible=false;}});
+    const prior=this.three.getRenderTarget(),priorClips=this.three.clippingPlanes;
+    // Discard geometry below the reflecting plane. Without this oblique half-space the mirrored
+    // camera sits below the bank and renders the terrain underside over the sky/tree reflection,
+    // producing a correctly allocated but nearly black texture.
+    this.three.clippingPlanes=[new THREE.Plane(new THREE.Vector3(0,1,0),-waterY+.018)];
+    this.sky.followCamera(rc);this.three.setRenderTarget(this.waterReflectionTarget);this.three.clear();this.three.render(this.scene,rc);this.three.setRenderTarget(prior);this.three.clippingPlanes=priorClips;
+    for(const o of hidden)o.visible=true;this.sky.followCamera(this.camera);
+    // gl_FragCoord belongs to the visible full-resolution pass; texture UVs are normalised, so
+    // divide by the main viewport size even though the bounded reflection target is half size.
+    const reflectionMatrix=this.waterReflectionMatrix||(this.waterReflectionMatrix=new THREE.Matrix4());reflectionMatrix.multiplyMatrices(rc.projectionMatrix,rc.matrixWorldInverse);this.waterReflectionTarget.texture.userData.valid=true;this.waterReflectionFrame=frame;this.waterReflectionFocus.copy(this.camera.position);
+    bindWaterReflection(this.waterReflectionTarget.texture,this.canvas.width,this.canvas.height,1,reflectionMatrix);
   }
 
   _syncCombatDecals(sim) {

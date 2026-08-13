@@ -204,3 +204,56 @@ instance after checking out the PR head:
 4. render the registered locomotion/combat action cells at 60 f@60 and inspect attachments, IK and secondary motion;
 5. repeat the streamed-boundary walk and record GPU frame time, draw/triangle/program/geometry/texture/VFX budgets;
 6. only then dispatch the fresh critic for complete populations, blind comparison, independent judgement, final aggregation and the two 7/10 verdicts.
+
+## Native GPU remediation checkpoint (2026-08-13)
+
+This checkpoint is not builder closure. The prior completion language above remains superseded.
+Chromium 151.0.7922.110 was launched with hardware acceleration and reported ANGLE D3D11 on an
+NVIDIA Tesla T4 rather than SwiftShader. Native 1280x720 stills, short moving clips and repeated
+walked-boundary sequences were inspected directly. The structural gates are green, but several
+shipping populations remain visibly below the requested modern reference bar.
+
+### Production repairs delivered in this continuation
+
+* The shared player renderer now has a more coherent opaque body, better head/torso/limb
+  proportions and attachment-following presentation. The motion ledger verifies the player body
+  stays opaque, head direction does not remain static and representative held attachments remain
+  stable during motion.
+* A complete 37-cell native motion ledger now renders 60 f@60 clips for locomotion, traversal,
+  turns, falls, directional dodges, blocking, reactions, swaps, IK, secondary motion, creature
+  movement and all 15 weapon classes. Clips and traces are transient and remain outside Git.
+* Slitherfang and shared creature construction gained stronger family anatomy and motion reads;
+  canopy/root silhouettes and vegetation LOD use more organic, asymmetric construction.
+* Regional water gained reflection/shore response and successive wave-field repairs. Crossed wave
+  frequencies reduce the most regular grid artifact, but inspected marsh vistas still show broad
+  directional banding and this row remains builder-red.
+* All 115 generated interiors now consume shared structural bays, wall bases and caps, ceiling
+  coffers, room-kind focal areas and clustered dressing. A literal delete-the-fix control changes
+  the rendered output. Some narrow rooms remain occluded and family repetition remains visible.
+* Population capture now covers all 13 regions, all eight settlements at street height and all 115
+  interiors. The street camera correction exposes facade/occupation defects that the former aerial
+  view concealed. It does not claim those settlements are visually complete.
+* Arena, rootway, landmark, foliage, equipment, weapon, VFX-light, HDR, residency and visual-control
+  repairs in the preceding continuation commits remain part of this checkpoint.
+
+### Current visual assessment
+
+The builder estimate is roughly 50-55% of the way to the requested whole-game visual bar. Coverage,
+repeatability and diagnostic instrumentation are about 90% established, while visible production
+fidelity is nearer 45-50%. The main remaining deficits are terrain/material richness, water
+banding, settlement architecture and street occupation, hero-quality characters/creatures and
+equipment, VFX composition, temporal weather, LOD continuity and GPU performance. These are rough
+planning estimates, not the critic-owned modern-fidelity or art-direction verdicts.
+
+### Transient native evidence
+
+The hardware evidence root is
+`C:/Users/Administrator/AppData/Local/Temp/1/w1-30-gpu-ec2amaztmcr7kb-d2ef87d6`.
+Important populations are `motion-phase43-full`, `atlas-phase74-interiors-production`,
+`atlas-phase77-world`, `atlas-phase78-settlements-street`, `water-phase70-short-motion`,
+`fixed-eight-phase83-crossed-water` and the targeted `control-phase75-interior-dressing-delete` /
+`control-phase81-water-no-reflection` controls.
+
+The latest measured boundary sequence recorded GPU frame time around 17.99 ms p50 and 26.96 ms
+p99; several settlement representatives also exceed the intended draw budget. Performance is
+therefore not closed and will be repaired without reducing required population coverage.

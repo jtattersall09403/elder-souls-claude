@@ -147,8 +147,11 @@ function makePalette(rec) {
     stone: std(mixHex(0x7a7a70, town.tint, town.mix * 0.7), 0.78, 0.03, 'stone'),
     metal: std(0x9aa0a6, 0.35, 0.72, 'metal'),
     // Anything that is meant to be SEEN as a light rather than lit by one.
-    flame: new THREE.MeshBasicMaterial({ color: 0xffb066 }),
-    ember: new THREE.MeshBasicMaterial({ color: 0xff8a3a }),
+    // Display-referred basic orange clipped into flat white/orange blobs under ACES. Emissive
+    // physical materials keep a coloured core while still accepting fog and tone mapping.
+    flame: new THREE.MeshStandardMaterial({ color:0x7a2607, emissive:0xf06b12, emissiveIntensity:1.14, roughness:.58, toneMapped:true }),
+    flameCore: new THREE.MeshStandardMaterial({ color:0xffb13b, emissive:0xffb11e, emissiveIntensity:1.42, roughness:.48, toneMapped:true }),
+    ember: new THREE.MeshStandardMaterial({ color:0x391208, emissive:0xa93208, emissiveIntensity:.68, roughness:.78, toneMapped:true }),
     glass: new THREE.MeshBasicMaterial({ color: 0xbcd6e0 }),
   };
 }
@@ -161,6 +164,29 @@ const box = (w, h, d, m) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
 const cyl = (rt, rb, h, seg, m) => new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m);
 const ico = (r, d, m) => new THREE.Mesh(new THREE.IcosahedronGeometry(r, d || 0), m);
 const craftedBox=(w,h,d,m,bevel=Math.min(w,h,d)*.08)=>{const s=new THREE.Shape();s.moveTo(-w/2,-h/2);s.lineTo(w/2,-h/2);s.lineTo(w/2,h/2);s.lineTo(-w/2,h/2);s.closePath();const g=new THREE.ExtrudeGeometry(s,{depth:d,steps:1,bevelEnabled:true,bevelSegments:1,bevelSize:bevel,bevelThickness:bevel});g.translate(0,0,-d/2);return new THREE.Mesh(g,m);};
+
+// A closed, asymmetrical flame blade with a broad hot root and a bent, tapered crown. It is
+// intentionally authored geometry rather than a cone: even without simulation the overlapping
+// silhouettes read as tongues of flame from a moving camera, not red traffic markers.
+function flameBlade(width=.12,height=.42,bend=.06,material){
+  const radial=7,rings=[
+    [0,width*.66,0],
+    [height*.18,width, bend*.05],
+    [height*.48,width*.72,bend*.28],
+    [height*.76,width*.43,bend*.68],
+    [height,width*.045,bend],
+  ],pos=[],idx=[];
+  for(const [y,r,zOff] of rings)for(let i=0;i<radial;i++){
+    const a=i/radial*Math.PI*2;
+    pos.push(Math.cos(a)*r,y,zOff+Math.sin(a)*r*.50);
+  }
+  for(let r=0;r<rings.length-1;r++)for(let i=0;i<radial;i++){
+    const q=(i+1)%radial,A=r*radial+i,B=r*radial+q,C=(r+1)*radial+i,D=(r+1)*radial+q;
+    idx.push(A,C,B,B,C,D);
+  }
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();
+  const mesh=new THREE.Mesh(geo,material);mesh.castShadow=false;mesh.receiveShadow=false;return mesh;
+}
 
 function part(g, mesh, x, y, z, ry) {
   mesh.position.set(x, y, z);
@@ -195,10 +221,10 @@ const B = {
   rack: (P, h = 1.7) => { const g = new THREE.Group(); for (const sx of [-0.5, 0.5]) part(g, cyl(0.045, 0.045, h, 6, P.wood), sx, h / 2, 0); for (let i = 0; i < 3; i++) part(g, box(1.1, 0.05, 0.05, P.wood), 0, 0.5 + i * 0.55, 0); return g; },
   post: (P, h = 2.2, r = 0.14) => { const g = new THREE.Group(); part(g, cyl(r, r * 1.15, h, 8, P.wood), 0, h / 2, 0); return g; },
   board: (P, w = 1.2, h = 0.9) => { const g = new THREE.Group(); part(g, box(w, h, 0.06, P.wood), 0, 1.35, 0); for (let i = 0; i < 3; i++) part(g, box(w * 0.28, h * 0.24, 0.02, P.cloth), (i - 1) * w * 0.3, 1.35 + ((i % 2) - 0.5) * 0.2, 0.04); return g; },
-  hearth: (P) => { const g = new THREE.Group(); part(g, cyl(0.95, 1.1, 0.34, 12, P.stone), 0, 0.17, 0); const f = ico(0.36, 1, P.flame); part(g, f, 0, 0.52, 0); for (let i = 0; i < 5; i++) { const a = i * 1.257; part(g, cyl(0.05, 0.05, 0.5, 5, P.wood), Math.cos(a) * 0.2, 0.42, Math.sin(a) * 0.2); } return g; },
+  hearth: (P) => { const g = new THREE.Group(); part(g, cyl(0.95, 1.1, 0.34, 12, P.stone), 0, 0.17, 0); for(let i=0;i<6;i++){const a=i*Math.PI/3,h=.30+(i%3)*.105,f=flameBlade(.075+(i%2)*.018,h,(i%2?-.05:.06),i%3===0?P.flameCore:(i%2?P.ember:P.flame));f.rotation.y=a;f.rotation.z=(i-2.5)*.055;part(g,f,Math.cos(a)*.12,.34,Math.sin(a)*.12);} const core=flameBlade(.10,.52,-.035,P.flameCore);part(g,core,0,.34,0,.65); for (let i = 0; i < 5; i++) { const a = i * 1.257; const log=cyl(0.05,0.06,0.5,7,P.wood);log.rotation.z=Math.PI/2;log.rotation.y=a;part(g,log,Math.cos(a)*0.2,0.38,Math.sin(a)*0.2); } return g; },
   brazier: (P) => { const g = new THREE.Group(); part(g, cyl(0.05, 0.05, 0.85, 6, P.metal), 0, 0.42, 0); part(g, cyl(0.3, 0.16, 0.22, 9, P.metal), 0, 0.95, 0); part(g, ico(0.16, 0, P.ember), 0, 1.04, 0); return g; },
-  lampHung: (P) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, 0.7, 4, P.metal), 0, -0.35, 0); part(g, cyl(0.13, 0.09, 0.2, 8, P.metal), 0, -0.78, 0); part(g, ico(0.09, 0, P.flame), 0, -0.8, 0); return g; },
-  lampStand: (P) => { const g = new THREE.Group(); part(g, cyl(0.11, 0.13, 0.04, 8, P.metal), 0, 0.02, 0); part(g, cyl(0.03, 0.03, 0.5, 6, P.metal), 0, 0.27, 0); part(g, ico(0.09, 0, P.flame), 0, 0.56, 0); return g; },
+  lampHung: (P) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, 0.7, 4, P.metal), 0, -0.35, 0); part(g, cyl(0.13, 0.09, 0.2, 8, P.metal), 0, -0.78, 0); part(g, flameBlade(.055,.18,.025,P.flameCore), 0, -0.78, 0); return g; },
+  lampStand: (P) => { const g = new THREE.Group(); part(g, cyl(0.11, 0.13, 0.04, 8, P.metal), 0, 0.02, 0); part(g, cyl(0.03, 0.03, 0.5, 6, P.metal), 0, 0.27, 0); const bowl=cyl(.14,.085,.075,9,P.metal);part(g,bowl,0,.53,0);const f=flameBlade(.043,.18,.025,P.flameCore);f.rotation.z=.05;part(g,f,0,.57,0); return g; },
   altar: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.85, 0.7, P.stone), 0, 0.42, 0); part(g, box(1.7, 0.1, 0.85, P.stone), 0, 0.9, 0); part(g, box(0.5, 0.12, 0.3, P.accent), 0, 1.01, 0); return g; },
   root: (P, h = 2.6) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const a = i * 2.094; const s = cyl(0.1, 0.24, h, 6, P.wood); s.rotation.z = Math.cos(a) * 0.16; s.rotation.x = Math.sin(a) * 0.16; part(g, s, Math.cos(a) * 0.22, h / 2, Math.sin(a) * 0.22); } return g; },
   grate: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.1, 0.1, P.metal), 0, 2.1, 0); for (let i = 0; i < 7; i++) part(g, cyl(0.035, 0.035, 2.1, 5, P.metal), -0.6 + i * 0.2, 1.05, 0); return g; },
@@ -430,6 +456,10 @@ export function buildInterior(root, rec, opts) {
   // can delete that leg on a copy without editing this file. Optional third argument; every
   // existing caller passes two and gets the shipped behaviour.
   const PROP_INSET = !(opts && opts.propInset === false);
+  // Literal delete-the-fix arm for the complete W1-30 room-shell/composition repair. The
+  // renderer exposes this through `setVisualFeature('interiorDressing', false)`, rebuilds the
+  // live room, and therefore produces real shipping pixels with only these additions removed.
+  const PRODUCTION_DRESSING = !(opts && opts.productionDressing === false);
   const summary = {
     id: rec && rec.id ? rec.id : null, name: (rec && rec.name) || null,
     kind: (rec && rec.interior_kind) || null, settlement: (rec && rec.settlement) || null,
@@ -464,6 +494,15 @@ export function buildInterior(root, rec, opts) {
   floor.name = 'roomshell';
   floor.position.set((bx[0] + bx[1]) / 2, by[0] - 0.15, (bz[0] + bz[1]) / 2);
   floor.receiveShadow = true; root.add(floor);
+  // Floor construction at player scale: long irregular boards or stone flags provide a depth
+  // and direction read that a single textured plane cannot. Kept low and deterministic so all
+  // 115 rooms share the repair without covering interactable placements.
+  const floorOrdered=rec.settlement&&['gideon','stormhold','blackrose'].includes(rec.settlement);
+  const floorCourses=Math.max(4,Math.min(18,Math.ceil(D/(floorOrdered?1.8:.85))));
+  for(let i=0;i<floorCourses;i++){
+    const z=bz[0]+(i+.5)*D/floorCourses,strip=box(W-.35,.025,Math.max(.18,D/floorCourses-.055),floorOrdered?P.stone:(i%3===0?P.wood:P.floor));
+    strip.position.set((bx[0]+bx[1])/2,by[0]+.018,z);strip.rotation.y=floorOrdered?0:(((h+i*13)%7)-3)*.003;strip.receiveShadow=true;strip.name='interior-floor-course';root.add(strip);
+  }
   const ceil = box(W, 0.3, D, P.roof);
   ceil.name = 'roomshell';
   ceil.position.set((bx[0] + bx[1]) / 2, by[1] + 0.15, (bz[0] + bz[1]) / 2);
@@ -493,6 +532,35 @@ export function buildInterior(root, rec, opts) {
   addWall(bx[0], (bz[0] + bz[1]) / 2, 0.3, D, 'west');
   addWall(bx[1], (bz[0] + bz[1]) / 2, 0.3, D, 'east');
 
+  // A single flat cuboid shell made all 115 rooms read as the same generated box even when the
+  // declared furniture differed. Build shallow architectural bays on the inside face instead:
+  // a lower wainscot, vertical piers and recessed upper panels. They stay inside `bounds_m`, do
+  // not alter collision/stealth volumes, and use the room-kind/settlement palette already chosen
+  // above. Entry walls keep a clear central door lane.
+  if(PRODUCTION_DRESSING){
+  const wallOrdered=!!art?.imperial,bayStep=wallOrdered?2.35:2.8;
+  const dressWall=(axis,side,min,max,fixed)=>{
+    const len=max-min,n=Math.max(2,Math.min(8,Math.floor(len/bayStep))),step=len/n;
+    for(let i=0;i<n;i++){
+      const at=min+(i+.5)*step;
+      if(side===entry&&Math.abs(at-(min+max)/2)<DOOR_W*.72)continue;
+      const x=axis==='x'?at:fixed,z=axis==='x'?fixed:at;
+      const panel=box(axis==='x'?step-.30:.065,Math.min(1.18,H*.36),axis==='x'?.065:step-.30,i%3===0?P.cloth:P.wood);
+      panel.position.set(x,by[0]+.70,z);panel.name=`interior-wall-bay:${rec.interior_kind||'room'}`;panel.receiveShadow=true;root.add(panel);
+      const pier=box(axis==='x'?.09:.12,H*.64,axis==='x'?.12:.09,wallOrdered?P.stone:P.wood);
+      pier.position.set(axis==='x'?min+i*step:fixed,by[0]+H*.42,axis==='x'?fixed:min+i*step);pier.name='interior-wall-pier';pier.castShadow=true;root.add(pier);
+      if(i%2===((h>>>3)&1)){
+        const inset=box(axis==='x'?Math.min(.72,step*.42):.045,Math.min(.52,H*.17),axis==='x'?.045:Math.min(.72,step*.42),P.accent);
+        inset.position.set(x,by[0]+H*.69,z);inset.name='interior-upper-inset';root.add(inset);
+      }
+    }
+  };
+  dressWall('x','north',bx[0]+.22,bx[1]-.22,bz[0]+.18);
+  dressWall('x','south',bx[0]+.22,bx[1]-.22,bz[1]-.18);
+  dressWall('z','west',bz[0]+.22,bz[1]-.22,bx[0]+.18);
+  dressWall('z','east',bz[0]+.22,bz[1]-.22,bx[1]-.18);
+  }
+
   // Continuous base and cornice courses give every room a readable wall/floor/ceiling junction;
   // settlement palettes make these masonry in ordered towns and lashed timber elsewhere.
   for(const y of [by[0]+.12,by[1]-.16]){
@@ -506,6 +574,12 @@ export function buildInterior(root, rec, opts) {
   const beams = Math.max(2, Math.min(9, Math.round(D / 3)));
   for (let i = 0; i < beams; i++) {
     part(root, box(W, 0.28, 0.28, P.wood), (bx[0] + bx[1]) / 2, by[1] - 0.32, bz[0] + (i + 0.5) * (D / beams));
+  }
+  // Recessed ceiling fields between the structural beams break the flat lid and give practical
+  // light a readable sequence of highlights/shadows while preserving full head clearance.
+  if(PRODUCTION_DRESSING)for(let i=0;i<beams-1;i++){
+    const z=bz[0]+(i+1)*(D/beams),coffer=box(W*.76,.055,Math.max(.24,D/beams*.54),i%2?P.roof:P.cloth);
+    coffer.position.set((bx[0]+bx[1])/2,by[1]-.205,z);coffer.name='interior-ceiling-coffer';coffer.receiveShadow=true;root.add(coffer);
   }
   // Settlement grammar remains visible after the door closes: asymmetric braces at the shell
   // junction use the town's own structural material and cadence rather than generic decoration.
@@ -649,6 +723,48 @@ export function buildInterior(root, rec, opts) {
     ci++;
   }
 
+  // Room-kind focal composition. Authored prop lists supply the interactable/semantic objects;
+  // these bounded architectural groupings give them a place to belong instead of scattering
+  // every room around the same central hearth. They are presentation-only construction using
+  // existing materials, fully inside the declared bounds, deterministic from the record id.
+  if(PRODUCTION_DRESSING){
+  const focal=new THREE.Group();focal.name=`interior-focal-zone:${rec.interior_kind||'dwelling'}`;
+  const fx=(bx[0]+bx[1])/2,fz=bz[0]+Math.min(D*.22,2.25),fy=by[0];
+  const put=(m,x,y,z,ry=0)=>part(focal,m,x,y,z,ry);
+  if(['shop','guild','travel'].includes(rec.interior_kind)){
+    put(craftedBox(Math.min(3.6,W*.48),.14,.82,P.wood),0,.92,0);
+    for(const sx of [-1,1])put(craftedBox(.16,.92,.68,P.wood),sx*Math.min(1.55,W*.20),.46,0);
+    put(box(Math.min(3.3,W*.44),.10,.12,P.accent),0,1.13,-.34);
+    for(let i=-2;i<=2;i++)put(i%2?ico(.10,1,P.accent):cyl(.09,.12,.22,8,P.stone),i*Math.min(.46,W*.065),1.12,.06);
+    const canopy=box(Math.min(4.1,W*.57),.10,.76,P.cloth);canopy.rotation.z=((h&1)?1:-1)*.035;put(canopy,0,Math.min(H-.45,2.45),-.05);
+  }else if(['temple','shrine','hall'].includes(rec.interior_kind)){
+    for(let s=0;s<3;s++){const step=box(Math.min(W*.48,3.8)-s*.35,.16,.72-s*.10,s===2?P.accent:P.stone);put(step,0,.08+s*.14,s*.25);}
+    put(craftedBox(Math.min(1.55,W*.22),.82,.70,P.stone),0,.72,.26);
+    const icon=ico(.34,2,P.accent);icon.scale.set(.72,1.35,.55);put(icon,0,1.42,.23);
+    for(const sx of [-1,1]){put(cyl(.055,.075,1.18,8,P.metal),sx*Math.min(1.15,W*.17),.59,.22);put(flameBlade(.055,.22,sx*.035,P.flameCore),sx*Math.min(1.15,W*.17),1.17,.22);}
+  }else if(rec.interior_kind==='tavern'){
+    const bar=B.counter(P);bar.scale.set(Math.min(1.32,W/4.2),1,1);put(bar,0,0,0);
+    for(let i=-2;i<=2;i++)put(cyl(.07,.09,.18,8,P.metal),i*.28,1.10,.08);
+    for(const sx of [-1,1])put(B.stool(P,.50),sx*.95,0,.95,sx*.12);
+    put(B.shelves(P,3,Math.min(2.8,W*.40)),0,.35,-.48);
+  }else if(['prison','hold','gate'].includes(rec.interior_kind)){
+    put(box(Math.min(W*.44,3.2),.18,.72,P.stone),0,.09,.15);
+    for(let i=-2;i<=2;i++)put(cyl(.035,.035,Math.min(H*.62,2.15),6,P.metal),i*Math.min(.56,W*.075),Math.min(H*.31,1.08),-.18);
+    put(box(Math.min(W*.42,3.0),.10,.10,P.metal),0,Math.min(H*.58,1.95),-.18);
+    for(const sx of [-1,1])put(B.sack(P),sx*Math.min(1.15,W*.17),0,.68,sx*.24);
+  }else{
+    const textile=box(Math.min(2.7,W*.40),Math.min(1.28,H*.37),.055,P.cloth);put(textile,0,1.35,-.42);
+    put(B.bed(P,Math.min(1.18,W*.22),Math.min(2.05,D*.22)),0,0,.46,Math.PI/2);
+    for(const sx of [-1,1]){put(B.chest(P,.62,.42),sx*Math.min(1.22,W*.18),0,.10);put(B.tiny(P),sx*Math.min(1.22,W*.18),.48,.10);}
+  }
+  focal.position.set(fx,fy,fz);focal.rotation.y=((h>>>9)%5-2)*.025;focal.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});root.add(focal);
+  summary.focal_zone=rec.interior_kind||'dwelling';
+
+  // A secondary loose cluster near the opposite wall stops long rooms becoming empty runways.
+  // It deliberately avoids creating simulation containers or lights.
+  if(D>7.5&&W>5.4){const cluster=new THREE.Group();cluster.name='interior-secondary-cluster';const cz=bz[1]-Math.min(1.65,D*.18),cx=bx[0]+Math.min(1.55,W*.20);cluster.position.set(cx,by[0],cz);cluster.rotation.y=((h>>>13)&1)?-.28:.34;const basket=B.basket(P),sacks=B.sack(P);basket.position.set(-.32,0,0);sacks.position.set(.30,0,.12);cluster.add(basket,sacks);cluster.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true;}});root.add(cluster);}
+  }
+
   // ---- verticality — RI-WLD07 and RI-WLD13 N5 -------------------------------------------------
   // A record that declares a stair HAS an upper floor. Thirteen do; before this they had a stair
   // that led to the ceiling.
@@ -703,13 +819,30 @@ export function buildInterior(root, rec, opts) {
     root.add(fitting);
     summary.lamps_built++;
     const colour = L.hearth ? 0xffa050 : 0xffc890;
-    const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 22 : 9), L.hearth ? 22 : 11, 2);
+    const pl = new THREE.PointLight(colour, L.intensity * (L.hearth ? 16 : 6.2), L.hearth ? 18 : 8, 2);
     pl.position.set(L.emit_pos[0], L.emit_pos[1], L.emit_pos[2]);
     if (L.shadow) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
     root.add(pl);
   }
   summary.lights_lit = lamps.length;
   summary.lights_synthesized = lamps.filter((L) => L.synthesized).length;
+
+  // Practical lamps provide direction, but their inverse-square falloff left most characters
+  // and material junctions as black cut-outs in the shipping third-person camera.  A bounded
+  // indirect term stands in for light bounced by the room's own walls and for diffuse daylight
+  // arriving through the aperture plan above.  It is intentionally an actual scene light (not
+  // exposure or a full-screen lift), so normals, roughness and occlusion continue to describe
+  // the room. Windowless holds stay substantially darker than glazed shops and halls.
+  const apertureFill=Math.min(.55,summary.aperture_ratio*14);
+  const indirect=new THREE.HemisphereLight(
+    summary.windows ? 0x9eacc0 : 0x665c58,
+    rec.settlement==='lilmoth'||rec.settlement==='helstrom' ? 0x24372d : 0x32251d,
+    .95+apertureFill,
+  );
+  indirect.position.set((bx[0]+bx[1])/2,by[1]-.25,(bz[0]+bz[1])/2);
+  indirect.name=`interior-bounced-fill:${rec.id}`;
+  root.add(indirect);
+  summary.indirect_fill={intensity:+(.95+apertureFill).toFixed(3),source:summary.windows?'aperture-and-practicals':'practicals-only'};
 
   // ---- containers and the unique item -----------------------------------------------------------
   // RI-QST08: thirty unique items declared, none of them reachable through a door. They are in
@@ -847,8 +980,8 @@ export function buildGenericHall(root) {
   const ceiling = box(12, 0.3, 18, P.roof); ceiling.position.y = 4.4; root.add(ceiling);
   for (let i = 0; i < 5; i++) part(root, box(12, 0.34, 0.34, P.wood), 0, 4.05, -7 + i * 3.5);
   const hearth = cyl(1.0, 1.15, 0.5, 12, P.stone); hearth.position.set(0, 0.25, 3.0); hearth.receiveShadow = true; root.add(hearth);
-  const fire = ico(0.45, 1, P.flame); fire.position.set(0, 0.72, 3.0); root.add(fire);
-  const light = new THREE.PointLight(0xffa050, 26, 26, 2);
+  const fire = new THREE.Mesh(new THREE.ConeGeometry(.13,.48,8,2),P.flame); fire.position.set(0, 0.60, 3.0); root.add(fire);
+  const light = new THREE.PointLight(0xffa050, 18, 22, 2);
   light.position.set(0, 1.0, 3.0);
   light.castShadow = true; light.shadow.mapSize.set(512, 512); light.shadow.bias = -0.004;
   root.add(light);

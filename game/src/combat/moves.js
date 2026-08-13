@@ -522,9 +522,17 @@ export function buildMoveTable(d, moveset, shieldId, opts) {
   // single-frame weapon snap the W1-09 verdict §2.5 measured at the attack/idle boundary. See
   // clips.json §archetypes.idle_loop.
   out._idle = new LoopClip('idle', arch.idle_loop, 96);
-  out._walk = new LoopClip('walk', arch.locomotion_cycle, 44);
-  out._run = new LoopClip('run', arch.locomotion_cycle, 30);
-  out._sprint = new LoopClip('sprint', arch.locomotion_cycle, 22);
+  // Speed affects stride extension as well as cadence. A single-amplitude cycle made walk,
+  // run and sprint read as the same cautious shuffle in actual moving captures even though
+  // their simulation speeds differed. These are deterministic pose multipliers only: the
+  // authoritative root displacement remains owned by the fixed-step controller.
+  // Keep the authored cycle's full 28-degree walk stride. The former .72 scale reduced the
+  // feet to a cautious shuffle in a following camera even while the controller translated
+  // the character several metres. Faster gaits extend beyond the walk pose as well as cycling
+  // faster, so acceleration changes the silhouette instead of only changing foot cadence.
+  out._walk = new LoopClip('walk', arch.locomotion_cycle, 44, 1.00);
+  out._run = new LoopClip('run', arch.locomotion_cycle, 30, 1.28);
+  out._sprint = new LoopClip('sprint', arch.locomotion_cycle, 22, 1.55);
   out._blockPose = arch.block_hold;
   out._idlePose = arch.idle_ready;
   out._dead = new Clip('dead', arch.dead_collapse, { startup: 12, active: 12, total: 48 }, 1.0, 0.4);

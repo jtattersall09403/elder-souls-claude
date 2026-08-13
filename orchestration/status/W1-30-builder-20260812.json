@@ -1,7 +1,7 @@
 {
   "task_id": "W1-30-builder-20260812",
   "role": "builder",
-  "state": "builder-remediation-awaiting-native-gpu-verification",
+  "state": "builder-native-gpu-remediation-in-progress",
   "plan": "orchestration/plans/W1-30.md",
   "base_commit": "f7df4df166a28c578db200761a0be8f5da330839",
   "dependencies": {
@@ -30,7 +30,7 @@
     "literal RI-VIS03, RI-VIS08 and RI-MAG05 instruments",
     "nine-scene reusable-browser live proof"
   ],
-  "bounded_result": "green: all Package 2-4 gates; literal metric self-tests; 540-frame RI-VIS08 C1-C10 representative result; nine-scene Chromium 141/SwiftShader live proof; final builder aggregate",
+  "bounded_result": "green structural gates plus Chromium 151/ANGLE D3D11/NVIDIA T4 native evidence: 37 moving action cells at 60 f@60, all 13 regions, eight street-height settlements and all 115 interiors. Visual rows remain red where recorded in the remediation matrix.",
   "binary_evidence": "6,681,570 bytes of governed production material assets committed with manifest provenance; bulk captures remain transient under /tmp/w1-30-remediation-* and traces/metrics under /tmp/w1-30-trace-* and /tmp/w1-30-animation-metrics.json",
   "files_touched": [
     "game/src/render/actor.js",
@@ -68,6 +68,6 @@
     "daylight capture initially used occluded/underwater named states; separated state placement from lighting and used the readable province state",
     "animation trace exposed held hitstop, root-space transition and secondary-proxy aggregation errors; repaired the instrument and cross-fade, then reran to C1-C10 GREEN"
   ],
-  "next_step": "Do not dispatch the critic yet. Run the exact native GPU verification ledger in reports/w1-30/VISUAL-REMEDIATION-MATRIX.md, repair any native red, then dispatch a fresh critic.",
+  "next_step": "Do not dispatch the critic yet. Continue native GPU repairs for the remaining red terrain, water, settlement, character/creature, VFX, temporal, LOD and performance rows, then complete the literal ledger.",
   "superseded_reason": "The structural/mechanism gates and nine-scene 320x180 proof established execution but not visual adequacy. Ordinary shipping captures remained visibly incapable of the plan's modern-fidelity target."
 }
