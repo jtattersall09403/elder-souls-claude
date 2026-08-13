@@ -23,7 +23,7 @@ const predicates={
   traversalAndInteriorContainment:traversalGate.result==='GREEN'&&traversalGate.interiors?.population===115&&traversalGate.jump?.frames===46,
   semanticSettlementConstruction:settlementGate.result==='GREEN'&&settlementGate.population?.structures===56&&settlementGate.production?.shellWalls===0,
   settlementDrawCompression:settlementBatchGate.result==='GREEN'&&settlementBatchGate.production?.reductionPct>=85&&settlementBatchGate.population?.settlements===8,
-  regionalSettlementPublicRealm:settlementRealmGate.result==='GREEN'&&settlementRealmGate.population?.approachOccupationClusters===32&&settlementRealmGate.deleteControl?.formerRunwaySlabsRestored===112,
+  regionalSettlementPublicRealm:settlementRealmGate.result==='GREEN'&&settlementRealmGate.population?.approachOccupationClusters===32&&settlementRealmGate.population?.clearApproaches===8&&settlementRealmGate.deleteControl?.formerRunwaySlabsRestored===112&&settlementRealmGate.deleteControl?.fixedSouthwestCollisions===6,
   linuxHardwareLaunch:['--use-angle=vulkan','VulkanFromANGLE','--disable-software-rasterizer','headless: hardwareGpuRequested ? false : true'].every(x=>browser.includes(x)),
 };
 const redControls={}; for(const token of ['WebGLRenderTarget','DepthTexture','setVisualFeature','EquirectangularReflectionMapping','Math.round(focus.x/texel)','normalMap:authored?.normal','STYLE_MATERIAL_CACHE','actor-family-form:','spell-vfx:practical:','--use-angle=vulkan']) {const s=[renderer,sky,foundation,province,actor,vfx,browser].find(x=>x.includes(token));redControls[token]=!!s&&!s.replaceAll(token,'__SABOTAGED__').includes(token);}

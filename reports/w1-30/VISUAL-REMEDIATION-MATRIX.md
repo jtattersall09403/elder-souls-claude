@@ -210,3 +210,25 @@ Draw calls are 423–837 (4,729 aggregate), so the extra route detail adds 14 ag
 the prior L4 atlas and every town still exceeds the 350-call target. Manifest SHA-256:
 `fe0f2eb8bd287562bd58acb4f52d5fdb09fe36a308c016403a5a3b926d14fa74`. Pod `7y1zit3m7vvx0u`
 and template `y4u9j1v77h` were deletion-confirmed; the cleanup dry-run found no managed orphan.
+
+## Clearance-scored settlement-arrival / native L4 delta (2026-08-13)
+
+The shipping public realm now derives its civic focus and arrival curve from the oriented drawn
+building footprints. All 8/8 routes clear a 1.32 m construction envelope and all 8/8 courts retain
+at least 2 m beyond their construction radius. The exact fixed-southwest delete arm collides in
+6/8 settlements. Board yaw follows the curve tangent, while lashings remain crosswise.
+
+Clean commit `2d39a58f`, RunPod `20260813-192841Z-161450`, Secure NVIDIA L4, Chromium
+141.0.7390.37 and NVIDIA Vulkan returned all eight 1280x720 DPR-1 frames. Direct original-size
+inspection confirms that Stormhold's former building occlusion and Thorn's buried civic focus are
+repaired and the wet routes run longitudinally. The visual row remains builder-red: Helstrom's
+route is compositionally lost, Soulrest/Blackrose/Archon expose dominant blank walls, Gideon's
+building masses remain oversized, and route occupation is still sparse and procedural.
+
+Draw calls range from 429 to 888 (4,923 aggregate) and triangles from 513,752 to 1,196,272. Camera
+positions changed with the route, so these are named L4 scene counters rather than a controlled
+delta from the prior A4500 atlas. Manifest SHA-256:
+`25990bdf675a08dd5a234268c712a96b1148a7dda49240e1a42b3f7fd5c0ad2d`. Pod
+`llq48pkpzwxrrb` and template `th50i5zqyy` were deletion-confirmed after retrieval; cleanup found
+no managed orphan. The earlier A5000/Xvfb bootstrap failure was definite, retrieved and cleaned,
+and is not counted as game evidence.

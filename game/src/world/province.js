@@ -1456,6 +1456,7 @@ export class Province {
         shrunk: s ? s.shrunk : null,
         deep_overlaps: s ? s.deep_overlaps : null,
         doorways: s ? s.doorways : null,
+        public_realm: s ? s.public_realm : null,
         drawn: s ? s.drawn : [],
       });
       out.buildings += groups.length;
