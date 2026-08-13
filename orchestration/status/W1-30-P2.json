@@ -3,7 +3,7 @@
   "role": "builder",
   "status": "complete",
   "plan_state": "building",
-  "summary": "Historical Package 2 consumer coverage is complete. All civic/building identities survive settlement-scope batching; all eight towns now consume regional occupied approach routes, while procedural cobble packing, facade depth and the remaining 423-837 draw-call range stay builder-red.",
+  "summary": "Historical Package 2 consumer coverage is complete. All civic/building identities survive settlement-scope batching; all eight towns now consume footprint-aware occupied approaches, while Helstrom composition, procedural road grammar, facade depth and the remaining 429-888 draw-call range stay builder-red.",
   "files_touched": [
     "orchestration/status/W1-30-P2.json",
     "game/src/render/world-art.js",
@@ -20,9 +20,9 @@
   "files_claimed": [],
   "latest_settlement_continuation": {
     "date": "2026-08-13",
-    "coverage": "8 settlements, 205 buildings, 56 civic structures, 32 occupied approach clusters, 1876 regional arrival parts; delete arm restores 112 former runway slabs",
-    "hardware": "RunPod 20260813-190041Z-151469; Secure NVIDIA RTX A4500; Chromium 141.0.7390.37; NVIDIA Vulkan; 1280x720 DPR 1",
-    "result": "GREEN structural/capture evidence; 18345 logical meshes compress to 753 render meshes and the pale slab runway is removed; procedural packing, facade composition and 423-837 calls remain builder-red"
+    "coverage": "8 settlements, 205 buildings, 56 civic structures, 8 clear civic focuses, 8 clear routes, 32 occupied clusters and 1876 regional parts; fixed-southwest delete arm collides in 6 settlements",
+    "hardware": "RunPod 20260813-192841Z-161450; Secure NVIDIA L4; Chromium 141.0.7390.37; NVIDIA Vulkan; 1280x720 DPR 1",
+    "result": "GREEN structural/capture evidence; 19497 logical meshes compress to 753 render meshes and Stormhold/Thorn occlusion is repaired; Helstrom composition, facade massing, procedural occupation and 429-888 calls remain builder-red"
   },
-  "next_step": "Retain Package 2 coverage while repairing remaining settlement facade depth, occupation density, Stormhold approach occlusion and non-settlement draw load, then continue the native GPU visual-remediation matrix; do not dispatch the fresh critic yet."
+  "next_step": "Retain Package 2 coverage while repairing remaining settlement facade depth, occupation density, Helstrom/near-wall composition and non-settlement draw load, then continue the native GPU visual-remediation matrix; do not dispatch the fresh critic yet."
 }

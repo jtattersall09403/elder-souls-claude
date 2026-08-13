@@ -123,3 +123,19 @@ row honestly open for procedural cobble packing, sparse occupation, facade massi
 occlusion. Static batching holds at 753 render meshes from 18,345 logical meshes; actual scene
 draws are 423–837, still above budget. Run `20260813-190041Z-151469` and its ephemeral resources
 were deletion-confirmed after artifact retrieval.
+
+## Collision-free settlement-arrival continuation (2026-08-13)
+
+Package 2's eight routes now consume one deterministic footprint-aware approach result. Each civic
+focus clears its constructed court by at least 2 m and each route clears authored building
+footprints with its full 1.32 m envelope. The targeted legacy southwest arm collides in 6/8 towns,
+proving that the selection rather than a population count causes the repair. Stormhold and Thorn
+no longer bury their arrival/court in authored architecture, and wet construction aligns with the
+route tangent.
+
+Run `20260813-192841Z-161450` rendered the clean `2d39a58f` tree on a Secure NVIDIA L4/Vulkan
+renderer at 1280x720 DPR 1. All eight frames were directly inspected. Identity and traversal
+composition improve, but Package 2 visible fidelity remains open for Helstrom's lost route,
+wall-heavy Soulrest/Blackrose/Archon views, oversized Gideon masses and sparse procedural street
+occupation. Static settlement compression remains 753 render meshes from 19,497 logical meshes;
+actual scene draws remain above budget at 429–888.

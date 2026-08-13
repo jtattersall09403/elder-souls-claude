@@ -485,3 +485,57 @@ Rough planning estimates after this phase: regional approach construction about 
 occupation/composition about 60–65%; settlement visible fidelity about 58–62%; settlement
 performance repair about 60–65%; whole-W1-30 builder progress roughly 56–60%. These are builder
 work estimates, not either critic-owned 7/10 verdict.
+
+## Final-builder collision-free settlement-arrival phase (2026-08-13)
+
+Direct review of the preceding eight-town atlas found that the route itself still crossed authored
+architecture: Stormhold's fixed southwest line ran through Old Customs, Thorn's authored civic
+origin sat inside Thorn Hall, and wet-town boards were rotated across rather than along the route.
+This phase derives the civic focus and arrival from the actual oriented shipping footprints. It
+searches deterministic nearby focus rings, scores sixteen bearings plus bounded bends, and uses
+the same selected curve for construction, audit metadata and the native street-height camera.
+
+`node tools/render/w1-30-settlement-public-realm.mjs` is GREEN with 8/8 civic focuses retaining at
+least 2 m of clearance outside the constructed court and 8/8 routes retaining at least 0.15 m
+clearance outside a 1.32 m route envelope. The targeted delete arm restores the former fixed
+southwest routing and collides in exactly 6/8 towns. The existing population remains complete:
+32 occupation clusters and 1,876 regional route parts. Static compression remains GREEN at 753
+render meshes from 19,497 logical meshes (96.1%).
+
+The clean hardware source is `2d39a58f74d1d47d27c6770cc53a349cb88fb0df`, snapshot SHA-256
+`a52c8f174839b74ab56cec61289bde40c24ec851356e87a8fc8d83e89d8538a3`. RunPod run
+`20260813-192841Z-161450` selected Secure Cloud Pod `llq48pkpzwxrrb`, an NVIDIA L4 at an actual
+$0.49/hour. The host reported driver 580.126.20 and 23,034 MiB. Chromium 141.0.7390.37 reported
+`ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)`; the fail-closed
+attestation found no software renderer markers. The native window was 1280x720 at DPR 1, seed
+3030, frame 2, with the same bounded atlas command recorded above.
+
+All eight returned frames were opened at original resolution. Stormhold now has a visible arrival
+between its buildings instead of a camera embedded in Old Customs; Thorn's board route and court
+sit outside Thorn Hall; Lilmoth and Thorn boards point longitudinally and read as continuous
+causeways. The native pixels also keep the row builder-red. Helstrom's curved route is lost against
+the broad grey foreground, Soulrest and Blackrose remain dominated by near blank walls, Archon's
+left facade is a large uninterrupted plane, Gideon's roof and wall masses remain oversized, and
+the cobble/roadside grammar is visibly procedural and sparse. This is collision and composition
+repair, not final visual adequacy.
+
+Native draw calls are Archon 429, Blackrose 673, Gideon 734, Helstrom 888, Lilmoth 468, Soulrest
+754, Stormhold 546 and Thorn 431 (4,923 aggregate). The changed capture positions alter resident
+world population, so these counters are not a controlled performance comparison with the prior
+A4500 atlas. Every frame remains above the intended 350-call budget. Triangles range from 513,752
+to 1,196,272; this still atlas contains no frame-time distribution.
+
+Evidence SHA-256 values: run ledger
+`808e32401aea91d3b360ffa29c7f6fc7bbb1ced470e048d1fa16c4c7762c5705`, lifecycle log
+`5c83ef37331a7262c0715dc3dea777cb5bf57a3d0de8cf71c79dd9a4cb5d0108`, worker result
+`61535e9b20fc8ab43300c73158ebde54e007a2b22f3ef1d43d94cdc7fd5c7e20`, and manifest
+`25990bdf675a08dd5a234268c712a96b1148a7dda49240e1a42b3f7fd5c0ad2d`. Artifact retrieval
+completed before Pod and ephemeral template `th50i5zqyy` deletion were confirmed; the subsequent
+cleanup dry-run found no managed orphan. The preceding A5000 attempt
+`20260813-192254Z-158704` failed definitively when Xvfb crashed in the current driver bootstrap;
+its diagnostics were retrieved and Pod/template deletion was confirmed before this L4 run.
+
+Rough planning estimates after this phase: settlement arrival routing about 90%; settlement
+occupation/composition about 62–65%; settlement visible fidelity about 58–62%; settlement
+performance repair about 60–65%; whole-W1-30 builder progress roughly 57–61%. These are builder
+work estimates only; neither critic-owned 7/10 verdict is claimed.
