@@ -17,5 +17,6 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Preserve the inherited /start.sh CMD: it starts the image's SSH service when PUBLIC_KEY is set.
-# The CLI injects a per-run key, so this image does not bake credentials into a layer.
+# The CLI creates a private per-run template that launches worker/ssh-entrypoint.sh with an
+# ephemeral public key. This image therefore does not bake credentials into a layer or depend on
+# the inherited image CMD to start SSH.

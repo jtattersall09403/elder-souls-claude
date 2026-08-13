@@ -3,7 +3,14 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { RunPodClient, RunPodError, chooseOffers, isManagedPod, normalizeOffers } from '../lib/api.mjs';
+import {
+  RunPodClient,
+  RunPodError,
+  chooseOffers,
+  isManagedPod,
+  isManagedRuntimeTemplate,
+  normalizeOffers,
+} from '../lib/api.mjs';
 import { runCommand } from '../cli.mjs';
 import { createSnapshot, makeEphemeralSshKey, runProcess } from '../lib/local.mjs';
 import { buildProvisioningBatches, provisionPod } from '../lib/provision.mjs';
@@ -64,6 +71,19 @@ test('Chromium hardware smoke keeps the required Linux ANGLE Vulkan feature gate
       true,
     );
   }
+});
+
+test('Pod SSH readiness covers the bounded entrypoint installation budget', () => {
+  const config = JSON.parse(fs.readFileSync(path.resolve('tools/runpod/config.json'), 'utf8'));
+  const entrypoint = fs.readFileSync(path.resolve('tools/runpod/worker/ssh-entrypoint.sh'), 'utf8');
+  const installBudgetSeconds = [...entrypoint.matchAll(/timeout\s+(\d+)s\s+apt-get/g)]
+    .reduce((total, match) => total + Number(match[1]), 0);
+  assert.equal(installBudgetSeconds > 0, true, 'the entrypoint installation bounds must remain explicit');
+  assert.equal(
+    config.readyTimeoutMinutes * 60 >= installBudgetSeconds + 60,
+    true,
+    `readiness ${config.readyTimeoutMinutes * 60}s must cover ${installBudgetSeconds}s of bounded apt work plus boot margin`,
+  );
 });
 
 test('offer normalization and selection enforce allowlist, capacity, cloud, and ceiling', () => {
@@ -144,56 +164,6 @@ test('RunPod REST uses bearer auth and delete treats 404 as already cleaned', as
   assert.equal(calls[0].options.headers.Authorization, 'Bearer unit-test-secret');
 });
 
-test('GraphQL GPU create explicitly requests managed SSH without retrying the mutation', async () => {
-  const calls = [];
-  const client = new RunPodClient({
-    apiKey: 'unit-test-secret',
-    fetchImpl: async (url, options) => {
-      calls.push({ url, options });
-      return new Response(JSON.stringify({
-        data: { podFindAndDeployOnDemand: { id: 'pod-gql', costPerHr: 0.19, desiredStatus: 'RUNNING' } },
-      }), { status: 200, headers: { 'content-type': 'application/json' } });
-    },
-  });
-  const pod = await client.createGpuPodWithSsh({
-    name: 'managed-ssh', templateId: 'template-test', cloudType: 'COMMUNITY',
-    gpuCount: 1, gpuTypeId: 'NVIDIA RTX A4500', supportPublicIp: true,
-    ports: ['22/tcp'], containerDiskInGb: 30, volumeInGb: 0,
-    minVCPUPerGPU: 4, minRAMPerGPU: 16,
-    env: { SSH_PUBLIC_KEY: 'ssh-ed25519 fixture', PUBLIC_KEY: 'ssh-ed25519 fixture' },
-  });
-  assert.equal(calls.length, 1);
-  assert.match(calls[0].url, /^https:\/\/api\.runpod\.io\/graphql\?api_key=/);
-  const request = JSON.parse(calls[0].options.body);
-  assert.equal(request.variables.input.startSsh, true);
-  assert.equal(request.variables.input.gpuTypeId, 'NVIDIA RTX A4500');
-  assert.equal(request.variables.input.ports, '22/tcp');
-  assert.equal(request.variables.input.dockerArgs, undefined);
-  assert.deepEqual(request.variables.input.env, [
-    { key: 'SSH_PUBLIC_KEY', value: 'ssh-ed25519 fixture' },
-    { key: 'PUBLIC_KEY', value: 'ssh-ed25519 fixture' },
-  ]);
-  assert.equal(pod.id, 'pod-gql');
-  assert.equal(pod.gpu.id, 'NVIDIA RTX A4500');
-});
-
-test('GraphQL managed-SSH capacity errors are definite non-creation', async () => {
-  const client = new RunPodClient({
-    apiKey: 'unit-test-secret',
-    fetchImpl: async () => new Response(JSON.stringify({
-      errors: [{ message: 'There are no longer any instances available with the requested specifications.' }],
-    }), { status: 200, headers: { 'content-type': 'application/json' } }),
-  });
-  await assert.rejects(() => client.createGpuPodWithSsh({
-    gpuTypeId: 'NVIDIA RTX A4500', gpuCount: 1, cloudType: 'COMMUNITY',
-    containerDiskInGb: 30, volumeInGb: 0,
-  }), (error) => (
-    error.uncertain === false
-    && error.creationOutcome === 'definite-non-creation'
-    && error.creationFailureKind === 'capacity'
-  ));
-});
-
 test('ambiguous create failures are marked uncertain and are never automatically retried', async () => {
   let calls = 0;
   const client = new RunPodClient({
@@ -201,6 +171,19 @@ test('ambiguous create failures are marked uncertain and are never automatically
     fetchImpl: async () => { calls++; throw new Error('socket closed'); },
   });
   await assert.rejects(() => client.createPod({ name: 'unique' }), (error) => error.uncertain === true);
+  assert.equal(calls, 1);
+});
+
+test('ambiguous ephemeral-template create is marked uncertain and never retried', async () => {
+  let calls = 0;
+  const client = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    fetchImpl: async () => { calls++; throw new Error('socket closed'); },
+  });
+  await assert.rejects(
+    () => client.createTemplate({ name: 'elder-souls-ephemeral-unique' }),
+    (error) => error.uncertain === true && error.creationOutcome === 'ambiguous',
+  );
   assert.equal(calls, 1);
 });
 
@@ -379,16 +362,24 @@ test('successful provision completes SSH, bootstrap, artifact, deletion, and con
   context.after(() => fs.rmSync(scratch, { recursive: true, force: true }));
   const processCalls = [];
   let createRequest;
+  let templateRequest;
   const deleted = new Set();
+  const deletedTemplates = new Set();
   const creates = [];
   const createdPods = [
     { ...podFor('pod-unready', 'first', 0.14), name: 'fixture-first', desiredStatus: 'RUNNING', publicIp: '203.0.113.9', portMappings: { 22: 22021 }, volumeInGb: 0 },
     { ...podFor('pod-lifecycle', 'allowed', 0.15), name: 'fixture-pod', desiredStatus: 'RUNNING', publicIp: '203.0.113.10', portMappings: { 22: 22022 }, volumeInGb: 0 },
   ];
   const client = {
-    async getTemplate() { return { id: 'template-test', name: 'fixture', imageName: 'runpod/base:test', ports: ['22/tcp'], volumeInGb: 0, containerDiskInGb: 30 }; },
+    async getTemplate(templateId) {
+      if (deletedTemplates.has(templateId)) return null;
+      if (templateId === 'runtime-template-test') return { ...templateRequest, id: templateId };
+      return { id: 'template-test', name: 'fixture', imageName: 'runpod/base:test', ports: ['22/tcp'], volumeInGb: 0, containerDiskInGb: 30 };
+    },
+    async createTemplate(input) { templateRequest = input; return { ...input, id: 'runtime-template-test' }; },
+    async deleteTemplate(templateId) { deletedTemplates.add(templateId); },
     async listGpuOffers() { return [offer('first', 'COMMUNITY', 0.14), offer('allowed', 'COMMUNITY', 0.15)]; },
-    async createGpuPodWithSsh(input) {
+    async createPod(input) {
       createRequest = input;
       creates.push(input);
       return createdPods[creates.length - 1];
@@ -429,24 +420,103 @@ test('successful provision completes SSH, bootstrap, artifact, deletion, and con
   assert.deepEqual([...deleted].sort(), ['pod-lifecycle', 'pod-unready']);
   assert.equal(creates.length, 2);
   assert.notEqual(creates[0].name, creates[1].name);
-  assert.equal(creates[1].gpuTypeId, 'allowed');
-  assert.equal(createRequest.dockerArgs, undefined);
-  assert.equal(createRequest.env.SSH_PUBLIC_KEY, 'ssh-ed25519 fixture');
-  assert.equal(createRequest.env.PUBLIC_KEY, 'ssh-ed25519 fixture');
+  assert.deepEqual(creates[1].gpuTypeIds, ['allowed']);
+  assert.equal(createRequest.dockerEntrypoint, undefined);
+  assert.equal(createRequest.dockerStartCmd, undefined);
+  assert.equal(createRequest.templateId, 'runtime-template-test');
+  assert.equal(createRequest.imageName, undefined);
+  assert.equal(createRequest.env, undefined);
+  assert.deepEqual(templateRequest.dockerEntrypoint, ['bash', '-c']);
+  assert.match(templateRequest.dockerStartCmd[0], /exec \/usr\/sbin\/sshd -D -e/);
+  assert.equal(templateRequest.env.SSH_PUBLIC_KEY, 'ssh-ed25519 fixture');
+  assert.equal(templateRequest.env.PUBLIC_KEY, 'ssh-ed25519 fixture');
+  assert.deepEqual(templateRequest.ports, ['22/tcp']);
+  assert.equal(templateRequest.isPublic, false);
+  assert.equal(templateRequest.volumeInGb, 0);
   assert.equal(processCalls.some(([command]) => command === 'ssh'), true);
   assert.equal(processCalls.some(([command]) => command === 'scp'), true);
   assert.match(fs.readFileSync(path.join(scratch, 'lifecycle.log'), 'utf8'), /deletion confirmed/i);
+  assert.match(fs.readFileSync(path.join(scratch, 'lifecycle.log'), 'utf8'), /private per-run template/i);
+  assert.deepEqual([...deletedTemplates], ['runtime-template-test']);
+  assert.equal(state.templateCleanup.deleted, true);
   assert.equal(state.provisioning.readinessFailures[0].podId, 'pod-unready');
   assert.deepEqual(state.provisioning.attempts.map(({ outcome }) => outcome), ['created', 'created']);
 });
 
+test('ambiguous template response is recovered once and the recovered template is deleted', async (context) => {
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'runpod-template-recovery-test-'));
+  context.after(() => fs.rmSync(scratch, { recursive: true, force: true }));
+  let templateCreates = 0;
+  let recoveredTemplate;
+  let templateDeleted = false;
+  const client = {
+    async getTemplate(templateId) {
+      if (templateId === 'template-test') {
+        return { id: templateId, name: 'fixture', imageName: 'runpod/base:test', volumeInGb: 0, containerDiskInGb: 30 };
+      }
+      return templateDeleted ? null : recoveredTemplate;
+    },
+    async createTemplate(input) {
+      templateCreates++;
+      recoveredTemplate = { ...input, id: 'runtime-template-recovered' };
+      throw new RunPodError('template response lost', {
+        uncertain: true,
+        creationOutcome: 'ambiguous',
+        creationFailureKind: 'transport',
+      });
+    },
+    async listTemplates() { return templateDeleted ? [] : [recoveredTemplate]; },
+    async deleteTemplate() { templateDeleted = true; },
+    async listGpuOffers() { return [offer('allowed', 'COMMUNITY', 0.15)]; },
+    async createPod() { throw capacityError(); },
+  };
+  const config = {
+    podNamePrefix: 'fixture-', maxPricePerHourUsd: 0.2, absoluteMaxPricePerHourUsd: 0.2,
+    maxRuntimeMinutes: 5, absoluteMaxRuntimeMinutes: 5, readyTimeoutMinutes: 1,
+    containerDiskInGb: 30, minVcpuPerGpu: 4, minRamPerGpu: 16,
+    cloudTypes: ['COMMUNITY'], allowedGpuTypes: ['allowed'], snapshotPaths: ['game'], artifactRoot: scratch,
+  };
+  await assert.rejects(() => runCommand({
+    gpu: [], cloud: [], include: [], onlyPath: [], artifactDir: scratch,
+  }, config, {
+    environment: { apiKey: 'not-logged', templateId: 'template-test' },
+    client,
+    commandExists: async () => true,
+    makeTempDir: () => scratch,
+    removeTempDir: () => {},
+    sshKeyMaterial: async () => ({ keyPath: path.join(scratch, 'key'), publicKey: 'ssh-ed25519 fixture', ephemeral: true }),
+    createSnapshot: async () => ({ archivePath: path.join(scratch, 'source.tar.gz'), revision: 'abc123', dirty: false, fileCount: 1, bytes: 1, sha256: '00', paths: ['game'] }),
+  }), /all safe eligible cloud\/GPU capacity options were exhausted/);
+  const state = JSON.parse(fs.readFileSync(path.join(scratch, 'run.json'), 'utf8'));
+  assert.equal(templateCreates, 1);
+  assert.equal(state.runtimeTemplate.id, 'runtime-template-recovered');
+  assert.equal(state.templateCleanup.deleted, true);
+  assert.equal(templateDeleted, true);
+});
+
 test('orphan cleanup scope cannot select manual, foreign-template, or terminated Pods', () => {
-  const policy = { podNamePrefix: 'elder-souls-gpu-', templateId: 'template-a' };
+  const policy = {
+    podNamePrefix: 'elder-souls-gpu-',
+    templateId: 'template-a',
+    runtimeTemplateIds: ['runtime-template-a'],
+    imageName: 'runpod/base:test',
+  };
   assert.equal(isManagedPod({ id: 'a', name: 'elder-souls-gpu-run', templateId: 'template-a', desiredStatus: 'RUNNING' }, policy), true);
   assert.equal(isManagedPod({ id: 'b', name: 'manual-pod', templateId: 'template-a', desiredStatus: 'RUNNING' }, policy), false);
   assert.equal(isManagedPod({ id: 'c', name: 'elder-souls-gpu-run', templateId: 'template-b', desiredStatus: 'RUNNING' }, policy), false);
   assert.equal(isManagedPod({ id: 'd', name: 'elder-souls-gpu-old', templateId: 'template-a', desiredStatus: 'TERMINATED' }, policy), false);
+  assert.equal(isManagedPod({ id: 'e', name: 'elder-souls-gpu-run', templateId: 'runtime-template-a', desiredStatus: 'RUNNING' }, policy), true);
+  assert.equal(isManagedPod({ id: 'f', name: 'elder-souls-gpu-run', templateId: null, imageName: 'runpod/base:test', desiredStatus: 'RUNNING' }, policy), true);
+  assert.equal(isManagedPod({ id: 'g', name: 'elder-souls-gpu-run', templateId: null, image: 'foreign/image', desiredStatus: 'RUNNING' }, policy), false);
   assert.equal(isManagedPod({ id: 'a', name: 'elder-souls-gpu-run', templateId: 'template-a', desiredStatus: 'RUNNING' }, { ...policy, podId: 'other' }), false);
+});
+
+test('orphan cleanup only recognizes private runtime templates with the owned prefix and image', () => {
+  const policy = { templateNamePrefix: 'elder-souls-ephemeral-', imageName: 'runpod/base:test' };
+  assert.equal(isManagedRuntimeTemplate({ name: 'elder-souls-ephemeral-run', imageName: 'runpod/base:test', isPublic: false }, policy), true);
+  assert.equal(isManagedRuntimeTemplate({ name: 'manual-template', imageName: 'runpod/base:test', isPublic: false }, policy), false);
+  assert.equal(isManagedRuntimeTemplate({ name: 'elder-souls-ephemeral-run', imageName: 'foreign/image', isPublic: false }, policy), false);
+  assert.equal(isManagedRuntimeTemplate({ name: 'elder-souls-ephemeral-run', imageName: 'runpod/base:test', isPublic: true }, policy), false);
 });
 
 test('worktree snapshot contains exact dirty tracked and untracked bytes', async (context) => {
