@@ -139,3 +139,19 @@ composition improve, but Package 2 visible fidelity remains open for Helstrom's 
 wall-heavy Soulrest/Blackrose/Archon views, oversized Gideon masses and sparse procedural street
 occupation. Static settlement compression remains 753 render meshes from 19,497 logical meshes;
 actual scene draws remain above budget at 429–888.
+
+## Shared facade-relief continuation (2026-08-13)
+
+Package 2's 56 civic structures retain their semantic construction, while all 149 ordinary
+buildings now consume the shared four-face relief grammar. The focused census preserves all 205
+shipping buildings and reports 149/149 relief groups, 10,884 relief modules and 398 entrance-face
+apertures. Its delete arm removes exactly those 149 groups. Shipping batching preserves the
+expanded construction as 40,213 instances in 782 final render meshes, compared with 19,673 meshes
+in the former building-local render graph.
+
+The first clean hardware variant was rejected for visually detached dark Blackrose braces. The
+revised clean `b93c3bd2` candidate rendered all eight frames in run `20260813-195102Z-172165` on
+a Secure NVIDIA L4/Vulkan renderer at 1280x720 DPR 1. Direct inspection confirms connected timber
+in Blackrose and stronger near-wall depth in Archon, Soulrest and Stormhold. Package 2 remains
+visually open for empty foreground, Gideon scale/fog, distant Lilmoth readability and procedural
+shared facade grammar. Actual scene draws remain above budget at 429–897.
