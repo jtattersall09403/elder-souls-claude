@@ -18,7 +18,7 @@ for(const f of list('game/data/world/settlements')){
   const a=counts(live),b=counts(deleted),route=wet.has(doc.id)?(a['arrival-board']||0):(a['arrival-cobble']||0);
   check(summary.public_realm.regional_route===true,`${doc.id}: regional route not exposed`);
   check(summary.public_realm.approach_occupation===4,`${doc.id}: approach occupation ${summary.public_realm.approach_occupation}/4`);
-  const expectedRoute=wet.has(doc.id)?42:210;
+  const expectedRoute=wet.has(doc.id)?42:350;
   check(route===expectedRoute,`${doc.id}: regional arrival pieces ${route}/${expectedRoute}`);
   check((a['arrival-spine']||0)===0,`${doc.id}: retained ${(a['arrival-spine']||0)} runway slabs`);
   check(deletedSummary.public_realm.regional_route===false,`${doc.id}: delete arm still reports regional route`);

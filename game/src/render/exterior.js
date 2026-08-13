@@ -1835,6 +1835,10 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
   // exposing the ground between construction units and using the town's darker structural
   // palette rather than a generic road surface.
   const approachR=Math.min(plan.radius_m*.58,48);
+  // The authored approach advances by the same amount in X and Z, so its world-space step is
+  // sqrt(2) longer than either component. Route parts sized from one component left conspicuous
+  // gaps even when their local lengths nominally matched the sampling interval.
+  const approachStep=approachR*Math.SQRT2/14;
   let approachOccupation=0;
   for(let i=0;i<14;i++){
     const t=(i+.5)/14,meander=Math.sin(i*.83+(hashStr(plan.id)%11))*.32;
@@ -1846,21 +1850,24 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
         const across=lane*.68+(((hashStr(plan.id+i)>>(lane+2))&3)-1.5)*.035;
         // Each bay overlaps the next slightly. At the former sub-spacing length these read as
         // isolated picnic tables from eye height rather than one lashed marsh causeway.
-        const board=box(.55+(i+lane+3)%3*.055,.12,Math.max(1.86,approachR/14+.18+(lane&1)*.08),(i+lane)&1?P.wood:P.stone);
+        const board=box(.55+(i+lane+3)%3*.055,.12,approachStep+.14+(lane&1)*.08,(i+lane)&1?P.wood:P.stone);
         board.rotation.z=(lane*2+i%3-1)*.009;
         add(board,x+Math.cos(yaw)*across,y+.10+((i+lane+3)%3)*.012,z-Math.sin(yaw)*across,yaw,'arrival-board');
       }
       if(i%2===0)add(box(2.28,.10,.11,P.stone),x,y+.19,z,yaw,'arrival-lashing');
     }else if(regionalRealm){
-      // Fifteen hand-scale founded stones make a dense 2.2 m lane bay. The earlier three
+      // Twenty-five hand-scale founded stones make a dense 2.2 m lane bay. The earlier three
       // 1.2 m stones were structurally distinct from the deleted slabs but looked like giant
-      // lily pads in the hardware capture. Small staggered courses read as laid cobble instead.
-      for(let row=-1;row<=1;row++)for(let lane=-2;lane<=2;lane++){
-        const jitter=((hashStr(`${plan.id}:${i}:${row}:${lane}`)&15)-7.5)*.008;
-        const along=row*(approachR/42),across=lane*.43+(row&1)*.16;
-        const stone=ico(.235+((i+lane+row+9)%3)*.018,1,(i+lane+row)&1?P.stone:P.wood);
-        stone.scale.set(1.28+(lane&1)*.08,.19,1.18+((i+row)&1)*.10);
-        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.055,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+jitter,'arrival-cobble');
+      // lily pads in the hardware capture. Five irregular staggered courses cover the true
+      // diagonal step, so the eye reads a continuous laid-cobble lane rather than repeated pads.
+      for(let row=-2;row<=2;row++)for(let lane=-2;lane<=2;lane++){
+        const h=hashStr(`${plan.id}:${i}:${row}:${lane}`),turn=((h&31)-15.5)*.016;
+        const along=row*(approachStep/5)+(((h>>5)&15)-7.5)*.012;
+        const across=lane*.40+(row&1)*.15+(((h>>9)&15)-7.5)*.012;
+        const radius=.205+((h>>13)&7)*.009;
+        const stone=ico(radius,1,(h&7)===0?P.wall:P.stone);
+        stone.scale.set(.98+((h>>16)&7)*.075,.17,1.02+((h>>20)&7)*.065);
+        add(stone,x+Math.cos(yaw)*across+Math.sin(yaw)*along,y+.05,z-Math.sin(yaw)*across+Math.cos(yaw)*along,yaw+turn,'arrival-cobble');
       }
     }else{
       const slab=box(2.28+(i%3)*.14,.18,Math.max(2.05,approachR/14-.20),wetTown||i%4!==0?P.wood:P.stone);
