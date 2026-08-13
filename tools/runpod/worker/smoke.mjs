@@ -5,28 +5,13 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { serveDir } from '../../lib/serve.mjs';
+import { commonArgs, launchCandidates, softwareRenderer } from './browser-config.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '../../..');
 const ARTIFACT_DIR = path.resolve(process.env.RUNPOD_ARTIFACT_DIR || path.join(REPO_ROOT, 'reports/runpod-gpu/smoke'));
 fs.mkdirSync(ARTIFACT_DIR, { recursive: true });
 
-const commonArgs = [
-  '--no-sandbox',
-  '--disable-dev-shm-usage',
-  '--ignore-gpu-blocklist',
-  '--enable-gpu-rasterization',
-  '--enable-zero-copy',
-  '--disable-software-rasterizer',
-  '--force-color-profile=srgb',
-];
-const launchCandidates = [
-  { name: 'angle-vulkan', args: ['--use-gl=angle', '--use-angle=vulkan', '--enable-features=Vulkan', '--disable-vulkan-surface'] },
-  { name: 'angle-gl-egl', args: ['--use-gl=angle', '--use-angle=gl-egl'] },
-  { name: 'angle-gl', args: ['--use-gl=angle', '--use-angle=gl'] },
-  { name: 'native-default', args: [] },
-];
-const softwareRenderer = /swiftshader|llvmpipe|software raster|softpipe/i;
 const attempts = [];
 let browser = null;
 let selected = null;

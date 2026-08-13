@@ -2,14 +2,50 @@ const REST_BASE = 'https://rest.runpod.io/v1';
 const GRAPHQL_BASE = 'https://api.runpod.io/graphql';
 
 export class RunPodError extends Error {
-  constructor(message, { status = null, code = null, details = null, uncertain = false } = {}) {
+  constructor(message, {
+    status = null,
+    code = null,
+    details = null,
+    uncertain = false,
+    creationOutcome = null,
+    creationFailureKind = null,
+  } = {}) {
     super(message);
     this.name = 'RunPodError';
     this.status = status;
     this.code = code;
     this.details = details;
     this.uncertain = uncertain;
+    this.creationOutcome = creationOutcome;
+    this.creationFailureKind = creationFailureKind;
   }
+}
+
+const CAPACITY_FAILURE_PATTERNS = [
+  /this machine does not have the resources to deploy your pod/i,
+  /there are no longer any instances available with the requested specifications/i,
+];
+
+function errorText(details) {
+  if (typeof details === 'string') return details;
+  if (!details || typeof details !== 'object') return '';
+  return [details.error, details.message, details.detail]
+    .filter((value) => typeof value === 'string')
+    .join(' ');
+}
+
+// Only narrowly recognized capacity responses override the conservative rule that a create-side
+// 5xx is ambiguous. RunPod's REST reference does not publish a general error schema, so unknown
+// server responses must never be inferred to mean that no billable Pod exists.
+export function classifyCreateFailure({ status, details } = {}) {
+  const text = errorText(details);
+  if (CAPACITY_FAILURE_PATTERNS.some((pattern) => pattern.test(text))) {
+    return { outcome: 'definite-non-creation', kind: 'capacity', text };
+  }
+  if (Number.isInteger(status) && status >= 400 && status < 500 && ![408, 409, 425, 429].includes(status)) {
+    return { outcome: 'definite-non-creation', kind: 'request-rejected', text };
+  }
+  return { outcome: 'ambiguous', kind: 'unknown', text };
 }
 
 function cleanKey(raw) {
@@ -33,7 +69,7 @@ export class RunPodClient {
     this.requestTimeoutMs = requestTimeoutMs;
   }
 
-  async #fetch(label, url, options = {}, { retries = 2, allow404 = false } = {}) {
+  async #fetch(label, url, options = {}, { retries = 2, allow404 = false, podCreate = false } = {}) {
     let lastError;
     for (let attempt = 0; attempt <= retries; attempt++) {
       const controller = new AbortController();
@@ -49,14 +85,19 @@ export class RunPodClient {
         if (allow404 && response.status === 404) return null;
         if (!response.ok) {
           const retryable = response.status === 429 || response.status >= 500;
+          const creationFailure = podCreate
+            ? classifyCreateFailure({ status: response.status, details: body })
+            : null;
           const err = new RunPodError(
             `${label} failed with HTTP ${response.status}${text ? `: ${safeBody(text, this.apiKey)}` : ''}`,
             {
               status: response.status,
               details: body,
-              // A timeout/rate-limit/server error can arrive after a POST was accepted. Never let
-              // the caller issue a fallback create until it has resolved that ambiguity by name.
-              uncertain: options.method === 'POST' && (response.status === 408 || response.status === 429 || response.status >= 500),
+              // A timeout/rate-limit/server error can arrive after a POST was accepted. Only an
+              // explicitly recognized capacity rejection proves that creation did not occur.
+              uncertain: creationFailure?.outcome === 'ambiguous',
+              creationOutcome: creationFailure?.outcome || null,
+              creationFailureKind: creationFailure?.kind || null,
             },
           );
           if (retryable && attempt < retries) {
@@ -70,9 +111,11 @@ export class RunPodClient {
       } catch (error) {
         if (error instanceof RunPodError) throw error;
         lastError = new RunPodError(`${label} failed before a response was received: ${error.message}`, {
-          uncertain: options.method === 'POST',
+          uncertain: podCreate,
+          creationOutcome: podCreate ? 'ambiguous' : null,
+          creationFailureKind: podCreate ? 'transport' : null,
         });
-        if (options.method === 'POST' || attempt >= retries) throw lastError;
+        if (podCreate || attempt >= retries) throw lastError;
         await delay(500 * (2 ** attempt));
       } finally {
         clearTimeout(timer);
@@ -88,7 +131,11 @@ export class RunPodClient {
       method,
       headers,
       body: body === undefined ? undefined : JSON.stringify(body),
-    }, { retries: method === 'POST' ? 0 : 2, ...options });
+    }, {
+      retries: method === 'POST' ? 0 : 2,
+      podCreate: method === 'POST' && path === '/pods',
+      ...options,
+    });
   }
 
   async graphql(query, variables = {}) {
@@ -126,7 +173,11 @@ export class RunPodClient {
     await this.rest('DELETE', `/pods/${encodeURIComponent(podId)}`, undefined, { allow404: true });
   }
 
-  async listGpuOffers() {
+  async listGpuOffers({ minVcpuPerGpu = 0, minRamPerGpu = 0, minDiskInGb = 0 } = {}) {
+    for (const [label, value] of Object.entries({ minVcpuPerGpu, minRamPerGpu, minDiskInGb })) {
+      if (!Number.isInteger(value) || value < 0) throw new RunPodError(`${label} must be a non-negative integer`);
+    }
+    const requirements = `gpuCount: 1, minVcpuCount: ${minVcpuPerGpu}, minMemoryInGb: ${minRamPerGpu}, minDisk: ${minDiskInGb}, supportPublicIp: true`;
     const data = await this.graphql(`
       query ElderSoulsGpuOffers {
         gpuTypes {
@@ -135,15 +186,17 @@ export class RunPodClient {
           memoryInGb
           secureCloud
           communityCloud
-          secure: lowestPrice(input: { gpuCount: 1, secureCloud: true }) {
+          secure: lowestPrice(input: { ${requirements}, secureCloud: true }) {
             stockStatus
             uninterruptablePrice
             availableGpuCounts
+            maxUnreservedGpuCount
           }
-          community: lowestPrice(input: { gpuCount: 1, secureCloud: false }) {
+          community: lowestPrice(input: { ${requirements}, secureCloud: false }) {
             stockStatus
             uninterruptablePrice
             availableGpuCounts
+            maxUnreservedGpuCount
           }
         }
       }
@@ -165,6 +218,7 @@ export function normalizeOffers(gpuTypes) {
     stockStatus: offer.price?.stockStatus || 'None',
     pricePerHourUsd: offer.price?.uninterruptablePrice == null ? Number.NaN : Number(offer.price.uninterruptablePrice),
     availableGpuCounts: Array.isArray(offer.price?.availableGpuCounts) ? offer.price.availableGpuCounts : null,
+    maxUnreservedGpuCount: offer.price?.maxUnreservedGpuCount == null ? null : Number(offer.price.maxUnreservedGpuCount),
   })));
 }
 
@@ -178,9 +232,10 @@ export function chooseOffers(offers, { allowedGpuTypes, cloudTypes, maxPricePerH
     && offer.stockStatus !== 'None'
     && Number.isFinite(offer.pricePerHourUsd)
     && offer.pricePerHourUsd <= maxPricePerHourUsd
-    // RunPod sometimes reports qualitative stock with availableGpuCounts=null. A non-None stock
-    // status is still its documented capacity signal; creation remains the final authority.
-    && (offer.availableGpuCounts === null || offer.availableGpuCounts.includes(1))
+    // lowestPrice was queried live for gpuCount=1 and this runner's CPU/RAM/disk/public-IP shape.
+    // The price is concrete inventory evidence independent of the qualitative stock label. RunPod
+    // currently omits both numeric count fields for some valid offers, so creation remains the
+    // machine-level authority and uses the API's availability-priority multi-type scheduler.
   )).sort((left, right) => (
     left.pricePerHourUsd - right.pricePerHourUsd
     || allowedGpuTypes.indexOf(left.gpuTypeId) - allowedGpuTypes.indexOf(right.gpuTypeId)

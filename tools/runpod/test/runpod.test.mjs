@@ -3,8 +3,68 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { RunPodClient, chooseOffers, isManagedPod, normalizeOffers } from '../lib/api.mjs';
+import { RunPodClient, RunPodError, chooseOffers, isManagedPod, normalizeOffers } from '../lib/api.mjs';
+import { runCommand } from '../cli.mjs';
 import { createSnapshot, makeEphemeralSshKey, runProcess } from '../lib/local.mjs';
+import { buildProvisioningBatches, provisionPod } from '../lib/provision.mjs';
+import { launchCandidates } from '../worker/browser-config.mjs';
+
+function offer(gpuTypeId, cloudType, pricePerHourUsd) {
+  return {
+    gpuTypeId,
+    displayName: gpuTypeId,
+    cloudType,
+    memoryInGb: 8,
+    cloudAvailable: true,
+    stockStatus: 'Low',
+    pricePerHourUsd,
+    availableGpuCounts: [1],
+  };
+}
+
+function podFor(id, gpuTypeId, costPerHr) {
+  return { id, gpu: { id: gpuTypeId }, costPerHr, volumeInGb: 0 };
+}
+
+function capacityError() {
+  return new RunPodError('HTTP 500: This machine does not have the resources to deploy your pod', {
+    status: 500,
+    details: { error: 'This machine does not have the resources to deploy your pod' },
+    creationOutcome: 'definite-non-creation',
+    creationFailureKind: 'capacity',
+  });
+}
+
+function provisionPodFixture(client, candidates, overrides = {}) {
+  return provisionPod({
+    client,
+    candidates,
+    podName: 'unique-test-pod',
+    createInput: (batch) => ({
+      name: 'unique-test-pod',
+      cloudType: batch.cloudType,
+      gpuCount: 1,
+      gpuTypeIds: batch.gpuTypeIds,
+      gpuTypePriority: 'availability',
+      volumeInGb: 0,
+    }),
+    recoverPodByName: async () => null,
+    ...overrides,
+  });
+}
+
+test('Chromium hardware smoke keeps the required Linux ANGLE Vulkan feature gates', () => {
+  const vulkanCandidates = launchCandidates.filter(({ name }) => name.startsWith('angle-vulkan'));
+  assert.equal(vulkanCandidates.length >= 2, true);
+  for (const candidate of vulkanCandidates) {
+    assert.equal(candidate.args.includes('--use-gl=angle'), true);
+    assert.equal(candidate.args.includes('--use-angle=vulkan'), true);
+    assert.equal(
+      candidate.args.includes('--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE'),
+      true,
+    );
+  }
+});
 
 test('offer normalization and selection enforce allowlist, capacity, cloud, and ceiling', () => {
   const offers = normalizeOffers([
@@ -32,11 +92,41 @@ test('offer normalization and selection enforce allowlist, capacity, cloud, and 
     ['cheap', 'COMMUNITY', 0.12],
     ['fallback', 'SECURE', 0.19],
   ]);
-  assert.equal(selected[1].availableGpuCounts, null);
+  assert.equal(offers.find((offer) => offer.gpuTypeId === 'fallback').availableGpuCounts, null);
   const unavailable = offers.find((offer) => (
     offer.gpuTypeId === 'fallback' && offer.cloudType === 'COMMUNITY'
   ));
   assert.equal(Number.isNaN(unavailable.pricePerHourUsd), true);
+});
+
+test('numeric max-unreserved capacity is accepted when RunPod omits available GPU counts', () => {
+  const offers = normalizeOffers([{
+    id: 'numeric-capacity', displayName: 'Numeric capacity', memoryInGb: 16,
+    secureCloud: true, communityCloud: false,
+    secure: {
+      stockStatus: 'Low', uninterruptablePrice: 0.25,
+      availableGpuCounts: null, maxUnreservedGpuCount: 2,
+    },
+  }]);
+  const selected = chooseOffers(offers, {
+    allowedGpuTypes: ['numeric-capacity'],
+    cloudTypes: ['SECURE'],
+    maxPricePerHourUsd: 0.5,
+  });
+  assert.equal(selected.length, 1);
+  assert.equal(selected[0].maxUnreservedGpuCount, 2);
+});
+
+test('qualitative stock without a live constrained price is never eligible', () => {
+  const selected = chooseOffers([{
+    ...offer('label-only', 'COMMUNITY', Number.NaN),
+    stockStatus: 'High', availableGpuCounts: null, maxUnreservedGpuCount: null,
+  }], {
+    allowedGpuTypes: ['label-only'],
+    cloudTypes: ['COMMUNITY'],
+    maxPricePerHourUsd: 0.5,
+  });
+  assert.deepEqual(selected, []);
 });
 
 test('RunPod REST uses bearer auth and delete treats 404 as already cleaned', async () => {
@@ -73,6 +163,231 @@ test('POST server errors are treated as ambiguous create outcomes', async () => 
     () => client.createPod({ name: 'unique' }),
     (error) => error.status === 503 && error.uncertain === true,
   );
+});
+
+test('explicit capacity HTTP 500 is definite non-creation and safely falls back', async () => {
+  const requests = [];
+  const fetchClient = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    fetchImpl: async () => new Response(JSON.stringify({
+      error: 'create pod: This machine does not have the resources to deploy your pod. Please try a different machine',
+      status: 500,
+    }), { status: 500 }),
+  });
+  await assert.rejects(() => fetchClient.createPod({ name: 'unique' }), (error) => (
+    error.uncertain === false
+    && error.creationOutcome === 'definite-non-creation'
+    && error.creationFailureKind === 'capacity'
+  ));
+
+  const candidates = [offer('cheap', 'COMMUNITY', 0.12), offer('fallback', 'SECURE', 0.18)];
+  const client = {
+    async createPod(input) {
+      requests.push(input);
+      if (requests.length === 1) throw capacityError();
+      return podFor('pod-2', 'fallback', 0.18);
+    },
+    async getPod() { throw new Error('hydration should not be needed'); },
+  };
+  const result = await provisionPodFixture(client, candidates);
+  assert.equal(result.pod.id, 'pod-2');
+  assert.deepEqual(requests.map((request) => request.cloudType), ['COMMUNITY', 'SECURE']);
+});
+
+test('multiple consecutive capacity failures fall through once per batch to a later success', async () => {
+  const candidates = [
+    offer('first', 'CLOUD_A', 0.10),
+    offer('second', 'CLOUD_B', 0.11),
+    offer('third', 'CLOUD_C', 0.12),
+  ];
+  let creates = 0;
+  const client = {
+    async createPod() {
+      creates++;
+      if (creates < 3) throw capacityError();
+      return podFor('pod-3', 'third', 0.12);
+    },
+    async getPod() { throw new Error('hydration should not be needed'); },
+  };
+  const result = await provisionPodFixture(client, candidates);
+  assert.equal(result.offer.gpuTypeId, 'third');
+  assert.equal(creates, 3);
+});
+
+test('all capacity batches unavailable fails cleanly without orphan recovery', async () => {
+  let creates = 0;
+  let recoveries = 0;
+  await assert.rejects(() => provisionPodFixture({
+    async createPod() { creates++; throw capacityError(); },
+    async getPod() { throw new Error('hydration should not be needed'); },
+  }, [offer('one', 'COMMUNITY', 0.10), offer('two', 'SECURE', 0.11)], {
+    recoverPodByName: async () => { recoveries++; return null; },
+  }), /all safe eligible cloud\/GPU capacity options were exhausted/);
+  assert.equal(creates, 2);
+  assert.equal(recoveries, 0);
+});
+
+test('ambiguous HTTP 500 performs recovery and never issues a second create', async () => {
+  let creates = 0;
+  let recoveries = 0;
+  const ambiguous = new RunPodError('HTTP 500 unknown', {
+    status: 500,
+    uncertain: true,
+    creationOutcome: 'ambiguous',
+    creationFailureKind: 'unknown',
+  });
+  await assert.rejects(() => provisionPodFixture({
+    async createPod() { creates++; throw ambiguous; },
+    async getPod() { throw new Error('not reached'); },
+  }, [offer('one', 'COMMUNITY', 0.10), offer('two', 'SECURE', 0.11)], {
+    recoverPodByName: async () => { recoveries++; return null; },
+  }), (error) => error.uncertain === true);
+  assert.equal(creates, 1);
+  assert.equal(recoveries, 1);
+});
+
+test('network timeout after POST takes the fail-closed recovery path', async () => {
+  let creates = 0;
+  let recoveries = 0;
+  const client = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    requestTimeoutMs: 5,
+    fetchImpl: async (_url, { signal }) => new Promise((_resolve, reject) => {
+      signal.addEventListener('abort', () => reject(signal.reason), { once: true });
+    }),
+  });
+  const wrapped = {
+    async createPod(input) { creates++; return client.createPod(input); },
+    async getPod() { throw new Error('not reached'); },
+  };
+  await assert.rejects(() => provisionPodFixture(wrapped, [offer('one', 'COMMUNITY', 0.10), offer('two', 'SECURE', 0.11)], {
+    recoverPodByName: async () => { recoveries++; return null; },
+  }), (error) => error.uncertain === true && error.creationFailureKind === 'transport');
+  assert.equal(creates, 1);
+  assert.equal(recoveries, 1);
+});
+
+test('multi-GPU availability batches stay price-capped and allowlisted', async () => {
+  const inventory = [
+    offer('cheap', 'COMMUNITY', 0.12),
+    offer('allowed-fallback', 'COMMUNITY', 0.19),
+    offer('too-expensive', 'SECURE', 0.41),
+    offer('disallowed', 'SECURE', 0.01),
+  ];
+  const candidates = chooseOffers(inventory, {
+    allowedGpuTypes: ['cheap', 'allowed-fallback', 'too-expensive'],
+    cloudTypes: ['COMMUNITY', 'SECURE'],
+    maxPricePerHourUsd: 0.20,
+  });
+  const batches = buildProvisioningBatches(candidates);
+  assert.deepEqual(batches.flatMap((batch) => batch.gpuTypeIds), ['cheap', 'allowed-fallback']);
+  assert.equal(batches.every((batch) => batch.offers.every((item) => item.pricePerHourUsd <= 0.20)), true);
+
+  let request;
+  await provisionPodFixture({
+    async createPod(input) { request = input; return podFor('pod-safe', 'allowed-fallback', 0.19); },
+    async getPod() { throw new Error('hydration should not be needed'); },
+  }, candidates);
+  assert.equal(request.gpuTypePriority, 'availability');
+  assert.equal(request.gpuCount, 1);
+  assert.deepEqual(request.gpuTypeIds, ['cheap', 'allowed-fallback']);
+});
+
+test('configured Secure Cloud preference wins over a cheaper Community batch', async () => {
+  const candidates = [
+    offer('community-cheap', 'COMMUNITY', 0.12),
+    offer('secure-reliable', 'SECURE', 0.25),
+  ];
+  const batches = buildProvisioningBatches(candidates, ['SECURE', 'COMMUNITY']);
+  assert.deepEqual(batches.map(({ cloudType }) => cloudType), ['SECURE', 'COMMUNITY']);
+
+  let request;
+  const result = await provisionPodFixture({
+    async createPod(input) {
+      request = input;
+      return podFor('pod-secure', 'secure-reliable', 0.25);
+    },
+    async getPod() { throw new Error('hydration should not be needed'); },
+  }, candidates, { cloudPriority: ['SECURE', 'COMMUNITY'] });
+  assert.equal(request.cloudType, 'SECURE');
+  assert.equal(result.offer.gpuTypeId, 'secure-reliable');
+});
+
+test('post-create GPU validation failure preserves the Pod for mandatory cleanup', async () => {
+  const created = podFor('pod-needs-cleanup', 'unexpected', 0.10);
+  await assert.rejects(() => provisionPodFixture({
+    async createPod() { return created; },
+    async getPod() { return created; },
+  }, [offer('allowed', 'COMMUNITY', 0.10)]), (error) => (
+    error.pod?.id === 'pod-needs-cleanup'
+    && /did not report one of the explicitly requested GPU types/.test(error.message)
+  ));
+});
+
+test('successful provision completes SSH, bootstrap, artifact, deletion, and confirmation lifecycle', async (context) => {
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'runpod-lifecycle-test-'));
+  context.after(() => fs.rmSync(scratch, { recursive: true, force: true }));
+  const processCalls = [];
+  let createRequest;
+  const deleted = new Set();
+  const creates = [];
+  const createdPods = [
+    { ...podFor('pod-unready', 'first', 0.14), name: 'fixture-first', desiredStatus: 'RUNNING', publicIp: '203.0.113.9', portMappings: { 22: 22021 }, volumeInGb: 0 },
+    { ...podFor('pod-lifecycle', 'allowed', 0.15), name: 'fixture-pod', desiredStatus: 'RUNNING', publicIp: '203.0.113.10', portMappings: { 22: 22022 }, volumeInGb: 0 },
+  ];
+  const client = {
+    async getTemplate() { return { id: 'template-test', name: 'fixture', imageName: 'runpod/base:test', ports: ['22/tcp'], volumeInGb: 0, containerDiskInGb: 30 }; },
+    async listGpuOffers() { return [offer('first', 'COMMUNITY', 0.14), offer('allowed', 'COMMUNITY', 0.15)]; },
+    async createPod(input) {
+      createRequest = input;
+      creates.push(input);
+      return createdPods[creates.length - 1];
+    },
+    async getPod(podId) { return deleted.has(podId) ? null : createdPods.find((pod) => pod.id === podId); },
+    async listPods() { return createdPods.filter((pod) => !deleted.has(pod.id)); },
+    async deletePod(podId) { deleted.add(podId); },
+  };
+  const config = {
+    podNamePrefix: 'fixture-', maxPricePerHourUsd: 0.2, absoluteMaxPricePerHourUsd: 0.2,
+    maxRuntimeMinutes: 5, absoluteMaxRuntimeMinutes: 5, readyTimeoutMinutes: 1,
+    containerDiskInGb: 30, minVcpuPerGpu: 4, minRamPerGpu: 16,
+    cloudTypes: ['COMMUNITY'], allowedGpuTypes: ['first', 'allowed'], snapshotPaths: ['game'], artifactRoot: scratch,
+  };
+  await runCommand({
+    gpu: [], cloud: [], include: [], onlyPath: [], artifactDir: scratch,
+  }, config, {
+    environment: { apiKey: 'not-logged', templateId: 'template-test' },
+    client,
+    commandExists: async () => true,
+    makeTempDir: () => scratch,
+    removeTempDir: () => {},
+    sshKeyMaterial: async () => ({ keyPath: path.join(scratch, 'key'), publicKey: 'ssh-ed25519 fixture', ephemeral: true }),
+    createSnapshot: async () => ({ archivePath: path.join(scratch, 'source.tar.gz'), revision: 'abc123', dirty: false, fileCount: 1, bytes: 1, sha256: '00', paths: ['game'] }),
+    sshArgs: () => ['ssh-fixture'],
+    scpArgs: () => ['scp-fixture'],
+    waitForSsh: async () => {
+      if (creates.length === 1) throw new Error('fixture SSH readiness timeout');
+    },
+    runProcess: async (command, args) => {
+      processCalls.push([command, ...args]);
+      return { code: 0, stdout: '', stderr: '' };
+    },
+  });
+  const state = JSON.parse(fs.readFileSync(path.join(scratch, 'run.json'), 'utf8'));
+  assert.equal(state.status, 'passed');
+  assert.equal(state.cleanup.terminated, true);
+  assert.deepEqual([...deleted].sort(), ['pod-lifecycle', 'pod-unready']);
+  assert.equal(creates.length, 2);
+  assert.notEqual(creates[0].name, creates[1].name);
+  assert.deepEqual(creates[1].gpuTypeIds, ['allowed']);
+  assert.deepEqual(createRequest.dockerEntrypoint, ['bash', '-lc']);
+  assert.match(createRequest.dockerStartCmd[0], /exec \/usr\/sbin\/sshd -D -e/);
+  assert.equal(createRequest.env.SSH_PUBLIC_KEY, 'ssh-ed25519 fixture');
+  assert.equal(processCalls.some(([command]) => command === 'ssh'), true);
+  assert.equal(processCalls.some(([command]) => command === 'scp'), true);
+  assert.match(fs.readFileSync(path.join(scratch, 'lifecycle.log'), 'utf8'), /deletion confirmed/i);
+  assert.equal(state.provisioning.readinessFailures[0].podId, 'pod-unready');
+  assert.deepEqual(state.provisioning.attempts.map(({ outcome }) => outcome), ['created', 'created']);
 });
 
 test('orphan cleanup scope cannot select manual, foreign-template, or terminated Pods', () => {

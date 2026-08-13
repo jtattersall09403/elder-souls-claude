@@ -26,7 +26,8 @@ if command -v node >/dev/null 2>&1; then
 fi
 
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl gnupg xz-utils xvfb xauth mesa-utils
+apt-get install -y --no-install-recommends \
+  ca-certificates curl gnupg xz-utils xvfb xauth mesa-utils libvulkan1 vulkan-tools
 
 if [ "$node_major" -lt 20 ]; then
   echo "[worker] installing Node.js 22 from the signed NodeSource repository"
@@ -45,6 +46,7 @@ if ! command -v nvidia-smi >/dev/null 2>&1; then
   exit 20
 fi
 nvidia-smi --query-gpu=name,uuid,driver_version,memory.total --format=csv,noheader | tee "$ARTIFACT_PATH/nvidia-smi.csv"
+vulkaninfo --summary > "$ARTIFACT_PATH/vulkaninfo.txt" 2>&1 || true
 
 cd "$WORKSPACE_PATH/tools"
 npm ci --no-audit --no-fund
