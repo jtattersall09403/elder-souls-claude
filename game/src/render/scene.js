@@ -280,10 +280,10 @@ export function buildScene(seed) {
   arenaFloor.receiveShadow = true;
   arenaFloor.name='arena-wet-stone-floor';
   cells.arena.add(arenaFloor);
-  const arenaFill=new THREE.HemisphereLight(0xdce6e5,0x756250,2.05);
+  const arenaFill=new THREE.HemisphereLight(0xdce6e5,0x756250,1.30);
   arenaFill.name='arena-bounded-readable-fill';cells.arena.add(arenaFill);
-  const arenaAmbient=new THREE.AmbientLight(0xa3aca7,.62);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
-  const arenaKey=new THREE.DirectionalLight(0xffe0b2,2.2);arenaKey.position.set(-9,14,-7);
+  const arenaAmbient=new THREE.AmbientLight(0xa3aca7,.28);arenaAmbient.name='arena-bounded-charcoal-fill';cells.arena.add(arenaAmbient);
+  const arenaKey=new THREE.DirectionalLight(0xffe0b2,1.55);arenaKey.position.set(-9,14,-7);
   arenaKey.name='arena-warm-raking-key';arenaKey.castShadow=true;arenaKey.shadow.mapSize.set(1024,1024);cells.arena.add(arenaKey);
   // Radial courses, irregular in value and material, carry scale through combat-camera motion.
   // These lie under actors and retain the original flat collision surface.

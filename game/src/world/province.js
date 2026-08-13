@@ -25,11 +25,11 @@ const TILE_M = 300;
 // an 11 m hummock field — the ground would have differed per region in the collision surface and
 // in every audit, and looked identical in the frame. A change that moves a number and not a
 // picture is the failure mode this whole piece is being re-dispatched for.
-const TILE_SEG = 56;
+const TILE_SEG = 44;
 const WATER_SEG = 24;
 const RADIUS = 2;                 // 5 x 5 tiles resident => 1.5 km of detailed ground
 const FAR_SEG_X = 96, FAR_SEG_Z = 110;
-const MAX_INSTANCES = { canopy: 700, under: 2600, rock: 420 };
+const MAX_INSTANCES = { canopy: 260, under: 780, rock: 165 };
 const STYLE_MATERIAL_CACHE=new WeakMap();
 // The region's own lamps at night (RI-WLD04 M17 step 6). TWO, not six, and the number is a
 // measurement rather than a taste: on the software rasteriser the M17 night pass ran at 11 s per
@@ -69,8 +69,8 @@ const SKIN_FADE_M = 9;
 // the regions that are supposed to be the dense ones. This disc puts the DEFICIT back inside
 // 90 m — full declared density where the frame is made, the tile budget beyond it. It is level
 // of detail, and it is the reason canopy closure is a real axis rather than a JSON field.
-const NEAR_RADIUS_M = 90;
-const NEAR_REBUILD_M = 22;
+const NEAR_RADIUS_M = 70;
+const NEAR_REBUILD_M = 17;
 const MAX_NEAR = { canopy: 2600, under: 2400, rock: 700 };
 const MAX_SIG_LIGHTS = 2;
 const SIG_LIGHT_RANGE = 160;
@@ -84,7 +84,7 @@ const COVER_CARD = Object.freeze({ litter:12, tussock:14, reed:3, tuft:8, stubbl
 // tapered outline, a lifted midrib and a different radial pitch.  That gives fern, reed and grass
 // populations real parallax at walking distance instead of the former row of intersecting planes.
 function bladeLeaf(length, width, bend, azimuth, phase = 0) {
-  const segments = 6, positions = [], indices = [];
+  const segments = 4, positions = [], indices = [];
   const dx = Math.sin(azimuth), dz = Math.cos(azimuth), tx = Math.cos(azimuth), tz = -Math.sin(azimuth);
   for (let i = 0; i <= segments; i++) {
     const t = i / segments, radial = length * (0.08 * t + 0.52 * t * t);
@@ -150,22 +150,22 @@ function thornGeometry(height,radius,variant=0,crown=false){
   const parts=[],phase=variant*.83;
   if(!crown){
     parts.push(taperedLimb(new THREE.Vector3(0,0,0),new THREE.Vector3(.08*(variant-1),height*.72,0),radius,radius*.35,8));
-    for(let i=0;i<4;i++){
-      const a=phase+i*Math.PI*.5+.18*(i%2),reach=radius*(2.2+.35*((i+variant)%3));
+    for(let i=0;i<3;i++){
+      const a=phase+i*Math.PI*2/3+.18*(i%2),reach=radius*(2.2+.35*((i+variant)%3));
       const curve=new THREE.QuadraticBezierCurve3(
         new THREE.Vector3(0,height*(.18+i*.10),0),
         new THREE.Vector3(Math.sin(a)*reach*.52,height*(.40+i*.07),Math.cos(a)*reach*.52),
         new THREE.Vector3(Math.sin(a)*reach,height*(.31+i*.09),Math.cos(a)*reach));
-      parts.push(new THREE.TubeGeometry(curve,7,radius*(.26-.025*i),6,false));
+      parts.push(new THREE.TubeGeometry(curve,4,radius*(.26-.025*i),4,false));
     }
   }else{
-    for(let i=0;i<9;i++){
+    for(let i=0;i<7;i++){
       const a=phase+i*2.399963,reach=radius*(.48+.48*((i*7+variant)%5)/4),y=height*(-.28+.07*(i%5));
       const start=new THREE.Vector3(Math.sin(a)*radius*.08,y,Math.cos(a)*radius*.08);
       const mid=new THREE.Vector3(Math.sin(a)*reach*.72,y+height*(.14+.025*(i%3)),Math.cos(a)*reach*.72);
       const end=new THREE.Vector3(Math.sin(a+.28*(i%2?1:-1))*reach,y+height*(.03+.035*(i%4)),Math.cos(a+.28*(i%2?1:-1))*reach);
-      parts.push(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(start,mid,end),8,radius*(.070-.004*(i%3)),5,false));
-      const tip=new THREE.ConeGeometry(radius*.095,radius*.42,5);
+      parts.push(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(start,mid,end),3,radius*(.070-.004*(i%3)),3,false));
+      const tip=new THREE.ConeGeometry(radius*.095,radius*.42,4);
       tip.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),end.clone().sub(mid).normalize()));
       tip.translate(end.x,end.y,end.z);parts.push(tip);
       if(i%2===0){
@@ -956,7 +956,8 @@ export class Province {
         ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
         : null;
       const form=Math.floor(noise2(x*2.17,z*1.73,7829)*3);
-      if (push('canopy', `trunk:${form}`, this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
+      const distant=tag==='tile';
+      if (push('canopy', `${distant?'trunkFar':'trunk'}:${form}`, this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
         // WHERE THE CROWN SITS. A crown parked at 0.86 of the plant's height is right for a tree
         // and wrong for a bush: the Clay Moor declares a 4 m dome of 3.2 m radius — wider than it
         // is tall, which is what clay scrub IS — and lifting it to 3.4 m over a stem sized off the
@@ -973,14 +974,14 @@ export class Province {
         const crownY = r.id==='thornmarsh' ? p.canopy.h*sc*.60 : bushy
           ? Math.max(p.canopy.r*.65,p.canopy.h*.16)*sc
           : p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86);
-        push('canopy', `crown:${form}`, this.regionMats[ri].crown, sc, crownY, tilt, 7797);
+        push('canopy', `${distant?'crownFar':'crown'}:${form}`, this.regionMats[ri].crown, sc, crownY, tilt, 7797);
       }
     }
     if (settlementClear && arrivalClear && rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
       // Tall marsh blades are accents, not walls. Clamp instance variation for declared 2–3 m
       // aquatic plants and preserve a clear gameplay bubble just as canopy trunks do.
       const tall=p.under.h>1.8,base=tall?.52:.68,variation=tall?.38:.62;
-      push('under', 'under', this.regionMats[ri].under, base + noise2(x * 5, z * 5, 7801) * variation, 0, null, 7789);
+      push('under', tag==='tile'?'underFar':'under', this.regionMats[ri].under, base + noise2(x * 5, z * 5, 7801) * variation, 0, null, 7789);
     }
     if (settlementClear && rolls[2] < dens.rock * cellArea / 100) {
       push('rock', 'rock', this.regionMats[ri].rock, p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1, null, 7789);
@@ -1924,16 +1925,43 @@ export class Province {
         }
         break;
       }
+      case 'trunkFar': {
+        // Mid-distance trees retain the declared height, taper and a forked silhouette without
+        // paying for the near camera's root and branch tubes on every one of 25 streamed tiles.
+        // Near-field instances still use the full geometry above and overlap this population.
+        const h=p.canopy.h,rt=clamp((p.canopy.shape==='cone'?.068:p.canopy.shape==='spire'?.052:.038)*h,.10,Math.min(.95,p.canopy.r*.34));
+        const stem=taperedLimb(new THREE.Vector3(0,0,0),new THREE.Vector3(0,h*.74,0),rt,rt*.42,6);
+        const a=.65+variant*1.73,reach=Math.min(p.canopy.r*.58,h*.18),fork=taperedLimb(new THREE.Vector3(0,h*.48,0),new THREE.Vector3(Math.cos(a)*reach,h*.79,Math.sin(a)*reach),rt*.28,rt*.07,5);
+        geo=mergeAll([stem,fork]);break;
+      }
       case 'crown': {
         const h = p.canopy.h, rr = p.canopy.r;
         geo=r.id==='thornmarsh' ? thornGeometry(h,rr,variant,true) : organicCrown(p.canopy.shape,rr,h,variant);
         break;
+      }
+      case 'crownFar': {
+        // A faceted, asymmetric cluster preserves crown width/height and holes at middle distance;
+        // the close 90 m disc replaces it with organicCrown/thornGeometry before leaf-scale
+        // articulation is large enough to resolve. This removes millions of sub-pixel triangles.
+        const h=p.canopy.h,rr=p.canopy.r,parts=[];
+        for(let i=0;i<3;i++){
+          const a=variant*.83+i*2.094,g=new THREE.IcosahedronGeometry(1,0);
+          const taper=p.canopy.shape==='spire'||p.canopy.shape==='cone'?(i===0?1:.62):1;
+          g.scale(rr*(.48+.08*(i===0))*taper,Math.max(rr*.32,h*.095)*(i===0?1:.72),rr*(.40+.05*((i+variant)%2))*taper);
+          g.translate(Math.cos(a)*rr*.22,(i-1)*h*.075,Math.sin(a)*rr*.22);parts.push(g);
+        }
+        geo=mergeAll(parts);break;
       }
       case 'under': {
         const h = p.under.h;
         const width = p.under.shape === 'crust' ? 1.45 : p.under.shape === 'comb' ? 1.25 : Math.max(.48, h * .44);
         geo = proceduralFan(p.under.shape,width,Math.max(.28,h),false);
         break;
+      }
+      case 'underFar': {
+        const h=p.under.h,w=p.under.shape==='crust'?1.25:p.under.shape==='comb'?1.05:Math.max(.38,h*.35),parts=[];
+        for(let i=0;i<3;i++){const a=i*Math.PI/3,g=new THREE.PlaneGeometry(w,h);g.translate(0,h*.5,0);g.rotateY(a);parts.push(g);}
+        geo=mergeAll(parts);break;
       }
       // The ordinary underfoot material. Unit geometry, authored at its declared height, kept
       // under a dozen triangles because there are up to 2,400 of them in a tile and the target
@@ -2074,6 +2102,7 @@ export class Province {
         return n;
       }, 0),
       drawBuildings: !!this.drawBuildings,
+      signatureLights: (this.sigLights||[]).map(l=>({visible:l.visible,intensity:+l.intensity.toFixed(3),colour:`#${l.color.getHexString()}`,position:[+l.position.x.toFixed(2),+l.position.y.toFixed(2),+l.position.z.toFixed(2)]})),
     };
   }
 

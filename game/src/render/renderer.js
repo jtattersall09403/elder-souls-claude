@@ -70,9 +70,10 @@ export class Renderer {
     this.three.shadowMap.type = THREE.PCFSoftShadowMap;
     this.three.outputColorSpace = THREE.SRGBColorSpace;
     this.three.toneMapping = THREE.ACESFilmicToneMapping;
-    // Preserve dark interiors while keeping shaded armour readable on SDR displays.  ACES still
-    // owns highlight roll-off; this is a modest scene exposure, not a per-shot compensation.
-    this.three.toneMappingExposure = 1.34;
+    // Apply photographic exposure once in the final HDR composite. Earlier values compensated
+    // for a compositor which wrote scene-linear values straight to the display; with the display
+    // transform restored they bleach daylight and erase material separation.
+    this.three.toneMappingExposure = 0.72;
 
     const built = buildScene(seed);
     this.seed = seed;
@@ -105,6 +106,8 @@ export class Renderer {
     this.waterReflectionTarget=new THREE.WebGLRenderTarget(Math.max(320,Math.floor(canvas.width/2)),Math.max(180,Math.floor(canvas.height/2)),{depthBuffer:true});
     this.waterReflectionTarget.texture.name='w1-30-planar-water-reflection';
     this.waterReflectionCamera=new THREE.PerspectiveCamera(60,canvas.width/canvas.height,.1,6400);
+    this.waterReflectionFrame=-99;
+    this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
     this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
     this._buildCompositor(canvas.width,canvas.height);
     this.enemyMeshes = new Map();
@@ -245,12 +248,14 @@ export class Renderer {
   }
 
   _buildCompositor(w,h) {
-    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false});
-    this.worldTarget.texture.colorSpace=THREE.SRGBColorSpace;
+    // Preserve scene-linear HDR until the final composite. An sRGB 8-bit target clipped the
+    // highlights before bloom and the fullscreen ShaderMaterial then bypassed ACES entirely.
+    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false,type:THREE.HalfFloatType});
+    this.worldTarget.texture.colorSpace=THREE.LinearSRGBColorSpace;
     this.worldTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);
     this.worldTarget.texture.name='w1-30-hdr-world-colour';
     this.worldTarget.depthTexture.name='w1-30-world-depth';
-    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:false,
+    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:true,
       uniforms:{tWorld:{value:this.worldTarget.texture},tDepth:{value:this.worldTarget.depthTexture},
         uResolution:{value:new THREE.Vector2(w,h)},uAO:{value:1},uAA:{value:1},uPost:{value:1}},
       vertexShader:`varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
@@ -264,7 +269,10 @@ export class Renderer {
           b=max(b*.25-vec3(.72),0.);c+=b*.075;
           float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.035);c=mix(c,c*c*(3.-2.*c),.08);c=(c-.5)*1.015+.5;
           float vignette=1.-smoothstep(.40,.84,length(vUv-.5))*.075;c*=vignette;
-        } gl_FragColor=vec4(c,1.);}`});
+        } gl_FragColor=vec4(c,1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`});
     this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
     this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
   }
@@ -838,7 +846,7 @@ export class Renderer {
       }
 
     this.sky.followCamera(this.camera);
-    this._renderWaterReflection();
+    this._renderWaterReflection(sim.frame);
 
     // ---- seam S19: spell VFX -----------------------------------------------------------------
     // Two passes, and the second one is the frame. The prepass writes scene DEPTH (which soft
@@ -906,12 +914,18 @@ export class Renderer {
     return true;
   }
 
-  _renderWaterReflection(){
-    if(this.cell!=='province'||!this.field){bindWaterReflection(null);return;}
+  _renderWaterReflection(frame=0){
+    if(this.cell!=='province'||!this.field){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
     const points=[this.camera.position,this._look];
     for(let i=1;i<=6;i++)points.push(this.camera.position.clone().lerp(this._look,i/7));
     let waterY=null;for(const p of points){const y=this.field.waterSurfaceAt(p.x,p.z);if(y!==null&&y!==undefined){waterY=y;break;}}
-    if(waterY===null){bindWaterReflection(null);return;}
+    if(waterY===null){this.waterReflectionTarget.texture.userData.valid=false;bindWaterReflection(null);return;}
+    // Reproject the last planar view until either the camera has moved enough for the error to
+    // resolve or six simulation frames have elapsed. This is spatially gated, not a blind
+    // every-third-frame stutter: stationary water remains stable and traversal updates before a
+    // quarter-metre parallax error accumulates.
+    const moved=this.waterReflectionFocus.distanceToSquared(this.camera.position)>.24*.24,stale=frame-this.waterReflectionFrame>=6;
+    if(!moved&&!stale&&this.waterReflectionTarget.texture.userData.valid){bindWaterReflection(this.waterReflectionTarget.texture,this.canvas.width,this.canvas.height,1,this.waterReflectionMatrix);return;}
     const rc=this.waterReflectionCamera;rc.copy(this.camera,false);rc.position.copy(this.camera.position);rc.position.y=waterY-(this.camera.position.y-waterY);
     const look=this._look.clone();look.y=waterY-(look.y-waterY);rc.up.set(0,1,0);rc.lookAt(look);rc.updateMatrixWorld();
     const hidden=[];this.scene.traverse(o=>{if(o.visible&&o.isMesh&&String(o.name||'').startsWith('water:')){hidden.push(o);o.visible=false;}});
@@ -924,7 +938,7 @@ export class Renderer {
     for(const o of hidden)o.visible=true;this.sky.followCamera(this.camera);
     // gl_FragCoord belongs to the visible full-resolution pass; texture UVs are normalised, so
     // divide by the main viewport size even though the bounded reflection target is half size.
-    const reflectionMatrix=new THREE.Matrix4().multiplyMatrices(rc.projectionMatrix,rc.matrixWorldInverse);
+    const reflectionMatrix=this.waterReflectionMatrix||(this.waterReflectionMatrix=new THREE.Matrix4());reflectionMatrix.multiplyMatrices(rc.projectionMatrix,rc.matrixWorldInverse);this.waterReflectionTarget.texture.userData.valid=true;this.waterReflectionFrame=frame;this.waterReflectionFocus.copy(this.camera.position);
     bindWaterReflection(this.waterReflectionTarget.texture,this.canvas.width,this.canvas.height,1,reflectionMatrix);
   }
 

@@ -14,6 +14,7 @@ const args=parseArgs();
 const out=path.resolve(String(args.out||'/tmp/w1-30-motion-proof'));
 ensureDir(out);
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
+const percentile=(xs,p)=>{const a=[...xs].sort((x,y)=>x-y);return a[Math.min(a.length-1,Math.floor(a.length*p))]||0;};
 const roster=JSON.parse(fs.readFileSync(path.join(REPO_ROOT,'game/data/weapons/roster.json'),'utf8'));
 const classes=JSON.parse(fs.readFileSync(path.join(REPO_ROOT,'game/data/weapons/classes.json'),'utf8')).classes;
 const reps=[];
@@ -45,6 +46,7 @@ const scenarios=[
   {id:'slope-stair-ik',label:'walked stair/slope foot IK',frames:170,camera:'gameplay',state:'cam_stair',script:move([0,.55],10,145)},
   {id:'world-camera-motion',label:'ordinary exterior play with character and gameplay-camera motion',frames:180,camera:'gameplay',state:'default',script:[{f:8,move:[.25,.82]},{f:110,move:[-.35,.72]},{f:158,move:[0,0]}]},
   {id:'stream-boundary-motion',label:'native exterior walk across the x=3900 streamed tile boundary',frames:240,camera:'gameplay',state:'town-thorn',teleport:[3884,871.58],script:move([1,0],8,218)},
+  {id:'stream-boundary-stationary',label:'stationary native exterior control for animated foliage and atmosphere mask',frames:30,camera:'gameplay',state:'town-thorn',teleport:[3884,871.58],script:[]},
   {id:'creature-beast-motion',label:'shipped slitherfang family articulated lunge presentation',frames:150,camera:'subject-beast',state:'arena_flat',spawn:{id:'beast_slitherfang',x:0,z:3.8,as:'creature-beast'},enemyScript:[{f:18,move:'lunge'}],script:[]},
   {id:'creature-undead-motion',label:'shipped drowned family articulated chop presentation',frames:190,camera:'subject-undead',state:'arena_flat',spawn:{id:'drowned_lesser',x:0,z:3.8,as:'creature-undead'},enemyScript:[{f:18,move:'chop'}],script:[]},
 ];
@@ -69,23 +71,36 @@ const orbitCamera=async(frame,total)=>{
   await handle.h('camera',{pos:[p[0]+Math.sin(a)*r,p[1]+1.74,p[2]-Math.cos(a)*r],look:[p[0],p[1]+1.02,p[2]+.05],fov:47,mode:'free'});
 };
 try{
-  await handle.h('ready');await handle.h('setSeed',report.seed);await handle.h('setRenderRate',0);await handle.h('setUIVisible',false);
+  await handle.h('ready');const viewport=await handle.h('setDevicePixelRatio',1);report.canvas=viewport.buffer;
+  if(viewport.buffer[0]!==report.nativeWindow[0]||viewport.buffer[1]!==report.nativeWindow[1])throw new Error(`native canvas ${viewport.buffer.join('x')} != requested ${report.nativeWindow.join('x')}`);
+  await handle.h('setSeed',report.seed);await handle.h('setRenderRate',0);await handle.h('setUIVisible',false);
   const renderer=await readRenderer(handle),launch=launchArgAudit(handle.chromiumArgs),attestation=t1Verdict(renderer.unmaskedRenderer||renderer.renderer||'','desktop-discrete',{launch,pageRenderer:renderer.unmaskedRenderer||renderer.renderer||''});
   report.browser={version:handle.browser.version(),chromiumArgs:handle.chromiumArgs};
   report.hardware={requested:handle.hardwareGpuRequested,renderer,launch,attestation};
   for(const spec of selected){
     const dir=path.join(out,spec.id);ensureDir(dir);
     await handle.h('loadState',spec.state||'arena_flat');await handle.h('setUIVisible',false);await handle.h('setWeather','clear');
-    if(spec.teleport)await handle.h('teleport',spec.teleport[0],spec.teleport[1],{});
+    let residency=null;
+    if(spec.teleport){
+      await handle.h('teleport',spec.teleport[0],spec.teleport[1],{});await handle.h('stepFrames',2);
+      const drain=await handle.h('streamAround',spec.teleport[0],spec.teleport[1]),stats=await handle.h('getProvinceStats');
+      if(stats.streaming.tilesQueued>0||stats.streaming.tilesResident<25)throw new Error(`${spec.id}: unsettled province queued=${stats.streaming.tilesQueued} resident=${stats.streaming.tilesResident}`);
+      residency={drain,stats};
+    }
     if(spec.spawn)await handle.h('spawn',spec.spawn.id,spec.spawn.x,spec.spawn.z,{as:spec.spawn.as,yaw:180});
     if(spec.enemyScript)await handle.h('queueEnemyScript',spec.spawn.as,spec.enemyScript);
     if(spec.weapon)await handle.h('setLoadout',{weapon:spec.weapon});
     await handle.h('stepFrames',8);if(spec.camera==='gameplay')await handle.h('camera',null);else await updateCamera(spec.camera);
     await handle.h('queueInputs',spec.script);
-    const start=await handle.h('getFrame'),frames=[];let attachmentMax=0,guardAttachmentMax=0,bodyOpaque=true,staticDirectionEmpty=true;
+    const start=await handle.h('getFrame'),frames=[],renderSubmitMs=[],cameraPositions=[];let attachmentMax=0,guardAttachmentMax=0,bodyOpaque=true,staticDirectionEmpty=true;
     for(let i=0;i<spec.frames;i++){
       if(spec.hook&&i===spec.hook.frame)await handle.h(spec.hook.method,...spec.hook.args);
-      await handle.h('stepFrames',1);if(spec.camera==='orbit')await orbitCamera(i,spec.frames);else if(spec.camera!=='gameplay')await updateCamera(spec.camera);await handle.h('renderFrame');
+      await handle.h('stepFrames',1);if(spec.camera==='orbit')await orbitCamera(i,spec.frames);else if(spec.camera!=='gameplay')await updateCamera(spec.camera);
+      // This is CPU render submission time on an attested hardware browser. It is useful for
+      // hitches but is not labelled GPU frame time: gl.finish is a global stall, not how the
+      // shipping requestAnimationFrame loop paces its frames. A proper Tier-H rAF ledger follows.
+      const frameMs=await handle.page.evaluate(()=>{const t0=performance.now();window.__HARNESS.renderFrame();return performance.now()-t0;});
+      renderSubmitMs.push(frameMs);
       const data=String(await handle.h('screenshot')).replace(/^data:image\/png;base64,/,'');const b=Buffer.from(data,'base64');
       const filename=`f${String(i).padStart(4,'0')}.png`;fs.writeFileSync(path.join(dir,filename),b);
       const drawn=await handle.h('getDrawnGeometry'),combat=await handle.h('getCombatState');
@@ -97,12 +112,17 @@ try{
       if(actor.tip_vs_socket_b_mm!==undefined)attachmentMax=Math.max(attachmentMax,actor.tip_vs_socket_b_mm);
       if(actor.guard_vs_socket_a_mm!==undefined)guardAttachmentMax=Math.max(guardAttachmentMax,actor.guard_vs_socket_a_mm);
       const subjectCombat=spec.spawn?(combat.enemies||[]).find(e=>e.id===spec.spawn.as):combat.player;
-      frames.push({i,simFrame:await handle.h('getFrame'),sha256:sha(b),subject:subjectId,state:subjectCombat&&subjectCombat.state||null,move:subjectCombat&&subjectCombat.move?(typeof subjectCombat.move==='string'?subjectCombat.move:subjectCombat.move.id):null,animFrame:subjectCombat&&subjectCombat.anim_frame||null,bones:actor.bones||null,presentation:actor.presentation||[],bodyMaterials:actor.body_materials||[],staticDirectionChildren:actor.static_direction_children,tipVsSocketBmm:actor.tip_vs_socket_b_mm??null,guardVsSocketAmm:actor.guard_vs_socket_a_mm??null});
+      const camera=(await handle.h('camera',{})).pos;cameraPositions.push(camera);
+      frames.push({i,simFrame:await handle.h('getFrame'),sha256:sha(b),renderGpuSyncMs:+frameMs.toFixed(3),camera,subject:subjectId,state:subjectCombat&&subjectCombat.state||null,move:subjectCombat&&subjectCombat.move?(typeof subjectCombat.move==='string'?subjectCombat.move:subjectCombat.move.id):null,animFrame:subjectCombat&&subjectCombat.anim_frame||null,bones:actor.bones||null,presentation:actor.presentation||[],bodyMaterials:actor.body_materials||[],staticDirectionChildren:actor.static_direction_children,tipVsSocketBmm:actor.tip_vs_socket_b_mm??null,guardVsSocketAmm:actor.guard_vs_socket_a_mm??null});
     }
-    const tracePath=path.join(dir,'frames.json');fs.writeFileSync(tracePath,JSON.stringify({schema:'elder-souls/w1-30-motion-frames@1',id:spec.id,seed:report.seed,startFrame:start,playbackRate:'60 f@60',camera:spec.camera,input:spec.script,frames},null,2)+'\n');
+    const displacements=cameraPositions.slice(1).map((p,i)=>Math.hypot(p[0]-cameraPositions[i][0],p[1]-cameraPositions[i][1],p[2]-cameraPositions[i][2]));
+    const displacementPath=path.join(dir,'camera-displacements.json');fs.writeFileSync(displacementPath,JSON.stringify(displacements,null,2)+'\n');
+    const tracePath=path.join(dir,'frames.json');fs.writeFileSync(tracePath,JSON.stringify({schema:'elder-souls/w1-30-motion-frames@1',id:spec.id,seed:report.seed,startFrame:start,playbackRate:'60 f@60',camera:spec.camera,input:spec.script,residency,displacementPath,frames},null,2)+'\n');
     const video=path.join(out,`${spec.id}.mp4`),ffargs=['-y','-loglevel','error','-framerate','60','-i',path.join(dir,'f%04d.png'),'-c:v','libx264','-crf','18','-pix_fmt','yuv420p',video];
     const enc=spawnSync('ffmpeg',ffargs,{encoding:'utf8'});if(enc.status!==0)throw new Error(`ffmpeg ${spec.id}: ${enc.stderr}`);
-    const row={id:spec.id,label:spec.label,state:spec.state||'arena_flat',weapon:spec.weapon||null,weaponClass:spec.weaponClass||null,frameRange:[start+1,start+spec.frames],frameCount:spec.frames,camera:spec.camera,input:spec.script,trace:tracePath,traceSha256:sha(fs.readFileSync(tracePath)),video,videoSha256:sha(fs.readFileSync(video)),encoderCommand:['ffmpeg',...ffargs].join(' '),controls:{bodyOpaque,staticDirectionEmpty,attachmentMaxMm:+attachmentMax.toFixed(4),guardAttachmentMaxMm:+guardAttachmentMax.toFixed(4),attachmentPass:attachmentMax<=20&&guardAttachmentMax<=20}};
+    const warm=renderSubmitMs.slice(Math.min(8,renderSubmitMs.length));const budget=await handle.h('getWorldStats');
+    const topInstanced=await handle.page.evaluate(()=>{const rows=[];window.__ENGINE.renderer.scene.traverse(o=>{if(!o.visible||!o.isInstancedMesh)return;const g=o.geometry,per=g.index?g.index.count/3:(g.attributes.position?.count||0)/3;rows.push({name:o.name,count:o.count,trianglesPerInstance:per,triangles:Math.round(per*o.count)});});return rows.sort((a,b)=>b.triangles-a.triangles).slice(0,24);});
+    const row={id:spec.id,label:spec.label,state:spec.state||'arena_flat',weapon:spec.weapon||null,weaponClass:spec.weaponClass||null,frameRange:[start+1,start+spec.frames],frameCount:spec.frames,camera:spec.camera,input:spec.script,residency,trace:tracePath,traceSha256:sha(fs.readFileSync(tracePath)),displacements:displacementPath,video,videoSha256:sha(fs.readFileSync(video)),encoderCommand:['ffmpeg',...ffargs].join(' '),hardwareRenderSubmit:{method:'performance.now around synchronous renderFrame; excludes CDP, PNG encoding and GPU completion; not a Tier-H presented-frame claim',warmupFrames:Math.min(8,renderSubmitMs.length),n:warm.length,p50Ms:+percentile(warm,.50).toFixed(3),p95Ms:+percentile(warm,.95).toFixed(3),p99Ms:+percentile(warm,.99).toFixed(3),maxMs:+Math.max(...warm).toFixed(3)},budgets:{drawCalls:budget.drawCalls,triangles:budget.triangles,programs:budget.programs,geometryMB:budget.geometryMB,textureMB:budget.textureMB,vfx:budget.vfx,topInstanced},controls:{bodyOpaque,staticDirectionEmpty,attachmentMaxMm:+attachmentMax.toFixed(4),guardAttachmentMaxMm:+guardAttachmentMax.toFixed(4),attachmentPass:attachmentMax<=20&&guardAttachmentMax<=20}};
     report.scenarios.push(row);fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify(report,null,2)+'\n');console.log(`${spec.id}: ${spec.frames}f video=${row.videoSha256.slice(0,12)} opaque=${bodyOpaque} attachment=${row.controls.attachmentMaxMm}mm`);
   }
   const allClasses=new Set(report.scenarios.filter(s=>s.weaponClass).map(s=>s.weaponClass));
