@@ -501,35 +501,43 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     familyMat.color.setHSL(hsl.h,Math.min(.58,hsl.s+.08),Math.max(.31,hsl.l+.12));
     familyMat.roughness=.36;familyMat.envMapIntensity=1.35;familyMat.name='actor-beast-wet-chitin';
   }
-  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);presentation.push({bi,mesh,local});};
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
   if(artFamily==='beast'){
-    // A complete quadruped presentation, not an ornament around the humanoid skin. The combat
-    // rig remains the one authority for pose and sockets; its arm chain drives the forelegs and
-    // its leg chain drives the haunches. Local fore/aft offsets reinterpret those chains into a
-    // low four-point stance while every segment still follows the evaluated animation.
-    // The skeleton has spine_00/spine_02 (never spine_01). The former version attached the
-    // thorax to that nonexistent id, silently deleting the creature's defining horizontal
-    // mass and leaving a shiny pelvis with humanoid limbs. Keep the load-bearing volumes on
-    // real trunk bones and deliberately lower the head from the biped rest pose.
-    const slitherBody=tubePath([[0,.00,-.88],[-.07,.03,-.56],[.04,.06,-.16],[-.05,.05,.25],[.03,.02,.62],[0,-.02,.90]],.24,40,12);
-    addPresentation('spine_00',slitherBody,[0,-.11,.04],[1.12,.82,1],[0,0,0],'continuous-slither-body');
-    addPresentation('spine_00',new THREE.SphereGeometry(.27,16,10),[0,-.11,.38],[1.08,.74,1.16],[0,0,0],'shoulder-mass');
-    addPresentation('spine_00',tubePath([[0,0,.38],[0,-.01,.62],[0,-.05,.83]],.145,18,10),[0,-.12,.02],[1,.90,1],[0,0,0],'neck');
-    addPresentation('spine_00',new THREE.DodecahedronGeometry(.21,2),[0,-.17,.96],[1.08,.76,1.34],[0,0,0],'skull');
-    addPresentation('spine_00',new THREE.ConeGeometry(.115,.40,10),[0,-.20,1.22],[1,.70,1],[Math.PI/2,0,0],'muzzle');
+    // The slitherfang is a low, weight-bearing animal with different widths at ribcage, loin,
+    // neck and tail. A constant-radius TubeGeometry made it a glossy capsule. Overlapping closed
+    // masses give it scapulae, a tapered waist and a descending tail, while the combat rig remains
+    // the sole pose authority. Limb pieces below ride upper/lower/terminal bones separately so a
+    // lunge bends at shoulder, wrist, hip and hock rather than translating four glued pegs.
+    addPresentation('spine_00',new THREE.SphereGeometry(.30,18,12),[0,-.10,.28],[1.18,.78,1.42],[0,0,0],'ribcage');
+    addPresentation('pelvis',new THREE.SphereGeometry(.27,16,10),[0,.03,-.20],[1.02,.80,1.30],[0,0,0],'haunch-mass');
+    addPresentation('spine_00',new THREE.SphereGeometry(.22,14,9),[0,-.11,-.10],[.90,.72,1.32],[0,0,0],'tapered-loin');
+    addPresentation('spine_02',new THREE.CapsuleGeometry(.135,.34,6,12),[0,-.18,.27],[1,.80,1],[Math.PI/2,0,0],'neck');
+    addPresentation('spine_02',new THREE.DodecahedronGeometry(.20,2),[0,-.19,.60],[1.12,.80,1.40],[0,0,0],'wedge-skull');
+    addPresentation('spine_02',new THREE.SphereGeometry(.145,14,9),[0,-.245,.79],[.78,.55,1.42],[0,0,0],'muzzle-mass');
+    addPresentation('spine_02',new THREE.BoxGeometry(.19,.045,.32),[0,-.32,.78],[1,1,1],[.08,0,0],'lower-jaw');
+    // Three diminishing, slightly offset tail sections avoid the pipe silhouette and carry the
+    // pelvis motion through a heavy base into a narrow terminal whip.
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.16,.36,6,11),[.015,.00,-.49],[1,.84,1],[Math.PI/2-.10,0,.03],'tail-base');
+    addPresentation('pelvis',new THREE.CapsuleGeometry(.105,.40,6,10),[-.025,-.055,-.80],[1,.82,1],[Math.PI/2-.20,.05,-.06],'tail-mid');
+    addPresentation('pelvis',new THREE.ConeGeometry(.082,.48,9),[.035,-.13,-1.11],[1,1,1],[-Math.PI/2+.28,.04,.08],'tail-whip');
     const eyeMat=mats.bone.clone();eyeMat.color.setHex(0xd3b957);eyeMat.emissive.setHex(0x5a3108);eyeMat.emissiveIntensity=.7;
-    for(const sx of [-1,1])addPresentation('spine_00',new THREE.SphereGeometry(.030,10,7),[sx*.110,-.12,1.14],[1,.72,.58],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
+    for(const sx of [-1,1])addPresentation('spine_02',new THREE.SphereGeometry(.032,10,7),[sx*.118,-.145,.715],[1,.78,.62],[0,0,0],`eye-${sx<0?'l':'r'}`,eyeMat);
     for(const sx of [-1,1]){
-      addPresentation('spine_00',new THREE.ConeGeometry(.026,.13,6),[sx*.065,-.30,1.37],[1,1,1],[Math.PI/2,0,sx*.08],`fang-${sx<0?'l':'r'}`,mats.bone);
-      // Short splayed legs stay on the trunk frame. This creature's authored locomotion is a
-      // slither with stabilising feet; humanoid arm animation no longer turns forelegs into
-      // waving antlers during attacks.
-      addPresentation('spine_00',new THREE.CapsuleGeometry(.075,.26,5,9),[sx*.26,-.27,.38],[1,1,.82],[0,0,sx*.52],`foreleg-${sx<0?'l':'r'}`);
-      addPresentation('spine_00',new THREE.SphereGeometry(.085,10,7),[sx*.38,-.43,.42],[1.45,.48,1.18],[0,0,0],`foreclaw-${sx<0?'l':'r'}`);
-      addPresentation('spine_00',new THREE.CapsuleGeometry(.090,.30,5,10),[sx*.28,-.25,-.46],[1,1,.88],[0,0,sx*.48],`hindleg-${sx<0?'l':'r'}`);
-      addPresentation('spine_00',new THREE.SphereGeometry(.10,10,7),[sx*.41,-.44,-.48],[1.48,.50,1.24],[0,0,0],`hindclaw-${sx<0?'l':'r'}`);
+      const side=sx<0?'l':'r';
+      addPresentation('spine_02',new THREE.ConeGeometry(.025,.14,7),[sx*.070,-.31,.94],[1,1,1],[Math.PI/2,0,sx*.08],`fang-${side}`,mats.bone);
+      // These segments share the trunk bone intentionally. The biped's shoulder/hip rest
+      // offsets are metres above the beast's low body and produced disconnected feet even when
+      // transformed coherently. Connected local chains supply the quadruped's true attachment
+      // points while the bounded lunge deformation below moves the complete chain together.
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.070,.20,5,9),[sx*.235,-.255,.40],[1,.92,.86],[0,0,sx*.52],`fore-upper-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.052,.17,5,9),[sx*.345,-.405,.43],[1,.96,.84],[0,0,-sx*.16],`fore-lower-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.076,11,7),[sx*.37,-.515,.50],[1.42,.42,1.30],[0,0,0],`fore-paw-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.115,12,8),[sx*.225,-.22,-.35],[1.12,1.32,1.18],[0,0,0],`hind-haunch-${side}`);
+      addPresentation('spine_00',new THREE.CapsuleGeometry(.065,.22,5,9),[sx*.365,-.39,-.43],[1,.96,.88],[0,0,sx*.22],`hind-hock-${side}`);
+      addPresentation('spine_00',new THREE.SphereGeometry(.085,11,7),[sx*.42,-.515,-.50],[1.55,.45,1.48],[0,0,0],`hind-paw-${side}`);
+      for(let toe=-1;toe<=1;toe++)addPresentation('spine_00',new THREE.ConeGeometry(.016,.12,6),[sx*.42+toe*.032,-.525,-.39-Math.abs(toe)*.018],[1,1,1],[Math.PI/2,0,0],`hind-toe-${side}-${toe+1}`,mats.bone);
     }
-    for(let i=0;i<7;i++)addPresentation('spine_00',new THREE.ConeGeometry(.060-i*.005,.22-i*.014,7),[0,.12,-.48+i*.18],[1,1,1],[-Math.PI/2-.18,0,0],`dorsal-${i}`);
+    for(let i=0;i<7;i++)addPresentation(i<3?'pelvis':'spine_00',new THREE.ConeGeometry(.062-i*.005,.21-i*.013,7),[(i%2?1:-1)*.018,.13,-.40+i*.17],[1,.72,1],[-Math.PI/2-.18,0,(i%2?1:-1)*.12],`dorsal-${i}`);
   }else if(artFamily==='undead'){
     // Use the declared upper-spine bone. A typo to spine_01 previously suppressed every rib,
     // making this family merely a brown humanoid. The staggered open arcs, sternum, exposed
@@ -1082,7 +1090,20 @@ export function poseFromRig(group, body, water) {
   }
 
   if(S.equipment){const set=Number(body.equipLoadPct||0)<30?'reed':Number(body.equipLoadPct||0)<70?'chitin':'xanmeer';for(const p of S.equipment){p.mesh.visible=!creatureOnly&&p.set===set;if(!p.mesh.visible)continue;const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
-  if(S.presentation){for(const p of S.presentation){const s=rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=s[10];e[14]=s[11];e[15]=1;p.mesh.matrix.multiply(p.local);p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;}}
+  if(S.presentation){
+    const beastRoot=creatureOnly?rig.world[0]:null,beastBaseY=creatureOnly?((body.pos&&body.pos[1])||beastRoot[10]):0;
+    // Beast animation is presentation deformation of one coherent quadruped, not a reuse of the
+    // biped limb arcs. Root/yaw/translation and fixed-step action timing still come directly from
+    // the combat rig. A lunge compresses the body then extends head/tail/feet by bounded local
+    // offsets; every part remains in the same root frame, so no foot or dorsal plate can detach.
+    const attackPhase=creatureOnly&&body.move?Math.sin(Math.min(1,Math.max(0,Number(body.animFrame||0)/Math.max(1,Number(body.move.total||body.move.total_frames||60))))*Math.PI):0;
+    for(const p of S.presentation){
+      const s=beastRoot||rig.world[p.bi],e=p.mesh.matrix.elements;e[0]=s[0];e[1]=s[3];e[2]=s[6];e[3]=0;e[4]=s[1];e[5]=s[4];e[6]=s[7];e[7]=0;e[8]=s[2];e[9]=s[5];e[10]=s[8];e[11]=0;e[12]=s[9];e[13]=creatureOnly?beastBaseY:s[10];e[14]=s[11];e[15]=1;
+      p.mesh.matrix.multiply(creatureOnly?p.rootLocal:p.local);
+      if(creatureOnly){const label=p.mesh.name,front=/skull|muzzle|jaw|eye|fang|neck/.test(label),tail=/tail/.test(label),paw=/paw|toe|hock|upper|lower|haunch/.test(label),forward=(front?.38:tail?-.18:paw?.08:0)*attackPhase,down=(front?.06:0)*attackPhase;p.mesh.matrix.elements[12]+=s[2]*forward-s[1]*down;p.mesh.matrix.elements[13]+=s[5]*forward-s[4]*down;p.mesh.matrix.elements[14]+=s[8]*forward-s[7]*down;}
+      p.mesh.matrixWorld.copy(p.mesh.matrix);p.mesh.matrixWorldNeedsUpdate=false;
+    }
+  }
 
   // Offhand surface follows the evaluated left hand in every gait, guard, reaction and swap.
   const shieldVisible=!creatureOnly&&!!body.shield&&!body.twoHanded&&body.offhandKind!=='weapon'&&body.offhandKind!=='catalyst';
