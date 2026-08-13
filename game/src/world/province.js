@@ -278,7 +278,7 @@ function terrainGeologyGeometry(kind){
     case 'wreck-dunes':
       ico(0,0,0,1.42,.22,.62);box(-.28,.13,.02,1.72,.16,.18,.18);box(.46,.08,-.16,.84,.13,.14,-.28);break;
     case 'salt-tusks':
-      ico(0,0,0,.76,.18,.58);cyl(-.30,.10,.02,.03,.21,.78,6,0,-.23);cyl(.28,.08,-.12,.025,.16,.58,6,0,.31);break;
+      ico(0,0,0,.76,.18,.58);cyl(-.30,.10,.02,.03,.21,.52,6,0,-.23);cyl(.28,.08,-.12,.025,.16,.38,6,0,.31);break;
     case 'basalt-steps':
       cyl(-.32,0,.05,.61,.70,.28,6,.08);cyl(.28,0,-.12,.55,.63,.42,6,.20);cyl(.06,0,.46,.38,.46,.22,6,-.11);break;
     case 'wind-shells':
@@ -720,12 +720,16 @@ export class Province {
     const f=this.field,step=GEOLOGY_LATTICE_M,n=Math.ceil(GEOLOGY_RADIUS_M/step);
     const gx0=Math.floor((x-GEOLOGY_RADIUS_M)/step),gz0=Math.floor((z-GEOLOGY_RADIUS_M)/step);
     const buckets=new Map(),m=new THREE.Matrix4(),q=new THREE.Quaternion(),v=new THREE.Vector3(),s=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);
+    // density, horizontal grammar scale, vertical scale, admitted water depth, cluster scale.
+    // The first hardware atlas rejected the original small/dense values: they read as repeated
+    // trinkets (especially wind shells) rather than a landform hierarchy. Fewer, broader founded
+    // clusters carry the same instance budget with clearer negative space and regional rhythm.
     const profiles={
-      'root-hummocks':[.72,1.08,.88,.16],'kiln-shelves':[.54,1.10,.90,.03],'tidal-ridges':[.64,1.22,.82,.12],
-      'drowned-hollows':[.58,1.05,.88,.42],'sap-fan-rises':[.57,1.18,.78,.14],'wax-cell-mounds':[.68,.92,1.05,.04],
-      'wreck-dunes':[.48,1.28,.82,.10],'salt-tusks':[.44,.96,1.08,.02],'basalt-steps':[.62,.98,1.10,.01],
-      'wind-shells':[.38,1.08,.82,.01],'thorn-islands':[.63,1.08,.94,.20],'cliff-buttresses':[.56,1.02,1.06,.01],
-      'braided-channels':[.66,1.24,.75,.18],
+      'root-hummocks':[.34,1.55,.72,.16,1.30],'kiln-shelves':[.27,1.70,.72,.03,1.28],'tidal-ridges':[.34,1.82,.62,.12,1.34],
+      'drowned-hollows':[.31,1.55,.68,.42,1.25],'sap-fan-rises':[.29,1.76,.62,.14,1.30],'wax-cell-mounds':[.35,1.45,.78,.04,1.26],
+      'wreck-dunes':[.25,1.90,.60,.10,1.36],'salt-tusks':[.31,1.65,.88,.02,1.38],'basalt-steps':[.33,1.54,.78,.01,1.28],
+      'wind-shells':[.18,1.82,.62,.01,1.46],'thorn-islands':[.32,1.62,.70,.20,1.28],'cliff-buttresses':[.29,1.62,.78,.01,1.30],
+      'braided-channels':[.34,1.92,.58,.18,1.34],
     };
     for(let iz=0;iz<=n*2;iz++)for(let ix=0;ix<=n*2;ix++){
       const cx=gx0+ix,cz=gz0+iz,px=(cx+hash2(cx,cz,6413))*step,pz=(cz+hash2(cx,cz,6419))*step;
@@ -734,14 +738,14 @@ export class Province {
       if(this.settlementAt(px,pz,10))continue;
       const ri=f.regionIndexAt(px,pz),r=f.regions[ri],art=regionArt(r.id),profile=profiles[art.terrain];
       if(!profile)throw new Error(`W1-30 missing geology profile '${art.terrain}'`);
-      const [density,wide,tall,waterM]=profile;
+      const [density,wide,tall,waterM,cluster]=profile;
       if(f.depthAt(px,pz)>waterM)continue;
       const patch=.52+.78*smoothstep(.32,.69,fbm(px/31,pz/31,6421,3));
       if(hash2(cx,cz,6427)>=density*patch)continue;
       let b=buckets.get(ri);
       if(!b){b={ri,art,xf:[]};buckets.set(ri,b);}
       if(b.xf.length>=MAX_GEOLOGY)continue;
-      const fade=1-smoothstep(GEOLOGY_RADIUS_M-18,GEOLOGY_RADIUS_M,d),scale=(.55+hash2(cx,cz,6431)*.30)*(.70+.30*fade);
+      const fade=1-smoothstep(GEOLOGY_RADIUS_M-18,GEOLOGY_RADIUS_M,d),scale=cluster*(.72+hash2(cx,cz,6431)*.28)*(.70+.30*fade);
       q.setFromAxisAngle(up,hash2(cx,cz,6433)*Math.PI*2);
       v.set(px,this._meshY(px,pz)+.018+this._skinLift(px,pz),pz);
       s.set(scale*wide,scale*tall,scale/Math.sqrt(wide));m.compose(v,q,s);b.xf.push(m.clone());
@@ -1102,7 +1106,11 @@ export class Province {
       push('under', tag==='tile'?'underFar':'under', this.regionMats[ri].under, base + noise2(x * 5, z * 5, 7801) * variation, 0, null, 7789);
     }
     if (settlementClear && rolls[2] < dens.rock * cellArea / 100) {
-      push('rock', 'rock', this.regionMats[ri].rock, p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1, null, 7789);
+      // Ordinary scatter is texture, not the regional landform. Its former spherical scale made
+      // Crimson Coast and Valus fields a wall of 3–5 m angular dice and hid the new middle-scale
+      // ridges/buttresses. Bound its footprint and flatten it into founded talus; the authored
+      // geology layer above now owns larger composition.
+      push('rock', 'rock', this.regionMats[ri].rock, Math.min(1.65,p.rock.scale) * (0.42 + noise2(x * 7, z * 7, 7817)*.58), 0.06, null, 7789);
     }
   }
 
@@ -2102,6 +2110,16 @@ export class Province {
       case 'underFar': {
         const h=p.under.h,w=p.under.shape==='crust'?1.25:p.under.shape==='comb'?1.05:Math.max(.38,h*.35),parts=[];
         for(let i=0;i<3;i++){const a=i*Math.PI/3,g=new THREE.PlaneGeometry(w,h);g.translate(0,h*.5,0);g.rotateY(a);parts.push(g);}
+        geo=mergeAll(parts);break;
+      }
+      case 'rock': {
+        // Founded talus rather than unit octahedra: a wide, low cluster catches light across its
+        // material surface and cannot become a field of upright dice when region scale is high.
+        const parts=[];
+        for(let i=0;i<3;i++){
+          const a=i*2.13+.31,g=new THREE.IcosahedronGeometry(1,0),rr=.48+.11*((i+1)%3);
+          g.scale(rr,.20+.035*i,rr*(.66+.10*(i%2)));g.rotateY(a*.37);g.translate(Math.sin(a)*.34,.12,Math.cos(a)*.28);parts.push(g);
+        }
         geo=mergeAll(parts);break;
       }
       // The ordinary underfoot material. Unit geometry, authored at its declared height, kept

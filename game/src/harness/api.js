@@ -407,6 +407,12 @@ export function installHarness(engine, bootPromise) {
       return engine.sim.inventory.find((r) => r.id === item);
     },
     getProvinceStats() { return engine.getProvinceStats(); },
+    /** W1-30 visual delete arm: cut only the constructed regional geology and rebuild its disc. */
+    __w1_30_drawGeology(on) {
+      const p=engine.renderer?.province;if(!p)throw new Error('__w1_30_drawGeology: no province is loaded');
+      p.drawGeology=!!on;p.geologyAt=null;const instances=p.updateGeology(p.focus[0],p.focus[1]);
+      return {drawGeology:p.drawGeology,instances,stats:p.stats()};
+    },
     walkRoute(opts) { return engine.walkRoute(opts); },
     walkPath(points, opts) { return engine.walkPath(points, opts || {}); },
     streamAround(x, z, budget) {
