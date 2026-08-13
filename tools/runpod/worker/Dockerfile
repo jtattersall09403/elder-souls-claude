@@ -17,4 +17,5 @@ RUN install -d -m 0755 /etc/apt/keyrings \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Keep the RunPod base image's /start.sh entrypoint: it starts sshd and preserves Pod access.
+# The CLI deliberately supplies worker/ssh-entrypoint.sh at Pod creation time, so this image does
+# not need to bake an API key, SSH public key, or template-specific startup command into a layer.

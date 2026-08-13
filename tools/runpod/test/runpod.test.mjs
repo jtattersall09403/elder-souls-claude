@@ -15,7 +15,7 @@ test('offer normalization and selection enforce allowlist, capacity, cloud, and 
     },
     {
       id: 'fallback', displayName: 'Fallback', memoryInGb: 16, secureCloud: true, communityCloud: false,
-      secure: { stockStatus: 'Medium', uninterruptablePrice: 0.19, availableGpuCounts: [1] },
+      secure: { stockStatus: 'Medium', uninterruptablePrice: 0.19, availableGpuCounts: null },
       community: null,
     },
     {
@@ -32,12 +32,17 @@ test('offer normalization and selection enforce allowlist, capacity, cloud, and 
     ['cheap', 'COMMUNITY', 0.12],
     ['fallback', 'SECURE', 0.19],
   ]);
+  assert.equal(selected[1].availableGpuCounts, null);
+  const unavailable = offers.find((offer) => (
+    offer.gpuTypeId === 'fallback' && offer.cloudType === 'COMMUNITY'
+  ));
+  assert.equal(Number.isNaN(unavailable.pricePerHourUsd), true);
 });
 
 test('RunPod REST uses bearer auth and delete treats 404 as already cleaned', async () => {
   const calls = [];
   const client = new RunPodClient({
-    apiKey: 'rpa_test_secret',
+    apiKey: 'unit-test-secret',
     fetchImpl: async (url, options) => {
       calls.push({ url, options });
       return new Response('', { status: 404 });
@@ -46,17 +51,28 @@ test('RunPod REST uses bearer auth and delete treats 404 as already cleaned', as
   await client.deletePod('pod-123');
   assert.equal(calls.length, 1);
   assert.equal(calls[0].url, 'https://rest.runpod.io/v1/pods/pod-123');
-  assert.equal(calls[0].options.headers.Authorization, 'Bearer rpa_test_secret');
+  assert.equal(calls[0].options.headers.Authorization, 'Bearer unit-test-secret');
 });
 
 test('ambiguous create failures are marked uncertain and are never automatically retried', async () => {
   let calls = 0;
   const client = new RunPodClient({
-    apiKey: 'rpa_test_secret',
+    apiKey: 'unit-test-secret',
     fetchImpl: async () => { calls++; throw new Error('socket closed'); },
   });
   await assert.rejects(() => client.createPod({ name: 'unique' }), (error) => error.uncertain === true);
   assert.equal(calls, 1);
+});
+
+test('POST server errors are treated as ambiguous create outcomes', async () => {
+  const client = new RunPodClient({
+    apiKey: 'unit-test-secret',
+    fetchImpl: async () => new Response('{"error":"upstream"}', { status: 503 }),
+  });
+  await assert.rejects(
+    () => client.createPod({ name: 'unique' }),
+    (error) => error.status === 503 && error.uncertain === true,
+  );
 });
 
 test('orphan cleanup scope cannot select manual, foreign-template, or terminated Pods', () => {

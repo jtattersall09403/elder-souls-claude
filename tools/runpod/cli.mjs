@@ -18,6 +18,7 @@ import {
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '../..');
 const CONFIG_PATH = path.join(HERE, 'config.json');
+const SSH_ENTRYPOINT = fs.readFileSync(path.join(HERE, 'worker', 'ssh-entrypoint.sh'), 'utf8');
 const HELP = `
 Safe, temporary RunPod GPU browser test runner.
 
@@ -154,7 +155,7 @@ async function listCommand(args, config) {
     VRAM_GB: offer.memoryInGb,
     USD_hr: Number.isFinite(offer.pricePerHourUsd) ? offer.pricePerHourUsd.toFixed(3) : 'n/a',
     stock: offer.stockStatus,
-    one_GPU: offer.availableGpuCounts.includes(1) ? 'yes' : 'no',
+    one_GPU: offer.availableGpuCounts === null ? 'unknown' : (offer.availableGpuCounts.includes(1) ? 'yes' : 'no'),
     eligible: chooseOffers([offer], { allowedGpuTypes: allowed, cloudTypes: clouds, maxPricePerHourUsd: maxPrice }).length ? 'yes' : 'no',
   })));
 }
@@ -171,7 +172,7 @@ async function doctorCommand(args, config) {
     const template = await client.getTemplate(templateId);
     checks.push({ check: 'RunPod API authentication', ok: true });
     checks.push({ check: 'configured template exists', ok: template?.id === templateId, detail: template?.name });
-    checks.push({ check: 'template is a Pod template', ok: template?.isServerless === false, detail: `isServerless=${template?.isServerless}` });
+    checks.push({ check: 'template is not marked serverless', ok: template?.isServerless !== true, detail: `isServerless=${template?.isServerless ?? 'omitted'}` });
     checks.push({ check: 'template exposes SSH', ok: template?.ports?.includes('22/tcp'), detail: (template?.ports || []).join(', ') });
     checks.push({ check: 'template has no persistent volume', ok: Number(template?.volumeInGb || 0) === 0, detail: `${template?.volumeInGb || 0} GB` });
     checks.push({ check: 'container disk is at least configured size', ok: Number(template?.containerDiskInGb || 0) >= config.containerDiskInGb, detail: `${template?.containerDiskInGb} GB` });
@@ -236,6 +237,19 @@ async function waitForSsh(connection, deadline, log, signal) {
   throw new Error('Pod API was ready but SSH never became reachable; verify the template starts sshd and exposes 22/tcp');
 }
 
+async function recoverPodByName(client, podName, log, attempts = 5) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const pods = await client.listPods().catch((lookupError) => {
+      log(`Pod recovery lookup ${attempt}/${attempts} failed: ${lookupError.message}`, 'stderr');
+      return [];
+    });
+    const recovered = pods.find((item) => item.name === podName);
+    if (recovered) return recovered;
+    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
+  }
+  return null;
+}
+
 function sourcePaths(args, config) {
   const selected = args.onlyPath.length ? args.onlyPath : [...config.snapshotPaths, ...args.include];
   for (const value of selected) {
@@ -270,6 +284,8 @@ async function runCommand(args, config) {
   let artifactsRetrieved = false;
   let error = null;
   let cleanup = { attempted: false, terminated: false };
+  let podName = null;
+  let provisionWasUncertain = false;
   const tempDir = makeTempDir();
   const keyMaterial = await sshKeyMaterial(args.sshKey, tempDir);
   const sshKey = keyMaterial.keyPath;
@@ -330,10 +346,10 @@ async function runCommand(args, config) {
 
   save();
   log(`Run ${id}: hard limits $${maxPrice.toFixed(3)}/hr, ${maxRuntime} minutes, 1 GPU, no persistent volume`);
-  log(`SSH identity: ${keyMaterial.ephemeral ? 'per-run ephemeral key (injected as PUBLIC_KEY)' : sshKey}`);
+  log(`SSH identity: ${keyMaterial.ephemeral ? 'per-run ephemeral key (injected as SSH_PUBLIC_KEY/PUBLIC_KEY)' : sshKey}`);
   try {
     const template = await client.getTemplate(templateId);
-    if (template?.isServerless !== false) throw new Error(`RUNPOD_GPU_TEMPLATE_ID ${templateId} is not a Pod template`);
+    if (template?.isServerless === true) throw new Error(`RUNPOD_GPU_TEMPLATE_ID ${templateId} is a Serverless template, not a Pod template`);
     if (!(template?.ports || []).includes('22/tcp')) throw new Error(`template ${templateId} does not expose 22/tcp; SSH transfer cannot be made safe`);
     if (Number(template?.volumeInGb || 0) !== 0) log(`Template declares ${template.volumeInGb} GB volume; run request overrides it to 0 GB`);
     log(`Template ${template.id}: ${template.name} (${template.imageName}), container disk=${template.containerDiskInGb} GB, volume=0 GB`);
@@ -353,7 +369,7 @@ async function runCommand(args, config) {
     if (!candidates.length) throw new Error(`no allowed one-GPU offers have capacity at or below $${maxPrice.toFixed(3)}/hr`);
     log(`Eligible offers: ${candidates.map((offer) => `${offer.displayName}/${offer.cloudType} $${offer.pricePerHourUsd.toFixed(3)}/hr ${offer.stockStatus}`).join('; ')}`);
 
-    const podName = `${config.podNamePrefix}${id}`;
+    podName = `${config.podNamePrefix}${id}`;
     for (const offer of candidates) {
       if (abortController.signal.aborted) throw abortController.signal.reason;
       log(`Provision attempt: ${offer.gpuTypeId} ${offer.cloudType} at advertised $${offer.pricePerHourUsd.toFixed(3)}/hr`);
@@ -369,25 +385,35 @@ async function runCommand(args, config) {
           interruptible: false,
           supportPublicIp: true,
           ports: [...new Set([...(template.ports || []), '22/tcp'])],
+          dockerEntrypoint: ['bash', '-lc'],
+          dockerStartCmd: [SSH_ENTRYPOINT],
           containerDiskInGb: config.containerDiskInGb,
           volumeInGb: 0,
           minVCPUPerGPU: config.minVcpuPerGpu,
           minRAMPerGPU: config.minRamPerGpu,
-          env: { PUBLIC_KEY: keyMaterial.publicKey },
+          // Current RunPod base images use SSH_PUBLIC_KEY for a per-Pod override. PUBLIC_KEY is
+          // retained for older/custom templates that follow RunPod's documented sshd snippet.
+          env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
         });
       } catch (createError) {
         // A lost POST response can still have created a billable Pod. Adopt it by its unique name.
-        const existing = await client.listPods().catch(() => []);
-        pod = existing.find((item) => item.name === podName) || null;
+        pod = await recoverPodByName(client, podName, log, createError.uncertain ? 5 : 1);
         if (!pod) {
+          if (createError.uncertain) {
+            provisionWasUncertain = true;
+            throw new Error(`Pod create outcome is uncertain; refusing another create and entering name-based cleanup: ${createError.message}`);
+          }
           log(`Offer failed without a Pod: ${createError.message}`, 'stderr');
           continue;
         }
         log(`Provision response was uncertain; recovered Pod ${pod.id} by unique name`, 'stderr');
       }
       if (!pod?.id) {
-        const existing = await client.listPods().catch(() => []);
-        pod = existing.find((item) => item.name === podName) || null;
+        pod = await recoverPodByName(client, podName, log, 5);
+        if (!pod) {
+          provisionWasUncertain = true;
+          throw new Error('Pod create returned no ID; refusing another create and entering name-based cleanup');
+        }
       }
       if (pod?.id) {
         state.selectedOffer = compactOffer(offer);
@@ -464,7 +490,21 @@ async function runCommand(args, config) {
       log('Attempting best-effort artifact retrieval before mandatory Pod cleanup');
       await retrieveArtifacts().catch((retrieveError) => log(`Best-effort artifact retrieval error: ${retrieveError.message}`, 'stderr'));
     }
-    state.cleanup = cleanup = { attempted: Boolean(pod?.id), terminated: false, at: new Date().toISOString(), error: null };
+    if (!pod?.id && provisionWasUncertain && podName) {
+      log(`Resolving uncertain provision outcome for ${podName} before mandatory cleanup`, 'stderr');
+      pod = await recoverPodByName(client, podName, log, 5);
+      if (pod?.id) {
+        state.pod = state.pod || {
+          id: pod.id,
+          name: pod.name || podName,
+          gpuTypeId: pod.gpu?.id || pod.gpuTypeId || null,
+          cloudType: pod.cloudType || null,
+          pricePerHourUsd: Number(pod.costPerHr ?? pod.adjustedCostPerHr),
+        };
+        log(`Recovered uncertain Pod ${pod.id} for mandatory cleanup`, 'stderr');
+      }
+    }
+    state.cleanup = cleanup = { attempted: Boolean(pod?.id) || provisionWasUncertain, terminated: false, at: new Date().toISOString(), error: null };
     if (pod?.id) {
       log(`Terminating Pod ${pod.id} in mandatory cleanup`);
       try {
@@ -478,6 +518,11 @@ async function runCommand(args, config) {
         log(`Recovery: npm run gpu:cleanup -- --pod ${pod.id}`, 'stderr');
         if (!error) error = cleanupError;
       }
+    } else if (provisionWasUncertain) {
+      cleanup.error = `No Pod named ${podName} was visible after repeated recovery checks; run npm run gpu:cleanup immediately`;
+      state.status = 'cleanup_unconfirmed';
+      log(`CRITICAL: ${cleanup.error}`, 'stderr');
+      if (!error) error = new Error(cleanup.error);
     }
     state.cleanup = cleanup;
     state.finishedAt = new Date().toISOString();

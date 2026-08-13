@@ -51,7 +51,13 @@ export class RunPodClient {
           const retryable = response.status === 429 || response.status >= 500;
           const err = new RunPodError(
             `${label} failed with HTTP ${response.status}${text ? `: ${safeBody(text, this.apiKey)}` : ''}`,
-            { status: response.status, details: body },
+            {
+              status: response.status,
+              details: body,
+              // A timeout/rate-limit/server error can arrive after a POST was accepted. Never let
+              // the caller issue a fallback create until it has resolved that ambiguity by name.
+              uncertain: options.method === 'POST' && (response.status === 408 || response.status === 429 || response.status >= 500),
+            },
           );
           if (retryable && attempt < retries) {
             lastError = err;
@@ -157,8 +163,8 @@ export function normalizeOffers(gpuTypes) {
     cloudType: offer.cloudType,
     cloudAvailable: offer.available !== false,
     stockStatus: offer.price?.stockStatus || 'None',
-    pricePerHourUsd: Number(offer.price?.uninterruptablePrice),
-    availableGpuCounts: offer.price?.availableGpuCounts || [],
+    pricePerHourUsd: offer.price?.uninterruptablePrice == null ? Number.NaN : Number(offer.price.uninterruptablePrice),
+    availableGpuCounts: Array.isArray(offer.price?.availableGpuCounts) ? offer.price.availableGpuCounts : null,
   })));
 }
 
@@ -172,7 +178,9 @@ export function chooseOffers(offers, { allowedGpuTypes, cloudTypes, maxPricePerH
     && offer.stockStatus !== 'None'
     && Number.isFinite(offer.pricePerHourUsd)
     && offer.pricePerHourUsd <= maxPricePerHourUsd
-    && offer.availableGpuCounts.includes(1)
+    // RunPod sometimes reports qualitative stock with availableGpuCounts=null. A non-None stock
+    // status is still its documented capacity signal; creation remains the final authority.
+    && (offer.availableGpuCounts === null || offer.availableGpuCounts.includes(1))
   )).sort((left, right) => (
     left.pricePerHourUsd - right.pricePerHourUsd
     || allowedGpuTypes.indexOf(left.gpuTypeId) - allowedGpuTypes.indexOf(right.gpuTypeId)

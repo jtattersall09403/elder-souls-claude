@@ -16,10 +16,14 @@ export RUNPOD_GPU_TEMPLATE_ID='...'
 ```
 
 The API key needs permission to read GPU inventory and templates and to create, read, and delete
-Pods. The configured template must be a Pod template which starts `sshd`, exposes `22/tcp`, uses
-an Ubuntu 24.04 NVIDIA image, has at least a 30 GB container disk, and has no persistent volume.
-The runner injects a unique, ephemeral SSH public key into `PUBLIC_KEY` for every run and deletes
-the private key locally afterward. An existing key can be selected with `--ssh-key` or
+Pods. The configured template must be a Pod template which exposes `22/tcp`, uses an Ubuntu 24.04
+NVIDIA-compatible image, has at least a 30 GB container disk, and has no persistent volume. The
+runner supplies its own minimal `sshd` entrypoint, so a generic base image does not need to start
+SSH itself.
+
+The runner injects a unique, ephemeral SSH public key into RunPod's current `SSH_PUBLIC_KEY` and
+the legacy/custom-template `PUBLIC_KEY` alias for every run, then deletes the private key locally
+afterward. An existing key can be selected with `--ssh-key` or
 `RUNPOD_SSH_KEY` when a template does not support `PUBLIC_KEY`.
 
 Check configuration and see live eligible capacity before spending anything:
@@ -121,15 +125,30 @@ SHA-256 so results cannot silently drift from the tested bytes.
 
 ## Template performance
 
-The existing generic Ubuntu template is supported by `worker/bootstrap.sh`, which installs Node
-22, the repo's pinned Playwright 1.56.1, Chromium, Xvfb, and required libraries on each ephemeral
-Pod. That is the cleanest zero-infrastructure starting point but spends several minutes installing.
+The existing generic Ubuntu template is supported by `worker/ssh-entrypoint.sh` and
+`worker/bootstrap.sh`, which install OpenSSH, Node 22, the repo's pinned Playwright 1.56.1,
+Chromium, Xvfb, and required libraries on each ephemeral Pod. That is the cleanest
+zero-infrastructure starting point but spends several minutes installing.
 
 For repeated runs, build `tools/runpod/worker/Dockerfile`, push it to the owner's container
 registry, and point a no-volume, 30 GB RunPod Pod template at it. The image extends RunPod's Ubuntu
-24.04 CUDA base and preinstalls the browser stack while retaining RunPod's `/start.sh` SSH service.
-Keep `RUNPOD_GPU_TEMPLATE_ID` on the generic template until the purpose-built image passes
+24.04 CUDA base and preinstalls the browser stack. The CLI still supplies its repo-owned SSH
+entrypoint at Pod creation, so the image never contains an SSH credential. Keep
+`RUNPOD_GPU_TEMPLATE_ID` on the generic template until the purpose-built image passes
 `npm run gpu:test`; switching the environment variable is the complete rollback.
+
+## Verified integration
+
+On 2026-08-13 the generic `runpod/base:1.0.3-ubuntu2404` template completed the default smoke on a
+Community RTX A2000 at $0.12/hour. Chromium reported hardware WebGL 2 through NVIDIA/Vulkan, the
+actual game reached its test harness in 16.14 seconds, and the PNG, WebM, browser console, worker
+logs, `nvidia-smi`, and result JSON all returned locally. The full lifecycle took 125.3 seconds
+(under $0.0042 at the selected rate); deletion succeeded and a subsequent API read returned 404.
+The durable verification summary is `reports/runpod-gpu/verification-2026-08-13.md`, and the
+selected screenshot is `docs/shots/2026-08-13-runpod-gpu-browser-smoke.png`.
+
+The generic template is therefore correct and needs no infrastructure change. A purpose-built
+image is only a speed optimization if these runs become frequent.
 
 ## Local self-test
 
