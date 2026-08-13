@@ -359,3 +359,64 @@ facade/threshold construction about 70%; street occupation and composition about
 settlement fidelity about 55–60%; settlement performance repair about 35%. Whole-W1-30 builder
 progress is roughly 55–60%. These are planning estimates, not modern-fidelity or art-direction
 scores, and neither critic-owned 7/10 verdict is claimed.
+
+## Final-builder settlement draw-compression phase (2026-08-13)
+
+The preceding native atlas exposed 1,102–2,989 draw calls in each settlement representative.
+This phase changes only the static shipping submission graph: buildings still retain their named
+record/kit/door groups and collision remains plan-derived, while compatible static meshes are
+submitted through settlement-scope heterogeneous `THREE.BatchedMesh` groups after final world
+placement.
+
+`node tools/render/w1-30-settlement-batching.mjs` is GREEN across all eight settlements and 205
+buildings. Against the previous building-local shipping graph, render meshes fall from 9,990 to
+740 (92.6%) across the population, or 61–110 per settlement. The gate preserves building, kit and
+door identities, logical triangle counts and world bounds. Its explicit delete arm disables the
+settlement pass and restores the 9,990-mesh graph. The aggregate consumes this focused result.
+
+The clean hardware tree is `15133c39fed4acfcfe94262829262a569e8c912c`, snapshot SHA-256
+`b088a0a5f0328fcbac1ab6f8b0fb2187a2566d6f291b82a555b6ddf688becd17`. RunPod run
+`20260813-183712Z-143987` selected Secure Cloud Pod `r9q8df84xy5ila`, an NVIDIA L4 at $0.49/hour.
+The host reported Linux 6.8.0-136-generic, driver 580.178.04 and 23,034 MiB; Chromium
+141.0.7390.37 reported
+`ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)`. The native window,
+seed and reproduction command remain 1280x720, DPR 1, seed 3030 and:
+
+```text
+node tools/render/w1-30-population-atlas.mjs --hardware-gpu --only settlements --width 1280 --height 720 --out "$RUNPOD_ARTIFACT_DIR/settlements"
+```
+
+All eight returned frames were opened at original resolution. They remain populated: facade,
+roof, kit, civic and public-realm geometry did not disappear under batching. The same direct
+inspection also keeps visual composition red—empty Archon/Blackrose foregrounds, Gideon's broad
+walls and oversized roofs, regular path slabs, sparse occupation and Stormhold's blocked near
+view remain plainly visible.
+
+Native draw calls changed as follows; triangles are unchanged from the preceding RTX A5000 atlas:
+
+| Settlement | Previous draws | Batched draws | Reduction | Triangles |
+|---|---:|---:|---:|---:|
+| Archon | 1,102 | 421 | 61.8% | 525,610 |
+| Blackrose | 2,989 | 619 | 79.3% | 737,754 |
+| Gideon | 1,777 | 660 | 62.9% | 879,382 |
+| Helstrom | 2,199 | 836 | 62.0% | 955,055 |
+| Lilmoth | 1,850 | 465 | 74.9% | 576,812 |
+| Soulrest | 1,177 | 582 | 50.6% | 509,792 |
+| Stormhold | 2,039 | 701 | 65.6% | 699,480 |
+| Thorn | 1,425 | 431 | 69.8% | 512,008 |
+
+The aggregate reduction is 67.6% (14,558 to 4,715 calls), but every representative still exceeds
+the intended 350-call settlement budget. This atlas records no frame-time distribution and the L4
+must not be timing-compared with the earlier A5000 or Tesla T4. Performance is improved, not
+closed; remaining world/vegetation/material submissions require separate repair.
+
+Evidence hashes: run ledger `dc417430059b99297dd4c43a84c51f8fa7c01bb4afc192cf842c0d2460c2f208`,
+manifest `339048e2ede5c659fe54f5cd9ab53bc77909d431e21f420abc4a86464f57398f`, worker result
+`ba3019a7c5f2c82612abcaafbeb21fdacccc6b403dbf0877b12eeff5857a4f26`. Frame hashes are recorded
+in the returned manifest. Artifact retrieval completed before Pod and ephemeral template
+`d7z52f2pv7` deletion were both confirmed; the subsequent cleanup dry-run found no managed orphan.
+
+Rough estimates after this phase: settlement graph compression 90%; settlement performance repair
+about 60–65%; settlement visible fidelity remains 55–60%; whole-W1-30 builder progress remains
+roughly 55–60% because this phase improves runtime cost rather than the still-red pixels. No
+critic-owned score is assigned.

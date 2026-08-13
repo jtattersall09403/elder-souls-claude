@@ -91,3 +91,20 @@ The native pixels confirm improved semantic identity, not final adequacy. Large 
 blank facade sides, generic large roofs, regular path slabs, sparse occupation and blocked focal
 views remain builder-red. Draw calls range from 1,102 to 2,989, so Package 2 coverage is preserved
 while settlement visual and performance remediation continues.
+
+## Settlement submission continuation (2026-08-13)
+
+The Package 2 identities now survive a shipping-only settlement-scope `THREE.BatchedMesh` pass.
+All 205 building groups and their kit/door identities remain in the graph, while the complete
+eight-town render mesh population falls from 9,990 to 740. Logical triangle counts and rendered
+bounds are unchanged, and disabling only this pass restores the former graph:
+
+```text
+node tools/render/w1-30-settlement-batching.mjs
+```
+
+A clean Secure Cloud NVIDIA L4/Vulkan atlas (`15133c39`, run `20260813-183712Z-143987`) rendered
+all eight 1280x720 frames GREEN. Direct inspection found no missing settlement population. Actual
+scene draw calls fell from 14,558 to 4,715 in aggregate (67.6%), but the 421–836 per-frame range
+still exceeds the intended 350-call budget. Package 2 breadth remains complete; performance and
+visible settlement quality remain in progress.

@@ -171,3 +171,23 @@ lifecycle evidence remain transient under `/tmp/w1-30-final-8c1d4f7a/` and are n
 
 The whole W1-30 builder estimate is now roughly 55–60%. This is a production-planning estimate,
 not either critic-owned 7/10 verdict.
+
+## Settlement draw-compression / native L4 delta (2026-08-13)
+
+The shipping settlement renderer now batches compatible static geometry after final world
+placement. The focused gate compares the complete eight-town graph against the former
+building-local route and preserves named building/kit/door identities, logical triangles and
+world bounds. It reports 9,990 previous render meshes versus 740 production meshes (92.6% fewer),
+with a delete arm that restores the former graph.
+
+The committed native atlas (`15133c39`, RunPod `20260813-183712Z-143987`) is GREEN on Secure Cloud
+NVIDIA L4/Vulkan at 1280x720, DPR 1. Real draw calls fell 67.6% in aggregate: Archon 421,
+Blackrose 619, Gideon 660, Helstrom 836, Lilmoth 465, Soulrest 582, Stormhold 701 and Thorn 431.
+All eight frames were inspected directly and remain populated. Since every scene is still above
+the intended 350-call budget, and the atlas has no frame-time distribution, the performance row
+remains in progress and builder-red.
+
+The optimization does not change the honest beauty assessment. Empty foregrounds, regular slab
+paths, shallow/blank facade planes, sparse occupation and blocked focal composition remain visible.
+Manifest SHA-256: `339048e2ede5c659fe54f5cd9ab53bc77909d431e21f420abc4a86464f57398f`.
+Pod `r9q8df84xy5ila` and ephemeral template `d7z52f2pv7` were deletion-confirmed after retrieval.
