@@ -872,7 +872,10 @@ function weaponMesh(w, mats) {
   const g = new THREE.Group();
   // Held equipment must remain readable on the shadowed side of the body. These are bounded
   // material variants on the weapon itself, not a full-scene exposure lift.
-  const metal=mats.metal.clone();metal.color.setHex(0xb7bec3);metal.roughness=.29;metal.emissive.setHex(0x101316);metal.emissiveIntensity=.13;metal.name='visual-family:metal:held-weapon';
+  // Broad weapon faces cross the key light several times during an attack. Preserve their
+  // construction on the shadow half of the sweep with a bounded, material-local floor; the
+  // former near-black response erased axe bits, hammer heads and great-blade ridges in motion.
+  const metal=mats.metal.clone();metal.color.setHex(0xd0d6d9);metal.metalness=.68;metal.roughness=.32;metal.emissive.setHex(0x30363a);metal.emissiveIntensity=.24;metal.flatShading=true;metal.needsUpdate=true;metal.name='visual-family:metal:held-weapon';
   const grip=mats.bark.clone();grip.color.setHex(0x765237);grip.roughness=.76;grip.name='visual-family:bark:held-grip';
   if (entry.metal) { const m = new THREE.Mesh(entry.metal, metal); m.castShadow = true; m.receiveShadow=true; g.add(m); }
   if (entry.wood) { const m = new THREE.Mesh(entry.wood, grip); m.castShadow = true; m.receiveShadow=true; g.add(m); }
