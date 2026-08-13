@@ -101,3 +101,24 @@ Transient inspected outputs are `/tmp/w1-30-remediation-proof`,
 `/tmp/w1-30-remediation-town4`, `/tmp/w1-30-remediation-interior`,
 `/tmp/w1-30-remediation-arena` and `/tmp/w1-30-remediation-final`. The last directory includes
 the nine-scene manifest and contact sheet. They are deliberately outside Git.
+
+## GPU continuation ledger (2026-08-13 checkpoint)
+
+Hardware attestation: Chromium 151.0.7922.110, ANGLE D3D11, NVIDIA Tesla T4, native 1280x720.
+SwiftShader evidence is not used for the observations below.
+
+| Population | Native evidence and implemented repair | Honest checkpoint state |
+|---|---|---|
+| Motion and attachments | 37 action cells, 60 f@60, including all 15 weapon classes, locomotion, traversal, combat, swaps, IK, secondary motion and creature motion; opaque-body and attachment-following defects repaired | broad moving coverage complete; further visual polish in progress |
+| Player close-up | torso/limb/head silhouette rebuilt; translucent body and static head ornament behavior covered by motion assertions | improved, still below hero-character reference quality |
+| Creature family | slitherfang anatomy/motion rebuilt and shared family differentiation strengthened | improved; remaining families need close-up polish |
+| Canopy/LOD | compound asymmetric crowns, root construction, shadow waste and far-band continuity repaired | improved; repetition and full boundary polish remain |
+| Interiors | all 115 captured after shared shell, focal-zone and dressing rebuild; literal delete control recorded | population delivered; repetition/occlusion polish remains |
+| Regions | all 13 captured at native resolution after landmark, HDR, residency and material repairs | covered; terrain relief/material richness remain red |
+| Settlements | all eight recaptured from street height after capture/residency repair | diagnostic coverage delivered; architecture and occupation remain red |
+| Water/shore | native stills plus short motion and reflection-delete control; crossed wave field committed | improved but broad banding remains red |
+| Streaming/performance | repeated native boundary motion with timing/counters | functional; p50/p99 and high-draw representatives remain red |
+
+Current builder estimate: about **50-55%** toward the requested whole-game visual bar. This estimate
+weights actual pixels and moving output more heavily than green structural gates. Complete blind
+comparison and both 7/10 judgements remain exclusively critic-owned and are not claimed here.
