@@ -3,7 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
-import { RunPodClient, RunPodError, chooseOffers, isManagedPod } from './lib/api.mjs';
+import {
+  RunPodClient,
+  RunPodError,
+  chooseOffers,
+  isManagedPod,
+  isManagedRuntimeTemplate,
+} from './lib/api.mjs';
 import { provisionPod } from './lib/provision.mjs';
 import {
   commandExists,
@@ -19,6 +25,8 @@ import {
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '../..');
 const CONFIG_PATH = path.join(HERE, 'config.json');
+const SSH_ENTRYPOINT = fs.readFileSync(path.join(HERE, 'worker', 'ssh-entrypoint.sh'), 'utf8');
+const RUNTIME_TEMPLATE_NAME_PREFIX = 'elder-souls-ephemeral-';
 const HELP = `
 Safe, temporary RunPod GPU browser test runner.
 
@@ -180,10 +188,9 @@ async function doctorCommand(args, config) {
     checks.push({ check: 'RunPod API authentication', ok: true });
     checks.push({ check: 'configured template exists', ok: template?.id === templateId, detail: template?.name });
     checks.push({ check: 'template is not marked serverless', ok: template?.isServerless !== true, detail: `isServerless=${template?.isServerless ?? 'omitted'}` });
-    checks.push({ check: 'template exposes SSH', ok: template?.ports?.includes('22/tcp'), detail: (template?.ports || []).join(', ') });
-    checks.push({ check: 'template has no persistent volume', ok: Number(template?.volumeInGb || 0) === 0, detail: `${template?.volumeInGb || 0} GB` });
-    checks.push({ check: 'container disk is at least configured size', ok: Number(template?.containerDiskInGb || 0) >= config.containerDiskInGb, detail: `${template?.containerDiskInGb} GB` });
-    checks.push({ check: 'template image recorded (Ubuntu 24.04 is an operator contract)', ok: Boolean(template?.imageName), detail: template?.imageName });
+    checks.push({ check: 'source template image recorded (Ubuntu 24.04 is an operator contract)', ok: Boolean(template?.imageName), detail: template?.imageName });
+    checks.push({ check: 'ephemeral runtime template exposes SSH', ok: true, detail: '22/tcp + repo-owned ssh-entrypoint.sh' });
+    checks.push({ check: 'ephemeral runtime template has no persistent volume', ok: true, detail: `0 GB; ${config.containerDiskInGb} GB container disk` });
   } catch (error) {
     checks.push({ check: 'RunPod API authentication/template lookup', ok: false, detail: error.message });
   }
@@ -194,20 +201,65 @@ async function doctorCommand(args, config) {
 async function cleanupCommand(args, config) {
   const { apiKey, templateId } = requireEnvironment();
   const client = new RunPodClient({ apiKey });
+  const sourceTemplate = await client.getTemplate(templateId);
+  const templates = await client.listTemplates();
+  const runtimeTemplates = (templates || []).filter((template) => isManagedRuntimeTemplate(template, {
+    templateNamePrefix: RUNTIME_TEMPLATE_NAME_PREFIX,
+    imageName: sourceTemplate?.imageName,
+  }));
+  const runtimeTemplateIds = runtimeTemplates.map((template) => template.id);
   const pods = await client.listPods();
   const matches = (pods || []).filter((pod) => isManagedPod(pod, {
     podNamePrefix: config.podNamePrefix,
     templateId,
+    runtimeTemplateIds,
+    imageName: sourceTemplate?.imageName,
     podId: args.pod,
   }));
-  if (!matches.length) {
-    console.log('No tool-managed orphaned Pods found.');
-    return;
-  }
+  const removedPodIds = new Set();
+  const failures = [];
   for (const pod of matches) {
     console.log(`${args.dryRun ? 'would terminate' : 'terminating'} ${pod.id} ${pod.name} ${pod.gpu?.displayName || ''} $${pod.costPerHr || '?'}/hr`);
-    if (!args.dryRun) await client.deletePod(pod.id);
+    if (args.dryRun) {
+      removedPodIds.add(pod.id);
+      continue;
+    }
+    try {
+      await client.deletePod(pod.id);
+      if (!await confirmPodDeleted(client, pod.id, console.log)) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
+      removedPodIds.add(pod.id);
+    } catch (error) {
+      failures.push(error.message);
+      console.error(`Pod ${pod.id} cleanup failed: ${error.message}`);
+    }
   }
+  const remainingPods = (pods || []).filter((pod) => (
+    pod.desiredStatus !== 'TERMINATED' && !removedPodIds.has(pod.id)
+  ));
+  // If RunPod omitted templateId for another matching live Pod, retain all candidate templates:
+  // deleting the wrong template would make later ownership/recovery less explicit.
+  const hasUnattributedManagedPod = remainingPods.some((pod) => (
+    String(pod.name || '').startsWith(config.podNamePrefix)
+    && (pod.imageName || pod.image) === sourceTemplate?.imageName
+    && !pod.templateId
+  ));
+  const orphanTemplates = hasUnattributedManagedPod ? [] : runtimeTemplates.filter((template) => !remainingPods.some((pod) => (
+    pod.templateId === template.id
+  )));
+  for (const template of orphanTemplates) {
+    console.log(`${args.dryRun ? 'would delete' : 'deleting'} ephemeral template ${template.id} ${template.name}`);
+    if (args.dryRun) continue;
+    try {
+      await client.deleteTemplate(template.id);
+      if (!await confirmTemplateDeleted(client, template.id, console.log)) throw new Error(`template ${template.id} remained visible after deletion checks`);
+    } catch (error) {
+      failures.push(error.message);
+      console.error(`Template ${template.id} cleanup failed: ${error.message}`);
+    }
+  }
+  if (!matches.length && !orphanTemplates.length) console.log('No tool-managed orphaned Pods or templates found.');
+  if (hasUnattributedManagedPod) console.log('Retained ephemeral templates because a live tool-named Pod omitted template identity.');
+  if (failures.length) throw new Error(`cleanup incomplete: ${failures.join('; ')}`);
 }
 
 async function waitForReady(client, podId, deadline, log, signal) {
@@ -260,11 +312,36 @@ async function recoverPodByName(client, podName, log, attempts = 5) {
   return null;
 }
 
+async function recoverTemplateByName(client, templateName, log, attempts = 5) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const templates = await client.listTemplates().catch((lookupError) => {
+      log(`Template recovery lookup ${attempt}/${attempts} failed: ${lookupError.message}`, 'stderr');
+      return [];
+    });
+    const recovered = templates.find((item) => item.name === templateName);
+    if (recovered) return recovered;
+    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
+  }
+  return null;
+}
+
 async function confirmPodDeleted(client, podId, log, attempts = 5) {
   for (let attempt = 1; attempt <= attempts; attempt++) {
     const found = await client.getPod(podId);
     if (!found) {
       log(`Deletion confirmed: subsequent API lookup for Pod ${podId} returned not found`);
+      return true;
+    }
+    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
+  }
+  return false;
+}
+
+async function confirmTemplateDeleted(client, templateId, log, attempts = 5) {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    const found = await client.getTemplate(templateId, { allow404: true });
+    if (!found) {
+      log(`Deletion confirmed: subsequent API lookup for template ${templateId} returned not found`);
       return true;
     }
     if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
@@ -318,6 +395,9 @@ export async function runCommand(args, config, dependencies = {}) {
   let cleanup = { attempted: false, terminated: false };
   let podName = null;
   let provisionWasUncertain = false;
+  let runtimeTemplate = null;
+  let runtimeTemplateName = null;
+  let runtimeTemplateWasUncertain = false;
   const tempDir = makeTempDirImpl();
   const keyMaterial = await sshKeyMaterialImpl(args.sshKey, tempDir);
   const sshKey = keyMaterial.keyPath;
@@ -329,7 +409,8 @@ export async function runCommand(args, config, dependencies = {}) {
     startedAt: startedAt.toISOString(),
     finishedAt: null,
     limits: { maxPricePerHourUsd: maxPrice, maxRuntimeMinutes: maxRuntime, allowedGpuTypes: allowedGpus, cloudTypes: clouds },
-    templateId,
+    sourceTemplateId: templateId,
+    runtimeTemplate: null,
     source: null,
     provisioning: { strategy: null, candidates: [], attempts: [], readinessFailures: [] },
     selectedOffer: null,
@@ -338,6 +419,7 @@ export async function runCommand(args, config, dependencies = {}) {
     commandExitCode: null,
     artifactDir: outputDir,
     cleanup,
+    templateCleanup: { attempted: false, deleted: false, error: null },
     error: null,
   };
   const save = () => writeJson(statePath, state);
@@ -385,7 +467,6 @@ export async function runCommand(args, config, dependencies = {}) {
     if (template?.id !== templateId) throw new Error(`template lookup did not return configured template ${templateId}`);
     if (template?.isServerless === true) throw new Error(`RUNPOD_GPU_TEMPLATE_ID ${templateId} is a Serverless template, not a Pod template`);
     if (!template?.imageName) throw new Error(`template ${templateId} does not declare a container image`);
-    if (!(template?.ports || []).includes('22/tcp')) throw new Error(`template ${templateId} does not expose 22/tcp; SSH transfer cannot be made safe`);
     if (Number(template?.volumeInGb || 0) !== 0) log(`Template declares ${template.volumeInGb} GB volume; run request overrides it to 0 GB`);
     log(`Template ${template.id}: ${template.name} (${template.imageName}), container disk=${template.containerDiskInGb} GB, volume=0 GB`);
 
@@ -406,32 +487,78 @@ export async function runCommand(args, config, dependencies = {}) {
     });
     const candidates = chooseOffers(allOffers, { allowedGpuTypes: allowedGpus, cloudTypes: clouds, maxPricePerHourUsd: maxPrice });
     if (!candidates.length) throw new Error(`no allowed one-GPU offers have capacity at or below $${maxPrice.toFixed(3)}/hr`);
-    state.provisioning.strategy = 'GraphQL podFindAndDeployOnDemand with startSsh=true, one explicit GPU/cloud candidate at a time';
+    state.provisioning.strategy = 'REST gpuTypeIds with gpuTypePriority=availability, grouped by cloud';
     state.provisioning.candidates = candidates.map(compactOffer);
     save();
     log(`Eligible live one-GPU candidates: ${candidates.map((offer) => `${offer.displayName}/${offer.cloudType} $${offer.pricePerHourUsd.toFixed(3)}/hr counts=${offer.availableGpuCounts?.join(',') || 'omitted'} maxUnreserved=${offer.maxUnreservedGpuCount ?? 'omitted'}`).join('; ')}`);
 
+    // RunPod applies a referenced template instead of Pod-level container settings. Put the
+    // repo-owned SSH bootstrap and per-run public key in a private, uniquely named template so
+    // the command cannot be silently replaced by the source image's default CMD. The template is
+    // deleted after its Pod, and ambiguous create responses are recovered by unique name.
+    runtimeTemplateName = `${RUNTIME_TEMPLATE_NAME_PREFIX}${id}`;
+    const runtimeTemplateInput = {
+      name: runtimeTemplateName,
+      category: 'NVIDIA',
+      containerDiskInGb: config.containerDiskInGb,
+      dockerEntrypoint: ['bash', '-c'],
+      dockerStartCmd: [SSH_ENTRYPOINT],
+      env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
+      imageName: template.imageName,
+      isPublic: false,
+      isServerless: false,
+      ports: ['22/tcp'],
+      readme: 'Ephemeral Elder Souls native-GPU smoke template; deleted by the owning run.',
+      volumeInGb: 0,
+      volumeMountPath: '/workspace',
+    };
+    try {
+      runtimeTemplate = await client.createTemplate(runtimeTemplateInput);
+    } catch (templateCreateError) {
+      runtimeTemplateWasUncertain = templateCreateError.uncertain === true;
+      if (!runtimeTemplateWasUncertain) throw templateCreateError;
+      log(`Template create outcome is ambiguous; recovering ${runtimeTemplateName} by unique name before any Pod create`, 'stderr');
+      runtimeTemplate = await recoverTemplateByName(client, runtimeTemplateName, log, 5);
+      if (!runtimeTemplate) throw templateCreateError;
+      log(`Recovered ephemeral runtime template ${runtimeTemplate.id}; no second template create was issued`, 'stderr');
+    }
+    if (!runtimeTemplate?.id) {
+      runtimeTemplateWasUncertain = true;
+      log('Template create returned success without an ID; recovering by unique name before any Pod create', 'stderr');
+      runtimeTemplate = await recoverTemplateByName(client, runtimeTemplateName, log, 5);
+      if (!runtimeTemplate?.id) {
+        throw new RunPodError(`Template create returned no ID; no template named ${runtimeTemplateName} was recoverable and no second create was issued`, {
+          uncertain: true,
+          creationOutcome: 'ambiguous',
+          creationFailureKind: 'invalid-success-response',
+        });
+      }
+    }
+    runtimeTemplateWasUncertain = false;
+    state.runtimeTemplate = {
+      id: runtimeTemplate.id,
+      name: runtimeTemplate.name || runtimeTemplateName,
+      imageName: runtimeTemplate.imageName || template.imageName,
+    };
+    save();
+    log(`Created private ephemeral runtime template ${runtimeTemplate.id}; mandatory deletion follows Pod cleanup`);
+
     let provisioningSequence = 0;
     let remainingCandidates = [...candidates];
     podName = `${config.podNamePrefix}${id}`;
-    log('SSH bootstrap: GraphQL startSsh, image-default ENTRYPOINT/CMD, and per-run public key');
+    log('SSH bootstrap: private per-run template with repo-owned bounded bash -c sshd command');
     const createInput = (batch) => ({
       name: podName,
-      templateId,
+      templateId: runtimeTemplate.id,
       computeType: 'GPU',
       cloudType: batch.cloudType,
       gpuCount: 1,
-      gpuTypeId: batch.gpuTypeIds[0],
+      gpuTypeIds: batch.gpuTypeIds,
+      gpuTypePriority: 'availability',
       interruptible: false,
       supportPublicIp: true,
-      ports: [...new Set([...(template.ports || []), '22/tcp'])],
-      containerDiskInGb: config.containerDiskInGb,
-      volumeInGb: 0,
       minVCPUPerGPU: config.minVcpuPerGpu,
       minRAMPerGPU: config.minRamPerGpu,
-      // SSH_PUBLIC_KEY is RunPod's per-Pod override. Official image startup scripts consume the
-      // platform-provided PUBLIC_KEY, so set both names to the same ephemeral key.
-      env: { SSH_PUBLIC_KEY: keyMaterial.publicKey, PUBLIC_KEY: keyMaterial.publicKey },
     });
     while (remainingCandidates.length) {
       provisioningSequence++;
@@ -443,9 +570,7 @@ export async function runCommand(args, config, dependencies = {}) {
           candidates: remainingCandidates,
           podName,
           createInput,
-          createPod: (input) => client.createGpuPodWithSsh(input),
           cloudPriority: clouds,
-          individualOffers: true,
           recoverPodByName: (attempts) => recoverPodByName(client, podName, log, attempts),
           log,
           onAttempt: (attempt) => {
@@ -481,9 +606,11 @@ export async function runCommand(args, config, dependencies = {}) {
       log(`Pod ${pod.id} created: ${state.selectedOffer.gpuTypeId}, ${state.selectedOffer.cloudType}, $${actualPrice.toFixed(3)}/hr`);
       if (!Number.isFinite(actualPrice) || actualPrice > maxPrice) throw new Error(`actual Pod price $${actualPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
 
-      const readyDeadline = Math.min(deadline - 60_000, Date.now() + config.readyTimeoutMinutes * 60_000);
+      // Host allocation/image pull and the in-container SSH install are separate bounded phases.
+      // A slow host must not consume the entrypoint's apt/sshd readiness budget.
+      const apiReadyDeadline = Math.min(deadline - 60_000, Date.now() + config.readyTimeoutMinutes * 60_000);
       try {
-        pod = await waitForReadyImpl(client, pod.id, readyDeadline, log, abortController.signal);
+        pod = await waitForReadyImpl(client, pod.id, apiReadyDeadline, log, abortController.signal);
         const readyPrice = Number(pod.costPerHr ?? pod.adjustedCostPerHr ?? state.pod.pricePerHourUsd);
         if (!Number.isFinite(readyPrice) || readyPrice > maxPrice) {
           throw new Error(`running Pod price $${readyPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
@@ -492,7 +619,8 @@ export async function runCommand(args, config, dependencies = {}) {
         save();
         log(`Pod ${pod.id} ready; API-confirmed running price $${readyPrice.toFixed(3)}/hr`);
         connection = { host: pod.publicIp, port: pod.portMappings['22'], keyPath: sshKey, knownHostsPath: path.join(tempDir, 'known_hosts') };
-        await waitForSshImpl(connection, readyDeadline, log, abortController.signal, { runProcessImpl, sshArgsImpl });
+        const sshReadyDeadline = Math.min(deadline - 60_000, Date.now() + config.readyTimeoutMinutes * 60_000);
+        await waitForSshImpl(connection, sshReadyDeadline, log, abortController.signal, { runProcessImpl, sshArgsImpl });
         break;
       } catch (readinessError) {
         if (abortController.signal.aborted) throw readinessError;
@@ -610,6 +738,44 @@ export async function runCommand(args, config, dependencies = {}) {
       state.status = 'cleanup_unconfirmed';
       log(`CRITICAL: ${cleanup.error}`, 'stderr');
       if (!error) error = new Error(cleanup.error);
+    }
+    if (!runtimeTemplate?.id && runtimeTemplateWasUncertain && runtimeTemplateName) {
+      log(`Resolving uncertain template outcome for ${runtimeTemplateName} before mandatory cleanup`, 'stderr');
+      runtimeTemplate = await recoverTemplateByName(client, runtimeTemplateName, log, 5);
+      if (runtimeTemplate?.id) {
+        state.runtimeTemplate = state.runtimeTemplate || {
+          id: runtimeTemplate.id,
+          name: runtimeTemplate.name || runtimeTemplateName,
+          imageName: runtimeTemplate.imageName || null,
+        };
+        log(`Recovered uncertain ephemeral template ${runtimeTemplate.id} for mandatory cleanup`, 'stderr');
+      }
+    }
+    state.templateCleanup = {
+      attempted: Boolean(runtimeTemplate?.id) || runtimeTemplateWasUncertain,
+      deleted: false,
+      at: new Date().toISOString(),
+      error: null,
+    };
+    if (runtimeTemplate?.id) {
+      log(`Deleting ephemeral runtime template ${runtimeTemplate.id} after Pod cleanup`);
+      try {
+        await client.deleteTemplate(runtimeTemplate.id);
+        state.templateCleanup.deleted = await confirmTemplateDeleted(client, runtimeTemplate.id, log);
+        if (!state.templateCleanup.deleted) throw new Error(`template ${runtimeTemplate.id} remained visible after deletion checks`);
+        log(`Ephemeral runtime template ${runtimeTemplate.id} deleted and absence confirmed`);
+      } catch (templateCleanupError) {
+        state.templateCleanup.error = templateCleanupError.message;
+        state.status = 'cleanup_failed';
+        log(`CRITICAL: Ephemeral template ${runtimeTemplate.id} cleanup failed: ${templateCleanupError.message}`, 'stderr');
+        log('Recovery: npm run gpu:cleanup', 'stderr');
+        if (!error) error = templateCleanupError;
+      }
+    } else if (runtimeTemplateWasUncertain) {
+      state.templateCleanup.error = `No template named ${runtimeTemplateName} was visible after repeated recovery checks; run npm run gpu:cleanup immediately`;
+      state.status = 'cleanup_unconfirmed';
+      log(`CRITICAL: ${state.templateCleanup.error}`, 'stderr');
+      if (!error) error = new Error(state.templateCleanup.error);
     }
     state.cleanup = cleanup;
     state.finishedAt = new Date().toISOString();

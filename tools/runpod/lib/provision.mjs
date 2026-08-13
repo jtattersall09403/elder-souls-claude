@@ -4,24 +4,7 @@ function unique(values) {
   return [...new Set(values)];
 }
 
-export function buildProvisioningBatches(candidates, cloudPriority = [], { individualOffers = false } = {}) {
-  if (individualOffers) {
-    return candidates.map((offer) => ({
-      cloudType: offer.cloudType,
-      offers: [offer],
-      gpuTypeIds: [offer.gpuTypeId],
-      cheapestPricePerHourUsd: offer.pricePerHourUsd,
-    })).sort((left, right) => {
-      const leftPriority = cloudPriority.indexOf(left.cloudType);
-      const rightPriority = cloudPriority.indexOf(right.cloudType);
-      if (leftPriority >= 0 || rightPriority >= 0) {
-        if (leftPriority < 0) return 1;
-        if (rightPriority < 0) return -1;
-        if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-      }
-      return left.cheapestPricePerHourUsd - right.cheapestPricePerHourUsd;
-    });
-  }
+export function buildProvisioningBatches(candidates, cloudPriority = []) {
   const byCloud = new Map();
   for (const offer of candidates) {
     if (!byCloud.has(offer.cloudType)) byCloud.set(offer.cloudType, []);
@@ -66,17 +49,13 @@ export async function provisionPod({
   createInput,
   recoverPodByName,
   cloudPriority = [],
-  individualOffers = false,
-  createPod = (input) => client.createPod(input),
   log = () => {},
   onAttempt = () => {},
   signal,
 }) {
-  const batches = buildProvisioningBatches(candidates, cloudPriority, { individualOffers });
+  const batches = buildProvisioningBatches(candidates, cloudPriority);
   if (!batches.length) throw new Error('no eligible provisioning batches');
-  log(individualOffers
-    ? `Provisioning strategy: ${batches.length} explicit GPU/cloud candidate(s), one GraphQL create mutation at a time`
-    : `Provisioning strategy: RunPod availability priority across ${batches.length} cloud batch(es); one POST per cloud at most`);
+  log(`Provisioning strategy: RunPod availability priority across ${batches.length} cloud batch(es); one POST per cloud at most`);
 
   for (const [index, batch] of batches.entries()) {
     if (signal?.aborted) throw signal.reason || new Error('run cancelled');
@@ -90,7 +69,7 @@ export async function provisionPod({
     onAttempt(attempt);
     let pod;
     try {
-      pod = await createPod(createInput(batch));
+      pod = await client.createPod(createInput(batch));
     } catch (error) {
       if (error.creationOutcome === 'definite-non-creation' && error.creationFailureKind === 'capacity') {
         attempt.outcome = 'definite-non-creation';

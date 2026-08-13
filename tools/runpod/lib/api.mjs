@@ -139,7 +139,12 @@ export class RunPodClient {
   }
 
   async graphql(query, variables = {}) {
-    const body = await this.#graphqlBody('RunPod GraphQL query', query, variables);
+    // RunPod's documented GraphQL authentication uses api_key in the query string. Never log URL.
+    const body = await this.#fetch('RunPod GraphQL query', `${GRAPHQL_BASE}?api_key=${encodeURIComponent(this.apiKey)}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+    }, { retries: 2 });
     if (body?.errors?.length) {
       throw new RunPodError(`RunPod GraphQL error: ${body.errors.map((item) => item.message).join('; ')}`, {
         details: body.errors,
@@ -148,17 +153,22 @@ export class RunPodClient {
     return body?.data;
   }
 
-  async #graphqlBody(label, query, variables = {}, { podCreate = false } = {}) {
-    // RunPod's documented GraphQL authentication uses api_key in the query string. Never log URL.
-    return this.#fetch(label, `${GRAPHQL_BASE}?api_key=${encodeURIComponent(this.apiKey)}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ query, variables }),
-    }, { retries: podCreate ? 0 : 2, podCreate });
+  getTemplate(templateId, { allow404 = false } = {}) {
+    return this.rest('GET', `/templates/${encodeURIComponent(templateId)}`, undefined, { allow404 });
   }
 
-  getTemplate(templateId) {
-    return this.rest('GET', `/templates/${encodeURIComponent(templateId)}`);
+  listTemplates() {
+    return this.rest('GET', '/templates');
+  }
+
+  createTemplate(input) {
+    // A lost response can still leave a template containing an ephemeral SSH key. Reuse the
+    // conservative create classification so callers recover by unique name instead of retrying.
+    return this.rest('POST', '/templates', input, { podCreate: true });
+  }
+
+  async deleteTemplate(templateId) {
+    await this.rest('DELETE', `/templates/${encodeURIComponent(templateId)}`, undefined, { allow404: true });
   }
 
   listPods() {
@@ -171,67 +181,6 @@ export class RunPodClient {
 
   createPod(input) {
     return this.rest('POST', '/pods', input);
-  }
-
-  async createGpuPodWithSsh(input) {
-    if (!input?.gpuTypeId) throw new RunPodError('GraphQL GPU Pod create requires exactly one gpuTypeId');
-    const graphInput = {
-      cloudType: input.cloudType,
-      containerDiskInGb: input.containerDiskInGb,
-      env: Object.entries(input.env || {}).map(([key, value]) => ({ key, value })),
-      gpuCount: input.gpuCount,
-      gpuTypeId: input.gpuTypeId,
-      minMemoryInGb: input.minRAMPerGPU,
-      minVcpuCount: input.minVCPUPerGPU,
-      name: input.name,
-      ports: (input.ports || []).join(','),
-      startSsh: true,
-      supportPublicIp: input.supportPublicIp,
-      templateId: input.templateId,
-      volumeInGb: input.volumeInGb,
-    };
-    const body = await this.#graphqlBody('RunPod GraphQL GPU Pod create', `
-      mutation ElderSoulsCreateGpuPod($input: PodFindAndDeployOnDemandInput!) {
-        podFindAndDeployOnDemand(input: $input) {
-          id
-          name
-          imageName
-          desiredStatus
-          costPerHr
-          containerDiskInGb
-          volumeInGb
-          gpuCount
-          memoryInGb
-          vcpuCount
-          ports
-          lastStatusChange
-          env
-          machine { gpuDisplayName location }
-        }
-      }
-    `, { input: graphInput }, { podCreate: true });
-    if (body?.errors?.length) {
-      const message = body.errors.map((item) => item.message).join('; ');
-      const classified = classifyCreateFailure({ details: { message } });
-      throw new RunPodError(`RunPod GraphQL GPU Pod create failed: ${message}`, {
-        details: body.errors,
-        uncertain: classified.outcome === 'ambiguous',
-        creationOutcome: classified.outcome,
-        creationFailureKind: classified.kind,
-      });
-    }
-    const pod = body?.data?.podFindAndDeployOnDemand;
-    if (!pod?.id) {
-      throw new RunPodError('RunPod GraphQL GPU Pod create returned no Pod ID', {
-        details: body,
-        uncertain: true,
-        creationOutcome: 'ambiguous',
-        creationFailureKind: 'invalid-success-response',
-      });
-    }
-    // The mutation accepts one explicit GPU type but does not return its ID. Preserve it so the
-    // same post-create allowlist and price validation used by the REST path remains authoritative.
-    return { ...pod, gpuTypeId: input.gpuTypeId, gpu: { id: input.gpuTypeId } };
   }
 
   async deletePod(podId) {
@@ -308,9 +257,18 @@ export function chooseOffers(offers, { allowedGpuTypes, cloudTypes, maxPricePerH
   ));
 }
 
-export function isManagedPod(pod, { podNamePrefix, templateId, podId } = {}) {
+export function isManagedPod(pod, { podNamePrefix, templateId, runtimeTemplateIds = [], imageName, podId } = {}) {
   if (podId && pod.id !== podId) return false;
+  const knownTemplateIds = new Set([templateId, ...runtimeTemplateIds].filter(Boolean));
+  const identityMatches = knownTemplateIds.has(pod.templateId)
+    || Boolean(imageName && (pod.imageName || pod.image) === imageName);
   return String(pod.name || '').startsWith(podNamePrefix)
-    && (!pod.templateId || pod.templateId === templateId)
+    && identityMatches
     && pod.desiredStatus !== 'TERMINATED';
+}
+
+export function isManagedRuntimeTemplate(template, { templateNamePrefix, imageName } = {}) {
+  return String(template?.name || '').startsWith(templateNamePrefix)
+    && template?.isPublic !== true
+    && (!imageName || template?.imageName === imageName);
 }
