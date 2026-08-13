@@ -49,11 +49,13 @@ pad-run.mjs — play the game on a gamepad alone, and measure the stick.
 USAGE
   node tools/gamepad/pad-run.mjs [--leg all|opening|locomote|screens|curve|consume] [--json PATH]
                                  [--shot PATH] [--name-via ledger|typed] [--timeout MS]
+                                 [--chromium PATH]
 
 OPTIONS
   --leg NAME     which legs to run (comma separated, default: all). One browser for all of them.
   --json PATH    the artifact (default reports/w1-gamepad/pad-run.json)
   --shot PATH    screenshot of a screen opened by the pad
+  --chromium PATH use this discovered Chromium executable
   --break-dir    TEARDOWN: invert the left stick's move_x/move_y axis mapping in the running
                  profile before the curve leg. Distance-only checks stay GREEN and the
                  DIRECTION check must go RED. This is the gap TOOL-COVERAGE-R3 left uncharged
@@ -94,7 +96,7 @@ const out = {
 const pass = (id, w, d) => { out.passes.push(id); say(`  PASS ${id}  ${w}`); out[id] = { ok: true, ...(d || {}) }; };
 const fail = (id, w, d) => { out.failures.push(id); say(`  FAIL ${id}  ${w}`); out[id] = { ok: false, ...(d || {}) }; };
 
-const h = await launchGame({ width: 960, height: 540, timeout: Number(args.timeout || 180000) });
+const h = await launchGame({ ...args, width: 960, height: 540, timeout: Number(args.timeout || 180000) });
 try {
   await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, { timeout: Number(args.timeout || 180000) });
   await h.page.evaluate(() => window.__HARNESS.ready());
@@ -137,6 +139,8 @@ try {
           title_sel: t && t.shown ? (t.options()[t.sel] ? t.options()[t.sel].id : null) : null,
           title_rows: t && t.shown ? t.options().map((r) => r.id) : [],
           ui_mode: e.ui ? e.ui.mode : null,
+          wait_hours: e.ui && e.ui.focus && e.ui.focus.wait ? e.ui.focus.wait.hours : null,
+          clock_hour: e.sim && e.sim.env ? e.sim.env.timeOfDay : null,
           pad_ui_mode: !!(e.real && e.real.pad && e.real.pad.uiMode),
           interior: e.sim.env.interior,
           pos: e.sim.player.pos.slice().map((v) => +v.toFixed(3)),
@@ -490,6 +494,30 @@ try {
       pass('S2', `all ${RING.length} screens CLOSE on the pad, on both close buttons — ${closes.length} of ${closes.length} open-hold-close cycles ended back in the world (index ${B.menu} 'menu' and index ${B.roll} 'roll'/back)`, { cycles: closes.length });
     } else {
       fail('S2', `a screen would not open or close on the pad: ${badClose.map((c) => `${c.want}: opened=${c.opened} after45f=${c.still_open_after_45f} close(${c.close_index})->${c.after}`).join('; ')}`, { bad: badClose });
+    }
+
+    // Wait is not merely another picture in the ring.  Reach it through the same pad-only
+    // route, choose three hours with vertical D-pad, and confirm through the normal UI action.
+    // This is deliberately separate from player-wait-smoke.mjs: that instrument proves the
+    // world-time semantics; this row proves the physical pad translation path reaches them.
+    await closeAll();
+    await tap({ down: [B.menu] }, 4, 8);
+    for (let i = 0; i < 8 && (await modeNow()) !== 'wait'; i++) await tap({ down: [B.swap_right] }, 4, 8);
+    const waitBefore = await W();
+    await tap({ down: [13] }, 4, 8); // W3C D-pad Down; Wait says Up/Down chooses the hours.
+    await tap({ down: [13] }, 4, 8);
+    const waitChosen = await W();
+    await tap({ down: [B.interact] }, 4, 10);
+    const waitAfter = await W();
+    out.pad_wait = { before: waitBefore, chosen: waitChosen, after: waitAfter };
+    const hourDelta = waitBefore.clock_hour == null || waitAfter.clock_hour == null
+      ? null : ((waitAfter.clock_hour - waitBefore.clock_hour + 24) % 24);
+    if (waitBefore.ui_mode === 'wait' && waitBefore.wait_hours === 1 &&
+        waitChosen.ui_mode === 'wait' && waitChosen.wait_hours === 3 &&
+        waitAfter.ui_mode === 'world' && Math.abs(hourDelta - 3) < 0.01) {
+      pass('S2w', `Wait is fully operable on the pad: horizontal D-pad reached it, vertical D-pad selected 3 hours, and confirm advanced the clock by ${hourDelta} hours`, { hour_delta: hourDelta });
+    } else {
+      fail('S2w', `the pad did not complete a 3-hour Wait: mode ${waitBefore.ui_mode}->${waitChosen.ui_mode}->${waitAfter.ui_mode}, selection ${waitBefore.wait_hours}->${waitChosen.wait_hours}, clock delta ${hourDelta}`, out.pad_wait);
     }
 
     const dwelt = pc.rows.filter((r) => r.dwell_frames > 0);

@@ -2001,6 +2001,13 @@ export function horizontalClearance(shapes, x, z) {
   let best = Infinity;
   for (let i = 0; i < shapes.length; i++) {
     const s = shapes[i];
+    // W1-30 added a conservative roof volume to this shared collision set for the camera. It
+    // begins above standing-body height, so the 3-D CollisionCell correctly ignores it for a
+    // player on the doorstep. This helper deliberately projects ground-level wall slabs into
+    // two dimensions; projecting that elevated volume as well would turn every point beneath a
+    // roof's x/z footprint into a fictitious ground collision. The stable id is authored at the
+    // volume's creation site and excludes only that explicitly overhead-only primitive.
+    if (String(s.id || '').endsWith(':roof-camera-solid')) continue;
     const yaw = (s.yaw_deg || 0) * Math.PI / 180;
     const cy = Math.cos(yaw), sy = Math.sin(yaw);
     const rx = x - s.c[0], rz = z - s.c[2];

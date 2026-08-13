@@ -1,0 +1,52 @@
+{
+  "task_id": "W1-19-builder-production-continuation-20260813",
+  "piece_id": "W1-19",
+  "role": "builder",
+  "status": "IN_PROGRESS",
+  "base_commit": "3ae9778a2b96d944e98c3b9f772a9ffe60cc4a9d",
+  "branch": "codex/w1-19-final-production-continuation",
+  "plan": "orchestration/plans/W1-19.md",
+  "files_touched": [
+    "game/src/render/exterior.js",
+    "game/src/ui/system.js",
+    "tools/gamepad/pad-run.mjs",
+    "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/validate-mainline-checkpoint.mjs",
+    "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q17.json",
+    "evidence/W1-19/q-main-17-checkpoint.manifest.json",
+    "evidence/W1-19/q-main-17-production-summary.json",
+    "evidence/W1-19/native-gpu-smoke-production-summary.json",
+    "orchestration/status/W1-19-builder-production-continuation-20260813.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-19-builder-production-continuation-20260813.json",
+    "evidence/W1-19/",
+    "tools/quests/",
+    "tools/experience/",
+    "tools/gamepad/pad-run.mjs",
+    "tools/runpod/",
+    "game/data/quests/",
+    "game/data/dialogue/",
+    "game/src/sim/quest/",
+    "game/src/engine.js",
+    "game/src/render/exterior.js",
+    "game/src/ui/system.js"
+  ],
+  "redundant_with": ["W1-19-builder-production-20260811"],
+  "observations": [
+    "Fresh isolated clone created at /tmp/elder-souls-w1-19-continuation.okfDPG; shared dirty worktrees and unrelated Node/browser/RunPod processes were left untouched.",
+    "PR #167 is merged at 2d39ac33c400f760c8e378bf19671ddd6be31ca9 and is an ancestor of the fetched base. Every base commit after b823e03d was inspected; the continuation preserves PRs #170-#174, including PR #173's robust private runtime-template runner and PR #174's settlement renderer, on base 3ae9778a.",
+    "reports/runs/W1-19-production-continuation/ is ignored. Raw traces, transient saves, video and screenshots remain there; only compact reproducible evidence and the genuine checkpoint are tracked.",
+    "A cross-merge collision consumer defect projected W1-30's elevated roof-camera volume onto the ground and falsely rejected door 114/115. horizontalClearance now excludes only the explicitly labelled overhead primitive; check-building-fits-room passes 115/115 and check-data passes.",
+    "Local syntax and JSON checks pass. Boot capability passes. Content reports 551 resolutions and 1108 topic pairs; quest, data, mainline census/topic supply, schedule access, reveal routing, canon, full opacity, findability, dialogue/prose/save-shape/shipped/corpus/image-reference checks pass with non-empty populations.",
+    "Focused player Wait smoke passes 9/9, including no movement/healing/flask refill and combat refusal. The repaired gamepad screens leg passes 7/7 and uses pad-only horizontal/vertical/confirm inputs to select three hours and advance the clock by 3.001204 hours.",
+    "All pre-Q17 checkpoint manifests reject as expected because the Q17 production quest/input hash changed. The new Q17 checkpoint validates green and its executed validator rejects both fixture tampering and input staleness, then restores green (4 consumer calls, support 2).",
+    "Canonical Q16/Q17 regeneration from the committed Q30 fixture completed Q1-Q17 plus Q30 with no active quest, marker count zero, res_persuade_chapter then nonviolent res_whole_arithmetic, no purse opening, violence, death/respawn, teleport, direct progression/topic/reveal/pose mutation, synthetic spawn or file injection.",
+    "The Q17 document route walked to Gideon Grange, selected 14 hours through inventory -> journal -> sheet -> spells -> map -> wait because the door was within one world hour of closing, advanced day 5 18.71 to day 6 08.71 without moving or restoring resources, entered the open door and read the real compact share book.",
+    "The genuine H.saveState checkpoint is evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q17.json, sha256 b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471. It is stable for 120 clean frames at Gideon with no active quest and zero markers.",
+    "RunPod live controls proved that GraphQL startSsh does not start the stock image's SSH daemon and overrides a runtime-template bootstrap. PR #173 now owns the robust production solution: private per-run SSH bootstrap template, availability-ranked REST create, five-minute bounded readiness, ambiguous-create recovery and Pod-then-template deletion confirmation. Self-test passes 23/23 and doctor passes 11/11.",
+    "Native GPU smoke on the exact reconciled 3ae9778a worktree passed on Secure Pod kux0h6xgo7nj67, NVIDIA RTX A5000 at $0.27/hour: Chromium 141 exposed ANGLE NVIDIA Vulkan 1.4.312, explicitly not SwiftShader, the game reached harness version 2 with zero page exceptions, artifacts transferred, command exited 0, and Pod plus runtime template iz71an3mb1 were deletion-confirmed. All six successful, failed or capacity-only attempts are recorded compactly with hashes and teardown outcomes in the native-GPU summary."
+  ],
+  "blockers": [],
+  "next_step": "Publish and merge the corrected Q17/native-GPU checkpoint milestone, then continue from the committed Q17 state through Q18-Q23 and retain the Act IV boundary checkpoint."
+}

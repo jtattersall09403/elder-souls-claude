@@ -1,43 +1,60 @@
 {
   "schema": "elder-souls/w1-19-production-summary@1",
   "quest": "Q-MAIN-17",
-  "measured_at": "2026-08-13T10:17:41.270Z",
-  "command": "node tools/quests/mainline-chain-floor.mjs --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-act4-q23-r8-no-purse/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-gpu-root-lf/intended-q17-wait-r12d",
+  "measured_at": "2026-08-13T17:50:17.008Z",
+  "command": "node tools/quests/mainline-chain-floor.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30-r2 --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save-r2.json --timeout 1800000",
   "exit": 0,
   "inputs": {
-    "local_resume_sha256": "fd64e196f8c65186c897861076e28c28e050b0db2dd907a5dc7bd41ab97e21b1",
-    "canonical_regeneration_command": "node tools/quests/mainline-chain-floor.mjs --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-gpu-root-lf/intended-q17-from-q30"
+    "q30_fixture": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json",
+    "q30_fixture_sha256": "6c517de3ba81da481e59c708c4fc108011fe27affc975728743425ef286f745d",
+    "canonical_regeneration_command": "node tools/quests/mainline-chain-floor.mjs --chromium <chromium> --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30 --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save.json --timeout 1800000"
   },
   "ignored_outputs": {
-    "report_sha256": "a4f93bdf1d63015efb03cacf23e1662cf7c51e126c57e804876f9a2b6e9ba8b7",
-    "resume_sha256": "ee30aa6f573cfc7bb2ff980b4b9101804defac10c9a3b9c0ee37505494e8d6a9"
+    "report": "reports/runs/W1-19-production-continuation/q17/from-q30-r2/mainline-chain-floor.json",
+    "report_sha256": "1454c6de39cfb023b3d8c7d34d1a45bdfe4279669435fd4230a01ff610ef1971",
+    "resume": "reports/runs/W1-19-production-continuation/q17/q17-current-save-r2.json",
+    "resume_sha256": "b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471"
+  },
+  "checkpoint": {
+    "fixture": "evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q17.json",
+    "fixture_sha256": "b869ed5af522236282d788d7dea9f70723c9b3acda90be79b31829dfb8791471",
+    "manifest": "evidence/W1-19/q-main-17-checkpoint.manifest.json",
+    "validation_exit": 0,
+    "control_exit": 0,
+    "control_consumer_calls": 4,
+    "control_non_zero_support": 2,
+    "tamper_expected_red": "checkpoint invalid: fixture hash mismatch",
+    "stale_expected_red": "checkpoint invalid: quests input hash changed"
   },
   "result": {
     "precompleted": [
       "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
       "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09", "Q-MAIN-10",
       "Q-MAIN-11", "Q-MAIN-12", "Q-MAIN-13", "Q-MAIN-14", "Q-MAIN-15",
-      "Q-MAIN-16", "Q-MAIN-30"
+      "Q-MAIN-30"
     ],
-    "completed": ["Q-MAIN-17"],
-    "resolution": "res_whole_arithmetic",
+    "completed": ["Q-MAIN-16", "Q-MAIN-17"],
+    "quest_16_resolution": "res_persuade_chapter",
+    "quest_17_resolution": "res_whole_arithmetic",
     "active_after": [],
     "arrival_disposition": 14.263157894736842,
     "gate_minimum": 12,
     "arrival_reserve": 2.2631578947368425,
     "purse_openings": 0,
     "violent_resolutions": 0,
-    "deaths": 0,
+    "deaths_or_respawns": 0,
     "teleports": 0,
+    "direct_progression_mutations": 0,
     "marker_count": 0
   },
   "scheduled_document": {
     "interior": "gideon-grange",
     "document": "the-compact-share-book",
     "door_open_hours": [8, 19],
-    "wait_hours_selected": 13,
-    "clock_before": 19.76,
-    "clock_after": 8.76,
+    "wait_reason": "door closes within one world hour",
+    "wait_hours_selected": 14,
+    "clock_before": 18.71,
+    "clock_after": 8.71,
     "day_before": 5,
     "day_after": 6,
     "menu_path": ["inventory", "journal", "sheet", "spells", "map", "wait"],
@@ -58,14 +75,31 @@
     "direct_quest_mutations": 0,
     "direct_pose_mutations": 0,
     "synthetic_spawns": 0,
-    "file_side_progress_injection": 0
+    "file_side_progress_injection": 0,
+    "chain_browser": {
+      "browser": "Chromium 141.0.7390.37",
+      "renderer_class": "deterministic software",
+      "renderer": "ANGLE Vulkan SwiftShader Device (Subzero)",
+      "hardware_gpu_requested": false
+    },
+    "native_gpu_smoke_summary": "evidence/W1-19/native-gpu-smoke-production-summary.json",
+    "native_gpu_smoke_summary_sha256": "7072bfa7a91c57e6c3c8589961fc96b848732461cf01b6cb50e4151476a6a83e"
   },
   "focused_wait_control": {
-    "command": "node tools/quests/player-wait-smoke.mjs --chromium C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --out reports/runs/W1-19-production-gpu-root-lf/player-wait-smoke-r1.json",
+    "command": "node tools/quests/player-wait-smoke.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --out reports/runs/W1-19-production-continuation/cpu/player-wait-smoke.json",
     "exit": 0,
-    "output_sha256": "d097fd35e58539f455bc17a2db842f5da8c3fa931c24bbdc1f12d1dce1a843e2",
+    "output_sha256": "0e6f6ebe222133a25cb339a761a56520b0dcce601f5b4cc497ad5dd65c5c3c38",
     "assertions_green": 9,
     "assertions_total": 9,
     "combat_refusal_green": true
+  },
+  "gamepad_wait_control": {
+    "command": "node tools/gamepad/pad-run.mjs --leg screens --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --json reports/runs/W1-19-production-continuation/cpu/gamepad-screens-post-base.json",
+    "exit": 0,
+    "output_sha256": "c3bea75d9001f463d155ad65de4ae965253ca4b4b2148403c316ae311dfae921",
+    "rows_green": 7,
+    "rows_total": 7,
+    "wait_selected_hours": 3,
+    "clock_delta_hours": 3.001204
   }
 }
