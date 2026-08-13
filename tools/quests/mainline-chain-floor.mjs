@@ -400,7 +400,23 @@ try {
         for (const leg of roads.legs.filter(l=>l.from.toLowerCase()===u||l.to.toLowerCase()===u)) { const v=(leg.from.toLowerCase()===u?leg.to:leg.from).toLowerCase(), nd=dist[u]+leg.built_path_m; if(nd<dist[v]){dist[v]=nd;prev[v]={u,leg};} }
       }
       const hops=[]; let cur=to.id; while(cur!==from.id && prev[cur]) { hops.unshift({from:prev[cur].u,to:cur,leg:prev[cur].leg});cur=prev[cur].u; }
-      const route=[]; let plannerReport={from:from.id,to:to.id,resumed_incoming:!!resumedIncoming};
+      // When a bounded run ends partway along an incoming provincial leg, the geographically
+      // nearest settlement can switch before the body has reached it.  The next graph lookup then
+      // starts at that settlement and omits the still-unwalked suffix, leaving a hundreds-of-metres
+      // beeline across terrain.  Retain that suffix when the live body is close to a different leg
+      // ending at the selected start station.  If the selected first hop is the same leg, the
+      // ordinary nearest-point splice below already resumes it in the forward direction.
+      let bodyRoad=null;
+      for(const leg of roads.legs)for(let i=0;i<leg.points.length;i++){const q=leg.points[i],d=Math.hypot(q[0]-here[0],q[1]-here[2]);if(!bodyRoad||d<bodyRoad.d)bodyRoad={leg,i,d,q};}
+      let incomingPrefix=[];
+      if(bodyRoad&&bodyRoad.d<180&&hops[0]?.leg!==bodyRoad.leg){
+        const a=bodyRoad.leg.from.toLowerCase(),b=bodyRoad.leg.to.toLowerCase();
+        if(a===from.id)incomingPrefix=[...bodyRoad.leg.points.slice(0,bodyRoad.i+1)].reverse();
+        else if(b===from.id)incomingPrefix=bodyRoad.leg.points.slice(bodyRoad.i);
+      }
+      const route=[]; let plannerReport={from:from.id,to:to.id,resumed_incoming:!!resumedIncoming,
+        resumed_leg_suffix:incomingPrefix.length?{leg:bodyRoad.leg.id,nearest_index:bodyRoad.i,nearest_m:+bodyRoad.d.toFixed(2),points:incomingPrefix.length,toward:from.id}:null};
+      for(const q of incomingPrefix)if(!route.length||q[0]!==route.at(-1)[0]||q[1]!==route.at(-1)[1])route.push([q[0],q[1]]);
       for (const h of hops) { const pts=h.leg.from.toLowerCase()===h.from?h.leg.points:[...h.leg.points].reverse(); for(const q of pts) if(!route.length||q[0]!==route.at(-1)[0]||q[1]!==route.at(-1)[1]) route.push([q[0],q[1]]); }
       route.push([x,z]);
       // A resumed production walk starts from the body's saved pose, not from the station it
@@ -628,6 +644,45 @@ try {
         route.splice(lo,hi-lo+1,pick.q);
         encounterDetours.push({post:post.id,encounter:post.encounter,production_placement:post.production_placement,road_distance_m:+near.d.toFixed(2),clearance_m:clearance,required_body_clearance_m:requiredClearance,side:pick.side,waypoint:pick.q,segment_validation:{inbound:pick.inbound,outbound:pick.outbound},alternatives_tested:tested.map(c=>({side:c.side,shoulder:c.shoulder,safe:c.safe,inbound_reason:c.inbound.reason,outbound_reason:c.outbound.reason,min_water_margin_m:c.min_water_margin_m}))});
       }
+      // A local settlement join and a later encounter-grid splice are each connected and safe in
+      // isolation, but their seam can retain a tiny out-and-back.  The Stormhold--Lilmoth resume
+      // produced [1544.0, 1543.5, 1545.5] at one terrain lip: pure pursuit walked that two-metre
+      // reversal forever, accumulating real input distance without ever becoming stationary.
+      // Remove only bounded local loops, and only when the replacement edge independently passes
+      // the same collision, W4/deep-SUCK, slope, grade, and *stronger 35 m* encounter clearance.
+      // This is route cleanup, not movement: the resulting edge is still consumed by walkPath.
+      const routeLength=(pts)=>pts.reduce((sum,q,i)=>i?sum+Math.hypot(q[0]-pts[i-1][0],q[1]-pts[i-1][1]):0,0);
+      const beforeLoopCleanup={points:route.length,length_m:routeLength(route)};
+      const cleanRoute=[];let routeI=0,loopJumps=0;
+      while(routeI<route.length){
+        cleanRoute.push(route[routeI]);
+        let jump=routeI+1;
+        const limit=Math.min(route.length-1,routeI+60);
+        for(let k=limit;k>routeI+1;k--){
+          const a=route[routeI],b=route[k];
+          if(Math.hypot(b[0]-a[0],b[1]-a[1])>7)continue;
+          const staticSafe=sampleSegment(a,b,{x:1e9,z:1e9},0).safe;
+          if(!staticSafe)continue;
+          const dx=b[0]-a[0],dz=b[1]-a[1],d2=dx*dx+dz*dz||1;
+          const clearsEveryObservedPost=encounterCandidates.every(({post})=>{
+            const t=Math.max(0,Math.min(1,((post.x-a[0])*dx+(post.z-a[1])*dz)/d2));
+            return Math.hypot(post.x-(a[0]+dx*t),post.z-(a[1]+dz*t))>=35;
+          });
+          if(clearsEveryObservedPost){jump=k;break;}
+        }
+        if(jump>routeI+1)loopJumps++;
+        routeI=jump;
+      }
+      if(cleanRoute.length){const last=route.at(-1),tail=cleanRoute.at(-1);if(last[0]!==tail[0]||last[1]!==tail[1])cleanRoute.push(last);}
+      if(loopJumps){route.splice(0,route.length,...cleanRoute);}
+      plannerReport.loop_cleanup={
+        algorithm:'bounded-last-point-within-7m-and-production-safe-bridge',window_points:60,
+        before_points:beforeLoopCleanup.points,after_points:route.length,
+        before_m:+beforeLoopCleanup.length_m.toFixed(2),after_m:+routeLength(route).toFixed(2),
+        jumps:loopJumps,collision_clearance_m:.42,water_max_m:.95,
+        saturated_suck_max_m:.4,slope_max_deg:40,grade_max_deg:35,
+        observed_post_clearance_m:35,
+      };
       plannerReport.encounter_detours=encounterDetours;
       plannerReport.encounter_candidates=encounterCandidates.length;
       plannerReport.unsafe_encounter_route=unsafeEncounterRoute;
@@ -1011,8 +1066,29 @@ try {
       // this repairs only the read projection and never moves or respawns the entity.
       if(ent&&!ent.interior&&loc?.pos&&Math.abs(ent.pos?.[0]??Infinity)<100&&Math.abs(ent.pos?.[2]??Infinity)<100)
         ent={...ent,pos:loc.pos.slice(),projection_repaired_from:ent.pos.slice()};
-      const walk = walkTo(ent.pos[0], ent.pos[2], 3.0);
-      return { ok:walk.ok, walk, approach, schedule_entry, entity_pos:ent.pos, location:loc || null };
+      let walk = walkTo(ent.pos[0], ent.pos[2], 3.0),interactionRing=null;
+      // Exterior posts derived from a doorway can sit against the fitted facade.  Walking at the
+      // actor's centre then asks the capsule to overlap the wall (Weeja-Sen stopped 7.73 m away
+      // after reaching Lilmoth).  A player only needs to stand in the visible 2.2 m talk range.
+      // If the centre approach fails, select a collision/water/slope-safe point on that exact
+      // interaction ring and walk there normally; the actor is neither moved nor talked to yet.
+      if(!walk.ok&&!ent.interior){
+        const now=H.whereAmI().pos,candidates=[];
+        for(let k=0;k<32;k++){
+          const a=k*Math.PI/16,q=[ent.pos[0]+Math.sin(a)*2,ent.pos[2]+Math.cos(a)*2];
+          const terrain=H.getTerrainAt(q[0],q[1]),water=H.getWaterAt(q[0],q[1]),solid=H.solidAt(q[0],terrain.y+.9,q[1]);
+          const safe=terrain.slope_deg<=40&&Number(water.depth_m??water.depth??0)<=.95&&!(terrain.substrate==='SUCK'&&Number(water.depth_m??water.depth??0)>.4)&&solid.distance_m>=.42;
+          candidates.push({q,safe,slope_deg:terrain.slope_deg,water_m:Number(water.depth_m??water.depth??0),substrate:terrain.substrate,clearance_m:solid.distance_m,travel_m:Math.hypot(q[0]-now[0],q[1]-now[2])});
+        }
+        const usable=candidates.filter(c=>c.safe).sort((a,b)=>a.travel_m-b.travel_m),attempts=[];
+        for(const candidate of usable.slice(0,8)){
+          const trial=walkTo(candidate.q[0],candidate.q[1],.45),at=H.whereAmI().pos,distance_m=Math.hypot(ent.pos[0]-at[0],ent.pos[2]-at[2]);
+          attempts.push({candidate,walk:trial,distance_m});
+          if(trial.ok&&distance_m<=2.2){walk={...trial,interaction_range_m:distance_m,actor_centre_approach:walk};break;}
+        }
+        interactionRing={production_input:true,radius_m:2,talk_range_m:2.2,candidates,attempts,selected:attempts.find(a=>a.walk.ok&&a.distance_m<=2.2)?.candidate.q||null};
+      }
+      return { ok:walk.ok, walk, approach, schedule_entry, interaction_ring:interactionRing, entity_pos:ent.pos, location:loc || null };
     };
 
     const reachGiver = (questId) => {
