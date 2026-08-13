@@ -218,6 +218,32 @@ const BOOTSTRAP_NPC = 'bone-ladder-carter';
 const STATE = 'soulrest-quay';
 
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
+// Process-side renderer provenance.  A page can monkey-patch WebGL strings; Chromium's browser
+// target cannot.  Preserve the exact launch request and the compact SystemInfo GPU report so a
+// GPU-pod run can distinguish an intentional deterministic SwiftShader chain from a native-GPU
+// render check instead of inferring hardware use from the machine it happened to run on.
+const browserExecution = {
+  browser_version: handle.browser.version(),
+  hardware_gpu_requested: handle.hardwareGpuRequested,
+  chromium_args: handle.chromiumArgs.slice(),
+  system_info: null,
+};
+try {
+  const cdp = await handle.browser.newBrowserCDPSession();
+  const info = await cdp.send('SystemInfo.getInfo');
+  browserExecution.system_info = {
+    gpu_devices: (info.gpu?.devices || []).map((d) => ({
+      vendor_id: d.vendorId, device_id: d.deviceId,
+      vendor_string: d.vendorString, device_string: d.deviceString,
+      driver_vendor: d.driverVendor, driver_version: d.driverVersion,
+    })),
+    aux_attributes: info.gpu?.auxAttributes || null,
+    feature_status: info.gpu?.featureStatus || null,
+  };
+  await cdp.detach();
+} catch (error) {
+  browserExecution.system_info_error = String(error && error.message || error);
+}
 let report;
 try {
   report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS, documentActions, markActions, npcActions, roads, populationPosts, travelStations, chainNames, walkMaxFrames, interiorActions, resumeState, stopAfter, saveWaypoint, stopAtWaypoint, stormShelterDiagnostic }) => {
@@ -1062,10 +1088,12 @@ try {
               if(Number.isFinite(d.open_h)&&Number.isFinite(d.close_h)){
                 const isOpenHour=h=>d.close_h>d.open_h?h>=d.open_h&&h<d.close_h:h>=d.open_h||h<d.close_h;
                 const startHour=H.whereAmI().hour;
-                if(!isOpenHour(startHour)){
+                const closingSoon=d.close_h>d.open_h&&isOpenHour(startHour)&&d.close_h-startHour<1;
+                if(!isOpenHour(startHour)||closingSoon){
                   let hours=Math.ceil(((d.open_h-startHour)%24+24)%24-1e-9);
                   if(hours<1)hours=24;
-                  a.entry_schedule_wait={...productionWait(hours),open_h:d.open_h,close_h:d.close_h};
+                  a.entry_schedule_wait={...productionWait(hours),open_h:d.open_h,close_h:d.close_h,
+                    reason:closingSoon?'door closes within one world hour':'door closed'};
                 }else a.entry_schedule_wait={production_wait:false,hours:0,start_hour:startHour,end_hour:startHour,open_h:d.open_h,close_h:d.close_h};
                 a.entry_schedule_wait.opened=isOpenHour(H.whereAmI().hour);
                 if(!a.entry_schedule_wait.opened)throw new Error(`${d.interior} did not open within one production day`);
@@ -1292,6 +1320,7 @@ const out = {
   tool: 'tools/quests/mainline-chain-floor.mjs',
   schema: 'elder-souls/mainline-chain-floor@1',
   measured_at: new Date().toISOString(),
+  browser_execution: browserExecution,
   sabotage,
   state: STATE,
   bootstrap_npc: sabotage === 'no-bootstrap' ? null : BOOTSTRAP_NPC,
