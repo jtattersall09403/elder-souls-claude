@@ -295,7 +295,7 @@ export class Renderer {
     const black=new THREE.MeshBasicMaterial({color:0x000000,toneMapped:false,fog:false});
     const white=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false,fog:false});
     this.scene.background=new THREE.Color(0x000000);
-    this.scene.traverse(o=>{if(!o.isMesh&&!o.isInstancedMesh)return;saved.push([o,o.material,o.visible]);o.material=String(o.name||'').startsWith('water:')?white:black;});
+    this.scene.traverse(o=>{if(!o.isMesh&&!o.isInstancedMesh)return;saved.push([o,o.material,o.visible]);o.material=/^water:[^:]+$/.test(String(o.name||''))?white:black;});
     this.three.setRenderTarget(null);this.three.render(this.scene,this.camera);
     const url=this.canvas.toDataURL('image/png');
     for(const [o,mat,visible] of saved){o.material=mat;o.visible=visible;}

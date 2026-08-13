@@ -32,10 +32,11 @@ try{
  // Elevated shoreline view keeps the same real wet/dry pair but sees over the dense shipped
  // aquatic understorey. The previous 1.45 m grazing view proved vegetation density while hiding
  // every water pixel, so it could not support the water/material judgement this ledger names.
- const pose=()=>h.h('camera',{pos:[mx-nx*10,y+4.6,mz-nz*10],look:[mx+nx*13,(pair.water.surface_y||y)-.05,mz+nz*13],fov:55,mode:'free'});
+ const pose=()=>h.h('camera',{pos:[mx-nx*8,y+6.8,mz-nz*8],look:[mx+nx*13,(pair.water.surface_y||y)-.05,mz+nz*13],fov:52,mode:'free'});
  await pose();await h.h('renderFrame');const mask=Buffer.from(String(await h.h('screenshotWaterMask')).split(',')[1],'base64');const maskFile=path.join(out,'water-mask.png');fs.writeFileSync(maskFile,mask);report.waterMask={file:maskFile,sha256:sha(mask),source:'live object-id pass over shipping water:* meshes'};
- await sequence('stationary-water-30',30,async()=>{await h.h('setTide','RISING');await pose();});
- await sequence('tide-low-to-high',30,async()=>{await h.h('setTide','LOW');await pose();});await h.h('setTide','HIGH');await sequence('tide-high-settled',12,pose);
+ const stationaryCount=Number(args.stationaryCount||30),tideCount=Number(args.tideCount||30),settledCount=Number(args.settledCount||12);
+ await sequence(`stationary-water-${stationaryCount}`,stationaryCount,async()=>{await h.h('setTide','RISING');await pose();});
+ await sequence('tide-low-to-high',tideCount,async()=>{await h.h('setTide','LOW');await pose();});await h.h('setTide','HIGH');await sequence('tide-high-settled',settledCount,pose);
  report.browser={version:h.browser.version(),chromiumArgs:h.chromiumArgs};report.result=report.errors.length?'RED':'GREEN';
 }finally{await h.close();fs.writeFileSync(path.join(out,'manifest.json'),JSON.stringify(report,null,2)+'\n');}
 console.log(JSON.stringify({result:report.result,site:report.site,sequences:report.sequences.map(s=>({id:s.id,count:s.count,video:s.video}))},null,2));if(report.result!=='GREEN')process.exitCode=1;

@@ -187,8 +187,8 @@ export function worldMaterial(family, options={}) {
           vEsWaterReflectionCoord=uWaterReflectionMatrix*vec4(vEsWaterWorld,1.0);`);
       shader.fragmentShader='uniform float uWaterPhase;\nuniform sampler2D uWaterReflection;\nuniform vec2 uWaterReflectionResolution;\nuniform float uWaterReflectionStrength;\nvarying float vEsWaterWave;\nvarying float vEsWaterShore;\nvarying vec2 vEsWaterXZ;\nvarying vec3 vEsWaterWorld;\nvarying vec4 vEsWaterReflectionCoord;\n'+shader.fragmentShader
         .replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>
-          vec2 esSlope=vec2(cos(vEsWaterXZ.x*.31+uWaterPhase*1.37)*.090 + cos(vEsWaterXZ.y*.83-uWaterPhase*1.71)*.032,
-                            cos(vEsWaterXZ.y*.43-uWaterPhase*.91)*.095 + cos(vEsWaterXZ.x*.71+uWaterPhase*1.43)*.028);
+          vec2 esSlope=vec2(cos(vEsWaterXZ.x*.31+uWaterPhase*1.37)*.105 + cos(vEsWaterXZ.y*.83-uWaterPhase*1.71)*.046 + cos(vEsWaterXZ.x*2.7+vEsWaterXZ.y*1.9-uWaterPhase*2.4)*.022,
+                            cos(vEsWaterXZ.y*.43-uWaterPhase*.91)*.110 + cos(vEsWaterXZ.x*.71+uWaterPhase*1.43)*.042 + cos(vEsWaterXZ.y*2.4-vEsWaterXZ.x*2.1+uWaterPhase*2.0)*.020);
           normal=normalize(normal+vec3(esSlope.x,0.0,esSlope.y));`)
         .replace('#include <color_fragment>',`#include <color_fragment>
           diffuseColor.rgb*=1.03+vEsWaterWave*.045;`)
@@ -202,17 +202,34 @@ export function worldMaterial(family, options={}) {
           vec2 esReflUV=clamp(vEsWaterReflectionCoord.xy/max(.0001,vEsWaterReflectionCoord.w)*.5+.5,vec2(.001),vec2(.999));
           esReflUV+=esSlope*.0015;
           vec3 esReflection=texture2D(uWaterReflection,esReflUV).rgb;
+          // Screen-aligned reflection retains the mirrored bank/sky relationship required at
+          // grazing angles; the projected lookup above supplies local parallax and ripple warp.
+          vec2 esScreenUV=gl_FragCoord.xy/max(uWaterReflectionResolution,vec2(1.0));
+          vec3 esScreenReflection=texture2D(uWaterReflection,esScreenUV+esSlope*.0025).rgb;
+          esReflection=mix(esReflection,esScreenReflection,.62);
           float esCaustic=pow(.5+.5*sin(vEsWaterWorld.x*.72+uWaterPhase*2.3)*sin(vEsWaterWorld.z*.61-uWaterPhase*1.7),3.0);
           float esShimmer=.5+.5*sin(uWaterPhase*5.1+vEsWaterWorld.x*.08-vEsWaterWorld.z*.05);
           float esPulse=sin(uWaterPhase*5.1)*.5+.5;
-          vec3 esSurface=mix(esSky,esReflection,.985*uWaterReflectionStrength);
-          outgoingLight=mix(outgoingLight,esSurface,.46+esFresnel*.52);
+          // Distance raises the grazing response across a broad marsh vista while the actual
+          // view/normal term preserves it on close oblique water. Reflected radiance is colour
+          // graded back into the regional water rather than copied as a white mirror.
+          float esGrazing=max(esFresnel,smoothstep(10.0,52.0,length(vViewPosition))*.72);
+          float esReflLuma=dot(esReflection,vec3(.2126,.7152,.0722));
+          esReflection=mix(esReflection,vec3(esReflLuma*.70,esReflLuma*.83,esReflLuma*.88),.48);
+          vec3 esDepth=vec3(.038,.105,.118)+diffuseColor.rgb*.21;
+          vec3 esSurface=mix(esDepth,esReflection,(.25+esGrazing*.50)*uWaterReflectionStrength);
+          outgoingLight=mix(outgoingLight,esSurface,.68);
           float esRipples=.5+.5*sin(vEsWaterWorld.x*4.7+uWaterPhase*2.1)*sin(vEsWaterWorld.z*4.1-uWaterPhase*1.7);
-          outgoingLight+=vec3(.011,.020,.024)*esCaustic+vec3(.006,.011,.014)*esShimmer+vec3(.020,.034,.041)*esPulse+vec3(.015,.020,.021)*esRipples;
+          float esCapillary=.5+.5*sin(vEsWaterWorld.x*13.7+vEsWaterWorld.z*9.3-uWaterPhase*3.4);
+          float esMicro=.5+.5*sin(vEsWaterWorld.x*26.3-vEsWaterWorld.z*21.7+uWaterPhase*4.7);
+          // Fine terms break the normal/specular lobe; they must not become visible wallpaper.
+          outgoingLight+=vec3(.006,.010,.011)*esCaustic+vec3(.003,.005,.006)*esShimmer+vec3(.006,.010,.012)*esPulse+vec3(.007,.010,.011)*(esRipples-.5)+vec3(.005,.007,.008)*(esCapillary-.5)+vec3(.004,.006,.007)*(esMicro-.5);
           float esShore=smoothstep(.04,.92,vEsWaterShore);
-          outgoingLight=mix(outgoingLight,vec3(.075,.094,.073)+outgoingLight*.12,esShore*.92);
+          float esFoam=esShore*smoothstep(.40,.78,.5+.5*sin(vEsWaterWorld.x*2.3-vEsWaterWorld.z*2.7+uWaterPhase*1.8));
+          outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
+          outgoingLight+=vec3(.095,.105,.082)*esFoam;
           #include <opaque_fragment>`);
-    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v11`;animatedWaterMaterials.add(mat);
+    };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v13`;animatedWaterMaterials.add(mat);
   }
   return mat;
 }
