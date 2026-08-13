@@ -306,3 +306,27 @@ attacks or topic/reveal hand-feeds.
 
 This remains a builder milestone, not an independent verdict. Q16 onward, both endings and the
 backpath, Gate B/C builder observations, remaining controls, cold chains and aggregate remain open.
+
+### Q-MAIN-16/Q-MAIN-17 and player wait continuation
+
+Q-MAIN-16 is retained in the legitimate local continuation and Q-MAIN-17 is now complete as
+`res_whole_arithmetic`. The no-purse character arrived at Ruvela Sath's gate with 14.263 standing
+against the recalibrated minimum 12, leaving 2.263 reserve; no conversation opening was bought.
+The run walked to the fitted Grange doorway, entered after its authored opening time, read
+`the-compact-share-book` through the book UI, returned to the giver, and selected the published
+nonviolent resolution. There were zero session deaths/respawns, teleports, violent resolutions,
+synthetic spawns, direct progression mutations or topic/reveal hand-feeds.
+
+The closed 19:00 Grange exposed that the runner was spending up to 259,200 ordinary fixed frames
+merely to reach morning. The game now has a player-facing `Wait` surface in the existing pause-menu
+ring. Directional input selects 1-24 hours and confirm advances the world calendar; it does not
+move the body, heal, refill flasks, respawn enemies or apply hearth taint. It is absent from the
+combat navigation ring and explicitly refuses a direct combat open. The focused production-input
+smoke passed 9/9 assertions. The Q17 continuation then selected 13 hours through that surface,
+advanced 19:46/day 5 to 08:46/day 6, moved 0 m, and preserved 92 HP and five flasks before the
+Grange admitted the player.
+
+Compact exact results, hashes, commands and the canonical-Q30 regeneration command are in
+`q-main-17-production-summary.json`. This is a builder continuation, not an independent verdict.
+Q18 onward, the first ending, the backpath/alternative ending, remaining controls, cold chains and
+the final builder aggregate remain open.

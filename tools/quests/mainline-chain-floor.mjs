@@ -133,7 +133,7 @@ for (const f of fs.readdirSync(interiorsDir)) {
   interiorActions[d.id] = { interior:d.id, exterior_door:d.exterior_door, exterior_spawn:d.continuity && d.continuity.exterior_spawn, interior_spawn:d.continuity && d.continuity.interior_spawn, exterior_footprint_m:d.continuity && d.continuity.exterior_footprint_m };
   for (const r of Array.isArray(d.readable) ? d.readable : []) {
     const key = Object.keys(knowledgeToBook).find((k) => knowledgeToBook[k] === r.book);
-    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book, exterior_spawn: d.continuity && d.continuity.exterior_spawn, interior_spawn: d.continuity && d.continuity.interior_spawn };
+    if (key) documentActions[key] = { interior: d.id, eid: `interior-readable:${r.id}`, book: r.book, exterior_spawn: d.continuity && d.continuity.exterior_spawn, interior_spawn: d.continuity && d.continuity.interior_spawn, open_h:d.open_h, close_h:d.close_h };
   }
 }
 // Door interaction reads the fitted settlement building table, not the interior record's
@@ -180,7 +180,18 @@ const planFor = (ids) => ids.map((id) => {
   };
 });
 const PREFER = {
-  intended: { 'Q-MAIN-14': 'res_give_it_back', 'Q-MAIN-28': 'res_open_the_count' },
+  intended: {
+    'Q-MAIN-14': 'res_give_it_back',
+    'Q-MAIN-16': 'res_persuade_chapter',
+    'Q-MAIN-17': 'res_whole_arithmetic',
+    'Q-MAIN-18': 'res_walk_the_eleven',
+    'Q-MAIN-19': 'res_expose_the_yard',
+    'Q-MAIN-20': 'res_finding_of_fact',
+    'Q-MAIN-21': 'res_the_eleven',
+    'Q-MAIN-22': 'res_true_reason',
+    'Q-MAIN-23': 'res_sign_the_clause',
+    'Q-MAIN-28': 'res_open_the_count',
+  },
   backpath: { 'Q-MAIN-14': 'res_take_the_skei', 'Q-MAIN-31': 'res_drain_past_the_roots' },
 };
 const plans = { intended: planFor(INTENDED), backpath: planFor(BACKPATH) };
@@ -228,6 +239,40 @@ try {
       }
       H.clearInputs(); H.stepFrames(2);
       return { attempted:closed, closed:!H.getUIState().dialogue_surface?.open };
+    };
+
+    // Advance the authored world clock through the same pause-menu surface and input actions a
+    // player uses. The simulation frame is intentionally paused while the menu is open, so each
+    // down/up edge is queued at f:0 and consumed on a separate render tick.
+    const productionWait = (hours) => {
+      const wanted=Math.max(1,Math.min(24,Math.floor(Number(hours)||1)));
+      const before={where:H.whereAmI(),stats:H.getPlayerStats(),env:H.getEnvironment(),ui:H.getUIState()};
+      const pos=before.where.pos.slice(),modes=[];
+      const tap=(action)=>{
+        H.queueInputs([{f:0,press:[action]}]);H.stepFrames(1);
+        H.queueInputs([{f:0,release:[action]}]);H.stepFrames(1);
+      };
+      H.clearInputs();H.stepFrames(2);
+      tap('menu');modes.push(H.getUIState().mode);
+      for(let i=0;i<8&&H.getUIState().mode!=='wait';i++){tap('swap_right');modes.push(H.getUIState().mode);}
+      if(H.getUIState().mode!=='wait')throw new Error(`production wait menu unreachable: ${modes.join(' -> ')}`);
+      for(let i=1;i<wanted;i++){
+        H.queueInputs([{f:0,move:[0,-1]}]);H.stepFrames(1);
+        H.queueInputs([{f:0,move:[0,0]}]);H.stepFrames(1);
+      }
+      const selected=H.getUIState();
+      if(selected.focus?.hours!==wanted)throw new Error(`production wait selected ${selected.focus?.hours}, expected ${wanted}`);
+      tap('interact');H.clearInputs();H.stepFrames(2);
+      const after={where:H.whereAmI(),stats:H.getPlayerStats(),env:H.getEnvironment(),ui:H.getUIState()};
+      const moved=Math.hypot(after.where.pos[0]-pos[0],after.where.pos[1]-pos[1],after.where.pos[2]-pos[2]);
+      if(after.ui.mode!=='world')throw new Error(`production wait did not return to world (${after.ui.mode})`);
+      if(moved>1e-6)throw new Error(`production wait moved the body ${moved} m`);
+      if(after.stats.hp!==before.stats.hp||after.stats.estus!==before.stats.estus)throw new Error('production wait restored combat resources');
+      return {production_wait:true,hours:wanted,menu_modes:modes,selected_hours:selected.focus.hours,
+        start_hour:before.where.hour,end_hour:after.where.hour,start_day:before.env.day,end_day:after.env.day,
+        clock_frames_before:before.env.clock_frames,clock_frames_after:after.env.clock_frames,
+        position_delta_m:moved,hp_before:before.stats.hp,hp_after:after.stats.hp,
+        estus_before:before.stats.estus,estus_after:after.stats.estus};
     };
 
     const walkTo = (x, z, reach = 1.0) => {
@@ -779,7 +824,12 @@ try {
           if(H.whereAmI().interior!==ent.interior){H.queueInputs([{f:0,release:['interact','block']}]);H.stepFrames(30);}
         }
         if(H.whereAmI().interior!==ent.interior)return {ok:false,why:`production interact did not enter scheduled ${ent.interior}`,approach,schedule_entry};
-        ent=H.listEntities().find((x)=>x.eid===npcId)||ent;
+        // Entering a scheduled cell refreshes the population projection. Some named actors
+        // still omit `interior` from that fresh list row even though their cell-local pose and
+        // active authored schedule are unambiguous. Re-apply the same schedule inference here;
+        // otherwise the generic stale-cell repair below mistakes the local pose for an exterior
+        // projection and sends an inside player toward the actor's kilometre-scale world post.
+        ent=inferScheduledInterior(H.listEntities().find((x)=>x.eid===npcId))||ent;
         }
       }
       // Scheduled actors leaving an interior can retain their cell-local list projection for one
@@ -1005,6 +1055,21 @@ try {
               a.entry_walk = walkTo(d.exterior_spawn[0], d.exterior_spawn[2], 1.5);
               a.entry_prompt = H.whereAmI().door_in_reach;
               if (!a.entry_walk.ok || !a.entry_prompt || a.entry_prompt.interior !== d.interior) throw new Error(`production door not reachable for ${d.interior}`);
+              // A closed guild still publishes its door prompt, and useDoor then emits an
+              // ordinary `closed` refusal. Q17 reaches Gideon's Grange after its 19:00 close.
+              // Use the shipped wait screen at the real prompted doorstep instead of burning a
+              // simulated day one fixed frame at a time or hammering the locked interaction.
+              if(Number.isFinite(d.open_h)&&Number.isFinite(d.close_h)){
+                const isOpenHour=h=>d.close_h>d.open_h?h>=d.open_h&&h<d.close_h:h>=d.open_h||h<d.close_h;
+                const startHour=H.whereAmI().hour;
+                if(!isOpenHour(startHour)){
+                  let hours=Math.ceil(((d.open_h-startHour)%24+24)%24-1e-9);
+                  if(hours<1)hours=24;
+                  a.entry_schedule_wait={...productionWait(hours),open_h:d.open_h,close_h:d.close_h};
+                }else a.entry_schedule_wait={production_wait:false,hours:0,start_hour:startHour,end_hour:startHour,open_h:d.open_h,close_h:d.close_h};
+                a.entry_schedule_wait.opened=isOpenHour(H.whereAmI().hour);
+                if(!a.entry_schedule_wait.opened)throw new Error(`${d.interior} did not open within one production day`);
+              }
               H.queueInputs([{f:0,release:['block','interact','use_item','light','heavy','sprint','roll']}]);H.stepFrames(30);
               H.queueInputs([{ f: 0, press: ['interact'] }, { f: 2, release: ['interact'] }]); H.stepFrames(8);
               // A crowded exterior can consume the first press as a nearby greeting even while

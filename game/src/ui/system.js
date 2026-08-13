@@ -53,18 +53,19 @@ import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './scr
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
 import { drawMap, shadeHex } from './screens/map.js';
+import { drawWait } from './screens/wait.js';
 import { drawTouchOverlay, drawRotateState } from './touch-overlay.js';
 import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
 import { BODY } from './type.js';
-import { MONTHS, EPOCH } from '../sim/quest/calendar.js';
+import { MONTHS, EPOCH, dateOf } from '../sim/quest/calendar.js';
 import { BOX } from './chrome.js';
 
 /** The closed mode vocabulary. `minimap` and `worldmap` are not in it and never will be. */
-export const MODES = ['world', 'dialogue', 'inventory', 'container', 'journal', 'book', 'levelup', 'sheet', 'spells', 'map'];
+export const MODES = ['world', 'dialogue', 'inventory', 'container', 'journal', 'book', 'levelup', 'sheet', 'spells', 'map', 'wait'];
 
 /** Modes `openMenu(name)` accepts. `minimap`/`worldmap` are refused with the reason. */
-export const OPENABLE = ['inventory', 'journal', 'book', 'levelup', 'sheet', 'spells', 'container', 'map'];
+export const OPENABLE = ['inventory', 'journal', 'book', 'levelup', 'sheet', 'spells', 'container', 'map', 'wait'];
 
 /**
  * The pair that must never be adjacent, in either direction (RI-UIX04 Q7, unamended).
@@ -97,6 +98,7 @@ export class UISystem {
       // pointing at. There is no `target`, no `centre` and no `pin` here, and there is nothing
       // in this record a quest could set that would move anything on the screen.
       map: { view: 'world', placeIdx: 0 },
+      wait: { hours: 1 },
     };
     this.bookId = null;
     this.bookPages = {};                 // T5: the page you were on, per book
@@ -158,6 +160,10 @@ export class UISystem {
       throw new Error("openMenu('levelup'): the level-up screen exists at a HEARTH only (RI-UIX03 L1). " +
         'It is not on the pause menu and it is not available in the world.');
     }
+    if (n === 'wait' && ctx && ctx.inCombat) {
+      throw new Error("openMenu('wait'): you cannot wait while enemies are engaged");
+    }
+    if (n === 'wait') this.focus.wait.hours = 1;
     // W1-13 round 3, GAP-W1-levelup-screen-and-character-speak-different-languages. The screen
     // draws its rows from `game/data/progression/attributes.json`; the character carries
     // `sim.progression.attributes`. When those were two different vocabularies the room still
@@ -230,6 +236,7 @@ export class UISystem {
    */
   navigable(ctx) {
     const peers = ['inventory', 'journal', 'sheet', 'spells', 'map'];
+    if (!(ctx && ctx.inCombat)) peers.push('wait');
     if (!this.isMenu()) {
       const out = peers.slice();
       if (ctx && ctx.atHearth) out.push('levelup');
@@ -338,7 +345,7 @@ export class UISystem {
    * `state().nav.walkable` reports the ring, so the difference between what is advertised and
    * what is walkable is a number a probe reads rather than a claim in a comment.
    */
-  static WALK_ORDER = ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'levelup'];
+  static WALK_ORDER = ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'wait', 'levelup'];
 
   /** The ring this mode sits in: WALK_ORDER filtered to here plus everywhere advertised. */
   _walkRing(ctx) {
@@ -466,6 +473,11 @@ export class UISystem {
         if (dx || dy) f.map.placeIdx = clamp(f.map.placeIdx + (dx || dy), 0, Math.max(0, n - 1));
         break;
       }
+      case 'wait': {
+        const d = dy || dx;
+        if (d) f.wait.hours = clamp(f.wait.hours + d, 1, 24);
+        break;
+      }
       default: break;
     }
   }
@@ -531,6 +543,9 @@ export class UISystem {
       // in this branch, so there is no action for the engine to apply afterwards either.
       case 'map':
         f.map.view = f.map.view === 'world' ? 'local' : 'world';
+        break;
+      case 'wait':
+        this._queue({ kind: 'wait', hours: clamp(f.wait.hours, 1, 24) });
         break;
       case 'levelup': {
         const a = this._attributes(ctx)[f.levelup.attrIdx];
@@ -644,6 +659,7 @@ export class UISystem {
       case 'sheet': drawSheet(S, this._sheetModel(ctx)); break;
       case 'spells': drawSpells(S, this._spellModel(ctx)); break;
       case 'map': drawMap(S, this._mapModel(ctx)); break;
+      case 'wait': drawWait(S, this._waitModel(ctx)); break;
       default: break;
     }
     if (this.isMenu()) S.endScreen();
@@ -909,6 +925,23 @@ export class UISystem {
     return {
       spells: this._spells(ctx), rowIdx: this.focus.spells.rowIdx,
       focusLabel: ctx.focusLabel, inCombat: !!ctx.inCombat,
+    };
+  }
+
+  _waitModel(ctx) {
+    const hours = clamp(this.focus.wait.hours, 1, 24);
+    const now = Number(ctx.clock && ctx.clock.hour) || 0;
+    const day = Math.max(0, Math.floor(Number(ctx.clock && ctx.clock.day) || 0));
+    const total = now + hours;
+    const afterDay = day + Math.floor(total / 24);
+    const after = ((total % 24) + 24) % 24;
+    const clock = (h) => {
+      const mins = Math.round(h * 60) % (24 * 60);
+      return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+    };
+    return {
+      hours, clockNow: clock(now), clockAfter: clock(after),
+      dateNow: dateOf(day).text, dateAfter: dateOf(afterDay).text,
     };
   }
 

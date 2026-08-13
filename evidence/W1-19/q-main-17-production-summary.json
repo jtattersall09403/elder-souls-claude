@@ -1,0 +1,71 @@
+{
+  "schema": "elder-souls/w1-19-production-summary@1",
+  "quest": "Q-MAIN-17",
+  "measured_at": "2026-08-13T10:17:41.270Z",
+  "command": "node tools/quests/mainline-chain-floor.mjs --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --signature-count 1 --chain intended --resume-state reports/runs/W1-19-production-gpu-root-lf/intended-act4-q23-r8-no-purse/resume-saxhleel-interior-intended.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-gpu-root-lf/intended-q17-wait-r12d",
+  "exit": 0,
+  "inputs": {
+    "local_resume_sha256": "fd64e196f8c65186c897861076e28c28e050b0db2dd907a5dc7bd41ab97e21b1",
+    "canonical_regeneration_command": "node tools/quests/mainline-chain-floor.mjs --chromium C:\\PROGRA~1\\Google\\Chrome\\Application\\chrome.exe --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-gpu-root-lf/intended-q17-from-q30"
+  },
+  "ignored_outputs": {
+    "report_sha256": "a4f93bdf1d63015efb03cacf23e1662cf7c51e126c57e804876f9a2b6e9ba8b7",
+    "resume_sha256": "ee30aa6f573cfc7bb2ff980b4b9101804defac10c9a3b9c0ee37505494e8d6a9"
+  },
+  "result": {
+    "precompleted": [
+      "Q-MAIN-01", "Q-MAIN-02", "Q-MAIN-03", "Q-MAIN-04", "Q-MAIN-05",
+      "Q-MAIN-06", "Q-MAIN-07", "Q-MAIN-08", "Q-MAIN-09", "Q-MAIN-10",
+      "Q-MAIN-11", "Q-MAIN-12", "Q-MAIN-13", "Q-MAIN-14", "Q-MAIN-15",
+      "Q-MAIN-16", "Q-MAIN-30"
+    ],
+    "completed": ["Q-MAIN-17"],
+    "resolution": "res_whole_arithmetic",
+    "active_after": [],
+    "arrival_disposition": 14.263157894736842,
+    "gate_minimum": 12,
+    "arrival_reserve": 2.2631578947368425,
+    "purse_openings": 0,
+    "violent_resolutions": 0,
+    "deaths": 0,
+    "teleports": 0,
+    "marker_count": 0
+  },
+  "scheduled_document": {
+    "interior": "gideon-grange",
+    "document": "the-compact-share-book",
+    "door_open_hours": [8, 19],
+    "wait_hours_selected": 13,
+    "clock_before": 19.76,
+    "clock_after": 8.76,
+    "day_before": 5,
+    "day_after": 6,
+    "menu_path": ["inventory", "journal", "sheet", "spells", "map", "wait"],
+    "position_delta_m": 0,
+    "hp_before": 92,
+    "hp_after": 92,
+    "estus_before": 5,
+    "estus_after": 5,
+    "door_open_after_wait": true,
+    "entered_interior": true,
+    "book_read": true
+  },
+  "provenance": {
+    "production_input_wait": true,
+    "production_input_navigation": true,
+    "direct_topic_calls": 0,
+    "direct_reveal_calls": 0,
+    "direct_quest_mutations": 0,
+    "direct_pose_mutations": 0,
+    "synthetic_spawns": 0,
+    "file_side_progress_injection": 0
+  },
+  "focused_wait_control": {
+    "command": "node tools/quests/player-wait-smoke.mjs --chromium C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe --out reports/runs/W1-19-production-gpu-root-lf/player-wait-smoke-r1.json",
+    "exit": 0,
+    "output_sha256": "d097fd35e58539f455bc17a2db842f5da8c3fa931c24bbdc1f12d1dce1a843e2",
+    "assertions_green": 9,
+    "assertions_total": 9,
+    "combat_refusal_green": true
+  }
+}

@@ -31,6 +31,7 @@ export const EVENT_TYPES = new Set([
   // "released, not cancelled" — the frame the hold ended and what the ramp paid.
   'block_success', 'charge_release',
   'roll_start', 'iframe_dodge', 'stamina_spend', 'heal', 'bonfire_rest', 'level_up',
+  'wait',
   'spawn', 'despawn', 'enemy_state', 'quest_stage', 'journal', 'topic', 'item', 'load',
   // A-JRN7
   'first_input', 'first_control', 'input_action', 'surface_enter', 'surface_exit',

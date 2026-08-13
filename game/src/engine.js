@@ -4288,6 +4288,7 @@ export class Engine {
       placeName: this.sim.env.interior || this.sim.env.region || null,
       journal: this.sim.quest.journal,
       dateLabel: this.sim.quest.journal.length ? this.sim.quest.journal[this.sim.quest.journal.length - 1].date : null,
+      clock: { hour: this.sim.env.timeOfDay, day: this.sim.env.dayCount | 0 },
       attributes: prog.attributes,
       skills: prog.skills,
       spells: this._uiSpells(),
@@ -5090,7 +5091,41 @@ export class Engine {
       this._transferItem(act.item, act.to);
     } else if (act.kind === 'level') {
       this._spendSouls(act.attribute);
+    } else if (act.kind === 'wait') {
+      this._waitHours(act.hours);
     }
+  }
+
+  /** Player wait: calendar passage without the healing, respawn or taint effects of a hearth. */
+  _waitHours(rawHours) {
+    if (this.inCombat()) return { waited: false, refused: 'combat' };
+    const hours = Math.max(1, Math.min(24, Math.floor(Number(rawHours) || 1)));
+    const beforeHour = Number(this.sim.env.timeOfDay) || 0;
+    const beforeDay = this.sim.env.dayCount | 0;
+    const total = beforeHour + hours;
+    const afterDay = beforeDay + Math.floor(total / 24);
+    const afterHour = ((total % 24) + 24) % 24;
+
+    this.sim.env.dayCount = afterDay;
+    this.sim.env.timeOfDay = afterHour;
+    const elapsedFrames = Math.round(hours * 3600 * FIXED_HZ);
+    for (const a of this.sim.quest.afflictions || []) {
+      if (a.incubation_in_frames != null) {
+        a.incubation_in_frames = Math.max(0, Number(a.incubation_in_frames) - elapsedFrames);
+      }
+    }
+    const deadlines = [];
+    for (let day = beforeDay + 1; day <= afterDay; day++) deadlines.push(...this.questEngine.onDay(day));
+
+    const ev = this.bus.emit(this.sim.frame, 'wait');
+    ev.hours = hours; ev.clock_before = beforeHour; ev.clock_after = afterHour;
+    ev.day_before = beforeDay; ev.day_after = afterDay; ev.deadlines_fired = deadlines.length;
+    this.ui.close();
+    this.sim.menuOpen = false;
+    cameraCloseUI(this.sim);
+    this.ui._surfaceChanged(this.real);
+    return { waited: true, hours, clock_before: beforeHour, clock_after: afterHour,
+      day_before: beforeDay, day_after: afterDay, deadlines_fired: deadlines.length };
   }
 
   /**
@@ -8330,7 +8365,9 @@ export class Engine {
       // walking, indoors, or displaced from their saved anchor retain their exact saved pose.
       for (const n of this.sim.npcs || []) {
         const rec=this._anyNpcRecord(n.eid),oldPost=n.post&&n.post.pos,newPost=rec&&rec.post&&rec.post.pos;
-        if(!Array.isArray(oldPost)||!Array.isArray(newPost)||n.at!==null)continue;
+        // Older outdoor saves omit `at`; newer ones serialise it as null. Both mean the named
+        // actor is at the exterior post. Any explicit interior/site id remains ineligible.
+        if(!Array.isArray(oldPost)||!Array.isArray(newPost)||n.at!=null)continue;
         const wasAtSavedPost=Math.hypot(n.pos[0]-oldPost[0],n.pos[2]-oldPost[2])<.1;
         const changed=Math.hypot(newPost[0]-oldPost[0],newPost[2]-oldPost[2])>.1;
         if(!wasAtSavedPost||!changed)continue;
