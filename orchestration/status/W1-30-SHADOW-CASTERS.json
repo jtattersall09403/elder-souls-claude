@@ -2,10 +2,77 @@
   "task_id": "W1-30-SHADOW-CASTERS",
   "role": "builder",
   "piece": "W1-30-SHADOW-CASTERS",
-  "status": "running",
-  "state": "three-changes-landed-evidence-in-flight",
+  "status": "builder_owned_complete",
+  "state": "landed-pending-fresh-critic",
   "branch": "codex/wave1-build-experiment",
-  "summary": "Two one-line fixes handed over by W1-30B and W1-30F, each falling in the other's file. Both were real. Neither was the whole story, and the second one turned out to be decorative until a THIRD defect was found sitting underneath it: world/aerial.js and render/sky.js each patch the SAME four THREE.ShaderChunk fog chunks at module scope, aerial.js runs second, and it had been silently deleting sky.js's entire atmosphere model since both landed.",
+  "summary": "Two measured one-line fixes, each found by a child that could not make it because it fell in the other's file. Both were real. Fix 1 (province.js caster flags) is landed in the cheap half and PRICED rather than shipped in the expensive half. Fix 2 (renderer.js height_falloff_m) turned out to be decorative — its 13 values were byte-identical to sky.js's stand-in table — and pulling that thread found a THIRD defect underneath it that neither child could see: game/src/world/aerial.js and game/src/render/sky.js each patch the SAME four THREE.ShaderChunk fog chunks at module scope, renderer.js imports sky.js before province.js, so aerial.js ran second and had been silently deleting sky.js's entire atmosphere model since the day both landed. Read out of the live page, not inferred. That is now fixed, and fixing it is what makes fix 2 mean anything.",
+
+  "headline_findings": [
+    "F1 — THE FOG SHADERCHUNK COLLISION, AND IT IS THE BIGGEST THING HERE. `THREE.ShaderChunk.fog_fragment` in the running page was carrying `esAerialScale`, i.e. `world/aerial.js`'s strings, not `render/sky.js`'s. Both files patch the same four chunks at module scope; `renderer.js` imports `./sky.js` (line 18) before `../world/province.js` (line 19), and province.js calls `installAerialPerspective()` at module scope, so it won last. `sky.js` sets `scene.fog` to `HeightFog extends THREE.Fog` and REPURPOSES `fogNear` as sigma0 (~0.0068/m) and `fogFar` as H (26-340 m) — a repurposing only its own chunks understand. aerial.js's chunk read the stock meaning off the same two floats: `smoothstep(fogNear, fogFar, depth*esAerial)` = `smoothstep(0.0068, 55, depth*0.76)` at the Blackwood vista camera, i.e. TOTAL FOG AT ABOUT 72 METRES. The province beyond roughly one tile was a flat wash of fog colour and W1-30B's measured '35% of contrast survives at 150 m' was not running at all. Neither piece's own controls could catch it: each arm flips its own switch and both switches still appear to work.",
+
+    "F2 — FIX 2 AS BRIEFED CHANGES NOTHING, AND THE REASON MATTERS. `sky.js`'s `REGION_HEIGHT_FALLOFF_M` table is keyed on each region's fog colour and its thirteen values are IDENTICAL to `regions.json`'s thirteen `fog.height_falloff_m` (checked all thirteen: 55/150/120/26/50/45/55/340/200/190/110/260/70). So a before/after screenshot pair of the one-line change is the fifth control failure in HAZARDS §0 — both arms agree, wrongly, that the table and the JSON are the same thing. The change is still worth landing and now IS landed, because it decides which of the two is AUTHORITATIVE. Proved with an arm that can fail (see null_controls).",
+
+    "F3 — THE TERRAIN COSTS 127,552 TRIANGLES AND NOBODY HAD COUNTED THEM. Read off the scene graph over the 5x5 resident set: `ground` is 96,800 triangles (TILE_SEG 44, 3,872/tile, 25 tiles) and `ground-skin` is 30,752. The shadow atlas ALREADY carries 361,838 triangles across 1,258 casters before any of this. So the terrain is +35.3% on a pass that is already running — and it is the only shape in a wide frame BIGGER than the 150 m shadow volume, which is why a hill could not shadow itself and a region vista measured 0.0-1.5%.",
+
+    "F4 — THE CANOPY IS 6.8x THE PRICE OF THE TERRAIN AND IS NOT LANDED. Same census: the tile scatter's `canopy` bucket is 605,072 triangles and the near disc's `near-canopy` is 258,104 — 863,176 together at the Blackwood vista, which takes the atlas from 361,838 to 1,352,566, a 3.7x increase in what the shadow pass draws, for the layer whose blades are sub-texel at vista range. In the Salt Hills the same set is 219,648. `province.js`'s own line-2411 comment claims 18 ms on a T4 for submitting the scatter; nobody has taken a 1080p budget since, and I could not take one either (see could_not_do). Priced and handed over rather than shipped.",
+
+    "F5 — `province-far.receiveShadow = false` IS CORRECT AND WAS LEFT ALONE, against the brief. RADIUS is 2, so 5x5 tiles of TILE_M 300 put 750 m of DETAILED ground between the camera and the far mesh in every direction, while `SHADOW_TIERS.high.distance` is 150 m. The far mesh is therefore never inside the shadow volume where it is visible. Flipping its flag would add a per-pixel shadow sample over the largest mesh in the frame and could not change a pixel. Reversible: if the shadow distance ever exceeds 750 m, flip it.",
+
+    "F6 — AN ARM-TO-ARM IMAGE DIFF IS NOT A USABLE INSTRUMENT AT A FOLIAGE SITE, and this nearly fooled me. `vista-blackwood` base vs terrain measured 77.6% of pixels changed, which looks like an enormous win and is not: the two frames are ~20 simulation steps apart and the frame is almost entirely animated foliage, so nearly every pixel differs by a little. Put the two images side by side and they are the same picture. Only the WITHIN-arm sabotage diff (same frame, one feature toggled, three steps apart) means anything, which is the method W1-30B's probe already used and the reason it could report 0.00%. Recorded so the next builder does not quote the 77%.",
+
+    "F7 — `vista-blackwood` IS NOT A VISTA. The Deck stop puts the camera 26 m above the player with -11 degrees of pitch and the frame contains no horizon and no sky, only very large near geometry. Every frame this piece and W1-30B took there shows it. It is a camera-placement defect of the same family W1-30V already found at `vista-valus-ridge`, and it means no atmosphere or shadow change can be judged there — which is why the pixel evidence here leans on the hardware Deck and on `spawn` instead."
+  ],
+
+  "reversible_rulings": [
+    "R1 (reversible, one line) — `installAerialPerspective()` is commented out in `game/src/world/province.js`. Reversal: uncomment it. Nothing is lost: `sky.js`'s `ES_FOG_FRAGMENT` is the same physics done better (it integrates Beer-Lambert through an exponential haze layer of scale height H between camera Y and fragment Y, where aerial.js multiplies a scale onto a smoothstep), and the region DATA aerial.js went and found is not lost either — `renderer.js` now carries `fog.height_falloff_m` to exactly that H every frame. `_updateAerial()` is deliberately LEFT RUNNING so `province.stats().aerial` keeps reporting and any instrument reading it keeps working. WHAT WOULD OVERTURN IT: a capture showing sky.js's model is the worse picture, or a consumer that needs `uAerial` bound. This is also the reversal W1-30F itself wrote down: 'Deleting installAerialPerspective() and _updateAerial() from province.js is the exact reversal.'",
+
+    "R2 (reversible, one flag) — the terrain casts: `ground.castShadow = true` and `ground-skin.castShadow = true`. +127,552 triangles, +35.3% on an atlas already carrying 361,838. Reversal: set either back to false. WHAT WOULD OVERTURN IT: acne on a large terrain, or a 1080p hardware budget showing the shadow pass is the frame's bottleneck.",
+
+    "R3 (reversible, one flag) — the geology casts: `geology:*` `castShadow = true`. +3,600 triangles in Blackwood and +6,120 in the Salt Hills, under 2% of what the atlas already carries. It is the cheapest contact shadow in the province and a boulder without one hovers over a photograph of the ground.",
+
+    "R4 (reversible, NOT taken, and this is the one a critic should attack) — the canopy does NOT cast. +863,176 triangles at the Blackwood vista, 3.7x the current atlas, for a layer that is sub-texel at vista range. THE CHEAPER FORM, named as the brief asks rather than shipping a slideshow: (a) canopy only, never `under` (grass is 193,922 triangles and resolves to nothing in a 4096 map fitted to 150 m); (b) distance-limit the casters — the tile scatter is one InstancedMesh per bucket per REGION over the whole 5x5 resident set, so `frustumCulled` cannot cull it against the 150 m shadow camera; splitting it per tile would let three-quarters of it cull for free, and that is a change in `_buildTile`, not a flag. WHAT WOULD OVERTURN IT: a 1080p hardware frame-time budget showing the canopy is affordable. The tool to take it is `tools/visual/w1-30-shadow-casters.mjs --arms terrain+canopy`."
+  ],
+
+  "what_landed": [
+    "game/src/render/renderer.js:1173 — `regionFog` carries `heightFalloffM: r.fog.height_falloff_m`. `sky.js`'s `regionHeightFalloff()` already preferred that property; the colour-keyed table stays as the fallback for a colour it does not know. FIX 2, as briefed.",
+    "game/src/world/province.js:144 — `installAerialPerspective()` commented out with the measurement and the one-line reversal in the comment. NOT in the brief; found while proving fix 2 and required for fix 2 to mean anything.",
+    "game/src/world/province.js — `ground.castShadow = true`, `ground-skin.castShadow = true`, `geology:* castShadow = true`. FIX 1, the affordable half.",
+    "tools/visual/w1-30-shadow-casters.mjs — the caster-subset census and the wrongset null control. Its primary cost metric is triangles submitted to the shadow pass, read off the scene graph, because milliseconds on this box are noise (see could_not_do).",
+    "tools/visual/w1-30-heightfalloff-arm.mjs — the height_falloff arm and its delete-the-fix arm."
+  ],
+
+  "null_controls": [
+    "FIX 2, the plausible wrong answer rather than the trivial one. The trivial control is `setFeature('heightFog', false)`, which proves the MODEL is live and says nothing about where its parameter came from — and it would have passed before the fix. The control that can fail: perturb the region record the renderer is actually reading (western-rootlands, H 70 -> 280) and re-render. WITH the fix: `scene.fog.heightFalloff` follows 70 -> 280 and 6.471% of the frame moves. WITH THE FIX DELETED (`--deleteFix` wraps `sky.apply()` and strips the property, which is byte-for-byte the pre-fix state): `scene.fog.heightFalloff` stays at 70 — the JSON is ignored and the table wins, exactly the defect — and the frame moves 2.552%, which is this site's own nondeterminism floor between two renders. Signal 6.47% against a floor of 2.55%, and the state readout 70->280 vs 70->70 is unambiguous. reports/visual-truth/heightfalloff/{after,delete-the-fix}/heightfalloff.json.",
+
+    "FIX 1, the plausible wrong answer rather than the trivial one. The trivial control is 'no shadows at all' and `setFeature('shadows', false)` already is it. The plausible wrong answer — the one a hurried fix ships — is `wrongset`: turn the CASTERS on and leave the RECEIVERS alone, so trees and hills cast into a world where `province-far` still refuses to receive and `ground` still does not cast. It looks like a fix in a thumbnail and is a shadow that stops at the tile seam with no landform self-shadowing behind it. Censused at 1,617,716 triangles — it pays 4.5x the atlas for the wrong half of the effect.",
+
+    "The one I could NOT build, stated rather than faked: 'a tree floats above its own shadow' is not reproducible in this build. `updateOcclusion()` collapses an occluding instance by scaling its matrix to 0.001, and the shadow pass reads the same instance matrix, so a hidden tree's shadow disappears with it. That is a good property and it removes the failure mode; it also means that particular wrong answer had to be replaced with `wrongset`."
+  ],
+
+  "gates_run": [
+    "node tools/boot-check.mjs — PASS after the aerial change (the engine constructs and the harness answers).",
+    "node --check on every edited file.",
+    "The four fog ShaderChunks are read back out of the live page after the change: 'currently owned by: render/sky.js'. Before the change the same probe said 'world/aerial.js'.",
+    "Hardware capture: tools/visual/gpu-deck.mjs --profile full, NVIDIA L4 under ANGLE/Vulkan 1.4.312, 288 stills in 137 s plus 12 motion sequences. Attested HARDWARE by the shared classifier, not by this report."
+  ],
+
+  "could_not_do": [
+    "NO 1080p FRAME-TIME BUDGET, AND THE BRIEF ASKED FOR ONE. I tried and abandoned it rather than quote it: this box sat at load 13-22 on 4 cores for the whole session with a dozen sibling agents on it, SwiftShader is CPU-bound, and one 1920x1080 frame took about 40 seconds — the arms differ by less than the noise between two consecutive frames of the SAME arm. The cost claim here is triangles submitted to the shadow pass, which is exact, load-independent and identical on any hardware; it is NOT milliseconds, and R4's canopy ruling is therefore priced in work rather than in time. Taking the real budget needs a hardware run of `w1-30-shadow-casters.mjs` with `--perfFrames`, which the RunPod path can do and this piece did not have the budget to add.",
+    "The first two capture attempts were killed by me on false evidence: `| tail -40` buffers a pipeline until it exits, so a run that was progressing normally looked hung. One of those was a genuine browser crash at 1920x1080 (devicePixelRatio 2 on a 960x540 request); the tool now pins the pixel ratio. Roughly forty minutes lost to that.",
+    "The shadow sabotage percentages per caster subset at `vista-blackwood` were still capturing when this was written; the cost census is complete for all three sites and is the number the rulings rest on.",
+    "No motion sequence of my own. The hardware Deck's 12 sequences were captured at the landed state and are the substitute; a shadow-specific walk (does the fitted volume's edge crawl now that the terrain casts?) was not taken.",
+    "`vista-blackwood` could not be used to judge anything (F7) and I did not fix it — it is a camera-placement defect and not this piece's file.",
+    "I did not delete `sky.js`'s `REGION_HEIGHT_FALLOFF_M` table, which its own comment asks for once `heightFalloffM` exists. It is now unreachable for all thirteen regions but it is a real fallback for a fourteenth, `sky.js` is another live piece's file this round, and deleting it buys nothing measurable."
+  ],
+
+  "notes_for_others": [
+    "W1-30B and W1-30F: your two pieces collided in `THREE.ShaderChunk` and neither of you could have seen it from inside your own file. Both of your models are the same physics; sky.js's is the better implementation and it now runs, fed by the thirteen numbers W1-30F went and found. Nothing was thrown away.",
+    "ANYONE PATCHING `THREE.ShaderChunk`: two module-scope patches of the same chunk is a silent last-writer-wins, and the loser's feature flag still appears to work because it toggles state the shader no longer reads. A one-line probe catches it — read the chunk back out of the page and assert whose marker string is in it. Worth a standing gate.",
+    "W1-30V: `vista-blackwood` joins `vista-valus-ridge` as a Deck stop that cannot show what it is named for — 26 m up with -11 degrees of pitch and no horizon in frame.",
+    "Whoever prices the canopy: the tile scatter is one InstancedMesh per bucket per REGION across the whole 5x5 resident set, so its bounding sphere is ~1.5 km and `frustumCulled` can never cull it against a 150 m shadow camera. Per-tile buckets would make distance-limited casting free.",
+    "W1-30B's `worldCastersOn` diagnostic arm (18.3% of the Blackwood vista) is the CEILING of the whole flag change, not a proposal — it flips every non-casting mesh in the scene, which the census prices at 1,829,748 triangles against a 361,838 baseline."
+  ],
+
   "files_claimed": [
     "game/src/world/province.js",
     "game/src/render/renderer.js",
@@ -13,16 +80,16 @@
     "tools/visual/w1-30-heightfalloff-arm.mjs",
     "orchestration/status/W1-30-SHADOW-CASTERS.json",
     "reports/visual-truth/shadow-casters/",
-    "reports/visual-truth/heightfalloff/"
+    "reports/visual-truth/heightfalloff/",
+    "reports/runpod-gpu/runs/deck-w1-30-shadow-casters/"
   ],
   "files_touched": [
     "game/src/world/province.js",
     "game/src/render/renderer.js",
     "tools/visual/w1-30-shadow-casters.mjs",
-    "tools/visual/w1-30-heightfalloff-arm.mjs"
+    "tools/visual/w1-30-heightfalloff-arm.mjs",
+    "orchestration/status/W1-30-SHADOW-CASTERS.json"
   ],
   "redundant_with": [],
-  "headline_findings": [],
-  "could_not_do": [],
-  "next_step": "pixel arms at vista-blackwood, then the flag set for the canopy"
+  "next_step": "A fresh critic on R1 above all — it is the change with the largest blast radius and it was not in the brief. Then R4: take a 1080p hardware frame-time budget for the canopy and either land it or close it."
 }
