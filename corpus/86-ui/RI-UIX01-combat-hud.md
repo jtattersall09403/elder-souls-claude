@@ -15,6 +15,18 @@ blind_pair: yes
 > `JUDGEMENT SIDE: ART_DIRECTION`. This item judges **what elements exist, how much screen they
 > take, and whether they are readable and truthful under pressure.** A beautiful chitin-framed
 > stamina bar that lags the simulation by four frames fails this item at any art score.
+>
+> **AND THIS ITEM STOPS AT THE FIGHT BOUNDARY — READ `RI-UIX07` BEFORE BUILDING ANY HUD.** Added
+> 2026-08-14 by **ARBITRATION S54**, after the project's owner read this file and found the gap:
+> §A's table is scoped, in its own words, to elements *"persistent, always present **in combat**"*,
+> and **the HUD persists for the rest of the game too** — which is most of an hour-wide world, and
+> which the supreme law assigns to Morrowind. `RI-UIX07` is this item's counterpart on the other side
+> of that line: the Morrowind out-of-combat element set, its own budget, and the transition.
+> **Nothing in this item is changed by it** — no threshold, no band, no §B row — and S54's clause (3)
+> is what keeps that true: the out-of-combat set declares nothing on a combat frame, asserted by
+> `RI-UIX07` V7's census-identity test, so §C's census reads exactly what it read before that set
+> existed. A build that satisfies this item and then leaves its HUD up for the rest of the game has
+> **not** satisfied `RI-UIX07`; it has declined to notice that the game continues after the fight.
 
 ## The bar
 
