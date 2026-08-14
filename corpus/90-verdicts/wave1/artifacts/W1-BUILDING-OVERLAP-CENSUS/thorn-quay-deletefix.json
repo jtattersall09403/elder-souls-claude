@@ -1,0 +1,41 @@
+{
+  "tool": "tools/world/thorn-quay-deletefix.mjs",
+  "generated_utc": "2026-08-14T16:43:10.159Z",
+  "fixed": {
+    "geometry": {
+      "overlap_x_m": 7.01,
+      "overlap_z_m": -3.99,
+      "overlaps": false,
+      "writ_door_inside_barge": false
+    },
+    "sweep": {
+      "best_drawn_and_clear": {
+        "yaw_deg": 95,
+        "arm_m": 3.993,
+        "char_opacity": 1,
+        "clearance_m": 12
+      },
+      "bearings_with_player_drawn": 46,
+      "bearings_in_the_middle": 17
+    }
+  },
+  "torn_down": {
+    "geometry": {
+      "overlap_x_m": 7.01,
+      "overlap_z_m": 4.01,
+      "overlaps": true,
+      "writ_door_inside_barge": true
+    },
+    "sweep": {
+      "best_drawn_and_clear": {
+        "yaw_deg": 210,
+        "arm_m": 3.993,
+        "char_opacity": 1,
+        "clearance_m": 0.75
+      },
+      "bearings_with_player_drawn": 25,
+      "bearings_in_the_middle": 0
+    }
+  },
+  "failures": []
+}
