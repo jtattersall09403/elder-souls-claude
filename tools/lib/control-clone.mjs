@@ -39,7 +39,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { REPO_ROOT, ensureDir, log } from './cli.mjs';
+import { REPO_ROOT, ensureDir } from './cli.mjs';
 import { currentOwner, ownerNameSegment, ownerOfName, ageMinutes } from '../runpod/lib/owner.mjs';
 import { processStartTicks } from '../runpod/lib/claims.mjs';
 
