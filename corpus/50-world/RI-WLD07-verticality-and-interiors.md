@@ -69,17 +69,59 @@ Plus **160 settlement interiors** (RI-WLD03). **Grand total interiors: 250.**
 
 ### 4. Verticality targets (exterior)
 
-| Metric | Target | Fail |
-|---|---|---|
-| Terrain elevation range | **−40 m to +420 m** | range < 150 m |
-| Valus Ridge max elevation | ≥380 m | <250 m |
-| Salt Hills max elevation | ≥190 m | <120 m |
-| Land below +5 m (marsh/tidal) | 35–50% | >70% (the world is a puddle) |
-| Land above +100 m | ≥12% | <5% |
-| Mean slope on non-road walkable land | 6–14° | <3° (a plane) |
-| Fraction of road network with ≥15 m elevation change per 500 m | ≥30% | <12% |
-| Distinct vertical strata in settlements (stairs/levels/roofs) | capital ≥4, city ≥3, town ≥2 | any named settlement flat |
-| Climbable/traversable verticality features (ladders, root-ramps, stilts, cliff paths) | ≥120 | <50 |
+**These rows bind per region, not on the province mean** (Ruling W1 — see the amendment below).
+
+| Metric | Scope | Target | Fail |
+|---|---|---|---|
+| Terrain elevation range | world | **−40 m to +420 m** | range < 150 m |
+| Valus Ridge max elevation | region | ≥380 m | <250 m |
+| Salt Hills max elevation | region | ≥190 m | <120 m |
+| **Mean slope, per region, inside its `RI-WLD16` §3 class envelope** | **every region** | **13 of 13** | any region outside its envelope |
+| **Relief range, per region, inside its `RI-WLD16` §3 class envelope** | **every region** | **13 of 13** | any region outside its envelope |
+| **Median region mean slope** | **quantile over regions** | **≥ 6°** | < 4.5° |
+| **Mean slope, any single region** | **worst region** | ≥ 3° | any region < 3° (a plane) |
+| Fraction of road network with ≥15 m elevation change per 500 m | world | ≥30% | <12% |
+| Distinct vertical strata in settlements (stairs/levels/roofs) | per settlement | capital ≥4, city ≥3, town ≥2 | any named settlement flat |
+| Climbable/traversable verticality features (ladders, root-ramps, stilts, cliff paths) | world | ≥120 | <50 |
+| Land below +5 m (marsh/tidal) | world, **descriptive** | 35–50% | — see note |
+| Land above +100 m | world, **descriptive** | ≥12% | — see note |
+
+> **AMENDED 2026-08-14 — Ruling W1** (`orchestration/OWNER-DIRECTIVES-2026-08-14.md` §6), implementing
+> `reports/BAR-AUDIT-WORLD-20260814.md` §5.3. **No threshold was lowered; three were re-scoped and
+> two were demoted to descriptive.**
+>
+> **The bad result that passed, and it was the shipped build.** The area-weighted mean slope of the
+> world is **10.07°** — comfortably mid-band — while **7 of the 13 regions sit below 5.5°** (Eastern
+> Rootlands 3.61, Western Rootlands 4.00, Stone Wastes 4.17, Marauder's Coast 4.99, Crimson Coast
+> 5.15, Deep Marshes 5.24, Clay Moor 5.32). Valus Ridge at 30.28° and the Salt Hills at 16.62° carry
+> the average for everyone else. A player does not walk the mean slope of the province; they walk the
+> ground under their feet for the next six minutes.
+>
+> **Why a quantile and not the worst region.** The ruling permits either, and here the worst
+> constituent is the wrong instrument: a tidal flat *ought* to be flat, and binding every region to
+> 6–14° would fail the Eastern Rootlands for being what it is. So the shape of the ground is judged
+> per region against its own declared landform class (`RI-WLD16` §3), and the province's overall
+> verticality is judged on the **median region** — which stops two steep regions carrying eleven flat
+> ones without forbidding any region from being low. The 3° hard floor still binds on the **worst**
+> region, because nothing should be a plane.
+>
+> **Why two rows became descriptive.** "Land below +5 m: 35–50%" and "land above +100 m: ≥12%" have
+> no honest per-region form — every region in a coastal marsh province is either almost all below
+> 5 m or almost none, and a per-region band would be arbitrary. Their per-region job is done properly
+> by the relief-range envelope, which asks whether each region has the vertical structure its
+> landform class implies. They are kept as world-level description because they remain useful
+> regression signals; **they no longer gate the item.** Stating this is preferable to leaving two
+> aggregate rows in place that look binding and are not.
+>
+> **Measured 2026-08-14** by `corpus/80-methods/m-instance-bars.mjs` check C: 13/13 regions inside
+> their slope envelope, 13/13 inside their relief envelope, **median region 5.32° against the ≥6°
+> target**, 0 regions under the 3° floor. The envelopes are deliberately wide — they catch a playa
+> built as a ridge, not a slope that wants tuning — so the median row is the one carrying this bar.
+>
+> **Reversal**: restore the four re-scoped rows to their world-aggregate form and delete the scope
+> column. **Falsifier**: if the median-region row proves unreachable because the province is
+> honestly a marsh, the right move is to lower *that* number with the census behind it, not to
+> return to the world mean.
 
 ### 5. Interior/exterior play ratio
 

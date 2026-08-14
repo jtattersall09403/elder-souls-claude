@@ -23,7 +23,14 @@ import { UILayer } from './ui.js';
 import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
-import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS, updateVisualFoundationFrame, bindWaterReflection } from './visual-foundation.js';
+import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS } from './visual-foundation.js';
+// W1-30S seam: the water surface shader's frame/reflection drivers moved to water.js (future
+// owner: W1-30H) — see render/water.js's header. Renderer.js's own water-reflection PASS BODY
+// (`_renderWaterReflection`, below) is unmoved this commit; it now registers through
+// `registerPrePass`, created by this same commit.
+import { updateVisualFoundationFrame, bindWaterReflection } from './water.js';
+// W1-30S seam: the compositor moved to render/post/composite.js (future owner: W1-30A).
+import { buildCompositor } from './post/composite.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -109,7 +116,15 @@ export class Renderer {
     this.waterReflectionFrame=-99;
     this.waterReflectionFocus=new THREE.Vector3(Infinity,Infinity,Infinity);
     this.quality = { postprocess:true, ao:true, antialias:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
-    this._buildCompositor(canvas.width,canvas.height);
+    // W1-30S seam: renderer.registerPrePass(fn) — H's vfx prepass and water reflection register
+    // here (future owner: W1-30H). This commit's own water-reflection pass is the first live
+    // registrant; A owns the call order in render(), H owns the pass body.
+    this._prePasses = [];
+    this.registerPrePass((frame) => this._renderWaterReflection(frame));
+    // W1-30S seam: renderer.registerComposite(mod) — A's composite module installs here
+    // (future owner: W1-30A). `buildCompositor` is the exact former `_buildCompositor` body,
+    // moved to render/post/composite.js.
+    this.registerComposite(buildCompositor(canvas.width, canvas.height));
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
     this.propMeshes = new Map();

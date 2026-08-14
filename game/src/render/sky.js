@@ -7,6 +7,10 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+// W1-30S seam: renderer.js pushes this frame's lighting summary through
+// `renderer.setLightingFrame(obj)`. Building the object here reads values apply() already
+// computed for its own uniforms/lights; it does not change what those values are.
+import { buildLightingFrame } from './lighting.js';
 const hash1=(n)=>{let h=Math.imul(n|0,0x45d9f3b);h=Math.imul(h^(h>>>16),0x45d9f3b);return((h^(h>>>16))>>>0)/4294967295;};
 
 /** The named weather states. Closed set — `setWeather` throws on anything else. */
@@ -327,6 +331,14 @@ export class Sky {
     this.environment.needsUpdate=true;
     this.scene.environment=this.features.ibl?this.environment:null;
     this.mesh.visible=this.features.sky;
+    // W1-30S seam: publish this frame's lighting summary. Purely additive — every value below
+    // is a local this function already computed for its own uniforms/lights above; nothing
+    // here changes what apply() does to the scene.
+    this.lastFrame = buildLightingFrame({
+      sunDir: dir.clone(), sunColour: this.uniforms.uSunColour.value.clone(),
+      skyLuminance: this.hemi.intensity, day, night, dusk, overcast,
+      fogColour: this.scene.fog.color.clone(), fogDensity: this.scene.fog.density,
+    });
     return weatherId;
   }
 

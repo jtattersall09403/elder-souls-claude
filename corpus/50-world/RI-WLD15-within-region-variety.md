@@ -123,6 +123,11 @@ that survives its own removal was carried by something else (rule 6).
 
 **M-W15-4 — the void-tract cross-check.** For every tract in `game/data/world/voids.json`, run arm A
 restricted to the tract polygon and assert W15-1 and W15-3 unrelaxed (W15-7). Report per tract.
+Implemented 2026-08-14 as check E of `corpus/80-methods/m-instance-bars.mjs`, which also carries the
+same clause from `RI-WLD09`'s side as its V11. **It checks the tract's coordinate frame before
+reporting any variety number** — a polygon that does not lie in the region it names is reported as
+unmeasurable rather than measured against whatever ground it happens to overlap, which is a number
+about the wrong place. As of this commit all five declared tracts are in that state (`RI-WLD09` V10).
 
 **M-W15-5 — blind pair.** Present a judge with two unlabelled 20-frame strips, one from our worst
 region walk and one from a Morrowind walk of the same length, and ask *which walk shows more

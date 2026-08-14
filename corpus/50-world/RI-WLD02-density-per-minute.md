@@ -69,6 +69,37 @@ area is smaller and our regions are more differentiated. Total POI density = **7
 | D13 | **Longest "nothing" stretch** on **settled-region** road network | **≤ 150 s** with no POI in 40 m | > 240 s | scripted walk, **outside declared void tracts** |
 | **V5** | **Share of road-network kilometres with TTNIT > 3 min** (the negative-space floor) | **≥ 12%** | < 6% | scripted walk, whole network |
 | **V6** | **Regions with median TTNIT > 2 min** | **≥ 2** | < 1 | scripted walk, per region |
+| **D14** | **Place-type Jaccard, every region pair** — how alike are the *kinds* of thing two regions offer | **≤ 0.727 on every pair** | any pair > 0.85 | static count from `pois.json`, by `kind` |
+| **D15** | **POI classes unique to a single region** | **≥ 1 for every region** (13 of 13) | any region with none | static count from `pois.json` |
+
+> **AMENDED 2026-08-14 — Ruling W1** (`orchestration/OWNER-DIRECTIVES-2026-08-14.md` §6),
+> implementing `reports/BAR-AUDIT-WORLD-20260814.md` §5.4. **D14 and D15 are new; nothing was
+> lowered.**
+>
+> The whole POI apparatus above — three tiers, 1,060 targets, D1–D13 — is **province-global**. It
+> requires regions to offer different *amounts* of thing to find and never requires them to offer
+> different *kinds*. A world that scatters one uniform tier mix over all thirteen regions passes
+> every D-metric in this item, and a player crossing it finds the same menu everywhere.
+>
+> **Morrowind does not do this, and we can now show it rather than assert it.**
+> `corpus/50-world/data/morrowind-region-census.json` mines the place-type inventories from the nine
+> Vvardenfell region pages: **pairwise place-type Jaccard runs 0.267 to 0.727** — no two Vvardenfell
+> regions offer the same menu — and **eight place types are unique to exactly one region** (Lakes and
+> Shipwrecks in the Ascadian Isles, Ashlander Camps and House Strongholds in the Ashlands, Taverns &
+> Inns on Azura's Coast, Main Gate and Foyadas on Red Mountain, Velothi Tower in Sheogorad). D14's
+> ceiling is Vvardenfell's own most-similar pair (Bitter Coast/Grazelands, 0.727); D15 is the weakest
+> honest form of "eight types belong to one region only". *Verified 2026-08-14* by recomputing both
+> from the census in `m-instance-bars.mjs --selfcheck`.
+>
+> **A caution for whoever measures this next.** UESP's headings are a wiki taxonomy, not the game's,
+> and its place counts are page counts — a floor, not a census. The signal being mined is real
+> nonetheless: a region whose editors needed a heading nobody else needed is a region with a
+> place-type nobody else has.
+>
+> **Reversal**: delete rows D14 and D15 and this note. **Falsifier**: if `pois.json`'s `kind`
+> vocabulary is too coarse to express region character — it currently holds four values — then D14/D15
+> are measuring the schema rather than the world, and the right response is to widen the vocabulary
+> before judging anyone against these rows.
 
 > **AMENDED wave 0 (corpus-audit) — BAR-CRITIQUE-01 W2, and the direct RI-WLD02 / RI-WLD09
 > contradiction (queue B2).** As written, D1, D2 and D13 were **global** floors: TTNIT median
@@ -204,8 +235,11 @@ is empty.
 
 ## Scoring
 
-Score 0–10 on the weighted mean of D1–D13 **plus V5 and V6** (each scored 0/1/2 →
-fail/pass/exceed), weights: D1 ×3, D3 ×3, D12 ×2, D7 ×2, D8 ×2, **V5 ×2, V6 ×1**, all others ×1.
+Score 0–10 on the weighted mean of D1–D15 **plus V5 and V6** (each scored 0/1/2 →
+fail/pass/exceed), weights: D1 ×3, D3 ×3, D12 ×2, D7 ×2, D8 ×2, **V5 ×2, V6 ×1, D14 ×2, D15 ×2**,
+all others ×1. D14 and D15 were added by Ruling W1 (2026-08-14) and carry weight 2 because a region
+that offers the same menu as its neighbour is the failure this item exists to catch, one level up
+from density.
 D1, D2 and D13 are computed over **settled-region** road kilometres only (amended wave 0, W2).
 
 | Score | Condition |
@@ -225,7 +259,7 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 |---|---|---|---|
 | Native | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** weighted mean of D1-D13 plus V5/V6, each 0/1/2, then banded.
+**Aggregation (a property of this item, not of the critic):** weighted mean of D1-D15 plus V5/V6, each 0/1/2, then banded.
 
 ## How we lose
 
@@ -248,6 +282,9 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 - **Repetition read as density.** Forty identical "bandit camps" with the same three tents and the same
   loot. They count as POIs by the letter of the definition and they are worthless. Enforced by
   RI-WLD05's uniqueness inventory and by M7's "mesh appearing >40 times with identical components" clause.
+- **The same menu everywhere.** Thirteen regions, each correctly dense, each offering the same kinds
+  of thing to find — a cave, a camp, a ruin, repeated province-wide. Every density metric passes and
+  the world reads as one place. D14 and D15 exist for this.
 - **Nothing on the skyline.** Flat marsh with fog at 120 m. D12 fails, the player has no reason to pick
   a direction, and RI-WLD06 (navigation without markers) becomes unsatisfiable. Density and
   navigability are the same problem seen twice.

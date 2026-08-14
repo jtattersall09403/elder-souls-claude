@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ae17b24`: 897 tools, 155 reference
+so it cannot drift. Generated at `5cee352`: 899 tools, 155 reference
 items, 160 pieces in flight.
 
 Its purpose is to stop 160+ concurrent agents each paying separately to discover the
@@ -147,9 +147,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/w1-chartfont-shot-sweep.mjs` — SWEEP docs/shots/ FOR FIGURES DRAWN WITH THE SHEARED CHART FONT — by reading the PIXELS.
 - `tools/analysis/w1-chartfont-shot.mjs` — the rule-27 picture for W1-CHARTFONT: the same strings drawn with the pre-fix table and with the fixed one, side by side, at the size a chart actually uses them
 
-### `tools/assets/` — 1
+### `tools/assets/` — 2
 
 - `tools/assets/fetch-cc0-materials.mjs` — W1-30C — fetch and convert the CC0 texture sets named in tools/assets/material-library.json.
+- `tools/assets/synth-materials.mjs` — W1-30C — synthesise the material assets no legally redistributable CC0 set provides.
 
 ### `tools/audio/` — 13
 
@@ -869,10 +870,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 4
+### `tools/visual/` — 5
 
 - `tools/visual/build-deck.mjs` — **no header comment**
 - `tools/visual/contact-sheet.mjs` — **no header comment**
+- `tools/visual/deck-compare.mjs` — **no header comment**
 - `tools/visual/deck.mjs` — **no header comment**
 - `tools/visual/frame-stats.mjs` — **no header comment**
 
@@ -1077,7 +1079,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **233 tools have no header comment**, so nobody can tell what they do without
+> **234 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

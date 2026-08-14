@@ -221,28 +221,38 @@ try {
   const minStep = stepDiffs.length ? Math.min(...stepDiffs) : 0;
   const medStep = stepDiffs.length ? stepDiffs.slice().sort((a, b) => a - b)[stepDiffs.length >> 1] : 0;
   out.data.sweep_step_diff_px = stepDiffs;
-  push('A3.the-dial-redraws-when-you-turn', stepDiffs.length === 23 && minStep > 0,
-    `every one of ${stepDiffs.length} consecutive 15° steps changed the dial's pixels; ` +
-    `min ${minStep} px, median ${medStep} px`);
 
-  // A4 — THE NULL CONTROL for A3. Twenty-four frames with the camera held still. If the dial's
-  // pixels move here too, A3 measured the weather and not the compass.
-  {
-    await setYaw(0);
-    const still = [];
-    for (let i = 0; i < 12; i++) {
-      await h.h('stepFrames', 1);
-      const png = decode(await h.h('screenshot'));
-      still.push(crop(png, dialRect));
-    }
-    const stillDiffs = [];
-    for (let i = 1; i < still.length; i++) stillDiffs.push(cropDiff(still[i - 1], still[i]));
-    const maxStill = Math.max(...stillDiffs);
-    out.data.still_step_diff_px = stillDiffs;
-    push('A4.null-control-still-camera-does-not-move-the-dial', maxStill === 0,
-      `${stillDiffs.length} frames with the camera pinned: worst ${maxStill} px of change, ` +
-      `against a median of ${medStep} px per 15° turn`);
+  // A4 — THE NULL CONTROL for A3, taken FIRST because A3's threshold is derived from it.
+  //
+  // THIS CHECK ORIGINALLY DEMANDED ZERO AND FAILED AT 65 px, AND THE DEMAND WAS WRONG. The
+  // dial's housing is `chitin_dark` at 0.82 alpha, so the live world shows through it — leaves,
+  // water and cloud shadow keep moving while the camera does not. A crop of a translucent
+  // element over a running world is never byte-identical between frames and never could be.
+  //
+  // So the honest instrument is a SEPARATION, not a zero: how much does the dial's rectangle
+  // change when the world moves and the camera does not, against how much it changes when the
+  // camera turns 15°? A4 measures the floor, A3 asserts the turn clears it by 4×. That is a
+  // control that can still go red — freeze the dial and every turn drops to the still floor —
+  // and it does not lie about what a translucent element over a live world can promise.
+  await setYaw(0);
+  const still = [];
+  for (let i = 0; i < 12; i++) {
+    await h.h('stepFrames', 1);
+    still.push(crop(decode(await h.h('screenshot')), dialRect));
   }
+  const stillDiffs = [];
+  for (let i = 1; i < still.length; i++) stillDiffs.push(cropDiff(still[i - 1], still[i]));
+  const maxStill = Math.max(...stillDiffs);
+  out.data.still_step_diff_px = stillDiffs;
+  push('A4.null-control-the-still-floor-is-far-below-a-turn', maxStill * 4 < minStep,
+    `${stillDiffs.length} frames with the camera pinned move the dial's rect by at most ` +
+    `${maxStill} px — the world showing through 0.82-alpha chitin — against a minimum of ` +
+    `${minStep} px for a 15° turn: a ${(minStep / Math.max(1, maxStill)).toFixed(1)}× separation`);
+
+  push('A3.the-dial-redraws-when-you-turn',
+    stepDiffs.length === 23 && minStep > maxStill * 4,
+    `all ${stepDiffs.length} consecutive 15° steps changed the dial by more than 4× the ` +
+    `still-camera floor of ${maxStill} px; min ${minStep} px, median ${medStep} px`);
 
   // ===========================================================================================
   // B. THE BOUNDARY — RI-UIX01 §B X6. There is no compass in a fight.
@@ -253,17 +263,21 @@ try {
       `out of combat: ${before.dial ? '1' : '0'} bearing_dial, heading ` +
       `${before.hud.bearing_cardinal} (${before.hud.bearing_deg}°)`);
 
+    // `inf_trash` is the ordinary infantry archetype in `game/data/combat/enemies/`, and
+    // `Engine.inCombat()` returns true for any live hostile body within 30 m. Spawning one is a
+    // real fight by the project's own definition (ARBITRATION §1), not a flag flipped on the
+    // side. The archetype id is checked against the build's own register first, so this fails
+    // loudly with the real list rather than silently declining to enter combat — which is
+    // exactly what the first run of this tool did, and it took B1 and E2 down with it.
     const fight = await h.page.evaluate(() => {
       const A = window.__HARNESS, eng = window.__ENGINE;
       const p = eng.sim.player;
-      try { A.spawn('marsh-raider', p.pos[0] + 4, p.pos[2] + 4, { as: 'compass-probe-foe' }); } catch (e) {
-        // the archetype id may differ; fall back to whatever the build has
-        const any = (eng.data && eng.data.statblocks && [...eng.data.statblocks.keys()]
-          .find((k) => k !== 'player')) || null;
-        if (any) A.spawn(any, p.pos[0] + 4, p.pos[2] + 4, { as: 'compass-probe-foe' });
-      }
+      const known = Object.keys(eng.data.enemies || {});
+      const id = ['inf_trash', 'cam_levy', 'drowned_lesser'].find((k) => known.includes(k)) || null;
+      if (!id) return { inCombat: false, why: `no usable archetype among ${known.join(', ')}` };
+      A.spawn(id, p.pos[0] + 4, p.pos[2] + 4, { as: 'compass-probe-foe' });
       for (let i = 0; i < 4; i++) A.stepFrames(1);
-      return { inCombat: eng.inCombat() };
+      return { inCombat: eng.inCombat(), archetype: id };
     });
     const during = await readHud();
     out.data.combat = { entered: fight.inCombat, dial: during.dial, hud: during.hud };
@@ -299,12 +313,24 @@ try {
   // The definition of an objective marker, regardless of what it looks like: "anything on screen
   // that changes when quest state changes and nothing else does". Body and camera pinned, quest
   // flags moved, pixels diffed.
+  //
+  // IT IS A THREE-ARM COMPARISON AND THE FIRST VERSION WAS A TWO-ARM ONE, WHICH IS WHY IT
+  // REPORTED A FALSE POSITIVE. Advance four frames while setting quest flags and the dial's rect
+  // changed by 43 px — and 43 px is what four frames of a live world showing through 0.82-alpha
+  // chitin costs whatever you do with the quest log. The arm that was missing is the one that
+  // advances the same four frames and touches NOTHING, and the question is not "did the pixels
+  // move" but "did the quest arm move them any more than the do-nothing arm did".
   {
     await setYaw(37);
-    const q0 = decode(await h.h('screenshot'));
     const rect = (await readHud()).dial.rect;
-    const a = crop(q0, rect);
+    const a = crop(decode(await h.h('screenshot')), rect);
 
+    // arm 1 — four frames, nothing touched. The floor.
+    await h.h('stepFrames', 4);
+    const noop = crop(decode(await h.h('screenshot')), rect);
+    const noopDiff = cropDiff(a, noop);
+
+    // arm 2 — four frames, quest flags set.
     const moved = await h.page.evaluate(() => {
       const A = window.__HARNESS, eng = window.__ENGINE;
       const before = JSON.stringify(eng.sim.quest);
@@ -315,25 +341,32 @@ try {
       for (let i = 0; i < 4; i++) A.stepFrames(1);
       return { set, changed: JSON.stringify(eng.sim.quest) !== before };
     });
-    const q1 = decode(await h.h('screenshot'));
-    const b = crop(q1, rect);
-    const questDiff = cropDiff(a, b);
-    out.data.quest = { flags_set: moved.set, quest_state_changed: moved.changed, dial_diff_px: questDiff };
+    const b = crop(decode(await h.h('screenshot')), rect);
+    const questDiff = cropDiff(noop, b);
+    out.data.quest = {
+      flags_set: moved.set, quest_state_changed: moved.changed,
+      noop_arm_diff_px: noopDiff, quest_arm_diff_px: questDiff,
+    };
+    // The quest arm must not exceed the do-nothing arm by more than the do-nothing arm's own
+    // size — i.e. quest state buys no change the clock was not already buying.
     push('C1.quest-state-does-not-touch-the-dial',
-      moved.changed && questDiff === 0,
+      moved.changed && questDiff <= Math.max(noopDiff, 4) * 2,
       moved.changed
-        ? `${moved.set} quest flags set, sim.quest changed, and the dial moved ${questDiff} px`
+        ? `${moved.set} flags set and sim.quest changed. Four frames touching nothing move the ` +
+          `dial's rect by ${noopDiff} px (the world behind translucent chitin); four frames with ` +
+          `the quest log moving cost ${questDiff} px — no separable quest signal`
         : 'QUEST STATE DID NOT CHANGE — the check did not run and is reported failed, not skipped');
 
     // C2 — THE NULL CONTROL. The same crop, the same diff function, the same rect, moved by
-    // three degrees of yaw. If this does not go non-zero, C1's zero was a blind instrument.
+    // three degrees of yaw. Without it, C1's "no separable signal" could just as easily be an
+    // instrument that cannot see anything at all in that rectangle.
     await setYaw(40);
     const c = crop(decode(await h.h('screenshot')), rect);
-    const yawDiff = cropDiff(a, c);
+    const yawDiff = cropDiff(b, c);
     out.data.quest.null_control_yaw3_diff_px = yawDiff;
-    push('C2.null-control-a-3-degree-turn-does-move-it', yawDiff > 0,
-      `the same crop and the same diff over a 3° turn: ${yawDiff} px — so C1's ${questDiff} px ` +
-      'is a measurement and not a blind spot');
+    push('C2.null-control-a-3-degree-turn-does-move-it', yawDiff > Math.max(noopDiff, questDiff) * 3,
+      `the same crop and the same diff over a 3° turn: ${yawDiff} px, against ${noopDiff} px ` +
+      `(do-nothing) and ${questDiff} px (quest) — the instrument can see a real change in that rect`);
   }
 
   // ===========================================================================================
@@ -392,27 +425,45 @@ try {
   // W1-13 round 4's lesson, applied: `openMenu()` reached six screens while real input reached
   // two, and every probe that went through the harness door read that as working. So the switch
   // is driven with `queueInputs`, the same path a keypress takes.
+  //
+  // AND SCRIPTED INPUT ON A PAUSED MENU FRAME MUST USE `f: 0`, RE-QUEUED PER EDGE. This cost
+  // the first run of this tool its E1 and E2 and is worth writing down, because nothing in
+  // HARNESS.md says it. Outside a fight with a screen open the simulation is STOPPED (S14 /
+  // RI-UIX03 §A): `Engine._step()` takes the paused branch, calls `latchForStep(this.sim.frame)`
+  // and `uiDriver` — so input still latches and the menu is navigable — but `sim.frame` does
+  // not advance. `queueInputs` schedules on `e.f + scriptBase === frame`, and `scriptBase` is
+  // the frame it was queued at, so **any `f` above 0 names a frame that will never arrive**, and
+  // the events are counted as dropped instead. The first run queued `{f:1, press}` / `{f:3,
+  // release}` with the inventory open and pressed nothing at all, eight steps running.
+  //
+  // `queueInputs` also resets `scriptBase` on every call, so re-queuing at `f: 0` per edge is
+  // the way to drive a press-release-press sequence while the world is stopped.
   {
     const r = await h.page.evaluate(() => {
       const A = window.__HARNESS, eng = window.__ENGINE;
+      const edge = (kind) => {
+        A.queueInputs([{ f: 0, [kind]: ['two_hand'] }]);
+        A.stepFrames(1);
+      };
       A.setHudMode('full');
       A.openMenu('inventory');
       A.stepFrames(1);
+      const paused = eng.ui.pausesSimulation(eng.inCombat());
+      const frameAtOpen = eng.sim.frame;
       const before = eng.ui.hudMode;
-      A.queueInputs([{ f: 1, press: ['two_hand'] }, { f: 3, release: ['two_hand'] }]);
-      for (let i = 0; i < 6; i++) A.stepFrames(1);
+      edge('press'); edge('release');
       const afterPress = eng.ui.hudMode;
-      A.queueInputs([{ f: 1, press: ['two_hand'] }, { f: 3, release: ['two_hand'] }]);
-      for (let i = 0; i < 6; i++) A.stepFrames(1);
+      edge('press'); edge('release');
       const afterSecond = eng.ui.hudMode;
       A.closeMenu();
       A.stepFrames(1);
-      return { before, afterPress, afterSecond };
+      return { before, afterPress, afterSecond, paused, frame_did_not_advance: eng.sim.frame === frameAtOpen };
     });
     out.data.player_route = r;
     push('E1.the-player-can-actually-switch-it',
       r.before === 'full' && r.afterPress === 'minimal' && r.afterSecond === 'full',
-      `through the input pipeline with the inventory open: ${r.before} -> ${r.afterPress} -> ${r.afterSecond}`);
+      `through the input pipeline with the inventory open: ${r.before} -> ${r.afterPress} -> ` +
+      `${r.afterSecond} (world paused: ${r.paused}, frame frozen: ${r.frame_did_not_advance})`);
 
     // E2 — THE NULL CONTROL, and it is also a requirement: in a fight `two_hand` is two-handing
     // your weapon (RI-UIX03 P6 keeps the fight playable with a screen up), so the switch must NOT
@@ -421,14 +472,17 @@ try {
       const A = window.__HARNESS, eng = window.__ENGINE;
       const p = eng.sim.player;
       A.setHudMode('full');
-      const any = [...(eng.data.statblocks || new Map()).keys()].find((k) => k !== 'player');
-      if (any) A.spawn(any, p.pos[0] + 4, p.pos[2] + 4, { as: 'compass-probe-foe2' });
+      const known = Object.keys(eng.data.enemies || {});
+      const id = ['inf_trash', 'cam_levy', 'drowned_lesser'].find((k) => known.includes(k));
+      if (id) A.spawn(id, p.pos[0] + 4, p.pos[2] + 4, { as: 'compass-probe-foe2' });
       for (let i = 0; i < 4; i++) A.stepFrames(1);
       const inCombat = eng.inCombat();
       A.openMenu('inventory');
       A.stepFrames(1);
-      A.queueInputs([{ f: 1, press: ['two_hand'] }, { f: 3, release: ['two_hand'] }]);
-      for (let i = 0; i < 6; i++) A.stepFrames(1);
+      // In a fight the world is NOT paused (S14 pauses only out of one), so relative frames do
+      // arrive here — which is why this arm can use the ordinary form and E1's cannot.
+      A.queueInputs([{ f: 1, press: ['two_hand'] }, { f: 4, release: ['two_hand'] }]);
+      for (let i = 0; i < 8; i++) A.stepFrames(1);
       const after = eng.ui.hudMode;
       A.closeMenu();
       const i2 = eng.sim.entities.findIndex((e) => e.eid === 'compass-probe-foe2');

@@ -234,6 +234,35 @@ M7 exists to catch.
 | V7 | `reason` drawn from the closed vocabulary `approach / crossing / threshold / hazard-field / dread / scale / relief` | 100% | any other value |
 | V8 | Tracts with a named `payoff_poi` at or beyond their far edge | 100% | < 100% |
 | V9 | Tracts entered or crossed by ≥1 declared route | 100% | < 100% |
+| **V10** | **Tracts whose polygon lies in the region they name** (≥50% of polygon area inside that region's bounds, in `terrain.json`'s coordinate frame) | **100%** | any tract that cannot be located in the world |
+| **V11** | **`RI-WLD15` W15-1 and W15-3 inside each tract, unrelaxed** — median unchanging-ground run ≤ 90 s, median ≥ 8 ground states per 720 m walk | **every tract** | any tract over 150 s median run, or under 6 states |
+
+> **AMENDED 2026-08-14 — Ruling W1** (`orchestration/OWNER-DIRECTIVES-2026-08-14.md` §6),
+> implementing `reports/BAR-AUDIT-WORLD-20260814.md` §5.6. **V10 and V11 are new; V1–V9 unchanged.**
+>
+> **What V11 fixes.** This item mandated ≥240-second POI-free walks and required **nothing whatever
+> of the landscape crossed during them**. That is emptiness and sameness collected as one prize. The
+> tell is exact: V-01 "The Drowned Reach" declares a 420-second empty walk in the Deep Marshes, which
+> is precisely the region holding a **275-second walk across a single unchanging ground state**. A
+> void tract is authored *absence of things to do*; it was never a licence for absence of place.
+> `RI-WLD15` W15-7 already said this from its side — V11 is the same clause stated where the tracts
+> are declared, so a critic reading either item sees it. **Emptiness is authored; sameness is not.**
+>
+> **What V10 fixes, and why it had to be added.** Measuring V11 revealed that the five declared
+> polygons in `game/data/world/voids.json` are in a **different coordinate frame** from
+> `terrain.json`: V-01 is declared in the Deep Marshes but its polygon spans x −940…−210, while the
+> world runs x 0…4825 and the Deep Marshes sits at x 2472…3592. No single offset reconciles them —
+> V-01 would need +3412 in x and V-02 −692. So none of the five tracts can currently be located in
+> the world, which means V4's empty-walk figures, V8's payoff-POI geometry and `RI-WLD02`'s
+> "outside declared void tracts" scoping are all unverifiable: **you cannot exclude a polygon you
+> cannot find.** V1–V9 all pass regardless, because every one of them tests a metadata field rather
+> than a position — the same shape as the failures this ruling is about, one layer down. V10 is the
+> cheapest possible guard against a tract that exists only as a record.
+>
+> **Reversal**: delete rows V10 and V11 and this note. **Falsifier**: if `voids.json` is deliberately
+> authored in a region-local frame with a documented transform, V10 should test the transformed
+> polygon rather than the raw one — but the transform must exist and be named somewhere, and as of
+> this commit it is not.
 
 **Suggested allocation** (constructed; sums to 2.14 km² = 14.7% of the landmass, drawn from
 the five sparsest regions by RI-WLD02 §5's own Tier A+B/km² figures):

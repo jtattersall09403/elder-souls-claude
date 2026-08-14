@@ -124,12 +124,16 @@ level-scaling component**. Any level-scaling found is an AR-1/S9 violation and f
 
 | Score | Condition |
 |---|---|
-| 10 | M17 ≥37/39 day and ≥32/39 night; M18 all pairs ≥7 axes; M19/M20/M21 clean |
-| 8 | M17 ≥33/39; night ≥27; M18 all pairs ≥6 axes; M20 ≥26/39 |
+| 10 | M17 ≥37/39 day and ≥32/39 night; M18 all pairs ≥7 of 10 axes; M19/M20/M21 clean |
+| 8 | M17 ≥33/39; night ≥27; M18 all pairs ≥6 of 10 axes with landform among them; M20 ≥26/39 |
 | 6 | M17 28–32/39; M18 has ≤3 pairs at 4–5 axes |
 | 4 | M17 22–27/39; regions differ but two or three are interchangeable |
 | 2 | M17 15–21/39; regions differ mainly by tint and fog |
 | **0 — WE LOSE** | Any of: M17 <15/39 (chance is 3/39); M18 finds any pair differing on ≤3 axes; two regions share an ONLY-HERE element; a level-scaling component exists on any enemy |
+
+**M18 and M19 were tightened by Ruling W1 on 2026-08-14** and the bands above are unchanged: an
+8 still means what it meant, it is simply harder to claim. Measured the same day on the shipped
+world, M18 passes 77 of 78 pairs and M19 12 of 13 elements — see `reports/RULING-W1-REMEASURE.md`.
 
 **Native → ladder anchors — the row mandated by `SCORING.md` §1.2 (BAR-CRITIQUE-01 W7).**
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
@@ -156,6 +160,12 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
   single cheapest way to double region legibility.
 - **ONLY-HERE assets reused.** The rock flutes look great, so they get scattered into the Stone Forest
   too, and now neither region owns anything. M19 fails both.
+- **The unique feature as a diorama.** All eight rock flutes in one clump beside the road, and the
+  rest of the region empty of them. The count passes; the place does not feel like it owns anything.
+  M19's spread and reach clauses exist for this.
+- **Differentiation by token.** One extra weather state that fires 0.5% of the time, one swapped bird
+  sample, a hazard covering 3 m². Three axes "differ" and the pair is still one region seen twice.
+  M18's magnitude floors exist for this.
 - **Difficulty by numbers.** Making tier 5 hard by multiplying enemy HP rather than by changing the
   roster, the group sizes and the hazard. A voriplasm that is a reskinned mudcrab with 4× health is not
   a tier-5 region, it is a spreadsheet.
