@@ -148,3 +148,18 @@ node tools/corpus-index.mjs --check
 # permission — it was seeing the list in time. Note that unstaging is not the whole answer:
 # `git commit` takes the entire index, so the reliable form is `git commit --only <your paths>`.
 node tools/ownership.mjs --staged "${ES_TASK_ID:-}" || true
+
+# ---------------------------------------------------------------------------------------------
+# Citation staleness — do the documents that direct work still describe the repo correctly?
+#
+# The project owner named this on 2026-08-14 as the most expensive pattern in the project, after
+# four instances in one day: twenty-nine plans against a superseded bar; six UI items guessing at
+# HUD geometry that was vendored on disk; a corpus that told builders 33 screenshots were not there
+# while they had been on disk since 6 August; and an n=0 that was a property of a wrongly-scoped
+# anchor rather than of the world. See `tools/check-citations.mjs` for the full account.
+#
+# WARNING, NOT BLOCKING, on the same reasoning as the prose and ownership gates above: the findings
+# are usually in documents the committer does not own, and a hard block would stop the wrong person.
+# What was missing was never permission — it was seeing it. `--self-test` proves the checks fire.
+echo "pre-commit: citation-staleness gate (node tools/check-citations.mjs)"
+node tools/check-citations.mjs || echo "pre-commit: citation staleness above — a document is describing a repo that no longer exists. Not blocking; fix or hand over."
