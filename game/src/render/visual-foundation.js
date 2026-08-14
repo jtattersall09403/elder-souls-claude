@@ -116,7 +116,7 @@ export const DETAIL_NORMAL_TILING = 8;
  * permits (resin 1.0 m against mud 3.8 m) is 3.8x.  Read it with `materialTiling(family, opts)`
  * rather than inlining the numbers. */
 export const TEXEL_METRES = Object.freeze({
-  mud: 3.8, wet_mud: 3.8, clay: 2.5, bark: 1.6, root: 1.8, timber: 2.2, thorn: 1.2,
+  mud: 3.8, wet_mud: 3.8, clay: 2.5, bark: 1.6, root: 1.2, timber: 2.2, thorn: 1.2,
   leaf: 1.8, reed: 1.6, stone: 2.4, salt: 3.0, metal: 1.0, chitin: 1.0, wet_chitin: 1.0,
   shell: 1.2, bone: 1.6, resin: 1.0, cloth: 1.1, skin: 1.4, water: 3.8,
 });
@@ -281,7 +281,7 @@ const mapCache = new Map();
 const FAMILY_SET=Object.freeze({
   mud:'brown_mud', wet_mud:'mud_forest', bark:'bark_brown_01', leaf:'forest_leaves_02',
   reed:'reed_roof_04', root:'roots', timber:'dark_wooden_planks', clay:'clay_plaster',
-  stone:'plastered_stone_wall', salt:'white_plaster_rough_01', bone:'marble_01',
+  stone:'coral_stone_wall', salt:'marble_cliff_02', bone:'marble_01',
   chitin:'chitin_plates', resin:'resin_flow', cloth:'rough_linen', skin:'brown_leather',
   metal:'rusty_metal_04', water:'water_ripple', shell:'shell_floor_01', thorn:'bark_willow',
   wet_chitin:'chitin_plates',
@@ -472,7 +472,7 @@ const NORMAL_MAPS_CHUNK='#include <normal_fragment_maps>';
 function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
   const detail=detailNormalTile(tile);
   const u={
-    uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?.62:0},
+    uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?.26:0},
     uWear:{value:wear}, uWearCurvature:{value:2.4},
     uWetness:{value:wetness}, uWorldWetness:{value:worldWetness.amount},
     uWetTop:{value:worldWetness.topY}, uWetBottom:{value:worldWetness.bottomY},

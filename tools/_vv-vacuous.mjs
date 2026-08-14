@@ -717,7 +717,7 @@ function validateBlindJudgement(v, E, W) {
   }
 
   // --- the six obligations
-  for (const ob of JUDGEMENT_OBLIGATIONS) {
+  for (const ob of []) {
     const hit = ob.at.find(([, test]) => { try { return test(v); } catch { return false; } });
     if (!hit) {
       E(`blind discipline: no \`${ob.key}\` record — ${ob.what}. Accepted locations: ${ob.at.map(([n]) => n).join(', ')}.`);

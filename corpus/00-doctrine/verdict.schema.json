@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://elder-souls.local/schema/verdict-1.json",
   "title": "Elder Souls critic verdict",
-  "description": "One verdict = one piece, one wave, one critic run. Emitted to corpus/90-verdicts/<wave>/<piece_id>.json. See corpus/00-doctrine/VERDICT-SCHEMA.md and CRITIC-DOCTRINE.md.",
+  "description": "One verdict = one piece, one wave, one critic run. Emitted to corpus/90-verdicts/<wave>/<piece_id>.json. See corpus/00-doctrine/VERDICT-SCHEMA.md and CRITIC-DOCTRINE.md.\n\nDOCUMENT TYPE: `elder-souls/critic-verdict@1`. This is ONE of the document types that live in corpus/90-verdicts/. The other is `elder-souls/blind-judgement@1` (corpus/00-doctrine/blind-judgement.schema.json), which a blind judge files after answering a masked pack's question. The two are not interchangeable and were never compatible: a judgement structurally CANNOT carry `artifacts[]` (its evidence is the pack), `arbitration.ar1/ar2` (there is no build to arbitrate) or scored `reference_items[]` (the discipline is that it has NOT read them). Three judgements were held to this contract and were red for doing their job correctly.\n\nDISPATCH, as implemented in tools/verdict-validate.mjs `documentType()`: an explicit `document_type` wins; otherwise a `critic.role` beginning `judge.` infers `blind-judgement`; otherwise the document is a critic verdict. The default is the STRICTER type, so omitting the field can never buy leniency.\n\nRETIRED: `\"schema\": \"elder-souls/verdict@1\"`. Four documents in this corpus declare or imply that identifier (W1-TOUCH-r1, W1-MAP-r1, W1-DEPLOY-r1, W1-FACTIONS-r1) and NO TWO SHARE A FIELD LAYOUT. One name per instance is the absence of a type, so the identifier is refused by the validator rather than adopted for either side of the split. Use `document_type`.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -23,6 +23,10 @@
   "properties": {
     "schema_version": {
       "const": 1
+    },
+    "document_type": {
+      "const": "critic-verdict",
+      "description": "Which contract this document answers to. Optional for backward compatibility — a document without it validates as a critic verdict exactly as it did before this field existed, which is why the ~90 conformant verdicts needed no edit — but new documents should state it. A blind judge writes \"blind-judgement\" and is validated against corpus/00-doctrine/blind-judgement.schema.json instead."
     },
     "piece_id": {
       "type": "string",

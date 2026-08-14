@@ -284,7 +284,7 @@ if (!LIST) {
     process.stdout.write(`  synth detail-normal/${name} ... `);
     const f = make(N), h = new Float32Array(N * N);
     for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) h[y * N + x] = f(x / N, y / N);
-    written[`detail/${name}`] = writeRGB(path.join(OUT, 'detail', `detail_normal_${name}_512.jpg`), normalFromHeight(h, N, 1.5), N, N, 3);
+    written[`detail/${name}`] = writeRGB(path.join(OUT, 'detail', `detail_normal_${name}_512.jpg`), normalFromHeight(h, N, 0.85), N, N, 3);
     console.log('ok');
   }
 

@@ -167,6 +167,30 @@ Its self-check missed it because the negative control was an *empty* world rathe
 one. The honest figure is 5%. A null control has to be the plausible wrong answer, not the trivial
 one — an empty world will fail almost any check by accident.
 
+### Ruling O1 — the orchestrator caused the silent-clobber bug, and owns the fix *(reversible)*
+
+**Three agents have now had committed work silently reverted mid-task**: the verdict-evidence agent
+lost three edits, and `tools/cost.mjs` was reverted during the cost-experiment run, destroying an
+experiments module that had already produced results. Each recovered, but each paid a round.
+
+**The cause is not git; it is two agents holding the same file.** A `Write` replaces a whole file, so
+when two agents both have that file in scope, the second silently erases the first regardless of what
+git does. And the reason two agents held the same file is an **orchestrator dispatch error**: the
+cost-dashboard agent built `tools/cost.mjs` and the cost-experiments agent was dispatched to extend
+it while the first still had pending writes. `tools/ownership.mjs --conflicts` exists precisely to
+catch that and the orchestrator did not run it before dispatching.
+
+**Binding on the orchestrator from now on:** before dispatching an agent into any file, run
+`node tools/ownership.mjs --for <path>` and `--conflicts`, and check `ListAgents` for a live agent
+that built or is building it. A piece that must extend a file another agent owns goes to **that
+agent via `SendMessage`**, not to a new one. This is the same discipline the `W1-30` decomposition
+applies to the visual programme — ten children split by file so nobody shares one — and it should
+never have been applied there and not here.
+
+**Reversal**: none needed; it is a check, not a change. **Falsifier**: if clobbering recurs between
+agents that provably never shared a file, the cause is elsewhere — most likely `bank.mjs` staging or
+a merge — and this ruling should not be allowed to mask it.
+
 ## 7. Housekeeping the previous run let slip
 
 Workers have not been updating these, and must: `docs/index.html`, `docs/progress.html`,

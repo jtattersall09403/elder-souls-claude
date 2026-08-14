@@ -61,7 +61,7 @@ async function fetchSource(slug) {
   return meta;
 }
 
-function convert(slug, meta) {
+function convert(slug, meta, adjust) {
   const dir = path.join(OUT, slug);
   fs.mkdirSync(dir, { recursive: true });
   const out = {};
@@ -72,7 +72,7 @@ function convert(slug, meta) {
   };
   // Albedo: desaturated to 0.55 so the region palette leads. Pigment variation survives;
   // "rusty orange" does not overrule Black Marsh.
-  step('albedo', 'albedo_1k', 'scale=1024:1024,eq=saturation=0.55', 4, meta.maps.diff.cached);
+  step('albedo', 'albedo_1k', `scale=1024:1024,eq=saturation=0.55${adjust ? ':' + adjust : ''}`, 4, meta.maps.diff.cached);
   // Normal: OpenGL convention, 1k, higher JPEG quality — a quantised normal shows as banded
   // shading, which is exactly the amateur tell this piece exists to remove.
   step('normal', 'normal_1k', 'scale=1024:1024', 3, meta.maps.nor_gl.cached);
@@ -104,8 +104,9 @@ for (const [slug, spec] of slugs) {
   process.stdout.write(`  fetch ${slug} ... `);
   const meta = await fetchSource(slug);
   report[slug] = {
+    adjust: spec.adjust || null,
     source: `https://polyhaven.com/a/${slug}`, author: spec.author || null, licence: 'CC0-1.0',
-    maps: convert(slug, meta),
+    maps: convert(slug, meta, spec.adjust),
     upstream: Object.fromEntries(Object.entries(meta.maps).map(([k, v]) => [k, { url: v.url, sha256: v.source_sha256 }])),
   };
   const kb = Object.values(report[slug].maps).reduce((a, m) => a + m.bytes, 0) / 1024;

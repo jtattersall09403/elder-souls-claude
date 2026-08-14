@@ -57,13 +57,31 @@ await g.page.evaluate(({ w, h }) => {
   window.__ENGINE.renderer.setSize(w, h);
 }, { w: CW, h: CH });
 
-// Never claim GPU. Read the live context's own answer and stamp it.
+// Never claim GPU, and FAIL CLOSED. Lifted verbatim in spirit from `tools/visual/deck.mjs`
+// lines 82-96, whose comment records the exact trap: the first version of that probe threw,
+// the catch returned a string that did not match /swiftshader/, and the manifest recorded
+// `software_renderer: false` on a software run. An unknown renderer is treated as software.
 manifest.renderer_string = await g.page.evaluate(() => {
-  const gl = window.__ENGINE.renderer.renderer.getContext();
-  const ext = gl.getExtension('WEBGL_debug_renderer_info');
-  return ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER));
+  try {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    if (!gl) return 'unavailable: no webgl2 context';
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+  } catch (e) { return `unavailable: ${e.message}`; }
 });
-manifest.swiftshader = /swiftshader|llvmpipe|software/i.test(manifest.renderer_string || '');
+manifest.swiftshader = /^unavailable|^unknown/i.test(manifest.renderer_string)
+  || /swiftshader|llvmpipe|software|mesa/i.test(manifest.renderer_string);
+
+// The vendored Three, reached the way the game reaches it, so the raycaster below is the same
+// implementation the renderer uses rather than a re-derivation of it.
+const THREE_URL = await g.page.evaluate(async () => {
+  for (const u of ['./vendor/three/three.module.js', '/vendor/three/three.module.js', '../vendor/three/three.module.js', '/game/vendor/three/three.module.js']) {
+    try { const m = await import(u); if (m && m.Raycaster) { window.__THREE = m; return u; } } catch { /* next */ }
+  }
+  return null;
+});
+if (!THREE_URL) { console.error('first-ten: could not reach the vendored Three from the page — the D2 overhead test needs a Raycaster'); }
+manifest.three_module = THREE_URL;
 
 let shotN = 0;
 async function shot(label) {
@@ -82,11 +100,10 @@ async function shot(label) {
 async function playerVisiblePx() {
   return g.page.evaluate(() => {
     const R = window.__ENGINE.renderer;
-    const root = R.player || R.scene.getObjectByName('player');
-    const gl = R.renderer;
+    const root = R.playerMesh;
     const grab = () => {
-      R.renderer.render(R.scene, R.camera);
-      const c = gl.domElement;
+      R.three.render(R.scene, R.camera);
+      const c = R.three.domElement;
       const cv = document.createElement('canvas'); cv.width = c.width; cv.height = c.height;
       cv.getContext('2d').drawImage(c, 0, 0);
       return cv.getContext('2d').getImageData(0, 0, c.width, c.height).data;
@@ -108,9 +125,9 @@ async function playerVisiblePx() {
 /** Every live rain streak, raycast straight up. A hit overhead means it is falling indoors. */
 async function streaksUnderCover() {
   return g.page.evaluate(() => {
-    const THREE = window.__THREE || window.THREE;
+    const THREE = window.__THREE;
+    if (!THREE) return { error: 'no Three module on the page' };
     const R = window.__ENGINE.renderer;
-    const sky = R.sky || R.skyRig || null;
     const rain = R.scene.getObjectByName('weather-precipitation-bounded-320');
     if (!rain) return { error: 'no precipitation object in the scene' };
     if (!rain.visible) return { visible: false, live: 0, under_cover: 0 };
@@ -123,9 +140,9 @@ async function streaksUnderCover() {
       if (!o.isMesh || !o.visible) return;
       if (o === rain) return;
       const n = String(o.name || '');
-      if (n.startsWith('npc:') || n.startsWith('prop:') || n === 'player' || n.includes('sky') || n.includes('dome') || n.includes('reflect')) return;
-      let p = o.parent, skip = false;
-      while (p) { const pn = String(p.name || ''); if (pn === 'player' || pn.startsWith('npc:')) { skip = true; break; } p = p.parent; }
+      if (n.startsWith('npc:') || n.startsWith('prop:') || n.includes('sky') || n.includes('dome') || n.includes('reflect') || n.includes('precipitation')) return;
+      let p = o, skip = false;
+      while (p) { if (p === R.playerMesh) { skip = true; break; } const pn = String(p.name || ''); if (pn.startsWith('npc:')) { skip = true; break; } p = p.parent; }
       if (!skip) solids.push(o);
     });
     const rc = new THREE.Raycaster();
@@ -192,13 +209,22 @@ if (want('d3')) {
   const c = await census();
   const shots = [];
   shots.push(await shot('d3-lilmoth-street'));
-  // And a look at the world origin itself, where the misplaced bodies are standing.
-  await g.page.evaluate(() => {
-    const R = window.__ENGINE.renderer;
-    R.camera.position.set(14, 6, 14); R.camera.lookAt(0, 1.2, 0);
-    R.renderer.render(R.scene, R.camera);
-  });
-  shots.push(await shot('d3-world-origin-orbit'));
+  // And a look at the world origin itself, where the misplaced bodies are standing. Posed
+  // through the ENGINE's own override rather than by moving the Three camera directly — the
+  // harness re-renders through the shipping path on `screenshot`, so a camera moved behind its
+  // back is overwritten before the pixels are read. (Cost me one capture run; recorded so it
+  // does not cost anybody else one.)
+  for (const [i, pose] of [
+    { pos: [14, 6, 14], look: [0, 1.2, 0] },
+    { pos: [-16, 5, 10], look: [0, 1.2, 0] },
+    { pos: [0, 22, 26], look: [0, 1.0, 0] },
+  ].entries()) {
+    await g.h('camera', pose);
+    await g.h('stepFrames', 2);
+    shots.push(await shot(`d3-world-origin-${i}`));
+  }
+  await g.h('camera', { mode: 'gameplay' });
+  await g.h('stepFrames', 4);
   manifest.d3 = { ...c, shots, rows: undefined, rows_saved: 'census-rows.json' };
   fs.writeFileSync(path.join(OUT, 'census-rows.json'), JSON.stringify(c.rows, null, 1));
   console.log(JSON.stringify({ d3: { npcs: c.npcs, at_origin_coords: c.at_origin_coords, visible_bodies_at_origin: c.visible_bodies_at_origin, residents_in_town: c.residents_in_town } }));

@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://elder-souls.local/schema/blind-judgement-1.json",
+  "title": "Elder Souls blind-pack judgement",
+  "description": "DOCUMENT TYPE: `elder-souls/blind-judgement@1`. One judgement = one blind pack, answered by one judge that has not seen the piece.\n\nWHY THIS IS A SEPARATE TYPE AND NOT A LOOSER VERDICT. A blind judge answers a masked pack's question. It has no build in front of it, so it has no `artifacts[]` of its own (the pack IS its evidence), no `arbitration.ar1/ar2` (there is no build to arbitrate), no `bifurcation` obligation over visual references it never cited, and no scored `reference_items[]` — the entire discipline is that it has NOT read the item its pack serves. For eight days three such documents (W1-PROSE-BLIND-r1, W1-PROSE-TICS-r4, W1-22-B2-blind) sat in corpus/90-verdicts/ being validated against a build critic's contract, and were red for having done their job correctly. A fourth (W1-TOUCH-r1) declared `elder-souls/verdict@1` while implementing a third layout again, so the name itself had become ambiguous and is now retired.\n\nWHAT IT IS SCORED AGAINST. corpus/80-methods/RI-MTH03-blind-comparison-protocol.md, not a build bar. RI-MTH03's six obligations are this type's required content, and tools/verdict-validate.mjs checks each one BY ROLE against a closed table of the field names this corpus actually uses — because the three existing judgements spell every one of them differently. Every non-canonical spelling is accepted with a warning naming the canonical key. That is a migration, not leniency: `node tools/verdict-validate.mjs --self-test` proves that removing any one of the six obligations makes the document red, and that a blind judgement accepted here is REJECTED when forced down the critic-verdict path.\n\nBACKWARD COMPATIBILITY. This type is additive. A document with no `document_type` and no `judge.`-prefixed `critic.role` validates on exactly the critic-verdict path it always did. `tools/scores.mjs` reads `score.overall_0_10` from every JSON under corpus/90-verdicts/ regardless of type and is not changed by the split, so the historical score series stays comparable point for point.",
+  "type": "object",
+  "additionalProperties": true,
+  "$comment": "additionalProperties is deliberately OPEN here, where the verdict schema closes it. A judgement's narrative is where its value is — `separation_margin`, `trios_i_got_wrong_and_would_change`, `rewrite_judgement`, `not_judged`, `finding_about_our_prose` are all real content in the three that exist, and no two judges need the same shelves. What is closed is the DISCIPLINE: the six obligations above are checked by role in tools/verdict-validate.mjs and each one rejects its own omission. Reversible: close it once a second wave of judgements shows the vocabulary has settled.",
+  "required": [
+    "schema_version",
+    "document_type",
+    "piece_id",
+    "wave",
+    "subsystem_paths",
+    "critic",
+    "pack",
+    "seal",
+    "results",
+    "leak_audit",
+    "status",
+    "status_reasons",
+    "score"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "document_type": {
+      "const": "blind-judgement",
+      "description": "Required on new judgements. Older documents are inferred from a `critic.role` beginning `judge.`, which is a migration aid and warns; the default for anything undeclared is the STRICTER critic-verdict contract, so omitting this can never buy leniency."
+    },
+    "piece_id": { "type": "string" },
+    "piece_title": { "type": "string" },
+    "wave": { "type": "integer", "minimum": 0 },
+    "subsystem_paths": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" },
+      "description": "Canonical paths from corpus/00-doctrine/subsystems.json. A strict refinement of a registered path (e.g. `audio.ambience.region.separation` under `audio.ambience.region`) is accepted with a warning and rolls up to its ancestor. A path with no canonical ancestor is an error: registering a new subsystem is a taxonomy decision, not a validator's (RI-MTH05 §C — a false mapping is worse than a hole, because a hole stops a builder and a false mapping tells them to proceed)."
+    },
+    "critic": {
+      "type": "object",
+      "required": ["run_id", "role", "conflict_of_interest"],
+      "properties": {
+        "run_id": { "type": "string" },
+        "role": {
+          "type": "string",
+          "pattern": "^judge\\.",
+          "description": "e.g. `judge.blind.audio`. This is what distinguishes the document from a build critic's `critic.<domain>` role — and it was in the file the whole time before anything read it."
+        },
+        "model": { "type": "string" },
+        "started_at": { "type": "string" },
+        "finished_at": {
+          "type": "string",
+          "description": "ISO 8601. Required (or started_at). tools/scores.mjs plots judgements on the same trajectory chart as verdicts, and a point with no time is drawn at x = 0 — before every measurement its domain has ever taken."
+        },
+        "conflict_of_interest": { "type": "boolean" },
+        "built_the_pack": {
+          "type": "boolean",
+          "description": "Must be false. You do not judge a blind pack you built (RULES rule 25); two comparisons here have already been voided for it."
+        },
+        "saw_builder_notes_before_blind": { "type": "boolean" }
+      }
+    },
+    "pack": {
+      "type": "object",
+      "description": "OBLIGATION 1 — which pack. Directory or pack id, seed, trial count, and where the reveal key lives (never inside the pack). Legacy spellings accepted by the validator: `pack_id`, `blind_comparisons[].pack_ids`."
+    },
+    "seal": {
+      "type": "object",
+      "description": "OBLIGATION 2 — the answers were fixed BEFORE the reveal (RI-MTH03 M3: answer file written and hashed first). This is the one claim that makes a blind result auditable rather than trusted. Legacy spellings accepted: `answers_sealed_before_reveal`, `blind_discipline`, `sampling_rule_declared_before_sampling`, `blind_comparisons[].answers_written_before_reveal`.",
+      "properties": {
+        "answer_file": { "type": "string" },
+        "answer_sha256": { "type": "string" },
+        "reveal_opened_after_hash": { "type": "boolean" },
+        "decision_rule": { "type": "string" }
+      }
+    },
+    "results": {
+      "type": "object",
+      "description": "OBLIGATION 3 — the reveal outcome. RI-MTH03 hard-fails a document that reports the pick but not the reveal, or the reveal but not the pick. Legacy spellings accepted: `result`, `blind_comparisons[]`.",
+      "properties": {
+        "admissible": { "type": "boolean" }
+      }
+    },
+    "leak_audit": {
+      "type": "object",
+      "description": "OBLIGATION 4 — RI-MTH03 M6. A pack decidable without reading is not a blind result: r1 of the prose pack was 17/17 on setting proper nouns, and r4's fix for that leaked mask-token density at 15/15. Legacy spellings accepted: `tells`, `blind_comparisons[].leak_audit`, a `protocol_score.checks[]` row naming a leak."
+    },
+    "quarantine": {
+      "type": "object",
+      "description": "OBLIGATION 5 — the no-peek attestation: what the judge was forbidden to read and whether it read any of it. Legacy spellings accepted: `self_audit.answered_before_unblinding`, `contamination_declared`.",
+      "properties": {
+        "forbidden_reads": { "type": "array", "items": { "type": "string" } },
+        "accidental_reads": { "type": "array", "items": { "type": "string" } },
+        "clean": { "type": "boolean" }
+      }
+    },
+    "admissible": {
+      "type": "boolean",
+      "description": "OBLIGATION 6 — is the blind result admissible as evidence? RI-MTH03 Scoring: below 75% of applicable points it is INADMISSIBLE and the item it served falls back to non-blind scoring. This is the judgement's real outcome and it is not a PASS/FAIL. Legacy locations accepted: `results.admissible`, `protocol_score.blind_result_admissible`, `leak_audit.verdict`, the word (in)admissible in `status`/`status_reasons`, or `score.points`."
+    },
+    "reference_items": {
+      "type": "array",
+      "description": "CONTEXT, NOT MEASUREMENTS. A blind judge names the protocol it is scored against and the item its pack serves. It does not score them — it has not read them — so no `native_scale`, no `evidence[]` and normally no `score_0_10`.",
+      "items": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^RI-[A-Z]+[0-9]+$" },
+          "path": {
+            "type": "string",
+            "description": "Repo-relative path to the RI markdown file. Must resolve in a fresh clone. Mutually exclusive with `not_read`: a cited path is a claim that the document was opened."
+          },
+          "role": { "type": "string" },
+          "not_read": {
+            "type": "object",
+            "required": ["reason", "why"],
+            "description": "AN HONEST NON-READING.\n\nThis field exists because W1-22-B2-blind's judge wrote the string \"NOT READ - quarantined\" into a `path` slot, for RI-AUD03 — the very item its pack served, deliberately unread, which is the entire point of a blind judgement. The schema had no way to say that, so an honest answer came out as a broken citation and the gate went red at the judge rather than at itself. THE SCHEMA WAS WHAT WAS WRONG. An instrument that cannot represent an honest answer will get lied to.\n\nTwo guards keep it from becoming an escape hatch. (1) A `not_read` item may carry no `score_0_10` — you cannot score an item you did not read. (2) It is permitted ONLY on a blind judgement. A build critic that could not measure an item already has a way to say so, and it is fail-closed: `measured: \"unmeasurable\"` with `score_0_10: 0`. Letting a critic declare an item unread would be a route around scoring it.\n\nThe legacy free-text form is still accepted, with a warning naming this field, and only when the path literally begins NOT READ / UNREAD / NOT OPENED — a path that merely fails to resolve is still an error, so the clause cannot launder a missing file.",
+            "properties": {
+              "reason": { "enum": ["quarantined", "sealed", "unavailable", "out-of-scope"] },
+              "why": { "type": "string", "minLength": 1 }
+            }
+          },
+          "score_0_10": { "type": "number", "minimum": 0, "maximum": 10 }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "description": "RI-MTH03's vocabulary, not a verdict's PASS|FAIL|VOID: `meets the bar` (100% of applicable points), `below bar` (75-99%, admissible with the process defect recorded), `blind result inadmissible` (<75%). Free text, because a judgement's outcome is the protocol's ruling and not a build decision."
+    },
+    "status_reasons": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "score": {
+      "type": "object",
+      "required": ["overall_0_10"],
+      "description": "A JUDGE MAY DECLINE TO SCORE THE PIECE. W1-22-B2-blind deliberately read no RI-AUD item, so it had no bar to score the piece against and wrote `overall_0_10: null` with a note saying exactly that. Forcing a number into that slot would have been fabricating a measurement — the failure this gate exists to prevent. So null is admissible, but ONLY with a written `note`, so it cannot be used to dodge scoring. tools/scores.mjs already skips non-numeric scores, so a declining judgement leaves the trajectory chart untouched rather than distorting it.",
+      "properties": {
+        "overall_0_10": { "type": ["number", "null"], "minimum": 0, "maximum": 10 },
+        "pass_threshold": { "type": "number" },
+        "aggregation": {
+          "type": "string",
+          "description": "Free text, naming the ITEM's own aggregation rule. RI-MTH03's is `percentage of applicable points`, which was never one of the verdict enum's min|mean|weighted-mean — the enum was wrong for this item, and three judgements were red for saying so correctly."
+        },
+        "points": { "type": "object" },
+        "note": { "type": "string" }
+      }
+    },
+    "biggest_gap": {
+      "type": "object",
+      "required": ["gap_id", "what", "why_it_matters"],
+      "description": "Substance is required; `evidence[]`, `remedy` and `severity` are WARNINGS here and errors on a critic verdict. The difference is stated rather than smuggled: a build critic's gap must be re-measurable by a later critic, so `remedy.acceptance` carries a number. A judge's gap is usually about the INSTRUMENT — the pack leaked, the question had two axes — and its remedy is a protocol change with no build delta to accept against. Nor is the `GAP-W<wave>-<slug>` id pattern imposed: judges use their own (`GAP-PROSE-01`, `GAP-PACK-01`, `AUDB2-F1`) and tools/gap-ledger.mjs keys on the id as an opaque string. REVERSIBLE: if judgement gaps start ageing in the ledger for want of an acceptance condition, promote these to errors."
+    },
+    "self_audit": {
+      "type": "object",
+      "description": "The judge's key set, not the critic's — `answered_before_unblinding`, `no_prose_edited`, `no_pack_or_reveal_file_modified`, `tempted_to_peek`. Each entry must be an ANSWER: a boolean, OR prose. Prose is allowed on purpose. W1-PROSE-TICS-r4 answers `tempted_to_peek` with four honest lines; a boolean cannot hold that, and demanding one would trade the content for a checkbox — the same mistake, one level down, as demanding a path for an item that was never opened. What is refused is a non-answer: null, a number, an object. Any `false` entry requires `self_audit_note`."
+    },
+    "pack_artifacts": { "type": "array", "items": { "type": "string" } },
+    "bifurcation": { "type": "object" },
+    "findings": { "type": "array" },
+    "tells": { "type": "array" },
+    "protocol_score": { "type": "object" },
+    "blind_comparisons": { "type": "array" },
+    "method_deviations": { "type": "array" },
+    "secondary_observations": { "type": "array" },
+    "path_to_ten": { "type": "array" },
+    "notes": { "type": "string" },
+    "build": { "type": "object" },
+    "contamination_declared": { "type": "object" },
+    "concurrency": { "type": "object" }
+  }
+}

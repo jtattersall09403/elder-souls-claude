@@ -20,7 +20,8 @@
     "normal": "ffmpeg -i <nor_gl> -vf scale=1024:1024 -q:v 3 <slug>_normal_1k.jpg",
     "rough": "ffmpeg -i <rough> -vf format=gray,scale=512:512 -q:v 5 <slug>_rough_512.jpg",
     "why_desaturated": "The source sets carry their own strong colour identity (rusty orange, red leather). Black Marsh's regional palette must lead, so albedo is desaturated to 0.55 at conversion: pigment variation survives, the source's colour opinion does not. The former pipeline went further and neutralised colour entirely, which is one reason the province reads as grey.",
-    "why_rough_at_512": "Roughness is a low-frequency signal; halving it costs nothing visible and takes the whole library under the 320 MB high-tier texture budget without a KTX2 toolchain."
+    "why_rough_at_512": "Roughness is a low-frequency signal; halving it costs nothing visible and takes the whole library under the 320 MB high-tier texture budget without a KTX2 toolchain.",
+    "adjust": "Per-slug ffmpeg eq adjustments, applied after the shared desaturation, recorded in families[].adjust. They exist because two of the source sets are lit far brighter than a Black Marsh frame and came out of the close-up rig as white paper."
   },
   "ktx2": {
     "state": "deferred",
@@ -39,8 +40,8 @@
     "root": "roots",
     "timber": "dark_wooden_planks",
     "clay": "clay_plaster",
-    "stone": "plastered_stone_wall",
-    "salt": "white_plaster_rough_01",
+    "stone": "coral_stone_wall",
+    "salt": "marble_cliff_02",
     "bone": "marble_01",
     "chitin": "chitin_plates",
     "resin": "resin_flow",
@@ -223,6 +224,34 @@
       }
     },
     {
+      "id": "coral_stone_wall",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/coral_stone_wall",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "stone"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "coral_stone_wall_albedo_1k.jpg",
+          "sha256": "e924e0432982402cd671845fc29bfd01ddd46379cdc4960da7f2741632ababec",
+          "bytes": 140680
+        },
+        "normal": {
+          "file": "coral_stone_wall_normal_1k.jpg",
+          "sha256": "71818ddf8e88a535941c62ac707590080dd1ad864ae32a0d40bd7abfba40896b",
+          "bytes": 421412
+        },
+        "rough": {
+          "file": "coral_stone_wall_rough_512.jpg",
+          "sha256": "c9be2111ccb727352dc9c03a154445423bb2a5135430f9f9ea8c092a63d80840",
+          "bytes": 8767
+        }
+      }
+    },
+    {
       "id": "dark_wooden_planks",
       "kind": "cc0",
       "licence": "CC0-1.0",
@@ -263,8 +292,8 @@
       "maps": {
         "albedo": {
           "file": "forest_leaves_02_albedo_1k.jpg",
-          "sha256": "1306af3ff809dd444a5b7f9c4ed736b6793abefbb34b23a759dcd1ae81e11e1e",
-          "bytes": 352118
+          "sha256": "43e126df046d565a081521f3b2c455a606b42bfcb34eaeec1bfbaac276ebb04d",
+          "bytes": 368721
         },
         "normal": {
           "file": "forest_leaves_02_normal_1k.jpg",
@@ -307,6 +336,34 @@
       }
     },
     {
+      "id": "marble_cliff_02",
+      "kind": "cc0",
+      "licence": "CC0-1.0",
+      "source": "https://polyhaven.com/a/marble_cliff_02",
+      "author": "Poly Haven contributor",
+      "why": null,
+      "consumers": [
+        "salt"
+      ],
+      "maps": {
+        "albedo": {
+          "file": "marble_cliff_02_albedo_1k.jpg",
+          "sha256": "48f7d05d57b9403c65a7ebf324d81a725111c27326be683f0fc21194e8698036",
+          "bytes": 324643
+        },
+        "normal": {
+          "file": "marble_cliff_02_normal_1k.jpg",
+          "sha256": "4d95ecdb482afaf7e7089f4fe12af801f4eb110063245a9588d89de3813f0056",
+          "bytes": 501445
+        },
+        "rough": {
+          "file": "marble_cliff_02_rough_512.jpg",
+          "sha256": "0da6f72eb093c9e756e9a886372c6641ac92927ac09533482c4d6027d0050c69",
+          "bytes": 28028
+        }
+      }
+    },
+    {
       "id": "mud_forest",
       "kind": "cc0",
       "licence": "CC0-1.0",
@@ -335,34 +392,6 @@
       }
     },
     {
-      "id": "plastered_stone_wall",
-      "kind": "cc0",
-      "licence": "CC0-1.0",
-      "source": "https://polyhaven.com/a/plastered_stone_wall",
-      "author": "Rob Tuytel",
-      "why": null,
-      "consumers": [
-        "stone"
-      ],
-      "maps": {
-        "albedo": {
-          "file": "plastered_stone_wall_albedo_1k.jpg",
-          "sha256": "d436d581a4683ec00b5b5f75f40d83dc7d337db48c23c7b37e32d8a4f361c2b2",
-          "bytes": 103483
-        },
-        "normal": {
-          "file": "plastered_stone_wall_normal_1k.jpg",
-          "sha256": "cc37c77f8487636a646710861641b95aa8ea381f7603632d4af373bdceec2a4b",
-          "bytes": 309367
-        },
-        "rough": {
-          "file": "plastered_stone_wall_rough_512.jpg",
-          "sha256": "bf6fd181e4637700b4af656f8c5530ba2da8d90269949b229479d215b7b24fe3",
-          "bytes": 8860
-        }
-      }
-    },
-    {
       "id": "reed_roof_04",
       "kind": "cc0",
       "licence": "CC0-1.0",
@@ -375,8 +404,8 @@
       "maps": {
         "albedo": {
           "file": "reed_roof_04_albedo_1k.jpg",
-          "sha256": "19c45957d81268323b8b27ebfc9e365b0c359ccece2102f2f0c76d4613ae534f",
-          "bytes": 316095
+          "sha256": "ef3751a8fb41d5ac70dd62b2fef1c6252cc1abc258cc9edbfd5c56b062b4d13a",
+          "bytes": 343773
         },
         "normal": {
           "file": "reed_roof_04_normal_1k.jpg",
@@ -557,59 +586,31 @@
           "bytes": 1938
         }
       }
-    },
-    {
-      "id": "white_plaster_rough_01",
-      "kind": "cc0",
-      "licence": "CC0-1.0",
-      "source": "https://polyhaven.com/a/white_plaster_rough_01",
-      "author": "Poly Haven contributor",
-      "why": null,
-      "consumers": [
-        "salt"
-      ],
-      "maps": {
-        "albedo": {
-          "file": "white_plaster_rough_01_albedo_1k.jpg",
-          "sha256": "c8dfb48f8b456ddea285a721317beaa9fd305b7131cfa4d4dde9f2c6859ef4a9",
-          "bytes": 250535
-        },
-        "normal": {
-          "file": "white_plaster_rough_01_normal_1k.jpg",
-          "sha256": "86d29ed17566c5cd46f0d87aaa0c233ba78da1ee5a62f777a92400cc1ece0129",
-          "bytes": 154993
-        },
-        "rough": {
-          "file": "white_plaster_rough_01_rough_512.jpg",
-          "sha256": "adb612ffeaf3e1a576bdc2445d88299a4789587ad623553eb8ede39dfe4d3bfd",
-          "bytes": 58102
-        }
-      }
     }
   ],
   "shared": {
     "detail_normal_organic": {
       "file": "detail/detail_normal_organic_512.jpg",
-      "sha256": "7ccd089045e7b941d5212b5e1950c6fe997be09a20b06edf5f3f024296845dee",
-      "bytes": 208216,
+      "sha256": "8fe75d189ffc7f9233c4134116569de03700c23421dcb50985428c6205f71fdc",
+      "bytes": 179433,
       "note": "fibrous directional grain with pores - wood, foliage"
     },
     "detail_normal_mineral": {
       "file": "detail/detail_normal_mineral_512.jpg",
-      "sha256": "d597246416fd0ff29a4dd0d74e8d25adab057021b75f95ef568d18d8df8c7a05",
-      "bytes": 163688,
+      "sha256": "3c45f0e40b94b7851bccce1a8c3d18fa980ff3bf0dcfbbfac455058423995e40",
+      "bytes": 122019,
       "note": "cellular pitting with sub-grain - soil, stone, salt, metal"
     },
     "detail_normal_fabric": {
       "file": "detail/detail_normal_fabric_512.jpg",
-      "sha256": "514bc0915a7b6cbb71167b74a166fd0cf66915491e43ed18f9edf092adcddfa3",
-      "bytes": 271075,
+      "sha256": "2fa578e98a3b49be9d945fd1aa2da608a337f7c7c78819aac0e42dff8fe95c20",
+      "bytes": 226569,
       "note": "woven warp/weft crossing - cloth, skin, water"
     },
     "detail_normal_hard": {
       "file": "detail/detail_normal_hard_512.jpg",
-      "sha256": "df9e35d9c6c8d5338d8cc95720f80c9b79bdfe144f22029bfbb5517b617f199a",
-      "bytes": 199221,
+      "sha256": "907746932baef8e00d47a1896cb0ba1815dbb08506eb8a737640185c2048f762",
+      "bytes": 167993,
       "note": "fine cracked plating - carapace, shell, bone, resin"
     },
     "trim_atlas_albedo_2k": {

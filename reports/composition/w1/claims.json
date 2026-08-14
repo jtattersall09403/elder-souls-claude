@@ -3,12 +3,12 @@
   "tool": "tools/composition/matrix-scan.mjs",
   "stage": "RI-CMP01 Comparison method Stage 1 — STATIC CLAIMS ONLY",
   "warning": "RI-CMP01 hard fail 6: a wave that reports coverage from this tool with no probe stage scores 0 for every cell. Nothing in this file is a demonstration.",
-  "at": "2026-08-08T05:26:18.712Z",
+  "at": "2026-08-14T09:34:48.882Z",
   "data_dir": "game/data",
-  "files_read": 567,
+  "files_read": 587,
   "js_census": {
-    "js_files": 134,
-    "js_bytes": 3410833,
+    "js_files": 150,
+    "js_bytes": 4071323,
     "rule": "HARNESS.md §7 — content that exists only as literals inside .js is unmeasurable and is treated as content that does not exist"
   },
   "declared_crossing_cells": 41,
@@ -554,6 +554,16 @@
   ],
   "seam_probes_on_the_tree": [
     {
+      "tool": "tools/composition/crossing-controls.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/composition/crossing-live-browser.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
       "tool": "tools/harness/critic-w1-14-r3-seam.mjs",
       "data_files_named": [
         "game/data/quests/hooks.json"
@@ -577,8 +587,8 @@
         "QST->JRN",
         "QST->WLD",
         "DIS->QST",
-        "LOR->QST",
         "QST->FAC",
+        "LOR->QST",
         "QST->DIS",
         "SKL->QST",
         "FAC->QST",
@@ -587,6 +597,30 @@
     },
     {
       "tool": "tools/quests/faction-seam-probe.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/critic-crossing-grade.mjs",
+      "data_files_named": [
+        "game/data/world/traversal.json",
+        "game/data/world/terrain.json",
+        "game/data/world/regions.json",
+        "game/data/world/water.json",
+        "game/data/world/signatures.json",
+        "game/data/world/roads.json"
+      ],
+      "cells_those_files_claim": [
+        "WEA->WLD"
+      ]
+    },
+    {
+      "tool": "tools/world/critic-crossing-probe.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/critic-crossing-walk.mjs",
       "data_files_named": [],
       "cells_those_files_claim": []
     },
@@ -632,17 +666,71 @@
         "game/data/world/pois.json"
       ],
       "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/w1-crossing-r2-bothways-gate.mjs",
+      "data_files_named": [
+        "game/data/world/traversal.json",
+        "game/data/world/roads.json",
+        "game/data/world/terrain.json",
+        "game/data/world/regions.json",
+        "game/data/world/water.json",
+        "game/data/world/signatures.json"
+      ],
+      "cells_those_files_claim": [
+        "WEA->WLD"
+      ]
+    },
+    {
+      "tool": "tools/world/w1-crossing-r2-legs.mjs",
+      "data_files_named": [],
+      "cells_those_files_claim": []
+    },
+    {
+      "tool": "tools/world/w1-crossing-r2-overpass.mjs",
+      "data_files_named": [
+        "game/data/world/roads.json",
+        "game/data/world/terrain.json",
+        "game/data/world/regions.json",
+        "game/data/world/water.json",
+        "game/data/world/signatures.json"
+      ],
+      "cells_those_files_claim": [
+        "WEA->WLD"
+      ]
+    },
+    {
+      "tool": "tools/world/w1-crossing-r2-parapet-trap.mjs",
+      "data_files_named": [
+        "game/data/world/roads.json",
+        "game/data/world/terrain.json",
+        "game/data/world/regions.json",
+        "game/data/world/water.json",
+        "game/data/world/signatures.json"
+      ],
+      "cells_those_files_claim": [
+        "WEA->WLD"
+      ]
+    },
+    {
+      "tool": "tools/world/w1-crossing-r2-pursue-sim.mjs",
+      "data_files_named": [
+        "game/data/world/roads.json"
+      ],
+      "cells_those_files_claim": []
     }
   ],
   "claims": [
     {
       "cell": "QST->JRN",
       "why": "§F: journal entries are quest state’s face (RI-DLG05)",
-      "n": 1005,
+      "n": 1425,
       "files": [
         "quests/blackmarsh-coast.json",
         "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
         "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
         "quests/faction-wet-ledger.json",
         "quests/faction-xul-aneekh.json",
         "quests/magic-utility.json",
@@ -692,11 +780,13 @@
     {
       "cell": "QST->WLD",
       "why": "§E: quest outcomes change the world — a village saved or burned",
-      "n": 963,
+      "n": 1147,
       "files": [
         "quests/blackmarsh-coast.json",
         "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
         "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
         "quests/faction-wet-ledger.json",
         "quests/faction-xul-aneekh.json",
         "quests/mainline-act1.json",
@@ -745,7 +835,7 @@
     {
       "cell": "DIS->QST",
       "why": "§E: the disposition register the giver gate reads",
-      "n": 495,
+      "n": 593,
       "files": [
         "npcs/faction-givers.json",
         "npcs/mainline.json",
@@ -766,7 +856,9 @@
         "npcs/writ-house.json",
         "quests/blackmarsh-coast.json",
         "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
         "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
         "quests/faction-wet-ledger.json",
         "quests/faction-xul-aneekh.json",
         "quests/magic-utility.json",
@@ -814,13 +906,70 @@
       "declared_direction": null
     },
     {
-      "cell": "LOR->QST",
-      "why": "§E: a quest resolvable by knowledge",
-      "n": 342,
+      "cell": "QST->FAC",
+      "why": "§E: quest outcomes advance, close and expel from factions",
+      "n": 453,
       "files": [
         "quests/blackmarsh-coast.json",
         "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
         "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
+      ],
+      "evidence": [
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/faction_reputation",
+          "value": "{the_imperial_assize,the_wet_ledger}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/faction_reputation",
+          "value": "{the_imperial_assize,the_wet_ledger,the_xul_aneekh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/2/consequences/faction_reputation",
+          "value": "{the_wet_ledger,the_xul_aneekh}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/0/consequences/faction_reputation",
+          "value": "{the_drowned_court,the_wet_ledger}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/1/consequences/faction_reputation",
+          "value": "{the_drowned_court}"
+        },
+        {
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/2/consequences/faction_reputation",
+          "value": "{the_drowned_court}"
+        }
+      ],
+      "declared_tier": "structural",
+      "declared_crossing": false,
+      "declared_direction": null
+    },
+    {
+      "cell": "LOR->QST",
+      "why": "§E: a quest resolvable by knowledge",
+      "n": 425,
+      "files": [
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
         "quests/faction-wet-ledger.json",
         "quests/faction-xul-aneekh.json",
         "quests/magic-utility.json",
@@ -868,54 +1017,54 @@
       "declared_direction": null
     },
     {
-      "cell": "DIS->LOR",
-      "why": "§F: disposition-gated topics (RI-DLG01)",
-      "n": 325,
+      "cell": "QST->DIS",
+      "why": "§F: outcomes move disposition",
+      "n": 420,
       "files": [
-        "dialogue/topics/00-roots.json",
-        "dialogue/topics/05-asking-around.json",
-        "dialogue/topics/10-global.json",
-        "dialogue/topics/20-tier-a.json",
-        "dialogue/topics/21-tier-b.json",
-        "dialogue/topics/22-tier-c.json",
-        "dialogue/topics/30-texture.json",
-        "dialogue/topics/50-factions.json",
-        "dialogue/topics/50-mainline.json",
-        "dialogue/topics/55-utility.json",
-        "dialogue/topics/56-writ-house-open.json",
-        "dialogue/topics/70-disputes.json",
-        "dialogue/topics/main-quest-argument.json"
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/mainline-act1.json",
+        "quests/mainline-act2.json",
+        "quests/mainline-act3.json",
+        "quests/mainline-act4.json",
+        "quests/mainline-act5.json",
+        "quests/mainline-backpath.json"
       ],
       "evidence": [
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/0/infos/0/d",
-          "value": 30
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/0/consequences/npc_disposition",
+          "value": "{dyer-sallis}"
         },
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/0/infos/1/d",
-          "value": 20
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/1/consequences/npc_disposition",
+          "value": "{dyer-sallis,apothecary-neen}"
         },
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/0/infos/2/d",
-          "value": 15
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/0/resolutions/2/consequences/npc_disposition",
+          "value": "{dyer-sallis}"
         },
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/1/infos/0/d",
-          "value": 30
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/0/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
         },
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/1/infos/1/d",
-          "value": 20
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/1/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
         },
         {
-          "data_path": "game/data/dialogue/topics/00-roots.json",
-          "json_pointer": "/topics/2/infos/0/d",
-          "value": 25
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/resolutions/2/consequences/npc_disposition",
+          "value": "{undertaker-vaskh}"
         }
       ],
       "declared_tier": "mechanical",
@@ -925,7 +1074,7 @@
     {
       "cell": "TOD->SCH",
       "why": "§E: schedules ARE time of day (RI-WLD08)",
-      "n": 315,
+      "n": 331,
       "files": [
         "npcs/faction-givers.json",
         "npcs/mainline.json",
@@ -980,105 +1129,96 @@
       "declared_direction": null
     },
     {
-      "cell": "QST->FAC",
-      "why": "§E: quest outcomes advance, close and expel from factions",
-      "n": 285,
+      "cell": "DIS->LOR",
+      "why": "§F: disposition-gated topics (RI-DLG01)",
+      "n": 324,
       "files": [
-        "quests/blackmarsh-coast.json",
-        "quests/blackmarsh-core.json",
-        "quests/faction-imperial-assize.json",
-        "quests/faction-wet-ledger.json",
-        "quests/faction-xul-aneekh.json",
-        "quests/mainline-act1.json",
-        "quests/mainline-act2.json",
-        "quests/mainline-act3.json",
-        "quests/mainline-act4.json",
-        "quests/mainline-act5.json",
-        "quests/mainline-backpath.json"
+        "dialogue/topics/00-roots.json",
+        "dialogue/topics/05-asking-around.json",
+        "dialogue/topics/10-global.json",
+        "dialogue/topics/20-tier-a.json",
+        "dialogue/topics/21-tier-b.json",
+        "dialogue/topics/22-tier-c.json",
+        "dialogue/topics/30-texture.json",
+        "dialogue/topics/50-factions.json",
+        "dialogue/topics/50-mainline.json",
+        "dialogue/topics/55-utility.json",
+        "dialogue/topics/56-writ-house-open.json",
+        "dialogue/topics/main-quest-argument.json"
       ],
       "evidence": [
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/0/consequences/faction_reputation",
-          "value": "{the_imperial_assize,the_wet_ledger}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/0/d",
+          "value": 30
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/1/consequences/faction_reputation",
-          "value": "{the_imperial_assize,the_wet_ledger,the_xul_aneekh}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/1/d",
+          "value": 20
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/2/consequences/faction_reputation",
-          "value": "{the_wet_ledger,the_xul_aneekh}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/0/infos/2/d",
+          "value": 15
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/0/consequences/faction_reputation",
-          "value": "{the_drowned_court,the_imperial_assize,the_wet_ledger}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/1/infos/0/d",
+          "value": 30
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/1/consequences/faction_reputation",
-          "value": "{the_drowned_court,the_imperial_assize}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/1/infos/1/d",
+          "value": 20
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/2/consequences/faction_reputation",
-          "value": "{the_drowned_court}"
+          "data_path": "game/data/dialogue/topics/00-roots.json",
+          "json_pointer": "/topics/2/infos/0/d",
+          "value": 25
         }
       ],
-      "declared_tier": "structural",
+      "declared_tier": "mechanical",
       "declared_crossing": false,
       "declared_direction": null
     },
     {
-      "cell": "QST->DIS",
-      "why": "§F: outcomes move disposition",
-      "n": 252,
+      "cell": "QST->LOR",
+      "why": "§F: granted topics",
+      "n": 246,
       "files": [
-        "quests/blackmarsh-coast.json",
-        "quests/blackmarsh-core.json",
-        "quests/faction-imperial-assize.json",
-        "quests/faction-wet-ledger.json",
-        "quests/faction-xul-aneekh.json",
-        "quests/mainline-act1.json",
-        "quests/mainline-act2.json",
-        "quests/mainline-act3.json",
-        "quests/mainline-act4.json",
-        "quests/mainline-act5.json",
-        "quests/mainline-backpath.json"
+        "quests/hooks.json"
       ],
       "evidence": [
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/0/consequences/npc_disposition",
-          "value": "{dyer-sallis}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/0/adds_topics/0",
+          "value": "the-phial"
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/1/consequences/npc_disposition",
-          "value": "{dyer-sallis,apothecary-neen}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/1/adds_topics/0",
+          "value": "the-toll-book"
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/0/resolutions/2/consequences/npc_disposition",
-          "value": "{dyer-sallis}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/2/adds_topics/0",
+          "value": "the-lease-roll"
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/0/consequences/npc_disposition",
-          "value": "{undertaker-vaskh}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/3/adds_topics/0",
+          "value": "the-struck-off-notary"
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/1/consequences/npc_disposition",
-          "value": "{undertaker-vaskh}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/4/adds_topics/0",
+          "value": "the-blackrose-day-book"
         },
         {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/resolutions/2/consequences/npc_disposition",
-          "value": "{undertaker-vaskh}"
+          "data_path": "game/data/quests/hooks.json",
+          "json_pointer": "/entry_topics/5/adds_topics/0",
+          "value": "the-warrant-of-attainder"
         }
       ],
       "declared_tier": "mechanical",
@@ -1088,11 +1228,12 @@
     {
       "cell": "SKL->QST",
       "why": "§E: skill-gated resolutions — pick it, climb it, brew it, talk it",
-      "n": 212,
+      "n": 223,
       "files": [
         "quests/blackmarsh-coast.json",
         "quests/blackmarsh-core.json",
         "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
         "quests/faction-wet-ledger.json",
         "quests/faction-xul-aneekh.json",
         "quests/magic-utility.json",
@@ -1197,45 +1338,53 @@
       "declared_direction": null
     },
     {
-      "cell": "QST->LOR",
-      "why": "§F: granted topics",
-      "n": 156,
+      "cell": "FAC->QST",
+      "why": "§E: rank gates quest availability",
+      "n": 148,
       "files": [
-        "quests/hooks.json"
+        "quests/blackmarsh-coast.json",
+        "quests/blackmarsh-core.json",
+        "quests/faction-continuation-wave1.json",
+        "quests/faction-imperial-assize.json",
+        "quests/faction-joining-wave1.json",
+        "quests/faction-wet-ledger.json",
+        "quests/faction-xul-aneekh.json",
+        "quests/magic-utility.json",
+        "quests/mainline-act4.json"
       ],
       "evidence": [
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/0/adds_topics/0",
-          "value": "the-phial"
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/1/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
         },
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/1/adds_topics/0",
-          "value": "the-toll-book"
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/5/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
         },
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/2/adds_topics/0",
-          "value": "the-lease-roll"
+          "data_path": "game/data/quests/blackmarsh-coast.json",
+          "json_pointer": "/quests/5/resolutions/2/requires/faction_rank",
+          "value": "{faction,min_rank}"
         },
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/3/adds_topics/0",
-          "value": "the-struck-off-notary"
+          "data_path": "game/data/quests/blackmarsh-core.json",
+          "json_pointer": "/quests/0/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
         },
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/4/adds_topics/0",
-          "value": "the-blackrose-day-book"
+          "data_path": "game/data/quests/blackmarsh-core.json",
+          "json_pointer": "/quests/2/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
         },
         {
-          "data_path": "game/data/quests/hooks.json",
-          "json_pointer": "/entry_topics/5/adds_topics/0",
-          "value": "the-warrant-of-attainder"
+          "data_path": "game/data/quests/faction-continuation-wave1.json",
+          "json_pointer": "/quests/0/rank_gate",
+          "value": "{faction,min_rank,min_reputation}"
         }
       ],
-      "declared_tier": "mechanical",
+      "declared_tier": "structural",
       "declared_crossing": false,
       "declared_direction": null
     },
@@ -1322,55 +1471,6 @@
         }
       ],
       "declared_tier": "mechanical",
-      "declared_crossing": false,
-      "declared_direction": null
-    },
-    {
-      "cell": "FAC->QST",
-      "why": "§E: rank gates quest availability",
-      "n": 66,
-      "files": [
-        "quests/blackmarsh-coast.json",
-        "quests/blackmarsh-core.json",
-        "quests/faction-imperial-assize.json",
-        "quests/faction-wet-ledger.json",
-        "quests/faction-xul-aneekh.json",
-        "quests/magic-utility.json",
-        "quests/mainline-act4.json"
-      ],
-      "evidence": [
-        {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/1/rank_gate",
-          "value": "{faction,min_rank,min_reputation}"
-        },
-        {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/5/rank_gate",
-          "value": "{faction,min_rank,min_reputation}"
-        },
-        {
-          "data_path": "game/data/quests/blackmarsh-coast.json",
-          "json_pointer": "/quests/5/resolutions/2/requires/faction_rank",
-          "value": "{faction,min_rank}"
-        },
-        {
-          "data_path": "game/data/quests/blackmarsh-core.json",
-          "json_pointer": "/quests/0/rank_gate",
-          "value": "{faction,min_rank,min_reputation}"
-        },
-        {
-          "data_path": "game/data/quests/blackmarsh-core.json",
-          "json_pointer": "/quests/2/rank_gate",
-          "value": "{faction,min_rank,min_reputation}"
-        },
-        {
-          "data_path": "game/data/quests/faction-imperial-assize.json",
-          "json_pointer": "/quests/0/rank_gate",
-          "value": "{faction,min_rank,min_reputation}"
-        }
-      ],
-      "declared_tier": "structural",
       "declared_crossing": false,
       "declared_direction": null
     },
@@ -1884,17 +1984,17 @@
         {
           "data_path": "game/data/combat/enemies/champion_hist_marked.json",
           "json_pointer": "/parley",
-          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,fiction}"
+          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,reputation_min,grounds,fiction}"
         },
         {
           "data_path": "game/data/combat/enemies/guard_legion.json",
           "json_pointer": "/parley",
-          "value": "{npc_id,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,surrender,fiction,gold_price_note}"
+          "value": "{npc_id,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,reputation_min,grounds,surrender,fiction,gold_price_note}"
         },
         {
           "data_path": "game/data/combat/enemies/inf_trash.json",
           "json_pointer": "/parley",
-          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,grounds,fiction}"
+          "value": "{npc_id,true_name_topic,faction,rank_required,rival_faction,gold_price,base_disposition,honour_bound,reputation_min,grounds,fiction}"
         }
       ],
       "declared_tier": "mechanical",
@@ -1935,7 +2035,7 @@
         {
           "data_path": "game/data/combat/ai.json",
           "json_pointer": "/leash",
-          "value": "{_source,hard_m,no_los_seconds,dist_multiple_of_sight,return_heal_seconds,_return_note}"
+          "value": "{_source,hard_m,_tier_resolution,_elite_row_note,_boss_note,no_los_seconds,dist_multiple_of_sight,_no_los_note,return_heal_seconds,_return_note}"
         }
       ],
       "declared_tier": "mechanical",
