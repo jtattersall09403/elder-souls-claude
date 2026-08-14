@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9aac1cbb`: 991 tools, 157 reference
+so it cannot drift. Generated at `c9a061d0`: 992 tools, 157 reference
 items, 204 pieces in flight.
 
 Its purpose is to stop 204+ concurrent agents each paying separately to discover the
@@ -886,7 +886,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 36
+### `tools/render/` — 37
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/consumption-sweep.mjs` — **no header comment**
@@ -924,6 +924,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30e-roof-extent.mjs` — **no header comment**
 - `tools/render/w1-30e-street-enclosure.mjs` — **no header comment**
 - `tools/render/w1-thorn-roof-census.mjs` — **no header comment**
+- `tools/render/w1-thorn-shoreline.mjs` — **no header comment**
 
 ### `tools/runpod/` — 16
 
@@ -1232,7 +1233,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **275 tools have no header comment**, so nobody can tell what they do without
+> **276 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1410,6 +1411,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-THORN-PLATES-C2` | in-progress | Quay vocabulary (reused parts placed at the MEASURED waterline, not on dry ground), the th | `orchestration/status/W1-THORN-PLATES-C2.json` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `tools/render/w1-thorn-roof-census.mjs` `tools/visual/w1-thorn-core12.sh` `reports/thorn-plates/roof-census-after.json` |
 | `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
 | `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
 | `W1-18-REINTEGRATION` | in_progress | Restore group A, verify JSON parses + quest-audit moves, land. | `orchestration/status/W1-18-REINTEGRATION.json` |
@@ -1418,7 +1420,6 @@ work is the difference between resuming and starting over.
 | `AUDIT-CONSUMPTION-CENSUS` | ? | none for this task — census complete. Follow-up work (not done here, per 'do not fix the o | `reports/consumption-census/2026-08-14-census.md` `tools/metrics/consumption-census.mjs` `orchestration/status/AUDIT-CONSUMPTION-CENSUS.json` |
 | `W1-BUILDING-OVERLAP-CENSUS` | starting | Read HAZARDS.md, RULING-D1-BUILDING-OVERLAP.json, reports/opening-frame/2026-08-14-opening | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
-| `W1-THORN-PLATES-C2` | in-progress | WIP | `orchestration/status/W1-THORN-PLATES-C2.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) READ `reports/w1-map-defects-r2/phone-leg.log.txt` AND  | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
 | `W1-DOOR-YAW-SWEEP` | ? | in-game validation run on the 12 failing exits + a stratified spread; then delete-the-fix  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` `game/src/engine.js` |

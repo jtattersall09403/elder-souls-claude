@@ -1,15 +1,59 @@
 {
   "task_id": "W1-BUILDING-OVERLAP-CENSUS",
-  "state": "starting",
-  "started_utc": "2026-08-14T00:00:00Z",
-  "could_not_do": [
-    "Nothing yet — task just started; this list is written first and kept first per dispatch instruction."
+  "state": "census-done-falsifier-answered-fix-in-progress",
+  "date": "2026-08-14",
+  "commissioned_by": "orchestration/status/RULING-D1-BUILDING-OVERLAP.json",
+
+  "could_not_do_FIRST": [
+    "NO HARDWARE FRAMES YET. Every number below is offline geometry and the shipped `stepCamera` in bare Node. Screenshots/motion at the doorstep are the next step and are NOT claimed.",
+    "The 83 counted overlaps are NOT fixed. This piece fixes ONE pair (Thorn writ-house/barge-hold, the pair the ruling names) and freezes the rest behind a ratchet. The other 82 need their own piece; see `the_ruling_verdict` below.",
+    "The yaw-blindness in `planSettlement()`'s shrink pass and in `province.js#_deepOverlaps()` is DIAGNOSED, not repaired. Both are shared files with 5 live pieces each; repairing the resolver would re-plan all eight towns and is not a change to make inside someone else's in-flight edit.",
+    "`applyInteriorBounds()`'s doorstep derivation is dead code on the shipped world (all 115 interiors take the native RI-WLD13 branch and `continue`), and that branch increments `doorsteps_standable_own_door` 115 times without testing anything. Reported, not fixed — not this piece's file."
   ],
-  "objective": "Census overlapping building footprints across all settlements; check the RULING-D1 falsifier; separate Writ House / barge hold at Thorn if the ruling stands; build a standing overlap gate and prove it fires.",
-  "next_step": "Read HAZARDS.md, RULING-D1-BUILDING-OVERLAP.json, reports/opening-frame/2026-08-14-opening-frame.md S1, then locate planSettlement().",
+
+  "the_census": {
+    "tool": "tools/world/building-overlap-census.mjs",
+    "definition": "SEPARATION DEPTH (SAT minimum translation distance) between the ORIENTED drawn footprints, the rectangles settlementSolids() actually collides with. depth<=0.36 m (SHELL_WALL_T) = shared wall/terrace, NOT counted. 0.36-1.50 m = borderline (porch/eave/lean-to), reported separately, NOT counted. >1.50 m = counted overlap. `kind:structure` pairs are censused separately and never folded into the headline.",
+    "counted_overlaps": 83,
+    "borderline": 24,
+    "shared_wall": 6,
+    "settlements_with_at_least_one": "8 of 8",
+    "pairs_with_a_door_inside_another_building": 25,
+    "pairs_with_a_centre_inside_another_building": 23,
+    "per_settlement": { "archon": 15, "blackrose": 8, "gideon": 6, "helstrom": 7, "lilmoth": 19, "soulrest": 12, "stormhold": 3, "thorn": 13 },
+    "the_mechanism": "63 of the 83 are INVISIBLE to the shipped check. planSettlement()'s shrink pass and province.js#_deepOverlaps() both compare AXIS-ALIGNED footprints (Dx=|a.x-c.x|, Sx=(aw+cw)/2) while settlementSolids() and buildSettlementExterior() ROTATE the footprint by yaw_deg. 71 of 83 involve at least one yawed building. Thorn's barge hold is declared 7.00 x 16.02 and stands 16.02 x 7.00.",
+    "instrument_proof": "node tools/world/building-overlap-census.mjs --self-test — 10 arms, including one that requires the axis-aligned and yawed arms to DISAGREE, and one that requires the yaw-blind AABB view to miss the pair the oriented view catches."
+  },
+
+  "the_falsifier": {
+    "asked": "Are overlaps pervasive AND load-bearing, so separation becomes a layout migration?",
+    "answer": "PERVASIVE: yes, decisively — 83 across 8 of 8 settlements, so the ruling's premise of one accidental overlap is dead. LOAD-BEARING: no, not in the way the falsifier feared, and the ruling therefore STANDS for Thorn. 72 of 83 are reachable by the plan's own size-only lever (shrink to the floors), which never moves a position and so cannot break a street layout or a quest coordinate. 11 need a position moved — including 6 pairs authored at a centre gap of 1.0 m or less, and thorn-gate/thorn-house-0 at the IDENTICAL offset_m [-6.86,0,8.6].",
+    "and_the_third_thing_the_ruling_did_not_anticipate": "Moving one building is a 7-value edit, not a 2-value edit. All 115 interiors are native RI-WLD13 records, so `door_world_pos`, `apertures[].world_pos`, `exterior_door`, `continuity.exterior_spawn` and `exterior_spawn_declared` are WORLD coordinates in the interior record that do not follow `offset_m`, plus `door` and `door_declared` in the settlement document. That is the door-registration coupling the falsifier named; it is real, it is per-building, and it is why the remaining 82 are a scheduled piece and not a sweep."
+  },
+
+  "the_thorn_fix": {
+    "chosen": "MOVE THE BARGE HOLD, not the writ house. barge-hold offset_m [-20,0,49] -> [-29,0,49]: a pure -9 m translation in x.",
+    "why_the_barge_hold": "The ruling forbids moving `continuity.exterior_spawn`, and the writ house's is the one it means. Moving the writ house would drag its doorstep with it; moving the barge hold leaves the writ house, its door and its doorstep byte-for-byte unchanged.",
+    "why_-9x_and_not_further": "Measured, not argued. Six candidate offsets were scored on a control clone with the shipped `stepCamera` (72 bearings). -9x is the smallest move that reaches the best score any candidate reaches, and it leaves a 1.99 m alley between the two buildings rather than shoving a quay building off its quay.",
+    "why_a_pure_translation": "Every relative geometry of the barge hold — its door on its own wall, its doorstep in front of that door, its aperture — is preserved exactly. Only its relation to the writ house changes."
+  },
+
+  "next_step": "Apply the 7-value translation, re-measure, run delete-the-fix on a copy, build tools/check-building-overlap.mjs as a ratchet against a frozen baseline (rule 13: 83 overlaps exist, so a fail-closed gate is illegal), prove it fires by reintroducing the Thorn overlap, then hardware frames.",
+
   "files_touched": [
-    "orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json"
+    "orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json",
+    "tools/world/building-overlap-census.mjs"
   ],
-  "files_claimed": [],
-  "findings": []
+  "files_claimed": [
+    "orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json",
+    "tools/world/building-overlap-census.mjs",
+    "tools/check-building-overlap.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-BUILDING-OVERLAP-CENSUS/",
+    "reports/building-overlap/",
+    "game/data/world/settlements/thorn.json",
+    "game/data/world/interiors/barge-hold.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-THORN-PLATES-C2", "W1-15-r3", "W1-25-persistent-builder", "W1-23-r4"],
+  "overlap_note": "thorn.json is claimed by W1-THORN-PLATES-C2 (quay dressing / kits / grammar fields), W1-15-r3 and W1-25-persistent-builder. My edit touches three values on ONE building record — buildings[barge-hold].offset_m, .door, .door_declared — and no kit, grammar, mesh or dressing field. Declared here rather than left to read as a collision. Committing with --only."
 }

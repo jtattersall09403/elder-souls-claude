@@ -269,25 +269,13 @@ const ALL_ARMS = [
   // ---- the shadow arm, re-run, with a whole-frame witness -------------------------------------
   { id: 'shadows-off', kind: 'cross-check',
     what: 're-run of the r1 critic shadow arm, this time with a whole-frame change fraction so an inert arm is visible',
-    run: async () => { await setFeature('shadows', false); return { feature: 'shadows=false', shadow_report: await shadowReport() }; },
+    // `sky.features.shadows` is consumed at sky.js:821, inside `Sky.apply()`, which runs on EVERY
+    // render — proven the hard way: an earlier version of this arm made `sun.castShadow`
+    // non-writable and line 821 threw on the next frame. So the flag does reach the light. The
+    // report is therefore read AFTER the settle step, not before it, because read before any
+    // render it always shows the previous frame's value and an inert arm and a live one look alike.
+    run: async () => { await setFeature('shadows', false); await step(4); return { feature: 'shadows=false', shadow_report_after_step: await shadowReport() }; },
     undo: async () => setFeature('shadows', true) },
-  // The same question asked of the object rather than of the feature flag. `setFeature('shadows')`
-  // only takes effect where `sky.update()` re-runs line 821; this arm writes `sun.castShadow`
-  // directly and reads it back, so an inert flag and a real negative are distinguishable.
-  { id: 'sun-castshadow-false', kind: 'cross-check',
-    what: 'renderer.sky.sun.castShadow = false written directly and read back, because a feature flag that never reaches the light looks exactly like a light that does not matter',
-    run: () => g.page.evaluate(() => {
-      const sky = window.__ENGINE.renderer.sky;
-      sky.__laneShadowWas = sky.sun.castShadow;
-      sky.sun.castShadow = false;
-      Object.defineProperty(sky.sun, 'castShadow', { value: false, writable: false, configurable: true });
-      return { was: sky.__laneShadowWas, now: sky.sun.castShadow };
-    }),
-    undo: () => g.page.evaluate(() => {
-      const sky = window.__ENGINE.renderer.sky;
-      delete sky.sun.castShadow;
-      sky.sun.castShadow = sky.__laneShadowWas !== undefined ? sky.__laneShadowWas : true;
-    }) },
 
   // ---- round two: is the water even the surface the lanes are painted on? ----------------------
   // Round one ablated every term water.js contributes and none of them moved the lanes, while
