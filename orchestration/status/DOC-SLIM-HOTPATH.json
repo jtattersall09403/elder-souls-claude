@@ -1,54 +1,71 @@
 {
   "task_id": "DOC-SLIM-HOTPATH",
-  "state": "running",
+  "state": "builder_delivery_complete — awaiting a fresh critic",
   "could_not_do": [
-    "STARTED — nothing attempted yet. This list is rewritten as the run proceeds and is the first thing a successor should read.",
-    "PRE-EXISTING GAP FOUND BEFORE ANY EDIT: the critical fact 'node tools/visual/gpu-deck.mjs --help does not print help, it rents a Pod and starts spending' lives ONLY in reports/thorn-plates/2026-08-14-thorn-plates.md, which is gitignored and NOT within two hops of CLAUDE.md. It was already unreachable before this cleanup. Fixing it costs one line in HAZARDS.md section 4 (RunPod), which is one file outside the three named in the dispatch."
+    "The 45 ARBITRATION rulings under ~4,000 characters were NOT compressed. They are dense operative law (S16's dungeon census, S23's equip-load tier split, S50's camera-guard sequence), not essay, and trimming them would have cost binding content for a few thousand tokens. Only the 10 rows that were genuinely arguments were summarised. A successor wanting more should start with S44/S47/S49 (2.5-2.9k each), not with the short rows.",
+    "ARBITRATION is still the largest single item on the read path at 22,572 tokens. It is the supreme law and every critic prompt must carry it, so it cannot be pointered away the way INDEX.md's listings were. Cutting it further means compressing rulings that are law.",
+    "I did NOT verify that the 10 hand-written holdings are complete against a fresh reader's judgement. I read each of the 10 rows in full before writing its holding, and the archive is proven byte-identical, so nothing is lost — but 'the holding captures everything operative' is my judgement and is exactly the thing a separate critic should falsify. Suggested method: for each of S26/S35/S36/S37/S38/S39/S51/S52/S53/S54, diff the live holding against the archived full text and name any clause that binds a builder and is missing.",
+    "tools/cost.mjs and other files cite `COST.md §2/§4.0/§4.1/§5/§6.1`. The live COST.md is renumbered, so those citations now resolve in orchestration/archive/COST-HISTORY-20260814.md, which keeps the original numbering and says so in its header. The citing comments themselves were NOT updated — out of scope, and they are comments rather than parsers, so nothing breaks.",
+    "OUT OF SCOPE, FOUND, NOT FIXED — a real defect in tools/land.mjs: its generated-file conflict policy ('theirs wins, regenerated next commit') can pin a generated file to a stale version permanently. orchestration/INDEX.md was stuck at the old 205,751-byte version through three consecutive lands because every attempt conflicted and theirs won each time, while nothing on the branch regenerates outside a hook that land.mjs bypasses. I broke the loop with `git reset --mixed origin/<branch>` (the same call land.mjs makes internally at line 331 — NOT --hard, so no working-tree file was touched) and the small INDEX landed cleanly. The policy is right in general and wrong when the fleet lands exclusively through land.mjs/bank.mjs. Worth a piece.",
+    "reports/thorn-plates/2026-08-14-thorn-plates.md is now a duplicate source for the gpu-deck hazard. Left alone deliberately — reports/ is out of scope."
   ],
   "baseline_commit": "94413aa98fe80eaddba9c3ad25514f03a742e62b",
   "branch": "codex/wave1-build-experiment",
-  "purpose": "Cut the mandatory cold-start read path (~145k tokens) by fixing tools/gen-index.mjs, corpus/00-doctrine/ARBITRATION.md and orchestration/COST.md, without losing a single load-bearing fact.",
-  "method": {
-    "instrument": "tools/readpath.mjs — measures the read path in bytes and estimated tokens AND checks a named list of critical facts is still reachable within two hops of CLAUDE.md. Exits non-zero if a fact is unreachable. --self-break proves it fires.",
-    "acceptance": "both halves of orchestration/DOC-POLICY.md — (1) read path materially smaller, before and after in tokens; (2) every named critical fact still reachable in two hops"
+  "result": {
+    "read_path_before_tokens": 145182,
+    "read_path_after_tokens": 68494,
+    "read_path_before_bytes": 580728,
+    "read_path_after_bytes": 273974,
+    "reduction_tokens": 76688,
+    "reduction_pct": 52.8,
+    "estimator": "4 chars/token — the same estimator the published 145,000 figure was taken with, verified against its own components (INDEX 205,192ch/51k, ARBITRATION 170,082ch/42k, COST 66,906ch/17k = 3.94-4.05 ch/tok). Bytes are exact; use the same estimator on both sides or the delta means nothing.",
+    "note_on_after": "CLAUDE.md grew 10,351 -> 12,661 bytes during the run from a sibling's edit, and HAZARDS grew 37,829 -> 38,292 from the gpu-deck line this task added. Both are counted in the AFTER figure, so the reported saving is understated rather than flattered.",
+    "instrument": "node tools/readpath.mjs  (--facts, --json, --self-break)",
+    "critical_facts_reachable_before": "24/26",
+    "critical_facts_reachable_after": "26/26",
+    "self_break": "PASS — clean arm loses 0, sabotaged arm loses 1, so a lost fact is actually detected"
   },
-  "critical_facts_written_before_cleaning": [
-    "landing recipe: node tools/bank.mjs \"<headline>\" / node tools/land.mjs \"<headline>\" --paths <yours>, commits AND pushes, exits non-zero unless bytes are on the remote",
-    "banned recipe: git read-tree origin/<branch> && git add -A — destroyed 18 files and 22,209 lines in commit 06dafd04",
-    "HEAD is not your baseline — a sibling's bank can turn your delete-the-fix green (HAZARDS 12)",
-    "diff your work against HEAD, never against origin",
-    "pkill -f headless_shell is a fleet-wide kill, not a cleanup — kill by PID",
-    "runpod cleanup with no args used to kill every managed Pod on the account, including siblings' live Pods",
-    "node tools/visual/gpu-deck.mjs --help does not print help — it rents a Pod and starts spending",
-    "git gc --prune=now destroys other agents' staged work — use plain git gc",
-    "the five non-negotiables (G3) and that no cost measure may reduce them",
-    "the arbitration rule: inside the fight Souls wins, everywhere else Morrowind wins",
-    "Ruling S55: RI-VIS06's FIDELITY backstop cap is amended from 7 to 2, as a HARD FAIL",
-    "CONSUMPTION (RI-MTH07): name the world-side consumer and perturb the model to demonstrate it",
-    "the event vocabulary in game/src/sim/events.js is closed; an unlisted name throws inside the fixed step",
-    "git commit --only <your paths>; never git add -A; staging by name is not enough",
-    "rule 0 — never wait for the owner; no AskUserQuestion; no approval-gated tool",
-    "souls are levelling only; gold is the currency (S15)",
-    "seam rulings are append-only; superseded rulings are struck through with a pointer, never deleted",
-    "model routing C5/C6: Sonnet is the default, Opus is the justified exception",
-    "G1 was INVERTED on 2026-08-14 evening: roadmap steps delivered, not a floor of 12 concurrent agents",
-    "node tools/land.mjs --self-test — 13 checks whose arms must disagree",
-    "tools/control-clone.mjs hard-links instead of copying; --writable or you corrupt the real repo file",
-    "node tools/contention.mjs --gate before browser work; one browser is six headless_shell entries",
-    "cost is superlinear in tool calls; rule 19b — batch probes, never poll"
-  ],
-  "files_claimed": [
+  "per_file": {
+    "orchestration/INDEX.md": {
+      "before_bytes": 206135, "after_bytes": 22012, "before_tokens": 51534, "after_tokens": 5503,
+      "how": "fixed tools/gen-index.mjs, never the file. The 1,002-tool listing, the 157-item table and the 445 harness verbs now generate into orchestration/index/{TOOLS,ITEMS,HARNESS}.md — full, byte-for-byte, nothing dropped — and the index points at them with a grep command. Nothing was deleted.",
+      "stale_count_fixed": "announced 208 pieces in flight; now 55-56, agreeing with tools/ownership.mjs. Two real bugs mirrored from today's ownership fix: 78 status files record their endpoint in `status` not `state`, and `builder_delivery_complete` never matched /complete/ at a word boundary. Also missing: `ownership_claim_released` and the awaiting-critic test.",
+      "tripwire": "node tools/gen-index.mjs --check-ownership — fails if gen-index's live count diverges from ownership.mjs. It fired on first run and caught two missing clauses."
+    },
+    "corpus/00-doctrine/ARBITRATION.md": {
+      "before_bytes": 170082, "after_bytes": 90288, "before_tokens": 42521, "after_tokens": 22572,
+      "how": "Supreme rule, section 1's boundary definition, and sections 3/4/5 are BYTE-IDENTICAL — verified by diff against the baseline commit. All 55 rulings present, none missing, none duplicated. 45 rows verbatim; 10 rows (S26 S35 S36 S37 S38 S39 S51 S52 S53 S54, which held 100,681 of 158,532 characters between them) summarised to hand-written operative holdings, each linking to its full text. Rows now sorted S1..S55 so the table can actually be looked things up in.",
+      "archive": "orchestration/archive/ARBITRATION-RULINGS-FULL.md — all 55 rulings, VERIFIED BYTE-IDENTICAL to the original for every one.",
+      "append_only": "preserved — S30 still struck through with its SUPERSEDED BY S35 pointer; S35's holding still names S38 as amending it, so check-citations' ruling-propagation check still passes."
+    },
+    "orchestration/COST.md": {
+      "before_bytes": 66906, "after_bytes": 21296, "before_tokens": 16727, "after_tokens": 5324,
+      "how": "restated in the present tense: the bar, the four guards as currently defined, the five non-negotiables, the instrument and where the money is, and rulings C1-C6 each as holding + reversal + tripwire. The amendment archaeology, the levers-as-hypotheses, the external-evidence survey and the full cost-ledger data contract moved to the archive.",
+      "G1": "INVERTED and now stated in the present tense only — throughput per roadmap step, and 'there is no parallelism floor anywhere in this programme'. Every superseded floor-of-12 assertion is gone from the live file, including C5's 'Parallelism is a separate guard with its own floor'. C2's mean-vs-median argument is now stated for what survives of it (never select a metric after seeing which reading passes) rather than for a statistic that is no longer a guard.",
+      "archive": "orchestration/archive/COST-HISTORY-20260814.md — the previous COST.md in full, verified verbatim, with a header that flags the G1 trap and maps the old section numbers that tools/cost.mjs still cites."
+    }
+  },
+  "also_changed": {
+    "tools/readpath.mjs": "NEW — the instrument for both halves of DOC-POLICY's acceptance test. Exits non-zero if a named critical fact is not reachable within two hops of CLAUDE.md.",
+    ".githooks/pre-commit": "stages the three new generated satellites alongside INDEX.md, or the tree stays permanently dirty.",
+    "orchestration/HAZARDS.md": "one line in section 4 — `gpu-deck.mjs --help` rents a Pod; use --estimate. This fact was ALREADY unreachable before this cleanup (it lived only in reports/thorn-plates/), so the acceptance test caught a pre-existing loss rather than one this task caused."
+  },
+  "verified": "every file confirmed against the remote blob by size, not by git status. Gates re-run green: corpus-index exit 0, check-append-only exit 0, check-citations exit 0 (13 pre-existing errors, none naming any file this task touched), tools/cost.mjs still runs, gen-index --check-ownership agrees.",
+  "files_touched": [
     "orchestration/status/DOC-SLIM-HOTPATH.json",
+    "tools/readpath.mjs",
     "tools/gen-index.mjs",
     "orchestration/INDEX.md",
+    "orchestration/index/TOOLS.md",
+    "orchestration/index/ITEMS.md",
+    "orchestration/index/HARNESS.md",
     "corpus/00-doctrine/ARBITRATION.md",
+    "orchestration/archive/ARBITRATION-RULINGS-FULL.md",
     "orchestration/COST.md",
-    "orchestration/archive/",
-    "tools/readpath.mjs",
-    "orchestration/HAZARDS.md"
+    "orchestration/archive/COST-HISTORY-20260814.md",
+    "orchestration/HAZARDS.md",
+    ".githooks/pre-commit"
   ],
-  "files_touched": [
-    "orchestration/status/DOC-SLIM-HOTPATH.json"
-  ],
-  "next_step": "build tools/readpath.mjs, take the BEFORE measurement, then fix gen-index.mjs"
+  "files_claimed": [],
+  "next_step": "a fresh critic: falsify the 10 hand-written ARBITRATION holdings against the archived full text, and re-run node tools/readpath.mjs"
 }
