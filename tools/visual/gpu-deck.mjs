@@ -26,6 +26,7 @@
  *   node tools/visual/gpu-deck.mjs --estimate --profile full        # spends nothing
  *   node tools/visual/gpu-deck.mjs --profile smoke --tag hw-smoke   # rents a Pod
  *   node tools/visual/gpu-deck.mjs --profile full  --tag hw-full --max-runtime 60
+ *   node tools/visual/gpu-deck.mjs --opening --no-stills --no-motion --tag hw-opening
  *   node tools/visual/gpu-deck.mjs --self-test                      # no browser-free arms, no spend
  */
 import fs from 'node:fs';
@@ -142,13 +143,26 @@ function printEstimate(e, returnLevel = 'sample', sheetEvery = 6) {
 }
 
 /** The single shell command the Pod runs. One job, one tar back. */
-export function remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel, sheetEvery = 6 }) {
+export function remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel, sheetEvery = 6, withOpening = false, openingSeconds = 30 }) {
   const lines = [
     'set -euo pipefail',
     'ART="$RUNPOD_ARTIFACT_DIR"',
     `TAG=${JSON.stringify(tag)}`,
     'mkdir -p "$ART"',
   ];
+  // `--opening` — THE FIRST THIRTY SECONDS, on hardware.
+  //
+  // The Deck is a fixed sweep of the whole world and it does not contain the opening at all,
+  // because until 2026-08-14 nobody knew where the opening was: every tool booted the harness
+  // default and photographed LILMOTH, and a player who clicks New comes out in THORN
+  // (`reports/spawn-truth/2026-08-14-spawn-truth.md`). `opening-capture.mjs` plays the title
+  // screen through the census and out of the writ house door, then takes eight orbit angles and
+  // thirty seconds of walking at a desktop AND a phone viewport — which is owner directive
+  // 2026-08-14 §2's "many screenshots and motion sequences from many angles", for the frames
+  // that matter most. It goes FIRST so a Deck that overruns its budget cannot cost the opening.
+  if (withOpening) {
+    lines.push(`node tools/harness/opening-capture.mjs --tag "$TAG-opening" --seconds ${Number(openingSeconds) || 30} --gpu hardware --out "$ART/opening/$TAG" 2>&1 | tee -a "$ART/opening.log"`);
+  }
   if (withStills) {
     lines.push(`node tools/visual/deck.mjs --profile ${profile} --tag "$TAG" --gpu hardware --require-hardware --out "$ART/deck/$TAG" 2>&1 | tee -a "$ART/deck.log"`);
   }
@@ -352,6 +366,11 @@ async function main() {
   const withStills = args['no-stills'] !== true;
   const withMotion = args['no-motion'] !== true;
   const returnLevel = String(args.return || 'sample');   // sheets | sample | all
+  // The opening is opt-in and independent of the Deck profile: `--opening --no-stills --no-motion`
+  // is a hardware run of the first thirty seconds and nothing else, which is the cheapest useful
+  // thing this tool can be asked for.
+  const withOpening = args.opening === true;
+  const openingSeconds = Number(args['opening-seconds'] || 30);
   if (!['sheets', 'sample', 'all'].includes(returnLevel)) throw new Error(`--return must be sheets, sample or all`);
 
   const plan = planFor(deck, profile, { frameCap, every, withStills, withMotion });
@@ -361,7 +380,7 @@ async function main() {
   if (args.estimate || args['dry-run']) {
     console.log('\n--estimate: nothing was rented and nothing was spent.');
     console.log('\nthe command a real run would send to the Pod:\n');
-    console.log(remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel }));
+    console.log(remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel, withOpening, openingSeconds }));
     return;
   }
 
@@ -372,7 +391,7 @@ async function main() {
     return;
   }
 
-  const command = remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel });
+  const command = remoteCommand({ profile, tag, frameCap, every, withStills, withMotion, returnLevel, withOpening, openingSeconds });
   const artifactDir = String(args['artifact-dir'] || `reports/runpod-gpu/runs/deck-${tag}`);
   console.log(`\nrenting a Pod. Budget ${maxRuntime} min; artefacts land in ${artifactDir}\n`);
 
