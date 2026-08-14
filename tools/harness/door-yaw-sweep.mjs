@@ -55,7 +55,7 @@
 // USAGE
 //   node tools/harness/door-yaw-sweep.mjs --json <path> [--label after] [--entry <html>]
 //        [--only a,b] [--limit N] [--reach 12] [--near 3] [--min-clear 3] [--max-occl 0.34]
-//        [--seed-yaw 200] [--hour 12] [--frames 1,30,120] [--resume]
+//        [--seed-yaw 200] [--hour 12] [--frames 1,30,120] [--resume] [--no-best]
 'use strict';
 
 import path from 'node:path';
@@ -70,7 +70,7 @@ door-yaw-sweep.mjs — all 115 interiors, both directions, clearance + view-occl
 USAGE
   node tools/harness/door-yaw-sweep.mjs --json <path> [--label after] [--entry <html>]
        [--only a,b] [--limit N] [--reach 12] [--near 3] [--min-clear 3] [--max-occl 0.34]
-       [--seed-yaw 200] [--hour 12] [--frames 1,30,120] [--resume]
+       [--seed-yaw 200] [--hour 12] [--frames 1,30,120] [--resume] [--no-best]
 `;
 
 const args = parseArgs();
@@ -84,6 +84,12 @@ const SEED_YAW = args['seed-yaw'] === undefined ? 200 : Number(args['seed-yaw'])
 const HOUR = args.hour === undefined ? 12 : Number(args.hour);
 const FRAMES = String(args.frames || '1,30,120').split(',').map((s) => Number(s.trim())).filter((n) => n >= 0);
 const LABEL = String(args.label || 'after');
+// The 36-bearing ceiling scan is the great majority of a row's compute (36 bearings x 22 rays x 48
+// steps against a cell of up to 130 slabs, twice per row) and it answers a question the OFFLINE
+// tool answers for all 115 in fifteen seconds: "could any facing have passed from this point?". On
+// this box, contended, it turned a 25 s row into a 610 s one. It is optional here; the population
+// classification comes from the offline sweep either way.
+const DO_BEST = !args['no-best'];
 const outDir = path.join(REPORTS_DIR, 'door-yaw');
 ensureDir(outDir);
 const jsonPath = args.json ? path.resolve(String(args.json)) : path.join(outDir, `sweep-${LABEL}.json`);
@@ -300,8 +306,10 @@ const main = async () => {
               yaw_returned_deg: (res && res.yaw_deg) === undefined ? null : res.yaw_deg, marks: {} };
             let f = 0;
             for (const m of o.frames) { H.stepFrames(m - f); f = m; r.enter.marks['f' + m] = X.sample(o.near, o.reach); }
-            r.enter.best = X.best(E.sim.player.pos[0], E.sim.player.pos[2], E.sim.player.pos[1] + 1.6,
-              o.near, o.reach, o.minClear, o.maxOccl);
+            if (o.doBest) {
+              r.enter.best = X.best(E.sim.player.pos[0], E.sim.player.pos[2], E.sim.player.pos[1] + 1.6,
+                o.near, o.reach, o.minClear, o.maxOccl);
+            }
           }
         } catch (e) { r.enter = { error: String((e && e.message) || e) }; }
 
@@ -321,7 +329,7 @@ const main = async () => {
             let f = 0;
             for (const m of o.frames) { H.stepFrames(m - f); f = m; r.exit.marks['f' + m] = X.sample(o.near, o.reach); }
             const p = E.sim.player.pos;
-            r.exit.best = X.best(p[0], p[2], p[1] + 1.6, o.near, o.reach, o.minClear, o.maxOccl);
+            if (o.doBest) r.exit.best = X.best(p[0], p[2], p[1] + 1.6, o.near, o.reach, o.minClear, o.maxOccl);
           } catch (e) { r.exit = { error: String((e && e.message) || e) }; }
         } else if (!r.enter || !r.enter.refused) {
           r.exit = { skipped: 'never entered' };
@@ -330,7 +338,7 @@ const main = async () => {
         }
         return r;
       }, { id, seed: SEED_YAW, reach: REACH, near: NEAR, hour: HOUR, frames: FRAMES,
-           minClear: MIN_CLEAR, maxOccl: MAX_OCCL });
+           minClear: MIN_CLEAR, maxOccl: MAX_OCCL, doBest: DO_BEST });
       row.ms = Date.now() - t0;
       out.rows.push(row);
       // WRITTEN AFTER EVERY ROW. The first full-tree attempt at this sweep was killed at 35
