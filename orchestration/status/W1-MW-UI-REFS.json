@@ -3,17 +3,29 @@
   "role": "corpus",
   "title": "Morrowind interface references + the dialogue window's specification + the topics-unlock-topics plan",
   "started_at": "2026-08-14T13:45:00Z",
-  "state": "running",
+  "state": "delivered",
   "branch": "codex/wave1-build-experiment",
-  "next_step": "eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UIX08 dialogue-window spec; write the topics plan",
+  "next_step": "Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor round under PLAN-LOOP.md. RI-UIX08 has never been scored and its played gate has never been run.",
   "headline_finding": "The dispatch premise is wrong in the project's favour and wrong in a way that explains the defect. The project DOES hold Morrowind interface references: corpus/70-visual/refs/morrowind/REF-A12b/ has 33 Steam captures acquired 2026-08-06 - dialogue x5, journal x3, inventory x4, map x5, character_sheet x4, barter x3, book_reader x4, tooltip x2, level_up x2, char_creation x1 - all manifested, eye-verified, vanilla_confidence: high, with reference_for listing RI-UIX03 and RI-UIX06. What is missing is not the pixels. It is that RI-VIS09 (the register of what pixels we hold) never mentions REF-A12b, its SS2 routing table still gives RI-UIX* only the OpenMW XML and explicitly forbids citing it for appearance, and REF-A12/README.md still ends 'one 1024x768 vanilla screenshot each ... is the only thing that would' close the appearance gap. A UI builder who obeyed the register was TOLD the reference did not exist. That is the gap to close.",
   "deliverables": {
-    "d1_references": "in_progress - owner screenshot to vendor as REF-A12c; REF-A12b to be surfaced in RI-VIS09 SS1/SS2/SS3 and REF-A12/README.md",
-    "d2_dialogue_window_spec": "not_started",
-    "d3_topics_unlock_plan": "not_started"
+    "d1_references": "done - REF-A12c vendored with full provenance and an explicit licence position; RI-VIS09 SS1/SS2/SS3.5 and REF-A12/README corrected so the 33 captures already on disk are findable",
+    "d2_dialogue_window_spec": "done - corpus/86-ui/RI-UIX08-dialogue-window.md, written from the image, corpus-coherence green",
+    "d3_topics_unlock_plan": "done - orchestration/plans/W1-DLG-TOPIC-WEB.md, draft, not built"
   },
   "files_touched": [
-    "orchestration/status/W1-MW-UI-REFS.json"
+    "orchestration/status/W1-MW-UI-REFS.json",
+    "corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png",
+    "corpus/70-visual/refs/_provenance.json",
+    "corpus/70-visual/refs/_computed.json",
+    "corpus/70-visual/refs/MANIFEST.json",
+    "corpus/70-visual/refs/make-manifest.py",
+    "corpus/70-visual/refs/LICENCE-NOTE.md",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md",
+    "corpus/70-visual/refs/morrowind/REF-A12/README.md",
+    "corpus/86-ui/RI-UIX08-dialogue-window.md",
+    "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+    "docs/shots/2026-08-14-morrowind-dialogue-window-spec.png",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "corpus/70-visual/refs/morrowind/REF-A12c/",
@@ -40,9 +52,47 @@
   ],
   "blocked_by": [],
   "could_not_do": [
-    "en.uesp.net and images.uesp.net: HTTP 403 behind a Cloudflare JS challenge (cf-mitigated: challenge). Not a proxy block - the CONNECT succeeded. No UESP interface page could be read.",
-    "web.archive.org: connection failure (curl exit, HTTP 000) on every attempt.",
-    "elderscrolls.fandom.com: HTTP 403.",
-    "Steam filedetails pages are now server-side-rendered JS and carry no image URL; the app-hub listing pages still do, and that is the route used."
+    "THE DISPATCH PREMISE WAS WRONG AND I DID NOT ACQUIRE MUCH. I was sent to acquire Morrowind interface references because the project had none. It had 33, in corpus/70-visual/refs/morrowind/REF-A12b/, since 2026-08-06, manifested and eye-verified. I harvested 176 fresh Steam candidates before finding them and then vendored NONE of them, because they would have duplicated a better-provenanced set. The candidates were left in the scratchpad, not in the repo. What I did instead was fix the register so the existing ones can be found. If more captures are wanted later, the harvest script and the working route are in the scratchpad and the route is documented below.",
+    "en.uesp.net and images.uesp.net: HTTP 403 behind a Cloudflare JS challenge (cf-mitigated: challenge, server: cloudflare). The CONNECT through the agent proxy succeeded, so this is the host refusing an automated client, not a proxy block. No UESP interface page was read and nothing about their contents is claimed.",
+    "web.archive.org: connection failure (HTTP 000) on every attempt at 12s and 20s timeouts. Not tried further.",
+    "elderscrolls.fandom.com: HTTP 403. static.wikia.nocookie.net serves only with an exact image path, which needed the wiki API, which is behind the same 403.",
+    "Steam sharedfiles/filedetails pages are now server-side-rendered JS and carry NO image URL in the HTML; my first harvester failed on 40 of 52 candidates for that reason. The app-hub LISTING pages still carry full-size image URLs, native width/height and uploader name per card, and that is the working route.",
+    "make-manifest.py could not be run in full: it takes about 2.0s per file over 808 files (~27 min) and the background runner killed it after 30 files. I computed the ONE new record with the scripts own analyse() function, merged it into _computed.json, and ran make-manifest.py --join-only. No numeric field was typed by hand, but the full walk has NOT been re-run and `--check` has NOT been executed against the whole tree. A successor should run it once.",
+    "NO BROWSER, NO RUNNING GAME. Nothing here was measured in the running world. The 6.7% visibility figure is a static census over game/data/dialogue/topics/ and is a claim about the DATA, not about what the shipped window draws - the shipped window draws no links at all, so there was nothing to measure. RI-UIX08 has never been scored and its played gate has never been run.",
+    "THE VISIBILITY PROBE IS A THROWAWAY, NOT A SHIPPED TOOL. It lives in the scratchpad. The plan commissions it as a --visibility mode on tools/dialogue/build-graph.mjs precisely so it is not a second implementation (rule 10), and requires it to be demonstrated failing against current HEAD before it is trusted.",
+    "COULD NOT REACH THE SIBLINGS BY MESSAGE. ListAgents is not available in this session and HUD-OUT-OF-COMBAT reports SendMessage to me returned \"no agent named ... is reachable\". Coordination was done by reading status files. HUD-OUT-OF-COMBAT had already declared the same boundary from its side, so the split held.",
+    "GIT WAS THE MAIN COST. The index lock was contended continuously by a dozen agents; several commit attempts ran their full pre-commit hook and then lost a race on HEAD. Every deliverable was ultimately carried into HEAD by an orchestrator bank rather than by my own commit, and each was verified present in HEAD afterwards by git show. Nothing was lost."
+  ],
+  "measurements": {
+    "commit_note": "Figures are claims about the tree at the time of measurement (rule 12); the tree moved under them constantly - a dozen agents were committing throughout.",
+    "topic_graph_today": "node tools/dialogue/build-graph.mjs: 470 nodes, 1630 edges, 9 roots, mean non-leaf out-degree 3.9836, reachable_only_via_another_topic 0.9809, max_depth 7, 0 orphans, 0 unreachable INFOs. Every RI-DLG01 SSD target green.",
+    "visibility_of_the_unlock": "1216 addTopic edges in game/data/dialogue/topics/. The destination topic name appears in the source answer text in 81 (6.7% strict; 121 = 10.0% under a matcher requiring only every content word). 1135 unlocks are invisible to the player.",
+    "topic_names": "14 of 471 topics carry an explicit player-visible `name` (3.0%). The rest would render as a slug.",
+    "owner_capture": "2376x1069 PNG (despite a .jpg extension), sha256 e9a0531c5a09e41214ce96136af2c60e11c2ca45b65b6e46c2473b32f66cba6a. Panel 1362x808 at x544-1905, y148-955. Topic column 325px = 23.9% of panel width against a nominal 28.2%, because the column is right-anchored at a fixed 166 layout px. Disposition bar 320x20. Derived UI scale ~1.93 from one element - a single-element estimate, not to be reused.",
+    "colours_measured": "body ~(195,174,132) vs normal #CAA560; heading ~(228,217,195) vs header #DFC99F; link ~(110,120,180) vs link #707ECF; topic column ~(144,196,146) - GREEN, matching no entry in the 45-entry FontColor table and rendered bronze in all five native captures.",
+    "translucency": "confirmed by brightening the prose pane 3.2x: the NPC face and shoulders are visible through it. The 0.84 figure quoted in RI-UIX08 is OpenMWs documented default, NOT measured from this frame."
+  },
+  "decisions": [
+    {
+      "id": "D1",
+      "ruling": "Do not vendor any of the 176 freshly harvested Steam candidates.",
+      "why": "REF-A12b already covers every window with better provenance (native engine, pre-2023 pages, eye-verified, vanilla_confidence high). Adding 176 lower-quality duplicates would grow the tree and dilute the set to close a gap that was never open. The real gap was the register.",
+      "reversible": true,
+      "falsifier": "If a specific window turns out to be uncovered - a short topic list, or the class/character-creation screens at high resolution, both named in RI-VIS09 SS3.5 - harvest for that window specifically. The route works and is documented."
+    },
+    {
+      "id": "D2",
+      "ruling": "File the owner capture as a NEW slot REF-A12c rather than into REF-A12b.",
+      "why": "REF-A12b is native-engine Steam captures with a uniform provenance shape. The owner capture is OpenMW-Android, owner-supplied, has no source page, and carries a different licence position. Mixing it in would make one folder mean two things and would hide the one record whose licence needed stating.",
+      "reversible": true,
+      "falsifier": "If a second owner-supplied capture never arrives, a one-file folder is overhead and it could be merged with a per-record provenance note."
+    },
+    {
+      "id": "D3",
+      "ruling": "Every numeric acceptance in the topics plan is a GATE that can only fail; only the played gate can return a pass.",
+      "why": "Measured: RI-DLG01 SSD is entirely green on current HEAD while the mechanism the owner described is 6.7% present. An edge count would have passed this build today. That is the brief's rule demonstrated on our own tree rather than asserted.",
+      "reversible": true,
+      "falsifier": "If a played gate proves impossible to staff repeatedly and the piece would otherwise have NO human read at all, ARBITRATION S52 already prefers a labelled leak check to an empty seat."
+    }
   ]
 }

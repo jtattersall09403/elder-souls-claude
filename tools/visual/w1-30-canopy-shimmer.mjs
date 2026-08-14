@@ -1,37 +1,48 @@
 #!/usr/bin/env node
 /**
- * w1-30-canopy-shimmer.mjs — does the canopy shadow SHIMMER when the camera moves?
+ * w1-30-canopy-shimmer.mjs — does the canopy's new shadow SHIMMER when the camera moves?
  *
- * WHY THIS EXISTS. `province.js` now submits the canopy to the sun's shadow atlas, on the strength
- * of a 1080p hardware frame-time budget that found no cost and a sabotage arm that found 17.7% of
- * the Blackwood vista. Both of those are STILLS. The failure mode a still cannot see is the one
- * that matters for a caster this small: a crown blade near the edge of a 4096 texel fitted to
- * 150 m flickers in and out of the depth comparison as the camera advances, and the ground under
- * a wood boils. Owner directive 2 — "Static inspection is not evidence. Play the game" — is
- * precisely about declaring this kind of thing fixed from one angle.
+ * WRITTEN BY THE CRITIC OF W1-30-SHADOW-CASTERS. It is the measurement that piece names as its
+ * own biggest gap: *"NO MOTION EVIDENCE OF MY OWN… nobody has yet watched a walk with the canopy
+ * casting, which is where sub-texel shimmer and a crawling shadow-volume edge would show up and a
+ * still never can."* It is also R5's written tripwire — `under`, `rock` and `cover` are declined
+ * because *"a grass blade is sub-texel in a 4096 map fitted to 150 m… WHAT WOULD OVERTURN IT: a
+ * motion sequence showing they are stable."*
  *
- * THE MEASUREMENT. Walk the camera forward through a canopy-dense region capturing EVERY frame
- * (adjacent frames are the whole point; a contact sheet every sixth frame cannot show flicker).
- * For each adjacent pair, measure the mean absolute luminance change over the frame. Then repeat
- * the identical walk with the canopy caster flag turned back off in the page.
+ * WHY A DIFF BETWEEN CONSECUTIVE FRAMES IS THE WRONG STATISTIC, and this tool does not use one.
+ * Everything in a forest frame moves: the foliage animates, the camera translates, and a shadow
+ * that MOVES SMOOTHLY across the ground is the feature, not the defect. An arm-to-arm or
+ * frame-to-frame pixel diff scores all three the same, which is exactly the trap W1-30-SHADOW-
+ * CASTERS recorded as F7 ("77.6% of pixels changed … side by side they are the same picture").
  *
- *   shimmer = mean |L(t) - L(t-1)| over the sequence
+ * WHAT SHIMMER ACTUALLY IS: a pixel whose luminance OSCILLATES — up, down, up — as the shadow
+ * texel it samples flips across the depth comparison. Smooth motion crosses a pixel once. So the
+ * statistic is the ZERO-CROSSING RATE of each pixel's luminance time series over the sequence,
+ * counted only where the swing exceeds a threshold that a smooth ramp would not produce.
+ * `flicker_rate` = mean oscillations per pixel per 10 frames.
  *
- * A moving camera changes every pixel, so the ABSOLUTE number is meaningless and is not reported
- * as a verdict. THE COMPARISON IS THE INSTRUMENT: the same walk, same seed, same frames, with one
- * flag different. If canopy casting is stable, arm A and arm B differ by little. If it boils, A is
- * measurably noisier than B, and the ratio says by how much.
+ * THREE ARMS, AND THE THIRD ONE IS A POSITIVE CONTROL THAT MUST GO RED (RULES 4/6).
  *
- * THE NULL CONTROL IS THE PLAUSIBLE WRONG ANSWER, NOT THE TRIVIAL ONE. The trivial control is
- * "camera still" — no motion, no shimmer, proves nothing. The plausible wrong answer is that the
- * walk itself is so noisy (wind on the leaves, water, streaming pop) that it swamps any shadow
- * flicker and BOTH arms look identical — a test that cannot fail. So a third arm walks the same
- * path with the sun's shadow switched off entirely: that is the floor this world's own motion
- * produces with no shadow in it at all, and if A and B both sit on that floor, this instrument has
- * no power and says so rather than reporting a green.
+ *   A  canopy-off      the state before this round: `canopy:*` and `near-canopy:*` do not cast.
+ *   B  canopy-on       the shipped state at HEAD.
+ *   C  canopy+under    B plus the `under` and `rock` buckets — the set R5 DECLINED as sub-texel
+ *                      shimmer risk. If C does not read higher than B, this instrument cannot see
+ *                      shimmer and its verdict on B is worthless. That is stated, not assumed.
+ *
+ * Every arm walks the SAME path with the SAME seed through the REAL input pipeline (`queueInputs`
+ * → ACTIONS), so the foliage animation and the camera track are identical between arms by
+ * construction and the only difference is which meshes entered the shadow atlas.
+ *
+ * HAZARDS §0'S FIFTH FAILURE SHAPE — which input do all three arms supply identically? The walk
+ * itself: the same frame-indexed input script. That is deliberate and it is the control, not the
+ * flaw — three different walks could not be compared at all. What no arm fabricates is the thing
+ * in dispute: each arm reads its own caster census off the scene graph after flipping the flags,
+ * and an arm that flipped nothing reports `flagged: 0` and is visible as a duplicate rather than
+ * silently passing as a second copy of its neighbour.
  *
  * Usage:
- *   node tools/visual/w1-30-canopy-shimmer.mjs --hardware --site eye-blackwood --frames 90
+ *   node tools/visual/w1-30-canopy-shimmer.mjs --site eye-blackwood --frames 90
+ *   node tools/visual/w1-30-canopy-shimmer.mjs --hardware --canvas 1280x720 --frames 120
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -44,23 +55,35 @@ for (let i = 2; i < process.argv.length; i++) {
   const k = process.argv[i].slice(2);
   args[k] = (process.argv[i + 1] && !process.argv[i + 1].startsWith('--')) ? process.argv[++i] : true;
 }
+
 const DECK = JSON.parse(fs.readFileSync(path.join(REPO, 'tools/visual/deck.json'), 'utf8'));
+const TAG = String(args.tag || 'shimmer');
+const OUT = path.resolve(REPO, args.out || `reports/visual-truth/canopy-shimmer/${TAG}`);
+fs.mkdirSync(path.join(OUT, 'frames'), { recursive: true });
+const [CW, CH] = String(args.canvas || '640x360').split('x').map(Number);
+const SEED = Number(args.seed || DECK.capture.seed);
 const SITE = String(args.site || 'eye-blackwood');
-const FRAMES = Number(args.frames || 90);
-const [CW, CH] = String(args.canvas || '960x540').split('x').map(Number);
-const OUT = path.resolve(REPO, args.out || 'reports/visual-truth/shadow-casters/shimmer');
-fs.mkdirSync(path.join(OUT, 'strip'), { recursive: true });
+const FRAMES = Number(args.frames || 60);
+const TIME = Number(args.time || 13);
+const HW = args.hardware === true || process.env.VT_HARDWARE_GPU === '1';
+const KEEP = args.keepFrames === true;
 
 const { PNG } = await import(path.join(REPO, 'tools/node_modules/pngjs/lib/png.js'));
-const g = await launchGame({ entry: 'game/index.html', width: CW, height: CH, hardwareGpu: args.hardware === true });
+
+// The buckets, by the mesh names `province.js` gives them. Kept as strings so a rename shows up
+// as an empty arm rather than as a silent zero.
+const CANOPY = ['canopy:', 'near-canopy:'];
+const UNDER = ['under:', 'near-under:', 'rock:', 'near-rock:'];
+
+const g = await launchGame({ entry: 'game/index.html', width: CW, height: CH, hardwareGpu: HW });
 await g.h('ready');
 await g.page.evaluate(({ w, h }) => {
   const c = document.getElementById('view'); c.width = w; c.height = h;
-  const R = window.__ENGINE.renderer;
-  if (R.renderer && R.renderer.setPixelRatio) R.renderer.setPixelRatio(1);
-  R.setSize(w, h);
+  const r = window.__ENGINE.renderer;
+  if (r.renderer && r.renderer.setPixelRatio) r.renderer.setPixelRatio(1);
+  r.setSize(w, h);
 }, { w: CW, h: CH });
-await g.h('setSeed', Number(args.seed || DECK.capture.seed));
+await g.h('setSeed', SEED);
 
 const renderer_string = await g.page.evaluate(() => {
   try {
@@ -69,123 +92,153 @@ const renderer_string = await g.page.evaluate(() => {
     return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : (gl ? gl.getParameter(gl.RENDERER) : 'none'));
   } catch (e) { return `unavailable: ${e.message}`; }
 });
-const software = /swiftshader|llvmpipe|software|mesa/i.test(renderer_string);
-console.log(`renderer: ${renderer_string}${software ? '   *** SOFTWARE ***' : '   [HARDWARE]'}`);
+const software = /swiftshader|llvmpipe|software|mesa/i.test(renderer_string) || /^unavailable/i.test(renderer_string);
+console.log(`renderer: ${renderer_string}${software ? '  *** SOFTWARE ***' : ''}`);
 
 const step = (n) => g.h('stepFrames', n);
-const grab = async () => {
-  const d = await g.h('screenshot');
-  return Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
-};
-/** Mean absolute luminance change between two frames, over the whole frame. */
-function meanAbsL(a, b) {
-  const A = PNG.sync.read(a), B = PNG.sync.read(b);
-  let sum = 0; const n = A.data.length / 4;
-  for (let i = 0; i < A.data.length; i += 4) {
-    const la = 0.2126 * A.data[i] + 0.7152 * A.data[i + 1] + 0.0722 * A.data[i + 2];
-    const lb = 0.2126 * B.data[i] + 0.7152 * B.data[i + 1] + 0.0722 * B.data[i + 2];
-    sum += Math.abs(la - lb);
-  }
-  return sum / n;
-}
 
-async function place() {
-  const s = DECK.setups.find((x) => x.id === SITE);
-  if (!s) throw new Error(`no Deck setup '${SITE}'`);
+/** Put the player at the site and stand still for a moment so streaming settles. */
+async function goTo(site) {
+  const s = DECK.setups.find((x) => x.id === site);
+  if (!s) throw new Error(`no Deck setup '${site}'`);
   await g.h('teleport', s.place.x, s.place.z);
-  await step(30);
+  await step(60);
   await g.h('setWeather', 'clear');
-  await g.h('setTimeOfDay', Number(args.time || 13));
-  await g.h('camera', { mode: 'gameplay' }).catch(() => {});
-  await step(6);
+  await g.h('setTimeOfDay', TIME);
+  await step(20);
+  return s;
 }
 
-/** Walk forward `FRAMES` frames, capturing every one; return the adjacent-frame series. */
-async function walk(tag, keepStrip) {
-  await place();
-  const diffs = []; let prev = null;
-  for (let i = 0; i < FRAMES; i++) {
-    await g.h('queueInputs', [{ f: 0, move: [0, 1] }]);
+/**
+ * Set the caster flags for one arm, ABSOLUTELY rather than additively. The builder's own tool only
+ * ever turns flags ON, which is why its `base` arm stopped being a baseline the moment the flags
+ * landed in source and two of its six arms became duplicates of their neighbours. This one writes
+ * the value it wants and reports how many meshes it actually changed.
+ */
+const setCasters = (prefixes, on) => g.page.evaluate(({ prefixes, on }) => {
+  const R = window.__ENGINE.renderer;
+  let changed = 0, matched = 0;
+  R.scene.traverse((o) => {
+    if (!(o.isMesh || o.isInstancedMesh)) return;
+    const n = o.name || '';
+    if (!prefixes.some((p) => n.startsWith(p))) return;
+    matched++;
+    if (o.castShadow !== on) { o.castShadow = on; changed++; }
+  });
+  return { matched, changed };
+}, { prefixes, on });
+
+const shadowLoad = () => g.page.evaluate(() => {
+  const R = window.__ENGINE.renderer;
+  let meshes = 0, tris = 0;
+  R.scene.traverse((o) => {
+    if (!(o.isMesh || o.isInstancedMesh) || !o.castShadow || !o.visible) return;
+    const geo = o.geometry; if (!geo) return;
+    const idx = geo.index ? geo.index.count : (geo.attributes.position ? geo.attributes.position.count : 0);
+    meshes++; tris += (idx / 3) * (o.isInstancedMesh ? o.count : 1);
+  });
+  return { casterMeshes: meshes, casterTriangles: Math.round(tris) };
+});
+
+/** Walk forward, capturing every frame. Real input pipeline, frame-indexed, identical per arm. */
+async function walk(arm) {
+  const inputs = [{ f: 0, move: [0, 1] }];
+  // A slow yaw as well as translation: a shadow-volume edge crawls when the FIT moves, and the
+  // fit follows the camera's direction as much as its position.
+  for (let f = 0; f <= FRAMES; f++) inputs.push({ f, look: f < FRAMES ? [0.8, 0] : [0, 0] });
+  await g.h('queueInputs', inputs);
+  const lum = [];
+  for (let f = 0; f < FRAMES; f++) {
     await step(1);
-    const buf = await grab();
-    if (prev) diffs.push(+meanAbsL(prev, buf).toFixed(4));
-    if (keepStrip && i < 24) fs.writeFileSync(path.join(OUT, 'strip', `${tag}-${String(i).padStart(3, '0')}.png`), buf);
-    prev = buf;
+    const d = await g.h('screenshot');
+    const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
+    if (KEEP || f % 12 === 0) fs.writeFileSync(path.join(OUT, 'frames', `${arm}-f${String(f).padStart(4, '0')}.png`), buf);
+    const p = PNG.sync.read(buf);
+    const n = p.width * p.height;
+    const y = new Float32Array(n);
+    for (let i = 0, j = 0; i < p.data.length; i += 4, j++) {
+      y[j] = 0.2126 * p.data[i] + 0.7152 * p.data[i + 1] + 0.0722 * p.data[i + 2];
+    }
+    lum.push(y);
   }
-  const sorted = [...diffs].sort((a, b) => a - b);
+  await g.h('queueInputs', [{ f: 0, move: [0, 0], look: [0, 0] }]);
+  await step(2);
+  return lum;
+}
+
+/**
+ * Oscillations per pixel per 10 frames, counted only on swings above `amp`. A smooth ramp — a
+ * shadow edge sweeping across the pixel — contributes ZERO crossings; a texel flip contributes one
+ * per reversal. `amp` is in 0-255 luminance and is deliberately well above PNG quantisation.
+ */
+function flickerRate(lum, amp = 8) {
+  if (lum.length < 3) return null;
+  const n = lum[0].length;
+  let crossings = 0, movedPixels = 0;
+  for (let p = 0; p < n; p++) {
+    let last = lum[0][p], dir = 0, c = 0, moved = false;
+    for (let f = 1; f < lum.length; f++) {
+      const v = lum[f][p], d = v - last;
+      if (Math.abs(d) < amp) continue;
+      moved = true;
+      const s = d > 0 ? 1 : -1;
+      if (dir !== 0 && s !== dir) c++;
+      dir = s; last = v;
+    }
+    crossings += c;
+    if (moved) movedPixels++;
+  }
   return {
-    frames: FRAMES,
-    mean: +(diffs.reduce((s, d) => s + d, 0) / diffs.length).toFixed(4),
-    median: +sorted[Math.floor(sorted.length / 2)].toFixed(4),
-    p95: +sorted[Math.floor(sorted.length * 0.95)].toFixed(4),
-    max: +sorted[sorted.length - 1].toFixed(4),
-    series: diffs,
+    flicker_per_px_per_10f: +((crossings / n) * (10 / (lum.length - 1))).toFixed(4),
+    moved_px_frac: +(movedPixels / n).toFixed(4),
+    total_crossings: crossings,
   };
 }
 
-const setCanopyCast = (on) => g.page.evaluate((v) => {
-  let k = 0;
-  window.__ENGINE.renderer.scene.traverse((o) => {
-    const n = o.name || '';
-    if (/^(near-)?canopy:/.test(n)) { o.castShadow = v; k++; }
-  });
-  return k;
-}, on);
-const setShadows = (on) => g.page.evaluate((v) => window.__ENGINE.renderer.sky.setFeature('shadows', v), on);
+const out = { tag: TAG, site: SITE, frames: FRAMES, canvas: [CW, CH], seed: SEED, time: TIME,
+  renderer_string, software, arms: [], pageErrors: [] };
 
-const out = { site: SITE, frames: FRAMES, canvas: [CW, CH], renderer_string, software, arms: {} };
+const setup = await goTo(SITE);
+out.place = setup.place;
 
-// A — as shipped: the canopy casts.
-console.log('arm A — canopy casting (as shipped)');
-out.arms.A_canopy_casts = await walk('A', true);
+const ARMS = [
+  { id: 'A-canopy-off', apply: async () => [await setCasters(CANOPY, false), await setCasters(UNDER, false)] },
+  { id: 'B-canopy-on', apply: async () => [await setCasters(CANOPY, true), await setCasters(UNDER, false)] },
+  { id: 'C-canopy+under', apply: async () => [await setCasters(CANOPY, true), await setCasters(UNDER, true)] },
+];
 
-// B — the delete-the-fix arm: canopy caster flag back off, identical walk.
-const nB = await setCanopyCast(false);
-console.log(`arm B — canopy caster flag off on ${nB} mesh(es)`);
-out.arms.B_canopy_does_not_cast = await walk('B', true);
+const start = await g.h('snapshot');
+const startPos = start.player.pos.slice();
 
-// C — the power control: no sun shadow at all. This is the floor the world's own motion makes.
-await setShadows(false);
-console.log('arm C — sun shadow off entirely (the instrument\'s noise floor)');
-out.arms.C_no_shadow_at_all = await walk('C', false);
-await setShadows(true);
-await setCanopyCast(true);
+for (const arm of ARMS) {
+  // Every arm starts from the same body pose and the same place, or the walks are not comparable.
+  await g.h('teleport', setup.place.x, setup.place.z);
+  await step(40);
+  await g.h('setTimeOfDay', TIME);
+  await step(10);
+  const flagged = await arm.apply();
+  const load = await shadowLoad();
+  await step(4);
+  const lum = await walk(arm.id);
+  const flick = flickerRate(lum);
+  const row = { arm: arm.id, flagged, ...load, ...flick };
+  out.arms.push(row);
+  console.log(`  ${arm.id.padEnd(16)} casters ${String(load.casterMeshes).padStart(5)} / ${String(load.casterTriangles).padStart(9)} tris   flicker ${row.flicker_per_px_per_10f}   moved ${(row.moved_px_frac * 100).toFixed(1)}%   flags ${JSON.stringify(flagged)}`);
+}
 
-const A = out.arms.A_canopy_casts.mean, B = out.arms.B_canopy_does_not_cast.mean, C = out.arms.C_no_shadow_at_all.mean;
-
-// THE POWER TEST IS TWO-SIDED, AND IT WAS ONE-SIDED ON ITS FIRST RUN — WHICH IS THE BUG THIS
-// COMMENT EXISTS FOR. The first hardware run at eye-blackwood returned A/C = 0.82 and B/C = 1.005
-// and this code printed "NO POWER", because it only asked whether an arm was NOISIER than the
-// floor. An arm that departs from the floor by 18% in the QUIETER direction has departed from the
-// floor; it is evidence, not an absence of it. A guard that can only see deviation in the
-// direction you expected is the same failure as a control that cannot fail.
-const dev = (r) => Math.abs(r - 1);
-out.verdict = {
-  a_over_b: +(A / B).toFixed(3),
-  headroom_a_over_c: +(A / C).toFixed(3),
-  headroom_b_over_c: +(B / C).toFixed(3),
-  // Power belongs to an ARM, not to the run: B sitting on C means the shadow system contributes
-  // nothing to motion with the canopy off, which is a finding about B, not a broken instrument.
-  arm_a_has_power: dev(A / C) > 0.02,
-  arm_b_has_power: dev(B / C) > 0.02,
-  reading: null,
-  // Stated so nobody quotes the magnitude as if it were a quality score.
-  caveat: 'This metric is MEAN ABSOLUTE LUMINANCE change. Shadowing darkens the ground, and a '
-    + 'darker image has smaller absolute luminance differences, so a REDUCTION here is confounded '
-    + 'with "the frame got darker" and its magnitude must not be read as "the frame got calmer". '
-    + 'What the direction does support is the negative claim: flicker would push this UP, and it '
-    + 'is not up. A contrast-normalised metric would be needed to quantify the improvement.',
-};
-out.verdict.reading = (!out.verdict.arm_a_has_power && !out.verdict.arm_b_has_power)
-  ? 'NO POWER — both arms sit on the no-shadow floor C, so this walk cannot see shadow-related motion at all and nothing is concluded from it.'
-  : (out.verdict.a_over_b > 1.05
-    ? `SHIMMER — casting the canopy makes the same walk ${((A / B - 1) * 100).toFixed(1)}% noisier frame-to-frame than not casting it.`
-    : `NO SHIMMER DETECTED — casting the canopy moves frame-to-frame change by ${((A / B - 1) * 100).toFixed(1)}% against arm B, in the QUIETER direction. Flicker would push this up; it is not up. See caveat before quoting the magnitude.`);
-
-fs.writeFileSync(path.join(OUT, 'shimmer.json'), JSON.stringify(out, null, 2));
-console.log(`\nA (canopy casts)      mean ${A}  p95 ${out.arms.A_canopy_casts.p95}`);
-console.log(`B (canopy does not)   mean ${B}  p95 ${out.arms.B_canopy_does_not_cast.p95}`);
-console.log(`C (no shadow at all)  mean ${C}  p95 ${out.arms.C_no_shadow_at_all.p95}`);
-console.log(`\nA/B ${out.verdict.a_over_b}   A/C ${out.verdict.headroom_a_over_c}   B/C ${out.verdict.headroom_b_over_c}`);
-console.log(out.verdict.reading);
+const A = out.arms.find((r) => r.arm === 'A-canopy-off');
+const B = out.arms.find((r) => r.arm === 'B-canopy-on');
+const C = out.arms.find((r) => r.arm === 'C-canopy+under');
+out.checks = [
+  { id: 'ARMS-ARE-DISTINCT', ok: A.casterTriangles < B.casterTriangles && B.casterTriangles < C.casterTriangles,
+    detail: `${A.casterTriangles} < ${B.casterTriangles} < ${C.casterTriangles} shadow-pass triangles` },
+  { id: 'INSTRUMENT-CAN-SEE-SHIMMER', ok: C.flicker_per_px_per_10f > B.flicker_per_px_per_10f,
+    detail: `the declined sub-texel set reads ${C.flicker_per_px_per_10f} against the shipped ${B.flicker_per_px_per_10f}; if this is not higher the instrument is blind and B's result means nothing` },
+  { id: 'CANOPY-DOES-NOT-SHIMMER', ok: B.flicker_per_px_per_10f <= A.flicker_per_px_per_10f * 1.25,
+    detail: `canopy-on ${B.flicker_per_px_per_10f} against canopy-off ${A.flicker_per_px_per_10f} (allowance 25%)` },
+];
+out.pageErrors = g.errors.slice(0, 20);
+fs.writeFileSync(path.join(OUT, 'canopy-shimmer.json'), JSON.stringify(out, null, 2));
+for (const c of out.checks) console.log(`${c.ok ? 'PASS' : 'FAIL'}  ${c.id} — ${c.detail}`);
+console.log(`\nwrote ${path.join(OUT, 'canopy-shimmer.json')}`);
 await g.close();

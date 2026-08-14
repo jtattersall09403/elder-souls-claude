@@ -103,13 +103,20 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
       faction: L.id, error: err, said,
       states_a_number: nums.length > 0, numbers: nums,
       unmet: r && r.evaluation ? (r.evaluation.unmet || r.evaluation.why || null) : (r && (r.unmet || r.why) || null),
+      // `factionRefusal` returns `{kind}`: 'welcome' when the gate is satisfied, a refusal kind
+      // otherwise. There is no `ok` field — reading one gives `false` for both outcomes, which is
+      // how the first pass of this tool reported "8/8 refusing" in BOTH arms and called an inert
+      // check discriminating. The kind is the truth.
+      kind: r && (r.kind || (r.voice && r.voice.kind)) || null,
+      refused: !!(r && (r.kind || (r.voice && r.voice.kind)) && (r.kind || r.voice.kind) !== 'welcome'),
       ok: !!(r && r.ok),
       drawn: !!(r && r.toast),
     });
   }
   say('A1.stranger_is_refused_by_every_line', {
     discriminating: true,
-    lines_refusing: refusals.filter((x) => x.said && !x.ok).length,
+    lines_refusing: refusals.filter((x) => x.refused).length,
+    lines_spoken_a_welcome: refusals.filter((x) => x.kind === 'welcome').length,
     of: LINES.length, rows: refusals,
   });
   say('A2.refusal_states_the_threshold', {
@@ -131,7 +138,7 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
     skillGated.push({
       faction: L.id,
       derived_rank_with_120_reputation: row ? row.derived_rank : null,
-      still_refused_at_7: !!(r && !r.ok),
+      still_refused_at_7: !!(r && (r.kind || (r.voice && r.voice.kind)) && (r.kind || r.voice.kind) !== 'welcome'),
       said: r && (r.said || null),
       unmet_terms: row && row.next_rank_terms ? (row.next_rank_terms.unmet || row.next_rank_terms.why || null) : null,
     });
@@ -225,15 +232,25 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
     const row = { joined: r.joined, quest: first.quest, declared_why: first.why };
     try { H.questPrepareOffer(first.quest); } catch (e) { row.prepare_error = String(e).slice(0, 120); }
     try { row.open_result = H.questOpen(first.quest); } catch (e) { row.open_error = String(e).slice(0, 200); }
-    const said = row.open_result && (row.open_result.said || row.open_result.refusal || row.open_result.why || null);
-    row.said = typeof said === 'string' ? said : (said ? JSON.stringify(said).slice(0, 240) : null);
-    row.names_the_lock = !!(row.said && /lock|rival|already|ledger|assize|court|hollow|kin|dock|root|cutter/i.test(row.said));
+    // TWO different strings, and the whole finding is that they disagree. `reason` is what the
+    // engine records; `said` is what the player HEARS. A substring test over faction names is not
+    // a check — the first version of this line matched the word "court" inside a WELCOME line and
+    // scored it as a lock explanation. So both are recorded, and the comparison is of `kind`.
+    row.open_refused = !!(row.open_result && row.open_result.ok === false);
+    row.reason = row.open_result && row.open_result.reason || null;
+    row.reason_names_the_lock = !!(row.reason && /will not deal with you/i.test(row.reason));
+    const said = row.open_result && row.open_result.said;
+    row.said = typeof said === 'string' ? said : null;
+    row.voice_kind = row.open_result && row.open_result.voice && row.open_result.voice.kind || null;
+    row.the_player_is_told_they_are_refused = row.voice_kind !== 'welcome';
     locked.push(row);
   }
   say('B3.the_world_explains_the_lock_when_you_try_the_door', {
     discriminating: true,
     lines_tested: locked.length,
-    lines_where_the_refusal_names_the_lock: locked.filter((l) => l.names_the_lock).length,
+    lines_where_open_refuses: locked.filter((l) => l.open_refused).length,
+    lines_where_the_RECORDED_reason_names_the_lock: locked.filter((l) => l.reason_names_the_lock).length,
+    lines_where_the_SPOKEN_line_tells_the_player_they_are_refused: locked.filter((l) => l.the_player_is_told_they_are_refused).length,
     rows: locked,
   });
 
@@ -251,8 +268,8 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
         const t = H.talkTo(L.rep);
         row.greeting = t && (t.greeting || t.line || null);
         row.greeting_cell = t && t.greeting_cell;
-        row.band = t && t.band;
-        row.disposition = t && t.disposition;
+        row.band = t && (t.band !== undefined ? t.band : null);
+        row.disposition = t && (t.disposition !== undefined ? t.disposition : null);
         row.topics_offered = t && t.topics_offered;
       } catch (e) { row.talk_error = String(e).slice(0, 160); }
       try { const d = H.explainDisposition(L.rep); row.explained = d ? d.value : null; } catch { /* */ }
@@ -263,17 +280,17 @@ const report = await page.evaluate(async ({ LINES, DISSENTERS }) => {
     }
     out.lines.push({ faction: L.id, representative: L.rep, zone: L.zone, by_rank: rows });
   }
-  const movers = out.lines.filter((l) => {
-    const b = l.by_rank.map((r) => r.band).filter((x) => x != null);
-    const d = l.by_rank.map((r) => r.disposition).filter((x) => x != null);
-    return new Set(b).size > 1 || new Set(d).size > 1;
-  });
-  const bandMovers = out.lines.filter((l) => new Set(l.by_rank.map((r) => r.band).filter((x) => x != null)).size > 1);
+  // `talkTo` does not publish `band`/`disposition` on its return value in every build, so the
+  // number that must drive this summary is `explained` (Engine.npcDisposition via
+  // questEngine.explainDisposition) and the greeting CELL, which is the band the player hears.
+  const movers = out.lines.filter((l) => new Set(l.by_rank.map((r) => r.explained).filter((x) => x != null)).size > 1);
+  const bandMovers = out.lines.filter((l) => new Set(l.by_rank.map((r) => r.greeting_cell).filter((x) => x != null)).size > 1);
   const talkFails = out.lines.filter((l) => l.by_rank.some((r) => r.talk_error));
   say('C1.rank_changes_what_the_representative_says', {
     discriminating: false,
     lines_where_disposition_moves: movers.length,
-    lines_where_the_GREETING_BAND_moves: bandMovers.length,
+    lines_where_disposition_is_FLAT: out.lines.filter((l) => new Set(l.by_rank.map((r) => r.explained)).size === 1).map((l) => l.faction),
+    lines_where_the_GREETING_CELL_moves: bandMovers.length,
     lines_where_talkTo_throws: talkFails.map((l) => ({ faction: l.faction, rep: l.representative, error: l.by_rank.find((r) => r.talk_error).talk_error })),
     of: LINES.length,
   });

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `0d67d1f0`: 964 tools, 157 reference
+so it cannot drift. Generated at `bfae92ea`: 964 tools, 157 reference
 items, 188 pieces in flight.
 
 Its purpose is to stop 188+ concurrent agents each paying separately to discover the
@@ -1377,6 +1377,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-MW-UI-REFS` | delivered | Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor rou | `orchestration/status/W1-MW-UI-REFS.json` `corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` `corpus/70-visual/refs/MANIFEST.json` `corpus/70-visual/refs/make-manifest.py` |
 | `W1-30-SHADOW-CASTERS` | landed-motion-evidence-taken-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, changes the atmospher | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
 | `SPAWN-YAW` | fix-landed-evidence-in-flight | collect the two runs, copy the frames to docs/shots/2026-08-14-spawn-yaw/, fold the 115 nu | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
@@ -1387,7 +1388,6 @@ work is the difference between resuming and starting over.
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
 | `W1-30DE-critic` | verdicts-filed-BOTH-FAIL-D-3.0-E-4.0-against-gate-7.0 | Done. Two rounds are owed to the builders (the per-part census for D, the roof gable flag  | `corpus/90-verdicts/wave1/W1-30D-r1.json` `corpus/90-verdicts/wave1/W1-30D-r1.md` `corpus/90-verdicts/wave1/W1-30E-r1.json` `corpus/90-verdicts/wave1/W1-30E-r1.md` `corpus/90-verdicts/wave1/artifacts/w1-30de/` `docs/shots/2026-08-14-w1-30de-critic/` |
-| `W1-MW-UI-REFS` | running | eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UI | `orchestration/status/W1-MW-UI-REFS.json` |
 | `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-30C-critic` | ? | orchestrator: dispatch a fresh judge for the naive grouping pack at corpus/90-verdicts/wav | `orchestration/status/W1-30C-critic.json` `corpus/90-verdicts/wave1/W1-30C-r1.md` `corpus/90-verdicts/wave1/W1-30C-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-30c/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |
