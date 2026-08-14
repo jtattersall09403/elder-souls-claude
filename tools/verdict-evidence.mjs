@@ -27,10 +27,11 @@
  * 0.97 MiB -> 3.15 MiB (x3.3) and 3.15 MiB -> 26.8 MiB (x8.5) — the largest gaps anywhere in the
  * distribution. A cut anywhere in that band separates *the same three files* (two raw frame
  * traces and one session trace, 108.9 MiB, 91.4% of all the bytes) from everything else
- * (205 files, 10.4 MiB — every one of them small enough that a human can open it). 1 MiB is the
- * round number that lands inside that measured gap, not one chosen before looking. Committing
- * the 205 costs ~1% of the tracked tree; committing the 3 would have tripled the smallest useful
- * clone for three files no human will ever read a line of.
+ * (205 cited paths, 10.4 MiB — every one of them small enough that a human can open it; 203 are
+ * files force-added by name and 2 are directory citations that resolve through their contents).
+ * 1 MiB is the round number that lands inside that measured gap, not one chosen before looking.
+ * Committing the 205 costs ~1% of the tracked tree; committing the 3 would have tripled the
+ * smallest useful clone for three files no human will ever read a line of.
  *
  * The pin is strictly MORE rigorous than committing the raw file would have been, which is the
  * argument for it: a committed 79 MiB trace can be silently regenerated and nothing notices,
