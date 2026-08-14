@@ -385,6 +385,63 @@ reverted and recorded as a failed hypothesis, with the number.
 > rather than confirm it*, with a cold-start control that fails loudly if the builder reproduces the
 > prototype's bug instead of its finding. If E1 overturns this, staggering comes back.
 
+
+## 4b. WASTE — the second cost axis, and nothing has been measuring it
+
+> Owner, 2026-08-14: *"your cost control setup should also be looking at things like wasted/lost/
+> duplicated work and how to prevent it… if a subagent somehow loses a load of work that then has to
+> get rebuilt, that's a huge unnecessary token cost. If two agents clash on something we then have to
+> waste tokens fixing the clash. If two agents are both independently generating the same outputs
+> from tool uses then that's a waste — could it be generated once and they both use it."*
+
+**This is invisible to C/H, which is why it has grown unchecked.** Cost-per-hour does not fall when
+work is lost — it *rises*, and the rise is indistinguishable from doing more work. Every other lever
+in §4 asks "can this token be cheaper"; this one asks **"did this token need to be spent at all"**.
+
+### Ruling C4 — waste is a measured category with its own ledger *(reversible)*
+
+**The taxonomy, each class observed on 2026-08-14 with a named instance. This is not hypothetical.**
+
+| # | Class | What it costs | Observed instance |
+|---|---|---|---|
+| **W1** | **Lost work** — completed, then destroyed | the full re-do | A GPU agent's transport code, already proven on live hardware, clobbered and rewritten from source. Seven-plus agents affected; several lost 30–60 min each |
+| **W2** | **Clobber-and-repair** — work survives but must be reconstructed | repair + verification | `reports/blog-feed.jsonl` clobbered **three times in forty minutes by three agents; ten lines from nine agents lost, restored, and lost again** |
+| **W3** | **Duplicated build** — two agents produce the same artefact | one whole agent | Two agents independently built capture tooling; two independently built fresh-checkout validators |
+| **W4** | **Re-derivation** — the same fact recomputed because it was not published as data | small each, large in aggregate | The count of reference plates in `refs/modern/` was independently established **three times**; the tool population was counted 786, then 776, then again |
+| **W5** | **Wasted dispatch** — an agent sent at work already done, or against a bar that has moved | the whole agent | A successor once spent its entire budget proving a piece was complete. **29 plans sat `satisfied` and dispatchable against predicates overturned that morning** |
+| **W6** | **Failed-run waste** — paid work that produced nothing | the run | GPU runs lost to a transport 404 and a SIGTERM; captures silently truncated by `ENOSPC` and banked as zero bytes |
+| **W7** | **Clash reconciliation** — tokens spent merging rather than building | pure overhead | `git merge` dying against five agents' uncommitted files; conflicts resolved by regeneration |
+
+**How to measure it, from ground truth rather than impression.** Agents *report* these in their own
+final summaries — today's are full of them — and git history carries the rest. A waste ledger is
+buildable from three sources already on disk: agent reports and status files (self-reported W1/W2/W6),
+git history (a path reverted and restored; two commits producing equivalent content from different
+authors — W2/W3), and the transcripts (an agent's requests before its first useful output, which is
+already how re-orientation cost was measured at $0.43).
+
+**Publish it beside C/H on the dashboard**, because a saving that is really a waste reduction should
+be visible as one, and because waste is the category most likely to *look* like productivity.
+
+### The prevention rules, which are worth more than the measurement
+
+1. **A fact measured is published as data, not prose** (kills W4). `docs/art-direction/board.json` and
+   the blind-pair census are the model: a number in a JSON file with its method beside it is consumed;
+   a number in a report paragraph is recomputed by the next three agents.
+2. **Before dispatching, name what already exists** (kills W3/W5). `tools/dispatchable.mjs`,
+   `tools/ownership.mjs --conflicts` and `ListAgents` all exist for this and the orchestrator has
+   skipped them. Every brief should say what to consume rather than leaving the agent to rebuild it.
+3. **A ruling needs a route into the documents it binds** (kills W5). Twenty-nine plans against a
+   superseded bar was **one unpropagated directive**, not twenty-nine defects.
+4. **Landing work is a solved problem — use the solution** (kills W1/W2). `HAZARDS.md` §2, §2d and
+   §2e: plumbing through a temporary index, rebuild append-only files from origin, verify against the
+   remote blob. Every loss today was preventable by an already-written procedure.
+5. **Fail loudly or not at all** (kills W6). A truncated capture banked as zero bytes, a bank exiting
+   0 after failing, a gate satisfied by a comment — each cost more than the failure it hid.
+
+**Reversal**: drop the ledger; it is additive and nothing depends on it. **Falsifier**: if the
+measured waste is small relative to the levers in §4, this ruling is over-engineering and the
+prevention rules alone should stand without the accounting.
+
 ## 5. What this programme may never do
 
 - **Never cut a critic.** The separate-critic rule is where the quality lives; a build with no critic
