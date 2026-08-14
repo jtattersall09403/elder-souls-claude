@@ -1,45 +1,55 @@
 {
   "task_id": "ROADMAP-TRACKER",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
   "baseline_pinned_at": "94413aa98fe80eaddba9c3ad25514f03a742e62b",
   "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline, a sibling bank can carry an uncommitted edit into it. Pinned before building anything.",
 
   "could_not_do": [
-    "Did not generate ROADMAP.md from roadmap.json. The prose in ROADMAP.md carries deliberate reasoning (why-first framing, named mechanisms, quoted judge language) that a records->markdown generator would flatten into a table. Per the brief's own fallback, built a drift check instead (tools/roadmap.mjs --check-drift, wired into the main run): it asserts every roadmap.json step id has a matching heading in ROADMAP.md and vice versa, and fails loudly (non-zero exit, printed to stderr) on a mismatch. Not run as a commit-time gate (pre-commit hook already regenerates 5 files; adding a 6th mandatory gate was out of scope for this piece), but callable on demand and by CI if wired in later.",
-    "Evidence entries in orchestration/roadmap.json are a representative set per step, not exhaustive proof of every claim in ROADMAP.md's prose. Each step has 2-3 evidence entries pointing at the load-bearing status file / instrument / gate for its current claimed state, chosen to be independently checkable, not a citation of every sentence.",
-    "Two closes_when conditions (step 2's 'looks right to a person', step 5's 'how fun it feels') are genuinely human-judgement conditions with no filed verdict on disk. Per the scope-discipline instruction, I did NOT invent a mechanical proxy for either — I recorded them with an `unevidenced_note` field on the step explaining what a real closing verdict would need to be (a blind-judgement or capture-review verdict naming the step), and they are listed again below.",
-    "Did not run any browser or GPU-pod command as part of this tool or its self-test — offline only, per the dispatch's 'no browser, no GPU'. tools/roadmap.mjs's evidence commands are limited to cheap, offline Node checks (all <2s when timed)."
+    "orchestration/ROADMAP.md IS CONDEMNED (CLAUDE.md rule 0b, message received mid-piece): it was written from working memory rather than the repo and will be DELETED AND REWRITTEN wholesale from a coverage audit, different structure, probably different ids. Per direct instruction I did NOT keep hand-transcribing its content or refining that transcription further. orchestration/roadmap.json is now explicitly marked `\"provisional\": true` with a `provisional_reason` field explaining why, and both the CLI output and the published page print a loud PROVISIONAL banner before anything else. The 40-item, 6-phase (A-F) content already transcribed is left in place as a FIXTURE that exercises the mechanism, not as a claim about real project completion — do not read pct_done from it as truth until `provisional` is cleared.",
+    "Did not generate ROADMAP.md from roadmap.json — same reasoning as before (the prose carries deliberate reasoning a table would flatten), now doubly true since the document is about to be rewritten by someone else with a different structure.",
+    "The drift check (tools/roadmap.mjs's checkDrift/driftGate) is now explicitly NON-FATAL while `provisional: true` — this was a direct instruction after a coordinator flagged that a guard which screams through a legitimate rewrite gets switched off rather than fixed. Drift is still COMPUTED and PRINTED every run (visibility is never suppressed); only the exit-code consequence is gated on the flag. tools/roadmap.mjs --self-test arm J proves both directions: the same real drift is fatal=true when provisional is unset and fatal=false, same problems reported, when provisional=true.",
+    "Two closes_when conditions on the (now-provisional) Phase A fixture (step-2's 'looks right to a person', step-5's 'how fun it feels') are genuinely human-judgement conditions with no filed verdict on disk. Did NOT invent a mechanical proxy for either — recorded with an `unevidenced_note` field explaining what a real closing verdict would need to be, listed again below. This is a property of the mechanism (it should behave this way for the rewritten roadmap too), not specific to the condemned fixture.",
+    "Evidence entries are a representative set per item, not exhaustive proof of every sentence in the source document — 2-4 entries per Phase A item pointing at the load-bearing status file / instrument / gate, chosen to be independently and cheaply checkable.",
+    "Did not run any browser or GPU-pod command anywhere in this tool or its self-test — offline only. All evidence commands in roadmap.json are cheap Node checks, each timed under 2s.",
+    "Did not fix the pre-existing, unrelated tools/publish.mjs failure ('1 verdict(s) plot on no chart because their piece id maps to no domain: w1-visual-blind-protocol-a-r1', from tools/scores.mjs). It predates this piece, is not caused by anything here, and is out of this piece's scope — noted so the non-zero exit of a full `node tools/publish.mjs` run is not misread as this tool's fault. tools/roadmap.mjs's own step inside publish.mjs prints its own success/failure and does not set that exit code."
   ],
 
-  "headline": "orchestration/roadmap.json (7 steps incl. 3 sub-steps of step 1, plus 2 standing-work entries) and tools/roadmap.mjs built and self-tested. The tool verifies every done/in_progress claim against its named evidence at run time, reports UNVERIFIED loudly when evidence is missing, writes docs/data/roadmap.json, and is wired into tools/publish.mjs and docs/progress.html following the cost-report.mjs pattern (a separate report module, not a second page-building path). Self-test passes 3/3 required-disagreeing arms.",
+  "headline": "Built the MECHANISM per the coordinator's redirect, not a permanent transcription: orchestration/roadmap.json (flat `items` list, each carrying `id`/`phase`/`title`/`visible_outcome`/`state`/`closes_when`/`evidence`/`blocked_by`, schema-general — no hard-coded step count anywhere in the tool) and tools/roadmap.mjs, which verifies every done/in_progress claim's evidence at run time (path / command / json_field checks), reports UNVERIFIED loudly and excludes it from progress, counts `unevidenced` items separately (33/40 right now, honestly, because Phase B-F is deliberately unplanned), computes a full-roadmap percentage plus a clearly-labelled Phase A sub-total, drift-checks against ROADMAP.md's prose (non-fatal while `provisional`), and writes docs/data/roadmap.json for the published page (tools/roadmap-report.mjs, wired into tools/progress.mjs and tools/publish.mjs, same pattern as tools/cost-report.mjs). Self-test: 25/25 arms pass, including the required 'both arms genuinely disagree' pairs for: evidence present vs removed, not_started vs done-claim-with-no-evidence, command evidence true vs false, json_field evidence right vs wrong state, a 2-item fixture's progress with vs without its evidence, drift detected vs clean (both the Phase-A-heading form and the Phase-B-F-bullet form), and drift fatal vs non-fatal under `provisional`. Live break-test against the REAL (non-fixture) roadmap.json also performed and reversed (see log below) — the instrument goes red on real data, not just on its own fixture.",
 
-  "steps_needing_criteria_that_were_too_vague_to_evidence": [
+  "live_break_test_against_real_data": "Rule 4. Corrupted orchestration/roadmap.json's step-1a evidence path to a nonexistent file, ran `node tools/roadmap.mjs`: step-1a correctly flipped to [UNVERIFIED] with the exact missing-path reason printed, and the overall count dropped from 1/40 to 0/40. Restored the file from a backup, re-ran: back to 1/40 with step-1a [DONE]. Not a simulation — this ran against the committed roadmap.json and tools/roadmap.mjs together.",
+
+  "items_needing_criteria_that_were_too_vague_to_evidence": [
     {
-      "step": "step-2",
+      "item": "step-2",
       "closes_when": "a hardware capture of the real opening path, many angles plus motion, looks right to a person",
       "why_not_evidenced": "human judgement, no verdict schema instance exists yet naming this step",
       "what_would_close_it": "a blind-judgement (or capture-review) verdict under corpus/90-verdicts/ that names step-2 / the Thorn opening path and reads PASS"
     },
     {
-      "step": "step-5",
+      "item": "step-5",
       "closes_when": "human judges actually fight the game and rate animation, difficulty, feel",
-      "why_not_evidenced": "no play-judgement has been run at all yet per ROADMAP.md's own text ('nobody has judged how the combat feels ... judges being shown charts instead of being asked to fight anything')",
+      "why_not_evidenced": "no play-judgement has been run at all yet per the (condemned) source's own text ('nobody has judged how the combat feels ... judges being shown charts instead of being asked to fight anything')",
       "what_would_close_it": "a blind-judgement verdict from judges who actually played the build, naming step-5"
+    },
+    {
+      "item": "all 30 Phase B-F items",
+      "closes_when": "deliberately not planned to step level — ROADMAP.md's own words, 'resolution deliberately drops with distance ... will be re-planned when they come into view'",
+      "why_not_evidenced": "correctly unevidenced by design, not a gap — recorded via evidence:[] plus a per-item unevidenced_note rather than an invented criterion"
     }
   ],
+
+  "next_owner_when_the_rewritten_roadmap_lands": "Overwrite orchestration/roadmap.json's `items`/`standing_work` with the rewritten roadmap's content (any id scheme, any phase set — the tool hard-codes nothing about the current 6 phases or 40 items) and set `provisional: false` (or remove the field). No change to tools/roadmap.mjs, tools/roadmap-report.mjs, tools/publish.mjs or tools/progress.mjs should be required — that is the point of the schema being general and the loader reading the file rather than a fixed list. Re-run `node tools/roadmap.mjs --self-test` once as a sanity check (it does not touch the real file) and `node tools/roadmap.mjs` for real, then land.",
 
   "files_touched": [
     "orchestration/roadmap.json",
     "tools/roadmap.mjs",
+    "tools/roadmap-report.mjs",
+    "tools/progress.mjs",
+    "tools/publish.mjs",
     "orchestration/status/ROADMAP-TRACKER.json"
   ],
-  "files_claimed": [
-    "docs/data/roadmap.json",
-    "tools/roadmap-report.mjs",
-    "tools/publish.mjs",
-    "docs/progress.html"
-  ],
+  "files_claimed": [],
 
-  "next_step": "Wire tools/roadmap-report.mjs into tools/progress.mjs (roadmap section on the page) and tools/publish.mjs (fail loudly if roadmap.mjs reports a drift or a hard error), then run node tools/roadmap.mjs --self-test and node tools/roadmap.mjs once for real, land with tools/land.mjs."
+  "next_step": "None outstanding for this piece. Land with tools/land.mjs. A successor's only task is the one-line handoff above, when the rewritten roadmap document lands."
 }
