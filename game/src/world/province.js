@@ -849,7 +849,14 @@ export class Province {
       if(!b.xf.length)continue;
       const geo=this._geologyGeo(b.art.terrain),im=new THREE.InstancedMesh(geo,this.regionMats[b.ri].rock,b.xf.length);
       for(let i=0;i<b.xf.length;i++)im.setMatrixAt(i,b.xf[i]);
-      im.instanceMatrix.needsUpdate=true;im.castShadow=false;im.receiveShadow=true;im.frustumCulled=true;
+      // The geology casts. Measured, not assumed: over the whole 5x5 resident set this bucket puts
+      // 3,600 triangles into the shadow atlas in Blackwood and 6,120 in the Salt Hills — one to two
+      // percent of what the terrain adds and under two percent of what the atlas already carries —
+      // and it is the population a missing contact shadow is most obvious under, because a boulder
+      // with no shadow does not sit on the ground, it hovers over a photograph of it.
+      // (`reports/visual-truth/shadow-casters/cost/shadow-casters.json`, arms
+      // `terrain+canopy` vs `terrain+canopy+geology`.)
+      im.instanceMatrix.needsUpdate=true;im.castShadow=true;im.receiveShadow=true;im.frustumCulled=true;
       im.name=`geology:${f.regions[b.ri].id}:${b.art.terrain}`;
       im.userData.worldArt={region:f.regions[b.ri].id,terrain:b.art.terrain,instances:b.xf.length};
       root.add(im);this.geologyCount+=b.xf.length;this.geologyRegions.push(f.regions[b.ri].id);
