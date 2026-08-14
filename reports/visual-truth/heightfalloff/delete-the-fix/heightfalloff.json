@@ -1,0 +1,32 @@
+{
+  "tag": "delete-the-fix",
+  "factor": 4,
+  "canvas": [
+    640,
+    360
+  ],
+  "deleteFix": true,
+  "rows": [
+    {
+      "site": "spawn",
+      "declared": {
+        "region": "western-rootlands",
+        "from": 70,
+        "to": 280
+      },
+      "moved_pct": 2.552,
+      "state_before": {
+        "sigma0": 0.0042229996769840485,
+        "H": 70,
+        "aerialH": 70
+      },
+      "state_after": {
+        "sigma0": 0.0042229996769840485,
+        "H": 70,
+        "aerialH": 280
+      }
+    }
+  ],
+  "chunkOwner": "render/sky.js",
+  "pageErrors": []
+}
