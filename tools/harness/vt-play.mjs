@@ -8,7 +8,8 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { launchGame } from '../lib/browser.mjs';
+import { launchForCapture, resolveGpuMode } from '../visual/lib/gpu-launch.mjs';
+import { manifestRendererFields, rendererBanner } from '../visual/lib/renderer-class.mjs';
 
 const args = {};
 for (let i = 2; i < process.argv.length; i++) {
@@ -21,8 +22,23 @@ fs.mkdirSync(OUT, { recursive: true });
 const log = [];
 const note = (o) => { log.push(o); console.log(JSON.stringify(o)); };
 
-const HW = process.env.VT_HARDWARE_GPU === '1';
-const g = await launchGame({ entry: 'game/index.html', width: 1280, height: 720, hardwareGpu: HW });
+// Which renderer drew these pixels is not a matter of which flag was passed: it is read back
+// from the page and stamped into renderer.json beside the frames, so a reader of this directory
+// never has to take the evidence class on trust. VT_HARDWARE_GPU=1 still works; --gpu hardware is
+// the explicit form; the default is this box on SwiftShader, which is cheap and always available.
+const GPU_MODE = resolveGpuMode(args);
+const { g, attestation } = await launchForCapture({
+  mode: GPU_MODE,
+  requireHardware: args['require-hardware'] === true,
+  entry: 'game/index.html', width: 1280, height: 720,
+});
+console.log(rendererBanner(attestation));
+fs.writeFileSync(path.join(OUT, 'renderer.json'), JSON.stringify({
+  schema: 'elder-souls/capture-renderer@1', at: new Date().toISOString(),
+  tool: 'tools/harness/vt-play.mjs', gpu_mode_requested: GPU_MODE,
+  gpu_backend: attestation.backend || null,
+  ...manifestRendererFields(attestation),
+}, null, 2) + '\n');
 g.page.on('pageerror', e => note({ pageerror: String(e.message).split('\n')[0] }));
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });
 await g.h('ready');

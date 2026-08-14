@@ -13,7 +13,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { PNG } from 'pngjs';
-import { launchGame } from '../lib/browser.mjs';
+import { launchForCapture, resolveGpuMode } from '../visual/lib/gpu-launch.mjs';
+import { manifestRendererFields, rendererBanner } from '../visual/lib/renderer-class.mjs';
 
 const args = {};
 for (let i = 2; i < process.argv.length; i++) {
@@ -31,10 +32,24 @@ const STEPS = Number(args.steps || 8);
 // before any of the game's own scripts execute. `initScripts` are installed pre-goto for exactly
 // this. With it false the engine takes mode 'play', the rAF loop drives the sim, and the GL
 // context is constructed the way it is for a person.
-const g = await launchGame({
+// Which renderer drew these pixels is read back from the page and stamped into renderer.json
+// beside the frames, so a reader of this directory never takes the evidence class on trust.
+// The default is this box on SwiftShader; --gpu hardware (or VT_HARDWARE_GPU=1) asks for a GPU,
+// which in practice means a Pod — see tools/visual/gpu-deck.mjs.
+const GPU_MODE = resolveGpuMode(args);
+const { g, attestation } = await launchForCapture({
+  mode: GPU_MODE,
+  requireHardware: args['require-hardware'] === true,
   entry: 'game/index.html', width: 960, height: 540,
   initScripts: ["Object.defineProperty(navigator, 'webdriver', { get: () => false, configurable: true });"],
 });
+console.log(rendererBanner(attestation));
+fs.writeFileSync(path.join(OUT, 'renderer.json'), JSON.stringify({
+  schema: 'elder-souls/capture-renderer@1', at: new Date().toISOString(),
+  tool: 'tools/harness/vt-playmode.mjs', gpu_mode_requested: GPU_MODE,
+  gpu_backend: attestation.backend || null,
+  ...manifestRendererFields(attestation),
+}, null, 2) + '\n');
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });
 await g.h('ready');
 const mode = await g.page.evaluate(() => ({

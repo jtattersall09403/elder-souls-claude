@@ -13,3 +13,11 @@ reports/runpod-gpu/runs/
 corpus/70-visual/refs/video/*.mp4
 corpus/70-visual/refs/video/*.mkv
 corpus/70-visual/refs/video/*.webm
+
+# Raw capture frames. W1-30-EVIDENCE.md §5: "Not committed: raw PNG sequences, orbit frame dumps,
+# transient moving derivatives." A full Deck run is 288 stills and 2,400 motion frames at ~880 KB
+# each — a quarter of a gigabyte that any agent's routine `git add -A` would otherwise sweep into
+# the tree (HAZARDS §3). The manifests, the per-frame HASHES and the contact sheets are the
+# committed artefacts and are deliberately NOT ignored.
+reports/visual-truth/deck/*/frames/
+reports/visual-truth/deck-motion/*/frames/

@@ -1,0 +1,7849 @@
+{
+  "schema": "elder-souls/visual-deck-motion@1",
+  "tag": "hw-full",
+  "profile": "full",
+  "seed": 20260814,
+  "canvas": [
+    960,
+    540
+  ],
+  "deck_version": 1,
+  "deck_manifest_hash": "4746eafe87af6559",
+  "commit": null,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "three": "180"
+  },
+  "gpu_mode_requested": "hardware",
+  "gpu_backend": "angle-vulkan-x11",
+  "gpu_backend_attempts": [
+    {
+      "name": "angle-vulkan-x11",
+      "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+      "hardware": true,
+      "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)"
+    }
+  ],
+  "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+  "software_renderer": false,
+  "evidence_class": "HARDWARE — valid for appearance claims.",
+  "renderer_attestation": {
+    "class": "HARDWARE",
+    "decided_from": "renderer-string",
+    "reason": "the reported renderer names a GPU vendor and no software rasteriser: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+    "unknown": false,
+    "hardware_requested": true,
+    "fell_back": false,
+    "source": "live page WEBGL_debug_renderer_info"
+  },
+  "declared_sequences": 12,
+  "profile_sequences": 12,
+  "unimplemented_scripts": [],
+  "counts": {
+    "planned": 12,
+    "ok": 11,
+    "red": 1,
+    "frames": 2220
+  },
+  "seconds": 318.4,
+  "rows": [
+    {
+      "sequence": "walk",
+      "script": "walk",
+      "why": "the most-seen animation in the game",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/walk",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/walk.png",
+      "hashes": [
+        "d705865cd079c08e",
+        "89a5c84719f3814c",
+        "0538a156f85de4c0",
+        "3cb8becbf478997a",
+        "b4867d5f0135c25e",
+        "48f49fc070f59176",
+        "b9fb854318b2c5ff",
+        "39fcd46d8e934122",
+        "7a5f2498acf1ae6a",
+        "b5296459de88bebd",
+        "dc3239cb4884f896",
+        "e7a78bd82693ed6f",
+        "935ddf1e67940099",
+        "13e4afeb6ba1e63a",
+        "f21e203c2f3acd75",
+        "646d8bd9143a2add",
+        "d9d54dd2707607b3",
+        "c64c176f5c8e546b",
+        "c8f034fa746b67c4",
+        "91f7df28afef3958",
+        "5144f6febb3a9295",
+        "bfc61c1b71940435",
+        "ed444a709b7aa8fd",
+        "4f9b992957ade336",
+        "a6c20ac52d225a62",
+        "486e7cd45e89519d",
+        "963102c23cc5eaf0",
+        "c31b20e79cd526d9",
+        "1c940681d0aa27f8",
+        "02f41f3df51a572d",
+        "4d384e5ce270e3d4",
+        "72e70f0ff9500c1e",
+        "a4010c4636ec1feb",
+        "88826708ec7afdc2",
+        "c6a2cbb7a75aec33",
+        "4ee1cb16112a8ba8",
+        "38cb506c5fc56b49",
+        "b472dc2f18e15a36",
+        "d94934f888bb8106",
+        "f3ba4bd1dbe83e9f",
+        "cab9379a2954574f",
+        "0085bf1a3166a7a1",
+        "be8aa8b420b2e97e",
+        "2e935c6a09ae5e8d",
+        "d63822ad10f95899",
+        "14a107785cd82daf",
+        "ef01a5c5c1464e96",
+        "5f6b575b24ce07ca",
+        "0eb7c934328e651b",
+        "eb438ba4da3fc202",
+        "a0cb3fbb176aba42",
+        "85fb1a10ca49a417",
+        "06dc4ac4bfb13159",
+        "040a90302433dc10",
+        "e7375a8d1f57e9d8",
+        "64631af18a15987c",
+        "601c2bc60228aea3",
+        "d5008f2bbda6d12a",
+        "1910d828dc62c645",
+        "129f915488d48bf4",
+        "b6709f8a73fa75c3",
+        "127e7dd14e6ab2df",
+        "4b228b222074c67d",
+        "0953811806a2493b",
+        "a884fb62c0260184",
+        "693541bd29a58615",
+        "2a4021e17da6878b",
+        "c8a2fa20273c738a",
+        "8a5f969aa19fe6ce",
+        "d2d33fe057e0d135",
+        "1ac69c49620df63d",
+        "ea544cb665b6bada",
+        "2db4046a77ef8690",
+        "e4806bfffc7b7646",
+        "90a1a1ed5604f902",
+        "5c7481b08acbeea2",
+        "d175ff1a163445f0",
+        "396f1f9f7b948d46",
+        "e366575f1e61f964",
+        "58964d1875649f18",
+        "0fdd92f943c6d3f3",
+        "0e31c98ed5155e36",
+        "abd92e099d1fd837",
+        "8cbaef31321613fe",
+        "b599824fda88286f",
+        "ec101720bf5e41cc",
+        "001484ccb7be7e6a",
+        "0c64f1b99e26e801",
+        "bd54349306c14f1d",
+        "353ae9381b9f9ca8",
+        "ba809dea6b86ddc1",
+        "25d0c7d0716154b6",
+        "74acf8775740ba6d",
+        "02faa636f98f1842",
+        "58ae049e3441caba",
+        "e6cb2c18419ec563",
+        "bb4e971249ee902b",
+        "2117733bdb93059e",
+        "89fd505c791d782a",
+        "b2cdf5d06423769a",
+        "03eb6353fc3c7f2b",
+        "6a88af2271bbf87d",
+        "153257f772f03b0e",
+        "e5965fa3eb66fdbf",
+        "c0fc7327ced331ed",
+        "5df65cb17264e057",
+        "c74d03df7e0bb2e4",
+        "6ddc4a552c1e01ce",
+        "59cbd8577f443a31",
+        "8f6b4d241ac72c8c",
+        "9c91b9fb92f41c0f",
+        "c42f9c8830350933",
+        "d672138ee55affa5",
+        "f2ccea32032c3162",
+        "629207c66b1627a2",
+        "ff19ed689690aa8b",
+        "14abccf78e58752b",
+        "0f18158a4497c576",
+        "2be25c7438aca233",
+        "5f197740652ecde7",
+        "8370352efa2f1228",
+        "f3638b91e50fee88",
+        "4f769c65905cfb77",
+        "0fa8181f7a223408",
+        "fcc0f09b1b7264f2",
+        "f825b5141484b5fe",
+        "580a2e5ef150a817",
+        "8d79b4edd99d1bfd",
+        "13d215c9988202a9",
+        "3cb502dbb66483e1",
+        "d1406671cfa2ab3e",
+        "6d6f3e808ca4f05d",
+        "da9377efa4600c46",
+        "2b518d9c874bf338",
+        "cd6a31c4352f9f86",
+        "cb23471f130b068b",
+        "03d07721db3fcd21",
+        "53dcd97f009aba0c",
+        "1aeed959f6f68069",
+        "95b1a5072d6c81fd",
+        "f45d8bc4587baefe",
+        "22f2bad160cf0338",
+        "e9a2bd7b4e08afc0",
+        "cef7ad6704cad965",
+        "ec5847784bd20209",
+        "13a29c1342caec08",
+        "4f7c7679d962a4b0",
+        "18914689d1c1a662",
+        "cd6b04403a14fd04",
+        "e55ba56a0d2ef0dd",
+        "404861bdb36d0677",
+        "a285476e4ce009cb",
+        "d6ae4a61c1dff450",
+        "0f394739ca8dc16c",
+        "064108ba23ca6a94",
+        "c2a519d1fc17a6fc",
+        "2800236900456cec",
+        "d7f4727dad6817c5",
+        "ed6d20e3f3cd312d",
+        "dfdb9945bed1a88a",
+        "502c6603f748fe7a",
+        "47d2bc9ec56a4dd1",
+        "21f2cdf1be179cf2",
+        "14e9d09772a33330",
+        "aaa68f388a747920",
+        "3c80ca7c5b102ab5",
+        "a76e9382d7ac3874",
+        "598b32863d167fbd",
+        "03f80b475c3e214f",
+        "113b798f6b8fc273",
+        "917c2e265aa59cd8",
+        "958a7d741322aac0",
+        "489e72d37c683c56",
+        "971dbc6269a040ab",
+        "51f32840750fdb57",
+        "f4c546a85a50661a",
+        "2162353ac7ef4e8c",
+        "236f5852f5da4897",
+        "b11df53a1f74b402",
+        "9d88c3641d0547e6"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 190,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 6,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 250,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 12,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 310,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 18,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 24,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 30,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.43
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 36,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.63
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 42,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.83
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 48,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 54,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 60,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.43
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 66,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.63
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 72,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.83
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 78,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 84,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 90,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.43
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 96,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.63
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 102,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.83
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 108,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 114,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 120,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.43
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 126,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.63
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 132,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.83
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 138,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 144,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 150,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.43
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 156,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.63
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 162,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.83
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 168,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5016.03
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 174,
+          "state": "WALK",
+          "anim": "walk",
+          "speed_mps": 2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5016.23
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        }
+      ],
+      "input_events": 1,
+      "trace_events": [],
+      "player_travelled_m": 5.23,
+      "player_yaw_span_deg": 310,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "turn_in_place_r",
+        "walk"
+      ],
+      "player_states": [
+        "IDLE",
+        "WALK"
+      ],
+      "player_moved": true,
+      "seconds": 29.8
+    },
+    {
+      "sequence": "run",
+      "script": "run",
+      "why": "foot plant and lean at speed",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/run",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/run.png",
+      "hashes": [
+        "0841d3f81c777e28",
+        "3e98467c61edb3ad",
+        "1d82139352cf7fb1",
+        "4333b8484ee1a180",
+        "606f4eca59fac902",
+        "6a365d7ebc9e1046",
+        "3debd078565c8ee8",
+        "519a5990c85853d1",
+        "6d1c2cb58a3cfcdb",
+        "ef1f57f51017f139",
+        "8193fa90735928d1",
+        "93964b8ad8af16f6",
+        "59717bee7a7141f6",
+        "f35385cfa0d0eb6f",
+        "e6e7ca8d10df456a",
+        "7ccf98eac3f263f5",
+        "e085e9e913019f91",
+        "1236002bbff9f0fd",
+        "5698daa6f8449bc7",
+        "b67fe1a73af2f605",
+        "9721081187fea485",
+        "bda8c5aa7ad3c46e",
+        "afbd3aaaec20ae74",
+        "aa61cba9372dd7ab",
+        "2a4637fccaea4647",
+        "ba36b583f0d9bc5f",
+        "c97a6c4c781fdd53",
+        "5666a7b6eb83d858",
+        "162e8131bec4272c",
+        "e22d2d8140def0f5",
+        "20c39ce6f29a01d8",
+        "aa38bf68780c0469",
+        "c7fb65d333359e9c",
+        "d6f896aa6bd112f8",
+        "bde68d48dc192ec6",
+        "0cf4603d8a6bb54b",
+        "95a328dcfd9c40d4",
+        "b1b07b31c7893b5c",
+        "1e14ef36899b193a",
+        "5998819618f1d55a",
+        "b371d7e88737ae65",
+        "3346654029c8f5cd",
+        "3b82d87631f65a91",
+        "dd6e84afa1b8802e",
+        "32b7357b17c44913",
+        "cb714a5c08213bd5",
+        "b5d558804a272341",
+        "bebb31c9790330ae",
+        "8a163d72c55ec2fd",
+        "4cccbc47e524daaa",
+        "9caa57ab3199d1b7",
+        "97e7c6faa9ef2cd8",
+        "f2cea625a19babf6",
+        "b99870e231fd875c",
+        "15a43af59dff47ab",
+        "90abe9644fb00a99",
+        "8c420f555e6e3e20",
+        "52b10cf5fc247536",
+        "7db35871c3082225",
+        "415c0ed9451540d9",
+        "4ae7646463c3f697",
+        "573b78a2fe48d6a9",
+        "ffbe7618152febe6",
+        "6ce26862ca84f56c",
+        "9e75d2d7d4dbd225",
+        "bba6bfba1f810f5e",
+        "48b621cd3f474f5b",
+        "5ceb5b76b1df4de2",
+        "9693ab0b9ff030e5",
+        "cd863e9fb1746adb",
+        "7e1eace2952b6335",
+        "6ffda2bca1dc47fb",
+        "3f1f6d0bdca20fec",
+        "74a7645b10c3a314",
+        "e7fa3c53bb890cf8",
+        "b043ba5462b84a9c",
+        "6e39e59196acd516",
+        "8b44f4d5163da074",
+        "9752c334e760c695",
+        "daa8c12ca02982a6",
+        "df346e8ccb92a930",
+        "ddb784bcd755faf6",
+        "d5f141f089be0209",
+        "8a20a5da9de6734d",
+        "d978c9eda5ed083c",
+        "527f25475f11e9bb",
+        "aefac5a375c15782",
+        "cf8ec193f960882b",
+        "6126f4d82105a691",
+        "8e1c9a8579b96fb4",
+        "ab9726fea9e8542d",
+        "e35cb50678fbd4b2",
+        "21edc9b0163eabe7",
+        "d3a07182d66ea693",
+        "f0d5b5a19e1f988d",
+        "628c7062be573b26",
+        "86673f54b7ad8b24",
+        "a73bb44ef344f1bc",
+        "524cc8bc924f959b",
+        "ef7f271c8d615a31",
+        "16d0a39e3f7c1770",
+        "cbeba37532672ade",
+        "fe3c6157b88bc126",
+        "ddf8dfc7a044fe7e",
+        "6ca990d26d25115a",
+        "6a3d1b06be89c346",
+        "2a3ad7f443da4ee3",
+        "a4df52555c2b6fee",
+        "77c9363f8f564902",
+        "3f8456920fad586e",
+        "e21ab806d4f47ae9",
+        "af3809a393aa1894",
+        "dbaf81965f0df857",
+        "7de4e8152cd29e82",
+        "97c7be46d471b32f",
+        "3be98e9bd7846b7d",
+        "fe7ed8d73c48e3cb",
+        "476b6be144a8e62e",
+        "2b3a29b169c7c4ab",
+        "fca05e1fa4ed6b63",
+        "7ebd9e3a625b2a65",
+        "f41629338ea76e43",
+        "4688dd24a5071034",
+        "9c6b6223acfd797d",
+        "7c90bf45494afd21",
+        "393be490a206e38b",
+        "7a953c3ef41bde36",
+        "cfc9410506587fa6",
+        "0d8ee7e4f148e185",
+        "87678c73be5b7284",
+        "1f4d8c6f61dc5f8f",
+        "660bb98c2f596a26",
+        "7a7089eda7e7c6b4",
+        "af846bd7bd8a10dd",
+        "a9e2e39db8f4b8d2",
+        "6bc22b5d72f99001",
+        "fbf5bd943d4f70f9",
+        "27dd2122534442ed",
+        "4053658308bcd528",
+        "245427e26b4a3531",
+        "3df44cc8d147c192",
+        "8743df64f612713c",
+        "bbd02879423bd68c",
+        "4adfa23179c6f5bc",
+        "951f55d0159e38a6",
+        "5be0b97cab8c2755",
+        "9417c82fe710c018",
+        "35ee3a0e167a73f8",
+        "49bf7dabe2798067",
+        "ca1b293c543d69c7",
+        "cb2ff3ead0af7296",
+        "6d600811be85bd21",
+        "0771eaff8629661d",
+        "f44b16ff88912c24",
+        "697100efb82ab039",
+        "ddb5c5ea3c878366",
+        "d13851adad5c92df",
+        "2b9501d5af780e7f",
+        "a190d749738a51cc",
+        "a444e9692fa85eaf",
+        "7ba4a154dc1ac48e",
+        "c36af9e91e29b942",
+        "180dfb07b6c53c37",
+        "3e606ef2d6d11939",
+        "134152e645038abc",
+        "65b8a13c3ecd35ae",
+        "3a665aa5866287ac",
+        "a9ee73f83b126310",
+        "3121e45cc0414af8",
+        "31ba9541c5b0ebbb",
+        "d9f6d51179d6a3a0",
+        "4f06720f444a41e9",
+        "9fceca5e8aea1205",
+        "f6523952e1692de6",
+        "b2c4754bae79ed0f",
+        "7cb0415e4468d270",
+        "849b683910912150",
+        "2daa7ee3956ae504",
+        "a9c9132d2f6cc65c",
+        "ca1557ac151983f5"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.05
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 6,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.37
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 12,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011.69
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 18,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.01
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 24,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.33
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 30,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.65
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 36,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5012.97
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 42,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.29
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 48,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.61
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 54,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5013.93
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 60,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.25
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 66,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.57
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 72,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5014.89
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 78,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.21
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 84,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.53
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 90,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5015.85
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 96,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5016.17
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 102,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5016.49
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 108,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.67,
+            5016.81
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 114,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.66,
+            5017.13
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 120,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.64,
+            5017.45
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 126,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.61,
+            5017.77
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 132,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.58,
+            5018.09
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 138,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.54,
+            5018.41
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 144,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.5,
+            5018.73
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 150,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.46,
+            5019.05
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 156,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.41,
+            5019.37
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 162,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.36,
+            5019.69
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 168,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.31,
+            5020.01
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 174,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.25,
+            5020.33
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        }
+      ],
+      "input_events": 1,
+      "trace_events": [],
+      "player_travelled_m": 9.28,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "run"
+      ],
+      "player_states": [
+        "RUN"
+      ],
+      "player_moved": true,
+      "seconds": 24.4
+    },
+    {
+      "sequence": "sprint-stop",
+      "script": "sprint-stop",
+      "why": "the blend nobody tunes",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/sprint-stop",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/sprint-stop.png",
+      "hashes": [
+        "7c1d54175f93498f",
+        "c6a4ea66505ff738",
+        "12cbc97a9ece4011",
+        "1eb7f9fc0dcb453e",
+        "055a75c2ac6c4793",
+        "4d3969bae54b4bcf",
+        "96fd1f23a4cf2fd6",
+        "687a84cf10e1ce78",
+        "1bfa449eafd2c01e",
+        "42cd1e3575448214",
+        "b0e4bff17b803859",
+        "f032482e7add36b1",
+        "9551e6bda39d68e4",
+        "62c401170b38b126",
+        "37e34abdd54c49d5",
+        "d204a5a03c12350b",
+        "adf6c5e461028d5b",
+        "4f061df12186b3ee",
+        "c09dcb7b1e6962c7",
+        "acc0aba26e670d32",
+        "2ca3c9bb9d3d8f4f",
+        "66778f016142f319",
+        "abd5f721d007012a",
+        "6424afd73f59513f",
+        "6723e414df69b78a",
+        "16bb4a744226b6ff",
+        "2cebf985268e2548",
+        "4dfe87ae29b00bc6",
+        "8b5c5b16ed6f7b4e",
+        "3b690235ced32da7",
+        "48e0245933237ebc",
+        "5ee992bf5b017320",
+        "6f0237b391924be7",
+        "0ba8d5d9a8b315d2",
+        "08def0492b9c52b5",
+        "389339cdddea1ae3",
+        "9e84028395d44638",
+        "7fb0801e559aba68",
+        "925c4f455e92361c",
+        "033f5b5ead69698a",
+        "ad7d5b66abbfccdd",
+        "8a4a91f9f6df500d",
+        "800f0c06c7752e98",
+        "8339c4cb5ebb909e",
+        "cb8c576c9aa3513e",
+        "328d2b2cf47b0019",
+        "9d654eec1e3966d1",
+        "03e6a327db3df158",
+        "280281f7086ddbe5",
+        "19b9872220273b52",
+        "006900ee1c50dd9a",
+        "6618893e85fb6e99",
+        "48f7a1bc8769bdeb",
+        "274b970e67a425a1",
+        "c6948adbfbc6d1a7",
+        "48ddd2678ad97778",
+        "b6cdd4086cd73d65",
+        "59b73ee80d74f41b",
+        "ed14e79cb02cb5ee",
+        "1fd27d03f03d330f",
+        "3dedaa94bdd9c5b8",
+        "118eb0ec072cea3a",
+        "f5805072f78eeb7f",
+        "e01fabac1ac2adb5",
+        "ecc362c9a37b520c",
+        "765588f492e016a7",
+        "56ea96e6c01ac52b",
+        "73a3f34651458ef2",
+        "d77063340eabbae9",
+        "d822966638450c57",
+        "ed9b3554457f944a",
+        "514dfe19d35e71dd",
+        "465b1e20ce70d09a",
+        "fbfd4c4ef9ddca0f",
+        "75e423e11f59af9e",
+        "0dd0f90b60e44efa",
+        "d62350b38d055831",
+        "09ca648c2cd57ef0",
+        "13777fdf8dedc0ea",
+        "a4c757172ec1afe6",
+        "6043a2004fdf2f39",
+        "5c53736d0a7a1b72",
+        "2caa8517697e998c",
+        "46670581d51a0e0e",
+        "0bcc9b39709d7463",
+        "cfe8ef65cc8a68a8",
+        "d90c700ddade6c11",
+        "49554dd10e1fdfd8",
+        "e753f9f22400d6c8",
+        "06cbe35e19998054",
+        "737b6aaf6983e0c1",
+        "fe47cf518c8724d3",
+        "b361ab2b0c0a1aa1",
+        "fab1d33558d5ccd4",
+        "55a14a480b6a6437",
+        "60c3e0b5d7f419ee",
+        "d3c51fce142527da",
+        "276e8ac7267efb69",
+        "e91883fc7fd70ba2",
+        "0b9c6c2e4df4bd76",
+        "cc329cff7c79b9dd",
+        "46e458092139b27b",
+        "2467662cb9c00a2b",
+        "480bdfe1b161099e",
+        "348064c355a86001",
+        "7d7a1bf9976eb1f8",
+        "86d9607205b75c86",
+        "1e64ee4d5af21e4d",
+        "766172ab744bb1d4",
+        "f9607f6dfbdca050",
+        "21d55883c98aab56",
+        "a249fa26797fd145",
+        "1525826a3575d811",
+        "15b41ffa25153c9c",
+        "cc4f5d34aae2a9b0",
+        "6a03180fd0598e1b",
+        "3713397f1db5e521",
+        "7b969647953e6289",
+        "ddf333bec434bc24",
+        "7669b6e068a7c892",
+        "66ae71811c657f99",
+        "7cd7d142d6bb988e",
+        "102b4513928e6dd2",
+        "e2dde6956fadd237",
+        "0c34bba08b768e07",
+        "7710fee24a6b9af1",
+        "0a7f53932487c2dd",
+        "644463bc169c2237",
+        "0fd17f94b8ea5920",
+        "34dd7e616afae2b4",
+        "165c598613bed534",
+        "5e4487482687eaa3",
+        "37c38d3283ef0a96",
+        "05b935cbba3daafa",
+        "02889d8dd16cf98e",
+        "9fd86b0b579e14b7",
+        "052ea38b736cd36e",
+        "bfdfdec5d398483f",
+        "22695e14e319760a",
+        "835742c4ba546931",
+        "74f3ae3cdb765f7e",
+        "d6a6af02087bfba8",
+        "9d8508779e9c7914",
+        "70755677f85953f9",
+        "0f4334c273dce3e7",
+        "4d8e4b0046529e55",
+        "4fa314c0c3f546de",
+        "d5a43c1b623867fc",
+        "28edcab5c2787bde",
+        "ec1b511b8349bbc0",
+        "3a3b631712649e51",
+        "18c5e976a73c5cf5",
+        "25713ff781324f1d",
+        "c35cda3fa4103e44",
+        "56ad707b8a92fe94",
+        "64f750db91f02906",
+        "1bcfd578b86961dc",
+        "46704f2e6ace9573",
+        "805d7f0abf785924",
+        "f96389cc88d66d80",
+        "2e5147da98ad1407",
+        "b31d7137b0482a0e",
+        "f6e20393addc040d",
+        "ee241110c40a7be0",
+        "ecb7d05f622de75f",
+        "d39173f09622b42c",
+        "86868f87d842ca41",
+        "3f98f157f79b4ef5",
+        "236bc156a8ad7681",
+        "13a298ca02995b6c",
+        "40f66ba69addd40d",
+        "2193987c1fe3eeb5",
+        "d4a6d6ddd6ea61e9",
+        "5dd92e741dc2a353",
+        "ab3cde47278eedfe",
+        "eda233f9102ba242",
+        "b9f0c16cb59c519b",
+        "c1ab81a576ee6cd6",
+        "5475986efb993a8a",
+        "49ef8b6d3d870a89"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 119.85,
+          "pos": [
+            2766,
+            2.68,
+            5011.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 6,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 118.95,
+          "pos": [
+            2766,
+            2.68,
+            5011.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 12,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 118.05,
+          "pos": [
+            2766,
+            2.68,
+            5012.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 18,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 117.15,
+          "pos": [
+            2766,
+            2.68,
+            5012.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 24,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 116.25,
+          "pos": [
+            2766,
+            2.68,
+            5013.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 30,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 115.35,
+          "pos": [
+            2766,
+            2.68,
+            5013.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 36,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 114.45,
+          "pos": [
+            2766,
+            2.68,
+            5014.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 42,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 113.55,
+          "pos": [
+            2766,
+            2.68,
+            5014.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 48,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 112.65,
+          "pos": [
+            2766,
+            2.68,
+            5015.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 54,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 111.75,
+          "pos": [
+            2766,
+            2.68,
+            5015.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 60,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 110.85,
+          "pos": [
+            2766,
+            2.68,
+            5016.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 66,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 109.95,
+          "pos": [
+            2766,
+            2.68,
+            5016.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 72,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 109.05,
+          "pos": [
+            2766,
+            2.66,
+            5017.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 78,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 108.15,
+          "pos": [
+            2766,
+            2.63,
+            5017.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 84,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 107.25,
+          "pos": [
+            2766,
+            2.58,
+            5018.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 90,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 106.35,
+          "pos": [
+            2766,
+            2.52,
+            5018.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 96,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 105.45,
+          "pos": [
+            2766,
+            2.45,
+            5019.08
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 102,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 104.55,
+          "pos": [
+            2766,
+            2.38,
+            5019.58
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 108,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 114,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 120,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 126,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 132,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 138,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 144,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 103.8,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 150,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 104.55,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 156,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 109.05,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 162,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 113.55,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 168,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 118.05,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        },
+        {
+          "f": 174,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.31,
+            5020
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0
+        }
+      ],
+      "input_events": 2,
+      "trace_events": [],
+      "player_travelled_m": 8.92,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "sprint",
+        "idle"
+      ],
+      "player_states": [
+        "SPRINT",
+        "IDLE"
+      ],
+      "player_moved": true,
+      "seconds": 25.4
+    },
+    {
+      "sequence": "turn-180",
+      "script": "turn-180",
+      "why": "pivot and camera settle",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/turn-180",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/turn-180.png",
+      "hashes": [
+        "4a608903e32c341d",
+        "9e26f9a7a6a57596",
+        "1bd6aa4eeba8700b",
+        "2953b500b4230005",
+        "e5cb84f915d5677f",
+        "cdc4949dbed4172b",
+        "434f29df1f0f3f24",
+        "dd731efe4a1869bb",
+        "97b69371e643d606",
+        "3b55b7ed4f164535",
+        "2e066168e9d02b06",
+        "2d1cf10555483ad4",
+        "aa5b27b8533ff0b2",
+        "352f7c560c36457f",
+        "e13993f82f625ff3",
+        "21c842c24f54a4f9",
+        "e82b8409a46683ab",
+        "4d515bd0dfea6c9e",
+        "d99bae7c4bcc0a4d",
+        "a27640c41a60cb67",
+        "0ea1773391efe953",
+        "b9a7ac5830063fe7",
+        "b15159f8e1105063",
+        "5e0894bd245f0090",
+        "38ad10a8f4f0196a",
+        "bf646427afe7bc0a",
+        "1d4f6e8897c4a696",
+        "e908af946430fb54",
+        "980dfb74d4347415",
+        "d218090150753671",
+        "77c18eefe0f8a2e4",
+        "b6c0f255f1a35caf",
+        "90db82c0b39bc4cc",
+        "704954c2eeeebcd2",
+        "c9df5ede204b9dc9",
+        "76e135239d8a7e6d",
+        "433cc91b84bb2bc4",
+        "b11747c8bdba669c",
+        "e8c559f86eba6fa6",
+        "766f3685adb91164",
+        "6c15322a795cc30e",
+        "59a83c77038fb8b9",
+        "0d8367a1e96535f9",
+        "67e5e337432c3232",
+        "6f49dadf93570286",
+        "e044fcb93777e157",
+        "ccc47e1ecfaa739a",
+        "fcf4d2920a3ef9a9",
+        "621e3abafe6bc57b",
+        "5681ffd9e8399833",
+        "d8f5ceee561ff618",
+        "494e88efb5354b58",
+        "9897d13115d4d4d3",
+        "2c972762b8c71c71",
+        "e247a2374c286868",
+        "bfab8164f9f475a4",
+        "94ac0223b9e21b97",
+        "b2f29d933ffc77ea",
+        "0b2e7176d8ac4558",
+        "038aebd88407c046",
+        "c83743d3c70ae471",
+        "b6e8a6e6e912da2d",
+        "6e3315f457adf815",
+        "f8d82c546d682ae1",
+        "e989749df52d5a48",
+        "6d3f3221cb3dd495",
+        "272bd51c68c31912",
+        "c8b071ce8ee4bcc8",
+        "3a6624b4bfd52787",
+        "cd0a71b9cbf27595",
+        "95c7810a1265bfc8",
+        "847cda1519b732da",
+        "f082ef72a62134ec",
+        "d33946b39667d013",
+        "d56ec4687eb4fc64",
+        "403a9a95ed588b03",
+        "3c27ad5eacf945da",
+        "f84bd3392659bd21",
+        "9e222f98d670490b",
+        "babf9dd8312546ba",
+        "96b0a2e6360974d4",
+        "7fe28e205e277974",
+        "be801a420914f7c7",
+        "25b2f53981c174a5",
+        "f82d914984882b73",
+        "72c24f69158606e6",
+        "04a697734f2ca508",
+        "f33e4f38f9749757",
+        "84b2c05c5be79672",
+        "3f3c45a596d75b57",
+        "6dbadb9748f76f85",
+        "3bbd6bb8a7335bce",
+        "35b9733a0d033f4a",
+        "e63049822c21be7f",
+        "e788e45e9871320e",
+        "e59e633db7c96f44",
+        "e2a82f4d2e5fa145",
+        "468b65fbfec1e349",
+        "f82a7302062e10a7",
+        "4404bee88f70798e",
+        "9c0e4fe28be6c843",
+        "64604e3a88b62a68",
+        "0e955134cc18c8b5",
+        "1c9a4699abbdf760",
+        "b7a8f484a0a731cc",
+        "0523d99966a48612",
+        "446d5faf8a742c5e",
+        "2d41f028439d922e",
+        "ca03e1077ea18c07",
+        "4c76ebcbb5afdfdf",
+        "d01bc788e88a0421",
+        "0614f14779e33f43",
+        "67cfcc126e89b57c",
+        "7a45277be49d8360",
+        "8797b4f0749670ce",
+        "726ff9480fb8e7f6",
+        "73874a2ad36f24b2",
+        "7e5e71c73ea1450d",
+        "7667040cd3e03ee8",
+        "ec0bc0c700ebbc90",
+        "ba36cdb949e5072a",
+        "b171d07124bfeadb",
+        "2fa3ce92f451f0f4",
+        "bcf8618b5f8478e5",
+        "418cc81d477ef715",
+        "73ee48d56081bd26",
+        "cf19b115edbcc144",
+        "6624f4a94e214602",
+        "b46293c23245f6ce",
+        "68be3544a86fa519",
+        "575b3641f205233b",
+        "921c2372d55fe857",
+        "e815b890b28a97ee",
+        "1af767453ab6a44c",
+        "607b85912f74106c",
+        "d55f656bfdbd15d1",
+        "6649b609a9c0c4f3",
+        "3394e950a133bea3",
+        "0b2eb38fb42db2c4",
+        "c1dbf7c768d08422",
+        "19c85e87b64b1316",
+        "685f825f3d8c8664",
+        "9c60d01b3d60b3b8",
+        "a7b0348288e615ea",
+        "bc15dd59badd7164",
+        "9f54cea472679070",
+        "1c76b58f815775ea",
+        "5bfec8bde61a470c",
+        "3f6b40ff49c4e726",
+        "5852b1297e888812",
+        "139d2cb4a59ae8e9",
+        "ee87cd83e1f31931",
+        "7b868ed22bb719a6",
+        "861004693522a0e1",
+        "86c5c0f73798d5f7",
+        "b339ac79bd780662",
+        "fdf4c0b65067128d",
+        "1c7a4a504d477ef4",
+        "1c496f0d76f372e9",
+        "6bc4a6678d97e9f0",
+        "61d622e1ed27d5ce",
+        "c7a08090a7ee71f9",
+        "5705893a8cfdbdae",
+        "60d2fe6db30cadd6",
+        "bdc8cab291df03d2",
+        "0bee73183b5c0613",
+        "ad0d1f302097639f",
+        "493e2d6e89bebaa6",
+        "fd90c6c5c32389f3",
+        "5fd76974fe031aaf",
+        "cd9eca828ab5d833",
+        "03fad789aa981f0a",
+        "9fe5ce5bd22c1219",
+        "32cdfc641df1f230",
+        "b81c3659d1195a46",
+        "677713ee3a1328e3",
+        "d56add733174ee19",
+        "d99e03aac0b11773",
+        "6c3235c89bbb29c9",
+        "8750798f4625323f"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 3
+        },
+        {
+          "f": 6,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 21
+        },
+        {
+          "f": 12,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 39
+        },
+        {
+          "f": 18,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 57
+        },
+        {
+          "f": 24,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 75
+        },
+        {
+          "f": 30,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 93
+        },
+        {
+          "f": 36,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 111
+        },
+        {
+          "f": 42,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 129
+        },
+        {
+          "f": 48,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 147
+        },
+        {
+          "f": 54,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 165
+        },
+        {
+          "f": 60,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 66,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 72,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 78,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 84,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 90,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 96,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 102,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 108,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 114,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 120,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 126,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 132,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 138,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 144,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 150,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 156,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 162,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 168,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 174,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 0,
+          "cam_yaw_deg": 180
+        }
+      ],
+      "input_events": 61,
+      "trace_events": [],
+      "player_travelled_m": 0,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 177,
+      "player_anims": [
+        "idle"
+      ],
+      "player_states": [
+        "IDLE"
+      ],
+      "player_moved": true,
+      "seconds": 23
+    },
+    {
+      "sequence": "roll-4dir",
+      "script": "roll-4dir",
+      "why": "i-frames read visually or they do not",
+      "frames_planned": 240,
+      "capture_every": 1,
+      "frames_captured": 240,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 240,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/roll-4dir",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/roll-4dir.png",
+      "hashes": [
+        "bce8c6c9fc39b010",
+        "4f5a3d7b6a892817",
+        "08fe9155e5fc3573",
+        "b88441fda53784af",
+        "0564460d7c21872b",
+        "3a7e3ced4245a93d",
+        "a586b062c3d46a4d",
+        "dfed3f6b76c9bb2f",
+        "7d1ebde789e80630",
+        "f575bfeecaba03fd",
+        "76176966f950ab8e",
+        "4b4252bda1572c21",
+        "398a629212fd034a",
+        "3ada6f15c7700933",
+        "77771fc5652cbf1a",
+        "c6c8f6f84b54d59b",
+        "e9ffd78b089fb28c",
+        "7aafd59db5dd2a23",
+        "af969de7c6f2e10c",
+        "236a1ca5f143d7b3",
+        "75aa4179a2b37f0a",
+        "13c1d5e1e7c0a23a",
+        "049f247b77d9624c",
+        "126708f27f629654",
+        "7e875da2d97d48ec",
+        "109073dea5ad0e03",
+        "ba7995f5d2658109",
+        "1685c9927e3800ee",
+        "9b604c7e321a28de",
+        "5cbf8854e9f74465",
+        "d1beaddca8d40b1f",
+        "b6fcd999f215cc44",
+        "32346ddd30a74c1f",
+        "f10328d929fa7c17",
+        "be672038658e2df0",
+        "28c587b0ecd3d075",
+        "197c8d1e8656cb95",
+        "f36752d6419f257a",
+        "90f4129a3bcc4475",
+        "191bd5a376df1e4c",
+        "083bb6697f1177a2",
+        "efe61b5db6d7968f",
+        "a44585f98fa1ef27",
+        "b7b252dd6ddf47ab",
+        "a211a991a64f1dc7",
+        "5b16db88eab762df",
+        "e4555d11607c6b74",
+        "8278d0d896aa7234",
+        "04439c2f245531ae",
+        "d903f6262575ab92",
+        "4c736032ca426c79",
+        "7ed5979a276a5c4b",
+        "0fb1439a0fe0a222",
+        "e8a749409180d351",
+        "a4d311d188469784",
+        "daee7df29d597bbd",
+        "3b6e6c23005cbb54",
+        "9157dfcf8884b7c9",
+        "87a381fa1f27c166",
+        "b6111884beb31ad4",
+        "821ea9ac2de7c801",
+        "5e1ed0b72a2cc520",
+        "7a59ef7f058eeb91",
+        "885b813fb210ce20",
+        "04fa3297ef76dc5b",
+        "1b5404beff86dba9",
+        "e66757fb439ad4ce",
+        "bcfa4155cfbe8f87",
+        "f3014fbffe198d77",
+        "94f0f2b0987d4f70",
+        "f76609e6d98ea74f",
+        "6a7ca8ab6f8644a8",
+        "89dd94f5d38696c6",
+        "bca9b50566843cc8",
+        "4368bf9540adb621",
+        "6b7732469f7f2b20",
+        "fcd208b2e51fc310",
+        "e335be92c4a10fa9",
+        "01cc3695f13416f8",
+        "08aef9cebf0b5882",
+        "f237f40047835fbc",
+        "bf426d5144c62104",
+        "563bbf02cd2fd2c1",
+        "f36858abfe31e797",
+        "4b56aac9db8426ba",
+        "0fcefc2e0cc9fd2c",
+        "d281c3e9b1f131ec",
+        "ca49acefd5c89baa",
+        "4070e9efdd23861b",
+        "eb98c8da9a7f6818",
+        "1512f54d863d5b95",
+        "0e5b47c3f11d87a4",
+        "ffb6f51ecf168727",
+        "786d917282375ee8",
+        "2f6fbe3e7e7b2421",
+        "27a927dd62bbfeda",
+        "1cfad46c0df47ba4",
+        "67cc2322d4ec29f3",
+        "402ad23d461dde06",
+        "dabbefc910f46ba6",
+        "7910da19f30132d9",
+        "c77aab1d0d908c74",
+        "8b67275e2489ff68",
+        "2884aa696376af27",
+        "9dcfffa75ff16123",
+        "b4ec351b6ee044f3",
+        "636bc37adca22664",
+        "8440cefb71e733f6",
+        "8c3d9767dc76dd4e",
+        "161dd809db34ffb7",
+        "e82346acf894e19c",
+        "f0ce710a62906f9b",
+        "3a6babb21475096f",
+        "fdf1436037565a08",
+        "40b8623c2159185e",
+        "41a9ae3c58a71bf7",
+        "f6e66dbbbcf6a27a",
+        "54233614cf2beda1",
+        "83076cf93d2e4e9a",
+        "dbdc2c214cd5e00e",
+        "4c52166c31356581",
+        "3e3023146521791d",
+        "da5b4a141042e062",
+        "b100953f78c0ebca",
+        "729455768003bf40",
+        "2eab04ef023af947",
+        "590c0d0a6457461a",
+        "d012f93052e9ca9c",
+        "0b721858d190f323",
+        "05552ce2e3612729",
+        "cb5db98c0056d45f",
+        "6d178ba95d030685",
+        "585e8fd4044c23d1",
+        "4df1811d906032f8",
+        "17e1a48a6a84bbd5",
+        "96d43aac9edb9f74",
+        "72f64dcc754f8fc2",
+        "f8ed98c4a205ff58",
+        "6c55d892cf7ae877",
+        "3917dd454aecaef1",
+        "05ae0dc7a1f2311a",
+        "a659d9575b3c70b9",
+        "ab4a8897ce9624a3",
+        "2bb94ee7e1182fd7",
+        "ebbbb9ba65bfcada",
+        "cc36121e8d0d77e2",
+        "d0e688394b683c24",
+        "ccb54075ce463ae8",
+        "bd926ad2a1419e79",
+        "978b95c9aacd5a36",
+        "cce256374d4b7e1a",
+        "5443153f2db5adc4",
+        "7ce8ad3b9e978182",
+        "5396a3e4f0e92f96",
+        "689223e72b97adfa",
+        "be2bb20b68b72e69",
+        "34cb870d1bdfa2ef",
+        "55df85ff42c17d3b",
+        "0d540f0a9902f719",
+        "3c905d4887cb39a0",
+        "a55bbf7c2ccc4382",
+        "ef28a4bbee2623af",
+        "d4bf898ea1a2c175",
+        "a3d58b1aceec9623",
+        "d399c01659cc5657",
+        "5c77b9ca09d3f8fa",
+        "fea950d2d8a48a98",
+        "d2c4ee22c0baa359",
+        "2bbbf64f61e4762c",
+        "4a545cc2d7c3697d",
+        "50e0fb201d1386bf",
+        "d725561494007e79",
+        "1608eec5fa69538c",
+        "fb401e0f9da015c8",
+        "014cef5b354c503a",
+        "ea15efca8a08a6e8",
+        "58f9f9110d849a0c",
+        "ac6fcf4a0ae969f4",
+        "5db1008f2543817e",
+        "bad31acb21af0524",
+        "1b67c782360a4729",
+        "8b73f8e20648f1e8",
+        "22a74811303dfe31",
+        "ede2581085e5c56d",
+        "378204a05d43ea73",
+        "f143b74a2509b840",
+        "7036f758044a74b0",
+        "be867fa5a313fc9c",
+        "b182ed8ef20cf25e",
+        "f463d8808b2bfca7",
+        "98fa5ffd26ade7f3",
+        "164f7adadf0ab313",
+        "f38eb1bd8bef4bf4",
+        "b7d7c09deda99847",
+        "10bc8820e2dfc655",
+        "e102a9c3c0ae9ec1",
+        "cd4585bcb9e4ca8c",
+        "7795714a521c0256",
+        "ad84d07bdcad163f",
+        "9bc032472acf219e",
+        "30ced2b48b6824d9",
+        "cc4ef556454f68a3",
+        "dbf9d598d6b6c0bf",
+        "726c37336971c3d4",
+        "e42ad8a2c21be2f0",
+        "6fc784f1f6e13ab3",
+        "7aa7640e3276595c",
+        "9a1270c73e95afeb",
+        "0b60dff1c89c023c",
+        "f3266e3cfa749355",
+        "0888f44c6b88212b",
+        "e53950287a590622",
+        "9b406e5618eb933d",
+        "462655209e58df68",
+        "ec09215d01dd9945",
+        "0f6dcc5bf9ecb9ba",
+        "fa1df87215e14c6a",
+        "7699eefe54410661",
+        "922c7b566f849634",
+        "69f496e5dd76eb25",
+        "d6c7b853e2984564",
+        "5524c31876611999",
+        "9a93925fb9ac4554",
+        "ac79b6a715d51511",
+        "85443cb92a792168",
+        "c7dac2775165048f",
+        "12c3b1bb5b3ecc8e",
+        "4f08ef2dde9ed71d",
+        "f8b9e1a6df8a3732",
+        "8febd90e7b1858dd",
+        "be3705e14b8c2e82",
+        "e6bcd1beee0a25a3",
+        "2963f1893a4b6561",
+        "793ab45ff6579978",
+        "61d0faae1b7e3855",
+        "2d8f8f8ff409b403",
+        "97fa00c3973c9394",
+        "0a71f520c6e967f4",
+        "14149970cb47bd32",
+        "a210dc05cc67c37c"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 10,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 6,
+          "state": "ROLL_STARTUP",
+          "anim": "roll_light",
+          "speed_mps": 5.146,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.86
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 12,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 11.218,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.02
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 18,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.55,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5009.28
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 24,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 1.961,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5008.18
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 30,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.973,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5007
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 36,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 9.62,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5006.31
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 42,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 1.269,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5005.93
+          ],
+          "yaw_deg": 52,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 48,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 99.5,
+          "pos": [
+            2766,
+            2.68,
+            5005.8
+          ],
+          "yaw_deg": 64,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 54,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 104,
+          "pos": [
+            2766,
+            2.68,
+            5005.8
+          ],
+          "yaw_deg": 88,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 60,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 108.5,
+          "pos": [
+            2766,
+            2.68,
+            5005.8
+          ],
+          "yaw_deg": 142,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 66,
+          "state": "ROLL_STARTUP",
+          "anim": "roll_light",
+          "speed_mps": 5.146,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5005.94
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 72,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 11.218,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5006.78
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 78,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.55,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5007.52
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 84,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 1.961,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5008.62
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 90,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.973,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5009.8
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 96,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 9.62,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5010.49
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 102,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 1.269,
+          "stamina": 88.75,
+          "pos": [
+            2766,
+            2.68,
+            5010.87
+          ],
+          "yaw_deg": 160,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 108,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 90.25,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 114,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 94.75,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 124,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 120,
+          "state": "IDLE",
+          "anim": "turn_in_place_r",
+          "speed_mps": 0,
+          "stamina": 99.25,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 170,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 126,
+          "state": "ROLL_STARTUP",
+          "anim": "roll_light",
+          "speed_mps": 5.146,
+          "stamina": 79.5,
+          "pos": [
+            2766.25,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 132,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 11.218,
+          "stamina": 79.5,
+          "pos": [
+            2767.09,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 138,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.55,
+          "stamina": 79.5,
+          "pos": [
+            2767.82,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 144,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 1.961,
+          "stamina": 79.5,
+          "pos": [
+            2768.92,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 150,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.973,
+          "stamina": 79.5,
+          "pos": [
+            2770.1,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 156,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 9.62,
+          "stamina": 79.5,
+          "pos": [
+            2770.8,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 162,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 1.269,
+          "stamina": 79.5,
+          "pos": [
+            2771.18,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 148,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 168,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 81,
+          "pos": [
+            2771.31,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 136,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 174,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 85.5,
+          "pos": [
+            2771.31,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 112,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 180,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 90,
+          "pos": [
+            2771.47,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 102,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 186,
+          "state": "ROLL_STARTUP",
+          "anim": "roll_light",
+          "speed_mps": 5.146,
+          "stamina": 70.25,
+          "pos": [
+            2771.16,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 192,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 11.218,
+          "stamina": 70.25,
+          "pos": [
+            2770.33,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 198,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.55,
+          "stamina": 70.25,
+          "pos": [
+            2769.59,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 204,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 1.961,
+          "stamina": 70.25,
+          "pos": [
+            2768.49,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 210,
+          "state": "ROLL_IFRAME",
+          "anim": "roll_light",
+          "speed_mps": 10.973,
+          "stamina": 70.25,
+          "pos": [
+            2767.31,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 216,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 9.62,
+          "stamina": 70.25,
+          "pos": [
+            2766.62,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 222,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 1.269,
+          "stamina": 70.25,
+          "pos": [
+            2766.23,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 150,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 228,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 71.75,
+          "pos": [
+            2766.11,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 162,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 234,
+          "state": "ROLL_RECOVER",
+          "anim": "roll_light",
+          "speed_mps": 0,
+          "stamina": 76.25,
+          "pos": [
+            2766.11,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 186,
+          "cam_yaw_deg": 180
+        }
+      ],
+      "input_events": 12,
+      "trace_events": [],
+      "player_travelled_m": 5.47,
+      "player_yaw_span_deg": 176,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "turn_in_place_r",
+        "roll_light",
+        "run"
+      ],
+      "player_states": [
+        "IDLE",
+        "ROLL_STARTUP",
+        "ROLL_IFRAME",
+        "ROLL_RECOVER",
+        "RUN"
+      ],
+      "player_moved": true,
+      "seconds": 30
+    },
+    {
+      "sequence": "jump-land",
+      "script": "jump-land",
+      "why": "contact and recovery",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/jump-land",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/jump-land.png",
+      "hashes": [
+        "f6f67e5e879aec29",
+        "252e13eccb990283",
+        "4586b11dcbaf84d4",
+        "9a92f69965a1b92a",
+        "358377b3bc11f36c",
+        "31e153d72eb30501",
+        "ce8458b617e28f13",
+        "34cf3a60095ad739",
+        "0653641ad86742a6",
+        "4a60fdf388eb831e",
+        "542f09e380a5c40a",
+        "f0de2692ef9d7422",
+        "067ade9a8b0c015c",
+        "83611629076e63f3",
+        "b64680e1d91a3546",
+        "a7c7539acbff6fa7",
+        "93f327b18c734e0f",
+        "6ffb46716b7e26ef",
+        "498dbd2cd39982b6",
+        "9c3955f2f7c954f6",
+        "e1f2410053c382c2",
+        "4f96eb56444d4944",
+        "3b9ad141a23c7842",
+        "9c24abffc67028ce",
+        "ffbf5723b3c59748",
+        "0f7320636313bff2",
+        "44ddfe4210b69138",
+        "5fa540ba670ae750",
+        "21401b84cf7c7d62",
+        "0fdc114531058278",
+        "55efddfddd55aac9",
+        "a61d7cd482558d9a",
+        "95668c2e564114ff",
+        "4c69cc42d6f9605a",
+        "a84c0dffcace34ec",
+        "1a6fbc454e020977",
+        "26dd7280bd4ff411",
+        "982fc0fd6974f0a6",
+        "02a0dd57543a9c2e",
+        "7e749de2f18e05d3",
+        "bb45218dfb2d087f",
+        "c6144dd094e7708c",
+        "b4523454567da1c7",
+        "f18a1875168768ba",
+        "f63b5c9114c13c7a",
+        "79dae12ed98cc6b6",
+        "400406462544bf29",
+        "91b9253e7e71a8ca",
+        "09c35cec652aae57",
+        "27efe59e0512f362",
+        "aa232119bb8aebad",
+        "99c2345f3f26080d",
+        "0bac7afb52bd6361",
+        "7a3740471b3bbe65",
+        "98f533cd5eb48f28",
+        "a8a8b65ddbae3af5",
+        "d510cfa84f2ad113",
+        "f7586c5a6a933eda",
+        "377485f6dec45b0c",
+        "d58a4b7cb3a91e10",
+        "cf5a24e25983e6b5",
+        "5f28d2e2c7936e54",
+        "92b731a0da8c17e5",
+        "55ac96634bd241fa",
+        "06e609193524f959",
+        "c3bc966093d611ae",
+        "3e377f910a1374cc",
+        "2525c210b93e4a5a",
+        "85565a4a5b102d80",
+        "1542c17dda9785d6",
+        "91fbbad06da40944",
+        "803a141c6568db66",
+        "ae5b0c067b3a6632",
+        "6e44897b6ee43bf8",
+        "5c6cf916d163d061",
+        "270c594df7ea68df",
+        "8675a825ce0c1b24",
+        "0d0633ab84d457fd",
+        "3f40fda2031da232",
+        "c3ce5ea83dcf2fa3",
+        "25d9c3405e29a9c5",
+        "3f5fef1e49616805",
+        "d0bf305aea6adf82",
+        "0311b1741d66a6a0",
+        "b815c858e813e67f",
+        "851734e771013f2c",
+        "1c710e21f546e8c4",
+        "e770518ac53b9c07",
+        "fc7194b82e40bb00",
+        "7f28571a62213bc2",
+        "9781035789992b09",
+        "bfdcb1e13c7f7aa4",
+        "d94e437178c0ef65",
+        "043ef0f983c0961c",
+        "814fe0a3d22e656d",
+        "ddf87446b6d4c194",
+        "42090ca63bf52525",
+        "6953e25851fbdbff",
+        "89b029e3670ac034",
+        "72c15c6bb2e114ed",
+        "62b99859238b4067",
+        "c20b7e29c36ae6cf",
+        "c74e3fff78eddf75",
+        "3a9d56dec8126165",
+        "7b8cbb56b860de81",
+        "38539914798f34f9",
+        "8774dd2cacdc26e8",
+        "4269cc0fbfbe3842",
+        "1deeaa61c30740d9",
+        "ee832b33d730dabc",
+        "da77973f7d024669",
+        "1d19e6eeada4118a",
+        "5d225b14d5d95baf",
+        "22cc92c62dc58be1",
+        "ad26a3046c10a337",
+        "e0de45f422a7a049",
+        "9ef8606d108ed34f",
+        "269fa37b72762a63",
+        "91b6b0ffe83d8f01",
+        "47efbdb5399748dc",
+        "41efef7c4534ac45",
+        "2edfc975bea3b431",
+        "68815b3dbb099c06",
+        "28161622483ba0a5",
+        "37c80567ada091b0",
+        "120309d7ebdeb721",
+        "68542b85515eb4e8",
+        "54a58522be81a792",
+        "b7816a9183487c62",
+        "e0e10322429940ec",
+        "16ccc75d711d03b3",
+        "963217a73b93d72f",
+        "0ce1f908eaed94e9",
+        "1441d4d44b25135a",
+        "346fb08dd05c28f3",
+        "15a1267052942c30",
+        "690de3c02830362e",
+        "67ad52252035d738",
+        "66cddfe0ddf1c45f",
+        "5a5949463fb2e7ec",
+        "6d2a109a13d08682",
+        "eff66e71fbce6bd8",
+        "3f610fca7ecaf548",
+        "2a2c12960008dc4c",
+        "da8b846e4406d579",
+        "90d0dff35dd0d89d",
+        "ed54f8526185c562",
+        "dba46e16a9c3b657",
+        "1467ed0b0f69475f",
+        "a01c9865b1b161ef",
+        "af32cc2d0ad05416",
+        "a37d95f86dec933e",
+        "1935cf209936f0e8",
+        "03bc62d58bbb767b",
+        "4e6cde5c79cc25e1",
+        "a068f2cf603f5aa3",
+        "ef0ee01081905de6",
+        "75b686703f02ba45",
+        "2c95e725de61ac68",
+        "ff8416e1b69d1082",
+        "6e7c36d66fab473f",
+        "fbb990519301b87e",
+        "1559d8b682bd452a",
+        "6c361c14d1f92f27",
+        "2f404eae132a46f9",
+        "d642fa13d43688ec",
+        "062f6cc0dbffb1e9",
+        "25cd30af7f05cf74",
+        "4210ce9d6ccfd358",
+        "f4430f11888ad0b4",
+        "21833d48c8837b0e",
+        "3c8d0a69ff23bb06",
+        "1216db3d7ef056ca",
+        "3581b17056b9ac2d",
+        "61d710c13fe7f190",
+        "badd6b5cddd25fe4",
+        "04d4c08bc885712d",
+        "862dcfeda67eded3",
+        "c8ab9f82f65e435c",
+        "c15715781b5af74a"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 89.75,
+          "pos": [
+            2766,
+            2.68,
+            5010.95
+          ],
+          "yaw_deg": 226,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 6,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 94.25,
+          "pos": [
+            2766,
+            2.68,
+            5010.63
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 12,
+          "state": "JUMP_RISE",
+          "anim": "jump",
+          "speed_mps": 0.367,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.46
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 18,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 0.139,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.41
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 24,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 2.975,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            2.99,
+            5010.22
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 30,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 1.241,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            3.17,
+            5009.98
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 36,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 2.195,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            3.19,
+            5009.86
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 42,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 1.505,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            2.85,
+            5009.64
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 48,
+          "state": "JUMP_LAND",
+          "anim": "jump",
+          "speed_mps": 0.785,
+          "stamina": 78.5,
+          "pos": [
+            2766,
+            2.68,
+            5009.57
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 54,
+          "state": "JUMP_LAND",
+          "anim": "jump",
+          "speed_mps": 0,
+          "stamina": 80,
+          "pos": [
+            2766,
+            2.68,
+            5009.57
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 60,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 84.5,
+          "pos": [
+            2766,
+            2.68,
+            5009.3
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 66,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 89,
+          "pos": [
+            2766,
+            2.68,
+            5008.98
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 72,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 93.5,
+          "pos": [
+            2766,
+            2.68,
+            5008.66
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 78,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5008.34
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 84,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 102.5,
+          "pos": [
+            2766,
+            2.68,
+            5008.02
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 90,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 107,
+          "pos": [
+            2766,
+            2.68,
+            5007.7
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 96,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 111.5,
+          "pos": [
+            2766,
+            2.68,
+            5007.38
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 102,
+          "state": "JUMP_RISE",
+          "anim": "jump",
+          "speed_mps": 0.367,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            2.68,
+            5007.21
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 108,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 0.139,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            2.68,
+            5007.17
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 114,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 2.975,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            2.99,
+            5006.97
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 120,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 1.241,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            3.17,
+            5006.73
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 126,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 2.195,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            3.19,
+            5006.61
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 132,
+          "state": "JUMP_AIR",
+          "anim": "jump",
+          "speed_mps": 1.505,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            2.85,
+            5006.4
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 138,
+          "state": "JUMP_LAND",
+          "anim": "jump",
+          "speed_mps": 0.785,
+          "stamina": 95.75,
+          "pos": [
+            2766,
+            2.68,
+            5006.32
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 144,
+          "state": "JUMP_LAND",
+          "anim": "jump",
+          "speed_mps": 0,
+          "stamina": 97.25,
+          "pos": [
+            2766,
+            2.68,
+            5006.32
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 150,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 101.75,
+          "pos": [
+            2766,
+            2.68,
+            5006.05
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 156,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 106.25,
+          "pos": [
+            2766,
+            2.68,
+            5005.73
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 162,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 110.75,
+          "pos": [
+            2766,
+            2.68,
+            5005.41
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 168,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 115.25,
+          "pos": [
+            2766,
+            2.68,
+            5005.09
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 174,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.75,
+          "pos": [
+            2766,
+            2.68,
+            5004.77
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        }
+      ],
+      "input_events": 6,
+      "trace_events": [],
+      "player_travelled_m": 6.18,
+      "player_yaw_span_deg": 46,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "run",
+        "jump"
+      ],
+      "player_states": [
+        "RUN",
+        "JUMP_RISE",
+        "JUMP_AIR",
+        "JUMP_LAND"
+      ],
+      "player_moved": true,
+      "seconds": 22.1
+    },
+    {
+      "sequence": "attack-light",
+      "script": "attack-light",
+      "why": "the swing arc and the weapon trail",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/attack-light",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/attack-light.png",
+      "hashes": [
+        "cf785324c40f507e",
+        "644a73812c3e0529",
+        "c511d2f1daefb428",
+        "4fd7e30e32534392",
+        "d86b5c60d4bfd973",
+        "1a11171114ff9192",
+        "29ab13b201d22faa",
+        "8391cbba34471e31",
+        "2dc5ff5e597de32e",
+        "cf0d8d976ca77ecc",
+        "5fd87778033e633f",
+        "54176e4ed6ecf9ff",
+        "750d61cfca365083",
+        "23d61717bcb73807",
+        "16973f02e716d45c",
+        "2c8d432d94ea39c6",
+        "8839cc1c30d06661",
+        "4f63027f50fb64c7",
+        "da8a43c201410093",
+        "0276111a97e9d5e2",
+        "fb4af8d2341dbba0",
+        "3d41d711bda09630",
+        "dbfed8bea86071f2",
+        "427adc25e70bf267",
+        "3b8b7a233d21c4bd",
+        "e48a17a5a088a3a0",
+        "24a03630f52e4d76",
+        "772340fd7ee783fc",
+        "35b27014a18fd8c4",
+        "fba70f488d516725",
+        "c9ba53dddfd44e03",
+        "a4bbb880b84055d9",
+        "44132b47874db01f",
+        "053f99686c100947",
+        "574b52de9a579990",
+        "6e77fc5e31a366ff",
+        "07fcef2339954a4b",
+        "06c984a702fbe14f",
+        "34d15e75d384df1c",
+        "254aa947bc1d02f0",
+        "8c104c89961f8f5a",
+        "2c1a9f0324b8d2f3",
+        "8122c40472969099",
+        "019f3000b767b78e",
+        "3fe21af4ec39244e",
+        "06bb45e976b95ba2",
+        "f88e6d71620fbe04",
+        "63a10591e787897b",
+        "e67f976431bedad0",
+        "981eae8759afcbf9",
+        "f299dfd2f04efb86",
+        "91b03fc7b6202d8e",
+        "d7e526ce66270791",
+        "a62e0993e676b377",
+        "906b16c6c8e9a05b",
+        "4dcad7007343182f",
+        "8bc07aa5d36deccc",
+        "c7c0890a397f6d86",
+        "245c13ade81892cd",
+        "9d3a0b100004c8d2",
+        "4827784ffc7d3f0a",
+        "4e7a485a2a62d1cf",
+        "1e0295593999655b",
+        "825d8e9d0b668ed8",
+        "3ad50e7ab7632029",
+        "29403163eb21bffc",
+        "cb740e497dd3d96e",
+        "e2496133529e5b8b",
+        "2b789cf2dd9a3779",
+        "c17e4b8649a4d758",
+        "5b76c2370e522440",
+        "443b7619e53869df",
+        "78e5a44ee9a46af2",
+        "ac8b85d4e82c59bd",
+        "d350ba2bc4e64675",
+        "46c6e04ada3e19ab",
+        "6645358d909b2062",
+        "dbeca1188c2282e7",
+        "59a19b35b958ecd9",
+        "566e760401e4a175",
+        "a04b5ed4cbb31311",
+        "03be30c99e5a0ee5",
+        "7e4dcb6c300506b6",
+        "4a656843b2b6df4e",
+        "82ce720fe4259419",
+        "823bddcf9587c1bc",
+        "a42619b41e1cf005",
+        "171e78d56088c8e0",
+        "f7f6b36d6052de7a",
+        "842d1794fdd2a332",
+        "09e25971b330dbff",
+        "3ffab15fbb7b5051",
+        "84eb5f1869a0e148",
+        "7e88e1fb826ad2f9",
+        "6a6f77faa30bbc4e",
+        "3a47ddbe9db9e216",
+        "6d2e032fcb34626e",
+        "4895ef4ec69ab662",
+        "46b749e9ad8e86ac",
+        "008454677c8272ea",
+        "790dd02073ad22a3",
+        "2da46fbd06880bad",
+        "d3db42b37a34482c",
+        "86031f2a0d2fad86",
+        "44c00f269848a238",
+        "6085e2a34ca6bc75",
+        "adeeebf4e90c53f6",
+        "0f2eabbfb60cc460",
+        "3df2e3e3689b7be8",
+        "3be965b55c994edb",
+        "ed3f0f035e0ac039",
+        "9e9a724089e93c9d",
+        "82a862ebe1ed2b7f",
+        "1f4d327b4e5d1cce",
+        "d4e58eedf5458134",
+        "5972f38a0a593ce0",
+        "65e4c474f301d00e",
+        "d9c07edc38e38f45",
+        "e19a7bc991aefc97",
+        "d77fc29f59dabcd2",
+        "474326b638bb36bf",
+        "e57a0fd03333fcf8",
+        "c52d151fc6b7e4c6",
+        "6ce6bb8ab27507a4",
+        "b546a8c72a6b76d2",
+        "4ecf16ebb93c1373",
+        "f6f7e1a41698de80",
+        "1943763f95fdcb4c",
+        "cf48a86c184f92c6",
+        "078a1b58a9267e31",
+        "1b5bd2b173dfdece",
+        "4c68f4b7d903432c",
+        "687f7a74e6f92c24",
+        "1662dfce849da877",
+        "f6f3fa043b7b0db0",
+        "d83fee6a085be3ce",
+        "8748233a3ddb65c0",
+        "9923193cb4dc13d9",
+        "c1ba2a02dac77435",
+        "bc7fdca9513c8912",
+        "3186ca9045712caa",
+        "c01300f2b7ac2848",
+        "b572a083e3b059e0",
+        "1614d96b7b872c3d",
+        "28abd7b1db739160",
+        "ace59feb71e4e62e",
+        "05439eb347da3c57",
+        "3758ae285b2a9efd",
+        "23ddfe88a4a9d140",
+        "57e3227e10b77c89",
+        "fb4b06306a1de406",
+        "9c9dbb59193066b3",
+        "e1486ad933bf7750",
+        "03e689616e2e1d07",
+        "d79f036fc04a0b7e",
+        "97ffde5cf1da18f9",
+        "5003d8a551a46975",
+        "550f62e85efe513b",
+        "686ff2e09f246692",
+        "b4ba2210018081b9",
+        "090d99e34a7ac4b7",
+        "220a717e0badf51b",
+        "533c9e65a6c43492",
+        "bcd5ee9c60d9743e",
+        "57b4d3734ca90210",
+        "f99cce021f5713ef",
+        "5f81070f61de80c8",
+        "abb484e58fdeba4f",
+        "83b9318f802dfd8e",
+        "4b966e7321cc681b",
+        "1280f268e3395895",
+        "f48fa9e84c630922",
+        "f96a8e140cba04b7",
+        "e9226c3bec73dc14",
+        "8db4caabf480cf40",
+        "e6a7bb3a4c011931",
+        "8733c9ca42564a44",
+        "6013fc68e29e2929",
+        "488cae9f758a5b59",
+        "6494d87c2c50379d"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 6,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 12,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.101,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 18,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.253,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5011.02
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 24,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.003,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5011.04
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 30,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.371,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5011.01
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 36,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.318,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5010.98
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 42,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.298,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5010.96
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 48,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.896,
+          "stamina": 100,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 54,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.537,
+          "stamina": 101.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.81
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 60,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.685,
+          "stamina": 106,
+          "pos": [
+            2766,
+            2.68,
+            5010.77
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 66,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0.882,
+          "stamina": 110.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.68
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 72,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 115,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 78,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 119.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 84,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 90,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 96,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 102,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 108,
+          "state": "ATK_RECOVER",
+          "anim": "clip_w_ssw_garrison_sword_r1_1",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 114,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 120,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 126,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 132,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.086,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.65
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 138,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.215,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.67
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 144,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.002,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.68
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 150,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.316,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.66
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 156,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.27,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.63
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 162,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.257,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.61
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 168,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.773,
+          "stamina": 98,
+          "pos": [
+            2766,
+            2.68,
+            5010.55
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 174,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0.463,
+          "stamina": 99.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.49
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        }
+      ],
+      "input_events": 6,
+      "trace_events": [],
+      "player_travelled_m": 0.51,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "idle",
+        "clip_w_ssw_garrison_sword_r1_1",
+        "clip_garrison_r1_2"
+      ],
+      "player_states": [
+        "IDLE",
+        "ATK_STARTUP",
+        "ATK_ACTIVE",
+        "ATK_RECOVER"
+      ],
+      "player_moved": true,
+      "seconds": 21.6
+    },
+    {
+      "sequence": "attack-heavy",
+      "script": "attack-heavy",
+      "why": "wind-up readability",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/attack-heavy",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/attack-heavy.png",
+      "hashes": [
+        "10486fb4de1d403a",
+        "7f8a64abe2b9b255",
+        "3b1af33e84fab458",
+        "b1c72708605fbdbd",
+        "775aebc1f2e5a1ea",
+        "33ec761bc4bbf7ce",
+        "a00a034456094623",
+        "419a2bf2e36c11fd",
+        "15a83a05f3fa9412",
+        "d5dbd5f6dab4567f",
+        "59044b6fc64d5bcd",
+        "f6929cfb935fdc15",
+        "521c65582523c0f9",
+        "e70647fee5da5eda",
+        "75c56e90d1a0a93b",
+        "b5bb8aa728586f0d",
+        "15ae28aaff3791c6",
+        "a65359a1caae421b",
+        "1c489c251e2fea76",
+        "d6a4b837c45bee84",
+        "f1bc39d2e01ee4f8",
+        "7053a3d274e835a3",
+        "9340a077d822833b",
+        "9f0b1b4234cff79b",
+        "2991fc012c8b75de",
+        "bb179701f68bb073",
+        "fb371b5741459346",
+        "97f58088c460d48d",
+        "9be4bbeeb4a592ff",
+        "a6db3b329f078c78",
+        "4c1541968b222a8c",
+        "5fe19ae94ce1b40f",
+        "3e70aa244c56b25c",
+        "463ec47240558728",
+        "467d0fa165dae0ec",
+        "2b7c72283f46d617",
+        "81345c0192bfe097",
+        "03d879c7d152a858",
+        "bfd227e3523145ef",
+        "baf400c4cccf40ff",
+        "4843f67534391d0f",
+        "beb84fa22c34c463",
+        "8386c6bbc6aacd8c",
+        "3eca1c0bff45a227",
+        "c4b91d5a5894378c",
+        "9040eee2e81f073f",
+        "0ae3e7bc59b31de7",
+        "775218d5bcce1b6e",
+        "a999e209912d5055",
+        "e5b47dc74d612290",
+        "48ea1cc25c10c317",
+        "a5a5710d3be64ea2",
+        "7371cf900b5fb90c",
+        "753e1eb20d9a0327",
+        "a10d755d608e774e",
+        "c3c0fbb5c347fc22",
+        "7d322cddaa6369cd",
+        "16f074ce25098869",
+        "827e001f3e18fe4e",
+        "1755a1eccd8ed00a",
+        "4d42e1a5e8c4f506",
+        "5e8fa97d4055005b",
+        "ae00c4cdb0cc3a1a",
+        "206753a325dc4f3f",
+        "1dd40ae0584377d8",
+        "2d82eae96f528043",
+        "4ed6337ce31ff37e",
+        "1add2b0da669b81c",
+        "a2c499717c80771c",
+        "502a42dfc166cc40",
+        "3a702e02abadbe8e",
+        "387a931fb3c13792",
+        "399ed85d7cdd245b",
+        "2b700a2896c5a0e5",
+        "24c0c41fff12933f",
+        "b9987d564f6fe72e",
+        "43830eab28f0dfdb",
+        "b229f638d887f022",
+        "b525704fe266c872",
+        "b509fe0e5919d0c3",
+        "f397c931df1998c6",
+        "47e036a8f70bd788",
+        "3407515dd260d1e8",
+        "2fd5fa891e8c42e6",
+        "8459d3df4691a481",
+        "910c2a1dadd99968",
+        "b432091b704ccfda",
+        "b508cb7c807f7dc4",
+        "a7820863be51316d",
+        "7057a9becb7a3356",
+        "daa512421c24d085",
+        "f0f9a6141663ffd3",
+        "2c703325f0b7d0b9",
+        "85f7bd87fcb7fb32",
+        "e30a8c11fdfd185a",
+        "51d1daf9e1787c97",
+        "5e0e3db1db5f02ee",
+        "a93f061390d199e6",
+        "eda8012a8f00fb30",
+        "80fdd2272a554631",
+        "b0a6a0c8ef502b28",
+        "4b39fe5bf785d682",
+        "c72410702f2e353a",
+        "fb6dfdea69117cd6",
+        "4ff7f0250be476d9",
+        "19ef1df4f3f5c4f3",
+        "68a1b74d761c4b14",
+        "7fff15613378b95f",
+        "8dd97dd934691a62",
+        "2b037196faaaf76c",
+        "9e29a9287ece2862",
+        "25aadd2ed9bf7a70",
+        "1d6dd81bb7419262",
+        "bc00312226472c34",
+        "98964c0e9dc6b8ed",
+        "57a0d89418d8adee",
+        "1d1ebc6da4b24fda",
+        "389de867e2816d97",
+        "c341681f4eac2e78",
+        "a3a9e87055060fad",
+        "70979154b6ae3762",
+        "9c4a5790268a54ae",
+        "4c35b8cbe20d5012",
+        "27f9d877c1b45c20",
+        "4d76f5d785343305",
+        "33bfe054a9122279",
+        "d85643875263d64d",
+        "32e85ccbe56f43a9",
+        "4a171e82dcdb6cb0",
+        "87ba792420102b95",
+        "2d73805e94b36863",
+        "8a544fbdc4afd02e",
+        "b111d851cddce245",
+        "e68a09c774ac2b45",
+        "d9af1beffd7f6a60",
+        "3fc61c82b7d7b5e4",
+        "078448d71ec6f34b",
+        "bd30a0a37fdf35a8",
+        "a5b4a810e2ae13c6",
+        "19489a4fd6569f50",
+        "6a16994702a25a1d",
+        "504498657bc97e87",
+        "a0b47c318d5b371b",
+        "59dae80f20fd3c5f",
+        "f13fcdb37884591f",
+        "cb9604d8980eda66",
+        "9fd0df6bed2a27ae",
+        "429e6126144c7eae",
+        "9fe05520d199c662",
+        "b2bda39214f478e7",
+        "66ed51cb52168e8f",
+        "eb4dafa74097d711",
+        "6cefb76a83732c45",
+        "0bb77bc1d3ea7372",
+        "e7707fb3c286723e",
+        "07ebab85e0091074",
+        "842a593cd860d404",
+        "0ae973e0c8980d56",
+        "51a38ba167cdeeab",
+        "c5b25058fdbe3469",
+        "9fff4a9b4b8e28a0",
+        "b8f2123a164616a2",
+        "d900eb27bc99491f",
+        "2044d7d677fa5987",
+        "b2ec14426d999cfd",
+        "2889ca7e18c1f2c0",
+        "dc89285187145eb3",
+        "a87894ccc952b8fb",
+        "c75d93a013e464ae",
+        "095585966a5a30f6",
+        "67e102ce19934763",
+        "384c3c34e34daddd",
+        "95dca2c7c4fd5ec0",
+        "31930e01cc88c52f",
+        "613e31b6b20980dc",
+        "0aff9980302c22d1",
+        "ae7e34e897ca8fda",
+        "3ebe1d07bf74fe25",
+        "4d7502a2a5555626",
+        "c8ceec776f5ecd9d"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 113,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 6,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 117.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 12,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 18,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 24,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 30,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 36,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r1_2",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 42,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 48,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 54,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 60,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 66,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 72,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 78,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 84,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 90,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 96,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 102,
+          "state": "ATK_STARTUP",
+          "anim": "clip_w_ssw_garrison_sword_r2",
+          "speed_mps": 0.065,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.89
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 108,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.9
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 114,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.097,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.91
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 120,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.164,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.92
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 126,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.188,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.94
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 132,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.17,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.96
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 138,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.111,
+          "stamina": 86,
+          "pos": [
+            2766,
+            2.68,
+            5010.97
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 144,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.01,
+          "stamina": 87.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.98
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 150,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.128,
+          "stamina": 92,
+          "pos": [
+            2766,
+            2.68,
+            5010.97
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 156,
+          "state": "ATK_STARTUP",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.227,
+          "stamina": 96.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.95
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 162,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 1.16,
+          "stamina": 101,
+          "pos": [
+            2766,
+            2.68,
+            5010.9
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 168,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 1.697,
+          "stamina": 105.5,
+          "pos": [
+            2766,
+            2.68,
+            5010.74
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        },
+        {
+          "f": 174,
+          "state": "ATK_ACTIVE",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0.394,
+          "stamina": 110,
+          "pos": [
+            2766,
+            2.68,
+            5010.63
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180
+        }
+      ],
+      "input_events": 4,
+      "trace_events": [],
+      "player_travelled_m": 0.26,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "clip_garrison_r1_2",
+        "idle",
+        "clip_w_ssw_garrison_sword_r2",
+        "clip_garrison_r2_charged"
+      ],
+      "player_states": [
+        "ATK_RECOVER",
+        "IDLE",
+        "ATK_STARTUP",
+        "ATK_ACTIVE"
+      ],
+      "player_moved": true,
+      "seconds": 22
+    },
+    {
+      "sequence": "block-hit",
+      "script": "block-hit",
+      "why": "hit reaction and impact staging",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 180,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 180,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/block-hit",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/block-hit.png",
+      "hashes": [
+        "d063e0c01c189981",
+        "d612f8ce513e8dff",
+        "30ef4a94cabdbf04",
+        "104cc769c4cc37d3",
+        "1a21152288b7609e",
+        "9ad5de26724e592f",
+        "67bd68fc44cb8011",
+        "d196a6461cdc2973",
+        "7ab988e3f23f9518",
+        "1a61fd4c7a77cd10",
+        "951f270b913e9472",
+        "e5b306cea0bc4e4a",
+        "0d35eddcb2fbfdd5",
+        "c5a1a8c0007ed760",
+        "b1588b6120f45a84",
+        "4d960e88e7cbacb8",
+        "4865f83e27ef8335",
+        "141c6ace1f5f5305",
+        "88124cb0cfcbd952",
+        "15b762dca41995b7",
+        "8bcda7b9442da834",
+        "317832558ae5213d",
+        "2b396c53c7c0e3d3",
+        "ed2b54cdb97a1c8a",
+        "a7a6f644e140f219",
+        "e0e47c5e45d018f3",
+        "d947db399616a065",
+        "337ebac62f0dbe5e",
+        "df6af41d76e0f314",
+        "8e22fc8535925297",
+        "a12ceac5c1a5994d",
+        "246aad029be05fb3",
+        "96a7af1d8c8b46d2",
+        "22f325a6f7e41943",
+        "e6455a5c5f60002e",
+        "97414eae0e54f130",
+        "485c0d341a906e1f",
+        "3ebe80fd393d2946",
+        "d70eee4f5dca5797",
+        "1e5b496ac537fe0c",
+        "dbda294070d68afe",
+        "0dd74a2234e13959",
+        "fc3e7b6b1379ac02",
+        "f3973a2997dcdb43",
+        "3629b5a79da57ffa",
+        "98f56e467af8a835",
+        "844608ac4a9eba4a",
+        "bdd21108e5a91da4",
+        "814b18d1c66e3305",
+        "45e496ce813aa857",
+        "a862ce79a78cff56",
+        "13b5086503a00bea",
+        "119e8e4e79c76c9a",
+        "7fece240c6f63c23",
+        "c257052e083276ac",
+        "68b5a1206b4cb48b",
+        "656b48079dd6a9c4",
+        "274a2b98c0093919",
+        "154a8fad4c085aca",
+        "0770b417bf5d7b57",
+        "edd292c15a045117",
+        "0ffb77901167a54d",
+        "e4bc4faa867523c6",
+        "23cdf7cf3c091059",
+        "1eb15b79f610da46",
+        "fa5a8b5153b92e71",
+        "1678b2f2307a08be",
+        "236cfc98044be1b2",
+        "522521ecf065edf9",
+        "a68880964d3642a7",
+        "1da8f67410966b36",
+        "e47218b46bc9c293",
+        "cbd5cfa8f803846c",
+        "c8248073a1b99eae",
+        "de28aa3057545af0",
+        "dbc6fc97ce82a687",
+        "024d23e675a56eff",
+        "69d79e2fea9cc4a7",
+        "036d2affa38a2f12",
+        "d7001189a2e0ddc2",
+        "1ca2204c3c544561",
+        "e1f482f05d5c9472",
+        "5fdd1a899eb74da7",
+        "c979385ab63f0c08",
+        "11a3e59085f75254",
+        "85663ef4ecab9143",
+        "e0cd3fddb1fe9fdc",
+        "ccbaffe4678bc9fb",
+        "ccdadcf1f0f59a89",
+        "76213694cefab587",
+        "2f91458718ba06f7",
+        "0bcb288d61dd7c2e",
+        "978d6f59ba80e3ed",
+        "6b56db5ad8ddfb60",
+        "22bf273a87eec29c",
+        "15ad3eadaf1968b0",
+        "d8762a762aa141e9",
+        "97a09f3611232e4c",
+        "b305b340b51afc35",
+        "83d94d37c1610060",
+        "b9d33b17c921630e",
+        "466196cf76535498",
+        "049c0f3af71aaa7d",
+        "3b0614463f4076be",
+        "58a8de739619fc1d",
+        "9755415240aaf93b",
+        "f3433655c16b858b",
+        "243c1aa1f31861d4",
+        "24b1995173a2b5ed",
+        "8d21d7f9a229acef",
+        "b1927c95e7c34089",
+        "e53bfd7dbe21df1f",
+        "a632827fbf5dc206",
+        "1c3ba3a1d0bba67b",
+        "4ad5380c86e256ff",
+        "298daadb8ce87f5f",
+        "21e997fc282e6bc2",
+        "eb163132e66b8102",
+        "d433900a9ce12b4f",
+        "5bce59c1d18794b6",
+        "6b6d63c0cc29e098",
+        "8d1b117707a2ecdd",
+        "a6489ae6293062e2",
+        "7792729859bc5143",
+        "45629e3ac1c39cb0",
+        "4f4efd1ae8459e62",
+        "8cba6e6c7c5a24d2",
+        "51b1ed408105763c",
+        "fc87208fc4c2800a",
+        "ab3c17ca1a22307d",
+        "9f21346755ce6c5c",
+        "217b4a41c2334b11",
+        "6354a2a42b1bacd5",
+        "6f9b784f0e536895",
+        "567e575b10b11262",
+        "6e9225806c5ecfad",
+        "6d8860cadae3e29a",
+        "b5482f519caa0d1a",
+        "3604549050df48bf",
+        "0a5a6d2344b182f4",
+        "90579c2eb96cdf36",
+        "1449412a7adf1ae3",
+        "df0b078a38af9f68",
+        "ab467cfcc37ae96a",
+        "7489105feddddc75",
+        "8929d713debab71a",
+        "026c9d2925fa05ed",
+        "162bb6406b812aca",
+        "9097d7f86dcec461",
+        "feea2d8b5406749a",
+        "8ec98739c2f91b8b",
+        "8b7bddd027c7787b",
+        "dc3961011c471df1",
+        "8d377c616a740056",
+        "62d4b8445513d3fe",
+        "66712d4140315584",
+        "8c0e6324f2ac01f3",
+        "7bc55f028745ccca",
+        "d3a64d5a1fa813b9",
+        "f1f319260c204795",
+        "7ae740a0edaa3c11",
+        "c5b5aad87706b616",
+        "c0cfb90f8d36d1c6",
+        "091902244be0120e",
+        "1571e00fef44f19d",
+        "6841242280df1a26",
+        "b2712c957a60b6ba",
+        "e4f3b3e54522d1de",
+        "e6cf9eda30d46951",
+        "c79c69e30ee3f12d",
+        "c9d2ea2c7bc6f691",
+        "3153befa58142c2c",
+        "2e2f90100a5a2659",
+        "bd992ac2fe5b08c1",
+        "e3997a383c73613e",
+        "19ac7b5b2f0d0f19",
+        "cea1e4dc107286e3",
+        "ac7e9be13d08d29a",
+        "05849c5133f51dc7",
+        "e515df5b39d18c92"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 173
+        },
+        {
+          "f": 6,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 131
+        },
+        {
+          "f": 12,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 89
+        },
+        {
+          "f": 18,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 57.7865
+        },
+        {
+          "f": 24,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 48.7808
+        },
+        {
+          "f": 30,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 40.3591
+        },
+        {
+          "f": 36,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 32.9125
+        },
+        {
+          "f": 42,
+          "state": "ATK_RECOVER",
+          "anim": "clip_garrison_r2_charged",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 180,
+          "cam_yaw_deg": 26.7546
+        },
+        {
+          "f": 48,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 204,
+          "cam_yaw_deg": 21.5545
+        },
+        {
+          "f": 54,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 252,
+          "cam_yaw_deg": 16.3336
+        },
+        {
+          "f": 60,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 300,
+          "cam_yaw_deg": 11.2924
+        },
+        {
+          "f": 66,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 348,
+          "cam_yaw_deg": 6.5584
+        },
+        {
+          "f": 72,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 2.1607
+        },
+        {
+          "f": 78,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 358.3759
+        },
+        {
+          "f": 84,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 355.1669
+        },
+        {
+          "f": 90,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 352.388
+        },
+        {
+          "f": 96,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 349.9075
+        },
+        {
+          "f": 102,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 347.6512
+        },
+        {
+          "f": 108,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 345.5959
+        },
+        {
+          "f": 114,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 343.7224
+        },
+        {
+          "f": 120,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 342.0129
+        },
+        {
+          "f": 126,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 340.4519
+        },
+        {
+          "f": 132,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 339.026
+        },
+        {
+          "f": 138,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 337.7234
+        },
+        {
+          "f": 144,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 336.5149
+        },
+        {
+          "f": 150,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 335.3676
+        },
+        {
+          "f": 156,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 334.2663
+        },
+        {
+          "f": 162,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 116.352,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 333.3887
+        },
+        {
+          "f": 168,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 116.352,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 333.3887
+        },
+        {
+          "f": 174,
+          "state": "BLOCK_HOLD",
+          "anim": "idle_guard",
+          "speed_mps": 0,
+          "stamina": 116.352,
+          "pos": [
+            2766,
+            2.68,
+            5010.78
+          ],
+          "yaw_deg": 346.77,
+          "cam_yaw_deg": 333.3887
+        }
+      ],
+      "enemy": {
+        "id": "inf_trash",
+        "eid": "e1"
+      },
+      "input_events": 2,
+      "trace_events": [],
+      "player_travelled_m": 0,
+      "player_yaw_span_deg": 168,
+      "camera_yaw_span_deg": 356.2,
+      "player_anims": [
+        "clip_garrison_r2_charged",
+        "idle_guard"
+      ],
+      "player_states": [
+        "ATK_RECOVER",
+        "BLOCK_HOLD"
+      ],
+      "player_moved": true,
+      "seconds": 25
+    },
+    {
+      "sequence": "spell",
+      "script": "spell",
+      "why": "release, travel, impact, residue — four separate looks",
+      "frames_planned": 180,
+      "capture_every": 1,
+      "frames_captured": 0,
+      "status": "red",
+      "reason": "setCatalyst refused: setCatalyst() threw: setCatalyst('root-speakers-rod'): unknown. Known: great_staff, rod, enchanted_weapon, none — casting requires a catalyst in hand",
+      "distinct_frames": 0,
+      "moving": false,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/spell",
+      "contact_sheet": null,
+      "hashes": [],
+      "samples": []
+    },
+    {
+      "sequence": "boundary-walk",
+      "script": "boundary-walk",
+      "why": "streamed-boundary pop, which only motion shows",
+      "frames_planned": 300,
+      "capture_every": 1,
+      "frames_captured": 300,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 300,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/boundary-walk",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/boundary-walk.png",
+      "hashes": [
+        "a32582c247c9779b",
+        "8430d99d639ae484",
+        "4b02d16cce419ff4",
+        "792a4ce5a554eabe",
+        "6feb2f6b14849ad2",
+        "ec2a306d1c2ce52c",
+        "8279bb404e1f652e",
+        "081e3e04592e5c55",
+        "342aa7c672603fc1",
+        "49d477966ea7c228",
+        "ffd6f19e6f7a8fcf",
+        "725af532106bbddb",
+        "972639a43187d2e6",
+        "e2743ded2dea03fa",
+        "3e642e66af724d89",
+        "a95e6cabbf5524ea",
+        "4d6a1657511fc1be",
+        "727f8955cae13e81",
+        "6165ff297bb360ac",
+        "855385061c967428",
+        "2117a5db49b53512",
+        "b59870a16bf403aa",
+        "c33004f9d75a8970",
+        "c2082be4c99cc515",
+        "6edbf58115f3b17d",
+        "9123b473dbb84705",
+        "cf7689e29056c948",
+        "059f82fc68c63180",
+        "bb0bea47d414df1d",
+        "b2b4e68dcbd8d532",
+        "45317ad852b7251f",
+        "3f10539a1cf60ca7",
+        "6caa5118856c519d",
+        "62fea2e689d0d80e",
+        "e61f000bef510aee",
+        "d7829975a1960e89",
+        "692ab0caf35b5025",
+        "3201a5ec0b7f7e78",
+        "fb815a228a7d7e33",
+        "54d9093be5313bc1",
+        "577ad6fe543a79b4",
+        "bf305adae75a5653",
+        "62eeb214cfa0830a",
+        "0d5952d257caaf14",
+        "08a900b55d308087",
+        "22482a899f11f78c",
+        "e92ebc10a3d115b0",
+        "d2162a6db0d25a04",
+        "8b8e6bc57397e54a",
+        "b7721e720533e7cb",
+        "948b0bb13a0f608b",
+        "061022b5b9ca3cc5",
+        "5b8bc8e267fe71ff",
+        "d7d3595a5bf6df68",
+        "51aef58e573db0e2",
+        "46c04f4d0f6e337a",
+        "e34182ba03515f79",
+        "a44a116c5e897679",
+        "4a70da5365cb5cbf",
+        "19967ddc6a1fb8bc",
+        "7c880f25325b6253",
+        "a0c8ccf2551c7404",
+        "7a5f4ac4ee155333",
+        "8aaac6adb20f3cc6",
+        "70feadd43f7d8c12",
+        "77790f61ab991570",
+        "8e02068ee100f3fc",
+        "294152df7550afae",
+        "0ee53a95930272db",
+        "e0bf4151a312a756",
+        "c5e7be3212845ada",
+        "86962582f3df3ee1",
+        "9eb12bf4722b29e6",
+        "964dd738344483d5",
+        "e0a64b985d012d12",
+        "c04394a9dd9bc857",
+        "107805bf225248aa",
+        "2980afb6aba82889",
+        "6eab21bb81cfbed3",
+        "d6de7f3693cb8d34",
+        "7d79daa523a45b00",
+        "2a8540e5a2c01848",
+        "b203fff153295b9f",
+        "67f69d61fa2c3c40",
+        "bb0a5b0086a48d3c",
+        "b7a43f800ccb5a3f",
+        "484a22eec74ad982",
+        "5c435ec8f3d708e5",
+        "1b4049fc66ad7062",
+        "0bb504855ce4d39e",
+        "26518a4a86759e10",
+        "fde427df74b188ca",
+        "2ca773e25903f5fc",
+        "7008461b714a29e2",
+        "abb4711491931cb0",
+        "00bddaf45c1cdb5c",
+        "02b7c7cf17c2c6e3",
+        "ca4ed197e1d1a838",
+        "598a74a1e74e256c",
+        "d2c6de765ce3e41e",
+        "243651ee70aae4a7",
+        "76adbe7b5961866f",
+        "9a4058206815f278",
+        "67448baa3479446e",
+        "da5de62bf0952069",
+        "96be21864a953835",
+        "af7d979981e634a5",
+        "9536875d4c0af890",
+        "d75268308621fdde",
+        "78db8889b29eeb57",
+        "dcd288874d2aea6d",
+        "19cd5764f73ed4c8",
+        "3d51f4e2dc417b3c",
+        "fb151367876a8bca",
+        "bfed70bc6b4b0a6e",
+        "8dd4fb26492e8227",
+        "8ea1bf8165ce23fb",
+        "50cb7c89496f7b45",
+        "5f956a1292dc4b4f",
+        "d400df38fd9e1fdc",
+        "0f9b3086e6940916",
+        "59d8e5b9a3244b5e",
+        "43dad81ca4440681",
+        "99e809d02731107c",
+        "a0a9677f99601f42",
+        "01db204d2705f8ba",
+        "5eb786f145b1f52c",
+        "d550c26d83db0552",
+        "d5d5698d292356c1",
+        "24553f4ff595c497",
+        "bb0c41b019252e88",
+        "9585161d440b0b53",
+        "5a9b693017a791df",
+        "6fdf81d3b54b8be2",
+        "6d2013d378689f9f",
+        "8cd4c06785835955",
+        "a4f970e1f16b4eb9",
+        "9725653e8a883f8d",
+        "2c6865977de5acb9",
+        "78a2993c2bb7a413",
+        "af048b5009ca2baf",
+        "6a04882d30dafe6b",
+        "095ea009eb4eedcb",
+        "716aa9612977d4af",
+        "5921f37155ff6903",
+        "b464d3b2b6bfb78c",
+        "aa4f02a6bd0167c1",
+        "fc7e8c342dc5a87e",
+        "c816c1b88c207f07",
+        "00292271f55a86bd",
+        "f326456a446aa6be",
+        "843ee4e16cb06fb3",
+        "ea8ea9ad942cc2cb",
+        "914425aec705f4fb",
+        "66a44e98036bb28c",
+        "6867408161bf65bf",
+        "8a06593cb8d9d2db",
+        "a335994ea6a29ae9",
+        "5fd5fb12b948ef95",
+        "aa891e12ef96b602",
+        "760a23121cf3995e",
+        "33704da957631839",
+        "57675d7981032f93",
+        "9ba31d99468d282a",
+        "5bd5587dcca2c04b",
+        "e12caf1a45b7a160",
+        "5eb6809ca99fa191",
+        "cc4c23c211dbb248",
+        "f79578cca11824ee",
+        "831c82f664e5080f",
+        "7cfdd37a5077f8b3",
+        "ca5ffa5b78bad90f",
+        "ce25cf93bd9f00fa",
+        "ad1578169a74163f",
+        "5a48bb9a70aa6825",
+        "fbeaa799ffb25a24",
+        "74fa423f7fa99f39",
+        "9b8c761edd742d57",
+        "4f453deb1f302ab4",
+        "46b7fce5baae74c3",
+        "24703c0b6ef3cda9",
+        "467d17c1bb919d8a",
+        "5d667ab03ea174cd",
+        "6a2ff2c0a5c0676e",
+        "2e9c896e5fcabb98",
+        "0b3aff4f69a32b51",
+        "da32e9740905fd48",
+        "2dda1cdfea945234",
+        "848d3f5d79f6674d",
+        "83c17d06d4838468",
+        "b980409429f258ea",
+        "14d4f9bb3fce475b",
+        "5bf462a212d18ee4",
+        "59aed0503ea5bd35",
+        "81d157b72718d5cf",
+        "008ca73e08d74f8f",
+        "c0616dad88b805c2",
+        "0849fff6c55bd550",
+        "ac7807b366906fee",
+        "aa0fcba0229869e7",
+        "c2b05164d1ce3102",
+        "6c2af5518905fe8f",
+        "c5f3e67873339381",
+        "6286ae7d1b16e733",
+        "25a13edfbef4b843",
+        "866a850d240cce72",
+        "7584f4dfa1ceb67b",
+        "9e391043a37b1aeb",
+        "eb213ad9ede1cef9",
+        "a4fa06ff91342071",
+        "07c7a457a640289d",
+        "db3decb77c777720",
+        "89d4b8d93350d307",
+        "fa8b252f4bb622d8",
+        "810a6055147d61e7",
+        "5f1d47ce29b05679",
+        "1f7abbde16b5e438",
+        "9019688ade7eec8e",
+        "698d8305b5a5a0b6",
+        "5665d92832354469",
+        "4203012f6f6665ea",
+        "b16eafdd24f2f5f0",
+        "f2f98ef5539f7cba",
+        "d89ffd5f764c57c8",
+        "5a0ca0569e89c283",
+        "5fc28c0793a486be",
+        "d9a73ae714a60b76",
+        "685e51855258bf8c",
+        "14519dea625ecba9",
+        "91c762458d442564",
+        "3e7731bda86ec8a1",
+        "57a0e422e7fdba90",
+        "873ebf2c7c435db6",
+        "d63897a7d0cff610",
+        "04173cd3370d023d",
+        "96e6a142a238eb1e",
+        "3d8a17f62ac8b49b",
+        "c5b54951c8a08c8e",
+        "e2f6110fcaa67f52",
+        "4b184d790e5ebd61",
+        "37079fc44014a4ce",
+        "11e635e43d7ab557",
+        "b72b5338f1049516",
+        "f01aec90570acf07",
+        "c5f44c051763f3c7",
+        "5734c0cd7481b461",
+        "6fb589e45ae8054e",
+        "1d6557d15c22e0e5",
+        "d893481676bff6b2",
+        "74c2da185e5e7f92",
+        "72fa468cd7ddc4b7",
+        "10fc85c4d38a6583",
+        "3692c83534c089da",
+        "20262d42f6a042cf",
+        "959b225eecb42de0",
+        "69278a42a2b49233",
+        "c3b8a84a54bb8eee",
+        "a5904548a58c1058",
+        "92f0481065fc0768",
+        "f2fea209aff97af8",
+        "44781a8dba75d3c1",
+        "6f506107b9295b72",
+        "e344b8cb9d522f71",
+        "07217e5ed9171bae",
+        "8441ffe30ddb96be",
+        "12005ddcf9ff928a",
+        "6fdb0a34c76d7d98",
+        "f6e63ad9275ba2a8",
+        "55ec4249e88cad1b",
+        "c12006f48324dc22",
+        "1539afdcb87cd6a3",
+        "9a286dec7bed237d",
+        "6d1dc77d73bb61f7",
+        "9b20d2078a1822f9",
+        "03974d78454cc961",
+        "ab594736db50435e",
+        "f0e4045ff020e582",
+        "0e539f60ed45296b",
+        "7cbe28bfc9e3d78d",
+        "0f49e23e0a3046ff",
+        "31fbf95a7e11092f",
+        "93474b8d75cc4b60",
+        "9ba2d7245791a264",
+        "3d2bcdc884bccc82",
+        "f2b82de15fedccf5",
+        "5503cf1946b77f75",
+        "36353086f48475a8",
+        "3565b777b1e46cc7",
+        "a91c6c5f32620f8b",
+        "a6588a9ca7d942be",
+        "2d617c728e49c312",
+        "1c878faaa3816549",
+        "de741bbfee022d0d",
+        "dc80e8da4c6bf533",
+        "0968d04feb4912ca",
+        "715855ab1da90797",
+        "0030d25c01ec57fe",
+        "51f46fdd32e25cba",
+        "0205bfc24f48993b",
+        "2a18db6fff1c5f5e"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 119.85,
+          "pos": [
+            2184.96,
+            9.32,
+            3112.57
+          ],
+          "yaw_deg": 344.04,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 6,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 118.95,
+          "pos": [
+            2184.72,
+            9.28,
+            3112.96
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 12,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 118.05,
+          "pos": [
+            2184.48,
+            9.23,
+            3113.35
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 18,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 117.15,
+          "pos": [
+            2184.25,
+            9.18,
+            3113.75
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 24,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 116.25,
+          "pos": [
+            2184.01,
+            9.13,
+            3114.13
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 30,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 115.35,
+          "pos": [
+            2183.78,
+            9.07,
+            3114.51
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 36,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 114.45,
+          "pos": [
+            2183.55,
+            9.02,
+            3114.89
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 42,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 113.55,
+          "pos": [
+            2183.32,
+            8.96,
+            3115.27
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 48,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 112.65,
+          "pos": [
+            2183.09,
+            8.9,
+            3115.66
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 54,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 111.75,
+          "pos": [
+            2182.89,
+            8.83,
+            3115.99
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 60,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 110.85,
+          "pos": [
+            2182.69,
+            8.77,
+            3116.32
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 66,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 109.95,
+          "pos": [
+            2182.48,
+            8.69,
+            3116.66
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 72,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 109.05,
+          "pos": [
+            2182.28,
+            8.61,
+            3116.99
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 78,
+          "state": "SPRINT",
+          "anim": "sprint",
+          "speed_mps": 5,
+          "stamina": 108.15,
+          "pos": [
+            2182.08,
+            8.55,
+            3117.33
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 84,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 107.45,
+          "pos": [
+            2181.92,
+            8.5,
+            3117.59
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 90,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 107.25,
+          "pos": [
+            2181.82,
+            8.47,
+            3117.76
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 96,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 107.05,
+          "pos": [
+            2181.72,
+            8.44,
+            3117.92
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 102,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 106.85,
+          "pos": [
+            2181.62,
+            8.42,
+            3118.08
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 108,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 106.65,
+          "pos": [
+            2181.52,
+            8.4,
+            3118.25
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 114,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 106.45,
+          "pos": [
+            2181.42,
+            8.38,
+            3118.41
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 120,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 106.25,
+          "pos": [
+            2181.32,
+            8.36,
+            3118.57
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 126,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 107.55,
+          "pos": [
+            2181.23,
+            8.35,
+            3118.74
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 132,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 111.85,
+          "pos": [
+            2181.13,
+            8.33,
+            3118.9
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 138,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 116.15,
+          "pos": [
+            2181.03,
+            8.32,
+            3119.07
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 144,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.93,
+            8.31,
+            3119.23
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 150,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.83,
+            8.39,
+            3119.39
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 156,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.73,
+            8.38,
+            3119.56
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 162,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.63,
+            8.37,
+            3119.72
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 168,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.53,
+            8.36,
+            3119.88
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 174,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.43,
+            8.35,
+            3120.05
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 180,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.33,
+            8.34,
+            3120.21
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 186,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.23,
+            8.33,
+            3120.38
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 192,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.14,
+            8.32,
+            3120.54
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 198,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2180.04,
+            8.31,
+            3120.7
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 204,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.94,
+            8.3,
+            3120.87
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 210,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.84,
+            8.29,
+            3121.03
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 216,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.74,
+            8.27,
+            3121.19
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 222,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.64,
+            8.26,
+            3121.36
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 228,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.54,
+            8.25,
+            3121.52
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 234,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.44,
+            8.23,
+            3121.69
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 240,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.34,
+            8.22,
+            3121.85
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 246,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.24,
+            8.2,
+            3122.01
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 252,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.14,
+            8.19,
+            3122.18
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 258,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2179.05,
+            8.17,
+            3122.34
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 264,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.95,
+            8.16,
+            3122.5
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 270,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.85,
+            8.14,
+            3122.67
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 276,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.75,
+            8.12,
+            3122.83
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 282,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.65,
+            8.1,
+            3122.99
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 288,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.55,
+            8.08,
+            3123.16
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 294,
+          "state": "RUN",
+          "anim": "run",
+          "speed_mps": 3.2,
+          "stamina": 119.967,
+          "pos": [
+            2178.45,
+            8.05,
+            3123.32
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        }
+      ],
+      "border": {
+        "id": "blackwood--deep-marshes",
+        "from": [
+          2185,
+          3112.5
+        ]
+      },
+      "input_events": 1,
+      "trace_events": [],
+      "player_travelled_m": 12.57,
+      "player_yaw_span_deg": 15.2,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "sprint",
+        "run"
+      ],
+      "player_states": [
+        "SPRINT",
+        "RUN"
+      ],
+      "player_moved": true,
+      "seconds": 37.4
+    },
+    {
+      "sequence": "day-night",
+      "script": "day-night",
+      "why": "the grade across a full day",
+      "frames_planned": 240,
+      "capture_every": 1,
+      "frames_captured": 240,
+      "status": "ok",
+      "reason": null,
+      "distinct_frames": 240,
+      "moving": true,
+      "dir": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/frames/day-night",
+      "contact_sheet": "../elder-souls-artifacts-20260814-111417Z-29414/motion/hw-full/contact/day-night.png",
+      "hashes": [
+        "16ec9bdd309a45b0",
+        "c06ecb7d352e51c2",
+        "de754adfe5e2ba64",
+        "4d0802138565cf82",
+        "d476aa983bd793d5",
+        "e7cc6fee1f72306f",
+        "44154cef7c51c751",
+        "a1dc2a9123b2f7c3",
+        "7453705b1494bc21",
+        "cde1a967c04ecd15",
+        "542bf2a8e0da2152",
+        "ab06bf6d3b8840fe",
+        "5a25e34e797834e0",
+        "f11b974ce41cd158",
+        "30461c1cf26be64a",
+        "643aff490c96042d",
+        "34c352fd293e0f4f",
+        "e6d9899ea13b80c7",
+        "69f810431ad825d6",
+        "e119232501587e9f",
+        "6fe16681152eba2e",
+        "d2816e770ad7d9f2",
+        "5fb3693ab21296e8",
+        "07fd64a0f5dac680",
+        "6d3edce83f314571",
+        "bfbd418ecc656423",
+        "1c9c6b950ba026aa",
+        "4e5145577e8bdafa",
+        "906b1f85f3a81d50",
+        "1e2e4581f2917451",
+        "0b7f47964ac0eeb0",
+        "a94facfa3e68ccf6",
+        "3228ad0bf3056205",
+        "102ca93b45d2d6f6",
+        "77ee88c36d76bdd3",
+        "cf6d109480f3476a",
+        "c570224a0ed1ca62",
+        "05f653b7aa1b1276",
+        "7743e07ab1829d5d",
+        "4178cfb3e3c8df5e",
+        "330d30ba9a894afe",
+        "33abc43cc75518d3",
+        "1dcb05adb72e0a21",
+        "2c94d9063c3411af",
+        "a86ab652233efbb6",
+        "12f24a7550fac9a6",
+        "8e1a26a50fe94027",
+        "f13e043be08c0943",
+        "791b236134dd95f4",
+        "1f68b54e6a69af19",
+        "a792f2ecd679e9d7",
+        "26422f4ea27dd5c4",
+        "9edb070424e03c38",
+        "e424beab4c971a7e",
+        "22d7747fbe245267",
+        "599eb715b5386543",
+        "997c9a874118b3dc",
+        "d3719dbdb5484604",
+        "33f22d19d5e99a9b",
+        "e513ce9a0696bdcc",
+        "47fc92870ab1c99b",
+        "088bec5fe7eb8541",
+        "8a83af72ba09778d",
+        "bb77ab19ccd2d739",
+        "d7222b9971627326",
+        "e596f5895f4fd073",
+        "656041b92b02759d",
+        "b4f0bef22b196b81",
+        "bc24ae66ede0610e",
+        "420527b98caa9cea",
+        "b434e4663ed082ae",
+        "01005c642e39869b",
+        "e743eed7e59e03dc",
+        "b91e775a8b5c0040",
+        "d5b72d9d76b4a895",
+        "95979d418ee83ef3",
+        "29b69cca81721e2d",
+        "4eaa8c787f1b76b7",
+        "747f073b3cf7a05a",
+        "ee346d69d501a74c",
+        "cf10c9c105ea420d",
+        "969a85e58d7e736c",
+        "0c8862e2ea697f23",
+        "39174fdfa6351f1e",
+        "24989e60f8642ec3",
+        "af70080cd48a6adc",
+        "44cca3b0e3e57324",
+        "827cfd3a16628b1f",
+        "96005c0f467f495f",
+        "959e046401d84755",
+        "3f7496c6ad77612d",
+        "ce9478301b0c7afc",
+        "657751a2eba2e99b",
+        "fc7e1f6956d015c9",
+        "49f566dc7654a36e",
+        "bf642c59b5e59004",
+        "7986e54b956ac501",
+        "9b1eaa334458565b",
+        "85a05921e98e90dd",
+        "9447338c0ac2bdbd",
+        "a330b050bda176a8",
+        "26552560652adb5d",
+        "c8acfe2d06eed84a",
+        "b773f24d57cdc166",
+        "fece68d55cb135ea",
+        "65a014a1263af6f7",
+        "bd807c97f056e83d",
+        "4a6cbdf7f4dc2342",
+        "7a19151117fc66a8",
+        "a9e8611a7f9b100f",
+        "93415bdf7a9ef1ae",
+        "4ae8b5dc9c68ff36",
+        "61c82b7565e47509",
+        "40c038bb40221d7b",
+        "194a39386bc6872e",
+        "0a52adb59adb92ff",
+        "b73bd284738f4f91",
+        "24041293eef4ffb8",
+        "a2c382caa9f3690e",
+        "c15b12f505aba5b4",
+        "9de9f8569f4e85f4",
+        "3ac33b30e3e8fe12",
+        "f484cb71f2124921",
+        "994ad841d18b9594",
+        "a31d04e21077e450",
+        "09c8d9d6e9a30e03",
+        "ee3c0fb68465b792",
+        "cb1e1b70c5976756",
+        "20a95165c61a1342",
+        "af66fb5900a34155",
+        "c4d26b3ea1a4299f",
+        "560ea7ac1bc380f1",
+        "4578b658e8d11a6e",
+        "5ddf4ecdf58ab93e",
+        "76bff07e23a5c229",
+        "08a5db510d6d5ac2",
+        "954cbe3c353cf5e5",
+        "d0f50429fc9a18c0",
+        "70b6d5598ddab81f",
+        "63e29dbf1aaa10d4",
+        "f632f9cca0f0aca9",
+        "5c932d46f3be0c2c",
+        "45286d7fdb0bec5b",
+        "9405f08e0010721e",
+        "c8df0cb1463708e6",
+        "01f45b83bd042126",
+        "ff8dc47b5c6c99b7",
+        "071acc800d23b26a",
+        "cb6878055a5c7166",
+        "7ed6573b95c22263",
+        "640d6bd04ba31327",
+        "746f693bad922274",
+        "d05843132984a10c",
+        "db175388b752a557",
+        "787ce36e634b7ed1",
+        "7e2de3080bf7f64b",
+        "9148cd792ff1cbf7",
+        "619080bfc7172fcf",
+        "f96a94b837dd8e0b",
+        "9b76f06590a3c40a",
+        "28697a35fab96e10",
+        "803c30996c39b7f2",
+        "5573974951b3eec1",
+        "30507a70668cff7c",
+        "f7937f189b4f29f6",
+        "55931120ec3685f5",
+        "8549a8bb57c90e83",
+        "73124dd0fbe191c7",
+        "340c1b1a6b0fe288",
+        "febf636ae86aaa4b",
+        "7231b85627952398",
+        "1ff0e4c4070bf24c",
+        "b68284a21aa7dfec",
+        "7535ddfb008b9628",
+        "d134d39224d0b89c",
+        "d147856c2bd17bed",
+        "582ed4fe05120b60",
+        "8a14894aa1439cec",
+        "fc0bffc1c2454bee",
+        "3498f5b3f1935c12",
+        "8a574c3cf20e65bf",
+        "e09df3eddc08335d",
+        "bfa733026870d8c0",
+        "c81d1bb7a4b9af34",
+        "1dc7e328d82b4609",
+        "0bdf312fa920bafa",
+        "e644da4dd60b69f7",
+        "ac5f162ea8f56bfd",
+        "b5aaf14c70a47e10",
+        "0cb22a96611a51d2",
+        "a5c08c14c14216ab",
+        "c61e9fcd64841e3a",
+        "7c71d02d151a3249",
+        "c176c1c628996b6f",
+        "13e82c10edb7054b",
+        "f32372f27957fa3e",
+        "3356c93b39a64a73",
+        "b7d7b3f7e9b5dcc7",
+        "e88b715a89bb60d3",
+        "6feef457ab5ede10",
+        "fda71b271690b424",
+        "c4b9a57a2abadfac",
+        "ca39e643bf2b50f2",
+        "062b6faa21e52418",
+        "3e1c7b23eefc298e",
+        "2d7c30dc19230eed",
+        "7431b837247fac04",
+        "4614d6b1deba081b",
+        "24515fa9f2ce4a24",
+        "19e0304bdf09704e",
+        "377114e7334b6dbe",
+        "103d9fbe3f38d5fc",
+        "e65b49e512b0cea9",
+        "451a1ce87fad7972",
+        "472a34a9f459f38d",
+        "4ca96eb58f4f9f40",
+        "75f16c85460e1d4d",
+        "20a0220c15f03da4",
+        "5399396270e64cd6",
+        "6ae7f5973f3c58bf",
+        "30a5c4fda9dad009",
+        "c6ff5bbc7c042e2d",
+        "1ea82c60820eda60",
+        "a8b58a6e0c2cbf28",
+        "c5e2f8b7c840e4e9",
+        "a9b20011574e11a1",
+        "e77b194a4a1636f0",
+        "c2ea98505bc7a4a4",
+        "c0532b65ed8573dd",
+        "548d0aa07b9af60e",
+        "3707aa5e7bd0aee2",
+        "4804d8590afe3eef",
+        "2a81962796ea913a",
+        "b3eeb1ec7df09210",
+        "11148a3a83e0d7d2",
+        "ed58081c2ac5cfa5",
+        "bb3769158f4217d2",
+        "e606ab874d0f84d2",
+        "f2c5cc1b5de7e01c",
+        "6ce673e8eb49d6ee"
+      ],
+      "samples": [
+        {
+          "f": 0,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 6,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 12,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 18,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 24,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 30,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 36,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 42,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 48,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 54,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 60,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 66,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 72,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 78,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 84,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 90,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 96,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 102,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 108,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 114,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 120,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 126,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 132,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 138,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 144,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 150,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 156,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 162,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 168,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 174,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 180,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 186,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 192,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 198,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 204,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 210,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 216,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 222,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 228,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        },
+        {
+          "f": 234,
+          "state": "IDLE",
+          "anim": "idle",
+          "speed_mps": 0,
+          "stamina": 120,
+          "pos": [
+            2766,
+            2.68,
+            5011
+          ],
+          "yaw_deg": 328.82,
+          "cam_yaw_deg": 328.822
+        }
+      ],
+      "trace_events": [],
+      "player_travelled_m": 0,
+      "player_yaw_span_deg": 0,
+      "camera_yaw_span_deg": 0,
+      "player_anims": [
+        "idle"
+      ],
+      "player_states": [
+        "IDLE"
+      ],
+      "player_moved": false,
+      "seconds": 31.7
+    }
+  ]
+}

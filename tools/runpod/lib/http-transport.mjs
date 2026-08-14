@@ -144,8 +144,32 @@ export class PodAgentClient {
     }
   }
 
-  /** Push a local file to the Pod in chunks small enough to survive any intermediary body limit. */
-  async upload(localPath, remotePath, { log = () => {} } = {}) {
+  /**
+   * Push a local file to the Pod in chunks small enough to survive any intermediary body limit.
+   *
+   * RETRIED AS A WHOLE, deliberately. On 2026-08-14 a 20 MiB snapshot upload died at 16 MiB with a
+   * bodyless `HTTP 404` — the shape the RunPod proxy returns while it is still settling, not
+   * something the agent said — and the run was over before a single frame was captured. A
+   * *chunk* cannot be retried safely: if the response was lost but the append succeeded, resending
+   * duplicates bytes into the middle of a tarball. Restarting the whole upload with `append=0` is
+   * idempotent by construction, and 20 MiB is cheap next to the Pod-minute it saves.
+   */
+  async upload(localPath, remotePath, { log = () => {}, attempts = 3 } = {}) {
+    let lastError = null;
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        return await this.#uploadOnce(localPath, remotePath, { log });
+      } catch (error) {
+        lastError = error;
+        if (attempt === attempts) break;
+        log(`upload of ${path.basename(localPath)} failed on attempt ${attempt}/${attempts} (${String(error.message).slice(0, 160)}); restarting it from byte 0`, 'stderr');
+        await new Promise((resolve) => setTimeout(resolve, 3_000 * attempt));
+      }
+    }
+    throw lastError;
+  }
+
+  async #uploadOnce(localPath, remotePath, { log = () => {} } = {}) {
     const size = fs.statSync(localPath).size;
     const handle = await fsp.open(localPath, 'r');
     try {

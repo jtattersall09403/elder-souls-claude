@@ -1,0 +1,70 @@
+{
+ "task_id": "W1-30-GPU-CAPTURE",
+ "title": "Point the visual capture tools at the proven hardware-GPU transport, and capture the twelve motion sequences that had never been captured at all",
+ "started": "2026-08-14T10:50:00Z",
+ "finished": "2026-08-14T11:30:00Z",
+ "state": "complete — the full Deck and 11 of 12 motion sequences captured on an RTX A5000, evidence class read from the renderer string, self-test green and mutation-proven",
+ "source": "orchestration/plans/W1-30-EVIDENCE.md §1 and §4; reports/runpod-gpu/TRANSPORT-20260814.md; orchestration/HAZARDS.md §0, §2, §4",
+ "branch": "codex/wave1-build-experiment",
+ "worktree": ".claude/worktrees/agent-a1d9334ca21e809c6",
+ "report": "reports/visual-truth/GPU-CAPTURE-20260814.md",
+ "files_claimed": [
+  "tools/visual/lib/renderer-class.mjs",
+  "tools/visual/lib/gpu-launch.mjs",
+  "tools/visual/deck-motion.mjs",
+  "tools/visual/gpu-deck.mjs",
+  "tools/visual/collect-run.mjs",
+  "tools/visual/test/mutate-renderer-class.mjs",
+  "tools/visual/deck.mjs (renderer probe, --gpu, --require-hardware, non-fatal call() only)",
+  "tools/harness/vt-play.mjs (launch + renderer.json only)",
+  "tools/harness/vt-seethrough.mjs (launch + renderer.json only)",
+  "tools/harness/vt-world.mjs (launch + renderer.json only)",
+  "tools/harness/vt-playmode.mjs (launch + renderer.json only)",
+  "tools/runpod/lib/http-transport.mjs (upload retry only)",
+  ".gitignore (two raw-frame directories only)",
+  "reports/visual-truth/deck/hw-full/manifest.json",
+  "reports/visual-truth/deck/sw-smoke/manifest.json",
+  "reports/visual-truth/deck-motion/hw-full/",
+  "docs/shots/2026-08-14-gpu-deck/",
+  "reports/visual-truth/GPU-CAPTURE-20260814.md",
+  "orchestration/status/W1-30-GPU-CAPTURE.json"
+ ],
+ "overlap_declared": "tools/visual/deck.mjs is claimed by W1-30V, who is live (checked with tools/ownership.mjs --for). My edit is confined to four places: the import block; the launch call; the renderer probe, which moves VERBATIM into tools/visual/lib/renderer-class.mjs and keeps its comment; and the manifest's evidence-class fields, which keep every name they had and gain three. One further change is a bug fix rather than a feature: call() reached the harness through browser.mjs's h(), which routes a page-side throw into die() -> process.exit, so a try/catch around it could not catch anything and one bad setup ended the sweep with no manifest at all. deck.mjs's own goTo() carries a comment about exactly that failure, worked around case by case; call() now speaks to the page directly and returns the error as a value. tools/runpod/lib/http-transport.mjs belongs to gpu-transport-20260814, whose status reads done; the change is one retry wrapper around upload(), and its 20-arm self-test still passes. tools/harness/vt-*.mjs are claimed by nobody live.",
+ "what_changed": [
+  {
+   "id": "join",
+   "headline": "The Deck, the motion runner and the four vt-* tools can all run on a real GPU now. `node tools/visual/gpu-deck.mjs --profile full` sends one batched job to a Pod and brings back one tar.",
+   "measured": "288 stills, 0 red, 143 s; 11 of 12 motion sequences, 2,220 frames, 318 s; total 10.02 min, $0.045, on RTX A5000 y7kvxe5sggeqhj. Renderer reported by the browser: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA).",
+   "default": "local SwiftShader. Hardware is --gpu hardware, and only gpu-deck.mjs ever rents anything."
+  },
+  {
+   "id": "motion",
+   "headline": "The twelve motion sequences the Deck has declared since it was generated are captured for the first time.",
+   "measured": "walk, run, sprint-stop, turn-180, roll-4dir, jump-land, attack-light, attack-heavy, block-hit, boundary-walk, day-night all green with every frame distinct; spell RED with the reason (setCatalyst wants a catalyst KIND: rod, not an item id). Contact sheets at every 6th frame are committed under reports/visual-truth/deck-motion/hw-full/contact/.",
+   "checks": "a sequence goes red if the picture did not change (frame hashes), if the PLAYER did not change (position, body yaw, camera yaw, anim, state), if a cast fired no magic event, or if any setup step was refused."
+  },
+  {
+   "id": "evidence-class",
+   "headline": "evidence_class is now decided by the renderer string the browser reported, never by which path was requested, in one shared module every capture tool routes through.",
+   "self_test": "node tools/visual/gpu-deck.mjs --self-test — 10 arms green. The two arms that matter do not fabricate the disputed input: the software arm reads the string off a live local browser, the hardware arm reads it out of docs/shots/2026-08-14-gpu-transport/gpu-smoke.json, written by an RTX A5000 on a live Pod. A third arm requires the two to DIFFER, which is the HAZARDS §0 fifth-failure-shape guard.",
+   "mutation": "node tools/visual/test/mutate-renderer-class.mjs — M1 (fail open again) reddens 1 arm, M2 (let the request decide) reddens 4 including the red control, and the file is restored byte-identically."
+  }
+ ],
+ "defects_found_in_the_tools_being_joined": [
+  "browser.mjs's h() turns a page-side throw into process.exit, so both the Deck and the motion runner had a try/catch that could not catch. spawn() threw and the first local motion run died at sequence 9 of 12 with NO manifest — the exact failure the Deck's header promises it will not produce. Both now call the page directly.",
+  "pop-0027-infantry is a population row, not a combat archetype; the engine refuses it by name. tools/harness/vt-play.mjs has been asking for it, so its fight section has been failing into a catch. inf_trash is a real one.",
+  "PodAgentClient.upload had no retry: a 20 MiB snapshot died at 16 MiB with a bodyless HTTP 404 from the RunPod proxy and ended a paid run before a frame was captured. It now retries the WHOLE upload three times (a chunk retry could duplicate bytes into the middle of a tarball; restarting at byte 0 is idempotent)."
+ ],
+ "pod_hygiene": {
+  "pods_created": 3,
+  "total_spend_usd": 0.066,
+  "all_terminated": "each by its own run's mandatory cleanup, with deletion API-confirmed",
+  "final_check": "node tools/runpod/cli.mjs cleanup --dry-run — nothing of mine; two live Pods belonging to other agents listed as PROTECTED and left alone"
+ },
+ "hazards_hit": [
+  "tools/contention.mjs said WAIT (load 13-25 over 4 cores) for most of the session. I proceeded, one browser at a time, and say so here as the tool asks. Local timings from this session are not comparable with anything.",
+  "Disk went from 12 GB free to 2.6 GB free during the piece. The full run's tar is 184 MB and --return sheets exists precisely to bound it; two raw-frame directories were added to .gitignore so a routine `git add -A` cannot sweep a quarter-gigabyte of PNGs into the tree (HAZARDS §3).",
+  "The first full run was lost to the un-retried upload above, at a cost of $0.007 and four minutes."
+ ],
+ "next_step": "A fresh-context critic. The four things most worth attacking: (1) run `--catalyst rod` and settle the one red sequence; (2) run frame-stats.mjs across the 288 hardware stills — street-lilmoth already flags occluded,no-detail,flat-tone and nobody has looked at the other 287 on hardware; (3) add the 144-frame orbit to remoteCommand() so the character gate runs natively too; (4) attack the SwiftShader-versus-hardware comparison — it is six shots at one time of day, and W1-30-EVIDENCE §4's falsifier asks specifically whether the two renderers ever disagree on a DELTA."
+}

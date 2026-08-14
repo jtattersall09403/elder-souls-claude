@@ -20,11 +20,19 @@
  * Usage:
  *   node tools/visual/deck.mjs --profile wide --tag baseline
  *   node tools/visual/deck.mjs --profile smoke --seed 12345      (determinism red control)
+ *   node tools/visual/deck.mjs --profile wide --gpu hardware --require-hardware
+ *
+ * WHERE IT RUNS. The default is this box, on SwiftShader, because that is cheap and fast and it
+ * is how a builder iterates. `--gpu hardware` asks for a real GPU — which only exists on a
+ * RunPod Pod, so in practice you get there through `node tools/visual/gpu-deck.mjs`, which sends
+ * one batched job and brings the frames back as one tar. `--require-hardware` refuses to capture
+ * at all rather than quietly produce software frames on a run somebody is paying for.
  */
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { launchGame } from '../lib/browser.mjs';
+import { launchForCapture, resolveGpuMode } from './lib/gpu-launch.mjs';
+import { manifestRendererFields, rendererBanner } from './lib/renderer-class.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -68,8 +76,15 @@ const red = (setup, axis, reason) => {
 };
 
 const t0 = Date.now();
-const HW = process.env.VT_HARDWARE_GPU === '1';
-const g = await launchGame({ entry: 'game/index.html', width: 1280, height: 720, hardwareGpu: HW });
+const GPU_MODE = resolveGpuMode(args);
+const REQUIRE_HARDWARE = args['require-hardware'] === true || args.requireHardware === true;
+const { g, attestation } = await launchForCapture({
+  mode: GPU_MODE,
+  requireHardware: REQUIRE_HARDWARE,
+  entry: 'game/index.html',
+  width: 1280,
+  height: 720,
+});
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 120000 });
 await g.h('ready');
 await g.page.evaluate(({ w, h }) => {
@@ -83,30 +98,42 @@ await g.h('setSeed', SEED);
 // The first version of this read window.__ENGINE.renderer.renderer.getContext(), which threw,
 // and the catch returned a string that did NOT match /swiftshader/ — so the manifest recorded
 // `software_renderer: false` on a SwiftShader run. A probe that fails open is worse than no
-// probe: it launders software pixels into an appearance claim. It now fails CLOSED.
-const renderer_string = await g.page.evaluate(() => {
-  try {
-    const gl = document.createElement('canvas').getContext('webgl2');
-    if (!gl) return 'unavailable: no webgl2 context';
-    const ext = gl.getExtension('WEBGL_debug_renderer_info');
-    return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
-  } catch (e) { return `unavailable: ${e.message}`; }
-});
-const rendererUnknown = /^unavailable|^unknown/i.test(String(renderer_string));
-const swiftshader = rendererUnknown || /swiftshader|llvmpipe|software|mesa/i.test(String(renderer_string));
+// probe: it launders software pixels into an appearance claim. It now fails CLOSED, and the
+// probe and the rule both live in tools/visual/lib/renderer-class.mjs so that this tool, the
+// motion runner and the vt-* tools cannot drift apart on the one question that decides whether
+// a frame may be used for an appearance claim.
 const build = await g.h('getBuildInfo');
-console.log(`deck: profile=${PROFILE_NAME} tag=${TAG} seed=${SEED} canvas=${CW}x${CH}`);
-console.log(`renderer: ${renderer_string}${swiftshader ? '   *** SOFTWARE — not valid for an appearance claim (W1-30-EVIDENCE §4) ***' : ''}`);
+console.log(`deck: profile=${PROFILE_NAME} tag=${TAG} seed=${SEED} canvas=${CW}x${CH} gpu=${GPU_MODE}`);
+console.log(rendererBanner(attestation));
 if (drift.length) console.log(`DECK DRIFT: ${drift.map((k) => `${k} ${DECK.source_counts[k]} -> ${live[k]}`).join(', ')} — setups below will go red, not vanish`);
 
+// A harness call that cannot kill the sweep. `browser.mjs`'s `h()` sends a page-side throw into
+// `die()`, which calls process.exit — so a try/catch around it does nothing, and one bad setup
+// ends the run with no manifest. That is the failure the `exitInterior()` comment in goTo() below
+// works around case by case; this is the general form of the same fix, and it is what makes the
+// "a setup that cannot be reached goes RED, it does not vanish" promise at the top of this file
+// actually true. (Found 2026-08-14 when spawn() threw inside tools/visual/deck-motion.mjs and
+// took the whole sweep with it at sequence 9 of 12.)
 const call = async (m, ...a) => {
-  try { return { ok: true, v: await g.h(m, ...a) }; }
-  catch (e) { return { ok: false, e: String(e.message).split('\n')[0].slice(0, 200) }; }
+  try {
+    const res = await g.page.evaluate(async ({ method, callArgs }) => {
+      const H = window.__HARNESS;
+      if (!H) return { __err: 'window.__HARNESS is not defined' };
+      if (typeof H[method] !== 'function') return { __err: `window.__HARNESS.${method} is not a function` };
+      try { return { __ok: await H[method](...callArgs) }; }
+      catch (e) { return { __err: `${method}() threw: ${e && e.message || e}` }; }
+    }, { method: m, callArgs: a });
+    if (res && res.__err) return { ok: false, e: String(res.__err).split('\n')[0].slice(0, 240) };
+    return { ok: true, v: res ? res.__ok : undefined };
+  } catch (e) {
+    return { ok: false, e: `evaluate failed: ${String(e.message).split('\n')[0].slice(0, 200)}` };
+  }
 };
 
 async function shoot(file) {
-  const d = await g.h('screenshot');
-  const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
+  const shot = await call('screenshot');
+  if (!shot.ok) throw new Error(shot.e);
+  const buf = Buffer.from(String(shot.v).replace(/^data:image\/png;base64,/, ''), 'base64');
   fs.writeFileSync(path.join(SHOT_DIR, file), buf);
   return { bytes: buf.length, hash: crypto.createHash('sha256').update(buf).digest('hex').slice(0, 16) };
 }
@@ -126,8 +153,9 @@ async function poseCamera(setup) {
     const per = 3.0, n = Math.min(200, Math.ceil(Math.abs(delta) / per));
     if (n > 0) {
       const step = delta / n;
-      await g.h('queueInputs', Array.from({ length: n + 1 }, (_, f) => ({ f, look: f < n ? [step, 0] : [0, 0] })));
-      await g.h('stepFrames', n + 2);
+      const queued = await call('queueInputs', Array.from({ length: n + 1 }, (_, f) => ({ f, look: f < n ? [step, 0] : [0, 0] })));
+      if (!queued.ok) return `queueInputs refused while turning the gameplay camera: ${queued.e}`;
+      await call('stepFrames', n + 2);
     }
     return null;
   }
@@ -177,7 +205,7 @@ async function goTo(setup) {
     if (!r.ok) return `teleport(${p.x},${p.z}) refused: ${r.e}`;
     await call('stepFrames', 4);
   }
-  await g.h('stepFrames', SETTLE);
+  await call('stepFrames', SETTLE);
   return null;
 }
 
@@ -201,7 +229,7 @@ for (const setup of setups) {
       // Re-pose after the light changes: some setups drive the gameplay camera and a
       // time change can nudge it.
       const poseErr = await poseCamera(setup);
-      await g.h('stepFrames', SETTLE);
+      await call('stepFrames', SETTLE);
       if (poseErr) { red(setup, { time: t.id, weather: w.id }, poseErr); continue; }
       const file = `${setup.id}__${t.id}__${w.id}.png`;
       try {
@@ -231,10 +259,12 @@ const manifest = {
   deck_version: DECK.version, deck_manifest_hash: DECK.manifest_hash,
   commit: process.env.GIT_COMMIT || null,
   build: { name: build.name, version: build.version, commit: build.commit, three: build.threeVersion, dataFiles: build.dataFiles },
-  renderer_string, software_renderer: swiftshader,
-  evidence_class: swiftshader
-    ? 'SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).'
-    : 'HARDWARE — valid for appearance claims.',
+  // evidence_class is derived from the renderer string the browser reported, never from
+  // `--gpu hardware` having been asked for. See tools/visual/lib/renderer-class.mjs.
+  gpu_mode_requested: GPU_MODE,
+  gpu_backend: attestation.backend || null,
+  gpu_backend_attempts: attestation.backend_attempts && attestation.backend_attempts.length ? attestation.backend_attempts : null,
+  ...manifestRendererFields(attestation),
   deck_drift: drift.length ? drift.map((k) => ({ axis: k, built_with: DECK.source_counts[k], live: live[k] })) : null,
   counts: { planned: setups.length * times.length * weathers.length, ok: rows.filter((r) => r.status === 'ok').length, red: rows.filter((r) => r.status === 'red').length },
   seconds: +((Date.now() - t0) / 1000).toFixed(1),
