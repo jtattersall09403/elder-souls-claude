@@ -3,17 +3,38 @@
   "role": "critic",
   "piece": "W1-30-SHADOW-CASTERS",
   "status": "running",
-  "state": "reading",
+  "state": "measuring",
   "branch": "codex/wave1-build-experiment",
-  "summary": "Fresh critic on the shadow/fog/shader-chunk round. Did not build it. Order: (1) R1 blast radius — is sky.js actually better, re-verify W1-30F's 13/13 height-fog credit, sweep for other module-scope ShaderChunk patches, confirm the commented path is dead; (2) motion evidence for the canopy on hardware; (3) re-take the canopy frame-time budget independently; (4) own the Deep Marshes bands.",
-  "next_step": "Read aerial.js, sky.js, province.js, renderer.js, W1-30B/F status, plan W1-30, board.json, rulings W1/W2.",
+  "summary": "Fresh critic on the shadow/fog/shader-chunk round. Did not build it. R1 is confirmed by a rendered A/B that could have overturned it: at HEAD the Blackwood vista reaches 95% fog at 912 m; with installAerialPerspective() re-enabled on a control clone the SAME camera reaches it at 48 m. The chunk owner is read out of the page in both arms, so neither arm asserts the disputed input. Separately: the hardware frame-time budget contains two pairs of BYTE-IDENTICAL arms the builder did not notice it had, which measure the run's own repeatability at up to 1.59 ms — six times the canopy cost it is being used to price. And the Deep Marshes bands are not shadows at all: high-passed and cross-correlated they are 0.84 self-similar between 08:00 and 13:00 and 0.67 against 19:30, against 0.046 for the negative control.",
+  "findings_so_far": [
+    "R1 CONFIRMED, and by an arm that could have failed. HEAD: fog_fragment owned by render/sky.js, uAerial not declared, 95% fog at 912 m (blackwood) / 1414 m (deep-marshes) / 1726 m (salt-hills). Control clone with the one line uncommented: fog_fragment owned by world/aerial.js, uAerial declared, 95% fog at 48 m at the same camera. tools/visual/w1-30-fog-owner-ab.mjs.",
+    "THE COMMENTED PATH IS DEAD, confirmed at runtime not by grep: installAerialPerspective() has exactly one import site (province.js:15) and one call site (commented, line 144); the live page reports uAerial_declared=false, so THREE.ShaderLib was never touched either.",
+    "SWEEP: exactly two module-scope THREE.ShaderChunk patchers in game/src (aerial.js, sky.js). But the PATTERN has a second, larger and older instance: Material.copy() in three r180 does NOT copy onBeforeCompile and DOES deep-copy userData, so every .clone() of a worldMaterial silently drops installSurfaceShader's detail-normal/wear/wetness pass while keeping userData.surfaceUniforms — 305 of 406 materials in the running scene are in that state, including the player's own body. Mechanism arm run in the page: source hook installs surface = true, clone hook installs surface = false, clone keeps surfaceUniforms = true. NOT this round's defect and NOT this round's file.",
+    "THE BUDGET'S ARMS ARE NOT SIX, THEY ARE FOUR. w1-30-shadow-casters.mjs's applyArm() only ever turns flags ON, so once the terrain and geology flags landed in source, `base` == `terrain` and `terrain+canopy` == `terrain+canopy+geology` — byte-identical caster configurations with identical casterTriangles. Same-configuration medians differ by up to 1.59 ms (salt-hills) and 1.23 ms (spawn). The canopy delta being priced is 0.25-0.60 ms. The ruling holds and is now better evidenced than the builder knew; F3's 'terrain alone 0.009%' is vacuous (cast+0) and F2's headline sentence crosses two sites.",
+    "THE BANDS ARE NOT SHADOWS. Offline cross-correlation of the committed hardware stills over a fixed band-rich crop: rho(t0800,t1300)=0.844, rho(t0800,t1930)=0.666, rho(t1300,t1930)=0.689, negative control (same crop, blackwood) 0.046, rain vs clear 0.896. A sun-driven pattern cannot be that self-similar across a day."
+  ],
+  "contention_declared": "Proceeded past tools/contention.mjs's WAIT once, for the canopy-shimmer shakeout, with one other capture of mine already running. Declared here as that tool asks.",
+  "next_step": "Finish the aerial arm capture; run the bands ownership probe; take the canopy motion sequence on hardware; write the verdict.",
   "files_claimed": [
     "orchestration/status/W1-30-SHADOW-CASTERS-critic.json",
-    "corpus/90-verdicts/wave1/",
+    "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.json",
+    "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.md",
+    "tools/visual/w1-30-fog-owner-ab.mjs",
+    "tools/visual/w1-30-shader-hook-collision.mjs",
+    "tools/visual/w1-30-canopy-shimmer.mjs",
+    "tools/visual/w1-30-deep-marshes-bands.mjs",
+    "reports/visual-truth/fog-owner/",
+    "reports/visual-truth/shader-hooks/",
+    "reports/visual-truth/canopy-shimmer/",
+    "reports/visual-truth/deep-marshes-bands/",
     "reports/blog-feed.jsonl"
   ],
   "files_touched": [
-    "orchestration/status/W1-30-SHADOW-CASTERS-critic.json"
+    "orchestration/status/W1-30-SHADOW-CASTERS-critic.json",
+    "tools/visual/w1-30-fog-owner-ab.mjs",
+    "tools/visual/w1-30-shader-hook-collision.mjs",
+    "tools/visual/w1-30-canopy-shimmer.mjs",
+    "tools/visual/w1-30-deep-marshes-bands.mjs"
   ],
   "redundant_with": []
 }

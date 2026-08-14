@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bfae92ea`: 964 tools, 157 reference
+so it cannot drift. Generated at `674d492a`: 967 tools, 157 reference
 items, 188 pieces in flight.
 
 Its purpose is to stop 188+ concurrent agents each paying separately to discover the
@@ -105,7 +105,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 41
+### `tools/` — 42
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -136,6 +136,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/orchestrate.mjs` — Dispatch registry + resume planner.
 - `tools/ownership.mjs` — the file-ownership registry: who is touching what, right now.
 - `tools/play.mjs` — serve the game and print the URL a person opens.
+- `tools/probe.mjs` — several read-only observations in ONE tool call, and one call that waits.
 - `tools/progress.mjs` — Regenerates docs/progress.html from the live state of the repo.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/rigour.mjs` — **no header comment**
@@ -865,7 +866,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 33
+### `tools/render/` — 34
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/consumption-sweep.mjs` — **no header comment**
@@ -898,6 +899,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30a-frame-probe.mjs` — **no header comment**
 - `tools/render/w1-30a-grade-census.mjs` — **no header comment**
 - `tools/render/w1-30a-verdict.mjs` — **no header comment**
+- `tools/render/w1-30e-ground-albedo.mjs` — **no header comment**
 - `tools/render/w1-30e-kit-gate.mjs` — W1-30E — the offline gates for the settlement kit, each with a null control.
 - `tools/render/w1-30e-roof-extent.mjs` — **no header comment**
 
@@ -969,7 +971,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 26
+### `tools/visual/` — 27
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -989,6 +991,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/test/mutate-renderer-class.mjs` — **no header comment**
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
 - `tools/visual/w1-30-canopy-shimmer.mjs` — **no header comment**
+- `tools/visual/w1-30-deep-marshes-bands.mjs` — **no header comment**
 - `tools/visual/w1-30-fog-owner-ab.mjs` — **no header comment**
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shader-hook-collision.mjs` — **no header comment**
@@ -1199,7 +1202,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **264 tools have no header comment**, so nobody can tell what they do without
+> **266 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1377,13 +1380,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30-SHADOW-CASTERS-critic` | measuring | Finish the aerial arm capture; run the bands ownership probe; take the canopy motion seque | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` `tools/visual/w1-30-fog-owner-ab.mjs` `tools/visual/w1-30-shader-hook-collision.mjs` `tools/visual/w1-30-canopy-shimmer.mjs` `tools/visual/w1-30-deep-marshes-bands.mjs` |
 | `W1-MW-UI-REFS` | delivered | Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor rou | `orchestration/status/W1-MW-UI-REFS.json` `corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` `corpus/70-visual/refs/MANIFEST.json` `corpus/70-visual/refs/make-manifest.py` |
 | `W1-30-SHADOW-CASTERS` | landed-motion-evidence-taken-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, changes the atmospher | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
 | `SPAWN-YAW` | fix-landed-evidence-in-flight | collect the two runs, copy the frames to docs/shots/2026-08-14-spawn-yaw/, fold the 115 nu | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
 | `W1-30E-KIT-DEFECTS` | running |  | — |
 | `W1-30DE-REMEDIATION` | ? | none — report filed at reports/w1-30de-remediation/README.md. Soulrest street row stays bl | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` `orchestration/status/W1-30D.md` |
-| `W1-30-SHADOW-CASTERS-critic` | reading | Read aerial.js, sky.js, province.js, renderer.js, W1-30B/F status, plan W1-30, board.json, | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` |
 | `W1-14-r6` | ? | Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independen | `game/data/npcs/spellwrights.json` `game/src/engine.js` `game/src/save/state.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/magic/system.js` `orchestration/status/W1-14-r6.json` |
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |

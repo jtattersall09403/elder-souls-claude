@@ -186,20 +186,40 @@ function selfTest() {
   setShellEave(null);
   const back = summarise(measure({}));
 
+  const shellShip = shipped.by_kit['roof.shell'], shellNone = noEave.by_kit['roof.shell'];
   ok('the span-ratio instrument responds to the eave it measures',
-    noEave.span_ratio_worst < shipped.span_ratio_worst,
-    `${shipped.span_ratio_worst} -> ${noEave.span_ratio_worst}`);
+    shellNone.span_ratio_max < shellShip.span_ratio_max,
+    `roof.shell max ${shellShip.span_ratio_max} -> ${shellNone.span_ratio_max}`);
   ok('setShellEave(null) restores the shipped number exactly',
-    back.span_ratio_worst === shipped.span_ratio_worst,
-    `${back.span_ratio_worst}`);
-  ok('coverage is measured, not assumed — the shipped tree covers every building',
-    shipped.roofs_that_do_not_cover_their_building === 0,
-    `worst coverage ${shipped.coverage_worst}`);
-  // The one that matters: the two numbers PULL AGAINST EACH OTHER. If shrinking the roof never
-  // costs coverage, the sweep is measuring nothing and any value would do.
-  ok('shrinking the shell to the footprint COSTS coverage (the two numbers are in tension)',
-    noEave.coverage_worst < shipped.coverage_worst,
-    `${shipped.coverage_worst} -> ${noEave.coverage_worst}`);
+    back.by_kit['roof.shell'].span_ratio_max === shellShip.span_ratio_max,
+    `${back.by_kit['roof.shell'].span_ratio_max}`);
+  ok('the lever is SINGLE-VARIABLE — it must not move the other two roofs',
+    noEave.by_kit['roof.hip'].span_ratio_max === shipped.by_kit['roof.hip'].span_ratio_max
+    && noEave.by_kit['roof.reed'].span_ratio_max === shipped.by_kit['roof.reed'].span_ratio_max,
+    `hip ${shipped.by_kit['roof.hip'].span_ratio_max}, reed ${shipped.by_kit['roof.reed'].span_ratio_max}`);
+  ok('every SHELL roof covers its own building — the eaves plate, not an assumption',
+    shellShip.coverage_min === 1, `min coverage ${shellShip.coverage_min}`);
+
+  /* THE ONE THAT WOULD OTHERWISE BE A TEST OF A FALSE PREMISE, HAZARDS.md §0.
+   *
+   * The first version of this suite asserted that shrinking the shell COSTS coverage — i.e. that
+   * span and coverage pull against each other, so the sweep is choosing between two real things.
+   * It does not, and the arms would all have agreed about that wrongly: since the fix puts a
+   * squared eaves plate under the dome, coverage is 1.0 at ANY eave including zero, and coverage
+   * therefore CANNOT discriminate the fix from the null control. Saying so out loud is the point.
+   * What discriminates them is the span, and what the null control costs is the overhang and its
+   * shadow line — a thing only a frame can score, which is why this tool is not the gate.
+   *
+   * So the coverage number is asserted to be what it is — insensitive here, and not inert in
+   * general: it still reads 0 for the civic structures that carry no roof at all by design, which
+   * is the proof that a 1.0 means something.
+   */
+  ok('coverage does NOT discriminate the fix from the null control, and that is stated not assumed',
+    shellNone.coverage_min === shellShip.coverage_min,
+    `${shellShip.coverage_min} = ${shellNone.coverage_min} — span is the discriminating number, not coverage`);
+  ok('the coverage instrument is not inert: roofless civic structures still read 0',
+    shipped.coverage_worst === 0 && shipped.roofs_that_do_not_cover_their_building > 0,
+    `${shipped.roofs_that_do_not_cover_their_building} roofless structures, pre-existing and unchanged by this fix`);
 
   console.log(bad ? `\n${bad} check(s) failed` : '\nself-test: all checks passed');
   process.exit(bad ? 1 : 0);

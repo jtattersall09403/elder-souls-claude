@@ -1,0 +1,1483 @@
+{
+ "tool": "tools/harness/opening-capture.mjs",
+ "tag": "hw-opening-thorn3-opening",
+ "when": "2026-08-14T15:18:19.553Z",
+ "start": "shipping",
+ "seconds": 30,
+ "measures": "title -> New -> barge-hold -> writ-house -> out of the door into thorn",
+ "hardware_requested": true,
+ "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+ "software_renderer": false,
+ "viewports": [
+  {
+   "id": "desktop",
+   "w": 1280,
+   "h": 720,
+   "opening": {
+    "start": "shipping",
+    "opening": {
+     "settlement": "thorn",
+     "interiors": [
+      "barge-hold",
+      "writ-house"
+     ],
+     "ends_in": "writ-house",
+     "evidence": "reports/spawn-truth/2026-08-14-spawn-truth.md"
+    },
+    "creation": {
+     "stages": [
+      {
+       "stage": "title",
+       "interior": null,
+       "settlement": "lilmoth",
+       "pos": [
+        2766.5,
+        2.68,
+        5011
+       ],
+       "yaw": 180,
+       "cam_yaw": 0
+      },
+      {
+       "stage": "barge-hold",
+       "interior": "barge-hold",
+       "settlement": "lilmoth",
+       "pos": [
+        0.3,
+        0,
+        -1.2
+       ],
+       "yaw": 329,
+       "cam_yaw": 351
+      },
+      {
+       "stage": "writ-house-done",
+       "interior": "writ-house",
+       "settlement": "lilmoth",
+       "pos": [
+        1.9,
+        0,
+        0.3
+       ],
+       "yaw": 320,
+       "cam_yaw": 350
+      }
+     ],
+     "exhausted_guard": false,
+     "interior": "writ-house",
+     "settlement": "lilmoth",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "yaw": 320,
+     "cam_yaw": 350
+    },
+    "exit": {
+     "before": {
+      "yaw": 320,
+      "cam_yaw": 350
+     },
+     "left": {
+      "left": true,
+      "interior": "writ-house",
+      "pos": [
+       3808.599,
+       0,
+       909.355
+      ],
+      "yaw_deg": 69.9992694308213,
+      "yaw_source": "door_to_doorstep"
+     },
+     "after": {
+      "interior": null,
+      "settlement": "thorn",
+      "pos": [
+       3808.6,
+       13.28,
+       909.36
+      ],
+      "yaw": 70,
+      "cam_yaw": 70
+     }
+    },
+    "interior": null,
+    "settlement": "thorn",
+    "pos": [
+     3808.6,
+     13.28,
+     909.36
+    ],
+    "yaw": 70,
+    "cam_yaw": 70
+   },
+   "frames": [
+    {
+     "file": "hw-opening-thorn3-opening-desktop-000-title.png",
+     "label": "title",
+     "settlement": "lilmoth",
+     "interior": null,
+     "pos": [
+      2766.5,
+      2.68,
+      5011
+     ],
+     "facing_yaw_deg": 180,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "stage": "title"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-001-barge-hold.png",
+     "label": "barge-hold",
+     "settlement": "lilmoth",
+     "interior": "barge-hold",
+     "pos": [
+      0.3,
+      0,
+      -1.2
+     ],
+     "facing_yaw_deg": 329,
+     "camera_yaw_deg": 351,
+     "clearance_m": 6.25,
+     "stage": "barge-hold"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-002-writ-house-done.png",
+     "label": "writ-house-done",
+     "settlement": "lilmoth",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 320,
+     "camera_yaw_deg": 350,
+     "clearance_m": 8,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-003-exit-orbit-000.png",
+     "label": "exit-orbit-000",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 0
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-004-exit-orbit-045.png",
+     "label": "exit-orbit-045",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 45
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-005-exit-orbit-090.png",
+     "label": "exit-orbit-090",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 90
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-006-exit-orbit-135.png",
+     "label": "exit-orbit-135",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 135
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-007-exit-orbit-180.png",
+     "label": "exit-orbit-180",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 180
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-008-exit-orbit-225.png",
+     "label": "exit-orbit-225",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 225
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-009-exit-orbit-270.png",
+     "label": "exit-orbit-270",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 270
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-010-exit-orbit-315.png",
+     "label": "exit-orbit-315",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 315
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-011-exit-gameplay-camera.png",
+     "label": "exit-gameplay-camera",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-012-walk-t01s.png",
+     "label": "walk-t01s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3811.61,
+      13.28,
+      910.45
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 1
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-013-walk-t02s.png",
+     "label": "walk-t02s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3814.61,
+      13.28,
+      911.54
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 2
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-014-walk-t03s.png",
+     "label": "walk-t03s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3817.62,
+      13.28,
+      912.64
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 3
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-015-walk-t04s.png",
+     "label": "walk-t04s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3820.63,
+      13.28,
+      913.73
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 4
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-016-walk-t05s.png",
+     "label": "walk-t05s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3823.63,
+      13.28,
+      914.83
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 5
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-017-walk-t06s.png",
+     "label": "walk-t06s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3826.64,
+      13.28,
+      915.92
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 6
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-018-walk-t07s.png",
+     "label": "walk-t07s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3829.65,
+      13.28,
+      917.02
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 7
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-019-walk-t08s.png",
+     "label": "walk-t08s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3832.66,
+      13.28,
+      918.11
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 8
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-020-walk-t09s.png",
+     "label": "walk-t09s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3835.66,
+      13.28,
+      919.21
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 9
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-021-walk-t10s.png",
+     "label": "walk-t10s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3838.67,
+      13.28,
+      920.3
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 10
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-022-walk-t11s.png",
+     "label": "walk-t11s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3841.68,
+      13.28,
+      921.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 11
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-023-walk-t12s.png",
+     "label": "walk-t12s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3844.68,
+      13.28,
+      922.49
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 12
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-024-walk-t13s.png",
+     "label": "walk-t13s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3847.69,
+      13.28,
+      923.58
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 13
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-025-walk-t14s.png",
+     "label": "walk-t14s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3850.7,
+      13.28,
+      924.68
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 14
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-026-walk-t15s.png",
+     "label": "walk-t15s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3853.7,
+      13.28,
+      925.77
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 15
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-027-walk-t16s.png",
+     "label": "walk-t16s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3856.71,
+      13.28,
+      926.87
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 16
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-028-walk-t17s.png",
+     "label": "walk-t17s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3859.72,
+      13.28,
+      927.96
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 17
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-029-walk-t18s.png",
+     "label": "walk-t18s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3862.73,
+      13.28,
+      929.06
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 18
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-030-walk-t19s.png",
+     "label": "walk-t19s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3865.73,
+      13.3,
+      930.15
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 19
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-031-walk-t20s.png",
+     "label": "walk-t20s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3868.74,
+      13.32,
+      931.25
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 20
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-032-walk-t21s.png",
+     "label": "walk-t21s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3871.75,
+      13.32,
+      932.34
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 21
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-033-walk-t22s.png",
+     "label": "walk-t22s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3874.63,
+      13.33,
+      933.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 22
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-034-walk-t23s.png",
+     "label": "walk-t23s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3877.37,
+      13.35,
+      934.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 23
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-035-walk-t24s.png",
+     "label": "walk-t24s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3880.05,
+      13.4,
+      935.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 24
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-036-walk-t25s.png",
+     "label": "walk-t25s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3882.73,
+      13.46,
+      936.34
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 25
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-037-walk-t26s.png",
+     "label": "walk-t26s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3885.42,
+      13.53,
+      937.32
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 26
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-038-walk-t27s.png",
+     "label": "walk-t27s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3888.1,
+      13.57,
+      938.29
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 27
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-039-walk-t28s.png",
+     "label": "walk-t28s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3890.78,
+      13.61,
+      939.27
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 28
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-040-walk-t29s.png",
+     "label": "walk-t29s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3893.66,
+      13.94,
+      940.31
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 29
+    },
+    {
+     "file": "hw-opening-thorn3-opening-desktop-041-walk-t30s.png",
+     "label": "walk-t30s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3896.57,
+      14.32,
+      941.38
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 30
+    }
+   ]
+  },
+  {
+   "id": "phone",
+   "w": 390,
+   "h": 844,
+   "opening": {
+    "start": "shipping",
+    "opening": {
+     "settlement": "thorn",
+     "interiors": [
+      "barge-hold",
+      "writ-house"
+     ],
+     "ends_in": "writ-house",
+     "evidence": "reports/spawn-truth/2026-08-14-spawn-truth.md"
+    },
+    "creation": {
+     "stages": [
+      {
+       "stage": "title",
+       "interior": null,
+       "settlement": "lilmoth",
+       "pos": [
+        2766.5,
+        2.68,
+        5011
+       ],
+       "yaw": 180,
+       "cam_yaw": 0
+      },
+      {
+       "stage": "barge-hold",
+       "interior": "barge-hold",
+       "settlement": "lilmoth",
+       "pos": [
+        0.3,
+        0,
+        -1.2
+       ],
+       "yaw": 329,
+       "cam_yaw": 351
+      },
+      {
+       "stage": "writ-house-done",
+       "interior": "writ-house",
+       "settlement": "lilmoth",
+       "pos": [
+        1.9,
+        0,
+        0.3
+       ],
+       "yaw": 320,
+       "cam_yaw": 350
+      }
+     ],
+     "exhausted_guard": false,
+     "interior": "writ-house",
+     "settlement": "lilmoth",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "yaw": 320,
+     "cam_yaw": 350
+    },
+    "exit": {
+     "before": {
+      "yaw": 320,
+      "cam_yaw": 350
+     },
+     "left": {
+      "left": true,
+      "interior": "writ-house",
+      "pos": [
+       3808.599,
+       0,
+       909.355
+      ],
+      "yaw_deg": 69.9992694308213,
+      "yaw_source": "door_to_doorstep"
+     },
+     "after": {
+      "interior": null,
+      "settlement": "thorn",
+      "pos": [
+       3808.6,
+       13.28,
+       909.36
+      ],
+      "yaw": 70,
+      "cam_yaw": 70
+     }
+    },
+    "interior": null,
+    "settlement": "thorn",
+    "pos": [
+     3808.6,
+     13.28,
+     909.36
+    ],
+    "yaw": 70,
+    "cam_yaw": 70
+   },
+   "frames": [
+    {
+     "file": "hw-opening-thorn3-opening-phone-000-title.png",
+     "label": "title",
+     "settlement": "lilmoth",
+     "interior": null,
+     "pos": [
+      2766.5,
+      2.68,
+      5011
+     ],
+     "facing_yaw_deg": 180,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "stage": "title"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-001-barge-hold.png",
+     "label": "barge-hold",
+     "settlement": "lilmoth",
+     "interior": "barge-hold",
+     "pos": [
+      0.3,
+      0,
+      -1.2
+     ],
+     "facing_yaw_deg": 329,
+     "camera_yaw_deg": 351,
+     "clearance_m": 6.25,
+     "stage": "barge-hold"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-002-writ-house-done.png",
+     "label": "writ-house-done",
+     "settlement": "lilmoth",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 320,
+     "camera_yaw_deg": 350,
+     "clearance_m": 8,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-003-exit-orbit-000.png",
+     "label": "exit-orbit-000",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 0
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-004-exit-orbit-045.png",
+     "label": "exit-orbit-045",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 45
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-005-exit-orbit-090.png",
+     "label": "exit-orbit-090",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 90
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-006-exit-orbit-135.png",
+     "label": "exit-orbit-135",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 135
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-007-exit-orbit-180.png",
+     "label": "exit-orbit-180",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 180
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-008-exit-orbit-225.png",
+     "label": "exit-orbit-225",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 225
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-009-exit-orbit-270.png",
+     "label": "exit-orbit-270",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 270
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-010-exit-orbit-315.png",
+     "label": "exit-orbit-315",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "orbit_yaw_deg": 315
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-011-exit-gameplay-camera.png",
+     "label": "exit-gameplay-camera",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-012-walk-t01s.png",
+     "label": "walk-t01s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3811.61,
+      13.28,
+      910.45
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 1
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-013-walk-t02s.png",
+     "label": "walk-t02s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3814.61,
+      13.28,
+      911.54
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 2
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-014-walk-t03s.png",
+     "label": "walk-t03s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3817.62,
+      13.28,
+      912.64
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 3
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-015-walk-t04s.png",
+     "label": "walk-t04s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3820.63,
+      13.28,
+      913.73
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 4
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-016-walk-t05s.png",
+     "label": "walk-t05s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3823.63,
+      13.28,
+      914.83
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 5
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-017-walk-t06s.png",
+     "label": "walk-t06s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3826.64,
+      13.28,
+      915.92
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 6
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-018-walk-t07s.png",
+     "label": "walk-t07s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3829.65,
+      13.28,
+      917.02
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 7
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-019-walk-t08s.png",
+     "label": "walk-t08s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3832.66,
+      13.28,
+      918.11
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 8
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-020-walk-t09s.png",
+     "label": "walk-t09s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3835.66,
+      13.28,
+      919.21
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 9
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-021-walk-t10s.png",
+     "label": "walk-t10s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3838.67,
+      13.28,
+      920.3
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 10
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-022-walk-t11s.png",
+     "label": "walk-t11s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3841.68,
+      13.28,
+      921.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 11
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-023-walk-t12s.png",
+     "label": "walk-t12s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3844.68,
+      13.28,
+      922.49
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 12
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-024-walk-t13s.png",
+     "label": "walk-t13s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3847.69,
+      13.28,
+      923.58
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 13
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-025-walk-t14s.png",
+     "label": "walk-t14s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3850.7,
+      13.28,
+      924.68
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 14
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-026-walk-t15s.png",
+     "label": "walk-t15s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3853.7,
+      13.28,
+      925.77
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 15
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-027-walk-t16s.png",
+     "label": "walk-t16s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3856.71,
+      13.28,
+      926.87
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 16
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-028-walk-t17s.png",
+     "label": "walk-t17s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3859.72,
+      13.28,
+      927.96
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 17
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-029-walk-t18s.png",
+     "label": "walk-t18s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3862.73,
+      13.28,
+      929.06
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 18
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-030-walk-t19s.png",
+     "label": "walk-t19s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3865.73,
+      13.3,
+      930.15
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 19
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-031-walk-t20s.png",
+     "label": "walk-t20s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3868.74,
+      13.32,
+      931.25
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 20
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-032-walk-t21s.png",
+     "label": "walk-t21s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3871.75,
+      13.32,
+      932.34
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 21
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-033-walk-t22s.png",
+     "label": "walk-t22s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3874.63,
+      13.33,
+      933.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 22
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-034-walk-t23s.png",
+     "label": "walk-t23s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3877.37,
+      13.35,
+      934.39
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 23
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-035-walk-t24s.png",
+     "label": "walk-t24s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3880.05,
+      13.4,
+      935.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 24
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-036-walk-t25s.png",
+     "label": "walk-t25s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3882.73,
+      13.46,
+      936.34
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 25
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-037-walk-t26s.png",
+     "label": "walk-t26s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3885.42,
+      13.53,
+      937.32
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 26
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-038-walk-t27s.png",
+     "label": "walk-t27s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3888.1,
+      13.57,
+      938.29
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 27
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-039-walk-t28s.png",
+     "label": "walk-t28s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3890.78,
+      13.61,
+      939.27
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 28
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-040-walk-t29s.png",
+     "label": "walk-t29s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3893.66,
+      13.94,
+      940.31
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 29
+    },
+    {
+     "file": "hw-opening-thorn3-opening-phone-041-walk-t30s.png",
+     "label": "walk-t30s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3896.57,
+      14.32,
+      941.38
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "t_s": 30
+    }
+   ]
+  }
+ ]
+}
