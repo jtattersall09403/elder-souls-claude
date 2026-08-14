@@ -17,6 +17,7 @@ import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
 import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
 import { planSettlement, buildSettlementExterior, settlementSolids, insideBuilding, applyInteriorBounds } from '../render/exterior.js';
+import { pairDepth } from './footprint.js';
 import { regionArt } from '../render/world-art.js';
 
 const TILE_M = 300;
@@ -1698,17 +1699,31 @@ export class Province {
     return n;
   }
 
-  /** How many pairs in this plan still cover more than 45% of the smaller building. */
+  /**
+   * HOW MANY PAIRS IN THIS PLAN STILL STAND INSIDE EACH OTHER, on the rectangles the world draws.
+   *
+   * This used to be a second, private copy of the resolver's arithmetic, and it was wrong in the
+   * same way: it compared AXIS-ALIGNED footprints while `settlementSolids()` and
+   * `buildSettlementExterior()` rotate by `yaw_deg`. At yaw 90 the width and the depth swap, so of
+   * the 82 pairs the census found interpenetrating, this counter could see 22 — and it agreed with
+   * a resolver that was blind in exactly the same place. Two implementations of one piece of
+   * geometry is how they came to agree with each other and not with the world.
+   *
+   * There is now ONE implementation, in `world/footprint.js`, imported by this counter, by
+   * `planSettlement()`'s shrink pass and by `tools/world/building-overlap-census.mjs`. The bar is
+   * the census's: a separation depth above `BORDERLINE_M` = 1.50 m is more than a wall, an eave and
+   * a porch — one building's floor area inside another's. Structures (`kind: 'structure'` — wells,
+   * posts, racks) are excluded, as they are in the census, because `settlementSolids()` does not
+   * give them a footprint box at all.
+   */
   _deepOverlaps(plan) {
     let n = 0;
     const B = plan.buildings;
     for (let i = 0; i < B.length; i++) {
       for (let j = i + 1; j < B.length; j++) {
         const a = B[i], c = B[j];
-        const aw = a.drawn_footprint_m[0], ad = a.drawn_footprint_m[1];
-        const cw = c.drawn_footprint_m[0], cd = c.drawn_footprint_m[1];
-        const ox2 = (aw + cw) / 2 - Math.abs(a.x - c.x), oz2 = (ad + cd) / 2 - Math.abs(a.z - c.z);
-        if (ox2 > Math.min(aw, cw) * 0.45 + 1e-6 && oz2 > Math.min(ad, cd) * 0.45 + 1e-6) n++;
+        if (a.kind === 'structure' || c.kind === 'structure') continue;
+        if (pairDepth(a, c) > 1.50) n++;
       }
     }
     return n;

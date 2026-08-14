@@ -62,6 +62,7 @@
 import * as THREE from '../../vendor/three/three.module.js';
 import { KIT_MESHES, paletteFor, PRIMS } from './interior.js';
 import { settlementArt } from './world-art.js';
+import { pairAxes, orientedAxes } from '../world/footprint.js';
 import {
   kit, grammarFor, grammarMat, roofChoice, storeyChoice, silhouetteHash, kitCensus,
   chamferBoxGeometry, prismGeometry, bakeCurvatureFromFaces, kitTexelMetres, kitJitter, kitMaterial, GRAMMARS,
@@ -422,7 +423,37 @@ const KIND_MASS = {
 const DEFAULT_MASS = KIND_MASS.dwelling;
 
 /** How much of the smaller building another may cover before both are shrunk. */
-const MAX_OVERLAP_FRAC = 0.45;
+const MAX_OVERLAP_FRAC = 0.45;   // retained: read by nothing in the resolver now. See SEPARATION_TOL_M.
+/**
+ * THE TOLERANCE — HOW DEEPLY TWO BUILDINGS MAY INTERPENETRATE BEFORE THE PLAN SHRINKS THEM.
+ *
+ * It replaces \`MAX_OVERLAP_FRAC\` and it is in METRES because the check that judges this resolver is
+ * in metres. \`tools/world/building-overlap-census.mjs\` counts a pair as one building standing
+ * inside another when the SAT separation depth of the drawn rectangles exceeds \`BORDERLINE_M\` =
+ * 1.50 m — above a shared wall, an eave and a porch. A resolver aiming at "45% of the smaller span"
+ * was aiming at 4.5 m for a pair of 10 m buildings, which is three times the bar it is graded on. A
+ * resolver and its check measuring in different currencies is the same family of defect as a
+ * resolver and its world measuring different rectangles.
+ *
+ * 1.45 m is that bar with 0.05 m of margin, so a pair the shrink has just settled cannot round back
+ * over the line.
+ *
+ * WHAT THIS NUMBER IS AND IS NOT WORTH, measured on the pinned tree 551c9722 and reported in full in
+ * \`orchestration/status/W1-OVERLAP-RESOLVER.json\`. Against a baseline of 82 counted overlaps:
+ *
+ *     yaw-aware, tolerance left at MAX_OVERLAP_FRAC = 0.45   82  — clears NOTHING
+ *     yaw-BLIND, tolerance in metres (the null control)      77  — clears 5
+ *     yaw-aware, tolerance in metres (this)                  76  — clears 6
+ *
+ * and the count is 76 for every tolerance between 0.50 m and 1.50 m. The tolerance is not what is
+ * limiting the result, and neither is the orientation. THE SHRINK LEVER IS EXHAUSTED: 227 of the 230
+ * axes of the 115 enterable buildings have ONE CENTIMETRE of slack between their declared footprint
+ * and the room behind their own door, and \`spanFloor()\` below may not go under it. The remaining
+ * 76 need positions moved, not sizes reduced. Do not tune this constant expecting the count to
+ * follow; it will not.
+ */
+const SEPARATION_TOL_M = 1.45;
+
 
 /* ------------------------------------------------------------------------------------------------
  * THE JOIN — round 4. Why the numbers below exist.
@@ -517,6 +548,15 @@ export const DOOR_REACH_M = 3.0;
  * drifted from its source. An unchecked copy is the shape this project has now found five times.
  */
 export const BODY_RADIUS_M = 0.35;
+/**
+ * HOW CLOSE A DRAWN FOOTPRINT MAY COME TO A DOORSTEP.
+ *
+ * The predicate \`tools/check-building-fits-room.mjs\` applies, fail-closed, is "at least
+ * \`BODY_RADIUS_M\` clear of every wall slab". A slab is \`SHELL_WALL_T\` thick and centred ON the
+ * footprint edge, so it reaches \`SHELL_WALL_T / 2\` outside the footprint. 0.05 m of margin above
+ * the sum keeps float noise out of a gate that stops every agent's boot-check when it fires.
+ */
+const DOORSTEP_CLEAR_M = SHELL_WALL_T / 2 + BODY_RADIUS_M + 0.05;
 /** The margin above the body radius. The solver stops at `d >= r`; this keeps float noise out. */
 const BODY_CLEAR_EPS_M = 0.05;
 /** How far inside its own wall a lamp's CENTRE is kept. A hearth is a 1.1 m stone ring. */
@@ -533,6 +573,25 @@ const LAMP_INSET_M = 0.35;
  */
 /** The footprint the building's own interior record declares, or null. */
 function declaredOf(b) { return b.declared_footprint_m || null; }
+
+/**
+ * IS THIS A NATIVE RI-WLD13 INTERIOR RECORD — one authored on both sides of the join?
+ *
+ * It matters to the SHRINK, not only to the join. Once a record is native the exterior is a
+ * consumer and never a generator of the interior geometry, so `applyInteriorBounds()` returns
+ * early and NOTHING APPLIES `interior_bounds_m`: the room behind the door cannot be made smaller
+ * to fit a building the town plan has squeezed. All 115 shipped interiors are native, so for every
+ * enterable building in the world the room is the floor the shrink may not go under.
+ *
+ * Lifted out of `applyInteriorBounds()` verbatim rather than restated, because it is now read in
+ * two places and a second copy of a predicate is how the resolver and its counter came to agree
+ * with each other and not with the world.
+ */
+export function isNativeInterior(rec) {
+  return !!(rec && rec.exterior_building_id && Array.isArray(rec.door_world_pos) && Array.isArray(rec.storeys)
+    && Array.isArray(rec.apertures) && typeof rec.seamless === 'boolean'
+    && typeof rec.see_into === 'boolean' && Object.hasOwn(rec, 'water_plane_m'));
+}
 
 export function planSettlement(rec, interiors, opts = {}) {
   const I = interiors || {};
@@ -596,6 +655,15 @@ export function planSettlement(rec, interiors, opts = {}) {
       y: (b.offset_m ? b.offset_m[1] : 0),
       z: pos[2] + (b.offset_m ? b.offset_m[2] : 0),
       yaw_deg: b.yaw_deg || 0,
+      // The point `leaveInterior()` puts the body on, carried onto the plan so the shrink pass
+      // can refuse to draw this building over it. Native RI-WLD13 records author it; older
+      // fixtures have `applyInteriorBounds()` derive it later, and null here simply skips them.
+      doorstep_world: cont && Array.isArray(cont.exterior_spawn) ? cont.exterior_spawn.slice() : null,
+      doorstep_limited: false,
+      // THE ROOM BEHIND THE DOOR, as the floor the shrink may not push the outside under. Null for
+      // a legacy record, whose room `applyInteriorBounds()` still shrinks to follow the building.
+      room_span_m: isNativeInterior(it) && it.bounds_m && it.bounds_m.x && it.bounds_m.z
+        ? [it.bounds_m.x[1] - it.bounds_m.x[0], it.bounds_m.z[1] - it.bounds_m.z[0]] : null,
       declared_footprint_m: declared,
       footprint_m: declared ? [declared[0], declared[1]] : [mass.fp[0], mass.fp[1]],
       footprint_source: declared ? 'declared' : 'derived',
@@ -639,7 +707,32 @@ export function planSettlement(rec, interiors, opts = {}) {
   // area under the old rule and is a full-depth terrace under this one.
   const sorted = list.slice().sort((a, c) => (a.id < c.id ? -1 : a.id > c.id ? 1 : 0));
   for (const b of sorted) b.shrink_m = [1, 1];
-  const spanFloor = (b) => (b.enterable ? MIN_ENTERABLE_SPAN_M : MIN_FOOTPRINT_M);
+  /**
+   * THE FLOOR THE SHRINK MAY NOT PUSH A BUILDING UNDER, PER AXIS.
+   *
+   * Round 4 wrote this as a single number — 5.0 m for a building you can walk into — and that was
+   * right when the room could be shrunk to follow the building. It no longer can. Every one of the
+   * 115 shipped interiors is a native RI-WLD13 record, so `applyInteriorBounds()` takes its native
+   * branch and `continue`s: `interior_bounds_m` is computed, and NOTHING APPLIES IT. The room
+   * behind the door is fixed, and the real floor for the outside is the size of the inside.
+   *
+   * This is the constraint the overlap census's feasibility bound did not have. That bound said
+   * "72 of 83 separate with no building moved" by taking every building to MIN_ENTERABLE_SPAN_M;
+   * measured against the room instead, the size-only lever reaches far fewer, and the difference is
+   * reported in `orchestration/status/W1-OVERLAP-RESOLVER.json` rather than absorbed here.
+   *
+   * The predicate is `tools/check-building-fits-room.mjs`'s, in its units:
+   *     drawn - SHELL_WALL_T  >=  room + ROOM_WALL_T
+   * so the floor is `room + ROOM_WALL_T + SHELL_WALL_T`. A shrink that goes under it draws a
+   * building smaller than the room behind its own door, which is a fail-closed RI-WLD13 N1 error
+   * for every agent on the box, not a cosmetic one.
+   */
+  const spanFloor = (b, k) => {
+    const base = b.enterable ? MIN_ENTERABLE_SPAN_M : MIN_FOOTPRINT_M;
+    const room = b.room_span_m;
+    return room ? Math.max(base, room[k] + ROOM_WALL_T + SHELL_WALL_T) : base;
+  };
+  const TOL = SEPARATION_TOL_M;
   for (let pass = 0; pass < 8; pass++) {
     const nx = sorted.map((b) => b.shrink_m[0]);
     const nz = sorted.map((b) => b.shrink_m[1]);
@@ -649,34 +742,96 @@ export function planSettlement(rec, interiors, opts = {}) {
         const a = sorted[i], c = sorted[j];
         const aw = a.footprint_m[0] * a.shrink_m[0], ad = a.footprint_m[1] * a.shrink_m[1];
         const cw = c.footprint_m[0] * c.shrink_m[0], cd = c.footprint_m[1] * c.shrink_m[1];
-        const Dx = Math.abs(a.x - c.x), Dz = Math.abs(a.z - c.z);
-        const Sx = (aw + cw) / 2, Sz = (ad + cd) / 2;
-        const limX = Math.min(aw, cw) * MAX_OVERLAP_FRAC, limZ = Math.min(ad, cd) * MAX_OVERLAP_FRAC;
-        if (Sx - Dx <= limX || Sz - Dz <= limZ) continue;      // clear, or terraced but not swallowed
-        const tx = Sx - limX > 1e-6 ? Math.min(1, Dx / (Sx - limX)) : 1;
-        const tz = Sz - limZ > 1e-6 ? Math.min(1, Dz / (Sz - limZ)) : 1;
-        // Resolve on the axis that costs the pair least — the larger factor is the smaller cut —
-        // and do NOT touch the other one.
-        const ax = tx >= tz ? 0 : 1;
-        const t = ax === 0 ? tx : tz;
-        if (t >= 0.999) continue;
-        const arr = ax === 0 ? nx : nz;
-        const cur = (b) => b.shrink_m[ax];
-        // The floor is in metres and belongs to the building, not to the pair: an enterable
-        // building stops at MIN_ENTERABLE_SPAN_M and the pair terraces instead.
-        const fa = Math.min(1, spanFloor(a) / a.footprint_m[ax]);
-        const fc = Math.min(1, spanFloor(c) / c.footprint_m[ax]);
-        arr[i] = Math.min(arr[i], Math.max(fa, cur(a) * t));
-        arr[j] = Math.min(arr[j], Math.max(fc, cur(c) * t));
+        // THE ORIENTED VIEW — the rectangles settlementSolids() collides with and
+        // buildSettlementExterior() draws, not the axis-aligned ones this loop used to compare.
+        const pa = pairAxes(a, c, aw, ad, cw, cd);
+        if (!pa) continue;                                     // a separating axis exists: disjoint
+        if (pa.depth <= TOL) continue;                         // a terrace, a shared wall, a porch
+        // Resolve on the axis that costs the pair least, and do NOT touch the others. Each axis
+        // names the LOCAL axis of each building whose direction is most aligned with it — at yaw 0
+        // on the world-x axis that is local axis 0 for both, which is exactly what this loop did
+        // before, so this generalises the shipped rule rather than replacing it.
+        let best = null;
+        for (const ax of pa.axes) {
+          const lim = TOL;
+          const K = ax.ca + ax.cb;
+          if (K <= 1e-6) continue;                             // no lever reaches this axis
+          const t = 1 - (ax.ov - lim) / K;
+          if (t >= 0.999) continue;
+          const fa = Math.min(1, spanFloor(a, ax.ka) / a.footprint_m[ax.ka]);
+          const fc = Math.min(1, spanFloor(c, ax.kb) / c.footprint_m[ax.kb]);
+          // What the floors permit, expressed as a factor on where the two already stand. An
+          // enterable building stops at MIN_ENTERABLE_SPAN_M and the pair terraces instead.
+          const tFloor = Math.max(fa / a.shrink_m[ax.ka], fc / c.shrink_m[ax.kb]);
+          // A shrink that cannot separate the pair even at the floors costs the room and leaves
+          // them inside each other anyway, so it is not taken. Those pairs need a POSITION moved
+          // and are reported by `_deepOverlaps()` rather than paid for in floor area.
+          if (t < tFloor - 1e-9) continue;
+          if (!best || t > best.t) best = { t, ka: ax.ka, kb: ax.kb, fa, fc };
+        }
+        if (!best) continue;
+        const arrA = best.ka === 0 ? nx : nz;
+        const arrB = best.kb === 0 ? nx : nz;
+        arrA[i] = Math.min(arrA[i], Math.max(best.fa, a.shrink_m[best.ka] * best.t));
+        arrB[j] = Math.min(arrB[j], Math.max(best.fc, c.shrink_m[best.kb] * best.t));
         touched++;
       }
     }
     for (let i = 0; i < sorted.length; i++) sorted[i].shrink_m = [nx[i], nz[i]];
     if (!touched) break;
   }
+
+  // ---- and no building may be drawn over a doorstep ---------------------------------------------
+  //
+  // WHY THIS IS HERE AND WHY IT IS COUNTED RATHER THAN SILENT.
+  //
+  // `tools/check-building-fits-room.mjs` asserts, fail-closed, that the point `leaveInterior()`
+  // puts the body on is (a) not inside a building and (b) at least `BODY_RADIUS_M` clear of every
+  // wall slab, because the collision solver depenetrates the body until it is. On the tree this fix
+  // was written against that assertion is GREEN — and in two places it is green BY ACCIDENT, held
+  // up by shrinks the yaw-blind resolver happened to make for unrelated pairs:
+  //
+  //   * `stormhold-archive`'s authored `continuity.exterior_spawn` lies 0.25 m INSIDE its own
+  //     DECLARED footprint. The body does not stand in the archive's wall today only because that
+  //     building's depth was cut from 10.47 m to 8.77 m to clear `stormhold-old-customs`.
+  //   * `archon-house-1` stands 0.08 m from a doorstep once its neighbours stop being shrunk on the
+  //     axis the axis-aligned resolver happened to pick.
+  //
+  // Make the resolver correct and both accidents go away with it. So the constraint is stated
+  // outright instead of being inherited: a drawn footprint may not come within `DOORSTEP_CLEAR_M`
+  // of ANY doorstep in its settlement — its own or a neighbour's, since `resolveSphere()` does not
+  // care which building's wall it is pushing the body out of.
+  //
+  // Ruling D1 is explicit that moving a spawn to accommodate geometry is the wrong trade, because
+  // it "converts a visible geometric fault into an invisible one". So no doorstep is moved. The
+  // building gives up the span instead, down to its own floor and no further, and every building
+  // this rule touches is named on the plan (`doorstep_limited`) so a probe can see the compensation
+  // rather than inherit it.
+  const doorsteps = list.map((b) => b.doorstep_world).filter(Boolean);
+  for (const b of sorted) {
+    const [ex, ez] = orientedAxes(b.yaw_deg);
+    for (const sp of doorsteps) {
+      const dx = sp[0] - b.x, dz = sp[2] - b.z;
+      const local = [Math.abs(dx * ex[0] + dz * ex[1]), Math.abs(dx * ez[0] + dz * ez[1])];
+      const half = [b.footprint_m[0] * b.shrink_m[0] / 2, b.footprint_m[1] * b.shrink_m[1] / 2];
+      if (local[0] >= half[0] + DOORSTEP_CLEAR_M || local[1] >= half[1] + DOORSTEP_CLEAR_M) continue;
+      // Too close on BOTH axes. Give up whichever costs least, and only if the floor allows it: a
+      // building smaller than the room behind its own door is a worse defect than a tight doorstep.
+      let best = null;
+      for (const k of [0, 1]) {
+        const want = (local[k] - DOORSTEP_CLEAR_M) / (b.footprint_m[k] / 2);
+        const floor = Math.min(1, spanFloor(b, k) / b.footprint_m[k]);
+        if (!(want >= floor) || want >= b.shrink_m[k]) continue;
+        if (!best || want > best.t) best = { k, t: want };
+      }
+      if (!best) continue;
+      b.shrink_m[best.k] = best.t;
+      b.doorstep_limited = true;
+    }
+  }
   for (const b of list) {
-    const fx = Math.min(1, spanFloor(b) / b.footprint_m[0]);
-    const fz = Math.min(1, spanFloor(b) / b.footprint_m[1]);
+    const fx = Math.min(1, spanFloor(b, 0) / b.footprint_m[0]);
+    const fz = Math.min(1, spanFloor(b, 1) / b.footprint_m[1]);
     const sx = +Math.max(fx, b.shrink_m[0]).toFixed(4);
     const sz = +Math.max(fz, b.shrink_m[1]).toFixed(4);
     b.shrink_m = [sx, sz];
@@ -707,6 +862,9 @@ export function planSettlement(rec, interiors, opts = {}) {
     architecture_kit: kitIds,
     silhouette: (rec.architecture_kit && rec.architecture_kit.silhouette) || null,
     kit_implemented: kitIds.filter((k) => EXT_KIT[k] || KIT_MESHES[k]),
+    // Buildings the shrink had to take depth from so they would not be drawn over their own
+    // doorstep. Named, not silently compensated — see the pass in the shrink above.
+    doorstep_limited: list.filter((b) => b.doorstep_limited).map((b) => b.id),
     buildings: list,
   };
 }
@@ -794,9 +952,7 @@ export function applyInteriorBounds(plans, interiors, docs, opts) {
       // present the exterior is a consumer, never a generator, of the interior geometry.  The
       // legacy branch below remains for old/non-settlement fixtures, but shipped rooms must not
       // be resized or have their continuity values manufactured from the town at load time.
-      if (rec.exterior_building_id && Array.isArray(rec.door_world_pos) && Array.isArray(rec.storeys)
-          && Array.isArray(rec.apertures) && typeof rec.seamless === 'boolean'
-          && typeof rec.see_into === 'boolean' && Object.hasOwn(rec, 'water_plane_m')) {
+      if (isNativeInterior(rec)) {
         const raw = rawById.get(b.id) || null;
         const door = rec.door_world_pos.slice();
         b.door = door.slice();
