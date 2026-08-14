@@ -66,6 +66,33 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 9. Evidence under `reports/` can silently never reach the remote — and nothing goes red
+
+**Symptom, from the agent who found it: three landing attempts that "succeeded" and put nothing on the
+branch but a `.pin.json`.**
+
+The mechanism is a disagreement between two tools that both look correct on their own.
+`tools/verdict-evidence.mjs --recover` does `git add -f` **into the real index**, which is exactly right
+— `-f` is there to defeat `.gitignore` for cited artefacts. But `land.mjs#buildOurs` does not use the
+real index. It builds a **temporary** one and runs `git add -A` into it, and `git add` without `-f`
+**honours `.gitignore`**. So the `-f` is applied to an index that is then thrown away, and every cited
+artefact under an ignored path evaporates between the two steps.
+
+Nothing reports a failure, because nothing failed: `verdict-evidence` did add the files, `land.mjs` did
+land what its index contained, and both exit 0. The verdict then cites screenshots that exist only on
+the box that made them — and the box is ephemeral.
+
+**What to do instead, and it is the route other verdicts already use.** Put cited evidence in
+`corpus/90-verdicts/wave1/artifacts/<PIECE>/`, not under `reports/`. Then **verify it against the remote
+blob**, not against `git status` — §2 of this file is the same lesson in a different disguise, and it
+has now cost two separate agents on two separate days. `bank.mjs` prints `verified N path(s) against the
+remote blob`; if your artefact count is not in that number, it did not land.
+
+**The general form, worth carrying past this specific bug:** a `-f` flag only defeats `.gitignore` for
+the index it is run against. Any pipeline that stages into one index and commits from another will drop
+exactly the files someone went out of their way to force-add — which is to say, exactly the files that
+mattered enough to force.
+
 ## 8. Two measurement traps that cost ~40 minutes each today
 
 **Arm-to-arm image diffs are meaningless at a foliage site.** Two frames that look identical to a

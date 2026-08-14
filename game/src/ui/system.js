@@ -55,6 +55,7 @@ import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } fro
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
 import { drawMap, shadeHex } from './screens/map.js';
 import { drawWait } from './screens/wait.js';
+import { drawDialogue, DialogueHistory } from './screens/dialogue.js';
 import { drawTouchOverlay, drawRotateState } from './touch-overlay.js';
 import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
@@ -120,6 +121,33 @@ export class UISystem {
     this.builtFrame = -1;
     this.lastModel = null;
     this.openedAt = 0;
+    // ---- W1-UIX08 / RI-UIX08: the dialogue window ------------------------------------------
+    //
+    // The window is NOT a mode. `mode === 'dialogue'` exists in MODES and `isMenu()` deliberately
+    // returns false for it, because RI-UIX08 §D6 and RI-UIX03's pause rule both say the world
+    // keeps existing behind this panel — it is a floating panel over a running world, not a
+    // screen that stops time. So it is driven by the presence of `ctx.dialogue` rather than by a
+    // mode, and it never touches `pausesSimulation()`.
+    //
+    // The transcript lives here because `character/converse.js` keeps only the LAST thing said,
+    // which is correct for the reply menu it was written for and cannot express §D3's
+    // accumulating history. Owning it on the UI side is also what let this item land without
+    // editing a single line of the dialogue-text or topic-graph pieces' files.
+    this.dialogue = new DialogueHistory();
+    this.dialogueFocus = { pane: 'prose', linkIdx: 0, rowIdx: 0 };
+    this.dialogueScroll = 0;          // lines walked back from the bottom
+    this.dialogueColScroll = 0;
+    this.dialogueMetrics = null;
+    this.dialoguePressed = false;
+    /**
+     * §G's ablated arm, and this build's plausible null control, as a flag rather than a branch:
+     * `links = false` renders the same window, the same prose and the same topic column with the
+     * inline links removed and the topics they would have added present in the column from the
+     * start. `HAZARDS` §0b — the trivial control is "no window at all"; the plausible one is a
+     * correct-looking window whose topic links are plain text, which passes every layout check
+     * and deletes the discovery mechanism.
+     */
+    this.dialogueArm = { links: true };
   }
 
   // ---- the pause rule (S14 / RI-UIX03 §A) --------------------------------------------------
@@ -735,7 +763,19 @@ export class UISystem {
     // one of the four actions and cannot miss a fifth added later. It appears in the key TWICE
     // over, once as it is set and once as it is cleared, which is deliberate: whichever side of
     // `_afterStep()` a build happens on, the key has moved.
+    // W1-UIX08. AND THE DIALOGUE WINDOW MOVES WHILE NONE OF THE ABOVE DOES, for the same reason
+    // focus and `pending` had to be added: a conversation is not a menu, so `mode` never changes;
+    // the world may be paused by nothing at all, so `ctx.frame` does move — but a probe that
+    // reads `getUIState()` twice on the SAME frame, once before and once after following a link,
+    // would get the pre-link window back. The signature carries the speaker, the length of the
+    // transcript, the focus and the arm, which between them are everything that can move.
+    const dsig = ctx.dialogue && ctx.dialogue.open
+      ? `${ctx.dialogue.npc}:${this.dialogue.blocks.length}:${ctx.dialogue.said_topic || '-'}:` +
+        `${this.dialogueFocus.pane}${this.dialogueFocus.linkIdx},${this.dialogueFocus.rowIdx}:` +
+        `${this.dialogueScroll},${this.dialogueColScroll}:${this.dialogueArm.links ? 'L' : 'l'}`
+      : '-';
     const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus)
+      + '#d:' + dsig
       + '#p:' + (this.pending ? JSON.stringify(this.pending) : '-') + ':' + this.actEpoch;
     if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;
     const S = this.S;
@@ -779,6 +819,17 @@ export class UISystem {
       default: break;
     }
     if (this.isMenu()) S.endScreen();
+
+    // ---- W1-UIX08: the dialogue window ------------------------------------------------------
+    //
+    // Drawn AFTER the screens and OUTSIDE `beginScreen()`'s rectangle, for the same reason the
+    // HUD is drawn before it: this panel carries its own translucency (§E1, 0.84 on the interior)
+    // and knocking it back a second time under a screen's alpha would compound exactly the way
+    // `UISurface.beginScreen`'s header describes. It is also drawn last so it sits over the
+    // world and the HUD, which is where a conversation belongs.
+    this.dialogueMetrics = (ctx.dialogue && ctx.dialogue.open)
+      ? drawDialogue(S, this._dialogueModel(ctx))
+      : null;
 
     // ---- RI-JRN04 §G/H1: the two models that had no renderer, drawn ----------------------
     //
@@ -826,6 +877,135 @@ export class UISystem {
   }
 
   // ---- models ------------------------------------------------------------------------------
+
+  // ---- W1-UIX08: the dialogue window's model, focus and input -------------------------------
+
+  /**
+   * Turn the engine's conversation view into the window's model, and keep the transcript.
+   *
+   * `ctx.dialogue` is built by `Engine._dialogueCtx()` and is a READ of the live conversation:
+   * the person, their derived disposition, the greeting, the answer just given, the topics they
+   * will answer, and — the field the whole item turns on — `linkable`, the topics that would
+   * actually produce an answer if a word in the prose were followed.
+   */
+  _dialogueModel(ctx) {
+    const d = ctx.dialogue;
+    // A new person: open a fresh transcript. §D3 says the history is never cleared MID-
+    // conversation; walking away and talking to somebody else is a different conversation.
+    if (this.dialogue.speaker !== d.npc) {
+      this.dialogue.open(d.npc, d.greeting);
+      this.dialogueFocus = { pane: 'prose', linkIdx: 0, rowIdx: 0 };
+      this.dialogueScroll = 0; this.dialogueColScroll = 0;
+    }
+    // §D1: following a link "appends the answer to the bottom of the history pane. It does not
+    // clear the pane." The heading is the topic's own words in `header` colour; the greeting,
+    // which opened the transcript above, carries none.
+    if (d.said) this.dialogue.append(d.said_topic, d.said_heading || null, d.said);
+
+    // §D2, and it is the thing only the picture carries: what you can DO with this person goes
+    // above the rule, what you can ASK them about the world goes below it, alphabetically.
+    const topics = (d.topics || []).slice().sort((a, b) => a.label.localeCompare(b.label));
+    const actions = (d.actions || []).slice();
+
+    // THE NULL CONTROL / §G ABLATED ARM. Same window, same prose, same column — links removed,
+    // and the topics they would have added present in the column FROM THE START. That is a build
+    // a reasonable team could ship (it is what most dialogue systems do), which is exactly what
+    // makes it a plausible control rather than a broken one.
+    const linksOn = this.dialogueArm.links !== false;
+    let columnTopics = topics;
+    if (!linksOn) {
+      const have = new Set(topics.map((t) => t.id));
+      const extra = (d.linkable || []).filter((t) => !have.has(t.id));
+      columnTopics = topics.concat(extra).sort((a, b) => a.label.localeCompare(b.label));
+    }
+
+    return {
+      speaker: d.speaker,
+      disposition: d.disposition,
+      blocks: this.dialogue.blocks,
+      topics: columnTopics,
+      actions,
+      linkable: d.linkable || [],
+      links_enabled: linksOn,
+      focus: this.dialogueFocus,
+      pressed: this.dialoguePressed,
+      scroll_up: this.dialogueScroll,
+      column_scroll: this.dialogueColScroll,
+      goodbye: 'Goodbye',
+    };
+  }
+
+  /**
+   * One fixed step of the open dialogue window. Called by `Engine._conversationStep()`.
+   *
+   * THE CLOSED ACTION SET, AND IT IS THE SAME FOUR THINGS EVERY OTHER SURFACE USES. There is no
+   * cursor anywhere in this interface (`ui/system.js` rule 2), so "what a click does" is
+   * implemented as "what confirm on the focused thing does": the directional axes walk the links
+   * in the prose in reading order, left/right crosses to the topic column, `interact` follows,
+   * and `roll`/`block` is Goodbye. Morrowind drives this window with a mouse; the owner tests on
+   * a GameSir X2s, and a mechanism that needs a pointer is a mechanism the owner cannot use.
+   *
+   * @returns {object|null} the action to apply after the step, or null
+   */
+  dialogueStep(input, ctx) {
+    const d = ctx.dialogue;
+    if (!d || !d.open) return null;
+    const m = this._dialogueModel(ctx);
+    const L = this.dialogueMetrics;
+    const nLinks = L ? L.links_total : 0;
+    const nRows = m.actions.length + m.topics.length + 1;          // + Goodbye
+    const f = this.dialogueFocus;
+
+    const dx = this._edge('x', input.uiMoveX || input.moveX, ctx.frame);
+    const dy = this._edge('y', -(input.uiMoveY || input.moveY), ctx.frame);
+
+    if (dx > 0 && f.pane === 'prose') { f.pane = 'column'; f.rowIdx = Math.min(f.rowIdx, nRows - 1); }
+    else if (dx < 0 && f.pane === 'column') { f.pane = 'prose'; }
+    else if (dy) {
+      if (f.pane === 'prose') {
+        if (nLinks) f.linkIdx = clamp(f.linkIdx + dy, 0, nLinks - 1);
+        // No links on screen at all — the pane still scrolls, because a long answer has to be
+        // readable in the arm where nothing is lit. This is what keeps the ablated arm playable.
+        else this.dialogueScroll = Math.max(0, this.dialogueScroll - dy);
+      } else {
+        f.rowIdx = clamp(f.rowIdx + dy, 0, nRows - 1);
+        const first = m.actions.length;
+        if (f.rowIdx >= first && L) {
+          const i = f.rowIdx - first;
+          if (i < this.dialogueColScroll) this.dialogueColScroll = i;
+          else if (i >= this.dialogueColScroll + (L.topics_shown || 1)) {
+            this.dialogueColScroll = i - (L.topics_shown || 1) + 1;
+          }
+        }
+      }
+    }
+
+    if (input.pressedName('roll')) return { kind: 'goodbye' };
+    if (!input.pressedName('interact')) { this.dialoguePressed = false; return null; }
+    this.dialoguePressed = true;
+    if (f.pane === 'prose') {
+      const topic = L && L.link_topics ? L.link_topics[f.linkIdx] : null;
+      return topic ? { kind: 'say', topic, via: 'link' } : null;
+    }
+    if (f.rowIdx < m.actions.length) {
+      const a = m.actions[f.rowIdx];
+      return a ? { kind: a.kind || 'say', topic: a.id, verb: a.verb || null, via: 'action' } : null;
+    }
+    if (f.rowIdx === nRows - 1) return { kind: 'goodbye' };
+    const t = m.topics[f.rowIdx - m.actions.length];
+    return t ? { kind: 'say', topic: t.id, via: 'column' } : null;
+  }
+
+  /** Called by the engine when a conversation closes, so the next one starts on a clean page. */
+  dialogueClosed() {
+    this.dialogue.close();
+    this.dialogueFocus = { pane: 'prose', linkIdx: 0, rowIdx: 0 };
+    this.dialogueScroll = 0; this.dialogueColScroll = 0;
+    this.dialogueMetrics = null;
+    this.dialoguePressed = false;
+    this.builtFrame = -1;
+    return null;
+  }
 
   _hudModel(ctx) {
     const p = ctx.player;
@@ -1187,6 +1367,16 @@ export class UISystem {
     const bk = this.mode === 'book' && this.bookId ? this.data.books.get(this.bookId) : null;
     return {
       mode: this.mode,
+      /**
+       * W1-UIX08. The dialogue window's own layout, published so every check in RI-UIX08's
+       * comparison method reads the layout that drew rather than a pixel guess: the six elements
+       * and their rects, the FIXED column width in layout units next to the panel width in
+       * pixels (B1), the interior alpha (§E1), the disposition as a number, and — the field the
+       * item exists for — how many inline links were lit and which topics they promise.
+       *
+       * `null` when no conversation is open, which is not the same value as an empty window.
+       */
+      dialogue_window: this.dialogueMetrics,
       // W1-MAP. Was `false` under seam S30 and is `true` under S35, which overruled it. The
       // field is KEPT AND FLIPPED rather than deleted, so that a probe written against S30 gets
       // a changed answer instead of `undefined` — an existence check that silently starts

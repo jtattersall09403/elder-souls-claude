@@ -37,6 +37,7 @@ import path from 'node:path';
 import { launchGame } from '../lib/browser.mjs';
 import { makeControlClone, removeClone, humanMB } from '../lib/control-clone.mjs';
 import { parseArgs, wantsHelp, usage, RUNS_DIR, ensureDir, writeJson, REPO_ROOT, log } from '../lib/cli.mjs';
+import { pinTree, assertUnmoved, pinSummary } from '../lib/pinned-tree.mjs';
 
 const args = parseArgs();
 if (wantsHelp(args)) usage('fog-control.mjs — geography whole, markers earned; with delete-the-fix and a plausible null control.');
@@ -132,9 +133,22 @@ async function measure(entry, label) {
 const report = { probe: 'fog-control', at: new Date().toISOString(), arms: {} };
 try { report.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD').toString().trim(); } catch { /* */ }
 
+// W1-MAP-DEFECTS-r2 — THE ARMS MUST BE RUN AGAINST ONE SOURCE, AND LAST TIME THEY WERE NOT.
+// The r1 record's `fog-deletefix.png` is headed "Where I have been" and its `fog-markers.png` is
+// headed "The Province": `game/src/ui/screens/map.js` was edited BETWEEN two arms of the same
+// experiment, which voids the comparison whatever the numbers said. `report.commit` above cannot
+// see that — the edit was uncommitted, so HEAD never moved. So pin the CONTENT of the served tree
+// before the first arm and re-check after every one; the run aborts rather than publishing a
+// comparison across a tree that shifted. `node tools/lib/pinned-tree.mjs --self-test` is the proof
+// it can fail (7 arms, including the control that requires it to stay silent when nothing moved).
+const pin = pinTree({ paths: ['game'], label: 'fog-control' });
+log(`  pinned ${pin.count} source files in game/ at ${pin.digest}${pin.git.dirty ? ' (tree dirty — recorded, not fatal; see pinned-tree.mjs)' : ''}`);
+report.pin = pinSummary(pin);
+
 const clones = [];
 try {
   for (const arm of ARMS) {
+    assertUnmoved(pin, { arm, what: 'the fog control' });
     let entry = null, patched = null;
     if (arm !== 'head') {
       const { dir, manifest } = makeControlClone({
@@ -183,5 +197,9 @@ let pass = true;
 for (const [what, ok] of checks) { if (!ok) pass = false; say(`${ok ? 'ok  ' : 'FAIL'} ${what}`); }
 report.checks = checks.map(([what, ok]) => ({ what, ok }));
 report.pass = pass && checks.length > 0;
+// The last gate, and the one that matters: nothing is published until the tree is confirmed to be
+// the tree every arm above was measured against.
+assertUnmoved(pin, { arm: 'publish', what: 'the fog control' });
+report.pin_verified_at_publish = new Date().toISOString();
 writeJson(path.join(OUT, 'fog-control.json'), report);
 process.exit(report.pass ? 0 : 1);

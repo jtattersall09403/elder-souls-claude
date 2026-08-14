@@ -52,7 +52,7 @@ export class FactionRefusals {
    *   `said` is null only when this file has nothing for the faction, and that is a reportable
    *   hole rather than a silent pass — `unknown_faction` covers the case in words.
    */
-  speak(factionId, evaluation) {
+  speak(factionId, evaluation, opts) {
     const lines = this.byFaction[factionId];
     const base = {
       faction: factionId,
@@ -64,6 +64,29 @@ export class FactionRefusals {
       const dead = this.notJoinable[factionId];
       return { ...base, said: dead || this.doc.unknown_faction || null, kind: dead ? 'not_joinable' : 'unknown' };
     }
+
+    // ---- THE LOCK COMES FIRST. W1-20 round 3, and it is a correction of THIS FILE. ------------
+    //
+    // `W1-20-r2` §"Secondary findings" 2: `QuestEngine.open()` refused an exclusivity-locked
+    // quest correctly and recorded *"The Imperial Assize will not deal with you: you are The Wet
+    // Ledger"* — and then spoke a line whose kind is `welcome`, on ALL FIVE locked lines, because
+    // the evaluation `open()` hands down is the RANK gate and the rank gate was satisfied. The
+    // player was told they were in. They were not in.
+    //
+    // The lock is not a term in `FactionGates.evaluate()` and must not become one: rank is
+    // derived, the lock is a membership fact the quest machine owns, and merging them would put
+    // two authorities on one sentence. So it arrives beside the evaluation instead, and it is
+    // tested BEFORE `allowed`, because a satisfied rank gate on a closed door is exactly the
+    // state that produced the defect.
+    const lockedBy = opts && (opts.locked_by || opts.lockedBy);
+    if (lockedBy) {
+      const tmpl = lines.rivalry_locked;
+      const rivals = Array.isArray(lockedBy) ? lockedBy.join(' and ') : String(lockedBy);
+      this.spoken++;
+      return { ...base, allowed: false, kind: 'rivalry_locked', locked_by: rivals,
+        said: tmpl ? String(tmpl).replace(/\{rival\}/g, rivals) : (opts.reason || null) };
+    }
+
     if (!evaluation) return { ...base, said: null };
 
     if (evaluation.allowed) {

@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-WATER-LANES",
+  "title": "Axis-aligned water lanes (job 1) + height-fog re-take at HEAD (job 2)",
+  "state": "starting",
+  "started": "2026-08-14",
+  "could_not_do": [
+    "Nothing yet — task just started. This list is written FIRST and updated as gaps appear."
+  ],
+  "next_step": "Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis.",
+  "files_touched": [
+    "orchestration/status/W1-WATER-LANES.json"
+  ],
+  "files_claimed": [
+    "game/src/render/water.js",
+    "tools/visual/w1-water-lanes.mjs",
+    "tools/visual/w1-heightfog-retake.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-WATER-LANES/"
+  ],
+  "notes": []
+}

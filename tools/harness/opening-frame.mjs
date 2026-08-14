@@ -244,6 +244,112 @@ function poseAndSettle(cell, pos, bodyYaw, camYaw, opts = {}) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// IS THE WAY OUT ACTUALLY VISIBLE? — a raycast against the DRAWN room, in two arms
+// ---------------------------------------------------------------------------------------------
+//
+// The angular test above answers "is the doorway inside the field of view" and, measured, the
+// answer was already YES before any of this: the census pose was 6.6 deg off the bearing to the
+// doorway, comfortably inside a 39.7 deg half-FOV. **So the yaw was never the defect at this
+// site**, and a fix that only turned the camera would have moved a number and changed nothing a
+// player can see. What was wrong is what stood in the way:
+//
+//   * `render/places.js#buildWritHouse()` drew the +z wall as one unbroken 11 m slab. The room
+//     had no door in it at all, while the collision shell (`interiorShellPlan`) had an opening
+//     there and the world had a door on that face.
+//   * the wall of reed-cases — 8.2 m wide, four rows, `z = 5.9` — stood 0.6 m in front of it,
+//     centred, so it covered the opening even once the opening existed.
+//
+// So the honest measure is OCCLUSION, and it has to be taken against the DRAWN meshes rather than
+// the collision cell, because `interiorCollisionShapes()` deliberately leaves furniture non-solid:
+// the shelving is invisible to physics and completely opaque to a player. This casts rays from
+// the real camera pose to a grid of points across the aperture the shell plan cuts, through the
+// room `buildWritHouse()` actually builds.
+//
+// TWO ARMS, AND THE "BEFORE" IS NOT A RECONSTRUCTION. `--baseline <git-ref>` checks the PREVIOUS
+// `render/places.js` straight out of git into the same directory (so its relative imports still
+// resolve), imports it, and builds the room from it. Comparing the shipped module against a
+// hand-retyped "what it used to look like" is how you measure your own retyping.
+async function buildRoom(ref) {
+  const THREE = await import(path.join(ROOT, 'game/vendor/three/three.module.js'));
+  let mod;
+  let tmp = null;
+  if (ref) {
+    const { execFileSync } = await import('node:child_process');
+    const src = execFileSync('git', ['show', `${ref}:game/src/render/places.js`], { cwd: ROOT, maxBuffer: 1 << 26 });
+    tmp = path.join(ROOT, `game/src/render/.opening-frame-baseline-${process.pid}.js`);
+    fs.writeFileSync(tmp, src);
+    mod = await import(tmp);
+  } else {
+    mod = await import(path.join(ROOT, 'game/src/render/places.js'));
+  }
+  // Any material will do: a raycast reads geometry and transforms, never a shader. One shared
+  // material for every name the builder asks for keeps this honest about what it is testing.
+  const one = new THREE.MeshBasicMaterial();
+  const mats = new Proxy({}, { get: () => one });
+  const root = new THREE.Group();
+  mod.buildWritHouse(root, mats);
+  root.visible = true;
+  root.traverse((o) => { o.visible = true; });
+  root.updateMatrixWorld(true);
+  if (tmp) fs.rmSync(tmp, { force: true });
+  return { THREE, root, ref: ref || 'working tree' };
+}
+
+/**
+ * What fraction of the doorway aperture can be seen from a camera pose.
+ *
+ * The aperture is the SAME rectangle in both arms — `INTERIOR_DOOR_W` x `INTERIOR_DOOR_H` at the
+ * centre of the wall `continuity.entry_side` names, which is what `interiorShellPlan()` cuts and
+ * what the collision shell already had. The sample plane sits at z = 6.30, in front of both the
+ * old solid wall's face (6.325) and the new leaf's face (6.37), so neither arm is measured
+ * through its own door.
+ */
+function apertureVisibility({ THREE, root }, camPos, cols = 5, rows = 7) {
+  const rc = new THREE.Raycaster();
+  const meshes = [];
+  root.traverse((o) => { if (o.isMesh) meshes.push(o); });
+  const origin = new THREE.Vector3(camPos[0], camPos[1], camPos[2]);
+  let seen = 0, n = 0;
+  const blockers = new Map();
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      const x = -0.63 + (1.26 * i) / (cols - 1);
+      const y = 0.15 + (1.80 * j) / (rows - 1);
+      const target = new THREE.Vector3(x, y, 6.30);
+      const dir = target.clone().sub(origin);
+      const dist = dir.length();
+      rc.set(origin, dir.normalize());
+      rc.far = dist - 0.02;
+      const hits = rc.intersectObjects(meshes, false);
+      n++;
+      if (!hits.length) seen++;
+      else {
+        const g = hits[0].object.geometry;
+        const key = g && g.parameters
+          ? `${g.type}(${[g.parameters.width, g.parameters.height, g.parameters.depth].map((v) => (v === undefined ? '' : (+v).toFixed(2))).join('x')}) @ z=${hits[0].object.position.z.toFixed(2)}`
+          : (g ? g.type : 'unknown');
+        blockers.set(key, (blockers.get(key) || 0) + 1);
+      }
+    }
+  }
+  return {
+    samples: n, visible: seen, visible_fraction: +(seen / n).toFixed(3),
+    blocked_by: [...blockers.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([k, v]) => ({ what: k, samples: v })),
+  };
+}
+
+/** The camera's world position for a settled pose, exactly as `desiredPoint()` builds it. */
+function camPosOf(pos, yawDeg, pitchDeg, armLen) {
+  const yaw = yawDeg * D2R, pitch = pitchDeg * D2R, cp = Math.cos(pitch);
+  const f = [Math.sin(yaw) * cp, Math.sin(pitch), Math.cos(yaw) * cp];
+  const r = [Math.cos(yaw), 0, -Math.sin(yaw)];
+  const u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]];
+  const sr = CAMERA_CONST.shoulder_right_free_m, su = CAMERA_CONST.shoulder_up_free_m;
+  const pv = [pos[0], pos[1] + CAMERA_CONST.pivot_height_m, pos[2]];
+  return [0, 1, 2].map((i) => pv[i] - f[i] * armLen + r[i] * sr + u[i] * su);
+}
+
+// ---------------------------------------------------------------------------------------------
 // the two sites
 // ---------------------------------------------------------------------------------------------
 const out = {
@@ -312,6 +418,31 @@ const out = {
       },
     },
   };
+  // ---- THE OCCLUSION ARMS, against the drawn room ------------------------------------------
+  const roomNow = await buildRoom(null);
+  const roomWas = args.baseline ? await buildRoom(String(args.baseline)) : null;
+  for (const [k, v] of Object.entries(out.sites.census_handback.arms)) {
+    const cp = camPosOf(pos, v.cam_yaw_deg, k === 'fixed' ? fixed.pitch_deg : place.camera.pitch, v.arm_m);
+    v.camera_pos_local = cp.map((n) => +n.toFixed(2));
+    v.way_out_visible = { after: apertureVisibility(roomNow, cp) };
+    if (roomWas) v.way_out_visible.before = apertureVisibility(roomWas, cp);
+    // AND WHERE DOES "FORWARD" GO? The camera decides what you see; the BODY decides where the
+    // stick takes you. The census leaves the body on `player_yaw` 320 — the bearing to the
+    // Warden-Scribe, correct for talking to her and 2.6 m wide of the door — so the first press
+    // of the stick in the shipped build walks you past the exit and into the wall beside it.
+    // Closest approach to the doorway over a straight 8 m walk, which is the whole of the room.
+    const by = k === 'as_shipped' || k === 'NULL_body_only' ? v.body_yaw_deg : v.body_yaw_deg;
+    const f = fwd2(by);
+    const tx = door.pos[0] - pos[0], tz = door.pos[2] - pos[2];
+    const t = Math.max(0, Math.min(8, tx * f[0] + tz * f[1]));
+    v.walk_forward = {
+      body_yaw_deg: by,
+      closest_approach_m: +Math.hypot(tx - f[0] * t, tz - f[1] * t).toFixed(2),
+      reaches_doorway: Math.hypot(tx - f[0] * t, tz - f[1] * t) <= 0.70,   // half INTERIOR_DOOR_W
+    };
+  }
+  out.sites.census_handback.room_arms = { after: 'working tree', before: args.baseline || null };
+
   // How long the null control takes to arrive, in frames, at 1.5 deg/frame — the cost of the trap.
   const gap = Math.abs(((fixed.yaw_deg - place.camera.yaw + 540) % 360) - 180);
   out.sites.census_handback.null_recentre = {
@@ -381,6 +512,14 @@ for (const [k, v] of Object.entries(C.arms)) {
     + `  WAY OUT ${v.way_out.on_screen ? 'ON SCREEN ' : 'off screen'} (${String(v.way_out.off_axis_deg).padStart(6)}° off axis)`);
 }
 say(`  the null control needs ${C.null_recentre.frames_to_arrive} frames at ${C.null_recentre.clamp_deg_per_frame}°/frame to close its ${C.null_recentre.yaw_gap_deg}° gap — and only if the player walks`);
+say(`  IS THE WAY OUT VISIBLE? — rays from the camera to the doorway aperture, against the drawn room:`);
+for (const [k, v] of Object.entries(C.arms)) {
+  const b = v.way_out_visible.before, a = v.way_out_visible.after;
+  say(`    ${k.padEnd(16)} ${b ? `before ${pct(b.visible_fraction).padStart(4)} -> ` : ''}after ${pct(a.visible_fraction).padStart(4)}`
+    + `    walk forward: ${v.walk_forward.reaches_doorway ? 'reaches the doorway' : `misses it by ${v.walk_forward.closest_approach_m} m`}`);
+  if (b) say(`      ${''.padEnd(16)} before, blocked by: ${b.blocked_by.map((x) => `${x.what} x${x.samples}`).join('; ') || '-'}`);
+  say(`      ${''.padEnd(16)} after,  blocked by: ${a.blocked_by.map((x) => `${x.what} x${x.samples}`).join('; ') || '-'}`);
+}
 say('');
 const S = out.sites.writ_house_doorstep;
 say(`SITE 2 — the Writ House doorstep, ${S.pos.map((n) => n.toFixed(2)).join(', ')} (ground ${S.ground_y_m} m), ${S.town_cell_shapes} solids:`);

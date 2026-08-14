@@ -111,8 +111,17 @@ const main = async () => {
           settlement: s.env.settlement, interior: s.env.interior,
           pos: p.map((v) => +v.toFixed(2)),
           facing_yaw_deg: +yaw.toFixed(1),
-          camera_yaw_deg: s.camera ? +s.camera.yaw.toFixed(1) : null,
+          camera_yaw_deg: +(s.camera ? s.camera.yaw : 0).toFixed(1),
           clearance_m: clear,
+          // IS THE PLAYER IN THIS FRAME? Not a judgement — `sim/camera.js#fadeOpacity()` fades the
+          // character out as the spring arm shortens and reaches ZERO at `fade_zero_m` = 0.90 m,
+          // and the renderer consumes `camera.charOpacity` without deciding anything. So a frame
+          // carrying `char_opacity: 0` is the build's own statement that the body is not drawn,
+          // which is exactly the open item this capture exists to photograph. `arm_m` is the
+          // length that produced it and `arm_guard` says the penetration guard fired.
+          arm_m: +(s.camera ? s.camera.armLen : 0).toFixed(3),
+          char_opacity: +(s.camera ? s.camera.charOpacity : 1).toFixed(3),
+          arm_guard: !!(s.camera && s.camera.armGuard),
         };
       }, 12);
       frames.push({ file: f, label, ...where, ...extra });
@@ -133,49 +142,64 @@ const main = async () => {
     manifest.renderer_string = rendererString;
     manifest.software_renderer = manifest.software_renderer === null ? software : (manifest.software_renderer || software);
 
+    // A camera orbit around the standing body, at a fixed radius. The directive's own words:
+    // *"if you just load the game rotate the camera around the player it's immediately obvious"*.
+    // The BODY is never touched — only the eye moves — so what an orbit shows is what is around
+    // the place the player is standing, and it is the check a single still cannot be.
+    const orbit = async (label, dist, height, extra = {}) => {
+      const p0 = await g.page.evaluate(() => window.__ENGINE.sim.player.pos.slice());
+      const pose = await g.page.evaluate(() => ({
+        yaw: window.__ENGINE.sim.player.yaw,
+        cam_yaw: window.__ENGINE.sim.camera ? window.__ENGINE.sim.camera.yaw : null,
+        cam_pitch: window.__ENGINE.sim.camera ? window.__ENGINE.sim.camera.pitch : null,
+      }));
+      for (const yaw of ORBIT_YAWS) {
+        const r = yaw * Math.PI / 180;
+        await g.h('camera', {
+          pos: [p0[0] - Math.sin(r) * dist, p0[1] + height, p0[2] - Math.cos(r) * dist],
+          look: [p0[0], p0[1] + 1.1, p0[2]],
+        });
+        await g.h('stepFrames', 2);
+        await shot(`${label}-${String(yaw).padStart(3, '0')}`, { orbit_yaw_deg: yaw, ...extra });
+      }
+      await g.h('camera', { mode: 'gameplay' });
+      // Put the pose back the way the SCENE left it, not the way the last orbit left it.
+      // Measured on the first hardware run: `camera({mode:'gameplay'})` releases the position
+      // override and leaves `sim.camera.yaw` on the last orbit angle, and `move: [0, 1]` is
+      // forward RELATIVE TO THE CAMERA — so thirty seconds of "walking out of the door" set off
+      // at 315 deg instead of the door's 70. `facing_yaw_deg` in the manifest is how it was caught.
+      await g.page.evaluate((q) => {
+        const s = window.__ENGINE.sim;
+        s.player.yaw = q.yaw;
+        if (s.camera && q.cam_yaw !== null) { s.camera.yaw = q.cam_yaw; s.camera.pitch = q.cam_pitch; }
+        const b = window.__ENGINE.combat && window.__ENGINE.combat.player;
+        if (b) b.yaw = q.yaw;
+      }, pose);
+      await g.h('stepFrames', 8);
+      return pose;
+    };
+
     // ---- 1-3. the opening, played -----------------------------------------------------------
+    // `handback` is the frame the CENSUS leaves you on, before any door is used, and it is the
+    // opening shot of the game. It gets the same orbit treatment as the doorstep, at a shorter
+    // radius because it is a 9 x 12 m room.
     const opening = await startOpening(g, {
       start: START,
       label: `opening-capture ${vp.id}`,
-      onStage: async (name) => { await shot(name, { stage: name }); },
+      onStage: async (name) => {
+        await shot(name, { stage: name });
+        if (name === 'writ-house-done' && START === 'shipping') {
+          await orbit('handback-orbit', 4.2, 1.9, { stage: 'writ-house-done' });
+          await shot('handback-gameplay-camera', { stage: 'writ-house-done' });
+        }
+      },
     });
 
     // ---- 4. the orbit -----------------------------------------------------------------------
     // `camera({pos, look})` poses the eye through the ENGINE's own override, which is what the
     // harness re-renders through on `screenshot`; a Three camera moved behind the engine's back
     // is overwritten before the pixels are read (first-ten.mjs learned this the expensive way).
-    const p0 = await g.page.evaluate(() => window.__ENGINE.sim.player.pos.slice());
-    // The pose the door left us in, stashed BEFORE the orbit moves the camera. Restored after.
-    // MEASURED on the first hardware run and it silently spoiled the walk: `camera({mode:
-    // 'gameplay'})` releases the position override but leaves `sim.camera.yaw` wherever the last
-    // orbit put it, and `move: [0, 1]` is forward RELATIVE TO THE CAMERA — so thirty seconds of
-    // "walking out of the door" set off at 315°, the last orbit angle, instead of the door's 70°.
-    // The manifest recorded it (`facing_yaw_deg` went 70 -> 315 between the orbit and t01s) which
-    // is the only reason it was caught, and is why that field is in the manifest at all.
-    const exitPose = await g.page.evaluate(() => ({
-      yaw: window.__ENGINE.sim.player.yaw,
-      cam_yaw: window.__ENGINE.sim.camera ? window.__ENGINE.sim.camera.yaw : null,
-    }));
-    for (const yaw of ORBIT_YAWS) {
-      const r = yaw * Math.PI / 180;
-      const dist = 5.5, height = 2.4;
-      await g.h('camera', {
-        pos: [p0[0] - Math.sin(r) * dist, p0[1] + height, p0[2] - Math.cos(r) * dist],
-        look: [p0[0], p0[1] + 1.1, p0[2]],
-      });
-      await g.h('stepFrames', 2);
-      await shot(`exit-orbit-${String(yaw).padStart(3, '0')}`, { orbit_yaw_deg: yaw });
-    }
-    await g.h('camera', { mode: 'gameplay' });
-    // Put the pose back the way the DOOR left it, not the way the last orbit left it.
-    await g.page.evaluate((pose) => {
-      const s = window.__ENGINE.sim;
-      s.player.yaw = pose.yaw;
-      if (s.camera && pose.cam_yaw !== null) s.camera.yaw = pose.cam_yaw;
-      const b = window.__ENGINE.combat && window.__ENGINE.combat.player;
-      if (b) b.yaw = pose.yaw;
-    }, exitPose);
-    await g.h('stepFrames', 8);
+    await orbit('exit-orbit', 5.5, 2.4);
     await shot('exit-gameplay-camera');
 
     // ---- 5. thirty seconds of walking -------------------------------------------------------

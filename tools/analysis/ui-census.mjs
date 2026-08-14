@@ -115,7 +115,11 @@ const KNOWN = new Set(['health_bar', 'stamina_bar', 'focus_bar', 'heal_charges',
   'journal_entry', 'journal_index_row', 'book_page', 'page_count', 'attribute_row',
   'attribute_preview', 'souls_held', 'souls_to_next', 'level_value', 'skill_row',
   'spell_row', 'sheet_row', 'search_field', 'scroll_extent', 'selection', 'divider',
-  'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph']);
+  'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph',
+  // W1-UIX08. Mirrors the two kinds added to `game/src/ui/surface.js` KINDS for the dialogue
+  // window (RI-UIX08 §A5/§A6). Deliberately NOT `progress_bar` and NOT `button`, both of which
+  // stay in the forbidden sweep below.
+  'disposition_meter', 'dialogue_exit']);
 
 const BUDGET = {
   persistent: { pass: 6, fail: 9 },

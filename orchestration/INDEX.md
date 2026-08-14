@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f8b3e4c8`: 969 tools, 157 reference
-items, 194 pieces in flight.
+so it cannot drift. Generated at `2df1dceb`: 973 tools, 157 reference
+items, 197 pieces in flight.
 
-Its purpose is to stop 194+ concurrent agents each paying separately to discover the
+Its purpose is to stop 197+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -226,7 +226,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/w1-22-r3-pack.mjs` — THE BLIND QUALITY PACK, WITH THE RECORDINGS IN IT.
 - `tools/audio/w1-22-r4-s41.mjs` — W1-22 completion-builder capture preparation.
 
-### `tools/blind/` — 8
+### `tools/blind/` — 9
 
 - `tools/blind/audio-pack-b2.mjs` — RI-AUD03 B2 PACK BUILDER.
 - `tools/blind/audio-pack-w1-22-r2.mjs` — W1-22 ROUND-2 CRITIC'S BLIND PACK BUILDER — THE HARDER PACK THE B2 JUDGE ASKED FOR.
@@ -236,6 +236,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/blind/make-image-pair.mjs` — **no header comment**
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 - `tools/blind/mask-text.mjs` — tools/blind/mask-text.mjs — hide provenance in a text artifact WITHOUT leaving a countable scar.
+- `tools/blind/protocol-a-transport-proof.mjs` — **no header comment**
 
 ### `tools/camera/` — 10
 
@@ -391,7 +392,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 252
+### `tools/harness/` — 253
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -531,6 +532,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-map-stepcheck.mjs` — is the long-step crash the map's, or the tree's?
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/door-exit-yaw.mjs` — WHICH WAY ARE YOU FACING WHEN A DOOR PUTS YOU DOWN?
+- `tools/harness/door-yaw-sweep.mjs` — ALL 115 INTERIORS, BOTH DIRECTIONS, AND A DEFINITION OF "CORRECT".
 - `tools/harness/first-ten.mjs` — **no header comment**
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
 - `tools/harness/jrn01-m8-writ.mjs` — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
@@ -677,7 +679,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/journey/state-diff.mjs` — RI-JRN05's round-trip instrument, named by the item (§ "Instruments", line 213) and absent until now: the W1-00 round-2 critic verified its absence.
 - `tools/journey/world-runs-gate.mjs` — one implementation of "is the simulation actually advancing?", used by every journey rather than by one.
 
-### `tools/lib/` — 14
+### `tools/lib/` — 15
 
 - `tools/lib/absence.mjs` — the third thing TOOL-LOOP rule 1 names, and the one this project keeps skipping.
 - `tools/lib/browser.mjs` — Boots the game in headless Chromium and hands back a live handle to window.__HARNESS.
@@ -689,6 +691,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/gamedata.mjs` — load the shipped game/data/** trees the way game/src/engine.js assembles them, so a static tool and the running game cannot drift.
 - `tools/lib/graded.mjs` — A CHECK WITH AN EMPTY SAMPLE SET MUST REPORT `EMPTY`, NEVER `PASS`.
 - `tools/lib/opening.mjs` — THE OPENING A PLAYER ACTUALLY GETS, as one shared function.
+- `tools/lib/pinned-tree.mjs` — refuse to publish an experiment whose source moved underneath it.
 - `tools/lib/run.mjs` — Scenario execution + artifact writing.
 - `tools/lib/scenario.mjs` — Scenario loading + input-script normalisation.
 - `tools/lib/serve.mjs` — Minimal static file server.
@@ -868,7 +871,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 34
+### `tools/render/` — 35
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/consumption-sweep.mjs` — **no header comment**
@@ -904,6 +907,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30e-ground-albedo.mjs` — **no header comment**
 - `tools/render/w1-30e-kit-gate.mjs` — W1-30E — the offline gates for the settlement kit, each with a null control.
 - `tools/render/w1-30e-roof-extent.mjs` — **no header comment**
+- `tools/render/w1-30e-street-enclosure.mjs` — **no header comment**
 
 ### `tools/runpod/` — 16
 
@@ -1204,7 +1208,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **266 tools have no header comment**, so nobody can tell what they do without
+> **268 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1382,6 +1386,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-WATER-LANES` | starting | Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis. | `orchestration/status/W1-WATER-LANES.json` |
+| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Read CLAUDE.md, OWNER-DIRECTIVES, MATERIAL_API.md, W1-30 verdict; then reproduce the censu | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
+| `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
+| `plan-review2-w1-dlg-topic-web` | in-progress | read the bar, re-measure round 1's figures at HEAD, attack the null control / S51 / the se | `orchestration/status/plan-review2-w1-dlg-topic-web.json` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
 | `W1-MAP-DEFECTS-r2` | in_progress | Read verdict r1, HAZARDS, OWNER-DIRECTIVES; then re-run fog control with both arms. | `orchestration/status/W1-MAP-DEFECTS-r2.json` |
@@ -1389,7 +1397,6 @@ work is the difference between resuming and starting over.
 | `RI-VIS06-PROTOCOL-A` | running | in progress | `orchestration/status/RI-VIS06-PROTOCOL-A.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
-| `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |
 | `SPAWN-YAW` | done-and-banked |  | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |
 | `W1-MW-UI-REFS` | delivered | Nothing blocking. W1-DLG-TOPIC-WEB is a draft awaiting its first fresh reviewer-editor rou | `orchestration/status/W1-MW-UI-REFS.json` `corpus/70-visual/refs/morrowind/REF-A12c/REF-A12c-dialogue__mw-owner-20260814.png` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` `corpus/70-visual/refs/MANIFEST.json` `corpus/70-visual/refs/make-manifest.py` |

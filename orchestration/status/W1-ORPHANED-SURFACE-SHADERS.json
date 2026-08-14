@@ -1,0 +1,47 @@
+{
+  "task_id": "W1-ORPHANED-SURFACE-SHADERS",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "commit_at_start": "52d66578",
+  "branch": "codex/wave1-build-experiment",
+
+  "could_not_do": [
+    "IN PROGRESS — this list is written first and updated as blockers appear, per the brief.",
+    "tools/contention.mjs reported WAIT at start (4 browser instances, load 5.47/core against a 4.0 ceiling). Non-browser work is being done first; any browser run taken past a WAIT will be declared here with the reason."
+  ],
+
+  "headline": "305 of 406 materials carry userData.surfaceUniforms whose onBeforeCompile no longer installs them, including the player's body. Establishing the population, fixing structurally at the copy seam, proving with a CONSUMPTION perturbation and hardware before/after frames.",
+
+  "mechanism_as_understood": [
+    "visual-foundation.js#installSurfaceShader writes BOTH mat.userData.surfaceUniforms (bookkeeping) and mat.onBeforeCompile (the shader).",
+    "three r180 Material.copy() copies userData by JSON deep-copy and does NOT copy onBeforeCompile. So every .clone() keeps the bookkeeping and loses the shader.",
+    "SECOND, INDEPENDENT LOSS at the same seam: installSurfaceShader also does shadedMaterials.add(mat). A clone is not in that Set, so setWorldWetness() never reaches it even if its hook were intact.",
+    "THIRD, INDEPENDENT LOSS at the same seam: registerFamilyMaterial(family, mat) is not re-run for a clone, so the loud magenta ASSET-LOAD-FAILED fallback cannot stain a cloned material.",
+    "FOURTH: actor.js#installWaterline ASSIGNS mat.onBeforeCompile rather than chaining prior, so on the player's body it would destroy a restored surface pass anyway. Ordering saves nothing here."
+  ],
+
+  "declared_claims": {
+    "note": "Both render files are hot. Live pieces reported by tools/ownership.mjs at start:",
+    "game/src/render/visual-foundation.js": ["W1-30-builder-20260812", "W1-30C-builder", "W1-30S"],
+    "game/src/render/actor.js": ["W1-03", "W1-30-P2", "W1-30-builder-20260812"],
+    "method": "Changes to both hot files are developed on a hard-linked control clone and applied to the live file by a single scripted patch that records a pre-edit md5, refuses to apply twice, and refuses to apply if its anchors have moved. The dev copy lives under the scratchpad, never in the repo tree."
+  },
+
+  "redundant_with": ["W1-30C-builder", "W1-30S", "W1-30-builder-20260812", "W1-30-P2"],
+
+  "files_touched": [
+    "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json"
+  ],
+  "files_claimed": [
+    "game/src/render/visual-foundation.js",
+    "game/src/render/actor.js",
+    "tools/visual/w1-30-surface-orphan-census.mjs",
+    "tools/visual/w1-30-surface-consumption.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+
+  "next_step": "Write the census tool (population + grouping by route), then develop the fix on a control clone.",
+  "notes": []
+}

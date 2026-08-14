@@ -291,6 +291,10 @@ export class QuestEngine {
     // so the refusal arrives through the same path as every other one and reads the same way.
     const locked = new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7)));
     const lockedReason = new Map();
+    // W1-20 round 3. `lockedReason` is a SENTENCE and `canOffer()` pushes it into `why`; the
+    // recruiter's own line needs the rival's NAME, not a sentence to embed. Kept as a second map
+    // rather than by changing the first, because three readers depend on the first's shape.
+    const lockedBy = new Map();
 
     // ---- EXPULSION — RI-QST03 §D, absent in round 1 ------------------------------------------
     // A faction throws you out for something you did to it while you were inside it. It arrives
@@ -325,6 +329,7 @@ export class QuestEngine {
             && (this.gates.closedBy(x).includes(fid) || (this.gates.exclusivity.earned || []).some((r) => (r.a === x && r.b === fid) || (r.b === x && r.a === fid))));
           const nm = (id) => { try { return this.gates.get(id).name; } catch { return id; } };
           lockedReason.set(def.id, `${nm(fid)} will not deal with you: you are ${by.map(nm).join(' and ')}`);
+          lockedBy.set(def.id, by.map(nm));
         }
       }
       // Mirror onto the standing rows so a save, a UI and a probe can all see WHY, rather than
@@ -350,7 +355,7 @@ export class QuestEngine {
       // upbringing term and no faction term ever reached `canOffer`.
       dispositions: this.dispositionView(),
       completed: new Set(q.completed),
-      locked, lockedReason,
+      locked, lockedReason, lockedBy,
       knowledge: know,
       items: new Set((this.sim.inventory || []).map((i) => i.id)),
       // RI-MAG06 / RI-MAG04 M6: a `requires.spell_effects` gate is satisfied by an effect the
@@ -502,9 +507,19 @@ export class QuestEngine {
       // words and puts them on the shipped toast channel. It is installed rather than imported so
       // that a QuestEngine built without an Engine — every quest tool in tools/quests/ — still
       // refuses exactly as before and simply says nothing.
+      //
+      // W1-20 ROUND 3. The third argument is the whole of secondary finding 2 in `W1-20-r2`: the
+      // gate handed down here is the RANK gate, and on an exclusivity-locked quest the rank gate
+      // is SATISFIED — so `refusal.js` picked the `welcome` line and the player was told they had
+      // been admitted to a faction that had just refused them, on all five locked lines. The lock
+      // lives here, in the machine, and it now travels with the evaluation instead of being
+      // silently dropped between the refusal and the mouth.
+      const lockedBy = ctx.lockedBy && ctx.lockedBy.get(id);
       let said = null;
-      if (c.gate && this.refusalVoice) {
-        try { said = this.refusalVoice(def.rank_gate.faction, c.gate); } catch { said = null; }
+      const voiceFaction = (def.rank_gate && def.rank_gate.faction) || def.faction || null;
+      if (voiceFaction && this.refusalVoice && (c.gate || lockedBy)) {
+        try { said = this.refusalVoice(voiceFaction, c.gate, lockedBy ? { locked_by: lockedBy, reason: ctx.lockedReason.get(id) } : null); }
+        catch { said = null; }
       }
       return { ok: false, reason: c.why.join('; '), gate: c.gate, said: (said && said.said) || null, voice: said || null };
     }
