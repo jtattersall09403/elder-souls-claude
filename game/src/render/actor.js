@@ -294,29 +294,36 @@ function installWaterline(mat, sharedUniforms) {
   mat.onBeforeCompile = (shader, renderer) => {
     if (prior) prior(shader, renderer);
     shader.uniforms.uWaterY = sharedUniforms.uWaterY;
-    shader.uniforms.uWetness = sharedUniforms.uWetness;
+    // Renamed uWetness -> uWaterlineWetness (W1-F1-SHADER-COLLISION): `installSurfaceShader`
+    // (visual-foundation.js) now chains onto the same preamble instead of being replaced, and it
+    // declares its own `uniform float uWetness`. Two declarations of one name in one fragment
+    // shader is a GLSL redefinition error — a fatal link failure, not a cosmetic clash — so this
+    // hook's identifiers must be unique against every other hook it now coexists with, not merely
+    // against itself. Same reasoning for `esWet`/`esBand`/`esMeniscus` below.
+    shader.uniforms.uWaterlineWetness = sharedUniforms.uWetness;
     shader.vertexShader = 'varying float vEsWaterY;\n' + shader.vertexShader.replace(
       '#include <skinning_vertex>',
       '#include <skinning_vertex>\n\tvEsWaterY = transformed.y;',
     );
-    shader.fragmentShader = 'varying float vEsWaterY;\nuniform float uWaterY;\nuniform float uWetness;\n'
+    shader.fragmentShader = 'varying float vEsWaterY;\nuniform float uWaterY;\nuniform float uWaterlineWetness;\n'
       + shader.fragmentShader
         .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\n'
-          // `esBand`: metres BELOW the waterline (positive = submerged). The meniscus itself is a
-          // ~5 cm soft band either side of the line, per §1's own "hard and hysteretic" boundary
-          // language for the GAMEPLAY band — the RENDERED line is deliberately a hair softer than
-          // that so it does not shimmer at 60 Hz the way a one-pixel hard edge would.
-          + '\tfloat esBand = uWaterY - vEsWaterY;\n'
-          + '\tfloat esWet = smoothstep(-0.06, 0.02, esBand) * uWetness;\n'
-          + '\tfloat esMeniscus = (1.0 - smoothstep(0.0, 0.05, abs(esBand))) * uWetness;\n')
+          // `esWaterlineBand`: metres BELOW the waterline (positive = submerged). The meniscus
+          // itself is a ~5 cm soft band either side of the line, per §1's own "hard and
+          // hysteretic" boundary language for the GAMEPLAY band — the RENDERED line is
+          // deliberately a hair softer than that so it does not shimmer at 60 Hz the way a
+          // one-pixel hard edge would.
+          + '\tfloat esWaterlineBand = uWaterY - vEsWaterY;\n'
+          + '\tfloat esWaterlineWet = smoothstep(-0.06, 0.02, esWaterlineBand) * uWaterlineWetness;\n'
+          + '\tfloat esWaterlineMeniscus = (1.0 - smoothstep(0.0, 0.05, abs(esWaterlineBand))) * uWaterlineWetness;\n')
         .replace('#include <color_fragment>', '#include <color_fragment>\n'
-          + '\tdiffuseColor.rgb *= mix(1.0, 0.42, esWet);\n'
-          + '\tdiffuseColor.rgb += vec3(0.07, 0.10, 0.09) * esMeniscus;\n')
+          + '\tdiffuseColor.rgb *= mix(1.0, 0.42, esWaterlineWet);\n'
+          + '\tdiffuseColor.rgb += vec3(0.07, 0.10, 0.09) * esWaterlineMeniscus;\n')
         .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n'
           // Wet skin/cloth reads shinier, dry the same roughness it always was — RI-WLD10 §10.2
           // forbids a full-screen blue filter, not a material response, and this is bounded to
           // the band the fragment is actually inside.
-          + '\troughnessFactor = mix(roughnessFactor, roughnessFactor * 0.30, esWet);\n');
+          + '\troughnessFactor = mix(roughnessFactor, roughnessFactor * 0.30, esWaterlineWet);\n');
   };
   // three.js's DEFAULT `customProgramCacheKey` reads `this.onBeforeCompile.toString()`, so calling
   // a prior key detached throws inside the renderer's program lookup — a boot failure, not a

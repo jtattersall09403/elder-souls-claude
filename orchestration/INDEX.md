@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `d1f20a2c`: **1006 tools**, **157 reference items**,
-**59 pieces in flight**.
+drift. At `ec30c7b8`: **1006 tools**, **158 reference items**,
+**58 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -12,7 +12,7 @@ deliberately off the read path. Grep them; do not read them.**
 | what you want to know | the one line that answers it |
 |---|---|
 | does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1006, one line each |
-| which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 157, with their `judges:` paths |
+| which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 158, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
 | am I about to collide with someone? | `node tools/ownership.mjs --conflicts` |
@@ -101,13 +101,13 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 > **282 of 1006 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
-## Reference items — 157, by family
+## Reference items — 158, by family
 
 `grep -i <word> orchestration/index/ITEMS.md` for the item, its `judges:` paths and its file.
 **Never assemble an item set by listing a directory** — a piece was once scored against a set built
 that way and seven of its twelve items judged none of its declared paths.
 
-`RI-AI` 7 · `RI-AUD` 5 · `RI-CAM` 7 · `RI-CHR` 3 · `RI-CMB` 12 · `RI-CMP` 3 · `RI-CRM` 2 · `RI-DLG` 9 · `RI-EXP` 6 · `RI-JRN` 9 · `RI-LOR` 16 · `RI-MAG` 6 · `RI-MTH` 7 · `RI-PLT` 3 · `RI-PRG` 9 · `RI-QST` 9 · `RI-STL` 2 · `RI-TRV` 2 · `RI-UIX` 8 · `RI-VIS` 9 · `RI-WLD` 16 · `RI-WPN` 7
+`RI-AI` 7 · `RI-AUD` 5 · `RI-CAM` 7 · `RI-CHR` 3 · `RI-CMB` 12 · `RI-CMP` 3 · `RI-CRM` 2 · `RI-DLG` 9 · `RI-EXP` 6 · `RI-JRN` 9 · `RI-LOR` 16 · `RI-MAG` 6 · `RI-MTH` 7 · `RI-PLT` 3 · `RI-PRG` 9 · `RI-QST` 9 · `RI-STL` 2 · `RI-TRV` 2 · `RI-UIX` 8 · `RI-VIS` 10 · `RI-WLD` 16 · `RI-WPN` 7
 
 ## Read these before you re-derive them
 
@@ -149,7 +149,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 59 live pieces
+## In flight right now — 58 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -160,11 +160,10 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
+| `W1-V2-CONTACT-SHADOWS-AO` | in_progress | `orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-v2-contact-ao.mjs` +4 |
 | `W1-F1-SHADER-COLLISION` | in-progress | `game/src/render/actor.js` `tools/visual/w1-f1-critic-shader-collision.mjs` `corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/` |
 | `I5-CHARACTER-REFERENCE-SET` | in_progress | `orchestration/status/I5-CHARACTER-REFERENCE-SET.json` `corpus/70-visual/refs/modern/character_fullbody/` `corpus/70-visual/refs/_provenance.json` `corpus/70-visual/refs/_computed.json` +10 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `W1-V2-CONTACT-SHADOWS-AO` | in_progress | `orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-v2-contact-ao.mjs` +3 |
-| `W1-G1-CAMERA-OCCLUSION` | in_progress | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `WIRING-AUDIT` | ? | — **declares nothing** |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
