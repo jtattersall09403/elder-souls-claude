@@ -10,7 +10,30 @@ fixes are verified by something other than my own say-so.
 `node tools/runpod/cli.mjs cleanup` with no arguments terminated **every** managed Pod on the
 account. On 2026-08-14 it killed `srd13nazorl0uc`, another agent's live Pod, mid-capture.
 
-**The mechanism.** Ownership travels **in the RunPod resource name**, not in a local file:
+**Correction, and it matters: the first version of this fix was insufficient and a sibling agent
+caught it.** Ownership was scoped to a slug hashed from `CLAUDE_CODE_SESSION_ID`, which I asserted
+distinguished agents. It does not — it identifies the **container**. At 10:11 a bare `cleanup`
+terminated a sibling's live Pod *through* the guard, and the run.json record is unambiguous: four
+runs started by different sibling agents (pids 16932, 2919, 12075, 4498) all carry the same slug
+`e9b0d69d`. My self-test passed throughout because every arm *injected* distinct slugs; nothing
+ever checked that two real sibling agents get different ones. The arms disagreed about the
+classification logic and agreed, wrongly, about the identity source.
+
+**So there are now two guards, because each covers the other's blind spot.**
+
+| guard | separates | survives |
+|---|---|---|
+| owner tag in the RunPod resource name | containers, accounts, worktrees | container restarts |
+| per-process claim in `/tmp` (`lib/claims.mjs`) | **sibling agents in one container** | not restarts — and pids are meaningless after one anyway |
+
+A bare `cleanup` now reaps a Pod only when the process that claimed it is gone, or when it has no
+claim at all *and* is past the 120-minute runtime cap. A Pod three minutes old with no claim is
+protected, because in a shared container that is far more likely to be a sibling's live run than an
+orphan. Claim liveness checks the pid **and** its recorded start time, so a recycled pid does not
+read as live.
+
+**The name mechanism, unchanged.** Ownership travels **in the RunPod resource name**, not in a
+local file:
 
 ```
 elder-souls-gpu-o<8 hex>-<runId>          e.g. elder-souls-gpu-oe9b0d69d-20260814-094028Z-30266
@@ -36,10 +59,15 @@ The literal `o` in the owner segment exists because the old run IDs start with a
 `20260814-...` is eight hex characters, and without a marker a legacy name would parse as a Pod
 owned by agent `20260814`. There is a self-test arm for exactly that.
 
-**Evidence it is load-bearing, not decorative.** On a copy, the ownership branch was replaced with
-"terminate everything managed" — the pre-guard behaviour. Three arms went red and the rest stayed
-green: `cleanup/foreign-pod-is-refused`, `cleanup/all-without-yes-refuses`, and
-`cleanup/young-foreign-pod-survives-an-older-than-sweep`. The guard is what those arms measure.
+**Evidence both guards are load-bearing, not decorative.** Two mutations on a copy. Replacing the
+ownership branch with "terminate everything managed" — the original behaviour — reddens three arms.
+Separately, disabling only the live-claim check reddens
+`cleanup/sibling-agent-live-pod-survives-despite-an-identical-owner-slug`, the arm that reproduces
+the 10:11 incident exactly: same owner slug, live sibling pid, must survive.
+
+**And the honest note on identity.** `RUNPOD_OWNER` is the only genuinely per-agent source. The CLI
+now prints the *scope* of whatever it resolved (`agent`, `container`, `box`) rather than implying
+the slug separates agents, because that implication is what made the second incident possible.
 
 ---
 
@@ -141,10 +169,13 @@ write names the disk instead of vanishing into a best-effort `catch`.
   smoke test. Pointing `vt-play.mjs`, `vt-seethrough.mjs` and `vt-world.mjs` at this transport — the
   many-angles, many-hours evidence directive §2 asks for — is the next piece of work and belongs to
   whoever owns the visual programme, not to this one.
-- **The owner-slug fallback is weak in one case.** With neither `RUNPOD_OWNER` nor
-  `CLAUDE_CODE_SESSION_ID` set, every agent on the box hashes to the same slug and bare `cleanup`
-  would treat their Pods as its own. It says so on stderr when that happens. Setting `RUNPOD_OWNER`
-  removes the case entirely.
+- **I got the ownership model wrong the first time and shipped it.** It took a sibling agent losing
+  a Pod to find it, which is the correct outcome for the project and a poor one for my own testing:
+  the self-test never questioned its own premise. The claim layer closes it, but the general lesson
+  is the one already in the directives — a green self-test is necessary and never sufficient, and an
+  arm that fabricates its own fixtures cannot falsify an assumption baked into those fixtures.
+- **Claims do not survive a container restart.** That is deliberate (pids are meaningless
+  afterwards), and it is why the age floor exists as the backstop for unclaimed Pods.
 - **This work was clobbered once mid-flight and had to be rewritten.** A concurrent agent's
   checkout removed `tools/runpod/lib/run-http.mjs`, the `launchGame` disk guard and the CLI's
   transport wiring from the worktree after they had been written and used for the two live runs;

@@ -95,10 +95,11 @@ Read the authoritative list from `MATERIAL_OPTION_KEYS`.
 | axis | type | today | when C's content lands |
 |---|---|---|---|
 | `palette` | swatch id, default `neutral` | **live** — tints base colour and re-grades saturation/value | also tints the trim atlas |
-| `wear` | 0..1, default 0 | **live** — rougher, desaturated, lighter toward the substrate | multiplied by a shared curvature/cavity mask so *edges* wear |
+| `wear` | 0..1, default 0 | **live** — rougher, desaturated, lighter toward the substrate, multiplied by a curvature mask | see `wearFrom` |
 | `wetness` | 0..1, default 0 | **live** — smoother, higher `envMapIntensity` | multiplied by a world-height mask so *hollows* wet |
 | `tilingScale` | >0, ≤64, default 1 | **live** — multiplies metres-per-tile, so 2 makes the texture read twice as coarse | unchanged |
-| `trim` | slot id, default `null` | recorded only | selects a band of the shared trim atlas |
+| `wearFrom` | `texture` \| `geometry`, default `texture` | **live** — see §6a | unchanged |
+| `trim` | slot id, default `null` | **live** — `trimSlot(id)` returns the band; `trimAtlasTextures()` returns the maps | unchanged |
 | `lod` | `shared`\|`near`\|`far`\|`impostor` | recorded | drives mip bias and detail-normal cut-off |
 | `boundedException` | string | recorded; appears in the census as a named exemption | unchanged |
 
@@ -155,6 +156,25 @@ is 3.8×.
 Do not inline the numbers. If a surface genuinely needs a different density, that is what
 `tilingScale` is for, and it is recorded in `userData.w1_30.metresPerTile` where the census can see
 it.
+
+## 6a. `wearFrom` — and the one thing C could not finish
+
+`wear` is multiplied by a curvature mask so that the arris of a plank wears and the face does not.
+Where that curvature comes from is the `wearFrom` axis.
+
+- **`texture`** (default) derives it from the base normal map. Every surface can do this today and
+  it is honest micro-wear. **It is not enough.** C's own variant proof, measured on an independent
+  edge/face split taken from the rendered image, found it moves rims and faces within about **one
+  percentage point** of each other — against the plan's bar of **8%**. The reason is structural: a
+  normal map's rate of change is dominated by grain, not by the arris of a plank, so no amount of
+  tuning the threshold turns it into an edge detector.
+- **`geometry`** reads a per-vertex float attribute **`esCurvature`** (0 = flat facet, 1 = edge)
+  and uses it directly.
+
+**This is a request to D and E.** Bake `esCurvature` onto your kit parts and your rigs — an edge
+between two faces meeting above a threshold angle is 1, a face interior is 0, smoothed — and pass
+`wearFrom: 'geometry'`. The option is frozen and live now, so you do not need another C commit, and
+this is the only route to the plan's `wear reads` gate.
 
 ## 6. Foliage and alpha
 

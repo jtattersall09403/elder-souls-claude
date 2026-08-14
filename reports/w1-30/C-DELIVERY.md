@@ -158,7 +158,7 @@ pictures:
 ### The variant axes — `node tools/assets/variant-proof.mjs`
 
 ```
-wear      4/5 subjects selective (inverted: chitin)
+wear      3-4/5 subjects selective run to run, by ~1 percentage point — SEE BELOW, THE GATE IS NOT MET
 wetness   reads on 5/5: delta -10.3% to -22.1% between the wet and dry arms
 palette   78 region pairs over ONE stone set; closest pair 0.013 hue / 0.011 value
           control (same swatch twice) 0.0000 / 0.0000
@@ -178,11 +178,38 @@ palette   78 region pairs over ONE stone set; closest pair 0.013 hue / 0.011 val
 4. **Two palette swatches were the same colour.** Blackwood and Deep Marshes were 0.006 hue apart
    over one stone set. Re-authored, along with three others that were crowding.
 
-**`chitin` inverts and is not tuned away.** Its synthesised height is a plateau per plate with
-grooves between, so the texture-space curvature lands in the grooves while this test's independent
-edge proxy (rendered luminance gradient) lands on the plate rims. The mask is demonstrably not inert
-on chitin — it moves edges and faces by different amounts — but it is pointed at the wrong feature,
-and the fix belongs with the synth script's height field.
+### The wear gate is NOT met, and I can say exactly why
+
+This is the plainest failure in the piece and it should not be read past.
+
+`wear` is **not inert** — at 0.9 it shifts surface luminance by 16–40% and at 0 by nothing. But it
+is **not selective**: on an edge/face split taken from the rendered image, independently of how the
+shader defines curvature, rims and faces move within about **one percentage point** of each other on
+two or three of five subjects, run to run. The plan's bar is **8%**. So today `wear` behaves close
+to the whole-material scalar it was meant to replace.
+
+Four versions were tried and measured, not guessed:
+
+| version | result |
+|---|---|
+| `length(mapN.xy)` | saturates to 1 on any strong normal map — **completely inert**, and it passed every other check I had |
+| `fwidth(mapN.xy)` | works, but is screen-space: the same wall would wear differently at 1 m and 10 m |
+| fixed-epsilon difference of the normal map, linear gain | not inert, ~0.3–5 pp selectivity |
+| the same, banded with `smoothstep` | ~1 pp selectivity |
+
+**The diagnosis is structural, not a tuning problem.** A normal map's rate of change is dominated by
+grain — pores, fibres, gravel — which is everywhere. The arris of a plank is a property of the
+*mesh*, and no texture-space proxy will find it.
+
+**So C published the input instead of faking the output.** A new frozen option, `wearFrom:
+'texture' | 'geometry'`, is live: `geometry` reads a per-vertex `esCurvature` attribute (0 = flat,
+1 = edge). W1-30E's kit parts and W1-30D's rigs can bake that at build time; a texture cannot. It is
+documented in `MATERIAL_API.md` §6a as a direct request to those two children, and it is frozen now
+so neither has to wait for another C commit.
+
+**`chitin` also inverts** for a second, smaller reason: its synthesised height is a plateau per
+plate with grooves between, so the texture proxy lands in the grooves while the test's edge proxy
+lands on the plate rims. That one belongs with the synth script's height field.
 
 ### Boot and the shipping gates
 

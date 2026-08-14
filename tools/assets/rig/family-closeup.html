@@ -14,7 +14,7 @@
 //                can move it. Noise-as-albedo scores zero here, and a real normal map does not.
 // A family passes when BOTH clear their thresholds.
 import * as THREE from '/game/vendor/three/three.module.js';
-import { worldMaterial, MATERIAL_FAMILIES, TEXEL_METRES, materialClass } from '/game/src/render/visual-foundation.js';
+import { worldMaterial, MATERIAL_FAMILIES, TEXEL_METRES, materialClass, setWorldWetness, PALETTES } from '/game/src/render/visual-foundation.js';
 
 const SIZE = 512, PLANE_M = 0.6, CAMERA_M = 0.5;
 
@@ -97,10 +97,85 @@ window.__RIG = {
   classOf: (f) => materialClass(f),
   size: SIZE,
   async run(family, mode) { return shoot(family, mode); },
+  palettes: Object.keys(PALETTES),
   async warm() {
     // Every family once, so no measurement races a texture that has not decoded yet.
     for (const f of MATERIAL_FAMILIES) await shoot(f, 'full');
     return true;
   },
+};
+
+// --- the wear and wetness mechanism proofs ---------------------------------
+// Both gates in W1-30C's bar are stated over content that does not exist yet (E's kit edges,
+// B's rain recipe), so the full populations are the critic's. What is provable here is the
+// mechanism: does wear land on curvature rather than everywhere, and does wetness land low on a
+// wall rather than uniformly. The edge/face split below is taken from the RENDERED image, not from
+// the shader's own definition of curvature, so this test cannot agree with the implementation by
+// construction — and it has already caught the implementation being inert twice.
+function readPixels() {
+  const buf = new Uint8Array(SIZE * SIZE * 4);
+  const gl = renderer.getContext();
+  gl.readPixels(0, 0, SIZE, SIZE, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+  return buf;
+}
+const lum = (b, i) => (0.2126 * b[i] + 0.7152 * b[i + 1] + 0.0722 * b[i + 2]) / 255;
+
+async function renderWith(family, opts, vertical) {
+  const metres = TEXEL_METRES[family];
+  const mat = worldMaterial(family, opts);
+  for (const t of [mat.map, mat.normalMap, mat.roughnessMap, mat.bumpMap, mat.aoMap]) {
+    if (t) { t.repeat.set(PLANE_M / metres, PLANE_M / metres); t.needsUpdate = true; }
+  }
+  mesh.material = mat;
+  mesh.rotation.x = vertical ? 0 : -0.42;
+  renderer.render(scene, camera);
+  await loaded();
+  renderer.render(scene, camera);
+  const px = readPixels();
+  mat.dispose();
+  return px;
+}
+
+// Gradient magnitude of the shading-only render: high where the normal map has an edge or a rim.
+function curvatureMask(px) {
+  const g = new Float32Array(SIZE * SIZE);
+  for (let y = 1; y < SIZE - 1; y++) for (let x = 1; x < SIZE - 1; x++) {
+    const i = (y * SIZE + x) * 4;
+    const dx = lum(px, i + 4) - lum(px, i - 4);
+    const dy = lum(px, i + SIZE * 4) - lum(px, i - SIZE * 4);
+    g[y * SIZE + x] = Math.hypot(dx, dy);
+  }
+  return g;
+}
+
+window.__RIG.wearProof = async function (family) {
+  const shading = await renderWith(family, { map: false, color: 0x8a8a8a }, false);
+  const grad = curvatureMask(shading);
+  const idx = [...grad.keys()].filter(i => grad[i] > 0).sort((a, b) => grad[b] - grad[a]);
+  const q = Math.max(1, Math.floor(idx.length / 4));
+  const edges = idx.slice(0, q), faces = idx.slice(-q);
+  const out = {};
+  for (const [name, opts] of [['dry', { wear: 0 }], ['worn', { wear: 0.9 }]]) {
+    const px = await renderWith(family, opts, false);
+    const mean = (list) => list.reduce((a, i) => a + lum(px, i * 4), 0) / list.length;
+    out[name] = { edge: mean(edges), face: mean(faces) };
+  }
+  return out;
+};
+
+window.__RIG.wetnessProof = async function (family, amount) {
+  // A vertical face 0.6 m tall, world Y from -0.3 to +0.3, with the wet band set across it, so
+  // "hollows are wet" is measurable as "the bottom of the wall is wet and the top is not".
+  setWorldWetness({ amount, topY: 0.15, bottomY: -0.25 });
+  const px = await renderWith(family, {}, true);
+  let top = 0, bottom = 0;
+  for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) {
+    const i = (y * SIZE + x) * 4;
+    // readPixels is bottom-up: y < SIZE/2 is the LOWER half of the plane.
+    if (y < SIZE / 2) bottom += lum(px, i); else top += lum(px, i);
+  }
+  const half = SIZE * SIZE / 2;
+  setWorldWetness({ amount: 0 });
+  return { bottom: bottom / half, top: top / half };
 };
 </script>

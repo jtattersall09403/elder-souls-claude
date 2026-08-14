@@ -114,19 +114,27 @@ for (const [group, fn] of Object.entries(groups)) {
     // Word-boundary match so `pos` does not match `position` and `mode` does not match `modes`.
     const re = new RegExp(`(?<![A-Za-z0-9_$])${name}(?![A-Za-z0-9_$])`);
     const readers = renderSrc.filter((r) => re.test(r.s)).map((r) => r.f);
-    rows.push({ group, field: name, class: VISUAL[name] ? 'VISUAL' : 'INTERNAL', why: VISUAL[name] || null, readers: readers.length, files: readers.slice(0, 4) });
+    const v = VISUAL[name];
+    const cls = !v ? 'INTERNAL' : (readers.length ? 'VISUAL' : (v.indirect ? 'INDIRECT' : 'VISUAL'));
+    rows.push({ group, field: name, class: cls, why: v ? v.why : null, indirect: v && v.indirect ? v.indirect : null, readers: readers.length, files: readers.slice(0, 4) });
   }
 }
 
 const visualRed = rows.filter((r) => r.class === 'VISUAL' && r.readers === 0);
+const indirect = rows.filter((r) => r.class === 'INDIRECT');
 if (process.argv.includes('--json')) {
-  console.log(JSON.stringify({ population: rows.length, visual: rows.filter((r) => r.class === 'VISUAL').length, visual_unconsumed: visualRed.length, rows }, null, 1));
+  console.log(JSON.stringify({ population: rows.length, visual: rows.filter((r) => r.class === 'VISUAL').length, visual_unconsumed: visualRed.length, indirect: indirect.length, rows }, null, 1));
 } else {
   console.log(`consumption-sweep: ${rows.length} per-frame fields over ${Object.keys(groups).length} sim objects; ${renderSrc.length} files in game/src/render/`);
   console.log(`  VISUAL: ${rows.filter((r) => r.class === 'VISUAL').length}   INTERNAL: ${rows.filter((r) => r.class === 'INTERNAL').length}`);
   console.log('');
   for (const r of rows.filter((x) => x.class === 'VISUAL')) {
     console.log(`  ${r.readers === 0 ? 'RED ' : 'ok  '} ${r.group}.${r.field}  readers=${r.readers}  ${r.readers ? r.files.join(' ') : '<< NOTHING IN game/src/render/ READS THIS >>'}`);
+  }
+  if (indirect.length) {
+    console.log('');
+    console.log('  AMBER — reaches the frame by another route, checked by hand, not a plain-grep defect:');
+    for (const r of indirect) console.log(`    ${r.group}.${r.field}  ${r.indirect}`);
   }
   const internalRed = rows.filter((r) => r.class === 'INTERNAL' && r.readers === 0);
   console.log('');

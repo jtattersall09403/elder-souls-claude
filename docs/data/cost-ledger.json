@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T10:24:27.314Z",
+  "generated_at": "2026-08-14T10:28:21.936Z",
   "generator": "tools/cost.mjs",
-  "commit": "8c595e5",
+  "commit": "a92bdeb",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T10:24:22.104Z",
-    "hours": 204.13,
+    "to": "2026-08-14T10:28:15.499Z",
+    "hours": 204.19,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -41,29 +41,29 @@
   "coverage": {
     "files_total": 434,
     "files_read": 434,
-    "bytes_read": 627640604,
+    "bytes_read": 629566350,
     "complete": true
   },
   "drivers": {
-    "requests": 52261,
-    "mean_context_tokens": 210273,
-    "pie_tokens": 1354654275,
-    "requests_per_agent_hour": 70.53
+    "requests": 52337,
+    "mean_context_tokens": 210288,
+    "pie_tokens": 1357177689,
+    "requests_per_agent_hour": 70.63
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 55,
     "agent_hours": 741,
-    "span_hours": 204.13
+    "span_hours": 204.19
   },
   "headline": {
-    "spend_to_date_usd": 6504.7,
-    "burn_usd_per_hour": 111.37,
+    "spend_to_date_usd": 6517.32,
+    "burn_usd_per_hour": 123.98,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 118.27,
-    "ch_pct_of_baseline": 102.1,
-    "usd_per_agent_hour": 8.78,
-    "usd_per_agent_hour_pct_of_baseline": 100.8
+    "ch_usd_per_hour": 118.5,
+    "ch_pct_of_baseline": 102.3,
+    "usd_per_agent_hour": 8.8,
+    "usd_per_agent_hour_pct_of_baseline": 101
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -305,24 +305,24 @@
     },
     {
       "t": "2026-08-14T10:00:00.000Z",
-      "usd_per_hour": 55.68,
-      "usd_per_agent_hour": 3.71,
+      "usd_per_hour": 61.99,
+      "usd_per_agent_hour": 4.13,
       "mean_agents": 15,
-      "commit": "8c595e5",
+      "commit": "a92bdeb",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 6325.65,
-      "requests": 48408,
+      "usd": 6338.27,
+      "requests": 48484,
       "tokens": {
-        "input": 1041420,
-        "cache_write_5m": 157046031,
+        "input": 1041572,
+        "cache_write_5m": 157594869,
         "cache_write_1h": 7967748,
-        "cache_read": 10059955249,
-        "output": 9170144
+        "cache_read": 10076135292,
+        "output": 9213986
       }
     },
     {
@@ -342,12 +342,12 @@
     {
       "class": "input",
       "usd": 5.78,
-      "tokens": 1329485
+      "tokens": 1329637
     },
     {
       "class": "cache_write_5m",
-      "usd": 1002.78,
-      "tokens": 165543307
+      "usd": 1006.21,
+      "tokens": 166092145
     },
     {
       "class": "cache_write_1h",
@@ -356,13 +356,13 @@
     },
     {
       "class": "cache_read",
-      "usd": 5180.84,
-      "tokens": 10814253655
+      "usd": 5188.93,
+      "tokens": 10830433698
     },
     {
       "class": "output",
-      "usd": 235.62,
-      "tokens": 9806959
+      "usd": 236.72,
+      "tokens": 9850801
     }
   ],
   "guards": {

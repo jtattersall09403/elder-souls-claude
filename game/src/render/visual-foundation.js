@@ -187,12 +187,25 @@ export const MATERIAL_OPTION_KEYS = Object.freeze([
   'color', 'roughness', 'metalness', 'map', 'normalMap', 'alphaTest', 'transparent', 'opacity',
   'side', 'emissive', 'emissiveIntensity', 'envMapIntensity', 'vertexColors', 'depthWrite',
   // declared variant axes
-  'lod', 'wetness', 'wear', 'tilingScale', 'trim', 'palette', 'boundedException',
+  'lod', 'wetness', 'wear', 'wearFrom', 'tilingScale', 'trim', 'palette', 'boundedException',
   // retained from the pre-freeze surface; live call sites depend on these
   'aoMapIntensity', 'bumpScale', 'authored',
 ]);
 const OPTION_KEY_SET = new Set(MATERIAL_OPTION_KEYS);
 export const LOD_LEVELS = Object.freeze(['shared', 'near', 'far', 'impostor']);
+/** Where the wear mask gets its curvature from.
+ *
+ * `texture` derives it from the base normal map. That is what every surface can do today and it is
+ * honest micro-wear, but the variant proof measured it: on an independent edge/face split it moves
+ * rims and faces within about a percentage point of each other, because a normal map's rate of
+ * change is dominated by grain, not by the arris of a plank. It cannot reach the plan's 8%
+ * edge-versus-face separation and it should not be reported as if it could.
+ *
+ * `geometry` reads a per-vertex `esCurvature` attribute (0 = flat facet, 1 = edge) baked by whoever
+ * built the mesh. That is the input W1-30E's kit parts and W1-30D's rigs can supply and a texture
+ * cannot. The option exists now, frozen, so E and D can bake the attribute and pass `wearFrom:
+ * 'geometry'` without waiting for another C commit — the same reason the whole API shipped early. */
+export const WEAR_SOURCES = Object.freeze(['texture', 'geometry']);
 
 const unit = (name, v) => {
   const n = Number(v);
@@ -223,7 +236,9 @@ export function validateMaterialOptions(family, options = {}) {
   if (trim !== null) trimSlot(trim);
   const lod = options.lod === undefined ? 'shared' : String(options.lod);
   if (!LOD_LEVELS.includes(lod)) throw new Error(`W1-30C unknown lod '${lod}' (known: ${LOD_LEVELS.join(', ')})`);
-  return { family, wear, wetness, tilingScale, palette, trim, lod, class: materialClass(family) };
+  const wearFrom = options.wearFrom === undefined ? 'texture' : String(options.wearFrom);
+  if (!WEAR_SOURCES.includes(wearFrom)) throw new Error(`W1-30C unknown wearFrom '${wearFrom}' (known: ${WEAR_SOURCES.join(', ')})`);
+  return { family, wear, wetness, tilingScale, palette, trim, lod, wearFrom, class: materialClass(family) };
 }
 
 /** The tiling a consumer should lay its UVs out for: metres of world surface per UV unit, and the
@@ -239,7 +254,7 @@ export function materialTiling(family, options = {}) {
 export function materialVariantKey(family, options = {}) {
   const v = validateMaterialOptions(family, options);
   return `${family}|p=${v.palette}|w=${v.wear.toFixed(2)}|wet=${v.wetness.toFixed(2)}`
-    + `|t=${v.tilingScale.toFixed(2)}|trim=${v.trim ?? '-'}|lod=${v.lod}`;
+    + `|t=${v.tilingScale.toFixed(2)}|trim=${v.trim ?? '-'}|lod=${v.lod}|wf=${v.wearFrom}`;
 }
 
 /** Apply a styleboard to pixels, not metadata. The semantic board controls the material's
@@ -478,11 +493,11 @@ export function setWorldWetness({ amount=0, topY, bottomY }={}) {
 export function worldWetnessState(){ return { ...worldWetness }; }
 
 const NORMAL_MAPS_CHUNK='#include <normal_fragment_maps>';
-function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength }) {
+function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength, wearFrom }) {
   const detail=detailNormalTile(tile);
   const u={
     uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?detailStrength:0},
-    uWear:{value:wear}, uWearCurvature:{value:5.5},
+    uWear:{value:wear}, uWearFloor:{value:.012}, uWearCurvature:{value:.16},
     uWetness:{value:wetness}, uWorldWetness:{value:worldWetness.amount},
     uWetTop:{value:worldWetness.topY}, uWetBottom:{value:worldWetness.bottomY},
   };
@@ -490,12 +505,18 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength
   const prior=mat.onBeforeCompile;
   mat.onBeforeCompile=(shader,renderer)=>{
     if(prior) prior(shader,renderer);
+    if(wearFrom==='geometry'){shader.vertexShader='#define ES_GEOMETRIC_WEAR\n'+shader.vertexShader;shader.fragmentShader='#define ES_GEOMETRIC_WEAR\n'+shader.fragmentShader;}
     for(const k of Object.keys(u)) shader.uniforms[k]=u[k];
-    shader.vertexShader='varying float vEsSurfaceWorldY;\n'+shader.vertexShader.replace('#include <begin_vertex>',
-      '#include <begin_vertex>\n  vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;');
+    const geo=wearFrom==='geometry';
+    shader.vertexShader='varying float vEsSurfaceWorldY;\n'
+      +(geo?'attribute float esCurvature;\nvarying float vEsGeoCurv;\n':'')
+      +shader.vertexShader.replace('#include <begin_vertex>',
+        '#include <begin_vertex>\n  vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;'
+        +(geo?'\n  vEsGeoCurv=esCurvature;':''));
     shader.fragmentShader='uniform sampler2D uDetailNormal;\nuniform float uDetailTiling;\nuniform float uDetailStrength;\n'
-      +'uniform float uWear;\nuniform float uWearCurvature;\nuniform float uWetness;\nuniform float uWorldWetness;\n'
+      +'uniform float uWear;\nuniform float uWearFloor;\nuniform float uWearCurvature;\nuniform float uWetness;\nuniform float uWorldWetness;\n'
       +'uniform float uWetTop;\nuniform float uWetBottom;\nvarying float vEsSurfaceWorldY;\nfloat vEsSurfaceCurv;\n'
+      +(geo?'varying float vEsGeoCurv;\n':'')
       +shader.fragmentShader
       // Replace the stock chunk rather than patch around it: the detail normal has to be combined
       // in tangent space *before* `tbn *` or it does not survive at grazing angles.
@@ -526,7 +547,14 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength
           vec2 esE = vec2( 0.004, 0.0 );
           vec2 esNx = texture2D( normalMap, vNormalMapUv + esE.xy ).xy - texture2D( normalMap, vNormalMapUv - esE.xy ).xy;
           vec2 esNy = texture2D( normalMap, vNormalMapUv + esE.yx ).xy - texture2D( normalMap, vNormalMapUv - esE.yx ).xy;
-          vEsSurfaceCurv = clamp( ( length( esNx ) + length( esNy ) ) * uWearCurvature, 0.0, 1.0 );
+          // smoothstep, not clamp-and-scale: with a linear gain the term saturated to 1 across
+          // most of a photogrammetry normal map, so wear moved edges and faces by within a
+          // percentage point of each other — not inert, but behaving like the scalar it replaced.
+          // A band puts flat facets at 0 and rims at 1, which is what "the arris wears" requires.
+          vEsSurfaceCurv = smoothstep( uWearFloor, uWearCurvature, length( esNx ) + length( esNy ) );
+          #ifdef ES_GEOMETRIC_WEAR
+            vEsSurfaceCurv = clamp( vEsGeoCurv, 0.0, 1.0 );
+          #endif
           normal = normalize( tbn * mapN );
         #elif defined( USE_BUMPMAP )
           normal = perturbNormalArb( - vViewPosition, normal, dHdxy_fwd(), faceDirection );
@@ -547,7 +575,7 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength
   // `customProgramCacheKey` reads `this.onBeforeCompile.toString()`, so calling it detached throws
   // inside the renderer's program lookup — which is a boot failure, not a visual one.
   const priorKey=Object.hasOwn(mat,'customProgramCacheKey')?mat.customProgramCacheKey.bind(mat):null;
-  mat.customProgramCacheKey=()=>`w1-30c-surface-v4:${tile}:${detailStrength.toFixed(2)}:${detail?1:0}:${priorKey?priorKey():''}`;
+  mat.customProgramCacheKey=()=>`w1-30c-surface-v6:${wearFrom}:${tile}:${detailStrength.toFixed(2)}:${detail?1:0}:${priorKey?priorKey():''}`;
   shadedMaterials.add(mat);
   mat.needsUpdate=true;
 }
@@ -613,7 +641,7 @@ export function worldMaterial(family, options={}) {
   mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true,
     uvScale:[baseRepeat/ts, baseRepeat/ts], detail:authored?.source||'96px-albedo-height-roughness',
     class:variant.class, wetness:variant.wetness, wear:variant.wear, palette:variant.palette,
-    tilingScale:variant.tilingScale, trim:variant.trim,
+    tilingScale:variant.tilingScale, trim:variant.trim, wearFrom:variant.wearFrom,
     metresPerTile:TEXEL_METRES[family]*ts, detailNormalTile:CLASS_DETAIL_TILE[variant.class],
     variantKey:materialVariantKey(family, options),
     boundedException:options.boundedException||null, lod:variant.lod };
@@ -626,7 +654,8 @@ export function worldMaterial(family, options={}) {
   if(materialOptions.normalMap){
     installSurfaceShader(mat, { tile:CLASS_DETAIL_TILE[variant.class],
       tiling:DETAIL_NORMAL_TILING/ts, wear, wetness:wet,
-      detailStrength:FAMILY_DETAIL_STRENGTH[family] ?? CLASS_DETAIL_STRENGTH[variant.class] });
+      detailStrength:FAMILY_DETAIL_STRENGTH[family] ?? CLASS_DETAIL_STRENGTH[variant.class],
+      wearFrom:variant.wearFrom });
   }
   return mat;
 }

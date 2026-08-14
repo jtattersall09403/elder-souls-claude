@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `8c595e5c`: 919 tools, 155 reference
+so it cannot drift. Generated at `a92bdeb7`: 919 tools, 155 reference
 items, 167 pieces in flight.
 
 Its purpose is to stop 167+ concurrent agents each paying separately to discover the
@@ -1307,6 +1307,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic, and tell W1-30E and W1-30D that MATERIAL_API.md section  | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
 | `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
 | `FIRST-TEN-MINUTES-critic` | starting | read audit + directives + schema | `orchestration/status/FIRST-TEN-MINUTES-critic.json` |
@@ -1314,7 +1315,6 @@ work is the difference between resuming and starting over.
 | `FIRST-TEN-MINUTES` | built-and-banked-d3-and-charopacity-only-d1-and-d2-diagnosed-not-fixed | A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/fir | — |
 | `W1-25-divergence-20260814` | done | Re-run tools/composition/matrix-probe.mjs to its DOCUMENTED DEFAULT path reports/compositi | `orchestration/status/W1-25-DIVERGENCE-20260814.json` `reports/experience/w1-25-r2-divergence/DIVERGENCE-20260814.md` `reports/experience/w1-25-r2-divergence/npc-presence-consumption.json` `reports/experience/w1-25-r2-divergence/session-2x2.json` `tools/experience/npc-presence-consumption.mjs` `orchestration/INDEX.md` |
 | `W1-30` | builder-native-gpu-remediation-in-progress |  | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` `orchestration/status/W1-30.json` |
-| `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic. The single test I most want run is the diffuse-floor rem | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `RULING-W1-IMPL` | done | ARM B OF RI-WLD15 IS STILL OWED and NEEDS A SCOPING RULING. RI-WLD15/RI-WLD16 stay `not_ru | `corpus/50-world/RI-WLD02-density-per-minute.md` `corpus/50-world/RI-WLD04-region-identity.md` `corpus/50-world/RI-WLD07-verticality-and-interiors.md` `corpus/50-world/RI-WLD09-the-opacity-budget.md` `corpus/50-world/RI-WLD15-within-region-variety.md` `corpus/80-methods/m-instance-bars.mjs` |
 | `W1-30S` | ? | Fresh critic: read the whole diff line by line for a behaviour change hidden in a move (th | `game/src/render/renderer.js` `game/src/render/sky.js` `game/src/render/visual-foundation.js` `game/src/render/water.js` `game/src/render/lighting.js` `game/src/render/post/composite.js` |
 | `HUD-MORROWIND` | code-landed-math-green-browser-pending | Run tools/ui/hud-compass-probe.mjs (one browser): the 360-degree sweep, in-combat withdraw | `game/src/ui/compass.js` `game/src/ui/hud.js` `game/src/ui/surface.js` `game/src/ui/system.js` `game/src/engine.js` `game/src/harness/api.js` |

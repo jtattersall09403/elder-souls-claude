@@ -28,6 +28,12 @@ hashes `RUNPOD_OWNER`, else `CLAUDE_CODE_SESSION_ID`, else (weak, and it says so
 | `cleanup --all` | **refuses** and exits 3 when it would touch another agent's work |
 | `cleanup --all --yes` | the old behaviour, now explicit |
 
+**Corrected after a sibling agent caught a hole.** The slug keys on `CLAUDE_CODE_SESSION_ID`, which
+is **container-scoped, not agent-scoped** — four sibling runs all carried slug `e9b0d69d`, and a
+bare cleanup killed a sibling's live Pod at 10:11 despite the guard. A second layer now does the
+work the tag cannot: a per-process claim in `/tmp` (`lib/claims.mjs`). Bare cleanup reaps a Pod only
+when its claiming process is gone, or it is unclaimed and past the runtime cap.
+
 The safe path is the one with no flags. Verified by mutation: replacing the ownership branch with
 "terminate everything managed" turns three self-test arms red.
 
@@ -57,6 +63,7 @@ harness tools in one edit. A silent ENOSPC can no longer look like a clean captu
 - `tools/runpod/lib/owner.mjs`
 - `tools/runpod/lib/cleanup-plan.mjs`
 - `tools/runpod/lib/lifecycle.mjs`
+- `tools/runpod/lib/claims.mjs`
 - `tools/runpod/lib/disk.mjs`
 - `tools/runpod/lib/http-transport.mjs`
 - `tools/runpod/lib/run-http.mjs`

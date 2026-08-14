@@ -159,6 +159,15 @@ try {
   log(`  placed at (${placed.pos[0].toFixed(0)}, ${placed.pos[2].toFixed(0)}), interior=${placed.interior}, inCombat=${placed.inCombat}`);
   out.data.placed = placed;
 
+  // `--shots-only` jumps straight to §F. It exists because the picture pack is the long, cheap,
+  // interruptible half of this tool and §A–§E is the short, load-bearing half: the first
+  // complete run on this box had all thirteen measurement checks green and was then killed
+  // mid-pack when something outside this process closed its browser (rule 21's "never
+  // `pkill -f headless_shell`" failure, seen from the receiving end). Re-running fifteen minutes
+  // of measurement to finish thirteen photographs is waste, so it does not have to.
+  measure: {
+  if (args['shots-only']) break measure;
+
   // ===========================================================================================
   // A. THE MOTION SEQUENCE — a full circle, 24 stops, 15 degrees apart
   // ===========================================================================================
@@ -498,6 +507,8 @@ try {
         : 'could not enter combat for this control — reported failed rather than skipped');
   }
 
+  } // end `measure:`
+
   // ===========================================================================================
   // F. THE PICTURES — five viewports, both modes, a bright scene and a dark one, and the turn
   // ===========================================================================================
@@ -595,6 +606,18 @@ try {
     log(`  wrote ${shotsWritten.length} pictures to docs/shots/`);
   }
 } finally {
+  // `--shots-only` MERGES rather than overwrites. Writing a report with §A–§E missing would
+  // replace thirteen measurements with their absence, and "the checks are not in the file" and
+  // "the checks did not pass" must never be the same value on disk.
+  if (args['shots-only']) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(path.join(OUT, 'browser.json'), 'utf8'));
+      const carried = (prev.checks || []).filter((c) => !checks.some((n) => n.id === c.id));
+      for (const c of carried) checks.unshift(c);
+      out.data = { ...(prev.data || {}), ...out.data };
+      out.carried_from_previous_run = { at: prev.at, commit: prev.commit, check_ids: carried.map((c) => c.id) };
+    } catch { /* no previous run to carry */ }
+  }
   out.checks = checks;
   const failed = checks.filter((c) => !c.pass);
   out.passed = checks.length - failed.length;

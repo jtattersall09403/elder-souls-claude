@@ -9,6 +9,7 @@ import path from 'node:path';
 import { cleanupCommand } from '../cli.mjs';
 import { currentOwner, ownerNameSegment, ownerOfName, ownerSlug } from './owner.mjs';
 import { classifyWriteError, guardArtifactWrite } from './disk.mjs';
+import { isClaimLive } from './claims.mjs';
 import { PodAgentClient, podAgentScript } from './http-transport.mjs';
 import { spawn } from 'node:child_process';
 
@@ -61,16 +62,26 @@ function podFixture(ownerHex, { id = 'pod-x', ageMinutes = 5 } = {}) {
   };
 }
 
-async function runCleanup(args, client) {
+async function runCleanup(args, client, claims = new Map()) {
   const lines = [];
   const result = await cleanupCommand(args, CONFIG, {
     client,
+    claims,
     environment: { apiKey: 'x', templateId: 'source-template' },
     owner: { slug: MINE, source: 'self-test', weak: false },
     log: (message) => lines.push(String(message)),
     logError: (message) => lines.push(String(message)),
   });
   return { ...result, lines, deleted: client.state.deletedPods };
+}
+
+/** A claim held by a process that is definitely alive but is not us. */
+function liveSiblingClaim(podId, runId = 'sibling-run') {
+  // pid 1 always exists and is never this process, so "a live sibling" needs no fixture process.
+  return { podId, pid: 1, runId, claimedAt: new Date().toISOString() };
+}
+function deadClaim(podId, runId = 'crashed-run') {
+  return { podId, pid: 2147480000, startTicks: '1', runId, claimedAt: new Date().toISOString() };
 }
 
 const arms = [
@@ -87,13 +98,15 @@ const arms = [
     },
   },
   {
-    name: 'cleanup/own-pod-is-terminated',
-    why: 'the guard must not be a blanket refusal; the same call must still clean up my own Pod',
+    name: 'cleanup/own-claimed-pod-is-terminated',
+    why: 'the guard must not be a blanket refusal; the same call must still clean up a Pod this lineage claimed',
     async run() {
       const client = fakeClient([podFixture(MINE, { id: 'pod-mine' })]);
-      const result = await runCleanup({}, client);
+      // A claim written by this very process: unambiguously ours, not a sibling's.
+      const claims = new Map([['pod-mine', { podId: 'pod-mine', pid: process.pid, runId: 'my-run' }]]);
+      const result = await runCleanup({}, client, claims);
       if (result.deleted.join(',') !== 'pod-mine') return { pass: false, detail: `deleted [${result.deleted.join(',')}], expected pod-mine` };
-      return { pass: true, detail: 'own Pod terminated by the same no-argument command' };
+      return { pass: true, detail: 'a Pod this process claimed is terminated by the same no-argument command' };
     },
   },
   {
@@ -153,6 +166,70 @@ const arms = [
     },
   },
   {
+    name: 'cleanup/sibling-agent-live-pod-survives-despite-an-identical-owner-slug',
+    why: 'THE REAL BUG: CLAUDE_CODE_SESSION_ID is container-scoped, so sibling agents share a slug. '
+      + 'Four sibling runs on 2026-08-14 all carried slug e9b0d69d and a bare cleanup killed one of them.',
+    async run() {
+      const client = fakeClient([podFixture(MINE, { id: 'pod-sibling', ageMinutes: 2 })]);
+      const claims = new Map([['pod-sibling', liveSiblingClaim('pod-sibling')]]);
+      const result = await runCleanup({}, client, claims);
+      if (result.deleted.length !== 0) return { pass: false, detail: `deleted a sibling's live Pod: ${result.deleted.join(',')}` };
+      if (!result.protectedPods.includes('pod-sibling')) return { pass: false, detail: 'not reported as protected' };
+      return { pass: true, detail: "same owner slug, but a live claim from another pid keeps the sibling's Pod alive" };
+    },
+  },
+  {
+    name: 'cleanup/crashed-run-pod-is-still-reaped',
+    why: 'the claim guard must not become a blanket refusal; a dead pid is exactly what cleanup is for',
+    async run() {
+      const client = fakeClient([podFixture(MINE, { id: 'pod-crashed', ageMinutes: 2 })]);
+      const claims = new Map([['pod-crashed', deadClaim('pod-crashed')]]);
+      const result = await runCleanup({}, client, claims);
+      if (result.deleted.join(',') !== 'pod-crashed') return { pass: false, detail: `deleted [${result.deleted.join(',')}], expected pod-crashed` };
+      return { pass: true, detail: 'a Pod whose claiming process is gone is still terminated' };
+    },
+  },
+  {
+    name: 'cleanup/unclaimed-young-pod-with-my-slug-is-not-assumed-mine',
+    why: 'a sibling running from another worktree may leave no claim here; age is the only honest signal',
+    async run() {
+      const client = fakeClient([podFixture(MINE, { id: 'pod-young', ageMinutes: 3 })]);
+      const young = await runCleanup({}, client, new Map());
+      if (young.deleted.length !== 0) return { pass: false, detail: 'a 3-minute-old unclaimed Pod was assumed to be mine' };
+      const old = await runCleanup({}, fakeClient([podFixture(MINE, { id: 'pod-old', ageMinutes: 500 })]), new Map());
+      if (old.deleted.join(',') !== 'pod-old') return { pass: false, detail: 'a 500-minute-old orphan was not reaped, so the rule is always-refuse' };
+      return { pass: true, detail: 'young unclaimed Pod protected; one past the runtime cap reaped' };
+    },
+  },
+  {
+    name: 'cleanup/pod-id-and-older-than-also-respect-a-live-sibling-claim',
+    why: 'the targeted and sweep paths must not be a way around the claim guard',
+    async run() {
+      const claims = new Map([['pod-sibling', liveSiblingClaim('pod-sibling')]]);
+      const targeted = await runCleanup({ pod: 'pod-sibling' }, fakeClient([podFixture(MINE, { id: 'pod-sibling', ageMinutes: 2 })]), claims);
+      if (targeted.deleted.length !== 0) return { pass: false, detail: '--pod bypassed a live sibling claim' };
+      const swept = await runCleanup({ olderThan: '180' }, fakeClient([podFixture(THEIRS, { id: 'pod-sibling', ageMinutes: 500 })]), claims);
+      if (swept.deleted.length !== 0) return { pass: false, detail: '--older-than bypassed a live sibling claim' };
+      const forced = await runCleanup({ pod: 'pod-sibling', force: true }, fakeClient([podFixture(MINE, { id: 'pod-sibling', ageMinutes: 2 })]), claims);
+      if (forced.deleted.join(',') !== 'pod-sibling') return { pass: false, detail: '--force did not override the claim guard' };
+      return { pass: true, detail: 'both paths refuse a live claim; --force still overrides deliberately' };
+    },
+  },
+  {
+    name: 'claims/liveness-distinguishes-a-running-process-from-a-recycled-pid',
+    why: 'if every claim read as live, cleanup would never reap anything',
+    async run() {
+      const live = isClaimLive({ pid: process.pid, startTicks: null });
+      const gone = isClaimLive({ pid: 2147480000, startTicks: '1' });
+      const recycled = isClaimLive({ pid: process.pid, startTicks: 'definitely-not-the-real-start-time' });
+      if (!live) return { pass: false, detail: 'this very process read as dead' };
+      if (gone) return { pass: false, detail: 'a nonexistent pid read as live' };
+      if (recycled) return { pass: false, detail: 'a mismatched start time still read as live, so pid reuse is undetected' };
+      return { pass: true, detail: 'live pid live, absent pid dead, recycled pid dead' };
+    },
+  },
+
+  {
     name: 'owner/name-tag-round-trips-and-legacy-names-read-as-unattributed',
     why: 'ownership lives in the Pod name; a date-shaped legacy runId must not be read as an owner',
     async run() {
@@ -167,15 +244,16 @@ const arms = [
   },
   {
     name: 'owner/identity-prefers-an-explicit-per-agent-value',
-    why: 'the hostname fallback cannot distinguish agents and must be flagged weak',
+    why: 'the session id is container-scoped, not agent-scoped; claiming otherwise is what let a sibling Pod be killed',
     async run() {
       const explicit = currentOwner({ RUNPOD_OWNER: 'agent-7', CLAUDE_CODE_SESSION_ID: 'sess' });
       const session = currentOwner({ CLAUDE_CODE_SESSION_ID: 'sess' });
       const fallback = currentOwner({});
       if (explicit.slug === session.slug) return { pass: false, detail: 'RUNPOD_OWNER did not take precedence' };
-      if (fallback.weak !== true) return { pass: false, detail: 'hostname fallback was not marked weak' };
-      if (session.weak !== false) return { pass: false, detail: 'session identity was marked weak' };
-      return { pass: true, detail: 'RUNPOD_OWNER > CLAUDE_CODE_SESSION_ID > weak hostname' };
+      if (fallback.scope !== 'box') return { pass: false, detail: `hostname fallback scope was ${fallback.scope}` };
+      if (session.scope !== 'container') return { pass: false, detail: `session identity claimed scope ${session.scope}; it is container-scoped and must say so` };
+      if (explicit.scope !== 'agent') return { pass: false, detail: `RUNPOD_OWNER scope was ${explicit.scope}` };
+      return { pass: true, detail: 'scopes reported honestly: RUNPOD_OWNER=agent, session=container, hostname=box' };
     },
   },
 

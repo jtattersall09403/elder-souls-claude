@@ -97,8 +97,16 @@ try {
       // luminance gradient this test uses as its independent edge proxy lands on the plate rims.
       // The mask is demonstrably not inert on any subject; on chitin it is pointed at the wrong
       // feature. Named here rather than tuned away, and left for the critic's full population.
-      selective: wear.filter(r => r.selective).length >= 4,
       inverted: wear.filter(r => !r.selective).map(r => r.family),
+      // The plan's bar is an 8% edge-versus-face separation. The texture-space proxy delivers about
+      // 1 point, run to run, and the reason is structural rather than a threshold: a normal map's
+      // rate of change is dominated by grain, not by the arris of a plank. Reported as NOT MET
+      // rather than softened, and `wearFrom: 'geometry'` is published as the route that can reach
+      // it once W1-30E and W1-30D bake a per-vertex esCurvature attribute.
+      separationPct: +Math.max(...wear.map(r => r.edgeShiftPct - r.faceShiftPct)).toFixed(2),
+      barPct: 8,
+      meetsBar: Math.max(...wear.map(r => r.edgeShiftPct - r.faceShiftPct)) >= 8,
+      route: "wearFrom: 'geometry' + a per-vertex esCurvature attribute (MATERIAL_API.md 6a)",
     },
     wetness: { rows: wetness, reads: wetness.every(r => r.reads), note: "delta = wet split minus dry split; the dry split is the plane's own lighting gradient and is the control baseline, not zero" },
     palette: {
@@ -114,8 +122,8 @@ try {
     ],
   };
   fs.writeFileSync(path.join(OUT, 'variant-proof.json'), JSON.stringify(report, null, 2) + '\n');
-  const ok = report.wear.selective && report.wetness.reads && report.palette.controlIsZero;
-  console.log(`variant-proof: wear ${report.wear.selectiveCount}/${report.wear.of} selective${report.wear.inverted.length ? ' (inverted: ' + report.wear.inverted.join(',') + ')' : ''}, wetness ${report.wetness.reads ? 'reads' : 'FLAT'}, palette control ${report.palette.controlIsZero ? 'zero' : 'NON-ZERO'} — ${ok ? 'GREEN' : 'RED'}`);
+  const ok = report.wear.meetsBar && report.wetness.reads && report.palette.controlIsZero;
+  console.log(`variant-proof: wear ${report.wear.separationPct}% edge-vs-face separation against a ${report.wear.barPct}% bar — NOT MET, route: ${report.wear.route}; wetness ${report.wetness.reads ? 'reads' : 'FLAT'}, palette control ${report.palette.controlIsZero ? 'zero' : 'NON-ZERO'} — ${ok ? 'GREEN' : 'RED'}`);
   process.exitCode = ok ? 0 : 1;
 } finally {
   await page.close().catch(() => {});

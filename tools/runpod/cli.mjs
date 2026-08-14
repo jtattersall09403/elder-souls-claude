@@ -27,11 +27,18 @@
 // this CLI re-executes itself with NODE_USE_ENV_PROXY=1. And openssh-client is only needed for
 // --transport ssh, which this container cannot use anyway.
 //
-// CLEANUP IS OWNER-SCOPED. Several agents share this account. A bare cleanup used to terminate
-// every managed Pod and on 2026-08-14 it killed another agent's live Pod mid-capture. Ownership
-// now travels in the RunPod resource name (RUNPOD_OWNER, else CLAUDE_CODE_SESSION_ID), so it
-// survives a container restart: bare cleanup touches only your own Pods, --all refuses unless
-// --yes, and --older-than <min> is the safe way to sweep orphans of a dead agent.
+// CLEANUP IS GUARDED TWICE, because one guard was measured to be insufficient. Several agents
+// share this account AND this container. A bare cleanup used to terminate every managed Pod, and
+// on 2026-08-14 it killed another agent's live Pod mid-capture — twice, the second time *through*
+// the first version of this guard, because CLAUDE_CODE_SESSION_ID identifies the container rather
+// than the agent, so four sibling runs all carried one owner slug. So:
+//   1. an owner tag in the RunPod resource name, which survives a container restart and is
+//      visible across worktrees — it separates containers and accounts;
+//   2. a per-process claim in /tmp (lib/claims.mjs), which separates sibling agents inside one
+//      container, where a pid is a real and checkable thing.
+// Bare cleanup reaps only Pods whose claiming process is gone, or that are past the runtime cap
+// with no claim at all. --all refuses unless --yes; --older-than <min> sweeps orphans of a dead
+// agent. Set RUNPOD_OWNER to a per-agent value if you want true per-agent tagging as well.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -47,6 +54,7 @@ import {
 import { provisionPod } from './lib/provision.mjs';
 import { currentOwner, ownerNameSegment, ownerOfName } from './lib/owner.mjs';
 import { planPodCleanup, planTemplateCleanup } from './lib/cleanup-plan.mjs';
+import { claimPod, readClaims, releasePod } from './lib/claims.mjs';
 import {
   confirmPodDeleted,
   confirmTemplateDeleted,
@@ -290,6 +298,7 @@ export async function cleanupCommand(args, config, dependencies = {}) {
   }));
   const runtimeTemplateIds = runtimeTemplates.map((template) => template.id);
   const pods = await client.listPods();
+  const claims = dependencies.claims || readClaims();
 
   const plan = planPodCleanup(pods, {
     ownerSlug: owner.slug,
@@ -303,11 +312,13 @@ export async function cleanupCommand(args, config, dependencies = {}) {
     force: Boolean(args.force),
     olderThanMinutes,
     now,
+    claims,
+    minOrphanAgeMinutes: config.absoluteMaxRuntimeMinutes,
   });
 
   log(`Cleanup scope: ${plan.scope}; this agent is o${owner.slug} (identity from ${owner.source})`);
-  if (owner.weak) {
-    logError('WARNING: owner identity fell back to hostname, which every agent on this box shares. Set RUNPOD_OWNER to a per-agent value before relying on owner scoping.');
+  if (owner.scope && owner.scope !== 'agent') {
+    logError(`NOTE: owner identity is ${owner.scope}-scoped, so sibling agents share this slug. Per-process claims are what separate them; set RUNPOD_OWNER for per-agent tagging too.`);
   }
 
   for (const entry of plan.protected) {
@@ -329,6 +340,7 @@ export async function cleanupCommand(args, config, dependencies = {}) {
       await client.deletePod(pod.id);
       if (!await confirmPodDeleted(client, pod.id, log)) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
       removedPodIds.add(pod.id);
+      releasePod(pod.id);
     } catch (error) {
       failures.push(error.message);
       logError(`Pod ${pod.id} cleanup failed: ${error.message}`);
@@ -352,6 +364,7 @@ export async function cleanupCommand(args, config, dependencies = {}) {
       templateNamePrefix: RUNTIME_TEMPLATE_NAME_PREFIX,
       imageName: sourceTemplate?.imageName,
       remainingPods,
+      claims,
       all: Boolean(args.all),
       yes: Boolean(args.yes),
       force: Boolean(args.force),
@@ -688,6 +701,7 @@ export async function runCommand(args, config, dependencies = {}) {
       state.pod = { id: pod.id, name: pod.name || podName, gpuTypeId: state.selectedOffer.gpuTypeId, cloudType: state.selectedOffer.cloudType, pricePerHourUsd: actualPrice };
       state.status = 'provisioned';
       save();
+      claimPod(pod.id, { runId: id, ownerSlug: owner.slug, podName: pod.name || podName });
       log(`Pod ${pod.id} created: ${state.selectedOffer.gpuTypeId}, ${state.selectedOffer.cloudType}, $${actualPrice.toFixed(3)}/hr`);
       if (!Number.isFinite(actualPrice) || actualPrice > maxPrice) throw new Error(`actual Pod price $${actualPrice}/hr exceeds hard ceiling $${maxPrice}/hr`);
 
@@ -810,6 +824,7 @@ export async function runCommand(args, config, dependencies = {}) {
         await client.deletePod(pod.id);
         cleanup.terminated = await confirmPodDeleted(client, pod.id, log);
         if (!cleanup.terminated) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
+        releasePod(pod.id);
         log(`Pod ${pod.id} terminated and deletion confirmed`);
       } catch (cleanupError) {
         cleanup.error = cleanupError.message;

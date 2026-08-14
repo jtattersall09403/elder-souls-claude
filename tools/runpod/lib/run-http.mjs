@@ -28,6 +28,7 @@ import {
   podProxyUrl,
 } from './http-transport.mjs';
 import { guardArtifactWrite, writeFileLoud } from './disk.mjs';
+import { claimPod, releasePod } from './claims.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(HERE, '../../..');
@@ -271,6 +272,8 @@ export async function runHttpCommand(args, config, dependencies = {}) {
     state.pod = { id: pod.id, name: pod.name || podName, gpuTypeId: state.selectedOffer.gpuTypeId, cloudType: state.selectedOffer.cloudType, pricePerHourUsd: actualPrice };
     state.status = 'provisioned';
     save();
+    // Claim it before anything else can look at it: a sibling agent's cleanup reads these.
+    claimPod(pod.id, { runId: id, ownerSlug: owner.slug, podName: pod.name || podName });
     log(`Pod ${pod.id}: ${state.selectedOffer.gpuTypeId}, ${state.selectedOffer.cloudType}, $${actualPrice.toFixed(3)}/hr`);
 
     pod = await waitForRunning(client, pod.id, Math.min(deadline - 60_000, Date.now() + config.readyTimeoutMinutes * 60_000), log, abortController.signal);
@@ -359,6 +362,7 @@ export async function runHttpCommand(args, config, dependencies = {}) {
         await client.deletePod(pod.id);
         state.cleanup.terminated = await confirmPodDeleted(client, pod.id, log);
         if (!state.cleanup.terminated) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
+        releasePod(pod.id);
       } catch (cleanupError) {
         state.cleanup.error = cleanupError.message;
         state.status = 'cleanup_failed';

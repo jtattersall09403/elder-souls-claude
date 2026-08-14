@@ -66,8 +66,15 @@
 // fails when the sign is flipped.
 'use strict';
 
-import { C, Ca, chitinPath, boneRule, idHash, jitter } from './theme.js';
+import { C, Ca, boneRule, idHash, jitter } from './theme.js';
 import { drawText, faceOf, measure } from './type.js';
+
+/**
+ * Where the labels sit, as a fraction of the dial's radius. Shared by `labelPoints()` (which
+ * decides whether they fit) and `drawCompass()` (which puts them there), because those two
+ * disagreeing is exactly how eight labels came to be drawn on a ring with room for four.
+ */
+export const LABEL_R = 0.64;
 
 /** The eight compass points, in clockwise bearing order from north. */
 export const POINTS = [
@@ -182,10 +189,20 @@ export function dialGeometry(v) {
  * in `meta.labelled`, rather than drawing letters on top of each other.
  */
 export function labelPoints(geo) {
-  const arc8 = 0.765 * geo.r, arc4 = 1.41 * geo.r;
-  const w2 = 1.55 * geo.letterPx, w1 = 0.80 * geo.letterPx;
-  if (w2 + 4 <= arc8) return POINTS.map((p) => p.label);
-  if (w1 + 4 <= arc4) return POINTS.filter((p) => p.major).map((p) => p.label);
+  // THE ARC IS MEASURED AT THE LABEL RADIUS, NOT AT THE RIM, and the first version of this
+  // function got that wrong. Labels are drawn at `LABEL_R · r` from the centre, so the gap
+  // between two adjacent labels is the chord at THAT radius — not at `r`. Measuring at the rim
+  // overstates the available room by 1/LABEL_R ≈ 1.5×, and on an 844×390 landscape phone that
+  // was the difference between "eight labels fit" and the photograph, which showed NW, NE, SW
+  // and SE crowding into their neighbours and the rim. Found by looking at the running game at
+  // a phone viewport, which is the only way it could have been found.
+  const lr = LABEL_R * geo.r;
+  const arc8 = 0.765 * lr, arc4 = 1.41 * lr;
+  // A two-character intercardinal is about 1.55 cap-widths; a single letter about 0.80. The
+  // 1.15 factor is breathing room — letters that exactly touch are letters that read as one word.
+  const w2 = 1.55 * geo.letterPx * 1.15, w1 = 0.80 * geo.letterPx * 1.15;
+  if (w2 <= arc8) return POINTS.map((p) => p.label);
+  if (w1 <= arc4) return POINTS.filter((p) => p.major).map((p) => p.label);
   return [];
 }
 
@@ -229,27 +246,41 @@ export function drawCompass(S, m) {
   }, (c, r) => {
     const cx = r[0] + r[2] / 2, cy = r[1] + r[3] / 2, R = r[2] / 2;
 
-    // ---- the housing: a chitin ring, hand-cut, not a circle -------------------------------
-    // theme.js's `chitinPath` is the shared plate edge every panel in this interface uses; the
-    // ring inside it is drawn from the same `jitter()` hash so it is deterministic and a
-    // screenshot diff of two runs of the same state is empty (RI-UIX02 §E depends on that).
-    chitinPath(c, r[0] + 1, r[1] + 1, r[2] - 2, r[3] - 2, s, seed);
-    c.fillStyle = Ca('chitin_dark', 0.82); c.fill();
-    c.strokeStyle = Ca('bone_dim', 0.85); c.lineWidth = Math.max(1, 1.8 * s); c.stroke();
+    // ---- the housing: a DISC, hand-turned, not a plate -------------------------------------
+    //
+    // THIS WAS A SQUARE AND IT LOOKED LIKE ONE. The first version reused `theme.chitinPath`,
+    // which is the interface's shared rectangular plate edge — correct for a panel and wrong
+    // here, because it filled the dial's whole bounding box and read, in the running game at
+    // 1920×1080 and worse on a phone, as a black square with a compass drawn inside it.
+    // Morrowind's compass is a disc. Nothing but a screenshot of the actual game shows you this;
+    // every number in this file was already green when the picture was taken.
+    //
+    // The wobble comes from `theme.jitter`, an integer hash of the element's own id, so it is
+    // deterministic — a frame drawn twice is the same frame twice, which RI-UIX02 §E's pixel
+    // detector depends on. `chitinPath` is no longer imported at all — the disc below is the
+    // same MATERIAL (`chitin_dark` under a bone rim, RI-UIX06 §A), drawn round instead of square.
+    const discPath = (radius, wobble, phase) => {
+      c.beginPath();
+      for (let i = 0; i <= 72; i++) {
+        const a = (i / 72) * Math.PI * 2;
+        const rr = radius + jitter(seed + phase, i % 72) * wobble * s;
+        const px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr;
+        if (i === 0) c.moveTo(px, py); else c.lineTo(px, py);
+      }
+      c.closePath();
+    };
 
-    // the bone rim, wobbled off the same hash — a turned ring of bone, not a stroked arc
-    c.beginPath();
-    for (let i = 0; i <= 64; i++) {
-      const a = (i / 64) * Math.PI * 2;
-      const rr = R * 0.90 + jitter(seed, i) * 1.1 * s;
-      const px = cx + Math.cos(a) * rr, py = cy + Math.sin(a) * rr;
-      if (i === 0) c.moveTo(px, py); else c.lineTo(px, py);
-    }
-    c.closePath();
-    c.strokeStyle = Ca('bone', 0.55); c.lineWidth = Math.max(1, 1.4 * s); c.stroke();
+    // the plate: opaque enough to carry its own contrast against a bright sky AND a night marsh
+    discPath(R * 0.97, 1.3, 0);
+    c.fillStyle = Ca('chitin_dark', 0.86); c.fill();
+    c.strokeStyle = Ca('root', 0.9); c.lineWidth = Math.max(1.5, 2.6 * s); c.stroke();
+
+    // the turned bone rim, inboard of the plate edge
+    discPath(R * 0.90, 1.0, 311);
+    c.strokeStyle = Ca('bone', 0.62); c.lineWidth = Math.max(1, 1.5 * s); c.stroke();
 
     // ---- the ring of points, rotated so your heading is at the top ------------------------
-    const tickOuter = R * 0.88, letterR = R * 0.66;
+    const tickOuter = R * 0.86, letterR = R * LABEL_R;
     const f = faceOf('bone'), sz = geo.letterPx;
     for (const p of POINTS) {
       const th = screenAngle(p.bearing, heading) * Math.PI / 180;
