@@ -217,9 +217,20 @@ whose correlation collapses owns the bands.
 | `shadows-off` (`setFeature('shadows', false)`) | **0.990** | 5.301 | the whole shadow system off |
 | `water-hidden` | **0.335** | **3.111** | 94 water meshes hidden |
 | `skin-hidden` | 0.978 | 5.402 | 1 `ground-skin` mesh hidden |
+| `cover-hidden` | 0.969 | 5.425 | 1 `cover:*` mesh hidden |
+| `ground-hidden` | 0.686 | 4.913 | 32 `ground*` meshes hidden |
+| `nothing` *(restore control)* | **0.957** | 5.418 | nothing — the site's own nondeterminism floor |
 
-**Turning off every shadow in the game changes the band pattern by ρ = 0.99 and 1% of its energy.
-Hiding the water collapses it to ρ = 0.335 and takes 42% of its energy away.**
+The restore control sets the scale and is why the rest can be read: re-capturing the untouched
+frame after every arm has been applied and undone returns **ρ = 0.957**, which is this site's own
+nondeterminism (the water animates). Any arm reading above about 0.96 therefore changed nothing
+about the bands.
+
+**Turning off every shadow in the game leaves them at ρ = 0.990 — above the floor, i.e. untouched —
+and takes 1% of their energy. Hiding the water collapses them to ρ = 0.335 and removes 42% of
+their energy.** `ground-hidden` moves it too (0.686), but that arm hides 32 meshes and changes what
+is *behind* them as well as removing the bed the water sits on; the discriminating pair is
+`shadows-off` 0.990 against `water-hidden` 0.335.
 
 **The bands are the water surface.** They are not shadow acne, they are not cast by posts, piles or
 landmark trunks, and no caster flag on any mesh could have produced or removed them — which means
