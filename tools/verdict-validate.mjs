@@ -17,7 +17,8 @@
  * Exit 0 = valid. Exit 1 = errors. Warnings never fail the run but are printed.
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync, statSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname, relative, sep, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -48,6 +49,85 @@ const SELF_AUDIT_KEYS = [
   'named_exactly_one_gap', 'remedy_is_buildable', 'no_banned_reasoning_used',
   'escalation_ladder_used_if_gap_seemed_small',
 ];
+
+// ---------------------------------------------------------------- cited-evidence resolution
+//
+// A CITATION MUST RESOLVE IN A FRESH CLONE, OR IT IS NOT A CITATION.
+//
+// For eight days this check was right and unsatisfiable at the same time: it demanded every cited
+// path exist, while `reports/.gitignore` deliberately excluded the directory those paths live in.
+// 56 of 76 Wave-1 verdicts failed a real fresh checkout and passed on the one machine that had
+// made their evidence — precisely the "nothing counts because someone says so" failure the method
+// exists to prevent (reports/ci-triage/TRIAGE-20260814.md §2 class A).
+//
+// The reconciliation is `tools/verdict-evidence.mjs`, and this is its other half. Evidence at or
+// under 1 MiB is committed outright. Above that, a PIN is committed in its place —
+// `<path>.pin.json`, carrying the decisive numbers, a SHA-256 of the raw bytes and the command
+// that regenerates them. So a citation resolves if EITHER the file is there or its pin is.
+//
+// THIS IS A TIGHTENING, NOT A LOOSENING, and the distinction is the whole point. A committed
+// 79 MiB trace can be silently regenerated and nothing notices. A pin cannot: the hash makes
+// drift a red `verdict-evidence.mjs --verify`. The pin is also checked here for shape, so a stub
+// `{}` next to a missing file buys nothing.
+const PIN_SUFFIX = '.pin.json';
+const PIN_REQUIRED = ['pin_version', 'path', 'bytes', 'sha256', 'produced_by', 'decisive', 'cited_by'];
+
+export function resolveCitedPath(root, p) {
+  if (existsSync(join(root, p))) return { ok: true, via: 'file' };
+  const pin = join(root, p + PIN_SUFFIX);
+  if (!existsSync(pin)) return { ok: false, via: null };
+  let o;
+  try { o = JSON.parse(readFileSync(pin, 'utf8')); }
+  catch (e) { return { ok: false, via: 'pin', why: `its pin ${p}${PIN_SUFFIX} is unparseable (${e.message})` }; }
+  const missing = PIN_REQUIRED.filter((k) => o[k] === undefined || o[k] === null || o[k] === '');
+  if (missing.length) return { ok: false, via: 'pin', why: `its pin ${p}${PIN_SUFFIX} is missing ${missing.join(', ')} — a pin without the decisive numbers, the hash and the regeneration command is not a citation` };
+  if (o.pin_version !== 1) return { ok: false, via: 'pin', why: `its pin ${p}${PIN_SUFFIX} declares pin_version ${o.pin_version}` };
+  if (!/^[0-9a-f]{64}$/.test(String(o.sha256))) return { ok: false, via: 'pin', why: `its pin ${p}${PIN_SUFFIX} carries no valid SHA-256` };
+  return { ok: true, via: 'pin' };
+}
+
+// ---------------------------------------------------------------- round identity
+//
+// ONLY THE LATEST ROUND OF A PIECE GATES CI. The other rounds are history: ten Wave-1 verdicts are
+// obsolete drafts already replaced by a later round for the same piece, and holding CI red for a
+// superseded draft trains everyone to ignore red, which is worse than having no gate at all.
+//
+// The naming is the whole risk, and it is why the triage designed this rule and refused to ship it
+// unverified. `W1-01-province-stream-r1` is a DIFFERENT SUB-PIECE of W1-01, not a round of it; a
+// prefix match would have silently un-gated it. So identity is "the filename with a trailing
+// `-r<N>` removed" — an exact string, never a prefix — and rounds compare numerically so r10 beats
+// r9. A verdict with no `-r<N>` suffix is round 1 of its own identity.
+//
+// Gate-relevance deliberately does NOT depend on whether the later round passes. Making the scope
+// of the gate depend on the gate's own output is circular and unstable — fixing round 3 would
+// silently un-gate round 2 — so the rule is the simplest deterministic one: highest round wins,
+// pass or fail. If the latest round is broken, CI is red for that piece, which is correct.
+export function pieceIdentity(file) {
+  const name = basename(String(file)).replace(/\.json$/i, '');
+  const m = name.match(/^(.*)-r(\d+)$/i);
+  if (!m) return { identity: name, round: 1, explicit: false };
+  return { identity: m[1], round: Number(m[2]), explicit: true };
+}
+
+/** Given a list of verdict paths, return a Map path -> {gates, supersededBy}. */
+export function roundRelevance(files) {
+  const best = new Map();          // `${dir}\0${identity}` -> {round, file}
+  const keyOf = (f) => `${dirname(String(f))}\0${pieceIdentity(f).identity}`;
+  for (const f of files) {
+    const { round } = pieceIdentity(f);
+    const k = keyOf(f);
+    const cur = best.get(k);
+    // ties (two files claiming the same round of the same identity) are impossible for distinct
+    // filenames, but resolve deterministically by name so the outcome never depends on readdir order
+    if (!cur || round > cur.round || (round === cur.round && String(f) > String(cur.file))) best.set(k, { round, file: f });
+  }
+  const out = new Map();
+  for (const f of files) {
+    const winner = best.get(keyOf(f));
+    out.set(f, winner.file === f ? { gates: true, supersededBy: null } : { gates: false, supersededBy: winner.file });
+  }
+  return out;
+}
 
 function requireGapForOutcome(v, g, E) {
   if (!g && v.status !== 'PASS') E('biggest_gap missing — an unsatisfied verdict must name one actionable biggest gap (ARBITRATION §3)');
@@ -120,7 +200,14 @@ function validate(file) {
       artifactPaths.add(a.path);
       if (!ENUM.artifactKind.includes(a.kind)) E(`artifact ${a.path}: kind "${a.kind}" invalid`);
       if (!a.produced_by) E(`artifact ${a.path}: produced_by (the exact command) required — an artifact you cannot reproduce is an anecdote`);
-      if (!existsSync(join(ROOT, a.path))) E(`artifact ${a.path}: FILE DOES NOT EXIST — verdict is VOID`);
+      {
+        const r = resolveCitedPath(ROOT, a.path);
+        if (!r.ok) {
+          E(r.why
+            ? `artifact ${a.path}: FILE DOES NOT EXIST and ${r.why} — verdict is VOID`
+            : `artifact ${a.path}: FILE DOES NOT EXIST and no ${a.path}${PIN_SUFFIX} stands in for it — verdict is VOID. Commit the evidence (\`node tools/verdict-evidence.mjs --recover\`) or, if it is over the pin threshold, commit its pin.`);
+        }
+      }
       if (a.kind === 'screenshot' && !a.camera_pose) E(`artifact ${a.path}: screenshots require camera_pose`);
       if (a.kind === 'screenshot' && !a.resolution) E(`artifact ${a.path}: screenshots require resolution`);
     }
@@ -413,7 +500,85 @@ if (process.argv.includes('--self-test')) {
   if (errors.length !== 1) throw new Error('FAIL without an actionable gap was accepted');
   requireGapForOutcome({ status: 'FAIL' }, { gap_id: 'GAP-W1-test' }, m => errors.push(m));
   if (errors.length !== 1) throw new Error('FAIL with a gap was rejected');
-  console.log('verdict validator self-test: no-gap PASS accepted; gapless FAIL rejected; historical gap-bearing shape accepted.');
+
+  // --- round identity. The triage designed this rule and refused to ship it without these,
+  // because the failure mode is silent: a mis-parsed name un-gates a live verdict and nothing
+  // anywhere goes red. Every case below is a real filename in corpus/90-verdicts/wave1 except
+  // the two marked hypothetical.
+  const idOf = (f) => { const { identity, round } = pieceIdentity(f); return `${identity}#${round}`; };
+  const idCases = [
+    ['W1-01.json', 'W1-01#1'],                                  // no suffix is round 1
+    ['W1-01-r2.json', 'W1-01#2'],
+    ['W1-01-province-stream-r1.json', 'W1-01-province-stream#1'], // A SUB-PIECE, NOT A ROUND OF W1-01
+    ['W1-08-W1-29-r2.json', 'W1-08-W1-29#2'],                    // two piece ids in one name
+    ['W1-17-act5-r1.json', 'W1-17-act5#1'],
+    ['W1-22-B2-blind.json', 'W1-22-B2-blind#1'],                 // no round, and not a round of W1-22
+    ['W1-LIBRARY-r1.json', 'W1-LIBRARY#1'],
+    ['W1-LIBRARY-MARTIAL-r4.json', 'W1-LIBRARY-MARTIAL#4'],      // NOT a round of W1-LIBRARY
+    ['W1-PROSE-TICS-r4.json', 'W1-PROSE-TICS#4'],
+    ['corpus/90-verdicts/wave1/W1-04-r5.json', 'W1-04#5'],       // full path, not just a basename
+    ['W1-30-r2-addendum.json', 'W1-30-r2-addendum#1'],           // hypothetical: -rN not at the end is not a round
+    ['W1-04-r10.json', 'W1-04#10'],                              // hypothetical: numeric, so r10 > r9
+  ];
+  for (const [f, want] of idCases) {
+    const got = idOf(f);
+    if (got !== want) throw new Error(`pieceIdentity("${f}") = ${got}, expected ${want}`);
+  }
+
+  const D = 'corpus/90-verdicts/wave1/';
+  const rel8 = roundRelevance([
+    D + 'W1-01.json', D + 'W1-01-r2.json', D + 'W1-01-province-stream-r1.json',
+    D + 'W1-04-r4.json', D + 'W1-04-r5.json', D + 'W1-04-r10.json',
+    D + 'W1-LIBRARY-r1.json', D + 'W1-LIBRARY-MARTIAL-r4.json',
+    D + 'W1-22-B2-blind.json',
+  ]);
+  const expectGates = {
+    [D + 'W1-01.json']: false,                       // superseded by -r2
+    [D + 'W1-01-r2.json']: true,
+    [D + 'W1-01-province-stream-r1.json']: true,     // its own piece: must still gate
+    [D + 'W1-04-r4.json']: false,
+    [D + 'W1-04-r5.json']: false,                    // r10 is higher, numerically
+    [D + 'W1-04-r10.json']: true,
+    [D + 'W1-LIBRARY-r1.json']: true,                // MARTIAL is a different piece, not a later round
+    [D + 'W1-LIBRARY-MARTIAL-r4.json']: true,
+    [D + 'W1-22-B2-blind.json']: true,
+  };
+  for (const [f, want] of Object.entries(expectGates)) {
+    const got = rel8.get(f).gates;
+    if (got !== want) throw new Error(`roundRelevance: ${f} gates=${got}, expected ${want}`);
+  }
+  if (rel8.get(D + 'W1-01.json').supersededBy !== D + 'W1-01-r2.json') throw new Error('roundRelevance must name the superseding file');
+  // Same basename in two waves must not supersede each other.
+  const rel2 = roundRelevance(['corpus/90-verdicts/wave1/W1-01-r2.json', 'corpus/90-verdicts/w2/W1-01-r2.json']);
+  if (!rel2.get('corpus/90-verdicts/wave1/W1-01-r2.json').gates || !rel2.get('corpus/90-verdicts/w2/W1-01-r2.json').gates) {
+    throw new Error('roundRelevance: identity must be scoped per wave directory');
+  }
+
+  // --- a pin stands in for an oversized artifact, but a stub does not. Built on a scratch copy,
+  // because a substitution rule nobody has tried to break is a hole with a comment over it.
+  {
+    const tmp = mkdtempSync(join(tmpdir(), 'verdict-validate-selftest-'));
+    try {
+      const p = 'reports/selftest/huge.jsonl';
+      mkdirSync(join(tmp, 'reports/selftest'), { recursive: true });
+      if (resolveCitedPath(tmp, p).ok) throw new Error('a path with neither file nor pin resolved');
+      const good = { pin_version: 1, path: p, bytes: 1, sha256: 'a'.repeat(64), produced_by: 'node x.mjs', decisive: { frames: 1 }, cited_by: ['v.json'] };
+      writeFileSync(join(tmp, p + '.pin.json'), JSON.stringify(good));
+      if (!resolveCitedPath(tmp, p).ok) throw new Error('a well-formed pin did not resolve the citation');
+      for (const drop of ['decisive', 'sha256', 'produced_by', 'cited_by']) {
+        const stub = { ...good }; delete stub[drop];
+        writeFileSync(join(tmp, p + '.pin.json'), JSON.stringify(stub));
+        if (resolveCitedPath(tmp, p).ok) throw new Error(`a pin missing \`${drop}\` was accepted as a citation`);
+      }
+      writeFileSync(join(tmp, p + '.pin.json'), '{ not json');
+      if (resolveCitedPath(tmp, p).ok) throw new Error('an unparseable pin was accepted as a citation');
+      writeFileSync(join(tmp, p + '.pin.json'), JSON.stringify({ ...good, sha256: 'nope' }));
+      if (resolveCitedPath(tmp, p).ok) throw new Error('a pin with no valid SHA-256 was accepted as a citation');
+    } finally { rmSync(tmp, { recursive: true, force: true }); }
+  }
+  console.log('verdict validator self-test: no-gap PASS accepted; gapless FAIL rejected; historical gap-bearing shape accepted;');
+  console.log(`  round identity correct on ${idCases.length} naming edge cases, ${Object.keys(expectGates).length} relevance cases, and per-wave scoping;`);
+  console.log('  a well-formed pin resolves an oversized citation and five malformed pins do not.');
   process.exit(0);
 }
 if (process.argv.includes('--all')) {
