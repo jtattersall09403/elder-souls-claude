@@ -468,6 +468,11 @@ sabotage-shaped files already tracked is owed.
   name, so it survives a container restart.
 - The proxy takes **40–90 s to start routing** after a Pod reads `RUNNING`; a run budget under
   ~4 minutes will not survive it.
+- **`node tools/visual/gpu-deck.mjs --help` does not print help — it rents a Pod and starts
+  spending.** The tool has no `--help` handler, so an unrecognised flag falls straight through to
+  provisioning. **Use `--estimate`**, which prints the cost model with no spend at all. (This was
+  recorded only in `reports/thorn-plates/2026-08-14-thorn-plates.md` and was not reachable from any
+  document an agent reads; moved here 2026-08-14 by `DOC-SLIM-HOTPATH`.)
 
 ## 5. The disk fails silently
 
