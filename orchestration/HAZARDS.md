@@ -3,6 +3,32 @@
 Written and owned by the orchestrator. Each entry cost somebody real work. Where an entry names a
 mistake, the orchestrator made it unless stated otherwise.
 
+## 0. A fifth failure shape: a self-test whose arms agree about a false premise
+
+Rule 6 lists four ways a control fails. Here is a fifth, found on 2026-08-14 when the fix for the
+Pod-killing bug **killed a sibling's live Pod through its own guard**, hours after shipping with a
+green self-test.
+
+The guard tagged ownership into the RunPod resource name, keyed on `CLAUDE_CODE_SESSION_ID`. The
+author asserted that identifies an agent. **It identifies the container** — four runs started by four
+different sibling agents all carried the same slug. In the author's own words:
+
+> *"My self-test passed the whole time because every arm **injected** distinct slugs. The arms
+> disagreed about classification logic and agreed, wrongly, about the identity source — a test that
+> cannot falsify its own premise."*
+
+**The shape: every arm supplies the disputed input by hand, so they can only argue about what happens
+downstream of an assumption none of them tests.** It looks exactly like a rigorous multi-arm suite.
+Ask of any self-test: *which input do all my arms fabricate identically, and what would happen if the
+real value were not what I assume?* If the answer is "they would all still pass", that input is
+untested no matter how many arms there are.
+
+**The repair is also worth copying: two guards, each covering the other's blind spot.** An owner tag
+in the RunPod name separates containers, accounts and worktrees and survives a container restart; a
+per-process claim in `/tmp` separates **sibling agents inside one container** but dies with the
+container. Neither is sufficient; together they cover it. Verified against the real collision — a
+sibling's Pod carrying the author's own slug, zero minutes old, came back `PROTECTED`.
+
 ## 1. `git gc --prune=now` destroys other agents' staged work — use plain `git gc`
 
 On 2026-08-14 the disk hit 96%. The space was in `.git`, which had grown to **9.3 GB**;

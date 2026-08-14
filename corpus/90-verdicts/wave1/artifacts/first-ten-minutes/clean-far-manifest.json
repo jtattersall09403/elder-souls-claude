@@ -1,0 +1,62 @@
+{
+ "tag": "cleanfar",
+ "when": "2026-08-14T10:43:49.917Z",
+ "canvas": "960x540",
+ "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+ "swiftshader": false,
+ "phases": {
+  "talkproof": {
+   "arms": [
+    {
+     "eid": "blackwood-company-factor",
+     "greeting": "Say it in one line. Local. Useful.",
+     "file_plain": "cleanfar-000-proof-blackwood-company-factor.png",
+     "canvas": [
+      960,
+      540
+     ],
+     "diff_px": 262,
+     "bbox": [
+      428,
+      179,
+      455,
+      211
+     ],
+     "centroid": [
+      433,
+      196
+     ],
+     "projected": {
+      "ndc": [
+       -0.03285591929033093,
+       0.22415327234462273
+      ],
+      "z": 33.77724182839624,
+      "in_front": true,
+      "on_screen": true
+     },
+     "distance_m": 30,
+     "mesh_present": true,
+     "mesh_visible": true,
+     "meshes": 51,
+     "npc_pos": [
+      2750.14,
+      2.68,
+      5031.89
+     ],
+     "player_pos": [
+      2780.14,
+      2.68,
+      5032.39
+     ],
+     "file_overlay": "cleanfar-001-proof-overlay-blackwood-company-factor.png"
+    }
+   ],
+   "npcs_in_world": 56
+  }
+ },
+ "warm_up": {
+  "frames": 30,
+  "npcs_in_world": 56
+ }
+}

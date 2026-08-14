@@ -80,7 +80,20 @@ async function shot(label) {
 /**
  * Pixels of ONE subtree, from the pose we are standing in right now. `which` picks the subtree:
  * 'player' is renderer.playerMesh, anything else is renderer.npcMeshes.get(which).
- * Two renders, one pose, only that subtree's materials touched.
+ *
+ * THIS TOGGLES `root.visible`, NOT `material.colorWrite`, AND THE DIFFERENCE IS NOT COSMETIC.
+ * My first version copied `vt-seethrough.mjs` §1.1 and set `colorWrite:false` on every material
+ * in the subtree. `render/actor.js:473` caches the reed/chitin/xanmeer armour materials against
+ * the shared `mats` object and hands the SAME INSTANCES to every actor — the exact trap the
+ * charOpacity fix documents and avoids by cloning. So blanking one NPC's materials also blanked
+ * the matching parts of the PLAYER, and the count came back as the NPC plus a few thousand
+ * pixels of somebody else. It was caught by painting the difference red and looking at it
+ * (`gpufar-001-proof-overlay-blackwood-company-factor.png`: the red is on the player in the
+ * foreground, while the actual NPC is a correct ~300-pixel figure at 30 m). Hiding the ROOT
+ * touches no material and cannot leak into another actor.
+ *
+ * Anything measuring an actor's screen footprint by material flags on this build inherits the
+ * same defect, `tools/harness/first-ten.mjs`'s D1 column included.
  */
 async function visiblePx(which) {
   return g.page.evaluate((w) => {
@@ -94,12 +107,14 @@ async function visiblePx(which) {
       cv.getContext('2d').drawImage(c, 0, 0);
       return cv.getContext('2d').getImageData(0, 0, c.width, c.height).data;
     };
-    const touched = [];
-    root.traverse((o) => { if (o.isMesh && o.material && !Array.isArray(o.material)) touched.push([o, o.material.colorWrite, o.material.depthWrite, o.material.depthTest]); });
+    let meshes = 0;
+    root.traverse((o) => { if (o.isMesh) meshes++; });
+    const was = root.visible;
     const ship = grab();
-    for (const [o] of touched) { o.material.colorWrite = false; o.material.depthWrite = false; o.material.depthTest = false; }
+    root.visible = false;
     const gone = grab();
-    for (const [o, cw, dw, dt] of touched) { o.material.colorWrite = cw; o.material.depthWrite = dw; o.material.depthTest = dt; }
+    root.visible = was;
+    const touched = { length: meshes };
     let n = 0;
     for (let i = 0; i < ship.length; i += 4) {
       if (ship[i] !== gone[i] || ship[i + 1] !== gone[i + 1] || ship[i + 2] !== gone[i + 2]) n++;
@@ -152,6 +167,23 @@ async function census() {
 }
 
 const step = (n) => g.h('stepFrames', n);
+
+/**
+ * WARM-UP, and it is not optional. `Engine.populateSettlement()` runs from the fixed step, so at
+ * frame 0 `sim.npcs` is EMPTY and every question about where somebody is standing answers "not in
+ * world". My first GPU run lost its talk and interior arms to exactly this: three `not in world`
+ * errors and an interior with `visible_bodies: 0`, which reads like a damning result and is only a
+ * missing `stepFrames`. `tools/harness/first-ten.mjs` steps 30 before its census for the same
+ * reason. Recorded in the manifest so no reader has to trust that it happened.
+ */
+async function warmUp(frames = 30) {
+  await step(frames);
+  const n = await g.page.evaluate(() => window.__ENGINE.sim.npcs.length);
+  M.warm_up = { frames, npcs_in_world: n };
+  if (!n) console.error('critic-first-ten-play: WARNING — the town is still empty after warm-up; every population number below is vacuous');
+  save();
+  return n;
+}
 
 // ---------------------------------------------------------------- spawn + look around
 if (want('spawn')) {
@@ -212,7 +244,7 @@ if (want('walk')) {
 //   talk-far  — talk to the audit's own subject from where we happen to be standing
 //   talk-near — walk up to the nearest drawn NPC and talk, which is what a player would do
 if (want('talk')) {
-  const p = { arms: [] };
+  const p = { arms: [], npcs_in_world: await warmUp() };
   const c = await census();
   p.drawn_within_60m = c.drawn_within_60m;
   p.player_pos = c.player_pos;
@@ -289,7 +321,7 @@ if (want('talk')) {
 // through the engine's `projectPoint`. If the red is a human silhouette in the middle of the
 // frame, D3 is fixed. If it is a smear at the horizon, the count was flattering.
 if (want('talkproof')) {
-  const p = { arms: [] };
+  const p = { arms: [], npcs_in_world: await warmUp() };
   const targets = String(args.targets || 'blackwood-company-factor').split(',');
   for (const eid of targets) {
     const a = { eid };
@@ -331,12 +363,14 @@ if (want('talkproof')) {
           cv.getContext('2d').drawImage(c, 0, 0);
           return cv.getContext('2d').getImageData(0, 0, c.width, c.height);
         };
-        const touched = [];
-        if (root) root.traverse((o) => { if (o.isMesh && o.material && !Array.isArray(o.material)) touched.push([o, o.material.colorWrite, o.material.depthWrite, o.material.depthTest]); });
+        let nMesh = 0;
+        if (root) root.traverse((o) => { if (o.isMesh) nMesh++; });
         const ship = grab();
-        for (const [o] of touched) { o.material.colorWrite = false; o.material.depthWrite = false; o.material.depthTest = false; }
+        const wasV = root ? root.visible : false;
+        if (root) root.visible = false;
         const gone = grab();
-        for (const [o, cw, dw, dt] of touched) { o.material.colorWrite = cw; o.material.depthWrite = dw; o.material.depthTest = dt; }
+        if (root) root.visible = wasV;
+        const touched = { length: nMesh };
         const W = ship.width, H = ship.height;
         const out = new ImageData(new Uint8ClampedArray(ship.data), W, H);
         let n0 = 0, x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1, sx = 0, sy = 0;
@@ -380,7 +414,7 @@ if (want('talkproof')) {
 
 // ---------------------------------------------------------------- go inside
 if (want('interior')) {
-  const p = {};
+  const p = { npcs_in_world: await warmUp() };
   try {
     const doors = await g.page.evaluate(() => {
       const E = window.__ENGINE;

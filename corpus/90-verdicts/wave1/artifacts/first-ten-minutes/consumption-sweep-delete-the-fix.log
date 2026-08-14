@@ -1,0 +1,20 @@
+consumption-sweep delete-the-fix — FIRST-TEN-MINUTES critic, 2026-08-14T10:47:00Z
+commit: a8e4c938da682688f472b8d6b6822e8acb913820
+sparse copy of game/ + tools/ only (76 MB), per HAZARDS.md section 5
+
+ARM 0  baseline, unmodified
+    sweep exit=0
+
+ARM A  TRIVIAL wrong answer: every 'charOpacity' mention in game/src/render/ renamed.
+    charOpacity mentions in renderer.js: 0
+    sweep exit=1
+
+ARM B  PLAUSIBLE wrong answer: the CALL SITE deleted. Method + comment intact; fade never runs.
+    charOpacity mentions in renderer.js: 3
+    sweep exit=0
+
+ARM C  PLAUSIBLE wrong answer: method body gutted to 'return;'. Doc comment intact.
+    charOpacity mentions in renderer.js: 2  (both are prose in the doc comment)
+    sweep exit=0
+
+RESULT: the tripwire fires only for ARM A. Both regressions a person would actually ship leave it green.

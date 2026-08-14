@@ -50,6 +50,9 @@ const STOPS = args.stops ? Number(args.stops) : 6;
 const [CW, CH] = String(args.canvas || '960x540').split('x').map(Number);
 const SEED = Number(args.seed || 20260814);
 const KEEP = Number(args.keepFrames || 8);     // PNGs written per variant per stop, for humans
+// `--grade-only` skips the AA sweep and runs just the region x hour x weather grade pass. It exists
+// so a grade change can be re-verified for the cost of ~90 frames instead of ~1400.
+const GRADE_ONLY = args.gradeOnly === true || args['grade-only'] === true;
 
 const DECK = JSON.parse(fs.readFileSync(path.join(REPO, 'tools/visual/deck.json'), 'utf8'));
 
@@ -313,7 +316,7 @@ const rows = [];
 const reports = {};
 console.log(`probe: ${stops.length} stops x ${VARIANTS.length} variants, pan ${PAN} frames @ ${PAN_STEP} deg/frame, ${CW}x${CH}`);
 
-for (const setup of stops) {
+for (const setup of (GRADE_ONLY ? [] : stops)) {
   const err = await goTo(setup);
   if (err) { console.log(`  RED  ${setup.id} — ${err}`); rows.push({ stop: setup.id, status: 'red', reason: err }); continue; }
   await call('setWeather', 'clear');

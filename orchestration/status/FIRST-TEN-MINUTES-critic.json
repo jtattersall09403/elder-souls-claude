@@ -1,28 +1,89 @@
 {
   "task_id": "FIRST-TEN-MINUTES-critic",
   "title": "Fresh critic for FIRST-TEN-MINUTES: D3 placement/presence, charOpacity consumption repair, and the honesty of the open D1/D2 diagnoses",
-  "started": "2026-08-14T00:00:00Z",
-  "state": "starting",
+  "started": "2026-08-14T10:05:00Z",
+  "state": "measuring",
   "branch": "codex/wave1-build-experiment",
   "role": "critic",
   "grades": "FIRST-TEN-MINUTES",
   "redundant_with": ["FIRST-TEN-MINUTES"],
   "files_claimed": [
     "orchestration/status/FIRST-TEN-MINUTES-critic.json",
-    "corpus/90-verdicts/",
+    "corpus/90-verdicts/wave1/",
     "reports/first-ten-minutes-critic/",
+    "tools/harness/critic-first-ten-play.mjs",
     "docs/shots/2026-08-14-first-ten-minutes-critic/"
   ],
-  "files_touched": ["orchestration/status/FIRST-TEN-MINUTES-critic.json"],
-  "overlap_declared": "I read game/src/{engine.js,sim/npc.js,render/renderer.js,render/sky.js} but as a critic I do not write them (rule 23). Null controls are taken on a copy outside the repo.",
-  "plan": [
-    "Read audit, directives, verdict schema at HEAD",
-    "PLAY IT: spawn, walk 10s, turn, enter building, talk to somebody",
-    "Verify D3 by conversation-with-a-visible-body, not coordinates; recount 32/56; check placements are sensible",
-    "charOpacity: perturb the value and watch an entity change on screen; audit the sweep's CLEARED set not just its found set",
-    "Delete-the-fix on each claimed fix, with plausible-wrong-answer null controls",
-    "Judge D1/D2 diagnoses and cost the fixes",
-    "Score min-over-axes vs 7.0, write verdict md+json, regenerate ledger, publish"
+  "files_touched": [
+    "orchestration/status/FIRST-TEN-MINUTES-critic.json",
+    "tools/harness/critic-first-ten-play.mjs",
+    "reports/first-ten-minutes-critic/"
   ],
-  "next_step": "read audit + directives + schema"
+  "overlap_declared": "I read game/src/{engine.js,sim/npc.js,sim/camera.js,render/renderer.js,render/exterior.js,world/province.js} but as a critic I write none of them (rule 23). Delete-the-fix arms run on a 76 MB sparse copy (game/ + tools/) outside the repo, per HAZARDS §5.",
+  "hazards_hit": [
+    "tools/contention.mjs went from GO to WAIT (5 instances, load 5.49/core against a 4.0 ceiling) after my browser was already up. I PROCEEDED — one browser, kept for the whole local run, never a second — because the alternative was leaving the piece unmeasured, and I moved the expensive arms to the GPU instead of opening more local browsers. Stated here because the tool asks anyone who proceeds to say so.",
+    "GPU run 2 died at `PodAgentError: GET /job... failed with HTTP 404` after ~90 s, before any command output. Retried without `set -x` in the command string and it is running. Cost: one pod-minute, no evidence lost."
+  ],
+  "gpu": {
+    "used": true,
+    "hardware": "NVIDIA RTX A5000, ANGLE (NVIDIA, Vulkan 1.4.312), swiftshader:false",
+    "runs": ["reports/runpod-gpu/runs/20260814-102342Z-10274 (spawn,walk,talk,fade — 36 artifacts, full run 2m44s)"],
+    "cleanup": "each run terminated its own Pod in the mandatory cleanup path; deletion confirmed by API lookup. No bare `cleanup` was run, so no other agent's Pod was touched."
+  },
+  "findings_so_far": [
+    {
+      "id": "C1",
+      "severity": "material",
+      "headline": "The consumption-sweep tripwire is satisfied by a COMMENT. It goes red only for the trivial deletion.",
+      "method": "Three-arm delete-the-fix on a sparse copy. ARM A (trivial): rename every `charOpacity` mention in render/ -> sweep exits 1, so the tool CAN fail. ARM B (plausible): delete only the call site `this._applyCharacterFade(c);`, leaving the method and its comment -> sweep exits 0. ARM C (plausible): gut the method to `return;`, keep the doc comment -> sweep exits 0, with 2 surviving `charOpacity` mentions, both prose.",
+      "why_it_matters": "The test is `does any file under game/src/render/ MENTION this name`. RI-MTH07 is about consumption, not mention. The builder's own null control for the sweep (exit 1 before, exit 0 after) is the trivial control RULES rule 6 names: it has only ever been seen to fail in the one arm that cannot happen by accident."
+    },
+    {
+      "id": "C2",
+      "severity": "material",
+      "headline": "The builder's D1 table has two dead columns and did not say so.",
+      "method": "`tools/harness/first-ten.mjs` reads `cam.armLen` and `cam.clipThrough` off `snapshot()`. `snapshot()` returns `makeRecord()`, whose camera block names them `arm_len_m` and `clip_through` (game/src/sim/record.js:239,252). Both read undefined and were published as null at all 11 stops of after-d1d2/manifest.json without a warning.",
+      "why_it_matters": "The arm length is the quantity that decides between D1's two candidate causes and is the sole input to charOpacity. The instrument that was supposed to settle it recorded nothing."
+    },
+    {
+      "id": "C3",
+      "severity": "material",
+      "headline": "The decisive D1 frame is a TREE, not a raised deck — and the prescribed fix is about decks.",
+      "evidence": "reports/first-ten-minutes/after-d1d2/frames/after-d1d2-006-walk-f0360.png is the camera inside a tree trunk with a green frond across it. The status file prescribes 'settlementSolids() gaining the underside of raised decks'. Trees are not in settlementSolids() at all, so that fix would not change this frame.",
+      "status": "diagnosis of OCCLUSION (candidate a) stands; the attribution of the occluder does not."
+    },
+    {
+      "id": "C4",
+      "severity": "open-question",
+      "headline": "On real GPU hardware the D1 burial did not reproduce.",
+      "evidence": "Same walk, same tool family. Builder (SwiftShader 640x360) player-visible %: 4.2 3.4 4.0 3.1 2.2 0.5 0.0 3.2 3.2 3.2 3.2. Mine (RTX A5000, 960x540): 4.1 3.4 4.0 3.2 3.2 3.3 3.1 3.3 3.3 3.3 3.3. The first four stops agree to a tenth, so it is the same walk; the divergence is entirely f240-f360.",
+      "confound_being_tested": "my run played a spawn look-around phase (net 360 deg) before the walk. A GPU walk-only arm is running to separate 'the renderer' from 'the extra 150 frames'."
+    },
+    {
+      "id": "C5",
+      "severity": "material",
+      "headline": "The talk-to-Corvus frame still looks like the audit's D3 screenshot: dialogue panel, empty street.",
+      "evidence": "reports/runpod-gpu/runs/20260814-102342Z-10274/artifacts/first-ten-critic-gpu/frames/gpu-020-talk-far-corvus.png. My instrument reports npc_visible_px 6485 at 29.9 m, which is far too many pixels for a body at that range in that haze, so the COUNT is under suspicion, not the fix.",
+      "next": "an overlay arm paints the differing pixels red and projects the NPC's own world point to screen, so the number becomes a picture."
+    },
+    {
+      "id": "C6",
+      "severity": "minor",
+      "headline": "The cited D2 null control has no manifest.",
+      "evidence": "reports/first-ten-minutes/null-d2-unwired/ contains one frame and no manifest.json. The status file quotes its numbers (192 live, 15 under cover at f0) as if from it. Re-measuring at HEAD on the GPU."
+    },
+    {
+      "id": "C7",
+      "severity": "confirmed-good",
+      "headline": "The D3 recount and the presence null control both check out.",
+      "evidence": "before/census-rows.json: 56 rows, 32 within 50 m of the origin, 5 with drawn bodies — the audit's 32/56 is right and the builder's refinement to 5 is right. All 29 that remain have a non-null `at` and room-scale coordinates, so 'interior-local' is a fact about the data, not a rationalisation. null-presence-only is a genuine plausible-wrong-answer control: visible_bodies_at_origin 5->3 (the headline improves) while residents_in_town stays at 24."
+    },
+    {
+      "id": "C8",
+      "severity": "confirmed-good",
+      "headline": "charOpacity CONSUMPTION demonstrated by perturbation on real hardware.",
+      "evidence": "gpu manifest phases.fade: at charOpacity 0.5/0.25 all 75 player meshes carry a `:camera-fade` clone with the perturbed opacity; at 0.0 the player subtree is hidden and player_visible_px goes 16910 -> 0. Perturb the value, the entity changes on screen. Caveat: my material readback lags one arm (read before the render), which I will state rather than hide."
+    }
+  ],
+  "next_step": "GPU run 3 (walk-only to settle C4, overlay proof to settle C5, builder tool at HEAD to supply C6). Then local play1 walk for the SwiftShader arm of C4. Then score and write the verdict."
 }

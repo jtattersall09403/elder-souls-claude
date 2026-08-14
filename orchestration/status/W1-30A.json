@@ -4,7 +4,7 @@
   "piece": "W1-30A",
   "plan": "orchestration/plans/W1-30A.md",
   "branch": "codex/wave1-build-experiment",
-  "status": "msaa-and-grade-landed-gpu-evidence-in-flight",
+  "status": "msaa-and-grade-landed-and-measured-on-gpu",
   "plan_state": "partially-satisfied",
   "summary": "The two named defects are fixed and both were re-verified at file and line before any code was written. (1) THE GAME HAD NO ANTIALIASING. renderer.js asked the WebGL context for antialias:true and then rendered every world pixel into worldTarget, whose samples was never set; context multisampling applies only to the default framebuffer, so the request was granted and never used. worldTarget now carries samples (4 at high, 2 at medium, 0 at low, clamped by the device MAX_SAMPLES), and the depth-edge blur that stood in for AA is replaced by a luma-directed FXAA aimed at the edges MSAA cannot reach (alpha-test foliage, specular sparkle). (2) THE COLOUR GRADE WAS A NO-OP: saturation x1.035, contrast x1.015, vignette 0.075. There is now a real grade in render/post/grade.js -- one base curve plus a named variant per region, per time of day, per weather, with the region palettes taken from game/data/world/regions.json rather than invented. Also landed: ordered dither after the colour-space transform (every sky in the game banded), a wider soft-knee bloom, and a high/medium/low quality ladder with an observable framebuffer-completeness fallback to samples:0.",
   "defects_verified_before_building": [
@@ -53,7 +53,27 @@
       "tools/render/w1-30a-grade-census.mjs -- GREEN: 13 recipes for exactly the 13 shipped regions, no two regions indistinguishable in any of six time/weather cells, and every region's grade moves with both time and weather. NULL CONTROL (--flat, every region pinned to one REAL grade, not to no grade) -- RED, distinctness collapses to exactly 0 as it must.",
       "tools/render/w1-30a-baseline-check.mjs -- GREEN: the held pre-A shader is sha256-identical to composite.js at 3b43ec6c. NULL CONTROL (--null, compares the CURRENT compositor, a real and plausible wrong answer) -- RED."
     ],
-    "gpu_in_flight": "tools/render/w1-30a-frame-probe.mjs on a RunPod A5000, 4 Deck stops x 7 variants, each with a still, an 8-frame static control and a 36-frame sub-pixel pan (0.05 deg/frame, about half a pixel), plus a 4-hour x 2-weather grade sweep. Verdict via tools/render/w1-30a-verdict.mjs."
+    "gpu_in_flight": "tools/render/w1-30a-frame-probe.mjs on a RunPod A5000, 4 Deck stops x 7 variants, each with a still, an 8-frame static control and a 36-frame sub-pixel pan (0.05 deg/frame, about half a pixel), plus a 4-hour x 2-weather grade sweep. Verdict via tools/render/w1-30a-verdict.mjs.",
+    "gpu_measured": {
+      "hardware": "NVIDIA RTX A5000, ANGLE/Vulkan 1.4.312, driver 580.159.04 — hardware, so valid for appearance claims (W1-30-EVIDENCE §4).",
+      "run": "reports/w1-30a/probe/probe.json (4 Deck stops x 7 variants; still + 8-frame static control + 36-frame sub-pixel pan each) and reports/w1-30a/probe/probe-grade-after-fix.json (grade re-verification).",
+      "sheets": "reports/w1-30a/probe/sheet-*.png (contact sheets, before and after on the same camera stops) and reports/w1-30a/probe/zoom-*.png (6x nearest-neighbour crops on the strongest silhouette edge).",
+      "green": [
+        "EDGE-STILL: silhouette 10-90 transition width on the WORST stop is 1.95 px against a 1.8 px bar. Mean rose from 1.56 px (pre-A) to 2.43 px. Edges are genuinely being resolved rather than chosen between.",
+        "SABOTAGE MATRIX: every one of the six off-switches changes the frame on every stop. No pass is decorative.",
+        "MSAA-IN-FORCE: the shipping tier allocated 4x on this device and the off-switch really returns 0.",
+        "BANDING-NULL: turning dither off brings the banding back everywhere (up to 55 px runs)."
+      ],
+      "red_and_why": [
+        "EDGE-MOTION (crawl drops >=60% on the worst stop): 53%, 68%, 28%, 95% by stop -- worst 28%, so RED as written. But the comparison is CONFOUNDED and the confound is mine: the new grade raises contrast, which raises the count of pixels crossing the 24/255 threshold, so it works against its own AA measurement. Held at constant grade (after vs after-noaa) the AA-attributable reduction is 68%, 67%, 42%, 96% -- worst 42%. Still short of 60% on one stop, and honestly short.",
+        "EDGE-MOTION-NULL (both AA paths off returns within 10% of pre-A): fails for the same reason -- with AA off the new grade still raises crawl by up to 50% over the pre-A frame. The row is measuring the grade, not the AA.",
+        "EDGE-STILL-NULL (width falls to <=1.2 px with AA off): three stops fall to 1.10-1.25 px as required; Blackwood stays at 1.97 px because Blackwood is heavy fog and its edges were already soft before anything was done to them. The 1.2 px bar assumes a clear-air frame.",
+        "BANDING (longest identical-8-bit run <=6 px): worst 54 px, RED. The instrument is at fault as much as the build: it counts runs down ANY sky column, and a genuinely flat fog colour is a long run of identical values that is not banding and that dither correctly does not break. Where there IS a gradient the dither works and is measurable -- Stone Wastes 53->25 px, Deep Marshes 55->35 px, Salt Hills 53->35 px with dither on. Blackwood 54->54 is flat fog.",
+        "GRADE-SEPARATES as first written could not pass: it compared the real run against the 90th percentile of the NULL run, and most of the separation between two regions is the terrain and the fog, not the grade. Replaced by the paired statistic, which is the right instrument: for the same region pair in the same hour and weather, does the grade increase separation or decrease it?"
+      ],
+      "the_finding_the_null_control_bought": "Paired, the grade increases regional separation in 66-68% of pairs and DECREASES it in the rest -- and every loser involves Blackwood against another dark-green region (the Deep Marshes above all). The grade amplifies each region palette, so where two corpus palettes are already alike it makes them MORE alike. Halving the overcast desaturation (which was flattening every region toward one grey in rain) moved rain pairs from 70% to 75% helped and the median gain from 0.053 to 0.066, verified on a second GPU run. The remainder is an art call, not a bug: Blackwood and the Deep Marshes need deliberately divergent palettes in game/data/world/regions.json, which is world-corpus territory and not this file.",
+      "the_other_finding": "MSAA alone does far less than expected in canopy: at Blackwood, MSAA-only removes about 3% of the crawl while FXAA-only removes 66%. In the open Salt Hills MSAA-only removes 79%. That pattern is what alpha-tested foliage looks like -- MSAA cannot antialias a cutout edge without alphaToCoverage on the material. It is strong evidence that turning alphaToCoverage on for the foliage materials is the highest-value follow-up in this area, and those materials are not in this piece paths."
+    }
   },
   "rulings_and_substitutions": [
     "SUBSTITUTION (plan item 2 asked for SMAA vendored from the r180 addons): FXAA instead, implemented inside the pass that already exists. SMAA needs two ~100 KB base64 lookup textures, a three-pass ping-pong and its own targets; with MSAA carrying the geometric silhouettes what is left for the post pass is cutout and specular edges, where the two are close. Reversible: if the motion gate fails, escalate to SMAA and only then to TAA. The plan's reason for not starting at TAA (history invalidation on cuts, teleports, resize, cell changes, animated foliage) still stands.",
@@ -62,6 +82,7 @@
     "AGGREGATION follows ruling W1: crawl, edge width and banding all bind on the WORST stop, never the mean, because a player stands in one place and pans once."
   ],
   "not_done": [
+    "Two of the four camera stops chosen for the AA measurement turned out to be poor frames for it -- vista-stone-wastes at 13:00 is near-featureless fog and vista-blackwood puts a large black wedge of geometry across the frame. tools/visual/frame-stats.mjs exists precisely to catch that and was not run on the stop list first. A re-run should pick stops with high-contrast silhouettes against sky.",
     "Plan item 3, the 5-mip bloom chain. The bloom is wider (three rings instead of one 2-pixel ring) and now has a soft knee so a light source does not pop into existence as it brightens, but it is not the multi-resolution downsample/upsample chain the plan asks for, and emissives still will not read as light sources the way they should.",
     "Plan item 4, real ambient occlusion. GTAO/SSAO needs a depth-normal prepass, which is a genuine chunk of work and a genuine frame-budget question. The old 4-tap depth ring, clamped to 0.12, is untouched and is still close to invisible. Nothing looks grounded yet.",
     "The frame budget row. No frame-time measurement at 1920x1080 on the Pod was taken, so 'high fits 16.6 ms in the worst Deck vista' is unproven. MSAA at 4x on a HalfFloat target is the largest new cost and it is exactly the number the plan called least certain.",

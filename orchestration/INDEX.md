@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `385e3f20`: 920 tools, 155 reference
+so it cannot drift. Generated at `a8e4c938`: 921 tools, 155 reference
 items, 168 pieces in flight.
 
 Its purpose is to stop 168+ concurrent agents each paying separately to discover the
@@ -922,7 +922,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 6
+### `tools/visual/` — 7
 
 - `tools/visual/build-deck.mjs` — **no header comment**
 - `tools/visual/contact-sheet.mjs` — **no header comment**
@@ -930,6 +930,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/deck.mjs` — **no header comment**
 - `tools/visual/frame-stats.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
+- `tools/visual/w1-30b-probe.mjs` — **no header comment**
 
 ### `tools/w1-26-continuation/` — 1
 
@@ -1132,7 +1133,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **241 tools have no header comment**, so nobody can tell what they do without
+> **242 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1308,9 +1309,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-30K` | plan-awaiting-criticism | A first fresh reviewer-editor criticises orchestration/plans/W1-30K.md under PLAN-LOOP.md  | — |
-| `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
 | `FIRST-TEN-MINUTES-critic` | measuring | GPU run 3 (walk-only to settle C4, overlay proof to settle C5, builder tool at HEAD to sup | `orchestration/status/FIRST-TEN-MINUTES-critic.json` `tools/harness/critic-first-ten-play.mjs` `reports/first-ten-minutes-critic/` |
+| `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
+| `W1-30K` | plan-awaiting-criticism | A first fresh reviewer-editor criticises orchestration/plans/W1-30K.md under PLAN-LOOP.md  | — |
 | `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |
 | `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic, and tell W1-30E and W1-30D that MATERIAL_API.md section  | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
