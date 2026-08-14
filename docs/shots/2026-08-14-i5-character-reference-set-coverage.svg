@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" width="820" height="470" font-family="Georgia, 'Times New Roman', serif">
+  <title>The character reference set: 13 slots, 252 files, 210 of them motion</title>
+  <desc>Coverage of the character reference set built for I5. Each bar is one slot; the number is how many reference files are routed to it. C5, a full-body turnaround of a modern humanoid, is empty and is drawn as such.</desc>
+  <rect width="820" height="470" fill="#14181a"/>
+  <text x="28" y="42" fill="#e8e4d4" font-size="21">The character reference set — what a builder can now open</text>
+  <text x="28" y="66" fill="#8f9a92" font-size="13">252 files across 13 slots · 210 of them motion · 227 were already on disk · 25 newly acquired · 1 slot honestly empty</text>
+
+  <g font-size="12">
+    <!-- rows: label, n, bar width (scale: 136 -> 460px), colour, note -->
+    <g transform="translate(0,96)">
+      <text x="28" y="10" fill="#c8d0c8">C1  close range, lit</text>
+      <rect x="230" y="0" width="10" height="13" fill="#7fa07a"/><text x="250" y="11" fill="#8f9a92">3</text>
+    </g>
+    <g transform="translate(0,118)">
+      <text x="28" y="10" fill="#c8d0c8">C2  close range, dark</text>
+      <rect x="230" y="0" width="10" height="13" fill="#7fa07a"/><text x="250" y="11" fill="#8f9a92">3</text>
+    </g>
+    <g transform="translate(0,140)">
+      <text x="28" y="10" fill="#c8d0c8">C3  mid distance</text>
+      <rect x="230" y="0" width="14" height="13" fill="#7fa07a"/><text x="254" y="11" fill="#8f9a92">4</text>
+    </g>
+    <g transform="translate(0,162)">
+      <text x="28" y="10" fill="#c8d0c8">C4  full body</text>
+      <rect x="230" y="0" width="85" height="13" fill="#c9a227"/><text x="325" y="11" fill="#c9a227">25  newly acquired</text>
+    </g>
+    <g transform="translate(0,184)">
+      <text x="28" y="10" fill="#d98b6a">C5  turnaround / orbit</text>
+      <rect x="230" y="0" width="120" height="13" fill="none" stroke="#d98b6a" stroke-dasharray="3 3"/>
+      <text x="360" y="11" fill="#d98b6a">0 — nothing exists, and this is the one the owner named</text>
+    </g>
+    <g transform="translate(0,212)">
+      <text x="28" y="10" fill="#c8d0c8">M1  locomotion (motion)</text>
+      <rect x="230" y="0" width="10" height="13" fill="#6f93b0"/><text x="250" y="11" fill="#8f9a92">3</text>
+    </g>
+    <g transform="translate(0,234)">
+      <text x="28" y="10" fill="#c8d0c8">M2  attack chains (motion)</text>
+      <rect x="230" y="0" width="41" height="13" fill="#6f93b0"/><text x="281" y="11" fill="#8f9a92">12</text>
+    </g>
+    <g transform="translate(0,256)">
+      <text x="28" y="10" fill="#c8d0c8">M3  dodge / parry (motion)</text>
+      <rect x="230" y="0" width="24" height="13" fill="#6f93b0"/><text x="264" y="11" fill="#8f9a92">7</text>
+    </g>
+    <g transform="translate(0,278)">
+      <text x="28" y="10" fill="#c8d0c8">M4  telegraphs (motion)</text>
+      <rect x="230" y="0" width="20" height="13" fill="#6f93b0"/><text x="260" y="11" fill="#8f9a92">6</text>
+    </g>
+    <g transform="translate(0,300)">
+      <text x="28" y="10" fill="#c8d0c8">M5  humanoid movesets (motion)</text>
+      <rect x="230" y="0" width="156" height="13" fill="#6f93b0"/><text x="396" y="11" fill="#8f9a92">46</text>
+    </g>
+    <g transform="translate(0,328)">
+      <text x="28" y="10" fill="#c8d0c8">K1  creature, still</text>
+      <rect x="230" y="0" width="17" height="13" fill="#7fa07a"/><text x="257" y="11" fill="#8f9a92">5</text>
+    </g>
+    <g transform="translate(0,350)">
+      <text x="28" y="10" fill="#c8d0c8">K2  creature (motion)</text>
+      <rect x="230" y="0" width="460" height="13" fill="#6f93b0"/><text x="700" y="11" fill="#8f9a92">136</text>
+    </g>
+    <g transform="translate(0,372)">
+      <text x="28" y="10" fill="#c8d0c8">D1  scaled humanoid — our race</text>
+      <rect x="230" y="0" width="14" height="13" fill="#7fa07a"/><text x="254" y="11" fill="#8f9a92">4 — on disk since 6 Aug, routed to nobody until now</text>
+    </g>
+  </g>
+
+  <line x1="28" y1="404" x2="792" y2="404" stroke="#2c3436"/>
+  <g font-size="12">
+    <rect x="28" y="418" width="11" height="11" fill="#7fa07a"/><text x="46" y="428" fill="#8f9a92">still</text>
+    <rect x="96" y="418" width="11" height="11" fill="#6f93b0"/><text x="114" y="428" fill="#8f9a92">motion</text>
+    <rect x="180" y="418" width="11" height="11" fill="#c9a227"/><text x="198" y="428" fill="#8f9a92">added this pass</text>
+    <rect x="316" y="418" width="11" height="11" fill="none" stroke="#d98b6a" stroke-dasharray="3 3"/><text x="334" y="428" fill="#8f9a92">empty, and recorded as empty rather than filled with something that only looks right</text>
+  </g>
+  <text x="28" y="452" fill="#5d6a63" font-size="11">Generated from corpus/70-visual/refs/MANIFEST.json by tools/visual/character-refs.mjs · 2026-08-14 · no reference pixels are reproduced here</text>
+</svg>
