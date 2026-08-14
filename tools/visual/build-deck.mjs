@@ -14,6 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { planSettlement, settlementApproach, settlementFootprintClearance } from '../../game/src/render/exterior.js';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -49,10 +50,111 @@ const WEATHERS = [
 ];
 
 // A settlement approach stands off the centre by radius+38 m and looks in: that is the
-// skyline read. The street shot stands INSIDE at 0.35r and looks across: that is the
-// 4-8 m building-quality read the evidence standard makes mandatory.
+// skyline read. The street shot stands INSIDE and looks across: that is the 4-8 m
+// building-quality read the evidence standard makes mandatory.
 const APPROACH_STANDOFF_M = 38;
-const STREET_FRACTION = 0.35;
+
+/* ---------------------------------------------------------------------------------------------
+ * WHERE THE STREET SHOT STANDS — and why this is no longer `centre + 0.35 * radius, yaw 270`.
+ *
+ * That rule was blind. It never asked whether the point it named had a building on it, and for at
+ * least three of the eight settlements it did: the W1-30E critic captured `street-lilmoth`,
+ * `street-helstrom` and `street-gideon` on hardware and found the camera INSIDE geometry in all
+ * three — a single reed wall filling the frame, a player half-clipped into stone, a timber post
+ * with the player inside the wall except one foot. E's own primary gate, the one the plan says
+ * decides that child, had therefore never produced a usable frame
+ * (`GAP-W1-w1-30e-street-gate-never-ran`).
+ *
+ * The world already knows where the street is. `settlementApproach()` searches outward in
+ * four-metre rings for the civic focus with enough open radius for the court, because a public
+ * court centred under the hall was a real defect once; and `settlementFootprintClearance()` is the
+ * signed distance from a point to the oriented, shrunk SHIPPING footprints. So the stand is chosen
+ * rather than assumed, against three declared constraints, fixed before running:
+ *
+ *   STAND_CLEAR_M   3.0   the player must be standing in the open, not inside a wall
+ *   CAM_CLEAR_M     1.5   the third-person camera sits ~4.9 m BEHIND along -forward
+ *                         (`sim/camera.js` rest_arm_m). That point must be clear too, or the
+ *                         spring arm collapses into the building behind and we are back where we
+ *                         started with the failure moved one wall over.
+ *   FACE_BAND_M   4..8    the nearest facade the camera is pointed at must land in the band the
+ *                         plan's row is written about. Outside it, the shot is not the shot.
+ *
+ * Candidates are the civic focus and 24 bearings on rings out to 30 m, crossed with 24 yaws; the
+ * score prefers more building in a +/-30 degree cone within 12 m, then a nearest facade closest to
+ * 6 m, and ties break on (radius, bearing, yaw) so the manifest is reproducible. All eight
+ * settlements resolve; a settlement that did not would ship as a RED row rather than an omission,
+ * the same way an unresolved interior does.
+ *
+ * The camera's forward is +(sin yaw, cos yaw) — `sim/camera.js:basisAt` — and the eye is
+ * `pivot - forward * arm`, which is the sign that decides whether the push-out is behind the
+ * player or in front of them. It is written here because getting it backwards produces a shot that
+ * looks deliberate and is aimed at nothing.
+ * ------------------------------------------------------------------------------------------ */
+const STAND_CLEAR_M = 3.0;
+const CAM_ARM_M = 4.9;
+const CAM_CLEAR_M = 1.5;
+const FACE_MIN_M = 4.0, FACE_MAX_M = 8.0, FACE_WANT_M = 6.0;
+
+/** Signed distance from (x,z) to ONE building's oriented shrunk footprint. Mirrors
+ *  `settlementFootprintClearance`, which minimises this over the whole plan. */
+function footprintDistance(b, x, z) {
+  const yaw = (b.yaw_deg || 0) * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
+  const dx = x - b.x, dz = z - b.z;
+  const lx = dx * c - dz * s, lz = dx * s + dz * c, fp = b.drawn_footprint_m || b.footprint_m || [5, 5];
+  const qx = Math.abs(lx) - fp[0] * 0.5, qz = Math.abs(lz) - fp[1] * 0.5;
+  return (qx <= 0 && qz <= 0) ? Math.max(qx, qz) : Math.hypot(Math.max(qx, 0), Math.max(qz, 0));
+}
+
+function loadPlan(rec) {
+  const interiors = {};
+  for (const b of rec.buildings || []) if (b.interior) {
+    const p = path.join(REPO, `game/data/world/interiors/${b.interior}.json`);
+    if (fs.existsSync(p)) interiors[b.interior] = JSON.parse(fs.readFileSync(p, 'utf8'));
+  }
+  return planSettlement(rec, interiors, {});
+}
+
+/** @returns {{x:number,z:number,yaw_deg:number,stand_clear_m:number,camera_clear_m:number,nearest_facade_m:number,buildings_in_view:number}|null} */
+function streetStand(rec) {
+  let plan;
+  try { plan = loadPlan(rec); } catch { return null; }
+  const app = settlementApproach(plan, true);
+  const [fx, fz] = app.focus;
+  const R = plan.radius_m || 60;
+  let best = null;
+  for (const r of [0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30]) {
+    const bearings = r === 0 ? 1 : 24;
+    for (let i = 0; i < bearings; i++) {
+      const a = (i / bearings) * Math.PI * 2;
+      const x = fx + Math.sin(a) * r, z = fz + Math.cos(a) * r;
+      if (Math.hypot(x - plan.pos[0], z - plan.pos[2]) > R) continue;
+      const stand = settlementFootprintClearance(plan, x, z);
+      if (stand < STAND_CLEAR_M) continue;
+      for (let k = 0; k < 24; k++) {
+        const yaw = (k / 24) * Math.PI * 2;
+        const fwd = [Math.sin(yaw), Math.cos(yaw)];
+        const camClear = settlementFootprintClearance(plan, x - fwd[0] * CAM_ARM_M, z - fwd[1] * CAM_ARM_M);
+        if (camClear < CAM_CLEAR_M) continue;
+        let inView = 0, nearFace = Infinity;
+        for (const b of plan.buildings) {
+          const dx = b.x - x, dz = b.z - z, d = Math.hypot(dx, dz);
+          if (d < 1e-6 || d > 20) continue;
+          if ((dx * fwd[0] + dz * fwd[1]) / d < Math.cos(30 * Math.PI / 180)) continue;
+          const fd = footprintDistance(b, x, z);
+          if (fd <= 12) inView++;
+          if (fd < nearFace) nearFace = fd;
+        }
+        if (!(nearFace >= FACE_MIN_M && nearFace <= FACE_MAX_M)) continue;
+        const score = inView * 100 - Math.abs(nearFace - FACE_WANT_M) * 10;
+        if (!best || score > best.score) {
+          best = { score, r, i, k, x, z, yaw_deg: k * 15, stand_clear_m: +stand.toFixed(2),
+            camera_clear_m: +camClear.toFixed(2), nearest_facade_m: +nearFace.toFixed(2), buildings_in_view: inView };
+        }
+      }
+    }
+  }
+  return best;
+}
 
 const setups = [];
 const add = (s) => { setups.push(s); return s; };
@@ -89,12 +191,21 @@ for (const s of settlements) {
     camera: { kind: 'orbit-free', yaw_deg: 180, pitch_deg: -5, height_m: 6, distance_m: 0 },
     why: 'silhouette and skyline: does this settlement read as a place before you are inside it',
   });
+  const st = streetStand(s);
   add({
     id: `street-${s.id}`, block: 'settlement-street', region: s.region, settlement: s.id,
     label: `${s.name} — street`, mandatory: true,
-    place: { kind: 'teleport', x: sx + Math.round((s.radius_m || 60) * STREET_FRACTION), z: sz },
-    camera: { kind: 'gameplay', yaw_deg: 270 },
-    why: 'MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot',
+    place: st ? { kind: 'teleport', x: +st.x.toFixed(1), z: +st.z.toFixed(1) }
+      : { kind: 'teleport', x: sx, z: sz },
+    camera: { kind: 'gameplay', yaw_deg: st ? st.yaw_deg : 270 },
+    // The clearances this stand was chosen against, carried in the manifest so a reader can check
+    // the choice without re-running the search, and so a world edit that invalidates it shows up
+    // as a diff rather than as a quietly worse frame.
+    stand: st ? { stand_clear_m: st.stand_clear_m, camera_clear_m: st.camera_clear_m,
+      nearest_facade_m: st.nearest_facade_m, buildings_in_view: st.buildings_in_view } : null,
+    unresolved: st === null,
+    why: 'MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot'
+      + (st ? '' : '. NO CLEAR STAND FOUND — this ships as a RED row, not an omission'),
   });
 }
 
@@ -159,6 +270,10 @@ const profiles = {
     stills: ['vista-deep-marshes', 'eye-deep-marshes', 'street-lilmoth', 'approach-lilmoth', 'char-player', 'interior-thorn-hall'],
     times: ['t1300'], weathers: ['clear'], motion: ['walk'],
   },
+  // The eight mandatory street shots on their own, all six lights, no motion. This is E's primary
+  // gate and it had never produced a usable frame; a profile that is only that gate makes
+  // re-scoring it cost ~3.6 min of Pod rather than the full Deck's 12.
+  street: { stills: setups.filter((s) => s.block === 'settlement-street').map((s) => s.id), times: TIMES.map((t) => t.id), weathers: ['clear', 'rain'], motion: [] },
   weather: { stills: setups.filter((s) => s.block !== 'interior').map((s) => s.id), times: ['t1300'], weathers: ['clear', 'rain'], motion: [] },
   night: { stills: setups.map((s) => s.id), times: ['t0800'], weathers: ['clear'], motion: [] },
 };
