@@ -1,0 +1,5836 @@
+{
+  "world-hud": {
+    "mode": "world",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 7,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing"
+      ],
+      "numeric_text_screen": [
+        "hud.heal"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "map",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": false,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      }
+    ],
+    "coveragePct": 2.4902,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0,
+      "opacity": 0,
+      "paused": false
+    },
+    "book": null,
+    "focus": null,
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [],
+    "overdraw": 0.025,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 7,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": null,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.0249,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "inventory": {
+    "mode": "inventory",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 29,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "inventory.panel",
+        "inventory.header",
+        "inventory.encumbrance",
+        "inventory.cat.all",
+        "inventory.cat.weapon",
+        "inventory.cat.armour",
+        "inventory.cat.clothing",
+        "inventory.cat.potion",
+        "inventory.cat.ingredient",
+        "inventory.cat.book",
+        "inventory.cat.tool",
+        "inventory.cat.misc",
+        "inventory.cat.quest",
+        "inventory.sort",
+        "inventory.gold",
+        "inventory.rule1",
+        "inventory.cols",
+        "inventory.row.eshis-knife",
+        "inventory.extent",
+        "inventory.rule2",
+        "inventory.detail",
+        "inventory.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "inventory.encumbrance",
+        "inventory.gold",
+        "inventory.row.eshis-knife"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "journal",
+      "sheet",
+      "spells",
+      "map",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "inventory.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "reed",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "inventory.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eshi's knife",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.encumbrance",
+        "kind": "encumbrance",
+        "rect": [
+          222,
+          224,
+          148,
+          60
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "0.0 / 183",
+        "fill": 0,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "load": 0,
+          "max": 182.5,
+          "tier": "UNBURDENED"
+        }
+      },
+      {
+        "id": "inventory.cat.all",
+        "kind": "category",
+        "rect": [
+          222,
+          296,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "All",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 1
+        }
+      },
+      {
+        "id": "inventory.cat.weapon",
+        "kind": "category",
+        "rect": [
+          222,
+          347,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Weapon",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 1
+        }
+      },
+      {
+        "id": "inventory.cat.armour",
+        "kind": "category",
+        "rect": [
+          222,
+          398,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Armour",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.clothing",
+        "kind": "category",
+        "rect": [
+          222,
+          449,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Clothing",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.potion",
+        "kind": "category",
+        "rect": [
+          222,
+          500,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Potion",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.ingredient",
+        "kind": "category",
+        "rect": [
+          222,
+          551,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Ingredient",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.book",
+        "kind": "category",
+        "rect": [
+          222,
+          602,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Book",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.tool",
+        "kind": "category",
+        "rect": [
+          222,
+          653,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Tool",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.misc",
+        "kind": "category",
+        "rect": [
+          222,
+          704,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Misc",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.cat.quest",
+        "kind": "category",
+        "rect": [
+          222,
+          755,
+          148,
+          46
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Quest",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "count": 0
+        }
+      },
+      {
+        "id": "inventory.sort",
+        "kind": "category",
+        "rect": [
+          222,
+          814,
+          148,
+          42
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "sorted by name",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.gold",
+        "kind": "gold",
+        "rect": [
+          222,
+          864,
+          148,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "0 gold",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.rule1",
+        "kind": "divider",
+        "rect": [
+          376,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.cols",
+        "kind": "divider",
+        "rect": [
+          396,
+          224,
+          700,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.row.eshis-knife",
+        "kind": "list_row",
+        "rect": [
+          396,
+          258,
+          700,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "— Eshi's knife  0.0  —  —",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "item_id": "eshis-knife",
+          "category": "weapon",
+          "weight": 0,
+          "value_gold": 0,
+          "equipped": true,
+          "stolen": false
+        }
+      },
+      {
+        "id": "inventory.extent",
+        "kind": "scroll_extent",
+        "rect": [
+          1102,
+          258,
+          12,
+          614
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "from": 0,
+          "shown": 15,
+          "total": 1
+        }
+      },
+      {
+        "id": "inventory.rule2",
+        "kind": "divider",
+        "rect": [
+          1108,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "inventory.detail",
+        "kind": "detail_panel",
+        "rect": [
+          1130,
+          224,
+          568,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "item_id": "eshis-knife",
+          "weight": 0,
+          "value_gold": 0,
+          "condition": 1
+        }
+      },
+      {
+        "id": "inventory.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Left and right change column. Up and down move. Confirm to equip, read or use. Swap turns the page: the map, the journal, your case, your spells.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "col": 1,
+      "tagIdx": 0,
+      "rowIdx": 0,
+      "sortIdx": 0
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "reed"
+    ],
+    "overdraw": 0.914,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 29,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "journal": {
+    "mode": "journal",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 13,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "journal.panel",
+        "journal.header",
+        "journal.index.head",
+        "journal.gutter",
+        "journal.pages",
+        "journal.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "journal.pages"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "sheet",
+        "spells",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "journal.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "parchment",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "journal.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Journal",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.index.head",
+        "kind": "panel_header",
+        "rect": [
+          222,
+          224,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Quests",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.gutter",
+        "kind": "divider",
+        "rect": [
+          1099,
+          224,
+          12,
+          644
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.pages",
+        "kind": "page_count",
+        "rect": [
+          512,
+          876,
+          1186,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "1 of 1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "spread": 1,
+          "spreads": 1,
+          "entries": 0
+        }
+      },
+      {
+        "id": "journal.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Left and right turn the page. Confirm on a name in the margin to go to it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "view": "chronicle",
+      "page": 0,
+      "indexIdx": 0,
+      "ringIdx": 0,
+      "query": ""
+    },
+    "journal": {
+      "chronological": true,
+      "interleave_ratio": 0,
+      "entries": 0,
+      "view": "chronicle",
+      "query": ""
+    },
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "parchment"
+    ],
+    "overdraw": 0.675,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 13,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "sheet": {
+    "mode": "sheet",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 49,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "sheet.panel",
+        "sheet.header",
+        "sheet.fact.recorded_as",
+        "sheet.fact.raised",
+        "sheet.fact.trade",
+        "sheet.fact.tide",
+        "sheet.fact.level",
+        "sheet.fact.souls",
+        "sheet.fact.reputation",
+        "sheet.fact.bounty",
+        "sheet.rule1",
+        "sheet.attr.strength",
+        "sheet.attr.endurance",
+        "sheet.attr.agility",
+        "sheet.attr.speed",
+        "sheet.attr.vigour",
+        "sheet.attr.willpower",
+        "sheet.attr.intellect",
+        "sheet.attr.hist-bond",
+        "sheet.attr.personality",
+        "sheet.attr.luck",
+        "sheet.rule2",
+        "sheet.skill.acrobatics",
+        "sheet.skill.alchemy",
+        "sheet.skill.athletics",
+        "sheet.skill.axes-maces",
+        "sheet.skill.blades",
+        "sheet.skill.claw-fang",
+        "sheet.skill.greatweapons",
+        "sheet.skill.marksman",
+        "sheet.skill.mercantile",
+        "sheet.skill.polearms",
+        "sheet.skill.root-speech",
+        "sheet.skill.security",
+        "sheet.skill.shieldcraft",
+        "sheet.skill.sneak",
+        "sheet.skill.sorcery",
+        "sheet.skill.speechcraft",
+        "sheet.skill.survival",
+        "sheet.skill.veiling",
+        "sheet.skill.warding",
+        "sheet.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "sheet.fact.level",
+        "sheet.fact.souls",
+        "sheet.fact.reputation",
+        "sheet.fact.bounty",
+        "sheet.attr.strength",
+        "sheet.attr.endurance",
+        "sheet.attr.agility",
+        "sheet.attr.speed",
+        "sheet.attr.vigour",
+        "sheet.attr.willpower",
+        "sheet.attr.intellect",
+        "sheet.attr.hist-bond",
+        "sheet.attr.personality",
+        "sheet.attr.luck",
+        "sheet.skill.acrobatics",
+        "sheet.skill.alchemy",
+        "sheet.skill.athletics",
+        "sheet.skill.axes-maces",
+        "sheet.skill.blades",
+        "sheet.skill.claw-fang",
+        "sheet.skill.greatweapons",
+        "sheet.skill.marksman",
+        "sheet.skill.mercantile",
+        "sheet.skill.polearms",
+        "sheet.skill.root-speech",
+        "sheet.skill.security",
+        "sheet.skill.shieldcraft",
+        "sheet.skill.sneak",
+        "sheet.skill.sorcery",
+        "sheet.skill.speechcraft",
+        "sheet.skill.survival",
+        "sheet.skill.veiling",
+        "sheet.skill.warding"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "journal",
+      "spells",
+      "map",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "journal",
+        "spells",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "sheet.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "reed",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "sheet.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Nameless",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.recorded_as",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          224,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "recorded as saxhleel",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.raised",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          250,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "raised null",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.trade",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          276,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "trade outlander",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.tide",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          302,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "tide the-shadow",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.level",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          328,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "level 1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.souls",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          354,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "souls 0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.reputation",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          380,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "reputation 0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.fact.bounty",
+        "kind": "sheet_row",
+        "rect": [
+          222,
+          406,
+          501.84,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "bounty 0",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.rule1",
+        "kind": "divider",
+        "rect": [
+          727.84,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.attr.strength",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          224,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "STRENGTH 12",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "strength",
+          "value": 12,
+          "soft_cap": 40
+        }
+      },
+      {
+        "id": "sheet.attr.endurance",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          250,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "ENDURANCE 20",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "endurance",
+          "value": 20,
+          "soft_cap": 20
+        }
+      },
+      {
+        "id": "sheet.attr.agility",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          276,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "AGILITY 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "agility",
+          "value": 10,
+          "soft_cap": 40
+        }
+      },
+      {
+        "id": "sheet.attr.speed",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          302,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "SPEED 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "speed",
+          "value": 10,
+          "soft_cap": 35
+        }
+      },
+      {
+        "id": "sheet.attr.vigour",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          328,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "VIGOUR 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "vigour",
+          "value": 10,
+          "soft_cap": 27
+        }
+      },
+      {
+        "id": "sheet.attr.willpower",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          354,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "WILLPOWER 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "willpower",
+          "value": 10,
+          "soft_cap": 30
+        }
+      },
+      {
+        "id": "sheet.attr.intellect",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          380,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "INTELLECT 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "intellect",
+          "value": 10,
+          "soft_cap": 40
+        }
+      },
+      {
+        "id": "sheet.attr.hist-bond",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          406,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "HIST-BOND 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "hist-bond",
+          "value": 10,
+          "soft_cap": 40
+        }
+      },
+      {
+        "id": "sheet.attr.personality",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          432,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "PERSONALITY 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "personality",
+          "value": 10,
+          "soft_cap": 45
+        }
+      },
+      {
+        "id": "sheet.attr.luck",
+        "kind": "attribute_row",
+        "rect": [
+          747.84,
+          458,
+          401.47,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "LUCK 10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "attribute": "luck",
+          "value": 10,
+          "soft_cap": 30
+        }
+      },
+      {
+        "id": "sheet.rule2",
+        "kind": "divider",
+        "rect": [
+          1157.31,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "sheet.skill.acrobatics",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          224,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Acrobatics  15",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "skill": "acrobatics",
+          "value": 15
+        }
+      },
+      {
+        "id": "sheet.skill.alchemy",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          248,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Alchemy  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "alchemy",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.athletics",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          272,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Athletics  25",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "athletics",
+          "value": 25
+        }
+      },
+      {
+        "id": "sheet.skill.axes-maces",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          296,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Axes & Maces  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "axes-maces",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.blades",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          320,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Blades  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "blades",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.claw-fang",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          344,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Claw & Fang  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "claw-fang",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.greatweapons",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          368,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Greatweapons  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "greatweapons",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.marksman",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          392,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Marksman  25",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "marksman",
+          "value": 25
+        }
+      },
+      {
+        "id": "sheet.skill.mercantile",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          416,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Mercantile  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "mercantile",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.polearms",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          440,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Polearms  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "polearms",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.root-speech",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          464,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Root-Speech  10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "root-speech",
+          "value": 10
+        }
+      },
+      {
+        "id": "sheet.skill.security",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          488,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Security  15",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "security",
+          "value": 15
+        }
+      },
+      {
+        "id": "sheet.skill.shieldcraft",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          512,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Shieldcraft  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "shieldcraft",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.sneak",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          536,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Sneak  20",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "sneak",
+          "value": 20
+        }
+      },
+      {
+        "id": "sheet.skill.sorcery",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          560,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Sorcery  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "sorcery",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.speechcraft",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          584,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Speechcraft  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "speechcraft",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.survival",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          608,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Survival  25",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "survival",
+          "value": 25
+        }
+      },
+      {
+        "id": "sheet.skill.veiling",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          632,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Veiling  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "veiling",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.skill.warding",
+        "kind": "skill_row",
+        "rect": [
+          1179.31,
+          656,
+          518.69,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Warding  5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "skill": "warding",
+          "value": 5
+        }
+      },
+      {
+        "id": "sheet.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "What is written on your case, and what you can do.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "rowIdx": 0
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "reed"
+    ],
+    "overdraw": 0.87,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 49,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "spells": {
+    "mode": "spells",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 14,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "spells.panel",
+        "spells.header",
+        "spells.row.spark_dart",
+        "spells.row.slowfall",
+        "spells.rule",
+        "spells.detail",
+        "spells.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "journal",
+      "sheet",
+      "map",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "journal",
+        "sheet",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "spells.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "chitin",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "spells.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "spells.row.spark_dart",
+        "kind": "spell_row",
+        "rect": [
+          222,
+          224,
+          678.96,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Spark-Dart  NaN",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "spell": "spark_dart",
+          "cost": null,
+          "school": "sorcery"
+        }
+      },
+      {
+        "id": "spells.row.slowfall",
+        "kind": "spell_row",
+        "rect": [
+          222,
+          254,
+          678.96,
+          30
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Slowfall  NaN",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "spell": "slowfall",
+          "cost": null,
+          "school": "warding"
+        }
+      },
+      {
+        "id": "spells.rule",
+        "kind": "divider",
+        "rect": [
+          908.96,
+          224,
+          12,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "spells.detail",
+        "kind": "detail_panel",
+        "rect": [
+          930.96,
+          224,
+          767.04,
+          674
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "spell": "spark_dart"
+        }
+      },
+      {
+        "id": "spells.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "rowIdx": 0
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "chitin"
+    ],
+    "overdraw": 0.928,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 14,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "map": {
+    "mode": "map",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 9,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": true,
+      "elements_considered": 9,
+      "elements_on_screen": 16,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing"
+      ],
+      "numeric_text_screen": [
+        "hud.heal"
+      ],
+      "drawn_cells": 42846,
+      "cells_in_view": 42846,
+      "geography_always_drawn": true,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 1,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "sheet",
+        "spells",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "map.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "parchment",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "map.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Province",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "map.terrain",
+        "kind": "map_terrain",
+        "rect": [
+          683.91,
+          230,
+          552.18,
+          634
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "view": "world",
+          "revealed_cells": 69,
+          "total_cells": 42846,
+          "revealed_frac": 0.00161,
+          "source": "game/data/world/terrain.json + regions.json",
+          "roads_drawn": 0,
+          "routes_drawn": 0,
+          "drawn_cells": 42846,
+          "cells_in_view": 42846
+        }
+      },
+      {
+        "id": "map.place.lilmoth",
+        "kind": "map_place",
+        "rect": [
+          998.01,
+          802.85,
+          5,
+          5
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Lilmoth",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "place": "lilmoth",
+          "discovered": true,
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.naming",
+        "kind": "map_place",
+        "rect": [
+          973.17,
+          779.35,
+          54.67,
+          22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Lilmoth",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "place": "lilmoth",
+          "names": "lilmoth",
+          "quest": null,
+          "objective": null,
+          "travel": false
+        }
+      },
+      {
+        "id": "map.player",
+        "kind": "map_player",
+        "rect": [
+          997.01,
+          799.96,
+          7,
+          7
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "facing": true,
+          "position": true,
+          "destination": null,
+          "route": null
+        }
+      },
+      {
+        "id": "map.rule",
+        "kind": "divider",
+        "rect": [
+          222,
+          870,
+          1476,
+          6
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "map.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          878,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "stick: the places you have found   ·   confirm: where I am   ·   back: close",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "map.found",
+        "kind": "hint",
+        "rect": [
+          222,
+          904,
+          1476,
+          22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "One place I have stood in.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "view": "world",
+      "placeIdx": 0
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "parchment"
+    ],
+    "overdraw": 0.844,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 16,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "wait": {
+    "mode": "wait",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 36,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "wait.panel",
+        "wait.header",
+        "wait.hours",
+        "wait.pip.1",
+        "wait.pip.2",
+        "wait.pip.3",
+        "wait.pip.4",
+        "wait.pip.5",
+        "wait.pip.6",
+        "wait.pip.7",
+        "wait.pip.8",
+        "wait.pip.9",
+        "wait.pip.10",
+        "wait.pip.11",
+        "wait.pip.12",
+        "wait.pip.13",
+        "wait.pip.14",
+        "wait.pip.15",
+        "wait.pip.16",
+        "wait.pip.17",
+        "wait.pip.18",
+        "wait.pip.19",
+        "wait.pip.20",
+        "wait.pip.21",
+        "wait.pip.22",
+        "wait.pip.23",
+        "wait.pip.24",
+        "wait.clock",
+        "wait.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "wait.hours",
+        "wait.pip.1",
+        "wait.pip.2",
+        "wait.pip.3",
+        "wait.pip.4",
+        "wait.pip.5",
+        "wait.pip.6",
+        "wait.pip.7",
+        "wait.pip.8",
+        "wait.pip.9",
+        "wait.pip.10",
+        "wait.pip.11",
+        "wait.pip.12",
+        "wait.pip.13",
+        "wait.pip.14",
+        "wait.pip.15",
+        "wait.pip.16",
+        "wait.pip.17",
+        "wait.pip.18",
+        "wait.pip.19",
+        "wait.pip.20",
+        "wait.pip.21",
+        "wait.pip.22",
+        "wait.pip.23",
+        "wait.pip.24",
+        "wait.clock"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "map"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "wait.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "reed",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "wait.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Wait",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "wait.hours",
+        "kind": "wait_duration",
+        "rect": [
+          222,
+          242,
+          1476,
+          72
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Let 1 hour pass",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "hours": 1,
+          "minimum": 1,
+          "maximum": 24
+        }
+      },
+      {
+        "id": "wait.pip.1",
+        "kind": "hour_pip",
+        "rect": [
+          263.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "hour": 1,
+          "selected": true
+        }
+      },
+      {
+        "id": "wait.pip.2",
+        "kind": "hour_pip",
+        "rect": [
+          386.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "2",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 2,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.3",
+        "kind": "hour_pip",
+        "rect": [
+          509.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "3",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 3,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.4",
+        "kind": "hour_pip",
+        "rect": [
+          632.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "4",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 4,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.5",
+        "kind": "hour_pip",
+        "rect": [
+          755.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "5",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 5,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.6",
+        "kind": "hour_pip",
+        "rect": [
+          878.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "6",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 6,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.7",
+        "kind": "hour_pip",
+        "rect": [
+          1001.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "7",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 7,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.8",
+        "kind": "hour_pip",
+        "rect": [
+          1124.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "8",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 8,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.9",
+        "kind": "hour_pip",
+        "rect": [
+          1247.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "9",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 9,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.10",
+        "kind": "hour_pip",
+        "rect": [
+          1370.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "10",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 10,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.11",
+        "kind": "hour_pip",
+        "rect": [
+          1493.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "11",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 11,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.12",
+        "kind": "hour_pip",
+        "rect": [
+          1616.5,
+          359,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "12",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 12,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.13",
+        "kind": "hour_pip",
+        "rect": [
+          263.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "13",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 13,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.14",
+        "kind": "hour_pip",
+        "rect": [
+          386.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "14",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 14,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.15",
+        "kind": "hour_pip",
+        "rect": [
+          509.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "15",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 15,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.16",
+        "kind": "hour_pip",
+        "rect": [
+          632.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "16",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 16,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.17",
+        "kind": "hour_pip",
+        "rect": [
+          755.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "17",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 17,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.18",
+        "kind": "hour_pip",
+        "rect": [
+          878.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "18",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 18,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.19",
+        "kind": "hour_pip",
+        "rect": [
+          1001.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "19",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 19,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.20",
+        "kind": "hour_pip",
+        "rect": [
+          1124.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "20",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 20,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.21",
+        "kind": "hour_pip",
+        "rect": [
+          1247.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "21",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 21,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.22",
+        "kind": "hour_pip",
+        "rect": [
+          1370.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "22",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 22,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.23",
+        "kind": "hour_pip",
+        "rect": [
+          1493.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "23",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 23,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.pip.24",
+        "kind": "hour_pip",
+        "rect": [
+          1616.5,
+          431,
+          40,
+          40
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "24",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "hour": 24,
+          "selected": false
+        }
+      },
+      {
+        "id": "wait.clock",
+        "kind": "clock_change",
+        "rect": [
+          392,
+          574,
+          1136,
+          116
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "09:00 to 10:00",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "before": "09:00",
+          "after": "10:00",
+          "date_before": "1 Second Seed, 3E 427",
+          "date_after": "1 Second Seed, 3E 427"
+        }
+      },
+      {
+        "id": "wait.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Up or down chooses the hours. Confirm waits. Back leaves the clock alone.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "hours": 1
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "reed"
+    ],
+    "overdraw": 0.788,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 36,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  },
+  "container": {
+    "mode": "container",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 13,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.bearing",
+        "container.panel",
+        "container.header",
+        "container.mine.head",
+        "container.mine.row.eshis-knife",
+        "container.theirs.head",
+        "container.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "container.mine.row.eshis-knife"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 69,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 1,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "journal",
+      "sheet",
+      "spells",
+      "map",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "journal",
+        "sheet",
+        "spells",
+        "map",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "map",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.13013698630136986,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 13.013698630136986
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "container.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "clay",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "container.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "undefined",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "container.mine.head",
+        "kind": "panel_header",
+        "rect": [
+          222,
+          224,
+          718,
+          28
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Carried",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true
+      },
+      {
+        "id": "container.mine.row.eshis-knife",
+        "kind": "list_row",
+        "rect": [
+          222,
+          258,
+          718,
+          32
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Eshi's knife  0.0  —",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": true,
+        "meta": {
+          "item_id": "eshis-knife",
+          "side": "mine"
+        }
+      },
+      {
+        "id": "container.theirs.head",
+        "kind": "panel_header",
+        "rect": [
+          980,
+          224,
+          718,
+          28
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "undefined",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "container.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Confirm moves one thing across. There is no button that decides what is worth keeping.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 59.6661,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 7,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 2.4902,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "side": 0,
+      "rowIdx": 0,
+      "otherIdx": 0
+    },
+    "journal": null,
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "clay"
+    ],
+    "overdraw": 0.685,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 7,
+    "toast": null,
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 13,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.5967,
+    "draw_calls": 353,
+    "frame": 10
+  }
+}

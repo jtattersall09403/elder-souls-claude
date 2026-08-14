@@ -127,7 +127,7 @@ export class Renderer {
     // change pixels" is a hard fail in the plan. `antialias` keeps its old name and now means the
     // POST edge pass (FXAA); `msaa` is the multisampled world target, which is a different thing
     // and has to be togglable separately or neither can be measured.
-    this.quality = { postprocess:true, ao:true, antialias:true, msaa:true, grade:true, dither:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
+    this.quality = { postprocess:true, ao:true, giFill:true, antialias:true, msaa:true, grade:true, dither:true, shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true, waterReflection:true, interiorDressing:true };
     this.qualityTier = 'high';
     // W1-30S seam: renderer.registerPrePass(fn) — H's vfx prepass and water reflection register
     // here (future owner: W1-30H). This commit's own water-reflection pass is the first live
@@ -342,6 +342,7 @@ export class Renderer {
     if (!(tier in MSAA_BY_TIER)) throw new Error(`unknown quality tier '${tier}' (have: ${Object.keys(MSAA_BY_TIER).join(', ')})`);
     this.qualityTier = tier;
     this.quality.ao = tier === 'high';
+    this.quality.giFill = tier === 'high';
     this.quality.postprocess = true;
     this.quality.antialias = true;
     this.quality.grade = true;
@@ -1283,6 +1284,9 @@ export class Renderer {
     if(this.quality.postprocess||this.quality.ao||this.quality.antialias) {
       this.three.setRenderTarget(null);
       this.compositeMaterial.uniforms.uAO.value=this.quality.ao?1:0;
+      // W1-F3. A separate switch from `uAO` — R2 (contact AO) and R3 (shadow-region ambient
+      // fill) are different remedies for different axes; see composite.js's own comment.
+      if(this.compositeMaterial.uniforms.uGI) this.compositeMaterial.uniforms.uGI.value=this.quality.giFill?1:0;
       this.compositeMaterial.uniforms.uAA.value=this.quality.antialias?1:0;
       this.compositeMaterial.uniforms.uPost.value=this.quality.postprocess?1:0;
       // W1-V2. The AO pass reconstructs view-space position from depth alone, so it needs the
