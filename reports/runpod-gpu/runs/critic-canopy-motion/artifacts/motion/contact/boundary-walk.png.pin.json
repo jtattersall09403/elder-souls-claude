@@ -1,0 +1,18 @@
+{
+ "pin_version": 1,
+ "path": "reports/runpod-gpu/runs/critic-canopy-motion/artifacts/motion/contact/boundary-walk.png",
+ "bytes": 2848567,
+ "sha256": "571416a6db5428e24a03b39a11874b955c5b6ad2744ff22ad013153380c8ed6a",
+ "produced_by": "node tools/visual/deck-motion.mjs --profile full --only boundary-walk --gpu hardware --require-hardware --frames 180, same Pod",
+ "regeneration_verified": null,
+ "decisive": {
+  "bytes": 2848567,
+  "note": "no structured extractor for this file type — the hash and the regeneration command are the pin"
+ },
+ "cited_by": [
+  "corpus/90-verdicts/wave1/W1-30-SHADOW-CASTERS-r1.json"
+ ],
+ "pinned_at": "2026-08-14T15:45:51.580Z",
+ "pinned_by": "verdict-evidence-20260814",
+ "note": "Raw file exceeds the 1 MiB pin threshold and is not tracked. This pin is its citation: the decisive numbers, the SHA-256 of the bytes they were read from, and the command that regenerates it. `node tools/verdict-evidence.mjs --verify` re-checks the hash on any machine that still holds the raw file."
+}
