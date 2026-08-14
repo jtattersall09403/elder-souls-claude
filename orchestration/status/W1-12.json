@@ -159,7 +159,8 @@
     "The perception fill rate (B2): W1-15 s multipliers.",
     "Enemy attack root motion peaks at 18.2 m/s (B1): W1-09 / RI-CMB04."
   ],
-  "plan_state": "satisfied",
-  "planning_next_step": "Dispatch a fresh builder from the satisfied canonical plan.",
-  "plan_review_20260809_fresh": "SATISFIED"
+  "plan_state": "awaiting-recriticism",
+  "planning_next_step": "A DIFFERENT fresh reviewer-editor judges the 2026-08-14 edited version. Do not dispatch a builder while this reads awaiting-recriticism.",
+  "plan_review_20260809_fresh": "SATISFIED",
+  "plan_review_20260814_rulingW2": "MATERIAL EDIT / awaiting-recriticism. Ruling W2 propagation round. Both existing human gates are packs of numbers and nobody in the plan ever fought an enemy. Added step 8a, a played fight quality gate (3 archetypes x 3 fights + 1 multi-enemy encounter, <=15 min per arm) with the deleted-repair null arm section 4 already builds, a stated effect size and worst-archetype binding; made it a closure condition. Steps 8 and 9 kept VERBATIM and reclassified explicitly as mechanism/leak checks, because both are transcribed correctly from RI-AI01:252 and RI-AI05:276 - the chart packs are the corpus's, not the plan's. CORPUS FINDING, not patched here: RI-AI01 and RI-AI05 both build their blind counterpart from their own published design tables, which RI-CMB07's wave-1 amendment (BAR-CRITIQUE-W1-09-R1 R5) rules VOID. Two items in one directory disagree; needs an ARBITRATION ruling. Also added Ruling W1 effect sizes on the perturbation rows. No native threshold changed."
 }
