@@ -268,23 +268,75 @@ export function consumeStyleboard(mat, board, role='dominant', amount=1) {
 }
 
 const mapCache = new Map();
-const AUTHORED_FAMILY=Object.freeze({mud:'brown_mud',wet_mud:'brown_mud',bark:'bark_brown_01',root:'bark_brown_01',timber:'bark_brown_01',thorn:'bark_brown_01',stone:'plastered_stone_wall',clay:'plastered_stone_wall',salt:'plastered_stone_wall'});
-const GENERATED_FAMILY=Object.freeze({leaf:'leaf',reed:'reed',cloth:'cloth',chitin:'chitin',wet_chitin:'chitin',resin:'resin',bone:'bone',metal:'metal',shell:'bone'});
+
+/** Every family's authored texture set. All twenty are covered; sixteen are CC0 photogrammetry
+ * from Poly Haven and three (chitin, resin, water) are synthesised by `tools/assets/`, recorded as
+ * substitutions under this piece's stop condition. `wet_chitin` deliberately shares `chitin`'s set
+ * and differs by the declared wetness axis — a second set for the same surface is a census
+ * duplicate, not a variant.
+ *
+ * This table is the shipped truth; `tools/assets/material-library.json` is the build-side spec, and
+ * `tools/assets/check-material-coverage.mjs` fails if the two disagree. It is a check rather than a
+ * constructor assertion on purpose (RULES.md rule 14). */
+const FAMILY_SET=Object.freeze({
+  mud:'brown_mud', wet_mud:'mud_forest', bark:'bark_brown_01', leaf:'forest_leaves_02',
+  reed:'reed_roof_04', root:'roots', timber:'dark_wooden_planks', clay:'clay_plaster',
+  stone:'plastered_stone_wall', salt:'white_plaster_rough_01', bone:'marble_01',
+  chitin:'chitin_plates', resin:'resin_flow', cloth:'rough_linen', skin:'brown_leather',
+  metal:'rusty_metal_04', water:'water_ripple', shell:'shell_floor_01', thorn:'bark_willow',
+  wet_chitin:'chitin_plates',
+});
+const SYNTH_SETS=Object.freeze(['chitin_plates','resin_flow','water_ripple']);
 const authoredCache=new Map();
+const assetUrl=(rel)=>new URL(`../../assets/w1-30/materials/${rel}`,import.meta.url).href;
+
 function authoredMaps(family){
-  const slug=AUTHORED_FAMILY[family], generated=GENERATED_FAMILY[family];if((!slug&&!generated)||typeof document==='undefined')return null;
-  const key=slug?`cc0:${slug}`:`generated:${generated}`;if(authoredCache.has(key))return authoredCache.get(key);
-  const loader=new THREE.TextureLoader(),setup=(t,role,repeat=2)=>{t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeat,repeat);t.anisotropy=4;t.name=`w1-30-authored:${key}:${role}`;return t;};
+  const slug=FAMILY_SET[family];if(!slug||typeof document==='undefined')return null;
+  const key=`${SYNTH_SETS.includes(slug)?'synth':'cc0'}:${slug}`;
+  if(authoredCache.has(key))return authoredCache.get(key);
+  const loader=new THREE.TextureLoader();
+  // Base repeat stays at 2, the value shipping today: this commit changes what the texture IS,
+  // not how often it tiles. Consumers moving to world-space UVs read materialTiling() instead.
+  const setup=(t,role)=>{t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2,2);t.anisotropy=8;t.generateMipmaps=true;t.minFilter=THREE.LinearMipmapLinearFilter;t.magFilter=THREE.LinearFilter;t.name=`w1-30-authored:${key}:${role}`;return t;};
   // Every family sharing this texture set goes to the visible fallback if any of its maps 404s.
   // This is the mechanism behind the coverage gate's null control: delete a normal map on a copy
-  // and the frame turns magenta rather than quietly reverting to noise.
-  const onError=(role,url)=>()=>{
-    for(const f of MATERIAL_FAMILIES) if((AUTHORED_FAMILY[f]===slug&&slug)||(GENERATED_FAMILY[f]===generated&&!slug)) markFamilyAssetFailure(f,`(${role} @ ${url})`);
+  // and the frame turns magenta rather than quietly reverting to something plausible.
+  const onError=(role,url)=>()=>{for(const f of MATERIAL_FAMILIES) if(FAMILY_SET[f]===slug) markFamilyAssetFailure(f,`(${role} @ ${url})`);};
+  const load=(file,role,colourSpace)=>{const url=assetUrl(`${slug}/${file}`);const t=setup(loader.load(url,undefined,undefined,onError(role,url)),role);t.colorSpace=colourSpace;return t;};
+  const maps={
+    albedo:load(`${slug}_albedo_1k.jpg`,'albedo',THREE.SRGBColorSpace),
+    normal:load(`${slug}_normal_1k.jpg`,'normal',THREE.NoColorSpace),
+    rough:load(`${slug}_rough_512.jpg`,'rough',THREE.NoColorSpace),
+    source:key,
   };
-  let maps;
-  if(slug){const load=(role,colourSpace)=>{const url=new URL(`../../assets/w1-30/materials/${slug}/${slug}_${role}_1k.jpg`,import.meta.url).href;const t=setup(loader.load(url,undefined,undefined,onError(role,url)),role);t.colorSpace=colourSpace;return t;};maps={albedo:load('detail',THREE.SRGBColorSpace),rough:load('rough',THREE.NoColorSpace),normal:load('nor_gl',THREE.NoColorSpace),source:key};}
-  else {const url=new URL(`../../assets/w1-30/materials/generated/${generated}_detail_256.jpg`,import.meta.url).href;const albedo=setup(loader.load(url,undefined,undefined,onError('detail',url)),'neutral-detail-256',1);albedo.colorSpace=THREE.SRGBColorSpace;maps={albedo,rough:null,normal:null,source:key};}
   authoredCache.set(key,maps);return maps;
+}
+
+/** The four shared detail-normal tiles, blended at DETAIL_NORMAL_TILING x the base rate. Four
+ * textures carry every family's close-up: this is why a 1k base survives 0.5 m without a 4k base. */
+const detailNormalCache=new Map();
+function detailNormalTile(tile){
+  if(typeof document==='undefined')return null;
+  if(detailNormalCache.has(tile))return detailNormalCache.get(tile);
+  const url=assetUrl(`detail/detail_normal_${tile}_512.jpg`);
+  const t=new THREE.TextureLoader().load(url,undefined,undefined,()=>console.error(`W1-30C detail normal '${tile}' failed to load @ ${url}`));
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;t.colorSpace=THREE.NoColorSpace;t.anisotropy=4;t.name=`w1-30-detail-normal:${tile}`;
+  detailNormalCache.set(tile,t);return t;
+}
+
+/** The shared trim atlas. E's kit parts and D's equipment map a face onto a band of this rather
+ * than authoring per-settlement trim, which is why eight settlements cost one texture. */
+let trimAtlasCache=null;
+export function trimAtlasTextures(){
+  if(typeof document==='undefined')return null;
+  if(trimAtlasCache)return trimAtlasCache;
+  const loader=new THREE.TextureLoader();
+  const one=(file,role,cs)=>{const url=assetUrl(`trim/${file}`);const t=loader.load(url,undefined,undefined,()=>console.error(`W1-30C trim atlas '${role}' failed to load @ ${url}`));
+    t.wrapS=THREE.RepeatWrapping;t.wrapT=THREE.ClampToEdgeWrapping;t.colorSpace=cs;t.anisotropy=8;t.name=`w1-30-trim:${role}`;return t;};
+  trimAtlasCache={albedo:one('trim_atlas_albedo_2k.jpg','albedo',THREE.SRGBColorSpace),
+    normal:one('trim_atlas_normal_2k.jpg','normal',THREE.NoColorSpace),
+    rough:one('trim_atlas_rough_2k.jpg','rough',THREE.NoColorSpace)};
+  return trimAtlasCache;
 }
 function hash(x, y, seed) {
   let h = Math.imul(x + seed, 374761393) ^ Math.imul(y - seed, 668265263);
@@ -390,6 +442,95 @@ export function materialFallbackReport() {
   return { fallbackColour: FALLBACK_COLOUR, families: [...failedFamilies].sort() };
 }
 
+// ---------------------------------------------------------------------------
+// The surface shader: detail normals, the wear mask and the wetness mask.
+//
+// Three things a scalar cannot do and a mask can.  A `wear` of 0.7 as a scalar makes the whole
+// plank rougher; as a mask it wears the *arris* of the plank and leaves the face, which is what
+// "used" actually looks like.  A `wetness` of 0.6 as a scalar makes a whole wall wet; as a mask it
+// wets the bottom of the wall and the hollow it stands in, which is what rain actually does.
+//
+// The curvature proxy is the base normal map's own slope: a texel whose normal leans hard away
+// from flat is on an edge or a rim.  That is a real signal already present in every authored set,
+// it costs one length() and it needs no extra vertex data from D, E or F.
+// ---------------------------------------------------------------------------
+let worldWetness={ amount:0, topY:0.9, bottomY:-0.4 };
+const shadedMaterials=new Set();
+
+/** B's weather drives this.  `amount` scales every material's wetness mask; `topY`/`bottomY` are
+ * the world heights between which a surface goes from dry to fully wet, so hollows wet first. */
+export function setWorldWetness({ amount=0, topY, bottomY }={}) {
+  worldWetness={ amount:Math.max(0,Math.min(1,Number(amount)||0)),
+    topY:Number.isFinite(topY)?topY:worldWetness.topY, bottomY:Number.isFinite(bottomY)?bottomY:worldWetness.bottomY };
+  for(const mat of shadedMaterials){const u=mat.userData?.surfaceUniforms;if(!u)continue;
+    u.uWorldWetness.value=worldWetness.amount;u.uWetTop.value=worldWetness.topY;u.uWetBottom.value=worldWetness.bottomY;}
+  return { ...worldWetness };
+}
+export function worldWetnessState(){ return { ...worldWetness }; }
+
+const NORMAL_MAPS_CHUNK='#include <normal_fragment_maps>';
+function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
+  const detail=detailNormalTile(tile);
+  const u={
+    uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?.62:0},
+    uWear:{value:wear}, uWearCurvature:{value:2.4},
+    uWetness:{value:wetness}, uWorldWetness:{value:worldWetness.amount},
+    uWetTop:{value:worldWetness.topY}, uWetBottom:{value:worldWetness.bottomY},
+  };
+  mat.userData.surfaceUniforms=u;
+  const prior=mat.onBeforeCompile;
+  mat.onBeforeCompile=(shader,renderer)=>{
+    if(prior) prior(shader,renderer);
+    for(const k of Object.keys(u)) shader.uniforms[k]=u[k];
+    shader.vertexShader='varying float vEsSurfaceWorldY;\n'+shader.vertexShader.replace('#include <begin_vertex>',
+      '#include <begin_vertex>\n  vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;');
+    shader.fragmentShader='uniform sampler2D uDetailNormal;\nuniform float uDetailTiling;\nuniform float uDetailStrength;\n'
+      +'uniform float uWear;\nuniform float uWearCurvature;\nuniform float uWetness;\nuniform float uWorldWetness;\n'
+      +'uniform float uWetTop;\nuniform float uWetBottom;\nvarying float vEsSurfaceWorldY;\nfloat vEsSurfaceCurv;\n'
+      +shader.fragmentShader
+      // Replace the stock chunk rather than patch around it: the detail normal has to be combined
+      // in tangent space *before* `tbn *` or it does not survive at grazing angles.
+      .replace(NORMAL_MAPS_CHUNK,`
+        vEsSurfaceCurv=0.0;
+        #ifdef USE_NORMALMAP_OBJECTSPACE
+          normal = texture2D( normalMap, vNormalMapUv ).xyz * 2.0 - 1.0;
+          #ifdef FLIP_SIDED
+            normal = - normal;
+          #endif
+          #ifdef DOUBLE_SIDED
+            normal = normal * faceDirection;
+          #endif
+          normal = normalize( normalMatrix * normal );
+        #elif defined( USE_NORMALMAP_TANGENTSPACE )
+          vec3 mapN = texture2D( normalMap, vNormalMapUv ).xyz * 2.0 - 1.0;
+          mapN.xy *= normalScale;
+          vec3 esDetailN = texture2D( uDetailNormal, vNormalMapUv * uDetailTiling ).xyz * 2.0 - 1.0;
+          // UDN blend: keep the base map's z, add the detail slope. Cheap, stable, and it does not
+          // wash the base map out the way a whiteout blend does.
+          mapN = normalize( vec3( mapN.xy + esDetailN.xy * uDetailStrength, mapN.z ) );
+          vEsSurfaceCurv = clamp( length( mapN.xy ) * uWearCurvature, 0.0, 1.0 );
+          normal = normalize( tbn * mapN );
+        #elif defined( USE_BUMPMAP )
+          normal = perturbNormalArb( - vViewPosition, normal, dHdxy_fwd(), faceDirection );
+        #endif`)
+      .replace('#include <lights_physical_fragment>',`#include <lights_physical_fragment>
+        // Wear lives on the arris: pigment is gone, the substrate shows through lighter, and the
+        // surface is rougher where a hand or a boot has been.
+        float esWear = uWear * vEsSurfaceCurv;
+        material.diffuseColor.rgb = mix( material.diffuseColor.rgb, material.diffuseColor.rgb * 1.42 + vec3( 0.035 ), esWear );
+        material.roughness = clamp( material.roughness + esWear * 0.34, 0.03, 1.0 );
+        // Wetness pools downhill: the material's own wetness, plus the world's, gated by height.
+        float esHeightWet = smoothstep( uWetTop, uWetBottom, vEsSurfaceWorldY );
+        float esWet = clamp( max( uWetness, uWorldWetness * esHeightWet ), 0.0, 1.0 );
+        material.roughness = clamp( material.roughness * ( 1.0 - 0.62 * esWet ), 0.03, 1.0 );
+        material.diffuseColor.rgb *= ( 1.0 - 0.34 * esWet );`);
+  };
+  const priorKey=mat.customProgramCacheKey;
+  mat.customProgramCacheKey=()=>`w1-30c-surface-v1:${tile}:${detail?1:0}:${priorKey?priorKey():''}`;
+  shadedMaterials.add(mat);
+  mat.needsUpdate=true;
+}
+
 export function worldMaterial(family, options={}) {
   const spec=FAMILY[family];
   if (!spec) throw new Error(`W1-30 unknown visual material family '${family}'`);
@@ -402,9 +543,8 @@ export function worldMaterial(family, options={}) {
   const foliage=/^(leaf|reed)$/.test(family), woody=/^(bark|root|thorn)$/.test(family),baseColour=options.color ?? 0xffffff;
   // Wetness and wear are physical, not decorative.  A wet surface is smoother, darker in diffuse
   // and brighter in specular; a worn surface is rougher and has lost pigment toward its substrate.
-  // Phase 1 applies them as whole-material scalars, phase 2 multiplies the same numbers by the
-  // shared curvature and world-height masks so edges wear and hollows wet.  A consumer that writes
-  // `{wear: .7}` today gets a visibly different material today and a better one when the masks land.
+  // These scalars set the whole-material response; `installSurfaceShader` below multiplies the same
+  // two numbers by the shared curvature and world-height masks, so edges wear and hollows wet.
   const wet=variant.wetness, wear=variant.wear;
   const materialOptions={
     color: baseColour,
@@ -420,7 +560,12 @@ export function worldMaterial(family, options={}) {
     normalMap: options.normalMap === false ? null : (options.normalMap?.isTexture ? options.normalMap : tiled(authored?.normal||null, ts)),
     normalScale:new THREE.Vector2(spec.bump*.72,spec.bump*.72),
     bumpMap: (options.normalMap?.isTexture||authored?.normal)?null:tiled(procedural.height, ts),
-    roughnessMap: tiled(authored?.rough||procedural.rough, ts), aoMap: tiled(procedural.height, ts),
+    roughnessMap: tiled(authored?.rough||procedural.rough, ts),
+    // The 96px noise field was bound as aoMap for the whole world.  Contact occlusion is a screen
+    // -space job (W1-30A's GTAO stack); binding noise to it darkened everything a little and
+    // grounded nothing.  It survives only on the procedural fallback path, where there is no
+    // authored cavity information at all.
+    aoMap: authored?null:tiled(procedural.height, ts),
     aoMapIntensity: options.aoMapIntensity ?? .42,
     bumpScale: options.bumpScale ?? spec.bump, vertexColors: !!options.vertexColors,
     transparent: !!options.transparent, opacity: options.opacity ?? 1,
@@ -443,7 +588,7 @@ export function worldMaterial(family, options={}) {
   const mat=new Material(materialOptions);
   mat.name=`visual-family:${family}`; mat.userData.visualFamily=family;
   applyVariantColour(mat, variant);
-  const baseRepeat=authored?(authored.source.startsWith('cc0:')?2:1):4;
+  const baseRepeat=authored?2:4;
   mat.userData.w1_30={ shadow:true, ao:'cavity-map', ibl:true,
     uvScale:[baseRepeat/ts, baseRepeat/ts], detail:authored?.source||'96px-albedo-height-roughness',
     class:variant.class, wetness:variant.wetness, wear:variant.wear, palette:variant.palette,
@@ -455,6 +600,12 @@ export function worldMaterial(family, options={}) {
   // W1-30S seam: the animated ripple/reflection shader lives in render/water.js now (future
   // owner: W1-30H). worldMaterial() still decides that 'water' gets it.
   if(family==='water') installWaterShader(mat);
+  // The detail-normal/wear/wetness pass needs a tangent-space normal map to work against, so it
+  // installs only where one exists — which, after this piece, is every family.
+  if(materialOptions.normalMap){
+    installSurfaceShader(mat, { tile:CLASS_DETAIL_TILE[variant.class],
+      tiling:DETAIL_NORMAL_TILING/ts, wear, wetness:wet });
+  }
   return mat;
 }
 

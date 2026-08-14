@@ -60,17 +60,23 @@ function fbm(seed, basePeriod, octaves) {
   return (u, v) => layers.reduce((s, l) => s + l.a * l.n(u * basePeriod * l.f, v * basePeriod * l.f), 0) / norm;
 }
 
-/** Tiling Voronoi over the unit square: returns {d1, d2, id, cx, cy} in wrapped space. */
+/** Tiling Worley/Voronoi over the unit square. One jittered site per grid cell and a 3x3
+ *  neighbourhood lookup, so cost is constant per texel instead of linear in the site count — the
+ *  naive all-pairs version took longer to run than the rest of the library put together.
+ *  `cells` is the requested site count; the grid is the nearest square at or above it. */
 function voronoi(seed, cells) {
-  const r = rng(seed), pts = [];
-  for (let i = 0; i < cells; i++) pts.push([r(), r(), i]);
+  const G = Math.max(2, Math.ceil(Math.sqrt(cells)));
+  const r = rng(seed), jx = new Float32Array(G * G), jy = new Float32Array(G * G);
+  for (let i = 0; i < G * G; i++) { jx[i] = r(); jy[i] = r(); }
+  const wrap = (i) => ((i % G) + G) % G;
   return (u, v) => {
+    const gu = u * G, gv = v * G, cu = Math.floor(gu), cv = Math.floor(gv);
     let d1 = 9, d2 = 9, id = 0, cx = 0, cy = 0;
-    for (const [px, py, i] of pts) {
-      for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) {
-        const dx = u - (px + ox), dy = v - (py + oy), d = Math.hypot(dx, dy);
-        if (d < d1) { d2 = d1; d1 = d; id = i; cx = px; cy = py; } else if (d < d2) d2 = d;
-      }
+    for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) {
+      const ax = cu + ox, ay = cv + oy, k = wrap(ay) * G + wrap(ax);
+      const px = ax + jx[k], py = ay + jy[k];
+      const dx = (gu - px) / G, dy = (gv - py) / G, d = Math.hypot(dx, dy);
+      if (d < d1) { d2 = d1; d1 = d; id = k; cx = px / G; cy = py / G; } else if (d < d2) d2 = d;
     }
     return { d1, d2, id, cx, cy, edge: d2 - d1 };
   };
@@ -116,7 +122,8 @@ function writeGray(file, gray, w, h, q) {
  *  plus a fine pore layer so the plates are not glassy. */
 function chitin(N = 1024) {
   const cellF = voronoi(1471, 46), pore = fbm(913, 24, 4), tint = rng(5501);
-  const cellTint = Array.from({ length: 46 }, () => [tint(), tint()]);
+  // Indexed by the Voronoi grid id, which is bounded by the grid, not by the requested site count.
+  const cellTint = Array.from({ length: 4096 }, () => [tint(), tint()]);
   const h = new Float32Array(N * N), alb = Buffer.alloc(N * N * 3), rgh = Buffer.alloc(N * N);
   for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
     const u = x / N, v = y / N, c = cellF(u, v), i = y * N + x;
