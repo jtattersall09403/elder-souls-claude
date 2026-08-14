@@ -66,6 +66,34 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 14. A whole-tree bank steals the headline — and the piece never learns it finished
+
+**Caused by the orchestrator, found three times in one day.**
+
+`bank.mjs` with no `--paths` carries every sibling's in-flight work under **the orchestrator's own
+commit headline**. The work lands correctly — nothing is lost — but the commit says something about,
+say, a `HAZARDS.md` fix, and **nothing writes back to the originating piece's status file.** So a piece
+that is completely finished still reads `in_progress`, and the next person to look at it either
+re-dispatches work that is already on the branch or, worse, treats a finished remediation as unstarted.
+
+Confirmed instances on 2026-08-14: `W1-20-r3-remediation` (its whole four-item remediation — twelve
+`world_flags`, the locked-player dialogue bug, a deleted `Engine.factionAccess()`, a missing
+faction-reactions row — arrived inside a bank titled about something else), plus `critic-w1-20` and
+`critic-w1-attr-scale` found by the ownership sweep the same day.
+
+**Two things follow:**
+
+1. **`--paths` whenever you reasonably can.** A whole-tree bank is the right tool for saving the fleet
+   before a restart and the wrong tool for landing your own work. It is an intervention in every live
+   piece on the box, not neutral housekeeping — §12 is the other half of the same lesson.
+2. **A status file is not evidence that work is unfinished.** Check the branch. `tools/stranded-check.mjs`
+   exists for this, and `node tools/ownership.mjs` was fixed the same day for the mirrored problem.
+
+**And do not use file mtime to judge staleness.** Independently confirmed twice: `W1-18`'s status file
+read **11.5 hours** old by mtime and **122 hours** by `git log` — a 10.6× error, easily enough to
+misdirect a fresh dispatch at an already-answered brief. Hundreds of files share a bulk-checkout
+timestamp. Use git dates.
+
 ## 13. Agents stall waiting on their own monitors — take the measurement or declare it unmeasured
 
 **Measured on the evening of 2026-08-14: four separate agents stalled waiting on background tasks, and
