@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `db5ebf3d`: 994 tools, 157 reference
-items, 204 pieces in flight.
+so it cannot drift. Generated at `792a0a2d`: 998 tools, 157 reference
+items, 205 pieces in flight.
 
-Its purpose is to stop 204+ concurrent agents each paying separately to discover the
+Its purpose is to stop 205+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -105,7 +105,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 43
+### `tools/` — 44
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -113,6 +113,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
 - `tools/check-append-only.mjs` — the shared record may be added to, never rewritten.
 - `tools/check-building-fits-room.mjs` — A BUILDING'S OUTSIDE MUST CONTAIN ITS INSIDE.
+- `tools/check-building-overlap.mjs` — NO SETTLEMENT MAY GROW A NEW BUILDING-INSIDE-A-BUILDING.
 - `tools/check-citations.mjs` — the documents that direct work must not hold false beliefs about what this repo contains.
 - `tools/check-content.mjs` — Hand-authored content must not vanish when a generator re-runs.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
@@ -311,7 +312,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/critic/w1-30c/grouping-tripwire.mjs` — W1-30C critic — the AUTOMATIC arm of the `families are distinguishable` gate.
 - `tools/critic/w1-30c/mech.mjs` — W1-30C critic — drive tools/critic/w1-30c/mech-rig.html and report mechanism results.
 
-### `tools/dialogue/` — 27
+### `tools/dialogue/` — 28
 
 - `tools/dialogue/answer-census.mjs` — WHAT DOES EVERY PERSON IN THE PROVINCE SAY, TO EVERY KIND OF PLAYER, ON EVERY SUBJECT?
 - `tools/dialogue/arbiter-order-divergence.mjs` — ARBITRATION S37 — the instrument.
@@ -339,6 +340,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/dialogue/w1-17-r2-s37-invariance.mjs` — HOW MUCH OF THIS ROUND DEPENDS ON THE RULING NOBODY HAS MADE YET?
 - `tools/dialogue/w1-17-r2-shot.mjs` — THE PICTURE FOR W1-17: how many things there are to ask about, and how many of them anybody can reach — before this round and after it.
 - `tools/dialogue/w1-17-shot.mjs` — THE PICTURE FOR W1-17: how many things there are to ask about, and how many of them anybody can reach — before this round and after it.
+- `tools/dialogue/weave-labels.mjs` — W1-DLG-TOPIC-WEB §4C — apply an authored rewrite of an answer, and REFUSE it unless it actually made the unlock visible.
 - `tools/dialogue/words-check.mjs` — WORDS-CHECK — does our dialogue have people in it, or one helpful narrator with many names?
 
 ### `tools/economy/` — 3
@@ -744,9 +746,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
 - `tools/map/touch-route.mjs` — HOW MANY TAPS DOES A PHONE PAY FOR A PAGE TURN, AND CAN IT FIND THE MAP?
 
-### `tools/merge/` — 1
+### `tools/merge/` — 2
 
 - `tools/merge/json-3way.mjs` — **no header comment**
+- `tools/merge/w1-18-engine-hunks.mjs` — **no header comment**
 
 ### `tools/metrics/` — 7
 
@@ -1069,7 +1072,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 162
+### `tools/world/` — 163
 
 - `tools/world/architecture.mjs` — RI-WLD14 M78-M84 builder instrument.
 - `tools/world/arrangement-audit.mjs` — **no header comment**
@@ -1185,6 +1188,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/road-water-audit.mjs` — **no header comment**
 - `tools/world/scale-audit.mjs` — **no header comment**
 - `tools/world/signpost-audit.mjs` — signpost-audit — does every name in the wayfinding layer point at somewhere that exists?
+- `tools/world/thorn-quay-deletefix.mjs` — RULES.md rule 6, for the Thorn writ-house / barge-hold separation.
 - `tools/world/threshold-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's border markers.
 - `tools/world/threshold-live.mjs` — W1-02 round 2 — the BROWSER half of the border markers.
 - `tools/world/threshold-shots.mjs` — W1-02 round 2 — the border markers, photographed.
@@ -1235,7 +1239,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **278 tools have no header comment**, so nobody can tell what they do without
+> **279 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1413,10 +1417,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `RECONCILE-MAP-PROBE-S13` | reconciled |  | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
+| `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
+| `W1-THORN-PLATES-C2` | built-awaiting-fresh-critic | IN ORDER. (1) MOVE THE WATERLINE TO THE QUAY — terrain.json/water.json, about 25 m of shor | `orchestration/status/W1-THORN-PLATES-C2.json` `reports/thorn-plates/2026-08-14-thorn-plates-chunk2.md` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `game/data/world/settlements/thorn.json` `docs/art-direction/build-board.mjs` |
 | `W1-DOOR-YAW-SWEEP` | ? | collect the three in-game sweep arms; run door-yaw-consume for CONSUMPTION + screenshots;  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` |
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole prov | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
 | `W1-BUILDING-OVERLAP-CENSUS` | census-done-falsifier-answered-fix-in-progress | Apply the 7-value translation, re-measure, run delete-the-fix on a copy, build tools/check | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` |
-| `W1-THORN-PLATES-C2` | in-progress | Quay vocabulary (reused parts placed at the MEASURED waterline, not on dry ground), the th | `orchestration/status/W1-THORN-PLATES-C2.json` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `tools/render/w1-thorn-roof-census.mjs` `tools/visual/w1-thorn-core12.sh` `reports/thorn-plates/roof-census-after.json` |
 | `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
 | `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
 | `W1-18-REINTEGRATION` | in_progress | Restore group A, verify JSON parses + quest-audit moves, land. | `orchestration/status/W1-18-REINTEGRATION.json` |
@@ -1426,7 +1432,6 @@ work is the difference between resuming and starting over.
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
 | `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
-| `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |

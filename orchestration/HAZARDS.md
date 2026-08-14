@@ -66,6 +66,37 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 12. `HEAD` is not your baseline — a sibling's bank can turn your delete-the-fix green
+
+**Reported by the agent it happened to, and caused by the orchestrator:** *"my first delete-the-fix came
+back green because the orchestrator's bank had already carried my uncommitted edit into `HEAD`. On this
+tree, `HEAD` is not your baseline — your session's base commit is."*
+
+This is worse than an inconvenience. **Delete-the-fix is one of the five non-negotiables** — *a fix is
+not a fix until it has been deleted on a copy and the old number has come back* — and this failure mode
+makes it **pass when it should fail**, silently, with no error and nothing red. An agent removes its
+change, measures, sees the improved number persist, and concludes... something. The honest conclusions
+are all wrong, and the tempting one ("my change must not have been the cause") is the most expensive.
+
+**Mechanism.** `bank.mjs` with no `--paths` stages the whole working tree, which in a shared checkout
+includes every sibling's uncommitted, in-flight edits. Once banked, that edit is in `HEAD`. Any control
+clone taken from `HEAD` therefore *already contains the fix* the experiment is trying to remove.
+
+**Three rules follow.**
+
+1. **Pin your baseline at the start of your piece and use that commit**, not `HEAD`, for every control
+   clone. Record the sha in your status file. `HEAD` moves under you many times an hour here.
+2. **Bank with `--paths <your files>` whenever you reasonably can.** A whole-tree bank is the right tool
+   for landing the fleet's work before a restart, and the wrong tool for landing yours.
+3. **Orchestrator: a whole-tree bank is an intervention in every live experiment on the box, not
+   neutral housekeeping.** It is still correct to do — unbanked work dies with the container, and the
+   container has restarted twice in one day taking nine agents each time — but the cost is real and it
+   lands on exactly the agents doing the most careful work. `bank.mjs` already refuses files that do not
+   parse; it cannot know which files are mid-experiment.
+
+**The tell:** a delete-the-fix control that comes back green on the first attempt deserves suspicion
+before celebration. Check whether your baseline moved before you conclude anything about your change.
+
 ## 11. A shared tree moves under every experiment — freeze the arms, don't guard them
 
 **Measured today: four different agents changed four files under `game/` in 45 seconds.** That is the
