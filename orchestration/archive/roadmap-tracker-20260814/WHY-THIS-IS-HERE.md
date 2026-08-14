@@ -1,39 +1,18 @@
-# The roadmap tracker, archived unfinished — 2026-08-14
+# We built a roadmap tracker on 2026-08-14 and threw it away. Don't rebuild it.
 
-**This was not abandoned because it failed. It was abandoned because the orchestrator asked for the
-wrong thing, and the owner corrected it.**
+**Kept as one paragraph so nobody spends a day rediscovering this.** The code is gone; it is in git
+history at commit `40f1a278fe` if anyone ever genuinely needs it.
 
-The brief asked for a machine-readable roadmap, evidence verification (a step could not report `done`
-unless its named evidence existed on disk), `unevidenced` accounting, a markdown↔JSON drift check, a
-self-test with both arms, and rendering into the progress dashboard. It came to **749 lines of tooling
-and 88 KB of JSON**.
+The orchestrator asked for a machine-readable roadmap with evidence verification, `unevidenced`
+accounting, a markdown↔JSON drift check and dashboard rendering. It came to **749 lines and 88 KB of
+JSON**. The owner's verdict was that it was over-engineered, and that what was wanted was one short
+file openable on a phone answering *"what are the agents working on, and what will I find if I play
+right now"*. That is **`STATUS.md` at the repo root**, written by hand and kept short so writing it
+stays cheap.
 
-The owner's verdict: *"I'm actually not sure the thing the tracker agent is building is a good idea,
-feel like it's over-engineered."* Correct. What was actually wanted was one short file you can open on
-a phone:
-
-> *"oh cool our agents are currently working on [bit x] of the roadmap; I should expect that everything
-> before that bit is delivered to the 7/10 standard; if I play the game right now I know what to
-> expect."*
-
-That is `STATUS.md` at the repo root, written by hand and kept short so writing it stays cheap.
-
-**Two further reasons this could not have shipped as built**, worth recording so nobody reads the
-archive as a lost opportunity:
-
-1. **Its data was derived from a condemned document.** `ROADMAP.md` was written from an orchestrator's
-   working memory rather than from the repo (see `CLAUDE.md` rule 0b) and is being rewritten from a
-   coverage audit. Every id and phase in the JSON here is about to be wrong.
-2. **The verification idea was sound and is not lost.** "A step may not claim `done` unless its
-   evidence exists" is a good principle — it lives on in the project's actual gate, which is the
-   builder/critic gauntlet plus the blind comparison protocols. It did not need a second implementation
-   in a progress tracker.
-
-**What replaced it:** `STATUS.md`, plus `tools/status-fresh.mjs` — a warning, not a gate, that says
-when `STATUS.md` has gone stale relative to branch activity. The owner's one hard requirement was
-*"you've just gotta make sure the updates actually happen"*, and a warning is the smallest thing that
-serves it. A blocking gate would fire on every unrelated landing, and a gate that fires constantly gets
-switched off.
-
-**If you are about to rebuild this: don't, unless the owner asks.** Read `STATUS.md` and this note
-first.
+Two things worth knowing before you reach for this idea again: its data was derived from a roadmap that
+was itself written from memory and has since been condemned and rewritten (`CLAUDE.md` rule 0b), so
+every id in it was already wrong; and the sound part of the idea — *a step may not claim done unless
+its evidence exists* — was never lost, because that is what the builder/critic gauntlet and the blind
+comparison protocols already enforce. It did not need a second implementation inside a progress
+tracker.
