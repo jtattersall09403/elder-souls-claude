@@ -1,0 +1,28 @@
+{
+  "task_id": "GIT-INTEGRATION-SCHEME",
+  "title": "Stop losing agents' work: branch-per-agent, no shared-tree banking, restart-resilient landing",
+  "state": "running",
+  "started_at": "2026-08-14T13:50:00Z",
+  "branch": "codex/wave1-build-experiment",
+  "what": "Diagnose and fix the most expensive recurring failure in the project — agents' pushed work being silently reverted. Test/refute the orchestrator's diagnosis (shared tree is half; shared BRANCH push race is the other half). Research external practice. Answer the owner's two questions. Implement with a --self-test whose arms genuinely disagree. Update HAZARDS.md and CLAUDE.md.",
+  "files_claimed": [
+    "orchestration/status/GIT-INTEGRATION-SCHEME.json",
+    "tools/land.mjs",
+    "orchestration/HAZARDS.md",
+    "CLAUDE.md"
+  ],
+  "files_touched": [],
+  "reads_only": [
+    "tools/bank.mjs",
+    ".githooks/pre-commit",
+    "tools/ownership.mjs",
+    "orchestration/RULES.md",
+    "orchestration/OWNER-DIRECTIVES-2026-08-14.md"
+  ],
+  "findings": [
+    "MEASURED 2026-08-14: through 2026-08-13 EVERY commit reaching the integration branch came in as a PR merge from a per-agent codex/* branch (150 such branches on origin). Claude-authored direct commits to the shared branch on 08-09..08-13: ZERO. On 08-14: 117 direct commits, 0 merges.",
+    "MEASURED: commits whose message says restore/revert/clobber/lost/dropped/rescue, by day: 08-06 x6, 08-08 x3, 08-10 x4, 08-11 x3, 08-14 x21. The 08-14 spike coincides exactly with the switch from branch-per-agent+PR to shared-tree+shared-branch.",
+    "So the answer to the owner's 'did this happen last week' is: not in this form. The scheme that is losing work is one day old."
+  ],
+  "next_step": "Research external practice; build tools/land.mjs with a falsifying --self-test; update HAZARDS + CLAUDE.md; land via plumbing and verify against the remote blob."
+}
