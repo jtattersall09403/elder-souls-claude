@@ -1,3 +1,29 @@
 == phone, touch, from a real boot ==
   boot                   tap={"tapped":null}                mode=world      glass=[roll,block,light,interact,jump,parry,heavy,use_item,crouch,lock_on,__drawer]
   first-touch            tap={"tapped":null}                mode=world      glass=[roll,block,light,interact,jump,parry,heavy,use_item,crouch,lock_on,__drawer]
+
+--- STOPPED BY THE CRITIC, 2026-08-14T15:45Z, after ~80 minutes ---
+Stopped at the `menu` tap. `tools/contention.mjs` read load 29.38 over 4 cores = 7.34 per core
+against a ceiling of 4.0, with 5 other browser instances resident; the box was over its ceiling
+every single time it was measured during this run. Three of the route's steps completed and the
+fourth did not: the tap on `menu` needs a fixed simulation step to consume it, and the frame loop
+was not being serviced. The `"ticked":false` on the drawer tap is that starvation, visible in the
+record. The drawer tap still worked because `game/src/input/touch.js` toggles `drawerOpen` on the
+input thread rather than inside the sim step, which is why the glass gained its five petals with
+no tick to consume anything.
+
+WHAT THIS RUN DID ESTABLISH, independently of the builder:
+  * a real phone context (844x390, hasTouch, isMobile) boots with ELEVEN controls on the glass and
+    no `menu` among them;
+  * one tap on the drawer adds exactly the five petals `game/data/input/profiles.json` declares —
+    two_hand, swap_left, swap_right, spell_cycle, menu — so `menu` and `swap_right` are both on
+    the glass, at real coordinates, one tap from a cold boot.
+
+WHAT IT DID NOT ESTABLISH: that the map appears on a phone screen. That remains unmeasured live.
+It is the same wall the builder hit, from the same cause, and it is reported as an incomplete run
+rather than dressed up as a result. Re-run `node tools/map/player-route.mjs --legs phone` on a box
+under 4.0 per core; it needs about two minutes there.
+
+The route itself is nonetheless CLOSED, by composition of three shipped facts rather than by this
+run — see corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json, RI-JRN04 check
+`phone-route-to-the-map-is-closed`.
