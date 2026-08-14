@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a8e4c938`: 921 tools, 155 reference
+so it cannot drift. Generated at `06dafd04`: 922 tools, 155 reference
 items, 168 pieces in flight.
 
 Its purpose is to stop 168+ concurrent agents each paying separately to discover the
@@ -922,7 +922,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 7
+### `tools/visual/` — 8
 
 - `tools/visual/build-deck.mjs` — **no header comment**
 - `tools/visual/contact-sheet.mjs` — **no header comment**
@@ -931,6 +931,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/frame-stats.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
 - `tools/visual/w1-30b-probe.mjs` — **no header comment**
+- `tools/visual/w1-30b-roughness.mjs` — **no header comment**
 
 ### `tools/w1-26-continuation/` — 1
 
@@ -1133,7 +1134,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **242 tools have no header comment**, so nobody can tell what they do without
+> **243 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

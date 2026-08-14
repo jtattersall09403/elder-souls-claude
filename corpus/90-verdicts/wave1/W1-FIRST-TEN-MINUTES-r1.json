@@ -1,0 +1,419 @@
+{
+  "schema_version": 1,
+  "document_type": "critic-verdict",
+  "piece_id": "first-ten-minutes",
+  "piece_title": "FIRST-TEN-MINUTES — D3 (people at the world origin), the charOpacity consumption failure, and the open D1/D2 diagnoses",
+  "subsystem_paths": [
+    "world.npc.population",
+    "dialogue.npc.identity",
+    "combat.camera.behaviour",
+    "world.weather.systems"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-first-ten-minutes-r1-a8e4c93",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-14T10:05:00Z",
+    "finished_at": "2026-08-14T10:55:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": false
+  },
+  "build": {
+    "commit_sha": "a8e4c938da682688f472b8d6b6822e8acb913820",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "command": "node tools/runpod/cli.mjs run --max-runtime 30 --command 'node tools/harness/critic-first-ten-play.mjs --tag clean --only walk,talkproof,interior --gpu --targets blackwood-company-factor,lilmoth-yard-brothers,dockmaster-weeja-sen'",
+        "exit_code": 0,
+        "duration_s": 155,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json"
+      },
+      {
+        "command": "node tools/runpod/cli.mjs run --max-runtime 30 --command 'node tools/harness/first-ten.mjs --tag gpu-head-d1d2 --only d1,d2'",
+        "exit_code": 0,
+        "duration_s": 260,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/head-d2-control-manifest.json"
+      },
+      {
+        "command": "three-arm delete-the-fix against tools/render/consumption-sweep.mjs on a sparse game/+tools/ copy",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This verdict judges whether named mechanisms act on the running world — where a body stands, whether a per-frame field has a consumer, whether an occlusion test fires. It cites screenshots as measurements of those mechanisms, not as art-direction or fidelity comparisons against a reference, so neither visual axis is engaged and no visual reference was consulted."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-10, min-over-axes (consumer named / coupling measured / hand-feed audit / instrumentation honesty / harness fidelity)",
+      "native_score": 4,
+      "native_max": 10,
+      "native_verdict": "Below the 6 pass floor on harness fidelity; min-over-axes",
+      "score_0_10": 4,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "consumer-named",
+          "result": "pass",
+          "value": "game/src/render/renderer.js:742 _applyCharacterFade(), called at line 1142",
+          "hard_fail": false
+        },
+        {
+          "id": "coupling-measured-by-perturbation",
+          "result": "pass",
+          "value": "charOpacity 1.00 -> 0 fade clones, 16910 player px; 0.50/0.25 -> 75 ':camera-fade' clones at the perturbed opacity; 0.00 -> subtree hidden, 0 px. RTX A5000.",
+          "hard_fail": false
+        },
+        {
+          "id": "tripwire-can-fail-for-a-plausible-regression",
+          "result": "fail",
+          "value": "the sibling sweep's tripwire is a name-grep: deleting the call site leaves 3 mentions and exit 0; gutting the method body leaves 2 mentions, both prose, and exit 0. Only a full rename goes red.",
+          "hard_fail": false
+        },
+        {
+          "id": "harness-fidelity-D-published-columns-are-real",
+          "result": "fail",
+          "value": "first-ten.mjs publishes arm_len and clip_through as null at 11/11 stops because it reads cam.armLen/cam.clipThrough where makeRecord() writes arm_len_m/clip_through. No VERIFY caught it.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json"
+      ],
+      "why_not_ten": "Axis mapping, stated because two checks here do NOT map 1:1 onto the item's five axes and the aggregator would otherwise fix the min at 0. Consumer named: PASS at the 10 band — game/src/render/renderer.js:742, called at 1142. Coupling measured: PASS — perturbing charOpacity to 0.5, 0.25 and 0.0 changes the player's materials and then removes the body from the frame, on an RTX A5000. Hand-feed audit: not exercised by this piece. Instrumentation honesty scores at the 6 band and NOT at 0: the item's 0 condition is \"undeclared trace-only fields presented as implementation\", and this piece did the opposite — it declared the failure, named the consumer it built, and recorded its three amber routes by hand. The check named tripwire-can-fail-for-a-plausible-regression is a finding about the sweep TOOL, not about an undeclared field, and it is the biggest gap of this verdict rather than a zero on this axis. Harness fidelity is the binding axis and scores 4: first-ten.mjs drives the shipping entry point, so it is not the \"partial harness with no VERIFY\" the axis was written for, but it published two columns as null for eleven consecutive stops from a field-name mismatch with no check that would notice. min-over-axes therefore gives 4."
+    },
+    {
+      "id": "RI-CAM01",
+      "path": "corpus/15-camera/RI-CAM01-rig-geometry-and-spring-arm.md",
+      "side": "souls",
+      "kind": "trace",
+      "native_scale": "0-100 sum of passed weights, with automatic-fail conditions",
+      "native_score": "automatic fail (Section C.1: a run of player_occluded longer than 6 consecutive frames)",
+      "native_max": 100,
+      "native_verdict": "Automatic fail (Section C.1). Capped at 2 by SCORING.md 1.1 regardless of the passing Section C fade check.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M2b",
+          "result": "fail",
+          "value": 0,
+          "threshold": "no run of player_occluded > 6 frames",
+          "hard_fail": true,
+          "observed": "player-visible pixels across the spawn walk on an RTX A5000: 6.5 6.4 6.3 5.8 2.3 0.5 0.0 6.1 6.2 6.2 6.2 per cent. Zero at f360, sampled every 60 frames, so the true occluded run is between 60 and 120 frames."
+        },
+        {
+          "id": "section-C-fade-consumer",
+          "result": "pass",
+          "observed": "the Section C character fade now has a renderer-side consumer for the first time; perturbation changes the entity on screen."
+        },
+        {
+          "id": "arm-behaviour-during-burial",
+          "result": "fail",
+          "observed": "arm_len 3.993 m and arm_hit false at every stop including the zero-pixel one. The arm is at full extension and does not detect the occluder, so it is absent from the collision set — which contradicts the piece's conclusion that collision is not the defect."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d1-f360-camera-inside-a-tree-rtx-a5000.png",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d1-f300-approach-rtx-a5000.png",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json"
+      ],
+      "hard_fails": [
+        "section-C.1-player-occluded-run-over-6-frames"
+      ],
+      "why_not_ten": "The item carries a triggered automatic fail in the shipped build: the player is occluded for a run of between 60 and 120 frames on the first walk out of the spawn point, against a ceiling of 6. The piece did not claim to close it and filed it as open, and this critic agrees it is open — the cap records the state of the world, not a broken promise. The piece's positive contribution to this item is real and is recorded as the passing section-C-fade-consumer check: the Section C character fade has a renderer-side consumer for the first time."
+    },
+    {
+      "id": "RI-WLD08",
+      "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-10, band",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "Above the pass floor on the placement half; the ambient-event and schedule bands were not measured",
+      "score_0_10": 7,
+      "justification": "d3-corvus-3m-overlay-clean.png and d3-corvus-30m-overlay-clean.png show the NPC drawn during his own conversation at 1016 px centre-frame and 262 px at 30 m, on an RTX A5000, with the engine's own projectPoint agreeing; d3-ledger-house-interior-bodies.png shows bodies in the interior the piece claims for them. Held at 7 rather than higher because only Lilmoth was ever entered and the item's ambient-event bands were not measured.",
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "npcs-are-where-the-conversation-is",
+          "result": "pass",
+          "value": "visible bodies at the world origin 5 -> 0; Corvus Aldeyn 5723 m -> 27 m from the player and drawn during the conversation at both 3.5 m and 30 m",
+          "hard_fail": false
+        },
+        {
+          "id": "audit-count-independently-recounted",
+          "result": "pass",
+          "value": "56 NPCs, 32 within 50 m of the origin before, of which exactly 5 had a drawn body; the remaining 27 carry a non-null cell and room-scale coordinates, and interiors are confirmed to be a local frame centred on zero"
+        },
+        {
+          "id": "null-control-is-the-plausible-wrong-answer",
+          "result": "pass",
+          "value": "null-presence-only: presence fix kept, placement fix dropped. Visible bodies at origin 5 -> 3, so the headline improves, while residents_in_town stays at 24 and Corvus stays 5.7 km away. Verified from the artifact."
+        },
+        {
+          "id": "conversational-range-framing",
+          "result": "marginal",
+          "value": "at 3.5 m, two of four NPCs contributed 0 px because the doorstep placement stands them against a building wall, and at a third the camera ended entirely inside geometry. Partly caused by the critic's fixed +3.5 m standoff, so reported as marginal rather than fail."
+        },
+        {
+          "id": "other-settlements",
+          "result": "unmeasurable",
+          "value": "only Lilmoth was ever entered, by the builder or by this critic"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-3m-overlay-clean.png",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-30m-overlay-clean.png",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-3m-conversation.png",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-ledger-house-interior-bodies.png"
+      ]
+    },
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-30 (M1-M8 plus an unmeasured list)",
+      "native_score": 24,
+      "native_max": 30,
+      "native_verdict": "Admissible with struck claims removed",
+      "score_0_10": 6,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M2",
+          "result": "fail",
+          "value": "reports/first-ten-minutes/null-d2-unwired/ holds one frame and no manifest.json, while the status file quotes its numbers",
+          "hard_fail": false
+        },
+        {
+          "id": "M4",
+          "result": "marginal",
+          "value": "every other numeric claim resolved when checked; the D2 null-control figures resolve only because this critic re-measured them independently, not because the cited artifact carries them"
+        },
+        {
+          "id": "M6",
+          "result": "fail",
+          "value": "arm_len and clip_through published as null at 11/11 stops from a field-name mismatch, with no warning that the columns were empty"
+        },
+        {
+          "id": "M7",
+          "result": "pass",
+          "value": "the 32-of-56 census, the 5 visible offenders, the null-presence-only deltas and the D2 f0 pair (192 live / 15 under cover) all recomputed from the shipped artifacts"
+        },
+        {
+          "id": "unmeasured-list",
+          "result": "pass",
+          "value": "the status file's not_done block is substantial and accurate: SwiftShader-only, the fade photograph owed, D1 and D2 open, D11 handed to its owner, and the four best attacks on itself named"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/head-d2-control-manifest.json",
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/method-contaminated-overlay-shared-materials.png"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d1-f360-camera-inside-a-tree-rtx-a5000.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-first-ten-play.mjs --tag clean --only walk --gpu, on a RunPod RTX A5000",
+      "resolution": "960x540",
+      "camera_pose": "gameplay third-person, arm 3.993 m, 360 fixed frames of held-forward from the Lilmoth spawn at [2766.5, 2.7, 5011] to [2766.5, 2.7, 5029.2]; rain; hour 09",
+      "source": "ours",
+      "note": "D1 reproduced on real hardware: the camera is inside a tree trunk and the player contributes zero pixels. The occluder is vegetation, not the raised deck the piece's remedy targets."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d1-f300-approach-rtx-a5000.png",
+      "kind": "screenshot",
+      "produced_by": "as above, frame 300",
+      "resolution": "960x540",
+      "camera_pose": "same walk, 300 frames in; player at [2766.5, 2.7, 5026]",
+      "source": "ours",
+      "note": "the approach to the burial: 0.5 per cent of the frame is the player."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-3m-overlay-clean.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-first-ten-play.mjs --only talkproof --gpu --targets blackwood-company-factor, RTX A5000",
+      "resolution": "960x540",
+      "camera_pose": "gameplay third-person, player at [2753.64, 2.68, 5032.39] facing the NPC at [2750.14, 2.68, 5031.89], 3.5 m, dialogue open",
+      "source": "ours",
+      "note": "the differing pixels between the frame with and without the NPC subtree, painted red: 1016 px, bbox 92x122, centroid (469,245) of a 960x540 frame."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-30m-overlay-clean.png",
+      "kind": "screenshot",
+      "produced_by": "as above with --standoff 30",
+      "resolution": "960x540",
+      "camera_pose": "player at [2780.14, 2.68, 5032.39], NPC at 30 m, dialogue open",
+      "source": "ours",
+      "note": "262 px, bbox 27x32 at (433,196) — the correct apparent size for a body at 30 m, and present rather than absent."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-corvus-3m-conversation.png",
+      "kind": "screenshot",
+      "produced_by": "as above, the unaltered frame behind the overlay",
+      "resolution": "960x540",
+      "camera_pose": "as the 3.5 m overlay",
+      "source": "ours",
+      "note": "the conversation as a player sees it — and incidentally shows D2, rain falling in front of the deck overhead."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/d3-ledger-house-interior-bodies.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/harness/critic-first-ten-play.mjs --only interior --gpu, RTX A5000",
+      "resolution": "960x540",
+      "camera_pose": "inside lilmoth-ledger-house, player at interior-local [0, 0, 2.8], look phase 180 degrees",
+      "source": "ours",
+      "note": "the interior residents the piece keeps at room-local coordinates are drawn in the room; 3 visible bodies, archivist 4 m away."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/method-contaminated-overlay-shared-materials.png",
+      "kind": "negative-evidence",
+      "produced_by": "the same probe before it was corrected, when it hid actors by setting material colorWrite:false instead of toggling root.visible",
+      "resolution": "960x540",
+      "camera_pose": "player at [2780.14, 2.68, 5032.39], NPC at 30 m, dialogue open",
+      "source": "ours",
+      "note": "the critic's own failed instrument, kept as evidence: the red is painted on the PLAYER in the foreground because render/actor.js shares armour material instances between actors. It reported 6485 px where the clean method reports 262. tools/harness/first-ten.mjs inherits the same defect."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log",
+      "kind": "log",
+      "produced_by": "three-arm delete-the-fix against tools/render/consumption-sweep.mjs on a 76 MB sparse copy of game/ and tools/",
+      "source": "ours",
+      "note": "arm A (trivial, every mention renamed) exits 1; arm B (call site deleted) and arm C (method body gutted, comment kept) both exit 0."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/head-d2-control-manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/first-ten.mjs --tag gpu-head-d1d2 --only d1,d2, run on the Pod",
+      "source": "ours",
+      "note": "the D2 null control the piece cited but never wrote: at HEAD with the roof field passed null, surviving streaks stay at 192 at every stop while streaks under a roof run 15,20,26,28,36,32,27,36,32,23,32. Confirms both that the defect is live and that the piece's attribution of its own failed fix was right."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-first-ten-play.mjs --tag clean --only walk,talkproof,interior --gpu",
+      "source": "ours",
+      "note": "the walk with arm_len, arm_hit and charOpacity read off the live sim rather than the trace record: 3.993 / false / 1.000 at every stop including the zero-pixel one."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-far-manifest.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-first-ten-play.mjs --only talkproof --gpu --standoff 30",
+      "source": "ours",
+      "note": "the 30 m conversation arm."
+    },
+    {
+      "path": "orchestration/status/FIRST-TEN-MINUTES.json",
+      "kind": "text-excerpt",
+      "produced_by": "the builder's own account, read in full before any measurement",
+      "source": "ours",
+      "note": "the document under judgement, including the two defects it diagnosed and did not fix and the four attacks it named on itself."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR1 arbitrates a Souls-versus-Morrowind conflict inside the fight. Nothing in this piece touches frames, stamina, hitboxes or enemy behaviour; the camera finding is an occlusion defect against the project's own RI-CAM01 bar, not a conflict between the two references.",
+      "checks": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "every claim was re-measured from the running world rather than read off the builder's account; the 32-of-56 census, the 5 offenders and the null-control deltas were recomputed from the shipped artifacts.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/head-d2-control-manifest.json"
+          ]
+        },
+        {
+          "id": "B2",
+          "result": "pass",
+          "observed": "delete-the-fix run on the claimed consumption repair in three arms, two of them the plausible wrong answer rather than the trivial one; the trivial arm goes red and both plausible arms stay green.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "pass",
+          "observed": "the target moved. D1 and D2 were measured over a 600-frame walk at eleven stops, not at one instant, and the D3 conversation was measured at two distances.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json"
+          ]
+        },
+        {
+          "id": "B4",
+          "result": "pass",
+          "observed": "the critic's own first instrument was found contaminated by shared materials, was corrected, and the failed version is filed as negative evidence rather than discarded. A first claim that D1 did not reproduce on GPU was retracted when the isolated walk-only arm reproduced it.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/method-contaminated-overlay-shared-materials.png"
+          ]
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "measured on real GPU hardware (RTX A5000 and L4, ANGLE NVIDIA Vulkan 1.4.312, swiftshader false), not only on the software rasteriser every prior number came from."
+        },
+        {
+          "id": "B6",
+          "result": "not_run",
+          "not_run_reason": "no blind pack is applicable: this verdict asks whether named mechanisms act, which is answered by perturbation and measurement, not by masked preference."
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "Below bar — named remedy required",
+    "confidence": "high",
+    "note": "overall_0_10 is the minimum over the SIX NAMED PIECE AXES in section 7 of the verdict markdown (D3 7.5, charOpacity 8.0, D2 8.0, D1 5.0, reporting honesty 9.0, instrument integrity 4.0), which is the aggregation the dispatch asked for and the one that describes this piece's own work. It is deliberately NOT the minimum over reference_items, which is 2: RI-CAM01 is capped by a triggered automatic fail (the buried camera) that the piece explicitly did not claim to close and that this critic agrees is open. Scoring the piece at 2 for a defect it honestly filed as unfixed would punish the honesty this project is trying to buy. Both numbers are on the page so a reader can take whichever they want."
+  },
+  "status": "FAIL",
+  "biggest_gap": {
+    "gap_id": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
+    "subsystem_path": "combat.camera.behaviour",
+    "what": "tools/render/consumption-sweep.mjs tests whether a field NAME is MENTIONED anywhere under game/src/render/, not whether it is consumed. Deleting the call site this._applyCharacterFade(c) leaves 3 mentions and exit 0; gutting the method body to `return;` leaves 2 mentions, both inside its own doc comment, and exit 0. Only renaming every occurrence — the one deletion nobody performs by accident — reaches exit 1. The piece's own control for the tool is that single trivial arm.",
+    "why_it_matters": "The one regression guard this piece leaves behind cannot see the regression it exists to catch, so the camera fade can silently stop running and every dashboard stays green — which is the exact failure that produced the charOpacity defect in the first place.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log",
+      "orchestration/status/FIRST-TEN-MINUTES.json"
+    ],
+    "severity": "major",
+    "remedy": {
+      "action": "Make the sweep a consumption test rather than a mention test, in tools/render/consumption-sweep.mjs only. Minimum viable change: strip block comments, line comments and string literals from each render/ source before matching, so prose can never satisfy the tripwire; then require the surviving match to sit on a call path reachable from Renderer.render(). Cheapest sufficient form of the second half, if the static call-path walk proves awkward, is a live arm: boot the game through tools/lib/browser.mjs, perturb the field on the sim object, render one shipping frame and require some observable to change — the machinery already exists in tools/harness/critic-first-ten-play.mjs phase `fade`. Do not add a second tool; extend this one. Preserve the existing VISUAL/INTERNAL/AMBER classification and the three hand-checked amber routes, which are correct and were checked by hand.",
+      "targets": [
+        "tools/render/consumption-sweep.mjs"
+      ],
+      "acceptance": "Re-run the three delete-the-fix arms in corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log on a sparse copy. Required: arm A exit 1, arm B exit 1, arm C exit 1, and the unmodified shipped tree exit 0. Three red arms and one green; today it is one red and three green. Publish the four exit codes."
+    }
+  },
+  "corpus_extended": [],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false and the shortfalls are named in section 9 of the verdict markdown. Not done: no settlement other than Lilmoth was entered, so the piece's own open question about the door derivation in a town whose buildings ring the centre is still open; the character fade was demonstrated by perturbation but was never photographed in motion against a wall, so the picture the builder said it owed is still owed; and the fight arm was captured but not judged, being outside the piece's claims. Two further honesty notes. My first probe hid actors by setting material colorWrite:false, which render/actor.js:473's shared armour materials made contaminate the player as well; it is filed as negative evidence and the corrected probe toggles root.visible instead, which also removes the cast shadow and makes my percentages body-plus-shadow where the builder's are body only. And I initially reported that D1 did not reproduce on GPU; that was wrong, caused by a look-around phase in my own harness leaving about 24 degrees of residual yaw so the player walked past the occluder, and it is retracted in section 6d. As a critic I read the production sources under judgement and wrote none of them; the only code I authored is tools/harness/critic-first-ten-play.mjs and the delete-the-fix arms, which ran on a sparse copy outside the repository."
+  }
+}
