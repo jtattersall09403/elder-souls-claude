@@ -1,0 +1,300 @@
+{
+  "commit": "9ae17140",
+  "three_revision": "180",
+  "materials_seen": 584,
+  "with_surface_uniforms": 406,
+  "orphaned_surface_pass": 0,
+  "dead_json_ghost_uniforms": 0,
+  "wetness_unreachable": 0,
+  "orphans_whose_hook_was_reassigned": 0,
+  "orphans_by_category": {},
+  "orphans_by_family": {},
+  "orphans_by_route": {},
+  "intact_by_category": {
+    "actor (npc)": 195,
+    "building": 125,
+    "water": 31,
+    "other": 28,
+    "player": 15,
+    "canopy/foliage": 7,
+    "terrain": 5
+  },
+  "player_rows": [
+    {
+      "name": "MeshBasicMaterial",
+      "meshes": [
+        "actor-contact-shadow"
+      ],
+      "family": null,
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": false,
+      "wetness_followed": false
+    },
+    {
+      "name": "MeshBasicMaterial",
+      "meshes": [
+        "actor-action-silhouette"
+      ],
+      "family": null,
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": false,
+      "wetness_followed": false
+    },
+    {
+      "name": "visual-family:cloth",
+      "meshes": [
+        "actor-body:saxhleel:cloth"
+      ],
+      "family": "cloth",
+      "orphaned": false,
+      "hook_installs_waterline": true,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:skin",
+      "meshes": [
+        "actor-body:saxhleel:skin"
+      ],
+      "family": "skin",
+      "orphaned": false,
+      "hook_installs_waterline": true,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:cloth",
+      "meshes": [
+        "actor-secondary-frill:0@spine_02",
+        "actor-secondary-frill:1@spine_02",
+        "actor-secondary-frill:2@spine_02"
+      ],
+      "family": "cloth",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:reed",
+      "meshes": [
+        "actor-equipment:reed:head@head",
+        "actor-equipment:reed:chest@spine_02",
+        "actor-equipment:reed:chest@spine_02",
+        "actor-equipment:reed:chest@upperarm_l",
+        "actor-equipment:reed:chest@upperarm_r",
+        "actor-equipment:reed:hands@hand_l"
+      ],
+      "family": "reed",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:chitin",
+      "meshes": [
+        "actor-equipment:chitin:head@head",
+        "actor-equipment:chitin:chest@spine_02",
+        "actor-equipment:chitin:chest@spine_02",
+        "actor-equipment:chitin:chest@upperarm_l",
+        "actor-equipment:chitin:chest@upperarm_r",
+        "actor-equipment:chitin:hands@hand_l"
+      ],
+      "family": "chitin",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:stone",
+      "meshes": [
+        "actor-equipment:xanmeer:head@head",
+        "actor-equipment:xanmeer:chest@spine_02",
+        "actor-equipment:xanmeer:chest@spine_02",
+        "actor-equipment:xanmeer:chest@upperarm_l",
+        "actor-equipment:xanmeer:chest@upperarm_r",
+        "actor-equipment:xanmeer:hands@hand_l"
+      ],
+      "family": "stone",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:bone",
+      "meshes": [
+        "actor-family-form:saxhleel:eye-l@head",
+        "actor-family-form:saxhleel:eye-r@head"
+      ],
+      "family": "bone",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:stone",
+      "meshes": [
+        "actor-family-form:saxhleel:pupil-l@head",
+        "actor-family-form:saxhleel:pupil-r@head"
+      ],
+      "family": "stone",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:skin",
+      "meshes": [
+        "actor-family-form:saxhleel:brow-horn-l@head",
+        "actor-family-form:saxhleel:brow-horn-r@head",
+        "actor-family-form:saxhleel:shoulder-scale@upperarm_l",
+        "actor-family-form:saxhleel:shoulder-scale@upperarm_r",
+        "actor-family-form:humanoid:tailored-tunic@spine_02",
+        "actor-family-form:humanoid:hair-cap@head"
+      ],
+      "family": "skin",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:metal:shield-rim",
+      "meshes": [
+        "Mesh",
+        "Mesh",
+        "Mesh",
+        "Mesh",
+        "Mesh",
+        "Mesh"
+      ],
+      "family": "metal",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:bark:shield-face",
+      "meshes": [
+        "Mesh"
+      ],
+      "family": "bark",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:bark:shield-face:inner",
+      "meshes": [
+        "Mesh"
+      ],
+      "family": "bark",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:bark:shield-straps",
+      "meshes": [
+        "Mesh",
+        "Mesh"
+      ],
+      "family": "bark",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:metal:held-weapon",
+      "meshes": [
+        "actor-held:weapon:SSW:metal"
+      ],
+      "family": "metal",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    },
+    {
+      "name": "visual-family:bark:held-grip",
+      "meshes": [
+        "actor-held:weapon:SSW:haft"
+      ],
+      "family": "bark",
+      "orphaned": false,
+      "hook_installs_waterline": false,
+      "uniforms_are_live": true,
+      "wetness_followed": true
+    }
+  ],
+  "mechanism": {
+    "source": "visual-family:mud",
+    "source_hook_installs_surface": true,
+    "clone_hook_installs_surface": true,
+    "clone_shader_uniform_is_the_live_one": true,
+    "clone_keeps_surface_uniforms": true,
+    "clone_uniforms_are_live": true,
+    "clone_wetness_followed": true
+  },
+  "loud_fallback_probe": {
+    "family": "cloth",
+    "members": 131,
+    "stained_by_registry": 131,
+    "invisible_to_loud_fallback": 0,
+    "page_state_permanently_mutated": true
+  },
+  "selfcheck": {
+    "victim": "visual-family:mud",
+    "detected_as_orphan_before_break": false,
+    "detected_as_orphan_after_break": true,
+    "detected_as_orphan_after_restore": false
+  },
+  "checks": [
+    {
+      "id": "NO-ORPHANED-SURFACE-PASS",
+      "ok": true,
+      "detail": "0 of 406 materials carry surfaceUniforms whose onBeforeCompile no longer installs them"
+    },
+    {
+      "id": "NO-DEAD-GHOST-UNIFORMS",
+      "ok": true,
+      "detail": "0 of 406 carry a JSON-deep-copied uniform block whose uDetailNormal is not a Texture"
+    },
+    {
+      "id": "WETNESS-REACHES-EVERY-SHADED-MATERIAL",
+      "ok": true,
+      "detail": "0 of 406 did not follow setWorldWetness() to its sentinel value"
+    },
+    {
+      "id": "SHADER-UNIFORM-IS-THE-LIVE-ONE",
+      "ok": true,
+      "detail": "0 of 406 bind a uWorldWetness that is NOT the object setWorldWetness() writes into"
+    },
+    {
+      "id": "NO-HOOK-THREW",
+      "ok": true,
+      "detail": "0 onBeforeCompile hooks threw when invoked against a stand-in shader"
+    },
+    {
+      "id": "LOUD-FALLBACK-REACHES-EVERY-MATERIAL",
+      "ok": true,
+      "detail": "0 of 131 'cloth' materials were NOT stained by markFamilyAssetFailure()"
+    },
+    {
+      "id": "INSTRUMENT-SEES-A-DEFECT-IT-CREATED",
+      "ok": true,
+      "detail": "broke visual-family:mud: before=false broken=true restored=false"
+    }
+  ]
+}
