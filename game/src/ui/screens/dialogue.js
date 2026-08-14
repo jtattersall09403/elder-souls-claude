@@ -311,6 +311,10 @@ function charsPerLine(lines, from, count) {
  */
 export function drawDialogue(S, m) {
   const L = layoutDialogue(S, m);
+  // §E1's alpha, as a MODEL FIELD rather than a constant, so the opaque arm is a frame that was
+  // actually rendered rather than a number computed on paper. RULES rule 6: a control you have
+  // never seen fail is not evidence, it is a second copy of the experiment.
+  const interiorAlpha = m.interior_alpha === undefined ? INTERIOR_ALPHA : m.interior_alpha;
   const s = S.s, u = L.u;
   const seed = idHash('dialogue') & 0xffff;
 
@@ -320,16 +324,16 @@ export function drawDialogue(S, m) {
   // translucent panel is what makes a conversation happen IN A PLACE."
   S.el({
     id: 'dialogue.panel', kind: 'panel', rect: L.panel, material: 'chitin',
-    opacity: INTERIOR_ALPHA,
+    opacity: interiorAlpha,
     meta: {
-      element: 1, interior_alpha: INTERIOR_ALPHA, frame_alpha: FRAME_ALPHA,
+      element: 1, interior_alpha: interiorAlpha, frame_alpha: FRAME_ALPHA,
       area_frac: +((L.panel[2] * L.panel[3]) / (S.W * S.H)).toFixed(4),
       client_lu: L.clientLU,
     },
   }, (c, r) => {
     // The interior: near-black and translucent, so the person you are talking to is visible
     // through their own answer.
-    c.globalAlpha = INTERIOR_ALPHA;
+    c.globalAlpha = interiorAlpha;
     c.fillStyle = C('chitin_dark');
     c.fillRect(r[0], r[1], r[2], r[3]);
     // The frame: a TILED band, not a stretched nine-slice. REF-A12's `TileRect` with `TileH`/
@@ -577,8 +581,8 @@ export function drawDialogue(S, m) {
     prose_px: +L.proseW.toFixed(2),
     layout_unit_px: +L.u.toFixed(4),
     client_lu: L.clientLU.map((v) => +v.toFixed(2)),
-    interior_alpha: INTERIOR_ALPHA,
-    world_visible_behind: true,
+    interior_alpha: interiorAlpha,
+    world_visible_behind: interiorAlpha < 1,
     body_px: +L.bodyPx.toFixed(2),
     chars_per_line: L.chars_per_line,
     leading: +(L.lineH / L.bodyPx).toFixed(3),

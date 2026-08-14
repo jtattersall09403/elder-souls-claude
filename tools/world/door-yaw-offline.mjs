@@ -123,6 +123,23 @@ function occluded(cell, x, z, yaw, eye) {
   return +(blocked / n).toFixed(4);
 }
 const passes = (c, o) => c >= MIN_CLEAR && o <= MAX_OCCL;
+
+/* ---- AND THE ROOM BEHIND YOU, WHICH IS A DIFFERENT DEFECT ------------------------------------
+ *
+ * The owner's complaint was "facing a building's wall", and turning the body fixes that. It does
+ * NOT fix the other half the predecessor's report named and did not own: at the writ house
+ * doorstep the third-person arm is collapsed against the wall behind the player, so the camera
+ * sits AT the body and the player character is not in the frame at all.
+ *
+ * That is a property of what is BEHIND the facing, not in front of it, and it is measured here as
+ * a proxy for `Engine.castCameraArm()`: a straight ray backwards from the camera pivot height.
+ * The real cast is a sphere of radius `cast_radius_m` with a shoulder offset, so this is an
+ * OPTIMISTIC proxy — it can only under-report the collapse — and it is labelled a proxy
+ * everywhere it appears. `arm_free_m` (4.10 m) is the length the arm wants; below `fade_start_m`
+ * (1.30 m) the character model starts to fade out of its own picture. Both from
+ * `game/src/sim/camera.js#CAMERA_CONST`.
+ */
+const CAM_PIVOT_H_M = 1.55, CAM_ARM_FREE_M = 4.10, CAM_FADE_START_M = 1.30;
 /** Does the side pass AFTER the engine's refinement? Unrefined rows fall back to the proposal. */
 const passesRefined = (side) => {
   const rp = side.refined_predicted;
@@ -164,7 +181,7 @@ function scan(cell, x, z, eye) {
  * checked against the running engine by `tools/harness/door-yaw-sweep.mjs`. An offline forecast
  * that has never been confronted with the engine is a hypothesis, not a result.
  */
-function predictRefine(sc, proposedYaw, scoreExact) {
+function predictRefine(sc, proposedYaw, scoreExact, rearAt) {
   if (!Number.isFinite(proposedYaw)) return null;
   // THE PROPOSAL IS SCORED AT ITS OWN ANGLE, not at the nearest ten-degree bearing. The first
   // version of this function snapped it, and `helstrom-house-2` — proposal 341.0 deg, failing on
@@ -172,16 +189,34 @@ function predictRefine(sc, proposedYaw, scoreExact) {
   // reported as an unfixable row. A predictor that rounds its own input is measuring a different
   // door from the one the engine places the body at.
   const p = scoreExact(proposedYaw);
-  if (p.pass) return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'proposal_clear',
-    clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, pass: true };
-  const cands = sc.rows.filter((r) => r.pass)
-    .map((r) => ({ r, dev: Math.abs(((r.yaw_deg - proposedYaw + 540) % 360) - 180) }))
-    .sort((a, b) => a.dev - b.dev);
-  if (!cands.length) return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'no_bearing_passes',
-    clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, pass: false };
-  const c = cands[0];
-  return { yaw_deg: c.r.yaw_deg, refined: true, reason: 'nearest_clear_bearing', turned_deg: +c.dev.toFixed(1),
-    clearance_m: c.r.clearance_m, occluded_frac: c.r.occluded_frac, pass: true };
+  const rear = rearAt ? rearAt(proposedYaw) : CAM_ARM_FREE_M;
+  // Mirrors Engine._refineFacing() exactly, INCLUDING its ruling that a facing which clears ahead
+  // is kept even when the camera is boxed in behind it. See that function's comment for why, and
+  // for the numbers both ways.
+  if (p.pass) {
+    return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'proposal_clear',
+      clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, rear_m: rear, pass: true,
+      camera_ok: rear >= CAM_ARM_FREE_M, player_visible: rear >= CAM_FADE_START_M };
+  }
+  let best = null;
+  for (const r of sc.rows) {
+    if (!r.pass) continue;
+    const rr = rearAt ? rearAt(r.yaw_deg) : CAM_ARM_FREE_M;
+    const dev = Math.abs(((r.yaw_deg - proposedYaw + 540) % 360) - 180);
+    const key = [rr < CAM_FADE_START_M ? 1 : 0, rr < CAM_ARM_FREE_M ? 1 : 0, dev];
+    if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && key[1] < best.key[1])
+      || (key[0] === best.key[0] && key[1] === best.key[1] && key[2] < best.key[2])) {
+      best = { r, dev, rear_m: rr, key };
+    }
+  }
+  if (!best) {
+    return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'no_bearing_passes',
+      clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, rear_m: rear, pass: false, camera_ok: rear >= CAM_ARM_FREE_M };
+  }
+  return { yaw_deg: best.r.yaw_deg, refined: true, reason: 'nearest_clear_bearing',
+    turned_deg: +best.dev.toFixed(1), clearance_m: best.r.clearance_m, occluded_frac: best.r.occluded_frac,
+    rear_m: best.rear_m, rear_was_m: rear, pass: true, camera_ok: best.rear_m >= CAM_ARM_FREE_M,
+    player_visible: best.rear_m >= CAM_FADE_START_M };
 }
 
 const main = () => {
@@ -233,6 +268,7 @@ const main = () => {
       const face = exitFacing(rec);
       const sc = scan(cell, out3[0], out3[2], eye);
       const exact = (yaw) => { const c = clearance(cell, out3[0], out3[2], yaw, eye), o = occluded(cell, out3[0], out3[2], yaw, eye); return { clearance_m: c, occluded_frac: o, pass: passes(c, o) }; };
+      const rearAt = (yaw) => Math.min(CAM_ARM_FREE_M, clearance(cell, out3[0], out3[2], yaw + 180, gy + CAM_PIVOT_H_M));
       const fixC = face ? clearance(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
       const fixO = face ? occluded(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
       const seedC = clearance(cell, out3[0], out3[2], SEED_YAW, eye);
@@ -246,7 +282,25 @@ const main = () => {
         worst_clearance_m: sc.worst_clearance_m,
         point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
         inside_a_building: !!insideBuilding(plan, out3[0], out3[2]),
-        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact) : null,
+        camera_arm_proxy: (() => {
+          const behind = (yaw) => clearance(cell, out3[0], out3[2], yaw + 180, gy + CAM_PIVOT_H_M);
+          const shipped = face ? behind(face.yaw_deg) : null;
+          const rp = face ? predictRefine(sc, face.yaw_deg, exact, rearAt) : null;
+          const refined = rp ? behind(rp.yaw_deg) : null;
+          // The best any facing could do for the camera, ignoring what is in front — the ceiling,
+          // so a bad rule can be told from a doorstep with a wall on every side.
+          let bestBehind = -1, bestYaw = null;
+          for (let a = 0; a < 360; a += 10) { const b = behind(a); if (b > bestBehind) { bestBehind = b; bestYaw = a; } }
+          return {
+            proxy: 'straight ray back from pivot height 1.55 m; the real cast is a 0.28 m sphere with a shoulder offset, so this UNDER-reports collapse',
+            shipped_rear_m: shipped, refined_rear_m: refined,
+            best_rear_m: bestBehind, best_rear_yaw_deg: bestYaw,
+            arm_wants_m: CAM_ARM_FREE_M, fade_below_m: CAM_FADE_START_M,
+            shipped_arm_collapsed: shipped !== null && shipped < CAM_FADE_START_M,
+            shipped_arm_shortened: shipped !== null && shipped < CAM_ARM_FREE_M,
+          };
+        })(),
+        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact, rearAt) : null,
         bearings: sc.rows,
       };
     }
@@ -261,6 +315,7 @@ const main = () => {
       const face = entryFacing(rec);
       const sc = scan(cell, isp[0], isp[2], eye);
       const exact = (yaw) => { const c = clearance(cell, isp[0], isp[2], yaw, eye), o = occluded(cell, isp[0], isp[2], yaw, eye); return { clearance_m: c, occluded_frac: o, pass: passes(c, o) }; };
+      const rearAt = (yaw) => Math.min(CAM_ARM_FREE_M, clearance(cell, isp[0], isp[2], yaw + 180, isp[1] + CAM_PIVOT_H_M));
       const fixC = face ? clearance(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
       const fixO = face ? occluded(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
       const seedC = clearance(cell, isp[0], isp[2], SEED_YAW, eye);
@@ -273,7 +328,7 @@ const main = () => {
         best_clearance_m: sc.best_clearance_m, best_yaw_deg: sc.best_yaw_deg,
         worst_clearance_m: sc.worst_clearance_m,
         point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
-        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact) : null,
+        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact, rearAt) : null,
         bearings: sc.rows,
       };
     }
@@ -304,6 +359,29 @@ const main = () => {
       refined_changed_ids: rs.filter((r) => r[key].refined_predicted && r[key].refined_predicted.refined).map((r) => r.id),
       point_cannot_pass: rs.filter((r) => !r[key].point_can_pass).map((r) => r.id),
       no_geometry_visible: rs.filter((r) => r[key].no_geometry_visible).map((r) => r.id),
+      camera_arm: key !== 'exit' ? null : (() => {
+        const c = rs.map((r) => r[key].camera_arm_proxy).filter(Boolean);
+        return {
+          n: c.length,
+          collapsed_under_fade: c.filter((x) => x.shipped_arm_collapsed).length,
+          shortened_under_arm_free: c.filter((x) => x.shipped_arm_shortened).length,
+          median_rear_m: med(c.map((x) => x.shipped_rear_m)),
+          median_best_rear_m: med(c.map((x) => x.best_rear_m)),
+          doorsteps_where_no_facing_gives_the_arm_room: c.filter((x) => x.best_rear_m < CAM_ARM_FREE_M).length,
+          after_refine_collapsed_under_fade: rs.filter((r) => {
+            const rp = r[key].refined_predicted; const cp = r[key].camera_arm_proxy;
+            if (!rp || !cp) return false;
+            const rm = rp.rear_m === undefined ? cp.shipped_rear_m : rp.rear_m;
+            return rm !== null && rm < CAM_FADE_START_M;
+          }).length,
+          after_refine_shortened: rs.filter((r) => {
+            const rp = r[key].refined_predicted; const cp = r[key].camera_arm_proxy;
+            if (!rp || !cp) return false;
+            const rm = rp.rear_m === undefined ? cp.shipped_rear_m : rp.rear_m;
+            return rm !== null && rm < CAM_ARM_FREE_M;
+          }).length,
+        };
+      })(),
       no_rule: rs.filter((r) => !r[key].fixed).map((r) => r.id),
       sources: rs.reduce((a, r) => { const k = r[key].fixed ? r[key].fixed.source : '(none)'; a[k] = (a[k] || 0) + 1; return a; }, {}),
     };
@@ -360,6 +438,13 @@ const main = () => {
     say(`    points where NO bearing passes: ${s.point_cannot_pass.length}${s.point_cannot_pass.length ? ' — ' + s.point_cannot_pass.join(', ') : ''}`);
     say(`    instrument saw no geometry: ${s.no_geometry_visible.length}${s.no_geometry_visible.length ? ' — ' + s.no_geometry_visible.slice(0, 10).join(', ') : ''}`);
     say(`    rule sources: ${JSON.stringify(s.sources)}`);
+    if (s.camera_arm) {
+      const c = s.camera_arm;
+      say(`    CAMERA ARM (proxy, behind the facing at pivot height): median rear ${c.median_rear_m} m against ${CAM_ARM_FREE_M} m wanted`);
+      say(`      arm shortened (< ${CAM_ARM_FREE_M} m): ${c.shortened_under_arm_free}/${c.n}   player fades out of frame (< ${CAM_FADE_START_M} m): ${c.collapsed_under_fade}/${c.n}`);
+      say(`      doorsteps where NO facing gives the arm its full room: ${c.doorsteps_where_no_facing_gives_the_arm_room}/${c.n} (median best rear ${c.median_best_rear_m} m)`);
+      say(`      AFTER the refinement: player fades out of frame ${c.after_refine_collapsed_under_fade}/${c.n}, arm shortened ${c.after_refine_shortened}/${c.n}`);
+    }
     if (s.fixed_failing) say(`    FAILING: ${s.fixed_failing_ids.join(', ')}`);
   }
   if (out.validation) {

@@ -404,23 +404,42 @@ try {
       Math.round((A.height - win.panel_px[1]) / 2 + win.panel_px[1] * 0.35),
       Math.round(win.panel_px[0] * 0.35), Math.round(win.panel_px[1] * 0.30),
     ];
+    // GLYPHS ARE DRAWN AT FULL ALPHA AND THEY ARE NOT THE PANEL. The first run of this check read
+    // a correlation of 0.215 over a rect that was a third ink: the text is opaque by design
+    // (§C's ink families are solid), so including it measures the type, not the translucency.
+    // Bronze and blue ink are both far brighter than the near-black ground, so excluding the
+    // bright pixels of the OPEN frame leaves the panel's own interior — which is the surface the
+    // item's claim is about.
     const xs = [], ys = [];
-    for (let j = r[1]; j < r[1] + r[3]; j += 2) {
-      for (let i = r[0]; i < r[0] + r[2]; i += 2) {
-        const o = (j * A.width + i) * 4;
-        xs.push(0.2126 * A.data[o] + 0.7152 * A.data[o + 1] + 0.0722 * A.data[o + 2]);
+    let inked = 0;
+    for (let j2 = r[1]; j2 < r[1] + r[3]; j2 += 2) {
+      for (let i2 = r[0]; i2 < r[0] + r[2]; i2 += 2) {
+        const o = (j2 * A.width + i2) * 4;
+        const lx = 0.2126 * A.data[o] + 0.7152 * A.data[o + 1] + 0.0722 * A.data[o + 2];
+        if (lx > 55) { inked++; continue; }                       // a glyph, not the ground
+        xs.push(lx);
         ys.push(0.2126 * B.data[o] + 0.7152 * B.data[o + 1] + 0.0722 * B.data[o + 2]);
       }
     }
-    const mean = (a) => a.reduce((s, v) => s + v, 0) / a.length;
+    const mean = (a) => a.reduce((s2, v) => s2 + v, 0) / a.length;
     const mx = mean(xs), my = mean(ys);
     let sxy = 0, sxx = 0, syy = 0;
-    for (let i = 0; i < xs.length; i++) { sxy += (xs[i] - mx) * (ys[i] - my); sxx += (xs[i] - mx) ** 2; syy += (ys[i] - my) ** 2; }
+    for (let i2 = 0; i2 < xs.length; i2++) { sxy += (xs[i2] - mx) * (ys[i2] - my); sxx += (xs[i2] - mx) ** 2; syy += (ys[i2] - my) ** 2; }
     const rho = sxx > 0 && syy > 0 ? sxy / Math.sqrt(sxx * syy) : 0;
     const sd = Math.sqrt(sxx / xs.length);
-    report.data.translucency = { rect: r, corr_with_world: +rho.toFixed(4), panel_sd: +sd.toFixed(3), declared_alpha: win.interior_alpha, samples: xs.length };
+    // THE COMPUTED NULL CONTROL, and it is what makes the number above mean anything. Replace the
+    // interior with its own mean — the frame an OPAQUE panel would have produced over the same
+    // world — and re-run the identical statistic. If that arm does not collapse, the check
+    // cannot tell a blend from a fill and its pass is worth nothing (RULES rule 6's inert
+    // control, HAZARDS §0b's half of the number line).
+    let cxy = 0, cxx = 0;
+    for (let i2 = 0; i2 < xs.length; i2++) { cxy += (mx - mx) * (ys[i2] - my); cxx += (mx - mx) ** 2; }
+    const rhoOpaque = cxx > 0 && syy > 0 ? cxy / Math.sqrt(cxx * syy) : 0;
+    report.data.translucency = { rect: r, corr_with_world: +rho.toFixed(4), corr_opaque_control: +rhoOpaque.toFixed(4), panel_sd: +sd.toFixed(3), glyph_pixels_excluded: inked, declared_alpha: win.interior_alpha, samples: xs.length };
     push('E1 the panel interior is a BLEND, not a fill', rho > 0.35 && sd > 1.0,
-      `correlation with the world behind it ${rho.toFixed(3)}, interior sd ${sd.toFixed(2)} (an opaque fill gives ~0 and ~0)`);
+      `correlation with the world behind it ${rho.toFixed(3)}, interior sd ${sd.toFixed(2)}, ${inked} glyph px excluded`);
+    push('E1b the opaque control collapses', Math.abs(rhoOpaque) < 0.05,
+      `an opaque fill over the same world scores ${rhoOpaque.toFixed(3)} on the identical statistic`);
     push('E2 the declared alpha is OpenMW\'s documented default', Math.abs(win.interior_alpha - 0.84) < 0.05,
       `interior_alpha=${win.interior_alpha} against 0.84 ± 0.05`);
   }

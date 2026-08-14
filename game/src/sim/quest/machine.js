@@ -638,7 +638,14 @@ export class QuestEngine {
         if (held) held.count = (held.count || 1) + (reward.amount || 1);
         else this.sim.inventory.push({ id: reward.id, count: reward.amount || 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
       }
-      if (['access', 'information', 'property', 'service', 'ally', 'training', 'faction_rank'].includes(reward.type)) q.flags[`reward:${reward.id || reward.name}`] = 1;
+      // W1-20 round 3: `q` was `q.flags[...]` and there is no `q` in this scope. It is a live
+      // ReferenceError out of `QuestEngine.resolve()` — thrown AFTER the journal entry is written
+      // and after the quest is pushed onto `completed`, so the quest closes and the caller gets an
+      // exception instead of a result. It landed at 6ff70897 today and reaches any quest whose
+      // `rewards[]` carries one of these seven types on the resolution taken. Found by driving the
+      // eight faction ladders to rank 7 through `resolve()`; three Assize and two Xul-Aneekh
+      // quests threw, which is what capped those two lines at rank 6 in the first run.
+      if (['access', 'information', 'property', 'service', 'ally', 'training', 'faction_rank'].includes(reward.type)) this.sim.quest.flags[`reward:${reward.id || reward.name}`] = 1;
       awarded.push({ type: reward.type, id: reward.id || null, name: reward.name || null, amount: reward.amount || null });
     }
     this._emit('quest_resolve', { quest: id, resolution: resolutionId, method: res.method, violence_required: !!res.violence_required, awarded, ...applied });

@@ -147,7 +147,7 @@ export class UISystem {
      * correct-looking window whose topic links are plain text, which passes every layout check
      * and deletes the discovery mechanism.
      */
-    this.dialogueArm = { links: true };
+    this.dialogueArm = { links: true, opaque: false };
   }
 
   // ---- the pause rule (S14 / RI-UIX03 §A) --------------------------------------------------
@@ -772,7 +772,7 @@ export class UISystem {
     const dsig = ctx.dialogue && ctx.dialogue.open
       ? `${ctx.dialogue.npc}:${this.dialogue.blocks.length}:${ctx.dialogue.said_topic || '-'}:` +
         `${this.dialogueFocus.pane}${this.dialogueFocus.linkIdx},${this.dialogueFocus.rowIdx}:` +
-        `${this.dialogueScroll},${this.dialogueColScroll}:${this.dialogueArm.links ? 'L' : 'l'}`
+        `${this.dialogueScroll},${this.dialogueColScroll}:${this.dialogueArm.links ? 'L' : 'l'}${this.dialogueArm.opaque ? 'O' : 'o'}`
       : '-';
     const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus)
       + '#d:' + dsig
@@ -927,6 +927,10 @@ export class UISystem {
       actions,
       linkable: d.linkable || [],
       links_enabled: linksOn,
+      // §E1's control arm: draw the same panel with an opaque interior. The translucency check
+      // runs its identical statistic on a REAL rendered frame from this arm, so the "an opaque
+      // fill would score ~0" sentence is a measurement instead of an assertion.
+      interior_alpha: this.dialogueArm.opaque ? 1 : undefined,
       focus: this.dialogueFocus,
       pressed: this.dialoguePressed,
       scroll_up: this.dialogueScroll,

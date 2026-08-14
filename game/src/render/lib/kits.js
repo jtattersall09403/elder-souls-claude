@@ -644,6 +644,82 @@ registerKit('roof.reed', (s) => {
   return g;
 });
 
+registerKit('roof.needle', (s) => {
+  /* THE THORN THATCH — the fourth roof, and the first new roof profile the game has had.
+   *
+   * WHY IT EXISTS. `game/data/world/settlements/thorn.json` `architecture_kit.silhouette` promises
+   * *"the thorn thatch — black needle-wood laid in courses, WHICH NO OTHER SETTLEMENT USES"*, and
+   * until now the renderer had three roof ids in total and Thorn drew reed and hip like everybody
+   * else. The one thing the starting town's own record says is unique to it did not exist.
+   * `reports/thorn-plates/2026-08-14-thorn-plates.md` §1a is the measurement.
+   *
+   * WHAT MAKES IT A DIFFERENT SILHOUETTE, rather than a reed roof with a different material — which
+   * is the failure mode this part has to avoid, because Ruling E1 counts SILHOUETTES, not parts:
+   *
+   *  1. IT IS STEEP. `rise = min(w,d) * 0.62` against `roof.reed`'s 0.34 and `roof.hip`'s 0.30. At
+   *     60 m the profile is a dark wedge about twice the height of anything else in the province,
+   *     and steepness is the one roof property that survives distance, fog and a 640x360 capture.
+   *  2. IT IS A GABLE, NOT A HIP. Two pitches, so the end elevations are open triangles. `roof.hip`
+   *     closes all four sides and `roof.shell` is a dome; a gable end is a third shape.
+   *  3. THE RIDGE BRISTLES. Needle-wood is laid in courses and the butts are not trimmed, so spars
+   *     project past the ridge line in both directions. That is the detail the record names, and it
+   *     is what breaks the skyline into something you can pick out of a row of roofs.
+   *
+   * THE EAVE DISCIPLINE `roof.shell` HAD TO LEARN THE HARD WAY (see its header): the plan of this
+   * roof is its building plus the eave the caller authored, and nothing else. Every projecting
+   * needle is held to 0.35 m past the gable end, which is INSIDE `over` at every call site
+   * `exterior.js buildKitRoof()` makes (0.45-0.80 m) — so the bristle cannot become an 8 m canopy
+   * the way the shell's did, and `roofPlanExtent()` reports the same number it would without them.
+   */
+  const g = new THREE.Group();
+  const w = s.w ?? 5, d = s.d ?? 5;
+  const rise = s.rise ?? Math.min(w, d) * 0.62;
+  const over = s.over ?? 0.5;
+  const W = w + over * 2, D = d + over * 2;
+  const n = s.lod === 'near' ? 5 : s.lod === 'far' ? 3 : 2;
+  const mat = M(s);
+  // The courses. Each one laps the one below, like `roof.reed`, but there are fewer and they are
+  // thicker: needle-wood is a coarser bundle than reed and the shadow lines are further apart.
+  for (const sign of [-1, 1]) for (let i = 0; i < n; i++) {
+    const t = i / n;
+    const y = rise * t;
+    const halfD = D / 2;
+    const depth = halfD * (1 - t);
+    const course = slab(W - t * w * 0.10, 0.20 + (1 - t) * 0.08, halfD / n + 0.20, mat, s, 'needlecourse');
+    course.rotation.x = sign * Math.atan2(rise / n, halfD / n);
+    at(g, course, 0, y + 0.06, sign * (depth - halfD / n / 2));
+  }
+  // The gable infill — the triangle each end, which is what makes this read as a gable at all.
+  // Stepped, because a chamfered slab is the only primitive here and three of them make a
+  // serviceable raking edge at the distance this is seen from.
+  for (const sz of [-1, 1]) for (let k = 0; k < 3; k++) {
+    const t0 = k / 3, t1 = (k + 1) / 3;
+    at(g, slab(W * (1 - t1) * 0.92, rise / 3 + 0.05, 0.22, mat, s, 'needlegable'),
+      0, rise * (t0 + t1) / 2, sz * (D / 2 - 0.14));
+  }
+  // THE BRISTLE. The ridge bundle, and the needle butts projecting past it. `sides: 5` keeps each
+  // spar a cheap prism; the count is the only thing that scales with LOD, because at `far` the
+  // bristle is a texture-free silhouette detail and five of them read the same as eleven.
+  const trimMat = M(s, { role: s.trimRole || 'thorn', trim: s.trim, wear: (s.mat?.wear ?? 0.3) + TRIM_WEAR });
+  at(g, drum(0.17, 0.17, W - over * 0.6, 5, trimMat, s, 'needleridge'), 0, rise + 0.10, 0, 0, Math.PI / 2);
+  const spars = s.lod === 'near' ? 11 : s.lod === 'far' ? 7 : 4;
+  for (let i = 0; i < spars; i++) {
+    const u = (i / (spars - 1) - 0.5) * (W - over * 0.8);
+    const lean = ((i % 3) - 1) * 0.16;
+    const spar = drum(0.045, 0.06, 0.78 + (i % 2) * 0.22, 4, trimMat, s, 'needlespar');
+    spar.rotation.z = lean;
+    at(g, spar, u, rise + 0.42, ((i % 2) - 0.5) * 0.22, 0, 0, ((i % 4) - 1.5) * 0.09);
+  }
+  // Both gable ends get a short projecting butt — 0.35 m, inside the authored eave, see the header.
+  for (const sz of [-1, 1]) {
+    const butt = drum(0.05, 0.07, 0.35, 4, trimMat, s, 'needlebutt');
+    butt.rotation.x = Math.PI / 2;
+    at(g, butt, 0, rise + 0.10, sz * (D / 2 - 0.05 + 0.175));
+  }
+  g.userData.roofPlan = { w: W, d: D, over, footprint: [w, d] };
+  return g;
+});
+
 /**
  * THE SHELL'S EAVE — the null-control lever, and it is not a debug flag.
  *
@@ -1135,9 +1211,21 @@ export const GRAMMARS = Object.freeze({
     dressing: ['crate', 'barrel'], imperial: true,
   },
   // ---- Thorn: spiral palisade. Black needle-thorn, steep, and leaning. -------------------------
+  // THE STARTING TOWN. `reports/spawn-truth/2026-08-14-spawn-truth.md` settled that title -> New
+  // puts the player here, not in Lilmoth, and this grammar is now written on that basis.
+  //
+  // `roof.needle` leads the mix because the settlement record says it is the one thing no other
+  // settlement has: *"the thorn thatch — black needle-wood laid in courses, which no other
+  // settlement uses"*. Before this, Thorn drew `roof.reed` and `roof.hip` — the same two Lilmoth
+  // and Helstrom draw — and its declared signature existed nowhere in the renderer.
+  //
+  // WHAT THIS DOES AND DOES NOT BUY, stated so nobody has to re-measure it: Thorn goes from 2
+  // distinct roof profiles over 18 buildings to 3. Ruling E1 asks for >= 5 and **>= 5 is still not
+  // reachable** — the kit now defines FOUR roof ids in total, so no grammar in the game can mix
+  // five. That is a kit gap, not a Thorn gap, and it is recorded rather than papered over.
   thorn: {
     town: 'thorn', region: 'thornmarsh',
-    roofs: ['roof.reed', 'roof.hip'], roofMix: [0.72, 0.28],
+    roofs: ['roof.needle', 'roof.reed', 'roof.hip'], roofMix: [0.58, 0.24, 0.18],
     support: 'post', supportTrim: 'edge',
     wallRole: 'thorn', frameRole: 'thorn', roofRole: 'thorn',
     storey: { base: 1, tall: 2, tallEvery: 3 }, terrace: 0.34,

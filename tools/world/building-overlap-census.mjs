@@ -190,6 +190,30 @@ export function intersectionArea(subject, clip) {
   return out.length < 3 ? 0 : areaOf(out);
 }
 
+/**
+ * CAN THE PLAN'S OWN LEVER REACH THIS PAIR? — the question the ruling's falsifier turns on.
+ *
+ * `planSettlement()`'s comment is explicit that positions are never moved and only sizes are
+ * touched, and the shrink has floors: `MIN_ENTERABLE_SPAN_M` 5.0 m for a building you can walk
+ * into, `MIN_FOOTPRINT_M` 3.4 m otherwise. So the most a size-only resolver can EVER do to a pair
+ * is take both buildings to their floors. Do that, and re-measure:
+ *
+ *   * separated at the floors  -> shrinking can reach it. Nothing moves, no street layout, quest
+ *     coordinate or door registration changes, and the fix is a code fix in one function.
+ *   * still overlapping at the floors -> shrinking cannot reach it. Only moving a position can,
+ *     and that is the layout migration the falsifier describes.
+ *
+ * This is a bound, not a proposal: it says what is REACHABLE, not what should be shipped.
+ */
+export function shrinkFeasible(a, b, limit = BORDERLINE_M, minEnterable = 5.0, minOther = 3.4) {
+  const floored = (o) => {
+    const fp = (o.drawn_footprint_m || o.footprint_m);
+    const floor = o.enterable ? minEnterable : minOther;
+    return { ...o, drawn_footprint_m: [Math.min(fp[0], floor), Math.min(fp[1], floor)] };
+  };
+  return penetrationDepth(footprintCorners(floored(a)), footprintCorners(floored(b))) <= limit;
+}
+
 /** Is world point (x, z) inside this convex quad? */
 export function pointInside(P, x, z) {
   let sign = 0;
@@ -258,6 +282,8 @@ export function censusPlan(plan) {
         centre_inside_other: centres,
         yaw_blind_deep_overlap: yawBlindDeep,
         yawed: (a.b.yaw_deg || 0) % 180 !== 0 || (c.b.yaw_deg || 0) % 180 !== 0,
+        shrink_feasible: klass === 'overlap' ? shrinkFeasible(a.b, c.b) : null,
+        centre_gap_m: +dd.toFixed(2),
       });
     }
   }
@@ -273,6 +299,8 @@ export function censusPlan(plan) {
     centre_inside_other: mass.filter((p) => p.centre_inside_other.length).length,
     structure_pairs_overlap: pairs.filter((p) => p.structural && p.class === 'overlap').length,
     yaw_blind_deep_overlaps: pairs.filter((p) => p.yaw_blind_deep_overlap).length,
+    overlap_shrink_feasible: mass.filter((p) => p.class === 'overlap' && p.shrink_feasible).length,
+    overlap_needs_move: mass.filter((p) => p.class === 'overlap' && !p.shrink_feasible).length,
   };
   return { id: plan.id, name: plan.name, counts, pairs };
 }
@@ -409,6 +437,8 @@ const total = {
   centre_inside_other: results.reduce((n, r) => n + r.counts.centre_inside_other, 0),
   structure_pairs_overlap: results.reduce((n, r) => n + r.counts.structure_pairs_overlap, 0),
   yaw_blind_deep_overlaps: results.reduce((n, r) => n + r.counts.yaw_blind_deep_overlaps, 0),
+  overlap_shrink_feasible: results.reduce((n, r) => n + r.counts.overlap_shrink_feasible, 0),
+  overlap_needs_move: results.reduce((n, r) => n + r.counts.overlap_needs_move, 0),
   settlements_with_overlap: results.filter((r) => r.counts.overlap > 0).length,
 };
 
@@ -434,6 +464,8 @@ if (counted.length) {
 say('');
 say(`  the shipped yaw-blind check (_deepOverlaps) would report: ${total.yaw_blind_deep_overlaps}`);
 say(`  structure-vs-anything overlaps, reported separately and not in the headline: ${total.structure_pairs_overlap}`);
+say(`  reachable by the plan's own size-only lever (shrink to the floors): ${total.overlap_shrink_feasible} of ${total.overlap}`);
+say(`  reachable only by MOVING a position (the layout migration): ${total.overlap_needs_move} of ${total.overlap}`);
 
 if (args.json) {
   const out = path.isAbsolute(String(args.json)) ? String(args.json) : path.join(ROOT, String(args.json));
