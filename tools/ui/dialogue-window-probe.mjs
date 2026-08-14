@@ -306,11 +306,11 @@ try {
     const m = A.getUIState().dialogue_window;
     if (!m) return null;
     // Ask up to six column topics, stopping as soon as an answer lights a link.
-    for (const t of m.topics.slice(0, 6)) {
+    for (const t of m.topics.slice(0, 12)) {
       eng._convPending = t;
       A.stepFrames(2);
       const now = A.getUIState().dialogue_window;
-      if (now && now.links_drawn > 0) break;
+      if (now && now.links_total > 0) break;
     }
     return null;
   });
@@ -322,7 +322,9 @@ try {
   // changes nothing in the world is a picture of a mechanism.
   W = await readWindow();
   const before = {
-    links: W.window.links_drawn,
+    links: W.window.links_total,
+    links_drawn: W.window.links_drawn,
+    linkable: W.window.linkable.length,
     topics: W.window.topics.slice(),
     lines: W.window.lines_total,
     known: W.topics_known,
@@ -334,19 +336,31 @@ try {
     // Walk the caret to the first link and confirm it, through the UI's own step — not by
     // calling `conversationSay` behind the window's back, which would prove the ENGINE works and
     // say nothing about the window.
+    // Focus link 0 first: the history is scrolled to the BOTTOM (§D3) and a link in an earlier
+    // answer is off the page until the caret walks to it. `layoutDialogue` follows the caret, so
+    // this is also the check that it does.
     eng.ui.dialogueFocus.pane = 'prose';
     eng.ui.dialogueFocus.linkIdx = 0;
+    eng.ui.builtFrame = -1;
+    A.stepFrames(1);
     const topic = m.link_topics[0];
     eng._convPending = topic;
     A.stepFrames(2);
     return topic;
   });
   if (!followed) {
-    push('D1 an inline link exists to follow', false, `0 links drawn in ${before.lines} lines of prose`);
+    push('D1 an inline link exists to follow', false,
+      `0 links in ${before.lines} lines of prose over ${before.linkable} linkable topic(s) — ` +
+      'either nothing was offered to light, or the prose does not name what was offered; ' +
+      'reports/uix08/window-probe.json carries both lists');
   } else {
     await h.h('stepFrames', 2);
     const after = await readWindow();
-    push('D1 an inline link exists to follow', before.links > 0, `${before.links} link element(s) drawn`);
+    push('D1 an inline link exists to follow', before.links > 0,
+      `${before.links} link(s) in the transcript, ${before.links_drawn} on screen, over ${before.linkable} linkable topic(s)`);
+    push('D1b at least one link is ON SCREEN after the caret walks to it',
+      (await readWindow()).window.links_drawn > 0,
+      'the history is scrolled to the bottom; the caret pulls its link into view');
     push('D2 following a link APPENDS (the pane is not cleared)',
       after.window.lines_total > before.lines,
       `${before.lines} -> ${after.window.lines_total} lines`);

@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `792a0a2d`: 998 tools, 157 reference
+so it cannot drift. Generated at `35643d53`: 998 tools, 157 reference
 items, 205 pieces in flight.
 
 Its purpose is to stop 205+ concurrent agents each paying separately to discover the
@@ -1417,6 +1417,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
 | `RECONCILE-MAP-PROBE-S13` | reconciled |  | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-THORN-PLATES-C2` | built-awaiting-fresh-critic | IN ORDER. (1) MOVE THE WATERLINE TO THE QUAY — terrain.json/water.json, about 25 m of shor | `orchestration/status/W1-THORN-PLATES-C2.json` `reports/thorn-plates/2026-08-14-thorn-plates-chunk2.md` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `game/data/world/settlements/thorn.json` `docs/art-direction/build-board.mjs` |
@@ -1432,7 +1433,6 @@ work is the difference between resuming and starting over.
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
 | `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
-| `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |

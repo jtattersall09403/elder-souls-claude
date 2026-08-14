@@ -6,42 +6,85 @@
   "branch": "codex/wave1-build-experiment",
 
   "could_not_do": [
-    "IN PROGRESS — this list is written first and updated as blockers appear, per the brief.",
-    "tools/contention.mjs reported WAIT at start (4 browser instances, load 5.47/core against a 4.0 ceiling). Non-browser work is being done first; any browser run taken past a WAIT will be declared here with the reason."
+    "NOT FIXED BY THIS PIECE, and it is the thing five blind judges named 5 of 5: there is NO contact darkening or ambient occlusion in this build at all. `worldMaterial()` sets `aoMap: authored ? null : ...` and every one of the twenty families HAS an authored set, so aoMap is null on every material in the game; and there is no screen-space AO pass anywhere in `game/src/render` — only a comment in visual-foundation.js:676 deferring it to 'W1-30A's GTAO stack', which does not exist in the tree. `FEATURE_CONSUMERS.ao` declares `['render/visual-foundation.js','aoMap']` as its consumer, and that consumer is null everywhere. This is a separate remedy needing its own owner. My fix does not touch it.",
+    "NOT FIXED BY THIS PIECE: nothing in `game/src` ever calls `setWorldWetness()`. Only tools do. So `uWorldWetness` has been 0 in every frame the game has ever drawn, on the intact materials as well as the orphaned ones. Restoring the shader restores the MECHANISM; it does not supply that INPUT. Owner: W1-30B (weather).",
+    "NOT FIXED BY THIS PIECE: `CHARACTER_SPECS` in actor.js declares `wear` (0.15-0.95) and `palette` per character, including the player's `wear: 0.25, palette: 'deep-marshes'`, and `ensureBuilt()` reads only `.skin` and `.cloth` hexes from it. So after my fix the player's body gets the detail-normal relief but still has wear = 0. I deliberately did NOT wire this: it is a different defect, and landing it in the same commit would confound my before/after evidence — I could not then say whether the pixels moved because the shader came back or because new wear was applied (RULES rule 6's third shape). Named as owed, with the exact edit, below.",
+    "The pre-existing gate `tools/visual/w1-30-shader-hook-collision.mjs` tests `/uDetailNormal/.test(String(mat.onBeforeCompile))`. That reads the SOURCE TEXT of the outer function and is blind to a CHAINED hook, so after this fix it reports 116 false orphans. My own census made the same mistake first and I caught it only because the number was suspicious. That gate needs the behavioural probe my census now uses; I have not edited it because it is another piece's instrument. Flagged, not fixed.",
+    "`tools/visual/gpu-deck.mjs` HAS NO `--help` HANDLER. The brief told me to run `gpu-deck.mjs --help`; the flag is parsed as an unknown option and the tool RENTS A POD. It rented `tujcoxeghk25hd` (RTX A5000, $0.27/hr), which I terminated by id with deletion confirmed by API lookup. The safe flags are `--estimate` / `--dry-run`. An orphaned ephemeral template `p9doidt3bh` remains; templates are free and I did not run a bare `cleanup` to reap it, because a bare cleanup is container-scoped and could take a sibling's live Pod.",
+    "I proceeded past `tools/contention.mjs`'s WAIT for the census runs (4-5 browser instances, load 5.3-6.6 per core against a 4.0 ceiling), with one small 480x270 browser at a time. Declared here as that tool asks.",
+    "No blind human re-judgement of the fixed build. `RI-VIS06` Protocol A is the real acceptance test for this piece and it is not mine to run."
   ],
 
-  "headline": "305 of 406 materials carry userData.surfaceUniforms whose onBeforeCompile no longer installs them, including the player's body. Establishing the population, fixing structurally at the copy seam, proving with a CONSUMPTION perturbation and hardware before/after frames.",
+  "headline": "305 of 406 materials carried userData.surfaceUniforms that no shader installed. Reproduced at HEAD, attributed to every call site, fixed at the copy seam, and now 0 of 406. Three further losses at the same seam were found and fixed with it.",
 
-  "mechanism_as_understood": [
-    "visual-foundation.js#installSurfaceShader writes BOTH mat.userData.surfaceUniforms (bookkeeping) and mat.onBeforeCompile (the shader).",
-    "three r180 Material.copy() copies userData by JSON deep-copy and does NOT copy onBeforeCompile. So every .clone() keeps the bookkeeping and loses the shader.",
-    "SECOND, INDEPENDENT LOSS at the same seam: installSurfaceShader also does shadedMaterials.add(mat). A clone is not in that Set, so setWorldWetness() never reaches it even if its hook were intact.",
-    "THIRD, INDEPENDENT LOSS at the same seam: registerFamilyMaterial(family, mat) is not re-run for a clone, so the loud magenta ASSET-LOAD-FAILED fallback cannot stain a cloned material.",
-    "FOURTH: actor.js#installWaterline ASSIGNS mat.onBeforeCompile rather than chaining prior, so on the player's body it would destroy a restored surface pass anyway. Ordering saves nothing here."
-  ],
-
-  "declared_claims": {
-    "note": "Both render files are hot. Live pieces reported by tools/ownership.mjs at start:",
-    "game/src/render/visual-foundation.js": ["W1-30-builder-20260812", "W1-30C-builder", "W1-30S"],
-    "game/src/render/actor.js": ["W1-03", "W1-30-P2", "W1-30-builder-20260812"],
-    "method": "Changes to both hot files are developed on a hard-linked control clone and applied to the live file by a single scripted patch that records a pre-edit md5, refuses to apply twice, and refuses to apply if its anchors have moved. The dev copy lives under the scratchpad, never in the repo tree."
+  "the_population": {
+    "commit": "52d66578",
+    "instrument": "tools/visual/w1-30-surface-orphan-census.mjs",
+    "materials_in_scene": 584,
+    "carrying_surfaceUniforms": 406,
+    "orphaned_before": 305,
+    "orphaned_after": 0,
+    "orphans_by_category": { "actor (npc)": 195, "building": 95, "player": 14, "other": 1 },
+    "intact_by_category": { "water": 31, "building": 30, "other": 27, "canopy/foliage": 7, "terrain": 5, "player": 1 },
+    "orphans_by_route": {
+      "actor.js:592/619 body+frill mats.<family>.clone()": 174,
+      "province.js:552 settlement styleboard .clone()": 95,
+      "actor.js:674 familyMat.clone()": 20,
+      "actor.js:1070-1099 weapon/shield .clone()": 12,
+      "actor.js:635 equipment set .clone() (cached per mats)": 3,
+      "unattributed": 1
+    },
+    "the_player": "14 of the 16 materials on renderer.playerMesh were orphaned: skin, cloth, the three spine frills, all three equipment sets (reed / chitin / xanmeer), eyes, pupils, shield rim / face / inner / straps, weapon metal and weapon haft. The only PBR material on the player that kept its shader is the SHARED `mats.skin` original used by the brow horns and shoulder scales — i.e. the one that was never copied. The other two are MeshBasicMaterials (contact shadow, action silhouette) that never had the pass.",
+    "routes_checked": "Material.copy() via .clone() is the only live route. There is no `new THREE.Material().copy(worldMat)` in game/src, no instancing route (InstancedMesh shares the material object), no LOD-generation route (the `lod` axis is a worldMaterial() option, not a copy), and the two material caches — province.js STYLE_MATERIAL_CACHE and kits.js MAT_CACHE — cache the RESULT of a clone and of worldMaterial() respectively, so the cache is not itself a route, it is what makes one clone serve many meshes."
   },
+
+  "the_four_losses_at_one_seam": {
+    "A_bookkeeping": "userData.surfaceUniforms SURVIVES the copy as a dead JSON ghost (uDetailNormal.value is no longer a Texture). 305 of 406 before, 0 after. THIS is why every static inspection said the material tables were fine: they were fine.",
+    "B_shader": "onBeforeCompile is not copied. 305 before, 0 after.",
+    "C_wetness_driver": "shadedMaterials.add() is not re-run, so setWorldWetness() could not reach the copy. 305 of 406 did not follow a sentinel value before; 0 after.",
+    "D_loud_fallback": "registerFamilyMaterial() is not re-run, so MATERIAL_API §7's deliberately-loud magenta ASSET-LOAD-FAILED fallback could not stain a copy. Measured by firing the real failure path on the `cloth` family: 130 of 131 cloth materials were NOT stained before; 0 of 131 after. The loud fallback was 0.8% effective on that family.",
+    "E_hook_clobber": "actor.js#installWaterline ASSIGNED onBeforeCompile rather than chaining, so restoring the pass at the copy seam alone would still have left the player's body broken. Fixed by chaining, same shape as installSurfaceShader."
+  },
+
+  "the_fix": {
+    "level": "the copy, not the call sites",
+    "why": "There are a dozen .clone() sites across province.js, actor.js, renderer.js and scene.js. Re-installing at each is a dozen chances to miss one and it rots the first time somebody adds the thirteenth. Instead installSurfaceShader records a JSON-safe RECIPE in userData (which survives the copy exactly as the uniforms did), and every material worldMaterial() builds carries an own-property `clone` that rebuilds the shader, the wetness registration and the fallback registration on the copy — and re-installs itself on the copy, so a clone of a clone is covered.",
+    "why_clone_and_not_copy": "Material.prototype.clone() is `new this.constructor().copy(this)`. The `copy` that runs belongs to the NEW object, which is a stock material, so an instance-level `copy` override on the source is never consulted — a copy hook would have been INERT and would have looked exactly like a fix. `clone` is the method invoked on the source.",
+    "api_amendment_owed": "MATERIAL_API.md is frozen and I did not edit it. Two exports were ADDED (an addition is permitted by §9; documenting it is owed): `installCopySeam(mat)` and `adoptMaterialCopy(copy, source)`. §8's export table should gain both rows, and §4 should state that `.clone()` of a worldMaterial is now a supported operation that preserves the surface pass.",
+    "files": ["game/src/render/visual-foundation.js", "game/src/render/actor.js"],
+    "reversal": "node tools/visual/w1-30-copy-seam-patch.mjs --revert — the same script that applied it, so the reversal cannot drift from the change. It refuses to apply twice and refuses to run against moved anchors."
+  },
+
+  "reconciliation_with_the_blind_fidelity_verdict": {
+    "asked_by": "orchestrator, after RI-VIS06 Protocol A returned 0/5 with 'surfaces are not shaded, they are filled'",
+    "answer": "The orphaning is CONCENTRATED (100% of the player's copied materials, 76% of building materials, 0% of terrain/water/canopy) but the SYMPTOM is universal, by two different mechanisms. Population 1, the 305: the shader was absent. Population 2, the 101 intact: the shader is present but both of its variant axes are pinned at zero in the shipped build — terrain is `worldMaterial('mud',{vertexColors:true})` with no wear, and nothing ever calls setWorldWetness(). So the intact materials run the pass with wear=0 and wetness=0 and get a detail-normal blend only. 'Every surface reads as flat diffuse albedo' is therefore consistent with BOTH populations and does not require a second cause for the flatness — but it does for the AO, which is genuinely absent everywhere (see could_not_do #1).",
+    "falsifiable_prediction": "After this fix, a re-judged blind comparison should show buildings improving most (kit materials carry real wear 0.2-0.9 with wearFrom:'geometry' and baked esCurvature, so they go from no wear at all to real geometric edge wear), the player improving modestly (micro-relief only, until the CHARACTER_SPECS wear wiring lands), and terrain and canopy NOT CHANGING AT ALL. If terrain and canopy are still called flat, that is a second cause and it is not this seam."
+  },
+
+  "owed_follow_ons": [
+    "actor.js ensureBuilt(): read `mat.wear` and `mat.palette` from CHARACTER_SPECS and pass them into the body materials. The specs already carry them for all 19 characters. One caller, and it is the difference between the player having micro-relief and the player having the wear the art direction asked for.",
+    "tools/visual/w1-30-shader-hook-collision.mjs: replace the source-text regex with the behavioural probe from w1-30-surface-orphan-census.mjs, or it will report 116 false orphans against the fixed tree.",
+    "tools/visual/gpu-deck.mjs: add a `--help` guard. Today `--help` rents a GPU pod.",
+    "MATERIAL_API.md §8: two new export rows (see the_fix.api_amendment_owed).",
+    "AO / contact shadows (judges' 5/5 finding) and ambient fill in shadow — separate owners, evidence in could_not_do #1."
+  ],
 
   "redundant_with": ["W1-30C-builder", "W1-30S", "W1-30-builder-20260812", "W1-30-P2"],
 
   "files_touched": [
-    "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json"
-  ],
-  "files_claimed": [
+    "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json",
     "game/src/render/visual-foundation.js",
     "game/src/render/actor.js",
     "tools/visual/w1-30-surface-orphan-census.mjs",
+    "tools/visual/w1-30-copy-seam-patch.mjs",
     "tools/visual/w1-30-surface-consumption.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/"
+  ],
+  "files_claimed": [
     "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/",
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
 
-  "next_step": "Write the census tool (population + grouping by route), then develop the fix on a control clone.",
-  "notes": []
+  "next_step": "CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms on the same GPU."
 }

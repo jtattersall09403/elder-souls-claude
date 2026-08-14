@@ -208,11 +208,14 @@ const results = [];
     const yaw = Math.round(i * 360 / ORBIT);
     await poseOrbit(yaw, 2.4);
     const base = await shoot(`player-yaw${String(yaw).padStart(3, '0')}-base.png`);
+    // NO stepFrames between the three captures. `__HARNESS.screenshot()` calls
+    // `engine.loop.renderNow()` itself, so the frame is re-rendered without advancing the
+    // simulation — which means the ONLY difference between these three images is the uniform
+    // value. The first shakeout DID step two frames between them and the player's idle animation
+    // put a 2.5% floor under a 5.5% signal; the instrument was measuring its own subject breathing.
     const cnt = await perturb('player', true);
-    await call('stepFrames', 2);
     const pert = await shoot(`player-yaw${String(yaw).padStart(3, '0')}-perturbed.png`);
     await perturb('player', false);
-    await call('stepFrames', 2);
     const rest = await shoot(`player-yaw${String(yaw).padStart(3, '0')}-restored.png`);
     per.push({ yaw, materials_selected: cnt.touched, with_uniforms: cnt.hadUniforms,
       perturbed: movedFraction(base, pert), restored_floor: movedFraction(base, rest) });
@@ -229,10 +232,8 @@ const results = [];
     await poseOrbit(yaw, 9, 3.0);
     const base = await shoot(`building-yaw${yaw}-base.png`);
     const cnt = await perturb('building', true);
-    await call('stepFrames', 2);
     const pert = await shoot(`building-yaw${yaw}-perturbed.png`);
     await perturb('building', false);
-    await call('stepFrames', 2);
     const rest = await shoot(`building-yaw${yaw}-restored.png`);
     per.push({ yaw, materials_selected: cnt.touched, with_uniforms: cnt.hadUniforms,
       perturbed: movedFraction(base, pert), restored_floor: movedFraction(base, rest) });
@@ -249,10 +250,8 @@ const results = [];
     await poseOrbit(yaw, 6, 0.2);
     const base = await shoot(`natural-yaw${yaw}-base.png`);
     const cnt = await perturb('natural', true);
-    await call('stepFrames', 2);
     const pert = await shoot(`natural-yaw${yaw}-perturbed.png`);
     await perturb('natural', false);
-    await call('stepFrames', 2);
     const rest = await shoot(`natural-yaw${yaw}-restored.png`);
     per.push({ yaw, materials_selected: cnt.touched, with_uniforms: cnt.hadUniforms,
       perturbed: movedFraction(base, pert), restored_floor: movedFraction(base, rest) });
