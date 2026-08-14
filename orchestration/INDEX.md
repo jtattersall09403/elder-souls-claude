@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e6f0825`: 889 tools, 155 reference
+so it cannot drift. Generated at `1901fc7`: 890 tools, 155 reference
 items, 159 pieces in flight.
 
 Its purpose is to stop 159+ concurrent agents each paying separately to discover the
@@ -53,7 +53,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 38
+### `tools/` — 39
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -90,6 +90,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
 - `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
 - `tools/tmp-bootpub.mjs` — **no header comment**
+- `tools/verdict-evidence.mjs` — **no header comment**
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 - `tools/wpn-tipspeed-s36.mjs` — tools/wpn-tipspeed-s36.mjs — the instrument for ARBITRATION seam ruling S36.
@@ -1063,7 +1064,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **226 tools have no header comment**, so nobody can tell what they do without
+> **227 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
