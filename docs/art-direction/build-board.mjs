@@ -472,7 +472,29 @@ const SETTLEMENT_ANCHORS = {
   soulrest: { slot: 'REF-A11', basis: "world-art.js grammar 'harbour-rib' against the slot's coastal harbour settlement" },
   helstrom: { slot: 'REF-A8', basis: "world-art.js grammar 'shell-pier-market' against the slot's street level among shell-built structures" },
   archon: { slot: 'REF-A2', basis: "world-art.js grammar 'terraced-kiln' against the slot's terraced shell-and-earth architecture" },
-  thorn: { slot: 'REF-A3', basis: "world-art.js grammar 'spiral-palisade' against the slot's grown, spiralling tower architecture" },
+  // W1-THORN-PLATES: RE-ANCHORED FROM REF-A3, AND THIS IS WHY THORN'S ROWS WERE UNSETTABLE.
+  //
+  // Thorn is the town the player actually starts in (`reports/spawn-truth/2026-08-14-spawn-truth.md`)
+  // and it was the one settlement on this board with n=0 composition-valid plates. That was never an
+  // acquisition failure: ALL FIVE REF-A3 plates are square crops, so REF-A3 scores 0 of 5 under the
+  // composition-valid rule (`framing == 'full frame, native aspect, uncropped'` AND `sky_visible`)
+  // and any settlement anchored there gets `unset` rows FOREVER, whatever the town looks like.
+  //
+  // The old basis also read the wrong one of the three incompatible descriptions of Thorn's
+  // architecture: `spiral-palisade` is `world-art.js`'s word and it is not one of the nine grammars
+  // in `game/data/world/architecture.json` at all. Thorn's own settlement record describes lean-tos
+  // under black needle-thatch on a tidewater quay — the opposite of a grown spiralling tower.
+  //
+  // REF-A19 has 6 composition-valid plates and is Morrowind's own waterside settlement (Hla Oad: a
+  // moored longboat beside stilted shacks), which is what Thorn's `tidewrack-quay` is. Both
+  // `ART-SET-ROOFLINE-RELIEF-thorn` and `ART-SET-SKY-FRACTION-thorn` become settable at the bands in
+  // `reports/thorn-plates/2026-08-14-thorn-plates.md` §2c. Lilmoth shares the slot, which is correct
+  // — they are the same kind of place — and sharing an anchor is already the case elsewhere here.
+  //
+  // REVERSIBLE. What would overturn it: a slot whose built form matches Thorn better AND has >= 3
+  // composition-valid plates. `stormhold` is in the same n=0 position for the same reason and is
+  // NOT fixed here — it needs its own judgement, not a copy of this one.
+  thorn: { slot: 'REF-A19', basis: "thorn.json's tidewrack-quay is a tidewater quay of stilted lean-tos; REF-A19 is Morrowind's own waterside settlement, and it has 6 composition-valid plates where REF-A3 has 0" },
   blackrose: { slot: 'REF-A9', basis: "world-art.js grammar 'root-stockade' against the slot's built barrier of pylons carrying a fence line" },
   stormhold: { slot: 'REF-A17', basis: "world-art.js 'imperial: true' and grammar 'root-bridge-tiers' against the slot's Imperial fort masonry" },
   gideon: { slot: 'REF-A22', basis: "world-art.js 'imperial: true' and grammar 'imperial-grid-broken-by-roots' against the slot's Imperial town on a laid grid" },

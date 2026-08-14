@@ -346,6 +346,11 @@ if (!args['static-only'] && !args.staticOnly) {
           const res = H.questResolutions(qid) || [];
           const raisers = new Set((o.raises || []).filter((r) => r.flags.length).map((r) => r.id));
           const pick = res.find((r) => r.available && raisers.has(r.id)) || res.find((r) => r.available) || res[0];
+          if (raisers.size && !(pick && raisers.has(pick.id))) {
+            // Every advancing resolution was refused. Say WHY — this is the difference between
+            // "the ladder has no route" and "this character could not take the route it has".
+            played.push({ quest: qid, advancing_refused: res.filter((r) => raisers.has(r.id)).map((r) => ({ id: r.id, available: r.available, why: r.why })) });
+          }
           if (!pick) { played.push({ quest: qid, no_resolution: true }); continue; }
           let closed = null;
           try { closed = H.questResolve(qid, pick.id); } catch (e) { played.push({ quest: qid, resolve_error: String(e).slice(0, 120) }); continue; }
