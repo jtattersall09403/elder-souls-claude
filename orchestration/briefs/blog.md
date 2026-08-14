@@ -35,43 +35,62 @@ has never built one, over a pint, without showing off.
 
 ## Cadence
 
-**Post often and post short.** The default is a **dispatch**: 300–600 words on one thing that
-happened, with at least one image. Not a milestone summary — one verdict, one fix, one discovery.
-Roughly one per critic verdict filed, one per interesting fix landed, and one whenever something
-turns up that would make the reader laugh or wince.
+**Owner instruction, and it supersedes everything this section used to say:** *"Reduce blogs
+frequency. More like a twice daily roundup of key things done/achieved/improved that day with a
+selection of visuals and images to showcase. And they should be less harsh."* This is a hard
+requirement on frequency, not a suggestion: **two roundups a day, not a post per finding.** The
+older version of this brief asked for several short posts a day, one per verdict; that is exactly
+the thing the owner asked to stop, and if you are about to file a fourth post today, don't — fold it
+into the next roundup instead.
 
-Aim for **several posts a day** while the build is moving. If three verdicts land in an afternoon,
-that is three posts, not one round-up. A round-up flattens the specifics, and the specifics are the
-entire appeal.
+**The default and near-only form is the roundup**: one post covering roughly half a day's work
+(morning/overnight and afternoon/evening are a reasonable split, but go by what actually landed, not
+the clock), 500–900 words, with a small selection of images — enough to show the two or three most
+visible things, not a gallery of everything that happened. It covers **several** things at once:
+whatever verdicts landed, fixes shipped, or discoveries turned up in that window, each given a short
+paragraph or two, not each given its own post.
+
+Structure a roundup the way the recently merged PR descriptions structure themselves — read a
+handful of them before you write (`gh pr list --state merged --limit 10` against
+`jtattersall09403/elder-souls-claude`, or the equivalent GitHub tool) and copy their shape, not just
+their sentences:
+
+- **Lead with what changed, in plain language**, one short paragraph per topic — what was worked on,
+  what it now does, what the reader should expect to see in the game as a result.
+- **Say honestly how far each thing has got.** The PRs do this with a rough percentage or a plain
+  "still outstanding" line, and it reads as honest bookkeeping, not as a complaint. Copy that: "the
+  settlement streets are about two-thirds built out" is a completely normal sentence, not bad news.
+- **Close with a line or two on what's next**, the way the PRs do.
+
+**Never post to say nothing happened**, and never pad a thin window out to two roundups a day for
+its own sake — if a period was quiet, say so briefly in the next roundup rather than manufacturing
+one, or, on a genuinely dead half-day, skip it once and note the gap when the next roundup opens.
 
 The long form still exists — a **feature**, 900–1,400 words — but only for a wave completing, a new
-seam ruling that changes the shape of the game, or a region standing up for the first time. Expect
-roughly one feature per five or six dispatches.
+seam ruling that changes the shape of the game, or a region standing up for the first time. These are
+rare next to the twice-daily roundups, not an alternative rhythm running alongside them.
 
-**Never post to say nothing happened.** A dispatch needs a fact that was not true yesterday.
+### What a roundup covers
 
-### What to write dispatches about
+Not an exhaustive list — pick whichever of these actually happened in the window, and cover several
+in one roundup rather than spreading them across separate posts:
 
-Not an exhaustive list, and not a rota — pick whatever is genuinely the most interesting thing
-sitting in the repo that hasn't been written about:
-
-- **A verdict and why it failed.** The score, the single biggest gap in the critic's own words, and
-  what the builder had believed was working. Show the images the critic compared.
-- **A fix, and what it turned out to be.** Especially when the diagnosis was wrong first — the
-  `block_score` business, where "Steam re-encodes screenshots" was a confident wrong answer and the
-  real cause was exposure, is a better post than a fix that went to plan.
-- **A side-by-side that we lose.** Our shot next to the reference it was judged against, with an
-  honest account of the distance. These are the posts the reader will most want.
-- **A measurement that surprised us** — but only where the number means something on its own, in
-  one sentence, without any setup. "Half a kilometre of the main road ran along the bottom of a
-  lake" works. "Tip speed 2.69× declared" does not, and no amount of explaining will rescue it;
-  find the version of the fact that a player would notice, or leave it out.
-- **A new seam ruling.** Two things were in conflict and a decision got made. Say what both sides
-  wanted and why one won.
-- **A disagreement.** When a builder refused its brief, or a critic and the doctrine collided.
+- **What got built or fixed, and what to expect in the game because of it.** This is the backbone of
+  every roundup. State plainly what stage it has reached — "still being built out", "roughly half
+  done", "the first pass is in and it needs another round" are all fine, ordinary sentences.
+- **A verdict, summarised kindly.** What a critic checked, what it found, and what the builder
+  believed was working. A gap the critic found is a normal part of the process, not an indictment —
+  say what it was and that someone is now on it.
+- **A side-by-side that shows the distance still to close.** Our shot next to the reference, with an
+  honest, matter-of-fact account of the gap. These are the images the reader will most want to see.
+- **A discovery worth a sentence** — but only where the fact means something on its own, without
+  jargon or setup. "Half a kilometre of the main road ran under water" works on its own.
+- **A new seam ruling**, summarised: two things were in conflict, a decision got made, briefly why.
 - **What a region actually looks like now**, against what the standard says it should.
-- **Something that is still bad.** Post these deliberately. A blog that only reports progress reads
-  as marketing within about three posts.
+
+**An unbuilt thing is "not yet built".** That is the normal, expected state of a project mid-wave,
+not a scandal and not something to apologise for. See the tone section below — this is a hard
+requirement, not a style preference.
 
 ### Follow-ups: close the loop on what you already told the reader
 
@@ -84,14 +103,15 @@ empties on save, or the level-up screen is refused at every well, is owed the en
 blog is a list of complaints and the reader has no way to tell a project that fixes things from one
 that only notices them.
 
-**One post can close several stories at once.** The owner's words: *"you wouldn't have to do one
-post per ending — you could have the agent decide to do a single post that wraps up a batch of
-them."* A round-up of four defects the reader was told about and has not heard the end of is often a
-better post than four thin ones, and it is the right shape when the fixes share a cause. Use your
-judgement: one story gets its own post when the story is worth it, several share one when the
-through-line is the interesting part.
+**One roundup can close several stories at once**, as one of its sections rather than a post to
+itself. The owner's words: *"you wouldn't have to do one post per ending — you could have the agent
+decide to do a single post that wraps up a batch of them."* A section closing four defects the
+reader was told about and has not heard the end of is often better than four separate mentions, and
+it is the right shape when the fixes share a cause.
 
-**The rule: at least one post in every four is a follow-up.** Write it as `kind: followup`, and:
+**The rule: most roundups should close at least one earlier thread**, as a section within that
+roundup (`kind: followup` only if a whole roundup happens to be dedicated to closures, which will be
+rare). Within that section:
 
 1. **Name the earlier post and link it** — `[the post where we found it](#slug)`. The slug is the
    post's anchor on the page.
@@ -118,13 +138,14 @@ is still open.
 ## Where things go
 
 - Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, **`time`**, `summary`.
-  Several posts a day share a date, so the slug carries the distinction — make it specific
-  (`w1-01-drowned-road`, not `progress-update`). Add `kind: dispatch` or `kind: feature`.
+  Two roundups a day share a date, so the slug carries the distinction — make it specific
+  (`w1-roundup-morning`, `w1-roundup-evening`, or name the headline topic —
+  `w1-30-settlement-streets` — not `progress-update`). Add `kind: roundup` (the default) or
+  `kind: feature` for the rare long form.
 - **`time:` is not optional.** Write it as `13:42Z`, in UTC, taken with `date -u +%H:%MZ` when you
-  finish the post. Posts are ordered on the page to the minute, and several a day is now normal —
-  without it the reader gets the day's posts in an order that is not the order they happened. If you
-  omit it the renderer falls back to the commit that added the file, which lumps everything in a
-  batch together.
+  finish the post. Posts are ordered on the page to the minute — without it the reader gets the
+  day's posts in an order that is not the order they happened. If you omit it the renderer falls
+  back to the commit that added the file, which lumps everything in a batch together.
 - **Append one line to `docs/blog/COVERED.md`** for every post: the slug and, in a few words, the
   fact it covered. Posts are frequent enough now that reading all of them before writing is
   wasteful; read the ledger first, then only the two or three posts nearest your subject. If the
