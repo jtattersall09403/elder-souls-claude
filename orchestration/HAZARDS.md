@@ -142,6 +142,29 @@ done < <(git diff --name-only "$P"; git ls-files --others --exclude-standard)
 First run of the guard: **0 files genuinely newer, 4 stale** — i.e. the unguarded routine would have
 reverted four files that instant. Assume it has been doing so all along.
 
+### 2e. The mtime guard is not sufficient, and append-only files need rebuilding from origin
+
+**Correction to §2d, from an agent that watched it fail.** The guard — stage a path only when the
+working file is newer than origin's tip — is **over-conservative and blind in one direction**:
+
+- Origin's tip is routinely newer than your file's mtime, so **it rejects safe paths too**, and an
+  agent relying on it alone will silently fail to land good work.
+- It does nothing for **append-only files**. `reports/blog-feed.jsonl` was clobbered **three times in
+  forty minutes by three agents — ten lines from nine agents lost**, restored, and lost again. A
+  whole-file stage of an append-only log reverts every line the stager never saw, and mtime cannot
+  see that.
+
+**What actually works**, and should be preferred:
+
+1. **Per-path content comparison against the merge base** rather than a timestamp — decide staleness
+   from what changed, not from when.
+2. **Rebuild append-only files *from* origin** immediately before writing: re-read origin's copy,
+   union your lines in by content key, write, stage, push in the same run. Never stage a whole
+   append-only file you assembled earlier.
+
+The mtime guard remains useful as a cheap first filter and it did prevent seven reverts on its first
+run. It is not a substitute for reading the remote blob back.
+
 ### 2b. Never `git reset --hard` a shared working tree
 
 A dozen agents hold uncommitted edits in it. `--hard` discards every one of them with no warning and
