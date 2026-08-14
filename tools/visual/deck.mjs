@@ -236,13 +236,43 @@ for (const setup of setups) {
         const { bytes, hash } = await shoot(file);
         const snap = await call('snapshot');
         const env = await call('getEnvConditions');
+        // WHICH REGION IS THIS FRAME OF? — and why there are now two fields where there was one.
+        //
+        // `region_reported` was read off `sim.env.region` and was PRESENTED as the answer. It is
+        // not: `sim.env.region` is written by the save loader and by a scenario patch and by
+        // nothing else — no engine code updates it from the player's position, so it does not
+        // track a teleport, and the Deck teleports to every one of its setups. In the
+        // `w1-30de-rem-street` hardware run it read `western-rootlands` for **all 48 rows in all
+        // eight settlements**, including `blackwood` Gideon and `stone-wastes` Soulrest. That is
+        // `reports/visual-truth/INVENTORY.md` row **V15**, still open, owned by W1-02 / W1-30F —
+        // this change does not fix the engine field, it stops the manifest presenting it as truth.
+        //
+        // A shot labelled with the wrong region silently corrupts every per-region conclusion drawn
+        // from it, the art board's per-region bands included, and it does it quietly — which is
+        // exactly why it is worth three lines here rather than waiting for V15.
+        //
+        // `getTerrainAt(x, z).region` is the position-derived lookup (`field.regionAt`) that the
+        // ground colour, the fog and the ambience bed all actually use, so it is the region the
+        // frame is a picture of. Note it can legitimately DIFFER from `setup.region`: the deck's
+        // label comes from the settlement record, and `W1-02`/`RI-WLD12` moves the palette axis
+        // across a border band before the rest, so Archon's street stand sits in `crimson-coast`
+        // while the ground under it is already `eastern-rootlands`. Both are recorded; neither is
+        // silently preferred.
+        const pos = snap.ok && snap.v.player ? snap.v.player.pos : null;
+        const terr = pos ? await call('getTerrainAt', pos[0], pos[2]) : { ok: false };
         rows.push({
           setup: setup.id, block: setup.block, label: setup.label, region: setup.region || null,
           time: t.id, weather: w.id, status: 'ok', file, hash, bytes,
           weather_applied: wr.ok, weather_reported: env.ok ? env.v.weather : null,
           time_reported: env.ok ? env.v.time_of_day : null,
-          player_y: snap.ok ? snap.v.player.pos[1] : null,
-          region_reported: snap.ok && snap.v.env ? snap.v.env.region : null,
+          player_y: pos ? pos[1] : null,
+          // The truth: derived from where the camera actually is.
+          region_at_player: terr.ok && terr.v ? terr.v.region : null,
+          // The cached scenario field, kept so V15 stays visible and measurable rather than hidden
+          // by its own fix. Renamed from `region_reported` on purpose: nothing in the tree reads
+          // that key, and a name that says "reported" is a name a reader trusts.
+          region_env_cached_see_V15: snap.ok && snap.v.env ? snap.v.env.region : null,
+          region_mismatch: !!(terr.ok && terr.v && snap.ok && snap.v.env && terr.v.region !== snap.v.env.region),
         });
         done++;
         if (done % 10 === 0) console.log(`  ${done} frames  (${((Date.now() - t0) / 1000).toFixed(0)}s)`);

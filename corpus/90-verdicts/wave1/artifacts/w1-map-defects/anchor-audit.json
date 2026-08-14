@@ -1,0 +1,35 @@
+{
+ "probe": "anchor-audit",
+ "at": "2026-08-14T15:21:14.486Z",
+ "anchors": [
+  {
+   "arm": "deletefix",
+   "file": "game/src/ui/screens/map.js",
+   "what": "the terrain loop body the fog gate is spliced into",
+   "hits": 1,
+   "exactly_once": true,
+   "guard_throws_on_miss": true,
+   "tool_still_uses_this_anchor": true
+  },
+  {
+   "arm": "deletefix",
+   "file": "game/src/ui/system.js",
+   "what": "the `cellHex` closure the `seen` closure is restored above",
+   "hits": 1,
+   "exactly_once": true,
+   "guard_throws_on_miss": true,
+   "tool_still_uses_this_anchor": true
+  },
+  {
+   "arm": "markers",
+   "file": "game/src/ui/system.js",
+   "what": "_mapPlaces() — the discovery-derived place loop the null control replaces",
+   "hits": 1,
+   "exactly_once": true,
+   "guard_throws_on_miss": true,
+   "tool_still_uses_this_anchor": true
+  }
+ ],
+ "tool_agrees": true,
+ "note_on_failure_mode": "patch() throws out of the arm loop; the process dies before writeJson(), so a miss produces NO report rather than a report naming a broken arm. Loud, but not \"reported\"."
+}

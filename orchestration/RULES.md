@@ -183,6 +183,30 @@ right now). Between these two you should not need to go looking for anything.
     builders and critics dozens of times. Read the file.
 19. **Wrap noisy commands**: `node tools/run.mjs -- <command>` keeps the whole output on disk and
     shows you the failures, the head and the tail. Nothing is discarded; the path is printed.
+
+19b. **Ask several questions in one call, and never poll.** `node tools/probe.mjs -- 'cmd1' 'cmd2'
+    'cmd3'` runs them all and returns one labelled digest; `node tools/probe.mjs --until '<test>'
+    -- '<digest cmd>'` waits inside a single call and comes back when the predicate is true.
+
+    **Why, with the number.** A request re-sends your whole accumulated context, so what a tool call
+    costs is not its output — a grep's output is a few hundred tokens — it is the **request** that
+    drags 200k–370k tokens of context behind it, at **$0.086 early and $0.144 late**. Measured on
+    this project's own transcripts on 2026-08-14: **91.3% of 59,306 tool-bearing requests carried
+    exactly one tool call**, and **27,313 of them (46.05%) carried one small read-only probe** — a
+    grep, a sed, an ls, a Read — costing **$2,773.32** in re-read context. **14,851 sat immediately
+    after another one just like it.** And **1,500 requests, $152.52, were pure waiting**: the same
+    read-only command re-run to see whether a background job had finished, `tail -20 <log>`
+    ninety-nine times in one agent.
+
+    Two probes in one call cost one context re-read instead of two. **Nothing is skipped, nothing is
+    truncated, nothing is verified less** — which is why this is the one cost lever that cannot
+    trade against `COST.md` §5. It is rule 19's argument on the other axis: 19 attacks the *size* of
+    one command's output, 19b attacks the *number* of requests.
+
+    Batch what you already know you want to look at. Do **not** batch a probe whose target you can
+    only choose after reading the previous answer — that is real sequential reasoning and merging it
+    would be shortening your work, not your waste (§5, and CH-05's second tripwire).
+
 20. **Use `tools/capture/` for pictures.** Launch your own browser only when you are stepping the
     simulation, and say which you did.
 21. **Run `node tools/contention.mjs --gate` before browser work.** Exit 3 means do the work that

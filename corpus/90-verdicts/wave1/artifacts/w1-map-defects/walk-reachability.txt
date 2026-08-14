@@ -1,0 +1,29 @@
+
+== BEFORE the fix (map sixth)
+   WALK_ORDER      world, inventory, journal, sheet, spells, map, wait, levelup
+   forward walk    inventory -> journal -> sheet -> spells -> map -> wait -> (closes)
+   backward walk   inventory -> (closes)
+   fewest turns    inventory=0  journal=1  sheet=2  spells=3  map=4  wait=5
+   phone taps      journal=4  sheet=6  spells=8  map=10  wait=12
+   SKIPPED by the forward walk: nothing
+
+== SHIPPED at HEAD
+   WALK_ORDER      world, inventory, map, journal, sheet, spells, wait, levelup
+   forward walk    inventory -> map -> sheet -> spells -> wait -> (closes)
+   backward walk   inventory -> (closes)
+   fewest turns    inventory=0  journal=3  sheet=2  spells=3  map=1  wait=4
+   phone taps      journal=8  sheet=6  spells=8  map=4  wait=10
+   SKIPPED by the forward walk: journal
+
+== PROPOSED remediation
+   WALK_ORDER      world, inventory, map, sheet, journal, spells, wait, levelup
+   forward walk    inventory -> map -> sheet -> journal -> spells -> wait -> (closes)
+   backward walk   inventory -> (closes)
+   fewest turns    inventory=0  journal=3  sheet=2  spells=4  map=1  wait=5
+   phone taps      journal=8  sheet=6  spells=10  map=4  wait=12
+   SKIPPED by the forward walk: nothing
+
+FAIL the shipped WALK_ORDER drops a screen from the forward page-walk entirely.
+     `map` sits immediately before `journal`, and `map`'s own ring excludes
+     `journal` (NEVER_ADJACENT / RI-UIX04 Q7), so the forward walk steps over it.
+     Separating the pair by one screen restores it and keeps the map one turn away.

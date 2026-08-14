@@ -131,6 +131,54 @@ reads 12 m on all three, which is how a bad *rule* is told apart from a bad *poi
 doorsteps are fine, the facing was not. `inside_a_building` is 0/3, so the exit points are not
 buried in masonry either.
 
+## 4a. The opening, re-photographed at Thorn, on real hardware
+
+`tools/harness/opening-capture.mjs` plays the shipping opening — title, `New`, the census graph,
+out through the writ house door by `leaveInterior()` — and then photographs it the way owner
+directive 2026-08-14 §2 demands rather than the way that got the transparency defect declared
+fixed: **eight orbit angles 45° apart around the standing body at the exit moment, thirty seconds
+of held-forward walking one frame per second, at a desktop viewport and again at a phone
+viewport.** Every frame carries the player's own `facing_yaw_deg` and `clearance_m` in the
+manifest, so a picture cannot be argued about without arguing about a number.
+
+It ran **on a rented GPU**, through `tools/visual/gpu-deck.mjs --opening` (new flag; the Deck does
+not contain the opening at all, because until yesterday nobody knew where the opening was):
+
+| | |
+|---|---|
+| renderer | `ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA L4), NVIDIA)` — `software_renderer: false` |
+| frames | **84** (42 desktop 1280×720, 42 phone 390×844) |
+| where | `thorn`, `[3808.6, 13.28, 909.36]` — the writ house's own `exterior_spawn` |
+| yaw before the door | **320°** (the census framing, facing the Warden-Scribe's shelves) |
+| yaw after the door | **70°**, `yaw_source: door_to_doorstep` |
+| worst clearance over all 40 outdoor frames per viewport | **12 m — the cap. Nothing under it.** |
+| cost | two pods, RTX A5000 and L4, 4.33 min and ~4 min, **$0.019 + ~$0.02**; both terminated, deletion confirmed by API lookup |
+
+Frames: `docs/shots/2026-08-14-spawn-yaw/` (tracked); full runs in
+`reports/runpod-gpu/runs/opening-thorn/` and `opening-thorn3/` (gitignored, reproducible).
+
+**Two things the pictures showed that the numbers did not, and both are recorded rather than
+tidied away:**
+
+* **The first hardware run's walk was invalid and its own manifest caught it.** `camera({mode:
+  'gameplay'})` releases the position override but leaves `sim.camera.yaw` wherever the last orbit
+  put it, and `move: [0, 1]` is forward *relative to the camera* — so thirty seconds of "walking
+  out of the door" set off at 315°, the last orbit angle, and hit something at 0.25 m one second
+  in. Visible only because `facing_yaw_deg` went 70 → 315 between the orbit and t01s. Fixed (the
+  door's pose is stashed and restored) and re-run; that is what the table above reports.
+* **The "phone" pass of the first run was not a phone pass.** `launchGame`'s width/height set the
+  browser viewport, not the canvas backing store, so the phone PNGs were byte-identical in size to
+  the desktop ones. Caught by comparing file sizes, not by anything going red. The tool now sizes
+  the canvas per viewport; the corrected run's phone frames are 390×844 and about a third of the
+  bytes.
+
+**And one thing the pictures show that is still wrong**, stated plainly: in
+`hw-desktop-011-exit-gameplay-camera.png` the player character is **not in frame**. The body is
+correctly turned and looking out over the marsh, but the third-person arm is collapsed against the
+writ house wall immediately behind it, so the camera sits at the body rather than behind it. That
+is the camera arm's problem, not the facing's, it is a cousin of the already-diagnosed D1
+camera-burial defect, and this pass did not fix it.
+
 ## 5. Retargeting the tooling at the real opening
 
 `tools/lib/opening.mjs` is new and is the shared piece, so this cannot recur one tool at a time:

@@ -168,10 +168,19 @@ async function parseFile(path, onRecord) {
     const tools = Array.isArray(msg.content)
       ? msg.content.filter((b) => b && b.type === 'tool_use' && b.name).map((b) => b.name)
       : [];
+    // Q6 needs how MANY tool calls a request carried, not just which kinds — the whole batching
+    // lever is the difference between one request carrying two calls and two requests carrying one
+    // each. The `tools` Set above cannot answer that (two greps collapse to one "Bash"), and taking
+    // the max block count per record is wrong for the 8% of message.ids whose blocks are split
+    // across records. Union the block IDS; that is exact.
+    const toolIds = Array.isArray(msg.content)
+      ? msg.content.filter((b) => b && b.type === 'tool_use' && b.id).map((b) => b.id)
+      : [];
     onRecord({
       id: msg.id,
       model: msg.model || 'unknown',
       tools,
+      toolIds,
       ts: rec.timestamp ? Date.parse(rec.timestamp) : NaN,
       sessionId: rec.sessionId || 'unknown-session',
       agentId: rec.agentId || null, // null = the orchestrator's own (top-level) transcript
@@ -225,6 +234,7 @@ async function collectPricedRequests() {
         }
         if (Number.isFinite(rec.ts)) g.tsMin = Number.isFinite(g.tsMin) ? Math.min(g.tsMin, rec.ts) : rec.ts;
         if (rec.tools && rec.tools.length) { if (!g.tools) g.tools = new Set(); for (const t of rec.tools) g.tools.add(t); }
+        if (rec.toolIds && rec.toolIds.length) { if (!g.toolIds) g.toolIds = new Set(); for (const t of rec.toolIds) g.toolIds.add(t); }
         g.records.push(rec);
       });
       filesRead++;
@@ -242,7 +252,8 @@ async function collectPricedRequests() {
   for (const [id, g] of groups) {
     const usage = reduceGroup(g.records, 'max');
     const model = g.records[g.records.length - 1].model || g.model; // any record's model; they agree
-    requests.push({ id, model, ts: g.tsMin, sessionId: g.sessionId, agentId: g.agentId, usage, tools: g.tools ? [...g.tools] : [] });
+    requests.push({ id, model, ts: g.tsMin, sessionId: g.sessionId, agentId: g.agentId, usage,
+                    tools: g.tools ? [...g.tools] : [], toolBlocks: g.toolIds ? g.toolIds.size : 0 });
   }
 
   const priced = [];
@@ -1348,6 +1359,67 @@ function experimentReorientation(agents, scoresRows) {
 // The plan critic caught this (BLOCKING 3). The satisfiable restatement, used here, is the fraction of
 // AVAILABLE HEADROOM closed: (warm_stag - warm_tight) / (1 - warm_tight). The primary acceptance is
 // the ceiling: what share of total spend could first-request cache writes possibly represent?
+// ---- Q6: batching. How many tool calls does a request carry, and what do the solo ones cost? ----
+// The mechanism is CH-04's, applied one level down. A request re-sends the agent's whole context, so
+// the expensive thing about a tool call is not its output — it is the request that carries it. Two
+// calls issued as two requests pay two context re-reads; the same two calls issued as ONE request
+// pay one. Nothing is skipped and nothing is truncated, which is why this is the one lever in the
+// programme that cannot trade against COST.md section 5: no verification is removed by it.
+//
+// This is the TRIPWIRE INSTRUMENT for that change. `blocks_per_request` is the number that must
+// rise; if it does not, `tools/probe.mjs` and rule 19b are inert and get reverted.
+//
+// What it deliberately does NOT do: classify a Bash command as a read-only probe. That needs the
+// command text, which this parser does not retain, and inventing a classifier here would be a second
+// implementation of a thing measured properly once (rule 10). The solo-request share and its priced
+// cost are the guard; the probe-level breakdown lives in the piece that landed the change.
+function experimentBatching(agents, priced) {
+  const withTools = priced.filter((r) => (r.toolBlocks || 0) > 0);
+  const blocks = sum(withTools.map((r) => r.toolBlocks));
+  const hist = new Map();
+  for (const r of withTools) hist.set(r.toolBlocks, (hist.get(r.toolBlocks) || 0) + 1);
+
+  // What a request costs is what it re-reads: its context, at that model's cache-read price. This is
+  // the marginal price of ISSUING a call separately rather than alongside another one.
+  const ctxUsd = (r) => {
+    const p = PRICES[r.model];
+    if (!p) return 0;
+    const ctx = r.usage.input + r.usage.cache_read + r.usage.cache_write_5m + r.usage.cache_write_1h;
+    return ctx * (p.cache_read || 0) / 1e6;
+  };
+  const solo = withTools.filter((r) => r.toolBlocks === 1);
+  const soloUsd = sum(solo.map(ctxUsd));
+  const allUsd = sum(withTools.map(ctxUsd));
+
+  // Per day, so the series shows whether the rate is actually moving after the change lands.
+  const byDay = new Map();
+  for (const r of withTools) {
+    if (!Number.isFinite(r.ts)) continue;
+    const d = new Date(r.ts).toISOString().slice(0, 10);
+    const e = byDay.get(d) || { requests: 0, blocks: 0, solo: 0 };
+    e.requests++; e.blocks += r.toolBlocks; if (r.toolBlocks === 1) e.solo++;
+    byDay.set(d, e);
+  }
+
+  return {
+    question: 'Q6 — how many tool calls does a request carry, and what do the single-call requests cost?',
+    method: 'tool_use blocks per deduplicated request (block ids unioned across records sharing a message.id); each request priced at its OWN context times its OWN model cache-read rate.',
+    population: { requests_with_tools: withTools.length, tool_use_blocks: blocks, agents: agents.length },
+    blocks_per_request: withTools.length ? +(blocks / withTools.length).toFixed(4) : null,
+    histogram: [...hist.entries()].sort((a, b) => a[0] - b[0])
+      .map(([b, n]) => ({ blocks: b, requests: n, pct: +(100 * n / withTools.length).toFixed(2) })),
+    solo_requests: solo.length,
+    solo_pct: withTools.length ? +(100 * solo.length / withTools.length).toFixed(2) : null,
+    solo_context_reread_usd: +soloUsd.toFixed(2),
+    all_tool_request_context_reread_usd: +allUsd.toFixed(2),
+    by_day: [...byDay.entries()].sort().map(([day, e]) => ({
+      day, requests: e.requests, blocks_per_request: +(e.blocks / e.requests).toFixed(4),
+      solo_pct: +(100 * e.solo / e.requests).toFixed(2),
+    })),
+    tripwire: 'blocks_per_request must RISE against the 2026-08-14 baseline of 1.0921. If it is flat or falling, tools/probe.mjs and RULES rule 19b are inert and the change is reverted rather than left in place looking busy.',
+  };
+}
+
 function experimentBursts(agents, priced) {
   const subs = agents.filter((a) => !a.isOrchestrator).sort((x, y) => x.first - y.first);
   const GAP_MS = 120_000, STAGGER_MS = 20_000;
@@ -1548,6 +1620,7 @@ async function runExperiments(which) {
     out.q5_reorientation = experimentReorientation(agents, scoresRows);
   }
   if (which.has('attribution')) out.q4_attribution = experimentAttribution(agents, priced, byTokenClass);
+  if (which.has('batching')) out.q6_batching = experimentBatching(agents, priced);
   return { results: out, agents, priced, totalSpend, collected };
 }
 
@@ -1719,6 +1792,37 @@ function runExperimentsSelfTest() {
   say(q5H.diagnostic_integral_DISQUALIFIED.n3_late_index_placebo.fired === false,
       `and the placebo is not a rubber stamp: on the clean handoff arm it correctly does NOT fire`);
 
+  // ---- Q6 batching arms. Arm U: every request carries ONE call (the unbatched world).
+  //                        Arm B: every request carries THREE (the batched world, same work done).
+  //                        The two fleets do the SAME NUMBER OF TOOL CALLS. Only the number of
+  //                        requests differs — which is precisely the claim, so an analysis that
+  //                        cannot tell them apart cannot support the change.
+  console.log('\nQ6 batching — two fleets doing identical work, batched and unbatched:');
+  const synthBatch = (id, calls, blocksPer, ctx0 = 100000) => {
+    const reqs = [];
+    const n = Math.ceil(calls / blocksPer);
+    for (let k = 0; k < n; k++) {
+      const usage = { input: 0, cache_write_5m: 0, cache_write_1h: 0, cache_read: ctx0, output: 10 };
+      reqs.push({ id: `${id}-${k}`, model: 'claude-opus-5', ts: Date.UTC(2026, 7, 14) + k * 1000,
+                  sessionId: 's', agentId: id, usage, toolBlocks: blocksPer, usd: priceRequest('claude-opus-5', usage) });
+    }
+    return reqs;
+  };
+  const armU = [], armB = [];
+  for (let i = 0; i < 6; i++) { armU.push(...synthBatch(`u${i}`, 300, 1)); armB.push(...synthBatch(`b${i}`, 300, 3)); }
+  const bU = experimentBatching(buildAgents(armU, null), armU);
+  const bB = experimentBatching(buildAgents(armB, null), armB);
+  say(Math.abs(bU.blocks_per_request - 1) < 1e-6, `unbatched fleet reads 1.0 blocks/request (${bU.blocks_per_request})`);
+  say(Math.abs(bB.blocks_per_request - 3) < 1e-6, `batched fleet reads 3.0 blocks/request (${bB.blocks_per_request})`);
+  say(bU.solo_pct === 100 && bB.solo_pct === 0, `solo share separates the arms: ${bU.solo_pct}% vs ${bB.solo_pct}%`);
+  // THE ARM THAT MATTERS: identical tool calls, and the batched fleet must cost a THIRD in context
+  // re-reads. If these came out equal the measurement would be inert and the whole change unfounded.
+  const ratio = bB.all_tool_request_context_reread_usd / bU.all_tool_request_context_reread_usd;
+  say(Math.abs(ratio - 1 / 3) < 0.02,
+      `same 1,800 tool calls cost ${(ratio * 100).toFixed(1)}% as much when batched 3-per-request ($${bB.all_tool_request_context_reread_usd} vs $${bU.all_tool_request_context_reread_usd}) — expected 33.3%`);
+  say(bU.all_tool_request_context_reread_usd > bB.all_tool_request_context_reread_usd,
+      'the two arms genuinely disagree on cost (an analysis returning the same number for both would be inert)');
+
   console.log(`\ncost --experiments-self-test: ${pass ? 'all arms pass and the arms genuinely disagree.' : 'FAILED — see FAIL lines.'}`);
   process.exit(pass ? 0 : 1);
 }
@@ -1784,7 +1888,7 @@ function runSelfTest() {
 }
 
 // ------------------------------------------------------------------ main
-const EXP_FLAGS = { '--routing': 'routing', '--growth': 'growth', '--bursts': 'bursts', '--attribution': 'attribution', '--reorientation': 'reorientation' };
+const EXP_FLAGS = { '--routing': 'routing', '--growth': 'growth', '--bursts': 'bursts', '--attribution': 'attribution', '--reorientation': 'reorientation', '--batching': 'batching' };
 const wantedExperiments = new Set(process.argv.filter((a) => EXP_FLAGS[a]).map((a) => EXP_FLAGS[a]));
 if (process.argv.includes('--experiments')) for (const k of Object.values(EXP_FLAGS)) wantedExperiments.add(k);
 
