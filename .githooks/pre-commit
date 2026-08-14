@@ -92,7 +92,12 @@ fi
 # can trust it instead of each paying to rediscover the same 441 tools. Must run BEFORE the early
 # exit further down, or it would only ever refresh on corpus commits.
 node tools/gen-index.mjs >/dev/null 2>&1 || echo "pre-commit: gen-index failed — orchestration/INDEX.md may be stale."
-git add orchestration/INDEX.md 2>/dev/null || true
+# gen-index writes FOUR files: the index itself, plus the full tool/item/harness listings that used
+# to be inline in it. They moved out because every agent reads INDEX.md on cold start and was paying
+# 51k tokens for listings it mostly did not need (DOC-POLICY: "an index points; it does not
+# contain"). All four are staged for the same reason INDEX.md always was — the hook regenerates them,
+# so a commit that leaves them unstaged leaves the tree permanently dirty. Expected, not a sweep.
+git add orchestration/INDEX.md orchestration/index/TOOLS.md orchestration/index/ITEMS.md orchestration/index/HARNESS.md 2>/dev/null || true
 
 # Keep the published page current on EVERY commit. GitHub Pages serves /docs from this
 # branch, so a stale page is a silent lie about where the project is — and gating this on
