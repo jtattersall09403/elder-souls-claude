@@ -73,7 +73,7 @@ function roofSpan(roof) {
   let any = false;
   roof.traverse((o) => {
     if (!o.isMesh || !o.geometry) return;
-    // Skyline features (masts, drying racks, banners) are deliberately EXCLUDED. They are点
+    // Skyline features (masts, drying racks, banners) are deliberately EXCLUDED. They are
     // vertical furniture on top of the roof, not the roof plane, and folding them in would make
     // a mast's guy-rope read as an eave. Roof parts carry a `roof.` kitId; nothing else does.
     const id = o.userData.kitId || '';
