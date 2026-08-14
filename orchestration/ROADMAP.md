@@ -153,6 +153,79 @@ difficulty to user experience to how fun it feels"* — so it is a step, not a b
 
 ---
 
+## Beyond step 5 — the rest of the game
+
+**Resolution deliberately drops with distance.** Phase A is planned to the step; later phases name the
+work and its visible outcome but will be re-planned when they come into view. A roadmap that pretends
+to know the detail of month three is lying, and this project has a rule about confident documents.
+**But naming the whole shape is not optional** — a roadmap that stops at what is currently in flight
+cannot tell anyone whether we are 5% or 50% through, which is the question it exists to answer.
+
+**Phase A — foundations you can see** *(steps 1–5 above, in flight)*
+Surfaces respond to light · the first five minutes · buildings not inside each other · conversation
+with depth · reachable quests · combat feel.
+
+---
+
+### Phase B — the Morrowind half
+
+Morrowind wins everywhere outside the fight, and this is what that actually costs.
+
+- **B1 Journal and quest-telling.** A journal that reads like a person wrote it, ordered, searchable, and the *only* navigation aid. Rule: no quest markers, ever.
+- **B2 Quests without markers.** Directions given in prose — *"follow the road east past the standing stone, ask for Ravel at the outfitters"* — and a world legible enough to follow them. This is the hardest single thing on the list and the one most worth getting right.
+- **B3 Factions and guilds with real ladders.** Joining, rank, duties, expulsion, rivalry. Ranks that gate content and *conflict* with each other, so belonging somewhere costs you somewhere else.
+- **B4 NPCs who live somewhere.** Schedules, homes, work, sleep. Disposition that moves and matters.
+- **B5 Crime, justice and consequence.** Being seen, being reported, bounty, guards, prison or fine, reputation that persists.
+- **B6 Economy in gold.** Prices that vary by merchant, disposition and region; barter that is a conversation; wealth that gates and unlocks. **Souls are levelling only — gold is the currency**, and every economic surface must obey that.
+- **B7 Magic, alchemy and crafting.** Spellmaking, effects that do what they say (a census found **33 effects that no system reads** — that is the shape of the work), ingredients, enchanting, repair, condition.
+- **B8 Skills, training and levelling.** Learning by doing, trainers, the choice of what to become.
+- **B9 Books, lore and rumour.** Things to read that reward reading. Rumours that change with where you are and who you are.
+- **B10 Strangeness.** The thing that makes Morrowind Morrowind and is easiest to leave out because nothing fails without it. Argonian, Hist, tidewater, insect and fungus — never a generic fantasy swamp.
+
+### Phase C — the Souls half
+
+Souls wins inside the fight. Frames, stamina, hitboxes, animation, enemy behaviour.
+
+- **C1 Animation and weight.** Readable wind-ups, recovery, commitment. The single biggest contributor to whether a fight feels good.
+- **C2 Weapons and movesets** with real identity, and a reason to choose one.
+- **C3 Poise, stagger, parry, backstab** — the whole exchange vocabulary.
+- **C4 Bosses.** Designed encounters with tells, phases and a first-death lesson.
+- **C5 Bonfires, runbacks and death.** Losing your souls and going back for them; checkpoint spacing as level design.
+- **C6 Difficulty and the curve.** Tuned by playing, never by inflating numbers.
+- **C7 Enemy placement as authorship** — the ambush, the pair, the one you learn to skip.
+
+### Phase D — the world
+
+- **D1 An hour to cross, and worth crossing.** Thirteen regions that read differently on foot.
+- **D2 Landmarks and legibility** — enough that prose directions can work (B2 depends on this).
+- **D3 Dungeons, xanmeers and ruins** worth entering, with rewards worth finding.
+- **D4 Variety within a region** — the "six minutes across one kind of ground" problem, still open.
+- **D5 Weather, tide and time** as things you plan around rather than watch.
+
+### Phase E — the whole thing
+
+- **E1 The opening hour**, end to end, judged as an experience.
+- **E2 Save, load, and returning after a week.**
+- **E3 Desktop, mobile and gamepad** all genuinely playable.
+- **E4 Performance and load** on ordinary hardware.
+- **E5 Sound.** Barely started, and it is half of atmosphere.
+
+### Phase F — the bar itself
+
+- **F1 Every corpus item judged**, no unjudged backlog.
+- **F2 Blind comparisons every wave**, both protocols, never skipped once things look decent — *"the blind test is most valuable exactly when the team has stopped being able to see the game."*
+- **F3 The corpus audited and extended.** The owner's own question stands: do we actually have Morrowind's region and topological maps and their Black Marsh equivalents?
+
+---
+
+## Honest position on how far through we are
+
+**Phase A is in flight; B through F are named and not started.** Most of what exists today is
+foundations, instruments and one playable slice — not a game. Anyone quoting a completion percentage
+should quote it against **this** list, not against Phase A, or it means nothing.
+
+---
+
 ## Standing work, one agent at a time, never a parallel sweep
 
 **Repo integrity.** The documents that direct the work hold false beliefs about what the repo contains.
