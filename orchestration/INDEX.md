@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7a7b87b2`: 917 tools, 155 reference
+so it cannot drift. Generated at `63626eb5`: 918 tools, 155 reference
 items, 167 pieces in flight.
 
 Its purpose is to stop 167+ concurrent agents each paying separately to discover the
@@ -356,7 +356,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 247
+### `tools/harness/` — 248
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -377,6 +377,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/cmb-probe.mjs` — the W1-09 instrument.
 - `tools/harness/cmb-reach.mjs` — MINIMUM REACHING DISTANCE, measured directly, at contact range.
 - `tools/harness/cmb-tipspeed.mjs` — RI-CMB04 §B's `peak_tip_speed_mps` column, measured on EVERY clip the game can play, on EVERY frame of it.
+- `tools/harness/critic-first-ten-play.mjs` — **no header comment**
 - `tools/harness/critic-map-r2-composite.mjs` — the unrendered test taken on THE PIXELS THE PLAYER SEES.
 - `tools/harness/critic-map-r2-shots.mjs` — the W1-MAP round-2 critic's visual evidence.
 - `tools/harness/critic-map-r2.mjs` — the W1-MAP ROUND-2 critic's instrument.
@@ -1129,7 +1130,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **239 tools have no header comment**, so nobody can tell what they do without
+> **240 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

@@ -1,0 +1,78 @@
+{
+  "task_id": "W1-30A",
+  "role": "builder",
+  "piece": "W1-30A",
+  "plan": "orchestration/plans/W1-30A.md",
+  "branch": "codex/wave1-build-experiment",
+  "status": "msaa-and-grade-landed-gpu-evidence-in-flight",
+  "plan_state": "partially-satisfied",
+  "summary": "The two named defects are fixed and both were re-verified at file and line before any code was written. (1) THE GAME HAD NO ANTIALIASING. renderer.js asked the WebGL context for antialias:true and then rendered every world pixel into worldTarget, whose samples was never set; context multisampling applies only to the default framebuffer, so the request was granted and never used. worldTarget now carries samples (4 at high, 2 at medium, 0 at low, clamped by the device MAX_SAMPLES), and the depth-edge blur that stood in for AA is replaced by a luma-directed FXAA aimed at the edges MSAA cannot reach (alpha-test foliage, specular sparkle). (2) THE COLOUR GRADE WAS A NO-OP: saturation x1.035, contrast x1.015, vignette 0.075. There is now a real grade in render/post/grade.js -- one base curve plus a named variant per region, per time of day, per weather, with the region palettes taken from game/data/world/regions.json rather than invented. Also landed: ordered dither after the colour-space transform (every sky in the game banded), a wider soft-knee bloom, and a high/medium/low quality ladder with an observable framebuffer-completeness fallback to samples:0.",
+  "defects_verified_before_building": [
+    "render/post/composite.js:16 (pre-A) constructed worldTarget with no `samples` -- confirmed by reading the vendored three r180 source: RenderTarget honours options.samples, WebGLRenderer allocates a multisampled renderbuffer and blits COLOUR and (because resolveDepthBuffer defaults true) DEPTH back to the texture, so MSAA plus a readable depthTexture is supported here.",
+    "render/renderer.js:75 requests antialias:true on the context; the world never renders to the default framebuffer, so it never applied.",
+    "render/post/composite.js:33 (pre-A) was the entire grade: mix(vec3(luma), c, 1.035), a 1.015 contrast and a 0.075 vignette."
+  ],
+  "files_touched": [
+    "game/src/render/renderer.js",
+    "game/src/render/post/composite.js",
+    "game/src/render/post/grade.js",
+    "game/src/render/post/baseline-composite.js",
+    "tools/render/w1-30a-frame-probe.mjs",
+    "tools/render/w1-30a-verdict.mjs",
+    "tools/render/w1-30a-grade-census.mjs",
+    "tools/render/w1-30a-baseline-check.mjs",
+    "orchestration/status/W1-30A.json",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "game/src/render/renderer.js",
+    "game/src/render/post/composite.js",
+    "game/src/render/post/grade.js",
+    "game/src/render/post/baseline-composite.js"
+  ],
+  "reuse": {
+    "consumed": [
+      "tools/visual/deck.json -- W1-30V's shot deck. Every camera stop the probe measures is a Deck stop, so a before and an after are comparable with anything else in the visual programme (rule 10: consume the deck, do not build a second one).",
+      "tools/visual/contact-sheet.mjs -- W1-30V's tiler, used unchanged for the human read.",
+      "render/lighting.js frame scalars (day / dusk / night / overcast) published by the W1-30S seam -- the grade reads these and never reaches into sky.js.",
+      "field.regionAt() -- the SAME region record the fog already reads, so the grade and the fog can never disagree about where the camera is.",
+      "the existing setVisualFeature sabotage surface and worldTarget's HDR-linear discipline."
+    ],
+    "published": [
+      "game/src/render/post/grade.js -- the grade registry: resolveGrade(), registerGradeRecipe(), identityGrade(), easeGrade(). This is the shared colour identity for the whole visual programme; any child that needs the game's look (a reference plate, a settings preview, a map illustration) should call it rather than inventing numbers. W1-30B owns lib/lighting-recipes.js for LIGHTING recipes; this is the GRADE registry and it is A's.",
+      "MSAA_BY_TIER + renderer.setQualityTier('high'|'medium'|'low') + renderer.qualityReport() -- the quality ladder, for the settings screen (W1-21) and the capture harness.",
+      "renderer.disposeComposite(mod) -- so a harness can swap compositors without leaking a ~90 MB multisample target per swap.",
+      "game/src/render/post/baseline-composite.js -- the pre-A compositor held verbatim so ANY child can measure a before and an after on the same frames in one process, rather than across two Pod runs."
+    ]
+  },
+  "evidence": {
+    "offline_green": [
+      "tools/render/w1-30-gate.mjs -- GREEN, all five unique red controls fire.",
+      "tools/boot-check.mjs -- PASS (the new shaders compile and the engine constructs).",
+      "tools/render/w1-30a-grade-census.mjs -- GREEN: 13 recipes for exactly the 13 shipped regions, no two regions indistinguishable in any of six time/weather cells, and every region's grade moves with both time and weather. NULL CONTROL (--flat, every region pinned to one REAL grade, not to no grade) -- RED, distinctness collapses to exactly 0 as it must.",
+      "tools/render/w1-30a-baseline-check.mjs -- GREEN: the held pre-A shader is sha256-identical to composite.js at 3b43ec6c. NULL CONTROL (--null, compares the CURRENT compositor, a real and plausible wrong answer) -- RED."
+    ],
+    "gpu_in_flight": "tools/render/w1-30a-frame-probe.mjs on a RunPod A5000, 4 Deck stops x 7 variants, each with a still, an 8-frame static control and a 36-frame sub-pixel pan (0.05 deg/frame, about half a pixel), plus a 4-hour x 2-weather grade sweep. Verdict via tools/render/w1-30a-verdict.mjs."
+  },
+  "rulings_and_substitutions": [
+    "SUBSTITUTION (plan item 2 asked for SMAA vendored from the r180 addons): FXAA instead, implemented inside the pass that already exists. SMAA needs two ~100 KB base64 lookup textures, a three-pass ping-pong and its own targets; with MSAA carrying the geometric silhouettes what is left for the post pass is cutout and specular edges, where the two are close. Reversible: if the motion gate fails, escalate to SMAA and only then to TAA. The plan's reason for not starting at TAA (history invalidation on cuts, teleports, resize, cell changes, animated foliage) still stands.",
+    "MEASUREMENT DEPARTURE, stated not substituted: the plan's crawl row measures luma change between frames 'while the camera and subject are both static in world space'. Taken literally that measures animation, not aliasing -- with nothing moving there is no sub-pixel sampling change for antialiasing to fix. The probe pans at about half a pixel per frame, which is the regime in which silhouettes actually crawl, and keeps the static case as the FLOOR every pan number is read against.",
+    "THRESHOLD DERIVED FROM THE CONTROL, not invented: the plan's grade row wants separation 'at least the corpus-defined swatch distance' and no such constant exists in the tree. The flat-grade null run IS the distribution of separation that is not the grade's doing, so its 90th percentile is the noise floor the real grade must clear. A threshold that comes out of the control cannot be tuned to pass.",
+    "AGGREGATION follows ruling W1: crawl, edge width and banding all bind on the WORST stop, never the mean, because a player stands in one place and pans once."
+  ],
+  "not_done": [
+    "Plan item 3, the 5-mip bloom chain. The bloom is wider (three rings instead of one 2-pixel ring) and now has a soft knee so a light source does not pop into existence as it brightens, but it is not the multi-resolution downsample/upsample chain the plan asks for, and emissives still will not read as light sources the way they should.",
+    "Plan item 4, real ambient occlusion. GTAO/SSAO needs a depth-normal prepass, which is a genuine chunk of work and a genuine frame-budget question. The old 4-tap depth ring, clamped to 0.12, is untouched and is still close to invisible. Nothing looks grounded yet.",
+    "The frame budget row. No frame-time measurement at 1920x1080 on the Pod was taken, so 'high fits 16.6 ms in the worst Deck vista' is unproven. MSAA at 4x on a HalfFloat target is the largest new cost and it is exactly the number the plan called least certain.",
+    "Determinism (same seed -> identical frame hash over 288 stills). The probe records a hash per still but a second run to compare against was not made.",
+    "The full 288-still / 12-sequence Deck and the naive human judgement pack. Those are the fresh critic's job under the plan's allocation, and the Deck's own motion runner does not exist yet (deck.json declares 12 sequences; deck.mjs captures stills only) -- that gap is W1-30V's and is unchanged by this piece.",
+    "alphaToCoverage on the alpha-tested foliage materials, which is the cheap and very effective companion to MSAA for leaf edges. It lives in scene/world material code that this piece does not own; filed rather than reached for."
+  ],
+  "hazards_hit": [
+    "Another agent's bank.mjs committed this piece's in-progress working tree mid-edit (that is bank's designed behaviour, not a fault). Consequence for anyone reading the history: the baseline commit recorded in baseline-composite.js is 'the last commit in which composite.js still held the seam version', not the seam commit's own id, because a bank commit carries several agents' work at once.",
+    "Two RunPod runs were lost before one held: the first to an HTTP 502 from the RunPod proxy during snapshot upload, the second to a SIGTERM on the background process about nine seconds in. Both terminated their Pods cleanly in the mandatory cleanup path. The third was launched detached.",
+    "tools/contention.mjs said WAIT on this box for most of the session, which is why the evidence is on the Pod rather than local. The one local browser run taken was tools/boot-check.mjs, during a window when contention said GO."
+  ],
+  "next_step": "FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheets before reading any number -- the gate is what a person sees, and a green metric here is only permission to look. Specifically compare vista-blackwood and vista-stone-wastes baseline-vs-after pan sheets: if the silhouettes still crawl, MSAA is not doing what the numbers say. (2) Attack the grade for being a filter rather than art direction: it can raise every separation statistic and still make the game look like an Instagram preset, and the guard (a human read on the WORST shot, including a character close-up and a street) has not been run. (3) Take the frame budget on the Pod at 1920x1080 in the worst Deck vista at 'high' -- if 4x MSAA on a HalfFloat target does not fit 16.6 ms, the answer is a tier change and not a crisis, but nobody has the number. Then: the bloom chain and real AO, which are plan items 3 and 4 and are the two largest things still owed."
+}
