@@ -1,13 +1,38 @@
 {
   "task_id": "AUDIT-CONSUMPTION-CENSUS",
-  "status": "in_progress",
+  "status": "complete",
   "started": "2026-08-14",
-  "next_step": "enumerate game/data field families, grep game/src for readers, classify",
-  "could_not_do": [],
-  "files_touched": [],
-  "files_claimed": [
+  "finished": "2026-08-14",
+  "commit": "250aad600870ddf861b9aa6093c6a94b6908837d",
+  "could_not_do": [
+    "No live browser perturb-and-observe was run for the top-10 ranked findings. node tools/contention.mjs --gate reported 8 browser instances against a ceiling of 6 at the time it was needed (RULES.md rule 21). Substituted static source-to-sink tracing (read the actual consuming function, confirmed it never references the field, and in two cases found the parallel hard-coded logic that stands in instead) rather than a bare grep-and-call-it-verified. Findings marked STATIC-TRACE in the report still need a browser confirmation before repair effort is spent.",
+    "648 name-grep orphan candidates (of 2,482 fields scanned) were not individually traced end-to-end; only ~40 were hand-verified. The report ranks the traced subset and lists the rest as available via --json rather than guessing at their status.",
+    "camera (100), stealth (96) and crime (105) orphan-candidate buckets are flagged UNRESOLVED-AGGREGATE rather than classified: a sample check found these directories mix real gameplay fields with embedded calibration/acceptance-criteria documents (e.g. game/data/camera/reference-framing.json, fetched at boot per game/data/index.json but never parsed at runtime — its conclusions are hand-transcribed into source comments instead) that are legitimately consumed only by critic tooling. Mass-labelling these 301 fields as orphan without checking which is which would itself be a wrong-CONSUMED-shaped mistake at scale.",
+    "The fourth baseline finding named in the dispatch brief (a fog-thins-with-altitude setting) could not be re-located under any of the field-name variants tried (fog+altitude, fogAltitude, fog_thin). Reported UNRESOLVED rather than guessed fixed or still-broken; needs the original finder's exact field name to re-check honestly.",
+    "userData.surfaceUniforms (baseline finding #1) was re-checked only at the mechanism level (confirmed installSurfaceShader() installs userData.surfaceUniforms together with onBeforeCompile at the same call site, so the direct path is genuinely consumed) — the actual defect is in Material.copy()-derived clones across 406 materials, which needs a clone-lineage walk this census pass did not attempt."
+  ],
+  "findings_summary": {
+    "fields_scanned": 2482,
+    "consumed": 1823,
+    "tooling_only": 11,
+    "orphan_candidate_total": 648,
+    "orphan_candidate_hand_verified": 8,
+    "written_never_updated_tracked": 1,
+    "written_never_updated_confirmed_red": 1
+  },
+  "top_findings": [
+    "Combat moveset slots.*.trigger (button/modifier/state_window), all 87 weapon files: ORPHANED, STATIC-TRACE. moveset.js resolveSlot() never reads .trigger; the equivalent gating logic is hard-coded a second time as an if/else chain (moveset.js:524-675). Unowned.",
+    "Combat moveset cancels_into, all 87 weapon files: ORPHANED, STATIC-TRACE. Real roll-cancel mechanism (dodge_cancel_from) is computed independently in moves.js/player.js:287; cancels_into is never read. Unowned.",
+    "sim.env.region: WRITTEN-NEVER-UPDATED, confirmed still red (single write site, save/state.js:828, save-load only; siblings sim.env.settlement/interior/weather/tidePhase are all live-updated). This is the dispatch brief's own baseline finding #2, re-verified not re-discovered. Owned elsewhere per brief; not touched.",
+    "Combat moveset guardbreak_kind, all 87 weapon files: ORPHANED, STATIC-TRACE. Guardbreak resolves by fixed literal slot name; the declared kind (shoulder/kick/thrust_through/shield_bash) is never read. Unowned.",
+    "world/settlements/*.json targets and counts blocks: ORPHANED, STATIC-TRACE, confirmed no reader in game/src or tools/. Content-completeness quotas with no automated check. Unowned.",
+    "combat/enemies reactable flag: GREP-ONLY, zero game/src references found; whether tools/harness/cmb-exchange.mjs itself reads it (making it TOOLING-ONLY like exclusive_slots) was not confirmed. Unowned."
+  ],
+  "next_step": "none for this task — census complete. Follow-up work (not done here, per 'do not fix the orphans'): dedicated re-pass on camera/stealth/crime to separate real orphans from embedded calibration docs; browser perturb-and-observe on the STATIC-TRACE findings once contention allows; a clone-lineage walk for the surfaceUniforms defect.",
+  "files_touched": [
     "reports/consumption-census/2026-08-14-census.md",
     "tools/metrics/consumption-census.mjs",
     "orchestration/status/AUDIT-CONSUMPTION-CENSUS.json"
-  ]
+  ],
+  "files_claimed": []
 }
