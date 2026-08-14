@@ -1,0 +1,429 @@
+{
+  "schema": "elder-souls/dialogue-graph-metrics@1",
+  "generated_by": "tools/dialogue/build-graph.mjs",
+  "nodes": 470,
+  "edges": 1630,
+  "roots": 9,
+  "root_ids_missing": [],
+  "mean_out_degree_nonleaf": 3.9836,
+  "leaf_fraction": 0.2234,
+  "reachable_only_via_another_topic": 0.9809,
+  "max_depth": 7,
+  "median_depth": 2,
+  "unreachable_from_greeting": [
+    "warden-eshi",
+    "the-one-path",
+    "the-blight-storms",
+    "the-ash-cough",
+    "the-xul-teekh",
+    "the-soul-trade",
+    "the-tolls",
+    "the-ninth-column",
+    "the-bond-berth",
+    "the-man-off-the-quay"
+  ],
+  "orphans": [],
+  "orphans_definition": "RI-DLG01 §D: in-degree 0, not a root, not journal-added. 0 by intent; >=1 = fail.",
+  "orphans_npc_advertised": [],
+  "orphans_no_way_in_at_all": [],
+  "orphans_breakdown_note": "orphans_npc_advertised is a BREAKDOWN of `orphans`, not an exemption from it. These topics are reachable in play only because a speaker's own record advertises the word (converse.js topicsFor() -> npc.topics), which is a real fourth door the lint did not model before W1-17 r1 found it — but it is not journal-added, so RI-DLG01 §D counts them as orphans and so does this tool.",
+  "unreachable_infos": 0,
+  "convergence": 0.6191,
+  "quest_topic_fraction": 0.0426,
+  "quest_topics": [
+    "the-dead-pay",
+    "the-heirs-clause",
+    "the-unfinished-survey",
+    "the-man-in-the-water",
+    "the-unlisted-well",
+    "the-under-drain",
+    "the-thinning",
+    "the-cleared-ground",
+    "the-lung-wage",
+    "the-petition",
+    "the-thorn-charter",
+    "the-listening-at-soulrest",
+    "the-removed-name",
+    "the-chain-on-the-wall",
+    "the-allowance",
+    "the-three-things-i-checked-myself",
+    "why-it-is-filling-now",
+    "how-the-count-opens",
+    "whose-count-are-you",
+    "what-does-the-marsh-owe-you"
+  ],
+  "menu_quest_fraction": 0.2,
+  "menu_quests": [
+    "the-unfinished-survey",
+    "the-under-drain",
+    "the-thinning",
+    "the-lung-wage"
+  ],
+  "topics_with_settlement_local_answer": 187,
+  "infos_total": 1276,
+  "mean_infos_per_topic": 2.715,
+  "per_settlement": {
+    "lilmoth": {
+      "answerable": 411,
+      "with_local_answer": 35
+    },
+    "stormhold": {
+      "answerable": 405,
+      "with_local_answer": 22
+    },
+    "helstrom": {
+      "answerable": 402,
+      "with_local_answer": 33
+    },
+    "thorn": {
+      "answerable": 399,
+      "with_local_answer": 21
+    },
+    "soulrest": {
+      "answerable": 403,
+      "with_local_answer": 16
+    },
+    "gideon": {
+      "answerable": 409,
+      "with_local_answer": 53
+    },
+    "archon": {
+      "answerable": 405,
+      "with_local_answer": 19
+    },
+    "blackrose": {
+      "answerable": 403,
+      "with_local_answer": 26
+    },
+    "tidewrack": {
+      "answerable": 395,
+      "with_local_answer": 0
+    }
+  },
+  "errors": [],
+  "visibility_strict_fraction": 0.1056,
+  "visibility_loose_or_better_fraction": 0.1499,
+  "visibility_unflagged_invisible": 1432,
+  "visibility": {
+    "occurrences": 1601,
+    "strict": 169,
+    "loose": 71,
+    "none": 1361,
+    "strict_fraction": 0.1056,
+    "loose_or_better_fraction": 0.1499,
+    "flagged_implied": 0,
+    "unflagged_invisible": 1432,
+    "destinations_with_no_record": 0,
+    "dangling_npc_topics": 16,
+    "dangling_npc_topics_distinct": [
+      "a berth for the bond-wife",
+      "a phial for the blind man",
+      "nine days at anchor",
+      "nineteen years in the first chair",
+      "speaking for people who are not there",
+      "the company man",
+      "the consensus that would not come",
+      "the elders count",
+      "the lease",
+      "the man who came back from the coast",
+      "the track is not cut",
+      "the vats or the people",
+      "the walled quarter",
+      "the widow",
+      "the widow line",
+      "what the cutting leaves"
+    ],
+    "dangling_npc_topics_records": 16,
+    "dangling_npc_topics_detail": [
+      "mainline.json:captain-oreem -> the vats or the people",
+      "mainline.json:clerk-meno -> the lease",
+      "mainline.json:npc-ossei -> the walled quarter",
+      "mainline.json:rootkeeper-under-the-temple -> the company man",
+      "mainline.json:npc-eleen -> a phial for the blind man",
+      "mainline.json:cutter-ashaan-hulei -> what the cutting leaves",
+      "mainline.json:npc-skara-hull-chalk -> nine days at anchor",
+      "mainline.json:npc-ineve-corrano -> nineteen years in the first chair",
+      "mainline.json:npc-ishi-vaal -> a berth for the bond-wife",
+      "mainline.json:npc-sorel-ithan -> the track is not cut",
+      "mainline.json:npc-uneel-vaakh-sister -> the man who came back from the coast",
+      "mainline.json:npc-high-hollow-speaker -> the consensus that would not come",
+      "mainline.json:npc-fourth-day-boatman -> speaking for people who are not there",
+      "mainline.json:npc-ineel-sa -> the widow",
+      "mainline.json:npc-widow-tesla-vor -> the widow line",
+      "mainline.json:npc-river-band-elder -> the elders count"
+    ],
+    "dangling_npc_topics_strict": 100,
+    "dangling_npc_topics_strict_distinct": [
+      "a berth for the bond-wife",
+      "a name for cover",
+      "a phial for the blind man",
+      "how the Count opens",
+      "nine days at anchor",
+      "nineteen years in the first chair",
+      "reading the count",
+      "speaking for people who are not there",
+      "the allowance",
+      "the ash gallery",
+      "the chain on the wall",
+      "the chapter's vote",
+      "the clause",
+      "the cohorts stormhold does not have",
+      "the cold well",
+      "the compact",
+      "the company man",
+      "the consensus that would not come",
+      "the count itself",
+      "the count of forty",
+      "the crypt road",
+      "the cutters' terms",
+      "the cutting yard",
+      "the drowned tally",
+      "the elders count",
+      "the eleven live roots",
+      "the eleven wells",
+      "the empty boxes",
+      "the fourth yard",
+      "the gem shipping",
+      "the hiring list",
+      "the intakes",
+      "the interior's consent",
+      "the keepers' leave",
+      "the lease",
+      "the leave book",
+      "the ledger's terms",
+      "the low chapel",
+      "the man who came back from the coast",
+      "the ninth clause of the Drowned Tally",
+      "the ninth recension",
+      "the opening of the count",
+      "the root channels",
+      "the root gallery",
+      "the rotting quarter",
+      "the salt factor",
+      "the sill",
+      "the skei",
+      "the steward of the count",
+      "the thread is cut",
+      "the three previous severances",
+      "the three things I checked myself",
+      "the track is not cut",
+      "the tree at thorn",
+      "the vats or the people",
+      "the walled quarter",
+      "the widow",
+      "the widow line",
+      "the works",
+      "the writ of works",
+      "what does the marsh owe you",
+      "what people say happened",
+      "what the cutting leaves",
+      "what the wells do now",
+      "whose count are you",
+      "why it is filling now"
+    ],
+    "dangling_npc_topics_strict_records": 52,
+    "dangling_npc_topics_strict_detail": [
+      "mainline.json:undersexton-aveline-rell -> the drowned tally",
+      "mainline.json:undersexton-aveline-rell -> the empty boxes",
+      "mainline.json:undersexton-aveline-rell -> the cold well",
+      "mainline.json:undersexton-aveline-rell -> a name for cover",
+      "mainline.json:undersexton-aveline-rell -> the ninth recension",
+      "mainline.json:undersexton-aveline-rell -> the crypt road",
+      "mainline.json:undersexton-aveline-rell -> the intakes",
+      "mainline.json:undersexton-aveline-rell -> the chapter's vote",
+      "mainline.json:undersexton-aveline-rell -> the works",
+      "mainline.json:undersexton-bel-mourne -> the low chapel",
+      "mainline.json:undersexton-bel-mourne -> the ninth clause of the Drowned Tally",
+      "mainline.json:undersexton-bel-mourne -> the ash gallery",
+      "mainline.json:ledgerer-hosk-vei -> the drowned tally",
+      "mainline.json:ledgerer-hosk-vei -> reading the count",
+      "mainline.json:ledgerer-hosk-vei -> the thread is cut",
+      "mainline.json:ledgerer-hosk-vei -> the three previous severances",
+      "mainline.json:ojal-weeth -> the empty boxes",
+      "mainline.json:ojal-weeth -> the count of forty",
+      "mainline.json:ojal-weeth -> what people say happened",
+      "mainline.json:soulrest-sexton-on-duty -> the low chapel",
+      "mainline.json:soulrest-sexton-on-duty -> the empty boxes",
+      "mainline.json:sexton-ravel-doun -> the chapter's vote",
+      "mainline.json:sexton-ivrenne-mour -> the chapter's vote",
+      "mainline.json:sexton-ivrenne-mour -> the ninth clause of the Drowned Tally",
+      "mainline.json:soulrest-customs-clerk -> the drowned tally",
+      "mainline.json:gideon-court-factor -> the drowned tally",
+      "mainline.json:sedd-ravano -> the drowned tally",
+      "mainline.json:gideon-quay-porter -> the drowned tally",
+      "mainline.json:keeper-teeja-lun -> the cold well",
+      "mainline.json:keeper-teeja-lun -> what the wells do now",
+      "mainline.json:bone-ladder-carter -> the drowned tally",
+      "mainline.json:bone-ladder-carter -> the cold well",
+      "mainline.json:neeja-xul -> the cutting yard",
+      "mainline.json:neeja-xul -> the skei",
+      "mainline.json:neeja-xul -> the cutters' terms",
+      "mainline.json:neeja-xul -> the eleven live roots",
+      "mainline.json:neeja-xul -> the root channels",
+      "mainline.json:blackrose-yard-hands -> the cutting yard",
+      "mainline.json:harbourmaster-cuiro-vaneth -> the gem shipping",
+      "mainline.json:harbourmaster-cuiro-vaneth -> the salt factor",
+      "mainline.json:archon-crane-crew -> the gem shipping",
+      "mainline.json:archon-crane-crew -> the salt factor",
+      "mainline.json:archon-bond-clerk -> the gem shipping",
+      "mainline.json:salt-factor-neloth-vaun -> the salt factor",
+      "mainline.json:salt-factor-neloth-vaun -> the clause",
+      "mainline.json:rootkeeper-ashul-tei -> the root gallery",
+      "mainline.json:rootkeeper-ashul-tei -> the interior's consent",
+      "mainline.json:rootkeeper-ashul-tei -> the eleven wells",
+      "mainline.json:helstrom-gallery-keepers -> the interior's consent",
+      "mainline.json:rootkeeper-sesh-anaat -> the tree at thorn",
+      "mainline.json:rootkeeper-sesh-anaat -> the keepers' leave",
+      "mainline.json:rootkeeper-sesh-anaat -> the leave book",
+      "mainline.json:factor-ruvela-sath -> the ledger's terms",
+      "mainline.json:factor-ruvela-sath -> the compact",
+      "mainline.json:prefect-galvus-arn -> the writ of works",
+      "mainline.json:prefect-galvus-arn -> the cohorts stormhold does not have",
+      "mainline.json:dockmaster-weeja-sen -> the hiring list",
+      "mainline.json:dockmaster-weeja-sen -> the rotting quarter",
+      "mainline.json:lilmoth-rootkeepers -> the rotting quarter",
+      "mainline.json:lilmoth-yard-brothers -> the fourth yard",
+      "mainline.json:lilmoth-yard-brothers -> the cutters' terms",
+      "mainline.json:lilmoth-wharf-cutters -> the fourth yard",
+      "mainline.json:blackwood-company-factor -> the works",
+      "mainline.json:blackwood-company-factor -> the fourth yard",
+      "mainline.json:blackwood-company-camp -> the works",
+      "mainline.json:keeper-ei-vashan -> the ash gallery",
+      "mainline.json:keeper-ei-vashan -> what the wells do now",
+      "mainline.json:gallery-intake-keepers -> the ash gallery",
+      "mainline.json:ixtu-meer -> the steward of the count",
+      "mainline.json:ixtu-meer -> the count itself",
+      "mainline.json:ixtu-meer -> the chain on the wall",
+      "mainline.json:ixtu-meer -> the allowance",
+      "mainline.json:ixtu-meer -> the three things I checked myself",
+      "mainline.json:ixtu-meer -> why it is filling now",
+      "mainline.json:ixtu-meer -> how the Count opens",
+      "mainline.json:ixtu-meer -> the ninth clause of the Drowned Tally",
+      "mainline.json:ixtu-meer -> the sill",
+      "mainline.json:ixtu-meer -> the opening of the count",
+      "mainline.json:ixtu-meer -> whose count are you",
+      "mainline.json:ixtu-meer -> what does the marsh owe you",
+      "mainline.json:npc-sesh-weth -> the intakes",
+      "mainline.json:npc-sexton-ivo-sarn -> the crypt road",
+      "mainline.json:aftermath-province-npcs -> what people say happened",
+      "mainline.json:aftermath-province-npcs -> what the wells do now",
+      "mainline.json:captain-oreem -> the vats or the people",
+      "mainline.json:clerk-meno -> the lease",
+      "mainline.json:npc-ossei -> the walled quarter",
+      "mainline.json:rootkeeper-under-the-temple -> the company man",
+      "mainline.json:npc-eleen -> a phial for the blind man",
+      "mainline.json:cutter-ashaan-hulei -> what the cutting leaves",
+      "mainline.json:npc-skara-hull-chalk -> nine days at anchor",
+      "mainline.json:npc-ineve-corrano -> nineteen years in the first chair",
+      "mainline.json:npc-ishi-vaal -> a berth for the bond-wife",
+      "mainline.json:npc-sorel-ithan -> the track is not cut",
+      "mainline.json:npc-uneel-vaakh-sister -> the man who came back from the coast",
+      "mainline.json:npc-high-hollow-speaker -> the consensus that would not come",
+      "mainline.json:npc-fourth-day-boatman -> speaking for people who are not there",
+      "mainline.json:npc-ineel-sa -> the widow",
+      "mainline.json:npc-widow-tesla-vor -> the widow line",
+      "mainline.json:npc-river-band-elder -> the elders count"
+    ],
+    "npc_topics_entries": 865,
+    "unreachable_from_greeting_count": 10
+  },
+  "unreachable_info_detail": []
+}
+
+---- visibility (W1-DLG-TOPIC-WEB §4B) — 1601 `to` occurrences ----
+  strict  169 (10.6%)   the destination's label is in the answer, whole and contiguous
+  loose   71 more (15.0% cumulative)   every content word appears, scattered
+  none    1361   the player is never shown the word
+  flagged `implied`: 0    UNFLAGGED INVISIBLE (A1b, no budget): 1432
+
+---- lint: dangling npc.topics (A7b) ----
+  strict    100 of 865 entries are not, byte for byte, a topic id
+            — 66 distinct string(s) over 52 record(s). This is the plan's figure.
+  effective 16 entries do not resolve through the SHIPPING reader either
+            (topicsFor -> infoFor -> topicIndex.get(topicKey(id)), which folds slug against prose)
+            — 16 distinct over 16 record(s). topicsFor() drops each silently.
+  Both are gated at 0. The lists, not the counts:
+    -- effective (no topic answers these at all):
+       a berth for the bond-wife
+       a phial for the blind man
+       nine days at anchor
+       nineteen years in the first chair
+       speaking for people who are not there
+       the company man
+       the consensus that would not come
+       the elders count
+       the lease
+       the man who came back from the coast
+       the track is not cut
+       the vats or the people
+       the walled quarter
+       the widow
+       the widow line
+       what the cutting leaves
+    -- strict-only (prose spelling of a topic that DOES exist; normalise to its slug):
+       a name for cover
+       how the Count opens
+       reading the count
+       the allowance
+       the ash gallery
+       the chain on the wall
+       the chapter's vote
+       the clause
+       the cohorts stormhold does not have
+       the cold well
+       the compact
+       the count itself
+       the count of forty
+       the crypt road
+       the cutters' terms
+       the cutting yard
+       the drowned tally
+       the eleven live roots
+       the eleven wells
+       the empty boxes
+       the fourth yard
+       the gem shipping
+       the hiring list
+       the intakes
+       the interior's consent
+       the keepers' leave
+       the leave book
+       the ledger's terms
+       the low chapel
+       the ninth clause of the Drowned Tally
+       the ninth recension
+       the opening of the count
+       the root channels
+       the root gallery
+       the rotting quarter
+       the salt factor
+       the sill
+       the skei
+       the steward of the count
+       the thread is cut
+       the three previous severances
+       the three things I checked myself
+       the tree at thorn
+       the works
+       the writ of works
+       what does the marsh owe you
+       what people say happened
+       what the wells do now
+       whose count are you
+       why it is filling now
+
+---- lint: unreachable_from_greeting (A5c) ----
+  10 topic(s) reachable from no greeting node by any route. The list, not the count:
+    warden-eshi
+    the-one-path
+    the-blight-storms
+    the-ash-cough
+    the-xul-teekh
+    the-soul-trade
+    the-tolls
+    the-ninth-column
+    the-bond-berth
+    the-man-off-the-quay
+
+LINT FAIL: 100 strict / 16 effective dangling npc.topics entries (A7b gate is 0 on both).
+EXIT=1
