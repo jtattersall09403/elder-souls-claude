@@ -1,0 +1,36 @@
+
+== SHIPPED at HEAD
+   fewest taps        journal=5  sheet=4  spells=6  map=3  wait=7
+   forward tap-walk   world -> inventory -> map -> sheet -> journal -> spells -> wait
+   ...at tap          journal=5  sheet=4  spells=6  map=3  wait=7
+   MISSED by tapping forward only: nothing
+   drawer left over the world by: nothing
+   a stranded drawer puts 5 extra controls over the world (0 arc centres stolen)
+
+== NULL CONTROL — a drawer that NEVER closes
+   fewest taps        journal=5  sheet=4  spells=6  map=3  wait=7
+   forward tap-walk   world -> inventory -> map -> sheet -> journal -> spells -> wait
+   ...at tap          journal=5  sheet=4  spells=6  map=3  wait=7
+   MISSED by tapping forward only: nothing
+   drawer left over the world by: two_hand from world, spell_cycle from world, swap_right from world, menu from inventory
+   a stranded drawer puts 5 extra controls over the world (0 arc centres stolen)
+
+== CONTROL — r1: the drawer ALWAYS closes
+   fewest taps        journal=8  sheet=6  spells=10  map=4  wait=12
+   forward tap-walk   world -> inventory -> map -> sheet -> journal -> spells -> wait
+   ...at tap          journal=8  sheet=6  spells=10  map=4  wait=12
+   MISSED by tapping forward only: nothing
+   drawer left over the world by: nothing
+   a stranded drawer puts 5 extra controls over the world (0 arc centres stolen)
+
+ok   both controls go red, and for DIFFERENT reasons:
+     never-close   route 3 taps to the map — the SAME as HEAD, so a tap-count guard waves it through — and strands the drawer over the world after 4 of 4 world-side petals, putting 5 extra controls over the fight
+     always-close  drawer hygiene clean, and the map is 4 taps with the journal at 8
+
+ok   the map is at most 3 taps from a cold start (r1: 4)
+ok   every screen is reachable by tapping FORWARD only — no reversal on an unlabelled pictogram
+ok   the journal is reachable, and cheaper than r1's 8
+ok   no petal leaves the drawer standing over the world
+ok   …and the fight-side petals behave exactly as r1 did
+
+wrote reports/w1-map-defects/touch-route.json

@@ -1,0 +1,12 @@
+  head       drawn 42846/42846 in view (revealed 0) · squares 0 · whole=true unearned=false
+[harness]   deletefix: clone at /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p21983-w1-map-defects-deletefix-2026-08-14T154222998Z-70d237 — 825 linked, new on disk 0.1 MB
+  deletefix  drawn 0/42846 in view (revealed 0) · squares 0 · whole=false unearned=false
+[harness]   markers: clone at /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p21983-w1-map-defects-markers-2026-08-14T154439730Z-c4bfce — 825 linked, new on disk 0.1 MB
+  markers    drawn 42846/42846 in view (revealed 0) · squares 34 · whole=true unearned=true
+
+ok   head draws the whole geography
+ok   head draws no unearned square
+ok   DELETE-THE-FIX goes red: the fog gate hides the province again
+ok   NULL CONTROL goes red: revealing every marker is caught
+ok   …and the control is not inert: it differs from head
+ok   …and the delete-the-fix arm is not inert: it differs from head

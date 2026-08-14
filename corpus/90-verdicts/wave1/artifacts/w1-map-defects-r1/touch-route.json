@@ -1,0 +1,156 @@
+{
+ "probe": "touch-route",
+ "at": "2026-08-14T15:43:38.619Z",
+ "viewport": {
+  "w": 844,
+  "h": 390
+ },
+ "insets": {
+  "top": 0,
+  "right": 44,
+  "bottom": 21,
+  "left": 44
+ },
+ "arms": {
+  "head": {
+   "label": "SHIPPED at HEAD",
+   "fewest_taps": {
+    "world": 1,
+    "inventory": 2,
+    "map": 3,
+    "sheet": 4,
+    "journal": 5,
+    "spells": 6,
+    "wait": 7
+   },
+   "forward_tap_walk": {
+    "visited": [
+     "inventory",
+     "map",
+     "sheet",
+     "journal",
+     "spells",
+     "wait"
+    ],
+    "cost": {
+     "inventory": 2,
+     "map": 3,
+     "sheet": 4,
+     "journal": 5,
+     "spells": 6,
+     "wait": 7
+    },
+    "taps": 8
+   },
+   "hygiene": {
+    "leaves_drawer_over_the_world": [],
+    "extra_controls_over_the_world": 5,
+    "arc_centres_stolen_by_a_petal": 0
+   },
+   "missed_by_forward_tapping": []
+  },
+  "never-close": {
+   "label": "NULL CONTROL — a drawer that NEVER closes",
+   "fewest_taps": {
+    "world": 1,
+    "inventory": 2,
+    "map": 3,
+    "sheet": 4,
+    "journal": 5,
+    "spells": 6,
+    "wait": 7
+   },
+   "forward_tap_walk": {
+    "visited": [
+     "inventory",
+     "map",
+     "sheet",
+     "journal",
+     "spells",
+     "wait"
+    ],
+    "cost": {
+     "inventory": 2,
+     "map": 3,
+     "sheet": 4,
+     "journal": 5,
+     "spells": 6,
+     "wait": 7
+    },
+    "taps": 8
+   },
+   "hygiene": {
+    "leaves_drawer_over_the_world": [
+     "two_hand from world",
+     "spell_cycle from world",
+     "swap_right from world",
+     "menu from inventory"
+    ],
+    "extra_controls_over_the_world": 5,
+    "arc_centres_stolen_by_a_petal": 0
+   },
+   "missed_by_forward_tapping": []
+  },
+  "always-close": {
+   "label": "CONTROL — r1: the drawer ALWAYS closes",
+   "fewest_taps": {
+    "world": 1,
+    "inventory": 2,
+    "map": 4,
+    "sheet": 6,
+    "journal": 8,
+    "spells": 10,
+    "wait": 12
+   },
+   "forward_tap_walk": {
+    "visited": [
+     "inventory",
+     "map",
+     "sheet",
+     "journal",
+     "spells",
+     "wait"
+    ],
+    "cost": {
+     "inventory": 2,
+     "map": 4,
+     "sheet": 6,
+     "journal": 8,
+     "spells": 10,
+     "wait": 12
+    },
+    "taps": 14
+   },
+   "hygiene": {
+    "leaves_drawer_over_the_world": [],
+    "extra_controls_over_the_world": 5,
+    "arc_centres_stolen_by_a_petal": 0
+   },
+   "missed_by_forward_tapping": []
+  }
+ },
+ "commit": "6881b6a4",
+ "checks": [
+  {
+   "what": "the map is at most 3 taps from a cold start (r1: 4)",
+   "ok": true
+  },
+  {
+   "what": "every screen is reachable by tapping FORWARD only — no reversal on an unlabelled pictogram",
+   "ok": true
+  },
+  {
+   "what": "the journal is reachable, and cheaper than r1's 8",
+   "ok": true
+  },
+  {
+   "what": "no petal leaves the drawer standing over the world",
+   "ok": true
+  },
+  {
+   "what": "…and the fight-side petals behave exactly as r1 did",
+   "ok": true
+  }
+ ],
+ "pass": true
+}
