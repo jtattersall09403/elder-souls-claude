@@ -75,6 +75,32 @@ async function shot(h, name) {
   }
 }
 
+// WAIT FOR THE GAME TO ACTUALLY TICK, not for a wall clock.
+//
+// This tool's first three runs pressed a key, slept 320 ms and read the mode, and reported the map
+// unreachable. The mode HAD not moved, and the reason was the instrument: on this box, headless
+// Chromium on a software rasteriser services `requestAnimationFrame` about once every ten seconds
+// once a screen is up — measured with an independent rAF chain installed by the probe, so it is
+// the browser and not the game (`loop.running` stayed true, nothing threw, and `uiPausedFrames`
+// froze in step with the rAF counter). A fixed sleep therefore measures the rig's frame rate and
+// calls it a navigation defect.
+//
+// So: press, then wait for the loop to tick at least twice, up to a generous ceiling. `rafTicks`
+// is the loop's own counter. A press that a tick did not consume is reported as `ticked: false`
+// rather than silently counted as a refusal.
+async function settle(h, { minTicks = 2, timeoutMs = 30000 } = {}) {
+  const before = await h.page.evaluate(() => window.__ENGINE.loop.stats.rafTicks).catch(() => null);
+  if (before === null) return { ticked: false, waited_ms: 0 };
+  const t0 = Date.now();
+  while (Date.now() - t0 < timeoutMs) {
+    await h.page.waitForTimeout(150);
+    const now = await h.page.evaluate(() => window.__ENGINE.loop.stats.rafTicks).catch(() => null);
+    if (now === null) return { ticked: false, waited_ms: Date.now() - t0 };
+    if (now - before >= minTicks) return { ticked: true, waited_ms: Date.now() - t0, ticks: now - before };
+  }
+  return { ticked: false, waited_ms: Date.now() - t0 };
+}
+
 async function bootPlay(h, query = '') {
   await h.page.goto(h.url.replace(/\?.*$/, '') + '?mode=play' + query, { waitUntil: 'load' });
   await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, null, { timeout: 120000 });
@@ -98,7 +124,7 @@ async function desktop() {
   try {
     await bootPlay(h);
     const push = async (label, key) => {
-      if (key) { await h.page.keyboard.press(key); await h.page.waitForTimeout(320); }
+      if (key) { await h.page.keyboard.press(key); await settle(h); }
       const st = await h.page.evaluate(READ).catch((e) => ({ read_failed: String(e && e.message || e).slice(0, 160) }));
       const file = await shot(h, `desktop-${String(leg.steps.length).padStart(2, '0')}-${label}`);
       leg.steps.push({ label, key: key || null, ...st, shot: file });
@@ -107,12 +133,12 @@ async function desktop() {
     };
     await push('boot', null);
     await push('menu-key-M', 'KeyM');
-    for (let i = 1; i <= 8; i++) await push(`swap_right-${i}`, 'Digit3');
-    // and the other way round the ring, in case forward is the broken direction
-    await push('close', 'Escape');
-    await push('menu-key-M-again', 'KeyM');
-    for (let i = 1; i <= 8; i++) await push(`swap_left-${i}`, 'Digit4');
+    for (let i = 1; i <= 6; i++) {
+      const st = await push(`swap_right-${i}`, 'Digit3');
+      if (st.mode === 'map') break;
+    }
     leg.reached_map = leg.steps.some((s) => s.mode === 'map');
+    leg.presses_to_map = leg.steps.findIndex((s) => s.mode === 'map');
   } finally {
     leg.console_errors = h.errors.slice(0, 6);
     await h.close();
@@ -155,8 +181,8 @@ async function phone() {
       const c = (l && l.controls || []).find((x) => x.action === action);
       if (!c) return { tapped: false, reason: `no '${action}' control on the glass`, controls: (l && l.controls || []).map((x) => x.action) };
       await h.page.touchscreen.tap(c.x, c.y);
-      await h.page.waitForTimeout(320);
-      return { tapped: true, at: [Math.round(c.x), Math.round(c.y)] };
+      const s = await settle(h);
+      return { tapped: true, at: [Math.round(c.x), Math.round(c.y)], ...s };
     };
     const push = async (label, action) => {
       let t = { tapped: null };
@@ -174,9 +200,10 @@ async function phone() {
     await push('first-touch', null);
     await push('drawer', '__drawer');
     await push('menu', 'menu');
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 4; i++) {
       await push(`drawer-${i}`, '__drawer');
-      await push(`swap_right-${i}`, 'swap_right');
+      const st = await push(`swap_right-${i}`, 'swap_right');
+      if (st.mode === 'map') break;
     }
     leg.reached_map = leg.steps.some((s) => s.mode === 'map');
   } finally {

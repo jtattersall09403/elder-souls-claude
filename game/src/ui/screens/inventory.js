@@ -98,7 +98,13 @@ export function drawInventory(S, m) {
   hint(S, 'inventory.hint', ix, iy + ih + 4 * s, iw,
     m.inCombat
       ? 'The fight has not stopped. Equipping takes time you are standing still for.'
-      : 'Left and right change column. Up and down move. Confirm to equip, read or use.',
+      // W1-MAP-DEFECTS. The second sentence is the owner's defect, in words: they could not open
+      // the map, because nothing in the game had ever mentioned that the pages turn or that a map
+      // is one of them. It names the ACTION and never the key (RI-JRN03 DS5) — `swap` is one of
+      // the sixteen closed action names, and it is what the pad's shoulder, the mouse wheel and
+      // the touch drawer's arrows all are.
+      : 'Left and right change column. Up and down move. Confirm to equip, read or use. '
+        + 'Swap turns the page: the map, the journal, your case, your spells.',
     alpha);
 }
 
