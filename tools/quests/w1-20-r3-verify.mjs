@@ -210,8 +210,21 @@ if (!args['static-only'] && !args.staticOnly) {
   }
   const REP_HOME = Object.fromEntries(Object.entries(REPS).map(([k, v]) => [k, where.get(v) || null]));
 
+  // The ladder, as a plan the page can execute. `QuestEngine.offers()` does not publish a
+  // `faction` field, so the mapping is done node-side off the book itself — which also keeps the
+  // plan honest: it is every faction quest in `game/data/quests/**`, in rank order, not whatever
+  // a harness census happened to return.
+  const PLAN = {};
+  for (const fid of LINES) {
+    PLAN[fid] = allQuests
+      .filter((q) => (q.faction || (q.rank_gate && q.rank_gate.faction)) === fid)
+      .map((q) => ({ id: q.id, min_rank: (q.rank_gate && q.rank_gate.min_rank) || 0, giver: (q.giver && q.giver.npc_id) || null,
+        home: (q.giver && where.get(q.giver.npc_id)) || null }))
+      .sort((a, b) => a.min_rank - b.min_rank);
+  }
+
   const game = await launchGame(args, { usage: USAGE });
-  const live = await game.page.evaluate(async ({ LINES, REPS, REP_HOME }) => {
+  const live = await game.page.evaluate(async ({ LINES, REPS, REP_HOME, PLAN }) => {
     const H = window.__HARNESS;
     const out = { checks: [], notes: [] };
     const push = (id, detail) => out.checks.push({ id, ...detail });
@@ -256,16 +269,18 @@ if (!args['static-only'] && !args.staticOnly) {
       maxOut(fid);
       const start = derived(fid).rank;
       const played = [];
-      const book = H.questBookIds ? H.questBookIds() : null;
+      const done = new Set();
       for (let round = 0; round < 10; round++) {
         const before = derived(fid).rank;
-        const offers = H.questOffers();
-        const list = (offers.quests || offers || []).filter ? (offers.quests || offers) : [];
-        // Take every faction quest this rank can reach that is not yet done.
-        const candidates = (Array.isArray(list) ? list : []).filter((o) => o && o.faction === fid);
+        // Everything this rank is allowed to take. `open()` still applies every other term —
+        // the rank gate, the reputation gate, the topic, the giver's disposition — and refuses
+        // in its own words if one is unmet; nothing here bypasses a gate.
+        const candidates = (PLAN[fid] || []).filter((q) => !done.has(q.id) && q.min_rank <= before);
         let acted = 0;
         for (const o of candidates) {
           const qid = o.id;
+          done.add(qid);
+          if (o.home) { try { H.populateSettlement(o.home); } catch { /* */ } }
           try { H.questPrepareOffer(qid); } catch { /* */ }
           try { if (o.giver) H.setDisposition(o.giver, 100); } catch { /* */ }
           let opened = null;
@@ -374,7 +389,7 @@ if (!args['static-only'] && !args.staticOnly) {
     });
 
     return out;
-  }, { LINES, REPS, REP_HOME });
+  }, { LINES, REPS, REP_HOME, PLAN });
   await game.close();
   for (const c of live.checks) report.checks.push(c);
   for (const n of live.notes) report.notes.push(n);

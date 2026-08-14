@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `43ca8121`: 982 tools, 157 reference
-items, 200 pieces in flight.
+so it cannot drift. Generated at `a2b017cc`: 985 tools, 157 reference
+items, 199 pieces in flight.
 
-Its purpose is to stop 200+ concurrent agents each paying separately to discover the
+Its purpose is to stop 199+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -105,7 +105,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 42
+### `tools/` — 43
 
 - `tools/bank.mjs` — the orchestrator's commit, with the attribution filled in.
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
@@ -113,6 +113,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
 - `tools/check-append-only.mjs` — the shared record may be added to, never rewritten.
 - `tools/check-building-fits-room.mjs` — A BUILDING'S OUTSIDE MUST CONTAIN ITS INSIDE.
+- `tools/check-citations.mjs` — the documents that direct work must not hold false beliefs about what this repo contains.
 - `tools/check-content.mjs` — Hand-authored content must not vanish when a generator re-runs.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
 - `tools/check-dialogue-topics.mjs` — A duplicate topic id across game/data/dialogue/topics/**/*.json is a defect that nothing currently detects.
@@ -387,6 +388,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/w1-25-production-populations.mjs` — **no header comment**
 - `tools/experience/w1-25-r2-active-fixture.mjs` — RULES #8: A STILL TARGET HIDES EVERY STEERING DEFECT.
 - `tools/experience/w1-25-r2-chart.mjs` — THE PICTURE FOR W1-25 ROUND 2: the verdict cascade, before and after.
+
+### `tools/forensics/` — 2
+
+- `tools/forensics/partial-revert-sweep.mjs` — the CONTENT-level analogue of the HAZARDS §2f signature.
+- `tools/forensics/wrapper-orphans.mjs` — AQ-W1-20-B, answered and kept answerable.
 
 ### `tools/gamepad/` — 2
 
@@ -1395,18 +1401,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
+| `W1-THORN-PLATES` | in_progress | CHUNK 2 BUILDS. Full brief: reports/thorn-plates/2026-08-14-thorn-plates.md §6. In short — | `orchestration/status/W1-THORN-PLATES.json` `reports/thorn-plates/2026-08-14-thorn-plates.md` |
+| `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
 | `AUDIT-CONSUMPTION-CENSUS` | ? | enumerate game/data field families, grep game/src for readers, classify | — |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `AUDIT-CITATION-STALENESS` | ? | Read ARBITRATION.md S-rulings, HAZARDS.md, OWNER-DIRECTIVES; build ruling->document revers | `orchestration/status/AUDIT-CITATION-STALENESS.json` |
-| `W1-THORN-PLATES` | in_progress | WIP — capture of the real opening path is running; report being written. | `orchestration/status/W1-THORN-PLATES.json` `reports/thorn-plates/silhouette-census.json` |
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) FIRST AND MOST IMPORTANT — demonstrate CONSUMPTION of t | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/w1-map-defects-r2/` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
-| `W1-WATER-LANES` | starting | Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis. | `orchestration/status/W1-WATER-LANES.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
-| `plan-review2-w1-dlg-topic-web` | in-progress | read the bar, re-measure round 1's figures at HEAD, attack the null control / S51 / the se | `orchestration/status/plan-review2-w1-dlg-topic-web.json` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
-| `RI-VIS06-PROTOCOL-A` | running | in progress | `orchestration/status/RI-VIS06-PROTOCOL-A.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |

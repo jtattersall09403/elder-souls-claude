@@ -73,7 +73,7 @@ const g = await launchGame({ entry: 'game/index.html', width: 480, height: 270 }
 await g.h('ready');
 await g.h('stepFrames', STEPS);
 
-const report = await g.page.evaluate(async ({ selfcheck }) => {
+const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
   const VF = await import('./src/render/visual-foundation.js');
   const R = window.__ENGINE.renderer;
   const HOOK_SURFACE = /uDetailNormal|vEsSurfaceWorldY/;

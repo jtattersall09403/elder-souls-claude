@@ -1,0 +1,1371 @@
+{
+ "tool": "tools/harness/opening-capture.mjs",
+ "tag": "hw-openingframe3-opening",
+ "when": "2026-08-14T16:11:33.225Z",
+ "start": "shipping",
+ "seconds": 10,
+ "measures": "title -> New -> barge-hold -> writ-house -> out of the door into thorn",
+ "hardware_requested": true,
+ "renderer_string": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+ "software_renderer": false,
+ "viewports": [
+  {
+   "id": "desktop",
+   "w": 1280,
+   "h": 720,
+   "opening": {
+    "start": "shipping",
+    "opening": {
+     "settlement": "thorn",
+     "interiors": [
+      "barge-hold",
+      "writ-house"
+     ],
+     "ends_in": "writ-house",
+     "evidence": "reports/spawn-truth/2026-08-14-spawn-truth.md"
+    },
+    "creation": {
+     "stages": [
+      {
+       "stage": "title",
+       "interior": null,
+       "settlement": "lilmoth",
+       "pos": [
+        2766.5,
+        2.68,
+        5011
+       ],
+       "yaw": 180,
+       "cam_yaw": 0
+      },
+      {
+       "stage": "barge-hold",
+       "interior": "barge-hold",
+       "settlement": "lilmoth",
+       "pos": [
+        0.3,
+        0,
+        -1.2
+       ],
+       "yaw": 329,
+       "cam_yaw": 351
+      },
+      {
+       "stage": "writ-house-done",
+       "interior": "writ-house",
+       "settlement": "lilmoth",
+       "pos": [
+        1.9,
+        0,
+        0.3
+       ],
+       "yaw": 343.4,
+       "cam_yaw": 343.4
+      }
+     ],
+     "exhausted_guard": false,
+     "interior": "writ-house",
+     "settlement": "lilmoth",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "yaw": 343.4,
+     "cam_yaw": 343.4
+    },
+    "exit": {
+     "before": {
+      "yaw": 343.4,
+      "cam_yaw": 343.4
+     },
+     "left": {
+      "left": true,
+      "interior": "writ-house",
+      "pos": [
+       3808.599,
+       0,
+       909.355
+      ],
+      "yaw_deg": 69.9992694308213,
+      "yaw_source": "door_to_doorstep",
+      "yaw_refined": false,
+      "yaw_geometry": {
+       "yaw_deg": 69.9992694308213,
+       "refined": false,
+       "reason": "proposal_clear",
+       "clear_m": 3,
+       "occluded": 0
+      }
+     },
+     "after": {
+      "interior": null,
+      "settlement": "thorn",
+      "pos": [
+       3808.6,
+       13.28,
+       909.36
+      ],
+      "yaw": 70,
+      "cam_yaw": 70
+     }
+    },
+    "interior": null,
+    "settlement": "thorn",
+    "pos": [
+     3808.6,
+     13.28,
+     909.36
+    ],
+    "yaw": 70,
+    "cam_yaw": 70
+   },
+   "frames": [
+    {
+     "file": "hw-openingframe3-opening-desktop-000-title.png",
+     "label": "title",
+     "settlement": "lilmoth",
+     "interior": null,
+     "pos": [
+      2766.5,
+      2.68,
+      5011
+     ],
+     "facing_yaw_deg": 180,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 3.993,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "title"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-001-barge-hold.png",
+     "label": "barge-hold",
+     "settlement": "lilmoth",
+     "interior": "barge-hold",
+     "pos": [
+      0.3,
+      0,
+      -1.2
+     ],
+     "facing_yaw_deg": 329,
+     "camera_yaw_deg": 351,
+     "clearance_m": 6.25,
+     "arm_m": 4.046,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "barge-hold"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-002-writ-house-done.png",
+     "label": "writ-house-done",
+     "settlement": "lilmoth",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 343.4,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-003-handback-orbit-000.png",
+     "label": "handback-orbit-000",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 0,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-004-handback-orbit-045.png",
+     "label": "handback-orbit-045",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 45,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-005-handback-orbit-090.png",
+     "label": "handback-orbit-090",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 90,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-006-handback-orbit-135.png",
+     "label": "handback-orbit-135",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 135,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-007-handback-orbit-180.png",
+     "label": "handback-orbit-180",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 180,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-008-handback-orbit-225.png",
+     "label": "handback-orbit-225",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 225,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-009-handback-orbit-270.png",
+     "label": "handback-orbit-270",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 270,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-010-handback-orbit-315.png",
+     "label": "handback-orbit-315",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 315,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-011-handback-gameplay-camera.png",
+     "label": "handback-gameplay-camera",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 343.4,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-012-exit-orbit-000.png",
+     "label": "exit-orbit-000",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 0
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-013-exit-orbit-045.png",
+     "label": "exit-orbit-045",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 45
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-014-exit-orbit-090.png",
+     "label": "exit-orbit-090",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 90
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-015-exit-orbit-135.png",
+     "label": "exit-orbit-135",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 135
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-016-exit-orbit-180.png",
+     "label": "exit-orbit-180",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 180
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-017-exit-orbit-225.png",
+     "label": "exit-orbit-225",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 225
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-018-exit-orbit-270.png",
+     "label": "exit-orbit-270",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 270
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-019-exit-orbit-315.png",
+     "label": "exit-orbit-315",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 315
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-020-exit-gameplay-camera.png",
+     "label": "exit-gameplay-camera",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 0.461,
+     "char_opacity": 0,
+     "arm_guard": true
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-021-walk-t01s.png",
+     "label": "walk-t01s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3811.61,
+      13.28,
+      910.45
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 0.853,
+     "char_opacity": 0,
+     "arm_guard": false,
+     "t_s": 1
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-022-walk-t02s.png",
+     "label": "walk-t02s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3814.61,
+      13.28,
+      911.54
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 2.803,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 2
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-023-walk-t03s.png",
+     "label": "walk-t03s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3817.62,
+      13.28,
+      912.64
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 3
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-024-walk-t04s.png",
+     "label": "walk-t04s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3820.63,
+      13.28,
+      913.73
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 4
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-025-walk-t05s.png",
+     "label": "walk-t05s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3823.63,
+      13.28,
+      914.83
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 5
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-026-walk-t06s.png",
+     "label": "walk-t06s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3826.64,
+      13.28,
+      915.92
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 6
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-027-walk-t07s.png",
+     "label": "walk-t07s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3829.65,
+      13.28,
+      917.02
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 7
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-028-walk-t08s.png",
+     "label": "walk-t08s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3832.66,
+      13.28,
+      918.11
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 8
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-029-walk-t09s.png",
+     "label": "walk-t09s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3835.66,
+      13.28,
+      919.21
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 9
+    },
+    {
+     "file": "hw-openingframe3-opening-desktop-030-walk-t10s.png",
+     "label": "walk-t10s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3838.67,
+      13.28,
+      920.3
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 10
+    }
+   ]
+  },
+  {
+   "id": "phone",
+   "w": 390,
+   "h": 844,
+   "opening": {
+    "start": "shipping",
+    "opening": {
+     "settlement": "thorn",
+     "interiors": [
+      "barge-hold",
+      "writ-house"
+     ],
+     "ends_in": "writ-house",
+     "evidence": "reports/spawn-truth/2026-08-14-spawn-truth.md"
+    },
+    "creation": {
+     "stages": [
+      {
+       "stage": "title",
+       "interior": null,
+       "settlement": "lilmoth",
+       "pos": [
+        2766.5,
+        2.68,
+        5011
+       ],
+       "yaw": 180,
+       "cam_yaw": 0
+      },
+      {
+       "stage": "barge-hold",
+       "interior": "barge-hold",
+       "settlement": "lilmoth",
+       "pos": [
+        0.3,
+        0,
+        -1.2
+       ],
+       "yaw": 329,
+       "cam_yaw": 351
+      },
+      {
+       "stage": "writ-house-done",
+       "interior": "writ-house",
+       "settlement": "lilmoth",
+       "pos": [
+        1.9,
+        0,
+        0.3
+       ],
+       "yaw": 343.4,
+       "cam_yaw": 343.4
+      }
+     ],
+     "exhausted_guard": false,
+     "interior": "writ-house",
+     "settlement": "lilmoth",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "yaw": 343.4,
+     "cam_yaw": 343.4
+    },
+    "exit": {
+     "before": {
+      "yaw": 343.4,
+      "cam_yaw": 343.4
+     },
+     "left": {
+      "left": true,
+      "interior": "writ-house",
+      "pos": [
+       3808.599,
+       0,
+       909.355
+      ],
+      "yaw_deg": 69.9992694308213,
+      "yaw_source": "door_to_doorstep",
+      "yaw_refined": false,
+      "yaw_geometry": {
+       "yaw_deg": 69.9992694308213,
+       "refined": false,
+       "reason": "proposal_clear",
+       "clear_m": 3,
+       "occluded": 0
+      }
+     },
+     "after": {
+      "interior": null,
+      "settlement": "thorn",
+      "pos": [
+       3808.6,
+       13.28,
+       909.36
+      ],
+      "yaw": 70,
+      "cam_yaw": 70
+     }
+    },
+    "interior": null,
+    "settlement": "thorn",
+    "pos": [
+     3808.6,
+     13.28,
+     909.36
+    ],
+    "yaw": 70,
+    "cam_yaw": 70
+   },
+   "frames": [
+    {
+     "file": "hw-openingframe3-opening-phone-000-title.png",
+     "label": "title",
+     "settlement": "lilmoth",
+     "interior": null,
+     "pos": [
+      2766.5,
+      2.68,
+      5011
+     ],
+     "facing_yaw_deg": 180,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 3.993,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "title"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-001-barge-hold.png",
+     "label": "barge-hold",
+     "settlement": "lilmoth",
+     "interior": "barge-hold",
+     "pos": [
+      0.3,
+      0,
+      -1.2
+     ],
+     "facing_yaw_deg": 329,
+     "camera_yaw_deg": 351,
+     "clearance_m": 6.25,
+     "arm_m": 4.046,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "barge-hold"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-002-writ-house-done.png",
+     "label": "writ-house-done",
+     "settlement": "lilmoth",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 343.4,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-003-handback-orbit-000.png",
+     "label": "handback-orbit-000",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 0,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-004-handback-orbit-045.png",
+     "label": "handback-orbit-045",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 45,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-005-handback-orbit-090.png",
+     "label": "handback-orbit-090",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 90,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-006-handback-orbit-135.png",
+     "label": "handback-orbit-135",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 135,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-007-handback-orbit-180.png",
+     "label": "handback-orbit-180",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 180,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-008-handback-orbit-225.png",
+     "label": "handback-orbit-225",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 225,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-009-handback-orbit-270.png",
+     "label": "handback-orbit-270",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 270,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-010-handback-orbit-315.png",
+     "label": "handback-orbit-315",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "arm_m": 4.276,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "orbit_yaw_deg": 315,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-011-handback-gameplay-camera.png",
+     "label": "handback-gameplay-camera",
+     "settlement": "thorn",
+     "interior": "writ-house",
+     "pos": [
+      1.9,
+      0,
+      0.3
+     ],
+     "facing_yaw_deg": 343.4,
+     "camera_yaw_deg": 343.4,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "stage": "writ-house-done"
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-012-exit-orbit-000.png",
+     "label": "exit-orbit-000",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 0,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 0
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-013-exit-orbit-045.png",
+     "label": "exit-orbit-045",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 45,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 45
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-014-exit-orbit-090.png",
+     "label": "exit-orbit-090",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 90,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 90
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-015-exit-orbit-135.png",
+     "label": "exit-orbit-135",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 135,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 135
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-016-exit-orbit-180.png",
+     "label": "exit-orbit-180",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 180,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 180
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-017-exit-orbit-225.png",
+     "label": "exit-orbit-225",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 225,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 225
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-018-exit-orbit-270.png",
+     "label": "exit-orbit-270",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 270,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 270
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-019-exit-orbit-315.png",
+     "label": "exit-orbit-315",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 315,
+     "clearance_m": 12,
+     "arm_m": 5.652,
+     "char_opacity": 1,
+     "arm_guard": true,
+     "orbit_yaw_deg": 315
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-020-exit-gameplay-camera.png",
+     "label": "exit-gameplay-camera",
+     "settlement": "thorn",
+     "interior": null,
+     "pos": [
+      3808.6,
+      13.28,
+      909.36
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 0.461,
+     "char_opacity": 0,
+     "arm_guard": true
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-021-walk-t01s.png",
+     "label": "walk-t01s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3811.61,
+      13.28,
+      910.45
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 0.853,
+     "char_opacity": 0,
+     "arm_guard": false,
+     "t_s": 1
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-022-walk-t02s.png",
+     "label": "walk-t02s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3814.61,
+      13.28,
+      911.54
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 2.803,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 2
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-023-walk-t03s.png",
+     "label": "walk-t03s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3817.62,
+      13.28,
+      912.64
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 3
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-024-walk-t04s.png",
+     "label": "walk-t04s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3820.63,
+      13.28,
+      913.73
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 4
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-025-walk-t05s.png",
+     "label": "walk-t05s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3823.63,
+      13.28,
+      914.83
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 5
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-026-walk-t06s.png",
+     "label": "walk-t06s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3826.64,
+      13.28,
+      915.92
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 6
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-027-walk-t07s.png",
+     "label": "walk-t07s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3829.65,
+      13.28,
+      917.02
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 7
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-028-walk-t08s.png",
+     "label": "walk-t08s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3832.66,
+      13.28,
+      918.11
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 8
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-029-walk-t09s.png",
+     "label": "walk-t09s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3835.66,
+      13.28,
+      919.21
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 9
+    },
+    {
+     "file": "hw-openingframe3-opening-phone-030-walk-t10s.png",
+     "label": "walk-t10s",
+     "settlement": null,
+     "interior": null,
+     "pos": [
+      3838.67,
+      13.28,
+      920.3
+     ],
+     "facing_yaw_deg": 70,
+     "camera_yaw_deg": 70,
+     "clearance_m": 12,
+     "arm_m": 4.019,
+     "char_opacity": 1,
+     "arm_guard": false,
+     "t_s": 10
+    }
+   ]
+  }
+ ]
+}

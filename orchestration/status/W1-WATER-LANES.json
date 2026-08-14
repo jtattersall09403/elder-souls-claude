@@ -1,18 +1,23 @@
 {
   "task_id": "W1-WATER-LANES",
-  "title": "Axis-aligned water lanes (job 1) + height-fog re-take at HEAD (job 2)",
-  "state": "starting",
-  "started": "2026-08-14",
+  "title": "Job 1: the axis-aligned marsh lanes in render/water.js. Job 2: height-fog re-take at HEAD (measurement only, no source edit).",
+  "state": "measuring",
+  "commit_at_start": "52d66578",
   "could_not_do": [
-    "Nothing yet — task just started. This list is written FIRST and updated as gaps appear."
+    "PROCEEDED PAST tools/contention.mjs's WAIT. The box sat at 5-6 browser instances and load 6.3-6.7 per core (ceiling 4.0) continuously; I waited 486 s across 17 polls with tools/probe.mjs --until and the gate never opened. Rule 21 permits proceeding if declared, and rule 0 forbids stalling. I launch ONE browser per run and keep it for the whole run. Every timing figure in this task is therefore taken under heavy contention and no timing figure is published.",
+    "Open — filled in as gaps appear."
   ],
-  "next_step": "Read game/src/render/water.js, W1-30S status, ownership; re-derive band diagnosis.",
+  "next_step": "Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader term.",
+  "declared_overlap": {
+    "game/src/render/water.js": "W1-30S touched it in its seam pass and is 'builder_owned_complete' with files_claimed: []. The r1 critic of W1-30-SHADOW-CASTERS explicitly handed this file's lane defect to the orchestrator, who handed it to me. I am claiming it; W1-30S is not holding it."
+  },
   "files_touched": [
-    "orchestration/status/W1-WATER-LANES.json"
+    "orchestration/status/W1-WATER-LANES.json",
+    "tools/visual/w1-water-lane-terms.mjs"
   ],
   "files_claimed": [
     "game/src/render/water.js",
-    "tools/visual/w1-water-lanes.mjs",
+    "tools/visual/w1-water-lane-terms.mjs",
     "tools/visual/w1-heightfog-retake.mjs",
     "corpus/90-verdicts/wave1/artifacts/W1-WATER-LANES/"
   ],

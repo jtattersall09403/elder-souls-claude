@@ -22,9 +22,17 @@
 //                 isolates the 1.5 deg/frame recentre clamp.
 //   no-combat     writes the body and the camera but NOT `combat.player.yaw`, so the mirror
 //                 overwrites the body one step later.
+//   no-refine     removes the `sim.faceRefine` hook install — the delete-the-fix for the GEOMETRY
+//                 half added by W1-DOOR-YAW-SWEEP, leaving the predecessor's data rule intact.
+//
+// THE ARM TEXT TRACKS THE TREE, ON PURPOSE. These are exact source strings, so an edit to
+// `settlement.js` or `engine.js` makes the matching arm REFUSE rather than silently apply to
+// nothing. That has already happened once during this piece — the `before` arm's two
+// `placeBody(...)` lines changed shape when the refinement landed, and the guard caught it in the
+// same minute. Update the string, do not relax the check.
 //
 // USAGE
-//   node tools/harness/door-yaw-teardown.mjs --dir <clone> --arm before|mirror-only|no-camera|no-combat
+//   node tools/harness/door-yaw-teardown.mjs --dir <clone> --arm before|mirror-only|no-camera|no-combat|no-refine
 //   node tools/harness/door-yaw-teardown.mjs --self-test
 'use strict';
 
@@ -40,17 +48,17 @@ USAGE
   node tools/harness/door-yaw-teardown.mjs --dir <clone dir> --arm <arm>
   node tools/harness/door-yaw-teardown.mjs --self-test
 
-ARMS  before | mirror-only | no-camera | no-combat
+ARMS  before | mirror-only | no-camera | no-combat | no-refine
 `;
 
 /** One edit: find exactly this text, replace it with that. `n` occurrences are REQUIRED. */
 const EDITS = {
   before: [
     { file: 'game/src/sim/settlement.js', n: 1,
-      from: 'placeBody(sim, spawn, face ? face.yaw_deg : undefined);',
+      from: 'placeBody(sim, spawn, Number.isFinite(face.yaw_deg) ? face.yaw_deg : undefined);',
       to: 'placeBody(sim, spawn); /* TEARDOWN before: no yaw */' },
     { file: 'game/src/sim/settlement.js', n: 1,
-      from: 'placeBody(sim, out, face ? face.yaw_deg : undefined);',
+      from: 'placeBody(sim, out, Number.isFinite(face.yaw_deg) ? face.yaw_deg : undefined);',
       to: 'placeBody(sim, out); /* TEARDOWN before: no yaw */' },
     { file: 'game/src/engine.js', n: 1,
       from: '  _placeBody(x, y, z, yaw) {',
@@ -68,6 +76,16 @@ const EDITS = {
     { file: 'game/src/engine.js', n: 1,
       from: '      if (this.sim.camera) { this.sim.camera.yaw = y360; this.sim.camera.yawRate = 0; }',
       to: '      /* TEARDOWN no-camera: camera not written */' },
+  ],
+  // The delete-the-fix arm for the GEOMETRY REFINEMENT specifically, as opposed to the yaw write
+  // the predecessor landed. Removing the hook install is the whole reversal: `refineFacing()` in
+  // sim/settlement.js is fail-open by construction, so with no hook the door falls back to the
+  // data-derived proposal and the tree behaves exactly as it did before the refinement existed.
+  // One line, and it is the line named in the report as the reversal.
+  'no-refine': [
+    { file: 'game/src/engine.js', n: 1,
+      from: '    this.sim.faceRefine = (x, y, z, yaw) => this._refineFacing(x, y, z, yaw);',
+      to: '    /* TEARDOWN no-refine: the geometry hook is not installed */' },
   ],
   'no-combat': [
     { file: 'game/src/engine.js', n: 1,
