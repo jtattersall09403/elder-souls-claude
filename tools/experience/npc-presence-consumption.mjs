@@ -191,14 +191,21 @@ const main = async () => {
       `${viaAt.before.perceivers} -> ${viaAt.after.perceivers} — and the world computed these ` +
       `itself from the perturbed input rather than having them forced in behind it`);
 
+    // THE BASELINE FOR THE NULL ARM IS THE STATE IMMEDIATELY BEFORE THE BREAK, NOT THE FIRST ARM.
+    // The first version of this check compared against INTACT and failed 26 against 27 — because
+    // the ONE-SHOT arm above leaves one person absent for good (their schedule slot does not turn
+    // over inside the arm, so `at` never gets rewritten and `present` stays where it was put). That
+    // is a defect in the CHECK, not in the world, and it is written down rather than silently
+    // rebaselined: an arm's control is the arm that ran before it.
+    const base = viaAt.before;
     chk('C4-null-arm-is-inert',
-      viaNull.after.npc_meshes_drawn === intact.after.npc_meshes_drawn
-      && viaNull.after.collidable === intact.after.collidable
-      && viaNull.after.perceivers === intact.after.perceivers,
+      viaNull.after.npc_meshes_drawn === base.npc_meshes_drawn
+      && viaNull.after.collidable === base.collidable
+      && viaNull.after.perceivers === base.perceivers,
       `restoring at and instead perturbing activity, on the same objects by the same route, ` +
       `returned drawn/collidable/perceivers to ${viaNull.after.npc_meshes_drawn}/` +
-      `${viaNull.after.collidable}/${viaNull.after.perceivers} against the intact ` +
-      `${intact.after.npc_meshes_drawn}/${intact.after.collidable}/${intact.after.perceivers}`);
+      `${viaNull.after.collidable}/${viaNull.after.perceivers} against the pre-break baseline ` +
+      `${base.npc_meshes_drawn}/${base.collidable}/${base.perceivers}`);
 
     chk('C5-null-arm-actually-landed',
       viaNull.after.activities_sample.indexOf('consumption-null-activity') >= 0,
@@ -207,7 +214,7 @@ const main = async () => {
     doc.effect_sizes = {
       one_shot_drawn_delta: intact.after.npc_meshes_drawn - oneShot.after.npc_meshes_drawn,
       via_at_drawn_delta: viaAt.before.npc_meshes_drawn - viaAt.after.npc_meshes_drawn,
-      via_at_null_drawn_delta: intact.after.npc_meshes_drawn - viaNull.after.npc_meshes_drawn,
+      via_at_null_drawn_delta: viaAt.before.npc_meshes_drawn - viaNull.after.npc_meshes_drawn,
       note: 'The one-shot delta is small because stepSchedule() recomputes `present` every frame, '
         + 'so a direct write is undone by its own writer. The VIA-AT delta is the measurement: it '
         + 'perturbs the input the schedule reads, so the world computes the absence itself. The '

@@ -230,6 +230,33 @@ export function resolveGrade(f = {}) {
   };
 }
 
+/**
+ * Ease one resolved grade toward another, term by term, at rate `k` per frame.
+ *
+ * Region boundaries in `field.regionAt()` are a raster edge: one step across it and the recipe
+ * changes between consecutive frames. Snapping there is a cut in the middle of a walk, which is
+ * more distracting than having no grade at all. `k = 0.10` converges to within a percent in about
+ * 45 frames — three quarters of a second at 60 Hz, slow enough to be unnoticed and fast enough
+ * that a player who runs into Blackwood is in Blackwood's colour before they have stopped.
+ *
+ * `recipe` is taken from the target, not eased: it is a label, and a half-eased frame belongs to
+ * where the camera IS.
+ */
+export function easeGrade(a, b, k) {
+  const l = (x, y) => x + (y - x) * k;
+  const v = (x, y) => x.map((c, i) => l(c, y[i]));
+  return {
+    recipe: b.recipe,
+    lift: v(a.lift, b.lift), gain: v(a.gain, b.gain), invGamma: v(a.invGamma, b.invGamma),
+    shadowTint: v(a.shadowTint, b.shadowTint), highlightTint: v(a.highlightTint, b.highlightTint),
+    mix: v(a.mix, b.mix),
+    balance: l(a.balance, b.balance), contrast: l(a.contrast, b.contrast), pivot: l(a.pivot, b.pivot),
+    saturation: l(a.saturation, b.saturation),
+    vignette: l(a.vignette, b.vignette),
+    vignetteInner: l(a.vignetteInner, b.vignetteInner), vignetteOuter: l(a.vignetteOuter, b.vignetteOuter),
+  };
+}
+
 /** The grade that is exactly "do nothing". Not a recipe — the OFF state for the sabotage switch,
  * used by `setVisualFeature('grade', false)`. Identity in every term, so the null control for the
  * whole grade is a real code path and not a second implementation. */

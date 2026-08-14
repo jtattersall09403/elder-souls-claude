@@ -34,7 +34,10 @@ import { visualFoundationCensus, VISUAL_FEATURES, FEATURE_CONSUMERS } from './vi
 // `registerPrePass`, created by this same commit.
 import { updateVisualFoundationFrame, bindWaterReflection } from './water.js';
 // W1-30S seam: the compositor moved to render/post/composite.js (future owner: W1-30A).
-import { buildCompositor } from './post/composite.js';
+import { buildCompositor, applyGrade, MSAA_BY_TIER } from './post/composite.js';
+// W1-30A. The colour grade, per region / time of day / weather. Published for reuse by any other
+// visual child that needs the game's colour identity rather than inventing its own numbers.
+import { resolveGrade, identityGrade, easeGrade } from './post/grade.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -131,10 +134,11 @@ export class Renderer {
     // registrant; A owns the call order in render(), H owns the pass body.
     this._prePasses = [];
     this.registerPrePass((frame) => this._renderWaterReflection(frame));
-    // W1-30S seam: renderer.registerComposite(mod) — A's composite module installs here
-    // (future owner: W1-30A). `buildCompositor` is the exact former `_buildCompositor` body,
-    // moved to render/post/composite.js.
-    this.registerComposite(buildCompositor(canvas.width, canvas.height));
+    // W1-30A owns this seam now. The compositor is rebuilt, not mutated, whenever MSAA changes:
+    // `samples` is read once by three when it first allocates the target's framebuffers and is
+    // never re-read, so flipping the flag on a live target would change a number and no pixels —
+    // exactly the "off-switch that does not change pixels" the plan hard-fails.
+    this._buildCompositorForTier();
     this.enemyMeshes = new Map();
     this.npcMeshes = new Map();
     this.propMeshes = new Map();
@@ -282,7 +286,113 @@ export class Renderer {
     this.compositeScene = mod.compositeScene;
     this.compositeCamera = mod.compositeCamera;
     this._composite = mod;
+    this.compositeSamples = mod.samples || 0;
     return mod;
+  }
+
+  /**
+   * W1-30A. Build (or rebuild) the compositor at the current tier and MSAA switch.
+   *
+   * THE DEFECT THIS CLOSES. `renderer.js` asked the WebGL context for `antialias: true`, and then
+   * every world pixel was rendered into `worldTarget` instead of the default framebuffer. Context
+   * multisampling applies only to the default framebuffer, so the request was granted and never
+   * used: the game shipped with no antialiasing at all, and the depth-edge blur in the composite
+   * stood in for it. `samples` on the render target is where MSAA actually lives.
+   *
+   * The old target and material are disposed here rather than left to GC: a 1920x1080 HalfFloat
+   * multisample colour buffer plus its depth is ~90 MB, and a toggle that leaked one of those per
+   * flip would turn the sabotage matrix itself into an out-of-memory crash.
+   */
+  _buildCompositorForTier() {
+    const want = this.quality.msaa ? (MSAA_BY_TIER[this.qualityTier] ?? MSAA_BY_TIER.high) : 0;
+    const maxSamples = (this.three.capabilities && Number.isFinite(this.three.capabilities.maxSamples))
+      ? this.three.capabilities.maxSamples : 0;
+    const old = this._composite;
+    const w = (this.worldTarget && this.worldTarget.width) || this.canvas.width;
+    const h = (this.worldTarget && this.worldTarget.height) || this.canvas.height;
+    this.registerComposite(buildCompositor(w, h, { samples: want, maxSamples }));
+    if (old) {
+      old.worldTarget.dispose();
+      if (old.worldTarget.depthTexture) old.worldTarget.depthTexture.dispose();
+      old.compositeMaterial.dispose();
+      for (const c of old.compositeScene.children) if (c.geometry) c.geometry.dispose();
+    }
+    this._msaaProbed = false;
+    this._grade = null;
+    return this.compositeSamples;
+  }
+
+  /**
+   * W1-30A. `high` / `medium` / `low`, as a named ladder rather than nine independent booleans, so
+   * a device that cannot hold the top tier degrades in a defined order instead of whichever pass
+   * the caller happened to think of. Consumed by the settings screen (W1-21) and the capture
+   * harness. Returns what is actually in force, which is NOT always what was asked for — the MSAA
+   * count is clamped by the device's `MAX_SAMPLES` and can be dropped to 0 by the completeness
+   * probe in `render()`.
+   */
+  setQualityTier(tier) {
+    if (!(tier in MSAA_BY_TIER)) throw new Error(`unknown quality tier '${tier}' (have: ${Object.keys(MSAA_BY_TIER).join(', ')})`);
+    this.qualityTier = tier;
+    this.quality.ao = tier === 'high';
+    this.quality.postprocess = true;
+    this.quality.antialias = true;
+    this.quality.grade = true;
+    this.quality.dither = tier !== 'low';
+    this.quality.msaa = tier !== 'low';
+    this._buildCompositorForTier();
+    return this.qualityReport();
+  }
+
+  /**
+   * W1-30A. Resolve and push this frame's colour grade.
+   *
+   * WHY IT IS SMOOTHED. `field.regionAt()` is a raster lookup, so walking across a region boundary
+   * flips the recipe between one frame and the next. A grade that snaps is a visible cut in the
+   * middle of a walk — far worse than no grade — so the uniform block eases toward its target over
+   * roughly half a second.
+   *
+   * WHY IT SNAPS ANYWAY, SOMETIMES. Easing makes the frame depend on history, and "same seed ->
+   * identical frame hash" is a gate. Two things break history legitimately: a cell change, and a
+   * teleport. Both are detected here (a cell change directly, a teleport as a camera move no walk
+   * could produce in one frame) and both snap. That leaves the eased path used only for continuous
+   * motion, where the capture harness always plays the same frames in the same order, so the hash
+   * stays deterministic.
+   *
+   * `forceGradeRegion` is the null control the plan's "grade separates places" row asks for: pin
+   * every region to one recipe and the distinguishability must collapse. It is the same code path
+   * with a different argument, not a second implementation.
+   */
+  _updateGrade(regionId, camPos) {
+    const lf = this.lightingFrame || {};
+    const target = this.quality.grade
+      ? resolveGrade({
+        regionId: this.forceGradeRegion || regionId,
+        interior: this.cell === 'interior',
+        day: lf.day, dusk: lf.dusk, night: lf.night, overcast: lf.overcast,
+        forceRegion: this.forceGradeRegion || null,
+      })
+      : identityGrade();
+    const jumped = !this._gradePrevCam
+      || this._gradePrevCell !== this.cell
+      || Math.hypot(camPos[0] - this._gradePrevCam[0], camPos[1] - this._gradePrevCam[1], camPos[2] - this._gradePrevCam[2]) > 20;
+    this._gradePrevCam = [camPos[0], camPos[1], camPos[2]];
+    this._gradePrevCell = this.cell;
+    this._grade = (!this._grade || jumped) ? target : easeGrade(this._grade, target, 0.10);
+    applyGrade(this.compositeMaterial, this._grade);
+    return this._grade;
+  }
+
+  /** What the frame pipeline is actually doing, for a status line, a manifest or a critic. */
+  qualityReport() {
+    return {
+      tier: this.qualityTier,
+      msaaRequested: this.quality.msaa ? (MSAA_BY_TIER[this.qualityTier] ?? 0) : 0,
+      msaaInForce: this.compositeSamples || 0,
+      maxSamples: (this.three.capabilities && this.three.capabilities.maxSamples) || 0,
+      msaaFallback: this.msaaFallback || null,
+      grade: this._grade ? this._grade.recipe : null,
+      flags: { ...this.quality },
+    };
   }
 
   /** W1-30S seam. H's vfx prepass and water reflection register here (future owner: W1-30H);
@@ -310,6 +420,10 @@ export class Renderer {
   setVisualFeature(name,enabled) {
     if(!(name in this.quality)) throw new Error(`unknown renderer feature '${name}'`);
     this.quality[name]=!!enabled;
+    // W1-30A. MSAA is a property of the render target's allocation, so its off-switch has to
+    // reallocate. Everything else here is a uniform and is picked up on the next frame.
+    if(name==='msaa') this._buildCompositorForTier();
+    if(name==='grade') this._grade=null;
     if(['shadows','ibl','atmosphere','sky','lighting'].includes(name)) this.sky.setFeature(name,enabled);
     if(name==='shadows') this.three.shadowMap.enabled=!!enabled;
     if(name==='interiorDressing'&&this.interiorRecord) {
@@ -1016,6 +1130,7 @@ export class Renderer {
     // axis Morrowind leans on hardest — an Ashlands frame is red because the fog is red — so it is
     // driven from the region under the camera rather than from a single global constant.
     let regionFog = null;
+    let gradeRegion = null;
     if (this.cell === 'province' && this.field) {
       const cx = clamp(c.pos[0], 0, this.field.sizeX - 1), cz = clamp(c.pos[2], 0, this.field.sizeZ - 1);
       const r = this.field.regionAt(cx, cz);
@@ -1024,6 +1139,9 @@ export class Renderer {
       const K = this.field.sig && SIGNATURE_KINDS[(r.only_here || {}).id];
       regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m,
         glow: K && K.glow > 0 ? K.glow_hex : null };
+      // W1-30A. The SAME region record the fog already reads, so the grade and the fog can never
+      // disagree about where the camera is. Nothing new is read out of `sky.js`.
+      gradeRegion = r.id;
     }
     // W1-02: `sim.env` carries the environment's own derived terms - the blended sightline the
     // front is currently at, and the weather's light class. The sky reads them off the LIVE
@@ -1044,6 +1162,10 @@ export class Renderer {
       if (this.province) {
         this.province.setNightFactor(1 - this.lightingFrame.day * 1.6);
       }
+    // W1-30A. Resolve this frame's grade from the region under the camera and the lighting frame
+    // B publishes. Done here, next to the fog, rather than at composite time, because these are
+    // the two things that have to agree about which region the player is standing in.
+    this._updateGrade(gradeRegion, c.pos);
 
     this.sky.followCamera(this.camera);
     // W1-30S seam: registered prepasses run here, in the exact position water reflection used
