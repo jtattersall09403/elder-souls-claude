@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-14T19:01:30.954Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-14T19:21:04.722Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
-| reference items (`corpus/**/RI-*.md`) | 149 | 0 |
+| reference items (`corpus/**/RI-*.md`) | 150 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 79 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 80 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -20,7 +20,7 @@
 | `I1` | The harness and determinism | RI-CMB07 RI-MTH01 RI-MTH02 | — | 5 (4) | W1-00 | built_below_bar | **none** |
 | `I2` | Capture and the Deck | RI-MTH04 RI-MTH06 | RI-MTH06 | 2 (1) | W1-30-EVIDENCE W1-30V | built_below_bar | V17 |
 | `I4` | Consumption as a gate | RI-MTH07 | — | 5 (3) | BUILDER-EXECUTION-CONTRACT | built_below_bar | **none** |
-| `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-MTH05 RI-MTH06 | RI-VIS09 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
+| `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
 | `I3` | The blind protocols | RI-DLG07 RI-VIS01 RI-VIS03 RI-VIS06 RI-MTH03 | RI-DLG07 RI-VIS01 | 2 (1) | W1-24 | built_below_bar | V17/F2 |
 
 ### Ring 1 — The frame — what a rendered pixel looks like. Wave 1 by owner directive.
@@ -28,7 +28,7 @@
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
 | `G1` | The camera | RI-CMB06 RI-CAM01 RI-CAM02 RI-CAM03 RI-CAM04 RI-CAM05 RI-CAM06 RI-CAM07 | RI-CAM03 RI-CAM04 | 0 (0) | W1-06 | built_below_bar | **none** |
-| `F1` | Materials and surface response | — | — | 2 (1) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
+| `F1` | Materials and surface response | — | — | 3 (2) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
 | `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30B W1-30S | at_bar | V2 |
 | `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 0 (0) | W1-30 W1-30B W1-30S | at_bar | V3 |
 | `F4` | Light, sky and atmosphere | RI-VIS04 | — | 1 (0) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
@@ -37,7 +37,7 @@
 | `F7` | The water surface | RI-WLD10 | — | 1 (1) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
-| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 | — | 1 (0) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
+| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | RI-VIS10 | 2 (1) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
 | `F11` | Animation quality | RI-WPN05 RI-VIS08 | — | 1 (1) | W1-30 W1-30D | built_below_bar | V7 |
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
@@ -234,6 +234,7 @@
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
 | `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 2 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
+| `RI-VIS10` | 70-visual | morrowind | F10 I5 | 0 | — | never_judged |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
@@ -309,6 +310,7 @@
 | `GAP-W1-deploy-instruments-point-at-the-tester-not-the-player` | major | `platform.load.ttfp` | T3 |
 | `GAP-W1-enemy-attacks-cannot-reach-contact-range` | blocking | `combat.hitbox.sweep` | G2 |
 | `GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage` | major | `combat.hitbox.sweep` | G2 |
+| `GAP-W1-f1-actor-body-shader-does-not-link` | blocking | `render.fidelity.character` | F1 F10 |
 | `GAP-W1-faction-ladders-are-bricked-up-at-rank-5` | blocking | `quests.faction.rankgating` | P7 |
 | `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` | blocking | `quests.faction.escalation` | P7 P8 |
 | `GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist` | blocking | `progression.bonfire.function` | C2 |

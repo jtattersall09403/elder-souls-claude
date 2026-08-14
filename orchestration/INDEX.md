@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `92d3ef66`: **1006 tools**, **158 reference items**,
-**58 pieces in flight**.
+drift. At `a75ea537`: **1009 tools**, **158 reference items**,
+**57 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1006, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1009, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 158, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -41,7 +41,7 @@ Run these; do not invent your own equivalents.
 Both work. Note that `node … 2>&1 | tail -1 ; echo exit=$?` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
-## The 46 tools you will actually reach for
+## The 47 tools you will actually reach for
 
 Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
@@ -57,6 +57,7 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
 - `tools/check-dialogue-topics.mjs` — A duplicate topic id across game/data/dialogue/topics/**/*.json is a defect that nothing currently detects.
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
+- `tools/check-published-refs.mjs` — no licensed reference plate may be published.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
 - `tools/check-save-shape.mjs` — a LIVE OBJECT must not come back from a save as a plain one.
 - `tools/check-shipped-files.mjs` — everything the game imports must actually be in the repository.
@@ -96,9 +97,9 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `grep -i <word> orchestration/index/TOOLS.md` for the one you want.
 
-`harness` 255 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 36 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
+`harness` 257 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 36 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **282 of 1006 tools have no header comment**, so nobody can tell what they
+> **282 of 1009 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 158, by family
@@ -149,7 +150,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 58 live pieces
+## In flight right now — 57 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -160,40 +161,32 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
-| `tool-build-viability-r6` | researching | — **declares nothing** |
-| `judge-prose-r5` | running | `orchestration/status/judge-prose-r5.json` `reports/packs/prose-tics-r5.answers/judge-prose-r5/` `reports/blog-feed.jsonl` |
-| `measure-own-e-w1-hud-toast-b` | running | `orchestration/plans/W1-HUD-TOAST.md` `orchestration/status/measure-own-e-w1-hud-toast-b.json` `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
-| `critic-w1-26-r4` | running | `corpus/90-verdicts/wave1/W1-26-r4.md` `corpus/90-verdicts/wave1/W1-26-r4.json` `orchestration/status/critic-w1-26-r4.json` `tools/journey/critic-` +1 |
-| `critic-w1-23-r5` | measuring | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` `corpus/90-verdicts/wave1/W1-23-r5.md` `corpus/90-verdicts/wave1/W1-23-r5.json` +2 |
-| `critic-w1-04-r6` | running | `corpus/90-verdicts/wave1/W1-04-r6.md` `corpus/90-verdicts/wave1/W1-04-r6.json` `orchestration/status/critic-w1-04-r6.json` `tools/world/critic-` +2 |
-| `critic-w1-08-r2` | researching | — **declares nothing** |
-| `W1-V2-CONTACT-SHADOWS-AO` | in_progress | `orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-v2-contact-ao.mjs` +4 |
-| `W1-WATER-LANES` | measuring | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` `game/src/render/water.js` `tools/visual/w1-heightfog-retake.mjs` +1 |
+| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
+| `T4-critic` | started | — **declares nothing** |
+| `W1-F1-SHADER-COLLISION` | in-progress | `game/src/render/actor.js` `tools/visual/w1-f1-critic-shader-collision.mjs` `corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/` |
 | `WIRING-AUDIT` | ? | — **declares nothing** |
-| `W1-TOUCH-r2` | in_progress | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` +14 |
-| `W1-TOUCH` | measured — two runs still in flight | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` +13 |
-| `W1-UIX08-dialogue-window` | built-probe-running | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` +11 |
-| `W1-JOURNAL-PROSE` | researching | — **declares nothing** |
+| `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
+| `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
+| `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
+| `W1-DOOR-YAW-SWEEP` | in_progress | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` +7 |
 | `W1-MAP-DEFECTS-r2` | in_progress | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` +1 |
 | `W1-DLG-TOPIC-WEB` | building | `orchestration/status/W1-DLG-TOPIC-WEB.json` `game/src/character/converse.js` `game/data/dialogue/topics/` `game/data/npcs/` +2 |
-| `W1-DOOR-YAW-SWEEP` | in_progress | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` +7 |
-| `W1-F1-SHADER-COLLISION` | in-progress | `game/src/render/actor.js` `tools/visual/w1-f1-critic-shader-collision.mjs` `corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/` |
-| `W1-FACTIONS-r3` | researching | — **declares nothing** |
-| `W1-CAPTURE-R2` | researching | — **declares nothing** |
-| `W1-CROSSING-r2` | in-progress | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` +13 |
+| `W1-UIX08-dialogue-window` | built-probe-running | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` +11 |
+| `W1-WATER-LANES` | measuring | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` `game/src/render/water.js` `tools/visual/w1-heightfog-retake.mjs` +1 |
+| `SPLIT-TRIAL-DISPATCH` | dispatched | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
+| `W1-20-r3-remediation` | in_progress | `orchestration/status/W1-20-r3-remediation.json` `game/data/quests/faction-continuation-wave1.json` `game/data/dialogue/faction-reactions.json` `game/src/engine.js` +3 |
+| `W1-24` | building | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` +6 |
+| `W1-06` | partial | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` +11 |
 | `W1-30F` | partial | — **declares nothing** |
 | `W1-30V` | running | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` +10 |
-| `W1-30-builder-20260812` | builder-native-gpu-remediation-in-progress | `game/src/render/actor.js` `game/src/render/visual-foundation.js` `game/src/world/province.js` `tools/render/w1-30-gate.mjs` +19 |
 | `W1-30` | builder-native-gpu-remediation-in-progress | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` +1 |
+| `W1-21-builder` | ? | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` +15 |
+| `W1-23-builder-codex-20260810` | ready_for_independent_criticism | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` +26 |
+| `W1-25-continuation-builder` | builder_incomplete | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` +6 |
 | `W1-26` | builder_delivery_partial_remaining_modality_ | `orchestration/status/W1-26.json` `tools/w1-26-r3/created-by-keyboard.mjs` `reports/w1-26-builder/keyboard.json` `reports/w1-26-builder/verify.json` +4 |
 | `W1-28` | partial | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` +3 |
-| `W1-25-continuation-builder` | builder_incomplete | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` +6 |
-| `W1-23-builder-codex-20260810` | ready_for_independent_criticism | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` +26 |
-| `W1-24` | building | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` +6 |
-| `W1-20-r3-remediation` | in_progress | `orchestration/status/W1-20-r3-remediation.json` `game/data/quests/faction-continuation-wave1.json` `game/data/dialogue/faction-reactions.json` `game/src/engine.js` +3 |
-| `W1-21-builder` | ? | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` +15 |
-| `W1-22-r2` | handed-off-incomplete | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` +10 |
-| `W1-22-r3` | building | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` +21 |
+| `W1-30-builder-20260812` | builder-native-gpu-remediation-in-progress | `game/src/render/actor.js` `game/src/render/visual-foundation.js` `game/src/world/province.js` `tools/render/w1-30-gate.mjs` +19 |
+| `W1-17` | partial | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` +27 |
 | `W1-18` | building | — **declares nothing** |
 | `W1-19-builder-codex-20260810` | builder_delivery_incomplete | `orchestration/status/W1-19-builder-codex-20260810.json` `game/src/engine.js` `game/src/harness/api.js` `game/src/sim/quest/reveal-routes.js` +17 |
 | `W1-19-builder-codex-continuation-20260810` | builder_delivery_incomplete | `orchestration/status/W1-19-builder-codex-continuation-20260810.json` `game/data/npcs/mainline.json` `game/data/index.json` `corpus/90-verdicts/wave1/artifacts/W1-19-builder-continuation/current-head-summary.json` +10 |
@@ -201,20 +194,27 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `W1-19-builder-codex-persistent-20260811` | IN_PROGRESS | `orchestration/status/W1-19-builder-codex-persistent-20260811.json` `tools/quests/mainline-chain-floor.mjs` `tools/quests/mainline-gate-b-fixtures.mjs` `game/data/world/assembled-lore.json` +3 |
 | `W1-19-builder-production-20260811` | IN_PROGRESS | `tools/quests/mainline-chain-floor.mjs` `tools/quests/player-wait-smoke.mjs` `tools/quests/validate-mainline-checkpoint.mjs` `tools/gamepad/pad-run.mjs` +19 |
 | `W1-19-builder-production-continuation-20260813` | IN_PROGRESS | `game/src/render/exterior.js` `game/src/ui/system.js` `tools/gamepad/pad-run.mjs` `tools/quests/mainline-chain-floor.mjs` +14 |
-| `W1-17` | partial | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` +27 |
-| `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
+| `W1-01-r5-builder` | partial | `orchestration/status/W1-01-r5-builder.json` `reports/w1-01-r5/builder-evidence.md` `tools/world/road-through-building.mjs` `tools/world/parapet-probe.mjs` |
+| `PLAYABILITY` | measuring (successor 3) — six-sabotage matri | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` +7 |
+| `judge-prose-r5` | running | `orchestration/status/judge-prose-r5.json` `reports/packs/prose-tics-r5.answers/judge-prose-r5/` `reports/blog-feed.jsonl` |
+| `W1-TOUCH-r2` | in_progress | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` +14 |
+| `PLAN-COST-EXPERIMENTS-critic` | in_progress | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` `orchestration/plans/COST-EXPERIMENTS.md` |
+| `measure-own-e-w1-hud-toast-b` | running | `orchestration/plans/W1-HUD-TOAST.md` `orchestration/status/measure-own-e-w1-hud-toast-b.json` `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
+| `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |
+| `critic-w1-23-r5` | measuring | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` `corpus/90-verdicts/wave1/W1-23-r5.md` `corpus/90-verdicts/wave1/W1-23-r5.json` +2 |
+| `W1-TOUCH` | measured — two runs still in flight | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` +13 |
+| `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
+| `critic-w1-26-r4` | running | `corpus/90-verdicts/wave1/W1-26-r4.md` `corpus/90-verdicts/wave1/W1-26-r4.json` `orchestration/status/critic-w1-26-r4.json` `tools/journey/critic-` +1 |
+| `W1-22-r3` | building | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` +21 |
+| `critic-w1-04-r6` | running | `corpus/90-verdicts/wave1/W1-04-r6.md` `corpus/90-verdicts/wave1/W1-04-r6.json` `orchestration/status/critic-w1-04-r6.json` `tools/world/critic-` +2 |
+| `W1-CROSSING-r2` | in-progress | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` +13 |
+| `W1-01-r4` | partial | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` +27 |
 | `W1-15-r3` | building | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` +34 |
 | `W1-06-r2` | partial | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` +12 |
-| `W1-06` | partial | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` +11 |
-| `W1-01-r4` | partial | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` +27 |
-| `W1-01-r5-builder` | partial | `orchestration/status/W1-01-r5-builder.json` `reports/w1-01-r5/builder-evidence.md` `tools/world/road-through-building.mjs` `tools/world/parapet-probe.mjs` |
-| `T4-critic` | started | — **declares nothing** |
+| `W1-22-r2` | handed-off-incomplete | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` +10 |
+| `tool-build-viability-r6` | researching | — **declares nothing** |
+| `W1-JOURNAL-PROSE` | researching | — **declares nothing** |
+| `W1-FACTIONS-r3` | researching | — **declares nothing** |
+| `critic-w1-08-r2` | researching | — **declares nothing** |
+| `W1-CAPTURE-R2` | researching | — **declares nothing** |
 | `W1-00-fix2` | building | — **declares nothing** |
-| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
-| `SPLIT-TRIAL-DISPATCH` | dispatched | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
-| `PLAYABILITY` | measuring (successor 3) — six-sabotage matri | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` +7 |
-| `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
-| `PLAN-COST-EXPERIMENTS-critic` | in_progress | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` `orchestration/plans/COST-EXPERIMENTS.md` |
-| `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
-| `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |
