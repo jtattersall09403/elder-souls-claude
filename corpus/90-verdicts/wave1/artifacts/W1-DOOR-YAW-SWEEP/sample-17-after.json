@@ -1,0 +1,458 @@
+{
+  "schema": "elder-souls/door-exit-yaw@1",
+  "generated_at": "2026-08-14T15:08:52.021Z",
+  "loadavg": "15.60 17.23 16.29 10/429 2700",
+  "reach_m": 12,
+  "seed_yaw_deg": 200,
+  "enter_measured": false,
+  "rows": [
+    {
+      "id": "archon-apothecary",
+      "settlement": "archon",
+      "entry_side": "south",
+      "bearing_deg": 45.8,
+      "exit": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 1
+          },
+          "outward": {
+            "yaw_deg": 45.8,
+            "clearance_m": 1.5
+          },
+          "inward": {
+            "yaw_deg": 225.8,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 315.9,
+            "clearance_m": 1.5
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 220
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 3.75
+        },
+        "exit": {
+          "yaw_deg": 315.9,
+          "cam_yaw_deg": 315.9,
+          "body_yaw_deg": 315.9,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 1.5,
+          "null_inward_clearance_m": 8
+        }
+      },
+      "ms": 22349
+    },
+    {
+      "id": "archon-kiln-house",
+      "settlement": "archon",
+      "entry_side": "south",
+      "bearing_deg": 17.2,
+      "exit": {
+        "pos": [
+          3794.96,
+          3.42,
+          3855.7
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 4.5
+          },
+          "outward": {
+            "yaw_deg": 17.2,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 197.2,
+            "clearance_m": 6.75
+          },
+          "from_door": {
+            "yaw_deg": 17.2,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 17.2,
+          "cam_yaw_deg": 17.2,
+          "body_yaw_deg": 17.2,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 6.75
+        }
+      },
+      "ms": 277834
+    },
+    {
+      "id": "blackrose-clerk",
+      "settlement": "blackrose",
+      "entry_side": "south",
+      "bearing_deg": 0,
+      "exit": {
+        "pos": [
+          1887.5,
+          2.59,
+          4458
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 5.5
+          },
+          "outward": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 180,
+            "clearance_m": 5.25
+          },
+          "from_door": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 3
+        },
+        "exit": {
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0,
+          "body_yaw_deg": 0,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 5.25
+        }
+      },
+      "ms": 209177
+    },
+    {
+      "id": "blackrose-pawn",
+      "settlement": "blackrose",
+      "entry_side": "south",
+      "bearing_deg": 180,
+      "exit": {
+        "pos": [
+          1876.5,
+          2.57,
+          4470.7
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 12
+          },
+          "outward": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0,
+          "body_yaw_deg": 0,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 12
+        }
+      },
+      "ms": 4132
+    },
+    {
+      "id": "gideon-apothecary",
+      "settlement": "gideon",
+      "entry_side": "south",
+      "bearing_deg": 0,
+      "exit": {
+        "pos": [
+          446,
+          2.71,
+          2944.2
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 11.25
+          },
+          "outward": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 180,
+            "clearance_m": 10.5
+          },
+          "from_door": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0,
+          "body_yaw_deg": 0,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 10.5
+        }
+      },
+      "ms": 444814
+    },
+    {
+      "id": "gideon-inn",
+      "settlement": "gideon",
+      "entry_side": "south",
+      "bearing_deg": 180,
+      "exit": {
+        "pos": [
+          462,
+          2.71,
+          2928.8
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 12
+          },
+          "outward": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0,
+          "body_yaw_deg": 0,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 12
+        }
+      },
+      "ms": 1153
+    },
+    {
+      "id": "helstrom-apothecary",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "bearing_deg": 21.3,
+      "exit": {
+        "pos": [
+          2288.88,
+          27.2,
+          2841.03
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 12
+          },
+          "outward": {
+            "yaw_deg": 21.3,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 201.3,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 21.2,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 10
+        },
+        "exit": {
+          "yaw_deg": 21.2,
+          "cam_yaw_deg": 21.2,
+          "body_yaw_deg": 21.2,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 12
+        }
+      },
+      "ms": 480084
+    },
+    {
+      "id": "helstrom-house-6",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "bearing_deg": 270,
+      "exit": {
+        "pos": [
+          2241.59,
+          27.2,
+          2780.35
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 0.25
+          },
+          "outward": {
+            "yaw_deg": 270,
+            "clearance_m": 5.25
+          },
+          "inward": {
+            "yaw_deg": 90,
+            "clearance_m": 0.5
+          },
+          "from_door": {
+            "yaw_deg": 285,
+            "clearance_m": 4.75
+          }
+        },
+        "best": {
+          "clearance_m": 5.25,
+          "yaw_deg": 270
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": null,
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 285,
+          "cam_yaw_deg": 285,
+          "body_yaw_deg": 285,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 4.75,
+          "null_inward_clearance_m": 1
+        }
+      },
+      "ms": 1051
+    }
+  ]
+}

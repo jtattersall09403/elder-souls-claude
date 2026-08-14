@@ -1,0 +1,414 @@
+{
+  "schema": "elder-souls/door-yaw-sweep@1",
+  "label": "smoke",
+  "generated_at": "2026-08-14T15:56:31.077Z",
+  "commit": "b883827a",
+  "loadavg": "23.60 18.01 17.18 24/609 18685",
+  "entry": "(repo tree) game/index.html",
+  "fix_fingerprint": {
+    "game_dir": "/home/user/elder-souls-claude/game",
+    "files": {
+      "src/sim/settlement.js": {
+        "sha256": "95a7cb2067cd2c60",
+        "writes_sim_player_yaw": false,
+        "writes_camera_yaw": false,
+        "writes_combat_yaw": false,
+        "has_exitFacing": true,
+        "has_entryFacing": true
+      },
+      "src/engine.js": {
+        "sha256": "653153ddf98a29c1",
+        "writes_sim_player_yaw": true,
+        "writes_camera_yaw": true,
+        "writes_combat_yaw": true,
+        "has_exitFacing": false,
+        "has_entryFacing": false
+      }
+    }
+  },
+  "population": 115,
+  "definition": {
+    "clearance_m": "distance to first solid at eye height (pos.y + 1.6), 0.25 m march, 12 m cap, against Engine.solidAt() = sim.cell.contains()",
+    "occluded_frac": "fraction of 21 rays across the forward 60 deg (+/-30, 3 deg apart) whose first solid is closer than 3 m",
+    "judged_on": "sim.camera.yaw — what the player looks through. body and combat yaw recorded beside it.",
+    "pass": "clearance_m >= 3 AND occluded_frac <= 0.34",
+    "frames_after_door": [
+      1,
+      30,
+      120
+    ],
+    "seed_yaw_deg": 200,
+    "hour": 12
+  },
+  "rows": [
+    {
+      "id": "barge-hold",
+      "settlement": "thorn",
+      "entry_side": "north",
+      "declared_bearing_deg": 90,
+      "doorstep_before": {
+        "pos": [
+          3800,
+          13.28,
+          904
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 11.38,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 170,
+          "best_occluded_frac": 0,
+          "point_can_pass": true
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 180,
+          "best_occluded_frac": 0,
+          "point_can_pass": true
+        }
+      },
+      "ms": 25573
+    },
+    {
+      "id": "writ-house",
+      "settlement": "thorn",
+      "entry_side": "south",
+      "declared_bearing_deg": 180,
+      "doorstep_before": {
+        "pos": [
+          3808.6,
+          13.28,
+          909.36
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 0.5,
+        "body_clearance_m": 0.5,
+        "occluded_frac": 1,
+        "fan_mean_m": 0.52,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 0,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              -4.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 11,
+            "body_clearance_m": 11,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.9,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              -4.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 11,
+            "body_clearance_m": 11,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.9,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              -4.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 11,
+            "body_clearance_m": 11,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.9,
+            "inside_a_building": false
+          }
+        },
+        "best": {
+          "clearance_m": 11.75,
+          "yaw_deg": 20,
+          "best_occluded_frac": 0,
+          "point_can_pass": true
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 69.9992694308213,
+        "marks": {
+          "f1": {
+            "pos": [
+              3808.6,
+              13.28,
+              909.36
+            ],
+            "cam_yaw_deg": 70,
+            "body_yaw_deg": 70,
+            "combat_yaw_deg": 70,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3808.6,
+              13.28,
+              909.36
+            ],
+            "cam_yaw_deg": 70,
+            "body_yaw_deg": 70,
+            "combat_yaw_deg": 70,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3808.6,
+              13.28,
+              909.36
+            ],
+            "cam_yaw_deg": 70,
+            "body_yaw_deg": 70,
+            "combat_yaw_deg": 70,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0,
+          "best_occluded_frac": 0,
+          "point_can_pass": true
+        }
+      },
+      "ms": 496428
+    }
+  ],
+  "summary": {
+    "rows": 2,
+    "population": 115,
+    "skipped": [],
+    "refused": [],
+    "errors": [],
+    "doorstep_before": {
+      "n": 2,
+      "failing": 1
+    },
+    "enter": {
+      "f1": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 1,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 1,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 1,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 2,
+        "cam_matches_body": 2,
+        "combat_matches_body": 2,
+        "still_at_seed_yaw": 0,
+        "cam_still_at_seed_yaw": 0
+      },
+      "yaw_sources": {
+        "towards_room_centre": 2
+      },
+      "point_cannot_pass": []
+    },
+    "exit": {
+      "f1": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0.2381,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 2,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0.2381,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 2,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 2,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0.2381,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 2,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 2,
+        "cam_matches_body": 2,
+        "combat_matches_body": 2,
+        "still_at_seed_yaw": 0,
+        "cam_still_at_seed_yaw": 0
+      },
+      "yaw_sources": {
+        "door_to_doorstep": 2
+      },
+      "point_cannot_pass": []
+    }
+  }
+}

@@ -1,0 +1,405 @@
+{
+  "schema": "elder-souls/door-yaw-consume@1",
+  "generated_at": "2026-08-14T17:04:09.338Z",
+  "interior": "archon-apothecary",
+  "consumer": "game/src/sim/settlement.js#refineFacing() <- sim.faceRefine <- Engine._refineFacing()",
+  "entity": "the player: sim.player.yaw, combat.player.yaw, sim.camera.yaw, and the drawn camera basis",
+  "viewport": [
+    1280,
+    720
+  ],
+  "arms": [
+    {
+      "enter": {
+        "entered": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          0,
+          0,
+          1.49
+        ],
+        "yaw_deg": 180,
+        "yaw_source": "towards_room_centre",
+        "yaw_refined": false,
+        "yaw_geometry": {
+          "yaw_deg": 180,
+          "refined": false,
+          "reason": "proposal_clear",
+          "clear_m": 3,
+          "occluded": 0,
+          "rear_m": 0.75,
+          "camera_boxed_in": true
+        }
+      },
+      "exit": {
+        "left": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          3804.665,
+          3.42,
+          3850.619
+        ],
+        "yaw_deg": 180,
+        "yaw_source": "door_to_doorstep+nearest_clear_bearing",
+        "yaw_refined": true,
+        "yaw_geometry": {
+          "yaw_deg": 180,
+          "refined": true,
+          "reason": "nearest_clear_bearing",
+          "from_yaw_deg": 315.8913758503732,
+          "turned_deg": 135.9,
+          "clear_m": 3,
+          "occluded": 0.2857,
+          "rear_m": 2,
+          "rear_was_m": 4.1
+        }
+      },
+      "after": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "sim_player_yaw": 180,
+        "combat_player_yaw": 180,
+        "sim_camera_yaw": 180,
+        "clearance_m": 3.75,
+        "occluded_frac": 0.2857
+      },
+      "enter_ms": 6.97,
+      "exit_ms": 26.65,
+      "arm": "shipped",
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-1-shipped.png",
+        "bytes": 3769665
+      }
+    },
+    {
+      "enter": {
+        "entered": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          0,
+          0,
+          1.49
+        ],
+        "yaw_deg": 180,
+        "yaw_source": "towards_room_centre",
+        "yaw_refined": false,
+        "yaw_geometry": null
+      },
+      "exit": {
+        "left": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          3804.665,
+          3.42,
+          3850.619
+        ],
+        "yaw_deg": 315.8913758503732,
+        "yaw_source": "door_to_doorstep",
+        "yaw_refined": false,
+        "yaw_geometry": null
+      },
+      "after": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "sim_player_yaw": 315.9,
+        "combat_player_yaw": 315.9,
+        "sim_camera_yaw": 315.9,
+        "clearance_m": 1.5,
+        "occluded_frac": 1
+      },
+      "enter_ms": 0.14,
+      "exit_ms": 0.13,
+      "arm": "removed",
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-2-removed.png",
+        "bytes": 4017954
+      }
+    },
+    {
+      "enter": {
+        "entered": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          0,
+          0,
+          1.49
+        ],
+        "yaw_deg": 270,
+        "yaw_source": "towards_room_centre+PERTURBED",
+        "yaw_refined": true,
+        "yaw_geometry": {
+          "yaw_deg": 270,
+          "refined": true,
+          "reason": "PERTURBED"
+        }
+      },
+      "exit": {
+        "left": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          3804.665,
+          3.42,
+          3850.619
+        ],
+        "yaw_deg": 45.89137585037321,
+        "yaw_source": "door_to_doorstep+PERTURBED",
+        "yaw_refined": true,
+        "yaw_geometry": {
+          "yaw_deg": 45.89137585037321,
+          "refined": true,
+          "reason": "PERTURBED"
+        }
+      },
+      "after": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "sim_player_yaw": 45.9,
+        "combat_player_yaw": 45.9,
+        "sim_camera_yaw": 45.9,
+        "clearance_m": 1.5,
+        "occluded_frac": 1
+      },
+      "enter_ms": 0.2,
+      "exit_ms": 0.15,
+      "arm": "perturbed (+90 deg)",
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-3-perturbed.png",
+        "bytes": 3982285
+      }
+    },
+    {
+      "enter": {
+        "entered": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          0,
+          0,
+          1.49
+        ],
+        "yaw_deg": 180,
+        "yaw_source": "towards_room_centre",
+        "yaw_refined": false,
+        "yaw_geometry": {
+          "yaw_deg": 180,
+          "refined": false,
+          "reason": "proposal_clear",
+          "clear_m": 3,
+          "occluded": 0,
+          "rear_m": 0.75,
+          "camera_boxed_in": true
+        }
+      },
+      "exit": {
+        "left": true,
+        "interior": "archon-apothecary",
+        "pos": [
+          3804.665,
+          3.42,
+          3850.619
+        ],
+        "yaw_deg": 180,
+        "yaw_source": "door_to_doorstep+nearest_clear_bearing",
+        "yaw_refined": true,
+        "yaw_geometry": {
+          "yaw_deg": 180,
+          "refined": true,
+          "reason": "nearest_clear_bearing",
+          "from_yaw_deg": 315.8913758503732,
+          "turned_deg": 135.9,
+          "clear_m": 3,
+          "occluded": 0.2857,
+          "rear_m": 2,
+          "rear_was_m": 4.1
+        }
+      },
+      "after": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "sim_player_yaw": 180,
+        "combat_player_yaw": 180,
+        "sim_camera_yaw": 180,
+        "clearance_m": 3.75,
+        "occluded_frac": 0.2857
+      },
+      "enter_ms": 0.35,
+      "exit_ms": 25.18,
+      "arm": "restored",
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-4-restored.png",
+        "bytes": 3769665
+      }
+    }
+  ],
+  "orbit": [
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 0,
+      "clearance_m": 2,
+      "occluded_frac": 1,
+      "camera_yaw_requested": 0,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-000.png",
+        "bytes": 3812224
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 45,
+      "clearance_m": 1.5,
+      "occluded_frac": 1,
+      "camera_yaw_requested": 45,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-045.png",
+        "bytes": 3995612
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 90,
+      "clearance_m": 2.25,
+      "occluded_frac": 0.619,
+      "camera_yaw_requested": 90,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-090.png",
+        "bytes": 4308743
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 135,
+      "clearance_m": 8,
+      "occluded_frac": 0,
+      "camera_yaw_requested": 135,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-135.png",
+        "bytes": 4264512
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 180,
+      "clearance_m": 3.75,
+      "occluded_frac": 0.2857,
+      "camera_yaw_requested": 180,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-180.png",
+        "bytes": 3721835
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 225,
+      "clearance_m": 12,
+      "occluded_frac": 0.7143,
+      "camera_yaw_requested": 225,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-225.png",
+        "bytes": 3638235
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 270,
+      "clearance_m": 1.5,
+      "occluded_frac": 1,
+      "camera_yaw_requested": 270,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-270.png",
+        "bytes": 4043804
+      }
+    },
+    {
+      "pos": [
+        3804.66,
+        3.42,
+        3850.62
+      ],
+      "sim_player_yaw": 180,
+      "combat_player_yaw": 180,
+      "sim_camera_yaw": 315,
+      "clearance_m": 1.5,
+      "occluded_frac": 1,
+      "camera_yaw_requested": 315,
+      "shot": {
+        "file": "docs/shots/2026-08-14-door-yaw/archon-apothecary-orbit-315.png",
+        "bytes": 4057092
+      }
+    }
+  ],
+  "verdict": {
+    "shipped_yaw": 180,
+    "removed_yaw": 315.9,
+    "perturbed_yaw": 45.9,
+    "restored_yaw": 180,
+    "removing_the_hook_moves_the_facing": true,
+    "perturbing_the_hook_moves_the_facing": true,
+    "perturbed_is_removed_plus_90": true,
+    "restored_matches_shipped": true,
+    "three_fields_agree_in_all_arms": true,
+    "picture_changed_when_perturbed": true,
+    "door_cost_ms": {
+      "shipped_exit": 26.65,
+      "removed_exit": 0.13,
+      "shipped_enter": 6.97,
+      "removed_enter": 0.14
+    },
+    "clearance_shipped_m": 3.75,
+    "clearance_removed_m": 1.5,
+    "occluded_shipped": 0.2857,
+    "occluded_removed": 1
+  }
+}
