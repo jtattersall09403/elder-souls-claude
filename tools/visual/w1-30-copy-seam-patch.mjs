@@ -20,7 +20,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 
-const ROOT = process.env.ES_ROOT || '/home/user/elder-souls-claude';
+// Resolve the repo from THIS FILE's own location, never from a hard-coded path. The first version
+// hard-coded `/home/user/elder-souls-claude` and the revert therefore silently did nothing on a
+// RunPod Pod, where the workspace is `/workspace/elder-souls-<runid>` — so the "delete the fix"
+// arm of a hardware run was a second copy of the positive arm. The run's own guard caught it and
+// printed "REVERT DID NOT APPLY — the BEFORE arm below is NOT a control", which is the only reason
+// it was not read as a result. A control that cannot fail is bad; a control that silently becomes
+// the experiment is worse (RULES rule 6, HAZARDS §0).
+const ROOT = process.env.ES_ROOT || path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const CHECK = process.argv.includes('--check');
 const REVERT = process.argv.includes('--revert');
 const MARKER = 'W1-ORPHANED-SURFACE-SHADERS';

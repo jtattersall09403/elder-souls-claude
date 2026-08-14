@@ -278,7 +278,15 @@ if (!args['static-only'] && !args.staticOnly) {
       .sort((a, b) => a.min_rank - b.min_rank);
   }
 
-  const game = await launchGame(args, { usage: USAGE });
+  // AN INERT CONTROL, CAUGHT. The first version of this line was `launchGame(args, ...)` with no
+  // entry, and `browser.mjs` then serves `game/index.html` FROM THIS REPO — so with `--root
+  // <clone>` the static arm read the clone and the LIVE arm read the shipping tree. The off-by-one
+  // control came back `L2 = 8/8`, identical to the fix, and it looked like a clean negative result.
+  // It was two copies of the same experiment (RULES 6, second shape). The entry is now derived from
+  // `--root`, and the control is only believed once it has been seen to go red.
+  const entryArgs = ROOT === REPO ? args : { ...args, entry: path.join(ROOT, 'game/index.html') };
+  const game = await launchGame(entryArgs, { usage: USAGE });
+  report.served_from = ROOT === REPO ? 'repo' : path.join(ROOT, 'game/index.html');
   const live = await game.page.evaluate(async ({ LINES, REPS, REP_HOME, PLAN, ALL_SKILLS, ALL_ATTRS }) => {
     const H = window.__HARNESS;
     const out = { checks: [], notes: [] };
