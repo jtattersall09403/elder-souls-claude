@@ -2,14 +2,15 @@
 id: RI-VIS10
 title: Playable-race and NPC humanoid character design — is this a person from Black Marsh, or a human in a costume
 kind: number
-side: art-direction
+side: morrowind
 judges: [render.art.character, render.art.silhouette]
 provenance: constructed
 confidence: medium
 blind_pair: no
 ---
 
-> **SIDE DECLARATION: this item is `art-direction`.**
+> **SIDE DECLARATION: this item is `morrowind`** — the front-matter value the item schema accepts
+> for the art-direction side, and the same one `RI-VIS05` and `RI-VIS07` carry.
 > Cited **only** under `JUDGEMENT SIDE: ART_DIRECTION` (RI-VIS01 §B), property **P10**.
 > **This item cites no modern game as a design target.** Not Skyrim, not ESO, not Elden Ring. That
 > is not squeamishness — it is RI-VIS01 **CC-2**, which voids any verdict citing a modern AAA
