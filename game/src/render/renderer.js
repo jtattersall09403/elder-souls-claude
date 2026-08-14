@@ -262,34 +262,38 @@ export class Renderer {
     return { ...this.prewarmState };
   }
 
-  _buildCompositor(w,h) {
-    // Preserve scene-linear HDR until the final composite. An sRGB 8-bit target clipped the
-    // highlights before bloom and the fullscreen ShaderMaterial then bypassed ACES entirely.
-    this.worldTarget=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true,stencilBuffer:false,type:THREE.HalfFloatType});
-    this.worldTarget.texture.colorSpace=THREE.LinearSRGBColorSpace;
-    this.worldTarget.depthTexture=new THREE.DepthTexture(w,h,THREE.UnsignedIntType);
-    this.worldTarget.texture.name='w1-30-hdr-world-colour';
-    this.worldTarget.depthTexture.name='w1-30-world-depth';
-    this.compositeMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,toneMapped:true,
-      uniforms:{tWorld:{value:this.worldTarget.texture},tDepth:{value:this.worldTarget.depthTexture},
-        uResolution:{value:new THREE.Vector2(w,h)},uAO:{value:1},uAA:{value:1},uPost:{value:1}},
-      vertexShader:`varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`,
-      fragmentShader:`varying vec2 vUv; uniform sampler2D tWorld,tDepth; uniform vec2 uResolution; uniform float uAO,uAA,uPost;
-      void main(){vec2 p=1./uResolution; vec3 c=texture2D(tWorld,vUv).rgb; float d=texture2D(tDepth,vUv).r;
-        float dx=abs(d-texture2D(tDepth,vUv+vec2(p.x,0.)).r),dy=abs(d-texture2D(tDepth,vUv+vec2(0.,p.y)).r);
-        float edge=clamp((dx+dy)*180.,0.,1.); if(uAA>.5&&edge>.08){vec3 n=(texture2D(tWorld,vUv+vec2(p.x,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y)).rgb)*.25;c=mix(c,n,edge*.38);}
-        float occ=1.; if(uAO>.5&&d<.9999){float ring=texture2D(tDepth,vUv+vec2(p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(-p.x*3.,0.)).r+texture2D(tDepth,vUv+vec2(0.,p.y*3.)).r+texture2D(tDepth,vUv+vec2(0.,-p.y*3.)).r;occ=1.-clamp((d*4.-ring)*22.,0.,.12);} c*=occ;
-        if(uPost>.5){
-          vec3 b=texture2D(tWorld,vUv+vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv-vec2(p.x*2.,0.)).rgb+texture2D(tWorld,vUv+vec2(0.,p.y*2.)).rgb+texture2D(tWorld,vUv-vec2(0.,p.y*2.)).rgb;
-          b=max(b*.25-vec3(.72),0.);c+=b*.075;
-          float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.035);c=mix(c,c*c*(3.-2.*c),.08);c=(c-.5)*1.015+.5;
-          float vignette=1.-smoothstep(.40,.84,length(vUv-.5))*.075;c*=vignette;
-        } gl_FragColor=vec4(c,1.);
-        #include <tonemapping_fragment>
-        #include <colorspace_fragment>
-      }`});
-    this.compositeScene=new THREE.Scene(); this.compositeCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
-    this.compositeScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),this.compositeMaterial));
+  /** W1-30S seam. A's composite module installs here (future owner: W1-30A). `mod` is the
+   * exact shape `_buildCompositor` used to assign onto `this` directly — moved, not changed.
+   * Null-control / seam-liveness: skip this call on a copy and `this.worldTarget` etc. stay
+   * undefined, so the compositor pass below fails loudly instead of silently drawing nothing. */
+  registerComposite(mod) {
+    this.worldTarget = mod.worldTarget;
+    this.compositeMaterial = mod.compositeMaterial;
+    this.compositeScene = mod.compositeScene;
+    this.compositeCamera = mod.compositeCamera;
+    this._composite = mod;
+    return mod;
+  }
+
+  /** W1-30S seam. H's vfx prepass and water reflection register here (future owner: W1-30H);
+   * A owns the call order in render(), H owns the pass body. Null-control / seam-liveness:
+   * skip the constructor's registration on a copy and no water reflection is ever computed —
+   * `bindWaterReflection` is never called with a live texture, so every water surface falls
+   * back to its unreflective depth colour, which is a visible, hashable frame change. */
+  registerPrePass(fn) {
+    if (typeof fn !== 'function') throw new Error('registerPrePass requires a function');
+    this._prePasses.push(fn);
+    return fn;
+  }
+
+  /** W1-30S seam. B pushes the frame's lighting summary here (future owner: W1-30B) instead of
+   * every consumer reading `sky.js` directly. This commit is the first caller: `render()` below
+   * calls it right after `this.sky.apply(...)`, and the province night-lamp factor — previously
+   * duplicated with its own local `elev`/`day` computation — now reads `this.lightingFrame.day`
+   * instead of recomputing the identical arithmetic. */
+  setLightingFrame(obj) {
+    this.lightingFrame = obj;
+    return obj;
   }
 
   /** Working feature sabotage surface used by live controls; every switch changes shipping pixels. */
@@ -856,17 +860,26 @@ export class Renderer {
     // front is currently at, and the weather's light class. The sky reads them off the LIVE
     // env rather than off weather.json, so what is drawn is what the fixed step computed.
     this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env, sim.frame);
+    // W1-30S seam: publish the frame's lighting summary sky.js just computed.
+    this.setLightingFrame(this.sky.lastFrame);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the
       // welkynd pillars, the kiln flues, the comb cells and the drifting jellies are what a region
       // is legible BY. RI-WLD04 M17 step 6: "a region that is only identifiable in clear daylight
       // is half-built."
+      //
+      // W1-30S: this used to recompute `elev`/`day` locally with the identical formula sky.js's
+      // apply() already evaluates for the same `sim.env.timeOfDay` — same operations, same
+      // inputs, so `this.lightingFrame.day` is bit-for-bit the `day` that duplicate calc produced.
+      // Reading the shared object retires the duplication instead of the arithmetic.
       if (this.province) {
-        const elev = Math.sin(((sim.env.timeOfDay - 6) / 24) * Math.PI * 2);
-        this.province.setNightFactor(1 - Math.max(0, Math.min(1, elev * 1.6 + 0.28)) * 1.6);
+        this.province.setNightFactor(1 - this.lightingFrame.day * 1.6);
       }
 
     this.sky.followCamera(this.camera);
-    this._renderWaterReflection(sim.frame);
+    // W1-30S seam: registered prepasses run here, in the exact position water reflection used
+    // to be called inline. Today `this._prePasses` holds exactly the one closure the
+    // constructor registered, so this is the same call with the same argument as before.
+    for (const pass of this._prePasses) pass(sim.frame);
 
     // ---- seam S19: spell VFX -----------------------------------------------------------------
     // Two passes, and the second one is the frame. The prepass writes scene DEPTH (which soft
