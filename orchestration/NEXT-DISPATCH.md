@@ -1,5 +1,38 @@
 # Next dispatches, in priority order
 
+## SPLIT-TRIAL-DISPATCH. The one thing the split trial could not do itself: dispatch the arms.
+
+`orchestration/status/SPLIT-TRIAL.json`, and `COST.md` Ruling **C3a**. The trial has its instrument,
+its frozen BEFORE and its falsifier answered; what it has never had is a single piece split **on
+purpose**. `node tools/cost.mjs --split-trial` currently reports `planned_split: 0` across 478
+subagents and returns **NOT YET DISPATCHED** — every "after" column is empty by construction.
+
+**Three long W1 pieces, each dispatched as two agents in sequence.** The instrument needs six
+planned-split agents before it will return a verdict at all; below that it returns UNDERPOWERED, and
+`--experiments-self-test` proves the refusal by feeding it the same $2.64 handoff on two agents and on
+ten and requiring different answers. One piece is not a trial.
+
+1. **The marker is not optional.** The dispatch description must contain `chunk N of M` — e.g.
+   `"W1-33 canopy — chunk 1 of 2"`. A split that does not say so is invisible to all three tripwires.
+   The regex is deliberately strict for the same reason `RESUMED_RE` is: one that guessed would fold
+   ordinary round-2 dispatches into the planned arm and manufacture the population this is measuring.
+2. **Chunk 1 stops on purpose at ~100 requests** and its last act is `orchestration/status/<PIECE>.json`
+   — findings, `files_touched`, and a `next_step` naming exactly what chunk 2 picks up. That note is
+   the intervention; everything else is bookkeeping.
+3. **Chunk 2's brief points at that file and almost nothing else** (rule 18).
+4. **Run the matched arm**: a comparable piece as one marathon agent, same wave, same role.
+5. Then `node tools/cost.mjs --split-trial` and read the verdict. Any one tripwire fires the revert;
+   the reversal is one line of the brief plus `git checkout` on `tools/cost.mjs`.
+
+**What would overturn the ruling behind this:** tripwire 1 above $2.00 on the split arm. The falsifier
+currently predicts the opposite — a richer handoff note orients **$0.49 cheaper**, with the maturity
+confound pushing the other way — but that is a direction at p = 0.072 on 21 successors, not a size, and
+it measures a note's **bytes**, never its quality. The dispatched arm is the only thing that settles it.
+
+**Second, small and cheap:** `--split-trial`'s tripwire 3 reads `corpus/90-verdicts` directly for critic
+find-rate because no instrument computed it. That belongs in `tools/scores.mjs` beside the scores, with
+a fixture — no synthetic self-test arm covers it today.
+
 ## SPAWN-TRUTH. Ruling: the game starts in Thorn, not Lilmoth. Every "first ten minutes" measurement so far measured the wrong town.
 
 **Reversible.** Full evidence, played and cited from the shipped data: `reports/spawn-truth/2026-08-14-spawn-truth.md`.
