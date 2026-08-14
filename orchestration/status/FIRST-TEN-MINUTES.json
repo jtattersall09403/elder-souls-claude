@@ -1,0 +1,109 @@
+{
+ "task_id": "FIRST-TEN-MINUTES",
+ "title": "The defects a player meets in their first ten minutes — D3 (people at the world origin), D2 (rain through roofs), D1 (buried camera), and the charOpacity consumption failure",
+ "started": "2026-08-14T09:25:00Z",
+ "state": "built-and-banked-d1-diagnosed-not-fixed",
+ "source": "reports/visual-truth/2026-08-14-visual-truth.md §2 (D1, D2, D3, D11) and §1.4 / §4 (charOpacity)",
+ "branch": "codex/wave1-build-experiment",
+ "code_landed_in": "91fbb20e (swept into another agent's tree-wide bank — see clobber_incident)",
+
+ "files_claimed": [
+  "game/src/sim/npc.js",
+  "game/src/render/sky.js",
+  "game/src/render/renderer.js",
+  "game/src/engine.js (populateSettlement() only)",
+  "tools/harness/first-ten.mjs",
+  "tools/render/consumption-sweep.mjs",
+  "reports/first-ten-minutes/",
+  "docs/shots/2026-08-14-first-ten-minutes/",
+  "orchestration/status/FIRST-TEN-MINUTES.json"
+ ],
+
+ "overlap_declared": "game/src/engine.js is claimed by HUD-MORROWIND (live) and touched by 27 other pieces. My edit is confined to populateSettlement()'s `cell === null` placement arm; HUD-MORROWIND's declared engine.js edit is 'adds one field to the UI context', so the two are disjoint. game/src/render/sky.js is touched by W1-30-builder-20260812 ('builder-native-gpu-remediation-in-progress'); my edit there is one optional parameter on apply(), one guarded block inside the existing precipitation branch, and one exported helper appended at the end — all additive. game/src/render/renderer.js is touched by W1-03, W1-30-builder-20260812 and W1-READABLES; my edits are two new private methods, one module-scope scratch vector and two call sites. game/src/ui/compass.js was NOT edited: ownership.mjs says HUD-MORROWIND, so the diagnosis was written up for them instead. NOTE for whoever owns tools/experience/npc-presence-consumption.mjs, which appeared untracked in the tree while I was working: we are both looking at NPC presence. My change is in sim/npc.js applyPresence() and engine.js populateSettlement(); worth a look before you measure.",
+
+ "what_changed": [
+  {
+   "id": "D3",
+   "headline": "5 named NPCs were being drawn at the world origin, 5.7 km from their own town. Now 0, and three of them are standing in Lilmoth.",
+   "audit_claim_refined": "The audit said '32 of 56 NPCs sit at world-origin coordinates'. That count is correct but it overstates the visible damage and understates the interesting part. 27 of those 32 are interior residents whose coordinates are correctly INTERIOR-LOCAL — that is the right frame for somebody in a room — and they were already being hidden. Exactly 5 had bodies actually drawn in the world at those coordinates, and those 5 are the defect.",
+   "root_cause_1": "game/src/engine.js populateSettlement(): the `else` arm derives a position from an INTERIOR's bounds. A person with no cell has no interior to derive from, so `d` is null and the fallbacks bx=3 / bz=4 placed them in a 6 m x 8 m box centred on the WORLD ORIGIN. Nothing then moved them, because anchorFor() returns null for `at: null` with no post.",
+   "root_cause_2": "game/src/sim/npc.js: the presence rule lived in the last paragraph of stepSchedule(), which opens `if (!n.schedule.length) return;`. A person with no schedule never had presence computed at all and kept makeNPC's optimistic `present: true` forever — so two Lilmoth interior residents were drawn in the open world at their room-local coordinates.",
+   "fix": "Placement: a person with no cell is placed outside a door of a real building in their own town, using the SAME arithmetic as tools/world/build-giver-posts.mjs lines 167-184 rather than a second derivation of it (owner directive §3, reuse). Presence: extracted to applyPresence() and asked of everybody, with `n.settlement` joining `n.post.settlement` as a reason to be outdoors.",
+   "measured": "visible_bodies_at_origin 5 -> 0; residents_in_town 24 -> 27; blackwood-company-factor (Corvus Aldeyn) 5723 m from the player -> 27 m; lilmoth-rootkeepers -> 55 m; lilmoth-yard-brothers -> 58 m. The two interior residents keep their room-local coordinates and are now correctly hidden while the player is outdoors.",
+   "evidence": "reports/first-ten-minutes/{before,after}/ — frames and census-rows.json. docs/shots/2026-08-14-first-ten-minutes/2026-08-14-npcs-at-the-world-origin-before-after.png is the same camera stop before and after.",
+   "null_control": "reports/first-ten-minutes/null-presence-only — the PLAUSIBLE wrong answer, not the trivial one: keep the presence fix, drop the placement fix. That is what a reasonable person would have done on seeing that the bodies at the origin are interior residents. visible_bodies_at_origin falls 5 -> 3, so the headline number improves, while residents_in_town stays at 24 and Corvus Aldeyn is still 5.7 km away and merely invisible. A fix that only hid people would have passed a naive gate."
+  },
+  {
+   "id": "D2",
+   "headline": "Rain no longer falls through solid roofs.",
+   "root_cause": "game/src/render/sky.js spawns streaks in a 28 m column around the player from 5 m below to 17 m above, and never asked what was overhead. Worth saying plainly because the obvious guess is wrong: this was NEVER a depth-sorting bug — the material is depth-tested, only depthWrite is off — the drops are genuinely spawned in the air beneath the deck, between the player and the underside.",
+   "fix": "Renderer._updateOverheadField() builds a 9x9 coarse roof-height field from cached world AABBs of nearby structures (field refreshed every 5 frames, candidate set every 90). Sky.apply() takes it and compacts covered streaks out of the draw range, so a sheltered player pays LESS overdraw, not more.",
+   "measured": "15 of 192 live streaks were under a roof at the spawn point with the fix unwired. Full walk numbers in reports/first-ten-minutes/after-d1d2/manifest.json d2.steps[].",
+   "null_control": "reports/first-ten-minutes/null-d2-unwired — again the plausible wrong answer rather than the trivial one: the roof field is still computed and the cost still paid, only the ARGUMENT to sky.apply() is dropped. That is exactly the state the build was already in: an emitter perfectly capable of culling with nothing handed to it to cull against.",
+   "honest_limit": "The AABB test errs toward dryness by design — a building's box covers its whole footprint including gaps under arches — so it can stop rain a metre outside a wall. That is the cheaper error, but it is an error, and a critic should check that no rain is being stopped over open street."
+  },
+  {
+   "id": "charOpacity",
+   "headline": "WIRED, not deleted. game/src/render/renderer.js:_applyCharacterFade() is now the consumer sim/camera.js:527 never had.",
+   "why_wired": "Three reasons, all reversible. The behaviour is one a third-person Souls camera actually needs, so deleting it moves the work to a later piece rather than removing it. The field is load-bearing in four other files (sim/state.js quantisation, sim/record.js trace, save/state.js both directions) and removing it changes the save shape — a far wider blast radius than adding a reader. And it is the closest thing this build has to a remedy for D1, where the compressed arm puts the player's own body in the frame.",
+   "what_would_change_my_mind": "If the fade reads badly in motion — a character strobing on every brush against a wall — the answer is a longer band or hysteresis in game/data/camera/rig.json, not a value nothing reads.",
+   "trap_avoided": "render/actor.js:473 caches the reed/chitin/xanmeer armour materials against the shared `mats` object and hands the SAME instances to every actor. Setting opacity on the player's meshes in place would have faded every NPC in the scene too. Each mesh therefore keeps its shared solid material plus a private translucent clone, made once on the first frame a fade is actually needed.",
+   "not_yet_photographed": "I have not got a picture of the fade actually happening — that needs the camera driven hard into a wall, and the run that would have done it is the D1 walk. The consumer exists and the sweep is green; the PICTURE is owed. Stated here rather than left for a critic to notice."
+  },
+  {
+   "id": "sweep",
+   "headline": "tools/render/consumption-sweep.mjs — the sibling search charOpacity implied, over a stated population rather than by anecdote.",
+   "population": "98 per-frame fields declared on makeCamera(), makePlayer(), makeEnvironment() and makeWorld() in game/src/sim/state.js, tested against all 21 files in game/src/render/.",
+   "result": "10 classified VISUAL, 85 INTERNAL, 3 AMBER. Exactly ONE genuine consumption failure in the whole population: charOpacity, now fixed.",
+   "amber_checked_by_hand": "camera.shakeYaw and camera.shakePitch DO reach the frame as a positional wobble via sim/camera.js:1039 viewBasis() -> writePose() -> camera.pos, but the ROTATION that RI-CAM06 §G calls the entire intent is discarded by renderer.js's camera.lookAt(pivot) + up=(0,1,0). camera.clipThrough is a diagnostic and correctly has no drawing consumer. A plain name-grep calls all three red; they are recorded as amber with the route they take, because a tool that cries wolf is not worth running.",
+   "tripwire": "exits 1 while any VISUAL field has no consumer. It exited 1 before this piece and exits 0 after, so it is a working regression guard rather than a report."
+  }
+ ],
+
+ "not_done": [
+  {
+   "id": "D1",
+   "what": "The buried camera is NOT fixed. I measured it and I am not claiming it.",
+   "why": "The cheap explanation is wrong, and this is the useful part of the finding: the arm's collision ALREADY runs against settlement buildings. engine.js _settleSettlementSolids() builds a CollisionCell from settlementSolidsNear(p, 45) and assigns it to sim.cell, and sim/camera.js solveArm() sphere-casts against exactly that. So 'the camera does not collide with the town' is not the defect, and an afternoon spent making it collide would have been wasted.",
+   "two_live_candidates": "(a) settlementSolids() emits wall slabs, not the underside of a raised deck — so the one surface that buries the camera is the one surface missing from the collision set; (b) the frame is composed badly rather than occluded — a near-field object owning 55% of it while the character is still technically visible behind — which no arm change fixes and which wants a near-field occluder fade.",
+   "how_to_tell_them_apart": "reports/first-ten-minutes/*/manifest.json d1.steps[].player_visible_px, at eleven stops along the walk, measured by rendering each stop twice from one pose with the player's materials set to colorWrite:false and counting differing pixels (the method from vt-seethrough.mjs §1.1). If it collapses under the deck it is (a); if it does not, it is (b). Read the number before choosing the fix.",
+   "why_i_stopped": "Both candidate fixes live in sim/camera.js and render/exterior.js, which W1-06 and W1-30 hold mid-flight, and neither is a change I could land AND null-control honestly in the time left. Filed as NEXT-DISPATCH R3."
+  },
+  {
+   "id": "D11",
+   "what": "The compass Infinity-yaw crash is diagnosed and confirmed still live, but NOT edited, because game/src/ui/compass.js belongs to HUD-MORROWIND.",
+   "handoff": "orchestration/NEXT-DISPATCH.md R1, with the mechanism, three independent one-liners, and a null control that is the plausible wrong answer (keep the cardinalOf fallback, revert only the system.js guard: the compass then silently draws NORTH forever instead of crashing, which is worse because nothing goes red)."
+  },
+  {
+   "id": "coordination",
+   "what": "Could not reach W1-30V. SendMessage reports no agent directory in this session and ListAgents is not available here.",
+   "what_i_did_instead": "Honoured 'consume the deck rather than build your own' by reading tools/visual/deck.mjs and reusing its conventions and its hard-won fail-closed renderer_string probe (its own comment records that the first version failed OPEN and stamped software_renderer:false on a SwiftShader run); by using their tools/visual/contact-sheet.mjs for the before/after sheet rather than writing a compositor; and by writing my frames to reports/first-ten-minutes/ so as not to touch tools/visual/** at all. tools/harness/first-ten.mjs is offered for adoption as a motion-sequence profile: the deck's 48 setups are all fixed stills, and none of them walks."
+  },
+  {
+   "id": "gpu",
+   "what": "Every frame in reports/first-ten-minutes/ is SwiftShader — 'ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)' — stamped in each manifest as renderer_string plus swiftshader:true, read fail-closed. Nothing here is evidence about driver-specific filtering or MSAA. No RunPod pod was created and tools/runpod/cli.mjs cleanup was NOT run, with or without --pod."
+  }
+ ],
+
+ "clobber_incident": {
+  "what_happened": "Mid-piece, a rebase ('In-flight agent work plus restored directives sections' / 'rebased onto dashboards') reverted ALL FOUR of my uncommitted source files plus my status file and my edits to tools/harness/first-ten.mjs. git log --all -S found no commit containing them, so they had never been banked — they were working-tree only for about 35 minutes, which on this box is too long.",
+  "recovery": "renderer.js and engine.js came back from copies I had taken for the null controls (a lucky side effect, not foresight). sky.js and npc.js had no backup and were re-applied by hand. Both recovered files were diffed against the post-rebase versions first and were clean supersets — one changed line each, mine — so restoring them wholesale could not clobber anyone.",
+  "then": "tools/bank.mjs reported 'commit failed (another agent may hold the index lock — retry)' and STILL EXITED 0, which is exactly the trap RULES rule 28 names. git commit --only then failed with 'cannot do a partial commit during a merge' — another agent's merge was open in the shared tree with conflicts already resolved. In the end my source was swept into that agent's tree-wide bank at 91fbb20e, which is how this fleet actually works.",
+  "for_everyone_else": "Two cheap lessons. (1) Take a copy of every file you edit BEFORE you edit it, not only when a null control makes you; the null-control copies are the only reason two of these four survived. (2) bank.mjs's exit code is not its verdict — read its stdout. And a third that is really an orchestration point: 35 minutes of unbanked source on a tree with 23 concurrent git processes is a coin flip, so bank in smaller pieces than feels natural."
+ },
+
+ "hazards_hit": [
+  "Disk reached 99% (604 MB free) mid-run. Every scratch clone under the shared scratchpad had been touched within 30 minutes — they are other agents' live null controls — so none was removed. 1.5 GB was reclaimed from /tmp/es-bench, /tmp/uesp and /tmp/purehead, six to eight days stale and referenced by nothing in tools/ or orchestration/.",
+  "tools/contention.mjs said WAIT (3 browser instances, load 3.40 over 4 cores against a 4.0 ceiling) for the second half of this piece. Stated here because the tool asks anyone who proceeds to say so: I proceeded, one browser at a time and never concurrently, because each run is a few minutes and the alternative was leaving the fixes unmeasured.",
+  "Two capture runs were lost to my own harness errors, both now documented in the tool so nobody else pays them: restoreState() throws on a bare call (it wants a named state or a save blob), and queueInputs events REQUIRE an `f` frame field."
+ ],
+
+ "gates_run": [
+  "node tools/boot-check.mjs — PASS, with all four changes in",
+  "node tools/check-data.mjs — PASS: 392 NPC records, every settlement resolves; check-save-shape 8 assertions pass; check-souls-world 310 rows agree",
+  "node tools/render/consumption-sweep.mjs — exit 1 before, exit 0 after",
+  "node tools/check-append-only.mjs — the shared record has only been appended to"
+ ],
+
+ "next_step": "A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/first-ten.mjs --tag critic --only d3 against a town that is NOT Lilmoth — my measurement only ever entered one settlement, and the door derivation could behave differently where buildings ring the centre; (2) walk INTO lilmoth-ledger-house and confirm lilmoth-archivist-ledger is actually visible in the room, because my fix makes them invisible outdoors and I never photographed them indoors; (3) check the D2 roof field does not stop rain over open street — the AABB test errs toward dryness by design, and a false ceiling would be a new defect wearing a fixed defect's clothes; (4) get the picture of the character fade that I owe — drive the camera hard into a wall and photograph it, because 'the sweep is green' is exactly the kind of evidence this project has learned not to trust."
+}

@@ -2,8 +2,8 @@
   "task_id": "W1-30",
   "role": "builder",
   "state": "builder-native-gpu-remediation-in-progress",
-  "plan_state": "satisfied",
-  "piece": "W1-30 \u2014 whole-game visual foundation and fidelity",
+  "plan_state": "awaiting-recriticism",
+  "piece": "W1-30 — whole-game visual foundation and fidelity",
   "plan_path": "orchestration/plans/W1-30.md",
   "owner_amendment": "docs/DECOMPOSITION-W1-AMENDMENT-02.md",
   "paths": [
@@ -85,7 +85,13 @@
     "report": "reports/w1-30/PACKAGE-2-CENSUS.md",
     "coverage": "13 regions, 8 settlements, 115 generated interiors, 5 places, shared flora and creature art direction"
   },
-  "builder_packages_complete": [1, 2, 3, 4, 5],
+  "builder_packages_complete": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
   "builder_packages_pending": [
     "remaining native visual repairs across the remediation matrix",
     "literal remaining RI-VIS03 temporal cells and performance repair",
@@ -121,8 +127,14 @@
     "seed": 3030,
     "population": "8/8 shipped settlements",
     "result": "GREEN capture and hardware attestation; attached relief is visible across the ordinary-building population and the rejected Blackrose member defect is repaired, while empty foreground, Gideon scale/fog, procedural grammar and the intended draw budget stay builder-red",
-    "draw_calls_range": [429, 897],
-    "triangles_range": [523892, 1209172],
+    "draw_calls_range": [
+      429,
+      897
+    ],
+    "triangles_range": [
+      523892,
+      1209172
+    ],
     "run_sha256": "c491cc66f0a497d6e6a8ffb16ee71b3116e73b26b51531c00eb86f299b327d44",
     "manifest_sha256": "727670e167c368ea3ae90a2326ebcf59a7cd2e8fe101943731ea95c6dbd2bec3",
     "worker_result_sha256": "72cc9ec5a633c7fbd126fea70cfcd0739cd2023b0b96a2abb87c6aaace682fd9",
@@ -144,5 +156,7 @@
     "final aggregation",
     "modern-fidelity 7/10 verdict",
     "art-direction 7/10 verdict"
-  ]
+  ],
+  "plan_state_note": "Materially edited twice on 2026-08-14: rewritten into a parent plus ten children by W1-30-VIS-REVIEW, then amended (R1-R6) and given an eleventh child W1-30K by W1-30-VIS-RECRITICISM. Under PLAN-LOOP.md rule 1 neither round may approve its own edit, so a third fresh reviewer-editor judges the current version. Children dispatch on their own plan states regardless.",
+  "children_plan_path": "orchestration/plans/W1-30K.md is the eleventh child, added by amendment R2, Plan-State awaiting-criticism."
 }

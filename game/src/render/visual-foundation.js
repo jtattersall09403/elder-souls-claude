@@ -105,6 +105,15 @@ const CLASS_DETAIL_TILE = Object.freeze({
   foliage: 'organic', carapace: 'hard', pliant: 'fabric',
 });
 export const DETAIL_NORMAL_TILES = Object.freeze(['organic', 'mineral', 'fabric', 'hard']);
+// Amplitude per CLASS, not one global number.  The detail tile is what carries a 1k base through a
+// 0.5 m close-up, so it has to be strong; at one strength for everything it imprinted the same
+// pattern on every surface and leather came out of the close-up rig reading as burlap.
+const CLASS_DETAIL_STRENGTH = Object.freeze({
+  soil: .62, mineral: .62, wood: .58, foliage: .58, carapace: .50, pliant: .30,
+});
+// Three families need their own number and the reason is the same each time: the shared tile is
+// either exactly right for them or exactly wrong. A woven tile IS cloth; on leather it is burlap.
+const FAMILY_DETAIL_STRENGTH = Object.freeze({ cloth: .55, skin: .22, water: .30 });
 export const DETAIL_NORMAL_TILING = 8;
 
 /** Metres of world surface covered by one tile of a family's base texture.
@@ -113,12 +122,12 @@ export const DETAIL_NORMAL_TILING = 8;
  * D, E and F lay out their UVs so that one UV unit equals this many metres, and then every surface
  * in a frame resolves at a comparable number of texels per metre.  The plan's hard fail is a >4x
  * density change between adjacent surfaces in one shot, and the widest adjacency this table
- * permits (resin 1.0 m against mud 3.8 m) is 3.8x.  Read it with `materialTiling(family, opts)`
+ * permits (root 0.9 m against mud 3.5 m) is 3.9x.  Read it with `materialTiling(family, opts)`
  * rather than inlining the numbers. */
 export const TEXEL_METRES = Object.freeze({
-  mud: 3.8, wet_mud: 3.8, clay: 2.5, bark: 1.6, root: 1.2, timber: 2.2, thorn: 1.2,
+  mud: 3.5, wet_mud: 3.5, clay: 2.5, bark: 1.6, root: 0.9, timber: 2.2, thorn: 1.2,
   leaf: 1.8, reed: 1.6, stone: 2.4, salt: 3.0, metal: 1.0, chitin: 1.0, wet_chitin: 1.0,
-  shell: 1.2, bone: 1.6, resin: 1.0, cloth: 1.1, skin: 1.4, water: 3.8,
+  shell: 1.2, bone: 1.6, resin: 1.0, cloth: 1.1, skin: 1.4, water: 3.5,
 });
 
 /** Region palette swatches — the `palette` variant axis.
@@ -130,19 +139,19 @@ export const TEXEL_METRES = Object.freeze({
  * stone without a second texture set on disk.  `neutral` is the identity. */
 export const PALETTES = Object.freeze({
   neutral: Object.freeze({ tint: 0x808080, strength: 0, satMul: 1.0, valMul: 1.0 }),
-  blackwood: Object.freeze({ tint: 0x2f3a2c, strength: .34, satMul: 1.08, valMul: .90 }),
+  blackwood: Object.freeze({ tint: 0x3f4526, strength: .36, satMul: 1.16, valMul: .94 }),
   'clay-moor': Object.freeze({ tint: 0x8a6a3f, strength: .32, satMul: 1.14, valMul: 1.08 }),
   'crimson-coast': Object.freeze({ tint: 0x7a3730, strength: .36, satMul: 1.22, valMul: .98 }),
-  'deep-marshes': Object.freeze({ tint: 0x2b3d35, strength: .38, satMul: 1.04, valMul: .86 }),
-  'eastern-rootlands': Object.freeze({ tint: 0x5d6b3a, strength: .30, satMul: 1.12, valMul: 1.04 }),
+  'deep-marshes': Object.freeze({ tint: 0x18363f, strength: .42, satMul: 1.20, valMul: .80 }),
+  'eastern-rootlands': Object.freeze({ tint: 0x87903c, strength: .32, satMul: 1.18, valMul: 1.10 }),
   hive: Object.freeze({ tint: 0x8a7239, strength: .35, satMul: 1.18, valMul: 1.06 }),
   'marauders-coast': Object.freeze({ tint: 0x5a6470, strength: .33, satMul: .88, valMul: 1.02 }),
   'salt-hills': Object.freeze({ tint: 0xb7b49a, strength: .37, satMul: .72, valMul: 1.18 }),
   'stone-forest': Object.freeze({ tint: 0x3f4247, strength: .34, satMul: .78, valMul: .92 }),
   'stone-wastes': Object.freeze({ tint: 0x7d7c72, strength: .32, satMul: .74, valMul: 1.10 }),
   thornmarsh: Object.freeze({ tint: 0x3d2f33, strength: .36, satMul: 1.06, valMul: .88 }),
-  'valus-ridge': Object.freeze({ tint: 0x4e5a52, strength: .31, satMul: .92, valMul: 1.00 }),
-  'western-rootlands': Object.freeze({ tint: 0x4a5738, strength: .30, satMul: 1.10, valMul: .98 }),
+  'valus-ridge': Object.freeze({ tint: 0x59657a, strength: .33, satMul: .96, valMul: 1.06 }),
+  'western-rootlands': Object.freeze({ tint: 0x6a6a30, strength: .32, satMul: 1.14, valMul: 1.00 }),
 });
 for (const id of Object.keys(REGION_ART)) {
   // Fail at import, not at the one frame where a region without a swatch is on screen.
@@ -469,11 +478,11 @@ export function setWorldWetness({ amount=0, topY, bottomY }={}) {
 export function worldWetnessState(){ return { ...worldWetness }; }
 
 const NORMAL_MAPS_CHUNK='#include <normal_fragment_maps>';
-function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
+function installSurfaceShader(mat, { tile, tiling, wear, wetness, detailStrength }) {
   const detail=detailNormalTile(tile);
   const u={
-    uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?.26:0},
-    uWear:{value:wear}, uWearCurvature:{value:2.4},
+    uDetailNormal:{value:detail}, uDetailTiling:{value:tiling}, uDetailStrength:{value:detail?detailStrength:0},
+    uWear:{value:wear}, uWearCurvature:{value:5.5},
     uWetness:{value:wetness}, uWorldWetness:{value:worldWetness.amount},
     uWetTop:{value:worldWetness.topY}, uWetBottom:{value:worldWetness.bottomY},
   };
@@ -508,7 +517,16 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
           // UDN blend: keep the base map's z, add the detail slope. Cheap, stable, and it does not
           // wash the base map out the way a whiteout blend does.
           mapN = normalize( vec3( mapN.xy + esDetailN.xy * uDetailStrength, mapN.z ) );
-          vEsSurfaceCurv = clamp( length( mapN.xy ) * uWearCurvature, 0.0, 1.0 );
+          // Curvature is the rate of change of the normal, not its magnitude, and it must be
+          // measured in TEXTURE space rather than screen space. Two earlier versions were wrong and
+          // the variant proof caught both: length(mapN.xy) saturates to 1 across any strong normal
+          // map, so wear came out uniform; fwidth() is screen-space, so the same wall would wear
+          // differently at 1 m and at 10 m. A fixed-epsilon difference of the normal map is stable
+          // with distance and lands on the rim rather than on the grain.
+          vec2 esE = vec2( 0.004, 0.0 );
+          vec2 esNx = texture2D( normalMap, vNormalMapUv + esE.xy ).xy - texture2D( normalMap, vNormalMapUv - esE.xy ).xy;
+          vec2 esNy = texture2D( normalMap, vNormalMapUv + esE.yx ).xy - texture2D( normalMap, vNormalMapUv - esE.yx ).xy;
+          vEsSurfaceCurv = clamp( ( length( esNx ) + length( esNy ) ) * uWearCurvature, 0.0, 1.0 );
           normal = normalize( tbn * mapN );
         #elif defined( USE_BUMPMAP )
           normal = perturbNormalArb( - vViewPosition, normal, dHdxy_fwd(), faceDirection );
@@ -529,7 +547,7 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
   // `customProgramCacheKey` reads `this.onBeforeCompile.toString()`, so calling it detached throws
   // inside the renderer's program lookup — which is a boot failure, not a visual one.
   const priorKey=Object.hasOwn(mat,'customProgramCacheKey')?mat.customProgramCacheKey.bind(mat):null;
-  mat.customProgramCacheKey=()=>`w1-30c-surface-v1:${tile}:${detail?1:0}:${priorKey?priorKey():''}`;
+  mat.customProgramCacheKey=()=>`w1-30c-surface-v4:${tile}:${detailStrength.toFixed(2)}:${detail?1:0}:${priorKey?priorKey():''}`;
   shadedMaterials.add(mat);
   mat.needsUpdate=true;
 }
@@ -607,7 +625,8 @@ export function worldMaterial(family, options={}) {
   // installs only where one exists — which, after this piece, is every family.
   if(materialOptions.normalMap){
     installSurfaceShader(mat, { tile:CLASS_DETAIL_TILE[variant.class],
-      tiling:DETAIL_NORMAL_TILING/ts, wear, wetness:wet });
+      tiling:DETAIL_NORMAL_TILING/ts, wear, wetness:wet,
+      detailStrength:FAMILY_DETAIL_STRENGTH[family] ?? CLASS_DETAIL_STRENGTH[variant.class] });
   }
   return mat;
 }

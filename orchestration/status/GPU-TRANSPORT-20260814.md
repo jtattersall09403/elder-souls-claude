@@ -1,6 +1,6 @@
 # gpu-transport-20260814 — stop `cleanup` killing other agents' Pods; make the GPU reachable
 
-**Status:** job 1 landed; job 2 in progress
+**Status:** done — all three jobs landed and verified on real hardware
 **Branch:** `codex/wave1-build-experiment`
 **Task id:** `gpu-transport-20260814`
 
@@ -31,11 +31,25 @@ hashes `RUNPOD_OWNER`, else `CLAUDE_CODE_SESSION_ID`, else (weak, and it says so
 The safe path is the one with no flags. Verified by mutation: replacing the ownership branch with
 "terminate everything managed" turns three self-test arms red.
 
-## Transport
+## Transport — working, measured twice
 
-`https://<podId>-<port>.proxy.runpod.net` is reachable through the agent proxy (HTTP/2, Cloudflare
-404 for an unknown Pod), so the Pod runs a small HTTPS control agent (`worker/agent.py`, bearer
-token, stdlib only) and the controller drives it with ordinary HTTPS. No SSH anywhere.
+`https://<podId>-<port>.proxy.runpod.net` passes the agent proxy (HTTP/2, Cloudflare 404 for an
+unknown Pod), so the Pod runs a small HTTPS control agent (`worker/agent.py`, bearer token, stdlib
+only) and the controller drives it with ordinary HTTPS. No SSH anywhere.
+
+- probe: RTX A4500, 57 s start to Pod terminated, 3 artefacts
+- full: RTX A5000, 2 m 51 s, 11 artefacts, renderer
+  `ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA RTX A5000), NVIDIA)` — **not SwiftShader**
+- both Pods and both ephemeral templates terminated with deletion API-confirmed; account
+  re-checked afterwards, nothing left running
+
+Evidence: `docs/shots/2026-08-14-gpu-transport/`. Write-up:
+`reports/runpod-gpu/TRANSPORT-20260814.md`.
+
+## Disk
+
+`tools/lib/browser.mjs:launchGame` refuses to start when free space is short, which covers all 247
+harness tools in one edit. A silent ENOSPC can no longer look like a clean capture run.
 
 ## files_claimed
 
@@ -48,7 +62,8 @@ token, stdlib only) and the controller drives it with ordinary HTTPS. No SSH any
 - `tools/runpod/lib/run-http.mjs`
 - `tools/runpod/lib/selftest.mjs`
 - `tools/runpod/worker/agent.py`
-- `tools/runpod/config.json`
+- `tools/lib/browser.mjs` (ENOSPC guard in launchGame only)
+- `docs/shots/2026-08-14-gpu-transport/`
 - `package.json` (gpu:* scripts only)
 - `orchestration/status/GPU-TRANSPORT-20260814.md`
 - `reports/runpod-gpu/TRANSPORT-20260814.md`
