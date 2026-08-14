@@ -470,6 +470,157 @@ function checkC(root, files) {
   return { findings, scanned, absenceLines };
 }
 
+
+// =============================================================================================
+// CHECK D — a correctly-computed figure over a wrongly-scoped population
+// =============================================================================================
+//
+// The fourth instance, found 2026-08-14, and the most dangerous shape yet because EVERY OTHER
+// CHECK PASSES ON IT.
+//
+//   `docs/art-direction/ART.md` §3 recorded Thorn — the town the game starts in — with **n=0**
+//   composition-valid reference plates, worse than any other settlement, and that number drove
+//   real prioritisation. No acquisition was needed: the plates were on disk the whole time.
+//   `board.json` anchors Thorn on **REF-A3** (Telvanni grown mushroom towers), whose 5 plates are
+//   ALL square crops and therefore 0 of 5 composition-valid under `RI-VIS09` §3.3. Meanwhile
+//   **REF-A19** — "waterside settlement at Hla Oad: a moored longboat beside stilted shacks",
+//   which is what Thorn actually is — holds **6** composition-valid plates, and REF-A11 holds 3.
+//
+// Nothing is missing, nothing is uncited, no document asserts an absence, and the arithmetic is
+// exactly right. The defect is that **the anchor points at the wrong thing** — and because
+// REF-A3's plates are all square crops, that row was STRUCTURALLY INCAPABLE of ever being
+// non-zero, whatever Thorn looked like and however many plates anyone acquired.
+//
+// A true number, honestly computed, over a set selected by a key nobody re-examined. Recomputing
+// the figure reproduces the wrong answer perfectly, which is why no recomputation check can find
+// it. The question that finds it is not "is the count right" but **"is the KEY right"**.
+//
+// THE MECHANICAL DISCRIMINATOR, which is what makes this checkable at all:
+//
+//   n_total(key) > 0  AND  n_valid(key) == 0
+//
+// A key that selects members none of which can satisfy the row's own validity predicate is a key
+// whose zero is a property of the KEY, not of the subject. That zero can never be moved by
+// acquiring anything, so treating it as a gap in the world sends work at a wall. Where a sibling
+// key clears the threshold, the check names it — those are the alternatives nobody looked at.
+//
+// STORMHOLD IS A SECOND, WORSE INSTANCE and the check finds it too: it is anchored on REF-A17,
+// which `board.json`'s own `slot_routing` classifies as **interior**, while the two zeroed rows
+// are `ROOFLINE-RELIEF` and `SKY-FRACTION` — skyline statistics. An interior anchor has no
+// skyline. 0 of REF-A17's 6 plates are `sky_visible`. That is a category error between the
+// anchor's slot class and the statistic's requirement, and it is likewise unmovable by acquiring.
+
+const BOARDS = [{
+  board: 'docs/art-direction/board.json',
+  population: 'docs/art-direction/plate-metrics.json',
+  keyPattern: /Anchored on (REF-[A-Za-z0-9]+)/,       // where the row names its key
+  refOf: (rec) => ((rec.path || '') + ' ' + (rec.slot || '')).match(/REF-(A\d+[a-z]?)/)?.[0] ?? null,
+  // Each row's validity predicate, by what the row measures. A row asking about the skyline needs
+  // a plate whose sky is visible; every row needs the framing intact.
+  validFor: (rowId, rec) => rec.composition_valid === true &&
+    (/SKY-FRACTION|ROOFLINE/i.test(rowId) ? rec.sky_visible === true : true),
+  threshold: 3,
+}];
+
+function checkD(root) {
+  const findings = [];
+  let rowsExamined = 0;
+  for (const cfg of BOARDS) {
+    let board, pop;
+    try { board = JSON.parse(readFileSync(join(root, cfg.board), 'utf8')); } catch { continue; }
+    try { pop = JSON.parse(readFileSync(join(root, cfg.population), 'utf8')); } catch { continue; }
+    const recs = Array.isArray(pop) ? pop : (pop.plates || pop.records || Object.values(pop).find(Array.isArray) || []);
+    const rows = Array.isArray(board.rows) ? board.rows : [];
+
+    for (const row of rows) {
+      const n = row?.source?.population_n;
+      if (n === undefined || n === null) continue;
+      rowsExamined++;
+      if (n >= cfg.threshold) continue;                       // the row is populated; nothing to ask
+      const key = (row?.judgement?.text || '').match(cfg.keyPattern)?.[1];
+      if (!key) continue;                                     // no key named — check A5's problem, not this one
+
+      const mine = recs.filter((r) => cfg.refOf(r) === key);
+      if (!mine.length) continue;                             // the key selects nothing on disk: an honest gap
+      const valid = mine.filter((r) => cfg.validFor(row.id, r));
+      if (valid.length) continue;                             // the key CAN yield; the zero is real work-in-progress
+
+      // The key selects members, and not one of them can ever satisfy this row. Name the siblings.
+      const alternatives = [];
+      const keys = [...new Set(recs.map(cfg.refOf).filter(Boolean))];
+      for (const k of keys) {
+        if (k === key) continue;
+        const v = recs.filter((r) => cfg.refOf(r) === k && cfg.validFor(row.id, r)).length;
+        if (v >= cfg.threshold) alternatives.push({ key: k, valid: v });
+      }
+      alternatives.sort((a, b) => b.valid - a.valid);
+      findings.push({
+        check: 'D1', severity: 'error', file: cfg.board, row: row.id, subject: row.subject, key,
+        key_population: mine.length, key_valid: 0, threshold: cfg.threshold,
+        alternatives: alternatives.slice(0, 5),
+        message: `${row.id} reports n=${n} over anchor ${key}. ${key} HAS ${mine.length} member(s) on disk ` +
+          `and 0 of them can satisfy this row's validity predicate, so the zero is a property of the ANCHOR, ` +
+          `not of "${row.subject}" — no acquisition can ever move it. ` +
+          (alternatives.length
+            ? `Anchors that clear the threshold of ${cfg.threshold}: ` + alternatives.slice(0, 3).map((a) => `${a.key} (${a.valid})`).join(', ') + '.'
+            : 'No sibling anchor clears the threshold either — this one may be a genuine gap after all.'),
+      });
+    }
+  }
+  return { findings, rowsExamined };
+}
+
+// =============================================================================================
+// CHECK E — a documented remediation that cannot run
+// =============================================================================================
+//
+// Found alongside check D and it is why the n=0 could sit unchallenged for so long: every zeroed
+// row carries a `fill_command` telling the next agent exactly how to fix it, and that command
+// names `docs/art-direction/measure-plates.mjs --shots <dir>`. `measure-plates.mjs` parses only
+// `--out`. `--shots` is silently ignored, so the documented fix recomputes the same population
+// and reproduces n=0 perfectly.
+//
+// **A remediation path that has never been executed is functionally the same as no remediation
+// path**, and it is worse than none, because it looks like the question has an answer.
+const FLAGGY = /(?:^|&&|\|\||;)\s*(?:node|python3?)\s+([A-Za-z0-9_@./-]+\.(?:mjs|js|py))((?:\s+--[A-Za-z0-9-]+(?:\s+[^\s&|;]+)?)*)/g;
+
+function checkE(root, files) {
+  const findings = [];
+  const seen = new Set();
+  let commandsRead = 0;
+  const candidates = files.filter((p) => /\.(json|md)$/.test(p) && !HISTORY.some((r) => r.test(p)) &&
+    !p.startsWith('tools/node_modules/') && !p.startsWith('game/node_modules/'));
+  for (const p of candidates) {
+    let text; try { text = readFileSync(join(root, p), 'utf8'); } catch { continue; }
+    if (!/fill_command|remediation_command|how_to_fill|repro_command/.test(text)) continue;
+    for (const m of text.matchAll(/"(?:fill_command|remediation_command|how_to_fill|repro_command)"\s*:\s*"((?:[^"\\]|\\.)*)"/g)) {
+      const cmd = m[1].replace(/\\"/g, '"');
+      commandsRead++;
+      for (const c of cmd.matchAll(FLAGGY)) {
+        const script = c[1];
+        if (!existsSync(join(root, script))) {
+          const k = p + '|' + script + '|MISSING';
+          if (seen.has(k)) continue; seen.add(k);
+          findings.push({ check: 'E1', severity: 'error', file: p, script, command: cmd.slice(0, 200),
+            message: `documented remediation names \`${script}\`, which is not on disk — the fix cannot run` });
+          continue;
+        }
+        let body; try { body = readFileSync(join(root, script), 'utf8'); } catch { continue; }
+        for (const f of (c[2] || '').matchAll(/--([A-Za-z0-9-]+)/g)) {
+          const flag = f[1];
+          if (body.includes(`--${flag}`)) continue;
+          const k = p + '|' + script + '|' + flag;
+          if (seen.has(k)) continue; seen.add(k);
+          findings.push({ check: 'E1', severity: 'error', file: p, script, flag, command: cmd.slice(0, 200),
+            message: `documented remediation passes \`--${flag}\` to \`${script}\`, which never reads that flag — ` +
+              'it is silently ignored, so the command runs, exits 0, and changes nothing' });
+        }
+      }
+    }
+  }
+  return { findings, commandsRead };
+}
+
 // =============================================================================================
 // Coverage — printed every run, because a percentage nobody sees is a percentage nobody believes
 // =============================================================================================
@@ -577,6 +728,58 @@ function selfTest() {
       findings: f.length, expect: 'red', detail: f[0]?.message });
   }
 
+  // D — the live Thorn row: an anchor whose whole population fails the row's own predicate.
+  {
+    const dir = stage('D', (d) => {
+      mkdirSync(join(d, 'docs/art-direction'), { recursive: true });
+      cpSync(join(ROOT, 'docs/art-direction/plate-metrics.json'), join(d, 'docs/art-direction/plate-metrics.json'));
+      const board = JSON.parse(readFileSync(join(ROOT, 'docs/art-direction/board.json'), 'utf8'));
+      board.rows = board.rows.filter((r) => r.id === 'ART-SET-SKY-FRACTION-thorn');
+      writeFileSync(join(d, 'docs/art-direction/board.json'), JSON.stringify(board));
+    });
+    const f = checkD(dir).findings;
+    results.push({ arm: 'D:zero-over-wrongly-scoped-anchor', red: f.length > 0, findings: f.length,
+      expect: 'red', detail: f[0]?.message?.slice(0, 150) });
+  }
+  // D control — REPOINT the same row at the anchor that fits (REF-A19, the waterside settlement)
+  // and it must go green. Without this arm D1 could be firing on "n=0" alone and the anchor
+  // reasoning would be decoration.
+  {
+    const dir = stage('Dctl', (d) => {
+      mkdirSync(join(d, 'docs/art-direction'), { recursive: true });
+      cpSync(join(ROOT, 'docs/art-direction/plate-metrics.json'), join(d, 'docs/art-direction/plate-metrics.json'));
+      const board = JSON.parse(readFileSync(join(ROOT, 'docs/art-direction/board.json'), 'utf8'));
+      board.rows = board.rows.filter((r) => r.id === 'ART-SET-SKY-FRACTION-thorn')
+        .map((r) => ({ ...r, judgement: { ...r.judgement, text: 'Anchored on REF-A19. waterside settlement.' } }));
+      writeFileSync(join(d, 'docs/art-direction/board.json'), JSON.stringify(board));
+    });
+    const f = checkD(dir).findings;
+    results.push({ arm: 'D:control-anchor-repointed-to-A19', red: f.length > 0, findings: f.length, expect: 'green' });
+  }
+  // E — the live `--shots` flag that `measure-plates.mjs` does not implement.
+  {
+    const dir = stage('E', (d) => {
+      mkdirSync(join(d, 'docs/art-direction'), { recursive: true });
+      writeFileSync(join(d, 'docs/art-direction/measure-plates.mjs'), 'const OUT = argv.includes("--out");\n');
+      writeFileSync(join(d, 'docs/art-direction/board.json'), JSON.stringify({ rows: [{
+        current_build: { fill_command: 'node docs/art-direction/measure-plates.mjs --shots reports/x' } }] }));
+    });
+    const f = checkE(dir, ['docs/art-direction/board.json']).findings;
+    results.push({ arm: 'E:remediation-flag-not-implemented', red: f.length > 0, findings: f.length,
+      expect: 'red', detail: f[0]?.message?.slice(0, 130) });
+  }
+  // E control — the same command with a flag the script does read. Must stay green.
+  {
+    const dir = stage('Ectl', (d) => {
+      mkdirSync(join(d, 'docs/art-direction'), { recursive: true });
+      writeFileSync(join(d, 'docs/art-direction/measure-plates.mjs'), 'const OUT = argv.includes("--out");\n');
+      writeFileSync(join(d, 'docs/art-direction/board.json'), JSON.stringify({ rows: [{
+        current_build: { fill_command: 'node docs/art-direction/measure-plates.mjs --out a.json' } }] }));
+    });
+    const f = checkE(dir, ['docs/art-direction/board.json']).findings;
+    results.push({ arm: 'E:control-flag-is-implemented', red: f.length > 0, findings: f.length, expect: 'green' });
+  }
+
   let bad = 0;
   console.log('check-citations --self-test\n');
   for (const r of results) {
@@ -609,9 +812,12 @@ function main() {
 
   const findings = [];
   let a = { findings: [], graph: [] }, b = { findings: [], dirCount: 0 }, c = { findings: [], scanned: 0, absenceLines: 0 };
+  let d = { findings: [], rowsExamined: 0 }, e = { findings: [], commandsRead: 0 };
   if (only.includes('A')) { a = checkA(ROOT, files); findings.push(...a.findings, ...checkA4(ROOT, files).findings); }
   if (only.includes('B')) { b = checkB(ROOT, files); findings.push(...b.findings); }
   if (only.includes('C')) { c = checkC(ROOT, files); findings.push(...c.findings); }
+  if (only.includes('D')) { d = checkD(ROOT); findings.push(...d.findings); }
+  if (only.includes('E')) { e = checkE(ROOT, files); findings.push(...e.findings); }
 
   const cov = coverage(ROOT, files, c);
   const errors = findings.filter((f) => f.severity === 'error');
@@ -621,15 +827,17 @@ function main() {
       generated: new Date().toISOString(),
       commit: (() => { try { return execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(); } catch { return null; } })(),
       checks_run: only, coverage: cov, supersession_graph: a.graph,
-      asset_directories_examined: b.dirCount, findings,
+      asset_directories_examined: b.dirCount, board_rows_examined: d.rowsExamined,
+      remediation_commands_examined: e.commandsRead, findings,
     }, null, 2));
     process.exit(errors.length ? 1 : 0);
   }
 
   const label = { A0: 'tool blind', A1: 'superseded ruling not propagated', A2: 'append-only rule broken', A3: 'in-place amendment not reachable from here',
     A4: 'amended item does not point at its amendment', A5: 'amendment cannot be routed to an item',
+    D1: 'A FIGURE COMPUTED OVER A WRONGLY-SCOPED POPULATION', E1: 'documented remediation cannot run',
     B1: 'asset nobody names', B2: 'asset only the inventory names', C1: 'FALSE ASSERTION OF ABSENCE' };
-  for (const grp of ['C1', 'A1', 'A4', 'A2', 'A0', 'B1', 'B2', 'A3', 'A5']) {
+  for (const grp of ['D1', 'C1', 'E1', 'A1', 'A4', 'A2', 'A0', 'B1', 'B2', 'A3', 'A5']) {
     const g = findings.filter((f) => f.check === grp);
     if (!g.length) continue;
     console.log(`\n== ${grp} — ${label[grp]} — ${g.length}`);
@@ -640,7 +848,8 @@ function main() {
     }
   }
   console.log(`\ncoverage: ${cov.governing_documents} governing documents of ${cov.total_tracked_files} tracked; ` +
-              `${b.dirCount} asset directories; ${cov.absence_sentences_seen} absence sentences read.`);
+              `${b.dirCount} asset directories; ${cov.absence_sentences_seen} absence sentences read; ` +
+              `${d.rowsExamined} keyed board rows; ${e.commandsRead} documented remediation commands.`);
   console.log(cov.note);
   console.log(`\n${errors.length} error(s), ${findings.length - errors.length} warning(s).`);
   process.exit(errors.length ? 1 : 0);
