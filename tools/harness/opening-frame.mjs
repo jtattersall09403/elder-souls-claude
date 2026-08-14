@@ -104,7 +104,7 @@ const CAM = await import(path.join(ROOT, 'game/src/sim/camera.js'));
 const { SimState } = await import(path.join(ROOT, 'game/src/sim/state.js'));
 const { InputPipeline } = await import(path.join(ROOT, 'game/src/input/pipeline.js'));
 const { exitFacing } = await import(path.join(ROOT, 'game/src/sim/settlement.js'));
-const { CENSUS_PLACES } = await import(path.join(ROOT, 'game/src/character/scene.js'));
+const { CENSUS_PLACES, handBackFraming, doorwayLocal } = await import(path.join(ROOT, 'game/src/character/scene.js'));
 
 const { stepCamera, CAMERA_CONST, fadeOpacity } = CAM;
 const D2R = Math.PI / 180;
@@ -257,34 +257,70 @@ const out = {
 };
 
 // ---- SITE 1: the census hand-back, inside the writ house ------------------------------------
+//
+// THE MEASURE HERE IS NOT CLEARANCE, IT IS WHETHER THE WAY OUT IS IN THE PICTURE.
+//
+// Clearance-in-metres is the right question at a doorstep and the wrong one in a 9 x 12 m room:
+// the census pose and the fix both see the far wall, so both score the same and the number is
+// blind to the entire complaint. What separates them is angular — where the room's own doorway
+// falls relative to where the camera is pointed, against the rig's real horizontal field of view,
+// which is `2*atan(tan(fov/2) * aspect)` = 79.3 deg at fov 50 and 16:9. Off by more than half of
+// that and the exit is not on the screen.
 {
   const place = CENSUS_PLACES['writ-house'];
   const cell = interiorCellFor('writ-house');
   const pos = [place.player_pos[0], 0, place.player_pos[2]];
   const rec = interiors['writ-house'];
-  const bm = rec.bounds_m;
-  // The door, in the room's own local frame: `continuity.interior_spawn` is where `useDoor()`
-  // stands you when you come IN, i.e. just inside the door — so it is the door, in local metres.
-  const doorLocal = rec.continuity.interior_spawn;
-  const toDoor = norm360(Math.atan2(doorLocal[0] - pos[0], doorLocal[2] - pos[2]) / D2R);
-  const toDesk = place.camera.yaw;
+  const door = doorwayLocal(rec);
+  const fixed = handBackFraming(rec, pos);
+  const halfH = Math.atan(Math.tan(CAMERA_CONST.fov_deg / 2 * D2R) * CAMERA_CONST.aspect) / D2R;
+
+  /** Where the doorway sits in the frame: degrees off the view axis, and is that on screen. */
+  const doorInFrame = (camYaw) => {
+    const b = norm360(Math.atan2(door.pos[0] - pos[0], door.pos[2] - pos[2]) / D2R);
+    const off = ((b - camYaw + 540) % 360) - 180;
+    return { bearing_deg: +b.toFixed(1), off_axis_deg: +off.toFixed(1), on_screen: Math.abs(off) <= halfH };
+  };
+
+  const arm = (bodyYaw, camYaw, opts) => {
+    const r = poseAndSettle(cell, pos, bodyYaw, camYaw, opts);
+    return { ...r, way_out: doorInFrame(r.cam_yaw_deg) };
+  };
+
   out.sites.census_handback = {
     what: 'the frame at the instant the last census answer resolves, before any door is used',
-    room_bounds_m: bm,
+    room_bounds_m: rec.bounds_m,
     player_pos_local: pos,
-    door_local: doorLocal,
-    yaw_to_door_deg: +toDoor.toFixed(1),
+    doorway_local: door ? door.pos : null,
+    doorway_side: door ? door.side : null,
+    interior_spawn_local: rec.continuity.interior_spawn,
+    note_interior_spawn: 'NOT the door. `continuity.interior_spawn` is where useDoor() puts you and '
+      + 'on this record it is [0,0,-4.6], against the -z wall, 11 m from the +z doorway the shell '
+      + 'plan cuts and the world door stands on. Named here so nobody aims at it again.',
+    horizontal_half_fov_deg: +halfH.toFixed(1),
     arms: {
-      as_shipped: { yaw_deg: toDesk, ...poseAndSettle(cell, pos, place.player_yaw, toDesk, { pitch: place.camera.pitch }) },
-      to_door: { yaw_deg: +toDoor.toFixed(1), ...poseAndSettle(cell, pos, toDoor, toDoor, { pitch: -6 }) },
-      NULL_body_only: { yaw_deg: +toDoor.toFixed(1), note: 'body + combat mirror turned to the door, sim.camera.yaw left on the census pose', ...poseAndSettle(cell, pos, toDoor, null, { pitch: place.camera.pitch, priorCamYaw: toDesk }) },
+      // The pose the scene left behind: a CONVERSATION framing, still live after the conversation.
+      as_shipped: { rule: 'CENSUS_PLACES.writ-house.camera', ...arm(place.player_yaw, place.camera.yaw, { pitch: place.camera.pitch }) },
+      // The fix: `handBackFraming()`, body and camera together.
+      fixed: { rule: `handBackFraming (${fixed ? fixed.source : 'null'})`, ...arm(fixed.yaw_deg, fixed.yaw_deg, { pitch: fixed.pitch_deg }) },
+      // THE NULL CONTROL, and it is the plausible wrong answer: the body and the combat mirror are
+      // turned to the door and `sim.camera.yaw` is not. Every state check passes. The player is
+      // shown the wall, and then shown it sliding away at 1.5 deg/frame.
+      NULL_body_only: {
+        rule: 'body + combat mirror only, sim.camera.yaw untouched',
+        ...arm(fixed.yaw_deg, null, { pitch: place.camera.pitch, priorCamYaw: place.camera.yaw }),
+      },
     },
   };
-  if (args.sweep) {
-    const sw = [];
-    for (let a = 0; a < 360; a += 5) sw.push({ yaw_deg: a, clearance_m: clearance(cell, pos[0], pos[1] + 1.6, pos[2], a) });
-    out.sites.census_handback.sweep = sw;
-  }
+  // How long the null control takes to arrive, in frames, at 1.5 deg/frame — the cost of the trap.
+  const gap = Math.abs(((fixed.yaw_deg - place.camera.yaw + 540) % 360) - 180);
+  out.sites.census_handback.null_recentre = {
+    yaw_gap_deg: +gap.toFixed(1),
+    clamp_deg_per_frame: CAMERA_CONST.recentre_yaw_clamp_deg_per_frame,
+    frames_to_arrive: Math.ceil(gap / CAMERA_CONST.recentre_yaw_clamp_deg_per_frame),
+    and_only_once: 'auto-recentre needs the stick held forward for recentre_gate_frames first, so '
+      + 'a player who does not move never arrives at all',
+  };
 }
 
 // ---- SITE 2: the writ-house doorstep ---------------------------------------------------------
@@ -338,11 +374,13 @@ fs.writeFileSync(jsonPath, JSON.stringify(out, null, 2));
 const pct = (v) => `${(v * 100).toFixed(0)}%`;
 say(`opening-frame — loadavg ${out.loadavg.split(' ').slice(0, 3).join(' ')}`);
 say('');
-say('SITE 1 — the census hand-back, inside the Writ House (before any door):');
-for (const [k, v] of Object.entries(out.sites.census_handback.arms)) {
-  say(`  ${k.padEnd(16)} cam yaw ${String(v.cam_yaw_deg).padStart(5)}  arm ${String(v.arm_m).padStart(6)} m  char opacity ${pct(v.char_opacity).padStart(4)}  clearance ${String(v.clearance_m).padStart(5)} m`);
+const C = out.sites.census_handback;
+say(`SITE 1 — the census hand-back, inside the Writ House (before any door). Doorway at local ${C.doorway_local.map((n) => n.toFixed(2)).join(', ')} (${C.doorway_side}); horizontal half-FOV ${C.horizontal_half_fov_deg}°:`);
+for (const [k, v] of Object.entries(C.arms)) {
+  say(`  ${k.padEnd(16)} cam yaw ${String(v.cam_yaw_deg).padStart(5)}  arm ${String(v.arm_m).padStart(6)} m  opacity ${pct(v.char_opacity).padStart(4)}`
+    + `  WAY OUT ${v.way_out.on_screen ? 'ON SCREEN ' : 'off screen'} (${String(v.way_out.off_axis_deg).padStart(6)}° off axis)`);
 }
-say(`  the door is at local yaw ${out.sites.census_handback.yaw_to_door_deg}°`);
+say(`  the null control needs ${C.null_recentre.frames_to_arrive} frames at ${C.null_recentre.clamp_deg_per_frame}°/frame to close its ${C.null_recentre.yaw_gap_deg}° gap — and only if the player walks`);
 say('');
 const S = out.sites.writ_house_doorstep;
 say(`SITE 2 — the Writ House doorstep, ${S.pos.map((n) => n.toFixed(2)).join(', ')} (ground ${S.ground_y_m} m), ${S.town_cell_shapes} solids:`);
