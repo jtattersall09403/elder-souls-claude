@@ -1,0 +1,6418 @@
+{
+ "generated": "2026-08-14T18:14:43.519Z",
+ "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
+ "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
+ "inventory_counts": {
+  "reference_items": 149,
+  "plans": 49,
+  "open_gaps": 79,
+  "proposed_roadmap_items": 69
+ },
+ "rings": {
+  "0": "Instruments — how we know anything. Continuous; never \"finished\".",
+  "1": "The frame — what a rendered pixel looks like. Wave 1 by owner directive.",
+  "2": "The body, the camera and the fight — Souls owns everything in here.",
+  "3": "The world you can navigate by prose — the substrate B-side quests stand on.",
+  "4": "The character and the economies — what you become and what it costs.",
+  "5": "People, words and quests — the Morrowind half proper.",
+  "6": "The platform — save, input, performance, screens.",
+  "7": "The whole thing — judged as an experience, end to end."
+ },
+ "proposed_items": [
+  {
+   "id": "I1",
+   "ring": 0,
+   "title": "The harness and determinism",
+   "blurb": "Harness API surface, seeded PRNG actually drawn, fixed-step reproducibility, save-shape probes.",
+   "ref_items": [
+    "RI-CMB07",
+    "RI-MTH01",
+    "RI-MTH02"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-combat-exemplar-has-no-danger",
+    "GAP-W1-platform-prng-never-drawn",
+    "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+    "GAP-W1-ui-detectors-that-cannot-see",
+    "GAP-W1-walkpath-absorbs-teleports"
+   ],
+   "n_open_gaps": 5,
+   "blocking_gaps": 4,
+   "plans": [
+    "W1-00"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "I2",
+   "ring": 0,
+   "title": "Capture and the Deck",
+   "blurb": "Hardware capture that returns frames under fleet load; many angles + motion as the standing evidence form.",
+   "ref_items": [
+    "RI-MTH04",
+    "RI-MTH06"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-MTH06"
+   ],
+   "open_gaps": [
+    "GAP-W1-w1-30d-guard-misses-part-deletion",
+    "GAP-W1-w1-30e-street-gate-never-ran"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30-EVIDENCE",
+    "W1-30V"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V17"
+  },
+  {
+   "id": "I4",
+   "ring": 0,
+   "title": "Consumption as a gate",
+   "blurb": "RI-MTH07 enforced on every piece: the world reads the model, demonstrated by perturbation.",
+   "ref_items": [
+    "RI-MTH07"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-FCT-03",
+    "GAP-W1-13-roster-clause-has-no-control",
+    "GAP-W1-25-the-control-facility-has-an-optional-control",
+    "GAP-W1-audio-emitter-consumption",
+    "GAP-W1-consumption-sweep-tripwire-is-a-name-grep"
+   ],
+   "n_open_gaps": 5,
+   "blocking_gaps": 3,
+   "plans": [
+    "BUILDER-EXECUTION-CONTRACT"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "I5",
+   "ring": 0,
+   "title": "The corpus audited and extended",
+   "blurb": "Citation tripwire, the missing instruments, reference plates that can satisfy their own rows, region/topological maps.",
+   "ref_items": [
+    "RI-VIS02",
+    "RI-VIS09",
+    "RI-MTH05",
+    "RI-MTH06"
+   ],
+   "n_ref_items": 4,
+   "never_judged": [
+    "RI-VIS09",
+    "RI-MTH05",
+    "RI-MTH06"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "F3"
+  },
+  {
+   "id": "I3",
+   "ring": 0,
+   "title": "The blind protocols",
+   "blurb": "Protocol A (fidelity) and Protocol B (art direction), packs that can express the question their item asks. Runs after I5: a pack that cannot separate quality from provenance is not a judgement.",
+   "ref_items": [
+    "RI-DLG07",
+    "RI-VIS01",
+    "RI-VIS03",
+    "RI-VIS06",
+    "RI-MTH03"
+   ],
+   "n_ref_items": 5,
+   "never_judged": [
+    "RI-DLG07",
+    "RI-VIS01"
+   ],
+   "open_gaps": [
+    "GAP-PACK-01",
+    "GAP-W1-02-m68-unanswerable"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-24"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V17/F2"
+  },
+  {
+   "id": "G1",
+   "ring": 1,
+   "title": "The camera",
+   "blurb": "Third-person rig, spring arm, collision pull-in, lock-on framing, camera-relative movement, the camera outside the fight. Scheduled in ring 1, not ring 2: every visual verdict on the player body is taken through it.",
+   "ref_items": [
+    "RI-CMB06",
+    "RI-CAM01",
+    "RI-CAM02",
+    "RI-CAM03",
+    "RI-CAM04",
+    "RI-CAM05",
+    "RI-CAM06",
+    "RI-CAM07"
+   ],
+   "n_ref_items": 8,
+   "never_judged": [
+    "RI-CAM03",
+    "RI-CAM04"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-06"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "F1",
+   "ring": 1,
+   "title": "Materials and surface response",
+   "blurb": "PBR sets bound to what is drawn; roughness, edge wear, wetness. DONE and evidenced on hardware.",
+   "ref_items": [],
+   "n_ref_items": 0,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
+    "GAP-W1-pbr-material-set-unbound"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30",
+    "W1-30C",
+    "W1-30S"
+   ],
+   "derived_state": "planned_unjudged",
+   "old_roadmap_home": "V1"
+  },
+  {
+   "id": "F2",
+   "ring": 1,
+   "title": "Shadow, contact and ambient occlusion",
+   "blurb": "Contact darkening, soft-where-soft, cascades. The judges’ most universal observation, 5 of 5.",
+   "ref_items": [
+    "RI-VIS03",
+    "RI-VIS04"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30A",
+    "W1-30B",
+    "W1-30S"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "V2"
+  },
+  {
+   "id": "F3",
+   "ring": 1,
+   "title": "Ambient and bounce fill",
+   "blurb": "GI/ambient so shadows stop crushing to black; tone-mapped shadow lift.",
+   "ref_items": [
+    "RI-VIS03",
+    "RI-VIS04"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30B",
+    "W1-30S"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "V3"
+  },
+  {
+   "id": "F4",
+   "ring": 1,
+   "title": "Light, sky and atmosphere",
+   "blurb": "Sun and moons, time of day, fog model, aerial perspective, cloud.",
+   "ref_items": [
+    "RI-VIS04"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-height-fog-credit-unanchored"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30B",
+    "W1-30S"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V4/V12"
+  },
+  {
+   "id": "F5",
+   "ring": 1,
+   "title": "The frame pipeline",
+   "blurb": "Antialiasing, exposure, bloom, tonemapping, grade by region/time/weather; the renderer feature checklist.",
+   "ref_items": [
+    "RI-VIS04"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30A",
+    "W1-30S"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "V5"
+  },
+  {
+   "id": "F6",
+   "ring": 1,
+   "title": "Terrain and vegetation surfaces",
+   "blurb": "Terrain texturing/blending/wear; species, density, LOD, wind, canopy shimmer.",
+   "ref_items": [
+    "RI-WLD15",
+    "RI-WLD16"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-WLD15",
+    "RI-WLD16"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30F"
+   ],
+   "derived_state": "planned_unjudged",
+   "old_roadmap_home": "V9/V10"
+  },
+  {
+   "id": "F7",
+   "ring": 1,
+   "title": "The water surface",
+   "blurb": "Surface, shore, depth, refraction; the axis-aligned lane defect.",
+   "ref_items": [
+    "RI-WLD10"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-03-water-surface-undrawn-and-frozen"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-03",
+    "W1-30",
+    "W1-30H"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V11"
+  },
+  {
+   "id": "F8",
+   "ring": 1,
+   "title": "The building kit and settlement silhouette",
+   "blurb": "Kit parts, grammars, roof profiles, silhouette variety, and the reuse library that makes a good model teach the next one.",
+   "ref_items": [
+    "RI-WLD14"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-w1-30e-street-gate-never-ran"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30-LIBRARY",
+    "W1-30",
+    "W1-30E"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V8"
+  },
+  {
+   "id": "F9",
+   "ring": 1,
+   "title": "Interiors and practical light",
+   "blurb": "Torches, lanterns, emissives, interior light falloff — and the light field stealth has to read.",
+   "ref_items": [
+    "RI-STL01"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30",
+    "W1-30G"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:V4"
+  },
+  {
+   "id": "F10",
+   "ring": 1,
+   "title": "Characters and creatures",
+   "blurb": "Model quality, silhouette readability, the player’s body under an always-behind camera.",
+   "ref_items": [
+    "RI-CAM07",
+    "RI-VIS08"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-w1-30d-guard-misses-part-deletion"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-24",
+    "W1-30-LIBRARY",
+    "W1-30",
+    "W1-30D"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V6"
+  },
+  {
+   "id": "F11",
+   "ring": 1,
+   "title": "Animation quality",
+   "blurb": "Locomotion, transitions, weight, recovery. Couples to G3; Souls owns the fight, so G3 governs where they meet.",
+   "ref_items": [
+    "RI-WPN05",
+    "RI-VIS08"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-weapon-animation-model-has-no-rendered-consumer"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30",
+    "W1-30D"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V7"
+  },
+  {
+   "id": "F12",
+   "ring": 1,
+   "title": "VFX and particles",
+   "blurb": "Magic, weather, dust, smoke, impact, blood.",
+   "ref_items": [
+    "RI-MAG05"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-w1-30s-seam-incomplete"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30",
+    "W1-30H"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V13"
+  },
+  {
+   "id": "F13",
+   "ring": 1,
+   "title": "Art direction and region identity",
+   "blurb": "The look target written as numbers, the transposition spec, the \"could this be Skyrim?\" detector.",
+   "ref_items": [
+    "RI-WLD04",
+    "RI-VIS05",
+    "RI-VIS07",
+    "RI-UIX06"
+   ],
+   "n_ref_items": 4,
+   "never_judged": [
+    "RI-VIS05"
+   ],
+   "open_gaps": [
+    "GAP-W1-world-region-identity-is-a-tint"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-30",
+    "W1-30K"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V15"
+  },
+  {
+   "id": "F14",
+   "ring": 1,
+   "title": "Performance, LOD and budgets",
+   "blurb": "Draw distance, instancing, shadow-caster budget, ordinary hardware.",
+   "ref_items": [
+    "RI-PLT01"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-30"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "V16"
+  },
+  {
+   "id": "T1",
+   "ring": 2,
+   "title": "Save and load",
+   "blurb": "The state manifest, the round-trip diff, the storage ruling. Scheduled in ring 2, not with the platform work: equip load, roll class and the purse all currently change when you reload, so nothing downstream can be judged across a session.",
+   "ref_items": [
+    "RI-JRN05"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
+    "GAP-W1-map-the-audit-is-computed-and-never-published",
+    "GAP-W1-platform-save-drops-entity-prev-state",
+    "GAP-W1-population-save-reload-repays-every-corpse",
+    "GAP-W1-save-purse-has-no-writer"
+   ],
+   "n_open_gaps": 5,
+   "blocking_gaps": 4,
+   "plans": [
+    "W1-00"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "E2"
+  },
+  {
+   "id": "T2",
+   "ring": 2,
+   "title": "Controls and discoverability",
+   "blurb": "Desktop action set and pointer lock, a fresh player with no manual, gamepad lifecycle, mobile with an attached pad. Ahead of G7: judging feel means humans playing.",
+   "ref_items": [
+    "RI-CMB11",
+    "RI-JRN03",
+    "RI-JRN04"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-input-calibration-outlives-its-pad-on-disconnect",
+    "GAP-W1-input-discoverability-unmeasured"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-08",
+    "W1-29"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "E3"
+  },
+  {
+   "id": "G4",
+   "ring": 2,
+   "title": "Enemies that can fight you",
+   "blurb": "Aggro/approach/spacing, telegraph doctrine, punish windows, attack strings, roster archetypes. Ahead of G2: an attack volume that cannot reach contact range makes the exchange untestable from the receiving end.",
+   "ref_items": [
+    "RI-AI01",
+    "RI-AI02",
+    "RI-AI03",
+    "RI-AI04",
+    "RI-AI05"
+   ],
+   "n_ref_items": 5,
+   "never_judged": [
+    "RI-AI04"
+   ],
+   "open_gaps": [
+    "GAP-W1-12-approach-cannot-close-on-a-walking-player",
+    "GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-09",
+    "W1-12"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:Step5"
+  },
+  {
+   "id": "G2",
+   "ring": 2,
+   "title": "The exchange",
+   "blurb": "Roll and i-frames, equip-load tiers, stamina economy, hitboxes/hurtboxes, poise, stagger, parry, backstab, riposte, input latency.",
+   "ref_items": [
+    "RI-CMB01",
+    "RI-CMB02",
+    "RI-CMB03",
+    "RI-CMB04",
+    "RI-CMB05",
+    "RI-CMB06",
+    "RI-CMB11",
+    "RI-PRG07",
+    "RI-MAG01"
+   ],
+   "n_ref_items": 9,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-enemy-attacks-cannot-reach-contact-range",
+    "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-09"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:C3"
+  },
+  {
+   "id": "G3",
+   "ring": 2,
+   "title": "Weapons and movesets, wired",
+   "blurb": "The 87 authored movesets reachable from the running game; class differentiation, contextual attacks, two-handing, shields, hitstop and material impact.",
+   "ref_items": [
+    "RI-CMB02",
+    "RI-WPN01",
+    "RI-WPN02",
+    "RI-WPN03",
+    "RI-WPN04",
+    "RI-WPN05",
+    "RI-WPN06",
+    "RI-WPN07"
+   ],
+   "n_ref_items": 8,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-weapon-animation-model-has-no-rendered-consumer",
+    "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
+    "GAP-W1-weapon-movesets-not-wired-to-the-runtime"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 3,
+   "plans": [
+    "W1-10",
+    "W1-11"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "C2"
+  },
+  {
+   "id": "G5",
+   "ring": 2,
+   "title": "Bosses and encounter authorship",
+   "blurb": "Phases, tells, arena, the fog-gate loop; placement, sightlines, density, the ambush and the one you learn to skip.",
+   "ref_items": [
+    "RI-AI06",
+    "RI-AI07"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-AI06"
+   ],
+   "open_gaps": [
+    "GAP-W1-population-save-reload-repays-every-corpse"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-12"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "C4/C7"
+  },
+  {
+   "id": "G6",
+   "ring": 2,
+   "title": "Combat HUD and impact feedback",
+   "blurb": "What the HUD shows and must never show; stamina as a correctness property; impact audio as frame-critical feedback.",
+   "ref_items": [
+    "RI-UIX01",
+    "RI-AUD01"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-UIX01"
+   ],
+   "open_gaps": [
+    "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-11",
+    "W1-21",
+    "W1-HUD-TOAST"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "G7",
+   "ring": 2,
+   "title": "How the fight feels",
+   "blurb": "Reactability, decision divergence, difficulty and the curve — judged by humans playing, never by charts.",
+   "ref_items": [
+    "RI-CMB07",
+    "RI-CMB12",
+    "RI-DLG09"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-CMB12"
+   ],
+   "open_gaps": [
+    "GAP-W1-combat-exemplar-has-no-danger"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-08"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step5/C6"
+  },
+  {
+   "id": "G8",
+   "ring": 2,
+   "title": "Healing, status and exhaustion",
+   "blurb": "The Hist-sap flask and its commitment frames; the five status meters and the handoff to the affliction economy; roll-spam and the exhausted state.",
+   "ref_items": [
+    "RI-CMB08",
+    "RI-CMB09",
+    "RI-CMB10"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-CMB08",
+    "RI-CMB10"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "W1",
+   "ring": 3,
+   "title": "Terrain form and the road network",
+   "blurb": "Landform and geology per region, the terrain grammar, world scale, the one-hour traversal budget, roads that are not underwater.",
+   "ref_items": [
+    "RI-WLD01",
+    "RI-WLD16"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-WLD16"
+   ],
+   "open_gaps": [
+    "GAP-W1-road-join-has-no-gate",
+    "GAP-W1-walkpath-absorbs-teleports",
+    "GAP-W1-world-trunk-road-below-the-waterline"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-01"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:D1"
+  },
+  {
+   "id": "W2",
+   "ring": 3,
+   "title": "Regions that read differently on foot",
+   "blurb": "Region identity beyond a colour tint, borders and staggered crossover, the unlabeled-screenshot test.",
+   "ref_items": [
+    "RI-WLD04",
+    "RI-WLD12"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-02-m68-unanswerable",
+    "GAP-W1-world-region-identity-is-a-tint"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-01",
+    "W1-02"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "D1"
+  },
+  {
+   "id": "W3",
+   "ring": 3,
+   "title": "Variety within a region",
+   "blurb": "The six-minute walk, the patch-size ceiling, density per minute of travel.",
+   "ref_items": [
+    "RI-WLD02",
+    "RI-WLD15"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-WLD02",
+    "RI-WLD15"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-27"
+   ],
+   "derived_state": "planned_unjudged",
+   "old_roadmap_home": "D4"
+  },
+  {
+   "id": "W4",
+   "ring": 3,
+   "title": "Settlements with an outside",
+   "blurb": "Settlement anatomy, exterior fabric for all 202 buildings, layout authored at the generator so buildings stop interpenetrating.",
+   "ref_items": [
+    "RI-WLD03"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-settlement-has-no-outside",
+    "GAP-W1-the-building-is-smaller-than-the-room"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-04"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step2b/2c"
+  },
+  {
+   "id": "W5",
+   "ring": 3,
+   "title": "Doors, interiors and continuity",
+   "blurb": "A door you can see, walk through, and come back in by; footprint/bearing/window agreement; verticality and the cave seam.",
+   "ref_items": [
+    "RI-WLD13"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-interior-door-draws-nothing",
+    "GAP-W1-the-door-puts-you-inside-the-building",
+    "GAP-W1-the-doorstep-cannot-get-you-back-in",
+    "GAP-W1-two-placement-mechanisms-collide"
+   ],
+   "n_open_gaps": 4,
+   "blocking_gaps": 4,
+   "plans": [
+    "W1-04"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step2/2b"
+  },
+  {
+   "id": "W6",
+   "ring": 3,
+   "title": "Legibility — landmarks and prose directions",
+   "blurb": "Landmarks, signposts, and a world you can direct someone across in a sentence. Hard prerequisite for P6.",
+   "ref_items": [
+    "RI-WLD06"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-05"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "D2"
+  },
+  {
+   "id": "W7",
+   "ring": 3,
+   "title": "Getting around",
+   "blurb": "The transport network — modes, routes, fares, stations, walked-it-once — and travel magic: Mark, Recall, the Interventions.",
+   "ref_items": [
+    "RI-TRV01",
+    "RI-TRV02"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-TRV02"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-01",
+    "W1-05"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "W8",
+   "ring": 3,
+   "title": "Dungeons, xanmeers and ruins",
+   "blurb": "Places worth entering with rewards worth finding.",
+   "ref_items": [
+    "RI-WLD07"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "D3"
+  },
+  {
+   "id": "W9",
+   "ring": 3,
+   "title": "Water and hazards as play",
+   "blurb": "Depth bands, wading, swimming, tide, substrate, what standing water does to a fight; the thirteen hazards and the telegraph law.",
+   "ref_items": [
+    "RI-WLD10",
+    "RI-WLD11"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-03-water-surface-undrawn-and-frozen"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-03"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:V11"
+  },
+  {
+   "id": "W10",
+   "ring": 3,
+   "title": "The living world",
+   "blurb": "Schedules, homes, work, sleep, ecology, ambient events, weather and time as things you plan around.",
+   "ref_items": [
+    "RI-WLD08"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-13-clock-consequences-never-fire",
+    "GAP-W1-13-roster-clause-has-no-control"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-13"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B4/D5"
+  },
+  {
+   "id": "W11",
+   "ring": 3,
+   "title": "Strangeness and the built alienness",
+   "blurb": "The thirty things that exist nowhere else, nine architectural grammars, the right-angle census, the opacity budget.",
+   "ref_items": [
+    "RI-WLD05",
+    "RI-WLD09",
+    "RI-WLD14"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-02"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B10"
+  },
+  {
+   "id": "C1",
+   "ring": 4,
+   "title": "Character creation as a played scene",
+   "blurb": "The Writ House rendered rather than an API: race, birthsigns, the questionnaire, the naming moment, what it changes and never locks.",
+   "ref_items": [
+    "RI-CHR01",
+    "RI-CHR02",
+    "RI-CHR03"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-26-creation-cannot-be-completed-from-the-title",
+    "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later",
+    "GAP-W1-creation-is-an-api-not-a-scene",
+    "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+    "GAP-W1-the-naming-moment-is-still-orphan-text"
+   ],
+   "n_open_gaps": 5,
+   "blocking_gaps": 4,
+   "plans": [
+    "W1-07",
+    "W1-26"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "C2",
+   "ring": 4,
+   "title": "Levelling and the hearth",
+   "blurb": "The soul cost curve, souls yield, the ten attributes, skills that improve by use, and a level-up screen that exists at the bonfire.",
+   "ref_items": [
+    "RI-PRG01",
+    "RI-PRG02",
+    "RI-PRG03",
+    "RI-PRG04",
+    "RI-PRG06"
+   ],
+   "n_ref_items": 5,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy",
+    "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
+    "GAP-W1-magic-skill-frozen",
+    "GAP-W1-souls-alive-keyed-on-eid",
+    "GAP-W1-souls-world-copy-of-the-values-is-53pc-stale"
+   ],
+   "n_open_gaps": 5,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-13",
+    "W1-16"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B8"
+  },
+  {
+   "id": "C3",
+   "ring": 4,
+   "title": "Load, inventory and upgrades",
+   "blurb": "Equip load and encumbrance surviving a save, the inventory screen, the menu-pause rule, the +N upgrade path and its materials.",
+   "ref_items": [
+    "RI-PRG07",
+    "RI-PRG08",
+    "RI-UIX03"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-PRG08"
+   ],
+   "open_gaps": [
+    "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
+    "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-16"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "C4",
+   "ring": 4,
+   "title": "Gold",
+   "blurb": "Prices by merchant, disposition and region; barter as a conversation; a purse that persists. Souls level you; gold buys things.",
+   "ref_items": [
+    "RI-PRG05"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [
+    "RI-PRG05"
+   ],
+   "open_gaps": [
+    "GAP-W1-save-purse-has-no-writer"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-05",
+    "W1-16"
+   ],
+   "derived_state": "planned_unjudged",
+   "old_roadmap_home": "B6"
+  },
+  {
+   "id": "C5",
+   "ring": 4,
+   "title": "Affliction and disease",
+   "blurb": "Seventeen diseases, their causes, their cures, and the one that has none.",
+   "ref_items": [
+    "RI-CMB10",
+    "RI-PRG09"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-CMB10",
+    "RI-PRG09"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "not_started",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "C6",
+   "ring": 4,
+   "title": "Magic that does what it says",
+   "blurb": "The effect catalogue with behaviour behind it, spellmaking and enchanting with a world-side surface, soul gems, combat casting frames, magic as a quest solution.",
+   "ref_items": [
+    "RI-MAG01",
+    "RI-MAG02",
+    "RI-MAG03",
+    "RI-MAG04",
+    "RI-MAG06",
+    "RI-TRV02"
+   ],
+   "n_ref_items": 6,
+   "never_judged": [
+    "RI-TRV02"
+   ],
+   "open_gaps": [
+    "GAP-W1-magic-effects-no-behaviour",
+    "GAP-W1-magic-skill-frozen",
+    "GAP-W1-magic-spellmaking-has-no-world-side-surface"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 3,
+   "plans": [
+    "W1-14"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B7"
+  },
+  {
+   "id": "C7",
+   "ring": 4,
+   "title": "Stealth and theft",
+   "blurb": "Detection by light/sound/sight, the search, ownership of every object, locks, pickpocketing, trespass, and a fence that will not buy your victim’s own furniture.",
+   "ref_items": [
+    "RI-STL01",
+    "RI-STL02"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale",
+    "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
+    "GAP-W1-the-fence-buys-your-victims-own-furniture"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 3,
+   "plans": [
+    "W1-15"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:B5"
+  },
+  {
+   "id": "C8",
+   "ring": 4,
+   "title": "Crime and justice",
+   "blurb": "Being seen, the report chain, bounty, guards who can actually fight, arrest, jail, reputation that persists, and faction-sanctioned crime.",
+   "ref_items": [
+    "RI-CRM01",
+    "RI-CRM02"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-crime-enforcement-is-a-free-win",
+    "GAP-W1-stealth-crime-model-not-coupled-to-the-world"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-15"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B5"
+  },
+  {
+   "id": "P1",
+   "ring": 5,
+   "title": "The topic web and the dialogue window",
+   "blurb": "Topics that unlock topics, the filter stack and first-match-wins, settlement topic webs, and a window that looks like Morrowind’s.",
+   "ref_items": [
+    "RI-DLG01",
+    "RI-UIX08"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-UIX08"
+   ],
+   "open_gaps": [
+    "GAP-W1-act5-argument-entry-shadowed",
+    "GAP-W1-mainquest-topic-bootstrap"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-17",
+    "W1-DLG-TOPIC-WEB"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step3"
+  },
+  {
+   "id": "P2",
+   "ring": 5,
+   "title": "Voice, disposition and persuasion",
+   "blurb": "Speakers who disagree, greetings and rumours, Admire/Intimidate/Taunt/Bribe, measurable style per archetype, tonal range, and characters who address the player.",
+   "ref_items": [
+    "RI-DLG02",
+    "RI-DLG03",
+    "RI-DLG04",
+    "RI-DLG06",
+    "RI-DLG07",
+    "RI-DLG08"
+   ],
+   "n_ref_items": 6,
+   "never_judged": [
+    "RI-DLG04",
+    "RI-DLG07",
+    "RI-DLG08"
+   ],
+   "open_gaps": [
+    "GAP-PROSE-01",
+    "GAP-W1-17-an-archetype-with-no-mouth"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-17"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step3"
+  },
+  {
+   "id": "P3",
+   "ring": 5,
+   "title": "The journal",
+   "blurb": "Chronological, append-only, in a person’s voice, searchable, and the only navigation aid. No quest markers, ever — enforced by a detector.",
+   "ref_items": [
+    "RI-DLG05",
+    "RI-UIX02",
+    "RI-UIX04"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-DLG05"
+   ],
+   "open_gaps": [
+    "GAP-W1-mark-teaches-nothing-to-the-journal"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-18"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B1"
+  },
+  {
+   "id": "P4",
+   "ring": 5,
+   "title": "Books and readables with a reader",
+   "blurb": "The 65 texts openable and readable in the world: pagination, legibility, reading as a real activity.",
+   "ref_items": [
+    "RI-LOR03",
+    "RI-UIX05"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-library-martial-single-hand-fingerprint",
+    "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+    "GAP-W1-library-unreachable-contradiction-pairs"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 2,
+   "plans": [],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B9"
+  },
+  {
+   "id": "P5",
+   "ring": 5,
+   "title": "Lore, canon and names",
+   "blurb": "The canon-facts registry and contradiction discipline, Jel phonology and naming, the peoples of the province and what they disagree about, the era brief, religion and metaphysics.",
+   "ref_items": [
+    "RI-LOR01",
+    "RI-LOR02",
+    "RI-LOR04",
+    "RI-LOR05",
+    "RI-LOR06",
+    "RI-LOR07",
+    "RI-LOR08"
+   ],
+   "n_ref_items": 7,
+   "never_judged": [
+    "RI-LOR07",
+    "RI-LOR08"
+   ],
+   "open_gaps": [
+    "GAP-W1-23-both-registered-voices-on-slavery-are-colonists",
+    "GAP-W1-library-martial-single-hand-fingerprint",
+    "GAP-W1-library-unreachable-contradiction-pairs"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-23"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:B9"
+  },
+  {
+   "id": "P6",
+   "ring": 5,
+   "title": "A quest end to end without markers",
+   "blurb": "Rumour → giver → prose direction → landmark → resolution → journal. Depends on W6.",
+   "ref_items": [
+    "RI-QST04",
+    "RI-JRN07"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [
+    "RI-JRN07"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-18"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "B2"
+  },
+  {
+   "id": "P7",
+   "ring": 5,
+   "title": "Quest givers who exist, and ladders that open",
+   "blurb": "The 94 quest givers standing somewhere a player can reach, and faction ranks past 5 opening the 21 already-authored quests.",
+   "ref_items": [
+    "RI-QST03"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-FCT-03",
+    "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
+    "GAP-W1-faction-ladders-are-doors-onto-empty-corridors",
+    "GAP-W1-quest-givers-not-in-the-world"
+   ],
+   "n_open_gaps": 4,
+   "blocking_gaps": 4,
+   "plans": [
+    "W1-20"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "Step4"
+  },
+  {
+   "id": "P8",
+   "ring": 5,
+   "title": "Factions with real ladders",
+   "blurb": "Joining, rank, duties, expulsion, rivalry, exclusivity — belonging somewhere costing you somewhere else.",
+   "ref_items": [
+    "RI-CRM02",
+    "RI-QST01",
+    "RI-QST03"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-faction-ladders-are-doors-onto-empty-corridors"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-20"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "B3"
+  },
+  {
+   "id": "P9",
+   "ring": 5,
+   "title": "The main quest",
+   "blurb": "Five acts and a backpath, enterable and advanceable by playing rather than by harness.",
+   "ref_items": [
+    "RI-QST06"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-act5-argument-entry-shadowed",
+    "GAP-W1-mainquest-topic-bootstrap"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 2,
+   "plans": [
+    "W1-19"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "P10",
+   "ring": 5,
+   "title": "Quest texture and consequence",
+   "blurb": "Type distribution and density, quests you have to overhear, unique-named rewards, non-combat resolution and the parley, irreversibility and mutually exclusive endings.",
+   "ref_items": [
+    "RI-MAG04",
+    "RI-QST02",
+    "RI-QST05",
+    "RI-QST07",
+    "RI-QST08",
+    "RI-QST09",
+    "RI-DLG09"
+   ],
+   "n_ref_items": 7,
+   "never_judged": [
+    "RI-QST09"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-18",
+    "W1-27"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:B2"
+  },
+  {
+   "id": "T3",
+   "ring": 6,
+   "title": "Load, streaming and budgets",
+   "blurb": "Time to first playable, silent region borders, hitch census, memory and the ten-minute traversal leak test, the frame budget.",
+   "ref_items": [
+    "RI-PLT01",
+    "RI-PLT02",
+    "RI-PLT03",
+    "RI-AUD02"
+   ],
+   "n_ref_items": 4,
+   "never_judged": [
+    "RI-PLT02"
+   ],
+   "open_gaps": [
+    "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player",
+    "GAP-W1-provstream-arrival-burst"
+   ],
+   "n_open_gaps": 2,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-00"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "E4"
+  },
+  {
+   "id": "T4",
+   "ring": 6,
+   "title": "The screens",
+   "blurb": "Inventory, map, level-up, journal screen, out-of-combat HUD, UI diegesis — style judged as art direction, rendering judged as fidelity.",
+   "ref_items": [
+    "RI-UIX03",
+    "RI-UIX04",
+    "RI-UIX06",
+    "RI-UIX07"
+   ],
+   "n_ref_items": 4,
+   "never_judged": [
+    "RI-UIX07"
+   ],
+   "open_gaps": [
+    "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
+    "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+    "GAP-W1-ui-detectors-that-cannot-see",
+    "GAP-W1-ui-map-outside-the-ar2-detectors"
+   ],
+   "n_open_gaps": 4,
+   "blocking_gaps": 3,
+   "plans": [
+    "W1-21",
+    "W1-HUD-TOAST"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "partial:V14"
+  },
+  {
+   "id": "E1",
+   "ring": 7,
+   "title": "The opening",
+   "blurb": "First launch to first meaningful choice as an unbroken act; the opening as an exchange; the first-hour beat sheet.",
+   "ref_items": [
+    "RI-JRN01",
+    "RI-JRN09",
+    "RI-EXP01"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [],
+   "open_gaps": [
+    "GAP-W1-26-creation-cannot-be-completed-from-the-title"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-07",
+    "W1-26"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "E1"
+  },
+  {
+   "id": "E2",
+   "ring": 7,
+   "title": "The first hour as interaction",
+   "blurb": "What the hands do, and when the player becomes competent.",
+   "ref_items": [
+    "RI-JRN02"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [
+    "RI-JRN02"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-28"
+   ],
+   "derived_state": "planned_unjudged",
+   "old_roadmap_home": "partial:E1"
+  },
+  {
+   "id": "E3",
+   "ring": 7,
+   "title": "Death and recovery",
+   "blurb": "Die, lose your souls, respawn, run back, get them back. Checkpoint spacing as level design.",
+   "ref_items": [
+    "RI-PRG04",
+    "RI-JRN06"
+   ],
+   "n_ref_items": 2,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [
+    "W1-13"
+   ],
+   "derived_state": "at_bar",
+   "old_roadmap_home": "C5"
+  },
+  {
+   "id": "E4",
+   "ring": 7,
+   "title": "Cross-system payoff and emergence",
+   "blurb": "The seam-sterility floor, the fuzzing protocol for combinations nobody wrote, the permissiveness budget.",
+   "ref_items": [
+    "RI-CMP01",
+    "RI-CMP02",
+    "RI-EXP06"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-CMP02"
+   ],
+   "open_gaps": [
+    "GAP-W1-25-the-control-facility-has-an-optional-control"
+   ],
+   "n_open_gaps": 1,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-25"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "E5",
+   "ring": 7,
+   "title": "Build identity",
+   "blurb": "Six archetypes each taken through the whole game and arriving somewhere different.",
+   "ref_items": [
+    "RI-CMP03"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [
+    "RI-CMP03"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "not_started",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "E6",
+   "ring": 7,
+   "title": "Session shape and pacing",
+   "blurb": "The twenty-hour curve, the mid-game sag, the novelty decay, the anecdote census.",
+   "ref_items": [
+    "RI-EXP02",
+    "RI-EXP03",
+    "RI-EXP04"
+   ],
+   "n_ref_items": 3,
+   "never_judged": [
+    "RI-EXP04"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "E7",
+   "ring": 7,
+   "title": "Endings and the last hour",
+   "blurb": "The approach, the point of no return, and what the world says about what you did.",
+   "ref_items": [
+    "RI-EXP05"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": null
+  },
+  {
+   "id": "E8",
+   "ring": 7,
+   "title": "Returning after a week",
+   "blurb": "Can a cold player rebuild their own intentions from in-game information alone.",
+   "ref_items": [
+    "RI-JRN08"
+   ],
+   "n_ref_items": 1,
+   "never_judged": [
+    "RI-JRN08"
+   ],
+   "open_gaps": [],
+   "n_open_gaps": 0,
+   "blocking_gaps": 0,
+   "plans": [],
+   "derived_state": "not_started",
+   "old_roadmap_home": "E2"
+  },
+  {
+   "id": "E9",
+   "ring": 7,
+   "title": "Sound",
+   "blurb": "Regional ambience with things that actually happen in it, music policy and where silence is correct, voice policy, the web-audio voice budget.",
+   "ref_items": [
+    "RI-AUD02",
+    "RI-AUD03",
+    "RI-AUD04",
+    "RI-AUD05"
+   ],
+   "n_ref_items": 4,
+   "never_judged": [
+    "RI-AUD04",
+    "RI-AUD05"
+   ],
+   "open_gaps": [
+    "AUDB2-F1",
+    "GAP-W1-22-event-level-graded-on-a-median",
+    "GAP-W1-audio-emitter-consumption"
+   ],
+   "n_open_gaps": 3,
+   "blocking_gaps": 1,
+   "plans": [
+    "W1-22"
+   ],
+   "derived_state": "built_below_bar",
+   "old_roadmap_home": "E5"
+  }
+ ],
+ "reference_items": [
+  {
+   "id": "RI-AI01",
+   "file": "corpus/10-combat/RI-AI01-aggro-approach-spacing.md",
+   "area": "10-combat",
+   "title": "Aggro, approach and spacing — the enemy engagement state machine",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-AI02",
+   "file": "corpus/10-combat/RI-AI02-telegraph-doctrine.md",
+   "area": "10-combat",
+   "title": "Telegraph doctrine — minimum windup, silhouette, and tracking cutoff",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-AI03",
+   "file": "corpus/10-combat/RI-AI03-punish-windows.md",
+   "area": "10-combat",
+   "title": "Punish windows — the recovery contract and the punish window ratio",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-AI04",
+   "file": "corpus/10-combat/RI-AI04-attack-strings-and-delays.md",
+   "area": "10-combat",
+   "title": "Attack strings, combo branching, and the delayed follow-up",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-AI05",
+   "file": "corpus/10-combat/RI-AI05-roster-archetypes.md",
+   "area": "10-combat",
+   "title": "Enemy roster archetypes — ten roles, and the stat bands that define them",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-AI06",
+   "file": "corpus/10-combat/RI-AI06-boss-design.md",
+   "area": "10-combat",
+   "title": "Boss design — phases, rhythm, arena, and the fog-gate loop",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-AI07",
+   "file": "corpus/10-combat/RI-AI07-encounter-composition.md",
+   "area": "10-combat",
+   "title": "Encounter composition — placement, sightlines, density, and the bonfire loop",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMB01",
+   "file": "corpus/10-combat/RI-CMB01-roll-iframes-equip-load.md",
+   "area": "10-combat",
+   "title": "Roll and dodge — i-frame windows, equip-load tiers, and the fat-roll threshold",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMB02",
+   "file": "corpus/10-combat/RI-CMB02-attack-frame-data.md",
+   "area": "10-combat",
+   "title": "Attack frame data by weapon class — startup, active, recovery, and the commitment rule",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2",
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMB03",
+   "file": "corpus/10-combat/RI-CMB03-stamina-economy.md",
+   "area": "10-combat",
+   "title": "Stamina economy — costs, regeneration, blocking, and guard break",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMB04",
+   "file": "corpus/10-combat/RI-CMB04-hitboxes-hurtboxes.md",
+   "area": "10-combat",
+   "title": "Hitboxes and hurtboxes — swept capsules, bone attachment, and the no-dice rule",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMB05",
+   "file": "corpus/10-combat/RI-CMB05-poise-stagger-criticals.md",
+   "area": "10-combat",
+   "title": "Poise, stagger, hyperarmour, and the critical windows (backstab, parry, riposte)",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMB06",
+   "file": "corpus/10-combat/RI-CMB06-lock-on-and-directional-roll.md",
+   "area": "10-combat",
+   "title": "Lock-on — acquisition, camera behaviour, directional roll semantics, and soft-lock steering",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1",
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMB07",
+   "file": "corpus/10-combat/RI-CMB07-combat-trace-format-and-exemplar.md",
+   "area": "10-combat",
+   "title": "The combat trace — machine-readable format and a 59-second hand-authored exemplar fight",
+   "kind": "trace",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "I1",
+    "G7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMB08",
+   "file": "corpus/10-combat/RI-CMB08-healing-flask.md",
+   "area": "10-combat",
+   "title": "Healing — the Hist-sap Flask, drink commitment frames, heal curve, and refill on rest",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G8"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CMB09",
+   "file": "corpus/10-combat/RI-CMB09-recovery-and-exhaustion.md",
+   "area": "10-combat",
+   "title": "The two self-inflicted punish windows — post-roll recovery, roll-spam, and the exhausted state",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMB10",
+   "file": "corpus/10-combat/RI-CMB10-status-buildup.md",
+   "area": "10-combat",
+   "title": "Status buildup — the five meters, the proc, and the handoff to the affliction economy",
+   "kind": "number",
+   "side": "split",
+   "judges": [],
+   "covered_by": [
+    "G8",
+    "C5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CMB11",
+   "file": "corpus/10-combat/RI-CMB11-input-latency.md",
+   "area": "10-combat",
+   "title": "Input latency as a combat-correctness property — the four-stage budget, the zero-frame dispatch rule, and edge sampling",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G2",
+    "T2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMB12",
+   "file": "corpus/10-combat/RI-CMB12-exchange-reactability-and-decision-divergence.md",
+   "area": "10-combat",
+   "title": "The exchange — reactability, decision divergence, and whether the fight is a decision at all",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G7"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-WPN01",
+   "file": "corpus/12-weapons/RI-WPN01-moveset-slot-contract.md",
+   "area": "12-weapons",
+   "title": "The moveset slot contract — every attack a weapon must own, and the schema it serialises to",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WPN02",
+   "file": "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+   "area": "12-weapons",
+   "title": "Weapon-class differentiation — fifteen classes and the behavioural fingerprint distance between them",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WPN03",
+   "file": "corpus/12-weapons/RI-WPN03-within-class-subtlety.md",
+   "area": "12-weapons",
+   "title": "Within-class subtlety — how much two weapons of the same class are allowed to be the same",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WPN04",
+   "file": "corpus/12-weapons/RI-WPN04-contextual-attacks.md",
+   "area": "12-weapons",
+   "title": "Contextual attacks — rolling, backstep, running, jumping, plunging, guard counter",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WPN05",
+   "file": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+   "area": "12-weapons",
+   "title": "Weapon feel — hitstop, material impact, whiff, and mass in the animation",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3",
+    "F11"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WPN06",
+   "file": "corpus/12-weapons/RI-WPN06-two-handing-shields-parry.md",
+   "area": "12-weapons",
+   "title": "Two-handing, shields, the offhand, and who is allowed to parry",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WPN07",
+   "file": "corpus/12-weapons/RI-WPN07-weapon-character-and-wrongness.md",
+   "area": "12-weapons",
+   "title": "Weapon character — the situations a weapon is wrong for, and the reversal that proves it",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CAM01",
+   "file": "corpus/15-camera/RI-CAM01-rig-geometry-and-spring-arm.md",
+   "area": "15-camera",
+   "title": "The third-person rig — pivot, shoulder offset, spring arm, and collision pull-in",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CAM02",
+   "file": "corpus/15-camera/RI-CAM02-free-camera-and-movement-mapping.md",
+   "area": "15-camera",
+   "title": "Free-camera control and camera-relative movement — deadzone, pitch clamp, turn rate, and auto-recentre",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CAM03",
+   "file": "corpus/15-camera/RI-CAM03-lock-on-framing.md",
+   "area": "15-camera",
+   "title": "Lock-on framing — the containment law, distance- and size-dependent pitch, switch latency, and the reticle",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CAM04",
+   "file": "corpus/15-camera/RI-CAM04-locked-movement-directional-roll-soft-lock.md",
+   "area": "15-camera",
+   "title": "Locked movement, directional roll clips, and the player-side tracking cutoff",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CAM05",
+   "file": "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+   "area": "15-camera",
+   "title": "The camera outside the fight — exploration, dialogue, menus, resting, interiors, and the first-person ban",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CAM06",
+   "file": "corpus/15-camera/RI-CAM06-camera-feel.md",
+   "area": "15-camera",
+   "title": "Camera feel — fixed-step coupling, zero inertia, no head-bob, no FOV punch, hitstop, shake, death and fog-gate",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CAM07",
+   "file": "corpus/15-camera/RI-CAM07-third-person-character-presentation.md",
+   "area": "15-camera",
+   "title": "Third-person character presentation — what the always-behind camera specifically demands of the player's body",
+   "kind": "number",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "F10",
+    "G1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-PRG01",
+   "file": "corpus/20-progression/RI-PRG01-soul-cost-curve.md",
+   "area": "20-progression",
+   "title": "The soul cost curve — souls-to-next-level, L1 to L140",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PRG02",
+   "file": "corpus/20-progression/RI-PRG02-stat-sheet.md",
+   "area": "20-progression",
+   "title": "The stat sheet — ten attributes, soft caps, and scaling grades",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PRG03",
+   "file": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+   "area": "20-progression",
+   "title": "Skills that improve by use — the 19 skills, their rates, and their gates",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 12,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-PRG04",
+   "file": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+   "area": "20-progression",
+   "title": "HEARTH — resting, respawn, spacing, and the death→corpse-run→recovery loop",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "C2",
+    "E3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PRG05",
+   "file": "corpus/20-progression/RI-PRG05-gold-economy.md",
+   "area": "20-progression",
+   "title": "The gold economy — prices, merchant pools, barter, and the regional balance sheet",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C4"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-PRG06",
+   "file": "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "area": "20-progression",
+   "title": "Souls yield and the levelling pace curve — per-archetype values, region tiers, expected level",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PRG07",
+   "file": "corpus/20-progression/RI-PRG07-equip-load-encumbrance.md",
+   "area": "20-progression",
+   "title": "Equip load and encumbrance — two ratios, two rulebooks, one breakpoint table",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "C3",
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PRG08",
+   "file": "corpus/20-progression/RI-PRG08-upgrade-path.md",
+   "area": "20-progression",
+   "title": "The upgrade path — +N tiers, materials, damage progression, and exploration gating",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "C3"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-PRG09",
+   "file": "corpus/20-progression/RI-PRG09-affliction-economy.md",
+   "area": "20-progression",
+   "title": "The affliction economy — seventeen named diseases, their causes, their cures, and the one that has none",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CHR01",
+   "file": "corpus/22-character/RI-CHR01-character-creation.md",
+   "area": "22-character",
+   "title": "Character creation — what the Writ House asks, what it changes, and what it never locks",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CHR02",
+   "file": "corpus/22-character/RI-CHR02-race-and-standing.md",
+   "area": "22-character",
+   "title": "Race in Argonia — profiles, the reaction matrix, and what your scales cost you",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 8,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CHR03",
+   "file": "corpus/22-character/RI-CHR03-birthsigns.md",
+   "area": "22-character",
+   "title": "Birthsigns — the nine tides, three of which take something from you",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CRM01",
+   "file": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+   "area": "23-stealth-crime",
+   "title": "Crime, witnesses and justice — the bounty schedule, the report chain, the arrest, and what jail takes",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 9,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CRM02",
+   "file": "corpus/23-stealth-crime/RI-CRM02-faction-crime-and-writs.md",
+   "area": "23-stealth-crime",
+   "title": "Faction crime — sanctioned murder, jurisdictional writs, and how a rank changes a guard",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C8",
+    "P8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-STL01",
+   "file": "corpus/23-stealth-crime/RI-STL01-detection-and-sneak.md",
+   "area": "23-stealth-crime",
+   "title": "Detection and sneak — light, sound, line of sight, the search, and the seam at the first blow",
+   "kind": "number",
+   "side": "split",
+   "judges": [],
+   "covered_by": [
+    "C7",
+    "F9"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-STL02",
+   "file": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+   "area": "23-stealth-crime",
+   "title": "Theft — ownership of every object, the lock ruling, pickpocketing, trespass, and the fence economy",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 9,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MAG01",
+   "file": "corpus/25-magic/RI-MAG01-combat-casting.md",
+   "area": "25-magic",
+   "title": "Combat casting — cast frames per weight class, the Focus/stamina dual cost, commitment, and spell geometry",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "C6",
+    "G2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MAG02",
+   "file": "corpus/25-magic/RI-MAG02-effect-catalogue.md",
+   "area": "25-magic",
+   "title": "The effect catalogue — 55 effects, the cost formula, and the rulings on levitation and teleport",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MAG03",
+   "file": "corpus/25-magic/RI-MAG03-spellmaking-enchanting.md",
+   "area": "25-magic",
+   "title": "Spellmaking and enchanting — the maker's systems, the soul-gem ruling, and eleven sanctioned breakages",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-MAG04",
+   "file": "corpus/25-magic/RI-MAG04-magic-as-quest-solution.md",
+   "area": "25-magic",
+   "title": "Magic as a quest solution — the required census, the diversity rule, and the AR-3 crossing",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C6",
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-MAG05",
+   "file": "corpus/25-magic/RI-MAG05-magic-vfx.md",
+   "area": "25-magic",
+   "title": "Magic VFX — spell design language (ART) and particle quality (FIDELITY), declared separately",
+   "kind": "image",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "F12"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-MAG06",
+   "file": "corpus/25-magic/RI-MAG06-effect-behaviour-census.md",
+   "area": "25-magic",
+   "title": "The effect-behaviour census — an effect is what it does, not what its record says it does",
+   "kind": "trace",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST01",
+   "file": "corpus/30-quests/RI-QST01-faction-escalation-shape.md",
+   "area": "30-quests",
+   "title": "The escalation shape of a Morrowind faction questline",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 7.5,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST02",
+   "file": "corpus/30-quests/RI-QST02-deceit-patterns.md",
+   "area": "30-quests",
+   "title": "How a questline lies to you — the deceit pattern catalogue",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST03",
+   "file": "corpus/30-quests/RI-QST03-faction-gating.md",
+   "area": "30-quests",
+   "title": "Faction gating — rank requirements, exclusivity, expulsion, lockout",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P7",
+    "P8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 7,
+   "best_score_0_10": 5.5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-QST04",
+   "file": "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
+   "area": "30-quests",
+   "title": "Quest stage anatomy and the canonical quest schema",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 6.5,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST05",
+   "file": "corpus/30-quests/RI-QST05-non-combat-resolution.md",
+   "area": "30-quests",
+   "title": "Non-combat resolution — the measurable pacifist fraction and first-class solution verbs",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 10,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST06",
+   "file": "corpus/30-quests/RI-QST06-main-quest-architecture.md",
+   "area": "30-quests",
+   "title": "Main quest architecture — the five-act template and the backpath",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P9"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-QST07",
+   "file": "corpus/30-quests/RI-QST07-side-quest-texture.md",
+   "area": "30-quests",
+   "title": "Side quest texture — type distribution, density, and the quests you have to overhear",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-QST08",
+   "file": "corpus/30-quests/RI-QST08-reward-design.md",
+   "area": "30-quests",
+   "title": "Reward design — the unique-named fraction and non-item rewards",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-QST09",
+   "file": "corpus/30-quests/RI-QST09-irreversibility.md",
+   "area": "30-quests",
+   "title": "Irreversibility — mutually exclusive resolutions, the state vector, and what death is allowed to touch",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P10"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-DLG01",
+   "file": "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "area": "40-dialogue",
+   "title": "The topic list as a graph — filter stack, first-match-wins, and settlement topic webs",
+   "kind": "graph",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-DLG02",
+   "file": "corpus/40-dialogue/RI-DLG02-words-per-settlement.md",
+   "area": "40-dialogue",
+   "title": "Unique dialogue words per settlement — the headline density metric",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-DLG03",
+   "file": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+   "area": "40-dialogue",
+   "title": "Greetings and rumours — disposition banding and the diegetic quest-discovery mechanism",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 7,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-DLG04",
+   "file": "corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md",
+   "area": "40-dialogue",
+   "title": "Disposition and persuasion — derived disposition, Admire/Intimidate/Taunt/Bribe formulas, gating thresholds",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-DLG05",
+   "file": "corpus/40-dialogue/RI-DLG05-journal.md",
+   "area": "40-dialogue",
+   "title": "The journal — schema, voice, exemplar entries, and the no-marker rule",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P3"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-DLG06",
+   "file": "corpus/40-dialogue/RI-DLG06-voice-differentiation.md",
+   "area": "40-dialogue",
+   "title": "Dialogue voice differentiation — measurable style fingerprints per speaker archetype",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-DLG07",
+   "file": "corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md",
+   "area": "40-dialogue",
+   "title": "Blind comparison pack — unattributed dialogue and journal excerpts for A/B judging",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "I3",
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-DLG08",
+   "file": "corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md",
+   "area": "40-dialogue",
+   "title": "Tonal range and the indifference ratio — does the writing have a tone worth having",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-DLG09",
+   "file": "corpus/40-dialogue/RI-DLG09-the-parley.md",
+   "area": "40-dialogue",
+   "title": "The parley — the non-lethal exit from a fight, its frames, its gate, and the PACIFIST-IN-FIGHT floor",
+   "kind": "structure",
+   "side": "split",
+   "judges": [],
+   "covered_by": [
+    "P10",
+    "G7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-TRV01",
+   "file": "corpus/50-world/RI-TRV01-transport-network.md",
+   "area": "50-world",
+   "title": "The transport network — modes, route graph, fares, stations and the walked-it-once rule",
+   "kind": "graph",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 8,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-TRV02",
+   "file": "corpus/50-world/RI-TRV02-travel-magic.md",
+   "area": "50-world",
+   "title": "Travel magic — Mark, Recall, the two Interventions, and the S19 reconciliation",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W7",
+    "C6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-WLD01",
+   "file": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+   "area": "50-world",
+   "title": "World scale, coordinate system and the one-hour traversal budget",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD02",
+   "file": "corpus/50-world/RI-WLD02-density-per-minute.md",
+   "area": "50-world",
+   "title": "Density per minute of travel — the headline world metric",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W3"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-WLD03",
+   "file": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+   "area": "50-world",
+   "title": "Settlement anatomy — what makes a Morrowind town, and the per-settlement allocation",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD04",
+   "file": "corpus/50-world/RI-WLD04-region-identity.md",
+   "area": "50-world",
+   "title": "Region identity and biome differentiation — the unlabeled screenshot test",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W2",
+    "F13"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD05",
+   "file": "corpus/50-world/RI-WLD05-strangeness-bar.md",
+   "area": "50-world",
+   "title": "The strangeness bar — thirty things that exist nowhere else",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W11"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD06",
+   "file": "corpus/50-world/RI-WLD06-navigation-without-markers.md",
+   "area": "50-world",
+   "title": "Navigation without markers — landmarks, signposts and prose directions",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD07",
+   "file": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+   "area": "50-world",
+   "title": "Verticality, interiors, and the Souls-loop / Morrowind-cave seam",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "W8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 8,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD08",
+   "file": "corpus/50-world/RI-WLD08-the-living-world.md",
+   "area": "50-world",
+   "title": "The living world — schedules, ecology, ambient events, weather and time",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W10"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 7,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD09",
+   "file": "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+   "area": "50-world",
+   "title": "The opacity budget — what the world refuses to explain, and the emptiness it is allowed to keep",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W11"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-WLD10",
+   "file": "corpus/50-world/RI-WLD10-the-water-model.md",
+   "area": "50-world",
+   "title": "The water model — depth bands, wading, swimming, tide, substrate, and what standing water does to a fight",
+   "kind": "number",
+   "side": "split",
+   "judges": [],
+   "covered_by": [
+    "W9",
+    "F7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD11",
+   "file": "corpus/50-world/RI-WLD11-environmental-hazards.md",
+   "area": "50-world",
+   "title": "Environmental hazards — the thirteen, the telegraph law, and the one instant death",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W9"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD12",
+   "file": "corpus/50-world/RI-WLD12-region-borders.md",
+   "area": "50-world",
+   "title": "Region borders — the transition zone, the staggered crossover, and the announced tier jump",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD13",
+   "file": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+   "area": "50-world",
+   "title": "Interior/exterior continuity — footprint, bearing, windows, light, and the door round-trip",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD14",
+   "file": "corpus/50-world/RI-WLD14-built-alienness.md",
+   "area": "50-world",
+   "title": "The built alienness — nine architectural grammars, the right-angle census, and the failing Empire",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W11",
+    "F8"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-WLD15",
+   "file": "corpus/50-world/RI-WLD15-within-region-variety.md",
+   "area": "50-world",
+   "title": "Within-region variety — the six-minute walk, and the patch-size ceiling",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W3",
+    "F6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-WLD16",
+   "file": "corpus/50-world/RI-WLD16-landform-and-geology.md",
+   "area": "50-world",
+   "title": "Landform and geology — the terrain grammar each region is built out of",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "W1",
+    "F6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-LOR01",
+   "file": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+   "area": "60-lore",
+   "title": "Black Marsh and Argonian canon dossier — what we may not contradict, and where we must invent",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 7,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-LOR02",
+   "file": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+   "area": "60-lore",
+   "title": "Era selection and the political brief — Black Marsh, 3E 427",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-LOR03",
+   "file": "corpus/60-lore/RI-LOR03-in-world-book-structure.md",
+   "area": "60-lore",
+   "title": "The structure of an Elder Scrolls in-world book — length stats, taxonomy, and six full exemplars",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 5,
+   "best_score_0_10": 6.5,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-LOR04",
+   "file": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+   "area": "60-lore",
+   "title": "Naming and language — Jel phonology, the lexicon, and the naming conventions of every culture in the marsh",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 8,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-LOR05",
+   "file": "corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md",
+   "area": "60-lore",
+   "title": "Religion and metaphysics — the Hist, Sithis, the colonial gods, and a diegetic account of souls-as-levelling",
+   "kind": "text",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-LOR06",
+   "file": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+   "area": "60-lore",
+   "title": "Contradiction discipline — the canon-facts registry, and how a critic tells intent from error",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 8,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-LOR07",
+   "file": "corpus/60-lore/RI-LOR07-canon-conformance.md",
+   "area": "60-lore",
+   "title": "Canon conformance — Argonians and the geography of Black Marsh, checked against the mined record",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-LOR08",
+   "file": "corpus/60-lore/RI-LOR08-argonian-tribes.md",
+   "area": "60-lore",
+   "title": "The peoples of the province — which Argonian tribes exist here, what makes them different, and what they disagree about",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-VIS01",
+   "file": "corpus/70-visual/RI-VIS01-bifurcation-protocol.md",
+   "area": "70-visual",
+   "title": "The bifurcation protocol — art direction and fidelity are judged separately, never together",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I3"
+   ],
+   "bucket": "method_doctrine",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-VIS02",
+   "file": "corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md",
+   "area": "70-visual",
+   "title": "Fidelity reference set — current-generation shots we are measured against",
+   "kind": "image",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "I5"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-VIS03",
+   "file": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+   "area": "70-visual",
+   "title": "Fidelity as measurable quantities — the image-metric battery",
+   "kind": "number",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "I3",
+    "F2",
+    "F3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-VIS04",
+   "file": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+   "area": "70-visual",
+   "title": "The renderer feature checklist — what a Three.js scene must have to be modern, and the tell when it doesn't",
+   "kind": "structure",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "F5",
+    "F2",
+    "F3",
+    "F4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-VIS05",
+   "file": "corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md",
+   "area": "70-visual",
+   "title": "Art direction — the Morrowind visual language and its Black Marsh transposition",
+   "kind": "image",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "F13"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-VIS06",
+   "file": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+   "area": "70-visual",
+   "title": "The blind comparison protocol — two protocols, one per side of the bifurcation",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I3"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-VIS07",
+   "file": "corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md",
+   "area": "70-visual",
+   "title": "The \"could this be Skyrim?\" test — the art-direction failure detector",
+   "kind": "text",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "F13"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-VIS08",
+   "file": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
+   "area": "70-visual",
+   "title": "Character, creature and animation fidelity — model quality, silhouette readability, and the tells of bad Three.js character work",
+   "kind": "number",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "F10",
+    "F11"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 3,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-VIS09",
+   "file": "corpus/70-visual/RI-VIS09-reference-image-set.md",
+   "area": "70-visual",
+   "title": "The reference image set — what pixels we actually hold, and what each side may do with them",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-MTH01",
+   "file": "corpus/80-methods/RI-MTH01-harness-api-surface.md",
+   "area": "80-methods",
+   "title": "The harness API surface — what a critic can and cannot measure",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I1"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MTH02",
+   "file": "corpus/80-methods/RI-MTH02-determinism-reproducibility.md",
+   "area": "80-methods",
+   "title": "Determinism and reproducibility as a judged property",
+   "kind": "trace",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I1"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MTH03",
+   "file": "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
+   "area": "80-methods",
+   "title": "The blind-comparison protocol",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I3"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-MTH04",
+   "file": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+   "area": "80-methods",
+   "title": "Measurement integrity — proving the critic actually ran the thing",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I2"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-MTH05",
+   "file": "corpus/80-methods/RI-MTH05-corpus-coherence.md",
+   "area": "80-methods",
+   "title": "Corpus coherence as a judged property — the corpus must pass its own audit",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I5"
+   ],
+   "bucket": "method_doctrine",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-MTH06",
+   "file": "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md",
+   "area": "80-methods",
+   "title": "The two missing instruments — build viability, and a journey you can actually record",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I2",
+    "I5"
+   ],
+   "bucket": "method_doctrine",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-MTH07",
+   "file": "corpus/80-methods/RI-MTH07-world-coupling.md",
+   "area": "80-methods",
+   "title": "World coupling — proving the model is consumed by the world, not merely computed beside it",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "I4"
+   ],
+   "bucket": "method_doctrine",
+   "judged": true,
+   "verdicts": 24,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-PLT01",
+   "file": "corpus/85-platform/RI-PLT01-frame-budget.md",
+   "area": "85-platform",
+   "title": "The frame budget as a combat-correctness requirement — and what may honestly be measured on a software rasteriser",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "T3",
+    "F14"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-PLT02",
+   "file": "corpus/85-platform/RI-PLT02-memory-and-asset-budgets.md",
+   "area": "85-platform",
+   "title": "Memory, asset budgets, and the ten-minute traversal leak test — sized for a phone",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "T3"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-PLT03",
+   "file": "corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md",
+   "area": "85-platform",
+   "title": "Load, streaming, and hitches — time to first playable, silent region borders, and a hitch census",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "T3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-UIX01",
+   "file": "corpus/86-ui/RI-UIX01-combat-hud.md",
+   "area": "86-ui",
+   "title": "The combat HUD — what it shows, what it must never show, and stamina as a correctness property",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-UIX02",
+   "file": "corpus/86-ui/RI-UIX02-no-marker-enforcement.md",
+   "area": "86-ui",
+   "title": "No-marker enforcement — the automated detector for S8",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 4,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-UIX03",
+   "file": "corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md",
+   "area": "86-ui",
+   "title": "Inventory, encumbrance, and the menu-pause rule (S14) — plus the level-up screen",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "C3",
+    "T4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-UIX04",
+   "file": "corpus/86-ui/RI-UIX04-journal-ui.md",
+   "area": "86-ui",
+   "title": "The journal screen — chronological, append-only, and not a quest tracker",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P3",
+    "T4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 7,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-UIX05",
+   "file": "corpus/86-ui/RI-UIX05-books-and-readable-text.md",
+   "area": "86-ui",
+   "title": "Books and readable text — pagination, legibility, and reading as a real activity",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-UIX06",
+   "file": "corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md",
+   "area": "86-ui",
+   "title": "UI diegesis and the UI bifurcation — style is art direction, rendering quality is fidelity",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "T4",
+    "F13"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 2,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-UIX07",
+   "file": "corpus/86-ui/RI-UIX07-out-of-combat-hud.md",
+   "area": "86-ui",
+   "title": "The out-of-combat HUD — what persists when nothing is trying to kill you, and how the two sets change hands",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-UIX08",
+   "file": "corpus/86-ui/RI-UIX08-dialogue-window.md",
+   "area": "86-ui",
+   "title": "The dialogue window — a floating index of keywords you find by reading, not a menu of replies",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P1"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-AUD01",
+   "file": "corpus/87-audio/RI-AUD01-combat-impact-audio.md",
+   "area": "87-audio",
+   "title": "Combat impact audio as frame-critical feedback",
+   "kind": "number",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "G6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-AUD02",
+   "file": "corpus/87-audio/RI-AUD02-web-audio-budget.md",
+   "area": "87-audio",
+   "title": "Web Audio constraints, scheduling discipline and the voice budget",
+   "kind": "number",
+   "side": "modern-fidelity",
+   "judges": [],
+   "covered_by": [
+    "E9",
+    "T3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-AUD03",
+   "file": "corpus/87-audio/RI-AUD03-regional-ambience.md",
+   "area": "87-audio",
+   "title": "Regional ambience — every region identifiable by sound alone",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 5,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-AUD04",
+   "file": "corpus/87-audio/RI-AUD04-music-policy.md",
+   "area": "87-audio",
+   "title": "Music policy — the coverage budget, and where silence is correct",
+   "kind": "number",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-AUD05",
+   "file": "corpus/87-audio/RI-AUD05-voice-policy.md",
+   "area": "87-audio",
+   "title": "Voice policy — text-first dialogue is the correct answer, and what audio dialogue exists instead",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-JRN01",
+   "file": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+   "area": "88-journeys",
+   "title": "First launch to first meaningful choice — the opening as an unbroken act",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "E1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 6,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-JRN02",
+   "file": "corpus/88-journeys/RI-JRN02-the-first-hour-as-interaction.md",
+   "area": "88-journeys",
+   "title": "The first hour as interaction — what the hands do, and when the player becomes competent",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E2"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-JRN03",
+   "file": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+   "area": "88-journeys",
+   "title": "Desktop controls — the action set, pointer lock, discoverability, and a fresh agent with no manual",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "T2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-JRN04",
+   "file": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+   "area": "88-journeys",
+   "title": "Mobile with an attached gamepad — the GameSir X2s, the button map, and a phone that is not a workstation",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "T2"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-JRN05",
+   "file": "corpus/88-journeys/RI-JRN05-save-and-load.md",
+   "area": "88-journeys",
+   "title": "Save and load — the state manifest, the round-trip diff, and the storage ruling",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "T1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-JRN06",
+   "file": "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+   "area": "88-journeys",
+   "title": "Death and recovery, end to end — die, lose, respawn, run back, get it back",
+   "kind": "structure",
+   "side": "souls",
+   "judges": [],
+   "covered_by": [
+    "E3"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 6,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-JRN07",
+   "file": "corpus/88-journeys/RI-JRN07-a-quest-without-markers.md",
+   "area": "88-journeys",
+   "title": "A quest end to end without markers — rumour, giver, prose, landmark, resolution, journal",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "P6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-JRN08",
+   "file": "corpus/88-journeys/RI-JRN08-returning-after-a-week.md",
+   "area": "88-journeys",
+   "title": "Returning after a week — can a cold player rebuild their own intentions from in-game information alone?",
+   "kind": "structure",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "E8"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-JRN09",
+   "file": "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md",
+   "area": "88-journeys",
+   "title": "The opening as an exchange — did the scene reach the player, were the answers consumed, and did anyone say what you are",
+   "kind": "number",
+   "side": "morrowind",
+   "judges": [],
+   "covered_by": [
+    "E1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 4,
+   "best_score_0_10": 8,
+   "state": "judged_at_or_above_bar"
+  },
+  {
+   "id": "RI-CMP01",
+   "file": "corpus/95-experience/RI-CMP01-cross-system-payoff-matrix.md",
+   "area": "95-experience",
+   "title": "The cross-system payoff matrix — the seam-sterility floor",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-CMP02",
+   "file": "corpus/95-experience/RI-CMP02-emergence-fuzzing.md",
+   "area": "95-experience",
+   "title": "Emergence — the fuzzing protocol for combinations nobody wrote",
+   "kind": "trace",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E4"
+   ],
+   "bucket": "method_doctrine",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-CMP03",
+   "file": "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+   "area": "95-experience",
+   "title": "Build-identity payoff — six archetypes, each taken through the whole game",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E5"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-EXP01",
+   "file": "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+   "area": "95-experience",
+   "title": "The first-hour beat sheet — what must have happened by minute sixty",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E1"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-EXP02",
+   "file": "corpus/95-experience/RI-EXP02-anecdote-census.md",
+   "area": "95-experience",
+   "title": "The anecdote census — the memorability instrument",
+   "kind": "text",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-EXP03",
+   "file": "corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md",
+   "area": "95-experience",
+   "title": "Session shape and the twenty-hour pacing curve — including the mid-game sag",
+   "kind": "graph",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E6"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-EXP04",
+   "file": "corpus/95-experience/RI-EXP04-novelty-curve.md",
+   "area": "95-experience",
+   "title": "The novelty curve — the rate must decay, the weight must not",
+   "kind": "graph",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E6"
+   ],
+   "bucket": "build",
+   "judged": false,
+   "verdicts": 0,
+   "best_score_0_10": null,
+   "state": "never_judged"
+  },
+  {
+   "id": "RI-EXP05",
+   "file": "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md",
+   "area": "95-experience",
+   "title": "Endings and the last hour — the approach, the point of no return, and what the world says about what you did",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E7"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 3,
+   "best_score_0_10": 0,
+   "state": "judged_below_bar"
+  },
+  {
+   "id": "RI-EXP06",
+   "file": "corpus/95-experience/RI-EXP06-permissiveness-budget.md",
+   "area": "95-experience",
+   "title": "The permissiveness budget — fifteen sanctioned breakages, asserted to work and tested to keep working",
+   "kind": "structure",
+   "side": "neutral",
+   "judges": [],
+   "covered_by": [
+    "E4"
+   ],
+   "bucket": "build",
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
+  }
+ ],
+ "plans": [
+  {
+   "id": "BUILDER-EXECUTION-CONTRACT",
+   "file": "orchestration/plans/BUILDER-EXECUTION-CONTRACT.md",
+   "title": "Builder execution contract — bounded proof, independent judgement",
+   "cites": [],
+   "covered_by": [
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "COST-EXPERIMENTS",
+   "file": "orchestration/plans/COST-EXPERIMENTS.md",
+   "title": "COST-EXPERIMENTS — the plan",
+   "cites": [
+    "RI-MTH07"
+   ],
+   "covered_by": [],
+   "bucket": "out_of_scope_process"
+  },
+  {
+   "id": "COST-INSTRUMENT",
+   "file": "orchestration/plans/COST-INSTRUMENT.md",
+   "title": "Plan — `COST-INSTRUMENT`: the measurement, the baseline, and the experiment protocol",
+   "cites": [],
+   "covered_by": [],
+   "bucket": "out_of_scope_process"
+  },
+  {
+   "id": "W1-00",
+   "file": "orchestration/plans/W1-00.md",
+   "title": "W1-00 — harness, determinism, persistence: current-state continuation plan",
+   "cites": [
+    "RI-AUD02",
+    "RI-CAM02",
+    "RI-CAM06",
+    "RI-CMB07",
+    "RI-JRN03",
+    "RI-JRN05",
+    "RI-MTH01",
+    "RI-MTH02",
+    "RI-MTH04",
+    "RI-MTH07",
+    "RI-PLT01",
+    "RI-PLT03"
+   ],
+   "covered_by": [
+    "I1",
+    "T1",
+    "T3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-01",
+   "file": "orchestration/plans/W1-01.md",
+   "title": "W1-01 — province, regions, traversal and travel: current-state continuation plan",
+   "cites": [
+    "RI-AI05",
+    "RI-CAM02",
+    "RI-MTH03",
+    "RI-PRG06",
+    "RI-PRG07",
+    "RI-TRV01",
+    "RI-VIS07",
+    "RI-WLD01",
+    "RI-WLD02",
+    "RI-WLD04",
+    "RI-WLD07",
+    "RI-WLD09",
+    "RI-WLD10",
+    "RI-WLD11",
+    "RI-WLD15",
+    "RI-WLD16"
+   ],
+   "covered_by": [
+    "W1",
+    "W2",
+    "W7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-02",
+   "file": "orchestration/plans/W1-02.md",
+   "title": "PLAN — W1-02: regions, borders and the strange",
+   "cites": [
+    "RI-AUD03",
+    "RI-MTH07",
+    "RI-WLD04",
+    "RI-WLD12",
+    "RI-WLD14"
+   ],
+   "covered_by": [
+    "W2",
+    "W11"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-03",
+   "file": "orchestration/plans/W1-03.md",
+   "title": "PLAN — W1-03: water, marsh, and the amphibious body",
+   "cites": [
+    "RI-VIS02",
+    "RI-VIS04",
+    "RI-VIS06",
+    "RI-VIS09",
+    "RI-WLD10",
+    "RI-WLD11"
+   ],
+   "covered_by": [
+    "W9",
+    "F7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-04",
+   "file": "orchestration/plans/W1-04.md",
+   "title": "W1-04 current-state continuation plan — settlements, interiors, and people",
+   "cites": [
+    "RI-MTH07",
+    "RI-WLD13"
+   ],
+   "covered_by": [
+    "W4",
+    "W5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-05",
+   "file": "orchestration/plans/W1-05.md",
+   "title": "W1-05 — current-state continuation plan",
+   "cites": [
+    "RI-DLG05",
+    "RI-LOR02",
+    "RI-LOR05",
+    "RI-PRG05",
+    "RI-TRV01",
+    "RI-TRV02",
+    "RI-UIX02",
+    "RI-WLD01",
+    "RI-WLD02",
+    "RI-WLD06",
+    "RI-WLD09"
+   ],
+   "covered_by": [
+    "W6",
+    "W7",
+    "C4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-06",
+   "file": "orchestration/plans/W1-06.md",
+   "title": "PLAN — W1-06: the camera",
+   "cites": [
+    "RI-AI06",
+    "RI-CAM01",
+    "RI-CAM02",
+    "RI-CAM03",
+    "RI-CAM04",
+    "RI-CAM05",
+    "RI-CAM06",
+    "RI-CAM07",
+    "RI-CMB06",
+    "RI-CMB09",
+    "RI-MTH01",
+    "RI-VIS02",
+    "RI-VIS05",
+    "RI-VIS06",
+    "RI-VIS08",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "G1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-07",
+   "file": "orchestration/plans/W1-07.md",
+   "title": "W1-07 — character creation and opening: current-state continuation plan",
+   "cites": [
+    "RI-CHR01",
+    "RI-CHR02",
+    "RI-CHR03",
+    "RI-JRN01",
+    "RI-JRN09",
+    "RI-PRG02"
+   ],
+   "covered_by": [
+    "C1",
+    "E1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-08",
+   "file": "orchestration/plans/W1-08.md",
+   "title": "W1-08 current-state continuation plan",
+   "cites": [
+    "RI-CMB07",
+    "RI-CMB09",
+    "RI-DLG09",
+    "RI-JRN02",
+    "RI-JRN03",
+    "RI-JRN04",
+    "RI-MTH07"
+   ],
+   "covered_by": [
+    "T2",
+    "G7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-09",
+   "file": "orchestration/plans/W1-09.md",
+   "title": "W1-09 — current-state continuation plan",
+   "cites": [
+    "RI-AI02",
+    "RI-AI03",
+    "RI-AI04",
+    "RI-AI05",
+    "RI-CAM02",
+    "RI-CAM04",
+    "RI-CMB01",
+    "RI-CMB02",
+    "RI-CMB03",
+    "RI-CMB04",
+    "RI-CMB05",
+    "RI-CMB06",
+    "RI-CMB07",
+    "RI-CMB08",
+    "RI-CMB09",
+    "RI-CMB11",
+    "RI-CMB12",
+    "RI-LOR05",
+    "RI-MTH07",
+    "RI-PRG02",
+    "RI-UIX01",
+    "RI-VIS08",
+    "RI-WLD10",
+    "RI-WPN01"
+   ],
+   "covered_by": [
+    "G2",
+    "G4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-10",
+   "file": "orchestration/plans/W1-10.md",
+   "title": "W1-10 current-state continuation plan",
+   "cites": [
+    "RI-WPN01",
+    "RI-WPN02",
+    "RI-WPN03",
+    "RI-WPN04",
+    "RI-WPN05",
+    "RI-WPN06"
+   ],
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-11",
+   "file": "orchestration/plans/W1-11.md",
+   "title": "W1-11 — impact, hitstop, mass, material, audio: current-state continuation plan",
+   "cites": [
+    "RI-AUD01",
+    "RI-AUD02",
+    "RI-CAM06",
+    "RI-MTH07",
+    "RI-WPN05"
+   ],
+   "covered_by": [
+    "G6",
+    "G3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-12",
+   "file": "orchestration/plans/W1-12.md",
+   "title": "W1-12 — enemy AI and encounter composition: current-state continuation plan",
+   "cites": [
+    "RI-AI01",
+    "RI-AI02",
+    "RI-AI03",
+    "RI-AI05",
+    "RI-AI06",
+    "RI-AI07",
+    "RI-CMB07",
+    "RI-CMB08",
+    "RI-DLG09",
+    "RI-MTH07",
+    "RI-PRG06",
+    "RI-STL01",
+    "RI-WLD02",
+    "RI-WLD07",
+    "RI-WPN02"
+   ],
+   "covered_by": [
+    "G4",
+    "G5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-13",
+   "file": "orchestration/plans/W1-13.md",
+   "title": "W1-13 current-state continuation plan",
+   "cites": [
+    "RI-AI05",
+    "RI-AI06",
+    "RI-AI07",
+    "RI-AUD04",
+    "RI-CAM05",
+    "RI-CAM06",
+    "RI-CMB08",
+    "RI-JRN05",
+    "RI-JRN06",
+    "RI-LOR05",
+    "RI-PRG04",
+    "RI-PRG06",
+    "RI-TRV01",
+    "RI-TRV02",
+    "RI-WLD01",
+    "RI-WLD04",
+    "RI-WLD06",
+    "RI-WLD07"
+   ],
+   "covered_by": [
+    "C2",
+    "E3",
+    "W10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-14",
+   "file": "orchestration/plans/W1-14.md",
+   "title": "W1-14 — magic: current-state continuation plan",
+   "cites": [
+    "RI-MAG01",
+    "RI-MAG02",
+    "RI-MAG03",
+    "RI-MAG04",
+    "RI-MAG05",
+    "RI-MAG06",
+    "RI-PRG03",
+    "RI-QST05",
+    "RI-TRV02"
+   ],
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-15",
+   "file": "orchestration/plans/W1-15.md",
+   "title": "W1-15 current-state continuation plan — stealth, theft, crime, justice, and non-combat seams",
+   "cites": [
+    "RI-AI01",
+    "RI-CHR02",
+    "RI-CRM01",
+    "RI-CRM02",
+    "RI-MTH07",
+    "RI-QST05",
+    "RI-STL01",
+    "RI-STL02"
+   ],
+   "covered_by": [
+    "C7",
+    "C8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-16",
+   "file": "orchestration/plans/W1-16.md",
+   "title": "W1-16 — current-state continuation plan",
+   "cites": [
+    "RI-AI05",
+    "RI-CHR01",
+    "RI-CHR02",
+    "RI-CHR03",
+    "RI-CMB01",
+    "RI-DLG04",
+    "RI-EXP02",
+    "RI-EXP03",
+    "RI-LOR05",
+    "RI-PRG01",
+    "RI-PRG02",
+    "RI-PRG03",
+    "RI-PRG04",
+    "RI-PRG05",
+    "RI-PRG06",
+    "RI-PRG07",
+    "RI-QST03",
+    "RI-QST08",
+    "RI-STL01",
+    "RI-STL02",
+    "RI-TRV01",
+    "RI-TRV02",
+    "RI-UIX03"
+   ],
+   "covered_by": [
+    "C2",
+    "C3",
+    "C4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-17",
+   "file": "orchestration/plans/W1-17.md",
+   "title": "PLAN — W1-17: dialogue, the topic graph, and the people using it",
+   "cites": [
+    "RI-CHR02",
+    "RI-DLG01",
+    "RI-DLG02",
+    "RI-DLG03",
+    "RI-DLG04",
+    "RI-DLG06",
+    "RI-DLG07",
+    "RI-DLG08",
+    "RI-DLG09",
+    "RI-LOR01",
+    "RI-MTH07",
+    "RI-PRG03",
+    "RI-QST02",
+    "RI-WLD03"
+   ],
+   "covered_by": [
+    "P1",
+    "P2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-18",
+   "file": "orchestration/plans/W1-18.md",
+   "title": "CURRENT-STATE CONTINUATION PLAN — W1-18: quest engine and journal",
+   "cites": [
+    "RI-DLG01",
+    "RI-DLG03",
+    "RI-DLG05",
+    "RI-DLG07",
+    "RI-DLG08",
+    "RI-DLG09",
+    "RI-JRN07",
+    "RI-JRN08",
+    "RI-LOR03",
+    "RI-LOR06",
+    "RI-MAG04",
+    "RI-QST02",
+    "RI-QST04",
+    "RI-QST05",
+    "RI-QST07",
+    "RI-QST08",
+    "RI-QST09",
+    "RI-STL01",
+    "RI-TRV02",
+    "RI-UIX02",
+    "RI-UIX04",
+    "RI-WLD03",
+    "RI-WLD06",
+    "RI-WLD09"
+   ],
+   "covered_by": [
+    "P3",
+    "P6",
+    "P10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-19",
+   "file": "orchestration/plans/W1-19.md",
+   "title": "CURRENT-STATE CONTINUATION PLAN — W1-19: the main quest, end to end",
+   "cites": [
+    "RI-EXP05",
+    "RI-LOR01",
+    "RI-LOR02",
+    "RI-LOR05",
+    "RI-QST06",
+    "RI-WLD09"
+   ],
+   "covered_by": [
+    "P9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-20",
+   "file": "orchestration/plans/W1-20.md",
+   "title": "W1-20 — current-state continuation plan",
+   "cites": [
+    "RI-CRM02",
+    "RI-LOR01",
+    "RI-LOR02",
+    "RI-QST01",
+    "RI-QST03"
+   ],
+   "covered_by": [
+    "P8",
+    "P7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-21",
+   "file": "orchestration/plans/W1-21.md",
+   "title": "W1-21 current-state continuation plan",
+   "cites": [
+    "RI-CAM03",
+    "RI-CAM05",
+    "RI-MTH07",
+    "RI-PRG01",
+    "RI-PRG02",
+    "RI-UIX01",
+    "RI-UIX02",
+    "RI-UIX03",
+    "RI-UIX04",
+    "RI-UIX06",
+    "RI-VIS01",
+    "RI-VIS02",
+    "RI-VIS03",
+    "RI-VIS05",
+    "RI-WLD06"
+   ],
+   "covered_by": [
+    "T4",
+    "G6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-22",
+   "file": "orchestration/plans/W1-22.md",
+   "title": "W1-22 — current-state continuation plan",
+   "cites": [
+    "RI-AUD03",
+    "RI-MTH07",
+    "RI-VIS06",
+    "RI-VIS07",
+    "RI-WLD04",
+    "RI-WLD08"
+   ],
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-23",
+   "file": "orchestration/plans/W1-23.md",
+   "title": "W1-23 current-state continuation plan — canon registry, books, disputes, and names",
+   "cites": [
+    "RI-CHR03",
+    "RI-LOR01",
+    "RI-LOR02",
+    "RI-LOR03",
+    "RI-LOR04",
+    "RI-LOR05",
+    "RI-LOR06",
+    "RI-LOR07",
+    "RI-MTH07",
+    "RI-QST06"
+   ],
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-24",
+   "file": "orchestration/plans/W1-24.md",
+   "title": "W1-24 — visual protocol and the player's body: current-state continuation plan",
+   "cites": [
+    "RI-CAM07",
+    "RI-UIX06",
+    "RI-VIS01",
+    "RI-VIS02",
+    "RI-VIS03",
+    "RI-VIS04",
+    "RI-VIS05",
+    "RI-VIS06",
+    "RI-VIS08",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "F10",
+    "I3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-25",
+   "file": "orchestration/plans/W1-25.md",
+   "title": "CURRENT-STATE CONTINUATION PLAN — W1-25: experience instruments and seam crossings",
+   "cites": [
+    "RI-CMP01",
+    "RI-EXP02",
+    "RI-EXP03",
+    "RI-EXP06",
+    "RI-MTH07"
+   ],
+   "covered_by": [
+    "E4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-26",
+   "file": "orchestration/plans/W1-26.md",
+   "title": "PLAN — W1-26: the opening as a played scene",
+   "cites": [
+    "RI-CHR01",
+    "RI-EXP01",
+    "RI-JRN01",
+    "RI-JRN09",
+    "RI-PLT03"
+   ],
+   "covered_by": [
+    "E1",
+    "C1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-27",
+   "file": "orchestration/plans/W1-27.md",
+   "title": "W1-27 — density, loot, and coherence: current-state continuation plan",
+   "cites": [
+    "RI-AI07",
+    "RI-CMP01",
+    "RI-DLG08",
+    "RI-LOR05",
+    "RI-LOR06",
+    "RI-LOR08",
+    "RI-MTH05",
+    "RI-PRG04",
+    "RI-PRG08",
+    "RI-QST08",
+    "RI-WLD01",
+    "RI-WLD02",
+    "RI-WLD05",
+    "RI-WLD09",
+    "RI-WLD15"
+   ],
+   "covered_by": [
+    "W3",
+    "P10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-28",
+   "file": "orchestration/plans/W1-28.md",
+   "title": "W1-28 — the first hour as interaction: current-state continuation plan",
+   "cites": [
+    "RI-EXP01",
+    "RI-JRN02",
+    "RI-MTH07"
+   ],
+   "covered_by": [
+    "E2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-29",
+   "file": "orchestration/plans/W1-29.md",
+   "title": "W1-29 current-state continuation plan",
+   "cites": [
+    "RI-CAM02",
+    "RI-JRN03",
+    "RI-JRN04"
+   ],
+   "covered_by": [
+    "T2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30-EVIDENCE",
+   "file": "orchestration/plans/W1-30-EVIDENCE.md",
+   "title": "The evidence standard — the Deck, the orbit, and the defect inventory",
+   "cites": [
+    "RI-VIS01",
+    "RI-VIS03",
+    "RI-VIS06",
+    "RI-VIS07",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "I2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30-LIBRARY",
+   "file": "orchestration/plans/W1-30-LIBRARY.md",
+   "title": "The visual library — how reuse becomes structural",
+   "cites": [],
+   "covered_by": [
+    "F8",
+    "F10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30",
+   "file": "orchestration/plans/W1-30.md",
+   "title": "W1-30 — whole-game visual fidelity: parent plan and decomposition",
+   "cites": [
+    "RI-CAM07",
+    "RI-VIS01",
+    "RI-VIS03",
+    "RI-VIS06",
+    "RI-VIS07",
+    "RI-VIS08",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9",
+    "F10",
+    "F11",
+    "F12",
+    "F13",
+    "F14"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30A",
+   "file": "orchestration/plans/W1-30A.md",
+   "title": "W1-30A — the frame pipeline: antialiasing, bloom, occlusion, grade",
+   "cites": [],
+   "covered_by": [
+    "F5",
+    "F2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30B",
+   "file": "orchestration/plans/W1-30B.md",
+   "title": "W1-30B — light, sky, shadow and atmosphere",
+   "cites": [],
+   "covered_by": [
+    "F4",
+    "F2",
+    "F3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30C",
+   "file": "orchestration/plans/W1-30C.md",
+   "title": "W1-30C — the material and texture library",
+   "cites": [],
+   "covered_by": [
+    "F1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30D",
+   "file": "orchestration/plans/W1-30D.md",
+   "title": "W1-30D — characters, creatures, animation",
+   "cites": [
+    "RI-CAM07",
+    "RI-VIS08",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "F10",
+    "F11"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30E",
+   "file": "orchestration/plans/W1-30E.md",
+   "title": "W1-30E — architecture, settlements and the model kit",
+   "cites": [],
+   "covered_by": [
+    "F8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30F",
+   "file": "orchestration/plans/W1-30F.md",
+   "title": "W1-30F — terrain, vegetation, and the region reference corpus",
+   "cites": [
+    "RI-WLD15",
+    "RI-WLD16"
+   ],
+   "covered_by": [
+    "F6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30G",
+   "file": "orchestration/plans/W1-30G.md",
+   "title": "W1-30G — interiors and practical lighting",
+   "cites": [],
+   "covered_by": [
+    "F9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30H",
+   "file": "orchestration/plans/W1-30H.md",
+   "title": "W1-30H — VFX and the water surface",
+   "cites": [
+    "RI-MAG05",
+    "RI-VIS04"
+   ],
+   "covered_by": [
+    "F12",
+    "F7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30K",
+   "file": "orchestration/plans/W1-30K.md",
+   "title": "W1-30K — the look target: art direction written as numbers",
+   "cites": [
+    "RI-VIS01",
+    "RI-VIS05",
+    "RI-VIS07",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "F13"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30S",
+   "file": "orchestration/plans/W1-30S.md",
+   "title": "W1-30S — the seam pass: make the visual tree safely parallel",
+   "cites": [],
+   "covered_by": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-30V",
+   "file": "orchestration/plans/W1-30V.md",
+   "title": "W1-30V — visual truth: the Deck, the orbit, the defect inventory",
+   "cites": [
+    "RI-VIS03"
+   ],
+   "covered_by": [
+    "I2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-DLG-TOPIC-WEB",
+   "file": "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+   "title": "W1-DLG-TOPIC-WEB — topics unlocking topics, as something a player can see happen",
+   "cites": [
+    "RI-DLG01",
+    "RI-DLG04",
+    "RI-MTH07",
+    "RI-UIX04",
+    "RI-UIX08",
+    "RI-VIS09"
+   ],
+   "covered_by": [
+    "P1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "W1-HUD-TOAST",
+   "file": "orchestration/plans/W1-HUD-TOAST.md",
+   "title": "PLAN — W1-HUD-TOAST: the toast that ran off the paper, and the check that could not see it",
+   "cites": [
+    "RI-LOR06",
+    "RI-MTH04",
+    "RI-UIX06"
+   ],
+   "covered_by": [
+    "T4",
+    "G6"
+   ],
+   "bucket": "build"
+  }
+ ],
+ "open_gaps": [
+  {
+   "id": "AUDB2-F1",
+   "severity": "major",
+   "path": "audio.ambience.events",
+   "what": "The regions are distinguishable but inert. Zero discrete sound events across 21 minutes 20 seconds of ambience in 64 recordings; crest factor never exceeds 17.4",
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-FCT-03",
+   "severity": "blocking",
+   "path": "quests.faction.measurement",
+   "what": "The round's headline measurements were taken in a world with nobody in it and no longer reproduce on the build that ships. machine.js:472 added a giver-presence",
+   "covered_by": [
+    "P7",
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-PACK-01",
+   "severity": "high",
+   "path": "process.critic.discipline",
+   "what": "The blind pack cannot separate quality from provenance, and each round's fix creates the next round's tell. r1 leaked setting nouns (17/17); r4 masked them and ",
+   "covered_by": [
+    "I3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-PROSE-01",
+   "severity": "high",
+   "path": "dialogue.voice",
+   "what": "Our characters do not address the player. Questions at 0.2x the reference, exclamations at 0.6x, first person at 0.5x, and every line closes on an epigram inste",
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-02-m68-unanswerable",
+   "severity": "blocking",
+   "path": "world.region.transition",
+   "what": "The RI-WLD12 M68 blind pack cannot answer the question it exists to ask, because the camera is standing inside the scenery. Of 24 frames shipped, 16 have a fore",
+   "covered_by": [
+    "W2",
+    "I3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-03-water-surface-undrawn-and-frozen",
+   "severity": "blocking",
+   "path": "world.water.marsh",
+   "what": "The waterline drawn on the player's body is live and correct to about 0.07 m — I measured it climbing calf to thigh to waist across a 1.178 m tide swing at one ",
+   "covered_by": [
+    "F7",
+    "W9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-12-approach-cannot-close-on-a-walking-player",
+   "severity": "blocking",
+   "path": "combat.enemy.movement",
+   "what": "RUSH is gated on a distance band (dist > 5.0*omega) rather than on whether the distance is actually closing, and APPROACH advances at archetype.*.walk_mps, whic",
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture",
+   "severity": "blocking",
+   "path": "combat.enemy.statemachine",
+   "what": "On RI-AI01 M3's own fixture — one enemy aggroed, the player holding position and never attacking for 60 s — min_dist_dwell is 0.3183 to 0.4373 across the fighti",
+   "covered_by": [
+    "G4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-13-clock-consequences-never-fire",
+   "severity": "major",
+   "path": "world.time.daynight",
+   "what": "RI-PRG04's own Comparison method #8, 'Clock consequence', has never been run. It is four assertions and it is written out in the item: \"Rest at in-game 17:00. A",
+   "covered_by": [
+    "W10"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-13-roster-clause-has-no-control",
+   "severity": "major",
+   "path": "world.time.daynight",
+   "what": "The clause that sets this item's score is passing against a control that contains no people, and the round's own aggregation says so. RI-PRG04's Clock cost axis",
+   "covered_by": [
+    "W10",
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
+   "severity": "blocking",
+   "path": "progression.equipment.encumbrance",
+   "what": "Engine._restoreFightFromSave() clears _equipLoadPinned, and game/src/save/fight.js persists fight.loadout.equip_load_pct which nothing ever reads back. A scenar",
+   "covered_by": [
+    "C3",
+    "T1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands",
+   "severity": "blocking",
+   "path": "progression.equipment.encumbrance",
+   "what": "Engine._recomputeEquipLoad() implements RI-PRG07 §2's formula minus its first two terms. §2 reads `equipRatio = (weight of equipped weapons, shields, armour, ta",
+   "covered_by": [
+    "C3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-17-an-archetype-with-no-mouth",
+   "severity": "blocking",
+   "path": "dialogue.npc.identity",
+   "what": "Forty infos are written for `a` values no NPC record carries, including all 23 `magister` lines — an entire RI-DLG06 §B archetype (row 2, the Telvanni-analogue)",
+   "covered_by": [
+    "P2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-22-event-level-graded-on-a-median",
+   "severity": "major",
+   "path": "audio.ambience.region",
+   "what": "RI-AUD03 §A's 'Level (rel. bed)' band is a claim about EVENTS, and every mechanism that touches it is a per-layer median: gate O3 grades the median of a bed/lay",
+   "covered_by": [
+    "E9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-23-both-registered-voices-on-slavery-are-colonists",
+   "severity": "major",
+   "path": "lore.canon.registry",
+   "what": "The piece diagnosed the province's worst authorial habit exactly right — 'a province that only ever says lease has adopted the Provincial Office's vocabulary as",
+   "covered_by": [
+    "P5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-25-the-control-facility-has-an-optional-control",
+   "severity": "blocking",
+   "path": "experience.permissiveness.register",
+   "what": "The sabotage facility fails when its arms agree, and whether it can SEE that they agree is delegated to `support` - a caller-supplied field that is optional, un",
+   "covered_by": [
+    "E4",
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-26-creation-cannot-be-completed-from-the-title",
+   "severity": "blocking",
+   "path": "journey.firstlaunch.flow",
+   "what": "Engine._titleApply('new') — the row the title's `New` commits to — calls censusBegin({}) with no options. Census.spec.race is set by exactly one function, Censu",
+   "covered_by": [
+    "C1",
+    "E1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later",
+   "severity": "major",
+   "path": "journey.firstlaunch.flow",
+   "what": "Engine.bodyRace() ends `return rows.some((r) => r.id === id) ? id : null`. A body whose sim.identity.race is not an id in game/data/progression/races.json is ob",
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
+   "severity": "major",
+   "path": "render.fidelity.materials",
+   "what": "installSurfaceShader() computes the world height its wetness mask rides on as `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y`, inserted after `#include",
+   "covered_by": [
+    "F1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-act5-argument-entry-shadowed",
+   "severity": "blocking",
+   "path": "dialogue.topics.filtering",
+   "what": "game/data/dialogue/topics/50-mainline.json and game/data/dialogue/topics/main-quest-argument.json both declare a topic record with id 'the-steward-of-the-count'",
+   "covered_by": [
+    "P1",
+    "P9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy",
+   "severity": "major",
+   "path": "progression.level.attributes",
+   "what": "The 42 rescaled attribute and skill demands were fitted to a ceiling of creation + earned skill growth only, on the piece's stated premise that souls are never ",
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-audio-emitter-consumption",
+   "severity": "blocking",
+   "path": "audio.ambience.region",
+   "what": "All four R7 positional emitters are computed every frame into an observation surface and produce no sound on any reachable path. Perturbing bell_buoy.level_db b",
+   "covered_by": [
+    "E9",
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-combat-exemplar-has-no-danger",
+   "severity": "blocking",
+   "path": "combat.frames.timing",
+   "what": "The regenerated RI-CMB07 exemplar is a 120-second, 7200-frame fight in which the player is never hit. Measured from the shipped statistics file and independentl",
+   "covered_by": [
+    "G7",
+    "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
+   "severity": "major",
+   "path": "combat.camera.behaviour",
+   "what": "tools/render/consumption-sweep.mjs tests whether a field NAME is MENTIONED anywhere under game/src/render/, not whether it is consumed. Deleting the call site t",
+   "covered_by": [
+    "I4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-creation-is-an-api-not-a-scene",
+   "severity": "blocking",
+   "path": "journey.chargen.diegesis",
+   "what": "The entire Writ House creation sequence renders nothing. Driving all 19 census nodes through window.__HARNESS and screenshotting after each at 1920x1080 produce",
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-crime-enforcement-is-a-free-win",
+   "severity": "blocking",
+   "path": "crime.guard.response",
+   "what": "The only guard in the build cannot attack and surrenders for nothing: guard_legion declares ai 'hold_ground' (combat/enemy.js only runs an action for ai === 'sc",
+   "covered_by": [
+    "C8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player",
+   "severity": "major",
+   "path": "platform.load.ttfp",
+   "what": "Four instruments now guard the one defect that has already been fixed (an untracked module plainly imported by `import … from`), while six deployment failure cl",
+   "covered_by": [
+    "T3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-enemy-attacks-cannot-reach-contact-range",
+   "severity": "blocking",
+   "path": "combat.hitbox.sweep",
+   "what": "An enemy attack's swept volume does not cover the attacker's own root translation, so it cannot hit a target standing inside its forward root travel. Measured o",
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage",
+   "severity": "major",
+   "path": "combat.hitbox.sweep",
+   "what": "The round-2 hole in the weapon volume is untouched; it has been covered by a second volume that pays the weapon's damage. Ablation, measured on a copy of the lo",
+   "covered_by": [
+    "G2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
+   "severity": "blocking",
+   "path": "quests.faction.rankgating",
+   "what": "RI-QST03 §B puts a world-state requirement on ranks 5, 6 and 7 of every ladder. On four of the eight lines the world states named are raised by nothing: the_doc",
+   "covered_by": [
+    "P7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-faction-ladders-are-doors-onto-empty-corridors",
+   "severity": "blocking",
+   "path": "quests.faction.escalation",
+   "what": "Eight eight-rank ladders exist and are richly specified — every rank gates on reputation, an attribute, two skills and a world state. Three lines carry 18 quest",
+   "covered_by": [
+    "P7",
+    "P8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
+   "severity": "blocking",
+   "path": "progression.bonfire.function",
+   "what": "The level-up screen — which RI-PRG04 §1 makes the hearth's defining affordance and calls 'THE ONLY PLACE LEVELLING IS POSSIBLE' — cannot be opened at any of the",
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-height-fog-credit-unanchored",
+   "severity": "major",
+   "path": "render.fidelity.atmosphere",
+   "what": "The thirteen-region height-fog result in circulation — 13 of 13 regions improved, unusable frames 9 of 13 down to 5 — was rendered through world/aerial.js's sha",
+   "covered_by": [
+    "F4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-input-calibration-outlives-its-pad-on-disconnect",
+   "severity": "major",
+   "path": "input.gamepad.lifecycle",
+   "what": "Round 2's build fix guards the COMPLETED calibration by pad id — `const perm = this.calibrationResult && this.calibrationResult.id === st.id ? ... : null` — and",
+   "covered_by": [
+    "T2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-input-discoverability-unmeasured",
+   "severity": "major",
+   "path": "input.discoverability",
+   "what": "RI-JRN03's entire 'Discoverability without instruction' block — 14 of its 100 points, and the home of hard fail HF5 — is unmeasured, and the one check in it tha",
+   "covered_by": [
+    "T2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-interior-door-draws-nothing",
+   "severity": "blocking",
+   "path": "world.interior.named",
+   "what": "Walking through a door sets sim.env.interior and moves the body to the declared interior spawn, and does not change what is drawn: renderer.setCell() has exactl",
+   "covered_by": [
+    "W5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-library-martial-single-hand-fingerprint",
+   "severity": "major",
+   "path": "lore.register",
+   "what": "All 43 martial texts carry the same three orthographic and page-furniture fingerprints, every one of them in a place tools/check-prose.mjs does not read. Bare A",
+   "covered_by": [
+    "P5",
+    "P4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+   "severity": "critical",
+   "path": "ui.readables",
+   "what": "37,819 words in 65 texts open 65/65 in the engine across 324 pages, and the only thing a player can do with any of it is read it. Both mechanical consumers the ",
+   "covered_by": [
+    "P4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-library-unreachable-contradiction-pairs",
+   "severity": "blocking",
+   "path": null,
+   "what": "Three of nineteen registered contradiction pairs have both sides reachable by a player. Fifteen have neither side reachable anywhere under game/. The ford pair ",
+   "covered_by": [
+    "P4",
+    "P5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch",
+   "severity": "major",
+   "path": "audio.combat.impact",
+   "what": "This piece's headline artifact is a three-arm experiment showing the shipped panner at r = 0.9999 and the rule it replaced at r = −0.5207 on the same fixture, a",
+   "covered_by": [
+    "G6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-magic-effects-no-behaviour",
+   "severity": "blocking",
+   "path": "magic.effects.utility",
+   "what": "The effect catalogue is a complete, correctly priced, deterministic parameter space with one behaviour behind it. Measured across all 71 shipped spells: 5 of 55",
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-magic-skill-frozen",
+   "severity": "blocking",
+   "path": "magic.gating.skills",
+   "what": "MagicSystem.skills is a private object initialised to {sorcery:30, root_speech:30, warding:30, veiling:30} that no gameplay path writes. Measured in four shippe",
+   "covered_by": [
+    "C6",
+    "C2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-magic-spellmaking-has-no-world-side-surface",
+   "severity": "blocking",
+   "path": "magic.effects.catalogue",
+   "what": "The spell-making and enchanting systems — the entire Morrowind half of this piece and the reason RI-MAG03 exists — are reachable only from window.__HARNESS. `ma",
+   "covered_by": [
+    "C6"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-mainquest-topic-bootstrap",
+   "severity": "blocking",
+   "path": "quests.mainline.acts",
+   "what": "The main quest cannot be entered or advanced by playing. Booted cold with nothing granted through the harness, 0 of 32 category:\"main\" quests are offerable and ",
+   "covered_by": [
+    "P9",
+    "P1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
+   "severity": "major",
+   "path": "input.modality.parity",
+   "what": "Moving `map` to second in `UISystem.WALK_ORDER` put it immediately before `journal`, and `map`'s own navigable ring excludes `journal` (NEVER_ADJACENT, enforcin",
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-map-the-audit-is-computed-and-never-published",
+   "severity": "blocking",
+   "path": "platform.save.persistence",
+   "what": "Discovery.restore() computes a seven-field audit of the loaded footprint against the blob's own claims — dropped, phantom_cells, missing_cells, claimed_places, ",
+   "covered_by": [
+    "T1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-mark-teaches-nothing-to-the-journal",
+   "severity": "blocking",
+   "path": "journal.entry.voice",
+   "what": "Looking at a mark writes a know: flag and no journal entry. journal [10] -> [10] on all four browser legs, before and after. The person channel writes both (37 ",
+   "covered_by": [
+    "P3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-pbr-material-set-unbound",
+   "severity": "blocking",
+   "path": "render.fidelity.materials",
+   "what": "Across five blind pairs, four of five judges described our surfaces as flat untextured fills with no albedo/normal/roughness response — three of them named it a",
+   "covered_by": [
+    "F1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-platform-prng-never-drawn",
+   "severity": "blocking",
+   "path": "platform.determinism.harness",
+   "what": "The seeded PRNG is reseeded correctly and never drawn from. rng.draws is 0 on every one of 3600 frames in every scenario, state and seed measured. Seeds 1337 an",
+   "covered_by": [
+    "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-platform-save-drops-entity-prev-state",
+   "severity": "blocking",
+   "path": "platform.save.persistence",
+   "what": "The save does not carry enemies[].prev_state. RI-JRN05 M5 run as written — identical 120-frame pre-roll on both sides, identical 600-frame script, seed 4711, co",
+   "covered_by": [
+    "T1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-population-save-reload-repays-every-corpse",
+   "severity": "major",
+   "path": "combat.encounter.placement",
+   "what": "Engine.applySave() and Engine.loadState() both call PopulationSystem.reset(), which sets all 144 posts back to DORMANT, while SoulsSystem.reset() empties the ei",
+   "covered_by": [
+    "T1",
+    "G5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-provstream-arrival-burst",
+   "severity": "blocking",
+   "path": "platform.load.hitches",
+   "what": "The urgent tile-build branch in Engine._streamProvince() is exempt from the one-unit-of-work-per-step budget AND is evaluated BEFORE it, so any frame on which t",
+   "covered_by": [
+    "T3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-quest-givers-not-in-the-world",
+   "severity": "blocking",
+   "path": "quests.mainline.acts",
+   "what": "Nine of the ninety-four quest givers in this build exist anywhere a player can stand, and none of the thirty-five quests behind the '10 of 35' findability headl",
+   "covered_by": [
+    "P7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+   "severity": "blocking",
+   "path": "character.creation.flow",
+   "what": "The questionnaire — RI-CHR01 §4 Route C, RI-JRN01 O9's mandatory route — reaches the player with neither its questions nor its answer. (a) buildCensusModel() at",
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+   "severity": "blocking",
+   "path": "journey.opening.legibility",
+   "what": "The build's rendered-text accessor — `__HARNESS.getRenderedText()`, fed by render/text-register.js — is STRUCTURALLY INCAPABLE of seeing the one surface RI-JRN0",
+   "covered_by": [
+    "T4",
+    "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-road-join-has-no-gate",
+   "severity": "blocking",
+   "path": "world.traversal.roads",
+   "what": "The road/settlement join is a BUILD-TIME consumption with no gate. game/data/world/roads.json carries the answer; planSettlement() produces the question; nothin",
+   "covered_by": [
+    "W1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-save-purse-has-no-writer",
+   "severity": "blocking",
+   "path": "journey.save.roundtrip",
+   "what": "The gold a player can actually spend is held in `combat.world.gold` (rebuilt by `Engine._buildCombat`) and `sim.stealth.p.gold`, and neither is ever written bac",
+   "covered_by": [
+    "C4",
+    "T1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-settlement-has-no-outside",
+   "severity": "blocking",
+   "path": "world.settlement.anatomy",
+   "what": "Round 2 built the inside of 115 buildings and none of the outside of 202. settlement.buildings is read at exactly two sites in game/src: the door table at sim/s",
+   "covered_by": [
+    "W4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale",
+   "severity": "blocking",
+   "path": "stealth.detection.model",
+   "what": "On the round's own 16,996-cell chest-height grid over all 115 interiors, 12,210 cells (71.8%) read L = 1.0000 at noon clear and 10 rooms are entirely flat at 1.",
+   "covered_by": [
+    "C7",
+    "F9"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-souls-alive-keyed-on-eid",
+   "severity": "major",
+   "path": "progression.souls.economy",
+   "what": "SoulsSystem._alive is keyed on the eid and nothing in the build is authorised to clear it. One bug, two faces: every probe in this tree (HF-1) and every player ",
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-souls-world-copy-of-the-values-is-53pc-stale",
+   "severity": "major",
+   "path": "progression.souls.economy",
+   "what": "Round 3 re-derived seven enemy statblocks. game/data/world/population-posts.json is GENERATED and caches a souls figure per post plus by_tier, by_region and a c",
+   "covered_by": [
+    "C2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
+   "severity": "blocking",
+   "path": "crime.witness.model",
+   "what": "The stealth and crime models are computed beside the world instead of by it, and the coupling is measurably zero at the two places the reference items make load",
+   "covered_by": [
+    "C7",
+    "C8"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-the-building-is-smaller-than-the-room",
+   "severity": "blocking",
+   "path": "world.settlement.anatomy",
+   "what": "54 of 202 exteriors are shrunk to fit plans authored tighter than the interiors declare themselves to be wide, while interior bounds_m is defined as the DECLARE",
+   "covered_by": [
+    "W4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-the-door-puts-you-inside-the-building",
+   "severity": "blocking",
+   "path": "world.interior.named",
+   "what": "buildings[].door is the building's own centre on 112 of 112 (max door-to-centre distance 0.00 m), and every declared continuity.exterior_spawn lies inside its o",
+   "covered_by": [
+    "W5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-the-doorstep-cannot-get-you-back-in",
+   "severity": "blocking",
+   "path": "world.interior.continuity",
+   "what": "Pressing `interact` on the doorstep you were just put on — the real latch, sim/settlement.js#stepSettlement() reading input.pressedName('interact') and handing ",
+   "covered_by": [
+    "W5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-the-fence-buys-your-victims-own-furniture",
+   "severity": "blocking",
+   "path": "stealth.fence.economy",
+   "what": "Engine.fenceQuote() (game/src/engine.js:8541) hands sim/stealth/theft.js::willBuy() a stub world — `const world = { npcById: () => null, dispositionBetween: () ",
+   "covered_by": [
+    "C7"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-the-naming-moment-is-still-orphan-text",
+   "severity": "blocking",
+   "path": "journey.chargen.diegesis",
+   "what": "RI-CHR01 §4 states the questionnaire's purpose in its own words — the Warden-Scribe says the profession aloud, 'which is the moment the route is for' — and RI-J",
+   "covered_by": [
+    "C1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-two-placement-mechanisms-collide",
+   "severity": "blocking",
+   "path": null,
+   "what": "Two placement mechanisms put objects into the same interior without either knowing where the other's are, and four documents — one of them half of a registered ",
+   "covered_by": [
+    "W5"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-ui-detectors-that-cannot-see",
+   "severity": "blocking",
+   "path": "ui.hud.minimalism",
+   "what": "The piece's detectors report PASS about things they did not sample, and its one detector that looks at the framebuffer rather than at the build's own register i",
+   "covered_by": [
+    "T4",
+    "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-ui-map-outside-the-ar2-detectors",
+   "severity": "blocking",
+   "path": "ui.hud.minimalism",
+   "what": "Every AR-2 detector this piece ships predates the map and none of them opens it — ui-layer's 8 viewpoints, ui-metrics' 6 screens, ui-forbidden's 4 menus, ui-cen",
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-w1-30d-guard-misses-part-deletion",
+   "severity": "major",
+   "path": "render.process.measurement",
+   "what": "The anti-gaming guard on the character defect metric is a scalar silhouette-area check, and a scalar cannot notice that a named part stopped existing. Deleting ",
+   "covered_by": [
+    "F10",
+    "I2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-w1-30e-street-gate-never-ran",
+   "severity": "blocking",
+   "path": "render.process.measurement",
+   "what": "The eight settlement street shots, which the plan names as this child's deciding gate, place the camera inside building geometry. Lilmoth is filled by the cours",
+   "covered_by": [
+    "F8",
+    "I2"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-w1-30s-seam-incomplete",
+   "severity": "major",
+   "path": "render.fidelity.vfx",
+   "what": "The seam publishes the boundary for 8 of 10 children and leaves 2 stranded. registerPrePass exists and has one registrant (water reflection), but the spell-VFX ",
+   "covered_by": [
+    "F12"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-walkpath-absorbs-teleports",
+   "severity": "major",
+   "path": "world.traversal.locomotion",
+   "what": "engine.walkPath() still adds a teleport to path_m — it accumulates the per-frame planar step with no upper bound and returns no teleports / teleported_m field —",
+   "covered_by": [
+    "W1",
+    "I1"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-weapon-animation-model-has-no-rendered-consumer",
+   "severity": "blocking",
+   "path": "weapon.animation.reuse",
+   "what": "The moveset animation model — 1150 distinct clips over 2689 slots and 87 weapons, the solved arcs, the solved blade lengths, the 25-slot contract — has no rende",
+   "covered_by": [
+    "G3",
+    "F11"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
+   "severity": "blocking",
+   "path": "weapon.feel.material",
+   "what": "The RI-WPN05 impact and material model is a data island, exactly as the 87 movesets were in round 1. Five of six perturbations of the shipped tables change noth",
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
+   "severity": "blocking",
+   "path": "weapon.moveset.slots",
+   "what": "The 87 authored movesets are unreachable from the running game. setLoadout() rejects all 87 roster ids with 'no moveset <id>. Known: axe, dagger, greatsword, ha",
+   "covered_by": [
+    "G3"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-world-region-identity-is-a-tint",
+   "severity": "blocking",
+   "path": "world.region.identity",
+   "what": "All thirteen regions are the same three primitives — canopy, under, rock — recoloured, and not one of the thirteen declared ONLY-HERE elements exists in the wor",
+   "covered_by": [
+    "W2",
+    "F13"
+   ],
+   "bucket": "build"
+  },
+  {
+   "id": "GAP-W1-world-trunk-road-below-the-waterline",
+   "severity": "blocking",
+   "path": "world.terrain.form",
+   "what": "The trunk road network is routed along the floors of water bodies. Sampling getWaterAt() at every point of all ten built legs at tide LOW: 1,364 m of road (5.4%",
+   "covered_by": [
+    "W1"
+   ],
+   "bucket": "build"
+  }
+ ],
+ "uncovered": {
+  "reference_items": [],
+  "open_gaps": [],
+  "plans": []
+ },
+ "mapping_problems": [],
+ "old_roadmap_backcheck": {
+  "note": "Against orchestration/ROADMAP.md as it stood at baseline commit dd222b79. Now condemned; kept because it names what a memory-written roadmap misses.",
+  "proposed_items_with_no_old_home": [
+   {
+    "id": "I1",
+    "title": "The harness and determinism",
+    "ref_items": [
+     "RI-CMB07",
+     "RI-MTH01",
+     "RI-MTH02"
+    ],
+    "open_gaps": [
+     "GAP-W1-combat-exemplar-has-no-danger",
+     "GAP-W1-platform-prng-never-drawn",
+     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+     "GAP-W1-ui-detectors-that-cannot-see",
+     "GAP-W1-walkpath-absorbs-teleports"
+    ]
+   },
+   {
+    "id": "I4",
+    "title": "Consumption as a gate",
+    "ref_items": [
+     "RI-MTH07"
+    ],
+    "open_gaps": [
+     "GAP-FCT-03",
+     "GAP-W1-13-roster-clause-has-no-control",
+     "GAP-W1-25-the-control-facility-has-an-optional-control",
+     "GAP-W1-audio-emitter-consumption",
+     "GAP-W1-consumption-sweep-tripwire-is-a-name-grep"
+    ]
+   },
+   {
+    "id": "G1",
+    "title": "The camera",
+    "ref_items": [
+     "RI-CMB06",
+     "RI-CAM01",
+     "RI-CAM02",
+     "RI-CAM03",
+     "RI-CAM04",
+     "RI-CAM05",
+     "RI-CAM06",
+     "RI-CAM07"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "G6",
+    "title": "Combat HUD and impact feedback",
+    "ref_items": [
+     "RI-UIX01",
+     "RI-AUD01"
+    ],
+    "open_gaps": [
+     "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch"
+    ]
+   },
+   {
+    "id": "G8",
+    "title": "Healing, status and exhaustion",
+    "ref_items": [
+     "RI-CMB08",
+     "RI-CMB09",
+     "RI-CMB10"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "W7",
+    "title": "Getting around",
+    "ref_items": [
+     "RI-TRV01",
+     "RI-TRV02"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "C1",
+    "title": "Character creation as a played scene",
+    "ref_items": [
+     "RI-CHR01",
+     "RI-CHR02",
+     "RI-CHR03"
+    ],
+    "open_gaps": [
+     "GAP-W1-26-creation-cannot-be-completed-from-the-title",
+     "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later",
+     "GAP-W1-creation-is-an-api-not-a-scene",
+     "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+     "GAP-W1-the-naming-moment-is-still-orphan-text"
+    ]
+   },
+   {
+    "id": "C3",
+    "title": "Load, inventory and upgrades",
+    "ref_items": [
+     "RI-PRG07",
+     "RI-PRG08",
+     "RI-UIX03"
+    ],
+    "open_gaps": [
+     "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
+     "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands"
+    ]
+   },
+   {
+    "id": "C5",
+    "title": "Affliction and disease",
+    "ref_items": [
+     "RI-CMB10",
+     "RI-PRG09"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "P9",
+    "title": "The main quest",
+    "ref_items": [
+     "RI-QST06"
+    ],
+    "open_gaps": [
+     "GAP-W1-act5-argument-entry-shadowed",
+     "GAP-W1-mainquest-topic-bootstrap"
+    ]
+   },
+   {
+    "id": "E4",
+    "title": "Cross-system payoff and emergence",
+    "ref_items": [
+     "RI-CMP01",
+     "RI-CMP02",
+     "RI-EXP06"
+    ],
+    "open_gaps": [
+     "GAP-W1-25-the-control-facility-has-an-optional-control"
+    ]
+   },
+   {
+    "id": "E5",
+    "title": "Build identity",
+    "ref_items": [
+     "RI-CMP03"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "E6",
+    "title": "Session shape and pacing",
+    "ref_items": [
+     "RI-EXP02",
+     "RI-EXP03",
+     "RI-EXP04"
+    ],
+    "open_gaps": []
+   },
+   {
+    "id": "E7",
+    "title": "Endings and the last hour",
+    "ref_items": [
+     "RI-EXP05"
+    ],
+    "open_gaps": []
+   }
+  ],
+  "proposed_items_only_partially_homed": [
+   {
+    "id": "F9",
+    "title": "Interiors and practical light",
+    "old": "partial:V4"
+   },
+   {
+    "id": "G4",
+    "title": "Enemies that can fight you",
+    "old": "partial:Step5"
+   },
+   {
+    "id": "G2",
+    "title": "The exchange",
+    "old": "partial:C3"
+   },
+   {
+    "id": "W1",
+    "title": "Terrain form and the road network",
+    "old": "partial:D1"
+   },
+   {
+    "id": "W9",
+    "title": "Water and hazards as play",
+    "old": "partial:V11"
+   },
+   {
+    "id": "C7",
+    "title": "Stealth and theft",
+    "old": "partial:B5"
+   },
+   {
+    "id": "P5",
+    "title": "Lore, canon and names",
+    "old": "partial:B9"
+   },
+   {
+    "id": "P10",
+    "title": "Quest texture and consequence",
+    "old": "partial:B2"
+   },
+   {
+    "id": "T4",
+    "title": "The screens",
+    "old": "partial:V14"
+   },
+   {
+    "id": "E2",
+    "title": "The first hour as interaction",
+    "old": "partial:E1"
+   }
+  ],
+  "reference_items_with_no_old_home": [
+   "RI-AUD01",
+   "RI-CAM01",
+   "RI-CAM02",
+   "RI-CAM03",
+   "RI-CAM04",
+   "RI-CAM05",
+   "RI-CAM06",
+   "RI-CAM07",
+   "RI-CHR01",
+   "RI-CHR02",
+   "RI-CHR03",
+   "RI-CMB06",
+   "RI-CMB07",
+   "RI-CMB08",
+   "RI-CMB09",
+   "RI-CMB10",
+   "RI-CMP01",
+   "RI-CMP02",
+   "RI-CMP03",
+   "RI-EXP02",
+   "RI-EXP03",
+   "RI-EXP04",
+   "RI-EXP05",
+   "RI-EXP06",
+   "RI-MTH01",
+   "RI-MTH02",
+   "RI-MTH07",
+   "RI-PRG07",
+   "RI-PRG08",
+   "RI-PRG09",
+   "RI-QST06",
+   "RI-TRV01",
+   "RI-TRV02",
+   "RI-UIX01",
+   "RI-UIX03"
+  ],
+  "open_gaps_with_no_old_home": [
+   "GAP-FCT-03",
+   "GAP-W1-13-roster-clause-has-no-control",
+   "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
+   "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands",
+   "GAP-W1-25-the-control-facility-has-an-optional-control",
+   "GAP-W1-26-creation-cannot-be-completed-from-the-title",
+   "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later",
+   "GAP-W1-act5-argument-entry-shadowed",
+   "GAP-W1-audio-emitter-consumption",
+   "GAP-W1-combat-exemplar-has-no-danger",
+   "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
+   "GAP-W1-creation-is-an-api-not-a-scene",
+   "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch",
+   "GAP-W1-mainquest-topic-bootstrap",
+   "GAP-W1-platform-prng-never-drawn",
+   "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+   "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+   "GAP-W1-the-naming-moment-is-still-orphan-text",
+   "GAP-W1-ui-detectors-that-cannot-see",
+   "GAP-W1-walkpath-absorbs-teleports"
+  ]
+ },
+ "dependencies": [
+  {
+   "from": "P6",
+   "needs": "W6",
+   "why": "A quest given in prose cannot be followed across a world with no landmarks to name.",
+   "evidence": "RI-JRN07 requires \"rumour, giver, prose, landmark, resolution\"; RI-WLD06 is the landmark/signpost item."
+  },
+  {
+   "from": "P7",
+   "needs": "W4",
+   "why": "Unlocking a rank does not make a quest reachable if its giver is standing nowhere.",
+   "evidence": "GAP-W1-quest-givers-not-in-the-world (blocking): 9 of 94 givers exist where a player can stand; GAP-W1-settlement-has-no-outside (blocking)."
+  },
+  {
+   "from": "P9",
+   "needs": "P1",
+   "why": "The main quest is entered through a dialogue topic, and two topic files declare the same entry.",
+   "evidence": "GAP-W1-mainquest-topic-bootstrap (blocking); GAP-W1-act5-argument-entry-shadowed (blocking)."
+  },
+  {
+   "from": "P3",
+   "needs": "W6",
+   "why": "The journal cannot be judged as the only navigation aid until looking at a landmark writes to it.",
+   "evidence": "GAP-W1-mark-teaches-nothing-to-the-journal (blocking): looking at a mark writes a know: flag and no journal entry; journal [10] -> [10] on all four browser legs."
+  },
+  {
+   "from": "C7",
+   "needs": "F9",
+   "why": "The sneak model reads a light field that is saturated: 71.8% of interior cells read L = 1.0000.",
+   "evidence": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale (blocking, stealth.detection.model)."
+  },
+  {
+   "from": "C4",
+   "needs": "T1",
+   "why": "Gold lives in two places and the spendable one has no writer, so the economy does not survive a reload.",
+   "evidence": "GAP-W1-save-purse-has-no-writer (blocking)."
+  },
+  {
+   "from": "C3",
+   "needs": "T1",
+   "why": "A save and a reload change your roll class, so equip-load tiers cannot be judged across a session.",
+   "evidence": "GAP-W1-16-a-save-and-a-reload-change-your-roll-class (blocking)."
+  },
+  {
+   "from": "C2",
+   "needs": "C1",
+   "why": "Levelling happens only at the hearth screen, and the hearth gate calls a method that does not exist; creation never reaches a scene to set the stats it levels.",
+   "evidence": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist (blocking); GAP-W1-creation-is-an-api-not-a-scene (blocking)."
+  },
+  {
+   "from": "F10",
+   "needs": "G1",
+   "why": "The player body is judged under an always-behind camera; you cannot inspect a body you cannot orbit.",
+   "evidence": "RI-CAM07 is filed side: modern-fidelity and titled \"what the always-behind camera specifically demands of the player’s body\"; owner: \"rotate the camera around the player\"."
+  },
+  {
+   "from": "F2",
+   "needs": "I2",
+   "why": "Visual work is graded from hardware capture, and two W1-30 gates never ran because the camera was in the wrong place or the daemon returned nothing.",
+   "evidence": "GAP-W1-w1-30e-street-gate-never-ran (blocking); GAP-W1-w1-30d-guard-misses-part-deletion (major)."
+  },
+  {
+   "from": "F13",
+   "needs": "I5",
+   "why": "Protocol B has never run, and the anchor plates cannot satisfy their own rows.",
+   "evidence": "RI-VIS02 best score 0/10 across 1 verdict; RI-VIS09 never named by any verdict."
+  },
+  {
+   "from": "G7",
+   "needs": "G1",
+   "why": "Nobody can judge how a fight feels without a camera that frames it.",
+   "evidence": "RI-CAM03 (lock-on framing) and RI-CAM04 never named by any verdict; RI-CAM01 best 2/10."
+  },
+  {
+   "from": "G7",
+   "needs": "T2",
+   "why": "Judging feel means humans playing, which means controls a stranger can find.",
+   "evidence": "GAP-W1-input-discoverability-unmeasured (major): RI-JRN03’s entire discoverability block, 14 of its 100 points, unmeasured."
+  },
+  {
+   "from": "G3",
+   "needs": "F11",
+   "why": "The moveset animation model has no rendered consumer, so weapon identity cannot be seen.",
+   "evidence": "GAP-W1-weapon-animation-model-has-no-rendered-consumer (blocking): 1150 clips over 2689 slots, 87 weapons."
+  },
+  {
+   "from": "G2",
+   "needs": "G4",
+   "why": "An enemy attack volume that cannot reach contact range makes the exchange untestable from the receiving end.",
+   "evidence": "GAP-W1-enemy-attacks-cannot-reach-contact-range (blocking)."
+  },
+  {
+   "from": "W2",
+   "needs": "F6",
+   "why": "Region identity is currently a tint over three shared primitives; distinguishing regions is a terrain and air problem before it is a colour problem.",
+   "evidence": "GAP-W1-world-region-identity-is-a-tint (blocking)."
+  },
+  {
+   "from": "W5",
+   "needs": "W4",
+   "why": "A door cannot be drawn into a building whose exterior does not exist.",
+   "evidence": "GAP-W1-settlement-has-no-outside (blocking); GAP-W1-interior-door-draws-nothing (blocking)."
+  },
+  {
+   "from": "E1",
+   "needs": "C1",
+   "why": "Creation cannot be completed from the title screen, so the opening has no first act.",
+   "evidence": "GAP-W1-26-creation-cannot-be-completed-from-the-title (blocking)."
+  },
+  {
+   "from": "E3",
+   "needs": "C2",
+   "why": "The corpse run is a souls economy, and SoulsSystem._alive is keyed on eid with nothing authorised to clear it.",
+   "evidence": "GAP-W1-souls-alive-keyed-on-eid (major)."
+  },
+  {
+   "from": "E9",
+   "needs": "I4",
+   "why": "All four positional emitters compute every frame and produce no sound on any device.",
+   "evidence": "GAP-W1-audio-emitter-consumption (blocking)."
+  },
+  {
+   "from": "I3",
+   "needs": "I5",
+   "why": "A blind pack that cannot separate quality from provenance is not a judgement.",
+   "evidence": "GAP-PACK-01 (high, process.critic.discipline)."
+  }
+ ],
+ "dependency_order_violations": []
+}
