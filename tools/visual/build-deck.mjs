@@ -14,7 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { planSettlement, settlementApproach, settlementFootprintClearance } from '../../game/src/render/exterior.js';
+import { planSettlement, settlementApproach, settlementFootprintClearance, applyInteriorBounds } from '../../game/src/render/exterior.js';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};

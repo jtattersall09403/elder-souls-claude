@@ -351,7 +351,7 @@ export class Engine {
     // belongs to where you WERE — so this is that, minus the province streaming and the camera
     // settle, both of which are unsafe inside the armed step and both of which resolve on their
     // own later in the same frame.
-    this.sim.placeBody = (x, y, z) => this._placeBody(x, y, z);
+    this.sim.placeBody = (x, y, z, yaw) => this._placeBody(x, y, z, yaw);
     // THE AUTHORITATIVE CELL SWITCH, and it is the same defect one layer up.
     //
     // The body half above was fixed in round 1. The RENDER half was not, and the round-1 verdict
@@ -7759,6 +7759,13 @@ export class Engine {
     if (b) {
       b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
       if (b.vel) { b.vel[0] = 0; b.vel[1] = 0; b.vel[2] = 0; }
+      // AND THE YAW, or the fix above is inert — which is the failure this file's own header
+      // comment is about, one field along. `sim.player.yaw` is a MIRROR:
+      // `combat-bridge.js#mirror()` runs `p.yaw = b.yaw` at the top of every step, so a yaw
+      // written only to `sim.player` survives exactly until the next step and is then quietly
+      // overwritten by the body's. Same shape as the position half, and it would have looked
+      // like a working fix in any single-frame probe.
+      if (Number.isFinite(yaw)) b.yaw = p.yaw;
       // Without this the capsule interpolates across the doorway and the renderer draws the
       // player streaking from the street to the hearth.
       b.hasPrev = false;

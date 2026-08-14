@@ -10,6 +10,16 @@
  *   node tools/harness/first-ten.mjs --tag before
  *   node tools/harness/first-ten.mjs --tag after
  *   node tools/harness/first-ten.mjs --tag null-d3 --only d3     (a null control)
+ *   node tools/harness/first-ten.mjs --start debug               (the OLD target: Lilmoth)
+ *
+ * WHICH FIRST TEN MINUTES. `--start shipping` is the default and it is the one a player gets:
+ * the title screen, `New`, the whole character-creation graph in the barge hold and the Writ
+ * House, and then out of the writ house door into Thorn. `--start debug` is what this tool used
+ * to do unconditionally — boot `game/data/states/default.json` and measure from the harbour
+ * steps at LILMOTH, which no player who clicks New ever reaches
+ * (`reports/spawn-truth/2026-08-14-spawn-truth.md`). The debug spawn is a legitimate thing to
+ * measure the WORLD from and is kept; it is not a measurement of the opening, and choosing it
+ * now prints a banner saying so.
  *
  * WHY IT MEASURES WHAT IT MEASURES. Each number is the player's own complaint, not a proxy
  * that a change could satisfy without helping:
@@ -31,6 +41,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { launchGame } from '../lib/browser.mjs';
+import { startOpening, OPENING, DEBUG_SPAWN } from '../lib/opening.mjs';
 
 const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const args = {};
@@ -47,7 +58,22 @@ const FRAMES = path.join(OUT, 'frames');
 fs.mkdirSync(FRAMES, { recursive: true });
 const [CW, CH] = String(args.canvas || '960x540').split('x').map(Number);
 
-const manifest = { tag: TAG, when: new Date().toISOString(), canvas: `${CW}x${CH}`, renderer_string: null, swiftshader: null, d1: null, d2: null, d3: null };
+const START = String(args.start || 'shipping');
+if (START !== 'shipping' && START !== 'debug') {
+  console.error(`first-ten: --start must be 'shipping' (title -> New -> Thorn) or 'debug' (${DEBUG_SPAWN.settlement}); got '${START}'`);
+  process.exit(2);
+}
+const manifest = {
+  tag: TAG, when: new Date().toISOString(), canvas: `${CW}x${CH}`,
+  // Recorded in the manifest, not only in the log, because the whole point of the spawn-truth
+  // finding is that a manifest that does not say where it stood cannot be audited later.
+  start: START,
+  measures: START === 'shipping'
+    ? `the shipping opening: title -> New -> ${OPENING.interiors.join(' -> ')} -> ${OPENING.settlement}`
+    : `the DEBUG spawn (${DEBUG_SPAWN.file}, ${DEBUG_SPAWN.settlement}) — NOT what a new player sees`,
+  opening: null,
+  renderer_string: null, swiftshader: null, d1: null, d2: null, d3: null,
+};
 
 const g = await launchGame({ entry: 'game/index.html', width: 1280, height: 720 });
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });
@@ -181,6 +207,10 @@ async function census() {
     const drawn = rows.filter((r) => r.mesh_visible);
     return {
       player_pos: P.map((v) => Math.round(v * 10) / 10),
+      // Which town this actually is. Named in the census rather than assumed by the caller,
+      // because "the report said Lilmoth and the body was in Thorn" is the defect this file's
+      // header is about.
+      player_settlement: sim.env.settlement || null,
       env_interior: sim.env.interior, hour: Math.round(sim.env.timeOfDay * 100) / 100,
       npcs: rows.length,
       at_origin_coords: rows.filter((r) => r.at_origin).length,
@@ -192,6 +222,18 @@ async function census() {
     };
   });
 }
+
+// ---------------------------------------------------------------------------------------
+// WHERE WE STAND BEFORE ANYTHING IS MEASURED.
+//
+// This used to be nowhere at all: the tool booted, `?state=` was absent, `main.js` loaded
+// `default.json`, and every number below was taken on the harbour steps at Lilmoth while the
+// report called it "the first ten minutes". `startOpening()` plays the title screen's `New`
+// through the census graph and out of the writ house door into Thorn, which is the sequence a
+// player gets. `--start debug` keeps the old behaviour and prints a banner.
+// ---------------------------------------------------------------------------------------
+manifest.opening = await startOpening(g, { start: START, label: `first-ten --tag ${TAG}` });
+console.log(JSON.stringify({ start: START, at: { settlement: manifest.opening.settlement, interior: manifest.opening.interior, pos: manifest.opening.pos, yaw: manifest.opening.yaw } }));
 
 // The real input pipeline: the same closed ACTIONS set a keyboard drives. The event shape is
 // `{ f, move }` — `f` is the frame the event lands on, and it is REQUIRED (a missing one throws
@@ -205,10 +247,10 @@ const walk = async (frames) => g.h('stepFrames', frames);
 // D3 first, because it needs nothing but a boot and a settlement crossing.
 // ---------------------------------------------------------------------------------------
 if (want('d3')) {
-  await g.h('stepFrames', 30);              // cross into Lilmoth; `stepSettlement` populates it
+  await g.h('stepFrames', 30);              // settle in the town we are standing in; `stepSettlement` populates it
   const c = await census();
   const shots = [];
-  shots.push(await shot('d3-lilmoth-street'));
+  shots.push(await shot(`d3-${c.player_settlement || START}-street`));
   // And a look at the world origin itself, where the misplaced bodies are standing. Posed
   // through the ENGINE's own override rather than by moving the Three camera directly — the
   // harness re-renders through the shipping path on `screenshot`, so a camera moved behind its
