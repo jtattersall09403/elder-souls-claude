@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `807cfd9f`: 998 tools, 157 reference
-items, 206 pieces in flight.
+so it cannot drift. Generated at `551c9722`: 998 tools, 157 reference
+items, 207 pieces in flight.
 
-Its purpose is to stop 206+ concurrent agents each paying separately to discover the
+Its purpose is to stop 207+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1417,6 +1417,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-OVERLAP-RESOLVER` | ? | Read HAZARDS §11/§12, census JSON, reports/building-overlap/, ruling D1. | `orchestration/status/W1-OVERLAP-RESOLVER.json` |
 | `W1-18-CRITIC-r1` | in_progress | Read RI-QST04 + RI-QST09, then attack mean_branches / X7 / multi_faction with break-the-de | `orchestration/status/W1-18-CRITIC-r1.json` |
 | `W1-18-REINTEGRATION` | done | W1-18's delivery still has NO INDEPENDENT CRITIC — that is the outstanding item and it is  | `corpus/30-quests/RI-QST04-quest-anatomy-schema.md` `corpus/30-quests/quest.schema.json` `game/data/index.json` `game/data/quests/blackmarsh-coast.json` `game/data/quests/blackmarsh-core.json` `game/data/quests/faction-continuation-wave1.json` |
 | `W1-BUILDING-OVERLAP-CENSUS` | done-except-hardware-frames |  | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` `tools/world/thorn-quay-deletefix.mjs` `tools/check-building-overlap.mjs` `corpus/50-world/data/building-overlap-baseline.json` `.githooks/pre-commit` |

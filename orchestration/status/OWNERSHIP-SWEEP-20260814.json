@@ -1,0 +1,12 @@
+{
+  "task_id": "OWNERSHIP-SWEEP-20260814",
+  "state": "researching",
+  "started": "2026-08-14",
+  "summary": "Sweeping orchestration/status/ for stale ownership claims per dispatch. Classifying each live claim as live/finished/indeterminate, clearing confident-finished ones in place, and adding freshness reporting to tools/ownership.mjs.",
+  "files_touched": [],
+  "files_claimed": [
+    "tools/ownership.mjs",
+    "orchestration/status/OWNERSHIP-SWEEP-20260814.json"
+  ],
+  "next_step": "Build classifier script over all orchestration/status/*.json, cross-check against corpus/90-verdicts, verify against the three known cases (province.js, dialogue topics, exterior.js), then clear confident claims and patch ownership.mjs to report freshness."
+}

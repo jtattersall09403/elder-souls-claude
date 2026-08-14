@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-OVERLAP-RESOLVER",
+  "status": "in_progress",
+  "started_utc": "2026-08-14T00:00:00Z",
+  "base_commit_pinned": "551c972291cfe4f4e7474c66c7ffc98af9747182",
+  "base_commit_note": "HAZARDS §12: HEAD is NOT the baseline. All control clones are made from this sha, not from HEAD.",
+  "could_not_do": [
+    "PENDING - nothing yet; this list is written first and updated as blockers appear.",
+    "Offline by dispatch: no browser, no GPU pod. Any claim requiring a rendered frame is recorded as unmeasured."
+  ],
+  "next_step": "Read HAZARDS §11/§12, census JSON, reports/building-overlap/, ruling D1.",
+  "files_touched": ["orchestration/status/W1-OVERLAP-RESOLVER.json"],
+  "files_claimed": [
+    "game/src/world/province.js",
+    "game/src/world/exterior.js",
+    "tools/check-building-overlap.mjs",
+    "orchestration/status/W1-OVERLAP-RESOLVER.json"
+  ]
+}
