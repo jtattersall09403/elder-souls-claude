@@ -446,6 +446,15 @@ export function knownKits() { return [...REGISTRY.keys()].sort(); }
  * if there is no roof under it. `over` is the largest authored eave found. Offline: no renderer,
  * no raycast, no world — a caller can build one building in Node and ask.
  *
+ * IT IS THE AUTHORED PLAN, NOT THE MESH BOUNDING BOX, and the difference is measured rather than
+ * hoped at. `tools/render/w1-30e-roof-extent.mjs --self-test` compares this against the drawn box
+ * on all 149 roofed buildings in the province: `roof.shell` agrees to **1.000–1.001**, `roof.reed`
+ * to 1.011, and `roof.hip` runs up to **1.050** — the eave board's own depth and the chamfer,
+ * which sit proud of the plan. So the drawn roof can be up to 5% wider than this number, and a
+ * clearance consumer must therefore apply a margin (1.1 is comfortable) rather than treat this as
+ * an upper bound. Under-stating a roof is the dangerous direction; the size of the understatement
+ * is bounded, checked on every build, and written here so nobody has to rediscover it.
+ *
  * The intended consumers are named rather than assumed, because a published number nobody reads
  * is the failure this project has a rule about: `tools/visual/build-deck.mjs` should gate its
  * street stand on `footprintClearance - roofOverhang` instead of on the footprint alone, and

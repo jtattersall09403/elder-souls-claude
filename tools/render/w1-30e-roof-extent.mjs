@@ -50,7 +50,7 @@
 import fs from 'node:fs';
 import * as THREE from '../../game/vendor/three/three.module.js';
 import { planSettlement, buildBuilding } from '../../game/src/render/exterior.js';
-import { GRAMMARS, setShellEave } from '../../game/src/render/lib/kits.js';
+import { GRAMMARS, setShellEave, roofPlanExtent } from '../../game/src/render/lib/kits.js';
 
 const TOWNS = Object.keys(GRAMMARS).sort();
 const rd = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -220,6 +220,47 @@ function selfTest() {
   ok('the coverage instrument is not inert: roofless civic structures still read 0',
     shipped.coverage_worst === 0 && shipped.roofs_that_do_not_cover_their_building > 0,
     `${shipped.roofs_that_do_not_cover_their_building} roofless structures, pre-existing and unchanged by this fix`);
+
+  /* THE PUBLISHED EXTENT MUST BE THE DRAWN EXTENT.
+   *
+   * `kits.js roofPlanExtent()` exists so a clearance test can ask how big a roof is without a
+   * renderer. A published number that nobody checks against the geometry is exactly the "model
+   * nothing in the running world reads" failure with the arrow reversed — so it is checked here,
+   * against the mesh bounding box this tool measures independently, on every roofed building in
+   * the province.
+   *
+   * The published number is the AUTHORED PLAN, and the drawn box is allowed to sit slightly proud
+   * of it: `roof.hip`'s eave board has its own depth and every part is chamfered. Measured, on all
+   * 149 roofed buildings — `roof.shell` 1.000–1.001, `roof.reed` up to 1.011, `roof.hip` up to
+   * **1.050**. The bound asserted here is 1.06, and it is asserted in BOTH directions, because a
+   * published extent that drifts away from the geometry in either one stops being usable: too
+   * small and a clearance test walks a player under a roof again, too large and it condemns
+   * streets that are fine.
+   */
+  let checked = 0, over = 0, worstUnder = 1, worstOver = 1;
+  for (const town of TOWNS) {
+    for (const b of loadPlan(town).buildings) {
+      const built = buildBuilding(b, town, {});
+      let roof = null;
+      built.group.traverse((o) => { if (o.name === 'roof') roof = o; });
+      if (!roof) continue;
+      const pub = roofPlanExtent(roof);
+      const drawn = roofSpan(roof);
+      if (!pub || !drawn) continue;
+      checked++;
+      const r = Math.max(
+        Math.max(drawn.x, drawn.z) / Math.max(pub.w, pub.d),
+        Math.min(drawn.x, drawn.z) / Math.min(pub.w, pub.d),
+      );
+      if (r > 1.06) over++;
+      worstOver = Math.max(worstOver, r);
+      worstUnder = Math.min(worstUnder, r);
+    }
+  }
+  ok('roofPlanExtent() under-states the drawn roof by no more than the documented 6%',
+    over === 0, `${checked} roofed buildings checked, worst drawn/published = ${worstOver.toFixed(3)}`);
+  ok('roofPlanExtent() is not a loose over-estimate either',
+    worstUnder > 0.94, `tightest drawn/published = ${worstUnder.toFixed(3)}`);
 
   console.log(bad ? `\n${bad} check(s) failed` : '\nself-test: all checks passed');
   process.exit(bad ? 1 : 0);
