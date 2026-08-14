@@ -181,7 +181,44 @@ coverage of a world containing none of the thing it measured. So the null arm re
 instead perturbs `activity`: written by the same slot block, on the same objects, at the same
 moment, of the same shape, through the same route. Every observable must return to its intact value.
 
-RESULTS-PLACEHOLDER
+### The result — 6/6, `CONSUMPTION: DEMONSTRATED`
+
+| arm | what it does | drawn NPC meshes | collidable | perceivers |
+|---|---|---|---|---|
+| **INTACT** | nothing | 27 → **27** | 27 → 27 | 27 |
+| **ONE-SHOT(present)** | write `present`/`visible` false | 27 → **26** | 27 → 26 | 26 |
+| **VIA-AT(broken)** | put every scheduled cell somewhere the player is not | 26 → **0** | 26 → **0** | **0** |
+| **VIA-AT(null: activity)** | restore `at`, perturb `activity` instead | 0 → **26** | 0 → **26** | **26** |
+
+```
+one_shot_drawn_delta 1  ·  via_at_drawn_delta 26  ·  via_at_null_drawn_delta 0
+```
+
+- **C0** the intact arm ranged over **56 NPCs and 56 meshes** — a zero here would have made every
+  other check on the page vacuous, which is the first thing to establish and the easiest to skip.
+- **C2** the renderer stops drawing every one of them. It still *holds* 56 mesh objects and draws
+  none of them, so this is the visibility flag being read rather than the scene being torn down.
+- **C3** collision and perception both go to zero, **and the world computed that itself** from the
+  perturbed input rather than having it forced in behind them.
+- **C4** the null arm returns every observable to exactly its pre-break value. **Effect size 0.**
+- **C5** the null perturbation is not a no-op — its string is on the live objects.
+
+**Conclusion: the state `npc_presence` mirrors is genuinely consumed** by the renderer, by collision
+and by perception. The 55 new schedule/presence events per simulated minute are not the
+`sim/camera.js` failure — they track something a player would actually meet.
+
+**Two things I got wrong, both recorded rather than tidied away.**
+
+1. **The obvious perturbation was nearly inert and I nearly published it.** Writing `present`
+   directly moved the census by **1**. If that had been the round's consumption evidence it would
+   have been a real claim resting on a 3.7% effect, and the honest reading of that arm is "the
+   probe is fighting the writer", not "the consumer is weak". It is kept in the tool as `C1`, with
+   its own explanation, because the gap between 1 and 26 *is* the lesson.
+2. **The null arm's first version compared against the wrong baseline** and reported FAIL: 26
+   against INTACT's 27. That was a defect in the check, not in the world — the ONE-SHOT arm leaves
+   one person absent for good, because their schedule slot does not turn over inside the arm so
+   `at` is never rewritten. The control for an arm is the arm that ran before it, and the check now
+   says so in a comment next to the fix. Both runs are consistent; only the comparison changed.
 
 ---
 
