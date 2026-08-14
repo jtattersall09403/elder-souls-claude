@@ -97,17 +97,84 @@ hazard type. Fog colour alone counts as **one** axis and can never be more than 
 6. Repeat the sample at **night** and in **each region's worst weather**. Night accuracy ≥70% required
    — a region that is only identifiable in clear daylight is half-built.
 
-**M18 — Differentiation matrix (mechanical, no human).** For all 78 region pairs, compute the 9 axes
-from world data: mean ground albedo (ΔE > 12 to count as different), slope histogram (χ² test),
-flora species Jaccard (<0.4 to count), fauna Jaccard (<0.4), architecture mesh Jaccard (<0.3), audio
-bed asset set (any difference), weather state set (any difference), fog extinction coefficient
-(>25% relative), hazard type (any difference). **Pass: every pair differs on ≥6 axes. Fail: any pair
-differs on ≤3.**
+**M18 — Differentiation matrix (mechanical, no human).** For all 78 region pairs, compute the 10 axes
+from world data. **Pass: every pair differs on ≥6 axes *and* landform is one of them. Fail: any pair
+differs on ≤3.** Measured by `corpus/80-methods/m-instance-bars.mjs` check A.
+
+| # | Axis | Counts as "differs" when | Source |
+|---|---|---|---|
+| 1 | mean ground albedo | ΔE (CIE76) > 12 | `regions.json` `ground.albedo` |
+| 2 | slope histogram | **Cramér's V ≥ 0.20** | `terrain.json` |
+| 3 | dominant flora species set | Jaccard < 0.4 | `regions.json` `flora` |
+| 4 | dominant fauna species set | Jaccard < 0.4 | `regions.json` `fauna` |
+| 5 | architecture mesh set | Jaccard < 0.3 | `regions.json` `architecture` |
+| 6 | ambient audio bed | **≥50% of *each* bed's assets absent from the other** | `regions.json` `audio` |
+| 7 | weather profile | **≥20 pp L1 between stationary distributions** over the shared perceptual vocabulary | `weather.json` |
+| 8 | fog extinction coefficient | >25% relative | `regions.json` `fog` |
+| 9 | hazard | different type **and** each hazard occupies ≥15% of its own region | `hazards.json` |
+| 10 | **landform (compulsory)** | different `macro_form`, or same class with different `drainage` *and* `bedrock` | `landforms.json` |
+
+Fog colour alone counts as **one** axis and can never be more than one.
+
+> **AMENDED 2026-08-14 — Ruling W1** (`orchestration/OWNER-DIRECTIVES-2026-08-14.md` §6), implementing
+> the repair specified in `reports/BAR-AUDIT-WORLD-20260814.md` §5.1. **No threshold was lowered.**
+>
+> Axes 6, 7 and 9 previously read *"any difference"*, and axis 2 was a bare χ² test. The bad result
+> that passed: two regions share an ambient loop, a weather machine and a hazard; one adds a rain
+> state that fires 0.5% of the time, one extra bird sample, and a hazard covering 3 m². Three axes
+> now "differ", and with three more cheap ones the pair clears 6-of-9 while being indistinguishable
+> in play. The χ² axis was worse — with ~3,000 cells per region it reports significance on
+> essentially any real pair, so it measured **detectability at large n, not perceptibility**, and
+> passed automatically.
+>
+> **Where the numbers come from.** Axis 7's floor is not a guess: `data/morrowind-region-census.json`
+> mines the weather probability vectors from the nine Vvardenfell region pages, and their 36 pairwise
+> L1 distances have a **minimum of 20 pp** (Sheogorad/West Gash) and a median of 90. Morrowind's own
+> closest pair is the floor. *Verified 2026-08-14* against the wikitext in the local UESP extract —
+> Sheogorad `clear 15 / cloudy 40 / foggy 10 / overcast 15 / rain 10 / thunder 10` against West Gash
+> `15 / 30 / 15 / 20 / 10 / 10`, summing to 20 pp by hand — and recomputed from the census in
+> `m-instance-bars.mjs --selfcheck`, which fails if the figure ever drifts from the mined data.
+>
+> **Axis 7 is measured over a shared perceptual vocabulary, and must be.** Our thirteen regions use
+> 41 region-specific weather state *names*; comparing raw name sets would make almost every pair
+> 200 pp apart by construction and the axis would pass automatically — the same instrument-validity
+> failure one level down. Morrowind's REGN records share an eight-word vocabulary, which is what
+> makes 20 pp meaningful. So each state is bucketed by the two things a player perceives — light
+> level and sightline band — and the stationary distributions of those buckets are compared.
+>
+> **Axis 10 is the tenth axis `RI-WLD16` §4 adds, folded in here so the matrix is readable in one
+> place.** 6-of-9 becomes 6-of-10 with one axis named, which is strictly stronger.
+>
+> **Measured 2026-08-14**: 78/78 pairs passed the old form, **77/78** pass this one. The floors were
+> largely already earned — the smallest weather difference in the built world is 49.4 pp against a
+> 20 pp floor, and the smallest audio difference 67% against 50%. The one failing pair is
+> deep-marshes/western-rootlands, which shares `macro_form` *and* `drainage`.
+>
+> **Reversal**: restore the four cells above to "any difference" / "χ² test" and drop axis 10.
+> **Falsifier**: if a pair fails only on axis 9 because hazards have no footprint in world data
+> rather than because the hazards are alike, that is an artefact of the data, not a finding — fix
+> the data, not the bar. That is the state today, and axis 9 is scored as not-differing on every
+> pair until `hazards.json` carries an area.
 
 **M19 — The "only here" audit.** For each region's ONLY-HERE element, query world data for entities of
-that class. **Pass: the element exists in its region with ≥8 instances (≥1 for singular features like
-the queen), and 0 instances in any other region.** An ONLY-HERE element found in two regions is a
-straight fail for both.
+that class. **Pass: all four of —**
+1. the element exists in its region with **≥8 instances** (≥1 for singular features like the queen);
+2. **0 instances in any other region** — an ONLY-HERE element found in two regions is a straight fail
+   for both;
+3. **spread**: instances occupy **≥3 of the region's 4 AABB quadrants** (waived for singular features);
+4. **reach**: **≥40% of the region's land area lies within 400 m** of an instance (waived for singular
+   features).
+
+> **AMENDED 2026-08-14 — Ruling W1**, per `reports/BAR-AUDIT-WORLD-20260814.md` §5.2. Clauses 3 and 4
+> are new; 1 and 2 are unchanged. The count had no spread requirement, so **all eight rock flutes
+> standing in one 50 m clump beside the road passed** while the other 1.7 km² of Valus Ridge held
+> none — the region's unique feature as a single diorama. A player meets these one at a time, so the
+> bar binds on where they are, not only how many exist.
+>
+> **Measured 2026-08-14**: 13/13 elements passed on count alone, **12/13** pass with spread. Valus
+> Ridge's rock flutes are 14 instances occupying 2 of 4 quadrants.
+>
+> **Reversal**: delete clauses 3 and 4.
 
 **M20 — Audio blind test.** Record 20 s of ambient audio at 3 points per region, no music, no combat.
 Shuffle the 39 clips; a fresh judge assigns regions from the audio bed column alone. **Pass: ≥26/39

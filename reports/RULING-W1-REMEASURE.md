@@ -187,11 +187,32 @@ reached arm B (load 4.4 per core against a 4.0 ceiling), then cleared again to G
 guess, I ran a single-frame smoke test through the shared capture daemon: **it works** — a real
 placed frame in the Deep Marshes, 640×360, **143.6 s cold including daemon boot**.
 
-**Why I stopped there.** Arm B as `RI-WLD15` M-W15-2 specifies it is 6 transects × 13 regions × 90
-frames = **~7,020 frames**. At the capture service's own published cold-cache rate of ~21.9 s/frame
-that is **over six hours of exclusive browser time**, on a box where other agents are live on visual
-fidelity. Rule 21 exists for precisely this, and a reduced-resolution pilot would not have satisfied
-arm B anyway — it would only have produced a number that looked like one.
+**Why I stopped there, and a correction to my own first estimate.** Arm B as `RI-WLD15` M-W15-2
+specifies it is 6 transects × 13 regions × 90 frames = **7,020 frames**. At the capture service's own
+published cold-cache rate of 21.9 s/frame that is **42.7 hours of exclusive browser time** — not the
+"about six hours" I first wrote here, which was simply wrong and is corrected rather than quietly
+edited. Rule 21 would forbid it on a busy box; 42.7 hours makes it unaffordable on any box.
+
+**So arm B as written needs a scoping decision, and that is a finding, not an excuse.** The cost is
+dominated by frame count, and three variants are affordable:
+
+| Scope | Frames | Cold cost | What it buys |
+|---|---:|---:|---|
+| Full M-W15-2 as specified | 7,020 | **42.7 h** | not affordable |
+| **All 13 regions, 2 transects, 24 m spacing** | 780 | **4.7 h** | province-wide coverage overnight; W15-6 quantises to 12 s |
+| **Worst 2 regions, 2 transects, 8 m spacing** | 360 | **2.2 h** | full-resolution answer where arm A says it is worst |
+| Any re-run on the same build | — | **0.4 h** | the daemon's warm cache makes repeats nearly free |
+
+**My recommendation, ruled rather than asked** (rule 0): run the **worst-2-regions variant first** —
+the Deep Marshes and Valus Ridge, which arm A ranks worst at 275 s and 312 s unchanging-ground runs.
+It is 2.2 hours, it is at the specified 8 m resolution so no threshold needs reinterpreting, and if
+those two regions pass, the item's own worst case has been cleared. **Reversible**: if they fail, the
+province-wide 24 m variant is the next step and `RI-WLD15` M-W15-2 should be rewritten around it.
+**What would overturn this**: if a critic judges that W15-5's "distinct views per 720 m walk" cannot
+be compared across regions unless every region is sampled identically, then the 24 m province-wide
+run is the only admissible form and the full protocol should be struck as unbuildable.
+
+The instrument already supports `--regions`, so the first variant is one flag away.
 
 **What exists instead, so the owed work is one command rather than a project:**
 `corpus/80-methods/m-wld15-armb.mjs`, complete and validated **without a browser**:
@@ -311,10 +332,23 @@ The audit's own lesson, applied: an empty world fails almost anything by acciden
   The `voids.json` frame mismatch (§6) is a world-data defect I have reported and deliberately not
   fixed.
 - **The four sweep hits in §8 are reported, not repaired**, for the reason given there.
-- **Git index contention is real.** Mid-task, another agent's bank committed my in-flight files and
-  reset the working tree, silently reverting several instrument fixes. Caught because the published
-  slope figure (8.28°) did not match the one I had verified (10.07°) — re-applied, re-verified, and
-  re-run. Worth knowing that a number can quietly become stale here without anything going red.
+- **Git index contention is severe, and it silently reverted finished work twice.** Mid-task another
+  agent's bank committed my in-flight files *and reset the working tree*, dropping edits that had
+  already been made and verified. It hit twice:
+  1. **`m-instance-bars.mjs`** lost three fixes. Caught only because the published slope figure
+     (8.28°, the raster derivation) did not match the 10.07° I had verified by hand an hour earlier.
+  2. **`RI-WLD04`'s M18 and M19 replacements** — the single most important edit in this task — were
+     reverted while the four smaller edits to the same file survived. Caught only by grepping the
+     **HEAD blob** for a string I knew I had written, rather than trusting that a commit had happened.
+
+  Both were re-applied and re-verified. The lesson for successors is concrete: **`git status` clean
+  and "the commit succeeded" are not evidence your work is in the tree.** Check the committed blob:
+  `git show HEAD:<path> | grep '<a string you added>'`. `bank.mjs` timed out at 180 s (exit 143) and
+  again later; `git commit --only` on this index takes minutes and repeatedly lost the `index.lock`
+  race — at one point a `git gc --prune=now` was running with several agents' commits queued behind
+  it. Staging the file and letting the next bank sweep it turned out to be the reliable path, which
+  is worth knowing rather than rediscovering. The orchestrator has since banked *"Ruling O1: the
+  orchestrator caused the silent-clobber bug and owns the fix"*, so this is already in hand.
 
 ---
 
