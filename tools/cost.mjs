@@ -527,7 +527,13 @@ async function buildLedger() {
 
 const EXPERIMENTS_DIR = join(ROOT, 'reports', 'cost');
 const EXPERIMENTS_PATH = join(EXPERIMENTS_DIR, 'experiments.json');
-const CHANGES_PATH = join(EXPERIMENTS_DIR, 'changes.json');
+// NOT under reports/ — `reports/.gitignore` excludes every .json there by design (run artifacts are
+// large and reproducible), and this file is neither: it is authored narrative that no tool can
+// regenerate. Left in reports/ it would be absent from a fresh clone, the ledger's `changes` array
+// would silently regenerate EMPTY on the next bank, and the programme's negative evidence would
+// disappear from the page — the same defect that made 56 of 76 verdicts fail a real checkout while
+// passing on the container that made them.
+const CHANGES_PATH = join(ROOT, 'orchestration', 'cost-changes.json');
 
 // The programme's ledger of changes, kept as authored narrative in reports/cost/changes.json and
 // copied into the ledger unchanged. Every FIGURE in it is the instrument's own output (from

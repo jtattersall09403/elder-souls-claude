@@ -1,0 +1,87 @@
+{
+  "note": "Authored narrative for the ledger's `changes` array (COST.md §6.1). Every figure quoted here is the instrument's own output from reports/cost/experiments.json (`node tools/cost.mjs --experiments`); this file carries the sentences, not the arithmetic. `before`/`after` C/H are deliberately null on every entry: COST.md §2 forbids resting a conclusion on a dollar comparison between two windows (cost-per-run CV ~0.97, ~238 runs per arm needed to see 25%), so the page correctly draws them as em-dashes and the mechanism lives in `outcome`.",
+  "measured_at_commit": "5cee352",
+  "measured_by": "COST-EXPERIMENTS-BUILD, 2026-08-14, over 50,286 deduplicated priced requests / 420 agents",
+  "changes": [
+    {
+      "id": "CH-01",
+      "title": "Sonnet for builds with a landed plan — the first thing this programme has actually saved",
+      "landed": "2026-08-07T00:00:00Z",
+      "commit": "5cee352",
+      "state": "kept",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "delta_pct": -3.8,
+      "reversal": "one line in the dispatch brief: the model field returns to Opus. NOT EXECUTED — reverting means dispatching a real agent, which is the orchestrator's call, not this measurement's. Recorded as unproven rather than ticked.",
+      "reversal_executed": false,
+      "tripwire": "matched-pair PIE tokens per request on the Sonnet arm rises above 1.15x the Opus arm — the cheaper model buying more volume than it saves",
+      "outcome": "MEASURED MECHANISTICALLY, not from the bill. The 3,660 requests that actually ran on Sonnet cost $162.94; the identical recorded token flow priced at Opus rates is $407.34. Saving $244.41 — 3.8% of what the bill would otherwise have been, and 60% off the flow it touched. The work was not made cheaper by being made smaller: on 38 request-count-matched pairs the median ratio of model-INDEPENDENT PIE tokens per request is 1.019, i.e. Sonnet agents consumed the same volume per request, so the whole saving is the price ratio and none of it was eaten back. The naive per-agent comparison would have claimed 70% (Sonnet agents averaged $4.29 against Opus $14.42) and that number is worthless — Sonnet was given shorter tasks by design (median 82 requests vs 104.5). Null control: repricing 33 request-count-matched OPUS agents as if they had been Sonnet 'saves' $335.03 on work nobody routed, which proves this figure measures VOLUME ROUTED and not fleet efficiency. Sonnet reached 27.5% of daily token volume on 14 Aug, from 0% on 5-6 Aug."
+    },
+    {
+      "id": "CH-02",
+      "title": "Ruling C1 — staggered burst dispatch (adopted, then reverted): the revert is confirmed",
+      "landed": "2026-08-08T00:00:00Z",
+      "commit": "5cee352",
+      "state": "reversed",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "delta_pct": null,
+      "reversal": "stop staggering — one line of orchestrator behaviour in orchestration/TICK.md, no code",
+      "reversal_executed": true,
+      "tripwire": "C1's own: warm_fraction difference below its bar, or the first-request cache-write ceiling below 2% of spend — both fired",
+      "outcome": "REPRODUCED INDEPENDENTLY with the real instrument, not confirmed from the prototype. 176 bursts, 83 multi-agent; tight arm warm_fraction 0.9604 (n=32) against staggered 0.9621 (n=51), a difference of +0.17 percentage points where a 4,000-draw label-shuffle permutation null spans [-5.7, +7.4] pp and gives p = 0.97 — indistinguishable from relabelling noise. The ceiling settles it regardless of significance: first-request cache writes are $18.13 of a $6,231 bill, 0.291% of spend against C1's own 2% bar, because 393 of 420 agents (93.6%) already read cache on their very first request. The cold-start control fires exactly where it must — the session's first-ever agent (Corpus: Souls combat frame data) shows cache_read 0 and cache_write 22,925 — so this is the finding and not the prototype's bug. Note also that C1's stated acceptance ('staggered exceeds tight by 10pp') was arithmetically unsatisfiable from a 0.96 base; restated as headroom closed it is 4.4%. Inert UNDER THESE CONDITIONS: a session with a much larger shared prefix, or a genuinely cold start, could still make it matter."
+    },
+    {
+      "id": "CH-03",
+      "title": "COST.md §4.0 'cost is roughly QUADRATIC in tool calls' — overturned; it is superlinear at exponent 1.27",
+      "landed": "2026-08-14T00:00:00Z",
+      "commit": "5cee352",
+      "state": "reversed",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "delta_pct": null,
+      "reversal": "git show HEAD:orchestration/COST.md restores the word 'quadratic' in §4.0 — one word, no code. EXECUTED on a copy under the scratchpad: the two arms differ, so the control goes red rather than being a second copy of the experiment.",
+      "reversal_executed": true,
+      "tripwire": "if the fleet ever runs agents long enough that the ~26k fixed prefix stops dominating, the exponent rises toward 2 and this correction must be retaken",
+      "outcome": "Regressing log(agent cost) on log(request count) over 419 agents gives exponent 1.268, R^2 0.876. Quadratic would be 2.0. The bin table §4.0 cites survives ($4.79 -> $48.43 per agent) but its stated multiplier does not: bin MEANS are 55.3 -> 329.1 requests, a 6.0x rise buying 10.1x the cost, not '3.5x buying 11x'. The lever is real and stays top-ranked; it is roughly half the size the doctrine records. IMPORTANT: the exponent alone does not answer the confound — the self-test builds a synthetic fleet where cost is purely workload-driven and it ALSO returns an exponent of 1.79, so anyone reporting the exponent as proof of the mechanism is reporting a statistic both hypotheses predict."
+    },
+    {
+      "id": "CH-04",
+      "title": "It is accumulation, not workload — 71% of subagent spend is context the agent had already paid for once",
+      "landed": "2026-08-14T00:00:00Z",
+      "commit": "5cee352",
+      "state": "trial",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null
+      },
+      "delta_pct": null,
+      "reversal": "n/a — nothing has been changed yet. This is the measurement that sizes the intervention, not the intervention",
+      "reversal_executed": false,
+      "tripwire": "a split trial whose re-read rate rises, or whose G3 counts fall on either arm, kills it — an agent cut short is an agent that stops before the delete-the-fix",
+      "outcome": "THE CONFOUND IS KILLED AND IT FALLS THE OTHER WAY. If long agents were simply doing more work, their early requests would already be heavier. At matched request index they are LIGHTER: at k=80 the 0-99 bin carries 240,931 context tokens and the 300+ bin 192,972. The work proxy agrees — context growth per request at matched index is flat across bins (about 3.3k at k=10, 1.1-2.1k at k=80) and output tokens show no trend. Predicting each bin's mean context from the pooled context-vs-index curve and that bin's own index distribution reproduces the actual within 0.96-1.06, so accumulation fully explains the per-request cost rise and nothing is left for a workload story. SIZE: 87.1% of all context re-read is accumulation above each agent's own first-request context; that is $4,032.52, or 71.1% of subagent spend. The harness never recovers any of it — 0 compaction events across 419 agents, and only 2 agents show any context decline at all. CEILING, and it is an upper bound with no re-orientation modelled: splitting every agent into 100-request pieces would not have re-read $1,728.02 of context, 27.7% of the bill. The missing term is what each split agent would have to re-read to get its bearings, and this piece did not measure it. Nothing here authorises shortening an agent's work, only its waste."
+    }
+  ]
+}
