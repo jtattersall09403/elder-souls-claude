@@ -14,7 +14,133 @@
     "game/src/sim/world-collision.js:121 — if (!n.present) continue",
     "game/src/sim/stealth/system.js:949 — if (!n.present) continue"
   ],
-  "arms": [],
-  "checks": [],
-  "ok": false
+  "arms": [
+    {
+      "arm": "INTACT",
+      "frames": 240,
+      "before": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 27,
+        "collidable": 27,
+        "perceivers": 27,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      },
+      "after": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 27,
+        "collidable": 27,
+        "perceivers": 27,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      }
+    },
+    {
+      "arm": "ONE-SHOT(present)",
+      "frames": 240,
+      "before": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 27,
+        "collidable": 27,
+        "perceivers": 27,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      },
+      "after": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 26,
+        "collidable": 26,
+        "perceivers": 26,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      }
+    },
+    {
+      "arm": "VIA-AT(broken)",
+      "frames": 8,
+      "before": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 26,
+        "collidable": 26,
+        "perceivers": 26,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      },
+      "after": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 0,
+        "collidable": 0,
+        "perceivers": 0,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      }
+    },
+    {
+      "arm": "VIA-AT(null: activity)",
+      "frames": 8,
+      "before": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 0,
+        "collidable": 0,
+        "perceivers": 0,
+        "activities_sample": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
+        "walked_sum": 85.4775
+      },
+      "after": {
+        "npc_total": 56,
+        "npc_meshes": 56,
+        "npc_meshes_drawn": 26,
+        "collidable": 26,
+        "perceivers": 26,
+        "activities_sample": "consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumption-null-activity|consumptio",
+        "walked_sum": 85.4775
+      }
+    }
+  ],
+  "checks": [
+    {
+      "id": "C0-population-non-empty",
+      "pass": true,
+      "why": "the intact arm ranged over 56 NPC(s) and 56 mesh(es) — a zero here would make every other check on this page vacuous"
+    },
+    {
+      "id": "C1-one-shot-moves-the-census-but-barely",
+      "pass": true,
+      "why": "writing present/visible directly moved drawn 27 -> 26. Directionally right, and small BECAUSE stepSchedule() recomputes present every frame — which is why the VIA-AT arm exists"
+    },
+    {
+      "id": "C2-renderer-consumes",
+      "pass": true,
+      "why": "putting every person's scheduled cell somewhere the player is not drove drawn NPC meshes 26 -> 0; the renderer still holds 56 mesh objects and draws none of them"
+    },
+    {
+      "id": "C3-collision-and-perception-consume",
+      "pass": true,
+      "why": "collidable 26 -> 0, perceivers 26 -> 0 — and the world computed these itself from the perturbed input rather than having them forced in behind it"
+    },
+    {
+      "id": "C4-null-arm-is-inert",
+      "pass": false,
+      "why": "restoring at and instead perturbing activity, on the same objects by the same route, returned drawn/collidable/perceivers to 26/26/26 against the intact 27/27/27"
+    },
+    {
+      "id": "C5-null-arm-actually-landed",
+      "pass": true,
+      "why": "the null perturbation is not a no-op — the activity string is on the live objects"
+    }
+  ],
+  "ok": false,
+  "effect_sizes": {
+    "one_shot_drawn_delta": 1,
+    "via_at_drawn_delta": 26,
+    "via_at_null_drawn_delta": 1,
+    "note": "The one-shot delta is small because stepSchedule() recomputes `present` every frame, so a direct write is undone by its own writer. The VIA-AT delta is the measurement: it perturbs the input the schedule reads, so the world computes the absence itself. The VIA-AT null delta must be 0."
+  }
 }
