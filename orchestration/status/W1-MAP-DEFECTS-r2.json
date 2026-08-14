@@ -3,17 +3,82 @@
   "chunk": "1 of 2",
   "state": "in_progress",
   "started": "2026-08-14",
-  "summary": "Four unowned findings from the W1-MAP-DEFECTS-r1 FAIL (4/10): (1) fog control missing its positive arm, (2) source changed mid-experiment, (3) map-probe S8/S12 tautologies + never run end-to-end, (4) ARBITRATION.md S35 superseded text with no amendment pointer. NOT ours: game/src/ui/system.js WALK_ORDER, tools/harness/walk-reachability.mjs, game/src/input/touch.js (live sibling agent).",
+  "commit_at_start": "f8b3e4c8",
+  "summary": "The four unowned findings from the W1-MAP-DEFECTS-r1 FAIL (4/10). Two are CLOSED, one is closed on its own terms with a caveat, one is open pending a browser. A fifth finding fell out of the first end-to-end probe run and is named below.",
+
+  "READ_THIS_FIRST_the_dispatch_was_wrong_about_ownership": {
+    "what": "The dispatch said these four findings were unowned. They were not. `W1-MAP-DEFECTS` — the r1 BUILDER — was still live and actively working findings 1 and 3 when this chunk started, with two node processes running (`fog-control.mjs --arms head,hiddenhalf` and `player-route.mjs --legs phone`). It had already re-run the fog control WITH the head arm, already replaced the S8/S12 tautologies, and already added the ARBITRATION amendment pointers.",
+    "how_to_see_it": "`ps -eo pid,etime,cmd | grep -E 'fog-control|player-route'`, and `orchestration/status/W1-MAP-DEFECTS.json`, whose `not_done` list names the same gaps the r1 critic named.",
+    "consequence": "Most of findings 1, 3 and 4 were already done by the r1 builder between the critic filing at 15:35 and this chunk starting at 15:50. This chunk deliberately did NOT redo them; it verified them and spent its budget on the one finding nobody was touching (finding 2) and on the one thing nobody had achieved (running map-probe end to end).",
+    "for_the_orchestrator": "A remediation chunk dispatched against a verdict whose builder is still running will collide. Check `ps` and the builder's status file before splitting a verdict into chunks."
+  },
+
   "findings": [
-    "WIP - nothing measured yet, status file written before reading per rule 1."
+    "COULD NOT DO — the pin's CONSUMPTION demonstration is NOT YET RUN. `tools/lib/pinned-tree.mjs` is wired into `tools/map/fog-control.mjs` and its own 7-arm self-test passes, but I have not yet watched a REAL `fog-control` run abort because the tree moved under it. That needs a browser and `node tools/contention.mjs --gate` returned exit 3 (load 23.04 over 4 cores = 5.76 per core, 5 browser instances, ceiling 4.0). Under RULES 5 the guard therefore scores ZERO until that run happens. It is the first thing chunk 2 should do. The exact command is in `next_step`.",
+    "COULD NOT DO — I did not run the `hiddenhalf` arm that proves the replaced S8/S12 can fail. The r1 builder is running it right now (pid 16769, past the head arm at time of writing, output to `reports/w1-map-defects/probe-teeth/`). Running a second copy would have burned a browser on a saturated box to duplicate a live sibling. If the sibling's run crashed again — its FIRST attempt died at `fog-control.mjs:119` with `page.evaluate: Target page, context or browser has been closed`, the same crash that killed the first map-probe attempt — chunk 2 must run it.",
+    "NEW, NOT IN THE r1 VERDICT — map-probe S11 FAILS. The first end-to-end run gives 32/33, and the one failure is real: `S11 the LOCAL view is a real second view, not the province with a new heading — got view=local, cells 42846 -> 484, target at most a 21x21 window and STRICTLY FEWER cells than the province view`. 484 = 22x22, against a 21-cell `localSpan`. The cause is in `game/src/ui/screens/map.js:126-129`: `c0/r0` are `Math.floor(origin/cell)` and `c1/r1` are `Math.ceil((origin+span)/cell)`, and the loops are INCLUSIVE at both ends, so a 21-cell span walks 22 rows and 22 columns. The local view draws a one-cell fringe outside its own window. This is a judgement call rather than an obvious bug — the same inclusive bound is what makes the province view paint all 42,846 cells, which is what S8 now REQUIRES — so either the draw is wrong or S11's `21x21` bound is wrong, and whoever owns `map.js` should rule it. I did not touch it: `map.js` is claimed by the live `W1-MAP-DEFECTS`.",
+    "OWED CHANGE FOR SOMEONE ELSE — `state().map.geography_always_drawn` is STILL the exact tautology the r1 critic flagged, and it has moved from the probe into the shipped game state. `game/src/ui/system.js:1455-1458` computes it as `t.meta.drawn_cells === t.meta.cells_in_view`, and those two counters are incremented on adjacent lines in `map.js:136-137`. So the field is the constant `true` whenever the map is open. `map-probe.mjs:332` ANDs it into S8 — harmless, because the other conjunct (`drawn_cells === total_cells`) is real and can fail, so the conjunction can fail — but the FIELD itself is worthless and a future reader will trust it. It should be redefined against `total_cells` or removed. I did not edit it: `game/src/ui/system.js` is the sibling agent's file and the dispatch forbade touching it.",
+    "VERIFIED — the sibling's WALK_ORDER fix HAS LANDED, which is one of the questions this chunk was asked to answer. map-probe S13 passes at HEAD: `inventory -> map -> sheet -> journal -> spells -> wait -> (closes); skipped: nothing`, with `map` one page-turn from the inventory. That is exactly the order the r1 critic prescribed in its remedy, and there is now an assertion (S13) that fails if a future reorder skips a screen — which was the other half of the critic's remedy.",
+    "RULED, AND REVERSIBLE — the revision pin does NOT refuse to run on a dirty tree, only on a tree that MOVES mid-run. A dozen agents write to this checkout concurrently and `git status --porcelain` is never empty (measured: `pin.git.dirty === true` on a clean-looking tree at 15:53), so a dirty-gate would refuse every experiment on this box forever and would be commented out within the hour. What actually voided the r1 experiment was not dirtiness at the start, it was the tree CHANGING BETWEEN ARMS. Dirtiness is therefore recorded as metadata and movement is the hard abort. WHAT WOULD OVERTURN THIS: per-agent worktrees making the tree quiet, or a measured run where a pre-existing dirty file — not a moving one — changed a published number. The metadata to detect the second is now in every pin."
   ],
+
+  "the_four_findings": {
+    "1_fog_control_missing_its_positive_arm": {
+      "state": "CLOSED BY THE r1 BUILDER, VERIFIED BY ME — with one caveat that keeps it half-open.",
+      "evidence": "`reports/w1-map-defects/fog-control.json` was re-run at 15:47:31 and now carries all three arms INCLUDING `head`, and six checks including the two positive ones the critic found missing. head: 42,846 of 42,846 drawn, 0 revealed, 0 squares. deletefix: 0 of 42,846 — the black rectangle. markers: 42,846 drawn AND 34 unearned squares. `pass: true`, and this time the pass was computed WITH the positive arm. The stale-file complaint is also gone: fog-head.png (15:42:22) now PRECEDES the run's `at` (15:47:31) instead of trailing it by 21 seconds.",
+      "caveat": "The published record is still not the record the CURRENT tool would produce. `tools/map/fog-control.mjs` now contains a third head check — `head draws the WHOLE PROVINCE — drawn === total_cells` — and the `hiddenhalf` arm, and NEITHER is in `fog-control.json`. So the json is from a source older than the tool that is supposed to have produced it. That is a milder version of the same defect the critic named, and it is exactly what the new pin is designed to make impossible going forward.",
+      "verdict_check_closed": "the two missing positive checks now exist and pass"
+    },
+    "2_source_changed_mid_experiment": {
+      "state": "BUILT AND SELF-TESTED; CONSUMPTION NOT YET DEMONSTRATED — this is the open one.",
+      "built": "`tools/lib/pinned-tree.mjs` — `pinTree()` hashes the CONTENT of every source file under `game/` per file (758 files, 296 ms), `assertUnmoved()` aborts naming exactly which paths moved, `pinSummary()` goes in the published report.",
+      "why_the_existing_instruments_missed_it": "`gitInfo().commit` is `git rev-parse HEAD` and the r1 edit was UNCOMMITTED, so HEAD never moved. `gitInfo().dirty` was already true and stayed true. `hashDataTree()` matches `\\.(json|jsonl|ndjson|csv|md|txt)$` — DATA ONLY — so `map.js` is not in its digest at all, and it returns one lump hash that cannot say which file moved.",
+      "proof_it_can_fail": "`node tools/lib/pinned-tree.mjs --self-test` — 7 arms, exit 0, all watched. ARM1 is the CONTROL and requires the guard to stay SILENT on an unmoved tree (without it, a guard that threw unconditionally would score a perfect suite). ARM2 replays the actual r1 incident — `map.js` edited between two arms — and requires the abort to NAME `game/src/ui/screens/map.js`. ARM3 is the one-sided-guard test of HAZARDS 0b: on that SAME mutation, `git rev-parse HEAD` and `hashDataTree()` are asserted to stay GREEN, so the new guard is shown going red where the old ones could not. ARM4/ARM5 cover a file appearing and disappearing. ARM6 is delete-the-fix: without the guard the run publishes `pass: true` across a moved tree, which is r1's `fog-control.json`. ARM7 refuses a pin that matches 0 files, because a guard over an empty set passes forever. The suite declares itself VACUOUS and exits 2 if ARM1 and ARM2 do not disagree.",
+      "wired_into": "`tools/map/fog-control.mjs` — pinned once before the first arm, `assertUnmoved` at the top of every arm, and a final `assertUnmoved(pin, {arm:'publish'})` immediately before `writeJson`, so nothing is published until the tree is confirmed to be the one every arm was measured against. `report.pin` carries the summary.",
+      "NOT_DONE": "No real `fog-control` run has yet been watched aborting. Until that happens this is a model nothing in the running world has been seen to read (RULES 5) and it scores zero."
+    },
+    "3_S8_S12_tautologies_and_map_probe_never_running": {
+      "state": "BOTH HALVES ESSENTIALLY CLOSED — the second half by me.",
+      "assertions_replaced_by_the_r1_builder": "`tools/harness/map-probe.mjs:330-333` (S8) and `:459-461` (S12) now assert `m.drawn_cells === m.total_cells` instead of `=== m.cells_in_view`.",
+      "I_verified_the_replacement_is_not_ITSELF_a_tautology": "`total_cells` comes from `ctx.map.discovery.cols * ctx.map.discovery.rows` (`game/src/ui/system.js:1461`) — the discovery model's raster dimensions, which the draw loop cannot move. `drawn_cells` is the draw loop's own counter. They have independent provenance, so a gate placed ANYWHERE in the loop — above `inView++` or below it — reduces `drawn` and breaks the assertion. The old form could only be broken by a gate spliced BETWEEN the two adjacent increments. This is a static check and it is not a substitute for the `hiddenhalf` arm.",
+      "map_probe_HAS_NOW_RUN_END_TO_END": "FIRST TIME. `node tools/harness/map-probe.mjs --json --out reports/w1-map-defects-r2/probe`, exit non-zero, **32/33 passed**, ~4 minutes, one browser, on a box that went from 2 to 5 browser instances during the run. Full report at `reports/w1-map-defects-r2/probe/map-probe.json`, console at `reports/w1-map-defects-r2/map-probe.log.txt`. S8 PASSES at HEAD (42,846 of 42,846) and S12 PASSES (whole province, 0 squares, 0 revealed). The single failure is S11, described in `findings` above.",
+      "still_owed": "the `hiddenhalf` arm, to watch the NEW S8/S12 form go RED where the OLD form stays GREEN. The r1 builder is running it now."
+    },
+    "4_ARBITRATION_S35_superseded_text": {
+      "state": "CLOSED — but not by me, and it landed under an unrelated commit message.",
+      "evidence": "`corpus/00-doctrine/ARBITRATION.md:105` now reads `~~Undiscovered is not merely unlabelled, it is unrendered.~~ **STRUCK BY THE OWNER, 2026-08-14 — SEE `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md`, AND READ IT BEFORE ENFORCING ANY CLAUSE OF THIS ROW ABOUT TERRAIN.**` followed by the owner's own words and the reasoning. The old text is struck through, not deleted, which is what the dispatch asked for, and it follows the file's own form — S30's row models the same pattern.",
+      "and_the_second_half_the_critic_named_is_also_done": "S38(b) at `:108` now carries `— NARROWED 2026-08-14 BY AMENDMENT-W1-MAP-02, AND AS WRITTEN IT IS NOW LITERALLY FALSE OF THE DRAWN MAP, WHICH IS WHY IT IS BEING SAID HERE RATHER THAN LEFT TO A CRITIC TO DISCOVER`, with the amended reading spelled out: no PLACE SQUARE and no entry in the revealed set may exist that the footprint does not imply; the terrain layer is identical for every save and discloses nothing.",
+      "provenance": "`git log -S'STRUCK BY THE OWNER, 2026-08-14'` returns exactly one commit, `8b1c9952`, whose message is about W1-30-SHADOW-CASTERS. It was swept into a bank, which is expected behaviour (RULES 17) and not a problem — but it means nobody reading commit messages would know this ruling was amended.",
+      "verdict_check_closed": "`ARBITRATION-record-updated-for-the-clause-struck`, which the r1 critic scored `fail`, is now satisfied"
+    }
+  },
+
+  "commands_that_produced_the_evidence": [
+    "node tools/lib/pinned-tree.mjs --self-test          # 7/7, exit 0",
+    "node tools/harness/map-probe.mjs --json --out reports/w1-map-defects-r2/probe   # 32/33, first end-to-end run",
+    "node tools/contention.mjs --gate                    # exit 3 at 15:56 — why the pin's consumption run is not done"
+  ],
+
   "files_touched": [
-    "orchestration/status/W1-MAP-DEFECTS-r2.json"
+    "orchestration/status/W1-MAP-DEFECTS-r2.json",
+    "tools/lib/pinned-tree.mjs",
+    "tools/map/fog-control.mjs",
+    "reports/w1-map-defects-r2/"
   ],
   "files_claimed": [
-    "tools/harness/map-probe.mjs",
-    "reports/w1-map/",
-    "orchestration/ARBITRATION.md"
+    "tools/lib/pinned-tree.mjs",
+    "tools/map/fog-control.mjs",
+    "reports/w1-map-defects-r2/"
   ],
-  "next_step": "Read verdict r1, HAZARDS, OWNER-DIRECTIVES; then re-run fog control with both arms."
+  "files_deliberately_NOT_touched": {
+    "game/src/ui/system.js": "sibling agent's WALK_ORDER work, forbidden by the dispatch; also holds the `geography_always_drawn` tautology, recorded above as an owed change",
+    "tools/harness/walk-reachability.mjs": "sibling agent",
+    "game/src/input/touch.js": "sibling agent",
+    "game/src/ui/screens/map.js": "claimed by the live W1-MAP-DEFECTS; holds the S11 off-by-one recorded above",
+    "tools/harness/map-probe.mjs": "claimed by the live W1-MAP-DEFECTS — I RAN it but did not EDIT it",
+    "reports/w1-map-defects/": "the r1 builder's output directory, live; I wrote to reports/w1-map-defects-r2/ instead"
+  },
+  "redundant_with": ["W1-MAP-DEFECTS"],
+
+  "next_step": "CHUNK 2 PICKS UP EXACTLY HERE. (1) FIRST AND MOST IMPORTANT — demonstrate CONSUMPTION of the revision pin, which is the only thing this chunk built and the only thing that currently scores zero. Check `node tools/contention.mjs --gate`; when it is not 3, run `node tools/map/fog-control.mjs --arms head,deletefix --out reports/w1-map-defects-r2/pin-consumption` in the background, and ~20 s in (during the head arm) create a file that the pin will see, e.g. `game/.pin-probe-W1-MAP-DEFECTS-r2.tmp.js`, then DELETE it. Expect: the run aborts at the top of the `deletefix` arm with `SOURCE MOVED MID-RUN`, naming that path, and NO fog-control.json is written. Then re-run the same command WITHOUT the perturbation and confirm it completes and writes a report carrying `report.pin` — that is the delete-the-fix pair. Do not skip the second half; a guard only ever seen throwing is as useless as one only ever seen passing. (2) Check whether the r1 builder's `hiddenhalf` run finished: `cat reports/w1-map-defects/probe-teeth/fog-control.json`. It must show the OLD assertion (drawn === cells_in_view) GREEN and the NEW one (drawn === total_cells) RED on the same arm. If the run crashed again — its first attempt died at `fog-control.mjs:119`, `page.evaluate: Target page, context or browser has been closed` — re-run `node tools/map/fog-control.mjs --arms head,hiddenhalf --out reports/w1-map-defects-r2/teeth` yourself. (3) Rule on S11: `map.js:126-129` inclusive floor/ceil bounds make the local view 22x22 = 484 where S11 demands <= 441. Decide whether the draw loop or the assertion is wrong, and note that the SAME inclusive bound is what makes the province view paint all 42,846 cells that S8 now requires — so do not 'fix' it without re-running S8. Coordinate with whoever holds `map.js`. (4) Re-run `node tools/map/fog-control.mjs` with the DEFAULT three arms so the published `fog-control.json` finally matches the tool that produced it — the current json predates both the `total_cells` head check and the `hiddenhalf` arm. (5) Owed to `game/src/ui/system.js`'s owner: `geography_always_drawn` is a tautology, redefine against `total_cells` or delete. STATE OF THE FOUR: #1 closed with a caveat, #2 built + self-tested but consumption UNPROVEN, #3 both halves closed except the `hiddenhalf` teeth arm, #4 closed. THE SIBLING'S WALK_ORDER CHANGE HAS LANDED — map-probe S13 passes with `skipped: nothing`."
 }
