@@ -1,0 +1,59 @@
+{
+  "task_id": "plan-review-w1-dlg-topic-web",
+  "role": "plan-reviewer-editor",
+  "piece": "W1-DLG-TOPIC-WEB",
+  "plan": "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+  "state": "complete",
+  "started": "2026-08-14",
+  "round": "1 (the plan's first fresh reviewer-editor; the draft had never been reviewed)",
+  "branch": "codex/wave1-build-experiment",
+  "commit_at_reading": "e2a7a1a8",
+  "plan_state": "awaiting-recriticism",
+  "outcome": "MATERIALLY EDITED. Under PLAN-LOOP.md rule 1 an agent may approve the version it received OR materially edit it, never both. Nine material defects were found and repaired in place, so this task does not approve; a DIFFERENT fresh reviewer-editor must judge this version.",
+  "no_browser_launched": true,
+  "three_mandatory_checks": {
+    "acceptance_number_predicate_units": "STATED in the draft but the units were ambiguous and the baselines did not reproduce. A1's '% of edges (1216)' does not distinguish addTopic occurrences (1,605 at e2a7a1a8) from distinct src-dst pairs (1,277), and neither equals 1216. Repaired: population fixed to occurrences, both figures published, commit stamped.",
+    "null_control": "STATED and its reasoning was the best thing in the draft — the three rejected simpler nulls are correct and are kept verbatim. One unbuildable clause: 'granted at exactly the moment it would have been unlocked' is undefined in an arm that has no clicks. Repaired to key on the answer being displayed, which both arms share. Also repaired: the ablation self-check must read RECALL, not precision — with zero marked spans precision is 0/0 and reads as NaN or 1.0.",
+    "instrument_reuse_by_path": "STATED and CORRECT on its central claim — nothing in tools/ computes visibility today, so --visibility on build-graph.mjs is reuse rather than a second implementation. Two errors: the `via` column is the literal string AddTopic/greeting_text, not a source span (the answer text is infos.tsv's `text` column); and tools/dialogue/consume.mjs ALREADY performs the `to` perturbation step E commissioned a control-clone for."
+  },
+  "defects_found": [
+    "R1 baseline unreproducible and uncommitted, in a plan whose own rule says stamp the commit. At e2a7a1a8: 1,605 addTopic occurrences / 1,277 distinct edges (draft 1216); 10.5% strict (draft 6.7%); 15.9% loose (draft 10.0%); 470 topics (draft 471); 23 name fields (draft 14).",
+    "R2 'every headline number RI-DLG01 SD names is green' is false: median_depth is 2 and SD's row reads target >=3, fail below 2.",
+    "R3 'the rest would render as a slug' is false: converse.js topicLabel() de-slugs. Worse, a topic record's `name` is read by NOTHING in game/src, so the draft's A2 would have authored 447 fields into a model nobody reads.",
+    "R4 step D duplicated a LIVE sibling builder (orchestration/status/W1-UIX08-dialogue-window.json, role builder, owns the window and the topic-link mechanism) in the same files. Ruling O1's exact failure.",
+    "R5 the unlock's firing moment was never stated, and it decides whether A1 is editorial or structural.",
+    "R6 step C authorised edge deletion with no budget. Measured: 770 of 1,115 invisible edges are deletable without orphaning, and taking that headroom lands topic-to-topic mean non-leaf out-degree at 2.02 against SD's floor of 2.0 while visibility reaches only 32%.",
+    "R7 A5's regression gate named 3 of SD's 13 rows after a step that may delete hundreds of edges.",
+    "R8 `via` is not a source span (and RI-UIX08's own comparison method step 2 says it is — an owed corpus edit).",
+    "R9 the reachability defect was missing entirely: 217 of 408 NPC records (53.2%) offer no topic of their own through the shipping reader; median own-topics 0; 3 offer nothing at all."
+  ],
+  "rulings_made": [
+    "2a SEAM (reversible): this piece owns making an unlock visible IN THE TEXT (content + the visibility census + visibility.tsv's spans as the contract file); W1-UIX08 owns RENDERING IT AS A LINK (the window, topic_link, colour, RI-UIX08 SC1 precision/recall, SG). File ownership split: game/data/dialogue/** + tools/dialogue/** here; game/src/ui/** + game/src/render/ui.js there. Step D and rows A3/A4 leave this plan.",
+    "2b UNLOCK FIRES ON THE CLICK (reversible, falsifier named): auto-grant-on-read survives only as A1's exception budget and each survivor carries an explicit `implied: true`. Makes A1 structural rather than a prose-rewriting quota over 1,400 answers.",
+    "2c THE 'NOTHING TO ASK' DEFECT BELONGS HERE (reversible, falsifier named), landing as row A7 — W1-DLG-WORDS handed it off explicitly to 'whoever owns reachability', and the topic web is that.",
+    "6 THE PLAYED GATE IS INHERITED, NOT COMMISSIONED. S52: one played gate per feel system. It is RI-UIX08 SG and it belongs to the sibling building the window; this plan supplies both arms' content and reads the verdict. Largest single cost saving here and it removes the Ruling O1 collision at the same time."
+  ],
+  "s51_check": "PASSES. The gate is a class-D within-build ablation contrast, both arms rendered play, differing by exactly the mechanism under test. Disconnected-script test: no script that has read the tables can answer RI-UIX08 SG's Q3 ('is there anything in this town you now want to ask someone about?'). S51 names class D admissible and says in terms it does not touch it. Two S51 conditions added to the plan's record requirement: generated through the runtime a player uses, design columns stripped; and the reference arm recorded blind_status not_possible with the reason rather than filed as a reference pair.",
+  "measurements_taken": {
+    "at_commit": "e2a7a1a8",
+    "build_graph": "nodes 470, edges 1630, mean_out_degree_nonleaf 3.9836, leaf_fraction 0.2234, reachable_only 0.9809, max_depth 7, median_depth 2, convergence 0.6191, orphans 0, unreachable_infos 0, menu_quest_fraction 0.20",
+    "visibility": "168/1605 occurrences strict (10.5%); 162/1277 distinct pairs (12.7%); 255/1605 loose (15.9%)",
+    "names": "23 topics carry `name`; 21 restate the de-slugged id; `name` has no reader in game/src",
+    "deletion_headroom": "1,115 invisible distinct edges; 770 deletable without orphaning; topic-to-topic out-degree 3.50 -> 2.96 at 200 deletions -> 2.02 at 770; visibility only 32.0% at max deletion",
+    "reach_via_shipping_reader": "408 NPC records; with the nine roots known, 217 (53.2%) offer no topic of their own, median own-topics 0, 3 offer nothing at all"
+  },
+  "could_not_do": [
+    "Could not confirm the seam with the live W1-UIX08 builder. The ruling in 2a is one-sided until that agent answers; the plan says so and concedes the overlap to the sibling if it has already built step D.",
+    "Could not reproduce the '257 of 336 NPC records carry actor names no starting topic is written for' figure as stated. The nearest true statement through the shipping reader at e2a7a1a8 is 217 of 408 (53.2%) offering no topic of their own, and only 3 offering nothing at all. The plan carries the measured form, not the quoted one.",
+    "Did not re-derive A7's 85% floor from a Morrowind reference — it is chosen, not measured, and section 10 says so.",
+    "Did not perform the two owed corpus edits (RI-UIX08's `via` claim; RI-DLG01 SD's unenforced median-depth row). Named for their item owners so this review stays one-step reversible.",
+    "Text only, per the brief: no browser, no game/ edits. The one game/src change the plan now commissions (topicLabel reading `name`) is specified, not made."
+  ],
+  "files_touched": [
+    "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+    "orchestration/status/plan-review-w1-dlg-topic-web.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "next_step": "A DIFFERENT fresh reviewer-editor judges this version. Start at section 0's table and section 10's five weakest joints — particularly whether A1's 90% floor is reachable without prose that reads like a keyword list, and whether the 2a seam survives contact with the live W1-UIX08 builder."
+}
