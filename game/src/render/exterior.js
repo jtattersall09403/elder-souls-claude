@@ -62,6 +62,10 @@
 import * as THREE from '../../vendor/three/three.module.js';
 import { KIT_MESHES, paletteFor, PRIMS } from './interior.js';
 import { settlementArt } from './world-art.js';
+import {
+  kit, grammarFor, grammarMat, roofChoice, storeyChoice, silhouetteHash, kitCensus,
+  chamferBoxGeometry, prismGeometry, bakeCurvatureFromFaces, kitTexelMetres, kitJitter, kitMaterial, GRAMMARS,
+} from './lib/kits.js';
 
 const { part, hashStr } = PRIMS;
 // Tag the simple primitives created by this module with their dimensions.  Thousands of facade
@@ -69,9 +73,65 @@ const { part, hashStr } = PRIMS;
 // shape/material were identical.  The tag lets `compressBuildingMeshes()` instance only exact
 // matches; kit meshes and named measurement surfaces remain untouched.
 const tagged=(mesh,key)=>{mesh.geometry.userData.w130BatchKey=key;return mesh;};
-const box=(w,h,d,m)=>tagged(PRIMS.box(w,h,d,m),`box:${w}:${h}:${d}`);
-const cyl=(rt,rb,h,seg,m)=>tagged(PRIMS.cyl(rt,rb,h,seg,m),`cyl:${rt}:${rb}:${h}:${seg}`);
-const ico=(r,d,m)=>tagged(PRIMS.ico(r,d,m),`ico:${r}:${d||0}`);
+
+/* W1-30E. `box()` and `cyl()` are the two primitives this whole 153 KB file is written in: the 37
+ * named cultural features, the public realm, the courts and the causeways are all boxes and
+ * cylinders. Rebuilding each of them by hand as a kit assembly would have thrown away the research
+ * they encode — `hel_rootgate` and `sou_drowned_court_step` are somebody's reading of what those
+ * towns ARE — and the parent plan says so explicitly: *"rebuilt as kit parts rather than
+ * discarded"*.
+ *
+ * So the primitives themselves became kit parts. A `box()` is now the kit's `wall` slab: same
+ * outer dimensions to the last millimetre, edges chamfered inward, `esCurvature` baked, UVs at the
+ * family's own texel density. A `cyl()` is the kit's `post` drum, faceted with real arrises. Every
+ * one of the 37 features is now made of broken-edged, wear-ready parts without a line of its
+ * silhouette changing.
+ *
+ * They are built at the `far` chamfer (44 triangles against 12) rather than `near` (140), because
+ * these are the parts that repeat by the thousand and the draw/triangle budget is a gate. The
+ * parts a player stands in front of — walls, roofs, doors, window surrounds — are built at `near`
+ * by `buildKitElevations()`.
+ *
+ * `ico()` is deliberately NOT converted. An icosahedral blob — moss, an egg, a clay mass — is not
+ * a wall and is not a post, and tagging it as one to make the census number go green would be the
+ * exact laundering `carryKitProvenance()` exists to stop. It is reported as bypass, with its
+ * count, in the census. */
+const PRIM_GEO=new Map();
+const primGeo=(key,make)=>{const hit=PRIM_GEO.get(key);if(hit)return hit;const g=make();g.userData.w130BatchKey=key;PRIM_GEO.set(key,g);return g;};
+/* The chamfer's own delete-the-fix switch. `setKitChamfer(false)` restores the raw
+ * `BoxGeometry`/`CylinderGeometry` the file shipped with, so the "edges are broken" gate has a
+ * control that actually removes the chamfer. Without it, the `kit:false` arm still received
+ * bevelled primitives and read 0.896 broken against 0.971 — a control that moves a little for the
+ * wrong reason is worse than one that does not move at all, because it looks like evidence.
+ * Module-level and NOT a per-call option on purpose: `box()` is called from four hundred sites and
+ * threading an option through all of them would be the change, not the control. */
+let CHAMFER=true;
+export function setKitChamfer(on){CHAMFER=on!==false;return CHAMFER;}
+const box=(w,h,d,m)=>{
+  if(!CHAMFER)return tagged(PRIMS.box(w,h,d,m),`box:${w}:${h}:${d}`);
+  const key=`box:${w}:${h}:${d}`;
+  const mesh=new THREE.Mesh(primGeo(key,()=>chamferBoxGeometry(w,h,d,{lod:'far',mpt:kitTexelMetres(m?.userData?.visualFamily||'timber')})),m);
+  mesh.userData.kitId='wall';
+  return mesh;
+};
+const cyl=(rt,rb,h,seg,m)=>{
+  if(!CHAMFER)return tagged(PRIMS.cyl(rt,rb,h,seg,m),`cyl:${rt}:${rb}:${h}:${seg}`);
+  const key=`cyl:${rt}:${rb}:${h}:${seg}`;
+  const mesh=new THREE.Mesh(primGeo(key,()=>prismGeometry(rt,rb,h,Math.max(3,seg),{lod:'far',mpt:kitTexelMetres(m?.userData?.visualFamily||'timber')})),m);
+  mesh.userData.kitId='post';
+  return mesh;
+};
+/* `ico()` keeps its shape and gains a MEASURED `esCurvature`. An icosahedral mass is not a wall
+ * and not a post, so it is not tagged as one and it counts as bypass in the kit census — that
+ * number is reported rather than laundered. What it does get is the attribute, baked by measuring
+ * its own face-normal disagreement, which both makes it wear-ready and lets it share a
+ * `BatchedMesh` group with the kit geometry beside it. */
+const ico=(r,d,m)=>{
+  const key=`ico:${r}:${d||0}`;
+  const mesh=new THREE.Mesh(primGeo(key,()=>bakeCurvatureFromFaces(PRIMS.ico(r,d,m).geometry)),m);
+  mesh.castShadow=mesh.receiveShadow=true;
+  return mesh;
+};
 
 /* ================================================================================================
  * THE 37 EXTERIOR-ONLY KIT MESHES — RI-WLD03 R5.
@@ -1261,7 +1321,9 @@ const WALL_T = SHELL_WALL_T;
  * The dome stays — it is the silhouette you read Archon by — and now it sits ON a roof.
  */
 function hipRoof(P, w, d, rise, mat, overhang = 0.5) {
-  const c = cyl(0.001, Math.SQRT1_2, rise, 4, mat);
+  // Uncached on purpose: this one mutates its own geometry below, and the kit primitives above
+  // share geometries between call sites. It is also only reachable on the `kit:false` control arm.
+  const c = tagged(PRIMS.cyl(0.001, Math.SQRT1_2, rise, 4, mat), `hiproof:${rise}`);
   // The turn goes into the GEOMETRY, not into the node. `Object3D` composes its matrix as
   // T·R·S, so a node rotation of 45 degrees would turn the already-scaled base and hand back a
   // diamond over a rectangle — which is the same corners-open defect wearing a different shape,
@@ -1314,6 +1376,381 @@ function roofFor(town, P, w, d, h, hash) {
   return g;
 }
 
+/* ================================================================================================
+ * THE KIT LAYER — W1-30E. Twenty-five parts, eight grammars, one town per grammar.
+ *
+ * Everything below assembles `render/lib/kits.js` parts against the grammar `world-art.js` names
+ * for the settlement. It replaces five blocks of hand-rolled facade primitives that used to live
+ * inside `buildBuilding()` — the bay panels, the ground accretion, the entry porch, the facade
+ * relief and the window pass. Those blocks are NOT deleted: they are the `kit:false` arm, and the
+ * offline gate runs them as the null control for every row that claims the kit did something.
+ *
+ * THE ONE THING THAT MUST NOT MOVE. Every dimension the settlement authority owns — footprint,
+ * doorway width and offset, entry side, collision shell, plinth — is read, never written, by this
+ * layer. The chamfer on a kit part is cut INWARD, so a kit wall of nominal 3.0 m is exactly 3.0 m
+ * across and `w1-04-r4-join.mjs` measures the same building it measured before.
+ * ==============================================================================================*/
+
+/** The kit material set for one building: the interior palette's own colours, carried onto the
+ * grammar's families with the region palette swatch, the settlement wear amount, the trim slot,
+ * and `wearFrom: 'geometry'`. The colours are read off `paletteFor()` so that the outside and the
+ * inside of one building stay the same building — the rule the head of this file states. */
+/**
+ * The exterior colour bucket. `paletteFor()` gives eleven room kinds their own albedos, which is
+ * right for interiors — a gaol is not an inn — and wrong for exteriors, where it multiplied the
+ * kit material count by eleven and every extra material is an extra settlement draw call
+ * (`w1-30-settlement-batching.mjs`, ≤ 140 render meshes). Three buckets keep a civic block, a
+ * trade front and a house visibly different from the street while the batcher sees three.
+ */
+const EXT_KIND_BUCKET = Object.freeze({
+  guild: 'guild', temple: 'guild', hall: 'guild', prison: 'guild', gate: 'guild', structure: 'guild',
+  shop: 'shop', tavern: 'shop', travel: 'shop', hold: 'shop',
+  dwelling: 'dwelling', shrine: 'dwelling', sealed: 'dwelling',
+});
+
+function kitMatsFor(P, gram) {
+  const col = (m) => (m && m.color ? m.color.getHex() : 0x8a8378);
+  const mk = (role, src, extra) => grammarMat(gram, role, { colour: col(src), ...extra });
+  // Lazily, and the reason is the same draw-call arithmetic: a settlement that never draws a
+  // drowned storey should not carry a drowned material into the batcher's group table.
+  const memo = {};
+  const lazy = (k, make) => Object.defineProperty(memo, k, { get: () => make(), enumerable: true });
+  lazy('wall', () => mk(gram.wallRole, P.wall));
+  lazy('stone', () => mk('stone', P.stone));
+  lazy('wood', () => mk(gram.frameRole, P.wood));
+  lazy('roof', () => mk(gram.roofRole, P.roof));
+  lazy('cloth', () => mk('cloth', P.cloth));
+  lazy('metal', () => mk('metal', P.metal, { metalness: 0.7, roughness: 0.42 }));
+  lazy('accent', () => mk('resin', P.accent));
+  lazy('drowned', () => mk(gram.drownedRole || 'stone', P.stone, { wear: 0.2, wetness: 0.75 }));
+  return memo;
+}
+
+/** A chamfered slab in a kit material, for the places `buildBuilding()` still needs a raw box —
+ * the shell walls and the plinth, whose names and dimensions instruments read. Same outer size as
+ * `box()`, broken edges, `esCurvature` baked, world-scale UVs. */
+function kslab(w, h, d, matSpec, lod = 'near') {
+  const mpt = kitTexelMetres(matSpec.role || 'timber');
+  const key = `ks:${lod}:${w.toFixed(2)}:${h.toFixed(2)}:${d.toFixed(2)}:${matSpec.role}:${mpt.toFixed(2)}`;
+  const geo = KSLAB_CACHE.get(key) || (() => {
+    const g = chamferBoxGeometry(+w.toFixed(2), +h.toFixed(2), +d.toFixed(2), { lod, mpt });
+    g.userData.w130BatchKey = key;
+    KSLAB_CACHE.set(key, g);
+    return g;
+  })();
+  const m = new THREE.Mesh(geo, kitMaterial(matSpec));
+  m.userData.kitId = 'wall';
+  m.castShadow = m.receiveShadow = true;
+  return m;
+}
+const KSLAB_CACHE = new Map();
+
+/** One skyline feature, assembled from kit parts. There is no `chimney` part and no `mast` part:
+ * the skyline is variant specs over `post`, `rope`, `net`, `railing` and `buttress`, because the
+ * kit economy row counts ids and the plan lists twenty-five of them. */
+function skylineFeature(name, K, gram, seed, scale) {
+  const g = new THREE.Group();
+  g.name = `skyline:${name}`;
+  const lod = 'near';
+  const j = (c) => kitJitter(seed, c);
+  const add = (node, x, y, z, ry) => { node.position.set(x, y, z); if (ry) node.rotation.y = ry; g.add(node); return node; };
+  if (name === 'chimney') {
+    add(kit('post', { lod, square: true, r: 0.24 * scale, h: 1.5 + j(1) * 1.4, mat: K.stone, trim: gram.trim }), 0, 0, 0);
+  } else if (name === 'mast') {
+    const h = 4.2 + j(2) * 2.6;
+    add(kit('post', { lod, r: 0.11, h, taper: 0.5, yard: true, yardW: h * 0.4, mat: K.wood, trim: gram.supportTrim }), 0, 0, 0);
+    add(kit('rope', { lod, span: h * 0.55, sag: h * 0.14, mat: K.cloth }), h * 0.24, h * 0.72, 0);
+  } else if (name === 'banner') {
+    add(kit('post', { lod, r: 0.09, h: 2.6 + j(3) * 1.2, banner: true, bannerW: 0.5 + j(4) * 0.35, bannerH: 1.2 + j(5) * 0.9, mat: K.wood, trim: gram.trim }), 0, 0, 0);
+  } else if (name === 'dryingrack') {
+    const h = 2.1 + j(6) * 0.8, span = 2.2 + j(7) * 1.1;
+    for (const sx of [-1, 1]) add(kit('post', { lod, r: 0.08, h, mat: K.wood, trim: gram.supportTrim }), sx * span / 2, 0, 0);
+    add(kit('rope', { lod, span, sag: 0.3, mat: K.cloth }), 0, h * 0.95, 0);
+    add(kit('net', { lod, w: span * 0.7, h: h * 0.55, mat: K.cloth }), 0, h * 0.88, 0.05);
+  } else if (name === 'netframe') {
+    const h = 1.9 + j(8) * 0.7, span = 2.4 + j(9) * 1.0;
+    for (const sx of [-1, 1]) add(kit('post', { lod, r: 0.07, h, mat: K.wood, trim: gram.supportTrim }), sx * span / 2, 0, 0);
+    add(kit('net', { lod, w: span * 0.86, h: h * 0.8, mat: K.cloth }), 0, h * 0.92, 0);
+  } else if (name === 'watchpost') {
+    const h = 1.6 + j(10) * 0.9;
+    add(kit('post', { lod, square: true, r: 0.2, h, mat: K.stone, trim: gram.trim }), 0, 0, 0);
+    add(kit('railing', { lod, w: 1.5, h: 0.85, mat: K.stone, trim: gram.trim }), 0, h, 0.4);
+  } else if (name === 'rib') {
+    for (const sx of [-1, 1]) {
+      const bt = kit('buttress', { lod, h: 1.7 + j(11) * 0.9, reach: 0.9, mat: K.wood, trim: gram.trim });
+      add(bt, sx * 0.9, 0, 0, sx > 0 ? 0 : Math.PI);
+    }
+  } else if (name === 'spike') {
+    add(kit('post', { lod, r: 0.10, taper: 0.06, h: 1.8 + j(12) * 1.5, capped: false, mat: K.roof }), 0, 0, 0);
+  } else {
+    throw new Error(`W1-30E unknown skyline feature '${name}'`);
+  }
+  return g;
+}
+
+/**
+ * Build one building's four elevations from kit parts, against its settlement grammar.
+ *
+ * The grammar decides: how many bays, whether the piers are square (ordered towns) or round
+ * (grown ones), which trim band the courses carry, how dense the dressing is, how much the whole
+ * assembly leans, and — in Lilmoth's case only — whether the ground storey is a drowned stone
+ * survivor with a tideline on it.
+ */
+function buildKitElevations(g, b, K, gram, w, d, h, side, hash, storeys, summary) {
+  const lodOf = (metres) => (metres >= 1.4 ? 'near' : 'far');
+  const along = doorAlongLocal(b);
+  const ordered = gram.asym < 0.06;
+  const faces = [
+    { side: '+z', span: w, pos: [0, 0, d * 0.5], yaw: 0, doorU: along },
+    { side: '-z', span: w, pos: [0, 0, -d * 0.5], yaw: Math.PI, doorU: -along },
+    { side: '+x', span: d, pos: [w * 0.5, 0, 0], yaw: Math.PI * 0.5, doorU: -along },
+    { side: '-x', span: d, pos: [-w * 0.5, 0, 0], yaw: -Math.PI * 0.5, doorU: along },
+  ];
+  const WINDOWLESS_KINDS = new Set(['prison', 'sealed', 'structure']);
+  const blind = WINDOWLESS_KINDS.has(b.building_kind) || b.kind === 'sealed-with-reason';
+  let apertures = 0, dressing = 0, parts = 0;
+  const elevations = new THREE.Group();
+  elevations.name = `kit-elevations:${b.id}`;
+
+  for (let fi = 0; fi < faces.length; fi++) {
+    const face = faces[fi];
+    const fg = new THREE.Group();
+    fg.position.set(...face.pos);
+    fg.rotation.y = face.yaw;
+    const isEntry = face.side === side;
+    const bays = Math.max(2, Math.min(5, Math.round(face.span / 2.7)));
+    const step = face.span / bays;
+    const place = (node, x, y, z, ry = 0, rz = 0) => {
+      node.position.set(x, y, z);
+      node.rotation.y += ry; node.rotation.z += rz;
+      fg.add(node); parts++;
+      return node;
+    };
+    // --- the two courses. Base course carries the support trim, eave course the settlement's own.
+    place(kit('trim.course', { lod: 'far', w: face.span + 0.28, h: 0.20, d: 0.24, mat: K.stone, trim: gram.supportTrim }), 0, 0.44, 0.12);
+    place(kit('trim.course', { lod: 'far', w: face.span + 0.30, h: 0.18, d: 0.26, mat: K.wood, trim: gram.trim }), 0, Math.max(1.2, h - 0.55), 0.13);
+    // A storey band wherever the grammar stacks one.
+    for (let st = 1; st < storeys; st++) {
+      const y = st * 2.4 + 0.1;
+      if (y < h - 0.9) place(kit('trim.course', { lod: 'far', w: face.span + 0.22, h: 0.16, d: 0.22, mat: K.wood, trim: gram.trim }), 0, y, 0.11);
+    }
+    // --- the piers. Ordered towns get square piers on the bay lines; grown towns get round ones
+    // that lean by the grammar's asymmetry, and the lean is seeded on the building id.
+    for (let i = 0; i <= bays; i++) {
+      const x = -face.span * 0.5 + i * step;
+      if (isEntry && Math.abs(x - face.doorU) < DOOR_W * 0.62) continue;
+      const lean = ordered ? 0 : (kitJitter(hash, i + fi * 7) - 0.5) * gram.asym;
+      place(kit('post', { lod: 'far', square: ordered, r: 0.11, h: Math.max(1.1, h * 0.84), capped: !ordered, mat: K.wood, trim: gram.supportTrim }), x, 0.12, 0.12, 0, lean);
+    }
+    // --- the apertures. `wall.window` as a shallow bay panel: it brings its own jambs, sill,
+    // lintel and pane, so an opening reads as a hole with thickness rather than a dark rectangle.
+    if (!blind) for (let i = 0; i < bays; i++) {
+      const x = -face.span * 0.5 + (i + 0.5) * step;
+      if (isEntry && Math.abs(x - face.doorU) < DOOR_W * 0.75 + step * 0.22) continue;
+      for (let st = 0; st < storeys; st++) {
+        const y = 1.05 + st * 2.4;
+        const openH = 0.9 + kitJitter(hash, i * 3 + st) * 0.35;
+        if (y + openH + 0.5 > h) continue;
+        const panelW = Math.min(step - 0.30, 1.9);
+        place(kit('wall.window', {
+          lod: lodOf(panelW), w: panelW, h: openH + 0.9, t: 0.18,
+          openW: Math.min(panelW - 0.5, 0.55 + kitJitter(hash, i + st * 5) * 0.55), openH,
+          sillY: 0.5, mat: K.wall, trim: gram.trim, trimRole: gram.frameRole,
+          glassColour: 0xbcd6e0,
+        }), x, y, 0.10);
+        apertures++;
+        // Shutters, at the grammar's decoration density. An ordered town shutters every window;
+        // a grown one shutters the ones the weather hits.
+        if (kitJitter(hash, i * 7 + st * 11 + fi) < gram.decor * 0.55) {
+          for (const sx of [-1, 1]) place(kit('shutter', { lod: 'far', w: 0.34, h: openH, mat: K.wood, trim: gram.trim }), x + sx * (0.42), y + 0.5 + openH / 2, 0.22, 0, sx * 0.22);
+          dressing++;
+        }
+      }
+    }
+    // --- the street dressing, on the entry elevation only, at the grammar's density.
+    if (isEntry && !blind) {
+      const u = face.doorU;
+      const dj = (c) => kitJitter(hash, c + fi * 13);
+      if (dj(1) < gram.decor) { place(kit('awning', { lod: 'far', w: Math.min(2.4, face.span * 0.5), d: 1.1 + dj(2) * 0.5, pitch: 0.2 + dj(3) * 0.16, canopyRole: 'cloth', mat: K.cloth, trim: gram.trim }), u + (dj(4) - 0.5) * 1.2, 2.45, 0.16); dressing++; }
+      if (dj(5) < gram.decor * 0.8) { place(kit('sign', { lod: 'far', w: 0.6 + dj(6) * 0.4, h: 0.4 + dj(7) * 0.25, arm: 0.55, mat: K.wood, trim: gram.trim }), u + (dj(8) < 0.5 ? -1 : 1) * (DOOR_W * 0.75 + 0.4), 2.7, 0.10); dressing++; }
+      if (dj(9) < gram.decor * 0.7) {
+        // A lantern hangs off a bracket. A light fitting floating on a wall is the tell that
+        // nobody thought about how it got there.
+        place(kit('bracket', { lod: 'far', h: 0.4, reach: 0.42, mat: K.metal, trim: gram.trim }), u + (DOOR_W * 0.62), 2.35, 0.12);
+        place(kit('lantern', { lod: 'far', r: 0.13, h: 0.30, mat: K.metal }), u + (DOOR_W * 0.62), 2.25, 0.42);
+        dressing++;
+      }
+      if (storeys > 1 && dj(10) < gram.decor * 0.6) {
+        place(kit('balcony', { lod: 'far', w: Math.min(2.4, face.span * 0.62), d: 0.95, mat: K.wood, trim: gram.trim }), u * 0.4, 2.45, 0.14);
+        dressing++;
+      }
+      // THE OUTSIDE STAIR. A settlement built on piles gets to its first floor from the street,
+      // and that stair is most of what makes a stilt town read as a stilt town from the ground:
+      // it puts a diagonal against every vertical and it tells you the ground floor is not the
+      // way in. Grammars that terrace get it; Gideon and Stormhold, which do not, do not.
+      if (gram.terrace > 0.25 && storeys > 1 && dj(11) < gram.terrace + 0.25) {
+        const s2 = kit('stair', { lod: 'far', w: 1.05, rise: 2.4, run: 1.9 + dj(12) * 0.7, mat: K.wood, trim: gram.supportTrim });
+        place(s2, u + (dj(13) < 0.5 ? -1 : 1) * (DOOR_W * 0.8 + 0.7), 0.0, 2.0, Math.PI);
+        place(kit('railing', { lod: 'far', w: 2.2, h: 0.9, mat: K.wood, trim: gram.trim }), u + (dj(13) < 0.5 ? -1 : 1) * (DOOR_W * 0.8 + 0.7), 2.45, 0.75);
+        dressing++;
+      }
+      // The cargo of a working street. Never on the doorstep itself — the doorway ring search in
+      // `applyInteriorBounds()` owns that ground and a crate in it is a stuck player.
+      const cargo = gram.dressing;
+      for (let k = 0; k < Math.round(gram.decor * 3); k++) {
+        const id = cargo[(hash + k) % cargo.length];
+        const x = u + (dj(20 + k) - 0.5) * face.span * 0.8;
+        if (Math.abs(x - u) < DOOR_W * 0.8) continue;
+        place(kit(id, { lod: 'far', mat: K.wood, trim: gram.trim, seed: hash + k }), x, 0.02, 0.42 + dj(30 + k) * 0.3, dj(40 + k) * 1.4);
+        dressing++;
+      }
+    }
+    // --- Lilmoth only: the drowned storey. `world-art.js` calls the grammar `reed-dome-tidal-court`
+    // and the settlement record calls the material rule *"two cities stacked, and the lower one is
+    // drowning"*. Below the tideline the wall is imperial colonial stone, wet, with a salt line on
+    // it; above it, reed. This is the single biggest silhouette-and-surface change in the file and
+    // it is deliberately the starting town's.
+    if (gram.tideline) {
+      const t = gram.tideline;
+      // The salt line. It uses the settlement's OWN support trim rather than soulrest's bleached
+      // timber: a second trim slot here is a second material and lilmoth is the one settlement
+      // already at the ≤ 140 render-mesh ceiling.
+      place(kit('trim.course', { lod: 'far', w: face.span + 0.34, h: 0.13, d: 0.30, mat: K.stone, trim: gram.supportTrim }), 0, t, 0.16);
+      place(kit('wall', { lod: 'far', w: face.span, h: t, t: 0.20, mat: K.drowned }), 0, 0, 0.06);
+      if (kitJitter(hash, 60 + fi) < 0.5) { place(kit('plank', { lod: 'far', w: face.span * 0.5, h: 0.07, d: 0.24, mat: K.wood, trim: gram.supportTrim }), (kitJitter(hash, 61 + fi) - 0.5) * face.span * 0.4, t * 0.55, 0.22, 0, 0.14); dressing++; }
+    }
+    elevations.add(fg);
+  }
+
+  // --- the support the whole thing stands on, per grammar ---------------------------------------
+  const support = new THREE.Group();
+  support.name = `kit-support:${b.id}`;
+  const sup = gram.support;
+  const supN = sup === 'pier' ? 4 : 4;
+  for (let i = 0; i < supN; i++) {
+    const sx = i < 2 ? -1 : 1, sz = i % 2 ? -1 : 1;
+    const x = sx * (w * 0.5 - 0.45), z = sz * (d * 0.5 - 0.45);
+    if (sup === 'pier') {
+      const pr = kit('pier', { lod: 'far', h: 1.5, piles: 3, spread: 0.7, splay: 0.10 + gram.asym, r: 0.13, mat: K.wood, trim: gram.supportTrim, seed: hash + i });
+      pr.position.set(x, -1.4, z);
+      support.add(pr);
+    } else if (sup === 'buttress') {
+      const bt = kit('buttress', { lod: 'far', h: Math.max(1.4, h * 0.42), reach: 0.75, mat: K.stone, trim: gram.supportTrim });
+      bt.position.set(x, 0, z);
+      bt.rotation.y = Math.atan2(sx, sz);
+      support.add(bt);
+    } else {
+      const p = kit('post', { lod: 'far', square: ordered, r: 0.15, h: Math.max(1.2, h * 0.5), mat: K.wood, trim: gram.supportTrim });
+      p.position.set(x, 0, z);
+      support.add(p);
+    }
+    parts++;
+  }
+  g.add(support);
+  g.add(elevations);
+  summary.kit_parts = parts;
+  summary.kit_apertures = apertures;
+  summary.kit_dressing = dressing;
+  return { parts, apertures, dressing };
+}
+
+/**
+ * The silhouette a building WILL have, computed without building it.
+ *
+ * Pure, and that is the point: `roofChoice()`, `storeyChoice()` and the skyline draw are all
+ * functions of the seed, so a settlement can look at what it is about to build, notice that two
+ * neighbours are about to come out identical, and change one of them — before spending the
+ * geometry. `variantSalt` is the only thing that moves, and it moves nothing an authority owns.
+ */
+export function previewSilhouette(gram, b, w, d, h, seed, opts = {}) {
+  const bandStoreys = Math.max(1, Math.min(Math.floor((h - 0.9) / 2.4),
+    opts.oneVariant ? 2 : storeyChoice(gram, seed, hashStr(b.id) % 7)));
+  const roofId = (opts.flatRoof || opts.oneVariant) ? gram.roofs[0] : roofChoice(gram, seed);
+  const sky = [];
+  if (!opts.flatRoof && !opts.oneVariant) {
+    const budget = (gram.skylineBudget ?? 1) + (bandStoreys > 2 ? 1 : 0);
+    for (let k = 0; k < budget; k++) {
+      if (kitJitter(seed, 30 + k) > gram.skylineRate) continue;
+      sky.push(gram.skyline[(seed + k * 3) % gram.skyline.length]);
+    }
+  }
+  return { roof: roofId, storeys: bandStoreys, skyline: sky, sil: silhouetteHash({ roof: roofId, storeys: bandStoreys, w, d, h, skyline: sky }) };
+}
+
+/**
+ * Choose a variant salt per building so that no building shares a silhouette with the building
+ * nearest to it. Deterministic: buildings are visited in plan order and each takes the LOWEST
+ * salt that clears every already-placed neighbour within `radius`, so the same plan produces the
+ * same town on every run and captures still hash.
+ *
+ * This exists because the offline gate said so. With one salt for everybody, 7 of 205
+ * nearest-neighbour pairs came out with the same roof, the same storey count and the same skyline
+ * — 3.4%, against a control of 27% and a bar of zero. Seven is a small number and a street is
+ * where you see it.
+ */
+export function assignVariantSalts(plan, gram, opts) {
+  const salts = new Map();
+  const placed = [];
+  const RADIUS2 = 22 * 22;
+  for (const b of plan.buildings) {
+    const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+    const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+    const base = hashStr(b.id);
+    let chosen = 0, chosenSil = null;
+    for (let salt = 0; salt < 12; salt++) {
+      const sil = previewSilhouette(gram, b, w, d, b.height_m, (base ^ (salt * 0x9e3779b1)) >>> 0, opts).sil;
+      chosenSil = chosenSil ?? sil;
+      const clash = placed.some((p) => p.sil === sil && ((p.x - b.x) ** 2 + (p.z - b.z) ** 2) < RADIUS2);
+      if (!clash) { chosen = salt; chosenSil = sil; break; }
+      if (salt === 11) { chosen = 0; chosenSil = previewSilhouette(gram, b, w, d, b.height_m, base, opts).sil; }
+    }
+    salts.set(b.id, chosen);
+    placed.push({ x: b.x, z: b.z, sil: chosenSil });
+  }
+  return salts;
+}
+
+/** The roof, and the skyline over it. This is the approach-shot gate, decided in twenty lines. */
+function buildKitRoof(gg, K, gram, w, d, h, hash, storeys, opts) {
+  // `oneVariant` freezes the roof CHOICE as well as the rise. The first version froze only the
+  // rise and the storey rule, and the control then produced the same adjacent-collision count as
+  // the shipped build — a null control that does not move is not a control, it is a second copy
+  // of the experiment.
+  const roofId = (opts.flatRoof || opts.oneVariant) ? gram.roofs[0] : roofChoice(gram, hash);
+  const roof = new THREE.Group();
+  roof.name = 'roof';
+  const rise = (roofId === 'roof.reed' ? 0.38 : roofId === 'roof.shell' ? 0.44 : 0.30) * Math.min(w, d)
+    * (opts.oneVariant ? 1 : 0.82 + kitJitter(hash, 21) * 0.42);
+  const node = kit(roofId, {
+    lod: 'near', w, d, rise, over: 0.45 + kitJitter(hash, 22) * 0.35,
+    mat: K.roof, trim: gram.trim, trimRole: gram.frameRole,
+  });
+  node.position.y = h;
+  roof.add(node);
+  // Skyline. `skylineRate` is the chance a building contributes anything at all; a town where
+  // every roof carries a mast has no skyline, it has a fence.
+  const sky = [];
+  if (!opts.flatRoof && !opts.oneVariant) {
+    // The budget is the grammar's, not a constant. Lilmoth is the starting town, the weakest of
+    // the eight in the visual sweep, and the town a demo opens on, so its `skylineBudget` is 3
+    // against the province's 1--2: masts, drying racks, net frames and a banner over the water.
+    // If that turns out to read as clutter rather than as a working harbour it is one number.
+    const budget = (gram.skylineBudget ?? 1) + (storeys > 2 ? 1 : 0);
+    for (let k = 0; k < budget; k++) {
+      if (kitJitter(hash, 30 + k) > gram.skylineRate) continue;
+      const name = gram.skyline[(hash + k * 3) % gram.skyline.length];
+      const scale = Math.min(1.4, Math.max(0.7, Math.min(w, d) / 6));
+      const f = skylineFeature(name, K, gram, hash + k * 17, scale);
+      f.scale.setScalar(gram.skylineScale ?? 1);
+      f.position.set((kitJitter(hash, 40 + k) - 0.5) * w * 0.7, h + rise * (name === 'chimney' || name === 'watchpost' ? 0.55 : 0.2), (kitJitter(hash, 50 + k) - 0.5) * d * 0.7);
+      roof.add(f);
+      sky.push(name);
+    }
+  }
+  gg.add(roof);
+  return { roofId, rise, skyline: sky, roof };
+}
+
 /**
  * Render a named public/civic structure as that feature, rather than as an empty house.
  *
@@ -1349,8 +1786,45 @@ function buildNamedStructure(g, b, P, w, d, hash) {
   return true;
 }
 
+/**
+ * ONE ATTRIBUTE SIGNATURE FOR THE WHOLE SETTLEMENT — a batching prerequisite, not a nicety.
+ *
+ * `BatchedMesh` groups by `material | indexed | attribute set`, so the same stone material used by
+ * one indexed `BoxGeometry` (interior.js's shared kit meshes, and the half-tori this file builds
+ * directly) and one non-indexed kit slab is TWO draw calls, not one. Landing the kit doubled
+ * Lilmoth's group count for exactly that reason and pushed it through the ≤ 140 render-mesh row
+ * that `w1-30-settlement-batching.mjs` already enforced.
+ *
+ * This pass makes every geometry in the subtree non-indexed and gives every one of them a
+ * MEASURED `esCurvature` (`bakeCurvatureFromFaces()` — face-normal disagreement, not a constant),
+ * so the two halves of the settlement can share a batch. Converted geometries are cached by the
+ * original's uuid: a geometry is shared between hundreds of meshes and converting in place would
+ * convert it hundreds of times.
+ */
+const NORMALISED = new Map();
+function normaliseForBatching(root) {
+  let converted = 0, baked = 0;
+  root.traverse((o) => {
+    if (!o.isMesh || o.isBatchedMesh || o.isInstancedMesh || !o.geometry) return;
+    const src = o.geometry;
+    if (!src.index && src.attributes.esCurvature) return;
+    const hit = NORMALISED.get(src.uuid);
+    if (hit) { o.geometry = hit; return; }
+    let g = src;
+    if (g.index) { g = g.toNonIndexed(); converted++; }
+    else if (g === src) { g = g.clone(); }
+    if (!g.attributes.esCurvature) { bakeCurvatureFromFaces(g); baked++; }
+    g.userData = { ...src.userData };
+    if (src.userData?.w130BatchKey) g.userData.w130BatchKey = `${src.userData.w130BatchKey}|nz`;
+    NORMALISED.set(src.uuid, g);
+    o.geometry = g;
+  });
+  return { converted, baked };
+}
+
 /** Collapse anonymous facade primitives into heterogeneous, per-material multi-draw batches. */
 function compressBuildingMeshes(root) {
+  normaliseForBatching(root);
   root.updateMatrixWorld(true);
   const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert(),groups=new Map();
   root.traverse(o=>{
@@ -1380,6 +1854,10 @@ function compressBuildingMeshes(root) {
       batch.setMatrixAt(instance,new THREE.Matrix4().multiplyMatrices(inverse,m.matrixWorld));
     }
     batch.userData.logicalTriangles=meshes.reduce((n,m)=>n+(m.geometry.index?m.geometry.index.count/3:m.geometry.attributes.position.count/3),0);
+    // W1-30E: batching must not launder provenance. Before this, every kit part folded into a
+    // `BatchedMesh` lost its `userData.kitId` and the library census read the whole settlement as
+    // a bypass — a census that cannot see the thing it is counting is worse than no census.
+    carryKitProvenance(batch,meshes);
     batch.computeBoundingBox();batch.computeBoundingSphere();root.add(batch);
     for(const m of meshes)m.parent?.remove(m);
     for(const geo of unique.values())geo.dispose();
@@ -1387,6 +1865,23 @@ function compressBuildingMeshes(root) {
   }
   root.userData.meshCompression={batches,instances,drawsSaved};
   return root.userData.meshCompression;
+}
+
+/** Fold the kit ids of the merged meshes onto the batch that replaces them. A batch is a kit mesh
+ * if and only if every mesh in it was; otherwise it carries the count of members that were not,
+ * and the census reports that number as the bypass rather than the whole batch. */
+function carryKitProvenance(batch,meshes){
+  const ids=new Set();let bypass=0;
+  for(const m of meshes){
+    const id=m.userData?.kitId;
+    if(id)ids.add(id);else bypass++;
+    if(m.userData?.kitIds)for(const k of m.userData.kitIds)ids.add(k);
+    if(m.userData?.kitBypass)bypass+=m.userData.kitBypass;
+  }
+  if(ids.size)batch.userData.kitIds=[...ids].sort();
+  if(!bypass&&ids.size)batch.userData.kitId='batch';
+  if(bypass)batch.userData.kitBypass=bypass;
+  batch.userData.kitMembers=meshes.length;
 }
 
 /**
@@ -1399,6 +1894,7 @@ function compressBuildingMeshes(root) {
  * groups remain in place as lightweight named markers; physics never reads render children.
  */
 function compressSettlementMeshes(root) {
+  normaliseForBatching(root);
   root.updateMatrixWorld(true);
   const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert(),groups=new Map();
   root.traverse(o=>{
@@ -1442,6 +1938,7 @@ function compressSettlementMeshes(root) {
     }
     batch.userData.logicalTriangles=meshes.reduce((n,m)=>n+(m.geometry.index?m.geometry.index.count/3:m.geometry.attributes.position.count/3),0);
     batch.userData.w130SettlementBatch={instances:meshes.length,geometries:unique.size};
+    carryKitProvenance(batch,meshes);
     batch.computeBoundingBox();batch.computeBoundingSphere();root.add(batch);
     const dispose=new Set();
     for(const m of meshes){dispose.add(m.geometry);m.parent?.remove(m);}
@@ -1467,9 +1964,31 @@ export function buildBuilding(b, town, opts = {}) {
   const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
   const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
   const h = b.height_m;
-  const hash = hashStr(b.id);
+  // The variant salt is chosen by the SETTLEMENT (`assignVariantSalts()`), because whether two
+  // buildings look the same is a property of the pair and a building cannot see its neighbour.
+  // Zero for a building built on its own, which keeps every standalone probe byte-identical.
+  const hash = opts.variantSalt ? ((hashStr(b.id) ^ (opts.variantSalt * 0x9e3779b1)) >>> 0) : hashStr(b.id);
   const side = entrySideLocal(b);
   const summary = { id: b.id, w, d, h, kit: [], kit_drawn: 0, doorway: false, meshes: 0, triangles: 0 };
+
+  // ---- W1-30E kit context ---------------------------------------------------------------------
+  // `opts.kit === false` is the delete-the-fix arm: it restores the five hand-rolled facade blocks
+  // that were here before, un-bevelled, un-trimmed and with no `esCurvature`, so every gate that
+  // claims the kit did something has a control that is the plausible wrong answer rather than an
+  // empty scene. `opts.oneGrammar` gives all eight settlements one grammar; `opts.oneVariant`
+  // freezes the per-building variation; `opts.flatRoof` collapses the roofline; `opts.allImperial`
+  // marks every town imperial. Each is a named null control in `orchestration/plans/W1-30E.md`.
+  const useKit = opts.kit !== false;
+  const gramTown = opts.oneGrammar ? (typeof opts.oneGrammar === 'string' ? opts.oneGrammar : 'gideon') : town;
+  const gram = useKit ? grammarFor(gramTown) : null;
+  const K = useKit
+    ? kitMatsFor(paletteFor({ interior_kind: EXT_KIND_BUCKET[b.building_kind] || 'dwelling', settlement: town }), gram)
+    : null;
+  // Facade storey BANDING, not the building's storey count: `b.storeys` and `b.height_m` are
+  // authority-owned and this layer reads them, never writes them.
+  const bandStoreys = useKit
+    ? Math.max(1, Math.min(Math.floor((h - 0.9) / 2.4), opts.oneVariant ? 2 : storeyChoice(gram, hash, hashStr(b.id) % 7)))
+    : b.storeys;
 
   // Named public works used to enter the windowless-house path below.  Retain that old path only
   // as a targeted delete-the-fix arm for the offline census.
@@ -1497,8 +2016,12 @@ export function buildBuilding(b, town, opts = {}) {
   // overhang, the plinth and a kit mesh parked a metre off the gable inflating the answer —
   // which is exactly the question RI-WLD13 N1 asks. See `tools/world/w1-04-r4-join.mjs`.
   const named = (m) => { m.name = 'shellwall'; return m; };
+  // The shell slab. With the kit on, it is the same slab with its edges broken and `esCurvature`
+  // baked; the nominal dimensions are byte-identical, because the chamfer is cut inward and the
+  // measured outer extent is unchanged (`tmp` self-test asserts this to 1e-5 m, float32 noise).
+  const shell = (sw, sh, sd, mat, role) => (useKit ? kslab(sw, sh, sd, role) : box(sw, sh, sd, mat));
   const wall = (cx, cz, sw, sd, mine) => {
-    if (!mine || !b.enterable) { part(g, named(box(sw, h, sd, P.wall)), cx, h / 2, cz); return; }
+    if (!mine || !b.enterable) { part(g, named(shell(sw, h, sd, P.wall, K && K.wall)), cx, h / 2, cz); return; }
     const along = sw > sd;
     const span = along ? sw : sd;
     // ROUND 6: the doorway is cut at `u` along the wall, not always at its middle. `u` is 0 for
@@ -1506,16 +2029,27 @@ export function buildBuilding(b, town, opts = {}) {
     // round 5 on 90 of 112 and moves the hole to where the door is on the rest.
     const u = doorAlongLocal(b);
     for (const seg of doorwaySegments(span, u, 0.4)) {
-      part(g, named(box(along ? seg.len : sw, h, along ? sd : seg.len, P.wall)), cx + (along ? seg.c : 0), h / 2, cz + (along ? 0 : seg.c));
+      part(g, named(shell(along ? seg.len : sw, h, along ? sd : seg.len, P.wall, K && K.wall)), cx + (along ? seg.c : 0), h / 2, cz + (along ? 0 : seg.c));
     }
     const ux = along ? u : 0, uz = along ? 0 : u;
-    part(g, named(box(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall)), cx + ux, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz + uz);
-    part(g, box(along ? DOOR_W + 0.5 : sd + 0.2, 0.24, along ? sd + 0.2 : DOOR_W + 0.5, P.wood), cx + ux, DOOR_H, cz + uz);
-    // The leaf, half open, so a door reads as a door from across the street.
-    const leaf = box(DOOR_W * 0.9, DOOR_H - 0.15, 0.12, P.wood);
-    leaf.name = `door:${b.id}`;
-    const lx = cx + ux + (along ? 0 : Math.sign(cx) * 0.4), lz = cz + uz + (along ? Math.sign(cz) * 0.4 : 0);
-    part(g, leaf, lx, (DOOR_H - 0.15) / 2, lz, along ? 0.5 : Math.PI / 2 + 0.5);
+    part(g, named(shell(along ? DOOR_W : sw, Math.max(0.2, h - DOOR_H), along ? sd : DOOR_W, P.wall, K && K.wall)), cx + ux, DOOR_H + Math.max(0.2, h - DOOR_H) / 2, cz + uz);
+    if (useKit) {
+      // The kit's `door` part: jambs with a reveal, a lintel, a stone threshold and a plank leaf
+      // with two straps and a handle. The leaf keeps its `door:<id>` name — `useDoor()` and the
+      // door probes find it by that name and neither may notice the geometry changed.
+      const dr = kit('door', { lod: 'near', w: DOOR_W, h: DOOR_H, t: 0.14, mat: K.wood, trim: gram.trim, swing: 0.55 });
+      dr.position.set(cx + ux, 0, cz + uz);
+      dr.rotation.y = along ? (Math.sign(cz) < 0 ? Math.PI : 0) : (Math.sign(cx) > 0 ? Math.PI / 2 : -Math.PI / 2);
+      dr.traverse((o) => { if (o.isMesh && o.userData.kitId === 'door' && o.geometry.userData.w130BatchKey?.includes('doorleaf')) o.name = `door:${b.id}`; });
+      g.add(dr);
+    } else {
+      part(g, box(along ? DOOR_W + 0.5 : sd + 0.2, 0.24, along ? sd + 0.2 : DOOR_W + 0.5, P.wood), cx + ux, DOOR_H, cz + uz);
+      // The leaf, half open, so a door reads as a door from across the street.
+      const leaf = box(DOOR_W * 0.9, DOOR_H - 0.15, 0.12, P.wood);
+      leaf.name = `door:${b.id}`;
+      const lx = cx + ux + (along ? 0 : Math.sign(cx) * 0.4), lz = cz + uz + (along ? Math.sign(cz) * 0.4 : 0);
+      part(g, leaf, lx, (DOOR_H - 0.15) / 2, lz, along ? 0.5 : Math.PI / 2 + 0.5);
+    }
     summary.doorway = true;
   };
   wall(0, -d / 2, w, WALL_T, side === '-z');
@@ -1523,18 +2057,29 @@ export function buildBuilding(b, town, opts = {}) {
   wall(-w / 2, 0, WALL_T, d, side === '-x');
   wall(w / 2, 0, WALL_T, d, side === '+x');
   // A plinth, so a building on a slope is founded rather than floating.
-  part(g, box(w + 0.5, 1.6, d + 0.5, P.stone), 0, -0.8, 0);
+  part(g, useKit ? kslab(w + 0.5, 1.6, d + 0.5, K.stone) : box(w + 0.5, 1.6, d + 0.5, P.stone), 0, -0.8, 0);
 
   // ---- the storey line -----------------------------------------------------------------------
-  if (b.storeys > 1) {
+  if (!useKit && b.storeys > 1) {
     part(g, box(w + 0.3, 0.22, d + 0.3, P.wood), 0, h - 2.4, 0);
   }
 
   // Material junctions and corner structure. These are deliberately part of the shared shell
   // grammar: every one of the 202 facades receives a founded base course, an eave course and
   // supports whose cadence follows scale, while the town palette keeps them region-specific.
-  for (const y of [0.16, Math.max(.45,h-.26)]) part(g, box(w+.34,.22,d+.34,y<1?P.stone:P.wood),0,y,0);
+  for (const y of [0.16, Math.max(.45,h-.26)]) {
+    part(g, useKit ? kslab(w+.34,.22,d+.34, y<1?K.stone:K.wood) : box(w+.34,.22,d+.34,y<1?P.stone:P.wood),0,y,0);
+  }
   for (const sx of [-1,1]) for (const sz of [-1,1]) {
+    if (useKit) {
+      // The corner is a kit part now: a proud vertical with a trim cap, which is what turns the
+      // junction of two wall planes into a line the light can describe.
+      const c = kit('corner', { lod: 'far', h: h*.92, t: .22, mat: K.wood, trim: gram.trim });
+      c.position.set(sx*(w*.5-.11), 0, sz*(d*.5-.11));
+      c.rotation.z = ((hash>>(sx>0?2:4))&1?1:-1)*.025*(gram.asym > 0.05 ? 1 : 0.2);
+      g.add(c);
+      continue;
+    }
     const post=box(.20,h*.92,.20,(hash&1)?P.wood:P.stone);
     post.rotation.z=((hash>>(sx>0?2:4))&1?1:-1)*.025;
     part(g,post,sx*(w*.5-.11),h*.46,sz*(d*.5-.11));
@@ -1544,7 +2089,7 @@ export function buildBuilding(b, town, opts = {}) {
   // braces and imperfect lower courses give the light real edges to describe without changing
   // the authority-owned footprint or doorway aperture.
   const bayN=Math.max(2,Math.min(6,Math.round(w/2.6)));
-  for(const s of [-1,1]) for(let i=0;i<bayN;i++){
+  if(!useKit) for(const s of [-1,1]) for(let i=0;i<bayN;i++){
     const x=-w*.5+(i+.5)*(w/bayN), front=s*d*.5+s*.045;
     part(g,box(Math.max(.5,w/bayN-.34),Math.max(.7,h*.34),.055,(i+hash)%3===0?P.stone:P.wall),x,h*.24,front);
     const brace=box(.10,Math.max(.8,h*.36),.09,P.wood);brace.rotation.z=((i+hash)&1?.32:-.32);
@@ -1554,7 +2099,7 @@ export function buildBuilding(b, town, opts = {}) {
   // founded buttresses; marsh towns receive swelling clay/root/shell masses.  These sit proud of
   // all four elevations, catch contact shadow, and are small enough not to alter collision.
   const orderedTown=town==='gideon'||town==='stormhold'||town==='blackrose';
-  for(const sideSign of [-1,1])for(let i=0;i<2;i++){
+  if(!useKit) for(const sideSign of [-1,1])for(let i=0;i<2;i++){
     const along=(i?-.27:.27),yy=.28+((hash>>(i+3))&3)*.045;
     const zMass=orderedTown?box(.42,.72,.32,(i&1)?P.stone:P.wood):ico(.32+(hash%3)*.035,1,(i&1)?P.stone:P.wood);
     if(!orderedTown)zMass.scale.set(1.25,1.1,.72);
@@ -1568,7 +2113,7 @@ export function buildBuilding(b, town, opts = {}) {
   // Previously the leaf was the only cue, while the later settlement pass put trim on +z even
   // when the actual door was on -x.  Build this assembly in a +z-facing local frame and rotate it
   // onto the named wall, keeping every support physically connected to the ground and canopy.
-  if(b.enterable){
+  if(b.enterable && !useKit){
     const u=doorAlongLocal(b), porch=new THREE.Group();
     porch.name=`entry-porch:${b.id}`;
     let px=0,pz=0,yaw=0;
@@ -1597,7 +2142,7 @@ export function buildBuilding(b, town, opts = {}) {
   // bays. A face-local group keeps the same construction arithmetic on all four sides; its +z
   // axis points out of the wall and its +x axis runs along it.
   const WINDOWLESS = new Set(['prison', 'sealed', 'structure']);
-  if(opts.facadeRelief!==false){
+  if(opts.facadeRelief!==false && !useKit){
     const relief=new THREE.Group();relief.name=`facade-relief:${b.id}`;
     let modules=0,entryApertures=0;
     const along=doorAlongLocal(b),faces=[
@@ -1654,8 +2199,24 @@ export function buildBuilding(b, town, opts = {}) {
     g.add(relief);
   }
 
-  // ---- windows, on the walls that are not the door -------------------------------------------
-  if (!WINDOWLESS.has(b.building_kind) && b.kind !== 'sealed-with-reason') {
+  // ---- the kit elevations, or the old window pass ---------------------------------------------
+  if (useKit) {
+    buildKitElevations(g, b, K, gram, w, d, h, side, hash, bandStoreys, summary);
+    if (b.kind === 'sealed-with-reason') {
+      // A sealed door is still a door you can see the reason for. Boards, in the town's own
+      // timber, over a doorway that is otherwise complete.
+      const u = doorAlongLocal(b);
+      for (let i = 0; i < 4; i++) {
+        const bd = kit('plank', { lod: 'far', w: 2.0, h: 0.13, d: 0.14, mat: K.wood, trim: gram.trim });
+        bd.position.set(side === '+x' || side === '-x' ? Math.sign(side === '+x' ? 1 : -1) * (w / 2 + 0.18) : u,
+          0.6 + i * 0.5,
+          side === '+z' || side === '-z' ? Math.sign(side === '+z' ? 1 : -1) * (d / 2 + 0.18) : u);
+        bd.rotation.y = (side === '+x' || side === '-x') ? Math.PI / 2 : 0;
+        bd.rotation.z = 0.3 - (i % 2) * 0.6;
+        g.add(bd);
+      }
+    }
+  } else if (!WINDOWLESS.has(b.building_kind) && b.kind !== 'sealed-with-reason') {
     const n = Math.max(1, Math.min(3, Math.round(w / 4.5)));
     for (const s of [-1, 1]) {
       const zside = s < 0 ? '-z' : '+z';
@@ -1725,6 +2286,34 @@ export function buildBuilding(b, town, opts = {}) {
   }
 
   // ---- the roof ------------------------------------------------------------------------------
+  if (useKit) {
+    const r = buildKitRoof(g, K, gram, w, d, h, hash, bandStoreys, opts);
+    summary.roof = r.roofId;
+    summary.skyline = r.skyline;
+    summary.storeys_drawn = bandStoreys;
+    summary.silhouette = silhouetteHash({ roof: r.roofId, storeys: bandStoreys, w, d, h, skyline: r.skyline });
+    r.roof.traverse((o) => { o.userData.w130NoBatch = true; if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    g.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+    if (opts.batch !== false) compressBuildingMeshes(g);
+    let km = 0, kt = 0;
+    g.traverse((m) => {
+      if (!m.isMesh || !m.geometry) return;
+      km++;
+      const gg2 = m.geometry;
+      const per = gg2.index ? gg2.index.count / 3 : (gg2.attributes.position ? gg2.attributes.position.count / 3 : 0);
+      kt += m.userData.logicalTriangles ?? per * (m.isInstancedMesh ? m.count : 1);
+    });
+    summary.meshes = km;
+    summary.triangles = Math.round(kt);
+    return { group: g, summary };
+  }
+  // The control arm publishes a silhouette signature too, or the variation gate's null control is
+  // a zero that means "the field was undefined" rather than "the buildings differ". A control that
+  // scores perfectly because its output is missing is not a control.
+  summary.roof = `legacy:${town}`;
+  summary.storeys_drawn = b.storeys;
+  summary.skyline = [];
+  summary.silhouette = silhouetteHash({ roof: summary.roof, storeys: b.storeys, w, d, h, skyline: [] });
   const roof = roofFor(town, P, w, d, h, hash);
   // A ridge cap and uneven eave ends stop pitched roofs reading as two featureless rectangles.
   // Extra rafters belong only to the two genuinely pitched roof grammars. Applying them to
@@ -1862,12 +2451,19 @@ export function buildSettlementExterior(root, plan, groundY, opts = {}) {
     doorways: 0, facade_relief_buildings: 0, facade_relief_modules: 0,
   };
   const kitSeen = new Set();
+  const salts = opts.kit === false ? new Map() : assignVariantSalts(plan, grammarFor(opts.oneGrammar ? (typeof opts.oneGrammar === 'string' ? opts.oneGrammar : 'gideon') : plan.id), opts);
   for (const b of plan.buildings) {
     // Shipping uses one heterogeneous batch pass after final world placement. Offline continuity
     // probes keep the established building-local graph unless they explicitly request that path.
+    // W1-30E: the kit's five control flags travel through to `buildBuilding()`. Without this
+    // line, `w1-30e-kit-gate.mjs` ran six arms that all built the same settlement and reported
+    // six identical numbers — `HAZARDS.md` §0's failure shape exactly, caught by the arms
+    // agreeing to four decimal places when they were meant to disagree.
     const { group, summary } = buildBuilding(b, plan.id, {
       batch:opts.settlementBatch?false:opts.buildingBatch!==false,
       facadeRelief:opts.facadeRelief!==false,
+      kit:opts.kit, oneGrammar:opts.oneGrammar, oneVariant:opts.oneVariant,
+      flatRoof:opts.flatRoof, allImperial:opts.allImperial, variantSalt:salts.get(b.id) || 0,
     });
     // Package 2 settlement grammar is a rendered construction pass, not an annotation.  The
     // existing building owns mass/door continuity; these town-specific junctions alter its

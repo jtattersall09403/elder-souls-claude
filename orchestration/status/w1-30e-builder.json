@@ -1,0 +1,127 @@
+{
+  "task_id": "W1-30E-builder",
+  "plan": "orchestration/plans/W1-30E.md",
+  "parent": "orchestration/plans/W1-30.md",
+  "branch": "codex/wave1-build-experiment",
+  "started": "2026-08-14",
+  "state": "built-awaiting-fresh-critic",
+  "report": "reports/w1-30e/E-DELIVERY.md",
+  "machine_report": "reports/w1-30e/kit-gate.json (untracked by reports/.gitignore rule: reproducible from the tool. Regenerate with: node tools/render/w1-30e-kit-gate.mjs)",
+  "outputs_written": [
+    "game/src/render/lib/kits.js",
+    "game/src/render/exterior.js",
+    "tools/render/w1-30e-kit-gate.mjs",
+    "reports/w1-30e/E-DELIVERY.md"
+  ],
+  "reproduce": [
+    "node tools/render/w1-30e-kit-gate.mjs",
+    "node tools/render/w1-30-settlement-batching.mjs",
+    "node tools/world/w1-04-r4-join.mjs"
+  ],
+  "gates": {
+    "kit_economy_parts": {
+      "bar": "<=25",
+      "value": 25,
+      "pass": true
+    },
+    "kit_economy_buildings": {
+      "bar": ">=40",
+      "value": 179,
+      "pass": true
+    },
+    "kit_economy_bypass": {
+      "bar": "0 building meshes without kitId",
+      "value": 3284,
+      "control_kit_false": 29584,
+      "pass": false
+    },
+    "variation_adjacent_silhouette": {
+      "bar": "0 collisions",
+      "value": "0/205",
+      "control_flat_roof": "53/205",
+      "control_one_variant": "56/205",
+      "pass": true
+    },
+    "variation_roof_profiles": {
+      "bar": ">=5 per settlement",
+      "value": 1,
+      "pass": false,
+      "note": "conflicts with the 25-part economy cap in the same plan"
+    },
+    "separable_geometry_proxy": {
+      "bar": ">0.55, chance 0.125",
+      "value": 0.6443,
+      "control_one_grammar": 0.2081,
+      "control_kit_false": 0.1745,
+      "pass": true,
+      "note": "NOT the plan gate; the plan gate is naive judges on street shots"
+    },
+    "edges_broken_geometric": {
+      "bar": ">=0.95",
+      "value": 0.971,
+      "control_no_chamfer": 0.9637,
+      "control_kit_false": 0.4816,
+      "pass": true,
+      "note": "the plan's row is a PIXEL reading and needs a frame"
+    },
+    "gideon_is_the_exception": {
+      "bar": "imperial towns more ordered",
+      "value": 0.14,
+      "control_all_imperial": -0.115,
+      "pass": true
+    },
+    "skyline_relief_indicator": {
+      "bar": "delta vs control",
+      "value": 0.1835,
+      "control_flat_roof": 0.1862,
+      "pass": null,
+      "note": "NO SIGNAL — first thing the critic should photograph"
+    },
+    "render_meshes_per_settlement": {
+      "bar": "<=140 (pre-existing)",
+      "value": 106,
+      "pass": true
+    },
+    "triangles_worst_settlement": {
+      "bar": "<=1.2M",
+      "value": 935302,
+      "pass": true
+    },
+    "batched_mesh_preserved": {
+      "bar": "required",
+      "value": "96.8% reduction, 708 render meshes over 8 towns",
+      "pass": true
+    }
+  },
+  "findings": [
+    "MATERIAL_API.md §6a is answered. Every kit part and every converted primitive carries a per-vertex `esCurvature` (1.0 on a chamfer strip, ~0.45 on the ring inside it, 0.0 on the face interior) and every kit material passes `wearFrom: 'geometry'`. C's diagnosis was right and structural: the arris of a plank is a property of the mesh, and it is now in the mesh. Whether that turns C's 3.4% edge/face separation into the 8% the plan wants is C's measurement to re-run, not this child's claim.",
+    "The trim atlas went from ZERO consumers to twelve, one per band, enforced at import: `assertGrammarsDerived()` throws if any `TRIM_SLOTS` id loses its consuming grammar. Two consumers were the library rule; this is a full census.",
+    "The 37 named cultural features were preserved rather than rebuilt, by converting the two PRIMITIVES the whole 153 KB file is written in. `box()` is now the kit's chamfered `wall` slab and `cyl()` its faceted `post` drum, at identical outer dimensions (asserted to 1e-5 m). This is a much cheaper route to 'rebuilt as kit parts rather than discarded' than rebuilding 37 features, and it converts the public realm and the courts at the same time.",
+    "HAZARDS §0, live: the first run of the gate produced SIX null-control arms with identical values to four decimal places, because `buildSettlementExterior()` builds its own options object for `buildBuilding()` and none of the flags reached it. Every arm was measuring the shipped build. Agreement that perfect is itself the evidence.",
+    "A second control defect: `kit:false` reported ZERO adjacent silhouette collisions — better than shipped — because the legacy path never set `summary.silhouette` and the unique-id fallback made every building distinct. It reads 56/205 now. A control that scores perfectly because its output is missing is the same failure shape one level down.",
+    "A third: `kit:false` left the primitive chamfer in place, so 'edges are broken' moved 0.971 -> 0.964 and looked like the chamfer did nothing. `setKitChamfer(false)` is the switch that actually removes it and the real control reads 0.482.",
+    "Materials are draw calls. Landing the kit took Lilmoth from 113 to 194 render meshes and broke `w1-30-settlement-batching.mjs`'s pre-existing <=140 row. Four changes fixed it without touching the look: wear/roughness/metalness quantised to 0.05 and colour to 5 bits a channel; nine different trim-wear bumps collapsed to one; trim members take the SETTLEMENT's colour rather than the building's; eleven exterior colour kinds bucketed to three. Worst settlement is now 106, better than the pre-kit baseline.",
+    "A second batching trap: `BatchedMesh` groups by material AND attribute set, so the same stone used by one indexed BoxGeometry and one non-indexed kit slab is two draw calls. `normaliseForBatching()` makes every geometry in a settlement non-indexed and bakes a MEASURED `esCurvature` on the strays (`bakeCurvatureFromFaces()`, face-normal disagreement). That single pass is worth ~40 draw calls a settlement.",
+    "Batching was also laundering the census: every kit part folded into a BatchedMesh lost its `userData.kitId` and the library census read whole settlements as bypass. `carryKitProvenance()` folds the member ids onto the batch and records how many members were NOT kit parts, so a batch neither hides a bypass nor is counted as one.",
+    "The board's finding that region separation is shape rather than colour (ART-X7-SEPARATION-RAW unset; 9.1% leave-one-out against 11.1% chance) matches what this child measures: a descriptor with NO colour term separates the eight settlements at 0.644 against a 0.125 chance baseline, and collapses to 0.208 when all eight are given one grammar.",
+    "NEGATIVE RESULT, and the most important line here: the geometric skyline-relief indicator does not distinguish the shipped build from one with every roofline flattened and every mast deleted (0.1835 vs 0.1862). Either the statistic is insensitive at the approach camera or the skyline work is too timid to read, and offline geometry cannot separate those. The board's ART-X5 / ART-SET-ROOFLINE-RELIEF-lilmoth are the real instrument and they need a rendered frame."
+  ],
+  "not_done": [
+    "No frame rendered, no browser or pod spent. Every number is geometry in Node. The premise all six control arms share — that geometric separation reaches pixels — is exactly the one none of them can falsify.",
+    "The bounded live proof (three settlement streets, three approaches, one walk-through) is still owed.",
+    "The public realm is not kit-built: ~9,945 street/court/causeway meshes across eight towns. Plan item 6, not started.",
+    "Interior thresholds (plan item 7) got the exterior half only; nothing was coordinated with W1-30G's side of the same doorway.",
+    "Landmarks as authored exceptions (plan item 5) not attempted; no exemption written and none claimed.",
+    "Draw calls measured per settlement, not per street shot. 106 render meshes bounds the plan's <=900 row but the frustum-scoped number is the critic's.",
+    "Every ART-* board band (ART-X2-CHROMA-P95, ART-X1-VALUE-SPLIT, the eight ART-SET-* blocks) is unmeasured against this build. Four of the eight settlement blocks are UNSET for want of plates (thorn 0, stormhold 0, archon 1, helstrom 2) and no target was invented for them.",
+    "Two pre-existing failures in w1-04-r4-join.mjs are unchanged and verified byte-identical by stashing this work and re-running: 42 of 115 exteriors smaller than their interiors, and 56 `*-struct-*` records with no roof group."
+  ],
+  "next_action": "Dispatch the fresh W1-30E critic: child-scoped Deck profile over the 8 settlement street and 8 approach shots at 3 times x 2 weathers, the naive attribution packs built by a different agent, WLD03's copy-paste matrix, the 12-shot unseen census sample and the open defect inventory. Photograph Lilmoth's skyline FIRST — the offline indicator has no signal and only a frame can say whether that is the instrument or the work.",
+  "files_touched": [
+    "game/src/render/lib/kits.js",
+    "game/src/render/exterior.js",
+    "tools/render/w1-30e-kit-gate.mjs",
+    "reports/w1-30e/E-DELIVERY.md"
+  ],
+  "next_step": "Dispatch the fresh W1-30E critic: child-scoped Deck profile over the 8 settlement street and 8 approach shots at 3 times x 2 weathers, the naive attribution packs built by a different agent, WLD03's copy-paste matrix, the 12-shot unseen census sample and the open defect inventory. Photograph Lilmoth's skyline FIRST — the offline indicator has no signal and only a frame can say whether that is the instrument or the work."
+}
