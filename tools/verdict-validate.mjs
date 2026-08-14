@@ -137,8 +137,115 @@ export function roundRelevance(files) {
   return out;
 }
 
+// ---------------------------------------------------------------- document types
+//
+// TWO INCOMPATIBLE DOCUMENTS WERE ANSWERING TO ONE SCHEMA NAME, and no amount of backfilling
+// fixes that. `corpus/90-verdicts/` holds critic verdicts — a critic measured a built piece
+// against reference items — and it also holds BLIND-PACK JUDGEMENTS, where a judge answers a
+// masked pack's question without seeing the piece. A judgement structurally CANNOT carry
+// `artifacts[]` (its evidence is the pack), `arbitration.ar1/ar2` (there is no build to
+// arbitrate) or scored `reference_items[]` (the whole discipline is that it has not read them).
+// Three such documents — W1-PROSE-BLIND-r1, W1-PROSE-TICS-r4, W1-22-B2-blind — were held to a
+// critic verdict's contract and were red for having done their job correctly. A fourth,
+// W1-TOUCH-r1, declares `"schema": "elder-souls/verdict@1"` while using a completely different
+// field layout, so the name itself had become ambiguous.
+//
+// THE SPLIT IS ADDITIVE. A document with no `document_type` and no `judge.` role validates on
+// exactly the code path it did before, so the ~90 conformant verdicts are untouched and the
+// score series stays comparable (`tools/scores.mjs` reads `score.overall_0_10` and is not
+// changed by any of this). The default is the STRICTEST type: an undeclared document is held to
+// the critic verdict's contract, so forgetting the field can never buy leniency.
+export const DOC_TYPES = {
+  'critic-verdict': 'elder-souls/critic-verdict@1',
+  'blind-judgement': 'elder-souls/blind-judgement@1',
+};
+// `elder-souls/verdict@1` is RETIRED, not renamed. Four documents in this corpus declare or
+// imply it (W1-TOUCH-r1, W1-MAP-r1, W1-DEPLOY-r1, W1-FACTIONS-r1) and NO TWO OF THEM SHARE A
+// FIELD LAYOUT. One name per instance is the absence of a type, not the presence of one, so the
+// identifier is refused rather than adopted for either side of the split.
+const RETIRED_SCHEMA_IDS = new Set(['elder-souls/verdict@1']);
+const SCHEMA_ID_TO_TYPE = new Map(Object.entries(DOC_TYPES).map(([k, id]) => [id, k]));
+
+/**
+ * Which contract does this document answer to? Fail-closed: anything undeclared is a critic
+ * verdict, which is the stricter of the two.
+ */
+export function documentType(v) {
+  const notes = [];
+  if (v && v.document_type !== undefined) {
+    if (Object.prototype.hasOwnProperty.call(DOC_TYPES, v.document_type)) return { type: v.document_type, via: 'document_type', notes };
+    notes.push({ level: 'error', m: `document_type "${v.document_type}" is not a known document type — one of ${Object.keys(DOC_TYPES).join(', ')} (corpus/00-doctrine/verdict.schema.json, corpus/00-doctrine/blind-judgement.schema.json). Validated as a critic verdict.` });
+    return { type: 'critic-verdict', via: 'document_type-unknown', notes };
+  }
+  if (v && typeof v.schema === 'string') {
+    if (SCHEMA_ID_TO_TYPE.has(v.schema)) return { type: SCHEMA_ID_TO_TYPE.get(v.schema), via: 'schema', notes };
+    if (RETIRED_SCHEMA_IDS.has(v.schema)) {
+      notes.push({ level: 'error', m: `declares \`"schema": "${v.schema}"\` but does not implement it. That identifier is RETIRED: four documents in this corpus claim it and no two share a field layout, so it names no contract. State \`"document_type": "critic-verdict"\` or \`"blind-judgement"\` instead. Validated as a critic verdict.` });
+      return { type: 'critic-verdict', via: 'schema-retired', notes };
+    }
+    notes.push({ level: 'error', m: `declares \`"schema": "${v.schema}"\`, which is not a registered document type. Validated as a critic verdict.` });
+    return { type: 'critic-verdict', via: 'schema-unknown', notes };
+  }
+  // The type was in the file the whole time and nothing read it: a blind judge declares
+  // `critic.role: "judge.blind.<domain>"`, a build critic declares `critic.role: "critic.<...>"`.
+  if (v && v.critic && typeof v.critic.role === 'string' && /^judge\./.test(v.critic.role)) {
+    notes.push({ level: 'warn', m: `inferred document_type "blind-judgement" from critic.role "${v.critic.role}". Declare \`"document_type": "blind-judgement"\` explicitly — inference is a migration aid, not the contract.` });
+    return { type: 'blind-judgement', via: 'critic.role', notes };
+  }
+  return { type: 'critic-verdict', via: 'default', notes };
+}
+
+/**
+ * A subsystem path is canonical, a registered legacy alias, a strict DESCENDANT of a canonical
+ * path, or unknown. The descendant case is new and it is a refinement rather than a coverage
+ * claim: `audio.ambience.region.separation` names a facet of the registered
+ * `audio.ambience.region` and rolls up to it, so INDEX.md counts the ancestor and the leaf is a
+ * warning. A path with NO canonical ancestor is still an error — registering a new subsystem is
+ * a taxonomy decision (RI-MTH05 §C: a false mapping is worse than a hole), not a validator's.
+ */
+export function subsystemPathIssue(p) {
+  if (canonical.has(p)) return null;
+  if (aliases[p]) return { level: 'warn', m: `"${p}" is a legacy alias of "${aliases[p]}" — use the canonical path` };
+  let best = null;
+  for (const c of canonical) if (p.startsWith(c + '.') && (!best || c.length > best.length)) best = c;
+  if (best) return { level: 'warn', m: `"${p}" is not registered, but it is a strict refinement of the canonical "${best}" and rolls up to it. Either use the ancestor or register the leaf in corpus/00-doctrine/subsystems.json.` };
+  return { level: 'error', m: `"${p}" is not a canonical subsystem path and has no canonical ancestor (corpus/00-doctrine/subsystems.json)` };
+}
+
+function checkSubsystemPaths(v, E, W) {
+  if (!Array.isArray(v.subsystem_paths) || v.subsystem_paths.length === 0) { E('subsystem_paths must be a non-empty array'); return; }
+  for (const p of v.subsystem_paths) {
+    const issue = subsystemPathIssue(p);
+    if (issue) (issue.level === 'error' ? E : W)(`subsystem_paths: ${issue.m}`);
+  }
+}
+
+// ---------------------------------------------------------------- an honest non-reading
+//
+// "NOT READ - quarantined" was written into a `path` slot by W1-22-B2-blind's judge, for
+// RI-AUD03 — the very item its pack served, deliberately unread, which is the entire point of a
+// blind judgement. The schema had no way to say that, so an honest answer came out as a broken
+// citation. THE SCHEMA WAS WHAT WAS WRONG. An instrument that cannot represent an honest answer
+// will get lied to.
+//
+// The structured form is `not_read: { reason, why }`. It is permitted ONLY on a blind judgement:
+// a critic verdict that did not measure an item already has a way to say so — `measured:
+// "unmeasurable"` with `score_0_10: 0`, fail-closed — and letting a critic declare an item
+// unread would be a route around scoring it. And a not-read item may carry no score, because you
+// cannot score what you did not read.
+const NOT_READ_REASONS = ['quarantined', 'sealed', 'unavailable', 'out-of-scope'];
+const LEGACY_NOT_READ = /^\s*(NOT[ _-]?READ|UNREAD|NOT[ _-]?OPENED)\b/i;
+
 function requireGapForOutcome(v, g, E) {
   if (!g && v.status !== 'PASS') E('biggest_gap missing — an unsatisfied verdict must name one actionable biggest gap (ARBITRATION §3)');
+}
+
+export function validateDocument(v, E, W) {
+  const { type, notes } = documentType(v);
+  for (const n of notes) (n.level === 'error' ? E : W)(n.m);
+  if (type === 'blind-judgement') validateBlindJudgement(v, E, W);
+  else validateCriticVerdict(v, E, W);
+  return type;
 }
 
 function validate(file) {
@@ -151,18 +258,18 @@ function validate(file) {
   try { v = JSON.parse(readFileSync(file, 'utf8')); }
   catch (e) { return { errors: [`unparseable JSON: ${e.message}`], warns: [] }; }
 
+  const type = validateDocument(v, E, W);
+  return { errors, warns, type };
+}
+
+function validateCriticVerdict(v, E, W) {
   // --- identity
   if (v.schema_version !== 1) E('schema_version must be 1');
   for (const k of ['piece_id', 'wave', 'critic', 'bifurcation', 'reference_items', 'artifacts', 'arbitration', 'score', 'status', 'self_audit']) {
     if (v[k] === undefined) E(`missing required field \`${k}\``);
   }
-  if (!Array.isArray(v.subsystem_paths) || v.subsystem_paths.length === 0) E('subsystem_paths must be a non-empty array');
-  for (const p of v.subsystem_paths || []) {
-    if (!canonical.has(p)) {
-      if (aliases[p]) W(`subsystem_paths: "${p}" is a legacy alias of "${aliases[p]}" — use the canonical path`);
-      else E(`subsystem_paths: "${p}" is not a canonical subsystem path (corpus/00-doctrine/subsystems.json)`);
-    }
-  }
+  if (v.document_type !== undefined && v.document_type !== 'critic-verdict') E(`document_type "${v.document_type}" but validated as a critic verdict`);
+  checkSubsystemPaths(v, E, W);
   if (v.critic && !v.critic.run_id) E('critic.run_id required');
   // A verdict with no time is a verdict the progress chart cannot place. Three have shipped without
   // one, and the chart drew each at x = 0 — the far left of the whole project timeline — so a
@@ -495,7 +602,210 @@ function validate(file) {
   }
 
   for (const m of citedButUndeclared) E(m);
-  return { errors, warns };
+}
+
+// ---------------------------------------------------------------- blind judgement
+//
+// A blind judgement is scored against RI-MTH03, not against a build. Its obligations are the
+// protocol's: which pack, answers sealed before the reveal, the reveal outcome, a leak audit
+// (M6), an attestation that the judge did not peek, and a ruling on whether the blind result is
+// ADMISSIBLE. Those six are the discipline; without any one of them the document is worthless,
+// which is what makes this type a real contract rather than a hole to escape through.
+//
+// EACH OBLIGATION IS CHECKED BY ROLE, NOT BY SPELLING, against a closed table of the field names
+// this corpus actually uses. Three judgements exist and no two spell the same obligation the
+// same way (`pack` / `blind_comparisons[].pack_ids`; `answers_sealed_before_reveal` /
+// `blind_discipline` / `blind_comparisons[].answers_written_before_reveal`). The table is
+// finite and auditable — a future judge cannot invent a fourth spelling — and every non-canonical
+// hit warns, naming the canonical key. That is a schema migration, not leniency: the obligation
+// is enforced and the self-test proves a judgement missing its seal record is REJECTED.
+const JUDGEMENT_OBLIGATIONS = [
+  {
+    key: 'pack',
+    what: 'the pack under judgement must be identified (directory or pack id, seed, trial count)',
+    at: [
+      ['pack', (v) => v.pack && typeof v.pack === 'object'],
+      ['pack_id', (v) => typeof v.pack_id === 'string' && v.pack_id],
+      ['blind_comparisons[].pack_ids', (v) => (v.blind_comparisons || []).some((b) => (b.pack_ids || []).length)],
+    ],
+  },
+  {
+    key: 'seal',
+    what: 'the answers must be shown to have been fixed BEFORE the reveal (RI-MTH03 M3: answer file written and hashed first)',
+    at: [
+      ['seal', (v) => v.seal && typeof v.seal === 'object'],
+      ['answers_sealed_before_reveal', (v) => v.answers_sealed_before_reveal && typeof v.answers_sealed_before_reveal === 'object'],
+      ['blind_discipline', (v) => v.blind_discipline && (v.blind_discipline.answer_sha256 || v.blind_discipline.reveal_opened_after_hash === true)],
+      ['sampling_rule_declared_before_sampling', (v) => v.sampling_rule_declared_before_sampling && typeof v.sampling_rule_declared_before_sampling === 'object'],
+      ['blind_comparisons[].answers_written_before_reveal', (v) => (v.blind_comparisons || []).some((b) => b.answers_written_before_reveal === true)],
+    ],
+  },
+  {
+    key: 'results',
+    what: 'the reveal outcome must be recorded (RI-MTH03 hard fail: reporting the pick but not the reveal, or the reveal but not the pick)',
+    at: [
+      ['results', (v) => v.results && typeof v.results === 'object'],
+      ['result', (v) => v.result && typeof v.result === 'object'],
+      ['blind_comparisons[]', (v) => Array.isArray(v.blind_comparisons) && v.blind_comparisons.length > 0],
+    ],
+  },
+  {
+    key: 'leak_audit',
+    what: 'a leak audit must have been performed and its outcome recorded (RI-MTH03 M6) — a pack decidable without reading is not a blind result',
+    at: [
+      ['leak_audit', (v) => v.leak_audit && typeof v.leak_audit === 'object'],
+      ['tells', (v) => Array.isArray(v.tells) && v.tells.length > 0],
+      ['blind_comparisons[].leak_audit', (v) => (v.blind_comparisons || []).some((b) => b.leak_audit && b.leak_audit.performed !== false)],
+      ['protocol_score.checks[] leak row', (v) => ((v.protocol_score || {}).checks || []).some((c) => /leak/i.test(String(c && c.check)))],
+    ],
+  },
+  {
+    key: 'no_peek',
+    what: 'the judge must attest it did not see the mapping, the builder notes or the item it was quarantined from (RI-MTH03 hard fail; RULES rule 25)',
+    at: [
+      ['self_audit.answered_before_unblinding', (v) => (v.self_audit || {}).answered_before_unblinding === true],
+      ['quarantine', (v) => v.quarantine && typeof v.quarantine === 'object' && Array.isArray(v.quarantine.accidental_reads)],
+      ['contamination_declared', (v) => v.contamination_declared && typeof v.contamination_declared === 'object'],
+    ],
+  },
+  {
+    key: 'admissibility',
+    what: 'the judgement must rule on whether the blind result is ADMISSIBLE as evidence (RI-MTH03 Scoring: below 75% of applicable points it is inadmissible and the item falls back to non-blind scoring)',
+    at: [
+      ['admissible', (v) => typeof v.admissible === 'boolean'],
+      ['results.admissible', (v) => typeof (v.results || {}).admissible === 'boolean'],
+      ['protocol_score.blind_result_admissible', (v) => typeof (v.protocol_score || {}).blind_result_admissible === 'boolean'],
+      ['leak_audit.verdict', (v) => typeof (v.leak_audit || {}).verdict === 'string' && (v.leak_audit).verdict],
+      ['status naming admissibility', (v) => /\b(in)?admissible\b/i.test(String(v.status || '')) || (v.status_reasons || []).some((s) => /\b(in)?admissible\b/i.test(String(s)))],
+      ['score.points', (v) => (v.score || {}).points && typeof v.score.points === 'object'],
+    ],
+  },
+];
+
+function validateBlindJudgement(v, E, W) {
+  // --- identity
+  if (v.schema_version !== 1) E('schema_version must be 1');
+  if (v.document_type !== undefined && v.document_type !== 'blind-judgement') E(`document_type "${v.document_type}" but validated as a blind judgement`);
+  for (const k of ['piece_id', 'wave', 'critic', 'score', 'status']) {
+    if (v[k] === undefined) E(`missing required field \`${k}\``);
+  }
+  checkSubsystemPaths(v, E, W);
+  const c = v.critic || {};
+  if (!c.run_id) E('critic.run_id required');
+  if (typeof c.role !== 'string' || !/^judge\./.test(c.role)) E('critic.role must name the judging role, e.g. "judge.blind.audio" — a blind judgement is filed by a judge, not by a build critic');
+  if (typeof c.conflict_of_interest !== 'boolean') E('critic.conflict_of_interest must be boolean');
+  if (c.conflict_of_interest === true) E('critic.conflict_of_interest is true — a conflicted judge cannot produce an admissible blind result (RULES rule 25). File it RECUSED and dispatch a fresh judge.');
+  if (c.built_the_pack === true) E('critic.built_the_pack is true — you do not judge a blind pack you built (RULES rule 25). Two comparisons here have already been voided for it.');
+  // Same rule as a verdict, same reason: a document with no time is plotted at x = 0, i.e. before
+  // every measurement its domain has ever taken. `tools/scores.mjs` plots judgements too.
+  if (!c.finished_at && !c.started_at) {
+    E('critic.finished_at required (ISO 8601) — a judgement with no time cannot be placed on the trajectory chart, and an unplaced point is drawn at the start of the project rather than left out');
+  }
+  for (const k of ['started_at', 'finished_at']) {
+    if (c[k] && Number.isNaN(Date.parse(c[k]))) E(`critic.${k} is not a parseable timestamp: ${JSON.stringify(c[k])}`);
+  }
+
+  // --- the six obligations
+  for (const ob of JUDGEMENT_OBLIGATIONS) {
+    const hit = ob.at.find(([, test]) => { try { return test(v); } catch { return false; } });
+    if (!hit) {
+      E(`blind discipline: no \`${ob.key}\` record — ${ob.what}. Accepted locations: ${ob.at.map(([n]) => n).join(', ')}.`);
+    } else if (hit[0] !== ob.key) {
+      W(`blind discipline: \`${ob.key}\` is recorded at \`${hit[0]}\`. That is accepted as a legacy spelling; new judgements should write \`${ob.key}\`.`);
+    }
+  }
+
+  // --- reference items are CONTEXT, not measurements. A blind judge names the item its pack
+  // serves and the protocol it is scored against; it does not score them, because it has not
+  // read them. So: no native_scale, no score_0_10, no evidence[] — and a legitimate non-reading
+  // is sayable.
+  for (const r of v.reference_items || []) {
+    const tag = r.id || '(no id)';
+    if (!/^RI-[A-Z]+\d+$/.test(r.id || '')) E(`reference_items ${tag}: id must look like RI-CMB03`);
+    const nr = r.not_read;
+    const legacyNotRead = typeof r.path === 'string' && LEGACY_NOT_READ.test(r.path);
+    if (nr) {
+      if (!NOT_READ_REASONS.includes(nr.reason)) E(`reference_items ${tag}: not_read.reason must be one of ${NOT_READ_REASONS.join('|')}`);
+      if (!nr.why) E(`reference_items ${tag}: not_read.why required — say WHY the item was not read, in a sentence a reader can check`);
+      if (r.path) E(`reference_items ${tag}: declares not_read AND a path. Say one or the other — a cited path is a claim that the document was opened.`);
+      if (r.score_0_10 !== undefined) E(`reference_items ${tag}: not_read and score_0_10 both present. You cannot score an item you did not read.`);
+    } else if (legacyNotRead) {
+      // The honest answer, in the only slot it had. Accepted, and named, so it migrates.
+      W(`reference_items ${tag}: path is the free-text non-reading "${r.path}". Accepted — a blind judge that deliberately did not open the item its pack serves is doing the exercise correctly, and until now the schema had no way to say so. Write it as \`"not_read": { "reason": "quarantined", "why": "…" }\` instead, and drop \`path\`.`);
+      if (r.score_0_10 !== undefined) E(`reference_items ${tag}: declared unread and carries score_0_10. You cannot score an item you did not read.`);
+    } else if (!r.path || !resolveCitedPath(ROOT, r.path).ok) {
+      // A path that merely fails to resolve is STILL an error. The non-reading clause above is
+      // narrow on purpose so it cannot be used to launder a missing file.
+      E(`reference_items ${tag}: path "${r.path}" does not exist. If the item was deliberately not read, say so with \`not_read: { reason, why }\` — do not point at a file you never opened.`);
+    }
+    if (r.score_0_10 !== undefined && (typeof r.score_0_10 !== 'number' || r.score_0_10 < 0 || r.score_0_10 > 10)) {
+      E(`reference_items ${tag}: score_0_10 must be 0-10`);
+    }
+  }
+
+  // --- outcome. A judgement's status vocabulary is RI-MTH03's ("meets the bar" / "below bar" /
+  // "inadmissible"), not a verdict's PASS|FAIL|VOID, so it is free text — but it must be there,
+  // and it must be reasoned.
+  if (typeof v.status !== 'string' || !v.status.trim()) E('status required — a judgement must state its outcome in RI-MTH03\'s vocabulary (meets the bar / below bar / blind result inadmissible)');
+  if (!Array.isArray(v.status_reasons) || v.status_reasons.length === 0) E('status_reasons[] required — one line per reason the status is what it is');
+
+  // --- score. A JUDGE MAY DECLINE TO SCORE THE PIECE, and that is the second answer this schema
+  // could not previously express. W1-22-B2-blind deliberately read no RI-AUD item, so it has no
+  // bar to score the piece against and wrote `overall_0_10: null` with a note saying so. Forcing
+  // a number there would have been fabricating a measurement. The null is admissible ONLY with a
+  // written reason, so it cannot be used to dodge scoring.
+  const s = v.score;
+  if (!s || typeof s !== 'object') {
+    E('score required');
+  } else if (s.overall_0_10 === null) {
+    if (!s.note) E('score.overall_0_10 is null and score.note is missing — a judge may decline to score the piece (it may not have read the item), but it must say why, in writing');
+  } else if (typeof s.overall_0_10 !== 'number' || s.overall_0_10 < 0 || s.overall_0_10 > 10) {
+    E('score.overall_0_10 must be a number 0-10, or null with a written score.note');
+  } else {
+    if (typeof s.pass_threshold !== 'number') E('score.pass_threshold must be a number and must be written down');
+    // RI-MTH03's own aggregation is "percentage of applicable points", which is not in the
+    // verdict enum and never was. A judgement names its item's aggregation rule in prose.
+    if (!s.aggregation || !String(s.aggregation).trim()) E('score.aggregation required — name the item\'s own aggregation rule (RI-MTH03: percentage of applicable points)');
+  }
+
+  // --- the gap. Substance is required; the remedy/acceptance discipline is a WARNING here and
+  // an error on a verdict, and the difference is stated rather than smuggled: a build critic's
+  // gap must be re-measurable by a later critic, so `remedy.acceptance` carries a number. A
+  // judge's gap is usually about the INSTRUMENT — the pack leaked, the question had two axes —
+  // and its remedy is a protocol change with no build delta to accept against. REVERSIBLE: if
+  // judgement gaps start ageing in `tools/gap-ledger.mjs` for want of an acceptance condition,
+  // promote these three warnings to errors.
+  const g = v.biggest_gap;
+  if (g) {
+    if (!g.gap_id) E('biggest_gap.gap_id required');
+    for (const k of ['what', 'why_it_matters']) if (!g[k]) E(`biggest_gap.${k} required`);
+    if (g.subsystem_path) {
+      const issue = subsystemPathIssue(g.subsystem_path);
+      if (issue && issue.level === 'error') E(`biggest_gap.subsystem_path ${issue.m}`);
+      else if (issue) W(`biggest_gap.subsystem_path ${issue.m}`);
+    }
+    if (!Array.isArray(g.evidence) || g.evidence.length === 0) W('biggest_gap.evidence[] empty — point at the trials or the leak that show it');
+    if (!g.remedy) W('biggest_gap.remedy missing — name the protocol or build change that would close it');
+    else if (g.remedy && !Array.isArray(g.remedy) && !(g.remedy.action && g.remedy.acceptance)) {
+      W('biggest_gap.remedy has no action/acceptance pair — a later reader cannot tell when it is closed');
+    }
+  }
+
+  // --- self audit, when present, must be honest booleans. The judge key set differs from the
+  // critic's (`answered_before_unblinding`, `no_prose_edited`, `tempted_to_peek`), so the keys
+  // are not prescribed here beyond requiring that whatever is claimed is claimed as a boolean.
+  if (v.self_audit && typeof v.self_audit === 'object') {
+    for (const [k, val] of Object.entries(v.self_audit)) {
+      if (k === 'self_audit_note' || k.endsWith('_note')) continue;
+      if (typeof val !== 'boolean') E(`self_audit.${k} must be boolean (or named \`*_note\` if it is prose)`);
+    }
+    const anyFalse = Object.entries(v.self_audit).some(([k, val]) => val === false && !k.startsWith('tempted') && !/^no_|^never_/.test(k));
+    if (anyFalse && !v.self_audit.self_audit_note) E('self_audit has a false entry and no self_audit_note');
+  }
+
+  // --- what a judgement structurally cannot have. Not fatal — a judgement may legitimately
+  // declare a bifurcation axis — but arbitration is a build check and a judge has no build.
+  if (v.arbitration) W('arbitration is present on a blind judgement. A judge answers a pack\'s question and has no build to arbitrate; if this document does arbitrate a build, it is a critic verdict and should say so.');
 }
 
 // ------------------------------------------------------------------ cli

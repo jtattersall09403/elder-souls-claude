@@ -167,7 +167,7 @@ function resin(N = 1024) {
     alb[i * 3 + 2] = Math.round(clamp01(lit * .56) * 255);
     rgh[i] = Math.round(clamp01(.18 + bubble * .40 + g * .14) * 255);
   }
-  return { slug: 'resin_flow', N, albedo: alb, height: h, rough: rgh, normalStrength: 1.6 };
+  return { slug: 'resin_flow', N, albedo: alb, height: h, rough: rgh, normalStrength: 3.4 };
 }
 
 /** water — a ripple normal only. The surface's appearance belongs to render/water.js; this exists

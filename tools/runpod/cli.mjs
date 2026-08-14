@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import {
@@ -13,6 +14,12 @@ import {
 import { provisionPod } from './lib/provision.mjs';
 import { currentOwner, ownerNameSegment, ownerOfName } from './lib/owner.mjs';
 import { planPodCleanup, planTemplateCleanup } from './lib/cleanup-plan.mjs';
+import {
+  confirmPodDeleted,
+  confirmTemplateDeleted,
+  recoverPodByName,
+  recoverTemplateByName,
+} from './lib/lifecycle.mjs';
 import {
   commandExists,
   createSnapshot,
@@ -375,56 +382,6 @@ async function waitForSsh(connection, deadline, log, signal, {
     await new Promise((resolve) => setTimeout(resolve, 5_000));
   }
   throw new Error('Pod API was ready but SSH never became reachable; verify the template starts sshd and exposes 22/tcp');
-}
-
-async function recoverPodByName(client, podName, log, attempts = 5) {
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    const pods = await client.listPods().catch((lookupError) => {
-      log(`Pod recovery lookup ${attempt}/${attempts} failed: ${lookupError.message}`, 'stderr');
-      return [];
-    });
-    const recovered = pods.find((item) => item.name === podName);
-    if (recovered) return recovered;
-    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
-  }
-  return null;
-}
-
-async function recoverTemplateByName(client, templateName, log, attempts = 5) {
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    const templates = await client.listTemplates().catch((lookupError) => {
-      log(`Template recovery lookup ${attempt}/${attempts} failed: ${lookupError.message}`, 'stderr');
-      return [];
-    });
-    const recovered = templates.find((item) => item.name === templateName);
-    if (recovered) return recovered;
-    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
-  }
-  return null;
-}
-
-async function confirmPodDeleted(client, podId, log, attempts = 5) {
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    const found = await client.getPod(podId);
-    if (!found) {
-      log(`Deletion confirmed: subsequent API lookup for Pod ${podId} returned not found`);
-      return true;
-    }
-    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
-  }
-  return false;
-}
-
-async function confirmTemplateDeleted(client, templateId, log, attempts = 5) {
-  for (let attempt = 1; attempt <= attempts; attempt++) {
-    const found = await client.getTemplate(templateId, { allow404: true });
-    if (!found) {
-      log(`Deletion confirmed: subsequent API lookup for template ${templateId} returned not found`);
-      return true;
-    }
-    if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 2_000));
-  }
-  return false;
 }
 
 function sourcePaths(args, config) {
@@ -896,7 +853,22 @@ async function main() {
   throw new Error(`unknown command: ${command}\n${HELP}`);
 }
 
+// Node's global fetch ignores HTTPS_PROXY unless NODE_USE_ENV_PROXY is set at startup, and in this
+// container every RunPod API call fails with "403 Host not in allowlist" without it. That cost one
+// agent an hour, so the CLI sets it for itself by re-executing once instead of documenting a trap.
+function reexecWithProxyAwareFetch() {
+  const proxy = process.env.HTTPS_PROXY || process.env.https_proxy;
+  if (!proxy || process.env.NODE_USE_ENV_PROXY || process.env.ELDER_SOULS_RUNPOD_REEXEC === '1') return false;
+  const result = spawnSync(process.execPath, [fileURLToPath(import.meta.url), ...process.argv.slice(2)], {
+    stdio: 'inherit',
+    // The child shares this process group, so SIGINT/SIGTERM still reach it and its Pod cleanup runs.
+    env: { ...process.env, NODE_USE_ENV_PROXY: '1', ELDER_SOULS_RUNPOD_REEXEC: '1' },
+  });
+  process.exit(result.status === null ? 1 : result.status);
+}
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  reexecWithProxyAwareFetch();
   main().catch((error) => {
     const prefix = error instanceof RunPodError ? 'RunPod error' : 'GPU runner error';
     console.error(`${prefix}: ${error.message}`);

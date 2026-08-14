@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-30S",
+  "role": "builder",
+  "piece": "W1-30S",
+  "status": "builder_owned_complete",
+  "plan_state": "satisfied-pending-critic",
+  "summary": "The seam pass: moved the compositor out of renderer.js into render/post/composite.js, moved the water surface shader out of visual-foundation.js into render/water.js, added the three registration points (registerPrePass, registerComposite, setLightingFrame) with a live registrant each, published render/lighting.js, render/rig-contract.js and four empty registries (models.js, lib/kits.js, lib/lighting-recipes.js, lib/rigs.js). Move only — no pixel change intended; boot-check, check-data and the W1-30 cheap gates are green. A byte-identical-frame proof ran on a reduced, contention-limited sample (not the full 288-still/12-sequence Deck) because the shared box stayed at or over tools/contention.mjs's ceiling for the whole session; the full population is a named gap for the fresh critic. renderer.js now belongs to W1-30A alone.",
+  "files_touched": [
+    "game/src/render/renderer.js",
+    "game/src/render/sky.js",
+    "game/src/render/visual-foundation.js",
+    "game/src/render/water.js",
+    "game/src/render/lighting.js",
+    "game/src/render/post/composite.js",
+    "game/src/render/rig-contract.js",
+    "game/src/render/models.js",
+    "game/src/render/lib/kits.js",
+    "game/src/render/lib/lighting-recipes.js",
+    "game/src/render/lib/rigs.js",
+    "tools/render/w1-30-gate.mjs",
+    "tools/render/w1-30-aggregate.mjs",
+    "orchestration/status/W1-30S.json",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "next_step": "Fresh critic: read the whole diff line by line for a behaviour change hidden in a move (this is the one job that matters here); independently re-capture a sampled 60 stills and 3 sequences on the GPU pod and re-verify hash identity against this commit; confirm each registration point has a live registrant and that removing it breaks the frame; confirm no other child would need to edit a file it does not own. Also worth completing: the full 288-still/12-sequence Deck comparison this builder could not finish under sustained box contention, and building tools/visual/library-census.mjs (does not exist yet in-tree; W1-30V's to build, not S's)."
+}

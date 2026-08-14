@@ -1,0 +1,72 @@
+{
+  "task_id": "RULING-W1-IMPL",
+  "role": "builder",
+  "started": "2026-08-14",
+  "state": "done",
+  "summary": "Implement Ruling W1 (OWNER-DIRECTIVES-2026-08-14.md §6): an aggregate may never be the binding predicate for something a player meets one at a time. Five predicates tightened per BAR-AUDIT-WORLD-20260814 §5.1-§5.6, the world re-measured against them, and the corpus swept for the same shape.",
+  "next_step": "ARM B OF RI-WLD15 IS STILL OWED. RI-WLD15 and RI-WLD16 stay `not_run` until it runs. The instrument is written and validated browser-free: `node corpus/80-methods/m-wld15-armb.mjs --selfcheck` then `--regions deep-marshes,valus-ridge --json <path>` on a quiet box. Budget ~22 s/frame cold; the full 13-region protocol is ~7,020 frames (~6 h of exclusive browser).",
+  "files_touched": [
+    "corpus/50-world/RI-WLD02-density-per-minute.md",
+    "corpus/50-world/RI-WLD04-region-identity.md",
+    "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+    "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+    "corpus/50-world/RI-WLD15-within-region-variety.md",
+    "corpus/80-methods/m-instance-bars.mjs",
+    "corpus/80-methods/m-wld15-armb.mjs",
+    "corpus/80-methods/m-wld15-monotony.mjs",
+    "corpus/00-doctrine/INDEX.md",
+    "reports/RULING-W1-REMEASURE.md",
+    "reports/ruling-w1/instance-bars.json",
+    "reports/ruling-w1/instance-bars.txt",
+    "reports/ruling-w1/wld15-armA.json",
+    "reports/blog-feed.jsonl",
+    "orchestration/status/RULING-W1-IMPL.json"
+  ],
+  "files_claimed": [
+    "corpus/50-world/RI-WLD02-density-per-minute.md",
+    "corpus/50-world/RI-WLD04-region-identity.md",
+    "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+    "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+    "corpus/50-world/RI-WLD15-within-region-variety.md",
+    "corpus/80-methods/m-instance-bars.mjs",
+    "corpus/80-methods/m-wld15-armb.mjs",
+    "reports/RULING-W1-REMEASURE.md",
+    "reports/ruling-w1/",
+    "orchestration/status/RULING-W1-IMPL.json"
+  ],
+  "explicitly_not_touched": [
+    "game/** — the job is the bar, not the world. W1-30F owns terrain and vegetation and consumes RI-WLD15/RI-WLD16; a separate visual programme is live in render and world source.",
+    "game/data/world/voids.json — the coordinate-frame defect found in §6 of the report is a world-data bug, reported and deliberately left for its owner.",
+    "game/data/world/hazards.json — needs an area_fraction/footprint field before M18's hazard axis can be measured; named, not added.",
+    "RI-WLD07 §5, RI-QST04, RI-WLD14, RI-DLG05 — the four sweep hits. Reported with exact proposed predicates, not edited: amending a live bar other pieces are judged against is an orchestrator's call, the same discipline the audit applied."
+  ],
+  "contention_note": "node tools/contention.mjs returned GO at start (3 instances, 2.45/core), flipped to WAIT before arm B (load 4.4/core against a 4.0 ceiling), then cleared to GO again. I did NOT take a browser for the full arm B run: the protocol is ~7,020 frames at ~21.9 s/frame cold, over six hours of exclusive browser while visual-fidelity agents are live (rule 21). One single-frame smoke test WAS taken through the shared capture daemon to prove the path works end to end: a real placed frame in the Deep Marshes, 640x360, 143.6 s cold including daemon boot.",
+  "findings": [
+    "RI-WLD04 M18 — magnitude floors added to the four axes that had none (weather >=20 pp L1, audio >=50% of EACH bed, hazard >=15% areal occupancy, slope Cramer's V >=0.20 replacing a bare chi-square) plus RI-WLD16's compulsory landform axis folded in. Measured: 78/78 pairs passed the old form, 77/78 pass the new one. The floors were mostly ALREADY EARNED — minimum observed weather difference is 49.4 pp against a 20 pp floor, minimum audio difference 67% against 50%. The single failing pair is deep-marshes/western-rootlands, which shares both macro_form (levee-and-backswamp) and drainage (anastomosing); RI-WLD16 §1 permits the shared form only if drainage load separates them, and it does not yet.",
+    "The 20 pp weather floor was VERIFIED, not copied. All 36 Vvardenfell pairwise L1 distances recomputed from the census reproduce min 20 / median 90 / max 200; going back to the wikitext in the local UESP extract, Sheogorad (15/40/10/15/10/10) against West Gash (15/30/15/20/10/10) sums to 20 pp by hand and is genuinely the closest pair. The 0.727 place-type Jaccard ceiling reproduces too. Both recomputations now run inside --selfcheck so the figures cannot drift from the data silently.",
+    "A derivation the audit did not anticipate had to be designed: our 13 regions use 41 REGION-SPECIFIC weather state names, so comparing raw state sets puts nearly every pair 200 pp apart by construction and the axis would pass automatically — the same instrument-validity failure the ruling exists to stop, one level down. Morrowind's REGN records share an eight-word vocabulary, which is what makes 20 pp meaningful. States are therefore bucketed by light level and sightline band (what a player perceives) and the STATIONARY distributions compared. Recorded in RI-WLD04 M18 because changing it changes every number.",
+    "RI-WLD04 M19 — spread and reach clauses added (>=3 of 4 region quadrants, >=40% of region land within 400 m). 13/13 elements passed on count alone; 12/13 pass with spread. Valus Ridge's rock flutes are 14 instances in 2 of 4 quadrants.",
+    "RI-WLD07 §4 — the clearest case. Area-weighted world mean slope 10.07 deg sits comfortably in the 6-14 band and the old row passes, while the MEDIAN REGION is 5.32 deg, 7 of 13 regions are under 5.5 deg and only 4 of 13 are in band. Valus Ridge (30.28) and the Salt Hills (16.62) carry the average for everyone.",
+    "Implementing RI-WLD07 §4 to the audit's LETTER would have made the bar WEAKER. The audit proposed pointing the row at RI-WLD16 §3's class envelopes; all 13 regions already sit inside theirs, because those envelopes are deliberately wide (built to catch a playa modelled as a ridge, not to tune a slope). So the row now binds three ways: every region inside its class envelope (worst-constituent), median region >=6 deg (quantile), no region under 3 deg (worst-constituent hard floor). The quantile rather than the worst constituent is deliberate and is the ruling's own falsifier — binding every region to 6-14 deg would fail the Eastern Rootlands for being a tidal flat.",
+    "Two RI-WLD07 §4 rows were DEMOTED to descriptive rather than re-scoped: 'land below +5 m 35-50%' and 'land above +100 m >=12%' have no honest per-region form (every region in a coastal marsh is either almost all below 5 m or almost none). Their per-region job is done by the relief envelope. Saying so beats leaving two aggregate rows that look binding and are not.",
+    "RI-WLD02 — D14 (place-type Jaccard <=0.727 every region pair) and D15 (>=1 POI class unique to each region) added, anchored on Vvardenfell's own measured 0.267-0.727 spread and its eight single-region place types. Measured: 13 of 77 measurable pairs over the ceiling (three at 1.0), and 0 of 13 regions own a POI class. CONTEXT MATTERS: pois.json holds 42 POIs across 4 classes against a 1,060-POI target and DECLARES ITSELF INCOMPLETE, naming dungeon entrances, caves, shrines, signposts and stations as not yet placed. This is an early system, not a wrong one; what the rows add is that region character now has to be built in rather than retrofitted.",
+    "RI-WLD09 — V11 added (landscape variety unrelaxed inside void tracts; emptiness is authored, sameness is not), implementing RI-WLD15 M-W15-4, which the item had named since it was written and no instrument had ever implemented.",
+    "UNEXPECTED FINDING, and the most consequential one: all five declared void polygons in game/data/world/voids.json are in a DIFFERENT COORDINATE FRAME from terrain.json. V-01 is declared in the Deep Marshes with a polygon spanning x -940..-210 while the world runs x 0..4825 and the Deep Marshes sits at x 2472..3592. No single offset reconciles them (V-01 needs +3412 in x, V-02 needs -692). None of the five tracts can be located in the world. V1-V9 all pass regardless because every one reads a metadata field and none reads a position — the same shape as the failures this ruling is about, one layer down. It also silently disables RI-WLD02's 'outside declared void tracts' scoping for D1/D2/D13. New row V10 guards it. Nobody's blunder: voids.json has no runtime consumer in game/src, so there was never a moment it would have shown up in play.",
+    "SWEEP — all 147 reference items searched for predicates binding on a mean, total, or 'any difference' over a population met one at a time; 57 items produced 85 candidate lines, all read. FOUR CONFIRMED HITS: (1) RI-WLD07 §5 'mean interior floor area 40 m2 / 120 m2 / mean volume >=9,000 m3' — you open one door at a time, and 150 broom cupboards plus 10 halls average to 40 m2; the fail floors are means too. Strongest hit, three rows below the §4 I just fixed. (2) RI-QST04 scoring bands and a HARD FAIL on 'mean resolutions < 2.0' with no per-quest floor — you play one quest at a time. (3) RI-WLD14 E2 'distinct decay types across the province >=4' — four types in one city passes while twelve regions show one; identical in shape to the D15 gap just closed. (4) RI-DLG05 'mean time-to-find <=4 minutes', partly guarded by its 7/10 proportion. Proposed predicates are spelled out in the report; none was edited.",
+    "SWEEP — CLEARED, with reasons, because a sweep that reports only hits is not a sweep. The largest group of grep hits (8 lines across RI-AI05, RI-WLD10, RI-WLD13, RI-JRN03, RI-PLT01, RI-TRV01) is 'any difference' as a FAIL condition — determinism assertions, opposite polarity to the ruling. Frame-data 'active/total <= 0.16' rows are ratios within one animation, not aggregates over a population. Pixel- and frame-population means (RI-VIS02/03, RI-MAG05) are out of scope by construction. And several items are ALREADY in the correct form and worth copying: RI-WPN03 UNQ ('>=1 for EVERY weapon' plus a roster mean), RI-LOR01 ('min-over-axes, never the mean' — the ruling, written before the ruling), RI-WLD07 §5's own bonfire row ('<=6 min from ANY road point, median <=3'), RI-DLG02 §5 (a mean bounded by two tail requirements), RI-AI01 (99th percentile alongside the mean), RI-QST01 (monotonic mean with a stated >=2 effect size).",
+    "NULL CONTROLS caught four real defects before any number was published, which is the whole argument for the ruling's plausible-near-miss requirement. (1) The audio metric was WRONG: '>=50% of assets differ' implemented as Jaccard distance scores exactly 0.50 when one asset of three is swapped, so the audit's own named near-miss would have cleared the floor on a technicality; measuring the shared fraction against each bed's own size gives 0.33. (2) My first C control was toothless — it gave the flat regions landform classes that MATCHED their flat terrain, so it passed and proved nothing; rebuilt as seven flat regions DECLARING karst towers and escarpments. (3) The arm-B controls were the empty-world trap again: featureless gradient frames made the pHash pure noise; rebuilt with horizons, landmark silhouettes, props, forward motion and drifting light. (4) m-wld15-monotony.mjs ran its CLI at module load, so importing it exited the importer.",
+    "A slope-units trap avoided: terrain.json stores a per-region mean_slope_deg (world 10.07 deg) and a raster derivation from the 25 m base_dm channel gives systematically gentler numbers (world 8.28 deg), because the raster cannot express the sub-cell micro-relief the generator included. RI-WLD16 §3's envelopes, landforms.json's measured_* fields and m-wld16's L2 are all authored against the STORED field, so check C binds on that and reports the raster figure only as a cross-check. Judging a stored-slope envelope with a raster-derived slope would have failed regions for the units they were measured in."
+  ],
+  "could_not_do": [
+    "ARM B OF RI-WLD15 — not run. RI-WLD15 and RI-WLD16 remain not_run, correctly; arm A is a gate, not a verdict. The protocol is 6 transects x 13 regions x 90 frames = ~7,020 frames at the capture service's published ~21.9 s/frame cold = over six hours of exclusive browser, on a box where visual-fidelity agents are live. A reduced-resolution pilot would not have satisfied arm B, only produced a number that looked like one. Instead the instrument was written and fully validated WITHOUT a browser, so the owed work is one command rather than a project.",
+    "The M18 hazard axis cannot be measured: hazards.json declares which regions a hazard applies to and nothing about how much ground it covers. Scored conservatively as not-differing on all 78 pairs — claiming an axis differs when its magnitude cannot be checked is exactly the habit the ruling forbids — and the item names the fix as a data change, not a bar change.",
+    "RI-WLD04 M17 (blind screenshot) and M20 (audio blind) were not run; both need a browser and fresh judges. Nothing in the report rests on them.",
+    "en.uesp.net is egress-blocked from this container (403 via curl, EGRESS_BLOCKED via WebFetch). Every Morrowind figure comes from the local 2019-11-07 UESP extract, which predates the ESO Blackwood chapter (2021).",
+    "The four sweep hits were reported, not repaired — other items' territory with pieces in flight against them."
+  ],
+  "notes": [
+    "HAZARD, for successors: git index contention is severe. Mid-task another agent's bank committed my in-flight files AND reset the working tree, silently reverting several instrument fixes. It was caught only because a published figure (8.28 deg) did not match the one I had verified by hand (10.07 deg). bank.mjs itself timed out at 180 s (exit 143) and `git commit --only` hit repeated index.lock contention; the work landed anyway because another agent's bank swept it in. Verify your own files are in HEAD with `git show HEAD:<path> | grep <a string you added>` rather than trusting a commit to have happened.",
+    "No agent graded its own work here: the five replacements are the audit's, specified before this task existed; this task implemented and measured them. The instrument's controls are the check on the instrument.",
+    "All five reversals and falsifiers are written into the items themselves, per the ruling's reversibility requirement."
+  ]
+}

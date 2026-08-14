@@ -115,10 +115,25 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):  # keep the container log readable
         sys.stderr.write("[agent] %s\n" % (fmt % args))
 
+    def _drain(self):
+        """Consume any request body.
+
+        A rejected POST that leaves its body in the socket poisons the next keep-alive request on
+        that connection — the self-test caught exactly that, as a nonsense 400 on an unrelated GET.
+        """
+        remaining = int(self.headers.get("Content-Length", "0") or 0)
+        while remaining > 0:
+            chunk = self.rfile.read(min(1024 * 1024, remaining))
+            if not chunk:
+                break
+            remaining -= len(chunk)
+
     def _authorized(self):
         header = self.headers.get("Authorization", "")
         expected = "Bearer " + TOKEN
         if not hmac.compare_digest(header, expected):
+            self._drain()
+            self.close_connection = True
             self._json(401, {"error": "unauthorized"})
             return False
         return True

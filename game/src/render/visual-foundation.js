@@ -47,7 +47,7 @@ const FAMILY = Object.freeze({
   timber: { roughness: .84, metalness: 0, bump: .38 }, clay: { roughness: .78, metalness: 0, bump: .30 },
   stone: { roughness: .72, metalness: .02, bump: .42 }, salt: { roughness: .58, metalness: .02, bump: .34 },
   bone: { roughness: .63, metalness: 0, bump: .20 }, chitin: { roughness: .46, metalness: .12, bump: .32 },
-  resin: { roughness: .34, metalness: .04, bump: .18 }, cloth: { roughness: .89, metalness: 0, bump: .16 },
+  resin: { roughness: .34, metalness: .04, bump: .34 }, cloth: { roughness: .89, metalness: 0, bump: .16 },
   skin: { roughness: .57, metalness: 0, bump: .14 }, metal: { roughness: .31, metalness: .78, bump: .12 },
   water: { roughness: .12, metalness: .38, bump: .08 },
   shell: { roughness: .55, metalness: .03, bump: .38 }, thorn: { roughness: .82, metalness: 0, bump: .45 },
@@ -113,12 +113,12 @@ export const DETAIL_NORMAL_TILING = 8;
  * D, E and F lay out their UVs so that one UV unit equals this many metres, and then every surface
  * in a frame resolves at a comparable number of texels per metre.  The plan's hard fail is a >4x
  * density change between adjacent surfaces in one shot, and the widest adjacency this table
- * permits (leaf 0.6 m against timber 2.2 m) is 3.7x.  Read it with `materialTiling(family, opts)`
+ * permits (resin 1.0 m against mud 3.8 m) is 3.8x.  Read it with `materialTiling(family, opts)`
  * rather than inlining the numbers. */
 export const TEXEL_METRES = Object.freeze({
-  mud: 4.0, wet_mud: 4.0, clay: 2.5, bark: 1.6, root: 1.8, timber: 2.2, thorn: 1.2,
-  leaf: 0.6, reed: 0.8, stone: 2.4, salt: 3.0, metal: 0.9, chitin: 0.7, wet_chitin: 0.7,
-  shell: 0.9, bone: 0.8, resin: 0.7, cloth: 1.1, skin: 1.4, water: 8.0,
+  mud: 3.8, wet_mud: 3.8, clay: 2.5, bark: 1.6, root: 1.8, timber: 2.2, thorn: 1.2,
+  leaf: 1.8, reed: 1.6, stone: 2.4, salt: 3.0, metal: 1.0, chitin: 1.0, wet_chitin: 1.0,
+  shell: 1.2, bone: 1.6, resin: 1.0, cloth: 1.1, skin: 1.4, water: 3.8,
 });
 
 /** Region palette swatches — the `palette` variant axis.

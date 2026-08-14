@@ -1,0 +1,106 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>W1-30C family close-up rig</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="module">
+// The permanent family close-up fixture. Twenty families, one light, one fixed camera, one
+// distance. It exists so that "does this surface have structure?" is a measurement rather than an
+// impression, and so that the same question can be asked again at every later commit.
+//
+// The two numbers it takes are deliberately different in kind:
+//   structure  — luminance standard deviation of the finished surface. Noise raises this. That is
+//                the whole reason it cannot be the only number.
+//   shading    — the same statistic with the albedo replaced by flat grey, so only the normal map
+//                can move it. Noise-as-albedo scores zero here, and a real normal map does not.
+// A family passes when BOTH clear their thresholds.
+import * as THREE from '/game/vendor/three/three.module.js';
+import { worldMaterial, MATERIAL_FAMILIES, TEXEL_METRES, materialClass } from '/game/src/render/visual-foundation.js';
+
+const SIZE = 512, PLANE_M = 0.6, CAMERA_M = 0.5;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x101214);
+const camera = new THREE.PerspectiveCamera(42, 1, 0.01, 10);
+camera.position.set(0, 0, CAMERA_M);
+camera.lookAt(0, 0, 0);
+
+// One light. Fixed. A material that only looks good under three lights has not been measured.
+const key = new THREE.DirectionalLight(0xfff3e2, 3.1);
+key.position.set(-0.7, 0.9, 0.6);
+scene.add(key);
+scene.add(new THREE.AmbientLight(0x2a3138, 0.35));
+
+const geo = new THREE.PlaneGeometry(PLANE_M, PLANE_M, 1, 1);
+// Plane tilted away from the camera so the light rakes it: a normal map that only reads head-on
+// is not a normal map that will survive a street.
+const mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial());
+mesh.rotation.x = -0.42;
+scene.add(mesh);
+
+const loaded = () => new Promise(r => setTimeout(r, 60));
+
+function luminanceStats(pixels) {
+  // Mean of the per-patch standard deviations over 64x64 patches, in 0..1 luminance. Patch-local
+  // rather than whole-frame, because a whole-frame figure is dominated by the lighting gradient
+  // and would pass a completely flat texture lit from one side.
+  const P = 64, n = SIZE / P;
+  let sum = 0, patches = 0, mean = 0;
+  for (let py = 0; py < n; py++) for (let px = 0; px < n; px++) {
+    let s = 0, s2 = 0, count = 0;
+    for (let y = 0; y < P; y++) for (let x = 0; x < P; x++) {
+      const i = (((py * P + y) * SIZE) + (px * P + x)) * 4;
+      const l = (0.2126 * pixels[i] + 0.7152 * pixels[i + 1] + 0.0722 * pixels[i + 2]) / 255;
+      s += l; s2 += l * l; count++;
+    }
+    const m = s / count;
+    sum += Math.sqrt(Math.max(0, s2 / count - m * m));
+    mean += m;
+    patches++;
+  }
+  return { sd: sum / patches, mean: mean / patches };
+}
+
+async function shoot(family, mode) {
+  const metres = TEXEL_METRES[family];
+  const opts = {};
+  if (mode === 'noise') opts.authored = false;                 // the null control: 96px fallback
+  if (mode === 'shading') { opts.map = false; opts.color = 0x8a8a8a; }  // normal map only
+  if (mode === 'noise-shading') { opts.authored = false; opts.map = false; opts.color = 0x8a8a8a; }
+  const mat = worldMaterial(family, opts);
+  // Honour the published texel density: the rig must not flatter a material by tiling it more
+  // finely than the game will.
+  for (const t of [mat.map, mat.normalMap, mat.roughnessMap, mat.bumpMap, mat.aoMap]) {
+    if (t) { t.repeat.set(PLANE_M / metres, PLANE_M / metres); t.needsUpdate = true; }
+  }
+  mesh.material = mat;
+  renderer.render(scene, camera);
+  await loaded();
+  renderer.render(scene, camera);
+  const buf = new Uint8Array(SIZE * SIZE * 4);
+  const gl = renderer.getContext();
+  gl.readPixels(0, 0, SIZE, SIZE, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+  const stats = luminanceStats(buf);
+  mat.dispose();
+  return { stats, png: renderer.domElement.toDataURL('image/png') };
+}
+
+window.__RIG = {
+  families: MATERIAL_FAMILIES.slice(),
+  classOf: (f) => materialClass(f),
+  size: SIZE,
+  async run(family, mode) { return shoot(family, mode); },
+  async warm() {
+    // Every family once, so no measurement races a texture that has not decoded yet.
+    for (const f of MATERIAL_FAMILIES) await shoot(f, 'full');
+    return true;
+  },
+};
+</script>

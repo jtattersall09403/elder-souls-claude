@@ -149,8 +149,8 @@ const t = materialTiling('timber', { tilingScale: 1.4 });
 **Lay your UVs out so that one UV unit equals `metresPerTile` metres of surface.** Then every
 surface in a frame resolves at a comparable number of texels per metre, and a wall does not sit
 next to a floor at four times the sharpness. The plan's hard fail is a >4× density change between
-adjacent surfaces in one shot; the table's widest legal adjacency (leaf 0.6 m against timber 2.2 m)
-is 3.7×.
+adjacent surfaces in one shot; the table's widest legal adjacency (resin 1.0 m against mud 3.8 m)
+is 3.8×.
 
 Do not inline the numbers. If a surface genuinely needs a different density, that is what
 `tilingScale` is for, and it is recorded in `userData.w1_30.metresPerTile` where the census can see
