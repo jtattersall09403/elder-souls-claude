@@ -1,0 +1,4157 @@
+{
+  "tool": "tools/world/building-overlap-census.mjs",
+  "generated_utc": "2026-08-14T16:47:57.139Z",
+  "thresholds_m": {
+    "shared_wall": 0.36,
+    "borderline": 1.5
+  },
+  "total": {
+    "settlements": 8,
+    "buildings": 211,
+    "mass_buildings": 149,
+    "overlap": 82,
+    "borderline": 24,
+    "shared_wall": 6,
+    "door_inside_other": 24,
+    "centre_inside_other": 23,
+    "structure_pairs_overlap": 8,
+    "yaw_blind_deep_overlaps": 22,
+    "overlap_shrink_feasible": 71,
+    "overlap_needs_move": 11,
+    "settlements_with_overlap": 8
+  },
+  "settlements": [
+    {
+      "id": "archon",
+      "name": "Archon",
+      "counts": {
+        "buildings": 22,
+        "mass_buildings": 16,
+        "overlap": 15,
+        "borderline": 2,
+        "shared_wall": 1,
+        "door_inside_other": 3,
+        "centre_inside_other": 3,
+        "structure_pairs_overlap": 2,
+        "yaw_blind_deep_overlaps": 5,
+        "overlap_shrink_feasible": 10,
+        "overlap_needs_move": 5
+      },
+      "pairs": [
+        {
+          "settlement": "archon",
+          "a": "archon-inn",
+          "b": "archon-ward",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 220.1,
+          "b_yaw": 214.4,
+          "a_footprint_m": [
+            12.41,
+            5.67
+          ],
+          "b_footprint_m": [
+            8.66,
+            5.67
+          ],
+          "depth_m": 5.088,
+          "area_m2": 31.94,
+          "frac_of_smaller": 0.6506,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "archon-inn"
+          ],
+          "centre_inside_other": [
+            "archon-inn",
+            "archon-ward"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 3.97
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-vat-house",
+          "b": "archon-market",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 237.3,
+          "b_yaw": 231.5,
+          "a_footprint_m": [
+            7.97,
+            15.61
+          ],
+          "b_footprint_m": [
+            7.97,
+            5.64
+          ],
+          "depth_m": 5.044,
+          "area_m2": 26.98,
+          "frac_of_smaller": 0.6001,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "archon-vat-house",
+            "archon-market"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 4.49
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-market",
+          "b": "archon-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 231.5,
+          "b_yaw": 225.8,
+          "a_footprint_m": [
+            7.97,
+            5.64
+          ],
+          "b_footprint_m": [
+            10.5,
+            5.64
+          ],
+          "depth_m": 4.857,
+          "area_m2": 27.43,
+          "frac_of_smaller": 0.6102,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "archon-market"
+          ],
+          "centre_inside_other": [
+            "archon-market",
+            "archon-apothecary"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 3.4
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-ward",
+          "b": "archon-shrine",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 214.4,
+          "b_yaw": 208.6,
+          "a_footprint_m": [
+            8.66,
+            5.67
+          ],
+          "b_footprint_m": [
+            5.18,
+            14.41
+          ],
+          "depth_m": 3.288,
+          "area_m2": 17.1,
+          "frac_of_smaller": 0.3483,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.8
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-vat-house",
+          "b": "archon-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 237.3,
+          "b_yaw": 225.8,
+          "a_footprint_m": [
+            7.97,
+            15.61
+          ],
+          "b_footprint_m": [
+            10.5,
+            5.64
+          ],
+          "depth_m": 3.141,
+          "area_m2": 14.84,
+          "frac_of_smaller": 0.2507,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "archon-vat-house"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.07
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-house-2",
+          "b": "archon-first-vat",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 180,
+          "b_yaw": 174.3,
+          "a_footprint_m": [
+            6.08,
+            14.41
+          ],
+          "b_footprint_m": [
+            5.93,
+            9
+          ],
+          "depth_m": 2.947,
+          "area_m2": 22,
+          "frac_of_smaller": 0.4122,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.49
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-first-vat",
+          "b": "archon-naga-row",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 174.3,
+          "b_yaw": 168.5,
+          "a_footprint_m": [
+            5.93,
+            9
+          ],
+          "b_footprint_m": [
+            5.93,
+            9
+          ],
+          "depth_m": 2.874,
+          "area_m2": 19.85,
+          "frac_of_smaller": 0.3718,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 3.59
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-kiln-house",
+          "b": "archon-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 197.2,
+          "b_yaw": 191.5,
+          "a_footprint_m": [
+            5,
+            14.41
+          ],
+          "b_footprint_m": [
+            5,
+            11.61
+          ],
+          "depth_m": 2.869,
+          "area_m2": 26.75,
+          "frac_of_smaller": 0.4607,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 2.83
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-house-1",
+          "b": "archon-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 185.7,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            5,
+            11.61
+          ],
+          "b_footprint_m": [
+            6.08,
+            14.41
+          ],
+          "depth_m": 2.814,
+          "area_m2": 26.11,
+          "frac_of_smaller": 0.4498,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 3.4
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-naga-row",
+          "b": "archon-old-kiln",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 168.5,
+          "b_yaw": 162.8,
+          "a_footprint_m": [
+            5.93,
+            9
+          ],
+          "b_footprint_m": [
+            5.6,
+            9
+          ],
+          "depth_m": 2.507,
+          "area_m2": 13.32,
+          "frac_of_smaller": 0.2643,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.65
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-old-kiln",
+          "b": "archon-quay-store",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 162.8,
+          "b_yaw": 157.1,
+          "a_footprint_m": [
+            5.6,
+            9
+          ],
+          "b_footprint_m": [
+            5.6,
+            9
+          ],
+          "depth_m": 2.344,
+          "area_m2": 15.64,
+          "frac_of_smaller": 0.3104,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 3.78
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-house-0",
+          "b": "archon-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 191.5,
+          "b_yaw": 185.7,
+          "a_footprint_m": [
+            5,
+            11.61
+          ],
+          "b_footprint_m": [
+            5,
+            11.61
+          ],
+          "depth_m": 2.273,
+          "area_m2": 11.21,
+          "frac_of_smaller": 0.1931,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.71
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-shrine",
+          "b": "archon-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 208.6,
+          "b_yaw": 202.9,
+          "a_footprint_m": [
+            5.18,
+            14.41
+          ],
+          "b_footprint_m": [
+            5.18,
+            14.41
+          ],
+          "depth_m": 2.193,
+          "area_m2": 20.59,
+          "frac_of_smaller": 0.2758,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 3.78
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-rootpost",
+          "b": "archon-kiln-house",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 202.9,
+          "b_yaw": 197.2,
+          "a_footprint_m": [
+            5.18,
+            14.41
+          ],
+          "b_footprint_m": [
+            5,
+            14.41
+          ],
+          "depth_m": 2.106,
+          "area_m2": 6.63,
+          "frac_of_smaller": 0.092,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.43
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-inn",
+          "b": "archon-shrine",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 220.1,
+          "b_yaw": 208.6,
+          "a_footprint_m": [
+            12.41,
+            5.67
+          ],
+          "b_footprint_m": [
+            5.18,
+            14.41
+          ],
+          "depth_m": 1.686,
+          "area_m2": 6.48,
+          "frac_of_smaller": 0.0921,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.65
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-quay-store",
+          "b": "archon-struct-the-dye-vats",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 157.1,
+          "b_yaw": 151.4,
+          "a_footprint_m": [
+            5.6,
+            9
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.641,
+          "area_m2": 5.82,
+          "frac_of_smaller": 0.2327,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.8
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-struct-the-old-quay",
+          "b": "archon-struct-the-wind-screen",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 128.5,
+          "b_yaw": 122.7,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.539,
+          "area_m2": 5.38,
+          "frac_of_smaller": 0.215,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 3.79
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-struct-the-dye-vats",
+          "b": "archon-struct-the-drying-racks",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 151.4,
+          "b_yaw": 145.6,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.347,
+          "area_m2": 4.6,
+          "frac_of_smaller": 0.1842,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 3.97
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-struct-the-drying-racks",
+          "b": "archon-struct-the-kiln-stacks",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 145.6,
+          "b_yaw": 139.9,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.152,
+          "area_m2": 2.12,
+          "frac_of_smaller": 0.0846,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 4.95
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-struct-the-kiln-stacks",
+          "b": "archon-struct-the-lichen-cribs",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 139.9,
+          "b_yaw": 134.2,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.137,
+          "area_m2": 3.78,
+          "frac_of_smaller": 0.1511,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 4.17
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-struct-the-lichen-cribs",
+          "b": "archon-struct-the-old-quay",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 134.2,
+          "b_yaw": 128.5,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.05,
+          "area_m2": 1.2,
+          "frac_of_smaller": 0.0479,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 5.51
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-apothecary",
+          "b": "archon-inn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 225.8,
+          "b_yaw": 220.1,
+          "a_footprint_m": [
+            10.5,
+            5.64
+          ],
+          "b_footprint_m": [
+            12.41,
+            5.67
+          ],
+          "depth_m": 1.004,
+          "area_m2": 4.86,
+          "frac_of_smaller": 0.082,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 6.12
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-house-0",
+          "b": "archon-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 191.5,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            5,
+            11.61
+          ],
+          "b_footprint_m": [
+            6.08,
+            14.41
+          ],
+          "depth_m": 0.559,
+          "area_m2": 0.8,
+          "frac_of_smaller": 0.0138,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 7.71
+        },
+        {
+          "settlement": "archon",
+          "a": "archon-house-2",
+          "b": "archon-naga-row",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 180,
+          "b_yaw": 168.5,
+          "a_footprint_m": [
+            6.08,
+            14.41
+          ],
+          "b_footprint_m": [
+            5.93,
+            9
+          ],
+          "depth_m": 0.093,
+          "area_m2": 0.02,
+          "frac_of_smaller": 0.0004,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 6.88
+        }
+      ]
+    },
+    {
+      "id": "blackrose",
+      "name": "Blackrose",
+      "counts": {
+        "buildings": 22,
+        "mass_buildings": 16,
+        "overlap": 8,
+        "borderline": 9,
+        "shared_wall": 0,
+        "door_inside_other": 4,
+        "centre_inside_other": 5,
+        "structure_pairs_overlap": 2,
+        "yaw_blind_deep_overlaps": 7,
+        "overlap_shrink_feasible": 3,
+        "overlap_needs_move": 5
+      },
+      "pairs": [
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-inn",
+          "b": "blackrose-warders-hall",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 4,
+          "area_m2": 54.44,
+          "frac_of_smaller": 0.8,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "blackrose-inn"
+          ],
+          "centre_inside_other": [
+            "blackrose-inn",
+            "blackrose-warders-hall"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-market",
+          "b": "blackrose-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 4,
+          "area_m2": 54.44,
+          "frac_of_smaller": 0.8,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "blackrose-market"
+          ],
+          "centre_inside_other": [
+            "blackrose-market",
+            "blackrose-smithy"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-rootpost",
+          "b": "blackrose-clerk",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            5
+          ],
+          "depth_m": 4,
+          "area_m2": 49.64,
+          "frac_of_smaller": 0.8,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "blackrose-rootpost"
+          ],
+          "centre_inside_other": [
+            "blackrose-rootpost",
+            "blackrose-clerk"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-house-0",
+          "b": "blackrose-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            5
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 4,
+          "area_m2": 49.64,
+          "frac_of_smaller": 0.8,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "blackrose-house-0"
+          ],
+          "centre_inside_other": [
+            "blackrose-house-0",
+            "blackrose-house-1"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-condemned-row",
+          "b": "blackrose-old-gallows",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            8,
+            3.4
+          ],
+          "b_footprint_m": [
+            8,
+            3.4
+          ],
+          "depth_m": 2.4,
+          "area_m2": 19.2,
+          "frac_of_smaller": 0.7059,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "blackrose-condemned-row",
+            "blackrose-old-gallows"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-family-row",
+          "b": "blackrose-struct-the-prison-wall",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            8,
+            3.4
+          ],
+          "b_footprint_m": [
+            5,
+            3.4
+          ],
+          "depth_m": 2.4,
+          "area_m2": 12,
+          "frac_of_smaller": 0.7059,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "blackrose-family-row",
+            "blackrose-struct-the-prison-wall"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-struct-the-gallows-frame",
+          "b": "blackrose-struct-the-visitors-queue-rail",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            5,
+            3.4
+          ],
+          "b_footprint_m": [
+            5,
+            3.4
+          ],
+          "depth_m": 2.4,
+          "area_m2": 12,
+          "frac_of_smaller": 0.7059,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "blackrose-struct-the-gallows-frame",
+            "blackrose-struct-the-visitors-queue-rail"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": false,
+          "centre_gap_m": 1
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-prison",
+          "b": "blackrose-market",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 2.305,
+          "area_m2": 6.02,
+          "frac_of_smaller": 0.0884,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-warders-hall",
+          "b": "blackrose-pawn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 1.705,
+          "area_m2": 3.43,
+          "frac_of_smaller": 0.0504,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-market",
+          "b": "blackrose-shrine",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 1.705,
+          "area_m2": 3.43,
+          "frac_of_smaller": 0.0504,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-pawn",
+          "b": "blackrose-clerk",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            5
+          ],
+          "depth_m": 1.41,
+          "area_m2": 2.4,
+          "frac_of_smaller": 0.0387,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-shrine",
+          "b": "blackrose-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            5
+          ],
+          "depth_m": 1.41,
+          "area_m2": 2.4,
+          "frac_of_smaller": 0.0387,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-clerk",
+          "b": "blackrose-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 1.41,
+          "area_m2": 2.4,
+          "frac_of_smaller": 0.0387,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 13.6
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-prison",
+          "b": "blackrose-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 1.305,
+          "area_m2": 3.41,
+          "frac_of_smaller": 0.0501,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-inn",
+          "b": "blackrose-pawn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 0.705,
+          "area_m2": 1.42,
+          "frac_of_smaller": 0.0208,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-smithy",
+          "b": "blackrose-shrine",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            13.61,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 0.705,
+          "area_m2": 1.42,
+          "frac_of_smaller": 0.0208,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-pawn",
+          "b": "blackrose-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            5
+          ],
+          "depth_m": 0.705,
+          "area_m2": 0.99,
+          "frac_of_smaller": 0.016,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-shrine",
+          "b": "blackrose-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            13.61,
+            5
+          ],
+          "depth_m": 0.705,
+          "area_m2": 1.42,
+          "frac_of_smaller": 0.0208,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        },
+        {
+          "settlement": "blackrose",
+          "a": "blackrose-rootpost",
+          "b": "blackrose-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            5
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 0.705,
+          "area_m2": 0.99,
+          "frac_of_smaller": 0.016,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 14.21
+        }
+      ]
+    },
+    {
+      "id": "gideon",
+      "name": "Gideon",
+      "counts": {
+        "buildings": 22,
+        "mass_buildings": 16,
+        "overlap": 6,
+        "borderline": 2,
+        "shared_wall": 1,
+        "door_inside_other": 2,
+        "centre_inside_other": 0,
+        "structure_pairs_overlap": 0,
+        "yaw_blind_deep_overlaps": 2,
+        "overlap_shrink_feasible": 6,
+        "overlap_needs_move": 0
+      },
+      "pairs": [
+        {
+          "settlement": "gideon",
+          "a": "gideon-court",
+          "b": "gideon-tollhouse",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "b_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "depth_m": 4.1,
+          "area_m2": 43.5,
+          "frac_of_smaller": 0.3062,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.07
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-lowmarket",
+          "b": "gideon-chapel",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "b_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "depth_m": 4.1,
+          "area_m2": 43.5,
+          "frac_of_smaller": 0.3062,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "gideon-chapel"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.07
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-lowmarket",
+          "b": "gideon-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 4.01,
+          "area_m2": 36.49,
+          "frac_of_smaller": 0.2569,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-tollhouse",
+          "b": "gideon-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 4.01,
+          "area_m2": 36.49,
+          "frac_of_smaller": 0.2569,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-smithy",
+          "b": "gideon-grange",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 3.41,
+          "area_m2": 42.32,
+          "frac_of_smaller": 0.2366,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-inn",
+          "b": "gideon-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 2.01,
+          "area_m2": 28.96,
+          "frac_of_smaller": 0.162,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-house-0",
+          "b": "gideon-cellar",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 180,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 0.705,
+          "area_m2": 5.64,
+          "frac_of_smaller": 0.0783,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [
+            "gideon-house-0"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-shrine",
+          "b": "gideon-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 0.41,
+          "area_m2": 0.58,
+          "frac_of_smaller": 0.0032,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 17.8
+        },
+        {
+          "settlement": "gideon",
+          "a": "gideon-court",
+          "b": "gideon-inn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            9.1,
+            15.61
+          ],
+          "b_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "depth_m": 0.355,
+          "area_m2": 5.54,
+          "frac_of_smaller": 0.039,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 11
+        }
+      ]
+    },
+    {
+      "id": "helstrom",
+      "name": "Helstrom",
+      "counts": {
+        "buildings": 40,
+        "mass_buildings": 32,
+        "overlap": 7,
+        "borderline": 0,
+        "shared_wall": 0,
+        "door_inside_other": 2,
+        "centre_inside_other": 0,
+        "structure_pairs_overlap": 0,
+        "yaw_blind_deep_overlaps": 0,
+        "overlap_shrink_feasible": 7,
+        "overlap_needs_move": 0
+      },
+      "pairs": [
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-house-2",
+          "b": "helstrom-house-6",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 126,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 4.879,
+          "area_m2": 22.39,
+          "frac_of_smaller": 0.1252,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "helstrom-house-6"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-house-6",
+          "b": "helstrom-house-10",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 54,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 4.879,
+          "area_m2": 22.39,
+          "frac_of_smaller": 0.1252,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "helstrom-house-10"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-warders",
+          "b": "helstrom-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 162,
+          "b_yaw": 126,
+          "a_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "depth_m": 3.203,
+          "area_m2": 10.63,
+          "frac_of_smaller": 0.0884,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-hollow-bole",
+          "b": "helstrom-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 234,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "depth_m": 2.604,
+          "area_m2": 6.84,
+          "frac_of_smaller": 0.0569,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-scriptorium",
+          "b": "helstrom-warders",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 198,
+          "b_yaw": 162,
+          "a_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "b_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "depth_m": 2.008,
+          "area_m2": 3.79,
+          "frac_of_smaller": 0.0315,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.12
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-rootpost",
+          "b": "helstrom-scriptorium",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 234,
+          "b_yaw": 198,
+          "a_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "b_footprint_m": [
+            10.01,
+            12.01
+          ],
+          "depth_m": 2.003,
+          "area_m2": 3.77,
+          "frac_of_smaller": 0.0314,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        },
+        {
+          "settlement": "helstrom",
+          "a": "helstrom-house-10",
+          "b": "helstrom-legate-annexe",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 54,
+          "b_yaw": 18,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 1.505,
+          "area_m2": 2.38,
+          "frac_of_smaller": 0.0331,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11.13
+        }
+      ]
+    },
+    {
+      "id": "lilmoth",
+      "name": "Lilmoth",
+      "counts": {
+        "buildings": 33,
+        "mass_buildings": 23,
+        "overlap": 19,
+        "borderline": 2,
+        "shared_wall": 2,
+        "door_inside_other": 10,
+        "centre_inside_other": 7,
+        "structure_pairs_overlap": 1,
+        "yaw_blind_deep_overlaps": 4,
+        "overlap_shrink_feasible": 19,
+        "overlap_needs_move": 0
+      },
+      "pairs": [
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-smithy",
+          "b": "lilmoth-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            10.55,
+            14.41
+          ],
+          "b_footprint_m": [
+            9.53,
+            13.21
+          ],
+          "depth_m": 6.22,
+          "area_m2": 51.07,
+          "frac_of_smaller": 0.4056,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "lilmoth-apothecary"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.82
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-scribe",
+          "b": "lilmoth-pawn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 5.87,
+          "area_m2": 64.98,
+          "frac_of_smaller": 0.4388,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "lilmoth-pawn"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.44
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-ledger-house",
+          "b": "lilmoth-market",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            8.24
+          ],
+          "b_footprint_m": [
+            12.41,
+            8.24
+          ],
+          "depth_m": 5.795,
+          "area_m2": 39.84,
+          "frac_of_smaller": 0.3896,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-ledger-house"
+          ],
+          "centre_inside_other": [
+            "lilmoth-market"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 5.69
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-yard",
+          "b": "lilmoth-ledger-house",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            12.41,
+            9.61
+          ],
+          "b_footprint_m": [
+            12.41,
+            8.24
+          ],
+          "depth_m": 5.73,
+          "area_m2": 44.32,
+          "frac_of_smaller": 0.4334,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-yard"
+          ],
+          "centre_inside_other": [
+            "lilmoth-yard"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 5.88
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-house-2",
+          "b": "lilmoth-house-3",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            12.66
+          ],
+          "b_footprint_m": [
+            12.41,
+            14.08
+          ],
+          "depth_m": 5.505,
+          "area_m2": 55.19,
+          "frac_of_smaller": 0.3513,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-house-3"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 8.14
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-shrine",
+          "b": "lilmoth-healer",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 5.31,
+          "area_m2": 53.9,
+          "frac_of_smaller": 0.364,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.2
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-apothecary",
+          "b": "lilmoth-scribe",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            9.53,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 5.19,
+          "area_m2": 50.81,
+          "frac_of_smaller": 0.4036,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-apothecary"
+          ],
+          "centre_inside_other": [
+            "lilmoth-apothecary"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.64
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-customs",
+          "b": "lilmoth-yard",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            12.41,
+            10.68
+          ],
+          "b_footprint_m": [
+            12.41,
+            9.61
+          ],
+          "depth_m": 5.14,
+          "area_m2": 51.32,
+          "frac_of_smaller": 0.4303,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-customs"
+          ],
+          "centre_inside_other": [
+            "lilmoth-yard"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.07
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-healer",
+          "b": "lilmoth-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            9.79,
+            13.21
+          ],
+          "depth_m": 4.96,
+          "area_m2": 43.5,
+          "frac_of_smaller": 0.3364,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-rootpost"
+          ],
+          "centre_inside_other": [
+            "lilmoth-rootpost"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.39
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-house-0",
+          "b": "lilmoth-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            10.83,
+            10.81
+          ],
+          "b_footprint_m": [
+            12.41,
+            10.81
+          ],
+          "depth_m": 4.88,
+          "area_m2": 32.26,
+          "frac_of_smaller": 0.2755,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-house-1"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.76
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-inn-drowned",
+          "b": "lilmoth-inn-stilt",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 4.76,
+          "area_m2": 51.69,
+          "frac_of_smaller": 0.3491,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.57
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-inn-stilt",
+          "b": "lilmoth-shrine",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 4.66,
+          "area_m2": 44.64,
+          "frac_of_smaller": 0.3015,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.49
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-house-1",
+          "b": "lilmoth-house-2",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            12.41,
+            10.81
+          ],
+          "b_footprint_m": [
+            12.41,
+            12.66
+          ],
+          "depth_m": 4.65,
+          "area_m2": 40.34,
+          "frac_of_smaller": 0.3007,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-house-2"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.96
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-rootpost",
+          "b": "lilmoth-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            9.79,
+            13.21
+          ],
+          "b_footprint_m": [
+            10.83,
+            10.81
+          ],
+          "depth_m": 4.4,
+          "area_m2": 32.03,
+          "frac_of_smaller": 0.2736,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.57
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-pawn",
+          "b": "lilmoth-inn-drowned",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 4.33,
+          "area_m2": 27.41,
+          "frac_of_smaller": 0.1851,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-pawn"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 9.83
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-plague-stair",
+          "b": "lilmoth-sugar-cellar",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 270,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 3.12,
+          "area_m2": 13.42,
+          "frac_of_smaller": 0.1863,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.83
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-first-storey",
+          "b": "lilmoth-boom-house",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 2.92,
+          "area_m2": 21.43,
+          "frac_of_smaller": 0.2977,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 5.7
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-customs",
+          "b": "lilmoth-struct-the-customs-bollards",
+          "a_kind": "interior",
+          "b_kind": "structure",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 90,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            10.68
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 2.455,
+          "area_m2": 12.28,
+          "frac_of_smaller": 0.491,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.26
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-sugar-cellar",
+          "b": "lilmoth-collapsed-arcade",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 2.04,
+          "area_m2": 9.34,
+          "frac_of_smaller": 0.1298,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.56
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-smithy",
+          "b": "lilmoth-scribe",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            10.55,
+            14.41
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 1.88,
+          "area_m2": 9.01,
+          "frac_of_smaller": 0.0608,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.39
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-customs",
+          "b": "lilmoth-ledger-house",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 90,
+          "b_yaw": 270,
+          "a_footprint_m": [
+            12.41,
+            10.68
+          ],
+          "b_footprint_m": [
+            12.41,
+            8.24
+          ],
+          "depth_m": 1.26,
+          "area_m2": 6.69,
+          "frac_of_smaller": 0.0654,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 11.9
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-scribe",
+          "b": "lilmoth-inn-drowned",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "depth_m": 0.99,
+          "area_m2": 2.17,
+          "frac_of_smaller": 0.0146,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 15.19
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-market",
+          "b": "lilmoth-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 90,
+          "a_footprint_m": [
+            12.41,
+            8.24
+          ],
+          "b_footprint_m": [
+            10.55,
+            14.41
+          ],
+          "depth_m": 0.235,
+          "area_m2": 2.76,
+          "frac_of_smaller": 0.027,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [
+            "lilmoth-market"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 9.31
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-rootpost",
+          "b": "lilmoth-house-1",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            9.79,
+            13.21
+          ],
+          "b_footprint_m": [
+            12.41,
+            10.81
+          ],
+          "depth_m": 0.2,
+          "area_m2": 0.27,
+          "frac_of_smaller": 0.0021,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": false,
+          "shrink_feasible": null,
+          "centre_gap_m": 15.26
+        },
+        {
+          "settlement": "lilmoth",
+          "a": "lilmoth-collapsed-arcade",
+          "b": "lilmoth-struct-the-boom-chain",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 90,
+          "b_yaw": 180,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 0.1,
+          "area_m2": 0.44,
+          "frac_of_smaller": 0.0178,
+          "class": "shared_wall",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 7.2
+        }
+      ]
+    },
+    {
+      "id": "soulrest",
+      "name": "Soulrest",
+      "counts": {
+        "buildings": 15,
+        "mass_buildings": 10,
+        "overlap": 12,
+        "borderline": 2,
+        "shared_wall": 1,
+        "door_inside_other": 1,
+        "centre_inside_other": 4,
+        "structure_pairs_overlap": 0,
+        "yaw_blind_deep_overlaps": 0,
+        "overlap_shrink_feasible": 12,
+        "overlap_needs_move": 0
+      },
+      "pairs": [
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-market",
+          "b": "soulrest-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 222,
+          "b_yaw": 198,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 8.643,
+          "area_m2": 71.42,
+          "frac_of_smaller": 0.2869,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "soulrest-market"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.29
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-pawn",
+          "b": "soulrest-quay",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 174,
+          "b_yaw": 150,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 8.642,
+          "area_m2": 71.4,
+          "frac_of_smaller": 0.2868,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "soulrest-pawn"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.29
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-quay",
+          "b": "soulrest-boneyard",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 150,
+          "b_yaw": 126,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 8.642,
+          "area_m2": 71.42,
+          "frac_of_smaller": 0.2869,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "soulrest-boneyard"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.29
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-smithy",
+          "b": "soulrest-pawn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 198,
+          "b_yaw": 174,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 8.637,
+          "area_m2": 71.35,
+          "frac_of_smaller": 0.2866,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "soulrest-pawn"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.3
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-court-steps",
+          "b": "soulrest-market",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 246,
+          "b_yaw": 222,
+          "a_footprint_m": [
+            14.81,
+            16.28
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 8.533,
+          "area_m2": 68.88,
+          "frac_of_smaller": 0.2857,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "soulrest-court-steps"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.3
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-pawn",
+          "b": "soulrest-boneyard",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 174,
+          "b_yaw": 126,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 7.456,
+          "area_m2": 44.83,
+          "frac_of_smaller": 0.1801,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 12.2
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-market",
+          "b": "soulrest-pawn",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 222,
+          "b_yaw": 174,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 7.454,
+          "area_m2": 44.8,
+          "frac_of_smaller": 0.18,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 12.21
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-grey-hist",
+          "b": "soulrest-court-steps",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 246,
+          "a_footprint_m": [
+            14.81,
+            11.86
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.28
+          ],
+          "depth_m": 4.379,
+          "area_m2": 20.9,
+          "frac_of_smaller": 0.119,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.35
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-boneyard",
+          "b": "soulrest-old-harbourmaster",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 126,
+          "b_yaw": 102,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 3.938,
+          "area_m2": 18.8,
+          "frac_of_smaller": 0.2611,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.3
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-boneyard",
+          "b": "soulrest-salt-house",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 126,
+          "b_yaw": 78,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 2.279,
+          "area_m2": 5.22,
+          "frac_of_smaller": 0.0725,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 12.21
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-smithy",
+          "b": "soulrest-quay",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 198,
+          "b_yaw": 150,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 2.255,
+          "area_m2": 4.1,
+          "frac_of_smaller": 0.0165,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 17.9
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-court-steps",
+          "b": "soulrest-smithy",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 246,
+          "b_yaw": 198,
+          "a_footprint_m": [
+            14.81,
+            16.28
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 2.061,
+          "area_m2": 3.72,
+          "frac_of_smaller": 0.0154,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 17.89
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-salt-house",
+          "b": "soulrest-burnt-shrine",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 78,
+          "b_yaw": 54,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 0.54,
+          "area_m2": 0.39,
+          "frac_of_smaller": 0.0054,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 10.3
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-old-harbourmaster",
+          "b": "soulrest-salt-house",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 102,
+          "b_yaw": 78,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 0.538,
+          "area_m2": 0.39,
+          "frac_of_smaller": 0.0054,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 10.3
+        },
+        {
+          "settlement": "soulrest",
+          "a": "soulrest-market",
+          "b": "soulrest-boneyard",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 222,
+          "b_yaw": 126,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 0.074,
+          "area_m2": 0.01,
+          "frac_of_smaller": 0,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 22.3
+        }
+      ]
+    },
+    {
+      "id": "stormhold",
+      "name": "Stormhold",
+      "counts": {
+        "buildings": 33,
+        "mass_buildings": 23,
+        "overlap": 3,
+        "borderline": 1,
+        "shared_wall": 1,
+        "door_inside_other": 0,
+        "centre_inside_other": 0,
+        "structure_pairs_overlap": 1,
+        "yaw_blind_deep_overlaps": 1,
+        "overlap_shrink_feasible": 3,
+        "overlap_needs_move": 0
+      },
+      "pairs": [
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-archive",
+          "b": "stormhold-old-customs",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 220.9,
+          "a_footprint_m": [
+            12.41,
+            8.77
+          ],
+          "b_footprint_m": [
+            8,
+            7.54
+          ],
+          "depth_m": 5.094,
+          "area_m2": 22.31,
+          "frac_of_smaller": 0.3699,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 6.14
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-rootpost",
+          "b": "stormhold-raid-house",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 242.7,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 3.599,
+          "area_m2": 14.94,
+          "frac_of_smaller": 0.2075,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 9.19
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-rootpost",
+          "b": "stormhold-house-4",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 0,
+          "b_yaw": 264.5,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "depth_m": 2.206,
+          "area_m2": 4.52,
+          "frac_of_smaller": 0.0305,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 15.87
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-chapel",
+          "b": "stormhold-struct-the-outside-ditch",
+          "a_kind": "interior",
+          "b_kind": "structure",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 133.6,
+          "a_footprint_m": [
+            11.21,
+            13.21
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.849,
+          "area_m2": 3.42,
+          "frac_of_smaller": 0.137,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 7.49
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-house-2",
+          "b": "stormhold-struct-the-bollard-line",
+          "a_kind": "interior",
+          "b_kind": "structure",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 286.4,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.024,
+          "area_m2": 1.93,
+          "frac_of_smaller": 0.0774,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 10.34
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-customs",
+          "b": "stormhold-old-customs",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 220.9,
+          "a_footprint_m": [
+            12.41,
+            14.41
+          ],
+          "b_footprint_m": [
+            8,
+            7.54
+          ],
+          "depth_m": 0.577,
+          "area_m2": 0.34,
+          "frac_of_smaller": 0.0056,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 12.1
+        },
+        {
+          "settlement": "stormhold",
+          "a": "stormhold-house-4",
+          "b": "stormhold-bloom-block",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 264.5,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            13.61,
+            15.61
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 0.063,
+          "area_m2": 0.02,
+          "frac_of_smaller": 0.0003,
+          "class": "shared_wall",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 12.57
+        }
+      ]
+    },
+    {
+      "id": "thorn",
+      "name": "Thorn",
+      "counts": {
+        "buildings": 24,
+        "mass_buildings": 13,
+        "overlap": 12,
+        "borderline": 6,
+        "shared_wall": 0,
+        "door_inside_other": 2,
+        "centre_inside_other": 4,
+        "structure_pairs_overlap": 2,
+        "yaw_blind_deep_overlaps": 3,
+        "overlap_shrink_feasible": 11,
+        "overlap_needs_move": 1
+      },
+      "pairs": [
+        {
+          "settlement": "thorn",
+          "a": "thorn-apothecary",
+          "b": "thorn-sapwell",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 218.6,
+          "b_yaw": 192.9,
+          "a_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "b_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "depth_m": 9.842,
+          "area_m2": 75.52,
+          "frac_of_smaller": 0.3517,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "thorn-apothecary",
+            "thorn-sapwell"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 8.54
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-sapwell",
+          "b": "thorn-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 192.9,
+          "b_yaw": 167.1,
+          "a_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 7.749,
+          "area_m2": 60.56,
+          "frac_of_smaller": 0.282,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "thorn-sapwell"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.65
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-inn",
+          "b": "thorn-trader",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 244.3,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 7.742,
+          "area_m2": 64.78,
+          "frac_of_smaller": 0.2602,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [
+            "thorn-inn"
+          ],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 10.65
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-hall",
+          "b": "thorn-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 218.6,
+          "a_footprint_m": [
+            16.01,
+            15.74
+          ],
+          "b_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "depth_m": 7.394,
+          "area_m2": 55.96,
+          "frac_of_smaller": 0.2606,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "thorn-hall"
+          ],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-inn",
+          "b": "thorn-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 270,
+          "b_yaw": 218.6,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "depth_m": 5.304,
+          "area_m2": 28.84,
+          "frac_of_smaller": 0.1343,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.3
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-trader",
+          "b": "thorn-apothecary",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 244.3,
+          "b_yaw": 218.6,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "depth_m": 5.062,
+          "area_m2": 28.23,
+          "frac_of_smaller": 0.1314,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.93
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-hall",
+          "b": "thorn-gate",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            16.01,
+            15.74
+          ],
+          "b_footprint_m": [
+            5,
+            14.69
+          ],
+          "depth_m": 5,
+          "area_m2": 30.7,
+          "frac_of_smaller": 0.418,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-hall",
+          "b": "thorn-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 180,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            16.01,
+            15.74
+          ],
+          "b_footprint_m": [
+            5,
+            12.75
+          ],
+          "depth_m": 5,
+          "area_m2": 25.85,
+          "frac_of_smaller": 0.4055,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-gate",
+          "b": "thorn-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 141.4,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            5,
+            14.69
+          ],
+          "b_footprint_m": [
+            5,
+            12.75
+          ],
+          "depth_m": 5,
+          "area_m2": 63.75,
+          "frac_of_smaller": 1,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [
+            "thorn-house-0"
+          ],
+          "centre_inside_other": [
+            "thorn-gate",
+            "thorn-house-0"
+          ],
+          "yaw_blind_deep_overlap": true,
+          "yawed": true,
+          "shrink_feasible": false,
+          "centre_gap_m": 0
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-hall",
+          "b": "thorn-burnt-stilt",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 180,
+          "b_yaw": 64.3,
+          "a_footprint_m": [
+            16.01,
+            15.74
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 3.884,
+          "area_m2": 18.9,
+          "frac_of_smaller": 0.2625,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-rootpost",
+          "b": "thorn-gate",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 167.1,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            5,
+            14.69
+          ],
+          "depth_m": 2.836,
+          "area_m2": 6.63,
+          "frac_of_smaller": 0.0902,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.93
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-rootpost",
+          "b": "thorn-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 167.1,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            5,
+            12.75
+          ],
+          "depth_m": 2.151,
+          "area_m2": 4.58,
+          "frac_of_smaller": 0.0719,
+          "class": "overlap",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 13.93
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-struct-the-tidewrack-piles",
+          "b": "thorn-struct-the-landing-stage",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 6,
+          "b_yaw": 0,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.748,
+          "area_m2": 3.79,
+          "frac_of_smaller": 0.1516,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.3
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-struct-the-tide-courses",
+          "b": "thorn-struct-the-tidewrack-piles",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 18,
+          "b_yaw": 6,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 1.644,
+          "area_m2": 3.75,
+          "frac_of_smaller": 0.15,
+          "class": "overlap",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": true,
+          "centre_gap_m": 4.27
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-inn",
+          "b": "thorn-struct-the-thicket-wall",
+          "a_kind": "interior",
+          "b_kind": "structure",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 270,
+          "b_yaw": 295.7,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 0.762,
+          "area_m2": 0.74,
+          "frac_of_smaller": 0.0297,
+          "class": "borderline",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 10.65
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-gate",
+          "b": "thorn-north-lean",
+          "a_kind": "interior",
+          "b_kind": "sealed-with-reason",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 141.4,
+          "b_yaw": 115.7,
+          "a_footprint_m": [
+            5,
+            14.69
+          ],
+          "b_footprint_m": [
+            8,
+            9
+          ],
+          "depth_m": 0.683,
+          "area_m2": 0.6,
+          "frac_of_smaller": 0.0083,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 8.55
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-north-lean",
+          "b": "thorn-house-0",
+          "a_kind": "sealed-with-reason",
+          "b_kind": "interior",
+          "a_enterable": false,
+          "b_enterable": true,
+          "a_yaw": 115.7,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            8,
+            9
+          ],
+          "b_footprint_m": [
+            5,
+            12.75
+          ],
+          "depth_m": 0.683,
+          "area_m2": 0.6,
+          "frac_of_smaller": 0.0094,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 8.55
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-trader",
+          "b": "thorn-sapwell",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 244.3,
+          "b_yaw": 192.9,
+          "a_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "b_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "depth_m": 0.61,
+          "area_m2": 0.38,
+          "frac_of_smaller": 0.0018,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 18.18
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-apothecary",
+          "b": "thorn-rootpost",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 218.6,
+          "b_yaw": 167.1,
+          "a_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "b_footprint_m": [
+            14.81,
+            16.81
+          ],
+          "depth_m": 0.608,
+          "area_m2": 0.38,
+          "frac_of_smaller": 0.0018,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 18.29
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-apothecary",
+          "b": "thorn-gate",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 218.6,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "b_footprint_m": [
+            5,
+            14.69
+          ],
+          "depth_m": 0.488,
+          "area_m2": 0.55,
+          "frac_of_smaller": 0.0075,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 13.72
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-apothecary",
+          "b": "thorn-house-0",
+          "a_kind": "interior",
+          "b_kind": "interior",
+          "a_enterable": true,
+          "b_enterable": true,
+          "a_yaw": 218.6,
+          "b_yaw": 141.4,
+          "a_footprint_m": [
+            14.81,
+            14.5
+          ],
+          "b_footprint_m": [
+            5,
+            12.75
+          ],
+          "depth_m": 0.488,
+          "area_m2": 0.55,
+          "frac_of_smaller": 0.0086,
+          "class": "borderline",
+          "structural": false,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 13.72
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-hall",
+          "b": "thorn-struct-the-bow-racks",
+          "a_kind": "interior",
+          "b_kind": "structure",
+          "a_enterable": true,
+          "b_enterable": false,
+          "a_yaw": 180,
+          "b_yaw": 347.1,
+          "a_footprint_m": [
+            16.01,
+            15.74
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 0.145,
+          "area_m2": 0.05,
+          "frac_of_smaller": 0.0019,
+          "class": "shared_wall",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 11
+        },
+        {
+          "settlement": "thorn",
+          "a": "thorn-struct-the-landing-stage",
+          "b": "thorn-struct-the-moored-barge",
+          "a_kind": "structure",
+          "b_kind": "structure",
+          "a_enterable": false,
+          "b_enterable": false,
+          "a_yaw": 0,
+          "b_yaw": 352,
+          "a_footprint_m": [
+            5,
+            5
+          ],
+          "b_footprint_m": [
+            5,
+            5
+          ],
+          "depth_m": 0.094,
+          "area_m2": 0.03,
+          "frac_of_smaller": 0.0013,
+          "class": "shared_wall",
+          "structural": true,
+          "door_inside_other": [],
+          "centre_inside_other": [],
+          "yaw_blind_deep_overlap": false,
+          "yawed": true,
+          "shrink_feasible": null,
+          "centre_gap_m": 5.39
+        }
+      ]
+    }
+  ]
+}

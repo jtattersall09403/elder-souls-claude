@@ -1,0 +1,27 @@
+{
+  "task_id": "RECONCILE-MAP-PROBE-S13",
+  "title": "Two status files disagree about whether map-probe ran. It ran. S13 is tested.",
+  "state": "reconciled",
+  "owner": "orchestrator",
+  "at": "2026-08-14T17:45:00Z",
+
+  "the_disagreement": "Two agents finished within minutes of each other holding opposite positions on the same fact, and both are honest reports of what their author knew. `W1-MAP-DEFECTS-r1-remediation` states that `tools/harness/map-probe.mjs` has NEVER run end to end (six attempts, all dying at map-probe.mjs:73 inside the single long page.evaluate the probe body runs in, on a box climbing to 11.96 per core and 11 browser instances) and therefore records S13 as UNTESTED CODE. `W1-MAP-DEFECTS-r2` states that it DID run end to end at 15:55 on its sixth attempt — 32 of 33 assertions passed, about four minutes, one browser, at 5.76 per core.",
+
+  "ruling": "IT RAN. S13 IS TESTED AND PASSES LIVE. The r2 claim is the later, more specific and independently checkable one: a named time, an attempt count, a pass count, a duration, a load figure, and a quoted result — `inventory -> map -> sheet -> journal -> spells; skipped: nothing`. That is the live ring read through the real input path that the r1 critic said was still owed, and which every prior claim had substituted for by enumerating the shipped module in bare Node. S8 and S12 also passed live (42,846 of 42,846 cells, whole province, 0 squares). Anyone reading `W1-MAP-DEFECTS-r1-remediation.json` should read its S13 line as superseded by this file.",
+
+  "why_this_happened_and_it_will_happen_again": "Neither agent could see the other. They were dispatched onto overlapping scope by me — my brief to r2 said the four findings were unowned when the r1-remediation agent had already taken them — and although I redirected r2 as soon as I saw the collision, the two had already been working the same probe in parallel. Both then reported honestly about a shared object from private evidence. THE FAILURE IS MINE AND IT IS A DISPATCH FAILURE, not a reporting one: two agents reporting different things about one artefact is the expected outcome of pointing two agents at one artefact.",
+
+  "the_general_lesson": "A contradiction between two status files is not automatically a defect in either. Prefer the report that is more specific, more recent, and cites conditions that can be re-checked — and then WRITE THE RECONCILIATION DOWN, because the losing file stays on disk and the next reader has no way to know which they found. An unreconciled contradiction in the record is the same disease as a superseded ruling left standing with no pointer (S35, the map's fog of war), and today's citation audit exists because that disease is expensive.",
+
+  "corollary_worth_keeping": "Contention was NOT the whole story on either side. r2's successful run happened at 5.76 per core — a HIGHER load than several attempts that failed. So the failures were not a simple function of load, and an agent that concludes `the box was busy` has explained less than it thinks. The known real instrument defect in this area was a missing `setRenderRate(12)` on the phone leg, which failed on a box at 0.65 per core — that is what ruled contention out as its cause, after it had hidden behind contention for two rounds.",
+
+  "still_genuinely_open": [
+    "NO PHOTOGRAPH OF THE MAP ON A PHONE EXISTS. The phone leg completed and the assertions passed (mode=map, 42,846/42,846 cells drawn, places_drawn=1), but the shots directory is empty. On its literal wording `final-tap-photographed-on-a-phone` remains `not_run`, and r2 was right to refuse to write that a map was photographed on a phone. Whoever closes this needs the picture, not the assertion.",
+    "S11 IS A NEW FAILURE not present in the r1 verdict: the local map view draws 484 cells (22x22) against a 21-cell span — a one-cell fringe outside its own window, from inclusive floor/ceil bounds at map.js:126-129. TRAP: the same bound is what makes S8's 42,846 correct. Tightening one without re-running the other turns S8 red.",
+    "`state().map.geography_always_drawn` is still the exact tautology it was, now living in shipped game state rather than in the probe — which is worse, not better.",
+    "RI-WLD06 M29 has never run and must be dispatched FRESH — r2 declined it on the grounds that its context is heavily loaded with the four findings and the instrumentation, which is the correct call and the kind of refusal worth rewarding."
+  ],
+
+  "files_claimed": ["orchestration/status/RECONCILE-MAP-PROBE-S13.json"],
+  "files_touched": ["orchestration/status/RECONCILE-MAP-PROBE-S13.json"]
+}
