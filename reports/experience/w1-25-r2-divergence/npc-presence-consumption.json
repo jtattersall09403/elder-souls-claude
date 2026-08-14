@@ -1,104 +1,20 @@
 {
   "schema": "elder-souls/npc-presence-consumption@1",
-  "measured_at": "2026-08-14T09:46:43.717Z",
+  "measured_at": "2026-08-14T09:57:49.543Z",
   "git": {
-    "commit": "630a46ee3c97868f4913592f2cd8c257cfa8bca1",
+    "commit": "91fbb20ee4fb7fd5111de8868b36d3a197bc89a5",
     "branch": "codex/wave1-build-experiment",
     "dirty": true
   },
-  "frames_per_arm": 300,
-  "model": "sim.npcs[].present / .visible — game/src/sim/npc.js:285, the line that also emits npc_presence",
+  "frames_per_arm": 240,
+  "settle_frames": 8,
+  "model": "sim.npcs[].present / .visible — game/src/sim/npc.js, the line that also emits npc_presence",
   "consumers": [
     "game/src/render/renderer.js:548 — mesh.visible = n.visible !== false",
     "game/src/sim/world-collision.js:121 — if (!n.present) continue",
     "game/src/sim/stealth/system.js:949 — if (!n.present) continue"
   ],
-  "arms": [
-    {
-      "arm": "INTACT",
-      "before": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      },
-      "after": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      }
-    },
-    {
-      "arm": "BROKEN(present)",
-      "before": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      },
-      "after": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 26,
-        "collidable": 26,
-        "perceivers": 26,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      }
-    },
-    {
-      "arm": "RESTORED",
-      "before": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 26,
-        "collidable": 26,
-        "perceivers": 26,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      },
-      "after": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      }
-    },
-    {
-      "arm": "NULL(generic field)",
-      "before": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "|||||||||home|home|home|home|home|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|market|post|post|post|post|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work|work",
-        "walked_sum": 85.4775
-      },
-      "after": {
-        "npc_total": 56,
-        "npc_meshes": 56,
-        "npc_meshes_drawn": 27,
-        "collidable": 27,
-        "perceivers": 27,
-        "activities": "consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm|consumption-null-arm",
-        "walked_sum": 56085.4775
-      }
-    }
-  ],
+  "arms": [],
   "checks": [],
   "ok": false
 }
