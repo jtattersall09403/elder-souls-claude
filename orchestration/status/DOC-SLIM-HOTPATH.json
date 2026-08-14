@@ -1,0 +1,54 @@
+{
+  "task_id": "DOC-SLIM-HOTPATH",
+  "state": "running",
+  "could_not_do": [
+    "STARTED — nothing attempted yet. This list is rewritten as the run proceeds and is the first thing a successor should read.",
+    "PRE-EXISTING GAP FOUND BEFORE ANY EDIT: the critical fact 'node tools/visual/gpu-deck.mjs --help does not print help, it rents a Pod and starts spending' lives ONLY in reports/thorn-plates/2026-08-14-thorn-plates.md, which is gitignored and NOT within two hops of CLAUDE.md. It was already unreachable before this cleanup. Fixing it costs one line in HAZARDS.md section 4 (RunPod), which is one file outside the three named in the dispatch."
+  ],
+  "baseline_commit": "94413aa98fe80eaddba9c3ad25514f03a742e62b",
+  "branch": "codex/wave1-build-experiment",
+  "purpose": "Cut the mandatory cold-start read path (~145k tokens) by fixing tools/gen-index.mjs, corpus/00-doctrine/ARBITRATION.md and orchestration/COST.md, without losing a single load-bearing fact.",
+  "method": {
+    "instrument": "tools/readpath.mjs — measures the read path in bytes and estimated tokens AND checks a named list of critical facts is still reachable within two hops of CLAUDE.md. Exits non-zero if a fact is unreachable. --self-break proves it fires.",
+    "acceptance": "both halves of orchestration/DOC-POLICY.md — (1) read path materially smaller, before and after in tokens; (2) every named critical fact still reachable in two hops"
+  },
+  "critical_facts_written_before_cleaning": [
+    "landing recipe: node tools/bank.mjs \"<headline>\" / node tools/land.mjs \"<headline>\" --paths <yours>, commits AND pushes, exits non-zero unless bytes are on the remote",
+    "banned recipe: git read-tree origin/<branch> && git add -A — destroyed 18 files and 22,209 lines in commit 06dafd04",
+    "HEAD is not your baseline — a sibling's bank can turn your delete-the-fix green (HAZARDS 12)",
+    "diff your work against HEAD, never against origin",
+    "pkill -f headless_shell is a fleet-wide kill, not a cleanup — kill by PID",
+    "runpod cleanup with no args used to kill every managed Pod on the account, including siblings' live Pods",
+    "node tools/visual/gpu-deck.mjs --help does not print help — it rents a Pod and starts spending",
+    "git gc --prune=now destroys other agents' staged work — use plain git gc",
+    "the five non-negotiables (G3) and that no cost measure may reduce them",
+    "the arbitration rule: inside the fight Souls wins, everywhere else Morrowind wins",
+    "Ruling S55: RI-VIS06's FIDELITY backstop cap is amended from 7 to 2, as a HARD FAIL",
+    "CONSUMPTION (RI-MTH07): name the world-side consumer and perturb the model to demonstrate it",
+    "the event vocabulary in game/src/sim/events.js is closed; an unlisted name throws inside the fixed step",
+    "git commit --only <your paths>; never git add -A; staging by name is not enough",
+    "rule 0 — never wait for the owner; no AskUserQuestion; no approval-gated tool",
+    "souls are levelling only; gold is the currency (S15)",
+    "seam rulings are append-only; superseded rulings are struck through with a pointer, never deleted",
+    "model routing C5/C6: Sonnet is the default, Opus is the justified exception",
+    "G1 was INVERTED on 2026-08-14 evening: roadmap steps delivered, not a floor of 12 concurrent agents",
+    "node tools/land.mjs --self-test — 13 checks whose arms must disagree",
+    "tools/control-clone.mjs hard-links instead of copying; --writable or you corrupt the real repo file",
+    "node tools/contention.mjs --gate before browser work; one browser is six headless_shell entries",
+    "cost is superlinear in tool calls; rule 19b — batch probes, never poll"
+  ],
+  "files_claimed": [
+    "orchestration/status/DOC-SLIM-HOTPATH.json",
+    "tools/gen-index.mjs",
+    "orchestration/INDEX.md",
+    "corpus/00-doctrine/ARBITRATION.md",
+    "orchestration/COST.md",
+    "orchestration/archive/",
+    "tools/readpath.mjs",
+    "orchestration/HAZARDS.md"
+  ],
+  "files_touched": [
+    "orchestration/status/DOC-SLIM-HOTPATH.json"
+  ],
+  "next_step": "build tools/readpath.mjs, take the BEFORE measurement, then fix gen-index.mjs"
+}
