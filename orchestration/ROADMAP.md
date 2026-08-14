@@ -43,6 +43,17 @@ landed on the same defect.
 **Sub-steps, in order:** (a) bind the material set — the orphan fix; (b) contact shadows and ambient
 occlusion; (c) ambient/GI fill with tone-mapped shadow lift so shadows stop crushing.
 
+**State, 2026-08-14 evening.** (a) is **diagnosed, fixed and landed**; what remains on it is the
+evidence — the CONSUMPTION arms before and after, and a hardware before/after sweep with both arms on
+the same Pod and the same GPU. Resumed under the new narrow regime. (b) and (c) are **not started and
+not yet dispatched** — deliberately, because they are separate remedies and the honest question is
+whether (a) alone moves the blind verdict. If it does not, (b) and (c) are why.
+
+**Watch for this when (a)'s evidence lands:** the judges named contact shadow and ambient occlusion
+more consistently than anything else — **5 of 5, the most universal observation in the whole run**.
+The orphan fix may not touch either. If the pixels move on material response but the frames still have
+no contact darkening, that is (b) becoming the next step rather than a disappointment.
+
 **Closes when:** Protocol A is re-run blind against the same plates and we stop losing 5 of 5. Not
 when the orphan count reaches zero — *statistics can fail a build and can never pass one*.
 
@@ -145,3 +156,12 @@ it a few at a time, prioritising anything on the player's path.
 ## Log of completed steps
 
 *(Append here as steps close, newest last, with the date and the update that was published.)*
+
+**2026-08-14 evening — the regime changed, and four pieces were found stranded.** Moving from ~14
+parallel agents to two-to-four sequential ones immediately surfaced something width had hidden:
+`W1-ORPHANED-SURFACE-SHADERS` (`in_progress`), `W1-WATER-LANES` (`measuring`),
+`W1-UIX08-dialogue-window` (`built-probe-running`) and `W1-DLG-TOPIC-WEB` (`building`) were all sitting
+part-finished with **no agent working them** — their agents had ended without completing. Nothing was
+lost, because each had written a `next_step`. But nobody had noticed, and at fourteen agents nobody
+would have. They are now the queue, picked up one at a time in roadmap order rather than all at once.
+That is the case for this file existing.
