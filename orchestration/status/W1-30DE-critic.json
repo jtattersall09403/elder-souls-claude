@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-30DE-critic",
+  "role": "critic",
+  "state": "running",
+  "started": "2026-08-14T12:05:00Z",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "Fresh critic for W1-30D (characters/creatures/animation) and W1-30E (architecture/settlement kit). Predecessor critics were killed by a container restart; no partial verdicts found in corpus/90-verdicts/wave1/.",
+  "next_step": "Read W1-30D.md and w1-30e-builder.json status, plans, board.json, W1-30-EVIDENCE.md, ARBITRATION S51.",
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-30D-r1.json",
+    "corpus/90-verdicts/wave1/W1-30D-r1.md",
+    "corpus/90-verdicts/wave1/W1-30E-r1.json",
+    "corpus/90-verdicts/wave1/W1-30E-r1.md",
+    "orchestration/status/W1-30DE-critic.json"
+  ],
+  "files_touched": ["orchestration/status/W1-30DE-critic.json"],
+  "notes": [
+    "Working in the shared tree by dispatch instruction (disk hit 100% twice today); no worktree."
+  ]
+}

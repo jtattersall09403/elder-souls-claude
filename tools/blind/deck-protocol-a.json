@@ -1,0 +1,185 @@
+{
+ "schema": "elder-souls/visual-deck@1",
+ "version": 1,
+ "owner": "RI-VIS06-PROTOCOL-A",
+ "generator": "tools/visual/build-deck.mjs",
+ "what_this_is": "Private shot list for RI-VIS06 Protocol A only. Same setups, camera and seed as tools/visual/deck.json; the ONLY differences are (a) restricted to the two `character` setups, because RI-VIS09 \u00a72 routes Protocol A to refs/modern/character_closeup/ and nothing else, and (b) capture at 1920x1080 so our side is native-resolution against native-resolution plates (RI-VIS06 \u00a7D forbids a resolution mismatch). Nothing in tools/visual/deck.json is edited.",
+ "source_counts": {
+  "regions": 13,
+  "settlements": 8,
+  "interiors": 115
+ },
+ "axes": {
+  "times": [
+   {
+    "id": "t0800",
+    "hour": 8,
+    "why": "low sun, long shadows, the shot that proves shadows exist"
+   },
+   {
+    "id": "t1300",
+    "hour": 13,
+    "why": "flat noon \u2014 the least forgiving light for flat materials"
+   },
+   {
+    "id": "t1930",
+    "hour": 19.5,
+    "why": "dusk \u2014 where a colour grade would show if there were one"
+   }
+  ],
+  "weathers": [
+   {
+    "id": "clear",
+    "weather": "clear"
+   },
+   {
+    "id": "rain",
+    "weather": "rain"
+   }
+  ]
+ },
+ "capture": {
+  "width": 1920,
+  "height": 1080,
+  "settle_frames": 12,
+  "seed": 20260814
+ },
+ "setups": [
+  {
+   "id": "char-player",
+   "block": "character",
+   "label": "player \u2014 close-up",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2766,
+    "z": 5011
+   },
+   "camera": {
+    "kind": "subject-orbit",
+    "subject": "player",
+    "yaw_deg": 35,
+    "pitch_deg": -6,
+    "distance_m": 2.6
+   },
+   "why": "MANDATORY. No build reaches 7.0 with capsule characters, and this is the frame that says so"
+  },
+  {
+   "id": "char-npc",
+   "block": "character",
+   "label": "nearest NPC \u2014 close-up",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2766,
+    "z": 5011
+   },
+   "camera": {
+    "kind": "subject-orbit",
+    "subject": "npc",
+    "yaw_deg": 35,
+    "pitch_deg": -6,
+    "distance_m": 2.6
+   },
+   "why": "MANDATORY. NPCs are built by the same actor code as the player; if one is good and the other is not, that is a dressing bug worth knowing"
+  }
+ ],
+ "motion": [
+  {
+   "id": "walk",
+   "frames": 180,
+   "script": "walk",
+   "why": "the most-seen animation in the game"
+  },
+  {
+   "id": "run",
+   "frames": 180,
+   "script": "run",
+   "why": "foot plant and lean at speed"
+  },
+  {
+   "id": "sprint-stop",
+   "frames": 180,
+   "script": "sprint-stop",
+   "why": "the blend nobody tunes"
+  },
+  {
+   "id": "turn-180",
+   "frames": 180,
+   "script": "turn-180",
+   "why": "pivot and camera settle"
+  },
+  {
+   "id": "roll-4dir",
+   "frames": 240,
+   "script": "roll-4dir",
+   "why": "i-frames read visually or they do not"
+  },
+  {
+   "id": "jump-land",
+   "frames": 180,
+   "script": "jump-land",
+   "why": "contact and recovery"
+  },
+  {
+   "id": "attack-light",
+   "frames": 180,
+   "script": "attack-light",
+   "why": "the swing arc and the weapon trail"
+  },
+  {
+   "id": "attack-heavy",
+   "frames": 180,
+   "script": "attack-heavy",
+   "why": "wind-up readability"
+  },
+  {
+   "id": "block-hit",
+   "frames": 180,
+   "script": "block-hit",
+   "why": "hit reaction and impact staging"
+  },
+  {
+   "id": "spell",
+   "frames": 180,
+   "script": "spell",
+   "why": "release, travel, impact, residue \u2014 four separate looks"
+  },
+  {
+   "id": "boundary-walk",
+   "frames": 300,
+   "script": "boundary-walk",
+   "why": "streamed-boundary pop, which only motion shows"
+  },
+  {
+   "id": "day-night",
+   "frames": 240,
+   "script": "day-night",
+   "why": "the grade across a full day"
+  }
+ ],
+ "profiles": {
+  "chars": {
+   "stills": [
+    "char-player",
+    "char-npc"
+   ],
+   "times": [
+    "t0800",
+    "t1300",
+    "t1930"
+   ],
+   "weathers": [
+    "clear"
+   ],
+   "motion": []
+  }
+ },
+ "totals": {
+  "setups": 2,
+  "stills_full": 6,
+  "motion_sequences": 0,
+  "motion_frames": 0
+ },
+ "manifest_hash": "4746eafe87af6559"
+}
