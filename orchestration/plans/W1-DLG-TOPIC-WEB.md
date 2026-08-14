@@ -1,8 +1,9 @@
 # W1-DLG-TOPIC-WEB — topics unlocking topics, as something a player can see happen
 
-Plan-State: awaiting-recriticism — materially edited 2026-08-14 by a fresh reviewer-editor at
-`e2a7a1a8`. Under `PLAN-LOOP.md` rule 1 the editing task may not also approve; a **different**
-fresh reviewer-editor judges this version.
+Plan-State: awaiting-recriticism — materially edited 2026-08-14 by reviewer-editor **round 2**
+(`plan-review2-w1-dlg-topic-web`) at `7b05e65e`, on top of round 1's edit at `e2a7a1a8`. Under
+`PLAN-LOOP.md` rule 1 the editing task may not also approve; a **third** fresh reviewer-editor
+judges this version.
 
 **Owner's ask, which is what this plan exists to serve:** *in Morrowind, asking about one subject
 adds new subjects to your list — the conversation branches outward as you pull threads, and that is
@@ -46,26 +47,110 @@ correct and is kept verbatim.
 
 ---
 
-## 1. The one-paragraph reason this piece is not what it looks like — re-measured at `e2a7a1a8`
+## 0b. Reviewer-editor round 2 — what was changed, and what was attacked and survived
+
+Round 2 re-measured every figure round 1 published, at `7b05e65e`, with an independently written
+census rather than round 1's. **`game/data/dialogue/` is byte-identical between `e2a7a1a8` and
+`7b05e65e`** (`git diff --stat e2a7a1a8..HEAD -- game/data/dialogue/` is empty), so any difference
+is a difference of instrument, not of tree.
+
+**Round 1's figures substantially reproduce, which is the opposite of what round 1 found about the
+draft, and it should be said plainly.** Independent re-measurement: mean non-leaf out-degree
+**3.9836**, leaf **0.2234**, `reachable_only` **0.9809**, max depth **7**, **median depth 2**,
+convergence **0.6191**, orphans **0**, unreachable INFOs **0**, `menu_quest_fraction` **0.20** —
+identical. Topic→topic mean non-leaf out-degree **3.488**, against round 1's 3.50 — reproduces.
+**470** topic ids, **23** `name` fields of which **21** merely restate the de-slugged id —
+reproduces. `topicLabel(id)` is `String(id).split('-').join(' ')` and `name` has no reader —
+reproduces. **`RI-UIX08`'s aggregation clause exists verbatim** at its `## Scoring` section:
+*"§G is a gate, not an axis … once a build exists that can be played, an unrun §G caps this item at
+2."* **S51's class-D reading is correct**: S51's own text names *"(D) A within-build ablation
+contrast … and **this ruling does not touch it**"*, and the two conditions round 1 added to the
+gate's record (generated through the runtime a player uses; design columns stripped) are S51's own
+two binding conditions, quoted correctly.
+
+**And the null control's two round-1 repairs both hold in the current text and both are sound.** The
+unlock keys on *the answer being displayed*, which both arms share — buildable. The self-check reads
+**recall**, and the reasoning given (zero marked spans ⇒ precision `0/0` ⇒ `NaN` or `1.0` ⇒ recorded
+as a pass) is correct. Against `HAZARDS` §0b's one-sided-guard test — *what would this print if the
+effect went the other way?* — the gate is genuinely two-sided: **worse** is the pass, **same** is
+`inert` and cannot pass, **better** overturns §2b and the gate must record the reason. Against
+`HAZARDS` §0 — *which input do all arms fabricate identically?* — both arms carry step C's prose
+unchanged, so a keyword-list failure in that prose is invisible to this contrast; §6's text pack is
+the instrument for it and is correctly placed. The availability asymmetry **is** forced by
+construction rather than asserted: under §2b the shipped arm grants on click plus `implied: true`,
+the ablated arm grants every `to` on display, so shipped ⊆ ablated for every player and every route.
+**No edit was needed anywhere in §6's null.**
+
+Seven material defects were found elsewhere. Each is repaired in place.
+
+| # | Defect | Repair |
+|---|---|---|
+| **P1** | **§2a's ownership table forbids the edit §4A commissions.** The table row reads *"Never edits — anything under `game/src/`"*; §4A step 1 says *"This is the one edit this piece makes under `game/src/`"* and **A2's hard fail depends on it** (`topicLabel` must read `name`). A builder obeying the table cannot pass A2; a builder obeying §4A has broken the seam table. In a plan whose central ruling is about file ownership under Ruling O1, this is the one contradiction that must not survive. | §2a's table now names the excluded paths precisely and carries the one declared exception. `node tools/ownership.mjs --for game/src/character/converse.js` returns one **done** piece (`W1-DLG-S37`) and no live claimant; the sibling claims `engine.js`, `ui/**` and `tools/ui/**`, not `converse.js`. |
+| **P2** | **§2a blocked step C on another agent replying** — *"does not begin step C until that agent has acknowledged"*. `CLAUDE.md` rule 0 and `RULES.md` rule 0: **no work parked pending an answer**, and a question asked may not be answered for hours. Ruling O1 requires the *message*; it nowhere requires an acknowledgement. | §2a rewritten: send it, record it, proceed. The protection against collision is the ownership check and the sibling's status file, both of which are one-sided and cost nothing. |
+| **P3** | **The concession to the sibling was written in §10, which is a self-doubt section a builder does not take orders from.** §10.5 said *"If it has already built against the draft's step D, this plan concedes the overlap"* — true, and unobeyable where it sat. | Promoted into §2a as a numbered rule with the exact check and the exact action. Sibling status at `7b05e65e`: `state: building`, `files_touched` is its status file and a reading note only — **it has not yet written the window**, so the seam is live rather than already lost. |
+| **P4** | **Ten topics are unreachable from any greeting, and no gate in this plan or in §D can see it.** `build-graph.mjs` at `7b05e65e` reports `unreachable_from_greeting`: `warden-eshi`, `the-one-path`, `the-blight-storms`, `the-ash-cough`, `the-xul-teekh`, `the-soul-trade`, `the-tolls`, `the-ninth-column`, `the-bond-berth`, `the-man-off-the-quay`. **Every one has in-degree ≥ 1, so none is an orphan; none is advertised by any `npc.topics`; so no player can reach any of them by any route.** §1 called the graph healthy without naming them, which is R2's own error recurring. Worse, **§4C's deletion budget is guarded by the wrong invariant**: "deletable without orphaning" tests in-degree ≥ 1, which by construction cannot detect a subtree cut off from every greeting — a 200-edge deletion pass can multiply this failure and leave all 13 §D rows green. This is the owner's complaint in its purest form: content no thread reaches. | §1 corrected; **new row A5c**; §4C's deletion test replaced with a reachability test. |
+| **P5** | **A7's number is the most flattering corner of an unstated player space, and its prose gloss names the wrong defect.** *"the median person in the province advertises zero subjects"* is false: **all 408 records carry a `topics` array and only one is empty.** They advertise; the advertised subject does not resolve. Measured through the shipping reader over the corpus's own player space (10 races × 4 upbringings × {0,40,100} disposition = 120 shapes): records offering nothing of their own runs **215–250 of 408 (52.7%–61.3%)**, worst `orc/3/d0`, best `dunmer/0/d40` = **215 (52.7%)**. Round 1's **217** sits one record off the best corner. Under **Ruling W1** the player is the constituent and a bar over such a population binds on the **worst**, never on one unnamed member. Round 1 also reported *"3 offer nothing at all"*; at no shape tried does that reproduce — it is **0** with the roots known and **27** with them unknown. | A7 restated: player space named, gate binds on the **worst** player, "nothing at all" clause re-baselined and its population fixed. |
+| **P6** | **Step D commissions the wrong repair, and it is the expensive one.** Of the 225 records offering nothing at `argonian/0/d40`, **208 do advertise a non-root topic** — the wiring step D would build already exists. Classifying the 221 dead advertisements: **17** name a string that is not a topic id at all (`the drowned tally`, `the vats or the people`, `the lease` — prose form where the corpus uses slugs; only **1** would be fixed by slugifying), and **204** name a real topic id, concentrated in just **23 distinct topics**, for which **no INFO passes the filter stack** for that player. So the job is 23 topics' filter stacks plus 17 broken references — not a rehoming pass over 200+ NPC records. | §4D rewritten with the measured decomposition and the cheap order. |
+| **P7** | **The §G cap is quoted but never bound to this piece's verdict, and §2a is what unbinds it.** `RI-UIX08`'s clause caps **`RI-UIX08`** — and §2a hands every `RI-UIX08` row to the sibling, leaving this piece's numeric rows anchored on `RI-DLG01`, whose published aggregation is *"count of passing §D rows, gated"* with **no human gate anywhere in it**. A critic could therefore score this piece green on statistics with §G unrun and break no stated rule. That is precisely the failure the plan's own framing paragraph forbids. | §5 now states the cap as a **verdict requirement** naming the item and the subsystem it applies to, and what to record when §G has not run. |
+
+**One thing deliberately not repaired**, so this review stays one-step reversible and does not
+re-home somebody else's number: **A1's floor of 90% is left exactly as round 1 set it.** It is
+argued, it is checkable against REF-A12c, and round 1 explicitly invited the argument. Round 2 has
+no measurement that beats it and declines to invent one.
+
+**A third owed corpus edit is added to §9** and is not performed here: `game/data/dialogue/topics/thorn.json`
+(`declared_incomplete: true`) carries **four records in a second, undeclared schema** — `topic` /
+`text` / `links` instead of `id` / `infos` / `to`. They are invisible to every `id`/`to` instrument
+in `tools/dialogue/`, and they are the whole of the 4-occurrence gap between round 1's **1,605** and
+this round's independently measured **1,601**. §5 now fixes A1's denominator against the definition
+rather than against either count.
+
+---
+
+## 1. The one-paragraph reason this piece is not what it looks like — re-measured at `7b05e65e`
 
 **The graph is already built and it has most of the shape RI-DLG01 asks for.**
-`node tools/dialogue/build-graph.mjs` at `e2a7a1a8`: **470** nodes, **1,630** edges, mean non-leaf
-out-degree **3.98**, `reachable_only_via_another_topic` **0.9809**, `max_depth` **7**, leaf fraction
-**0.223**, convergence **0.619**, **zero** orphans, **zero** unreachable INFOs, `menu_quest_fraction`
-**0.20**.
+`node tools/dialogue/build-graph.mjs` at `7b05e65e` (identical at `e2a7a1a8`): **470** nodes,
+**1,630** edges, mean non-leaf out-degree **3.98**, `reachable_only_via_another_topic` **0.9809**,
+`max_depth` **7**, leaf fraction **0.223**, convergence **0.619**, **zero** orphans, **zero**
+unreachable INFOs, `menu_quest_fraction` **0.20**.
 
-**One §D row is not green and the draft said they all were:** `median_depth` is **2**, against §D's
-*"Median depth from greeting — our target ≥ 3 — fail below 2"*. It sits on the fail value. Nothing
-in this plan repairs it directly and nothing here may make it worse; it is named so a reviewer is
-not told the graph is clean when it is not.
+**Two things in that paragraph are not green, and a plan that names only the first is repeating the
+error it convicted the draft of.**
 
-**And the mechanism the owner described is 10.5% present.** Of the **1,605** `addTopic` occurrences
-in `game/data/dialogue/topics/` (**1,277** distinct source→destination pairs), the destination's
-player-visible label occurs literally in the text of the answer that unlocks it in **168** cases —
-**10.5%** of occurrences, **12.7%** of distinct edges — and **15.9%** under a deliberately generous
-matcher that only requires every content word to appear somewhere in the answer. **1,437 unlocks are
-invisible.** A topic silently appears in the list; the player was never shown the word, so there was
-nothing to notice, nothing to click, and nothing to pull.
+1. **`median_depth` is 2**, against §D's *"Median depth from greeting — our target ≥ 3 — fail below
+   2"*. It clears the hard floor and misses the target, so §D scores 12 of 13 and `RI-DLG01`'s
+   *"12/13 or better"* still reads PASS. Nothing in this plan repairs it and nothing here may make
+   it worse.
+2. **Ten topics cannot be reached from any greeting, by any player, by any route** —
+   `unreachable_from_greeting` at `7b05e65e` is `warden-eshi`, `the-one-path`, `the-blight-storms`,
+   `the-ash-cough`, `the-xul-teekh`, `the-soul-trade`, `the-tolls`, `the-ninth-column`,
+   `the-bond-berth`, `the-man-off-the-quay`. **Every one has in-degree ≥ 1, so §D's orphan row
+   passes them; and none is named in any `npc.topics`, so `build-graph.mjs`'s own documented "fourth
+   door" does not save them either.** They are a pocket that only points at itself. Ten topics
+   written and unreachable is this piece's subject, not a footnote to it, and **§D has no row that
+   can see it** — the figure is printed by `RI-DLG01`'s own comparison-method step 2 and then
+   scored by nothing. Row **A5c** below closes it, and §4C's deletion test is rewritten because the
+   orphan test it used cannot detect this class at all.
+
+`reachable_only_via_another_topic` deserves one warning, because it reads like a reachability
+guard and is not one: `build-graph.mjs` computes it as *"nodes that are neither a root nor
+journal-added, over all nodes"*. **Deleting edges cannot move it.** It is a shape statistic, and
+A5's regression gate must not be read as covering reachability because that row is green.
+
+**And the mechanism the owner described is about 10.5% present.** Counting every `to` entry of every
+INFO in `game/data/dialogue/topics/` — **1,601** occurrences over **1,273** distinct
+source→destination pairs — the destination's player-visible label occurs literally in the text of
+the answer that unlocks it in **167** cases: **10.4%** of occurrences, **12.6%** of distinct pairs,
+and **15.9%** under a deliberately generous matcher that only requires every content word to appear
+somewhere in the answer. **About 1,434 unlocks are invisible.** A topic silently appears in the
+list; the player was never shown the word, so there was nothing to notice, nothing to click, and
+nothing to pull.
+
+*(Round 1 published 1,605 / 1,277 / 168. The four-occurrence gap is not tree movement —
+`game/data/dialogue/` is byte-identical between `e2a7a1a8` and `7b05e65e` — it is the four
+second-schema records in `thorn.json` carrying `links` instead of `to`. §5 fixes A1's population
+against the definition; §9 records the corpus edit owed.)*
 
 **Two corrections to the draft's supporting claims, both load-bearing:**
 
@@ -97,7 +182,14 @@ Reproduce before doing anything else — one second each:
 ```
 node tools/dialogue/build-graph.mjs --out /tmp/dlg          # the §D topology
 node tools/dialogue/build-graph.mjs --out /tmp/dlg --visibility   # once §4B has added it
+node tools/dialogue/critic-reach.mjs                        # A7's player space, already enumerated
 ```
+
+**One trap in `topicsFor()` that will cost the builder and the critic a confused hour each if it is
+not written down: `player.knows` must be a `Set`.** `converse.js:214` calls `knows.has(k)`; an array
+throws `TypeError: knows.has is not a function` from inside `infoFor`, and a census that swallows
+that exception silently drops the record rather than counting it. Any A7 measurement must assert
+zero throws over the population and publish that count.
 
 ---
 
@@ -113,6 +205,22 @@ node tools/dialogue/build-graph.mjs --out /tmp/dlg --visibility   # once §4B ha
 | `corpus/86-ui/RI-UIX04-journal-ui.md` | the journal screen | `RI-UIX08` §E5's journal links — **out of scope**, named so a later piece picks it up |
 | `corpus/00-doctrine/ARBITRATION.md` **S13** | topics are unavailable in combat | nothing here reaches into a fight |
 | `corpus/00-doctrine/ARBITRATION.md` **S51**, **S52**, **Ruling W2** | admissible counterparts; the shape of a played gate; a human gate asks whether it is *good* | §6 inherits the dialogue system's single played gate rather than commissioning a second |
+| `orchestration/OWNER-DIRECTIVES-2026-08-14.md` **Ruling W1** | *"an aggregate may never be the binding predicate for something a player meets one at a time … bind on the worst constituent or a stated quantile, never the mean"* | **A7 binds on the worst player, not on one unnamed one (§5). A1 is already per-constituent and the argument is made explicitly below rather than assumed.** |
+
+**Ruling W1 applied to this plan's two ratio rows, because the directives file records that no plan
+outside the `W1-30` tree cites it and that is how superseded predicates get built against.**
+
+- **A1 complies as written, and here is why rather than an assertion.** Its constituent is the
+  *unlock*, not the settlement: A1 is a percentage over occurrences, and **A1b is the worst-
+  constituent clause** — *every single* occurrence that fails A1 must carry `implied: true`, with no
+  budget and no ratio. There is no configuration in which A1+A1b passes while some individual unlock
+  is silently invisible. The settlement is not a meaningful constituent here either, and that is
+  measured rather than argued: `metrics.json`'s `per_settlement.answerable` runs **395–411 of 470**
+  in all nine settlements, so the population a player meets is very nearly the whole graph wherever
+  they stand.
+- **A7 did not comply and now does.** Its constituent is the *player build*, the figure moves
+  **215–250 of 408** across the corpus's own player space, and round 1 bound it on one unnamed
+  member near the best end. See §5.
 
 ### 2a. The seam with `W1-UIX08-dialogue-window` — ruled, because a sibling is already building
 
@@ -126,10 +234,17 @@ reverted three agents' work. **Ruling, and it is the answer to "which piece owns
 
 | | This piece (`W1-DLG-TOPIC-WEB`) | `W1-UIX08-dialogue-window` |
 |---|---|---|
-| Owns files | `game/data/dialogue/topics/**`, `tools/dialogue/**` | `game/src/ui/**`, `game/src/render/ui.js`, the `topic_link` surface role |
-| Owns rows | A1, A2, A5, A6, A7 (below) | `RI-UIX08` §A/§B/§C/§D/§E1, and §C1's link precision ≥ 0.98 / recall ≥ 0.95 |
-| Owns the played gate | **no** — reads its result | **yes** — `RI-UIX08` §G, one gate for the dialogue system (S52) |
-| Never edits | anything under `game/src/` | anything under `game/data/dialogue/` |
+| Owns files | `game/data/dialogue/topics/**`, `tools/dialogue/**`, **and `game/src/character/converse.js` for exactly the `topicLabel` change in §4A step 1** | `game/src/ui/**`, `game/src/render/ui.js`, `game/src/engine.js`, `tools/ui/**`, the `topic_link` surface role |
+| Owns rows | A1, A1b, A2, A5, A5b, A5c, A6, A7 (below) | `RI-UIX08` §A/§B/§C/§D/§E1, and §C1's link precision ≥ 0.98 / recall ≥ 0.95 |
+| Owns the played gate | **no** — reads its result, and records the cap when there is none (§5) | **yes** — `RI-UIX08` §G, one gate for the dialogue system (S52) |
+| Never edits | `game/src/ui/**`, `game/src/render/ui.js`, `game/src/engine.js`, `tools/ui/**` — **and nothing else under `game/src/` beyond the one declared `converse.js` change** | anything under `game/data/dialogue/` |
+
+**The one `game/src/` exception is declared here rather than left as a contradiction between this
+table and §4A.** `node tools/ownership.mjs --for game/src/character/converse.js` at `7b05e65e`
+returns one piece, `W1-DLG-S37`, state **done**, and no live claimant; the sibling's own
+`files_claimed` lists `game/src/engine.js`, `game/src/ui/**` and `tools/ui/**` and **not**
+`converse.js`. A2's hard fail (*`topicLabel` reads `name`*) is unreachable without it, so a table
+that forbade it would have made this plan unbuildable on its own terms.
 
 **The contract between them is machine-checkable and is this piece's deliverable, not a
 conversation.** `--visibility` (§4B) emits, for every answer the build will render, the list of
@@ -145,9 +260,27 @@ the window's input.
   colouring proper nouns has broken the contract from its side; a content edit that raises A1 by
   deleting the window's spans has broken it from this side.
 
-Handoff mechanics: the seam is agreed by `SendMessage` to the live `W1-UIX08` agent (Ruling O1
-requires the message, not a new agent), and this plan does not begin step C until that agent has
-acknowledged the contract's shape or the orchestrator has ruled otherwise in writing.
+**Handoff mechanics — decide, record, proceed. Nothing here waits for a reply.** Round 1 wrote *"does
+not begin step C until that agent has acknowledged"*, and that is work parked pending an answer,
+which `CLAUDE.md` rule 0 and `RULES.md` rule 0 forbid in terms. Ruling O1 requires the **message**;
+it nowhere requires an acknowledgement, and a sibling agent may be finished, dead or unreachable by
+the time this builds. The rule is therefore three one-sided checks, all of which cost seconds and
+none of which needs anybody to answer:
+
+1. **Send the seam contract to the live `W1-UIX08` agent by `SendMessage`** (Ruling O1: the message,
+   not a new agent), record in the status file that it was sent and when — **and continue
+   immediately**. An acknowledgement, if it arrives, is recorded and may narrow the seam; its
+   absence changes nothing.
+2. **Before writing any file, run `node tools/ownership.mjs --for <path>` and re-read
+   `orchestration/status/W1-UIX08-dialogue-window.json`.** If the sibling has claimed or touched a
+   path this plan is about to write, that path is theirs; say so in the status file and route the
+   work over the seam instead of taking it.
+3. **If the sibling has already built the visible-unlock text side** — i.e. its `files_touched`
+   includes anything under `game/data/dialogue/`, or it has landed its own visibility/link census
+   under `tools/dialogue/` — **this plan concedes the overlap and keeps only the contract file.**
+   Say that plainly in the verdict; do not fight for the row. *(At `7b05e65e` the sibling is
+   `state: building` with `files_touched` = its own status file and `reports/uix08/READING-NOTE.md`
+   only, so nothing is conceded yet and the seam is live.)*
 
 ### 2b. When does the unlock fire? — ruled, reversible
 
@@ -176,16 +309,42 @@ this plan supplies the data contract and the census that says whether it is hone
 
 `W1-DLG-WORDS` (`state: complete`) closed with: *"whether these lines reach a player's ear is a
 reachability question (257 of 336 NPC records carry actor names no root topic is written for) and
-belongs to whoever owns reachability."* Re-measured through the shipping reader at `e2a7a1a8`, with
-the nine roots known and a neutral player: **217 of 408 NPC records (53.2%) offer no topic of their
-own**, median own-topics **0**, and **3 offer nothing at all**.
+belongs to whoever owns reachability."*
+
+**Re-measured at `7b05e65e` through the shipping reader, over the corpus's own player space rather
+than one unnamed player** (10 races × 4 upbringings × disposition {0, 40, 100} = 120 shapes, roots
+known, `knows` as a `Set`): records offering **no topic of their own** run **215–250 of 408**, i.e.
+**52.7% – 61.3%**; best `dunmer/upbringing 0/disposition 40` = 215, worst `orc/upbringing 3/
+disposition 0` = 250. Median own-topics is **0** at every shape. **Round 1's 217 (53.2%) is one
+record off the best corner of that space and did not say which player it was.** Round 1's *"3 offer
+nothing at all"* does not reproduce at any shape tried: it is **0** with the nine roots known and
+**27** with them unknown.
 
 > **Ruling: it belongs here, not to the dialogue-text piece.** The words exist; what is missing is a
 > route from a person to them, which is the topic web. It lands as row **A7**.
 
-**Reversible.** **Falsifier:** if the repair turns out to require new *answers* rather than new
-`npc.topics` wiring for answers that already exist, the work is `W1-DLG-WORDS`'s successor's and
-this row becomes a handoff with a number attached.
+**And the defect is not the one round 1 described, which changes the work.** Round 1 wrote *"the
+median person in the province advertises zero subjects beyond the nine you started with"*. That is
+false: **all 408 records carry a `topics` array and exactly one of them is empty.** They advertise;
+the advertisement does not resolve. Measured at `argonian/0/d40`, of the 225 records offering
+nothing, **208 advertise at least one non-root topic**, and the 221 dead advertisements decompose:
+
+| cause | count | distinct | what it actually is |
+|---|---|---|---|
+| the advertised string is **not a topic id at all** | **17** | 17 | prose form where the corpus uses slugs — `the drowned tally`, `the vats or the people`, `the lease`, `a phial for the blind man`. **Only 1 of the 17 would be fixed by slugifying**; the rest name subjects that do not exist. A dangling reference, and nothing in the corpus lints for it. |
+| the id **exists** but **no INFO passes the filter stack** for that player | **204** | **23** | the answers are authored and gated — by race, class, faction or disposition — with no fallback INFO. Twenty-three topics carry the whole of it. |
+
+> **Sub-ruling, reversible: this is a filter-stack and dangling-reference repair, not a rehoming
+> job.** Twenty-three topics plus seventeen broken strings is a bounded, cheap, mostly-mechanical
+> fix; rewiring 200+ NPC records is a large content pass that would leave the same 23 topics
+> unanswerable for the same players. **Falsifier:** if adding a fallback INFO to those 23 topics
+> moves A7's worst-player figure by less than 10 points, the concentration argument is wrong and
+> the work is a broader authoring pass after all — measure it after the first five topics, not
+> after all 23.
+
+**Reversible.** **Falsifier for the row as a whole:** if the repair turns out to require new
+*answers* rather than fallback INFOs and corrected references for answers that already exist, the
+work is `W1-DLG-WORDS`'s successor's and this row becomes a handoff with a number attached.
 
 **What is landed and must be preserved.** The 470-topic graph, its authored INFO order and the
 S37 scoring reader, `tools/dialogue/build-graph.mjs` and its four outputs, `consume.mjs`'s
@@ -241,8 +400,9 @@ Two parts, in this order, and the first is small:
    when present, the de-slugged id otherwise — and `topicsFor()` passes the record. One function,
    one call site. Until this lands, every `name` in the corpus is decoration. *This is the one edit
    this piece makes under `game/src/`; it is a two-line change in
-   `game/src/character/converse.js`, it is outside `W1-UIX08`'s owned files, and it is announced
-   over the seam before it lands.*
+   `game/src/character/converse.js`, it is the declared exception in §2a's ownership table, it is
+   outside `W1-UIX08`'s claimed files (verified at `7b05e65e`), and it is announced over the seam
+   before it lands — announced, not waited on (§2a).*
 2. **Author a `name` only where `topicLabel(id)` is wrong** — proper nouns that need their capital,
    and ids whose wording is not what a person would say. Baseline: 23 authored, 21 of them
    redundant. This is a bounded review of 470 ids, not 447 new fields.
@@ -255,20 +415,37 @@ strict and the loose matcher, and writing `visibility.tsv` (`src, dst, label, ma
 char_end`) plus three fields in `metrics.json`. **`visibility.tsv`'s span columns are the §2a
 contract file**, so the window has something to consume.
 
-**It must be able to fail: run it against `e2a7a1a8` first and confirm it reports 10.5% / 15.9%, not
-100%.** A visibility probe that cannot report today's tree as broken is not a probe. State the
-matcher's fold rules (case, apostrophes, hyphens) in the tool's header, because `RI-UIX08`'s own
-"Untested" note predicts the recall floor will be argued over morphology.
+**It must be able to fail: run it against the unmodified tree first and confirm it reports ~10.4% /
+15.9%, not 100%.** A visibility probe that cannot report today's tree as broken is not a probe.
+State the matcher's fold rules (case, apostrophes, hyphens) in the tool's header, because
+`RI-UIX08`'s own "Untested" note predicts the recall floor will be argued over morphology.
+
+**The same run carries two cheap lints that nothing in the tree performs today**, both of which are
+one pass over data the tool already parses, and both of which must exit non-zero when they fire:
+
+- **Dangling `npc.topics` reference** — an advertised string that matches no topic id. **17 at
+  `7b05e65e`** (§2c). Publish the list.
+- **`unreachable_from_greeting`** — already computed by `build-graph.mjs` and scored by nothing.
+  **10 at `7b05e65e`** (§1). Publish the list; row A5c gates it.
 
 **C. Author the missing links — with a budget (content; no browser).**
 For every edge whose destination is invisible: write the destination's label into the source
 answer's prose, mark the `to` entry `implied: true`, or **delete the edge**.
 
-**The deletion budget is 200 distinct edges and it is a hard cap.** Measured at `e2a7a1a8`: of the
-1,115 invisible distinct edges, 770 can be deleted without orphaning their destination, and taking
-that headroom lands topic→topic mean non-leaf out-degree at **2.02** against §D's floor of **2.0** —
-while visibility still only reaches **32%**. So deletion cannot reach A1 and can consume the entire
-margin.
+**The deletion budget is 200 distinct edges and it is a hard cap.** Measured at `e2a7a1a8` and
+unchanged at `7b05e65e`: of the ~1,112 invisible distinct edges, 770 can be deleted without
+orphaning their destination, and taking that headroom lands topic→topic mean non-leaf out-degree at
+**2.02** against §D's floor of **2.0** — while visibility still only reaches **32%**. So deletion
+cannot reach A1 and can consume the entire margin. *(Round 2 reproduces the baseline this table
+starts from: topic→topic distinct edges **1,273**, mean non-leaf out-degree **3.488**.)*
+
+**The safety test on a deletion is reachability, not orphaning, and this is a correction not a
+refinement.** "Does not orphan" tests in-degree ≥ 1. **Ten topics at HEAD already have in-degree ≥ 1
+and are reachable from no greeting** (§1), so the orphan test demonstrably cannot see this failure —
+it is a guard with one eye in exactly `HAZARDS` §0b's sense, and a 200-edge pass could multiply the
+pocket while every §D row stayed green. **An edge may be deleted only if, after the deletion, its
+destination is still reachable from some greeting node** — recompute, do not assume. Row **A5c**
+gates the result.
 
 | edges deleted | topic→topic mean non-leaf out-degree | visibility |
 |---|---|---|
@@ -282,10 +459,27 @@ journal edges; the two numbers are in different populations and a builder must n
 
 Re-run `build-graph.mjs` after this step — **the whole §D table, per A5.**
 
-**D. `npc.topics` reach (data; no browser).** Wire the 217 records that advertise nothing of their
-own to subjects that already have answers. This is a rehoming job over existing content, and
-`tools/dialogue/rehome-actors.mjs` already exists for exactly this shape of edit — read it before
-writing anything.
+**D. Make the advertisements resolve (data; no browser). Cheapest first, and the order matters
+because the first branch may make the second unnecessary.** §2c measured the decomposition: the
+`npc.topics` wiring largely **already exists** and does not resolve.
+
+1. **The 17 dangling references first** — advertised strings that are not a topic id at all
+   (`the drowned tally`, `the lease`, …). One of the 17 is a slug/prose mismatch; the other 16 name
+   subjects that do not exist and must either be pointed at a real topic or removed. **Land a lint
+   for this class** in the `--visibility` extension (§4B): an `npc.topics` entry with no matching
+   topic id is an error and exits non-zero. It costs nothing and there is no check for it today.
+2. **Then the 23 topics carrying 204 of the 221 dead advertisements** — a real topic id whose filter
+   stack admits no INFO for the player. The repair is a fallback INFO per topic, authored last in
+   the file so first-match-wins and the S37 scoring reader both reach it only when nothing more
+   specific does. **Re-measure A7's worst player after the first five** (§2c's falsifier): if the
+   worst-player figure has not moved materially, stop and report, rather than authoring 18 more.
+3. **Only then, rehoming**, and only for whatever residue survives 1 and 2.
+   `tools/dialogue/rehome-actors.mjs` already exists for that shape of edit — read it before
+   writing anything.
+
+**Do not run this step against one player.** A7 binds on the worst of the corpus's player space
+(§5), and `tools/dialogue/critic-reach.mjs` already enumerates that space and reads its domains out
+of the corpus rather than assuming them — reuse it rather than writing a second enumerator (rule 10).
 
 **E. CONSUMPTION (`RI-MTH07`, mandatory under `ARBITRATION.md` §3) — extend, do not clone.**
 `tools/dialogue/consume.mjs` **already** names the world-side reader of `to` and breaks it

@@ -207,6 +207,27 @@ export const BUILD = {
   piece: 'W1-09 — combat core (on W1-00’s harness)',
 };
 
+/* ---- WHAT COUNTS AS A GOOD FACING, AS A NUMBER ------------------------------------------------
+ *
+ * `_refineFacing()` below and `tools/world/door-yaw-offline.mjs` / `tools/harness/door-yaw-sweep.mjs`
+ * apply THE SAME predicate, deliberately: a fixer that optimises a different quantity from the one
+ * the audit scores is a fixer that can pass its own tests and fail the player's.
+ *
+ * Why two numbers and not one. "Face away from the door you came out of" is satisfied by a body
+ * put down in an alley staring at the opposite wall two metres away, so distance alone is not
+ * enough — and distance alone also mis-reads `archon-vat-house`, where the facing has TWELVE
+ * METRES of sightline straight ahead and 48% of the forward view is a wall at arm's length. The
+ * fan is what sees that.
+ */
+const FACE_EYE_M = 1.6;              // where a head is above the feet the placement writes
+const FACE_STEP_M = 0.25;            // march resolution; the body radius is larger than this
+const FACE_MIN_CLEAR_M = 3;          // you must be able to walk three metres
+const FACE_NEAR_M = 3;               // "in your face" starts here
+const FACE_MAX_OCCL = 0.34;          // and no more than a third of the view may be that close
+const FACE_FAN_DEG = 30;             // the forward 60 degrees, which is roughly what a player reads
+const FACE_FAN_STEP_DEG = 3;         // 21 rays across it
+const FACE_SCAN_STEP_DEG = 10;       // 36 candidate bearings when the proposal fails
+
 export class Engine {
   constructor(canvas) {
     this.canvas = canvas;
@@ -8033,6 +8054,110 @@ export class Engine {
    * `y` is taken as given rather than snapped to the province: an interior floor is a plane and
    * `groundAt()` would drag the body to the heightfield under the building.
    */
+  /**
+   * THE DATA PROPOSES A FACING; THE GEOMETRY DISPOSES.
+   *
+   * `sim/settlement.js#exitFacing()` answers "face the way you just walked" from the door's own
+   * two coordinates, and on 103 of the 115 shipped interiors that is right. On twelve it is not,
+   * and the reason is that a doorstep is a point in a town, not a point in a corridor: at
+   * `archon-apothecary` the doorstep sits at bearing 315.9 deg from its own door and there is
+   * something 1.5 m along that bearing, while 12 m of open street is available 136 deg away. No
+   * rule derived from the door record ALONE can find that, because the obstruction is a DIFFERENT
+   * BUILDING and the door record does not know it exists.
+   *
+   * The project has been here before and the lesson is written into `exitFacing()`'s own comment:
+   * `door_world_bearing_deg` is a frozen derived value that disagrees with the drawn world, and
+   * authoring a second frozen number to patch the first would be the same mistake a third time. So
+   * this does not add data. It asks the collision set — the one the body is depenetrated against
+   * and the camera arm casts into — the same question the audit asks, at the moment of placement:
+   *
+   *   can you walk `FACE_MIN_CLEAR_M` along this facing, and is no more than `FACE_MAX_OCCL` of
+   *   the forward 60 degrees of view blocked closer than `FACE_NEAR_M`?
+   *
+   * If the proposal passes, IT IS RETURNED UNCHANGED and nothing scans — so 103 of 115 doors cost
+   * one 21-ray fan and behave exactly as before. If it fails, the 36 ten-degree bearings are
+   * scored and the NEAREST PASSING one wins, so the answer stays as close to "the way you walked"
+   * as the geometry allows. **If none passes, the proposal is kept.** A doorstep wedged between
+   * two walls (`thorn-hall`: best available clearance 2.5 m; `archon-vat-house`: 12 m of sightline
+   * with 48% of the view blocked at arm's length) is a defect in where the door was PUT, and
+   * spinning the player to face a different wall would hide it rather than fix it. Those two are
+   * reported by `tools/world/door-yaw-offline.mjs` as `point_cannot_pass` and are not this
+   * function's to solve.
+   *
+   * SAFE INSIDE THE ARMED DETERMINISM GUARD: no wall clock, no load boundary, no allocation the
+   * step depends on — `settlementSolidsNear()` is the same pure call `_settleSettlementSolids()`
+   * already makes every time the player moves 8 m. Returns null when there is no geometry to ask
+   * (a bare sim harness, a headless renderer, a town not streamed in), and the caller then keeps
+   * the data-derived answer — the same fail-open the whole facing chain takes.
+   */
+  _refineFacing(x, y, z, proposedYaw) {
+    const has = Number.isFinite(proposedYaw);
+    const cell = this._facingCell(x, z);
+    if (!cell || !cell.shapes.length) return null;
+    const eye = Number(y) + FACE_EYE_M;
+    const d2r = Math.PI / 180;
+    // One march serves both halves of the test: the pass rule only asks whether the first solid is
+    // nearer than FACE_MIN_CLEAR_M / FACE_NEAR_M, so nothing beyond that distance changes an answer.
+    const rayClear = (yaw) => {
+      const sx = Math.sin(yaw * d2r), sz = Math.cos(yaw * d2r);
+      for (let d = FACE_STEP_M; d <= FACE_NEAR_M + 1e-9; d += FACE_STEP_M) {
+        if (cell.contains(x + sx * d, eye, z + sz * d)) return d - FACE_STEP_M;
+      }
+      return FACE_NEAR_M;
+    };
+    const score = (yaw) => {
+      let blocked = 0, n = 0;
+      for (let a = -FACE_FAN_DEG; a <= FACE_FAN_DEG + 1e-9; a += FACE_FAN_STEP_DEG) {
+        n++;
+        if (rayClear(yaw + a) < FACE_NEAR_M) blocked++;
+      }
+      const ahead = rayClear(yaw);
+      return { clear_m: ahead, occluded: blocked / n, pass: ahead >= FACE_MIN_CLEAR_M && blocked / n <= FACE_MAX_OCCL };
+    };
+    const proposal = has ? score(proposedYaw) : null;
+    if (proposal && proposal.pass) {
+      return { yaw_deg: proposedYaw, refined: false, reason: 'proposal_clear',
+        clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4) };
+    }
+    let best = null;
+    for (let a = 0; a < 360; a += FACE_SCAN_STEP_DEG) {
+      const s = score(a);
+      if (!s.pass) continue;
+      const dev = has ? Math.abs(((a - proposedYaw + 540) % 360) - 180) : 0;
+      if (!best || dev < best.dev) best = { yaw_deg: a, dev, s };
+    }
+    if (!best) {
+      return has
+        ? { yaw_deg: proposedYaw, refined: false, reason: 'no_bearing_passes',
+            clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4) }
+        : null;
+    }
+    return { yaw_deg: best.yaw_deg, refined: true, reason: has ? 'nearest_clear_bearing' : 'clear_bearing',
+      from_yaw_deg: has ? proposedYaw : null, turned_deg: +best.dev.toFixed(1),
+      clear_m: +best.s.clear_m.toFixed(2), occluded: +best.s.occluded.toFixed(4) };
+  }
+
+  /** The collision set a body placed at (x, z) will actually be standing in. */
+  _facingCell(x, z) {
+    const id = this.sim && this.sim.env ? this.sim.env.interior : null;
+    if (id) {
+      // The room's own shell. `_syncInteriorCollisionCell()` has not necessarily run yet at the
+      // instant a door places the body, so the cell is built here from the same function it uses.
+      if (this._interiorCell && this._interiorCell.meta && this._interiorCell.meta.interior_id === id) return this._interiorCell;
+      const rec = this.settlements ? this.settlements.interior(id) : null;
+      if (!rec) return null;
+      try { return new CollisionCell(`facing:interior:${id}`, interiorCollisionShapes(rec), { class: 'interior' }); }
+      catch { return null; }
+    }
+    const pv = this.renderer && this.renderer.province;
+    if (!pv || typeof pv.settlementSolidsNear !== 'function') return null;
+    let solids = null;
+    try { solids = pv.settlementSolidsNear(x, z, 45); } catch { return null; }
+    if (!solids || !solids.shapes || !solids.shapes.length) return null;
+    try { return new CollisionCell(`facing:settlement:${solids.id}`, solids.shapes, { class: 'exterior' }); }
+    catch { return null; }
+  }
+
   _placeBody(x, y, z, yaw) {
     const p = this.sim.player;
     p.pos[0] = Number(x); p.pos[1] = Number(y); p.pos[2] = Number(z);

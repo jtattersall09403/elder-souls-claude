@@ -750,3 +750,67 @@ role, and **run the palette validator rather than eyeballing contrast**.
 The owner reads rather than approves — **nothing in this programme is ever gated on their reply**
 (`CLAUDE.md` rule 0). Decisions are ruled in writing, marked reversible, with the evidence that would
 overturn them.
+
+---
+
+## Ruling C5 — model routing is the ORCHESTRATOR's act, at dispatch, and it starts now
+
+**2026-08-14, orchestrator. Reversible; the tripwire and the reversal are named at the bottom.**
+
+### Why this ruling exists at all
+
+The routing policy has been written down since the cost programme began and **never applied**, and the
+reason is a category error I made and should name: routing was filed as *a change an agent could
+research and land*, like an instrument or a batching scheme. It is not. Nothing an agent writes into a
+file changes which model the next agent runs on — **the model is chosen by whoever calls the dispatch
+tool, at the moment of the call.** So every cost agent that "adopted" routing adopted a document, the
+fleet kept running on Opus, and the largest measured lever in the programme sat at zero while smaller
+ones were argued about. The dispatcher is the only actor who can pull it, and the dispatcher is me.
+
+Measured now, across this session's subagent transcripts: **94,831 Opus requests against 9,113 Sonnet**
+— 91.2% Opus. Headline: **$124.26/h, 107.2% of baseline**, mean parallelism 14.08. The programme's
+target is 25% of baseline. Nothing else on the table is the size of this.
+
+### The policy, in the only form that can be obeyed
+
+Route at dispatch, by **what the agent's output has to survive**, never by how important the piece
+sounds:
+
+- **Opus** — anything that *judges*: critics, plan reviewers, arbiters, adversarial verification,
+  blind judges, anything producing a score or a verdict, anything designing a control. Also anything
+  where being subtly wrong is expensive and hard to detect. **This is the quality guard and it is not
+  negotiable**: `CLAUDE.md` binds the programme to *"no sacrifices in quality, delivery speed, or
+  rigour"*, and the four guards must hold **together** — a cost win bought with a worse verdict is a
+  failed change, not a trade.
+- **Sonnet** — enumeration, census, sweeps, mechanical verification, format and schema work, applying
+  a decision already made, and any piece whose output is itself checked by a downstream critic. The
+  test: *if this agent is subtly wrong, does something else catch it?* If yes, it does not need Opus.
+- **When genuinely unsure, Opus.** The asymmetry is deliberate. A wrongly-cheap judge costs a bad
+  verdict that misdirects weeks; a wrongly-expensive census costs a few dollars.
+
+### Applied, not merely written
+
+First application landed with this ruling: the repo-wide **orphaned-consumption census** dispatched on
+**Sonnet** — a large, genuinely mechanical grep-and-classify sweep whose output is a map that a critic
+will check. Its sibling, the **citation-staleness audit**, stayed on Opus because it must judge whether
+a document's claim about the repo is false and which of two contradictory sources is authoritative.
+That pair is the policy's own worked example, and the two were dispatched within a minute of each
+other so they are close to a matched comparison.
+
+### Guards, tripwire, reversal
+
+- **Tripwire (quality).** Verdict scores and critic find-rate, tracked per model tier. If Sonnet-routed
+  pieces show a materially higher rate of being overturned by their critic than Opus-routed ones, the
+  routing is wrong for that class of work and the class moves back. Watch find-rate specifically:
+  a cheap builder whose critic finds *more* is not necessarily a failure — it may be the gauntlet
+  working — but a cheap builder whose *critic* misses things is a silent one, which is why critics
+  never move.
+- **Tripwire (the honest confound).** Sonnet-routed pieces will be systematically *easier* pieces,
+  because that is the selection rule. So a raw quality comparison across tiers is confounded by
+  construction and must never be read as "Sonnet is as good". The only clean read is within a class:
+  the same kind of piece, before and after the class moved.
+- **Reversal, one step:** stop passing `model` at dispatch. The fleet returns to inheriting the
+  session model on the very next spawn, with no file to revert and no state to unwind. That is the
+  cheapest reversal in the whole programme, and it is a reason to start now rather than to plan more.
+- **This is not a licence to run fewer agents.** Parallelism is a separate guard with its own floor;
+  routing must move spend per unit of work, never the amount of work in flight.

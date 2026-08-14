@@ -137,10 +137,18 @@ export function buildWritHouse(root, mats) {
     const seg = (11.0 - DW) / 2;                      // the wall either side of it
     for (const sign of [-1, 1]) box(root, mats.wall, seg, 4.0, 0.35, sign * (DW / 2 + seg / 2), 2.0, 6.5);
     box(root, mats.wall, DW, 4.0 - DH, 0.35, 0, DH + (4.0 - DH) / 2, 6.5);   // the lintel over it
-    // The leaf. Shut, and a different material from the wall, because a doorway drawn as a hole
-    // in a dark room reads as a hole and not as a door — RI-JRN01 M5's frame has to say "there is
-    // a way out of here" without a prompt saying so.
-    box(root, mats.bark, DW - 0.10, DH - 0.08, 0.10, 0, (DH - 0.08) / 2, 6.42);
+    // The leaf, and a frame around it. Shut, and in a LIGHTER material than the wall and the
+    // shelving either side of it, because this room has one lamp and it is at the far end: a
+    // doorway drawn as a dark rectangle in a dark wall reads as a shadow, and the whole point of
+    // this opening is that the frame says "there is a way out of here" with no prompt saying so.
+    // Measured against the reference: not one of the 33 plates in
+    // `corpus/70-visual/refs/morrowind/REF-A12b/` has a surface over a blank wall.
+    // NAMED, and that is not decoration: `tools/harness/opening-frame.mjs` asks "what does a ray
+    // from the opening frame's camera to the doorway hit FIRST" and the only honest way to answer
+    // is for the door to be identifiable in the scene graph. Before this change the answer was
+    // "the wall", on every sample, because there was no door.
+    box(root, mats.bark, DW + 0.24, DH + 0.12, 0.12, 0, (DH + 0.12) / 2, 6.30).name = 'writ-house-door';
+    box(root, mats.plank, DW - 0.06, DH - 0.06, 0.10, 0, (DH - 0.06) / 2, 6.26).name = 'writ-house-door';
   }
   box(root, mats.wall, 0.35, 4.0, 13.0, -5.5, 2.0, 0);
   box(root, mats.wall, 0.35, 4.0, 13.0, 5.5, 2.0, 0);
@@ -196,9 +204,13 @@ export function buildWritHouse(root, mats) {
   box(root, mats.plank, 1.6, 0.16, 0.9, -3.7, 0.94, 2.2, 0.35);
   box(root, mats.plank, 0.18, 0.9, 0.8, -3.7, 0.47, 2.2, 0.35);
 
-  // One high window, north-facing, coast light. It is the only daylight in the room.
-  const win = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.0), new THREE.MeshBasicMaterial({ color: 0xb9c8cf }));
-  win.position.set(0, 2.9, 6.30); win.rotation.y = Math.PI;
+  // One high window over the door, coast light. It is the only daylight in the room, and at 2.4 m
+  // it was WIDER than the 2.10 m gap the reed-cases now leave — so it read as a flat white card
+  // laid over four rows of shelving rather than as an opening in a wall. Narrowed to fit inside
+  // the gap, and lifted clear of the lintel's top edge, so the frame reads door-then-daylight in
+  // one vertical line, which is what a player has to be able to find in the first second.
+  const win = new THREE.Mesh(new THREE.PlaneGeometry(1.90, 0.86), new THREE.MeshBasicMaterial({ color: 0xb9c8cf }));
+  win.position.set(0, 3.02, 6.28); win.rotation.y = Math.PI;
   root.add(win);
   // The record currently has no authored lamp, so litLights() supplies one explicit fail-open
   // hearth at this position. Match that shared policy rather than inventing two private lamps.
