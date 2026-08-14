@@ -37,7 +37,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync, execSync } from 'node:child_process';
-import { makeControlClone, humanMB } from '../lib/control-clone.mjs';
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const argv = process.argv.slice(2);
@@ -50,30 +49,15 @@ const BASE = argOf('--base', 'HEAD');
 const log = (s) => process.stdout.write(s + '\n');
 const sha = (p) => crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex').slice(0, 16);
 
-/**
- * A minimal tree that `build-roads.mjs` and `road-through-building.mjs` can both run in.
- *
- * Built with `tools/lib/control-clone.mjs` (HAZARDS.md §5) instead of `fs.cpSync`: `game/` and
- * `tools/` are hard-linked, not deep-copied — this scratch cost ~1.2 GB to build as a `git clone`
- * and ~50 MB as a deep copy; a hard-linked clone costs the disk only the bytes it actually writes.
- * `game/data/world/roads.json` is the one file every arm below overwrites, so it is the one path
- * declared `writable` — everything else stays a link, and `--self-test` on that tool proves writing
- * into a correctly-declared writable path never touches the real repository file.
- */
+/** A minimal tree that `build-roads.mjs` and `road-through-building.mjs` can both run in. */
 function makeScratch() {
   fs.rmSync(SCRATCH, { recursive: true, force: true });
-  const { manifest } = makeControlClone({
-    root: ROOT,
-    paths: ['game', 'tools'],
-    extra: ['corpus/50-world/world-scale.json'],
-    writable: ['game/data/world/roads.json'],
-    dir: SCRATCH,
-  });
+  fs.mkdirSync(path.join(SCRATCH, 'corpus/50-world'), { recursive: true });
   fs.mkdirSync(path.join(SCRATCH, 'reports'), { recursive: true });
+  fs.cpSync(path.join(ROOT, 'game'), path.join(SCRATCH, 'game'), { recursive: true });
+  fs.cpSync(path.join(ROOT, 'tools'), path.join(SCRATCH, 'tools'), { recursive: true });
+  fs.copyFileSync(path.join(ROOT, 'corpus/50-world/world-scale.json'), path.join(SCRATCH, 'corpus/50-world/world-scale.json'));
   fs.rmSync(path.join(SCRATCH, 'tools/runs'), { recursive: true, force: true });
-  log(`  scratch built: ${manifest.stats.linked} files linked, ${manifest.stats.copiedWritable} copied (writable), `
-    + `${manifest.stats.copiedFallback} link fallbacks — apparent ${humanMB(manifest.stats.apparentBytes)}, `
-    + `actually new on disk ${humanMB(manifest.stats.newBytes)}`);
 }
 
 function run(cmd, args, cwd) {

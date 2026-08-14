@@ -1,0 +1,80 @@
+{
+  "task_id": "W1-30F",
+  "role": "builder",
+  "piece": "W1-30F",
+  "status": "partial",
+  "plan_state": "building",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "The brief's first question is answered and the answer changes the plan. The 286 m of amplitude Valus Ridge declares is NOT missing from the data and NOT missing from the mesh - the baked raster carries 418 m of built relief there, 264 m in the Salt Hills, 230 m in Blackwood, and the far mesh samples the whole province at 50 m per quad against a 420-1560 m landform wavelength. The landform is deleted in the LAST stage, by uniform-height FogExp2: across the 26 region shots there are 158.3 m of relief inside the frustum and 49.2 m survive the air, and 51.1% of the mean frame is flat fog colour rather than a picture of anything. That prediction is anchored in pixels at Spearman rho +0.95 against frame-stats.mjs's measured dominant_frac. One fix landed: game/src/world/aerial.js consumes fog.height_falloff_m, which all thirteen regions declare and which appeared NOWHERE in game/src before today. It takes surviving relief 49.2 -> 70.3 m and Valus Ridge's fog wash 85.6% -> 70.1%. It is honestly not the cure for sameyness, and section 5 below rules on why.",
+  "headline_findings": [
+    "F1 PIPELINE, NOT AUTHORING. terrain.json carries 418 m of built relief in valus-ridge, 264 salt-hills, 230 blackwood, 214 stone-forest. RI-WLD16's L2 (built terrain matches declared class) already PASSES. province.js#_buildFar samples the whole 4825x5540 m province at 96x110 = 50 m quads, twelve-plus samples per landform wave. The shape survives to the vertex buffer intact.",
+    "F2 THE AIR IS WHAT DELETES IT. eye-blackwood: 450.7 m of relief in the frustum, 1.6 m survives 10% transmittance - 99.6% gone. eye-western-rootlands 415.7 -> 0.2 m. eye-stone-wastes 446.6 -> 5.5 m. eye-hive 448.5 -> 6.5 m. Mean over 26 shots 158.3 -> 49.2 m, 15 of 26 below a 25% floor.",
+    "F3 HALF OF EVERY FRAME IS FOG. New metric fog_wash - fraction of the real 2D frustum that resolves to flat fog colour. Mean 51.1%; vista-valus-ridge 85.6%, and its captured frame is a pale rectangle with one straight edge. Validated against pixels, not asserted: rho(+0.95) with frame-stats.mjs's measured dominant_frac and rho(-0.82) with luma span, over the 13 vistas. The Deck's own unusability screen independently flags 9 of those 13.",
+    "F4 A DECLARED FIELD WITH NO CONSUMER. All 13 regions carry fog.height_falloff_m (26 m deep-marshes, 340 m salt-hills, 260 m valus-ridge). Before this piece `height_falloff` appeared nowhere in game/src. It is the scale height of the haze layer and it is now consumed by game/src/world/aerial.js.",
+    "F5 THE OBVIOUS RECONCILIATION MAKES IT WORSE, MEASURED. Every region declares TWO visibility numbers that disagree in 8 of 13: fog.extinction_per_m (which renders) and sightline_m (which RI-WLD04 declares). Valus Ridge says 2200 m and renders 599 m; Thornmarsh says 30 m and renders 264 m. Driving extinction from the declared sightline takes mean fog wash 51.1% -> 57.4% - WORSE - because the marsh regions declare SHORTER sightlines than they render. Blackwood declares 18 m.",
+    "F6 58% OF THE VISIBLE SHAPE IS BETWEEN-REGION STEP. Flattening every region to its own mean height still leaves 91.8 m of the shipped world's 158.3 m mean frustum relief. So most of the shape a camera can see here is the elevation difference BETWEEN regions, not landform inside one - which is RI-WLD15's complaint arriving from a different instrument and is why RI-WLD16's L3 finds 3 of 65 named elements."
+  ],
+  "reversible_rulings": [
+    "RULING F1 - the samey nine cannot be fixed with terrain. In nine of thirteen regions the landform can never reach the camera, and that is what those regions themselves declare (blackwood sightline_m 18, deep-marshes 22, thornmarsh 30, hive 55, western-rootlands 120). Their variety has to be carried inside 20-60 m - ground state, water, scatter, undergrowth, props - which is exactly RI-WLD15's within-region variety and exactly what is failing. Terrain-amplitude work aimed at those nine will move the raster and not the frame. OVERTURNED BY: a frame from a marsh region in which a landform 300 m away is legible, without lowering that region's extinction below its declared floor.",
+    "RULING F2 - aerial perspective lives in world/aerial.js and not in render/sky.js. sky.js has three live pieces on it and ownership.mjs reports an undeclared overlap; regions.json is claimed by W1-25. So the change is a NEW file inside W1-30F's owned paths plus two calls in province.js, and it patches THREE.ShaderChunk globally rather than forking C's frozen material API. OVERTURNED BY: W1-30B taking atmosphere ownership, at which point deleting the two province.js calls reverses this exactly.",
+    "RULING F3 - the plan's item 6 (region landform profiles driving the height field) is DEPRIORITISED against items 1-3 (terrain layer blending, ground-breaking scatter, alpha-cut foliage). The measurement says the shape a landform profile would add is invisible in nine of thirteen regions while the ground within 60 m is visible in all thirteen. OVERTURNED BY: F1 being overturned, or by a critic showing the four open regions carry enough of the play time to justify the order."
+  ],
+  "what_landed": [
+    "game/src/world/aerial.js - NEW. Height-attenuated aerial perspective. Patches THREE.ShaderChunk's four fog chunks and adds one shared-by-reference Float32Array uniform to every built-in shader, so one write reaches every material in the scene without a per-material walk. Extinction sigma(y) = sigma0*exp(-(y-refY)/H) integrated along the ray and applied as a pure SCALE on the density three.js already uses, clamped to a maximum of 1 so the change can only ever reveal and never hide. Datum is sea level, which is why the marsh regions do not move by construction.",
+    "game/src/world/province.js - installAerialPerspective() at module scope (before any material is drawn); _updateAerial(x,z) feeds the region's own fog.height_falloff_m from request(); aerialState() published in stats() so a probe reads what the SHADER holds rather than what the JSON declares; public this.aerialStrength is the control arm.",
+    "tools/visual/landform-reach.mjs - NEW permanent instrument, offline, ~2 s, with --selfcheck, --compare, --aerial <0..1>, --declared-sightline, --json. Measures the same quantity at three stations (raster relief, frustum relief, relief surviving the air) plus fog_wash. Imports aerialScale from game/src/world/aerial.js rather than re-implementing the shader's arithmetic.",
+    "reports/w1-30f/deck/F-before + F-after - 13 region vistas each, t1300 clear, same Deck, same camera stops, same seed."
+  ],
+  "null_controls": [
+    "flat-world (the plausible wrong DIAGNOSIS, 'the province is a plane with a tint'): every cell replaced by the province mean, fog and cameras untouched. Mean frustum relief 158.3 m -> 0 m. GOES RED as required.",
+    "clear-air (the plausible wrong MECHANISM, 'the fog is not what is doing it'): every region's extinction set to 0. Mean survival 33.8% -> 100.0%. GOES GREEN as required, which is what makes the fog the named cause.",
+    "sea-level datum (the control that must NOT move - guards against passing this metric by turning the fog down everywhere): aerial term evaluated with camera and target both at the datum. Visible relief 49.2 m -> 49.2 m. UNMOVED as required.",
+    "instrument-on-shipped-world: the live world must NOT pass. 15 of 26 shots below floor. A green instrument on a red world is a broken instrument.",
+    "aerialStrength 0: mixes the scale back to 1.0 in the shader and reproduces stock FogExp2. This is the one-line reversal of the whole change.",
+    "REJECTED as too weak, and kept as a finding instead: flattening each region to ITS OWN mean only took frustum relief 158.3 -> 91.8 m, because a ray crossing a region boundary still steps between two flat plates. Recorded as F6 rather than quietly strengthened."
+  ],
+  "shared_premise_audit": [
+    "HAZARDS.md section 0, fifth failure shape - which input do all the arms supply by hand? NONE. Every arm including the controls reads game/data/world/terrain.json, regions.json and tools/visual/deck.json off disk; the controls are perturbations of those bytes, not a fabricated world all arms agree on.",
+    "The one fabricated shared premise is the camera list, and it comes from the Deck, which build-deck.mjs generates from game/data/world/** - so a deleted region turns this tool red rather than shrinking its population.",
+    "The 'after' arm does not re-implement the shader: it imports aerialScale() from game/src/world/aerial.js, the function the fragment shader runs. A disagreement would be one bug, not two implementations."
+  ],
+  "gates_run": [
+    "node corpus/80-methods/m-wld15-monotony.mjs --selfcheck : PASS (separates uniform from varied)",
+    "node corpus/80-methods/m-wld15-monotony.mjs : FAIL - 15 threshold breaches, unchanged by this piece. NOTE: arm A reads game/data/world/terrain.json ONLY. Nothing in game/src/world/ can move its number; it requires regenerating the raster through tools/world/build-terrain.mjs, which is outside W1-30F's owned paths and whose output is claimed by W1-25-persistent-builder.",
+    "node corpus/80-methods/m-wld16-landform-census.mjs --selfcheck : PASS (3 negative and 3 positive controls)",
+    "node corpus/80-methods/m-wld16-landform-census.mjs : L1 PASS, L2 PASS, L3 FAIL 3/65 elements (5%). Unchanged by this piece.",
+    "node tools/visual/landform-reach.mjs --selfcheck : PASS on all four arms",
+    "node tools/visual/frame-stats.mjs --in reports/w1-30f/deck/F-before/frames : 9 of 13 vistas flagged unusable; vista-valus-ridge edge_density 1.63%, luma span 33, dominant 40.9%"
+  ],
+  "reuse": {
+    "consumed": [
+      "W1-30C's material library through worldMaterial() unchanged - aerial.js patches THREE.ShaderChunk's fog chunks, which sit downstream of C's installSurfaceShader and do not fork or duplicate the frozen MATERIAL_API",
+      "W1-30V's Deck end to end: deck.mjs for both captures on identical camera stops, frame-stats.mjs for the pixel-side validation, deck.json as the camera population. No second capture harness was written (rule 10).",
+      "corpus/80-methods/m-wld15-monotony.mjs and m-wld16-landform-census.mjs run as gates, not reimplemented",
+      "game/data/world/regions.json fog records, read only",
+      "game/src/world/field.js WorldField, which loads in plain Node with no browser - which is what makes the instrument two seconds instead of thirteen minutes"
+    ],
+    "published": [
+      "game/src/world/aerial.js: installAerialPerspective(), setAerialPerspective({falloff_m, refY_m, strength}), aerialState(), aerialScale(camY, fragY, H, refY, strength). W1-30E (architecture) and W1-30G (interiors) get height-attenuated fog on every exterior material for free with no call; if either wants to suppress it for an interior volume, setAerialPerspective({strength:0}) is the switch and it restores stock fog exactly.",
+      "province.stats().aerial: what the SHADER is reading, for any consumption probe.",
+      "tools/visual/landform-reach.mjs exports measure(opts) and TH so a critic can re-derive every number without shelling out.",
+      "fog_wash as a metric, with its pixel anchor (rho +0.95 vs dominant_frac) recorded in the tool header."
+    ]
+  },
+  "could_not_do": [
+    "Plan items 1-5 are NOT BUILT: multi-layer terrain blending, ground-breaking scatter, alpha-cut foliage, vegetation LOD fade, wind. None started. The brief said find out which failure this is before building anything, and the diagnosis plus one fix plus its proof consumed the budget.",
+    "Item 0, floating canopies: not reproduced and not addressed. W1-30V already withdrew it at eye level; it remains open for the vista band.",
+    "No hardware GPU frame. Every frame is SwiftShader (ANGLE/Vulkan/SwiftShader Subzero) and both manifests say so. The box sat at or over tools/contention.mjs's ceiling for the whole session (load 18-25 on 4 cores), each 13-shot deck run took 13 minutes, and a GPU pod run was not attempted rather than attempted and abandoned.",
+    "Lilmoth is untouched. The weakest of the eight settlements is still the weakest.",
+    "No naive human judgement and no Craft number, so the plan's 'human read' row is unmet.",
+    "The eye-level half of the Deck was not re-captured before/after; only the 13 vistas were, and eye level is where the fix matters least. The offline instrument covers all 26.",
+    "orchestration/INDEX.md was NOT edited - its header says it is generated by tools/gen-index.mjs on every commit and that edits will be overwritten."
+  ],
+  "notes_for_others": [
+    "W1-02 / W1-25 (regions.json): sightline_m and fog.extinction_per_m are two independent statements about the same thing and they disagree in 8 of 13 regions. Do not reconcile them by driving extinction from sightline_m - that was measured here and makes the mean frame 6 points foggier.",
+    "W1-30B (lighting/atmosphere): if you take ownership of aerial perspective, world/aerial.js is written to be lifted into sky.js whole. Deleting installAerialPerspective() and _updateAerial() from province.js is the exact reversal.",
+    "Anyone planning terrain work: read RULING F1 before costing it. Nine of thirteen regions cannot show a landform to a camera at their declared extinction.",
+    "tools/node_modules does not exist inside an agent worktree and .gitignore's `node_modules/` does not match a symlink. This worktree has a symlink to the shared tools/node_modules; it must be excluded by path when banking, not trusted to .gitignore."
+  ],
+  "next_step": "A fresh critic should (a) re-fire all four null controls in landform-reach.mjs --selfcheck rather than reading this file, (b) re-capture the 13 vistas at the parent commit and at this one and compare dominant_frac, (c) attack RULING F1 by finding a marsh-region frame where 300 m of landform is legible, and (d) decide whether plan items 1-3 or item 6 come next. The orchestrator should note that m-wld15 arm A cannot be moved from inside W1-30F's owned paths at all and needs a piece that owns tools/world/build-terrain.mjs."
+}

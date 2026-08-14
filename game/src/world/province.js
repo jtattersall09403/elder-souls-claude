@@ -12,6 +12,7 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { worldMaterial, consumeStyleboard } from '../render/visual-foundation.js';
 import { noise2, fbm, ridged, hash2, clamp, smoothstep, lerp } from './noise.js';
 import { arrangeAt } from './arrangement.js';
+import { installAerialPerspective, setAerialPerspective, aerialState } from './aerial.js';
 import { SIGNATURE_KINDS } from './signature.js';
 import { signatureGeometry, signatureMaterials, mergeAll } from './signature-geo.js';
 import { thresholdGeometry, thresholdMaterials, remainsGeometry, remainsMaterial } from './threshold-geo.js';
@@ -86,6 +87,20 @@ const MAX_SIG_LIGHTS = 2;
 const SIG_LIGHT_RANGE = 160;
 
 const c3 = (hex) => new THREE.Color(hex);
+
+// AERIAL PERSPECTIVE, INSTALLED BEFORE ANY MATERIAL IS DRAWN.
+//
+// At module scope on purpose. `world/aerial.js` patches `THREE.ShaderChunk`'s fog chunks and adds
+// one shared uniform to every built-in shader; both are read when a program is first COMPILED and
+// BOUND, which is the first render, so installing here — long before `new Province()` — is early
+// enough for every material in the game, including the ones `render/exterior.js` and
+// `render/visual-foundation.js` build. It is idempotent, so a second importer costs nothing.
+//
+// It is a no-op until `_updateAerial` supplies a falloff, and `setAerialPerspective({strength:0})`
+// restores stock fog exactly. Read the header of `aerial.js` for the measurement that motivated it:
+// nine of thirteen eye-level shots currently lose over 90% of the landform inside their own frustum
+// to uniform-height fog, while every region declares a `fog.height_falloff_m` that nothing reads.
+installAerialPerspective();
 
 const COVER_CARD = Object.freeze({ litter:12, tussock:14, reed:3, tuft:8, stubble:8 });
 
@@ -624,12 +639,42 @@ export class Province {
     return out;
   }
 
+  /**
+   * Feed the region's own haze scale height to the shader.
+   *
+   * `fog.height_falloff_m` is declared by all thirteen regions in `game/data/world/regions.json`
+   * and, until this line existed, the string `height_falloff` appeared nowhere in `game/src` — it
+   * was a JSON field with no consumer, which is exactly the failure mode `RI-MTH07` is about. It is
+   * the scale height of the haze: 26 m in the Deep Marshes (mist on the water), 340 m in the Salt
+   * Hills, 260 m on Valus Ridge (a ridge that stands out of the weather).
+   *
+   * The datum is sea level, and that choice is what makes this a change with a shape rather than a
+   * global brightness lift: this province's sea level IS 0, so at a PLAYER'S EYE HEIGHT in a marsh
+   * region — Blackwood at 6.3 m against a 55 m scale height — the density scale is 0.89, an 11%
+   * change nobody will name, and Blackwood keeps the enclosure its own record asks for. Be precise
+   * about where it is not small: the Deck's VISTA cameras sit 26 m up, and 26 m into a 55 m haze
+   * layer is a scale of 0.57. That is correct physics and it is a real change to those frames, so
+   * it is written down here rather than left for a critic to find.
+   *
+   * `aerialStrength` is public and is the control arm: set it to 0 and re-render, and the fog is
+   * bit-for-bit the fog of the commit before this one.
+   */
+  _updateAerial(x, z) {
+    const r = this.field.regionAt(x, z);
+    const H = (r && r.fog && r.fog.height_falloff_m) || 0;
+    const s = this.aerialStrength === undefined ? 1 : this.aerialStrength;
+    if (this._aerialH === H && this._aerialS === s) return;
+    this._aerialH = H; this._aerialS = s;
+    setAerialPerspective({ falloff_m: H, refY_m: 0, strength: s });
+  }
+
   // ---- streaming ------------------------------------------------------------------------------
   key(tx, tz) { return `${tx},${tz}`; }
 
   /** Ask for the tiles around (x, z); returns the number still queued. */
   request(x, z) {
     this.focus = [x, z];
+    this._updateAerial(x, z);
     this.updateSkin(x, z);
     this.updateGeology(x, z);
     this.updateNear(x, z);
@@ -2265,6 +2310,10 @@ export class Province {
       geologyInstances: this.geologyCount || 0, geologyRadiusM: GEOLOGY_RADIUS_M,
       geologyRegions: this.geologyRegions || [], drawGeology: !!this.drawGeology,
       lodBands: this.lodBands,
+      // What the fog shader is reading RIGHT NOW, not what regions.json declares. The two are the
+      // same only because `_updateAerial` runs; a probe that read the JSON would have reported a
+      // consumed `height_falloff_m` for the whole of this project's history.
+      aerial: aerialState(),
       lodTransition: 'near/far geometry and PBR material overlap; one-tile release hysteresis',
       sharedGeometryPool: this.geoCache.size,
       // W1-04 r3. `settlementsPlanned` is what was READ; `buildingGroups` is what is in the

@@ -157,57 +157,5 @@ sabotage-shaped files already tracked is owed.
 
 Captures were failing with `ENOSPC` and looking exactly like clean runs. `tools/lib/browser.mjs` now
 refuses to launch on short free space, covering all 247 harness tools; override deliberately with
-`ELDER_SOULS_MIN_FREE_MB`.
-
-### 5a. `tools/control-clone.mjs` — the cheap null-control clone, built and proven
-
-The disk hit 99% twice in one day, and every time the seven live clones taking the space were
-delete-the-fix work in progress (RULES.md rule 6) — legitimate, un-deletable, and each one copying
-the *whole* tree when a control almost never reads most of it. Reading the seven existing controls
-that do this by hand (`tools/world/road-join-deletefix.mjs` and its two siblings,
-`tools/lore/*-consume.mjs` ×3, `tools/harness/w1-15-r4-deletefix.mjs`) turned up one consistent
-answer: every one of them needs `game/` and `tools/`, and three of them additionally need one small
-fixture, `corpus/50-world/world-scale.json` — never `corpus/`, `reports/`, `docs/` or `.git` wholesale.
-A `git clone` of the whole tree (the worst case, and what "1.2 GB per copy" measures — `.git` alone is
-1.2 GB after `git gc`, hazard §1) is not needed at all.
-
-**The fix is hard links, not a smaller copy.** `game/` and `tools/` sit on the same filesystem as
-`os.tmpdir()` (verified: same device id under ext4), so `fs.linkSync` costs one directory entry and
-zero marginal bytes, versus `fs.copyFileSync`'s full byte-for-byte cost. `tools/control-clone.mjs
-make --label <name> --writable <paths>` builds exactly this: everything under the requested paths is
-hard-linked *except* whatever the caller names in `--writable`, which is real-copied because a
-control always mutates at least one file (`game/data/world/roads.json`, an edited source file, a
-quest doc) and **writing into a hard link truncates the shared inode and corrupts the real repository
-file** — this is the one way the saving turns dangerous, and getting the `--writable` list right is
-the only thing standing between a control and that corruption.
-
-**Measured, on the actual road/settlement-join case** (`node tools/control-clone.mjs --self-test`):
-apparent size — what a full `fs.cpSync` copy costs — **45.7 MB**; what the hard-linked clone actually
-added to the disk — **0.2 MB** (the one declared-writable file). **A ~228× reduction**, and against a
-naive full `git clone` (1.2 GB) it is closer to 6,000×. `--self-test` proves three things, not just
-the disk number, because "cheap but stops detecting things" is the failure `COST.md` §5 forbids
-absolutely:
-1. **Equivalence** — the hard-linked clone and a full deep copy give byte-identical `roads.json` and
-   identical measurements on the same real instrument (`tools/world/road-through-building.mjs`).
-2. **Discrimination survives** — the SAME cheap clone, torn down with `--no-join`, goes red (legs
-   blocked jumps and the bytes change) exactly like the deep-copy control does.
-3. **Source safety, proven both ways** — on a synthetic tree (nothing real at risk), writing into a
-   *declared*-writable file leaves the source untouched; writing into the same file *without*
-   declaring it corrupts the source, which is deliberately reproduced once to show the danger is real
-   and that `--writable` is what prevents it, not an assumption. On the real case, the actual
-   repository's `game/data/world/roads.json` is hashed before and after and is byte-identical.
-
-Cleanup follows `tools/runpod/cli.mjs`'s pattern exactly, because it solved this exact problem today:
-ownership travels in the clone's directory name (an owner slug, the same computation
-`tools/runpod/lib/owner.mjs` uses, so it is visible across a container restart), and a live-process
-check (pid + `/proc` start tick, the same idea as `tools/runpod/lib/claims.mjs`) protects a sibling
-agent in this container from a bare `sweep` — a bare `node tools/control-clone.mjs sweep` removes
-only clones this agent made whose owning process has already exited; `--all --yes` or
-`--older-than <min>` are required to reach anyone else's, and even `--older-than` still protects a
-live claim unless `--force`.
-
-`road-join-deletefix.mjs` now builds its scratch tree this way — read it as the worked example before
-writing a new one by hand. `critic-road-join-consume.mjs`, `road-join-consumption.mjs`, the three
-`tools/lore/*-consume.mjs` files and `w1-15-r4-deletefix.mjs` all do the same `fs.cpSync(ROOT/game,
-...)` today and are candidates for the same swap; converting them was out of scope for this pass —
-say so plainly rather than claim it happened.
+`ELDER_SOULS_MIN_FREE_MB`. Null-control clones copy the whole tree when a control needs only `game/`
+and `tools/` — **76 MB against 12 GB** — so a sparse copy is ~150× cheaper and is worth building.
