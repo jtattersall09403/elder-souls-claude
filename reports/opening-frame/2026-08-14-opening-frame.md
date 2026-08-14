@@ -229,6 +229,38 @@ touched here: it is the door placement's field, not the opening shot's.
 
 ---
 
+## 2b. The hardware evidence, and it agrees with the offline instrument to three decimals
+
+`docs/shots/2026-08-14-opening-frame/` — 62 frames, **NVIDIA RTX A5000, ANGLE/Vulkan,
+`software_renderer: false`**, at a desktop viewport (1280 × 720) and a phone viewport (390 × 844).
+The two viewports were verified to differ by PNG dimensions and md5, not by a check going green:
+the last pass's phone frames came back byte-identical to its desktop frames and that was caught by
+looking at the artefact.
+
+New in this pass: **the hand-back frame now gets the same eight-angle orbit the doorstep does.**
+`opening-capture.mjs` only ever orbited outdoors, so the frame this piece is about had exactly one
+camera angle of evidence behind it, which is the shape of the mistake owner directive §2 is about.
+
+**The cross-check that matters.** Everything in §1 and §2 was computed in bare Node with no browser.
+The browser, on real hardware, reports:
+
+| | bare Node | hardware, both viewports |
+|---|---|---|
+| hand-back yaw (`player.yaw` **and** `camera.yaw`) | 343.4° | **343.4° / 343.4°** |
+| hand-back arm | 4.019 m | **4.019 m**, `char_opacity 1` |
+| doorstep arm | 0.464 m | **0.461 m**, `char_opacity 0`, `arm_guard true` |
+
+The yaw agreeing on *both* fields is the check that the three-writes trap was not walked into: had
+`sim.camera.yaw` been left out, the manifest would show a body at 343.4 and a camera still at 350.
+
+**And one fact only the motion sequence could give:** the doorstep defect is **bounded to about two
+seconds**. `walk-t01s` still has `arm 0.853 m`, `char_opacity 0` — the player is invisible for the
+first second of walking — and by `walk-t03s` the arm is back to 4.019 m and the body is drawn again,
+because by then you have walked clear of the two buildings. So a new player watches the first two
+seconds of their own game in accidental first person and then the body appears.
+
+---
+
 ## 3. What changed
 
 | file | what |
@@ -262,6 +294,12 @@ thing the opening shot does on the first press of the stick is drift.
 - **The deployed Pages URL was not tested.** Chromium in this container still cannot reach any
   external host (`reports/spawn-truth/…` §5); everything was measured on the local tree, which per
   the repo README is the same directory Pages publishes.
-- **Contention.** `tools/contention.mjs --gate` returned WAIT for the whole window in which the local
-  capture would have run, which is why the hardware evidence went to a rented Pod (remote load, not
+- **Contention.** `tools/contention.mjs --gate` returned WAIT for the whole window in which a local
+  capture would have run, which is why the hardware evidence went to rented Pods (remote load, not
   local) and why every failing measurement in §1 and §2 was taken in bare Node instead.
+- **Three Pods rented, $0.051 in total, all three terminated with API-confirmed deletion** (a
+  subsequent API lookup returns not found for each). The middle one, $0.010, produced nothing: the
+  Pod's Xvfb was not up when Playwright launched (`Missing X server or $DISPLAY`) and the run exited
+  70. That is a transport flake in the Pod bootstrap, not a defect in anything measured here, and it
+  is worth someone's time because it will happen again — the first and third runs used the identical
+  command and both worked. **Nothing is billing.**
