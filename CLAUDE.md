@@ -118,6 +118,27 @@ named one-step reversal that has actually been executed on a copy, an after, and
 largest known lever is that the fleet is essentially all Opus — 3,230 Opus requests against 29
 Sonnet — while the model-choice policy that would fix it has been written down and never applied.
 
+## 0c. Work from the roadmap. Every dispatch names its item.
+
+**`orchestration/ROADMAP.md` decides what gets built and in what order.** It is not a summary of what
+we happen to be doing — it is the instruction, and the orchestrator follows it rather than choosing
+freshly each tick. It exists because an orchestrator's context does not survive compaction and this one
+compacted twice in a day.
+
+- **Work the lowest unfinished ring.** Rings are ordered by dependency, not importance. Two to four
+  agents at a time, never two that can touch the same files.
+- **Every dispatch brief names the roadmap item it serves** (`F2`, `G1`, `I5`…). A piece of work that
+  cannot name its item is either not on the roadmap — in which case the roadmap is wrong and should be
+  fixed first — or it is a distraction.
+- **An item is `done` only when delivered AND independently judged at or above the bar.** Delivered and
+  judged are different words. Nothing counts because someone says so.
+- **Coverage is machine-checked.** `node tools/roadmap-coverage.mjs` exits non-zero if any reference
+  item, plan or open gap has no home, or if the order violates a recorded dependency. **Run it after
+  changing the roadmap**, and fix the generator rather than the markdown — they are two views of one
+  source and they must not drift.
+- **When the roadmap is wrong, change the roadmap** — then work it. Do not quietly work around it, and
+  do not carry the correction only in your head.
+
 ## The character directive — binding, and deliberately hard to lose
 
 **Owner, 2026-08-14, verbatim:** *"the player character and every NPC when I load the game look frankly
