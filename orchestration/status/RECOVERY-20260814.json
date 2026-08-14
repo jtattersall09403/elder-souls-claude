@@ -1,0 +1,120 @@
+{
+  "task_id": "RECOVERY-20260814",
+  "title": "Recover the agent work the banks deleted, and find every other incident",
+  "state": "complete",
+  "started_at": "2026-08-14T14:30:00Z",
+  "completed_at": "2026-08-14T15:40:00Z",
+  "branch": "codex/wave1-build-experiment",
+  "report": "reports/RECOVERY-20260814.md",
+  "files_claimed": [
+    "reports/RECOVERY-20260814.md",
+    "orchestration/status/RECOVERY-20260814.json"
+  ],
+  "headline": "74 files restored. The famous incident 06dafd04 was already repaired by its own victim three minutes later; the still-outstanding losses were elsewhere, and the disease is eight days old rather than one.",
+  "population_searched": {
+    "commits_reachable_from_head": 1401,
+    "merge_commits": 194,
+    "commit_parent_pairs_with_deletions": 64,
+    "merge_side_drops": 15,
+    "commits_carrying_the_true_signature": 8,
+    "unique_paths_deleted_and_still_absent_before_this_pass": 886,
+    "restored": 74,
+    "ruled_deliberate_and_left_alone": 812,
+    "note": "Swept twice \u2014 with git rename detection on and with --no-renames. The no-renames arm adds 1,140 paths and every one checked resolved to a genuine rename (souls-behaviour refs moved under anim/, movesets consolidated per weapon, quest resolution baseline moved to reports/). Rename detection was right; the second arm exists so that is measured rather than assumed.",
+    "landed": 73
+  },
+  "the_known_incident": {
+    "commit": "06dafd04",
+    "reproduced": "git diff --diff-filter=D --name-only e469e6df 06dafd04 -> 18 paths, every one absent from merge base d7702f04",
+    "finding": "ALREADY REPAIRED. 17 of 18 are byte-identical to their pre-deletion blobs at HEAD, restored by 5f1e03b8 at 10:52:25 \u2014 three minutes after the loss at 10:49:09 \u2014 by the W1-25 agent itself, which caught it by re-reading the remote blob after a second fetch. 5f1e03b8 is an ancestor of HEAD. Verified per path.",
+    "eighteenth_path": "docs/data/cost-ledger.error.json \u2014 a failure marker tools/cost-refresh.mjs writes on failure and removes on success. Its absence IS the success signal. Deleting it was correct; restoring it would plant a false failure on the dashboard.",
+    "first_parent_side": "06dafd04 also deleted 15 paths against its FIRST parent \u2014 the entire HUD-MORROWIND picture pack. 13 recovered here, 2 regenerated later and kept."
+  },
+  "other_incidents_found": [
+    {
+      "commit": "eed8e7fe",
+      "date": "2026-08-14",
+      "shape": "single-parent bank",
+      "lost": 39,
+      "what": "the visual-truth evidence: all 24 close-orbit -shipping frames and 15 play frames",
+      "recovered": 39
+    },
+    {
+      "commit": "314e9f3f / 06dafd04",
+      "date": "2026-08-14",
+      "shape": "single-parent bank, then a fake merge",
+      "lost": 15,
+      "what": "the HUD-MORROWIND picture pack",
+      "recovered": 13,
+      "note": "2 regenerated later; the later versions are kept"
+    },
+    {
+      "commit": "091a6cec",
+      "date": "2026-08-10",
+      "shape": "merge-side drop",
+      "lost": 3,
+      "what": "the W1-20 faction builder instrument, its evidence and its delivery report",
+      "recovered": 3
+    },
+    {
+      "commit": "c9603f64",
+      "date": "2026-08-10",
+      "shape": "5-parent octopus",
+      "lost": 6,
+      "what": "W1-11/W1-14-r6/W1-18 builder status records, quest-witnesses.json, the bindings screen",
+      "recovered": 5
+    },
+    {
+      "commit": "b5850ff0 / 9bc5f028 / 3708b3f2",
+      "date": "2026-08-10",
+      "shape": "merge-side drop",
+      "lost": 3,
+      "what": "three chart images still cited by status files and INDEX.md",
+      "recovered": 3
+    },
+    {
+      "commit": "0b2d6efe / 6ea5c0e5 / 58726586 / 3757b026 / 72baa121 / 7bdc979a",
+      "date": "2026-08-07 and 08-08",
+      "shape": "collateral in banks about other things",
+      "lost": 11,
+      "what": "evidence screenshots the blog feed and three status files have been pointing at since 08-07",
+      "recovered": 11
+    }
+  ],
+  "the_signature_is_not_only_in_merges": "The largest still-outstanding loss, eed8e7fe, is an ordinary one-parent commit. A one-parent `add -A` from a stale shared tree loses work exactly as readily as a fake merge; it just leaves no merge parent to blame.",
+  "older_restore_commits_verified": {
+    "claim_tested": "HAZARDS believed the 08-06, 08-10 and 08-11 restore commits were regenerated-index churn rather than destroyed measurements, and said they had not been individually verified.",
+    "verdict": "FALSE. Every one restored real content.",
+    "evidence": [
+      "54a41452 (08-06) +5,183 lines: verdicts W1-09-r3, W1-14-r2, W1-15-r2 \u2014 three round-2 verdicts",
+      "d86fc4a7 (08-06) game/data/dialogue/topics/thorn.json plus a 2,004-line critic recompute",
+      "dfaaf7b2 (08-06) game/src/engine.js +613, renderer.js +167, scene.js +284 \u2014 engine source",
+      "bc779ee4 (08-10) titled 'Restore generated indexes' \u2014 25+ authored game/data/world/interiors/*.json",
+      "227b3d53 (08-10) reports/composition/w1-25-builder/matrix.json +3,688",
+      "494edb36 (08-10) titled 'Revert generated indexes' \u2014 actually +7,437, two composition matrices",
+      "a0a2e230 (08-11) game/src/engine.js +11,573 / -1,733",
+      "669ae9b7 (08-11) game/src/engine.js +11,583 / -1,825"
+    ],
+    "08_08": "No commit that day is titled 'restore'. Three RECORD losses without repairing them: f862df5d ('the commit lost the index race and the work landed under two other messages'), a3dd6f65 ('record that 4a41f58 swept this verdict under another message'), 9063779b ('Fleet lost to the weekly limit'). Almost certainly the three the hazard file counted.",
+    "all_still_intact_at_head": true,
+    "what_it_changes": "The story was 'a bad recipe cost us a day'. The record says the same recipe was eating engine source and verdict measurements on 2026-08-06, the day after the branch opened, and took game/src/engine.js down to a stub twice in two days on 08-10 and 08-11. Nine days, not one. It read as churn because the repairs were real work filed under housekeeping titles."
+  },
+  "gates_after_restore": {
+    "boot-check": "PASS \u2014 the engine constructed and the harness answers",
+    "check-data": "PASS \u2014 408 NPC records, 310 soul rows agree",
+    "check-content": "PASS \u2014 551 quest resolutions, none lost",
+    "check-material-coverage": "PASS \u2014 20/20 families, 281 MB high / 70 MB medium",
+    "json_parse": "every restored JSON parses",
+    "byte_identity": "74/74 re-hashed against their source blob after writing"
+  },
+  "method": "git cat-file blob <rev>:<path> > <path> per file, never git checkout \u2014 the shared index is not this pass's to touch while a dozen agents hold staged work in it (HAZARDS \u00a71). Landed with tools/land.mjs --paths.",
+  "could_not_do": [
+    "reports/w1-20/builder-continuation.json is recovered to disk but NOT landed: reports/.gitignore excludes *.json under reports/ by default and the original was force-added past that rule. Overriding another file's stated policy unilaterally is the wrong direction. Its blob is permanent \u2014 `git show 9ed28905:reports/w1-20/builder-continuation.json` reads it, `git add -f` lands it. That leaves 73 of 74 on the branch and 74 of 74 on this disk.",
+    "Could not prove intent for two files: game/src/ui/screens/bindings.js is imported by nothing, and game/data/npcs/quest-witnesses.json is absent from game/data/index.json so the engine never loads it. Both restored and flagged; either could legitimately be deleted again by its author, and that costs one line.",
+    "Restoring three builder status files re-registers their files_claimed entries, which land.mjs reads to arbitrate conflicts. Correct as history, but it nudges conflict resolution. Reversible in one line by marking them superseded; not done here, because rewriting another agent's status file to suit a tool is the wrong direction.",
+    "The 39 recovered visual-truth frames are byte-identical to what the capture produced, but nobody re-ran vt-seethrough.mjs against the current engine. They are the right evidence of that run and may be the wrong evidence of today.",
+    "The sweep covers HEAD's ancestry only. ~20 local worktree-agent-* branches were not swept; work that never reached this branch would not appear.",
+    "game/data/npcs/quest-witnesses.json was NOT added to game/data/index.json \u2014 doing so would move NPC counts and the soul ledgers, which is W1-18's call."
+  ],
+  "next_step": "Two owners are owed a decision: W1-08 on whether game/src/ui/screens/bindings.js gets wired or deleted, and W1-18 on whether quest-witnesses.json gets an index.json entry. A W1-20 critic should be re-pointed at reports/w1-20/builder-delivery.md, which it has been judging without."
+}
