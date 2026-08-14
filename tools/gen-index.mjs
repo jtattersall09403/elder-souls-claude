@@ -145,6 +145,26 @@ ${gates.map(([c, w]) => `| \`${c}\` | ${w} |`).join('\n')}
 Both work. Note that \`node … 2>&1 | tail -1 ; echo exit=$?\` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
+## Work the banks deleted — recovered, and do not re-derive this
+
+**\`reports/RECOVERY-20260814.md\`** is the forensic and the recovery. Read it before you conclude a
+file of yours is missing, and before you re-run a sweep somebody has already run.
+
+- **All 1,401 commits on the branch were swept** for the \`HAZARDS\` §2f signature — a commit whose tree
+  lacks paths its own parents contain. 64 candidate (commit, parent) pairs, **8 commits guilty**,
+  **74 files still missing at the tip. All 74 are back**, byte-identical to their last good blob.
+- **\`06dafd04\` — the famous one — needed no recovery.** Its victim repaired it three minutes later in
+  \`5f1e03b8\`; 17 of its 18 paths are already correct at \`HEAD\` and the 18th
+  (\`docs/data/cost-ledger.error.json\`) is a failure marker whose *absence* is the success signal.
+- **The signature is not only in merges.** The largest outstanding loss, \`eed8e7fe\`, is an ordinary
+  one-parent bank that deleted 39 visual-truth frames.
+- **The disease is eight days old, not one.** The 08-06/08-10/08-11 restore commits were believed to be
+  index churn. They are not: three round-2 verdicts, a dialogue topic, two composition matrices, and
+  \`game/src/engine.js\` restored twice at +11,573 and +11,583 lines.
+- **Two recovered files are flagged, not vouched for**: \`game/src/ui/screens/bindings.js\` (imported by
+  nothing) and \`game/data/npcs/quest-witnesses.json\` (absent from \`game/data/index.json\`, so the
+  engine never loads it). Their authors own the call; deleting either again costs one line.
+
 ## CI health — read this before re-deriving it
 
 The \`corpus gate\` workflow has one step that is allowed to be red, and it is telling the truth

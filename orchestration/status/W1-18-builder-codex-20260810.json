@@ -1,0 +1,73 @@
+{
+  "task_id": "W1-18-builder-codex-20260810",
+  "role": "builder",
+  "status": "ready_for_independent_criticism",
+  "started": "2026-08-10",
+  "base": "CURRENT HEAD",
+  "files_touched": [
+    "corpus/30-quests/RI-QST04-quest-anatomy-schema.md",
+    "corpus/30-quests/quest.schema.json",
+    "game/data/index.json",
+    "game/data/quests/blackmarsh-coast.json",
+    "game/data/quests/blackmarsh-core.json",
+    "game/data/quests/faction-continuation-wave1.json",
+    "game/data/quests/faction-imperial-assize.json",
+    "game/data/quests/faction-joining-wave1.json",
+    "game/data/quests/faction-wet-ledger.json",
+    "game/data/quests/faction-xul-aneekh.json",
+    "game/data/quests/magic-utility.json",
+    "game/data/quests/mainline-act1.json",
+    "game/data/quests/mainline-act2.json",
+    "game/data/quests/mainline-act3.json",
+    "game/data/quests/mainline-act4.json",
+    "game/data/quests/mainline-act5.json",
+    "game/data/quests/mainline-backpath.json",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/src/sim/quest/machine.js",
+    "game/src/sim/quest/reveal-routes.js",
+    "tools/quests/reveal-route-audit.mjs",
+    "game/data/npcs/quest-witnesses.json",
+    "orchestration/status/W1-18-builder-codex-20260810.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Exact future critic entry point: from this commit run `node tools/analysis/quest-audit.mjs --schema`, `node tools/quests/reveal-route-audit.mjs`, then falsify `eavesdrop`/`corpse` via crouch-noticed/alive controls and resolution rewards via save/load; proceed to the complete 24-item suite and fresh naive/blind actors in orchestration/plans/W1-18.md \u00a72-4. No independent PASS is claimed.",
+  "state": "builder_delivery_complete",
+  "commit_under_test": "pre-commit working tree from 091a6ce",
+  "browser_context": "Browser journey deferred after contention gate exit 3 (6 instances over ceiling); boot-check and journal-ui used repository Chromium successfully outside a new journey.",
+  "builder_ledger": {
+    "quest_population": 202,
+    "quest_files": 19,
+    "schema": "202/202",
+    "resolutions": 551,
+    "mean_resolutions": 2.73,
+    "mean_branches": 1.94,
+    "silent_failure_pct": 13.79,
+    "multi_faction_consequence_pct": 30.2,
+    "x7_cosmetic_pairs": 0,
+    "x8_foreshadowed_pct": 81.98,
+    "demanded_reveal_routes": "121/121",
+    "journal_entries": 1425,
+    "journal_ui": "11/11",
+    "witnesses_added": 16,
+    "route_channels_added": [
+      "eavesdrop",
+      "corpse"
+    ],
+    "reward_consumers": [
+      "canonical gold purse",
+      "inventory",
+      "durable quest/world flags"
+    ]
+  },
+  "controls": [
+    "reveal-route-audit --falsify no-router: all 52 runnable person/place legs red, zero still pass",
+    "quest-audit before/fixed: branches 1.03->1.94; multi-faction 6.44->30.2; X7 267->0",
+    "wrong action guards: eavesdrop requires crouch/range/unnoticed; corpse requires durable dead register"
+  ],
+  "warnings": [
+    "check-quests retains 12 non-demanded missing document warnings",
+    "check-prose exits 0 but reports existing corpus-band warnings",
+    "fresh blind/naive judgement remains independent and is not claimed"
+  ]
+}

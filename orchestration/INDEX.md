@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `9d2504b3`: 953 tools, 156 reference
-items, 185 pieces in flight.
+so it cannot drift. Generated at `69295a6a`: 955 tools, 157 reference
+items, 186 pieces in flight.
 
-Its purpose is to stop 185+ concurrent agents each paying separately to discover the
+Its purpose is to stop 186+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -27,6 +27,26 @@ Run these; do not invent your own equivalents.
 `tools/boot-check.mjs` is a forwarding shim; the real file is `tools/harness/boot-check.mjs`.
 Both work. Note that `node … 2>&1 | tail -1 ; echo exit=$?` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
+
+## Work the banks deleted — recovered, and do not re-derive this
+
+**`reports/RECOVERY-20260814.md`** is the forensic and the recovery. Read it before you conclude a
+file of yours is missing, and before you re-run a sweep somebody has already run.
+
+- **All 1,401 commits on the branch were swept** for the `HAZARDS` §2f signature — a commit whose tree
+  lacks paths its own parents contain. 64 candidate (commit, parent) pairs, **8 commits guilty**,
+  **74 files still missing at the tip. All 74 are back**, byte-identical to their last good blob.
+- **`06dafd04` — the famous one — needed no recovery.** Its victim repaired it three minutes later in
+  `5f1e03b8`; 17 of its 18 paths are already correct at `HEAD` and the 18th
+  (`docs/data/cost-ledger.error.json`) is a failure marker whose *absence* is the success signal.
+- **The signature is not only in merges.** The largest outstanding loss, `eed8e7fe`, is an ordinary
+  one-parent bank that deleted 39 visual-truth frames.
+- **The disease is eight days old, not one.** The 08-06/08-10/08-11 restore commits were believed to be
+  index churn. They are not: three round-2 verdicts, a dialogue topic, two composition matrices, and
+  `game/src/engine.js` restored twice at +11,573 and +11,583 lines.
+- **Two recovered files are flagged, not vouched for**: `game/src/ui/screens/bindings.js` (imported by
+  nothing) and `game/data/npcs/quest-witnesses.json` (absent from `game/data/index.json`, so the
+  engine never loads it). Their authors own the call; deleting either again costs one line.
 
 ## CI health — read this before re-deriving it
 
@@ -370,7 +390,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 249
+### `tools/harness/` — 250
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -509,6 +529,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-map-shots.mjs` — the W1-MAP critic's visual evidence, in four discovery states.
 - `tools/harness/critic-w1-map-stepcheck.mjs` — is the long-step crash the map's, or the tree's?
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
+- `tools/harness/door-exit-yaw.mjs` — WHICH WAY ARE YOU FACING WHEN A DOOR PUTS YOU DOWN?
 - `tools/harness/first-ten.mjs` — **no header comment**
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
 - `tools/harness/jrn01-m8-writ.mjs` — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
@@ -764,7 +785,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 61
+### `tools/quests/` — 62
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -825,6 +846,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-15-prerequisite-ledger.mjs` — S43's W1-15-owned QST05 seam: enumerate canonical prerequisite references without rerunning W1-18's quest population.
+- `tools/quests/w1-20-builder.mjs` — **no header comment**
 - `tools/quests/w1-20-shot.mjs` — The picture for W1-20: the door being shut, in the doorkeeper's own words.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
@@ -1168,7 +1190,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **257 tools have no header comment**, so nobody can tell what they do without
+> **258 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1304,6 +1326,7 @@ of its twelve items judged none of its declared paths.
 | **RI-UIX05**  | [ui.menu.books, lore.book.structure] | `corpus/86-ui/RI-UIX05-books-and-readable-text.md` |
 | **RI-UIX06**  | [ui.style.diegesis, visual.process.declaration] | `corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md` |
 | **RI-UIX07**  | [ui.hud.world] | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md` |
+| **RI-UIX08**  | [ui.dialogue.presentation, dialogue.topics.discovery, dialogue.disposition] | `corpus/86-ui/RI-UIX08-dialogue-window.md` |
 | **RI-VIS01**  | [visual.process.judgement, visual.process.declaration, visual.process.contamination, visual.artdirection, visual.renderer] | `corpus/70-visual/RI-VIS01-bifurcation-protocol.md` |
 | **RI-VIS02**  | [visual.renderer.lighting, visual.renderer.materials, visual.renderer.atmosphere, visual.renderer.water, visual.renderer.foliage, visual.renderer.sky, visual.re | `corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md` |
 | **RI-VIS03** optional, faster, native: npm i sharp | [visual.renderer.lighting, visual.renderer.materials, visual.renderer.postprocess, visual.renderer.shadows, visual.renderer.atmosphere, visual.renderer.sky, vis | `corpus/70-visual/RI-VIS03-fidelity-image-metrics.md` |
@@ -1345,13 +1368,14 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `SPAWN-YAW` | starting | read game/src/sim/settlement.js and door data schema | — |
-| `W1-30DE-REMEDIATION` | ? | fix 3 (one-word held/major), then fix 2 (census + hide-both-hands control), then fix 4, th | `orchestration/status/W1-30DE-REMEDIATION.json` |
-| `W1-30-SHADOW-CASTERS` | three-changes-landed-evidence-in-flight | pixel arms at vista-blackwood, then the flag set for the canopy | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` |
+| `SPAWN-YAW` | measuring | run tools/harness/door-exit-yaw.mjs over all 115 interiors, pick the rule, implement, dele | `orchestration/status/SPAWN-YAW.json` `tools/harness/door-exit-yaw.mjs` |
+| `W1-30DE-REMEDIATION` | ? | hardware render of profile=street on a RunPod pod, then report | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` |
+| `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
+| `W1-30-SHADOW-CASTERS` | landed-pending-fresh-critic | A fresh critic on R1 above all — it is the change with the largest blast radius and it was | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
+| `W1-14-r6` | ? | Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independen | `game/data/npcs/spellwrights.json` `game/src/engine.js` `game/src/save/state.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/magic/system.js` `orchestration/status/W1-14-r6.json` |
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
 | `W1-30DE-critic` | verdicts-filed-BOTH-FAIL-D-3.0-E-4.0-against-gate-7.0 | Done. Two rounds are owed to the builders (the per-part census for D, the roof gable flag  | `corpus/90-verdicts/wave1/W1-30D-r1.json` `corpus/90-verdicts/wave1/W1-30D-r1.md` `corpus/90-verdicts/wave1/W1-30E-r1.json` `corpus/90-verdicts/wave1/W1-30E-r1.md` `corpus/90-verdicts/wave1/artifacts/w1-30de/` `docs/shots/2026-08-14-w1-30de-critic/` |
-| `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `tools/map/player-route.mjs` `tools/map/fog-control.mjs` `tools/map/explore-W1-MAP-DEFECTS.mjs` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` |
 | `W1-MW-UI-REFS` | running | eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UI | `orchestration/status/W1-MW-UI-REFS.json` |
 | `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |

@@ -1,0 +1,35 @@
+{
+  "task_id": "W1-14-r6",
+  "status": "done",
+  "plan_state": "satisfied",
+  "role": "builder",
+  "files_touched": [
+    "game/data/npcs/spellwrights.json",
+    "game/src/engine.js",
+    "game/src/save/state.js",
+    "game/src/sim/magic/enchant-counter.js",
+    "game/src/sim/magic/system.js",
+    "orchestration/status/W1-14-r6.json"
+  ],
+  "files_claimed": [],
+  "next_step": "Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independently judges MAG05; no builder-authored PASS is claimed.",
+  "done_so_far": [
+    "Closed the remaining native enchantment consumer gap: commissioned objects now enter the ordinary inventory and equip path.",
+    "On-strike enchantments consume real player weapon HIT events, charge and the existing magic effect pipeline; body-corridor contacts are excluded.",
+    "Constant enchantments acquire and release ordinary timed effect leases on equip/unequip and rebuild those leases from equipped inventory after save/load.",
+    "Removed the player-facing and data declarations that on-strike/constant objects are knowingly unread.",
+    "Preserved W1-09 combat resolution and W1-16 equipment/loadout behavior by adding a narrow enchanted overlay rather than changing damage, frames, equipment weights or ordinary loadout resolution.",
+    "Reused the native W1-14 probes; no removed Cartesian legal-dial sweep was introduced."
+  ],
+  "checks": [
+    "node tools/boot-check.mjs",
+    "node tools/harness/boot-check.mjs",
+    "node tools/harness/w1-14-r5-enchant.mjs",
+    "node tools/harness/w1-14-r3-dials.mjs",
+    "npm run ci"
+  ],
+  "not_done": [
+    "No independent visual/perceptual judgement was self-administered; MAG05 blind/reference judgement remains critic-owned.",
+    "No independent Wave-1 PASS is claimed; the critic must aggregate RI-MAG01-RI-MAG06 and RI-TRV02 using their native populations and controls."
+  ]
+}
