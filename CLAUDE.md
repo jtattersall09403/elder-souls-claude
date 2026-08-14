@@ -67,10 +67,37 @@ Sonnet — while the model-choice policy that would fix it has been written down
 
 ## Running the fleet
 
-`orchestration/TICK.md` is the loop: measure contention, bank, top up. **Never fewer than 12 agents
-running**, and dispatching comes before writing a reply. `node tools/dispatchable.mjs` before every
-spawn; `node tools/contention.mjs` before every browser; `node tools/bank.mjs "<headline>"` to
-commit the tree, which names whose work it carries.
+`orchestration/TICK.md` is the loop: measure contention, bank, top up. `node tools/dispatchable.mjs`
+before every spawn; `node tools/contention.mjs` before every browser; `node tools/bank.mjs
+"<headline>"` to commit the tree, which names whose work it carries.
 
 Push after every bank. The container has restarted twice in one day and taken nine agents with it
 each time; unbanked work dies with it.
+
+**The hard floor of 12 is removed.** Owner, 2026-08-14: *"Instead continuously qualitatively review
+and use your judgment as the implementation lead to set as much working in parallel as is sensible in
+a dependency safe and performance aware way. Maximising delivery speed and quality and minimising
+cost… things that can safely run in parallel always should."* So: no number to hit, and no excuse to
+idle. Two agents that will collide in the same files cost more to reconcile than they save; two that
+touch nothing in common should both be running. Review this continuously — it is a standing duty of
+the role, not a one-off setup.
+
+## The 2026-08-14 owner directives — binding, and they override older text
+
+Full detail and the owner's own words: **`orchestration/OWNER-DIRECTIVES-2026-08-14.md`**. Read it
+after this file. The five that change day-to-day behaviour most:
+
+1. **Graphics and visual fidelity are Wave 1, not Wave 4.** *"It's not worth progressing to wave 2's
+   depth unless we can make the game look pretty good."* Breadth across the whole game, not just the
+   player-facing slice W1-24 owned.
+2. **Static inspection is not evidence. Play the game.** *"if you just load the game rotate the
+   camera around the player it's immediately obvious that it hasn't [been fixed]."* Any visual claim
+   needs **many screenshots and motion sequences from many angles**; a single still from one angle is
+   how the player-transparency defect got declared fixed while still broken.
+3. **Reuse deliberately.** A good-looking player should teach the NPCs; a good building model should
+   be tweaked and reused, not rebuilt. Make this structural, not a hope.
+4. **Progress travels as merged PRs in plain English**, and blogs drop to a **twice-daily roundup** —
+   warm, factual, progress-oriented, with pictures. Not sarcastic, not hype.
+5. **The bar itself may be insufficient.** Do we actually have Morrowind region/topological maps and
+   their Black Marsh equivalents? *"Exploring Morrowind never felt dull… our game should be the
+   same."* Auditing and extending the reference corpus is in scope, not a distraction from it.
