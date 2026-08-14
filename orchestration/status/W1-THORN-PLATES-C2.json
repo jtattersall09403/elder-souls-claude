@@ -4,13 +4,31 @@
   "state": "in-progress",
   "date": "2026-08-14",
   "parent": "W1-THORN-PLATES",
+  "base_commit": "f434730c",
   "spec": "orchestration/status/W1-THORN-PLATES.json next_step + reports/thorn-plates/2026-08-14-thorn-plates.md §6",
   "findings_could_not_do_first": [
-    "WIP — nothing concluded yet."
+    "NO FRAMES YET, AND THE CAPTURE PIPELINE IS THE REASON, NOT MY BUDGET. The shared capture daemon has taken 3 requests, booted a browser 3 times (111 s, 165 s, 180 s — 456 s of boot in total) and returned `captures: 0, errors: 6`. Every job dies with `closing browser: job timeout`, because under the load that has held all day (7 browser instances, load 8.19/core against a ceiling of 4.0) the browser takes longer to BOOT than the job timer allows. This is a fleet-wide condition, not specific to this piece. Recorded here so the next agent does not spend its budget rediscovering it.",
+    "THE 48-FRAME SWEEP IS NOT DELIVERABLE ON THIS BOX and I did not pretend otherwise. I committed `tools/visual/w1-thorn-core12.sh`, a 12-frame subset (4 yaws at noon + 3 times of day at the writ-house door, 2 roofline reads, the approach, and a 2-frame town-centre control) that answers the owner's many-angles directive and can run twice — a before AND an after — inside one budget. It has produced 0 frames so far for the reason above.",
+    "I REAPED MY OWN PIECE'S ORPHAN. Chunk 1's `w1-thorn-sweep.sh` was still alive and respawning shots into `reports/thorn-plates/frames/` from a dead shell (pid 2426, from chunk 1's scratchpad), doubling the load on a daemon that was already failing every job. I killed 2426/4111/4112 by pid — my own piece's processes, no pkill of anything shared, no sibling's browser touched.",
+    "MATERIAL RESPONSE STAYS n=0, as chunk 1 left it: `pixel_metrics_valid: false` on all 89 Morrowind plates, and I have no hardware frames either."
   ],
-  "findings": [],
+  "findings": [
+    "THE REGION QUESTION IS SETTLED AND IT WAS A HARNESS ARTEFACT, NOT A WORLD DEFECT. The position-derived region — `WorldField.regionAt()`, the lookup that actually drives ground, fog and flora — returns `thornmarsh` at ALL of: the quay spawn [3808.6,909.4], both quay doors, the approach and the town centre. The harness's `western-rootlands` comes from `sim.env.region`, a cached field that NOTHING in the engine updates from player position (INVENTORY V15, open, owned by W1-02/W1-30F, already diagnosed by W1-30E-KIT-DEFECTS, which renamed the field in deck.mjs and records `region_at_player` from `getTerrainAt` instead). Nothing is being dressed as Lilmoth's region. I did not touch the field — it is another piece's.",
+    "roof.needle SHIPPED, AND IT IS THE FIRST NEW ROOF PROFILE THE GAME HAS HAD. Thorn's own record promises 'black needle-wood laid in courses, which no other settlement uses' and the renderer had no such profile. Measured with the renderer's own planSettlement -> assignVariantSalts -> previewSilhouette: THORN GOES 2 -> 3 DISTINCT ROOF PROFILES (roof.needle x12, roof.reed x4, roof.hip x2 over 18 buildings). The other seven towns are byte-identical before and after.",
+    "RULING E1's >=5 IS STILL NOT REACHABLE AND I AM NOT CLAIMING IT. The kit now defines FOUR roof ids in total (roof.hip, roof.needle, roof.reed, roof.shell) against E1's five, so no grammar in the game can mix five. That is a kit gap, not a Thorn gap. 2 -> 3 is the honest step.",
+    "DELETE-THE-FIX DONE AND THE CONTROL WENT RED. On a control clone with kits.js and exterior.js reverted to my base commit f434730c, thorn returns to exactly chunk 1's baseline — 2 profiles, roof.reed x13, roof.hip x5 — and the kit falls back to 3 roof ids. The seven untouched towns are identical in both arms, which is the proof the change is scoped to Thorn.",
+    "THE INSTRUMENT CROSS-VALIDATES AGAINST CHUNK 1. `tools/render/w1-thorn-roof-census.mjs` was written independently of chunk 1's script (which lived in a scratchpad and is gone) and reproduces chunk 1's table EXACTLY on all seven towns I did not touch (archon 2, blackrose 1, gideon 1, helstrom 2, lilmoth 3, soulrest 2, stormhold 1). It carries chunk 1's negative control as a built-in arm: a constant seed collapses every town to 1 profile, and the tool EXITS NON-ZERO if the two arms ever agree.",
+    "THE CONSUMER SEAM WAS A REAL TRAP AND IT WOULD HAVE PASSED EVERY COUNT. `exterior.js buildKitRoof()` hard-codes the roof pitch per roof id and passes `rise` explicitly, so a part's own `s.rise ?? ...` default NEVER fires. A roof.needle registered with rise = 0.62*min(w,d) and left out of that table renders at 0.30 — a slightly bristly hip — while every census in the tree still counts a fourth profile. Fixed at the table. This is RULES rule 5's 'a model nothing in the running world reads', caught before it shipped.",
+    "MEASURED, AND IT OVERTURNS §6.2 AND §6.4 OF CHUNK 1'S BRIEF: THE TIDEWRACK QUAY IS NOT ON THE WATER, AND THERE IS NO CLIMB. From the world's own field: (a) the terrain from the writ-house door to the Rotted Hall is FLAT at 13.28 m at all 11 samples — the '~15% grade the player climbs' in chunk 1 §4 is an artefact of comparing the quay buildings' AUTHORED door y (0) against the town's (13.31), not terrain, and the renderer places buildings on groundY, not on door y; (b) `waterAt().depth_m` is 0 at every point within 29 m of both quay doors — the nearest water is a hard-edged body whose shoreline runs straight east-west at z = 938-939 across x = 3790-3835, i.e. 30-34 m NORTH of the doors; (c) that water's surface is 14.60 m, which is 1.32 m ABOVE the ground the quay stands on, with 1.32 m of depth immediately at the edge and no shelving; (d) it is non-tidal here — `tidal: false`, and surface_y is identical at all four tide phases. Probe committed: tools/render/w1-thorn-shoreline.mjs.",
+    "RULING T1 (mine, reversible): THORN DOES NOT GET A `tideline` IN CHUNK 2. The brief's §6.2(1) assumed Thorn's quay stands in water as Lilmoth's does; measured, it stands on dry flat ground 30 m from a shore whose surface is above its doorsteps, and no tide moves there. A tideline is a mark left by water on a thing the water touches, and painting a wet line and a drowned storey on those buildings would be dressing a lie. WHAT WOULD OVERTURN IT: a terrain/water edit that brings the waterline to the quay — at which point `tideline: 1.32` is the measured value to use (water surface 14.60 minus quay ground 13.28) and this ruling reverses in one line. Both files are other pieces'; the number is handed over rather than acted on."
+  ],
   "files_touched": [
-    "orchestration/status/W1-THORN-PLATES-C2.json"
+    "orchestration/status/W1-THORN-PLATES-C2.json",
+    "game/src/render/lib/kits.js",
+    "game/src/render/exterior.js",
+    "tools/render/w1-thorn-roof-census.mjs",
+    "tools/visual/w1-thorn-core12.sh",
+    "reports/thorn-plates/roof-census-after.json"
   ],
   "files_claimed": [
     "orchestration/status/W1-THORN-PLATES-C2.json",
@@ -20,9 +38,12 @@
     "game/src/render/lib/kits.js",
     "game/src/render/exterior.js",
     "game/data/world/settlements/thorn.json",
+    "tools/render/w1-thorn-roof-census.mjs",
+    "tools/render/w1-thorn-shoreline.mjs",
+    "tools/visual/w1-thorn-core12.sh",
     "reports/blog-feed.jsonl"
   ],
   "redundant_with": ["W1-30E-KIT-DEFECTS", "W1-30S", "W1-30E-builder", "W1-06-build", "W1-19-builder-production-continuation-20260813", "W1-30-P2"],
-  "overlap_note": "kits.js and exterior.js are shared with the pieces above (ownership.mjs reports 3 and 4 live pieces). Declared deliberately rather than left to read as a collision. My edits are additive and narrowly scoped: a new roof id in the roof table, GRAMMARS.thorn fields, and a thorn quay dressing block. Committing with --only.",
-  "next_step": "WIP"
+  "overlap_note": "kits.js and exterior.js are shared with the pieces above (ownership.mjs reports 3 and 4 live pieces). Declared deliberately rather than left to read as a collision. My edits are additive and narrowly scoped: one new roof part registered in the roof section, GRAMMARS.thorn's roofs/roofMix, and one arm added to buildKitRoof's pitch table. Committing with --paths.",
+  "next_step": "Quay vocabulary (reused parts placed at the MEASURED waterline, not on dry ground), the thicket, frames if the daemon ever captures, report and blog line."
 }

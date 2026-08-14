@@ -1719,7 +1719,16 @@ function buildKitRoof(gg, K, gram, w, d, h, hash, storeys, opts) {
   const roofId = (opts.flatRoof || opts.oneVariant) ? gram.roofs[0] : roofChoice(gram, hash);
   const roof = new THREE.Group();
   roof.name = 'roof';
-  const rise = (roofId === 'roof.reed' ? 0.38 : roofId === 'roof.shell' ? 0.44 : 0.30) * Math.min(w, d)
+  // THE PITCH TABLE IS THE ROOF'S REAL CONSUMER, and it overrides the part's own default. A roof
+  // part registered in `kits.js` with `rise = min(w,d) * 0.62` still gets drawn at 0.30 unless its
+  // id appears here, because this call passes `rise` explicitly and the part's `s.rise ?? ...`
+  // default never fires. `roof.needle` was added with a steep pitch as its entire reason for
+  // existing — Thorn's record calls it *"black needle-wood laid in courses, which no other
+  // settlement uses"* — so leaving it out of this table would have shipped a fourth roof id that
+  // renders as a slightly bristly hip. That is the shape of defect RULES rule 5 calls a model
+  // nothing in the running world reads, and it would have passed every count in the tree.
+  const rise = (roofId === 'roof.needle' ? 0.62 : roofId === 'roof.reed' ? 0.38 : roofId === 'roof.shell' ? 0.44 : 0.30)
+    * Math.min(w, d)
     * (opts.oneVariant ? 1 : 0.82 + kitJitter(hash, 21) * 0.42);
   const node = kit(roofId, {
     lod: 'near', w, d, rise, over: 0.45 + kitJitter(hash, 22) * 0.35,

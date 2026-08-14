@@ -32,10 +32,11 @@ const argOf = (f, dflt) => { const i = argv.indexOf(f); return i >= 0 && argv[i 
 const ARM = argOf('--arm', 'both');
 const JSON_OUT = argOf('--json', null);
 
-let planSettlement, assignVariantSalts, previewSilhouette, GRAMMARS, grammarFor;
+let planSettlement, assignVariantSalts, previewSilhouette, GRAMMARS, grammarFor, hashStr;
 try {
-  ({ planSettlement } = await import(path.join(REPO, 'game/src/render/exterior.js')));
-  ({ assignVariantSalts, previewSilhouette, GRAMMARS, grammarFor } = await import(path.join(REPO, 'game/src/render/lib/kits.js')));
+  ({ planSettlement, assignVariantSalts, previewSilhouette } = await import(path.join(REPO, 'game/src/render/exterior.js')));
+  ({ GRAMMARS, grammarFor } = await import(path.join(REPO, 'game/src/render/lib/kits.js')));
+  ({ PRIMS: { hashStr } } = await import(path.join(REPO, 'game/src/render/interior.js')));
 } catch (e) {
   console.error('could not load the renderer:', e && e.message);
   process.exit(2);
@@ -43,23 +44,40 @@ try {
 
 const TOWNS = Object.keys(GRAMMARS).sort();
 const readSettlement = (id) => JSON.parse(fs.readFileSync(path.join(REPO, 'game/data/world/settlements', id + '.json'), 'utf8'));
+// The interiors are what give a building its DECLARED footprint; without them every building falls
+// back to `KIND_MASS` and the census measures a plan the renderer never draws.
+const INTERIORS = (() => {
+  const dir = path.join(REPO, 'game/data/world/interiors');
+  const out = {};
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith('.json')) continue;
+    try { const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); if (r && r.id) out[r.id] = r; } catch { /* a malformed record is not this tool's business */ }
+  }
+  return out;
+})();
 
 /** One town, one arm. Returns the distinct roof profiles its skyline carries. */
 function census(town, arm) {
   const rec = readSettlement(town);
   const gram = grammarFor(town);
-  const plan = planSettlement(rec, {});
-  const built = plan.buildings.filter((b) => b.w && b.d && b.h);
-  // The live arm feeds the SAME per-building salts the renderer feeds. The constant arm feeds one
-  // seed for everybody, which is the mistake this control exists to keep visible.
-  const salts = arm === 'constant' ? built.map(() => 7) : assignVariantSalts(gram, built, plan);
+  const plan = planSettlement(rec, INTERIORS);
+  const built = plan.buildings;
+  // The live arm feeds the SAME per-building salts the renderer feeds — `assignVariantSalts()` is
+  // the exact call `buildSettlementExterior()` makes. The constant arm feeds one seed for
+  // everybody, which is the mistake this control exists to keep visible.
+  const salts = arm === 'constant' ? null : assignVariantSalts(plan, gram, {});
   const roofs = new Map();
   const heights = [];
-  built.forEach((b, i) => {
-    const sil = previewSilhouette(gram, b, b.w, b.d, b.h, salts[i] ?? 0);
+  for (const b of built) {
+    const w = b.drawn_footprint_m ? b.drawn_footprint_m[0] : b.footprint_m[0];
+    const d = b.drawn_footprint_m ? b.drawn_footprint_m[1] : b.footprint_m[1];
+    // `assignVariantSalts` stores the salt INDEX; the seed the renderer then uses is the building's
+    // own id hash mixed with it. Reproducing that mix here is what makes this the game's number.
+    const seed = arm === 'constant' ? 7 : ((hashStr(b.id) ^ ((salts.get(b.id) || 0) * 0x9e3779b1)) >>> 0);
+    const sil = previewSilhouette(gram, b, w, d, b.height_m, seed);
     roofs.set(sil.roof, (roofs.get(sil.roof) || 0) + 1);
-    heights.push(b.h);
-  });
+    heights.push(b.height_m);
+  }
   return {
     town,
     buildings: built.length,

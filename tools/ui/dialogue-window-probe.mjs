@@ -396,8 +396,16 @@ try {
   const shotShut = Buffer.from(String(await h.h('screenshot')).split(',')[1], 'base64');
   await h.page.evaluate((eid) => window.__HARNESS.talkTo(eid), who.eid);
   await h.h('stepFrames', 3);
+  // THE OPAQUE ARM, RENDERED. Same window, same world, interior alpha 1 — the frame a build that
+  // filled its panel would produce. The identical statistic runs on it below, so "an opaque fill
+  // scores ~0" is a measurement rather than an assertion about arithmetic.
+  await h.page.evaluate(() => { window.__ENGINE.ui.dialogueArm.opaque = true; window.__ENGINE.ui.builtFrame = -1; });
+  await h.h('stepFrames', 2);
+  const shotOpaque = Buffer.from(String(await h.h('screenshot')).split(',')[1], 'base64');
+  await h.page.evaluate(() => { window.__ENGINE.ui.dialogueArm.opaque = false; window.__ENGINE.ui.builtFrame = -1; });
+  await h.h('stepFrames', 2);
   {
-    const A = readPNG(shotOpen), B = readPNG(shotShut);
+    const A = readPNG(shotOpen), B = readPNG(shotShut), O = readPNG(shotOpaque);
     const win = restored.window;
     const r = [
       Math.round((A.width - win.panel_px[0]) / 2 + win.panel_px[0] * 0.10),
@@ -432,14 +440,27 @@ try {
     // world — and re-run the identical statistic. If that arm does not collapse, the check
     // cannot tell a blend from a fill and its pass is worth nothing (RULES rule 6's inert
     // control, HAZARDS §0b's half of the number line).
-    let cxy = 0, cxx = 0;
-    for (let i2 = 0; i2 < xs.length; i2++) { cxy += (mx - mx) * (ys[i2] - my); cxx += (mx - mx) ** 2; }
-    const rhoOpaque = cxx > 0 && syy > 0 ? cxy / Math.sqrt(cxx * syy) : 0;
-    report.data.translucency = { rect: r, corr_with_world: +rho.toFixed(4), corr_opaque_control: +rhoOpaque.toFixed(4), panel_sd: +sd.toFixed(3), glyph_pixels_excluded: inked, declared_alpha: win.interior_alpha, samples: xs.length };
+    const os = [], oys = [];
+    let k = 0;
+    for (let j2 = r[1]; j2 < r[1] + r[3]; j2 += 2) {
+      for (let i2 = r[0]; i2 < r[0] + r[2]; i2 += 2) {
+        const o = (j2 * A.width + i2) * 4;
+        const lx = 0.2126 * A.data[o] + 0.7152 * A.data[o + 1] + 0.0722 * A.data[o + 2];
+        if (lx > 55) continue;
+        os.push(0.2126 * O.data[o] + 0.7152 * O.data[o + 1] + 0.0722 * O.data[o + 2]);
+        oys.push(ys[k]); k++;
+      }
+    }
+    const mo = mean(os);
+    let oxy = 0, oxx = 0, oyy = 0;
+    for (let i2 = 0; i2 < os.length; i2++) { oxy += (os[i2] - mo) * (oys[i2] - my); oxx += (os[i2] - mo) ** 2; oyy += (oys[i2] - my) ** 2; }
+    const rhoOpaque = oxx > 0 && oyy > 0 ? oxy / Math.sqrt(oxx * oyy) : 0;
+    const sdOpaque = Math.sqrt(oxx / Math.max(1, os.length));
+    report.data.translucency = { rect: r, corr_with_world: +rho.toFixed(4), corr_opaque_control: +rhoOpaque.toFixed(4), sd_opaque_control: +sdOpaque.toFixed(3), panel_sd: +sd.toFixed(3), glyph_pixels_excluded: inked, declared_alpha: win.interior_alpha, samples: xs.length };
     push('E1 the panel interior is a BLEND, not a fill', rho > 0.35 && sd > 1.0,
       `correlation with the world behind it ${rho.toFixed(3)}, interior sd ${sd.toFixed(2)}, ${inked} glyph px excluded`);
-    push('E1b the opaque control collapses', Math.abs(rhoOpaque) < 0.05,
-      `an opaque fill over the same world scores ${rhoOpaque.toFixed(3)} on the identical statistic`);
+    push('E1b the RENDERED opaque control collapses', Math.abs(rhoOpaque) < 0.35 && sdOpaque < sd,
+      `the same window drawn opaque over the same world scores rho ${rhoOpaque.toFixed(3)}, sd ${sdOpaque.toFixed(2)} (ours: ${rho.toFixed(3)}, ${sd.toFixed(2)})`);
     push('E2 the declared alpha is OpenMW\'s documented default', Math.abs(win.interior_alpha - 0.84) < 0.05,
       `interior_alpha=${win.interior_alpha} against 0.84 ± 0.05`);
   }
