@@ -1,0 +1,79 @@
+{
+  "task_id": "W1-30B",
+  "role": "builder",
+  "piece": "W1-30B",
+  "status": "builder_owned_complete",
+  "state": "landed-pending-fresh-critic",
+  "plan_state": "satisfied-pending-critic",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "Light, sky, shadow and atmosphere. Three defects were named in the plan; all three were real, two of them were mis-diagnosed in ways that mattered, and a fourth cause was found that is not in W1-30B's files. (1) FOG: FogExp2 transmits exp(-(d*rho)^2), a Gaussian, and the code fed it regions.json's extinction_per_m — which declares itself Beer-Lambert — plus a second fog derived as 1.978/sightline_m from the same weather front. Replaced with a real Beer-Lambert height-fog model implemented as a THREE.ShaderChunk override installed from sky.js (per pixel, correctly occluded, no second depth pass, and reversible in one call), with a monotone saturating compression that preserves the thirteen regions' authored ordering exactly while holding clear air to an extinction that leaves 35% contrast at 150 m. Measured offline through the shipping function: 12/13 regions now pass the 150 m row in clear weather against 7/13 before, and the one that misses (deep-marshes, 15.3%) declares a 110 m sightline in its own clearest state. (2) SHADOWS: the plan said nothing casts a shadow anywhere; measured, the shadow sabotage moved 13.03% of pixels at the spawn and exactly 0.00% on all three region vistas. Shadows were drawing and stopping dead at the edge of a 120 m box centred on the player's feet. Replaced with a camera-frustum-fitted, bounding-sphere-stabilised, texel-snapped volume out to 150 m, near 40 -> 0.5, and a bias/normalBias proportional to the fit's own texel (the old normalBias of 0.25 m was four texels and is what erased every contact shadow). Cascades were NOT built and the substitution is recorded: three.js has no CSM, and the two ways to get one either put a visible ring in the shadow strength — a hard fail in this same plan — or reach into every material's shader mid-round while W1-30A holds the compositor. (3) IBL: the environment was a 16x8 byte DataTexture, and three.js caches the PMREM convolution of a non-render-target texture forever (WebGLCubeUVMaps.get only re-converts render-target textures), so it was baked once at boot and never rebuilt however many times sky.js rewrote its bytes; it was also tagged sRGB while holding linear values, which darkened it further. Replaced with a 128x64 half-float probe rebuilt on a time/weather/region bucket change and disposed on replacement so the convolution is rebuilt. Measured: switching the probe off now changes 25.1% of pixels at the spawn. (4) THE FOURTH CAUSE, NOT MINE: after the shadow volume reaches 150 m the region vistas still measure 0.00%, because game/src/world/province.js flags the geometry inside it not to cast — castShadow=false on the streamed vegetation instances (766, 857, 1204, 2249), never set on the terrain (ground 1333, ground-skin 995), and province-far (564) additionally has receiveShadow=false. A hill cannot shadow itself and a tree line cannot shadow the ground. The probe carries a diagnostic arm that flips those flags in the page for one frame to size the effect; nothing is shipped by it.",
+  "files_touched": [
+    "game/src/render/sky.js",
+    "game/src/render/lighting.js",
+    "game/src/render/lib/lighting-recipes.js",
+    "tools/visual/w1-30b-air.mjs",
+    "tools/visual/w1-30b-probe.mjs",
+    "tools/visual/w1-30b-roughness.mjs",
+    "orchestration/status/W1-30B.json",
+    "orchestration/INDEX.md",
+    "docs/progress.html",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [
+    "game/src/render/sky.js",
+    "game/src/render/lighting.js",
+    "game/src/render/lib/lighting-recipes.js"
+  ],
+  "consumed": {
+    "shot_deck": "tools/visual/deck.json (W1-30V) — every camera stop in every instrument comes from it; no shot list was invented (rule 10)",
+    "world_records": "game/data/world/regions.json fog.extinction_per_m and fog.height_falloff_m; game/data/world/weather.json sightline_m via sim.env.sightlineM",
+    "existing_discipline": "the single authoritative celestial direction shared by dome, fog, sun and shadow; texel snapping; deterministic bounded precipitation driven by simulation frame; the moon as the exact inverse of the sun",
+    "seam": "W1-30S's renderer.setLightingFrame() and the empty lib/lighting-recipes.js registry"
+  },
+  "published": {
+    "render/lighting.js": "the frozen per-frame lighting contract — 22 fields. Consumers: W1-30A's colour grade (day/dusk/night/overcast, live today), the province night lamps (day, live today), and declared-not-yet-observed W1-30G interiors and the Deck plate renderer.",
+    "render/lib/lighting-recipes.js": "two base rigs and eight named recipes (noon-marsh, dusk-canopy, overcast-flat, storm, night-moon, interior-hearth, interior-cold, cave-emissive). Consumers: sky.js recipeForConditions() every frame (live), and environmentProbeSpec() for the probe bake (live). Interior recipes have ONE observed consumer today (the probe bake); W1-30G is the declared second and is not landed — stated rather than counted.",
+    "render/sky.js environmentProbeSpec(recipeId, place)": "the entry point W1-30G consumes for per-room interior probes: pass the room's own colours, get back a texture and an intensity. Two call sites: sky.js's own exterior bake path uses bakeEnvironmentProbe directly, G uses the recipe-named wrapper.",
+    "render/sky.js installAtmosphereModel/restoreStockAtmosphere": "the fog model and its one-call reversal, so the source-level null control needs no edit to this file."
+  },
+  "variants_in_use": "all eight recipes are variant specs over EXTERIOR_RIG or INTERIOR_RIG; resolveLightingRecipe() applies the five declared axes (timeOfDay, weather, regionTint, interior, intensity) and throws on any other, so a silently-ignored axis is impossible.",
+  "measured_before_after": {
+    "method": "shadow/atmosphere/height/probe sabotage = fraction of pixels changing by more than 6/765 when that one feature is switched off, same camera, same seed, same frame. SwiftShader, 640x360, 13:00 clear.",
+    "shadow_sabotage_before": {
+      "spawn": 13.03,
+      "street-lilmoth": 2.16,
+      "approach-lilmoth": 0.6,
+      "street-gideon": 0.62,
+      "eye-blackwood": 0.97,
+      "vista-blackwood": 0.0,
+      "vista-salt-hills": 0.0,
+      "vista-deep-marshes": 0.0
+    },
+    "spawn_after": {
+      "shadow": 13.51,
+      "atmosphere": 92.83,
+      "heightFog": 7.44,
+      "probe": 25.14,
+      "shadowFitVsOldBox": 45.6
+    },
+    "vista_blackwood_after": {
+      "shadow": 0.0,
+      "atmosphere": 29.95,
+      "heightFog": 18.63,
+      "probe": 0.0,
+      "shadowFitVsOldBox": 0.01
+    },
+    "air_model_clear_150m": "12/13 regions >= 35% transmittance (was 7/13); worst is deep-marshes at 15.3%",
+    "air_model_null_control": "the shipped model collapses below 10% at 150 m in 6/13 regions — hive, eastern-rootlands, thornmarsh, marauders-coast, blackwood, deep-marshes — and does NOT in the other seven. The plan's premise that fog erases the world is true of the regions the audit photographed and false of the driest third."
+  },
+  "not_done": [
+    "CONTACT SHADOWS (plan item 3). A screen-space ray march needs the depth buffer and a full-screen pass, which live in render/post/** — W1-30A's paths under ruling O1. Not attempted. The 'contact' gate row is NOT met and is not claimed.",
+    "CASCADES (plan item 2). Substituted by one ring-free fitted volume; see the summary. The 'shadows reach the horizon' row is not met, and after the fit it is blocked by province.js's caster flags rather than by the light.",
+    "SUN-DIRECTION AERIAL INSCATTER (plan item 4, second half). The extinction half is shipped per pixel; the inscatter half needs the sun vector in a full-screen pass and is published on the lighting frame as aerialInscatter/aerialParams for W1-30A to apply.",
+    "WEATHER AS MATERIAL RESPONSE (plan item 7). Rain now darkens and colours the air and the precipitation correctly, but raising wetness on the material families that declare it means writing to W1-30C's visual-foundation.js. Not attempted; the 'weather changes materials' row is not claimed.",
+    "The 'atmosphere has height' row as written. Height fog is demonstrably live (its own null control moves 7.4% of pixels at the spawn and 18.6% on the Blackwood vista), but the row measures the lower third of an EYE-LEVEL frame against the middle third, and at eye level the lower third is near ground in thin air while the middle third is the fogged horizon. Measured at the spawn: lower 57.5, middle 69.4. The row is reported as measured-and-not-met with its numbers rather than reinterpreted.",
+    "RI-VIS06 Protocol A. No blind paired judging was run by this builder; pack-builder and judge must be different agents, so it belongs to the fresh critic.",
+    "Native frame-time and draw-call budgets. The GPU pod run was in flight at the time of writing; every absolute budget row stays CARRIED per W1-30-EVIDENCE.md R3c until it lands."
+  ],
+  "next_step": "Fresh critic: (1) run the child-scoped Deck plus the census sample plus the whole open inventory on the GPU pod, not on SwiftShader — IBL and shadows are exactly what SwiftShader misrepresents; (2) replay tools/visual/w1-30b-roughness.mjs independently, including its null arm, and judge the four spheres by eye as well as by the numbers; (3) execute every null control by DELETING the fix on a sparse copy rather than by flipping a feature flag — restoreStockAtmosphere() and the pre-W1-30B sky.js are both one revert away; (4) attack the shadow substitution specifically: walk 180 frames forward and look for a shadow edge that crawls or a volume that pops when the recipe changes, which is what the sphere fit is supposed to prevent and the thing a still cannot show; (5) rule on whether the deep-marshes 150 m miss is a defect or the region working as authored. TWO MESSAGES THAT COULD NOT BE DELIVERED — no agent named W1-30A or W1-30V was reachable through SendMessage, so they are recorded here for the orchestrator to relay. To W1-30A: renderer.js:1173 builds regionFog as {colour, extinction, glow}; please add height_falloff_m: r.fog.height_falloff_m, which lets the colour-keyed fallback table in sky.js be deleted (regionHeightFalloff already prefers the field when present). Also, scene.fog is now a HeightFog extends THREE.Fog with fogNear/fogFar repurposed as sigma0 and height falloff, and .density kept as a two-way alias so visual-foundation.js's declared sabotage accessor and the vt-* tools that pin it are unaffected. To W1-30V: three inventory amendments, in the summary above — V02's 'nothing casts a shadow' should read 'shadows stop at about 60 m from the player and are exactly zero on every region vista'; V01 is region-specific and six of thirteen regions were never affected; and a NEW row for province.js's caster flags, owner W1-30F."
+}
