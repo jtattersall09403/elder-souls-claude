@@ -18,11 +18,13 @@ inert — no swim, no wading band, no breath clock — which the builder declare
 piece's unbuilt work rather than faking it.
 
 :::compare Ours on the trunk road in The Stone Forest, ground at 69.66 m under a water surface at
-135.30 m; ours on the Lilmoth–Archon tideway, the one leg meant to sit at the waterline; and
-REF-A11, where Morrowind carries a route over standing water rather than under it.
+135.30 m; and ours on the Lilmoth–Archon tideway, the one leg meant to sit at the waterline. The
+Morrowind reference we judged these against — REF-A11, a Bitter Coast boardwalk on driven pilings,
+where the route is carried *over* standing water rather than under it — is not reproduced here: it is
+held for internal comparison and critique only and may not be redistributed, which publishing it to
+this site would be.
 ![Ours — Stormhold–Helstrom, 65.64 m down, midday, low tide](../shots/shot-drowned-road-stormhold-helstrom.png)
 ![Ours — the Lilmoth–Archon tideway at low tide, dry and walkable](../shots/shot-tideway-lilmoth-archon-LOW.png)
-![Reference — REF-A11, Bitter Coast boardwalk on driven pilings](../shots/REF-A11__mwscr-2017-06-20-crossing-swampy-islands.avif)
 :::
 
 The first image is not underexposed. That is the entire frame: sixty-five metres of water between
