@@ -70,7 +70,12 @@ export function drawMap(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const local = m.view === 'local';
-  const sc = screen(S, 'map', local ? 'Where I am' : 'Where I have been', m.regionName || null, 'parchment', alpha);
+  // "Where I have been" was the province view's heading under W1-MAP-01, and it stopped being
+  // true the moment the fog came off: the province is all there whether you have been or not.
+  // A heading that describes a rule the build no longer follows is the cheapest kind of lie, so
+  // it is corrected here rather than left for a critic. The region name stays in the subtitle,
+  // which is where the Morrowind reference puts it (REF-A12b: "Ascadian Isles Region").
+  const sc = screen(S, 'map', local ? 'Where I am' : 'The Province', m.regionName || null, 'parchment', alpha);
   const [ix, iy, iw, ih] = sc.inner;
 
   // The drawing box, square-ish and centred, so the province is not stretched. The aspect is

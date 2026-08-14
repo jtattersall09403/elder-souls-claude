@@ -1,39 +1,51 @@
 {
   "task_id": "W1-MAP-DEFECTS",
-  "status": "D1-root-cause-found-D2-code-landed",
+  "status": "both-defects-fixed-evidence-in-progress",
   "started": "2026-08-14",
   "owner_defects": [
     "D1: cannot open the map at all from the deployed build",
     "D2: remove fog of war — geography visible from the start, markers hidden until discovered"
   ],
-  "D1_root_cause": {
-    "symptom": "M opens the inventory; swap_right walks one or two screens; then NOTHING the player presses reaches the game ever again. The map is four screens along the ring, so it is unreachable — and the menu is also unclosable.",
-    "mechanism": "It is not a navigation bug at all. In `mode: 'play'` the FIXED LOOP STOPS. Instrumented at HEAD: `uiPausedFrames` climbs 19 -> 44 -> 59 and then freezes at 59 for the rest of the run, while `window` still receives every keydown. `Engine._step()`'s paused branch is what latches input while a screen is open, so once the loop stops ticking, `sim.uiDriver` is never called again and no key can reach `UISystem.step`.",
-    "evidence": "tools/map/explore-W1-MAP-DEFECTS.mjs (diagnosis, throwaway) — DOM keydown logged for every press after the freeze, with no matching `driver`/`step` entry. tools/map/player-route.mjs is the keeper: real boot, real key presses, no harness driving.",
-    "why_the_existing_probe_says_otherwise": "tools/ui/critic-w1-21-r2-doors-at-head.mjs reaches all six screens — from `loadState('ui-journal')` in `play-instrumented` mode, where the harness advances the clock by hand. It never runs the rAF loop, so it cannot see this.",
-    "next": "identify what stops the rAF loop (diag2 instruments loop.running / rafTicks / an independent rAF chain / throws inside the tick)"
+  "D1": {
+    "reproduced": "tools/map/player-route.mjs — real boot at `?mode=play` (rAF drives the sim), real page.keyboard presses, real touch taps. Nothing calls openMenu/stepFrames/loadState. Before the fix: M opened the inventory and the map was never reached.",
+    "root_cause": "UISystem.WALK_ORDER. `menu` opens the INVENTORY; `swap_right`/`swap_left` are the only way on; and `map` sat SIXTH — four presses away — with nothing anywhere in the game saying the pages turned or that a map was one of them. The surface existed and drew correctly (a visual audit had photographed it); a person could not get to it.",
+    "fix": "`map` moved from sixth to second in WALK_ORDER — one press from the screen `menu` opens — and the inventory's foot hint now names the page turn in the device-neutral vocabulary the rest of the interface uses (RI-JRN03 DS5: the action, never the key). RI-UIX04 Q7 is unaffected in both directions: NEVER_ADJACENT is untouched, so the journal's ring still has no `map` and the map's ring still has no `journal` (map-probe S9/S10 unchanged).",
+    "instrument_trap_worth_knowing": "The first three runs of the route probe reported the map unreachable even AFTER the fix would have applied, because they slept 320 ms between presses. On this box headless Chromium on a software rasteriser services requestAnimationFrame roughly once every ten seconds once a screen is up — measured with an independent rAF chain installed by the probe, with `loop.running` still true, nothing thrown, and `uiPausedFrames` freezing in step. Removing `--run-all-compositor-stages-before-draw` did not help. The probe now waits for the loop's own tick counter to advance instead of for a wall clock, and says so in the file. A fixed sleep in play mode measures the rig's frame rate and calls it a navigation defect."
   },
-  "D2_landed": {
-    "ruling": "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md — geography whole from frame 0, place squares still earned by standing there, roads still forbidden. Reversal is one line; §6 names what would overturn it.",
-    "code": "game/src/ui/screens/map.js (fog gate removed, cells_in_view added), game/src/ui/system.js (`seen` closure removed; `cells_in_view` and a DERIVED `geography_always_drawn` added to state().map)",
-    "checks": "tools/harness/map-probe.mjs S8/S12/C1b inverted to the new rule; tools/map/fog-control.mjs is the delete-the-fix arm plus the plausible null control (reveal every marker with the geography)",
-    "reference": "A Morrowind map reference DOES now exist and was read before building: corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-map__mw-*.jpg (5 shots, landed by W1-MW-UI-REFS). Whole landmass, small square markers only, no roads, region name in the header. All five are late saves, so they do not settle what a FRESH character's world map looks like — recorded as such in the amendment."
+  "D2": {
+    "ruling": "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md — the geography whole from frame 0; place squares still earned by standing on the built pad; roads/routes still forbidden by S35, which is what keeps RI-WLD06's markerless navigation intact. Reversal is one line and §6 names three things that would overturn it.",
+    "why_it_is_a_correction_not_a_preference": "RI-WLD06 §5 already banned 'fog-of-war reveal-on-approach' and permitted the surface as 'paper, static, hand-drawn'. A sheet of paper does not fill in as you walk. Two items disagreed and the corpus was on the owner's side.",
+    "code": "game/src/ui/screens/map.js (terrain gate removed, cells_in_view counted, province-view heading corrected from 'Where I have been'); game/src/ui/system.js (the `seen` closure REMOVED rather than left unread, cells_in_view + a derived geography_always_drawn added to state().map)",
+    "measured": "tools/map/fog-control.mjs, head arm: 42,846 of 42,846 cells in view drawn, 0 cells in the footprint, 0 place squares — the amendment's inverted appendix test, exactly. Screenshot reports/w1-map-defects/fog-head.png.",
+    "reference": "corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-map__mw-*.jpg — five Morrowind map screenshots, landed by the sibling W1-MW-UI-REFS, read BEFORE building. Whole landmass out to the coast, sea a flat field, only symbols are small square markers, not one road, region name in the header. All five are late saves, so they do not settle what a fresh character's world map looks like; recorded as such in the amendment."
   },
+  "controls": {
+    "delete_the_fix": "tools/map/fog-control.mjs --arms deletefix — the one-line fog gate and the closure it needs put back on a hard-linked control clone; must turn the geography half red.",
+    "null_control": "--arms markers — NOT the trivial 'no map at all', which distinguishes nothing. The plausible wrong answer: `_mapPlaces()` rewritten as 'the map draws the world's sites', so the geography is whole AND every settlement is squared. Looks like a working map in a screenshot and deletes discovery from the game; must turn the marker half red.",
+    "both_patches_assert_their_own_hit_count": "a sabotage whose text replacement did not apply is reported as a broken arm, never as a passing control."
+  },
+  "not_done": [
+    "The phone leg of player-route.mjs had not finished when this was written; the desktop leg is the evidence for D1.",
+    "The province view reads as flat blocks of saturated region colour where Morrowind's reads as shaded relief. The height shading is applied (base_dm through shadeHex) but the palette dominates it. Out of scope for these two defects and worth a look by whoever owns map art.",
+    "The map is one press from the inventory now, but the inventory is still what `menu` opens and Escape is still eaten by pointer lock, so `KeyM` is in practice the only working menu key. Whether the map deserves its own binding is a live question and would need a HARNESS.md §4 action-set amendment."
+  ],
   "files_touched": [
     "orchestration/status/W1-MAP-DEFECTS.json",
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
+    "game/src/ui/screens/map.js",
+    "game/src/ui/screens/inventory.js",
+    "game/src/ui/system.js",
+    "tools/harness/map-probe.mjs",
     "tools/map/player-route.mjs",
     "tools/map/fog-control.mjs",
     "tools/map/explore-W1-MAP-DEFECTS.mjs",
-    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
-    "game/src/ui/screens/map.js",
-    "game/src/ui/system.js",
-    "tools/harness/map-probe.mjs"
+    "reports/w1-map-defects/",
+    "reports/blog-feed.jsonl"
   ],
   "files_claimed": [
     "game/src/ui/screens/map.js",
+    "game/src/ui/screens/inventory.js",
     "game/src/ui/system.js",
-    "game/src/core/loop.js",
-    "game/src/engine.js (the rAF/paused-step path only)",
     "game/data/ui/map.json",
     "tools/map/",
     "tools/harness/map-probe.mjs",
@@ -42,7 +54,7 @@
     "reports/blog-feed.jsonl"
   ],
   "notes": [
-    "ui/system.js and engine.js are also claimed by HUD-MORROWIND and others; my edits are confined to _mapModel, state().map and (pending) the loop path, and I commit only my own paths with --only.",
-    "Play mode in headless swiftshader renders every rAF and starves the compositor — three runs lost the browser. player-route.mjs lowers the RENDER rate to 12 Hz (declared in the file); the simulation and the input path are untouched."
+    "ui/system.js is also claimed by HUD-MORROWIND and W1-19-builder-production-20260811; my edits are confined to WALK_ORDER, _mapModel and state().map, and I land only my own paths.",
+    "Landing via tools/land.mjs after HAZARDS §2f — the shared .git/index.lock was contended for minutes at a time and two commit attempts lost the race outright."
   ]
 }
