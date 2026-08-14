@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-14T09:59:32Z
+Generated: 2026-08-14T14:40:38Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -25,9 +25,9 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 
 ## 1. Coverage at a glance
 
-- Canonical subsystem paths: **330**
-- Reference items found: **147** across 18 area(s)
-- Subsystems with at least one judging reference item: **324**
+- Canonical subsystem paths: **331**
+- Reference items found: **149** across 18 area(s)
+- Subsystems with at least one judging reference item: **325**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
 - Front-matter problems: 0 error(s), 30 warning(s)
@@ -43,7 +43,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 | `lore.*` | 11 | 11 | 0 | 0 |
 | `render.*` | 25 | 25 | 0 | 0 |
 | `audio.*` | 4 | 4 | 0 | 0 |
-| `ui.*` | 8 | 8 | 0 | 0 |
+| `ui.*` | 9 | 9 | 0 | 0 |
 | `platform.*` | 13 | 13 | 0 | 0 |
 | `coherence.*` | 8 | 4 | 4 | 0 |
 | `process.*` | 2 | 2 | 0 | 0 |
@@ -178,9 +178,9 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 | Game subsystem path | What it means | Arb | Judging items | Critic | Method |
 |---|---|---|---|---|---|
 | `dialogue.topics.graph` | Topic-list dialogue with a real graph behind it | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/dialogue/arbiter-order-divergence.mjs, tools/corpus/probe-combat-dialogue.mjs, order-infos.mjs, shadow-audit.mjs |
-| `dialogue.topics.discovery` | Keyword discovery: topics unlock by being told about them | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/dialogue/arbiter-order-divergence.mjs, tools/corpus/probe-combat-dialogue.mjs, order-infos.mjs, shadow-audit.mjs |
+| `dialogue.topics.discovery` | Keyword discovery: topics unlock by being told about them | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-UIX08](../../corpus/86-ui/RI-UIX08-dialogue-window.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/dialogue/arbiter-order-divergence.mjs, tools/corpus/probe-combat-dialogue.mjs, order-infos.mjs, shadow-audit.mjs<br>in-item procedure (kind: structure); tools/dialogue/build-graph.mjs |
 | `dialogue.topics.filtering` | Same topic, different answer by faction/race/rank/disposition/place | morrowind | [RI-DLG01](../../corpus/40-dialogue/RI-DLG01-topic-graph.md)<br>[RI-DLG02](../../corpus/40-dialogue/RI-DLG02-words-per-settlement.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: graph); tools/corpus/dump-dialogue-graph.mjs, tools/dialogue/arbiter-order-divergence.mjs, tools/corpus/probe-combat-dialogue.mjs, order-infos.mjs, shadow-audit.mjs<br>in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs, tools/corpus/dump-npcs.mjs<br>in-item procedure (kind: number); tools/dialogue/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
-| `dialogue.disposition.model` | Disposition as a real number with real consequences | morrowind | [RI-CHR02](../../corpus/22-character/RI-CHR02-race-and-standing.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: number); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: number); tools/dialogue/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
+| `dialogue.disposition.model` | Disposition as a real number with real consequences | morrowind | [RI-CHR02](../../corpus/22-character/RI-CHR02-race-and-standing.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md)<br>[RI-UIX08](../../corpus/86-ui/RI-UIX08-dialogue-window.md) | `critic.dialogue` | in-item procedure (kind: number); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: number); tools/dialogue/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: structure); tools/dialogue/build-graph.mjs |
 | `dialogue.persuasion.mechanics` | Admire / intimidate / taunt / bribe and their risks | morrowind | [RI-PRG03](../../corpus/20-progression/RI-PRG03-skills-by-use.md)<br>[RI-QST05](../../corpus/30-quests/RI-QST05-non-combat-resolution.md)<br>[RI-DLG04](../../corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: number)<br>in-item procedure (kind: number); tools/dialogue/dump-engine-disposition.mjs, tools/corpus/dump-dialogue.mjs |
 | `dialogue.rumour.distribution` | Rumours differ per town and per class, and point at real content | morrowind | [RI-QST07](../../corpus/30-quests/RI-QST07-side-quest-texture.md)<br>[RI-DLG03](../../corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md)<br>[RI-LOR02](../../corpus/60-lore/RI-LOR02-era-and-political-brief.md) | `critic.dialogue` | in-item procedure (kind: number)<br>in-item procedure (kind: text); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: text) |
 | `dialogue.voice.register` | Prose quality and register: does it read like Morrowind or like filler | morrowind | [RI-DLG06](../../corpus/40-dialogue/RI-DLG06-voice-differentiation.md)<br>[RI-DLG07](../../corpus/40-dialogue/RI-DLG07-blind-comparison-pack.md)<br>[RI-DLG08](../../corpus/40-dialogue/RI-DLG08-tonal-range-and-the-indifference-ratio.md)<br>[RI-LOR04](../../corpus/60-lore/RI-LOR04-naming-and-language.md)<br>[RI-AUD05](../../corpus/87-audio/RI-AUD05-voice-policy.md) | `critic.dialogue` | in-item procedure (kind: number); tools/corpus/dump-dialogue.mjs<br>in-item procedure (kind: text)<br>in-item procedure (kind: number); corpus/80-methods/tone-metrics.py, tools/analysis/content-stats.mjs, tools/blind/make-pair.mjs<br>in-item procedure (kind: structure); corpus/80-methods/jel-phonotactics.py<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs |
@@ -303,9 +303,10 @@ the bar outright). `Method` is derived from each item's `## Comparison method`.
 |---|---|---|---|---|---|
 | `ui.hud.combat` | Health/stamina/charges HUD legibility under pressure | souls | [RI-CAM03](../../corpus/15-camera/RI-CAM03-lock-on-framing.md)<br>[RI-WLD06](../../corpus/50-world/RI-WLD06-navigation-without-markers.md)<br>[RI-UIX01](../../corpus/86-ui/RI-UIX01-combat-hud.md) | `critic.ui` | in-item M1–M7 (7 checks); corpus/80-methods/m-cam03-lockon-framing.mjs<br>in-item M27–M32 (6 checks)<br>in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/ui-census.mjs, tools/analysis/ui-forbidden.mjs |
 | `ui.hud.minimalism` | No compass, no markers, no quest arrows on screen (AR-2) | morrowind | [RI-UIX02](../../corpus/86-ui/RI-UIX02-no-marker-enforcement.md) | `critic.ui` | in-item procedure (kind: structure); tools/analysis/marker-scan.mjs, tools/harness/run-headless.mjs, tools/analysis/ui-layer.mjs, tools/analysis/marker-diff.mjs, tools/corpus/dump-journal.mjs, ui-layer.mjs |
+| `ui.hud.world` | The HUD outside a fight: the Morrowind element set, and how the two sets change hands at the combat boundary (ARBITRATION S54) | morrowind | [RI-UIX07](../../corpus/86-ui/RI-UIX07-out-of-combat-hud.md) | `critic.ui` | in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/ui-census.mjs, ui-census.mjs |
 | `ui.menu.inventory` | Inventory screen structure and information density | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.journal` | Journal presentation, topic index, quest filtering | morrowind | [RI-UIX04](../../corpus/86-ui/RI-UIX04-journal-ui.md) | `critic.ui` | in-item procedure (kind: structure); tools/corpus/dump-journal.mjs, tools/analysis/journal-ui.mjs, tools/harness/run-headless.mjs |
-| `ui.dialogue.presentation` | Dialogue window: topic list, hyperlinked keywords, portrait, prose | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs |
+| `ui.dialogue.presentation` | Dialogue window: topic list, hyperlinked keywords, portrait, prose | morrowind | [RI-CAM05](../../corpus/15-camera/RI-CAM05-camera-outside-the-fight.md)<br>[RI-UIX08](../../corpus/86-ui/RI-UIX08-dialogue-window.md) | `critic.ui` | in-item M0–M7 (8 checks); corpus/80-methods/m-cam05-world-camera.mjs<br>in-item procedure (kind: structure); tools/dialogue/build-graph.mjs |
 | `ui.style.diegesis` | UI art belongs to the world rather than to a UI kit | art-direction | [RI-VIS05](../../corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md)<br>[RI-UIX06](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) | `critic.ui` | in-item procedure (kind: image); corpus/80-methods/palette-conformance.mjs, vis-metrics.mjs<br>in-item procedure (kind: structure); corpus/80-methods/palette-conformance.mjs, corpus/80-methods/cc-scan.mjs, tools/harness/shoot.mjs, tools/metrics/ui-metrics.mjs, ui-metrics.mjs, cc-scan.mjs |
 | `ui.menu.levelup` | The level-up screen: what it shows, what it costs, where it lives | split | [RI-PRG01](../../corpus/20-progression/RI-PRG01-soul-cost-curve.md)<br>[RI-PRG02](../../corpus/20-progression/RI-PRG02-stat-sheet.md)<br>[RI-UIX03](../../corpus/86-ui/RI-UIX03-inventory-and-the-pause-rule.md) | `critic.ui` | in-item procedure (kind: number); corpus/80-methods/sim-souls-yield.md<br>in-item procedure (kind: number)<br>in-item procedure (kind: structure); tools/analysis/content-stats.mjs, tools/harness/run-headless.mjs |
 | `ui.menu.books` | Reading a book in-game: presentation, pagination, legibility | morrowind | [RI-LOR03](../../corpus/60-lore/RI-LOR03-in-world-book-structure.md)<br>[RI-UIX05](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) | `critic.ui` | in-item procedure (kind: text); corpus/80-methods/book-stats.py<br>in-item procedure (kind: number); tools/harness/run-headless.mjs, tools/harness/shoot.mjs, tools/analysis/text-metrics.mjs, tools/analysis/content-stats.mjs, text-metrics.mjs |
@@ -542,7 +543,7 @@ front-matter should be corrected to the canonical spelling when the item is next
 touched. **New reference items must use canonical paths only** — aliases are a
 migration aid, not a second vocabulary.
 
-**202 legacy spellings in use.**
+**203 legacy spellings in use.**
 
 | Legacy path | Canonical path | Used by |
 |---|---|---|
@@ -590,6 +591,7 @@ migration aid, not a second vocabulary.
 | `data.quests` | `quests.data.schema` | RI-QST04 (corpus/30-quests/RI-QST04-quest-anatomy-schema.md) |
 | `dialogue.claims` | `dialogue.lore.vector` | RI-LOR01 (corpus/60-lore/RI-LOR01-canon-dossier.md), RI-LOR03 (corpus/60-lore/RI-LOR03-in-world-book-structure.md) |
 | `dialogue.directions` | `journal.entry.directions` | RI-WLD06 (corpus/50-world/RI-WLD06-navigation-without-markers.md) |
+| `dialogue.disposition` | `dialogue.disposition.model` | RI-UIX08 (corpus/86-ui/RI-UIX08-dialogue-window.md) |
 | `dialogue.persuasion` | `dialogue.persuasion.mechanics` | RI-PRG03 (corpus/20-progression/RI-PRG03-skills-by-use.md), RI-QST05 (corpus/30-quests/RI-QST05-non-combat-resolution.md) |
 | `dialogue.rumours` | `dialogue.rumour.distribution` | RI-QST07 (corpus/30-quests/RI-QST07-side-quest-texture.md), RI-LOR02 (corpus/60-lore/RI-LOR02-era-and-political-brief.md) |
 | `dialogue.voice` | `dialogue.voice.register` | RI-LOR04 (corpus/60-lore/RI-LOR04-naming-and-language.md) |
@@ -887,6 +889,8 @@ _None._
 | RI-UIX04 | The journal screen — chronological, append-only, and not a quest tracker | 86-ui | structure | morrowind | constructed | high | yes | `ui.menu.journal` `journal.entry.numbering` | [corpus/86-ui/RI-UIX04-journal-ui.md](../../corpus/86-ui/RI-UIX04-journal-ui.md) |
 | RI-UIX05 | Books and readable text — pagination, legibility, and reading as a real activity | 86-ui | number | morrowind | constructed | medium | yes | `ui.menu.books` `lore.book.structure` | [corpus/86-ui/RI-UIX05-books-and-readable-text.md](../../corpus/86-ui/RI-UIX05-books-and-readable-text.md) |
 | RI-UIX06 | UI diegesis and the UI bifurcation — style is art direction, rendering quality is fidelity | 86-ui | structure | neutral | constructed | high | yes | `ui.style.diegesis` `render.process.bifurcation` | [corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md](../../corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md) |
+| RI-UIX07 | The out-of-combat HUD — what persists when nothing is trying to kill you, and how the two sets change hands | 86-ui | number | morrowind | measured | medium | yes | `ui.hud.world` | [corpus/86-ui/RI-UIX07-out-of-combat-hud.md](../../corpus/86-ui/RI-UIX07-out-of-combat-hud.md) |
+| RI-UIX08 | The dialogue window — a floating index of keywords you find by reading, not a menu of replies | 86-ui | structure | morrowind | measured | high | yes | `ui.dialogue.presentation` `dialogue.topics.discovery` `dialogue.disposition.model` | [corpus/86-ui/RI-UIX08-dialogue-window.md](../../corpus/86-ui/RI-UIX08-dialogue-window.md) |
 | RI-AUD01 | Combat impact audio as frame-critical feedback | 87-audio | number | souls | constructed | medium | yes | `audio.combat.impact` `combat.feedback.hitstop` | [corpus/87-audio/RI-AUD01-combat-impact-audio.md](../../corpus/87-audio/RI-AUD01-combat-impact-audio.md) |
 | RI-AUD02 | Web Audio constraints, scheduling discipline and the voice budget | 87-audio | number | modern-fidelity | constructed | high | no | `audio.combat.impact` `platform.determinism.harness` | [corpus/87-audio/RI-AUD02-web-audio-budget.md](../../corpus/87-audio/RI-AUD02-web-audio-budget.md) |
 | RI-AUD03 | Regional ambience — every region identifiable by sound alone | 87-audio | structure | morrowind | constructed | medium | yes | `audio.ambience.region` `world.region.identity` | [corpus/87-audio/RI-AUD03-regional-ambience.md](../../corpus/87-audio/RI-AUD03-regional-ambience.md) |
