@@ -1,0 +1,11 @@
+  head       drawn 42846/42846 in view (revealed 0) · squares 0 · whole=true unearned=false
+[harness]   hiddenhalf: clone at /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p16769-w1-map-defects-hiddenhalf-2026-08-14T155506832Z-e1e013 — 827 linked, new on disk 0.1 MB
+  hiddenhalf drawn 21423/21423 in view (revealed 0) · squares 0 · whole=true unearned=false
+
+ok   head draws the whole geography
+ok   head draws no unearned square
+ok   head draws the WHOLE PROVINCE — drawn === total_cells (42846)
+ok   PROBE TEETH: a gate ABOVE inView++ hides half the province
+ok   …and the OLD assertion (drawn === cells_in_view) stays GREEN on it — which is why it was replaced
+ok   …and the NEW assertion (drawn === total_cells) goes RED on it
+ok   …and the arm is not inert: it differs from head

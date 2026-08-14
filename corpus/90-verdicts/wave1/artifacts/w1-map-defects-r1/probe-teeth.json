@@ -1,0 +1,64 @@
+{
+  "probe": "fog-control",
+  "at": "2026-08-14T15:51:48.074Z",
+  "arms": {
+    "head": {
+      "drawn_cells": 42846,
+      "cells_in_view": 42846,
+      "revealed_cells": 0,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 0,
+      "geography_whole": true,
+      "no_marker_unearned": true,
+      "shot": "fog-head.png",
+      "patched": null
+    },
+    "hiddenhalf": {
+      "drawn_cells": 21423,
+      "cells_in_view": 21423,
+      "revealed_cells": 0,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 0,
+      "geography_whole": true,
+      "no_marker_unearned": true,
+      "shot": "fog-hiddenhalf.png",
+      "patched": [
+        "a draw gate spliced ABOVE inView++ in screens/map.js — every even row hidden"
+      ]
+    }
+  },
+  "commit": "8361fcb9",
+  "checks": [
+    {
+      "what": "head draws the whole geography",
+      "ok": true
+    },
+    {
+      "what": "head draws no unearned square",
+      "ok": true
+    },
+    {
+      "what": "head draws the WHOLE PROVINCE — drawn === total_cells (42846)",
+      "ok": true
+    },
+    {
+      "what": "PROBE TEETH: a gate ABOVE inView++ hides half the province",
+      "ok": true
+    },
+    {
+      "what": "…and the OLD assertion (drawn === cells_in_view) stays GREEN on it — which is why it was replaced",
+      "ok": true
+    },
+    {
+      "what": "…and the NEW assertion (drawn === total_cells) goes RED on it",
+      "ok": true
+    },
+    {
+      "what": "…and the arm is not inert: it differs from head",
+      "ok": true
+    }
+  ],
+  "pass": true
+}
