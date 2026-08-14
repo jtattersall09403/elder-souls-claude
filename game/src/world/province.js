@@ -1079,7 +1079,11 @@ export class Province {
     const mesh = new THREE.Mesh(geo, this.skinMats);
     mesh.name = 'ground-skin';
     mesh.receiveShadow = true;
-    mesh.castShadow = false;
+    // The skin is not coplanar with the ground it sits on — `_skinLift()` raises berms, banks and
+    // spoil out of it, and those are exactly the small forms that read as ground rather than as a
+    // painted texture, but only if they have a shadow at their own foot. A 34 m disc at 0.55 m
+    // cells is about 30,700 triangles, which is a third of one ground tile.
+    mesh.castShadow = true;
     this.group.add(mesh);
     this.skinMesh = mesh;
     this.skinVerts = V * V;
@@ -1491,6 +1495,14 @@ export class Province {
     geo.computeVertexNormals();
     const ground = new THREE.Mesh(geo, this.mats.ground);
     ground.receiveShadow = true;
+    // THE TERRAIN CASTS. It never has, and that — not the light — is why a region vista measured
+    // 0.0-1.5% shadow after W1-30B rebuilt the volume out to 150 m: a hill cannot shadow itself,
+    // a bank cannot shadow the water at its foot, and the only shape in a wide frame that is
+    // BIGGER than the shadow volume was the one shape excluded from it. The cost is bounded and
+    // known rather than argued: TILE_SEG is 44, so one tile is 3,872 triangles and the whole
+    // 5x5 resident set is 96,800 — under 4% of what the tile scatter would put in the same atlas,
+    // and it is the 4% that carries the landform.
+    ground.castShadow = true;
     ground.name = 'ground';
     g.add(ground);
 
