@@ -1249,7 +1249,7 @@ export class Province {
       im.castShadow = false;
       im.receiveShadow = true;
       im.name = `near-${b.kind}:${f.regions[b.ri].id}`;
-      if(b.kind==='canopy')this._registerOccludable(im,b.xf);
+      if(b.kind==='canopy')this._registerOccludable(im,b.xf,this._occluderRadiusM(b,f.regions[b.ri]));
       g.add(im);
       total += b.xf.length;
     }
@@ -1259,30 +1259,104 @@ export class Province {
     return total;
   }
 
-  _registerOccludable(im,matrices){
-    const base=new Float32Array(matrices.length*16);
-    for(let i=0;i<matrices.length;i++)matrices[i].toArray(base,i*16);
-    im.userData.w130Occlusion={base,hidden:new Uint8Array(matrices.length)};
+  /**
+   * The horizontal reach of one canopy bucket, in metres, at unit instance scale.
+   *
+   * Read from the SAME region record the placer read — `props.canopy.r` for a crown, the trunk
+   * radius rule from `_geo`'s own arithmetic for a trunk — so the occlusion test and the geometry
+   * can only ever disagree if one of them is edited without the other. A crown bucket and a trunk
+   * bucket are separate `InstancedMesh`es built from the same placement, which is why this is per
+   * bucket and not per region.
+   */
+  _occluderRadiusM(b, region) {
+    const p = region.props.canopy;
+    if (!p || p.shape === 'none') return 0;
+    if (/crown/.test(b.geoKind)) return p.r || 0;
+    // Trunks: `_geo` sizes them as a fraction of height, clamped against the crown radius. A trunk
+    // is thin, but it is still opaque and it is still the thing that lands between camera and
+    // actor most often, so it gets its real radius rather than zero.
+    const ratio = p.shape === 'cone' ? .068 : p.shape === 'spire' ? .052 : .038;
+    return clamp(ratio * (p.h || 0), 0.10, Math.min(0.95, (p.r || 0) * 0.34));
+  }
+
+  /**
+   * Remember an instanced canopy population so the camera can push it out of the way.
+   *
+   * `radiusM` is new and it is the whole point. The rejection test used to compare the camera
+   * against the instance ORIGIN with a fixed radius, so a crown whose trunk stands eight metres
+   * away and whose canopy is five metres across draped straight over the sightline and was never
+   * considered — the instance origin was outside the bubble while the geometry was not. The crown
+   * radius is a property of the region (`props.canopy.r`, in metres) times the per-instance
+   * horizontal scale, and both are known here and cheap to bake once at build time.
+   */
+  _registerOccludable(im,matrices,radiusM=0){
+    const base=new Float32Array(matrices.length*16),rad=new Float32Array(matrices.length);
+    for(let i=0;i<matrices.length;i++){
+      matrices[i].toArray(base,i*16);
+      // Column 0 of the composed matrix is the instance's own X basis; its length is the
+      // horizontal scale the placer applied. Baked once so the hot loop is arithmetic only.
+      const k=i*16,sx=Math.hypot(base[k],base[k+1],base[k+2]);
+      rad[i]=radiusM*sx;
+    }
+    im.userData.w130Occlusion={base,rad,hidden:new Uint8Array(matrices.length)};
   }
 
   /**
    * Third-person camera foliage rejection. Dense procedural populations are scenery, not opaque
-   * camera colliders: if a camera enters the branch radius, hide that whole authored instance
-   * pair until it is clear again. The base matrices are retained verbatim, so this cannot drift,
-   * accumulate scale, or detach crowns from trunks. A small player bubble also prevents a retained
-   * streamed tile (built around an earlier focus) from placing a bole through the actor.
+   * camera colliders: if a plant stands between the camera and the actor, hide that whole authored
+   * instance pair until it is clear again. The base matrices are retained verbatim, so this cannot
+   * drift, accumulate scale, or detach crowns from trunks.
+   *
+   * WHY THIS IS A SIGHTLINE AND NOT A BUBBLE, and it is a measurement rather than a preference.
+   *
+   * The first version tested TWO POINT DISTANCES — 5.6 m from the camera, 2.7 m from the player,
+   * both against the instance ORIGIN. The first-ten-minutes critic then photographed the defect on
+   * real hardware (RTX A5000, not SwiftShader): ten seconds from spawn the player renders at ZERO
+   * pixels behind a tree, while the collision arm reports `arm_len 3.993 m, arm_hit false` —
+   * because a tree is not a collider and never was. Two independent things let that tree through:
+   *
+   *   1. A BUBBLE IS NOT A SEGMENT. The camera orbits several metres back, so the thing that must
+   *      be clear is the LINE from camera to actor, not two discs round its ends. A trunk sitting
+   *      beside the camera disc but squarely on the line was never tested.
+   *   2. AN ORIGIN IS NOT A CROWN. The test used the instance origin against a constant radius,
+   *      so a canopy whose trunk is eight metres off and whose crown is five metres across draped
+   *      over the sightline with its origin comfortably outside the bubble. `_registerOccludable`
+   *      now bakes each instance's real horizontal radius and the test uses it.
+   *
+   * IT CAN ONLY EVER HIDE MORE, NEVER LESS. The old proximity terms are kept verbatim and OR-ed
+   * with the new one, so no plant that used to be pushed aside stops being pushed aside. A change
+   * to camera-occlusion code that could hide FEWER things is a change that can bury the player in
+   * a new place, and this one cannot.
+   *
+   * `occlusionSightline` is public and is the control arm: set it to false and the behaviour is
+   * bit-for-bit the behaviour of the commit before this one.
    */
   updateOcclusion(cameraX,cameraZ,playerX,playerZ){
     const last=this._occlusionAt;
     if(last&&Math.hypot(cameraX-last[0],cameraZ-last[1])<.32&&Math.hypot(playerX-last[2],playerZ-last[3])<.32)return 0;
     this._occlusionAt=[cameraX,cameraZ,playerX,playerZ];
     const cm2=5.6*5.6,pm2=2.7*2.7,m=this._occlusionMatrix||(this._occlusionMatrix=new THREE.Matrix4()),tiny=new THREE.Vector3(.001,.001,.001);
+    const sightline=this.occlusionSightline===undefined?true:!!this.occlusionSightline;
+    // The camera-to-actor segment in the ground plane. Trees are vertical, so the XZ projection is
+    // the right test and it is the only one the caller has the data for.
+    const sx=playerX-cameraX,sz=playerZ-cameraZ,segLen2=sx*sx+sz*sz;
+    // Half the actor's shoulder width plus a little, so a trunk grazing the edge of the line still
+    // counts. Below this the plant is not between camera and actor in any sense that matters.
+    const BODY_M=0.55;
     let changed=0;
     this.group.traverse(o=>{
       const rec=o.userData&&o.userData.w130Occlusion;if(!rec||!o.isInstancedMesh)return;
       for(let i=0;i<o.count;i++){
         const k=i*16,ix=rec.base[k+12],iz=rec.base[k+14];
-        const hide=(ix-cameraX)*(ix-cameraX)+(iz-cameraZ)*(iz-cameraZ)<cm2||(ix-playerX)*(ix-playerX)+(iz-playerZ)*(iz-playerZ)<pm2;
+        let hide=(ix-cameraX)*(ix-cameraX)+(iz-cameraZ)*(iz-cameraZ)<cm2||(ix-playerX)*(ix-playerX)+(iz-playerZ)*(iz-playerZ)<pm2;
+        if(!hide&&sightline&&segLen2>1e-6){
+          // Distance from the instance origin to the camera-to-actor SEGMENT, clamped to its ends
+          // so a tree behind the camera or beyond the actor is not hidden for nothing.
+          const t=Math.max(0,Math.min(1,((ix-cameraX)*sx+(iz-cameraZ)*sz)/segLen2));
+          const dx=ix-(cameraX+sx*t),dz=iz-(cameraZ+sz*t);
+          const reach=(rec.rad?rec.rad[i]:0)+BODY_M;
+          hide=dx*dx+dz*dz<reach*reach;
+        }
         if(Number(hide)===rec.hidden[i])continue;
         m.fromArray(rec.base,k);if(hide)m.scale(tiny);o.setMatrixAt(i,m);rec.hidden[i]=Number(hide);changed++;
       }
@@ -2294,7 +2368,7 @@ export class Province {
       im.castShadow = false;
       im.receiveShadow = true;
       im.name = `${b.kind}:${this.field.regions[b.ri].id}`;
-      if(b.kind==='canopy')this._registerOccludable(im,b.xf);
+      if(b.kind==='canopy')this._registerOccludable(im,b.xf,this._occluderRadiusM(b,this.field.regions[b.ri]));
       im.frustumCulled = true;
       group.add(im);
     }
