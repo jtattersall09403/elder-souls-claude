@@ -113,40 +113,82 @@ the documentation of them is owed: `installCopySeam(mat)` and `adoptMaterialCopy
   `with_surface_uniforms` count is the tripwire: if it climbs across a long session while the scene
   does not, materials are being retained after their meshes are gone.
 
-## 5. CONSUMPTION (`RI-MTH07`) — on hardware, and the control is the point
+## 5. CONSUMPTION (`RI-MTH07`) — on hardware, before AND after, both arms on one Pod
 
-**NVIDIA L4, `ANGLE (NVIDIA, Vulkan 1.4.303)`, `software: false`** — a hardware attestation, so
-these are admissible as appearance evidence.
+**It took three Pod runs to get a real before-arm, and all three are on record rather than only the
+one that worked.** The first two are superseded, not deleted, because each one taught the next what
+was wrong:
+
+1. **NVIDIA L4** (`reports/runpod-gpu/runs/w1-orphaned-surface-shaders`) — the AFTER arm is real.
+   The BEFORE arm is **not a control**: `revert.log` shows `ENOENT` resolving the repo from a
+   hard-coded `/home/user/elder-souls-claude`, which does not exist on a Pod, so the revert did
+   nothing. `census-before` on that run reports **zero orphans**, proving it. Its "before" numbers
+   (5.36% / 32.84% / 73.97%) are a same-configuration repeat of the after arm, not a before arm —
+   this is the "accidental repeatability estimate" an earlier draft of this section read as a
+   result. It was not one.
+2. **NVIDIA RTX A5000** (`…/w1-orphaned-surface-shaders-ab`) — the path bug above was fixed
+   (`ES_ROOT` now resolves from the patch script's own file location) and `census-before` on this
+   run is real: **321 of 422 orphaned**, matching the diagnosis. But the run was **SIGTERM'd by the
+   calling shell** — run in the foreground, not backgrounded — the instant after census-before
+   finished and before `w1-30-surface-consumption.mjs` captured a single frame. No before-arm
+   consumption data exists from this run either.
+3. **NVIDIA RTX A5000**, run `20260814-173808Z-27049` (`…/w1-orphaned-surface-shaders-consumption-r2`,
+   copied here as `hardware-ab/`) — same fix as run 2, this time launched via `run_in_background`
+   so a shell timeout could not orphan the Pod. **Passed end to end**, both arms, one Pod, one GPU.
+   This is the arm that closes the piece; runs 1 and 2 stay on disk as the record of what went wrong
+   on the way here (`run.json`, `revert.log`, `census-before/summary.json`,
+   `consumption-before/consumption.json`, `consumption-after/consumption.json` all copied into
+   `hardware-ab/`).
+
+**Renderer on the deciding run**, both arms, identical: `ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA
+NVIDIA RTX A5000 (0x00002231)), NVIDIA)`, `software_renderer: false` — a hardware attestation on
+both sides of the comparison, so the pair is admissible as appearance evidence and not confounded by
+a GPU or driver difference between arms.
 
 The perturbation drives a material's **own uniform objects** to an extreme and **never sets
 `needsUpdate`**, so no program is recompiled and no `onBeforeCompile` re-runs. The only route from
-the call to a pixel is the renderer already holding those exact objects. The three captures at each
-site are taken with **no simulated frames between them** — `__HARNESS.screenshot()` re-renders by
-itself — so the frames are identical but for the uniform value.
+the call to a pixel is the renderer already holding those exact objects. Each site's captures are
+taken with **no simulated frames between them** — `__HARNESS.screenshot()` re-renders by itself — so
+frames at one site are identical but for the uniform value.
 
-| target | affected by the defect? | pixels moved (best angle) | restore floor |
-|---|---|---:|---:|
-| **player**, 8-angle orbit | yes | 3.23 – **5.36%** at every one of 8 angles | **0.00%** |
-| **building**, 3 angles | yes | 24.25 / **32.84** / 25.12% | **0.00%** |
-| **ground**, 2 angles *(control)* | **no** | 73.97 / 52.68% | **0.00%** |
+| target | pixels moved, **BEFORE** (defect present) | pixels moved, **AFTER** (fixed) | change |
+|---|---:|---:|---:|
+| **player**, 8-angle orbit (best angle) | 0.19 – **0.33%** — FAILS the 0.5% consumption threshold | 3.23 – **5.36%** | **≈16×** |
+| **building**, 3 angles (best angle) | 0.00 – **1.30%** | 24.25 – **32.84%** | **≈25×** |
+| **ground**, 2 angles *(control, unaffected by the defect)* | 52.16 – **73.28%** | 52.68 – **73.97%** | ≈1× (unchanged, as required) |
 
-The restore floor is **0.00% at all thirteen sites** — the site is perfectly deterministic, so any
-movement at all is signal rather than noise.
+Restore floor is **0.00% in both arms, at every site** — the instrument is deterministic, so any
+movement at all is signal rather than noise. Full per-angle numbers:
+`hardware-ab/consumption-before/consumption.json`, `hardware-ab/consumption-after/consumption.json`.
+
+**Reading the before-arm honestly.** `PLAYER-CONSUMES` **FAILS in the before arm by design** — the
+whole claim is that perturbing an orphaned material's uniforms does *not* move pixels, and 0.33% sits
+below the instrument's own 0.5% threshold for "moved". The residual 0.33% (rather than a clean 0.00%)
+is explained by the census, not hand-waved: 1 of the player's 17 materials — the shared
+`family-form:skin` original used by brow-horns and shoulder-scales — was **never cloned**, so it kept
+its shader in both arms and contributes a small live response even in the "before" configuration.
+`BUILDING-CONSUMES` technically stays above its own threshold before the fix (1.30%) because the
+`building` selector at this capture site also catches a handful of intact materials (kit water trim,
+un-orphaned styleboard originals) alongside the 95 orphaned clones — the **effect size**, not the
+pass/fail line, is the honest number, and it moves 25×.
 
 **Why `ground` is in the table.** It is the plausible-wrong-answer control. Terrain kept its shader
-in both arms, so it must respond in *both*. If every target had come back zero in the before-arm,
-the honest reading would have been "the harness cannot perturb anything" and the whole result would
-be worthless. `ground` responding is what makes a player/building zero mean an *absence*.
+in both arms, so it must respond in *both*, and it does — 73.28% before, 73.97% after, no meaningful
+change. If every target had come back nonresponsive in the before-arm, the honest reading would have
+been "the harness cannot perturb anything on this Pod" and the whole result would be worthless.
+`ground` responding identically in both arms is what makes the player/building *change* mean the
+defect, and not an artefact of the Pod.
 
-**An accidental repeatability estimate, and it is worth more than it cost.** The first hardware run
-tried to delete the fix with a script that resolved the repo from a hard-coded
-`/home/user/elder-souls-claude`, which does not exist on a Pod. The revert silently did nothing —
-and the run's own guard printed *"REVERT DID NOT APPLY — the BEFORE arm below is NOT a control"*,
-which is the only reason it was not read as a result. That arm is therefore a **same-configuration
-repeat** of the positive arm, and it returned **byte-identical** numbers: 73.97 / 5.36 / 32.84 and a
-0.00% floor. Repeatability spread on this instrument is **zero**. (The script now resolves the repo
-from its own location, and the runner additionally greps both source files for the marker rather
-than trusting the revert's own log.)
+**Census on the same Pod, same arms, for the record.** `hardware-ab/census-before/summary.json`: 321
+of 422 orphaned (`actor (npc)` 211, `building` 95, `player` 14, `other` 1 — matches the diagnosis in
+§1–§3 up to session-to-session NPC-spawn variance). `hardware-ab/census-after/summary.json`: 0 of 422.
+
+**Motion and building/natural surfaces, both arms.** `hardware-ab/motion-before/contact/walk.png` and
+`hardware-ab/motion-after/contact/walk.png` are contact sheets of a 180-frame walk cycle (thinned to
+every 6th frame), and `hardware-ab/deck-before/` / `hardware-ab/deck-after/` each hold six scenes —
+`street-lilmoth` (settlement/building), `char-player`, `interior-thorn-hall`, `vista-deep-marshes`,
+`approach-lilmoth`, `eye-deep-marshes` — at the same setups in both arms. `hardware-ab/consumption-*/frames/`
+carries the full 8-angle player orbit and all building/ground angles, base and perturbed, both arms.
 
 ## 6. Delete-the-fix, on a copy
 

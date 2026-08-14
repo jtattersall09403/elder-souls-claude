@@ -1,0 +1,45 @@
+{
+  "task_id": "ROADMAP-TRACKER",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "baseline_pinned_at": "94413aa98fe80eaddba9c3ad25514f03a742e62b",
+  "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline, a sibling bank can carry an uncommitted edit into it. Pinned before building anything.",
+
+  "could_not_do": [
+    "Did not generate ROADMAP.md from roadmap.json. The prose in ROADMAP.md carries deliberate reasoning (why-first framing, named mechanisms, quoted judge language) that a records->markdown generator would flatten into a table. Per the brief's own fallback, built a drift check instead (tools/roadmap.mjs --check-drift, wired into the main run): it asserts every roadmap.json step id has a matching heading in ROADMAP.md and vice versa, and fails loudly (non-zero exit, printed to stderr) on a mismatch. Not run as a commit-time gate (pre-commit hook already regenerates 5 files; adding a 6th mandatory gate was out of scope for this piece), but callable on demand and by CI if wired in later.",
+    "Evidence entries in orchestration/roadmap.json are a representative set per step, not exhaustive proof of every claim in ROADMAP.md's prose. Each step has 2-3 evidence entries pointing at the load-bearing status file / instrument / gate for its current claimed state, chosen to be independently checkable, not a citation of every sentence.",
+    "Two closes_when conditions (step 2's 'looks right to a person', step 5's 'how fun it feels') are genuinely human-judgement conditions with no filed verdict on disk. Per the scope-discipline instruction, I did NOT invent a mechanical proxy for either — I recorded them with an `unevidenced_note` field on the step explaining what a real closing verdict would need to be (a blind-judgement or capture-review verdict naming the step), and they are listed again below.",
+    "Did not run any browser or GPU-pod command as part of this tool or its self-test — offline only, per the dispatch's 'no browser, no GPU'. tools/roadmap.mjs's evidence commands are limited to cheap, offline Node checks (all <2s when timed)."
+  ],
+
+  "headline": "orchestration/roadmap.json (7 steps incl. 3 sub-steps of step 1, plus 2 standing-work entries) and tools/roadmap.mjs built and self-tested. The tool verifies every done/in_progress claim against its named evidence at run time, reports UNVERIFIED loudly when evidence is missing, writes docs/data/roadmap.json, and is wired into tools/publish.mjs and docs/progress.html following the cost-report.mjs pattern (a separate report module, not a second page-building path). Self-test passes 3/3 required-disagreeing arms.",
+
+  "steps_needing_criteria_that_were_too_vague_to_evidence": [
+    {
+      "step": "step-2",
+      "closes_when": "a hardware capture of the real opening path, many angles plus motion, looks right to a person",
+      "why_not_evidenced": "human judgement, no verdict schema instance exists yet naming this step",
+      "what_would_close_it": "a blind-judgement (or capture-review) verdict under corpus/90-verdicts/ that names step-2 / the Thorn opening path and reads PASS"
+    },
+    {
+      "step": "step-5",
+      "closes_when": "human judges actually fight the game and rate animation, difficulty, feel",
+      "why_not_evidenced": "no play-judgement has been run at all yet per ROADMAP.md's own text ('nobody has judged how the combat feels ... judges being shown charts instead of being asked to fight anything')",
+      "what_would_close_it": "a blind-judgement verdict from judges who actually played the build, naming step-5"
+    }
+  ],
+
+  "files_touched": [
+    "orchestration/roadmap.json",
+    "tools/roadmap.mjs",
+    "orchestration/status/ROADMAP-TRACKER.json"
+  ],
+  "files_claimed": [
+    "docs/data/roadmap.json",
+    "tools/roadmap-report.mjs",
+    "tools/publish.mjs",
+    "docs/progress.html"
+  ],
+
+  "next_step": "Wire tools/roadmap-report.mjs into tools/progress.mjs (roadmap section on the page) and tools/publish.mjs (fail loudly if roadmap.mjs reports a drift or a hard error), then run node tools/roadmap.mjs --self-test and node tools/roadmap.mjs once for real, land with tools/land.mjs."
+}

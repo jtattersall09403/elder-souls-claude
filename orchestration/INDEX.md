@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `900a84e9`: 999 tools, 157 reference
-items, 208 pieces in flight.
+so it cannot drift. Generated at `5ed8930a`: 999 tools, 157 reference
+items, 210 pieces in flight.
 
-Its purpose is to stop 208+ concurrent agents each paying separately to discover the
+Its purpose is to stop 210+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1418,6 +1418,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `ROADMAP-TRACKER` | in_progress | Wire tools/roadmap-report.mjs into tools/progress.mjs (roadmap section on the page) and to | `orchestration/roadmap.json` `tools/roadmap.mjs` `orchestration/status/ROADMAP-TRACKER.json` |
+| `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
+| `DOC-SLIM-HOTPATH` | running | build tools/readpath.mjs, take the BEFORE measurement, then fix gen-index.mjs | `orchestration/status/DOC-SLIM-HOTPATH.json` |
 | `W1-OVERLAP-RESOLVER` | built-awaiting-fresh-critic | A fresh independent critic. Then THE LAYOUT PIECE, which is now the whole of the remaining | `game/src/world/footprint.js` `game/src/render/exterior.js` `game/src/world/province.js` `tools/world/overlap-resolver-deletefix.mjs` `tools/world/building-overlap-census.mjs` `tools/check-building-overlap.mjs` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` `game/src/render/visual-foundation.js` `game/src/render/actor.js` `tools/visual/w1-30-surface-orphan-census.mjs` `tools/visual/w1-30-copy-seam-patch.mjs` `tools/visual/w1-30-surface-consumption.mjs` |
 | `OWNERSHIP-SWEEP-20260814` | done | none -- swept, tool patched and self-tested, 4 claims cleared with verified evidence, rema | `tools/ownership.mjs` `orchestration/status/judge-prose-r4-m5.json` `orchestration/status/PLT01-STEPRATE-critic.json` `orchestration/status/critic-w1-20.json` `orchestration/status/critic-w1-attr-scale.json` `orchestration/status/OWNERSHIP-SWEEP-20260814.json` |
@@ -1438,7 +1441,6 @@ work is the difference between resuming and starting over.
 | `W1-UIX08-dialogue-window` | built-probe-running | finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` `game/src/ui/surface.js` `game/src/ui/system.js` |
 | `plan-review3-w1-dlg-topic-web` | done | none — the plan is build-ready. Dispatch the builder per §8; steps A-E, rows A1/A1b/A2/A5/ | `orchestration/plans/W1-DLG-TOPIC-WEB.md` `orchestration/status/plan-review3-w1-dlg-topic-web.json` |
 | `AUDIT-CONSUMPTION-CENSUS` | ? | none for this task — census complete. Follow-up work (not done here, per 'do not fix the o | `reports/consumption-census/2026-08-14-census.md` `tools/metrics/consumption-census.mjs` `orchestration/status/AUDIT-CONSUMPTION-CENSUS.json` |
-| `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
 | `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |

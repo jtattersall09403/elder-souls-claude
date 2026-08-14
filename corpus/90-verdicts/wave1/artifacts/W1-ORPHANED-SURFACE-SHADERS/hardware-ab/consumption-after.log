@@ -1,0 +1,21 @@
+gpu backend angle-vulkan-x11: HARDWARE — ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)
+surface-consumption arm=after canvas=960x540
+renderer: ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)   [HARDWARE — valid for appearance claims]
+  player yaw 0: 15/17 materials had uniforms, moved 5.04% (floor 0.00%)
+  player yaw 45: 15/17 materials had uniforms, moved 4.38% (floor 0.00%)
+  player yaw 90: 15/17 materials had uniforms, moved 4.62% (floor 0.00%)
+  player yaw 135: 15/17 materials had uniforms, moved 5.11% (floor 0.00%)
+  player yaw 180: 15/17 materials had uniforms, moved 5.16% (floor 0.00%)
+  player yaw 225: 15/17 materials had uniforms, moved 5.36% (floor 0.00%)
+  player yaw 270: 15/17 materials had uniforms, moved 3.23% (floor 0.00%)
+  player yaw 315: 15/17 materials had uniforms, moved 4.47% (floor 0.00%)
+  building yaw 20: 134/145 materials had uniforms, moved 24.25% (floor 0.00%)
+  building yaw 140: 134/145 materials had uniforms, moved 32.84% (floor 0.00%)
+  building yaw 260: 134/145 materials had uniforms, moved 25.12% (floor 0.00%)
+  natural yaw 0: 37/37 materials had uniforms, moved 73.97% (floor 0.00%)
+  natural yaw 180: 37/37 materials had uniforms, moved 52.68% (floor 0.00%)
+PASS  CONTROL-NATURAL-RESPONDS  — unaffected ground surfaces moved 73.97% of pixels against a restore floor of 0.00% — if this fails, nothing else in this run means anything
+PASS  RESTORE-IS-CLEAN  — worst restore-to-baseline drift 0.00%
+PASS  PLAYER-CONSUMES  — player moved 5.36% at its best angle (floor 0.00%)
+PASS  BUILDING-CONSUMES  — buildings moved 32.84% at their best angle (floor 0.00%)
+frames in /workspace/elder-souls-artifacts-20260814-173808Z-27049/consumption-after/frames

@@ -1,0 +1,87 @@
+{
+  "schema": "elder-souls/runpod-run@2",
+  "runId": "20260814-173808Z-27049",
+  "transport": "https-podproxy",
+  "owner": {
+    "slug": "e9b0d69d",
+    "source": "CLAUDE_CODE_SESSION_ID (container-scoped: sibling agents share it)"
+  },
+  "status": "passed",
+  "startedAt": "2026-08-14T17:38:08.584Z",
+  "finishedAt": "2026-08-14T17:46:24.448Z",
+  "diskCheck": {
+    "checked": true,
+    "availableBytes": 12496470016,
+    "requiredBytes": 268435456
+  },
+  "limits": {
+    "maxPricePerHourUsd": 1,
+    "maxRuntimeMinutes": 30,
+    "allowedGpuTypes": [
+      "NVIDIA RTX A2000",
+      "NVIDIA GeForce RTX 3070",
+      "NVIDIA RTX A4000",
+      "NVIDIA GeForce RTX 3080",
+      "NVIDIA RTX A4500",
+      "NVIDIA RTX A5000",
+      "NVIDIA GeForce RTX 3090",
+      "NVIDIA L4"
+    ],
+    "cloudTypes": [
+      "SECURE",
+      "COMMUNITY"
+    ]
+  },
+  "sourceTemplateId": "q3vvfpdtgf",
+  "runtimeTemplate": {
+    "id": "yzqc6lmor7",
+    "name": "elder-souls-ephemeral-oe9b0d69d-20260814-173808Z-27049"
+  },
+  "source": {
+    "revision": "03ba530d470a46e9784be71305005a598d223b9b",
+    "dirty": false,
+    "fileCount": 1881,
+    "bytes": 22009631,
+    "sha256": "91825267666e2827ed64381ef54d74d3a366c46f973650e3b40910734c98e0b4",
+    "paths": [
+      "game",
+      "tools",
+      "package.json",
+      "play.sh"
+    ]
+  },
+  "selectedOffer": {
+    "gpuTypeId": "NVIDIA RTX A5000",
+    "displayName": "RTX A5000",
+    "cloudType": "SECURE",
+    "memoryInGb": 24,
+    "stockStatus": "Low",
+    "pricePerHourUsd": 0.27
+  },
+  "pod": {
+    "id": "3onsist1x8b9tz",
+    "name": "elder-souls-gpu-oe9b0d69d-20260814-173808Z-27049",
+    "gpuTypeId": "NVIDIA RTX A5000",
+    "cloudType": "SECURE",
+    "pricePerHourUsd": 0.27
+  },
+  "agentUrl": "https://3onsist1x8b9tz-8888.proxy.runpod.net",
+  "command": "bash tools/visual/w1-30-copy-seam-hw.sh",
+  "commandExitCode": 0,
+  "artifactDir": "/home/user/elder-souls-claude/reports/runpod-gpu/runs/w1-orphaned-surface-shaders-consumption-r2",
+  "artifactFiles": 179,
+  "gpu": "NVIDIA RTX A5000, 580.159.04, 24564 MiB",
+  "cleanup": {
+    "attempted": true,
+    "terminated": true,
+    "at": "2026-08-14T17:46:21.561Z",
+    "error": null
+  },
+  "templateCleanup": {
+    "attempted": true,
+    "deleted": true,
+    "at": "2026-08-14T17:46:23.643Z",
+    "error": null
+  },
+  "error": null
+}
