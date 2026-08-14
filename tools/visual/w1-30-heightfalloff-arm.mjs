@@ -21,7 +21,15 @@
  * `setFeature('heightFog', false)`, which proves the MODEL is live and says nothing about where
  * its parameter came from.
  *
- * Usage: node tools/visual/w1-30-heightfalloff-arm.mjs --tag before --sites vista-blackwood
+ * BOTH ARMS IN ONE RUN. `--deleteFix` reproduces the pre-fix build exactly without editing a file
+ * or cloning the repo: it wraps `sky.apply()` and deletes `heightFalloffM` off the object
+ * `renderer.js` just built, which is byte-for-byte the state before the one-line change, because
+ * the change is that property and nothing else. Rule 3 — a fix is not a fix until it has been
+ * deleted and the old number has come back — executed against the shipping code path rather than
+ * against a copy of it.
+ *
+ * Usage: node tools/visual/w1-30-heightfalloff-arm.mjs --tag after --sites vista-blackwood
+ *        node tools/visual/w1-30-heightfalloff-arm.mjs --tag delete-the-fix --deleteFix
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -85,7 +93,20 @@ async function goTo(site) {
   return null;
 }
 
-const out = { tag: TAG, factor: FACTOR, canvas: [CW, CH], rows: [], chunkOwner: null, pageErrors: [] };
+const out = { tag: TAG, factor: FACTOR, canvas: [CW, CH], deleteFix: args.deleteFix === true,
+  rows: [], chunkOwner: null, pageErrors: [] };
+if (out.deleteFix) {
+  const ok = await g.page.evaluate(() => {
+    const sky = window.__ENGINE.renderer.sky;
+    const real = sky.apply.bind(sky);
+    sky.apply = (h, w, f, regionFog, ...rest) => {
+      if (regionFog) delete regionFog.heightFalloffM;
+      return real(h, w, f, regionFog, ...rest);
+    };
+    return true;
+  });
+  console.log(`DELETE-THE-FIX arm installed (${ok}): sky.apply() now receives the pre-fix regionFog.`);
+}
 out.chunkOwner = await g.page.evaluate(async () => {
   const THREE = await import('/game/vendor/three/three.module.js');
   const f = THREE.ShaderChunk.fog_fragment;

@@ -22,7 +22,7 @@ async function leg(label, chromiumArgs) {
   say(`\n== ${label} ==`);
   const h = await launchGame({ width: 640, height: 360, chromiumArgs });
   try {
-    await h.page.goto(h.url.replace(/\?.*$/, '') + '?mode=play', { waitUntil: 'load' });
+    await h.page.goto(h.url.replace(/\?.*$/, '') + '?mode=play', { waitUntil: 'load', timeout: 240000 });
     await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, null, { timeout: 180000 });
     await h.page.evaluate(() => window.__HARNESS.ready());
     await h.page.waitForTimeout(800);
