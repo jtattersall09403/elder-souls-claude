@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T15:38:25.769Z",
+  "generated_at": "2026-08-14T15:41:15.521Z",
   "generator": "tools/cost.mjs",
-  "commit": "7c9488d",
+  "commit": "e265684",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T15:38:18.051Z",
-    "hours": 209.36,
+    "to": "2026-08-14T15:41:04.955Z",
+    "hours": 209.41,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,31 +39,31 @@
     }
   },
   "coverage": {
-    "files_total": 484,
-    "files_read": 484,
-    "bytes_read": 740582497,
+    "files_total": 486,
+    "files_read": 486,
+    "bytes_read": 741673309,
     "complete": true
   },
   "drivers": {
-    "requests": 59832,
-    "mean_context_tokens": 211156,
-    "pie_tokens": 1554830859,
-    "requests_per_agent_hour": 71.83
+    "requests": 59910,
+    "mean_context_tokens": 211114,
+    "pie_tokens": 1556721460,
+    "requests_per_agent_hour": 71.75
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 60,
-    "agent_hours": 833,
-    "span_hours": 209.36
+    "agent_hours": 835,
+    "span_hours": 209.41
   },
   "headline": {
-    "spend_to_date_usd": 7461.56,
-    "burn_usd_per_hour": 172.21,
+    "spend_to_date_usd": 7471.02,
+    "burn_usd_per_hour": 181.66,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 124.36,
-    "ch_pct_of_baseline": 107.3,
-    "usd_per_agent_hour": 8.96,
-    "usd_per_agent_hour_pct_of_baseline": 102.8
+    "ch_usd_per_hour": 124.52,
+    "ch_pct_of_baseline": 107.5,
+    "usd_per_agent_hour": 8.95,
+    "usd_per_agent_hour_pct_of_baseline": 102.7
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -321,24 +321,24 @@
     },
     {
       "t": "2026-08-14T14:00:00.000Z",
-      "usd_per_hour": 173.54,
-      "usd_per_agent_hour": 8.68,
-      "mean_agents": 20,
-      "commit": "7c9488d",
+      "usd_per_hour": 178.26,
+      "usd_per_agent_hour": 8.1,
+      "mean_agents": 22,
+      "commit": "e265684",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 7253.17,
-      "requests": 55309,
+      "usd": 7262.62,
+      "requests": 55387,
       "tokens": {
-        "input": 1240584,
-        "cache_write_5m": 178932004,
-        "cache_write_1h": 9466950,
-        "cache_read": 11551177245,
-        "output": 10335277
+        "input": 1240739,
+        "cache_write_5m": 179234512,
+        "cache_write_1h": 9482115,
+        "cache_read": 11564817259,
+        "output": 10358873
       }
     },
     {
@@ -358,33 +358,33 @@
     {
       "class": "input",
       "usd": 6.81,
-      "tokens": 1544591
+      "tokens": 1544746
     },
     {
       "class": "cache_write_5m",
-      "usd": 1142.74,
-      "tokens": 188698391
+      "usd": 1144.63,
+      "tokens": 189000899
     },
     {
       "class": "cache_write_1h",
-      "usd": 94.67,
-      "tokens": 9466950
+      "usd": 94.82,
+      "tokens": 9482115
     },
     {
       "class": "cache_read",
-      "usd": 5952.19,
-      "tokens": 12434168190
+      "usd": 5959.01,
+      "tokens": 12447808204
     },
     {
       "class": "output",
-      "usd": 265.15,
-      "tokens": 11012512
+      "usd": 265.74,
+      "tokens": 11036108
     }
   ],
   "guards": {
     "g1_parallelism": {
-      "mean_agents": 13.88,
-      "mean_agents_present": 13.98,
+      "mean_agents": 13.92,
+      "mean_agents_present": 14.02,
       "floor": 12,
       "divergence_flag": false,
       "status": "ok",
@@ -544,6 +544,34 @@
       "reversal_executed": true,
       "tripwire": "THREE, any one of which fires the revert. (1) ADOPTION: blocks_per_request, published every bank by tools/cost.mjs --batching, does not RISE above the 1.0925 baseline. It has been flat at 1.076-1.099 every day of this project except day one, so drift cannot be mistaken for effect; if it stays flat the change is inert and gets removed rather than left in place looking busy. (2) SCOPE, and this is the COST.md section 5 guard, carried over verbatim from CH-05: total tool CALLS per piece must not fall. Batching must remove requests, never observations - an agent that looks at less is not a saving. (3) QUALITY: critic find-rate or the G3 separate-critic count falls.",
       "outcome": "THE LEVER THAT NEEDS NOTHING SPLIT. CH-04 established that a request re-sends the whole accumulated context and that 87% of what is re-read is accumulation. This applies that one level down: what a tool call costs is not its output - a grep returns a few hundred tokens - it is the REQUEST, which drags 200k-370k tokens behind it at /bin/bash.086 early and /bin/bash.144 late. MEASURED over 480 agents and 58,448 tool-bearing requests with tools/cost.mjs --batching: blocks per request 1.0925, and 91.29% of requests carry EXACTLY ONE tool call, costing ,595.09 in re-read context. A separate pass over the raw transcripts found 27,313 of those (46.05%) carry one SMALL READ-ONLY PROBE - a grep, a sed, an ls, a Read - worth ,773.32, and 14,851 of them sit immediately after another one just like it, worth ,512.43. TWO INDEPENDENT IMPLEMENTATIONS AGREE: the standalone census read 1.0921 on 59,306 requests, the instrument 1.0925 on 58,448. THE CONTROL THAT DECIDES IT, because adjacency is not mergeability: a probe chosen only after reading the previous probe answer cannot be merged with it. Testing whether any identifier in probe 2 command first appeared in probe 1 RESULT marks 10.6% of adjacent pairs dependent; the SAME test on a RANDOM earlier probe from the same agent marks only 1.86%, a 5.7x separation, so the test detects sequential dependence and not shared vocabulary. That puts the mergeable ceiling at ,362.99. The STRICT floor - pairs sharing no token with the previous result at all - is 63.1% of pairs, about 54, and the honest bracket is 54-,363, 13-19% of the ,310 bill, with NO re-orientation term and NO handoff risk because nothing is split. AND THE PART THAT IS NOT A MODEL AT ALL: 1,500 requests costing 52.52, across 368 poll runs in 172 agents, were the same read-only command re-run to see whether a background job had finished - tail -20 of one log ninety-nine times in a single agent, pgrep, sleep 1, echo waiting-more-3. That is money already spent on waiting, priced at each request own recorded context, not a projection. LANDED: tools/probe.mjs runs several commands in one call and returns one labelled digest, and --until waits inside a single call until a predicate holds; 12 self-test arms pass and every deliberate break goes red, including a no-wait control proving the wait is load-bearing and a timeout arm proving it fails loudly rather than printing a stale digest. Plus RULES rule 19b and tools/cost.mjs --batching as the tripwire instrument, whose own self-test feeds it two synthetic fleets doing IDENTICAL work batched and unbatched and requires the batched one to cost 33.3% as much. THE HONEST WEAKNESS, and it is about adoption rather than mechanism: this agent WROTE the rule and still finished its own session at 1.0792 blocks per request, barely above the 1.0925 fleet baseline, batching 8 of 101 requests. Intending to batch is demonstrably not enough, which is why the change is a tool and a tripwire rather than an exhortation - and why tripwire 1 is adoption, measured, rather than anything this piece can claim today. NOTHING HERE IS A SAVING YET: the ceiling is measured, the realised number is not, and it lands as a trial for exactly that reason."
+    },
+    {
+      "id": "CH-07",
+      "title": "The split trial's falsifier is run and does not fire — a richer handoff note orients $0.49 CHEAPER, and the confound pushes the other way",
+      "landed": "2026-08-14T00:00:00Z",
+      "commit": "PENDING",
+      "state": "trial",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null,
+        "handoff_usd": 0.4302,
+        "requests_per_unsplit_piece": 265,
+        "find_rate_per_verdict": 1.3,
+        "separate_critics_per_piece": 1.47
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null,
+        "handoff_usd": null,
+        "requests_per_unsplit_piece": null,
+        "find_rate_per_verdict": null,
+        "separate_critics_per_piece": null
+      },
+      "delta_pct": null,
+      "reversal": "git checkout <this commit>~1 -- tools/cost.mjs removes --split-trial and the hoisted orientation statistic in one step, and one line of the dispatch brief stops marking chunks. EXECUTED ON A COPY: the reverted copy carries no '--split-trial' flag and no experimentSplitTrial, and its --experiments-self-test prints zero Q7 arms against the live file's six — the arms genuinely differ rather than being two copies of the same thing. Separately, DELETE-THE-FIX on the falsifier itself: removing the git time-travel (reading each piece's status files as they are TODAY instead of as the successor found them) FLIPS THE SIGN, from -$0.4862 (p = 0.072, 'does not fire') to +$0.2767 (p = 0.370, 'FALSIFIER FIRES'). The wrong implementation reaches the opposite conclusion, so the time-travel is load-bearing rather than believed to be.",
+      "reversal_executed": true,
+      "tripwire": "CH-05's three, now with an instrument that computes all of them and a frozen BEFORE. (1) COST: handoff re-measured on deliberately split agents above $2.00 — before $0.4302, n = 50. (2) SCOPE: total requests across a split piece below the pre-split median — before 265 per unsplit piece over 28 pieces. (3) QUALITY: find-rate or separate-critic count falls — before 1.30 gaps per verdict and 1.47 separate critics per piece. A FOURTH guard is built into the instrument itself: below 6 planned-split agents it returns UNDERPOWERED rather than a verdict, which --experiments-self-test proves by feeding it the same $2.64 handoff on 2 agents and on 10 and requiring different answers.",
+      "outcome": "THE HONEST HEADLINE FIRST: no piece has been split on purpose yet. planned_split = 0 across 478 subagents, so every 'after' column here is empty BY CONSTRUCTION and this run is the BEFORE. What this piece could do without dispatching, it did — and it settles the question CH-05 left open. CH-05 named exactly one falsifier: a PLANNED handoff costing more than an accidental one, because a deliberate status file is bigger than what a killed agent leaves behind. That has a gradient inside the accidental population already, because the 53 accidental successors differ enormously in how much their predecessor had written down. Measured from GIT AS OF THE SUCCESSOR'S FIRST REQUEST — not as of today, because those files have been rewritten many times since — successors who inherited the RICHER written record oriented $0.486 CHEAPER (n = 11 against 10, label-shuffle p = 0.072). THE CONTROL IS WHAT MAKES THAT READABLE, and it is the plausible wrong answer rather than the trivial one: a big written record belongs to a MATURE piece, so the identical measurement was run on FRESH agents, which resumed nothing, stratified by the same status-file bytes at the same dispatch times. It moves the OTHER WAY, +$0.358 on the identical contrast — fresh agents on well-documented pieces orient MORE dearly, not less. The confound therefore cannot be manufacturing the handoff arm's gradient; it is working against it. So a planned split, which always writes the richest note there is, is predicted at or BELOW the accidental $0.4302, and CH-05's $6.264 break-even is not threatened from this direction. TWO THINGS THAT NUMBER IS NOT, said plainly: p = 0.072 is not significance, and it is used as a DIRECTION that survives its control, never as a size; and it measures the SIZE of a note, never its quality — a long useless note scores the same as a short excellent one, which biases towards 'notes do not help', i.e. AGAINST the reading that makes the trial safe. THE OTHER HALF: two of CH-05's three tripwires had nothing that could compute them, and a trial whose tripwires cannot be evaluated is a trial that cannot be stopped. --split-trial now computes all three with the BEFORE frozen: $0.4302 handoff, 265 requests per unsplit piece against 1,197.5 for the 14 accidentally-split ones, 1.30 gaps per verdict and 1.47 separate critics per piece against 1.52 and 3.00. Tripwire 2 is biased AGAINST firing and that is the right direction — a piece is split BECAUSE it is long — so a quiet tripwire 2 means 'no alarm', never 'scope preserved'. WHAT I COULD NOT DO: dispatch. No agent-spawning tool is in this agent's toolset, so the arms of a dispatch trial could not be filled, and the instrument reports the planned arm as EMPTY rather than inferring it from anything. The next dispatch is named in orchestration/status/SPLIT-TRIAL.json and it is the one that fills it."
     }
   ],
   "notes": [
