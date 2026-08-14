@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T15:24:26Z",
+  "generated": "2026-08-14T15:32:13Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 82,
+  "verdicts_read": 83,
   "counts": {
-    "total": 77,
-    "open": 76,
+    "total": 78,
+    "open": 77,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -93,6 +93,9 @@
     "combat.hitbox.sweep": [
       "GAP-W1-enemy-attacks-cannot-reach-contact-range",
       "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+    ],
+    "quests.faction.rankgating": [
+      "GAP-W1-faction-ladders-are-bricked-up-at-rank-5"
     ],
     "quests.faction.escalation": [
       "GAP-W1-faction-ladders-are-doors-onto-empty-corridors"
@@ -1456,6 +1459,44 @@
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-node.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-reach-browser.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09-r3/critic-r3-turtle-via-browser.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
+      "subsystem_path": "quests.faction.rankgating",
+      "opened_wave": 1,
+      "opened_by": "critic-w1-20-r2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-20-r2.json",
+      "piece_id": "W1-20",
+      "severity": "blocking",
+      "what": "RI-QST03 §B puts a world-state requirement on ranks 5, 6 and 7 of every ladder. On four of the eight lines the world states named are raised by nothing: the_dockhands (dockhands_gang_held, dockhands_wharf_decided, dockhands_harbourmaster_vacant), the_drowned_court (court_yard_held, court_tally_decided, court_crown_vacant), the_ixtu_vakh (sapcutters_well_cut, sapcutters_buyer_decided, sapcutters_cutter_vacant) and the_rootkeepers (rootkeepers_sapwell_kept, rootkeepers_chapter_decided, rootkeepers_voice_vacant). `grep -rl dockhands_gang_held game/data/` returns exactly one file, faction-gates.json. The other four lines are clean — ledger_gate_held, assize_seal_held and the Deep-Kin/Xul-Aneekh states are each raised by a real quest resolution. Measured live: a character given every favoured skill at 100, every favoured attribute at 100 and 400 reputation reaches rank 4 on all eight lines and stops, held by the world state; in the null control, with that column flattened, the same character reaches rank 7 on all eight. So the live arm establishes what holds everyone at 4 and the static grep establishes that on four lines nothing can ever move it. 21 authored quests are stranded above the ceiling — 4 on the Dockhands, 6 on the Drowned Court, 6 on the Ixtu-Vakh, 5 on the Rootkeepers — including every succession quest on those lines.",
+      "why_it_matters": "Round 1's failure was visible: a line with one quest on it. This one is invisible. Every static check passes, every quest exists, the census is green, and the player simply finds that the Rootkeepers stop promoting them and nobody says why. It is Ruling W1's shape exactly — an aggregate (RI-QST03 §4's 'earnable reputation >= the rank-7 requirement', which passes on all eight lines) standing in for something a player meets one rung at a time. And it deletes the beat RI-QST01 says the whole ladder exists to arrive at: the player taking the seat.",
+      "remedy": {
+        "owner": "W1-20 or its wave-2 successor",
+        "acceptance": "node tools/quests/critic-w1-20-r2-census.mjs returns zero QST03.ceiling.* hard fails, AND node tools/quests/critic-w1-20-r2-live.mjs reports A4.lines_reaching_rank_ge_5 = 8 of 8 on the shipping tree (it is 0 of 8 today).",
+        "action": "Twelve world_flags entries on quests that already exist at the right ranks. For each of the four lines: give its rank-4 or rank-5 quest a resolution that raises the line's *_held flag, its rank-6 quest one that raises *_decided, and its rank-7 quest one that raises *_vacant. The four carried lines already show the pattern — copy game/data/quests/faction-wet-ledger.json's ledger_gate_held.",
+        "targets": [
+          "game/data/quests/faction-continuation-wave1.json",
+          "game/data/quests/faction-gates.json"
+        ]
+      },
+      "remedy_action": "Twelve world_flags entries on quests that already exist at the right ranks. For each of the four lines: give its rank-4 or rank-5 quest a resolution that raises the line's *_held flag, its rank-6 quest one that raises *_decided, and its rank-7 quest one that raises *_vacant. The four carried lines already show the pattern — copy game/data/quests/faction-wet-ledger.json's ledger_gate_held.",
+      "remedy_acceptance": "node tools/quests/critic-w1-20-r2-census.mjs returns zero QST03.ceiling.* hard fails, AND node tools/quests/critic-w1-20-r2-live.mjs reports A4.lines_reaching_rank_ge_5 = 8 of 8 on the shipping tree (it is 0 of 8 today).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-census.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-shipping.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-20-r2/r2-live-null-control.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

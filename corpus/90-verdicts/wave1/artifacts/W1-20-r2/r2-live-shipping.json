@@ -1,0 +1,1159 @@
+{
+  "checks": [
+    {
+      "id": "A1.stranger_is_refused_by_every_line",
+      "discriminating": true,
+      "lines_refusing": 8,
+      "of": 8,
+      "rows": [
+        {
+          "faction": "the_wet_ledger",
+          "error": null,
+          "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_imperial_assize",
+          "error": null,
+          "said": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_xul_aneekh",
+          "error": null,
+          "said": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "deep_kin",
+          "error": null,
+          "said": "That is the hollow's own name for itself. It is the same people and the same door.",
+          "states_a_number": false,
+          "numbers": [],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_dockhands",
+          "error": null,
+          "said": "The board doesn't know you. 0 against 10, and the hands put the names up, not me.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_drowned_court",
+          "error": null,
+          "said": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_ixtu_vakh",
+          "error": null,
+          "said": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        },
+        {
+          "faction": "the_rootkeepers",
+          "error": null,
+          "said": "The slate has 0 beside your name and a Leaf has 10. That is not a rule I made and I cannot rub it out. Go and do some counting.",
+          "states_a_number": true,
+          "numbers": [
+            "0",
+            "10"
+          ],
+          "unmet": null,
+          "ok": false,
+          "drawn": true
+        }
+      ]
+    },
+    {
+      "id": "A2.refusal_states_the_threshold",
+      "discriminating": false,
+      "spoken": 8,
+      "stating_a_number": 7,
+      "of": 8
+    },
+    {
+      "id": "A3.reputation_alone_does_not_buy_the_ladder",
+      "discriminating": true,
+      "lines_still_refusing_rank_7_on_reputation_alone": 8,
+      "of": 8,
+      "rows": [
+        {
+          "faction": "the_wet_ledger",
+          "derived_rank_with_120_reputation": 1,
+          "still_refused_at_7": true,
+          "said": "personality at 10. It's a long road to Archon and the fords are the fords. 12.",
+          "unmet_terms": [
+            "a first favoured skill at 25 (best available sneak 20)"
+          ]
+        },
+        {
+          "faction": "the_imperial_assize",
+          "derived_rank_with_120_reputation": 2,
+          "still_refused_at_7": true,
+          "said": "Alchemy stands at 25. The schedule for this grade is 70. You may sit it again when you have the difference.",
+          "unmet_terms": [
+            "a first favoured skill at 32 (best available alchemy 25)"
+          ]
+        },
+        {
+          "faction": "the_xul_aneekh",
+          "derived_rank_with_120_reputation": 2,
+          "still_refused_at_7": true,
+          "said": "Root-Speech at 25. We ask 70 of anyone who walks where you are asking to walk, and the ones who went short are still out there.",
+          "unmet_terms": [
+            "a first favoured skill at 32 (best available root-speech 25)"
+          ]
+        },
+        {
+          "faction": "deep_kin",
+          "derived_rank_with_120_reputation": 2,
+          "still_refused_at_7": true,
+          "said": "That is the hollow's own name for itself. It is the same people and the same door.",
+          "unmet_terms": [
+            "a first favoured skill at 32 (best available root-speech 25)"
+          ]
+        },
+        {
+          "faction": "the_dockhands",
+          "derived_rank_with_120_reputation": 1,
+          "still_refused_at_7": true,
+          "said": "Survival at 20. The board rate is for 70, and if I chalk you up under it the four who carry your end will rub it off by noon.",
+          "unmet_terms": [
+            "a first favoured skill at 25 (best available survival 20)"
+          ]
+        },
+        {
+          "faction": "the_drowned_court",
+          "derived_rank_with_120_reputation": 2,
+          "still_refused_at_7": true,
+          "said": "Warding at 25, and the Court asks 70. It isn't a test. It's the number at which people stop drowning next to me.",
+          "unmet_terms": [
+            "a first favoured skill at 32 (best available warding 25)"
+          ]
+        },
+        {
+          "faction": "the_ixtu_vakh",
+          "derived_rank_with_120_reputation": 1,
+          "still_refused_at_7": true,
+          "said": "Survival at 20. The road wants 70 and the road doesn't care that you'd like the money. I've buried two who thought otherwise.",
+          "unmet_terms": [
+            "a first favoured skill at 25 (best available survival 20)"
+          ]
+        },
+        {
+          "faction": "the_rootkeepers",
+          "derived_rank_with_120_reputation": 2,
+          "still_refused_at_7": true,
+          "said": "You have Root-Speech at 25 and the work wants 70. I'm not being unkind. A well you count badly is worse to me than a well nobody counted, because I would believe you.",
+          "unmet_terms": [
+            "a first favoured skill at 32 (best available root-speech 25)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A4.a_qualified_character_climbs",
+      "discriminating": false,
+      "lines_reaching_rank_ge_5": 0,
+      "of": 8,
+      "rows": [
+        {
+          "faction": "the_wet_ledger",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a toll gate that pays into your hand before it pays into theirs"
+          ]
+        },
+        {
+          "faction": "the_imperial_assize",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a seal of your own, and a debt the Assize paid to get it for you"
+          ]
+        },
+        {
+          "faction": "the_xul_aneekh",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a hollow that names you, and eats where you say it eats"
+          ]
+        },
+        {
+          "faction": "deep_kin",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a hollow that names you, and eats where you say it eats"
+          ]
+        },
+        {
+          "faction": "the_dockhands",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a gang of your own that will not work for anyone else"
+          ]
+        },
+        {
+          "faction": "the_drowned_court",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a burning yard of your own and the fees that come off it"
+          ]
+        },
+        {
+          "faction": "the_ixtu_vakh",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a sapwell that is yours to bleed"
+          ]
+        },
+        {
+          "faction": "the_rootkeepers",
+          "derived_rank": 4,
+          "world_state_blocks": [
+            "a sapwell that answers to you and to nobody else"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B1.joining_closes_a_door",
+      "discriminating": true,
+      "lines_whose_join_locks_something": 5,
+      "of": 8,
+      "lines_whose_join_locks_quests": 5,
+      "rows": [
+        {
+          "joined": "the_wet_ledger",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [
+            "the_imperial_assize",
+            "the_ixtu_vakh",
+            "the_xul_aneekh"
+          ],
+          "quests_locked": 54,
+          "closes_declared": [
+            "the_imperial_assize"
+          ]
+        },
+        {
+          "joined": "the_imperial_assize",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [
+            "the_drowned_court",
+            "the_wet_ledger"
+          ],
+          "quests_locked": 36,
+          "closes_declared": [
+            "the_drowned_court",
+            "the_wet_ledger"
+          ]
+        },
+        {
+          "joined": "the_xul_aneekh",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [
+            "the_wet_ledger"
+          ],
+          "quests_locked": 18,
+          "closes_declared": []
+        },
+        {
+          "joined": "deep_kin",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [],
+          "quests_locked": 0,
+          "closes_declared": []
+        },
+        {
+          "joined": "the_dockhands",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [],
+          "quests_locked": 0,
+          "closes_declared": []
+        },
+        {
+          "joined": "the_drowned_court",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [
+            "the_imperial_assize"
+          ],
+          "quests_locked": 18,
+          "closes_declared": [
+            "the_imperial_assize"
+          ]
+        },
+        {
+          "joined": "the_ixtu_vakh",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [
+            "the_wet_ledger"
+          ],
+          "quests_locked": 18,
+          "closes_declared": []
+        },
+        {
+          "joined": "the_rootkeepers",
+          "rivalry_locked_before": [],
+          "rivalry_locked_after": [],
+          "quests_locked": 0,
+          "closes_declared": []
+        }
+      ]
+    },
+    {
+      "id": "B2.the_rival_refuses_in_its_own_voice",
+      "discriminating": true,
+      "rows": [
+        {
+          "joined": "the_wet_ledger",
+          "refused_by": "the_imperial_assize",
+          "said": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_wet_ledger",
+          "refused_by": "the_ixtu_vakh",
+          "said": "I've heard your name 0 times and I want 10. Nobody starts here. Go and be useful where somebody's watching.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_wet_ledger",
+          "refused_by": "the_xul_aneekh",
+          "said": "You are 0 to the hollow and the name you are asking for is 10. Names are not given. They are noticed.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_imperial_assize",
+          "refused_by": "the_drowned_court",
+          "said": "The tally has you at 0. Knee-Deep is 10. You'll get there or you won't, and either way the bay keeps sending them.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_imperial_assize",
+          "refused_by": "the_wet_ledger",
+          "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_xul_aneekh",
+          "refused_by": "the_wet_ledger",
+          "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_drowned_court",
+          "refused_by": "the_imperial_assize",
+          "said": "The roll records 0 against your name and the grade requires 10. Applications are considered when the roll supports them.",
+          "names_the_rival": false
+        },
+        {
+          "joined": "the_ixtu_vakh",
+          "refused_by": "the_wet_ledger",
+          "said": "The margin has your name in it 0 times and the next line wants 10. The Ledger remembers people by the margin. Give it more to remember.",
+          "names_the_rival": false
+        }
+      ],
+      "note": "This is the RANK-GATE voice (Engine.factionRefusal). The exclusivity voice is on the quest-open path and is measured by B3."
+    },
+    {
+      "id": "B3.the_world_explains_the_lock_when_you_try_the_door",
+      "discriminating": true,
+      "lines_tested": 5,
+      "lines_where_the_refusal_names_the_lock": 4,
+      "rows": [
+        {
+          "joined": "the_wet_ledger",
+          "quest": "Q-ASSZ-00",
+          "declared_why": "The Imperial Assize will not deal with you: you are The Wet Ledger",
+          "open_result": {
+            "ok": false,
+            "reason": "The Imperial Assize will not deal with you: you are The Wet Ledger; assizer-corvo disposition 19.75/30",
+            "gate": {
+              "allowed": true,
+              "faction": "the_imperial_assize",
+              "rank": 0,
+              "rank_name": "Clerk",
+              "terms": [
+                {
+                  "kind": "reputation",
+                  "what": "the_imperial_assize",
+                  "need": 0,
+                  "have": 0,
+                  "met": true
+                }
+              ],
+              "unmet": []
+            },
+            "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+            "voice": {
+              "faction": "the_imperial_assize",
+              "rank": 0,
+              "allowed": true,
+              "kind": "welcome",
+              "need": null,
+              "have": null,
+              "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+              "toast": {
+                "text": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+                "until": 240,
+                "frame": 0
+              }
+            }
+          },
+          "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+          "names_the_lock": true
+        },
+        {
+          "joined": "the_imperial_assize",
+          "quest": "Q-CORT-00",
+          "declared_why": "The Drowned Court will not deal with you: you are The Imperial Assize",
+          "open_result": {
+            "ok": false,
+            "reason": "The Drowned Court will not deal with you: you are The Imperial Assize; undertaker-vaskh disposition 27.5/30",
+            "gate": {
+              "allowed": true,
+              "faction": "the_drowned_court",
+              "rank": 0,
+              "rank_name": "Wader",
+              "terms": [
+                {
+                  "kind": "reputation",
+                  "what": "the_drowned_court",
+                  "need": 0,
+                  "have": 0,
+                  "met": true
+                }
+              ],
+              "unmet": []
+            },
+            "said": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+            "voice": {
+              "faction": "the_drowned_court",
+              "rank": 0,
+              "allowed": true,
+              "kind": "welcome",
+              "need": null,
+              "have": null,
+              "said": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+              "toast": {
+                "text": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+                "until": 240,
+                "frame": 0
+              }
+            }
+          },
+          "said": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
+          "names_the_lock": false
+        },
+        {
+          "joined": "the_xul_aneekh",
+          "quest": "Q-LEDG-00",
+          "declared_why": "The Wet Ledger will not deal with you: you are The Xul-Aneekh",
+          "open_result": {
+            "ok": false,
+            "reason": "The Wet Ledger will not deal with you: you are The Xul-Aneekh",
+            "gate": {
+              "allowed": true,
+              "faction": "the_wet_ledger",
+              "rank": 0,
+              "rank_name": "Runner",
+              "terms": [
+                {
+                  "kind": "reputation",
+                  "what": "the_wet_ledger",
+                  "need": 0,
+                  "have": 0,
+                  "met": true
+                }
+              ],
+              "unmet": []
+            },
+            "said": "Your name's in the margin. That's how the Ledger remembers people.",
+            "voice": {
+              "faction": "the_wet_ledger",
+              "rank": 0,
+              "allowed": true,
+              "kind": "welcome",
+              "need": null,
+              "have": null,
+              "said": "Your name's in the margin. That's how the Ledger remembers people.",
+              "toast": {
+                "text": "Your name's in the margin. That's how the Ledger remembers people.",
+                "until": 240,
+                "frame": 0
+              }
+            }
+          },
+          "said": "Your name's in the margin. That's how the Ledger remembers people.",
+          "names_the_lock": true
+        },
+        {
+          "joined": "the_drowned_court",
+          "quest": "Q-ASSZ-00",
+          "declared_why": "The Imperial Assize will not deal with you: you are The Drowned Court",
+          "open_result": {
+            "ok": false,
+            "reason": "The Imperial Assize will not deal with you: you are The Drowned Court; assizer-corvo disposition 8.5/30",
+            "gate": {
+              "allowed": true,
+              "faction": "the_imperial_assize",
+              "rank": 0,
+              "rank_name": "Clerk",
+              "terms": [
+                {
+                  "kind": "reputation",
+                  "what": "the_imperial_assize",
+                  "need": 0,
+                  "have": 0,
+                  "met": true
+                }
+              ],
+              "unmet": []
+            },
+            "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+            "voice": {
+              "faction": "the_imperial_assize",
+              "rank": 0,
+              "allowed": true,
+              "kind": "welcome",
+              "need": null,
+              "have": null,
+              "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+              "toast": {
+                "text": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+                "until": 240,
+                "frame": 0
+              }
+            }
+          },
+          "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
+          "names_the_lock": true
+        },
+        {
+          "joined": "the_ixtu_vakh",
+          "quest": "Q-LEDG-00",
+          "declared_why": "The Wet Ledger will not deal with you: you are The Ixtu-Vakh",
+          "open_result": {
+            "ok": false,
+            "reason": "The Wet Ledger will not deal with you: you are The Ixtu-Vakh",
+            "gate": {
+              "allowed": true,
+              "faction": "the_wet_ledger",
+              "rank": 0,
+              "rank_name": "Runner",
+              "terms": [
+                {
+                  "kind": "reputation",
+                  "what": "the_wet_ledger",
+                  "need": 0,
+                  "have": 0,
+                  "met": true
+                }
+              ],
+              "unmet": []
+            },
+            "said": "Your name's in the margin. That's how the Ledger remembers people.",
+            "voice": {
+              "faction": "the_wet_ledger",
+              "rank": 0,
+              "allowed": true,
+              "kind": "welcome",
+              "need": null,
+              "have": null,
+              "said": "Your name's in the margin. That's how the Ledger remembers people.",
+              "toast": {
+                "text": "Your name's in the margin. That's how the Ledger remembers people.",
+                "until": 240,
+                "frame": 0
+              }
+            }
+          },
+          "said": "Your name's in the margin. That's how the Ledger remembers people.",
+          "names_the_lock": true
+        }
+      ]
+    },
+    {
+      "id": "C1.rank_changes_what_the_representative_says",
+      "discriminating": false,
+      "lines_where_disposition_moves": 0,
+      "lines_where_the_GREETING_BAND_moves": 0,
+      "lines_where_talkTo_throws": [],
+      "of": 8
+    },
+    {
+      "id": "D1.expulsion_bites_and_readmission_is_priced",
+      "discriminating": false,
+      "lines_that_expel": 8,
+      "lines_where_a_broke_player_is_refused": 8,
+      "lines_where_gold_buys_the_way_back": 8,
+      "of": 8,
+      "rows": [
+        {
+          "faction": "the_wet_ledger",
+          "trigger_flag": "assize_has_the_paired_letters",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Sneak at 20, and I need 40. I'm not asking you to be clever. I'm asking you to be the sort of clever that doesn't leave a paper trail.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "1200 gold short",
+            "shortfall_g": 1200,
+            "line": "The table takes a bond or it takes nothing. You are 1200 short of one."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_wet_ledger",
+            "paid_g": 1200,
+            "reputation_after": 40,
+            "line": "The table will take a bond against you and call the thing closed. Twelve hundred, lodged, and it stays lodged."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_imperial_assize",
+          "trigger_flag": "vell_holds_the_wax_proof",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Alchemy stands at 25. The schedule for this grade is 40. You may sit it again when you have the difference.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "400 gold short",
+            "shortfall_g": 400,
+            "line": "There is a fee on an amended filing and it is not waived for officers. You are 400 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_imperial_assize",
+            "paid_g": 400,
+            "reputation_after": 26,
+            "line": "File the return you should have filed, in your own hand, with the date it should have carried. The court does not forgive; it amends."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_xul_aneekh",
+          "trigger_flag": "assize_holds_the_tide_record",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Root-Speech at 25. We ask 40 of anyone who walks where you are asking to walk, and the ones who went short are still out there.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "900 gold short",
+            "shortfall_g": 900,
+            "line": "A blood-price is a number and yours is nine hundred. You are 900 from it."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_xul_aneekh",
+            "paid_g": 900,
+            "reputation_after": 48,
+            "line": "There is a blood-price for a wrong to kin and it does not care whether you meant it. Pay it to the hollow you did it to and the gallery stops counting."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "deep_kin",
+          "trigger_flag": "deep_kin_trust_broken",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "That is the hollow's own name for itself. It is the same people and the same door.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "800 gold short",
+            "shortfall_g": 800,
+            "line": "The price is not a promise. You are 800 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "deep_kin",
+            "paid_g": 800,
+            "reputation_after": 50,
+            "line": "The breach has a price of 800 gold and a witnessed return to standing."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_dockhands",
+          "trigger_flag": "dockhands_trust_broken",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Survival at 20. The board rate is for 40, and if I chalk you up under it the four who carry your end will rub it off by noon.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "300 gold short",
+            "shortfall_g": 300,
+            "line": "The price is not a promise. You are 300 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_dockhands",
+            "paid_g": 300,
+            "reputation_after": 50,
+            "line": "The breach has a price of 300 gold and a witnessed return to standing."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_drowned_court",
+          "trigger_flag": "drowned_court_trust_broken",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Warding at 25, and the Court asks 40. It isn't a test. It's the number at which people stop drowning next to me.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "600 gold short",
+            "shortfall_g": 600,
+            "line": "The price is not a promise. You are 600 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_drowned_court",
+            "paid_g": 600,
+            "reputation_after": 50,
+            "line": "The breach has a price of 600 gold and a witnessed return to standing."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_ixtu_vakh",
+          "trigger_flag": "ixtu_vakh_trust_broken",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "Survival at 20. The road wants 40 and the road doesn't care that you'd like the money. I've buried two who thought otherwise.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "500 gold short",
+            "shortfall_g": 500,
+            "line": "The price is not a promise. You are 500 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_ixtu_vakh",
+            "paid_g": 500,
+            "reputation_after": 50,
+            "line": "The breach has a price of 500 gold and a witnessed return to standing."
+          },
+          "expelled_after_readmission": false
+        },
+        {
+          "faction": "the_rootkeepers",
+          "trigger_flag": "rootkeepers_trust_broken",
+          "expelled_before": false,
+          "expelled_after": true,
+          "refusal_while_expelled": "You have Root-Speech at 25 and the work wants 40. I'm not being unkind. A well you count badly is worse to me than a well nobody counted, because I would believe you.",
+          "readmit_broke": {
+            "ok": false,
+            "reason": "450 gold short",
+            "shortfall_g": 450,
+            "line": "The price is not a promise. You are 450 short."
+          },
+          "readmit_rich": {
+            "ok": true,
+            "faction": "the_rootkeepers",
+            "paid_g": 450,
+            "reputation_after": 50,
+            "line": "The breach has a price of 450 gold and a witnessed return to standing."
+          },
+          "expelled_after_readmission": false
+        }
+      ]
+    },
+    {
+      "id": "E1.registry_services_model",
+      "discriminating": false,
+      "factionAccess_runs": false,
+      "detail": {
+        "factionAccess_error": "TypeError: engine.factionAccess is not a function"
+      },
+      "note": "The delivery report names Engine.factionAccess() as the RI-MTH07 consumer for the registry."
+    },
+    {
+      "id": "E2.the_dissenter_says_something_specific",
+      "discriminating": false,
+      "rows": [
+        {
+          "eid": "npc-ineve-corrano",
+          "settlement": "gideon",
+          "greeting": "Name and hatch-name, if you have both. Papers on the desk, please."
+        },
+        {
+          "eid": "npc-sorel-ithan",
+          "settlement": "helstrom",
+          "greeting": "You're from here, or near enough. Mind the wagons."
+        },
+        {
+          "eid": "npc-eleen",
+          "settlement": "archon",
+          "greeting": "You're from here, or near enough. Mind the wagons."
+        },
+        {
+          "eid": "npc-skara-hull-chalk",
+          "settlement": "archon",
+          "greeting": "Prices are on the board. You're from here, or near enough."
+        }
+      ]
+    }
+  ],
+  "lines": [
+    {
+      "faction": "the_wet_ledger",
+      "representative": "harbourmistress-tesh",
+      "zone": "lilmoth.factor0.r0",
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "Name and hatch-name, if you have both. Yes. What.",
+          "greeting_cell": "110",
+          "explained": 49,
+          "trespassing": true
+        },
+        {
+          "rank": 2,
+          "greeting": "If it is an amendment it is a fee. If it is anything else it is a wait. Name and hatch-name, if you have both.",
+          "greeting_cell": "110",
+          "explained": 55,
+          "trespassing": true
+        },
+        {
+          "rank": 4,
+          "greeting": "Name and hatch-name, if you have both. I can look it up. It'll take as long as it takes.",
+          "greeting_cell": "110",
+          "explained": 61,
+          "trespassing": true
+        },
+        {
+          "rank": 7,
+          "greeting": "Say the whole thing once rather than half of it three times. Name and hatch-name, if you have both.",
+          "greeting_cell": "110",
+          "explained": 70,
+          "trespassing": true
+        }
+      ]
+    },
+    {
+      "faction": "the_imperial_assize",
+      "representative": "assizer-corvo",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "Provincial. Ask. And if it's Legion business, I'll tell you it's Legion business.",
+          "greeting_cell": "135",
+          "explained": 40
+        },
+        {
+          "rank": 2,
+          "greeting": "Keep out of the marsh after dark and I'll have less to write. Provincial.",
+          "greeting_cell": "135",
+          "explained": 49
+        },
+        {
+          "rank": 4,
+          "greeting": "Provincial. Something to report?",
+          "greeting_cell": "135",
+          "explained": 58
+        },
+        {
+          "rank": 7,
+          "greeting": "Provincial. Citizen. Something you need?",
+          "greeting_cell": "135",
+          "explained": 71.5
+        }
+      ]
+    },
+    {
+      "faction": "the_xul_aneekh",
+      "representative": "ee-vashum",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "Root-kin. There is dry floor by the fire.",
+          "greeting_cell": "15",
+          "explained": 76
+        },
+        {
+          "rank": 2,
+          "greeting": "Eat something before you talk. It goes better. Root-kin.",
+          "greeting_cell": "15",
+          "explained": 88
+        },
+        {
+          "rank": 4,
+          "greeting": "Root-kin. Ask. This one will answer if it can.",
+          "greeting_cell": "15",
+          "explained": 100
+        },
+        {
+          "rank": 7,
+          "greeting": "You have been walking. Sit. Root-kin.",
+          "greeting_cell": "15",
+          "explained": 100
+        }
+      ]
+    },
+    {
+      "faction": "deep_kin",
+      "representative": "ee-vashum",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "Root-kin. There is dry floor by the fire.",
+          "greeting_cell": "15",
+          "explained": 76
+        },
+        {
+          "rank": 2,
+          "greeting": "Eat something before you talk. It goes better. Root-kin.",
+          "greeting_cell": "15",
+          "explained": 88
+        },
+        {
+          "rank": 4,
+          "greeting": "Root-kin. Ask. This one will answer if it can.",
+          "greeting_cell": "15",
+          "explained": 100
+        },
+        {
+          "rank": 7,
+          "greeting": "You have been walking. Sit. Root-kin.",
+          "greeting_cell": "15",
+          "explained": 100
+        }
+      ]
+    },
+    {
+      "faction": "the_dockhands",
+      "representative": "npc-porter-eeja",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "You're from here, or near enough. Ask. If I know it, you can have it.",
+          "greeting_cell": "260",
+          "explained": 47
+        },
+        {
+          "rank": 2,
+          "greeting": "It's a small place. There isn't much to tell. You're from here, or near enough.",
+          "greeting_cell": "260",
+          "explained": 47
+        },
+        {
+          "rank": 4,
+          "greeting": "You're from here, or near enough. Mind the wagons.",
+          "greeting_cell": "260",
+          "explained": 47
+        },
+        {
+          "rank": 7,
+          "greeting": "You're from here, or near enough. Something you need?",
+          "greeting_cell": "260",
+          "explained": 47
+        }
+      ]
+    },
+    {
+      "faction": "the_drowned_court",
+      "representative": "undertaker-vaskh",
+      "zone": "lilmoth.priest6.r0",
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "Approach. What is your petition?",
+          "greeting_cell": "235",
+          "explained": 59,
+          "trespassing": true
+        },
+        {
+          "rank": 2,
+          "greeting": "Approach. Speak your business to the court.",
+          "greeting_cell": "235",
+          "explained": 68,
+          "trespassing": true
+        },
+        {
+          "rank": 4,
+          "greeting": "The court will hear it in order. Approach.",
+          "greeting_cell": "235",
+          "explained": 77,
+          "trespassing": true
+        },
+        {
+          "rank": 7,
+          "greeting": "Approach. You may put it in writing.",
+          "greeting_cell": "235",
+          "explained": 90.5,
+          "trespassing": true
+        }
+      ]
+    },
+    {
+      "faction": "the_ixtu_vakh",
+      "representative": "cutter-neeth",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "One of the drowned ones, then. The water is high. It is always high.",
+          "greeting_cell": "210",
+          "explained": 53
+        },
+        {
+          "rank": 2,
+          "greeting": "You want something the drowned know. One of the drowned ones, then.",
+          "greeting_cell": "210",
+          "explained": 59
+        },
+        {
+          "rank": 4,
+          "greeting": "One of the drowned ones, then. Ask. It may cost you a thing you did not offer.",
+          "greeting_cell": "210",
+          "explained": 65
+        },
+        {
+          "rank": 7,
+          "greeting": "Keep your feet wet and your words short. One of the drowned ones, then.",
+          "greeting_cell": "210",
+          "explained": 74
+        }
+      ]
+    },
+    {
+      "faction": "the_rootkeepers",
+      "representative": "rootkeeper-jeen",
+      "zone": null,
+      "by_rank": [
+        {
+          "rank": 0,
+          "greeting": "This one will speak with you. The tree does not mind. Egg-brother.",
+          "greeting_cell": "40",
+          "explained": 82
+        },
+        {
+          "rank": 2,
+          "greeting": "Egg-brother. You may drink. Once, and not deeply.",
+          "greeting_cell": "40",
+          "explained": 94
+        },
+        {
+          "rank": 4,
+          "greeting": "Ask about the sap and this one will not stop talking. Egg-brother.",
+          "greeting_cell": "40",
+          "explained": 100
+        },
+        {
+          "rank": 7,
+          "greeting": "Egg-brother. You have the smell of a long road. Sit.",
+          "greeting_cell": "40",
+          "explained": 100
+        }
+      ]
+    }
+  ],
+  "notes": [],
+  "declared_exclusivity": {
+    "hard_groups": [
+      {
+        "id": "the_two_courts",
+        "members": [
+          "the_drowned_court",
+          "the_imperial_assize"
+        ],
+        "why": "You cannot swear to a drowned crown and to the Assize that would hang it."
+      }
+    ],
+    "enemy_pairs": [
+      [
+        "the_wet_ledger",
+        "the_imperial_assize"
+      ]
+    ],
+    "earned": [
+      {
+        "a": "the_xul_aneekh",
+        "b": "the_wet_ledger",
+        "a_locks_b_at_rank": 2,
+        "b_locks_a_at_rank": 3,
+        "why": "The Deep-Kin position is that the coast is a wound. The Ledger IS the coast.",
+        "escape": "RI-QST03 §C X3: the rank-3 quest on each side has a resolution that does not lock."
+      },
+      {
+        "a": "the_xul_aneekh",
+        "b": "the_imperial_assize",
+        "a_locks_b_at_rank": 4,
+        "b_locks_a_at_rank": 4,
+        "why": "The Blackrose labour-lease and the Deep-Kin answer to it are the same event from two chairs.",
+        "escape": "RI-QST03 §C X3: the rank-4 quest on each side has a resolution that does not lock."
+      },
+      {
+        "a": "the_wet_ledger",
+        "b": "the_ixtu_vakh",
+        "a_locks_b_at_rank": 3,
+        "b_locks_a_at_rank": 3,
+        "why": "The Ledger’s business survives on not being the Sap-Cutters.",
+        "escape": null
+      }
+    ],
+    "rank_ceiling_with_a_second_membership": 5,
+    "soft": [
+      {
+        "a": "the_dockhands",
+        "b": "the_wet_ledger",
+        "penalty": -15,
+        "why": "The wharf knows who fences its cargo."
+      }
+    ]
+  },
+  "arm": "shipping",
+  "schema": "elder-souls/critic-w1-20-r2-live@1",
+  "generated_at": "2026-08-14T15:09:55.031Z",
+  "capture_note": "CAPTURE NOTE: the per-check summary counters `A1.lines_refusing` and `A3.lines_still_refusing_rank_7_on_reputation_alone` in this file were computed by the PRE-CORRECTION pass of the tool, which read `r.ok` — a field `factionRefusal` does not return — so both read 8/8 in both arms and were reported inert. The ROWS are authoritative and unchanged: `rows[].said` shows eight refusal sentences carrying the player's own numbers in the shipping arm and eight WELCOME sentences carrying none in the null-control arm. The landed tool reads `r.kind` and recomputes those two counters correctly; the verdict quotes the rows."
+}
