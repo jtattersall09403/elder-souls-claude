@@ -1,6 +1,8 @@
 All work we've done is on a codex/build-experiment branch.
 
-When you restart and get this message, codex may still be doing work on W1-19 and W1-30 in parallel from another environment. I have asked it to open and merge regular PRs into the build experiment branch as updates. I quite like this approach of agents regularly opening and merging PRs as progress updates in plain English - see recently close PRs as examples - and would like this to keep happening going forward.
+Notes in no particular order:
+
+Codex has been doing work on W1-19 and W1-30 from another environment. I have asked it to open and merge regular PRs into the build experiment branch as updates. I quite like this approach of agents regularly opening and merging PRs as progress updates in plain English - see recently close PRs as examples - and would like this to keep happening going forward. The codex task has now terminated but its work is **not complete**.
 
 Random specific thing but make sure Morrowind style HUD is covered somewhere, including minimal with compass directions
 
