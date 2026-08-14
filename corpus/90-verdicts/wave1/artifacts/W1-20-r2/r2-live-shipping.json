@@ -4,6 +4,7 @@
       "id": "A1.stranger_is_refused_by_every_line",
       "discriminating": true,
       "lines_refusing": 8,
+      "lines_spoken_a_welcome": 0,
       "of": 8,
       "rows": [
         {
@@ -16,6 +17,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -29,6 +32,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -42,6 +47,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -52,6 +59,8 @@
           "states_a_number": false,
           "numbers": [],
           "unmet": null,
+          "kind": "not_joinable",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -65,6 +74,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -78,6 +89,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -91,6 +104,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         },
@@ -104,6 +119,8 @@
             "10"
           ],
           "unmet": null,
+          "kind": "reputation",
+          "refused": true,
           "ok": false,
           "drawn": true
         }
@@ -404,7 +421,9 @@
       "id": "B3.the_world_explains_the_lock_when_you_try_the_door",
       "discriminating": true,
       "lines_tested": 5,
-      "lines_where_the_refusal_names_the_lock": 4,
+      "lines_where_open_refuses": 5,
+      "lines_where_the_RECORDED_reason_names_the_lock": 5,
+      "lines_where_the_SPOKEN_line_tells_the_player_they_are_refused": 0,
       "rows": [
         {
           "joined": "the_wet_ledger",
@@ -445,8 +464,12 @@
               }
             }
           },
+          "open_refused": true,
+          "reason": "The Imperial Assize will not deal with you: you are The Wet Ledger; assizer-corvo disposition 19.75/30",
+          "reason_names_the_lock": true,
           "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
-          "names_the_lock": true
+          "voice_kind": "welcome",
+          "the_player_is_told_they_are_refused": false
         },
         {
           "joined": "the_imperial_assize",
@@ -487,8 +510,12 @@
               }
             }
           },
+          "open_refused": true,
+          "reason": "The Drowned Court will not deal with you: you are The Imperial Assize; undertaker-vaskh disposition 27.5/30",
+          "reason_names_the_lock": true,
           "said": "You're in the tally. Everyone gets in it eventually. You've just done it standing up.",
-          "names_the_lock": false
+          "voice_kind": "welcome",
+          "the_player_is_told_they_are_refused": false
         },
         {
           "joined": "the_xul_aneekh",
@@ -529,8 +556,12 @@
               }
             }
           },
+          "open_refused": true,
+          "reason": "The Wet Ledger will not deal with you: you are The Xul-Aneekh",
+          "reason_names_the_lock": true,
           "said": "Your name's in the margin. That's how the Ledger remembers people.",
-          "names_the_lock": true
+          "voice_kind": "welcome",
+          "the_player_is_told_they_are_refused": false
         },
         {
           "joined": "the_drowned_court",
@@ -571,8 +602,12 @@
               }
             }
           },
+          "open_refused": true,
+          "reason": "The Imperial Assize will not deal with you: you are The Drowned Court; assizer-corvo disposition 8.5/30",
+          "reason_names_the_lock": true,
           "said": "The roll is amended. You are an officer of this court, which is a heavier thing than it sounds.",
-          "names_the_lock": true
+          "voice_kind": "welcome",
+          "the_player_is_told_they_are_refused": false
         },
         {
           "joined": "the_ixtu_vakh",
@@ -613,16 +648,23 @@
               }
             }
           },
+          "open_refused": true,
+          "reason": "The Wet Ledger will not deal with you: you are The Ixtu-Vakh",
+          "reason_names_the_lock": true,
           "said": "Your name's in the margin. That's how the Ledger remembers people.",
-          "names_the_lock": true
+          "voice_kind": "welcome",
+          "the_player_is_told_they_are_refused": false
         }
       ]
     },
     {
       "id": "C1.rank_changes_what_the_representative_says",
       "discriminating": false,
-      "lines_where_disposition_moves": 0,
-      "lines_where_the_GREETING_BAND_moves": 0,
+      "lines_where_disposition_moves": 7,
+      "lines_where_disposition_is_FLAT": [
+        "the_dockhands"
+      ],
+      "lines_where_the_GREETING_CELL_moves": 0,
       "lines_where_talkTo_throws": [],
       "of": 8
     },
@@ -850,6 +892,8 @@
           "rank": 0,
           "greeting": "Name and hatch-name, if you have both. Yes. What.",
           "greeting_cell": "110",
+          "band": null,
+          "disposition": null,
           "explained": 49,
           "trespassing": true
         },
@@ -857,6 +901,8 @@
           "rank": 2,
           "greeting": "If it is an amendment it is a fee. If it is anything else it is a wait. Name and hatch-name, if you have both.",
           "greeting_cell": "110",
+          "band": null,
+          "disposition": null,
           "explained": 55,
           "trespassing": true
         },
@@ -864,6 +910,8 @@
           "rank": 4,
           "greeting": "Name and hatch-name, if you have both. I can look it up. It'll take as long as it takes.",
           "greeting_cell": "110",
+          "band": null,
+          "disposition": null,
           "explained": 61,
           "trespassing": true
         },
@@ -871,6 +919,8 @@
           "rank": 7,
           "greeting": "Say the whole thing once rather than half of it three times. Name and hatch-name, if you have both.",
           "greeting_cell": "110",
+          "band": null,
+          "disposition": null,
           "explained": 70,
           "trespassing": true
         }
@@ -885,24 +935,32 @@
           "rank": 0,
           "greeting": "Provincial. Ask. And if it's Legion business, I'll tell you it's Legion business.",
           "greeting_cell": "135",
+          "band": null,
+          "disposition": null,
           "explained": 40
         },
         {
           "rank": 2,
           "greeting": "Keep out of the marsh after dark and I'll have less to write. Provincial.",
           "greeting_cell": "135",
+          "band": null,
+          "disposition": null,
           "explained": 49
         },
         {
           "rank": 4,
           "greeting": "Provincial. Something to report?",
           "greeting_cell": "135",
+          "band": null,
+          "disposition": null,
           "explained": 58
         },
         {
           "rank": 7,
           "greeting": "Provincial. Citizen. Something you need?",
           "greeting_cell": "135",
+          "band": null,
+          "disposition": null,
           "explained": 71.5
         }
       ]
@@ -916,24 +974,32 @@
           "rank": 0,
           "greeting": "Root-kin. There is dry floor by the fire.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 76
         },
         {
           "rank": 2,
           "greeting": "Eat something before you talk. It goes better. Root-kin.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 88
         },
         {
           "rank": 4,
           "greeting": "Root-kin. Ask. This one will answer if it can.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 100
         },
         {
           "rank": 7,
           "greeting": "You have been walking. Sit. Root-kin.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 100
         }
       ]
@@ -947,24 +1013,32 @@
           "rank": 0,
           "greeting": "Root-kin. There is dry floor by the fire.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 76
         },
         {
           "rank": 2,
           "greeting": "Eat something before you talk. It goes better. Root-kin.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 88
         },
         {
           "rank": 4,
           "greeting": "Root-kin. Ask. This one will answer if it can.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 100
         },
         {
           "rank": 7,
           "greeting": "You have been walking. Sit. Root-kin.",
           "greeting_cell": "15",
+          "band": null,
+          "disposition": null,
           "explained": 100
         }
       ]
@@ -978,24 +1052,32 @@
           "rank": 0,
           "greeting": "You're from here, or near enough. Ask. If I know it, you can have it.",
           "greeting_cell": "260",
+          "band": null,
+          "disposition": null,
           "explained": 47
         },
         {
           "rank": 2,
           "greeting": "It's a small place. There isn't much to tell. You're from here, or near enough.",
           "greeting_cell": "260",
+          "band": null,
+          "disposition": null,
           "explained": 47
         },
         {
           "rank": 4,
           "greeting": "You're from here, or near enough. Mind the wagons.",
           "greeting_cell": "260",
+          "band": null,
+          "disposition": null,
           "explained": 47
         },
         {
           "rank": 7,
           "greeting": "You're from here, or near enough. Something you need?",
           "greeting_cell": "260",
+          "band": null,
+          "disposition": null,
           "explained": 47
         }
       ]
@@ -1009,6 +1091,8 @@
           "rank": 0,
           "greeting": "Approach. What is your petition?",
           "greeting_cell": "235",
+          "band": null,
+          "disposition": null,
           "explained": 59,
           "trespassing": true
         },
@@ -1016,6 +1100,8 @@
           "rank": 2,
           "greeting": "Approach. Speak your business to the court.",
           "greeting_cell": "235",
+          "band": null,
+          "disposition": null,
           "explained": 68,
           "trespassing": true
         },
@@ -1023,6 +1109,8 @@
           "rank": 4,
           "greeting": "The court will hear it in order. Approach.",
           "greeting_cell": "235",
+          "band": null,
+          "disposition": null,
           "explained": 77,
           "trespassing": true
         },
@@ -1030,6 +1118,8 @@
           "rank": 7,
           "greeting": "Approach. You may put it in writing.",
           "greeting_cell": "235",
+          "band": null,
+          "disposition": null,
           "explained": 90.5,
           "trespassing": true
         }
@@ -1044,24 +1134,32 @@
           "rank": 0,
           "greeting": "One of the drowned ones, then. The water is high. It is always high.",
           "greeting_cell": "210",
+          "band": null,
+          "disposition": null,
           "explained": 53
         },
         {
           "rank": 2,
           "greeting": "You want something the drowned know. One of the drowned ones, then.",
           "greeting_cell": "210",
+          "band": null,
+          "disposition": null,
           "explained": 59
         },
         {
           "rank": 4,
           "greeting": "One of the drowned ones, then. Ask. It may cost you a thing you did not offer.",
           "greeting_cell": "210",
+          "band": null,
+          "disposition": null,
           "explained": 65
         },
         {
           "rank": 7,
           "greeting": "Keep your feet wet and your words short. One of the drowned ones, then.",
           "greeting_cell": "210",
+          "band": null,
+          "disposition": null,
           "explained": 74
         }
       ]
@@ -1075,24 +1173,32 @@
           "rank": 0,
           "greeting": "This one will speak with you. The tree does not mind. Egg-brother.",
           "greeting_cell": "40",
+          "band": null,
+          "disposition": null,
           "explained": 82
         },
         {
           "rank": 2,
           "greeting": "Egg-brother. You may drink. Once, and not deeply.",
           "greeting_cell": "40",
+          "band": null,
+          "disposition": null,
           "explained": 94
         },
         {
           "rank": 4,
           "greeting": "Ask about the sap and this one will not stop talking. Egg-brother.",
           "greeting_cell": "40",
+          "band": null,
+          "disposition": null,
           "explained": 100
         },
         {
           "rank": 7,
           "greeting": "Egg-brother. You have the smell of a long road. Sit.",
           "greeting_cell": "40",
+          "band": null,
+          "disposition": null,
           "explained": 100
         }
       ]
@@ -1154,6 +1260,5 @@
   },
   "arm": "shipping",
   "schema": "elder-souls/critic-w1-20-r2-live@1",
-  "generated_at": "2026-08-14T15:09:55.031Z",
-  "capture_note": "CAPTURE NOTE: the per-check summary counters `A1.lines_refusing` and `A3.lines_still_refusing_rank_7_on_reputation_alone` in this file were computed by the PRE-CORRECTION pass of the tool, which read `r.ok` — a field `factionRefusal` does not return — so both read 8/8 in both arms and were reported inert. The ROWS are authoritative and unchanged: `rows[].said` shows eight refusal sentences carrying the player's own numbers in the shipping arm and eight WELCOME sentences carrying none in the null-control arm. The landed tool reads `r.kind` and recomputes those two counters correctly; the verdict quotes the rows."
+  "generated_at": "2026-08-14T15:36:00.026Z"
 }
