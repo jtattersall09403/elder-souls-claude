@@ -476,6 +476,26 @@
 })();
 </script>
 
+<!--
+  W1-30D: the import map exists so the VENDORED three.js addons can stay byte-exact.
+
+  `game/vendor/three/addons/**` are unmodified r180 originals (W1-30 R4a makes editing one a hard
+  fail), and every official addon opens with `import { ... } from 'three'`. A bare specifier is
+  only resolvable through an import map, so without this the loaders cannot be imported at all —
+  and rewriting their import line to a relative path would be exactly the fork R4a forbids.
+
+  This is additive and changes nothing that runs today: `grep -rn "from 'three'" game/src` returns
+  nothing, so no existing module resolves through this map. Reversal is deleting this one element.
+-->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+  }
+}
+</script>
+
 <script type="module" src="./src/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,61 @@
+{
+  "schema": "elder-souls/model-manifest@1",
+  "owner": "W1-30D",
+  "written": "2026-08-14",
+  "why": [
+    "An unmanifested model must not load. That is the whole point of this file: `render/models.js`",
+    "admits a model id only if it appears here, and refuses anything else with the reason, so a",
+    "character can never reach the screen without a recorded licence, scale, budget and consumer",
+    "list. The failure this prevents is the one the corpus already has: refs/MANIFEST.json records",
+    "`licence: null` on frames that are nonetheless on disk and cited.",
+    "",
+    "Every entry MUST carry: source, licence, licence_url, real_world_scale_m, bounds_m, lods,",
+    "material_families, consumers, sha256 (null only for `procedural` sources, which have no file)."
+  ],
+  "licence_policy": {
+    "allowed": ["CC0-1.0", "CC-BY-4.0", "in-repo-original"],
+    "refused": ["CC-BY-NC", "unknown", null],
+    "note": "CC-BY-4.0 entries must carry an attribution string; the loader refuses one without."
+  },
+  "models": {
+    "base.saxhleel": {
+      "source": "procedural",
+      "generator": "game/src/render/actor.js#buildSkeleton(artFamily='saxhleel')",
+      "licence": "in-repo-original",
+      "licence_url": null,
+      "attribution": null,
+      "sha256": null,
+      "skeleton": "es.humanoid.v1",
+      "real_world_scale_m": 1.78,
+      "bounds_m": { "min": [-0.33, 0.0, -0.72], "max": [0.33, 1.83, 0.36] },
+      "lods": [
+        { "id": "lod0", "max_tris": 40000, "screen_height_px": ">220" },
+        { "id": "lod1", "max_tris": 8000, "screen_height_px": "80-220" },
+        { "id": "lod2", "max_tris": 2000, "screen_height_px": "<80" }
+      ],
+      "material_families": ["skin", "cloth", "bone", "chitin", "metal", "bark"],
+      "vertex_attributes": ["position", "normal", "uv", "skinIndex", "skinWeight", "esCurvature"],
+      "consumers": ["render/renderer.js: the player", "render/renderer.js: every saxhleel/naga NPC"],
+      "note": "Procedural for the reason recorded in orchestration/status/W1-30D-SOURCING-SPIKE.md. It is manifested anyway so the census and the admission path treat it exactly like a file-backed model, and so a later glTF replacement is a manifest edit rather than a code change."
+    },
+    "base.humanoid": {
+      "source": "procedural",
+      "generator": "game/src/render/actor.js#buildSkeleton(artFamily='humanoid')",
+      "licence": "in-repo-original",
+      "licence_url": null,
+      "attribution": null,
+      "sha256": null,
+      "skeleton": "es.humanoid.v1",
+      "real_world_scale_m": 1.78,
+      "bounds_m": { "min": [-0.33, 0.0, -0.34], "max": [0.33, 1.83, 0.34] },
+      "lods": [
+        { "id": "lod0", "max_tris": 40000, "screen_height_px": ">220" },
+        { "id": "lod1", "max_tris": 8000, "screen_height_px": "80-220" },
+        { "id": "lod2", "max_tris": 2000, "screen_height_px": "<80" }
+      ],
+      "material_families": ["skin", "cloth", "bone", "chitin", "metal", "bark"],
+      "vertex_attributes": ["position", "normal", "uv", "skinIndex", "skinWeight", "esCurvature"],
+      "consumers": ["render/renderer.js: imperial and breton NPCs", "render/renderer.js: DUMMY and human enemy archetypes"]
+    }
+  }
+}

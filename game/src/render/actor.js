@@ -29,6 +29,8 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 import { creatureArt } from './world-art.js';
+import { registerRig, registerCharacter, character, charactersOf, resolveMorph, variantKey, SKELETON_ID }
+  from './lib/rigs.js';
 
 // ---------------------------------------------------------------------------------------
 // Geometry helpers. Everything is authored directly into typed arrays with skin indices and
@@ -43,6 +45,83 @@ const _w = new THREE.Vector3();
 const _m = new THREE.Matrix4();
 const _directionMaterialCache=new WeakMap();
 const _equipmentMaterialCache=new WeakMap();
+
+/**
+ * `esCurvature` — MATERIAL_API.md §6a, which is a direct request to this file.
+ *
+ * W1-30C measured its own `wearFrom: 'texture'` path at 3.4% edge/face separation against an 8%
+ * bar and published the reason rather than tuning past it: *a normal map's rate of change is
+ * grain, and the arris of a plank is a property of the mesh.* So the curvature has to come from
+ * geometry, and this is where geometry is made.
+ *
+ * It is computed, not authored. Hand-tagging each builder ("the tube rim is an edge, the ball is
+ * not") would drift the moment somebody adds a shape, and it would encode an opinion rather than
+ * the definition. This reads the definition literally: an edge shared by two faces whose normals
+ * differ by more than `thresholdDeg` is an arris and scores 1; a face interior scores 0; a
+ * boundary edge (an open rim) is an arris too. One smoothing pass spreads it a vertex inward so
+ * the band has width at any texel density.
+ *
+ * Positions are quantised to 0.1 mm before pairing, so vertices split for UV or skin-weight
+ * reasons still count as one point — otherwise every seam in a welded body reads as a boundary
+ * and the whole character wears at once.
+ */
+export function bakeCurvature(geometry, thresholdDeg = 35) {
+  const pos = geometry.attributes.position, idx = geometry.index;
+  if (!pos || !idx) return geometry;
+  const n = pos.count;
+  const key = new Int32Array(n);
+  const map = new Map();
+  for (let i = 0; i < n; i++) {
+    const k = `${Math.round(pos.getX(i) * 1e4)},${Math.round(pos.getY(i) * 1e4)},${Math.round(pos.getZ(i) * 1e4)}`;
+    let id = map.get(k);
+    if (id === undefined) { id = map.size; map.set(k, id); }
+    key[i] = id;
+  }
+  const faceN = [];
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3(), u = new THREE.Vector3(), v2 = new THREE.Vector3();
+  const edges = new Map();
+  const tri = idx.array, tcount = idx.count / 3;
+  for (let f = 0; f < tcount; f++) {
+    const i0 = tri[f * 3], i1 = tri[f * 3 + 1], i2 = tri[f * 3 + 2];
+    a.fromBufferAttribute(pos, i0); b.fromBufferAttribute(pos, i1); c.fromBufferAttribute(pos, i2);
+    u.subVectors(b, a); v2.subVectors(c, a);
+    const nv = new THREE.Vector3().crossVectors(u, v2);
+    if (nv.lengthSq() > 1e-20) nv.normalize();
+    faceN.push(nv);
+    for (const [x, y] of [[i0, i1], [i1, i2], [i2, i0]]) {
+      const p = key[x], q = key[y], ek = p < q ? `${p}_${q}` : `${q}_${p}`;
+      let e = edges.get(ek);
+      if (!e) { e = { f: [], v: [x, y] }; edges.set(ek, e); }
+      e.f.push(f);
+    }
+  }
+  const cur = new Float32Array(n);
+  const cosT = Math.cos((thresholdDeg * Math.PI) / 180);
+  for (const e of edges.values()) {
+    let sharp = 0;
+    if (e.f.length === 1) sharp = 1;                                  // an open rim is an arris
+    else {
+      for (let i = 1; i < e.f.length; i++) {
+        const d = faceN[e.f[0]].dot(faceN[e.f[i]]);
+        if (d < cosT) sharp = Math.max(sharp, Math.min(1, (cosT - d) / (cosT + 1)));
+      }
+    }
+    if (sharp <= 0) continue;
+    for (let i = 0; i < n; i++) if (key[i] === key[e.v[0]] || key[i] === key[e.v[1]]) cur[i] = Math.max(cur[i], sharp);
+  }
+  // One outward smoothing pass, at half amplitude: the wear band should have width, not be a
+  // one-vertex line that disappears the moment the mesh is decimated for LOD1.
+  const soft = new Float32Array(cur);
+  for (let f = 0; f < tcount; f++) {
+    const i0 = tri[f * 3], i1 = tri[f * 3 + 1], i2 = tri[f * 3 + 2];
+    const m = Math.max(cur[i0], cur[i1], cur[i2]) * 0.5;
+    if (soft[i0] < m) soft[i0] = m;
+    if (soft[i1] < m) soft[i1] = m;
+    if (soft[i2] < m) soft[i2] = m;
+  }
+  geometry.setAttribute('esCurvature', new THREE.Float32BufferAttribute(soft, 1));
+  return geometry;
+}
 
 class MeshBuilder {
   constructor() {
@@ -179,7 +258,7 @@ class MeshBuilder {
     g.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(this.si, 4));
     g.setAttribute('skinWeight', new THREE.Float32BufferAttribute(this.sw, 4));
     g.setIndex(this.idx);
-    return g;
+    return bakeCurvature(g);
   }
 }
 
@@ -248,8 +327,12 @@ function installWaterline(mat, sharedUniforms) {
 const PLAN = {
   pelvis: { to: 'spine_00', r0: 0.185, r1: 0.170, mat: 'cloth', blend: 0 },
   spine_00: { to: 'spine_02', r0: 0.178, r1: 0.218, mat: 'cloth', blend: 0.4 },
-  spine_02: { to: 'neck', r0: 0.218, r1: 0.142, mat: 'cloth', blend: 0.4 },
-  neck: { to: 'head', r0: 0.072, r1: 0.070, mat: 'skin', blend: 0.5 },
+  // `r1` was 0.142 — a 2x step down into a 0.072 neck. That step is not a joint, it is a ledge,
+  // and it is why the derived joint radius below would otherwise put a 28 cm collar at the throat.
+  // The chest VOLUME is the ellipsoid emitted further down (0.228 x 0.20 x 0.142); this tube only
+  // needs to carry the taper into the neck, so it now ends near the neck's own radius.
+  spine_02: { to: 'neck', r0: 0.218, r1: 0.095, mat: 'cloth', blend: 0.4 },
+  neck: { to: 'head', r0: 0.082, r1: 0.070, mat: 'skin', blend: 0.5 },
   clavicle_l: { to: 'upperarm_l', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
   clavicle_r: { to: 'upperarm_r', r0: 0.105, r1: 0.088, mat: 'cloth', blend: 0.5 },
   upperarm_l: { to: 'lowerarm_l', r0: 0.094, r1: 0.075, mat: 'skin', blend: 0.45 },
@@ -270,19 +353,47 @@ const PLAN = {
 /**
  * Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes.
  *
- * Each radius is a HAIR under its segment's radius at that end. Larger reads as a lumpy string
- * of beads — the first capture had a pelvis ball at 0.190 sitting proud of the 0.185 hip tube
- * and two 0.114 thigh balls inside it, which at VP07 distance is three overlapping spheres
- * where a hip should be. The pelvis has no ball at all now: its own tube already spans the
- * joint, so a ball there could only ever stick out of it.
+ * WHY THE RADIUS IS NOW DERIVED AND NOT AUTHORED — this is the transparency defect, and the
+ * previous rule was the cause of it.
+ *
+ * The old table set every ball "a HAIR under its segment's radius at that end", to avoid a lumpy
+ * string of beads. That reasoning is right about a ball that is *bigger than the limb* and wrong
+ * about the one case that matters. Two tapered tubes meeting at a joint and bending through an
+ * angle cover everything except a wedge on the OUTSIDE of the bend, and the size of that wedge is
+ * set by the tube radii, not by the ball. A ball smaller than either tube cannot reach the wedge —
+ * so the wedge is open, and you can see the sky through the character's shoulder. Measured, before
+ * this change, by `tools/visual/actor-orbit-holes.mjs` on the shipping clip poses: 9,254 enclosed
+ * background pixels across 5,760 orbit frames, 1,562 frames affected.
+ *
+ * The rule now: **a joint ball's radius is the LARGEST radius any segment has at that joint.**
+ * That is the smallest sphere that can bridge the wedge, and it is tangent to the widest tube by
+ * construction, so it cannot read as a bead — a bead is a ball *larger* than its limb, which this
+ * can never be. It is computed from `PLAN` so a future radius edit cannot silently reopen the gap.
  */
-const JOINTS = [
-  ['upperarm_l', 0.080, 'skin'], ['upperarm_r', 0.080, 'skin'],
-  ['lowerarm_l', 0.068, 'skin'], ['lowerarm_r', 0.068, 'skin'],
-  ['hand_l', 0.052, 'skin'], ['hand_r', 0.052, 'skin'],
-  ['thigh_l', 0.106, 'cloth'], ['thigh_r', 0.106, 'cloth'],
-  ['calf_l', 0.086, 'cloth'], ['calf_r', 0.086, 'cloth'],
-];
+function jointRadius(id) {
+  let r = 0;
+  const own = PLAN[id];
+  if (own) r = Math.max(r, own.r0);
+  for (const spec of Object.values(PLAN)) if (spec.to === id) r = Math.max(r, spec.r1);
+  return r;
+}
+
+/** Which surface a joint belongs to, and nothing else — the radius is derived above. The ankle
+ *  was simply missing from the old list, which is why `foot_*` appears in the crack tally. */
+const JOINT_SURFACE = {
+  upperarm_l: 'skin', upperarm_r: 'skin',
+  lowerarm_l: 'skin', lowerarm_r: 'skin',
+  hand_l: 'skin', hand_r: 'skin',
+  neck: 'skin', head: 'skin',
+  // The two spine nodes are deliberately absent. Their derived radius would be the 0.218 chest
+  // tube, and a 0.218 sphere is wider than the chest ellipsoid is deep (0.142) — it would be a
+  // barrel, not a joint. The trunk articulates by a few degrees and is already carried by two
+  // overlapping ellipsoids; adding a ball there would trade a hole nobody has for a lump
+  // everybody sees.
+  thigh_l: 'cloth', thigh_r: 'cloth',
+  calf_l: 'cloth', calf_r: 'cloth',
+  foot_l: 'skin', foot_r: 'skin',
+};
 
 /**
  * Build the two skinned meshes (skin and cloth) plus the bone hierarchy, from a live `Rig`.
@@ -291,7 +402,13 @@ const JOINTS = [
  * drawn character cannot be built against a different bone list than the fight is using — the
  * arrays are the same length, in the same order, by construction.
  */
-function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
+function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphSpec=null) {
+  // The morph is the variant axis that has to REBUILD geometry rather than tint it, or "twelve
+  // distinct characters" is twelve colours of one character. Every multiplier below lands on a
+  // radius or an ornament dimension; none of them touches a bone offset, because a bone offset is
+  // where the hurtboxes are (see `lib/rigs.js`'s header).
+  const M = resolveMorph(morphSpec);
+  const rScale = (r) => r * M.build;
   const defs = rig.def.bones;
   const bones = [];
   const index = new Map();
@@ -326,11 +443,18 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
       b = new THREE.Vector3(spec.local[0], spec.local[1], spec.local[2]).applyMatrix4(restWorld[bi]);
     }
     const parent = defs[bi].parent === null ? -1 : index.get(defs[bi].parent);
-    B[spec.mat].tube(a, b, spec.r0, spec.r1, bi, parent, spec.blend);
+    const k = /^clavicle/.test(id) ? M.shoulders : /^(pelvis|spine_00)$/.test(id) ? M.belly
+      : id === 'neck' ? M.neck : /^hand_/.test(id) ? M.hand : 1;
+    B[spec.mat].tube(a, b, rScale(spec.r0) * k, rScale(spec.r1) * k, bi, parent, spec.blend);
   }
-  for (const [id, r, mat] of JOINTS) {
+  for (const [id, mat] of Object.entries(JOINT_SURFACE)) {
     const bi = index.get(id);
     if (bi === undefined) continue;
+    // The joint ball must track the morph exactly, or a heavy build re-opens the wedge the derived
+    // radius exists to close: a 1.15x limb against a 1.0x ball is the old defect with extra steps.
+    const k = id === 'neck' ? M.neck : /^hand_/.test(id) ? M.hand : 1;
+    const r = rScale(jointRadius(id)) * k;
+    if (r <= 0) continue;
     B[mat].ball(originOf(id), r, bi, 10);
   }
 
@@ -338,9 +462,9 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // They are emitted into the same sealed, skinned surfaces, so they cannot lag behind motion
   // or recreate the translucent-overlap defect that separate transparent shells produced.
   const pelvisI=index.get('pelvis');
-  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185,.13,.135],pelvisI,12);
+  if(pelvisI!==undefined)B.cloth.ellipsoid(originOf('pelvis').add(new THREE.Vector3(0,.035,0)),[.185*M.build*M.belly,.13*M.build,.135*M.build*M.belly],pelvisI,12);
   const chestI=index.get('spine_02');
-  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228,.20,.142],chestI,14);
+  if(chestI!==undefined)B.cloth.ellipsoid(originOf('spine_02').add(new THREE.Vector3(0,.025,0)),[.228*M.build*M.shoulders,.20*M.build,.142*M.build],chestI,14);
 
   // ---- the head ------------------------------------------------------------------------
   // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
@@ -354,12 +478,13 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     const P = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(hm);
     if(artFamily==='saxhleel'){
       B.skin.ellipsoid(P(0,0.085,0.005),[.108,.132,.126],hi,12);          // skull
-      B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.235), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
-      B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.205), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
-      for (let k = 0; k < 3; k++) {
+      B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.075+0.160*M.snout), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
+      B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.065+0.140*M.snout), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
+      for (let k = 0; k < 3 && M.crest > 0.01; k++) {
         const t = k / 3;
         B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
-          P(0, 0.215 - t * 0.055, -0.010 - t * 0.090), 0.030, 0.008, hi, hi, 0, 6, 2);
+          P(0, 0.150 + (0.065 - t * 0.055) * M.crest, 0.030 - t * 0.075 - (0.040 + t * 0.090) * M.crest),
+          0.030 * M.crest, 0.008, hi, hi, 0, 6, 2);
       }
     }else if(artFamily==='humanoid'){
       B.skin.ellipsoid(P(0,.080,.004),[.100,.132,.098],hi,14);
@@ -379,10 +504,14 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // toes remain rigid to their terminal bones, so they cannot disturb hit volumes or IK.
   for (const [id, sideSign] of [['hand_l',-1],['hand_r',1]]) {
     const bi=index.get(id); if (bi===undefined) continue;
-    const hm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x,y,z).applyMatrix4(hm);
-    B.skin.ellipsoid(P(0,-.055,.025),[.070,.090,.048],bi,10);
-    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.025,-.084,.022),P(k*.038,-.174,.045+Math.abs(k)*.012),.016,.006,bi,bi,0,7,3);
-    B.skin.tube(P(sideSign*.052,-.060,.018),P(sideSign*.098,-.132,.060),.015,.006,bi,bi,0,7,3);
+    const h=M.hand*M.build;
+    const hm=restWorld[bi], P=(x,y,z)=>new THREE.Vector3(x*h,y*h,z*h).applyMatrix4(hm);
+    B.skin.ellipsoid(P(0,-.055,.025),[.070*h,.090*h,.048*h],bi,10);
+    // Three fingers and an opposed thumb. The gate reads "hands have separated digits"; a hand
+    // whose thumb is one of four parallel tubes has digits but not a thumb, so the fourth tube
+    // leaves the palm sideways and forward, from a different origin.
+    for(let k=-1;k<=1;k++) B.skin.tube(P(k*.025,-.084,.022),P(k*.038,-.174,.045+Math.abs(k)*.012),.016*h,.006*h,bi,bi,0,7,3);
+    B.skin.tube(P(sideSign*.052,-.060,.018),P(sideSign*.098,-.132,.060),.015*h,.006*h,bi,bi,0,7,3);
   }
   for (const id of ['foot_l','foot_r']) {
     const bi=index.get(id); if (bi===undefined) continue;
@@ -401,18 +530,50 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   // the separate spine frill below is the deterministic delayed secondary-motion carrier.
   const pi = index.get('pelvis');
   const s0 = index.get('spine_00');
+  const s2 = index.get('spine_02');
   if (pi !== undefined && artFamily==='saxhleel') {
     const pm = restWorld[pi];
     const T = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(pm);
+    // THE TAIL ROOT WAS THE SINGLE LARGEST HOLE IN THE CHARACTER. Two causes, both fixed here.
+    //
+    // (1) The first segment started at z = -0.13, which is the exact back surface of the pelvis
+    //     ellipsoid (rz = 0.135) — tangent, not embedded. Any pose that swung the pelvis opened
+    //     a slit between the tail and the rump. It now starts at z = -0.045, well inside the
+    //     pelvis volume, and at 0.115 rather than 0.085 so it leaves the body at the body's own
+    //     width instead of stepping down to it.
+    // (2) Its start ring was 50% weighted to `spine_00` (`blend: 0.35`). The tail is not part of
+    //     the spine and does not follow it; that weight dragged the root away from the pelvis
+    //     every time the character bent. The whole tail is now rigid to `pelvis`, which is also
+    //     what the combat rig assumes — `skeleton.json` declares no tail bones at all.
     const spine = [
-      [T(0, 0.02, -0.13), T(0, -0.10, -0.36), 0.085, 0.068],
+      [T(0, 0.010, -0.045), T(0, -0.10, -0.36), 0.115, 0.068],
       [T(0, -0.10, -0.36), T(0, -0.30, -0.55), 0.068, 0.048],
       [T(0, -0.30, -0.55), T(0, -0.50, -0.66), 0.048, 0.030],
       [T(0, -0.50, -0.66), T(0, -0.66, -0.70), 0.030, 0.012],
     ];
-    for (let k = 0; k < spine.length; k++) {
-      const [a, b, r0, r1] = spine[k];
-      B.skin.tube(a, b, r0, r1, pi, k === 0 && s0 !== undefined ? s0 : pi, k === 0 ? 0.35 : 0, 8, 2);
+    for (const [a, b, r0, r1] of spine) B.skin.tube(a, b, r0, r1, pi, pi, 0, 8, 2);
+    // THE DORSAL CREST IS NOW PART OF THE BODY, not four cones hovering behind it.
+    //
+    // It used to be four `ConeGeometry` presentation meshes at z = -0.16 .. -0.49 off `spine_02`,
+    // i.e. up to 35 cm behind a back whose ellipsoid is 14 cm deep. They floated, and the gap
+    // between crest and back was the largest single contributor to the crack count. Emitting them
+    // into the same skinned surface as everything else means the weld is structural: there is no
+    // pose in which a crest plate and the back can separate, because they are one mesh.
+    const crest = [
+      [s2, [0, 0.150, -0.055], [0, 0.230, -0.130], 0.042, 0.010],
+      [s2, [0, 0.020, -0.070], [0, 0.080, -0.170], 0.040, 0.010],
+      [s0, [0, 0.060, -0.075], [0, 0.110, -0.180], 0.036, 0.009],
+      [s0, [0, -0.060, -0.070], [0, -0.020, -0.175], 0.032, 0.008],
+      [pi, [0, 0.030, -0.060], [0, 0.070, -0.160], 0.028, 0.007],
+    ];
+    for (const [bi, a, b, r0, r1] of crest) {
+      if (bi === undefined || M.crest <= 0.01) continue;
+      const m = restWorld[bi];
+      // The crest's ROOT stays where it is (inside the body) and only its tip and section scale
+      // with the morph. Scaling both ends would lift a small crest out of the back — which is the
+      // defect this block was written to remove, reintroduced by a variant axis.
+      const tip = [a[0] + (b[0] - a[0]) * M.crest, a[1] + (b[1] - a[1]) * M.crest, a[2] + (b[2] - a[2]) * M.crest];
+      B.skin.tube(new THREE.Vector3(...a).applyMatrix4(m), new THREE.Vector3(...tip).applyMatrix4(m), r0 * M.crest, r1, bi, bi, 0, 6, 2);
     }
   }
 
@@ -433,6 +594,7 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     if (key === 'cloth' && tintHex !== undefined) mat.color.setHex(tintHex);
     installWaterline(mat, waterU);
     const mesh = new THREE.SkinnedMesh(B[key].build(), mat);
+    mesh.name = `actor-body:${artFamily}:${key}`;
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     // The bones are written in WORLD space by `poseFromRig`, so the mesh's own transform must
@@ -458,7 +620,7 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   if (tintHex !== undefined) frillMat.color.setHex(tintHex).offsetHSL(0.03, 0.08, -0.08);
   for (let i = 0; i < 3; i++) {
     const mesh = new THREE.Mesh(new THREE.ConeGeometry(0.082 - i * 0.014, 0.25 - i * 0.025, 7), frillMat);
-    mesh.name = `actor-secondary-frill:${i}`;
+    mesh.name = `actor-secondary-frill:${i}@spine_02`;
     mesh.castShadow = true;
     mesh.matrixAutoUpdate = false;
     group.add(mesh);
@@ -471,10 +633,14 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
   const equipment=[];
   let equipMat=_equipmentMaterialCache.get(mats);
   if(!equipMat){equipMat={reed:mats.reed.clone(),chitin:(mats.chitin||mats.bark).clone(),xanmeer:mats.darkStone.clone()};equipMat.reed.color.setHex(0x91885b);equipMat.chitin.color.setHex(0x805d42);equipMat.xanmeer.color.setHex(0x969987);equipMat.reed.roughness=.78;equipMat.chitin.roughness=.48;equipMat.xanmeer.roughness=.38;_equipmentMaterialCache.set(mats,equipMat);}
-  const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
+  const addEquip=(set,slot,boneId,geo,offset,scale=[1,1,1],rot=[0,0,0])=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,equipMat[set]);mesh.name=`actor-equipment:${set}:${slot}@${boneId}`;mesh.castShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));group.add(mesh);equipment.push({set,slot,bi,mesh,local});};
   for(const set of ['reed','chitin','xanmeer']){
     const heavy=set==='xanmeer',mid=set==='chitin';
-    addEquip(set,'head','head',heavy?new THREE.CylinderGeometry(.145,.17,.20,10):mid?new THREE.SphereGeometry(.155,12,7,0,Math.PI*2,0,Math.PI*.58):new THREE.TorusGeometry(.145,.022,5,12,Math.PI*1.55),[0,.14,-.015],heavy?[1.08,1,1.08]:[1,1,1],heavy?[0,0,0]:[Math.PI/2,0,.35]);
+    // Headgear sat a clean 4-5 cm off the skull (a 0.145 circlet around a 0.098 skull radius at
+    // that height), so `stagger_recoil` opened sky between helm and head. Each set now sits on the
+    // skull it is worn on: the circlet inside the skull radius, the chitin cap lowered so its rim
+    // meets the temple rather than hovering above it.
+    addEquip(set,'head','head',heavy?new THREE.CylinderGeometry(.132,.152,.20,10):mid?new THREE.SphereGeometry(.126,12,7,0,Math.PI*2,0,Math.PI*.58):new THREE.TorusGeometry(.104,.028,5,12,Math.PI*1.55),[0,heavy?.125:mid?.062:.105,-.010],heavy?[1.06,1,1.06]:[1,1,1],heavy?[0,0,0]:mid?[0,0,0]:[Math.PI/2,0,.35]);
     // Chest plates follow the torso as a tapered shell. A capsule transformed by the live spine
     // read as one horizontal log from shoulder to shoulder in the canonical rear camera.
     addEquip(set,'chest','spine_02',torsoShellGeometry(set),[0,-.04,-.012],[1,1,1]);
@@ -485,10 +651,18 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     for(const s of [-1,1])addEquip(set,'legs',s<0?'calf_l':'calf_r',taperedGuardGeometry(heavy?.13:mid?.115:.095,heavy?.10:mid?.09:.072,heavy?.38:.34,heavy?.86:.78),[0,-.17,0],[1,1,1]);
     // A belt, hanging front panel and oblique bindings integrate the set across the torso and
     // pelvis. Without these junctions every slot read as an unrelated primitive glued to a rig.
-    addEquip(set,'chest','spine_00',new THREE.TorusGeometry(.205,heavy?.035:.024,6,18),[0,-.04,0],[1,.72,1],[Math.PI/2,0,0]);
-    addEquip(set,'legs','pelvis',garmentTabGeometry(heavy?.25:.215,heavy?.42:.36,.025),[0,-.20,.105],[1,1,1],[0,0,0]);
-    for(const s of [-1,1]) addEquip(set,'chest','spine_02',new THREE.BoxGeometry(.035,.40,.025),[s*.105,-.06,.125],[1,1,1],[0,0,s*.24]);
-    addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.205,.205,.050,14):mid?new THREE.DodecahedronGeometry(.18,1):new THREE.CapsuleGeometry(.105,.20,4,8),[0,-.07,-.178],heavy?[1,.66,1]:mid?[.78,1,.32]:[.76,1,.34],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
+    // EVERY RIGID PIECE THAT RIDES A BONE MUST INTERSECT THE BODY, not rest against it.
+    //
+    // A skinned surface can be welded; a separate mesh cannot, so the only weld available to it is
+    // overlap. The belt used to be a torus of radius 0.205 with a 0.024 section — inner edge 0.181,
+    // against a waist of about 0.178. Three millimetres of clearance. At rest it looked closed; the
+    // moment the spine bent it opened, and it was the largest remaining crack in the orbit after
+    // the body itself was fixed. The rule applied here and to the pack and the oblique straps is
+    // that a fitting's inner surface sits at least 3 cm INSIDE the body radius at that height.
+    addEquip(set,'chest','spine_00',new THREE.TorusGeometry(.178,heavy?.050:.042,6,18),[0,-.04,0],[1,.72,1],[Math.PI/2,0,0]);
+    addEquip(set,'legs','pelvis',garmentTabGeometry(heavy?.25:.215,heavy?.42:.36,.025),[0,-.20,.085],[1,1,1],[0,0,0]);
+    for(const s of [-1,1]) addEquip(set,'chest','spine_02',new THREE.BoxGeometry(.035,.30,.025),[s*.100,-.02,.100],[1,1,1],[0,0,s*.24]);
+    addEquip(set,'back','spine_02',heavy?new THREE.CylinderGeometry(.205,.205,.050,14):mid?new THREE.DodecahedronGeometry(.18,1):new THREE.CapsuleGeometry(.105,.20,4,8),[0,-.07,-.128],heavy?[1,.66,1]:mid?[.78,1,.32]:[.76,1,.34],[heavy?Math.PI/2:.08,0,mid?.10:-.06]);
   }
 
   // Family-specific articulated presentation pieces. These ride evaluated bones just like
@@ -501,7 +675,13 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     familyMat.color.setHSL(hsl.h,Math.min(.58,hsl.s+.08),Math.max(.31,hsl.l+.12));
     familyMat.roughness=.36;familyMat.envMapIntensity=1.35;familyMat.name='actor-beast-wet-chitin';
   }
-  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const local=new THREE.Matrix4().compose(new THREE.Vector3(...offset),q,new THREE.Vector3(...scale));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
+  // THE MORPH HAS TO REACH THE PRESENTATION PIECES OR THE VARIANT CLAIM IS FALSE FOR TWO FAMILIES.
+  // Measured, before this line existed: `beast.slitherfang` and `beast.slitherfang-pale` had a
+  // silhouette IoU of 1.0000 — the same character with two names — and a 6% widening of the shared
+  // body plan moved 15 of 17 characters rather than all of them, because the quadruped's whole body
+  // is presentation geometry and none of it read the morph. `tools/visual/rig-variant-proof.mjs`
+  // is what caught it; the registry alone said PASS.
+  const addPresentation=(boneId,geo,offset,scale=[1,1,1],rot=[0,0,0],label='form',material=familyMat)=>{const bi=index.get(boneId);if(bi===undefined)return;bakeCurvature(geo);const mesh=new THREE.Mesh(geo,material);mesh.name=`actor-family-form:${artFamily}:${label}@${boneId}`;mesh.castShadow=true;mesh.receiveShadow=true;mesh.matrixAutoUpdate=false;const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(...rot));const bs=M.build,local=new THREE.Matrix4().compose(new THREE.Vector3(offset[0]*bs,offset[1]*bs,offset[2]*bs),q,new THREE.Vector3(scale[0]*bs,scale[1]*bs,scale[2]*bs));const rootLocal=artFamily==='beast'?restWorld[bi].clone().multiply(local):null;group.add(mesh);presentation.push({bi,mesh,local,rootLocal});};
   if(artFamily==='beast'){
     // The slitherfang is a low, weight-bearing animal with different widths at ribcage, loin,
     // neck and tail. A constant-radius TubeGeometry made it a glossy capsule. Overlapping closed
@@ -557,8 +737,12 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel') {
     addPresentation('head',new THREE.SphereGeometry(.026,10,7),[ .052,.09,.112],[1,.72,.58],[0,0,0],'eye-r',eyeMat);
     addPresentation('head',new THREE.SphereGeometry(.010,8,5),[-.052,.09,.132],[.62,1,.40],[0,0,0],'pupil-l',pupilMat);
     addPresentation('head',new THREE.SphereGeometry(.010,8,5),[ .052,.09,.132],[.62,1,.40],[0,0,0],'pupil-r',pupilMat);
-    for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045,.16,7),[s*.055,.18,-.055],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`);
-    for(let i=0;i<4;i++) addPresentation('spine_02',new THREE.ConeGeometry(.045-i*.006,.16-i*.018,6),[0,.12-i*.13,-.16-i*.11],[1,1,1],[-Math.PI/2-.18,0,0],`spine-scale-${i}`);
+    if(M.horn>.01)for(const s of [-1,1]) addPresentation('head',new THREE.ConeGeometry(.045*M.horn,.16*M.horn,7),[s*.055,.16,-.045],[1,1,1],[-.30,0,s*.10],`brow-horn-${s<0?'l':'r'}`);
+    // The four `spine-scale-*` cones that used to hang here are gone. They are now welded crest
+    // tubes inside the skinned surface (see `buildSkeleton`'s tail/crest block) — same read, no
+    // gap. Deleting a floating ornament is not "hiding the defect": the crest is still drawn, at
+    // the same place, and `actor-orbit-holes` reports mean silhouette area so a shrunken character
+    // cannot pass as a fixed one.
     for(const s of [-1,1]) addPresentation(s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(.10,10,5,0,Math.PI*2,0,Math.PI*.58),[0,.02,0],[1.15,.58,1],[0,0,s*.16],'shoulder-scale');
   }else{
     // Civilian clothing needs the same shoulder/chest/waist hierarchy as armour. The old
@@ -847,7 +1031,7 @@ function mergeBoxes(list) {
   out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   out.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3));
   out.setIndex(new THREE.Uint16BufferAttribute(idx, 1));
-  return out;
+  return bakeCurvature(out);
 }
 
 /**
@@ -885,8 +1069,8 @@ function weaponMesh(w, mats) {
   // former near-black response erased axe bits, hammer heads and great-blade ridges in motion.
   const metal=mats.metal.clone();metal.color.setHex(0xd0d6d9);metal.metalness=.68;metal.roughness=.32;metal.emissive.setHex(0x30363a);metal.emissiveIntensity=.24;metal.flatShading=true;metal.needsUpdate=true;metal.name='visual-family:metal:held-weapon';
   const grip=mats.bark.clone();grip.color.setHex(0x765237);grip.roughness=.76;grip.name='visual-family:bark:held-grip';
-  if (entry.metal) { const m = new THREE.Mesh(entry.metal, metal); m.castShadow = true; m.receiveShadow=true; g.add(m); }
-  if (entry.wood) { const m = new THREE.Mesh(entry.wood, grip); m.castShadow = true; m.receiveShadow=true; g.add(m); }
+  if (entry.metal) { const m = new THREE.Mesh(entry.metal, metal); m.name=`actor-held:weapon:${w.class||'?'}:metal`; m.castShadow = true; m.receiveShadow=true; g.add(m); }
+  if (entry.wood) { const m = new THREE.Mesh(entry.wood, grip); m.name=`actor-held:weapon:${w.class||'?'}:haft`; m.castShadow = true; m.receiveShadow=true; g.add(m); }
   g.matrixAutoUpdate = false;
   return g;
 }
@@ -899,7 +1083,7 @@ function shieldMesh(id,row,mats){
   const shape=new THREE.Shape();shape.moveTo(0,h*.52);shape.lineTo(w*.48,h*.34);shape.lineTo(w*.44,-h*.23);shape.lineTo(0,-h*.52);shape.lineTo(-w*.44,-h*.23);shape.lineTo(-w*.48,h*.34);shape.closePath();
   const boardGeo=new THREE.ExtrudeGeometry(shape,{depth:d,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.025,bevelThickness:.018});boardGeo.translate(0,-h*.12,-d*.5);
   const panelGeo=new THREE.ShapeGeometry(shape,10);panelGeo.translate(0,-h*.12,0);
-  const g=new THREE.Group();g.name=`actor-shield:${id||cls}`;g.matrixAutoUpdate=false;
+  const g=new THREE.Group();g.name=`actor-held:shield:${id||cls}`;g.matrixAutoUpdate=false;
   const rimMat=mats.metal.clone();rimMat.color.setHex(great?0x8b9495:0xb09665);rimMat.roughness=.38;rimMat.emissive.setHex(0x100d08);rimMat.emissiveIntensity=.10;rimMat.side=THREE.DoubleSide;rimMat.name='visual-family:metal:shield-rim';
   const faceMat=(great?mats.darkStone:mats.bark).clone();faceMat.color.setHex(great?0x686e70:0x926846);faceMat.roughness=.72;faceMat.emissive.setHex(great?0x090b0c:0x100b07);faceMat.emissiveIntensity=.10;faceMat.side=THREE.DoubleSide;faceMat.name=`visual-family:${great?'stone':'bark'}:shield-face`;
   const rim=new THREE.Mesh(boardGeo,rimMat);rim.castShadow=true;rim.receiveShadow=true;g.add(rim);
@@ -921,6 +1105,91 @@ function shieldMesh(id,row,mats){
 // ---------------------------------------------------------------------------------------
 // The public surface.
 // ---------------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------------
+// The registry — two bases, one skeleton, and every character a variant spec.
+//
+// `W1-30-LIBRARY.md` §5 is the contract: `base.saxhleel` and `base.humanoid` on `es.humanoid.v1`,
+// and *"the census fails if any character in the shipped world carries a mesh that is neither a
+// base nor a variant of one."* The bases are the body plans above; the characters below are
+// numbers. Nothing here is a second mesh.
+//
+// `base.slitherfang` is a THIRD base and it carries a written exemption, because pretending a
+// quadruped is a variant of a biped would be a reuse claim rather than reuse: it shares the
+// skeleton and shares nothing of the body plan (`poseFromRig` hides the humanoid surface entirely
+// for it). Saying so is cheaper than a census row that reads green and means nothing.
+// ---------------------------------------------------------------------------------------
+
+const FAMILY_BASE = { saxhleel: 'base.saxhleel', humanoid: 'base.humanoid', undead: 'base.humanoid', beast: 'base.slitherfang' };
+
+for (const [id, family] of [['base.saxhleel', 'saxhleel'], ['base.humanoid', 'humanoid'], ['base.slitherfang', 'beast']]) {
+  registerRig(id, (variant = {}) => ({ id, family, skeleton: SKELETON_ID, morph: resolveMorph(variant.morph), variant }),
+    { family, skeleton: SKELETON_ID, note: id === 'base.slitherfang' ? 'exempt: quadruped body plan, shares the skeleton only' : null });
+}
+
+/**
+ * Sixteen characters from three bases. Each row is what the owner asked for, written down: a build,
+ * a set of proportions, a palette and a kit — never a mesh.
+ *
+ * The morph numbers are chosen to be visible at 4 m, not merely different in the file. A `build` of
+ * 0.86 against 1.18 is a 37% difference in limb section; a `crest` of 0 against 1.35 changes the
+ * head silhouette outright, which is what `RI-CAM07` §F1 asks the back of a character to do.
+ */
+const CHARACTER_SPECS = {
+  // --- base.saxhleel -----------------------------------------------------------------------
+  'player.saxhleel':        { base: 'base.saxhleel', morph: { build: 1.00, crest: 1.00, snout: 1.00 }, material: { skin: 0x8d9a72, cloth: 0x8f9aa6, palette: 'deep-marshes', wear: 0.25 }, clips: 'clipset.player' },
+  'sax.marsh-lean':         { base: 'base.saxhleel', morph: { build: 0.86, crest: 0.75, snout: 1.18, hand: 0.94 }, material: { skin: 0x6f8a5e, cloth: 0x5d6b4a, palette: 'deep-marshes', wear: 0.55 }, clips: 'clipset.civilian' },
+  'sax.hist-broad':         { base: 'base.saxhleel', morph: { build: 1.18, shoulders: 1.14, crest: 1.35, snout: 0.90 }, material: { skin: 0x4a6b52, cloth: 0x3f4d3a, palette: 'eastern-rootlands', wear: 0.40 }, clips: 'clipset.civilian' },
+  'sax.naga-tall':          { base: 'base.saxhleel', morph: { build: 0.94, neck: 1.30, snout: 1.32, crest: 0.45, horn: 1.6 }, material: { skin: 0x3f6357, cloth: 0x2f3f3c, palette: 'crimson-coast', wear: 0.30 }, clips: 'clipset.civilian' },
+  'sax.helstrom-guard':     { base: 'base.saxhleel', morph: { build: 1.12, shoulders: 1.20, crest: 0.60, horn: 0.0 }, material: { skin: 0x5a7a5f, cloth: 0x6b5a3a, palette: 'thornmarsh', wear: 0.20 }, sockets: { set: 'chitin' }, clips: 'clipset.guard' },
+  'sax.thorn-hunter':       { base: 'base.saxhleel', morph: { build: 0.90, belly: 0.88, crest: 1.10, snout: 1.10, hand: 1.08 }, material: { skin: 0x77694a, cloth: 0x4a3b28, palette: 'thornmarsh', wear: 0.70 }, clips: 'clipset.civilian' },
+  'sax.salt-elder':         { base: 'base.saxhleel', morph: { build: 1.04, belly: 1.22, neck: 0.86, crest: 0.30, snout: 0.94 }, material: { skin: 0x9aa08a, cloth: 0x8a8470, palette: 'salt-hills', wear: 0.85 }, clips: 'clipset.civilian' },
+  // Skin was 0x8a7a3f — CIELAB C* 34.3, sitting on W1-30K's province chroma ceiling of 34.64
+  // BEFORE any light touches it. A frame cannot come in under a 95th-percentile ceiling if a
+  // character's raw albedo is already at it, so this swatch is pulled back to C* 24.
+  'sax.hive-drone':         { base: 'base.saxhleel', morph: { build: 0.80, shoulders: 0.86, crest: 0.0, horn: 0.0, snout: 0.82 }, material: { skin: 0x877c56, cloth: 0x6a6041, palette: 'hive', wear: 0.45 }, clips: 'clipset.civilian' },
+  'sax.deep-warden':        { base: 'base.saxhleel', morph: { build: 1.22, shoulders: 1.10, belly: 1.10, crest: 1.20, horn: 1.3 }, material: { skin: 0x2f4a3f, cloth: 0x24302c, palette: 'deep-marshes', wear: 0.15 }, sockets: { set: 'xanmeer' }, clips: 'clipset.guard' },
+  // --- base.humanoid -----------------------------------------------------------------------
+  'hum.imperial-clerk':     { base: 'base.humanoid', morph: { build: 0.94, shoulders: 0.94, belly: 1.06 }, material: { skin: 0xb9a184, cloth: 0x6b6357, palette: 'stone-wastes', wear: 0.30 }, clips: 'clipset.civilian' },
+  'hum.legion-heavy':       { base: 'base.humanoid', morph: { build: 1.20, shoulders: 1.24, neck: 1.14 }, material: { skin: 0xa08a6b, cloth: 0x4a4a52, palette: 'stone-wastes', wear: 0.35 }, sockets: { set: 'xanmeer' }, clips: 'clipset.guard' },
+  'hum.dunmer-lean':        { base: 'base.humanoid', morph: { build: 0.84, shoulders: 0.92, neck: 1.08, hand: 0.92 }, material: { skin: 0x7a6f78, cloth: 0x53303a, palette: 'valus-ridge', wear: 0.50 }, clips: 'clipset.civilian' },
+  'hum.breton-stout':       { base: 'base.humanoid', morph: { build: 1.10, belly: 1.24, shoulders: 1.02 }, material: { skin: 0xc2a98c, cloth: 0x5a4a2f, palette: 'blackwood', wear: 0.60 }, clips: 'clipset.civilian' },
+  'hum.marauder':           { base: 'base.humanoid', morph: { build: 1.14, shoulders: 1.16, hand: 1.12, belly: 0.92 }, material: { skin: 0x8a7256, cloth: 0x3f2f24, palette: 'marauders-coast', wear: 0.80 }, sockets: { set: 'chitin' }, clips: 'clipset.guard' },
+  'hum.drowned':            { base: 'base.humanoid', morph: { build: 0.78, belly: 0.80, neck: 0.88, hand: 0.90 }, material: { skin: 0xc4bfa7, cloth: 0x555044, palette: 'salt-hills', wear: 0.95 }, clips: 'clipset.undead' },
+  // --- base.slitherfang (exempt: see above) -------------------------------------------------
+  'beast.slitherfang':      { base: 'base.slitherfang', morph: { build: 0.92 }, material: { skin: 0x47382b, cloth: 0x3a2f24, palette: 'deep-marshes', wear: 0.5 }, clips: 'clipset.beast' },
+  'beast.slitherfang-pale': { base: 'base.slitherfang', morph: { build: 1.18 }, material: { skin: 0x7a7360, cloth: 0x5f5a4a, palette: 'salt-hills', wear: 0.7 }, clips: 'clipset.beast' },
+};
+for (const [id, spec] of Object.entries(CHARACTER_SPECS)) registerCharacter(id, spec);
+
+/**
+ * WHICH VARIANT AN ACTOR GETS, and why it is derived rather than passed.
+ *
+ * `renderer.js` belongs to W1-30A and calls `makeRiggedActor(mats, tint, skin, family)` — four
+ * arguments, no character id. Adding a fifth at every call site is a cross-child edit, and a
+ * registry of sixteen characters that nothing in the running world reads scores zero
+ * (`CLAUDE.md`, method line 3). So the variant is selected from something the caller ALREADY sets
+ * and that is stable per person: `group.name`, which `renderer.js` writes as `npc:<eid>` or
+ * `enemy:<eid>` before the body is built on the first pose.
+ *
+ * That makes it deterministic — the same eid picks the same body in every capture, so frame hashes
+ * still reproduce — and it makes the variants real without touching a file this child does not own.
+ * An explicit `group.userData.actor.characterId` overrides it, so the one-line renderer change that
+ * would make the choice authored rather than derived needs no further work here.
+ */
+function characterFor(group, artFamily) {
+  const A = group.userData.actor;
+  if (A.characterId) return character(A.characterId);
+  const base = FAMILY_BASE[artFamily] || 'base.humanoid';
+  const pool = charactersOf(base).filter((id) => (artFamily === 'undead') === /drowned|undead/.test(id));
+  const list = pool.length ? pool : charactersOf(base);
+  if (!list.length) return null;
+  if (artFamily === 'saxhleel' && /^player$|player/.test(group.name || '')) return character('player.saxhleel');
+  const key = String(group.name || 'anon');
+  let h = 2166136261;
+  for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return character(list[h % list.length]);
+}
 
 /**
  * An actor that can be posed. Cheap to make and inert until `poseFromRig` is first called
@@ -962,6 +1231,49 @@ export function isBuilt(group) {
 }
 
 /**
+ * Build the body ONCE, through the registry, and stamp the identity the census reads.
+ *
+ * Both pose paths funnel through here so a combat actor and a static villager cannot end up on
+ * different rules — which is exactly how, before this, an NPC could stack three armour sets while
+ * the player wore one.
+ *
+ * `userData.rigId` on every mesh is what `W1-30-LIBRARY.md` §4 calls for: *"a character lacks
+ * `userData.rigId`"* is a census `bypass`, and a bypass is a hard fail. Stamping it here means it
+ * is impossible to add a character path that forgets to.
+ */
+function ensureBuilt(group, rigSource) {
+  const A = group.userData.actor;
+  if (A.built) return A.built;
+  const spec = characterFor(group, A.artFamily);
+  A.character = spec;
+  A.characterId = A.characterId || (spec && Object.keys(CHARACTER_SPECS).find((k) => CHARACTER_SPECS[k] === spec)) || null;
+  const mat = (spec && spec.material) || {};
+  // A variant's material is part of the variant, but a caller that named an explicit tint keeps it:
+  // `renderer.js` hands per-race colours in and silently overriding them would make every Dunmer
+  // and Imperial in a room the same person again.
+  const skinHex = A.skinHex !== undefined ? A.skinHex : mat.skin;
+  const tintHex = A.tintHex !== undefined ? A.tintHex : mat.cloth;
+  A.built = buildSkeleton(rigSource, A.mats, tintHex, skinHex, A.artFamily, spec && spec.morph);
+  const rigId = (spec && spec.base) || FAMILY_BASE[A.artFamily] || 'base.humanoid';
+  const vkey = spec ? variantKey(spec.base, spec) : null;
+  A.built.group.traverse((o) => {
+    if (!o.isMesh) return;
+    o.userData.rigId = rigId;
+    o.userData.characterId = A.characterId;
+    o.userData.rigVariantKey = vkey;
+  });
+  for (const p of [...(A.built.equipment || []), ...(A.built.presentation || []), ...(A.built.secondary || [])]) {
+    p.mesh.userData.rigId = rigId;
+    p.mesh.userData.characterId = A.characterId;
+    p.mesh.userData.rigVariantKey = vkey;
+  }
+  group.userData.rigId = rigId;
+  group.userData.characterId = A.characterId;
+  group.add(A.built.group);
+  return A.built;
+}
+
+/**
  * Drive the actor from a live `CombatBody`. This is the whole consumer: it writes the rig's
  * own world matrices into the skeleton and hangs the weapon off the grip hand's world frame.
  *
@@ -977,11 +1289,7 @@ export function poseFromRig(group, body, water) {
   const A = group.userData.actor;
   if (!A || !body || !body.rig) return false;
   const rig = body.rig;
-  if (!A.built) {
-    A.built = buildSkeleton(rig, A.mats, A.tintHex, A.skinHex, A.artFamily);
-    group.add(A.built.group);
-  }
-  const S = A.built;
+  const S = ensureBuilt(group, rig);
   const creatureOnly=A.artFamily==='beast';
   // The beast's presentation is its entire authored skin. Showing the shared humanoid surface
   // beneath it is the exact "humanoid wearing creature accents" defect this body plan replaces.
@@ -1151,8 +1459,7 @@ export function poseStatic(group, rigDefSource, pos, yawDeg) {
   if (!A) return false;
   if (!A.built) {
     if (!rigDefSource || !rigDefSource.def) return false;
-    A.built = buildSkeleton(rigDefSource, A.mats, A.tintHex, A.skinHex, A.artFamily);
-    group.add(A.built.group);
+    ensureBuilt(group, rigDefSource);
   }
   if (A.rigged) return false;                 // already world-driven; do not fight it
   group.position.set(pos[0], pos[1], pos[2]);

@@ -925,8 +925,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 17
+### `tools/visual/` — 20
 
+- `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for actor-orbit-holes, run against patched SOURCE TREES; two of the six are the plausible wrong answers (hide the arm, weld it to the ribs) and are caught by the silhouette-area guard rather than by the crack count. One control is left FAILING on purpose, as evidence the crack metric has a floor.
+- `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector: rasterises the actor and nothing else across 24 stops x 3 distances x 80 clip-sampled poses, and counts background pixels ENCLOSED by the body. The world-hidden pass, by construction, on the CPU, in under three minutes.
 - `tools/visual/build-deck.mjs` — **no header comment**
 - `tools/visual/collect-run.mjs` — **no header comment**
 - `tools/visual/contact-sheet.mjs` — **no header comment**
@@ -939,6 +941,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/lib/gpu-launch.mjs` — **no header comment**
 - `tools/visual/lib/renderer-class.mjs` — **no header comment**
 - `tools/visual/occlusion-sightline-check.mjs` — **no header comment**
+- `tools/visual/rig-variant-proof.mjs` — W1-30D — does the reuse claim survive a measurement? Silhouette-IoU distinctness across the character registry, plus a base-edit probe that counts how many characters actually move.
 - `tools/visual/test/mutate-renderer-class.mjs` — **no header comment**
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
@@ -1402,6 +1405,7 @@ work is the difference between resuming and starting over.
 | `W1-GAMEPAD` | done | none — handing to a critic | `orchestration/status/W1-GAMEPAD.json` `tools/gamepad/pad-run.mjs` `tools/gamepad/deadzone-deletefix.mjs` `tools/journey/gamepad-shim.mjs` `game/src/engine.js` `orchestration/NEXT-DISPATCH.md` |
 | `W1-HUD-TOAST-A` | code-landed-awaiting-browser-measurement | Code landed: BLOCKING-1/3/6 folded into the plan text; hud.js wrap swapped to type.wrap()+ | `orchestration/status/W1-HUD-TOAST-A.json` `orchestration/plans/W1-HUD-TOAST.md` `game/src/ui/hud.js` `game/src/ui/type.js` `game/src/ui/surface.js` `game/src/render/text-register.js` |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
+| `W1-30D` | build-partial | FRESH CRITIC. The three attacks worth making. (1) Nobody has LOOKED at these characters — every number is an offline CPU rasteriser and the doctrine says statistics can never pass a build; run the naive character pack and Protocol A against refs/modern/character_closeup/. (2) The crack metric's depth-spread discriminator (8 cm) and held-object rule were chosen by the builder — attack them, and note that one earlier version of them excused the largest real defect, and that one null control no longer isolates. (3) Item 4 (the clip set) is untouched and no motion sequence was captured, which matters more for this child than any other. | `game/src/render/actor.js` `game/src/render/models.js` `game/src/render/lib/rigs.js` `game/assets/w1-30/models/manifest.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/rig-variant-proof.mjs` `orchestration/status/W1-30D.md` `orchestration/status/W1-30D-SOURCING-SPIKE.md` |
 | `W1-30F` | ? | A fresh critic should (a) re-fire all four null controls in landform-reach.mjs --selfcheck | — |
 | `W1-30K` | ? |  | `docs/art-direction/measure-plates.mjs` `docs/art-direction/build-board.mjs` `docs/art-direction/emit-docs.mjs` `docs/art-direction/validate-board.mjs` `docs/art-direction/board.json` `docs/art-direction/plate-metrics.json` |
 | `W1-30S-critic` | verdict_filed | W1-30A to close F3 (relocate the VFX prepass behind registerPrePass) and F4 (publish an as | `orchestration/status/W1-30S-critic.json` `corpus/90-verdicts/wave1/W1-30S-r1.md` `corpus/90-verdicts/wave1/W1-30S-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-30S-r1/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |
