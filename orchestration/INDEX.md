@@ -2,7 +2,7 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `1a28d0d4`: **1013 tools**, **158 reference items**,
+drift. At `61ed8b8e`: **1013 tools**, **158 reference items**,
 **57 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
@@ -167,19 +167,19 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `measure-own-e-w1-hud-toast-b` | superseded | `orchestration/plans/W1-HUD-TOAST.md` `orchestration/status/measure-own-e-w1-hud-toast-b.json` `orchestration/status/measure-quoted-e-w1-hud-toast-b.json` |
 | `critic-w1-23-r5` | abandoned | `orchestration/status/critic-w1-23-r5.json` `tools/lore/critic-w1-23-r5-consume.mjs` `corpus/90-verdicts/wave1/W1-23-r5.md` `corpus/90-verdicts/wave1/W1-23-r5.json` +2 |
 | `critic-w1-26-r4` | abandoned | `corpus/90-verdicts/wave1/W1-26-r4.md` `corpus/90-verdicts/wave1/W1-26-r4.json` `orchestration/status/critic-w1-26-r4.json` `tools/journey/critic-` +1 |
-| `critic-w1-04-r6` | abandoned | `corpus/90-verdicts/wave1/W1-04-r6.md` `corpus/90-verdicts/wave1/W1-04-r6.json` `orchestration/status/critic-w1-04-r6.json` `tools/world/critic-` +2 |
 | `critic-w1-08-r2` | researching | — **declares nothing** |
-| `W1-WATER-LANES` | measuring | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` `game/src/render/water.js` `tools/visual/w1-heightfog-retake.mjs` +1 |
-| `WIRING-AUDIT` | ? | — **declares nothing** |
+| `critic-w1-04-r6` | abandoned | `corpus/90-verdicts/wave1/W1-04-r6.md` `corpus/90-verdicts/wave1/W1-04-r6.json` `orchestration/status/critic-w1-04-r6.json` `tools/world/critic-` +2 |
 | `W1-TOUCH-r2` | in_progress | `game/src/engine.js` `game/src/input/gamepad.js` `game/src/input/hold-gate.js` `game/src/input/real.js` +14 |
 | `W1-TOUCH` | measured — two runs still in flight | `orchestration/status/W1-TOUCH.json` `game/src/input/hold-gate.js` `game/src/input/gamepad.js` `game/src/input/touch.js` +13 |
 | `W1-UIX08-dialogue-window` | built-probe-running | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` +11 |
-| `W1-JOURNAL-PROSE` | researching | — **declares nothing** |
+| `W1-WATER-LANES` | measuring | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` `game/src/render/water.js` `tools/visual/w1-heightfog-retake.mjs` +1 |
+| `WIRING-AUDIT` | ? | — **declares nothing** |
 | `W1-MAP-DEFECTS-r2` | in_progress | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` +1 |
 | `W1-DOOR-YAW-SWEEP` | in_progress | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` +7 |
 | `W1-F3-AMBIENT-FILL` | in_progress | `orchestration/status/W1-F3-AMBIENT-FILL.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-f3-ambient-fill.mjs` +2 |
 | `W1-FACTIONS-r3` | researching | — **declares nothing** |
 | `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
+| `W1-JOURNAL-PROSE` | researching | — **declares nothing** |
 | `W1-CAPTURE-R2` | researching | — **declares nothing** |
 | `W1-CROSSING-r2` | in-progress | `orchestration/status/W1-CROSSING-r2.json` `tools/world/w1-crossing-r2-overpass.mjs` `tools/world/w1-crossing-r2-legs.mjs` `tools/world/w1-crossing-r2-bothways-gate.mjs` +13 |
 | `W1-DLG-TOPIC-WEB` | building | `orchestration/status/W1-DLG-TOPIC-WEB.json` `game/src/character/converse.js` `game/data/dialogue/topics/` `game/data/npcs/` +2 |
@@ -189,12 +189,12 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `W1-30` | builder-native-gpu-remediation-in-progress | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` +1 |
 | `W1-26` | builder_delivery_partial_remaining_modality_ | `orchestration/status/W1-26.json` `tools/w1-26-r3/created-by-keyboard.mjs` `reports/w1-26-builder/keyboard.json` `reports/w1-26-builder/verify.json` +4 |
 | `W1-28` | partial | `orchestration/status/W1-28.json` `tools/journey/jrn02-hour.mjs` `tools/journey/jrn02-competence.mjs` `tools/journey/jrn02-chart.mjs` +3 |
-| `W1-25-continuation-builder` | builder_incomplete | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` +6 |
-| `W1-23-builder-codex-20260810` | ready_for_independent_criticism | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` +26 |
 | `W1-24` | building | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` +6 |
-| `W1-21-builder` | ? | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` +15 |
+| `W1-25-continuation-builder` | builder_incomplete | `game/src/engine.js` `tools/composition/matrix-probe.mjs` `orchestration/status/W1-25-continuation-builder.json` `reports/experience/w1-25-continuation-builder/crossing-manifest.json` +6 |
 | `W1-22-r2` | handed-off-incomplete | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` +10 |
 | `W1-22-r3` | building | `orchestration/status/W1-22-r3.json` `tools/audio/w1-22-r3-daynight.mjs` `game/src/audio/ambience.js` `game/data/audio/ambience/clay-moor.json` +21 |
+| `W1-23-builder-codex-20260810` | ready_for_independent_criticism | `corpus/60-lore/data/canon-facts.json` `corpus/60-lore/data/jel-lexicon.json` `corpus/80-methods/book-stats.py` `docs/shots/2026-08-10-w1-23-canon-registry-builder.svg` +26 |
+| `W1-21-builder` | ? | `orchestration/status/W1-21-builder.json` `game/data/world/readables/site-marks.json` `tools/harness/ui-pause.mjs` `tools/ui/w1-21-model-consumption.mjs` +15 |
 | `W1-17` | partial | `orchestration/status/W1-17.json` `game/data/dialogue/topics/05-asking-around.json` `game/data/dialogue/topics/00-roots.json` `game/data/dialogue/topics/07-root-coverage.json` +27 |
 | `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
 | `W1-18` | superseded | — **declares nothing** |
@@ -207,15 +207,15 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | `W1-15-r3` | building | `docs/shots/2026-08-08-w1-15-r3-the-lamps-reach-the-detection-model.png` `game/data/combat/enemies/guard_legion.json (gold_price 0 -> 300, gold_price_note)` `game/data/stealth/detection.json` `game/data/world/interiors/*.json, game/data/world/settlements/*.json (regenerated by the above)` +34 |
 | `W1-06-r2` | partial | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` +12 |
 | `W1-06` | partial | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` +11 |
+| `W1-01-r4` | partial | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` +27 |
 | `W1-01-r5-builder` | partial | `orchestration/status/W1-01-r5-builder.json` `reports/w1-01-r5/builder-evidence.md` `tools/world/road-through-building.mjs` `tools/world/parapet-probe.mjs` |
 | `W1-00-fix2` | building | — **declares nothing** |
-| `W1-01-r4` | partial | `tools/world/road-through-building.mjs` `tools/world/hazard-fire.mjs` `game/src/sim/hazards.js` `reports/road-through-building.json` +27 |
+| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
 | `T4-critic` | started | — **declares nothing** |
-| `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
-| `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `PLAN-COST-EXPERIMENTS-critic` | in_progress | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` `orchestration/plans/COST-EXPERIMENTS.md` |
 | `PLAYABILITY` | measuring (successor 3) — six-sabotage matri | `orchestration/status/PLAYABILITY.json` `tools/playability/live-mirror.mjs` `tools/playability/verify-links.mjs` `tools/world/verify-playable.mjs` +7 |
+| `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
+| `PLAN-COST-EXPERIMENTS-critic` | in_progress | `orchestration/status/PLAN-COST-EXPERIMENTS-critic.json` `orchestration/plans/COST-EXPERIMENTS.md` |
 | `AUDIT-R1-LIST` | running | `orchestration/status/AUDIT-R1-LIST.json` `orchestration/NEXT-DISPATCH.md` `tools/dispatch-staleness.mjs` `reports/blog-feed.jsonl` |
 | `COST-G3` | running | `orchestration/status/COST-G3.json` `tools/rigour.mjs` `corpus/90-verdicts/RIGOUR-SCHEMA.md` |
