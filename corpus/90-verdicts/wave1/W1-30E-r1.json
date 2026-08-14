@@ -1,0 +1,424 @@
+{
+ "schema_version": 1,
+ "document_type": "critic-verdict",
+ "piece_id": "W1-30E-r1",
+ "piece_title": "W1-30E — architecture, settlements and the model kit (round 1 critique)",
+ "subsystem_paths": [
+  "render.art.architecture",
+  "render.art.silhouette",
+  "render.fidelity.materials",
+  "render.process.measurement"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-30de-r1-3c19",
+  "role": "critic.artdirection",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-14T12:05:00Z",
+  "finished_at": "2026-08-14T14:15:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "318ecdf2",
+  "branch": "codex/wave1-build-experiment",
+  "harness_commands": [
+   "node tools/render/w1-30e-kit-gate.mjs",
+   "node corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.mjs",
+   "node docs/art-direction/measure-plates.mjs",
+   "node tools/visual/gpu-deck.mjs --profile full --tag w1-30de-critic --every 6 --max-runtime 25"
+  ]
+ },
+ "bifurcation": {
+  "axis": "both-separately",
+  "declared_before_citation": true,
+  "note": "Declared before any frame was opened. This piece has two genuinely separate questions and they are scored without crossing: the ART-DIRECTION question is whether eight settlements read as eight places with their own architectural language (RI-WLD03, RI-VIS05, RI-VIS07, and the board's ART-SET-* rows); the FIDELITY question is whether the surfaces are made rather than blockout (the chamfer, trim and esCurvature work). No Morrowind plate was averaged with a modern one at any point."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WLD03",
+   "path": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "M12-M16, five checks on settlement anatomy, architecture rules and identity",
+   "native_score": 4,
+   "native_max": 10,
+   "native_verdict": "The architectural language is real and is derived from world-art.js rather than invented alongside it, and the 37 named cultural features survived the transition, which is the specific thing this item's falsification audit told the critic to check. But the item's identity half cannot be scored: the eight street shots that carry it put the camera inside building geometry, and the copy-paste matrix was not run.",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "kit-economy-parts",
+     "result": "pass",
+     "value": "25 parts assembling 179 distinct buildings across 8 settlements; reproduced",
+     "threshold": "<= 25 parts, >= 40 buildings"
+    },
+    {
+     "id": "kit-economy-bypass",
+     "result": "fail",
+     "value": "3,284 building meshes carry no kitId, against a kit-false control of 29,584. The composition is published: icosahedral organic masses the kit has no part for, plus ~9,945 public-realm meshes that are plan item 6 and declared not started.",
+     "threshold": "zero"
+    },
+    {
+     "id": "cultural-features-rebuilt-not-discarded",
+     "result": "pass",
+     "value": "37 named features converted by converting the two primitives the 153 KB file is written in, at identical outer dimensions asserted to 1e-5 m, chamfer cut inward so no footprint, doorway or collision bound moves. Confirmed by w1-04-r4-join.mjs returning byte-identical results before and after.",
+     "threshold": "the specific named features survive the transition"
+    },
+    {
+     "id": "grammar-derived-from-world-art",
+     "result": "pass",
+     "value": "assertGrammarsDerived() throws at import if a settlement's trim word, trim slot, imperial flag or region palette disagrees with world-art.js; all 12 TRIM_SLOTS have a consuming grammar",
+     "threshold": "no settlement whose grammar is not derived from world-art.js"
+    },
+    {
+     "id": "copy-paste-matrix",
+     "result": "not_run",
+     "value": "WLD03's copy-paste matrix was not run by this critic",
+     "threshold": "no settlement shows the same building placement pattern as another"
+    },
+    {
+     "id": "landmarks-as-authored-exceptions",
+     "result": "not_run",
+     "value": "plan item 5 not attempted by the builder; no exemption written and none claimed. Trivially within the cap of 6 because the count is zero, which is not the same as passing the row.",
+     "threshold": "<= 6 landmark exemptions, each written"
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json",
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ]
+  },
+  {
+   "id": "RI-VIS07",
+   "path": "corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md",
+   "side": "morrowind",
+   "kind": "text",
+   "native_scale": "Place: does this look like a specific place with its own character, or generic fantasy? Measured as distance FROM refs/anti-generic/, never toward it",
+   "native_score": 4,
+   "native_max": 10,
+   "native_verdict": "Split, and the split is the finding. At 1-2 m the architecture is specific and made — Gideon's rubble masonry with mortar courses and timber framing, Helstrom's chamfered stone with a real lintel and door surround. At the approach distance it is not: Lilmoth dissolves into fog and Helstrom reads as one wide hipped roof repeated across the whole town, which is the uniformity failure this child's own falsification audit predicted a kit would produce.",
+   "score_0_10": 4,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "close-range-specificity",
+     "result": "pass",
+     "value": "visible chamfers, mortar courses, timber posts and beams, lintels and door surrounds with thickness on hardware frames at 1-2 m",
+     "threshold": "not blockout"
+    },
+    {
+     "id": "approach-range-specificity",
+     "result": "fail",
+     "value": "Lilmoth's town is a pale wash barely separable from the sky; Helstrom's roofline is one profile repeated",
+     "threshold": "recognisable from silhouette at 200 m, as Morrowind's towns are"
+    },
+    {
+     "id": "naive-attribution-street",
+     "result": "not_run",
+     "value": "the pack must be built by an agent other than the judge (S51, rule 25) and this critic is one agent",
+     "threshold": ">= 55% against chance 12.5%"
+    },
+    {
+     "id": "naive-attribution-skyline",
+     "result": "not_run",
+     "value": "same reason, and blocked anyway by the approach-frame fog",
+     "threshold": ">= 45% against chance 12.5%"
+    }
+   ],
+   "evidence": [
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ]
+  },
+  {
+   "id": "RI-VIS03",
+   "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+   "side": "modern-fidelity",
+   "kind": "number",
+   "native_scale": "M1-M12 image metrics, as a tripwire only — they can fail a build and can never pass one",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "Used as the standard requires: as a tripwire, not a pass. The geometric edge-break reading of 0.971 is real and is corroborated by the frames, which is the reading the builder correctly said it could not make offline. Held at 6 because the row's single-variable null control is nearly inert.",
+   "score_0_10": 6,
+   "measured": "partial",
+   "checks": [
+    {
+     "id": "edges-broken",
+     "result": "pass",
+     "value": "0.971 geometric, corroborated on hardware frames by visible chamfers and courses",
+     "threshold": ">= 0.95"
+    },
+    {
+     "id": "edges-broken-null-control-isolates",
+     "result": "fail",
+     "value": "null:no-chamfer moves the metric only 0.971 -> 0.9637 and leaves the row passing; the arm that collapses it (0.4816) replaces the entire kit and confounds the chamfer with everything else",
+     "threshold": "a single-variable control that collapses the row"
+    },
+    {
+     "id": "draw-and-triangle-budget",
+     "result": "pass",
+     "value": "worst settlement 106 render meshes against a pre-existing bar of 140; 935,302 triangles against 1.2 M; BatchedMesh batching preserved at 96.8% mesh reduction",
+     "threshold": "<= 140 meshes, <= 1.2 M triangles, batching preserved"
+    },
+    {
+     "id": "draw-calls-per-street-shot",
+     "result": "not_run",
+     "value": "measured per settlement, not frustum-scoped per street shot; the plan's <= 900 row stays CARRIED",
+     "threshold": "<= 900 draw calls in the worst street shot"
+    }
+   ],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json",
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ]
+  },
+  {
+   "id": "RI-VIS06",
+   "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+   "side": "modern-fidelity",
+   "kind": "structure",
+   "native_scale": "Protocol A blind pair-preference against profile-matched plates from refs/modern/exterior_daylight/",
+   "native_score": 0,
+   "native_max": 10,
+   "native_verdict": "NOT RUN, and scored 0 rather than omitted so it cannot be read as a pass. Protocol A requires pack-builder and judge to be different agents (ARBITRATION S51, RULES.md rule 25); this critic is one agent. The 288 hardware frames are in the tree for a pack-builder. The 0 is an absence of evidence, not a measured failure, and must not be quoted as one.",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "checks": [
+    {
+     "id": "protocol-A-pairs-run",
+     "result": "not_run",
+     "not_run_reason": "pack-builder and judge must be different agents; no second agent was available to this critic"
+    }
+   ],
+   "evidence": [
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ]
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "docs/shots/2026-08-14-w1-30de-critic/",
+   "kind": "screenshot",
+   "produced_by": "node tools/visual/gpu-deck.mjs --profile full --tag w1-30de-critic --every 6 --max-runtime 25, run on a RunPod NVIDIA L4",
+   "seed": 20260814,
+   "resolution": "960x540, downsampled to 800px wide for committing",
+   "camera_pose": "8 settlement-approach setups (orbit-free, yaw 180, pitch -5, height 6 m) and 8 settlement-street setups (gameplay camera, yaw 270), each at 3 times x 2 weathers",
+   "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)' — HARDWARE, valid for appearance claims. This capture closes the builder's own headline red, that no frame had been rendered."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json",
+   "kind": "trace",
+   "produced_by": "node tools/render/w1-30e-kit-gate.mjs, re-run from the shipping tree by this critic",
+   "seed": 20260814,
+   "note": "Every gate value and every control value reproduces the builder's report to the last digit. Includes this critic's note on the nearly-inert chamfer control and the four UNSET board rows."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.json",
+   "kind": "trace",
+   "produced_by": "node corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.mjs",
+   "seed": 20260814,
+   "resolution": "128x128 normalised roof silhouette masks",
+   "note": "Ruling E1's falsifier. IoU >= 0.95 merge threshold and the decision rule were fixed before the run."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "note": "The falsifier itself. Normalises each roof silhouette to its own bounding box so the same roof at two sizes lands on itself, which is what 'profile' has to mean."
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "not_applicable_reason": "AR-1's probes are combat-contamination probes — to-hit rolls, dice damage, pause mid-fight, level scaling. This piece builds building geometry and assembly grammars and touches no combat surface. It was checked that the chamfer is cut inward so no collision bound moves, which is the only way this piece could have reached the fight at all.",
+   "checks": [
+    {
+     "id": "A1-A10",
+     "result": "not_applicable",
+     "not_run_reason": "no combat resolution surface touched; collision bounds verified unmoved"
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B-imperial-contrast",
+     "result": "pass",
+     "value": "Imperial forms appear only where world-art.js marks imperial:true; the ordering metric reads +0.14 shipped against -0.115 with every settlement marked imperial. Gideon and Stormhold are deliberate contrast rather than default, which is the Morrowind-side reading this row exists for.",
+     "threshold": "imperial towns measurably more ordered than the rest"
+    },
+    {
+     "id": "B-no-objective-marker-architecture",
+     "result": "pass",
+     "value": "no waypoint, marker or quest-pointer affordance is introduced by the kit; settlements are read from their own built form, which is the Morrowind-wins-everywhere-else side of the project rule",
+     "threshold": "no navigation affordance substituted for legible place"
+    }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 4,
+  "pass_threshold": 7,
+  "aggregation": "min",
+  "band_label": "The kit is real, economical and derived from the world's own vocabulary, and the 37 named cultural features survived rather than being rebuilt — the two strongest attacks this child's own plan predicted did not land. But its primary gate never executed because the eight street shots put the camera inside geometry, its skyline is destroyed at the approach by fog it does not own, and its roof-variety row fails under both readings.",
+  "confidence": "high",
+  "axes": [
+   {
+    "axis": "kit economy",
+    "score": 7
+   },
+   {
+    "axis": "cultural preservation",
+    "score": 8
+   },
+   {
+    "axis": "variation and roof profiles",
+    "score": 5
+   },
+   {
+    "axis": "edges and close-range craft",
+    "score": 6
+   },
+   {
+    "axis": "skyline and the approach read",
+    "score": 4
+   },
+   {
+    "axis": "method — does geometry reach pixels",
+    "score": 5
+   }
+  ]
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "The eight mandatory settlement street shots — the plan's own deciding gate for this child — put the camera inside building geometry in all three cases examined on hardware (Lilmoth, Helstrom, Gideon). The gate did not execute, and a critic may not pass a piece on a gate that did not run.",
+  "Ruling E1's silhouette reading is upheld but does not rescue the roof-profile row: the honest number moves from 1 to 3 against a bar of 5, minimum over settlements per Ruling W1.",
+  "E1's falsifier fires in exactly three settlements — Gideon (max pair IoU 0.9995), Stormhold and Blackrose (1.000) — where two 'distinct' roof classes are literally the same silhouette. In those towns the variety is parameter jitter.",
+  "Lilmoth's approach frame shows the skyline has real relief and that the fog at the approach camera removes the contrast it needs to read; the plan's >= 45% skyline-attribution row cannot be passed from inside exterior.js.",
+  "Helstrom's approach frame shows one wide hipped roof repeated across the town — the uniformity failure this child's own falsification audit predicted a kit would produce.",
+  "3,284 building meshes carry no kitId against a bar of zero. The builder's refusal to tag them is upheld as correct; the row fails because the work is not done, which the builder said.",
+  "The edges-are-broken row has no isolating single-variable null control: null:no-chamfer moves it 0.971 -> 0.9637 and leaves it passing."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-w1-30e-street-gate-never-ran",
+  "subsystem_path": "render.process.measurement",
+  "what": "The eight settlement street shots, which the plan names as this child's deciding gate, place the camera inside building geometry. Lilmoth is filled by the courses of a single reed wall with no street visible; Helstrom is jammed against a stone wall with the player half-clipped into it; Gideon is a timber post filling the frame with the player entirely inside the wall. The one measurement that could confirm or refute this child has never executed.",
+  "why_it_matters": "The kit's entire justification is how it reads at 4-8 m — the plan says so in its first paragraph, and the builder correctly refused to claim it from offline geometry. The offline proxies deliberately cannot answer it, the naive attribution packs are built from these frames, and the board's settlement rows are defined on them. So the gate, the human read and the board row all depend on eight camera positions that nobody had looked at because nobody had rendered a frame. This is the same shape as the defect the owner complained about: a claim standing on an instrument that was never pointed at the thing.",
+  "evidence": [
+   "docs/shots/2026-08-14-w1-30de-critic/"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Move the 8 street-* setups in tools/visual/deck.json off the raw gameplay camera at yaw 270 and onto the settlement's own street centreline with a collision push-out. settlementApproach() in game/src/render/exterior.js already carries the settlement's approach vector and the plan carries every building footprint, so the push-out has the data it needs. Then re-run the child-scoped profile and score the row. This is a W1-30V edit, not a W1-30E one, and it should be dispatched there.",
+   "acceptance": "All 8 street frames show at least 2 buildings whose facades are visible and unoccluded, with the near facade between 4 and 8 m from the camera, and zero frames in which the player capsule intersects building geometry. Re-measured by re-running the 8 street setups and checking the depth buffer's nearest non-player surface is >= 1.5 m in every frame.",
+   "targets": [
+    "tools/visual/deck.json",
+    "tools/visual/deck.mjs"
+   ]
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "RULING E1, ruled on. Part (a): E1's reading is UPHELD. Its falsifier's condition is that the variety is parameter jitter reading as noise, and it is not — five of eight settlements carry five or more roof silhouettes mutually distinct by a wide margin (median pair IoU 0.50-0.74 in helstrom, lilmoth and archon). The ruling's reasoning is also right on its own terms: three roof parts cannot yield five roof PARTS per settlement without breaking the 25-part cap in the same plan, and a row no build can satisfy is a defect in the row. Part (b): the row STILL FAILS under E1's own reading. Aggregating minimum-over-settlements per Ruling W1 (a player walks into one town), the worst is 3 against a bar of 5. E1 changes what the number means; it does not change the verdict. Part (c): the falsifier DOES fire, precisely, in Gideon, Stormhold and Blackrose — the three grammars with roofMix [1] — where two 'distinct' classes overlap at 0.9995, 1.000 and 1.000. The builder's own proposed rescue is worse than E1's: it offers 32 distinct silhouettes in Lilmoth, but those are whole-BUILDING silhouettes including storey count and footprint, which would pass the row while the roofs stayed identical. Remedy: give roof.hip a discrete gable/monopitch flag — the same part, one boolean in the spec, two genuinely different silhouettes — and put it in the three failing grammars' mixes. That is a variant, not a part, so the 25-part economy is untouched. Re-run the falsifier; the bar is classesAfterMergingJitter >= 5 per settlement, minimum over the eight.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.json",
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.mjs"
+   ],
+   "subsystem_path": "render.art.silhouette"
+  },
+  {
+   "what": "THE 3,284 UNTAGGED MESHES: the builder's refusal to tag them is UPHELD as correct, checked rather than taken on trust. The composition is published and reproducible via bypassComposition(), split four ways. The mechanism that would have laundered it — carryKitProvenance() — was built to prevent laundering and records how many batch members were NOT kit parts; a builder inclined to launder had the tool and used it in the honest direction. And the bulk of the number is not a tagging decision at all: ~9,945 public-realm meshes are plan item 6, declared not started, and tagging unstarted work would make an unbuilt thing report as built. The row stays FAIL because the bar is zero, but it fails for the right reason. Remedy: the builder's own suggestion — a 26th part for organic masses with the cap raised in writing and the count stated, or an explicit kitExempt tag the census counts separately from bypass so the public realm's 9,945 stop being averaged in with a design decision about blobs.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json"
+   ],
+   "subsystem_path": "render.art.architecture"
+  },
+  {
+   "what": "THE SKYLINE INDICATOR, PHOTOGRAPHED — and the answer is neither of the builder's two options. Its negative result stands (0.1835 shipped against 0.1862 flattened), and the frame says why: the skyline HAS relief — stepped roof masses, a tiered form and at least six masts breaking the roofline in Lilmoth — and the fog at the approach camera has removed almost all the contrast it needs to read. A statistic computed on untextured geometry with no sky and no fog cannot see that. So the offline indicator and the rendered frame disagree about the WORLD, not about the roofline. Consequence: the fog density at settlement-approach distance belongs to W1-30B, and E's approach row is BLOCKED rather than failed. Raise it as a defect-inventory row against B with approach-lilmoth__t1300__clear.jpg as its evidence, and re-run E's approach gate after it moves.",
+   "evidence": [
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ],
+   "subsystem_path": "render.fidelity.materials"
+  },
+  {
+   "what": "The edges-are-broken row passes with a nearly inert single-variable control. null:no-chamfer moves the metric 0.971 -> 0.9637 on a bar of 0.95 — the arm meant to remove the thing being measured leaves the row passing comfortably. The arm that does collapse it, kit:false at 0.4816, replaces the entire kit and confounds the chamfer with every other difference. The builder noticed half of this and introduced setKitChamfer(false), but the arm shipping in the gate output still reads 0.9637. The row is currently evidenced by the frames rather than by the statistic and its control. Remedy: make null:no-chamfer call setKitChamfer(false) and report that arm.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json"
+   ],
+   "subsystem_path": "render.process.measurement"
+  },
+  {
+   "what": "Said plainly because it is the best news in this verdict: the builder's reporting is unusually honest and nothing here overturns a number it reported. Four reds were declared on its own initiative; three control defects were self-found and self-corrected, including a first run in which ALL SIX arms produced identical values to four decimal places because the options never reached buildBuilding(), which the builder correctly read as evidence rather than as agreement. Every gate value and every control value reproduced to the last digit when re-run from the shipping tree by this critic.",
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/e-kit-gate-reproduced.json"
+   ],
+   "subsystem_path": "render.process.measurement"
+  }
+ ],
+ "gap_closure": [],
+ "corpus_extended": [
+  {
+   "what": "Four settlement roofline-relief rows on the art board are UNSET for want of plates — helstrom (n=2), archon (n=1), thorn (n=0), stormhold (n=0) — confirmed by re-running the board's own instrument, docs/art-direction/measure-plates.mjs. This is a corpus shortage, not a failure of this piece. No target was invented for them: the builder refused to and this critic refuses too. Owed: acquire reference plates for the four settlement profiles, or record in the board why those four cannot have a band.",
+   "where": "docs/art-direction/board.json"
+  },
+  {
+   "what": "The plan's roof-profile row is defective as written and Ruling E1 is the repair, but E1 needs to be written into the corpus rather than living only in a dispatch. Owed: append the silhouette reading to orchestration/plans/W1-30E.md's variation row with the aggregation stated (minimum over settlements, per Ruling W1) and the merge threshold named, so a later builder cannot read the row as counting kit parts and a later critic cannot read it as counting whole-building silhouettes. Both misreadings have already happened once each in this round.",
+   "where": "orchestration/plans/W1-30E.md"
+  }
+ ],
+ "method_deviations": [
+  "The 12-shot unseen census sample was NOT drawn. The full Deck profile was captured instead, which is a superset of the fixed list but is not the census sample — the census sample's whole purpose is to be shots the builder could not anticipate, and drawing it is a separate seeded step. The anti-beauty-shot arm therefore did not run, and no claim in this verdict is protected by it.",
+  "The open defect inventory was not re-run, so this verdict does not report whether E's changes closed or opened rows in reports/visual-truth/INVENTORY.md.",
+  "WLD03's copy-paste matrix was not run.",
+  "Interior thresholds (plan item 7) were not examined against W1-30G's side of the doorway.",
+  "No naive attribution pack was built at either street or skyline range, for the S51 reason recorded against RI-VIS06 and RI-VIS07.",
+  "Draw calls were measured per settlement (106 worst), not frustum-scoped per street shot; the plan's <= 900 row remains CARRIED."
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "tools/render/w1-30e-kit-gate.mjs",
+   "purpose": "locate-harness",
+   "note": "To find the gate rows, the control arms and the town enumeration before re-running them."
+  },
+  {
+   "path": "game/src/render/lib/kits.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read only after the kit gate had reported roofProfiles=1, to find out what the number counts. It counts distinct summary.roof values, which are kit part ids — which is what made Ruling E1's question answerable."
+  },
+  {
+   "path": "game/src/render/exterior.js",
+   "purpose": "locate-harness",
+   "note": "To find planSettlement, buildBuilding and assignVariantSalts for the falsifier probe."
+  },
+  {
+   "path": "reports/w1-30e/E-DELIVERY.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "orchestration/status/w1-30e-builder.json",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "orchestration/plans/W1-30E.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "docs/art-direction/measure-plates.mjs",
+   "purpose": "locate-harness",
+   "note": "To confirm the board's own instrument was used rather than a parallel one, per rule 10."
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is FALSE and the misses are itemised in method_deviations; the two that matter most are the census sample, which is the anti-beauty-shot arm, and the naive attribution packs, which are this child's two primary rows. blind_done_where_required is FALSE for the S51 reason: pack-builder and judge must be different agents and this critic is one agent, so Protocol A is recorded at 0 with measured unmeasurable rather than being scored as a pass or quietly omitted. judged_output_not_source is TRUE — the gate was re-run rather than read, the falsifier was written against the shipping build's own geometry, and 288 frames were captured on real hardware. The one place this critic went to source first would have been wrong, so it did not: the roof-profile finding was demonstrated by the falsifier BEFORE kits.js was opened to explain it. The verdict also upholds two builder positions against the temptation to find a gap where none exists — the refusal to tag the 3,284 meshes, and the refusal to invent targets for the four UNSET board rows — because a critic may PASS a row without inventing a gap when the bar is evidenced."
+ },
+ "notes": "Full prose verdict: corpus/90-verdicts/wave1/W1-30E-r1.md. Companion verdict for the same critic round: W1-30D-r1."
+}

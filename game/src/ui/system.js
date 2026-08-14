@@ -1091,8 +1091,14 @@ export class UISystem {
         z: ctx.player ? ctx.player.pos[2] : 0,
         yaw: ctx.player ? (ctx.player.yaw || 0) : 0,
       },
-      // Two closures rather than two 42k arrays copied every frame. Both are pure reads.
-      seen: d ? (cx, rz) => d.seenCell(cx, rz) : () => false,
+      // A closure rather than a 42k array copied every frame. A pure read.
+      //
+      // AMENDMENT-W1-MAP-02: there used to be a second one here — `seen: (cx, rz) =>
+      // d.seenCell(cx, rz)` — and the terrain loop opened with `if (!m.seen(cx, rz)) continue;`.
+      // The fog of war is struck, so the closure is REMOVED rather than left unread: an unread
+      // field is what RI-MTH07 exists to catch, and leaving it here is an invitation to put the
+      // gate back without anyone noticing. Reinstating the fog now costs two files, which is the
+      // right price for reversing an owner ruling.
       cellHex: f ? (cx, rz) => {
         const i = rz * f.cols + cx;
         if (f.oceanU[i] === 1) return oceanHex;
@@ -1189,8 +1195,21 @@ export class UISystem {
         elements_on_screen: els.length,
         non_map_elements: els.filter((e) => !e.id.startsWith('map.') && e.visible).map((e) => e.id),
         numeric_text_screen: els.filter((e) => e.visible && e.text !== null && /\d/.test(String(e.text))).map((e) => e.id),
-        // What the screen actually painted, so "undiscovered is unrendered" is a number.
+        // What the screen actually painted, and what it could have painted.
+        //
+        // AMENDMENT-W1-MAP-02 turned the old rule ("undiscovered is unrendered") into its
+        // opposite ("the geography is drawn whole"), and both are claims about these two numbers
+        // rather than about a comment. `geography_always_drawn` is DERIVED from them — not a
+        // typed `true`, which is the literal this same object literal has now been failed for
+        // three times — so a future edit that puts the fog gate back turns it false and
+        // `tools/harness/map-probe.mjs` S8/S12 go red.
         drawn_cells: (els.find((e) => e.kind === 'map_terrain') || { meta: {} }).meta.drawn_cells || 0,
+        cells_in_view: (els.find((e) => e.kind === 'map_terrain') || { meta: {} }).meta.cells_in_view || 0,
+        geography_always_drawn: (() => {
+          const t = els.find((e) => e.kind === 'map_terrain');
+          if (!t || !t.meta || !t.meta.cells_in_view) return null;   // the map is not open
+          return t.meta.drawn_cells === t.meta.cells_in_view;
+        })(),
         revealed_cells: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.revealedCells : 0,
         total_cells: ctx && ctx.map && ctx.map.discovery ? ctx.map.discovery.cols * ctx.map.discovery.rows : 0,
         places_drawn: els.filter((e) => e.kind === 'map_place' && e.id !== 'map.naming').length,

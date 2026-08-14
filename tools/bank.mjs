@@ -288,11 +288,18 @@ console.log(`\nbank: landed ${result.commit.slice(0, 10)} — ${result.changed.l
 for (const d of result.decisions) {
   console.log(`  conflict ${d.path}: resolved ${d.why}${d.rescue ? ` — the other side is preserved at ${d.rescue}` : ''}`);
 }
+if (result.suppressed?.length) {
+  console.log(`bank: ${result.suppressed.length} path(s) are in HEAD but not on this disk — NOT carried as deletions.`);
+  console.log('      In a shared tree that means "written in another agent\'s worktree", not "removed".');
+  for (const p of result.suppressed.slice(0, 10)) console.log(`  kept ${p}`);
+  console.log('      `node tools/land.mjs --sync` brings them onto this disk.');
+}
 
 // Verify against the remote blob, never against local state (hazard 2). This tool once printed
 // failure and exited 0, so every retry loop in the fleet believed a lie; the exit code here tracks
 // whether the bytes are actually on the branch and nothing else.
-const bad = verify(ROOT, result.changed.filter(p => !p.startsWith('reports/land-rescue/')));
+const bad = verify(ROOT, result.changed.filter(p => !p.startsWith('reports/land-rescue/')),
+  { commit: result.commit, ours: result.ours, decisions: result.decisions });
 if (bad.length) {
   console.error(`bank: VERIFICATION FAILED for ${bad.length} path(s) — THIS WORK IS NOT BANKED:`);
   for (const b of bad.slice(0, 20)) console.error(`  ${b.path}: ${b.why}`);

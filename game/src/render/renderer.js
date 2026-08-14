@@ -1170,7 +1170,23 @@ export class Renderer {
       // The region's own night colour comes off its ONLY-HERE element, so what little light there
       // is at 01:00 is light that region owns and no other region has.
       const K = this.field.sig && SIGNATURE_KINDS[(r.only_here || {}).id];
+      // `heightFalloffM` closes a loop that has been open since the region records were authored.
+      // All thirteen regions declare `fog.height_falloff_m` — 26 m in the Deep Marshes, 340 m in
+      // the Salt Hills — and until this line nothing in `game/src/render` read it. `sky.js` needed
+      // it (it is the scale height its Beer-Lambert integral is written around) and could not have
+      // it, because `renderer.js` was another piece's file that round; so it carried a thirteen-row
+      // table keyed on each region's fog COLOUR as a stand-in, and asked in its own comment for
+      // this property to appear. `regionHeightFalloff()` already prefers it, so this is the whole
+      // change; the table stays as the fallback for a region whose colour it does not know.
+      //
+      // BE HONEST ABOUT WHAT THIS MOVES TODAY: nothing. The table's thirteen values are identical
+      // to the JSON's thirteen values, so no frame changes. What changes is which of the two is
+      // AUTHORITATIVE — edit `regions.json` now and the air changes, which is what an authored
+      // field is for and was not true before. `tools/visual/w1-30-heightfalloff-arm.mjs` is that
+      // claim as a control that can fail: it perturbs the live region record and measures whether
+      // the frame follows.
       regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m,
+        heightFalloffM: r.fog.height_falloff_m,
         glow: K && K.glow > 0 ? K.glow_hex : null };
       // W1-30A. The SAME region record the fog already reads, so the grade and the fog can never
       // disagree about where the camera is. Nothing new is read out of `sky.js`.

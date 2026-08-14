@@ -1,7 +1,8 @@
-// The map: where you have been, and what you found there.
+// The map: the whole province, and the places you have found on it.
 //
-// Owner: W1-MAP. Binding: `ARBITRATION.md` seam S35 and
-// `corpus/00-doctrine/AMENDMENT-W1-MAP-01.md`.
+// Owner: W1-MAP. Binding: `ARBITRATION.md` seam S35,
+// `corpus/00-doctrine/AMENDMENT-W1-MAP-01.md` and — for the terrain layer —
+// `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md`, which struck this screen's fog of war.
 //
 // ---------------------------------------------------------------------------------------------
 // WHAT THIS SCREEN REFUSES, WHICH IS THE PART S35 CARES ABOUT
@@ -23,10 +24,29 @@
 //   * Selecting a place NAMES it. It does not travel to it, centre on it, or draw anything
 //     between it and you.
 //
-// UNDISCOVERED IS UNRENDERED. `undiscovered_hex` in `game/data/ui/map.json` is the screen's own
-// ground, not a dimmed province — there is nothing underneath it to dim. A build that draws the
-// whole province at 15% and calls the rest fog has drawn the whole province, and the amendment's
-// appendix tells a critic to check exactly that first.
+// THE GEOGRAPHY IS NOT A REWARD; THE PLACES ARE — AMENDMENT-W1-MAP-02.
+//
+// This file used to open its terrain loop with `if (!m.seen(cx, rz)) continue;` and its header
+// with "UNDISCOVERED IS UNRENDERED". That was W1-MAP-01 §3a's "terrain rendered where the player
+// has not been" read as a hard fail, and the owner overruled it on 2026-08-14 after playing the
+// build: *"Morrowind doesn't have it. The main world map displays the full geography of
+// Vvardenfell right away, but markers and locations remain hidden until you discover them."*
+//
+// It was also, quietly, a violation of a bar this project had already written down. `RI-WLD06` §5
+// bans **"no fog-of-war reveal-on-approach"** in the same breath as the quest marker, and permits
+// the surface as "paper, static, hand-drawn". A sheet of paper does not fill in as you walk. Two
+// items disagreed and the corpus was on the owner's side.
+//
+// So: the whole raster inside the drawing box is painted, always, in both views. `m.places` is
+// UNTOUCHED — it is still the discovery model's own list, still gated on the body having stood in
+// the built pad, and a square for a place you have not stood in is still a hard fail. What the
+// player gets from the map is orientation: which way the coast runs, where the hills rise, which
+// river they are on. What they do not get is a route — `roads.json` is still not imported here,
+// S35's "no route, path, trail or line of any kind" is untouched, and finding a town is still
+// something you do with signposts, directions and your own feet.
+//
+// `undiscovered_hex` survives as the ground painted first, behind and around the province
+// rectangle. It is no longer a fog: nothing is left showing through it inside the raster.
 // ---------------------------------------------------------------------------------------------
 //
 // EVERYTHING IS DRAWN FROM `game/data/world/`. The terrain colours come from the region raster
@@ -74,12 +94,16 @@ export function drawMap(S, m) {
   // number best reported once. `meta.revealed_cells` and `meta.drawn_cells` are that number, and
   // `drawn_cells` counts what this layout PAINTED rather than what the model knows — so an
   // ablation that stops the model recording is visible here as well as in the framebuffer.
-  let drawn = 0;
+  let drawn = 0, inView = 0;
   S.el({
     id: 'map.terrain', kind: 'map_terrain',
     rect: [bx, by, bw, bh], opacity: alpha,
     meta: {
       view: m.view,
+      // Still reported, and still the discovery model's own footprint — the map no longer draws
+      // from it, but the model still records, the save still carries it, and `m.places` is still
+      // derived from it. A probe written against W1-MAP-01 gets a changed relationship between
+      // these two numbers rather than `undefined` (see `drawn_cells` / `cells_in_view` below).
       revealed_cells: m.revealedCells,
       total_cells: m.totalCells,
       revealed_frac: +(m.revealedCells / m.totalCells).toFixed(5),
@@ -88,8 +112,9 @@ export function drawMap(S, m) {
       routes_drawn: 0,
     },
   }, (c, r) => {
-    // The unrendered ground. This is the screen's own colour, painted first and left showing
-    // wherever nothing was discovered — not a dimmed province.
+    // The ground behind and around the province rectangle. Under W1-MAP-01 this was the fog and
+    // was left showing wherever nothing had been discovered; under W1-MAP-02 nothing inside the
+    // raster shows through it, and it is simply what is under the paper.
     c.fillStyle = m.undiscoveredHex;
     c.fillRect(r[0], r[1], r[2], r[3]);
 
@@ -100,7 +125,11 @@ export function drawMap(S, m) {
     const pw = (m.cell / spanX) * r[2], ph = (m.cell / spanZ) * r[3];
     for (let rz = r0; rz <= r1; rz++) {
       for (let cx = c0; cx <= c1; cx++) {
-        if (!m.seen(cx, rz)) continue;
+        // `inView` is what this layout COULD have painted and `drawn` is what it did. They are
+        // equal by construction now, and that is the point: the two numbers are what
+        // `state().map.geography_always_drawn` is computed from, so a future edit that puts a
+        // gate back here is caught by a number rather than by a code review.
+        inView++;
         drawn++;
         const px = r[0] + ((cx * m.cell - originX) / spanX) * r[2];
         const pz = r[1] + ((rz * m.cell - originZ) / spanZ) * r[3];
@@ -114,12 +143,21 @@ export function drawMap(S, m) {
   // The layout writes back what it painted, so the element's own record is honest about the
   // frame the player is looking at rather than about the model's totals.
   S.elements[S.elements.length - 1].meta.drawn_cells = drawn;
+  S.elements[S.elements.length - 1].meta.cells_in_view = inView;
 
   // ---- the places you have stood in ---------------------------------------------------------
   //
-  // One small square each, exactly as S35 permits. `m.places` is the discovery model's own list
-  // and there is no other source: a place cannot appear here without the body having been
-  // inside its built pad.
+  // One small square each, exactly as S35 permits, and exactly what the Morrowind reference
+  // shows (`corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-map__mw-*.jpg`: a whole landmass,
+  // and the only symbols on it are small squares, one per known place).
+  //
+  // THIS LOOP IS THE HALF W1-MAP-02 DID NOT TOUCH, and it is the half that keeps discovery in
+  // the game. `m.places` is the discovery model's own list and there is no other source: a place
+  // cannot appear here without the body having been inside its built pad. The plausible wrong
+  // answer to "remove the fog of war" is to reveal the geography AND every marker with it —
+  // which looks like a working map in a screenshot and quietly deletes finding places. See
+  // `tools/map/fog-control.mjs`, which is that mistake, made on purpose, so the check can be
+  // watched going red on it.
   m.places.forEach((p, i) => {
     const [px, pz] = toScreen(p.x, p.z);
     const q = m.placePx;

@@ -217,6 +217,21 @@ async function runViewport(tag, width, height) {
     }));
     note({ label: 'door-transit', reached, ...doorMeta, ...doorInfo });
 
+    // The greedy straight-line walker above (same shape as the one in the pre-existing
+    // w1-26-r2-arrival.mjs tool) can get stuck on room geometry between the census end-position
+    // and the door and never reach it — this happened on this run. Rather than report an indoor
+    // frame as "the spawn point", fall back to `H.teleport()`, a real supported engine placement
+    // (used elsewhere for fast travel), landing EXACTLY at the interior's own declared
+    // `continuity.exterior_spawn` — the same coordinate `leaveInterior()` itself would have used.
+    // Labelled honestly below; this is a placed shot for the exterior location, not a claim that
+    // the door-walk succeeded.
+    let usedTeleportFallback = false;
+    if (doorInfo.nowInterior && doorMeta.exteriorSpawn) {
+      usedTeleportFallback = true;
+      note({ label: 'door-walk-did-not-reach-exit; falling back to H.teleport() at the same continuity.exterior_spawn coordinate' });
+      await g.h('teleport', doorMeta.exteriorSpawn[0], doorMeta.exteriorSpawn[2], {});
+    }
+
     await shot('spawn-moment');
     const spawnTel = await telemetry('spawn-moment');
 
@@ -229,7 +244,7 @@ async function runViewport(tag, width, height) {
     }
     await telemetry('walk-30s-end');
 
-    return { tag, source: g.source, fallback_reason: g.fallbackReason || null, buildInfo, spawnTel, doorInfo };
+    return { tag, source: g.source, fallback_reason: g.fallbackReason || null, buildInfo, spawnTel, doorInfo, usedTeleportFallback };
   } finally {
     await g.close();
   }

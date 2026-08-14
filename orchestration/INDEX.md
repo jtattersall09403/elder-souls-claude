@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b240cff6`: 953 tools, 155 reference
+so it cannot drift. Generated at `a56ef1af`: 953 tools, 156 reference
 items, 185 pieces in flight.
 
 Its purpose is to stop 185+ concurrent agents each paying separately to discover the
@@ -702,7 +702,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ### `tools/map/` — 4
 
 - `tools/map/arbiter-map-s38.mjs` — THE S38 GATE — does the map comply with S35's "no square for a place the player has not stood in"?
-- `tools/map/explore-W1-MAP-DEFECTS.mjs` — Throwaway diagnosis for W1-MAP-DEFECTS: WHY does the screen walk stop at the journal?
+- `tools/map/explore-W1-MAP-DEFECTS.mjs` — Throwaway diagnosis for W1-MAP-DEFECTS.
 - `tools/map/fog-control.mjs` — the fog-of-war removal, with a delete-the-fix arm and a NULL CONTROL that is the plausible wrong answer rather than the trivial one.
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
 
@@ -1303,6 +1303,7 @@ of its twelve items judged none of its declared paths.
 | **RI-UIX04**  | [ui.menu.journal, journal.entry.numbering] | `corpus/86-ui/RI-UIX04-journal-ui.md` |
 | **RI-UIX05**  | [ui.menu.books, lore.book.structure] | `corpus/86-ui/RI-UIX05-books-and-readable-text.md` |
 | **RI-UIX06**  | [ui.style.diegesis, visual.process.declaration] | `corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md` |
+| **RI-UIX07**  | [ui.hud.world] | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md` |
 | **RI-VIS01**  | [visual.process.judgement, visual.process.declaration, visual.process.contamination, visual.artdirection, visual.renderer] | `corpus/70-visual/RI-VIS01-bifurcation-protocol.md` |
 | **RI-VIS02**  | [visual.renderer.lighting, visual.renderer.materials, visual.renderer.atmosphere, visual.renderer.water, visual.renderer.foliage, visual.renderer.sky, visual.re | `corpus/70-visual/RI-VIS02-fidelity-reference-set-modern.md` |
 | **RI-VIS03** optional, faster, native: npm i sharp | [visual.renderer.lighting, visual.renderer.materials, visual.renderer.postprocess, visual.renderer.shadows, visual.renderer.atmosphere, visual.renderer.sky, vis | `corpus/70-visual/RI-VIS03-fidelity-image-metrics.md` |

@@ -3,7 +3,12 @@
  "document_type": "critic-verdict",
  "piece_id": "W1-30D-r1",
  "piece_title": "W1-30D — characters, creatures, animation (round 1 critique)",
- "subsystem_paths": ["render.fidelity.character", "render.fidelity.animation", "render.art.creature", "render.process.measurement"],
+ "subsystem_paths": [
+  "render.fidelity.character",
+  "render.fidelity.animation",
+  "render.art.creature",
+  "render.process.measurement"
+ ],
  "wave": 1,
  "critic": {
   "run_id": "crit-w1-30de-r1-3c19",
@@ -25,7 +30,7 @@
   ]
  },
  "bifurcation": {
-  "axis": "modern-fidelity",
+  "axis": "fidelity",
   "declared_before_citation": true,
   "note": "Declared before any frame was opened. This piece is character mesh and animation quality up close, which RI-VIS01 §A routes to the FIDELITY side. No Morrowind plate was consulted and no art-direction reference was crossed with a fidelity one. The art-direction question about these characters (do they read as Saxhleel rather than generic lizardmen) is real and is NOT judged here."
  },
@@ -33,7 +38,7 @@
   {
    "id": "RI-VIS08",
    "path": "corpus/70-visual/RI-VIS08-character-animation-fidelity.md",
-   "side": "modern",
+   "side": "modern-fidelity",
    "kind": "number",
    "native_scale": "0-10 across model fidelity, animation fidelity and creature matrices; failure threshold < 6 blocks the wave via RI-VIS01 §E min() on FIDELITY",
    "native_score": 3,
@@ -42,24 +47,52 @@
    "score_0_10": 3,
    "measured": "partial",
    "checks": [
-    {"id": "orbit-clean-zero-background-pixels", "result": "fail", "value": "2,204 crack px at the 5,760-frame profile (builder, reproduced at the 640-frame profile as 178); the instrument's own verdict field returns FAIL", "threshold": "zero background pixels inside the body silhouette"},
-    {"id": "orbit-improvement-against-pre-fix", "result": "pass", "value": "1,858 -> 178 crack px at the 640-frame profile against baseline a1d24f58; independently reproduced by this critic", "threshold": "a measured improvement with a working baseline"},
-    {"id": "transparency-visible-in-frame", "result": "pass", "value": "no sky visible through the body at either mandatory character close-up or across 400 hardware motion frames", "threshold": "no background through the body at the stops rendered"},
-    {"id": "clip-set-exists", "result": "fail", "value": "CLIP_NAMES in rig-contract.js is empty; no authored crossfade times, no additive upper-body layering, no root-motion agreement measurement. The clips: axis on all 17 characters drives nothing.", "threshold": "plan item 4, a real clip set"},
-    {"id": "hands-have-separated-digits", "result": "marginal", "value": "three fingers and an opposed thumb exist in geometry (actor.js:505) and do not read as hands at 2.6 m on hardware", "threshold": "a hand needs a thumb and reads as a hand"},
-    {"id": "budget-triangles-per-character", "result": "not_run", "value": "asserted for file-backed models, unmeasured for the procedural ones; no LODs generated", "threshold": "<= 40k at LOD0"}
+    {
+     "id": "orbit-clean-zero-background-pixels",
+     "result": "fail",
+     "value": "2,204 crack px at the 5,760-frame profile (builder, reproduced at the 640-frame profile as 178); the instrument's own verdict field returns FAIL",
+     "threshold": "zero background pixels inside the body silhouette"
+    },
+    {
+     "id": "orbit-improvement-against-pre-fix",
+     "result": "pass",
+     "value": "1,858 -> 178 crack px at the 640-frame profile against baseline a1d24f58; independently reproduced by this critic",
+     "threshold": "a measured improvement with a working baseline"
+    },
+    {
+     "id": "transparency-visible-in-frame",
+     "result": "pass",
+     "value": "no sky visible through the body at either mandatory character close-up or across 400 hardware motion frames",
+     "threshold": "no background through the body at the stops rendered"
+    },
+    {
+     "id": "clip-set-exists",
+     "result": "fail",
+     "value": "CLIP_NAMES in rig-contract.js is empty; no authored crossfade times, no additive upper-body layering, no root-motion agreement measurement. The clips: axis on all 17 characters drives nothing.",
+     "threshold": "plan item 4, a real clip set"
+    },
+    {
+     "id": "hands-have-separated-digits",
+     "result": "marginal",
+     "value": "three fingers and an opposed thumb exist in geometry (actor.js:505) and do not read as hands at 2.6 m on hardware",
+     "threshold": "a hand needs a thumb and reads as a hand"
+    },
+    {
+     "id": "budget-triangles-per-character",
+     "result": "not_run",
+     "value": "asserted for file-backed models, unmeasured for the procedural ones; no LODs generated",
+     "threshold": "<= 40k at LOD0"
+    }
    ],
    "evidence": [
-    "docs/shots/2026-08-14-w1-30de-critic/char-player__t1300__clear.jpg",
-    "docs/shots/2026-08-14-w1-30de-critic/char-npc__t1300__clear.jpg",
-    "docs/shots/2026-08-14-w1-30de-critic/motion-walk-contact.jpg",
-    "docs/shots/2026-08-14-w1-30de-critic/motion-attack-light-contact.jpg"
+    "docs/shots/2026-08-14-w1-30de-critic/",
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
    ]
   },
   {
    "id": "RI-CAM07",
    "path": "corpus/15-camera/RI-CAM07-third-person-character-presentation.md",
-   "side": "modern",
+   "side": "modern-fidelity",
    "kind": "number",
    "native_scale": "M1-M6 weighted checks over duel traces, roll matrices, near-plane poses and the silhouette matrix",
    "native_score": 4,
@@ -68,55 +101,100 @@
    "score_0_10": 4,
    "measured": "partial",
    "checks": [
-    {"id": "F1-recognisable-silhouettes", "result": "pass", "value": "17/17 characters distinct at IoU <= 0.985, worst pair sax.marsh-lean vs sax.thorn-hunter at 0.9809; reproduced independently", "threshold": "pairwise IoU <= 0.72 at 32 px in the item; the piece's own floor is 0.985 at full resolution and it clears it"},
-    {"id": "C8-recovery-legibility", "result": "not_run", "value": "requires a cmb-duel trace of >= 3600 frames; not captured by this critic", "threshold": ">= 0.95"}
+    {
+     "id": "F1-recognisable-silhouettes",
+     "result": "pass",
+     "value": "17/17 characters distinct at IoU <= 0.985, worst pair sax.marsh-lean vs sax.thorn-hunter at 0.9809; reproduced independently",
+     "threshold": "pairwise IoU <= 0.72 at 32 px in the item; the piece's own floor is 0.985 at full resolution and it clears it"
+    },
+    {
+     "id": "C8-recovery-legibility",
+     "result": "not_run",
+     "value": "requires a cmb-duel trace of >= 3600 frames; not captured by this critic",
+     "threshold": ">= 0.95"
+    }
    ],
-   "evidence": ["tools/visual/rig-variant-proof.mjs output, re-run 2026-08-14"]
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
+   ]
   },
   {
    "id": "RI-VIS06",
    "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
-   "side": "modern",
+   "side": "modern-fidelity",
    "kind": "structure",
    "native_scale": "Protocol A blind pair-preference against profile-matched plates from refs/modern/",
-   "native_score": null,
+   "native_score": 0,
    "native_max": 10,
-   "native_verdict": "NOT RUN. Protocol A requires that pack-builder and judge be different agents (ARBITRATION S51, RULES.md rule 25). This critic is one agent and building the pack it then judged would be the coupled-yardstick failure S51 convicts. The 288 hardware frames are in the tree for a pack-builder. Under W1-30-EVIDENCE §2 a wave in which zero Protocol A pairs ran caps FIDELITY at 7 — which binds nothing here, because this verdict awards 3.",
-   "score_0_10": null,
-   "measured": "not_measured",
+   "native_verdict": "NOT RUN, and scored 0 rather than omitted so it cannot be read as a pass. Protocol A requires that pack-builder and judge be different agents (ARBITRATION S51, RULES.md rule 25); this critic is one agent and building the pack it then judged would be the coupled-yardstick failure S51 convicts. The 288 hardware frames are in the tree for a pack-builder. Under W1-30-EVIDENCE section 2 a wave in which zero Protocol A pairs ran caps FIDELITY at 7 — which binds nothing here, because this verdict awards 3. The 0 is an absence of evidence, not a measured failure, and must not be quoted as one.",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
    "checks": [
-    {"id": "protocol-A-pairs-run", "result": "not_run", "not_run_reason": "pack-builder and judge must be different agents; no second agent was available to this critic"}
+    {
+     "id": "protocol-A-pairs-run",
+     "result": "not_run",
+     "not_run_reason": "pack-builder and judge must be different agents; no second agent was available to this critic"
+    }
    ],
-   "evidence": []
+   "evidence": [
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ]
   }
  ],
  "artifacts": [
   {
    "path": "docs/shots/2026-08-14-w1-30de-critic/",
-   "kind": "image",
+   "kind": "screenshot",
    "produced_by": "node tools/visual/gpu-deck.mjs --profile full --tag w1-30de-critic --every 6 --max-runtime 25, run on a RunPod NVIDIA L4",
    "seed": 20260814,
    "resolution": "960x540, downsampled to 800px wide for committing",
-   "camera_pose": "Deck full profile: 48 setups x 3 times x 2 weathers = 288 stills, plus 12 motion sequences at 400 frames",
-   "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)' — HARDWARE, valid for appearance claims under W1-30-EVIDENCE §4. Raw PNG frames are deliberately NOT committed (§5); the run directory reports/runpod-gpu/runs/w1-30de-critic/ holds them locally."
+   "camera_pose": "Deck full profile: 48 setups x 3 times x 2 weathers = 288 stills, plus 12 motion sequences at 400 frames. The two character setups (char-player, char-npc) are subject-orbit at yaw 35, pitch -6, distance 2.6 m.",
+   "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)' — HARDWARE, valid for appearance claims under W1-30-EVIDENCE section 4. Raw PNG frames are deliberately NOT committed (section 5); reports/runpod-gpu/runs/w1-30de-critic/ holds them locally."
   },
   {
-   "path": "reports/runpod-gpu/runs/w1-30de-critic/run.json",
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json",
+   "kind": "trace",
+   "produced_by": "node tools/visual/actor-hole-control.mjs and corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs",
+   "seed": 20260814,
+   "resolution": "384x384 raster, 640 frames per arm",
+   "camera_pose": "8 angles x 1 distance (1.5 m) x 80 poses sampled from clips.json",
+   "note": "Every builder control reproduced, plus five new critic controls. Includes the two arms this critic found INERT and says so."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs",
+   "kind": "report",
+   "produced_by": "written by this critic",
+   "note": "The guard attack. Patches a COPY of game/src, game/data/combat and game/vendor and runs the unmodified instrument against the copy; never a flag inside the instrument. Copies are removed on exit including on failure."
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/artifacts/w1-30de/gpu-run-record.json",
    "kind": "trace",
    "produced_by": "tools/visual/gpu-deck.mjs",
-   "note": "Run record: status passed, 288 stills + 400 motion frames, 12 sequences ok / 0 red, cost $0.054."
+   "note": "Run record copied into the verdict's own artifact directory because reports/ is gitignored and a citation that does not resolve in a fresh clone is not a citation. Status passed, 288 stills + 400 motion frames, 12 sequences ok / 0 red, NVIDIA L4, cost $0.054."
   }
  ],
  "arbitration": {
   "ar1": {
    "status": "not_applicable",
    "not_applicable_reason": "AR-1's probes are combat-contamination probes — to-hit rolls, dice damage, pause mid-fight, level scaling. This piece builds character geometry and a rig registry; it changes no combat resolution and no simulation data. It consumes combat/skeleton.js and combat/clips.js as a read-only pose authority, which is the correct direction of dependency.",
-   "checks": [{"id": "A1-A10", "result": "not_applicable", "not_run_reason": "no combat resolution surface touched"}]
+   "checks": [
+    {
+     "id": "A1-A10",
+     "result": "not_applicable",
+     "not_run_reason": "no combat resolution surface touched"
+    }
+   ]
   },
   "ar2": {
    "status": "not_applicable",
    "not_applicable_reason": "AR-2's probes are Morrowind-contamination probes — objective markers, bonfire semantics, fast travel. This piece is geometry and a variant registry; it introduces no world-navigation or progression affordance.",
-   "checks": [{"id": "B1-B11", "result": "not_applicable", "not_run_reason": "no navigation or progression surface touched"}]
+   "checks": [
+    {
+     "id": "B1-B11",
+     "result": "not_applicable",
+     "not_run_reason": "no navigation or progression surface touched"
+    }
+   ]
   }
  },
  "score": {
@@ -126,11 +204,26 @@
   "band_label": "The owner's transparency complaint was diagnosed correctly for the first time and measurably closed, and the reuse mechanism is the best-evidenced thing in the visual tree. But the anti-gaming guard on the metric that carries the whole claim misses the deletion of both the character's hands, the animation half of the child was not built, and on hardware the characters read as white plastic mannequins.",
   "confidence": "high",
   "axes": [
-   {"axis": "transparency-defect closure", "score": 6},
-   {"axis": "instrument and control integrity", "score": 3},
-   {"axis": "reuse", "score": 8},
-   {"axis": "it reads as a character", "score": 3},
-   {"axis": "animation and the clip set", "score": 3}
+   {
+    "axis": "transparency-defect closure",
+    "score": 6
+   },
+   {
+    "axis": "instrument and control integrity",
+    "score": 3
+   },
+   {
+    "axis": "reuse",
+    "score": 8
+   },
+   {
+    "axis": "it reads as a character",
+    "score": 3
+   },
+   {
+    "axis": "animation and the clip set",
+    "score": 3
+   }
   ]
  },
  "status": "FAIL",
@@ -149,43 +242,67 @@
   "what": "The anti-gaming guard on the character defect metric is a scalar silhouette-area check, and a scalar cannot notice that a named part stopped existing. Deleting both of the character's hands — palms, three fingers and an opposed thumb each — improves the headline crack metric by 31% and moves the guarded quantity by 0.31% against a 3.0% threshold. It is not caught.",
   "why_it_matters": "Every claim this piece makes about the character rests on the crack metric, and the crack metric's only defence against being gamed has now been shown, on a copy of the source tree, to miss the cheapest realistic mutilation. The builder's two declared cheats — delete a whole arm, swallow the arms into the torso — are the conspicuous versions and they are caught. The version a builder under schedule pressure would actually reach for is deleting the small expensive parts, and that walks straight through. The plan's own item 5 calls hands one of the two features a person looks at first.",
   "evidence": [
-   "hide-both-hands: 178 -> 123 crack px, silhouette 53075 -> 52913 px (-0.31%), NOT CAUGHT",
-   "hide-hand (one hand): 178 -> 137 crack px, silhouette -0.14%, NOT CAUGHT",
-   "shipped build's own drift against baseline a1d24f58: -2.9%, against a guard docstring claiming -1.0%",
-   "hide-arm, the builder's own control: -3.3%, caught by 0.3 percentage points"
+   "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json",
+   "corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs"
   ],
   "severity": "major",
-  "remedy": "Replace the scalar with a per-part presence census, and keep the area guard as its second half. rasterise() already carries owner[] and the part label, so classifyPockets's caller can record the set of part names contributing at least one pixel anywhere in the run and fail any build whose part set is a strict subset of the baseline's. That is roughly a dozen lines, it introduces no new threshold to argue about, and it catches deletion of any named part at any size. Keep the 3% area guard for the opposite direction — it is what catches weld-arm-to-rib, which adds rather than removes. Then re-run the six existing controls plus hide-both-hands and record that all seven behave."
+  "remedy": {
+   "action": "Replace the scalar silhouette-area guard with a PER-PART PRESENCE CENSUS in tools/visual/actor-hole-control.mjs, and keep the area guard as its second half. rasterise() in actor-orbit-holes.mjs already carries owner[] and the part label, so classifyPockets's caller can record the set of part names contributing at least one pixel anywhere in the run and return it on the summary. The comparison tool then fails any build whose part set is a strict subset of the baseline's. Roughly a dozen lines and no new threshold to argue about. Keep the 3 percent area guard for the opposite direction, because it is what catches weld-arm-to-rib, which adds rather than removes.",
+   "acceptance": "All 7 controls behave: the 4 red-required arms go red, hide-arm and weld-arm-to-rib stay caught, and hide-both-hands is CAUGHT where it is currently missed at -0.31 percent drift against a 3.0 percent threshold. Additionally the part census must report zero missing parts on the shipped build and at least 2 missing parts on the hide-both-hands arm.",
+   "targets": [
+    "tools/visual/actor-hole-control.mjs",
+    "tools/visual/actor-orbit-holes.mjs"
+   ]
+  }
  },
  "secondary_observations": [
   {
    "what": "The successor of the discriminator mistake the builder was asked to find: `const held = ring.some(...)` at actor-orbit-holes.mjs:350 is computed on the unfiltered ring, while the stray-pixel guard described in the comment at line 351 is applied only to `major`, which feeds `allJointed` — and allJointed is explicitly reported rather than gated. One pixel of a held object bordering a pocket removes that pocket from the crack count. Remedy: compute held from the same 15% share the file already chose, then re-run the full profile and report whether 2,204 moves.",
-   "evidence": ["tools/visual/actor-orbit-holes.mjs:350-371"],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
+   ],
    "subsystem_path": "render.process.measurement"
   },
   {
    "what": "One of this critic's own controls was inert, and the reason corroborates the build. sink-crest — burying the dorsal crest further inside the body and shrinking it 65% — returned numbers identical to the shipped build to the pixel, because the crest is already fully interior to the skinned surface. The control proves nothing about the guard and is reported as inert rather than as a pass, but it is independent confirmation that defect #2 (four cones floating up to 35 cm off a 14 cm-deep back) is structurally closed rather than cosmetically hidden.",
-   "evidence": ["sink-crest: 178 crack px, 53075 px silhouette — identical to shipped"],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
+   ],
    "subsystem_path": "render.fidelity.character"
   },
   {
    "what": "The 12 Deck motion sequences are not an instrument for judging character animation as configured. All twelve ran on hardware, 12 ok / 0 red, 400 frames, deterministic — but the character occupies roughly forty pixels of frame height, so the contact sheets can show that a sword arcs and a body translates and cannot show whether a knee bends or a foot slides. This is a W1-30V finding, not a W1-30D one, and it means the animation axis above is scored on the absence of the work rather than on frames that failed.",
-   "evidence": ["docs/shots/2026-08-14-w1-30de-critic/motion-walk-contact.jpg", "docs/shots/2026-08-14-w1-30de-critic/motion-attack-light-contact.jpg"],
+   "evidence": [
+    "docs/shots/2026-08-14-w1-30de-critic/"
+   ],
    "subsystem_path": "render.process.measurement"
   },
   {
    "what": "The reuse claim is verified independently and is the strongest thing in this piece. 17 characters on one body plan, 17 distinct structural keys, 0 duplicates; widening the shared humanoid plan by 6% on a copy moved exactly 15 of 17 — 9/9 saxhleel, 6/6 humanoid, 0/2 quadruped — which is the written exemption behaving rather than a miss. The prediction was made before the run and came true. Colour is correctly excluded from the distinctness measure, on the grounds W1-30K established independently.",
-   "evidence": ["node tools/visual/rig-variant-proof.mjs, re-run by this critic 2026-08-14: PASS"],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
+   ],
    "subsystem_path": "render.art.creature"
   },
   {
    "what": "game/index.html's import map, edited outside the builder's owned paths and flagged loudly by the builder, was checked and is as described: additive, inert, and `grep -rn \"from 'three'\" game/src` returns nothing so no existing module resolves through it. Not a defect, and the builder was right to flag rather than bury it.",
-   "evidence": ["game/index.html"],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json"
+   ],
    "subsystem_path": "render.process.measurement"
   }
  ],
  "gap_closure": [],
- "corpus_extended": [],
+ "corpus_extended": [
+  {
+   "what": "The plan's orbit row is binary — 'zero background pixels appear inside the body silhouette' — and the instrument that measures it has a measured floor. The builder found that below roughly 200 crack px at the 640-frame profile the metric can tell you that something changed and not reliably what, and left a control failing to prove it. A binary row over a metric with a known noise floor is unsatisfiable in principle. Owed: amend the row to bind on crack pixels attributable to a joint or an ornament, and state the attribution floor as a declared limit of the instrument rather than as a footnote in a status file.",
+   "where": "orchestration/plans/W1-30D.md"
+  },
+  {
+   "what": "The evidence standard requires a 24-stop x 3-distance orbit per character, and no orbit rig exists in the Deck — tools/visual/deck.json's char-player and char-npc are one yaw each. So the standard's central instrument, the one written specifically because of the owner's rotate-the-camera complaint, has never been buildable from the shipped shot list. Owed: an orbit profile in deck.json, or an explicit statement in W1-30-EVIDENCE that the orbit is measured offline by actor-orbit-holes.mjs and never on hardware — which is the current de facto position and is not what the document says.",
+   "where": "orchestration/plans/W1-30-EVIDENCE.md"
+  }
+ ],
  "method_deviations": [
   "The 144-frame orbit (24 stops x 3 distances) was NOT rendered on hardware. The Deck's char-player and char-npc setups are one yaw each, and the orbit is a separate rig this critic did not build. Every transparency statement in this verdict is therefore 'clean at the stops rendered', not 'clean at 144 stops' — and that distinction is exactly the one the owner's original complaint turned on, so it is stated rather than smoothed.",
   "The full 5,760-frame profile was not re-run after diagnosing the held-object bug, so this verdict makes no claim about how much of the 2,204 that bug is hiding.",
@@ -194,13 +311,37 @@
  ],
  "arbitration_questions": [],
  "source_reads": [
-  "game/src/render/actor.js",
-  "game/src/render/lib/rigs.js",
-  "tools/visual/actor-orbit-holes.mjs",
-  "tools/visual/actor-hole-control.mjs",
-  "tools/visual/rig-variant-proof.mjs",
-  "orchestration/status/W1-30D.md",
-  "orchestration/plans/W1-30D.md"
+  {
+   "path": "tools/visual/actor-orbit-holes.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read only after the control runs had demonstrated the numbers. The held-object finding is a finding ABOUT the instrument, which is the one thing a critic must read as source."
+  },
+  {
+   "path": "tools/visual/actor-hole-control.mjs",
+   "purpose": "locate-harness",
+   "note": "To find the guard threshold and the control list before attacking them."
+  },
+  {
+   "path": "tools/visual/rig-variant-proof.mjs",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/render/actor.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after this critic's first hide-hand control moved the silhouette 0.00 percent, to find out why — the fingers are built in a separate loop at line 505. The control was strengthened as a result."
+  },
+  {
+   "path": "game/src/render/lib/rigs.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "orchestration/status/W1-30D.md",
+   "purpose": "quote-written-content"
+  },
+  {
+   "path": "orchestration/plans/W1-30D.md",
+   "purpose": "quote-written-content"
+  }
  ],
  "self_audit": {
   "judged_output_not_source": true,

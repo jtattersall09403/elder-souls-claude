@@ -3,6 +3,69 @@
 Written and owned by the orchestrator. Each entry cost somebody real work. Where an entry names a
 mistake, the orchestrator made it unless stated otherwise.
 
+## THE ONE THAT MATTERS — how to put work on the branch. Everything below §2 is history now.
+
+**Use `node tools/bank.mjs "headline"`, or `node tools/land.mjs "headline" --paths <yours>` if you
+want to carry only your own files. Nothing else. Do not hand-roll a push.**
+
+Both go through `tools/land.mjs`, which commits by **three-way merge** (`git merge-tree`), takes no
+`.git/index.lock`, retries when a sibling lands first, and exits non-zero unless the bytes are
+actually on the remote. `node tools/land.mjs --self-test` proves it: 13 checks, and the arm running
+the *old* recipe is required to lose an agent's work or the suite declares itself vacuous.
+
+**Three things every agent should know, because each one cost a day:**
+
+1. **There is no push race.** Git rejects a non-fast-forward push; two agents pushing at the same
+   instant cannot overwrite each other. Every hour spent on that theory was spent on the wrong
+   problem — which is why worktrees, adopted to fix it, changed nothing.
+2. **Diff your work against `HEAD`, never against `origin`.** A file a sibling pushed is absent from
+   this disk *and* absent from `HEAD`, so against `HEAD` it is not a change. Against `origin` it
+   reads as a deletion — and that is the deletion that has been eating this project.
+3. **Never give a commit a second parent unless its tree came from a real merge.** A merge parent is
+   a *claim* that your tree already accounts for that branch. Snapshot the working tree and label it
+   a merge and git believes the lie permanently: every later merge reads the absences as deliberate
+   deletions and never brings the files back.
+
+**If `land`/`bank` says "N path(s) are in HEAD but not on this disk", that is not an error and
+nothing was lost — it is refusing to delete files written in other agents' worktrees. Run
+`node tools/land.mjs --sync` to bring them onto this disk.**
+
+### 2f. The forensic, because the diagnosis was half wrong for a day and cost the fleet a day
+
+Commit `06dafd04` — an orchestrator bank — destroyed **18 files and 22,209 lines** of finished agent
+work in one commit. It is the largest single loss found, and it is not the shape anyone assumed:
+
+```
+merge-base d7702f04 ── 18 commits of agents' pushed work ──▶ e469e6df   (origin, "theirs")
+     └───────────────── 2 local commits ─────────────────▶ a8e4c938   ("ours", the shared tree)
+```
+
+`06dafd04` is recorded as a **merge** of both. Its tree is not a merge of both — it is a `git add -A`
+snapshot of a shared working tree that had never received any of those 18 commits' files. Check it
+yourself: `git diff --diff-filter=D --name-only e469e6df 06dafd04` returns 18 paths, and **every one
+of them is absent from the merge base**, i.e. every one was work added by the branch it claimed to
+have merged.
+
+**The same merge, re-run through `git merge-tree --write-tree`: 18 of 18 kept, and ours' own addition
+kept too.** That is not a simulation of the fix, it is the fix applied to the actual incident.
+
+**There is a third mechanism, and `land.mjs` found it by deleting a file on its own first live run.**
+`HEAD` is only a faithful description of the disk if the disk was checked out from it. In a shared
+tree it never is: `HEAD` advances through merges and `reset --mixed` all day, while the files those
+commits introduced were written in *other agents' worktrees* and never touched this disk. So HEAD's
+tree is a superset of the disk and `add -A` reads the difference as deletions — faithfully, and
+catastrophically. Nothing in the tree distinguishes "an agent deliberately deleted this" from "this
+was never written here"; both are exactly *in HEAD, not on disk*. So the asymmetry is the answer:
+a wrongly-kept file is a dead byte somebody removes later, a wrongly-deleted file is an agent's
+afternoon. **Deletions are not carried unless asked for** (`--paths`, or `--allow-deletions`).
+
+**Two guards, and they are independent — say so when you report it.** Base-is-HEAD and
+deletions-are-opt-in each individually prevent the classic two-agent loss. The self-test's first
+scenario therefore runs as a **2×2**: sabotage either guard alone and the work still survives;
+sabotage both and it is lost, exactly as the old recipe loses it. The first version of that suite
+sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
+RULES rule 6's fourth shape, and it is why the arms are four and not two.
+
 ## 7. A git worktree cannot render the game — and it fails as `GAME_BROKEN`
 
 **The orchestrator moved most agents into isolated worktrees to stop the clobbering, and thereby
@@ -71,22 +134,29 @@ Six agents have had finished work silently reverted. Three distinct causes, all 
   afterwards because the edit is simply gone.
 - **A push built from a stale parent** silently drops files added since that parent.
 
-**The technique that survives it — git plumbing through a temporary index, which never takes
-`.git/index.lock`:**
+**⚠ RETIRED — 2026-08-14. THE RECIPE THAT USED TO BE HERE IS THE THING THAT LOSES THE WORK. Do not
+use it, do not copy it out of an old status file, do not "just this once".**
 
 ```sh
-git fetch origin <branch>
-export GIT_INDEX_FILE=/tmp/idx-$$
-git read-tree origin/<branch>
-git add -A
-TREE=$(git write-tree); P=$(git rev-parse origin/<branch>)
-C=$(git commit-tree "$TREE" -p "$P" -m "…")
-unset GIT_INDEX_FILE
-git push origin "$C":<branch>
+#  ────────────────  DO NOT RUN THIS  ────────────────
+#  git read-tree origin/<branch>     ←  the defect is this word: `origin`, not `HEAD`
+#  git add -A                        ←  now every file a sibling pushed is staged as a DELETION
+#  git commit-tree "$TREE" -p "$P"   ←  and the parent makes git believe you meant it
 ```
 
-**Then verify against the remote blob, not local state:**
-`git show origin/<branch>:<path> | grep -c '<a string you know you wrote>'`.
+It got the *lock* right and the *baseline* wrong, and the baseline is the whole game. Staging against
+`origin` means the shared working tree — which never receives anything anyone else pushes — is
+treated as the truth about the branch. This is the mechanism behind §2d, §2e and §2f, and behind at
+least eight agents' silently reverted work.
+
+**Use `node tools/bank.mjs "headline"` or `node tools/land.mjs "headline" --paths <yours>` instead.**
+They keep the good half — a private `GIT_INDEX_FILE`, so `.git/index.lock` is never taken and no
+commit can lose a race — and replace the bad half with `git merge-tree`, an actual three-way merge.
+
+**Verifying against the remote blob is still right, and `land` does it for you.** If you do it by
+hand, compare against **what you committed**, not against what is on disk a minute later: a live
+agent rewriting its own file between your snapshot and your check is not a loss, and a verifier that
+reports losses that are not losses is a verifier everyone learns to ignore.
 
 ### 2a. Never create a file as a blob without also writing it to the working tree
 
@@ -96,7 +166,13 @@ that had never contained the file — staged its **deletion**, and the file vani
 one commit later. If you use the plumbing route for a *new* file, write it to disk as well, or the
 next bulk stage will delete it for you.
 
-### 2c. The actual fix: dispatch file-writing agents into their own worktree
+### 2c. Worktrees — still worth having, but they were never "the actual fix" (superseded by §2f)
+
+> **Read this heading's original claim as a warning about confident diagnosis.** Worktrees were
+> adopted to stop the clobbering, cost nine of eleven agents their ability to render the game
+> (hazard §7), and **did not stop the losses**, because the losses were never two agents writing one
+> file. Keep worktrees for what they genuinely do — two agents cannot overwrite each other's edits on
+> disk — and stop expecting them to protect the branch. Landing is what protects the branch (§2f).
 
 Seven agents have now lost an hour or more to this, and several independently arrived at the same
 workaround — *"the final push needed an isolated worktree, because `git merge` in the shared copy
@@ -128,19 +204,14 @@ faithfully stages an old copy over the new one, and the merge "keeps the pre-pus
 > stop a bank staging a stale index over a branch that has moved. Those are different failures and
 > the second is the orchestrator's alone.
 
-**The guard: stage a path only when the working-tree file is newer than origin's tip commit.**
+**⚠ THE mtime GUARD IS RETIRED — 2026-08-14. It was a timestamp patch over a baseline bug.** It kept
+`read-tree origin` and then tried to guess, from file dates, which of the resulting deletions were
+real. §2e already recorded that it rejects safe paths and is blind to append-only files; §2f explains
+why no timestamp could ever have worked. **Diffing against `HEAD` makes the whole question vanish** —
+a file a sibling pushed is not a change at all, so there is nothing to guess about.
 
-```sh
-P=$(git rev-parse origin/<branch>); PT=$(git log -1 --format=%ct "$P")
-export GIT_INDEX_FILE=/tmp/idx-$$; git read-tree "$P"
-while IFS= read -r f; do
-  [ -f "$f" ] || continue
-  [ "$(stat -c %Y "$f")" -gt "$PT" ] && git add -- "$f"     # else it is stale: skip
-done < <(git diff --name-only "$P"; git ls-files --others --exclude-standard)
-```
-
-First run of the guard: **0 files genuinely newer, 4 stale** — i.e. the unguarded routine would have
-reverted four files that instant. Assume it has been doing so all along.
+The diagnosis it came with is still exactly right and worth keeping: *"`add -A` faithfully stages an
+old copy over the new one."* It is the fix that was wrong, not the observation.
 
 ### 2e. The mtime guard is not sufficient, and append-only files need rebuilding from origin
 
@@ -154,16 +225,15 @@ working file is newer than origin's tip — is **over-conservative and blind in 
   whole-file stage of an append-only log reverts every line the stager never saw, and mtime cannot
   see that.
 
-**What actually works**, and should be preferred:
+**This entry called it exactly right and is now implemented rather than remembered.** Its own
+prescription — *"per-path content comparison against the merge base rather than a timestamp"* — is
+precisely what a three-way merge is, and `tools/land.mjs` does it with `git merge-tree`.
 
-1. **Per-path content comparison against the merge base** rather than a timestamp — decide staleness
-   from what changed, not from when.
-2. **Rebuild append-only files *from* origin** immediately before writing: re-read origin's copy,
-   union your lines in by content key, write, stage, push in the same run. Never stage a whole
-   append-only file you assembled earlier.
-
-The mtime guard remains useful as a cheap first filter and it did prevent seven reverts on its first
-run. It is not a substitute for reading the remote blob back.
+**And append-only files need no procedure at all any more.** `.gitattributes` marks
+`reports/blog-feed.jsonl` as `merge=union`, so git keeps **both** sides' lines instead of calling it
+a conflict. Verified under `merge-tree` specifically, not just under `git merge`, and covered by the
+self-test's second scenario: the old recipe loses a line, `land` keeps both. Nobody has to remember
+to re-read origin and union by content key before writing; just append your line and land.
 
 ### 2b. Never `git reset --hard` a shared working tree
 
