@@ -95,7 +95,15 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
     if (!GL) return null;
     const props = GL.properties.get(m) || {};
     const prog = props.currentProgram;
-    if (!prog || !prog.diagnostics) return null;   // not compiled at the instant we sampled
+    // three.js's WebGLProgram only populates `.diagnostics` when there is something to report —
+    // empirically confirmed on this repo's own before/after packs (corpus/90-verdicts/wave1/
+    // artifacts/W1-F1-SHADER-COLLISION/{before,after}/shader-collision.json): a program that
+    // links cleanly leaves `.diagnostics` undefined FOREVER, not just before its first compile.
+    // So null here is genuinely silent — it means "no evidence of a link failure", which covers
+    // both "never compiled" and "compiled and linked fine" and cannot be told apart from this
+    // signal alone. That is exactly why only a POSITIVE `runnable === false` is ever treated as a
+    // finding below; null must never be read as a pass on its own.
+    if (!prog || !prog.diagnostics) return null;
     return {
       runnable: prog.diagnostics.runnable,
       fragment_log: String(prog.diagnostics.fragmentShader?.log || '').slice(0, 400),
@@ -390,7 +398,7 @@ const checks = [
   // link failure leaves behind, independent of what any hook claims about itself.
   { id: 'NO-UNRUNNABLE-PROGRAM-IN-SCENE', ok: notRunnable.length === 0,
     detail: notRunnable.length === 0
-      ? `0 of ${rows.filter((r) => r.program_runnable !== null).length} sampled program(s) failed to link (${rows.length - rows.filter((r) => r.program_runnable !== null).length} not yet compiled at sampling time)`
+      ? `0 of ${rows.length} materials hold a program the driver marked runnable:false (three.js leaves .diagnostics undefined for a program that links cleanly, so a link-failure report is the only signal this reads — see the comment on programRunnable above)`
       : `${notRunnable.length} material(s) hold a program the driver marked runnable:false — the mesh is not drawn. `
         + notRunnable.slice(0, 3).map((r) => `${r.material_name}: ${r.program_runnable.fragment_log.replace(/ /g, '').trim().slice(0, 200)}`).join(' | ') },
 ];
