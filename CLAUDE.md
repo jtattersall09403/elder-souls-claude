@@ -94,13 +94,39 @@ it broke rendering for nine agents and stopped none of the losses. Worktrees are
 for what they actually do — two agents cannot overwrite each other's edits on disk — and nothing
 more.
 
-**The hard floor of 12 is removed.** Owner, 2026-08-14: *"Instead continuously qualitatively review
-and use your judgment as the implementation lead to set as much working in parallel as is sensible in
-a dependency safe and performance aware way. Maximising delivery speed and quality and minimising
-cost… things that can safely run in parallel always should."* So: no number to hit, and no excuse to
-idle. Two agents that will collide in the same files cost more to reconcile than they save; two that
-touch nothing in common should both be running. Review this continuously — it is a standing duty of
-the role, not a one-off setup.
+**~~The hard floor of 12 is removed… things that can safely run in parallel always should.~~
+SUPERSEDED 2026-08-14 evening — DO NOT ACT ON THE STRUCK TEXT.** It ran the fleet at ~14 agents and
+burned **37% of a weekly cap in nine hours**. Kept, struck, so nobody re-derives it.
+
+**GO NARROW AND SEQUENTIAL.** Owner, 2026-08-14 evening, verbatim: *"Run less in parallel at once…
+I would prefer you to go slower, more methodically, make fewer mistakes, do fewer things at once, and
+make continuous, incremental progress (in terms of things I can actually see in the game), going
+through a big picture plan that breaks down into sensible sequential steps, with regular updates
+written about them… I am keen that you don't get lost or lose track of work and more like just go
+through things one at a time, so we get less done at once but can be more sure we're making progress
+towards our perfect game."*
+
+The standing shape of the work is now:
+
+- **Two to four agents at a time, not fourteen.** Not one — one wastes wall-clock without saving much
+  per unit of work — but few enough that no two can collide and every result is read properly before
+  the next dispatch.
+- **Sequence by what the player sees**, not by subsystem. Each step ends in something the owner could
+  look at in the game. A step that moves an internal number and changes nothing visible is not a step.
+- **`orchestration/ROADMAP.md` is the source of truth**, ordered, each step carrying its visible
+  outcome and its state. **The orchestrator's context is not the plan** — this session compacted twice
+  in one day, and a plan held only in context dies there.
+- **A short written update per completed step**, cheap, on the blog or the progress page.
+- **Fewer pieces in flight, not fewer checks per piece.** The builder/critic gauntlet stays intact and
+  critics stay on Opus. The gauntlet is exactly what catches the false claims the repo is now known to
+  be full of; cutting it to save money would buy the saving with the one thing that makes any of this
+  trustworthy.
+
+**This is not a retreat from the cost goal, it is how to hit it.** Width at fourteen manufactured work
+that existed only because of width: two agents dispatched onto the same four findings, contradictory
+status files needing reconciliation, and whole-tree banks that carried siblings' in-flight edits into
+`HEAD` and silently turned a delete-the-fix green. That overhead is pure loss and it scales with the
+number of agents.
 
 ## The 2026-08-14 owner directives — binding, and they override older text
 

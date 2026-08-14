@@ -28,13 +28,31 @@ when **all four guards hold simultaneously**:
 | # | Guard | Measured as | Fails if |
 |---|---|---|---|
 | **G0** | **Cost** | C/H against baseline | > 25% of baseline |
-| **G1** | **Parallelism** | mean concurrent agents over the window | < 12 (RULES/TICK floor) |
+| **G1** | ~~**Parallelism**~~ **Throughput per step** | ~~mean concurrent agents~~ **steps of `ROADMAP.md` completed per day, each with a player-visible outcome** | **no completed step in a working day** |
 | **G2** | **Quality** | verdict scores; critic find-rate (findings per critic) | either falls vs baseline |
 | **G3** | **Rigour** | count of runs of the five non-negotiables (below) | any declines |
 
-**The diagnostic that proves it was efficiency and not idling: cost per agent-hour.** If C/H fell 4×
-and cost-per-agent-hour did not fall, the fleet simply got smaller and the programme has failed.
-Report both, always, in that order.
+> **AMENDED 2026-08-14 evening, and G1 is inverted rather than tweaked.** G1 was a **floor of 12
+> concurrent agents**, written when the risk was an orchestrator saving money by idling. The owner has
+> now ruled the opposite way — *"Run less in parallel at once… go slower, more methodically, make
+> fewer mistakes, do fewer things at once"* — so a guard that **fails the programme for running three
+> agents instead of fourteen** would fight the instruction on every tick. Left unamended it would have
+> done exactly that, silently, in an instrument nobody re-reads.
+>
+> **The thing G1 was protecting is still worth protecting, so it is restated rather than deleted:**
+> the failure mode is *paying less by delivering less*. Concurrency was only ever a proxy for delivery.
+> The direct measure is better — **a completed roadmap step with something the owner can see in the
+> game.** Three agents finishing one visible thing a day beats fourteen finishing none, and the old
+> guard scored that backwards.
+>
+> **`tools/cost.mjs:500` still hard-codes `floor: 12`** and will keep printing `floor 12 -> ok`
+> against a number that no longer means anything. Owed change, named here so it is not discovered as a
+> surprise: the field is stale, not authoritative, and **nothing should be concluded from it.**
+
+**The diagnostic that proves it was efficiency and not idling: cost per agent-hour, and per roadmap
+step.** If C/H fell 4× and cost-per-agent-hour did not fall, the fleet simply got smaller and the
+programme has failed. Under the narrow-and-sequential regime the second number carries the weight the
+first used to: **cost per completed, player-visible step.** Report both, always, in that order.
 
 ### Ruling C2 — G1 is the median, not the mean *(reversible)*
 
@@ -825,3 +843,71 @@ other so they are close to a matched comparison.
   cheapest reversal in the whole programme, and it is a reason to start now rather than to plan more.
 - **This is not a licence to run fewer agents.** Parallelism is a separate guard with its own floor;
   routing must move spend per unit of work, never the amount of work in flight.
+
+---
+
+## Ruling C6 — route aggressively, size the task to the model, and VERIFY it in the transcript
+
+**2026-08-14 evening, orchestrator, at the owner's direction:** *"Route more aggressively to Sonnet,
+and make sure this is actually happening in practice and not just theory. Keep Opus for where it's
+really needed. Break tasks down to an appropriate size for each sonnet agent."*
+
+C5 established that routing is the **dispatcher's** act. C6 makes it aggressive, and adds the two
+things C5 left out — sizing, and proof.
+
+### The default flips
+
+C5 said "when unsure, Opus". **That is now backwards for everything except judgement.** The default is
+**Sonnet**, and Opus is the exception that must be *justified at dispatch*:
+
+**Opus, and the list is deliberately short:** critics, plan reviewers, arbiters, blind judges,
+anything producing a score or a verdict, anything *designing* a control or a null arm, and the
+orchestrator. That is the quality guard and it does not move — the gauntlet is precisely what catches
+the false claims the repo is now known to be full of, and buying a saving with it would be buying it
+with the only thing that makes the numbers trustworthy.
+
+**Sonnet, which is now most work:** builders following an approved plan, censuses, sweeps, enumeration,
+data authoring, tooling, fixes with a stated acceptance number, and anything a downstream critic will
+check.
+
+**Evidence it works, from the first day of trying it:** the Sonnet-routed backlog triage did not merely
+survive, it **corrected the brief it was given** — the population was 126 not 121, and the regex defect
+the brief blamed had already been fixed hours earlier. A cheap agent that corrects its dispatcher is
+not a degraded agent.
+
+### Sizing is the half that makes it work
+
+A model change without a scope change just moves the failure. **A Sonnet piece should be one clear
+objective with a stated acceptance number, not a five-part investigation.** The briefs written today
+ran to a page and a half and assumed the agent would rediscover context, negotiate ownership, and rule
+on its own trade-offs. Split that: the *ruling* is Opus's job or the orchestrator's, and what reaches
+the builder is the decision plus the acceptance test.
+
+Practical shape: if a brief contains the words "decide whether", "rule on", or "judge which", it is
+either an Opus piece or it is two pieces.
+
+### Verify, because "in theory" is exactly how routing failed for weeks
+
+**The policy existed for weeks and the fleet ran 91% Opus the entire time.** Nobody checked. So the
+check is now part of the tick:
+
+```
+cd /root/.claude/projects/-home-user-elder-souls-claude/<session>/subagents \
+  && grep -ho '"model":"claude-[a-z0-9-]*"' *.jsonl | sort | uniq -c
+```
+
+**Baseline at the moment of this ruling: 94,831 Opus against 9,113 Sonnet — 91.2% Opus.** Report the
+ratio in every cost update. A ruling whose adoption is never measured is a document, and this project
+has enough of those.
+
+### Guards
+
+- **Quality tripwire:** verdict scores and critic find-rate per tier. If Sonnet-routed builders are
+  overturned by their critics materially more often, the class moves back — but read it carefully,
+  because a cheap builder whose critic finds *more* may be the gauntlet working as designed. The
+  silent failure is a cheap **critic** missing things, which is why critics never move.
+- **The confound, stated so nobody quotes a rigged comparison:** Sonnet pieces are *selected* for being
+  easier. Cross-tier quality comparison is confounded by construction. The only clean read is within
+  one class of work, before and after it moved.
+- **Reversal, one step:** stop passing `model` at dispatch. The next spawn inherits the session model.
+  No file to revert, no state to unwind.
