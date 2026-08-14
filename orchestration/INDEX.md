@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c9a061d0`: 992 tools, 157 reference
+so it cannot drift. Generated at `db5ebf3d`: 994 tools, 157 reference
 items, 204 pieces in flight.
 
 Its purpose is to stop 204+ concurrent agents each paying separately to discover the
@@ -886,7 +886,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 37
+### `tools/render/` — 38
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/consumption-sweep.mjs` — **no header comment**
@@ -923,6 +923,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30e-kit-gate.mjs` — W1-30E — the offline gates for the settlement kit, each with a null control.
 - `tools/render/w1-30e-roof-extent.mjs` — **no header comment**
 - `tools/render/w1-30e-street-enclosure.mjs` — **no header comment**
+- `tools/render/w1-thorn-quay-consumption.mjs` — **no header comment**
 - `tools/render/w1-thorn-roof-census.mjs` — **no header comment**
 - `tools/render/w1-thorn-shoreline.mjs` — **no header comment**
 
@@ -996,7 +997,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 31
+### `tools/visual/` — 32
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -1022,6 +1023,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shader-hook-collision.mjs` — **no header comment**
 - `tools/visual/w1-30-shadow-casters.mjs` — **no header comment**
+- `tools/visual/w1-30-surface-consumption.mjs` — **no header comment**
 - `tools/visual/w1-30-surface-orphan-census.mjs` — **no header comment**
 - `tools/visual/w1-30-terrain-acne-ab.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
@@ -1233,7 +1235,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **276 tools have no header comment**, so nobody can tell what they do without
+> **278 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1411,6 +1413,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-DOOR-YAW-SWEEP` | ? | collect the three in-game sweep arms; run door-yaw-consume for CONSUMPTION + screenshots;  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` |
+| `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole prov | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
+| `W1-BUILDING-OVERLAP-CENSUS` | census-done-falsifier-answered-fix-in-progress | Apply the 7-value translation, re-measure, run delete-the-fix on a copy, build tools/check | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` `tools/world/building-overlap-census.mjs` |
 | `W1-THORN-PLATES-C2` | in-progress | Quay vocabulary (reused parts placed at the MEASURED waterline, not on dry ground), the th | `orchestration/status/W1-THORN-PLATES-C2.json` `game/src/render/lib/kits.js` `game/src/render/exterior.js` `tools/render/w1-thorn-roof-census.mjs` `tools/visual/w1-thorn-core12.sh` `reports/thorn-plates/roof-census-after.json` |
 | `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
 | `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
@@ -1418,11 +1423,8 @@ work is the difference between resuming and starting over.
 | `W1-UIX08-dialogue-window` | built-probe-running | finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` `game/src/ui/surface.js` `game/src/ui/system.js` |
 | `plan-review3-w1-dlg-topic-web` | done | none — the plan is build-ready. Dispatch the builder per §8; steps A-E, rows A1/A1b/A2/A5/ | `orchestration/plans/W1-DLG-TOPIC-WEB.md` `orchestration/status/plan-review3-w1-dlg-topic-web.json` |
 | `AUDIT-CONSUMPTION-CENSUS` | ? | none for this task — census complete. Follow-up work (not done here, per 'do not fix the o | `reports/consumption-census/2026-08-14-census.md` `tools/metrics/consumption-census.mjs` `orchestration/status/AUDIT-CONSUMPTION-CENSUS.json` |
-| `W1-BUILDING-OVERLAP-CENSUS` | starting | Read HAZARDS.md, RULING-D1-BUILDING-OVERLAP.json, reports/opening-frame/2026-08-14-opening | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `OPENING-FRAME` | done-and-banked |  | `orchestration/status/OPENING-FRAME.json` `game/src/character/scene.js` `game/src/engine.js` `game/src/render/places.js` `tools/harness/opening-frame.mjs` `tools/harness/opening-capture.mjs` |
-| `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) READ `reports/w1-map-defects-r2/phone-leg.log.txt` AND  | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
-| `W1-DOOR-YAW-SWEEP` | ? | in-game validation run on the 12 failing exits + a stratified spread; then delete-the-fix  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` `game/src/engine.js` |
 | `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |

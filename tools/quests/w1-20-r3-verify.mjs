@@ -273,7 +273,8 @@ if (!args['static-only'] && !args.staticOnly) {
         // each carry a REFUSAL resolution that deliberately does not empty the chair —
         // `Q-LEDG-14`'s journal says so out loud, *"that is not a wall, it is a fee"* — so a
         // driver that takes the first available resolution measures the refusal, not the ladder.
-        raises: (q.resolutions || []).map((r) => ({ id: r.id, flags: (((r.consequences || {}).world_flags) || []).filter((w) => LADDER_FLAGS.has(w)) })) }))
+        raises: (q.resolutions || []).map((r) => ({ id: r.id, flags: (((r.consequences || {}).world_flags) || []).filter((w) => LADDER_FLAGS.has(w)) })),
+        reveals: (((q.deceit || {}).revealed_by) || []).map((r) => r.id) }))
       .sort((a, b) => a.min_rank - b.min_rank);
   }
 
@@ -343,6 +344,16 @@ if (!args['static-only'] && !args.staticOnly) {
           let opened = null;
           try { opened = H.questOpen(qid); } catch (e) { played.push({ quest: qid, open_error: String(e).slice(0, 120) }); continue; }
           if (!opened || opened.ok !== true) { played.push({ quest: qid, refused: opened && opened.reason }); continue; }
+          // THE KNOWLEDGE GATE, satisfied through `QuestEngine.reveal()` — and this IS a poke, said
+          // out loud. `RI-JRN07` M-Q14 makes `requires_knowing` real: on the Assize and the
+          // Xul-Aneekh EVERY resolution that empties the chair is gated on a truth the player
+          // learns from a person, and the first run of this tool reported those two lines capped
+          // at rank 6 for exactly that reason. Granting the reveals here separates "the ladder has
+          // no route" (a build defect, which is what this tool is for) from "the probe never went
+          // and talked to anybody" (its own location). WHETHER THE DISSENTER CAN BE WALKED UP TO
+          // IS NOT MEASURED HERE and is a live open finding — `W1-20-r2` records that the sixteen
+          // `quest-witnesses.json` records are absent from `game/data/index.json`.
+          for (const rev of o.reveals || []) { try { H.questReveal(qid, rev); } catch { /* not all are declared on this quest */ } }
           const res = H.questResolutions(qid) || [];
           const raisers = new Set((o.raises || []).filter((r) => r.flags.length).map((r) => r.id));
           const pick = res.find((r) => r.available && raisers.has(r.id)) || res.find((r) => r.available) || res[0];

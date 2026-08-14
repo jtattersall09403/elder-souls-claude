@@ -263,7 +263,13 @@ export function loadTopicRecordsAsRead() {
       if (!t || typeof t.id !== 'string') continue;
       const cur = byId.get(t.id) || { id: t.id, infos: [], files: [] };
       if (cur.name === undefined && typeof t.name === 'string' && t.name) cur.name = t.name;
-      for (const info of t.infos || []) cur.infos.push({ ...info, _file: f });
+      // `_file` and `_idx` are the way back to the byte on disk: `_idx` is the info's index inside
+      // THIS file's record, which is what an editor has to address, while the position in
+      // `cur.infos` is the index in the MERGED record, which is what the player's reader sees and
+      // what `visibility.tsv`'s `info_id` column reports. 92 of the 470 ids are declared in more
+      // than one file, so the two indices differ for 38% of the corpus and conflating them edits
+      // the wrong sentence.
+      (t.infos || []).forEach((info, ii) => cur.infos.push({ ...info, _file: f, _idx: ii }));
       cur.files.push(f);
       byId.set(t.id, cur);
     }

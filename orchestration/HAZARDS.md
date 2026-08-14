@@ -66,6 +66,33 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 11. A shared tree moves under every experiment — freeze the arms, don't guard them
+
+**Measured today: four different agents changed four files under `game/` in 45 seconds.** That is the
+normal state of this box, not a bad moment.
+
+So any browser experiment that serves its arms from the live repo is being run against a moving target,
+and one of its arms will differ from another for reasons that have nothing to do with the thing under
+test. This has already voided a real experiment — the fog control's source changed *between two of its
+own arms*, and the run's `pass` was computed across a discontinuity nobody noticed.
+
+**The obvious remedy is a guard, and the obvious remedy is wrong.** An agent built a `pinned-tree`
+check that aborts a run if the tree moves. It works — and it aborted **both** of its real runs, neither
+time because of the deliberate test perturbation, both times because siblings were simply working. A
+guard that fires on every honest run is a guard people switch off, and then the protection is worth
+less than nothing because everyone believes it is on.
+
+**Freeze by construction instead.** Serve **every** arm from its own `control-clone`, not just the
+sabotage arms. Then the tree cannot move during the experiment, because the experiment is not reading
+the tree. The half-measure is the trap: `fog-control.mjs` served its `head` arm from the live repo
+while serving its sabotage arms from frozen clones — so the one arm that mattered most was the only one
+exposed to drift, and it is exactly the arm whose evidence turned out to be stale.
+
+**The general rule:** when the environment is shared and mutable, prefer *making the variable constant*
+over *detecting that it changed*. A detector on a genuinely noisy input produces alarms you will learn
+to ignore. This is the same family as §8's arm-to-arm image diffs — the answer there was also to stop
+comparing across a noisy axis rather than to build a better comparison.
+
 ## 10. `pkill -f headless_shell` is a fleet-wide kill, not a cleanup — kill by PID
 
 An agent cleaning up **its own** stalled browser ran `pkill -9 -f headless_shell`. The pattern matches
