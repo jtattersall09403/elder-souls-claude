@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-MAP-DEFECTS-r2",
+  "chunk": "1 of 2",
+  "state": "in_progress",
+  "started": "2026-08-14",
+  "summary": "Four unowned findings from the W1-MAP-DEFECTS-r1 FAIL (4/10): (1) fog control missing its positive arm, (2) source changed mid-experiment, (3) map-probe S8/S12 tautologies + never run end-to-end, (4) ARBITRATION.md S35 superseded text with no amendment pointer. NOT ours: game/src/ui/system.js WALK_ORDER, tools/harness/walk-reachability.mjs, game/src/input/touch.js (live sibling agent).",
+  "findings": [
+    "WIP - nothing measured yet, status file written before reading per rule 1."
+  ],
+  "files_touched": [
+    "orchestration/status/W1-MAP-DEFECTS-r2.json"
+  ],
+  "files_claimed": [
+    "tools/harness/map-probe.mjs",
+    "reports/w1-map/",
+    "orchestration/ARBITRATION.md"
+  ],
+  "next_step": "Read verdict r1, HAZARDS, OWNER-DIRECTIVES; then re-run fog control with both arms."
+}

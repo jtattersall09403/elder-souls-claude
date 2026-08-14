@@ -169,6 +169,23 @@ async function phone() {
     await page.goto(h.url.replace(/\?.*$/, '') + '?mode=play', { waitUntil: 'load', timeout: 240000 });
     await page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, null, { timeout: 240000 });
     await page.evaluate(() => window.__HARNESS.ready());
+    // W1-MAP-DEFECTS r1 REMEDIATION — THE LINE THAT WAS MISSING, AND IT IS WHY THIS LEG HAD
+    // NEVER FINISHED. `bootPlay()` above caps the RENDER rate at 12 Hz and says in its own
+    // comment exactly why: `core/loop.js` warns that a continuously-rendering rAF "starves the
+    // compositor on a software rasteriser and page.screenshot() times out", and three runs of
+    // this tool lost the whole browser mid-walk before that cap went in. **The desktop leg got
+    // the cap and this one never did.** So the phone leg rendered every rAF at full rate on
+    // swiftshader: every screenshot came back FAILED, `settle()` burned its 30 s timeout waiting
+    // for two rAF ticks that were not coming, and the run died of old age at the `menu` tap —
+    // twice for the r1 critic (80 minutes, then a bounded retry), once for the r1 builder, and
+    // once more here on a box measured at 0.65 per core, which is what ruled the box out as the
+    // cause. It is an instrument defect, not a contention defect, and it had been hiding behind
+    // contention for two rounds.
+    //
+    // IT DOES NOT TOUCH WHAT IS BEING MEASURED. The fixed-step accumulator is untouched,
+    // `rafDrivesSim` is still true, and every tap still lands on a 60 Hz fixed step exactly as it
+    // does for a person — this is the render rate, not the simulation rate.
+    await page.evaluate(() => window.__HARNESS.setRenderRate(12));
     await page.waitForTimeout(1500);
     leg.touch_state_at_boot = await page.evaluate(() => window.__HARNESS.touchState());
     const layout = async () => h.page.evaluate(() => {

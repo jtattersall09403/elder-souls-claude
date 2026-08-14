@@ -231,6 +231,11 @@ row now carries:
 * `region_at_player` — from `getTerrainAt(x, z).region`, the position-derived `field.regionAt()`
   lookup that the ground colour, the fog and the ambience bed all actually use. This is the region
   the frame is a picture of.
+  **Proven live on hardware in this run**: `region_at_player` takes **13 distinct values** across
+  the 288 rows and agrees with the deck's own label for all eight settlements —
+  `blackwood` at Gideon, `stone-wastes` at Soulrest, `salt-hills` at Stormhold — while the cached
+  field is `western-rootlands` on every one of the 288. **240 of 288 rows carry
+  `region_mismatch: true`.**
 * `region_env_cached_see_V15` — the cached scenario field, renamed so V15 stays visible and
   measurable rather than hidden by its own fix. Nothing in the tree reads the old key, so the rename
   breaks nothing, and a key named "reported" is a key a reader trusts.
@@ -244,6 +249,54 @@ of metres before anything standing on it does"*. Both values are recorded and ne
 preferred.
 
 ---
+
+---
+
+## On hardware — 288 stills and 2,400 motion frames, and one thing it falsified
+
+RTX A5000, `ANGLE (NVIDIA, Vulkan 1.4.312)`, `HARDWARE — valid for appearance claims`, 960x540,
+seed 20260814, `full` profile: **288 stills, 0 red; 12 motion sequences, 2,400 frames, 0 red.**
+14.1 min, **$0.063**. Pod terminated, deletion confirmed by a subsequent API lookup. Frames in
+`reports/runpod-gpu/runs/deck-w1-30e-roof-fix/`, the eleven that carry the argument copied to
+`docs/shots/2026-08-14-w1-30e-kit-defects/`.
+
+**The approach shots are where the roof fix shows, and it shows plainly.** Compare
+`docs/shots/2026-08-14-w1-30de-critic/approach-helstrom__t1300__clear.jpg` with
+`docs/shots/2026-08-14-w1-30e-kit-defects/approach-helstrom__t1300__clear.jpg` — same camera, same
+hour, same weather. Before, every building in Helstrom is a wide pale cap with a sliver of wall
+underneath, and the critic's reading of it was *"the same wide hipped roof repeated across the whole
+town"*. After, the walls are the building: two-storey elevations with windows and timber framing,
+the shell domes sitting on them at a size that reads as a roof, and an eave line where the two meet.
+The uniformity the critic named was substantially the eave — eight metres of identical overhang on
+every building is a town of identical objects no matter what is underneath. Held across three hours
+and both weathers (`t0800`, `t1300`, `t1930`, `clear` and `rain` all captured and all consistent),
+which is the "many angles, many lights, not one still" bar Directive §2 sets.
+
+`street-helstrom` and `street-lilmoth` are proper street reads at 4–8 m — facades both sides,
+windows, mortar courses, a market canopy, stepping stones.
+
+### And the thing the hardware run falsified, which is a finding against my own brief
+
+**Soulrest's street shot is still enclosed, and `roof.shell` was not why.**
+`street-soulrest__t1300__clear` is the same enclosure after the fix as before it.
+
+Chasing it produced a clean negative result. A ray probe from the stand — 16 horizontal rays at eye
+height plus one straight up, and the same from the third-person camera's own point 4.9 m behind —
+run on the shipping tree **and on the delete-the-fix clone**, gives byte-identical answers for all
+eight settlements: **open sky over the player and over the camera at every one, in both arms**,
+nearest wall to the Soulrest camera 6.98 m. The roof was never over that stand.
+
+So the remediation report's §4 attribution of Soulrest to `roof.shell` was made with the wrong
+instrument. It listed *"meshes whose XZ bounding box contains the Soulrest stand"* and found
+`roof.shell 43.7 x 3.5 x 42.7 m`. **An axis-aligned bounding box on a rotated building is not the
+building**: a ~17 m plan turned 45 degrees has a 24 m AABB, and a 31 m one has 43 m. The roof defect
+it found is real — the delete-the-fix reproduces 1.97 exactly, and the approach frames show what it
+cost — but *Soulrest's street shot* is a different defect that happened to be standing next to it.
+
+**What encloses Soulrest is therefore still unknown**, and it is not in `buildSettlementExterior`'s
+output, because that is what the probe built. The next instrument is the one this whole report is an
+argument for: not another bounding box, but a ray cast from the camera that has actually been
+rendered. Recorded as open, not closed, and not claimed as fixed.
 
 ## What this could not do
 
@@ -261,6 +314,10 @@ preferred.
   design (`renderCivicFeature()`: *"a quay, vat or root gate should preserve its negative space"*).
   Unchanged by this work in all three arms including the legacy one; it is a pre-existing red in
   somebody else's column and it is not touched.
+* **Soulrest's street shot is not fixed and its cause is not identified.** It was handed over as a
+  `roof.shell` consequence; the ray probe says it is not that, in either arm. Named as open above.
+* **Gideon's ground is still black in the new frames**, exactly as expected — nothing here changed
+  it, and `street-gideon__t1300__clear.jpg` in this run is a picture of a diagnosis, not of a fix.
 * **Lilmoth's approach row and Ruling E1 were left alone**, as instructed.
 * **No arm-to-arm image diff is offered anywhere in this report.** `HAZARDS.md` §8: two frames that
   look identical to a person differed on 77% of pixels at a foliage site, so a between-arm pixel

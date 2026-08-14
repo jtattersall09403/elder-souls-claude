@@ -1,0 +1,64 @@
+{
+  "task_id": "SPLIT-TRIAL-DISPATCH",
+  "title": "The split trial's arms, dispatched — three pieces split on purpose, one matched marathon",
+  "state": "dispatched",
+  "owner": "orchestrator",
+  "dispatched_at": "2026-08-14T15:50:00Z",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "what": "SPLIT-TRIAL.json's next_step named the one thing the trial could not do for itself: dispatch the arms. tools/cost.mjs --split-trial reported planned_split = 0 across 478 subagents and returned NOT YET DISPATCHED, every 'after' column empty by construction rather than by measurement. This file records the dispatch. The instrument returns UNDERPOWERED below six planned-split agents, so three pieces were split, not one.",
+
+  "orchestrator_ruling": {
+    "id": "C4",
+    "reversible": true,
+    "ruling": "The split trial's arms are filled with REAL WAVE-1 WORK, not synthetic work. Three long pieces that had to be dispatched anyway are dispatched as two sequential agents each; a fourth piece of comparable length and role is dispatched as one marathon agent. The trial therefore costs nothing beyond the work itself.",
+    "reasoning": "A synthetic arm would have measured a synthetic handoff. The whole quantity under test is what a real status file is worth to a real successor, and only real work produces one. It also means a REVERT verdict costs nothing already spent: the work lands either way, and only the dispatch shape changes.",
+    "what_would_overturn_it": "Tripwire 1 above $2.00 on the split arm — i.e. a planned handoff costing more to orient against than the $0.4302 accidental baseline by enough to threaten the $6.264 break-even. CH-07's falsifier currently predicts the opposite (a richer written record orients $0.49 cheaper, p=0.072, with the maturity confound pushing the other way), but that is a direction on 21 successors, not a size, and it measures a note's bytes and never its quality."
+  },
+
+  "split_arm": [
+    {
+      "piece": "RI-VIS06-PROTOCOL-A",
+      "marker": "chunk 1 of 2",
+      "why_this_piece": "The highest-value outstanding item in the project. RI-VIS06 caps FIDELITY at 7 for any wave in which zero Protocol A pairs ran; the visual tree targets >= 7.0, so it is pinned at exactly its own bar and cannot pass. A previous attempt died at the compaction boundary with the pod's HTTPS job-poll timing out mid-render (tools/runpod/lib/http-transport.mjs:63) after reaching real hardware (RTX 3090, logged HARDWARE).",
+      "seam": "chunk 1 builds the sealed, leak-checked pairs; chunk 2 runs the five blind judges and writes the verdict. The seam is clean because the sealed key is the handoff — chunk 2 must not read it until judgements are collected, so the split enforces the blinding rather than merely surviving it.",
+      "chunk_2_dispatched": false
+    },
+    {
+      "piece": "W1-THORN-PLATES",
+      "marker": "chunk 1 of 2",
+      "why_this_piece": "Thorn is where the game actually starts (SPAWN-TRUTH, settled today by playing it) and has n=0 composition-valid art-direction reference plates — the one town every player's first minutes happen in is the one nobody has a picture to build against.",
+      "seam": "chunk 1 establishes the target and measures the gap; chunk 2 builds against it. The seam is the plate set plus the named largest gap.",
+      "chunk_2_dispatched": false
+    },
+    {
+      "piece": "W1-MAP-DEFECTS-r2",
+      "marker": "chunk 1 of 2",
+      "why_this_piece": "The map critic returned FAIL 4/10. Its biggest finding (the walk order pushing the journal off the forward walk) is owned by a live agent; the other four findings are unowned — a fog control whose positive arm is missing and whose cited frame predates the run by 21 seconds, a source tree that changed mid-experiment, two tautological probe assertions whose counters increment on adjacent lines, and ARBITRATION S35 left standing with no pointer to the amendment that struck it.",
+      "seam": "chunk 1 takes the four findings as far as ~100 requests; chunk 2 picks up from the status file. Deliberately a looser seam than the other two — that variety is wanted, because a trial of only clean seams would measure the seam and not the split.",
+      "chunk_2_dispatched": false
+    }
+  ],
+
+  "marathon_arm": [
+    {
+      "piece": "W1-DOOR-YAW-SWEEP",
+      "why_matched": "Same wave, same builder role, comparable length: a per-row sweep across 115 interiors in both directions with a before, a delete-the-fix and hardware capture. Its predecessor ran 447 tool uses over 78 minutes on the same defect, so the length is measured rather than guessed.",
+      "instruction_given": "Told explicitly not to hand off early. The agent needs no knowledge of the experiment beyond that."
+    }
+  ],
+
+  "honest_limits": [
+    "ROLE MIX IS NOT PERFECTLY MATCHED, and saying so is cheaper than discovering it later. Protocol A's chunk 1 is closer to an instrument-builder than to a world builder; Thorn's chunk 1 is closer to a critic. The marathon arm is a pure builder. If --split-trial's verdict is close, that mix is the first confound to interrogate, not the last.",
+    "THREE PIECES IS SIX PLANNED-SPLIT AGENTS ONLY IF ALL THREE CHUNK 2s ARE DISPATCHED. As of this file, zero chunk 2s exist — they are dispatched on each chunk 1's completion, off its status file. Until then the instrument will still return UNDERPOWERED, and it is correct to.",
+    "The ~100-request stop is a target, not a mechanism. Nothing enforces it; an agent that overruns has weakened its own arm, and the instrument cannot tell that from a piece that was simply longer. Read request counts per arm alongside the verdict."
+  ],
+
+  "next_step": "On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chunk 2 with a brief that points at that file and almost nothing else (rule 18) and whose description contains `chunk 2 of 2`. When all three chunk 2s have run and the marathon has finished, run `node tools/cost.mjs --split-trial` and read the verdict. Any one tripwire fires the revert; the reversal is one line of the brief plus `git checkout` on tools/cost.mjs. Separately and cheaply: --split-trial's tripwire 3 reads corpus/90-verdicts directly for critic find-rate because no instrument computed it — that belongs in tools/scores.mjs beside the scores, with a fixture, and whoever owns that file should take it.",
+
+  "files_claimed": [
+    "orchestration/status/SPLIT-TRIAL-DISPATCH.json"
+  ],
+  "files_touched": [
+    "orchestration/status/SPLIT-TRIAL-DISPATCH.json"
+  ]
+}

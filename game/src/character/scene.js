@@ -66,6 +66,88 @@ export function placeOfNode(node) {
   return (node && node.place) || 'writ-house';
 }
 
+/* ---- THE FRAME AT HAND-BACK -------------------------------------------------------------------
+ *
+ * THE DEFECT. The two poses above are CONVERSATION poses and they are correct as conversation
+ * poses: the camera sits off the line to the person talking so she is beside your head rather
+ * than behind it. Nothing re-aimed them when the scene ended. So at the instant the last census
+ * answer resolved and control came back, the player was left on `writ-house`'s pose — camera yaw
+ * 350, pitch -3, pointed over the Warden-Scribe's desk into the wall of eleven years of other
+ * people's reed-cases — and that is the FIRST FRAME OF THE GAME. Measured and photographed:
+ * `docs/shots/2026-08-14-spawn-yaw/hw-desktop-002-writ-house-done.png`, and carried as an open
+ * item in `orchestration/status/SPAWN-YAW.json`'s `not_done` list, because the door-exit fix in
+ * `sim/settlement.js` corrects which way you face when you LEAVE a building and this is the frame
+ * BEFORE any door is used.
+ *
+ * WHAT IT SHOULD BE, and why. Morrowind's opening is its strongest convention and it is the same
+ * beat three times running — the ship's hold, the census office, the excise office: each one hands
+ * you back your body inside a confined space with the way out in the frame, and the world is the
+ * reward for walking through it. The reference plates
+ * (`corpus/70-visual/refs/morrowind/REF-A12b/`) are interface captures rather than that beat, so
+ * they do not settle it; what settles it is that a first frame with no exit in it has to be
+ * recovered from by flailing the stick, and this game has no tutorial prompt and wants none.
+ * So: **the way out, from where you are standing, with the room around it.**
+ *
+ * WHERE THE WAY OUT IS. Not `continuity.interior_spawn` — that is where `useDoor()` PUTS you and
+ * on the writ house it is `[0, 0, -4.6]`, hard against the -z wall, which is 11 m from the drawn
+ * door and on the opposite side of the room. (That contradiction is the same one
+ * `sim/settlement.js#exitFacing()` documents on 109 of the 115 records and it is not fixed here.)
+ * The doorway is cut by `render/interior.js#interiorShellPlan()` at the CENTRE of the wall named
+ * by `continuity.entry_side`, and that plan is the one the collision shell is built from too, so
+ * it is the only answer that is true of both the pixels and the physics. The arithmetic is
+ * restated here rather than imported because `character/` must not depend on `render/`.
+ *
+ * The yaw convention is the rig's: `sim/camera.js#viewBasis()` builds forward as
+ * `[sin(yaw), ., cos(yaw)]`, so yaw 0 looks down +z and 90 down +x — and `south` is +z in this
+ * build, which is the opposite of the intuition and is exactly why `entrySideLocal()` in
+ * `render/exterior.js` writes `wz = 1` for it.
+ */
+
+/** The local-frame centre of the doorway `interiorShellPlan()` cuts, or null. */
+export function doorwayLocal(rec) {
+  const bm = rec && rec.bounds_m;
+  if (!bm || !Array.isArray(bm.x) || !Array.isArray(bm.z)) return null;
+  const side = ((rec.continuity && rec.continuity.entry_side) || 'south');
+  const cx = (bm.x[0] + bm.x[1]) / 2, cz = (bm.z[0] + bm.z[1]) / 2;
+  const y = (bm.y && Number.isFinite(bm.y[0]) ? bm.y[0] : 0) + 1.05;   // half INTERIOR_DOOR_H
+  if (side === 'north') return { pos: [cx, y, bm.z[0]], side };
+  if (side === 'south') return { pos: [cx, y, bm.z[1]], side };
+  if (side === 'west') return { pos: [bm.x[0], y, cz], side };
+  if (side === 'east') return { pos: [bm.x[1], y, cz], side };
+  return null;
+}
+
+/**
+ * Which way to turn the body AND the camera when the census hands control back.
+ *
+ * @param {object} rec    the interior record the scene ends in (`game/data/world/interiors/**`)
+ * @param {number[]} from the local position the body is standing at
+ * @returns {{yaw_deg:number, pitch_deg:number, door_local:number[], range_m:number, source:string}|null}
+ */
+export function handBackFraming(rec, from) {
+  const d = doorwayLocal(rec);
+  if (!d || !Array.isArray(from)) return null;
+  const dx = d.pos[0] - from[0], dz = d.pos[2] - from[2];
+  const range = Math.hypot(dx, dz);
+  // A body standing IN its own doorway has no bearing to it; fall back to looking along the wall's
+  // outward normal, which is the same direction the door leads, and say which rule answered.
+  if (range < 0.75) {
+    const out = d.side === 'north' ? 180 : d.side === 'south' ? 0 : d.side === 'east' ? 90 : 270;
+    return { yaw_deg: ((out % 360) + 360) % 360, pitch_deg: HAND_BACK_PITCH_DEG, door_local: d.pos, range_m: +range.toFixed(3), source: 'entry_side_outward' };
+  }
+  const yaw = Math.atan2(dx, dz) * 180 / Math.PI;
+  return { yaw_deg: ((yaw % 360) + 360) % 360, pitch_deg: HAND_BACK_PITCH_DEG, door_local: d.pos, range_m: +range.toFixed(3), source: 'towards_doorway' };
+}
+
+/**
+ * The pitch the frame is handed back at, and it is not a taste call: `CAMERA_CONST`'s
+ * `recentre_pitch_target_deg` is -6.0, i.e. the pitch the rig's own auto-recentre walks back to
+ * whenever the player moves. Handing back at any other pitch means the first thing the opening
+ * shot does on the first press of the stick is drift, which is the same class of defect as the
+ * 1.5°/frame yaw grind the door fix exists to avoid.
+ */
+export const HAND_BACK_PITCH_DEG = -6;
+
 // ---------------------------------------------------------------------------------------
 // The surface: selection state and the closed-action-set driver.
 // ---------------------------------------------------------------------------------------

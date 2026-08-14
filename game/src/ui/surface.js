@@ -80,6 +80,24 @@ export const KINDS = new Set([
   // dial tick, a bearing pin, a place mark — would be the compass "acquiring a single tick for
   // the active quest" that RI-UIX02 §A predicts by name, and would need this line edited.
   'bearing_dial',
+  // W1-UIX08 / RI-UIX08 §A5 and §A6. The two things the dialogue window is made of that no
+  // existing kind can say, added by the same deliberate route `map_terrain` and `bearing_dial`
+  // took: the name each would naturally have taken stays in FORBIDDEN_KINDS below, untouched, so
+  // `ui-census.mjs`'s forbidden-name sweep still reads 0 after this window exists exactly as it
+  // did before. An implementation that had to shorten the forbidden list to draw its window would
+  // be telling on itself.
+  //
+  // `disposition_meter` is NOT `progress_bar`. RI-UIX01 §B forbids `progress_bar` and RI-UIX06 G8
+  // forbids "progress bars with a percentage numeral"; both are about a TASK COMPLETING. This is a
+  // relationship statistic read out of the simulation, RI-UIX08 §A5 requires it be shown as `N/100`
+  // and §D4 requires it never be a word, and RI-UIX04 owns what moves it. There is exactly one of
+  // these and it exists only while a conversation is open.
+  //
+  // `dialogue_exit` is NOT a `button` and there is no `button()` helper in `ui/chrome.js` — G9
+  // forbids the OK/Cancel pair and RI-UIX06 §A gives bone to buttons as a MATERIAL. RI-UIX08 §D5:
+  // "Goodbye is a button, at the foot of the topic column, the full width of that column. It is
+  // the only way out that the window advertises." One per window, and nothing else may use it.
+  'disposition_meter', 'dialogue_exit',
 ]);
 
 /**

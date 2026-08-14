@@ -115,7 +115,33 @@ export function buildWritHouse(root, mats) {
   const floor = box(root, mats.stone, 11.0, 0.3, 13.0, 0, -0.15, 0);
   floor.castShadow = false;
   box(root, mats.wall, 11.0, 4.0, 0.35, 0, 2.0, -6.5);
-  box(root, mats.wall, 11.0, 4.0, 0.35, 0, 2.0, 6.5);
+  // ---- THE WAY OUT, and it was not drawn ------------------------------------------------------
+  //
+  // This wall was one unbroken 11 m slab and the room therefore had NO DOOR IN IT AT ALL — four
+  // solid walls and a ceiling. The record says otherwise and so does the physics:
+  // `writ-house.json`'s `continuity.entry_side` is `"south"`, `render/exterior.js#entrySideLocal()`
+  // maps south to **+z** (`wz = 1`, which is the opposite of the intuition and is why it is
+  // written down), the exterior door stands on the building's +z face at world
+  // `[3806.25, 0, 908.5]`, and `render/interior.js#interiorShellPlan()` — the plan the shipped
+  // CollisionCell is built from — cuts a 1.40 x 2.10 m doorway at the centre of exactly this wall.
+  // So the collision shell has an opening here, the world has a door here, and until now the
+  // pixels had a wall.
+  //
+  // That is the other half of the opening-shot defect. The census hands the body back facing the
+  // way out (`Engine._censusHandBack()`), and the way out has to be something a player can SEE.
+  // The opening at 1.40 x 2.10 and centred at x = 0 is not a taste call: it is
+  // `INTERIOR_DOOR_W`/`INTERIOR_DOOR_H` and the shell plan's own placement, so the drawn opening
+  // and the collided opening are the same opening rather than two that drift apart.
+  {
+    const DW = 1.40, DH = 2.10;                       // interior.js INTERIOR_DOOR_W / _DOOR_H
+    const seg = (11.0 - DW) / 2;                      // the wall either side of it
+    for (const sign of [-1, 1]) box(root, mats.wall, seg, 4.0, 0.35, sign * (DW / 2 + seg / 2), 2.0, 6.5);
+    box(root, mats.wall, DW, 4.0 - DH, 0.35, 0, DH + (4.0 - DH) / 2, 6.5);   // the lintel over it
+    // The leaf. Shut, and a different material from the wall, because a doorway drawn as a hole
+    // in a dark room reads as a hole and not as a door — RI-JRN01 M5's frame has to say "there is
+    // a way out of here" without a prompt saying so.
+    box(root, mats.bark, DW - 0.10, DH - 0.08, 0.10, 0, (DH - 0.08) / 2, 6.42);
+  }
   box(root, mats.wall, 0.35, 4.0, 13.0, -5.5, 2.0, 0);
   box(root, mats.wall, 0.35, 4.0, 13.0, 5.5, 2.0, 0);
   const ceil = box(root, mats.roof, 11.0, 0.3, 13.0, 0, 4.0, 0);
@@ -138,13 +164,28 @@ export function buildWritHouse(root, mats) {
     t.rotation.z = Math.PI / 2; t.rotation.y = 0.2 + i * 0.06;
     t.castShadow = true; root.add(t);
   }
-  // The wall of cases behind her: eleven years of other people.
-  for (let r = 0; r < 4; r++) {
-    box(root, mats.bark, 8.2, 0.10, 0.44, 0, 1.0 + r * 0.78, 5.9);
-    for (let i = 0; i < 26; i++) {
-      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.40, 6), r % 2 ? mats.reed : mats.bark);
-      t.position.set(-3.9 + i * 0.31, 1.27 + r * 0.78, 5.9);
-      t.castShadow = true; root.add(t);
+  // The wall of cases behind her: eleven years of other people. In TWO RUNS, with the doorway
+  // between them.
+  //
+  // They were one 8.2 m run of shelving standing 0.6 m in front of the door wall, four rows high,
+  // dead centre — so even once the doorway above is cut, the exit is behind a shelf. That is
+  // literally the frame the owner saw: `hw-desktop-002-writ-house-done.png` is this shelving,
+  // corner to corner, because the camera was pointed at the wall the door is in and the shelving
+  // was in front of it. The fiction is unchanged (it is still eleven years of other people's
+  // reed-cases, still behind her, still the same 52 cases per row's worth of room-width); what
+  // changes is that the room's own exit is not stored in front of.
+  {
+    const GAP = 2.10;                                  // 1.40 m doorway + 0.35 m of frame each side
+    const run = (8.2 - GAP) / 2;                       // 3.05 m of shelving each side of it
+    for (let r = 0; r < 4; r++) {
+      for (const sign of [-1, 1]) box(root, mats.bark, run, 0.10, 0.44, sign * (GAP / 2 + run / 2), 1.0 + r * 0.78, 5.9);
+      for (let i = 0; i < 26; i++) {
+        const x = -3.9 + i * 0.31;
+        if (Math.abs(x) < GAP / 2) continue;
+        const t = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.40, 6), r % 2 ? mats.reed : mats.bark);
+        t.position.set(x, 1.27 + r * 0.78, 5.9);
+        t.castShadow = true; root.add(t);
+      }
     }
   }
   // The waiting bench, along the wall you came in past.

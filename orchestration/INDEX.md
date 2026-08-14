@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `8b1c9952`: 969 tools, 157 reference
-items, 190 pieces in flight.
+so it cannot drift. Generated at `f8b3e4c8`: 969 tools, 157 reference
+items, 194 pieces in flight.
 
-Its purpose is to stop 190+ concurrent agents each paying separately to discover the
+Its purpose is to stop 194+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1382,6 +1382,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
+| `W1-DOOR-YAW-SWEEP` | ? | read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state | `orchestration/status/W1-DOOR-YAW-SWEEP.json` |
+| `W1-MAP-DEFECTS-r2` | in_progress | Read verdict r1, HAZARDS, OWNER-DIRECTIVES; then re-run fog control with both arms. | `orchestration/status/W1-MAP-DEFECTS-r2.json` |
+| `W1-THORN-PLATES` | in_progress | WIP - reading orientation files. | `orchestration/status/W1-THORN-PLATES.json` |
+| `RI-VIS06-PROTOCOL-A` | running | in progress | `orchestration/status/RI-VIS06-PROTOCOL-A.json` |
 | `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
@@ -1395,7 +1400,6 @@ work is the difference between resuming and starting over.
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
 | `W1-30DE-critic` | verdicts-filed-BOTH-FAIL-D-3.0-E-4.0-against-gate-7.0 | Done. Two rounds are owed to the builders (the per-part census for D, the roof gable flag  | `corpus/90-verdicts/wave1/W1-30D-r1.json` `corpus/90-verdicts/wave1/W1-30D-r1.md` `corpus/90-verdicts/wave1/W1-30E-r1.json` `corpus/90-verdicts/wave1/W1-30E-r1.md` `corpus/90-verdicts/wave1/artifacts/w1-30de/` `docs/shots/2026-08-14-w1-30de-critic/` |
-| `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-30C-critic` | ? | orchestrator: dispatch a fresh judge for the naive grouping pack at corpus/90-verdicts/wav | `orchestration/status/W1-30C-critic.json` `corpus/90-verdicts/wave1/W1-30C-r1.md` `corpus/90-verdicts/wave1/W1-30C-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-30c/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |
 | `W1-30S-critic` | verdict_filed | W1-30A to close F3 (relocate the VFX prepass behind registerPrePass) and F4 (publish an as | `orchestration/status/W1-30S-critic.json` `corpus/90-verdicts/wave1/W1-30S-r1.md` `corpus/90-verdicts/wave1/W1-30S-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-30S-r1/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |

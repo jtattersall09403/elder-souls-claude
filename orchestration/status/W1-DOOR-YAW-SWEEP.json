@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-DOOR-YAW-SWEEP",
+  "status": "in_progress",
+  "started": "2026-08-14",
+  "headline": "Door-yaw sweep across all 115 interiors, both directions, with before/after and delete-the-fix",
+  "could_not_do": [
+    "nothing yet - just started"
+  ],
+  "next_step": "read HAZARDS.md, OWNER-DIRECTIVES, prior agent status file, settlement.js current state",
+  "findings": [],
+  "files_touched": [
+    "orchestration/status/W1-DOOR-YAW-SWEEP.json"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-DOOR-YAW-SWEEP.json",
+    "game/src/sim/settlement.js",
+    "tools/harness/w1-door-yaw-sweep.mjs",
+    "reports/door-yaw/"
+  ]
+}

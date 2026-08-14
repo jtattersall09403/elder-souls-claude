@@ -1,28 +1,15 @@
 {
   "task_id": "RI-VIS06-PROTOCOL-A",
-  "title": "RI-VIS06 Protocol A — the blind paired fidelity comparison, run for the first time",
+  "chunk": "1 of 2",
   "state": "running",
-  "started_at": "2026-08-14T13:35:00Z",
-  "branch": "codex/wave1-build-experiment",
-  "what": "Runs RI-VIS06 Protocol A as written: fresh GPU frames of ours vs profile-matched plates from corpus/70-visual/refs/modern/character_closeup/, subject-neutral 512x512 native crops, sealed key, five fresh blind judges, verbatim prompt. Unpins the FIDELITY cap of 7 that zero-pairs-run imposes on the whole visual tree.",
+  "started": "2026-08-14",
+  "note": "PREVIOUS RUN'S state:running WAS STALE (it died on an HTTPS job-poll timeout). This entry supersedes it. Chunk 1 builds sealed, leak-checked image pairs ONLY. It does not judge and does not write a verdict.",
+  "findings": [],
+  "files_touched": ["orchestration/status/RI-VIS06-PROTOCOL-A.json"],
   "files_claimed": [
-    "orchestration/status/RI-VIS06-PROTOCOL-A.json",
-    "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md",
-    "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
     "tools/blind/image-leakcheck.mjs",
-    "tools/blind/make-image-pair.mjs",
-    "reports/blind/protocol-a-w1/",
-    "docs/shots/2026-08-14-protocol-a/"
+    "tools/blind/deck-protocol-a.json",
+    "reports/blind/protocol-a-w1/"
   ],
-  "files_touched": [],
-  "reads_only": [
-    "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
-    "corpus/70-visual/RI-VIS09-reference-image-set.md",
-    "corpus/70-visual/refs/modern/character_closeup/",
-    "tools/visual/deck.json"
-  ],
-  "notes": [
-    "Does NOT edit tools/visual/deck.json (owned by W1-30V) — capture runs against a private deck file passed with --deck.",
-    "Does NOT edit RI-VIS06 or RI-VIS09; protocol corrections are reported as owed amendments, not applied."
-  ]
+  "next_step": "in progress"
 }

@@ -104,7 +104,7 @@ const num10 = (v) => (Number.isFinite(Number(v)) ? Number(v) : 10);
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { movableTerms as dlgMovableTerms, persuade, VERBS as PERSUADE_VERBS } from './sim/dialogue/disposition.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
-import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
+import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode, handBackFraming } from './character/scene.js';
 
 /** Lines of the writ visible at once in the reader. The document scrolls; it never clips. */
 const WRIT_WINDOW = 9;
@@ -1034,6 +1034,11 @@ export class Engine {
     // W1-07: the people and the things. A state file that names an interior and puts nobody
     // in it is the round-1 failure in data form.
     this.censusPlace = null;
+    // What `_censusHandBack()` did when the scene last ended, or null. Declared here so the key
+    // exists before anyone has finished character creation — a field that springs into existence
+    // on first use makes the object's key set depend on the session's history, which this
+    // codebase has been bitten by often enough to have a rule about it.
+    this.censusHandBack = null;
     for (const n of patch.npcs || []) this.spawnNPC(n);
     // ---- W1-GIVER-PRESENCE. The town, not just the scene. ---------------------------------
     //
@@ -3722,8 +3727,99 @@ export class Engine {
     // is inside the Writ House, and the camera is in whichever of the two the node is in.
     const node = this.census.node();
     if (node) this._censusPlace(placeOfNode(node));
+    // ... and when there is no next node, the scene is over and the player has the body back.
+    // That frame is the opening shot of the game and until now nothing aimed it. See below.
+    else this._censusHandBack();
     this._censusSync();
     return this.getCensusState();
+  }
+
+  /**
+   * THE OPENING SHOT. Turn the body and the camera to the way out, at the instant the census
+   * stops taking input and the player has the stick.
+   *
+   * WHY THIS IS NOT COVERED BY THE DOOR FIX. `sim/settlement.js`'s `exitFacing()`/`entryFacing()`
+   * decide which way a body faces after `leaveInterior()`/`useDoor()` teleports it. This frame is
+   * BEFORE any door: the census ends with the body standing at `CENSUS_PLACES['writ-house']`'s
+   * `player_pos`, in the room, with the camera still on the conversation pose it used to keep the
+   * Warden-Scribe beside your head. Photographed, at 1280x720 on an NVIDIA L4:
+   * `docs/shots/2026-08-14-spawn-yaw/hw-desktop-002-writ-house-done.png` — reed-case shelving,
+   * corner to corner, no exit anywhere in it.
+   *
+   * ALL THREE YAWS, AND THAT IS THE WHOLE TRAP. Player facing is written in three places and
+   * writing one of them is a fix that is silently inert:
+   *
+   *   `combat.player.yaw`  the AUTHORITY. `combat-bridge.js#mirror()` runs `p.yaw = b.yaw` at the
+   *                        top of every step, so `sim.player.yaw` is a MIRROR and a yaw written
+   *                        only there survives exactly one frame.
+   *   `sim.player.yaw`     the mirror. Written anyway, so the value is right on the same frame
+   *                        rather than one step later — every single-frame probe reads this one.
+   *   `sim.camera.yaw`     SEPARATE, and it is the one the player actually sees. Auto-recentre
+   *                        walks the camera towards the body at `recentre_yaw_clamp_deg_per_frame`
+   *                        = 1.5°/frame, so leaving it out turns a 7° correction into 5 frames and
+   *                        a 150° correction into a hundred — a hundred frames of the wall sliding
+   *                        away, which is the complaint rather than the fix.
+   *
+   * `sim/settlement.js`'s own header comment records this codebase hitting that trap twice. The
+   * NULL CONTROL for this change is therefore "body and mirror written, camera left alone", not
+   * "nothing written": it passes every state check anybody would think to write and shows the
+   * player the wall. `tools/harness/opening-frame.mjs` measures both arms.
+   *
+   * THE ARM IS RESET TOO. Snapping the yaw without re-solving the spring arm leaves the camera
+   * swinging round the pivot on the old arm length for the first frames of the shot. A scene
+   * boundary is exactly where a snap is correct — there is no continuity of view to preserve —
+   * and `_censusPlace()` already snaps both for the same reason. The writes are the same ones
+   * `_settleCamera()` makes, done inline rather than by calling it, because `_settleCamera()` is
+   * also the call `teleport()` makes and this one has to be safe on the deferred commit path.
+   */
+  _censusHandBack() {
+    const placeId = this.censusPlace || 'writ-house';
+    const place = CENSUS_PLACES[placeId];
+    const rec = this.data && this.data.interiors ? this.data.interiors[place ? place.interior : placeId] : null;
+    const p = this.sim.player;
+    const frame = handBackFraming(rec, [p.pos[0], p.pos[1], p.pos[2]]);
+    // Fail OPEN, exactly as `exitFacing()` does: a record that carries no bounds must not become
+    // a room the scene cannot hand back in. The old behaviour is the fallback, and it is recorded
+    // as such rather than silently taken.
+    this.censusHandBack = {
+      place: placeId, interior: place ? place.interior : null,
+      applied: !!frame, source: frame ? frame.source : 'none',
+      yaw_deg: frame ? +frame.yaw_deg.toFixed(2) : null,
+      pitch_deg: frame ? frame.pitch_deg : null,
+      door_local: frame ? frame.door_local : null,
+      range_m: frame ? frame.range_m : null,
+      from_camera_yaw_deg: this.sim.camera ? +this.sim.camera.yaw.toFixed(2) : null,
+    };
+    if (!frame) return this.censusHandBack;
+    const y360 = ((frame.yaw_deg % 360) + 360) % 360;
+    p.yaw = y360;
+    const b = this.combat && this.combat.player;
+    if (b) {
+      b.yaw = y360;
+      b.hasPrev = false;
+      if (typeof b.evaluateRig === 'function') b.evaluateRig(0);
+    }
+    const c = this.sim.camera;
+    if (c) {
+      c.yaw = y360;
+      c.pitch = frame.pitch_deg;
+      c.yawRate = 0;
+      c.lookBufX = 0; c.lookBufY = 0;
+      c.recentreFrames = 0; c.recentreActive = false;
+      c.mode = 'free';
+      c.uiMode = null;
+      c.dialogueFrames = 0; c.dialogueArm = 0; c.dialogueYawStep = 0; c.dialogueArmStep = 0;
+      c.pivot[0] = p.pos[0];
+      c.pivot[1] = p.pos[1] + CAMERA_CONST.pivot_height_m;
+      c.pivot[2] = p.pos[2];
+      c.pivotSnap = true;
+      const want = CAMERA_CONST.arm_free_m * pitchArmScale(c.pitch);
+      c.armDesired = want; c.armEased = want; c.armLen = want; c.armCast = want;
+      c.dist = want; c.distTarget = want; c.clearFrames = 0;
+      c.containArm = 0; c.containPitch = 0; c.armHit = false; c.armGuard = false;
+    }
+    if (this.combat) mirror(this.sim, this.combat);
+    return this.censusHandBack;
   }
 
   /**

@@ -129,9 +129,36 @@ export class PodAgentClient {
     let stdout = '';
     let stderr = '';
     const hardDeadline = Date.now() + (timeoutSec + 120) * 1000;
+    // RETRIED, deliberately, and this is the whole reason RI-VIS06 Protocol A had no frames on
+    // 2026-08-14. A render was running on a live RTX 3090, one `/job` poll came back
+    // `GET /job?id=... timed out`, and the single throw took the run, the Pod and the frames with
+    // it — the render itself never failed. A poll is IDEMPOTENT by construction: `outOffset` and
+    // `errOffset` are only advanced after a poll succeeds, so a repeat asks for the same byte
+    // range and can neither lose nor duplicate a log line. The job keeps running on the Pod
+    // regardless of whether we are listening. So a transient proxy stall must cost a poll, not a
+    // Pod. Only CONSECUTIVE failures count: any success resets the counter, because the failure
+    // we must still fail on is "the agent has genuinely gone away", not "the proxy hiccuped".
+    let consecutivePollFailures = 0;
+    const MAX_CONSECUTIVE_POLL_FAILURES = 5;
     for (;;) {
       if (signal?.aborted) throw signal.reason || new Error('cancelled');
-      const status = await this.#request('GET', `/job?id=${encodeURIComponent(started.id)}&outOffset=${outOffset}&errOffset=${errOffset}`, { timeoutMs: 60_000 });
+      let status;
+      try {
+        status = await this.#request('GET', `/job?id=${encodeURIComponent(started.id)}&outOffset=${outOffset}&errOffset=${errOffset}`, { timeoutMs: 60_000 });
+        consecutivePollFailures = 0;
+      } catch (error) {
+        // A 401/404 from the agent is a real answer and means the job or the token is gone;
+        // retrying those is just waiting for a deadline. Everything else is transport.
+        if (error instanceof PodAgentError && (error.status === 401 || error.status === 404)) throw error;
+        consecutivePollFailures++;
+        if (consecutivePollFailures >= MAX_CONSECUTIVE_POLL_FAILURES) {
+          throw new PodAgentError(`job ${started.id} could not be polled ${consecutivePollFailures} times in a row; last error: ${error.message}`);
+        }
+        if (Date.now() > hardDeadline) throw new PodAgentError(`command did not finish within ${timeoutSec}s plus grace: ${command}`);
+        if (onLog) onLog(`poll ${consecutivePollFailures}/${MAX_CONSECUTIVE_POLL_FAILURES} failed (${String(error.message).slice(0, 160)}); the job is still running on the Pod, retrying\n`, 'stderr');
+        await new Promise((resolve) => setTimeout(resolve, Math.min(15_000, pollMs * 2 ** consecutivePollFailures)));
+        continue;
+      }
       outOffset = status.outOffset;
       errOffset = status.errOffset;
       if (status.stdout) { stdout += status.stdout; if (onLog) onLog(status.stdout, 'stdout'); }
