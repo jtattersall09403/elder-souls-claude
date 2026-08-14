@@ -330,8 +330,11 @@ nearly as much. With a dozen agents holding staged work, those blobs are the onl
 Six agents have had finished work silently reverted. Three distinct causes, all real:
 
 - **Two agents holding one file.** A whole-file write erases the other's edit regardless of git.
-  Ruling O1 binds the orchestrator to run `node tools/ownership.mjs --for <path>` and `--conflicts`,
-  and check `ListAgents`, before dispatching into any file.
+  Ruling O1 (**defined in `orchestration/OWNER-DIRECTIVES-2026-08-14.md` § "Ruling O1", NOT in
+  `corpus/00-doctrine/ARBITRATION.md` — the orchestrator sent agents to the wrong file all day on
+  2026-08-14, and a pointer that resolves to nothing is obeyed by guesswork) binds the orchestrator to
+  run `node tools/ownership.mjs --for <path>` and `--conflicts`, and check `ListAgents`, before
+  dispatching into any file.
 - **`index.lock` contention.** `bank.mjs` times out, `git commit --only` loses the race, `git merge`
   dies with `fatal: stash failed` against other agents' uncommitted files, and the tree looks clean
   afterwards because the edit is simply gone.
