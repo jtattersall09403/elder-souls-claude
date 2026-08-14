@@ -350,10 +350,32 @@ Art direction judged against Morrowind. Visual fidelity judged against current-g
 
 mkdirSync(P('docs'), { recursive: true });
 writeFileSync(P('docs', 'progress.html'), html);
+// W1-30V: the standing visual defect inventory's open/verified counts, so the progress pages
+// and the twice-daily roundup carry a real trend rather than a number nobody can move. Parsed
+// from the table rather than kept in a second file, because a count that can drift from the
+// rows it counts is worse than no count at all.
+function visualInventory() {
+  const p = P('reports', 'visual-truth', 'INVENTORY.md');
+  if (!existsSync(p)) return null;
+  let rows = [];
+  try {
+    rows = readFileSync(p, 'utf8').split('\n')
+      .map((l) => l.match(/^\|\s*\*\*(V\d+)\*\*\s*\|.*\|\s*([a-z-]+)\s*\|\s*(open|claimed-fixed|verified-fixed)\s*\|\s*$/))
+      .filter(Boolean);
+  } catch { return null; }
+  const by = (i, v) => rows.filter((r) => r[i] === v).length;
+  return {
+    rows: rows.length,
+    open: by(3, 'open'), claimed_fixed: by(3, 'claimed-fixed'), verified_fixed: by(3, 'verified-fixed'),
+    blocks_demo_open: rows.filter((r) => r[2] === 'blocks-demo' && r[3] === 'open').length,
+  };
+}
+
 writeFileSync(P('docs', 'status.json'), JSON.stringify({
   generated: now, items: items.length, subsystems_judged: judged.size,
   verdicts: verdicts.length, passing: passed, open_gaps: openGaps.length,
   loc, data: dataStats, areas: byArea, sides: bySide,
+  visual_inventory: visualInventory(),
 }, null, 2));
 
 console.log(`progress: ${items.length} reference items, ${verdicts.length} verdicts, ${openGaps.length} open gaps, ${loc} LOC -> docs/progress.html`);

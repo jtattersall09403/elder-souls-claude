@@ -47,6 +47,10 @@ quality, driver filtering or true HDR resolve is **not** measured and is claimed
 | **V12** | An NPC renders at a wrong scale or position — a doll-sized figure in mid-air. | `key/` orbit set | W1-30D | noticeable | open |
 | **V13** | Character proportions: legs roughly twice the torso, no neck, cylinder hands. | `key/2026-08-14-player-isolated-210deg.png` | W1-30D | noticeable | open |
 | **V14** | Intermittent hard boot failure: `cardinalOf()` → `POINTS[NaN].label` at `ui/compass.js:109`, reached when camera yaw is non-finite. `ui/system.js:799` guards with `ctx.cameraYaw \|\| 0`, which catches `NaN` but not `Infinity`. Seen once in ~20 boots; a ten-viewport sweep did not reproduce it, so it is timing-related. Did **not** block this child's work. | stack trace in `2026-08-14-visual-truth.md` §D10 | owned by another agent | noticeable | open |
+| **V16** | **A gaol, an inn, an apothecary and a hall are the same room.** The four named interiors in the Deck render one shared shell: identical wall panelling, identical window count and placement, identical doorway, identical torch-stand positions, and the same NPC standing in the same spot. Only about 25% of pixels differ between any two of them, and that difference is dressing and tint. 115 interior records exist in `game/data/world/interiors/`; four differently-named ones are visually one room. This is the interior half of the owner's *"exploring should never feel samey"* concern, and it is the flip side of the good news that interiors are otherwise the best-looking block in the game. | `docs/shots/2026-08-14-deck/2026-08-14-deck-interiors-and-characters.png` — bottom two rows, all four at both times | W1-30G / W1-30E | blocks-demo | open |
+| **V17** | **Three regions are effectively empty**, not merely samey. Ranked by mean edge density over their vista and eye-level frames, `crimson-coast` (0.012), `marauders-coast` (0.012) and `stone-wastes` (0.018) are pale washes with almost nothing in them — 1 of 12 frames usable across the three. The other ten regions run 0.031–0.093 and seven of them score 4 of 4 usable. The problem is not uniform sameyness; it is three specific regions with nothing built in them. | `deck/wide-r1` per-region table in `W1-30V-STATUS.md`; `2026-08-14-deck-region-vistas.png` | W1-30F | blocks-demo | open |
+| **V18** | **Landform does not reach the picture.** Every one of the 13 region vistas is a flat horizontal band with a dead-level horizon — including Valus Ridge, whose data says `amp_m: 286`, and Salt Hills at `amp_m: 168`. Regions differ strongly in palette and prop scatter and not at all in the shape of the land. This is the most likely mechanical cause of *"walking over samey landscape for ages"*: the eye reads silhouette before it reads colour. | `2026-08-14-deck-region-vistas.png` — all 26 tiles | W1-30F | blocks-demo | open |
+| **V19** | The starting town is the weakest of the eight settlements. Lilmoth's approach reads as pale blocks behind reeds with no vertical construction, while Helstrom (domed buildings, a hist tree with a real canopy, banners, boardwalk) and Soulrest (a domed lattice on sand) have genuine silhouettes. The first settlement a player ever sees is the one that most looks unfinished. | `2026-08-14-deck-settlement-approaches.png` | W1-30E | blocks-demo | open |
 | **V15** | **`sim.env.region` does not track a teleport.** Across a 13-region sweep every frame reported `region: western-rootlands` while the player was demonstrably elsewhere — ground height differed per region and the frames show different places. `getTerrainAt(x,z).region` is correct; the cached `sim.env.region` is not. Anything reading the cached value — region art selection, region ambience, region weather — risks being chosen for the wrong region after a fast traversal. Found by the Deck recording both values per frame, which is why it recorded both. | `deck/wide-r1/manifest.json`, `region_reported` vs `getTerrainAt` | W1-02 / W1-30F | noticeable | open |
 
 **Note on V05's owner.** The camera is inside no W1-30 child's owned paths. It is recorded here
@@ -90,32 +94,65 @@ in a plan is how a wrong priority survives three rounds.
 
 ---
 
+## The first wide sweep, in numbers
+
+`deck/wide-r1` — 48 setups × 2 times (13:00, 19:30) × clear = **96 frames, 0 red, 29 amber, 67 ok**,
+2,317 s on SwiftShader. `amber` means the frame was captured but the usability screen judged it not
+worth a human's time. Determinism PASS (6/6 byte-identical across independent launches); time-axis
+red control PASS (48/48 pairs moved).
+
+| block | usable | flagged | what the flags were |
+|---|---|---|---|
+| **interiors** | **8** | **0** | — the only block with a clean sheet |
+| settlement approach | 14 | 2 | flat tone |
+| region eye-level | 20 | 6 | mostly no-detail |
+| character close-ups | 2 | 2 | the NPC shot buried the camera at both times |
+| settlement street | 9 | 7 | camera inside geometry — see V05 |
+| region vista | 14 | 12 | **the worst block in the game** — no-detail and flat-tone |
+
+Read plainly: **you are standing in a decent interior, walking through a passable settlement
+approach, and looking at a vista that is not there yet.**
+
 ## What already looks good
 
 Not a courtesy section. These measured well or photographed well, and a demo can lean on them.
 
-1. **Interiors are the best-looking thing in the game right now.** `interior-thorn-hall` is a warm,
-   dark, panelled room with two lit torches carrying real flame, windows reading as light sources,
-   and a doorway with depth. It has the widest tonal range in the whole set — a luma span of 119 of
-   255, against 35 for the worst exterior. Whatever W1-30G does next, it builds on something that
-   already works.
+1. **Interiors are the best-looking thing in the game right now, and it is not close.** Eight of
+   eight interior frames passed the usability screen — the only block in the Deck with a clean
+   sheet. `interior-thorn-hall` is a warm, dark, panelled room with two lit torches carrying real
+   flame, windows reading as light sources, and a doorway with depth. It has the widest tonal range
+   in the set — a luma span of 119 of 255 against 35 for the worst exterior. The shell is shared
+   across all four (V16) and that is a real defect, but the shell itself is good. Whatever W1-30G
+   does next, it builds on something that already works.
 2. **The player character is solid, sealed and readable**, and recognisably an armoured Argonian with
    a tail that follows the rig. `key/2026-08-14-player-isolated-210deg.png` is a presentable
    character shot today.
 3. **Equipment and race variants are correctly gated.** Three armour sets and two body families are
    built per actor and exactly one of each shows — 2,470 of 2,945 actor meshes correctly hidden at
    boot. Nothing bleeds through, nothing is doubled. That is the hard part of a wardrobe system.
-4. **Trees have trunks.** The parent plan's *"canopies floating with no trunks"* does not reproduce at
+4. **Several settlements have a genuine silhouette.** Helstrom reads as a town — domed tan
+   buildings, a hist tree with a full canopy, banners, a boardwalk — and Soulrest's domed lattice on
+   sand looks like nowhere else in the game. Fourteen of sixteen approach frames were usable. The
+   parent plan's *"settlements are flat planks on a lawn"* was true of Lilmoth and is not true of the
+   set (see V19).
+5. **The regions do have their own palettes.** Clay Moor is warm orange rock, the Hive is pale sand
+   with yellow bloom and white stone, Stone Forest is a field of tall pale mushroom-trees, Thornmarsh
+   is dense brown grass. Colour identity is real and landed; what is missing is landform (V18).
+6. **The day genuinely changes the light.** Every one of 48 setups produced different pixels at 13:00
+   and at 19:30 — Clay Moor at dusk is an orange sunset, Stone Forest at dusk is blue-grey with
+   silhouetted crowns, Archon at dusk has a lit beacon over red ground. Whatever is true of the
+   composite grade, the sky and sun are doing real work.
+7. **Trees have trunks.** The parent plan's *"canopies floating with no trunks"* does not reproduce at
    eye level: `eye-deep-marshes` shows a full trunk with branches and a layered canopy. The
    floating-geometry problem (V08) is real but it is buildings, and narrower than assumed.
-5. **The HUD is quiet and in the right register** — three slim bars, a gold count, a legible
+8. **The HUD is quiet and in the right register** — three slim bars, a gold count, a legible
    Morrowind-style compass rose, and it stays out of the way.
-6. **The engine boots clean and fast**: 586 data files, Three r180, no console errors, no failed
+9. **The engine boots clean and fast**: 586 data files, Three r180, no console errors, no failed
    requests, and a real boot-failure screen with a stack trace rather than a black rectangle.
-7. **The renderer's bones are right** — HDR-linear until one tone-map, a live off-switch per visual
+10. **The renderer's bones are right** — HDR-linear until one tone-map, a live off-switch per visual
    feature, and a semantic material registry world builders request from. It means these fixes land
    in one place rather than fifty.
-8. **The capture path is deterministic.** Two independent browser launches at the same commit
+11. **The capture path is deterministic.** Two independent browser launches at the same commit
    produced 6 of 6 byte-identical frames. Every before/after in this programme rests on that, and it
    is now measured rather than assumed.
 
