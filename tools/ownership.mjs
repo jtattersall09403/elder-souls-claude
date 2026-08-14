@@ -86,10 +86,16 @@
 //                                             overlap exists among live pieces
 //   node tools/ownership.mjs --for <path>    who -- among live pieces -- is in this file right now
 //   node tools/ownership.mjs --self-test     prove a real overlap goes red and a declared-redundant
-//                                             one stays quiet (RULES.md rule 4)
+//                                             one stays quiet (RULES.md rule 4), and prove the
+//                                             freshness fix (2026-08-14) both directions
+//
+// Every report now shows each live piece's age (time since its status file last changed) and a
+// [STALE? verify before trusting] hint past 2 days. This is deliberately not a second gate --
+// see ADVISORY note below -- it exists so a human or orchestrator glancing at `--for <path>`
+// output does not have to open five status files by hand to notice a claim has gone quiet.
 
 import { readFileSync, readdirSync, existsSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
@@ -97,12 +103,79 @@ import { execFileSync } from 'node:child_process';
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const STATUS_DIR = join(ROOT, 'orchestration', 'status');
 
-// Identical to the test tools/gen-index.mjs uses for "in flight", on purpose: this tool and
-// INDEX.md must never disagree about who counts as live.
-const DONE_RE = /complete|blocked/i;
+// ---------------------------------------------------------------------------------------------
+// FRESHNESS — added 2026-08-14, orchestration/status/OWNERSHIP-SWEEP-20260814.json
+// ---------------------------------------------------------------------------------------------
+//
+// The sweep that added this found the registry over-reporting for two structural reasons, not
+// one: agents genuinely forget to clear a finished claim, but a LARGE share of the "live" count
+// was never real disagreement about whether a piece was done — it was this tool failing to read
+// the field that said so.
+//
+//   1. 78 of 452 status files (2026-08-14 count) record completion in `"status"`, not `"state"`.
+//      The old code read only `j.state`, so every one of those 78 displayed as state `?` and
+//      counted live regardless of what its own `status` field said — 20 of them literally say
+//      `"status": "done"`, 31 say `"complete"`. Fix: read `state`, falling back to `status`.
+//   2. The terminal-word regex was tested against raw text, so `"builder_delivery_complete"`
+//      never matched `/complete/` at a word boundary the way plain `"complete"` does, and
+//      (worse, the other direction) a naive substring test would have wrongly matched
+//      `"builder_delivery_incomplete"`. Fix: normalise `_`/`-` to spaces before testing, so
+//      compound machine-generated state strings get real word boundaries either way.
+//
+// Neither change makes the tool trust prose (`next_step` text is NOT parsed here — that is a
+// judgement call an orchestrator should still make by eye, and it is exactly the kind of soft
+// signal a fail-closed gate must not act on per the ADVISORY note below). Both changes only make
+// the tool read the two structured fields agents already write, correctly.
+const TERMINAL_WORD_RE =
+  /\b(complete|completed|done|closed|landed|committed|published|banked|fixed|satisfied|delivered|filed|blocked)\b/i;
+
+// A builder handed to a critic has, by definition, stopped editing its own claimed files -- a
+// critic reads and judges, it does not write source. `built_awaiting_critic` is the calibration
+// case the sweep was dispatched with by name: state text alone (no "complete"/"done" word) but
+// unambiguously means "my own edits are finished". Matches "awaiting critic", "awaiting a fresh
+// critic", "awaiting recriticism", "awaiting fresh recriticism" -- "critic" is a substring of
+// "recriticism", so a short-window search after "awaiting" catches all of them without
+// enumerating every phrasing. `(?!al)` excludes "awaiting a critical fix", where "critic" is
+// only the first six letters of an unrelated word.
+const AWAITING_CRITIC_RE = /\bawaiting\b[\s\S]{0,20}\bcritic(?!al)/i;
+
+function normaliseForMatch(s) {
+  return String(s || '').replace(/[_-]+/g, ' ');
+}
+
+/** True if the piece's own recorded state text asserts an endpoint. Tests BOTH `state` and
+ *  `status` (see FRESHNESS note above) rather than picking one -- a file that carries a specific
+ *  `state` and a stale-looking `status`, or vice versa, must not have the terminal one shadowed
+ *  by the other. An explicit `ownership_claim_released` always wins outright, because that is a
+ *  fact about the CLAIM (retired by a sweep), not a guess from state text. */
+function isTerminal(j) {
+  if (j && j.ownership_claim_released) return true;
+  const combined = normaliseForMatch(`${(j && j.state) || ''} ${(j && j.status) || ''}`);
+  return TERMINAL_WORD_RE.test(combined) || AWAITING_CRITIC_RE.test(combined);
+}
 
 function uniqStrings(a) {
   return Array.isArray(a) ? [...new Set(a.filter((x) => typeof x === 'string' && x))] : [];
+}
+
+/** Whole days since this status file's content last actually changed.
+ *
+ *  This MUST be git-log-based, not mtime. Measured directly on this tree: hundreds of status
+ *  files share the exact same millisecond mtime (`2026-08-14T08:15:24.4xxZ`, 452 files fall into
+ *  five such clusters) because a checkout/bank pass touched them without changing their content --
+ *  mtime answers "when was this last written to disk", not "when did anyone last work on this
+ *  piece", and on a tree with a whole-tree bank running every few minutes (RULES.md, HAZARDS.md
+ *  §12) those are different questions with very different answers. `git log -1` per file is a
+ *  subprocess per live piece, not per tool-call round-trip (rule 19b's actual target), and is
+ *  only run for LIVE pieces -- the ones this report displays -- so the cost is bounded by the
+ *  live count (~50-200), not the full 452. */
+function ageDays(relPath) {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%ct', '--', relPath],
+      { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    if (!out) return null;
+    return (Date.now() / 1000 - Number(out)) / 86400;
+  } catch { return null; }
 }
 
 /** Read every status file in `dir` into a flat record. Pure I/O, no judgement. */
@@ -113,11 +186,16 @@ function loadRecords(dir) {
     let j;
     try { j = JSON.parse(readFileSync(join(dir, f), 'utf8')); } catch { continue; }
     const task_id = j.task_id || f.replace(/\.json$/, '');
+    const stateText = (j.state || j.status || '?');
+    const live = !isTerminal(j);
     out.push({
       task_id,
       file: f,
-      state: j.state || '?',
-      live: !DONE_RE.test(j.state || ''),
+      state: stateText,
+      live,
+      released: !!j.ownership_claim_released,
+      // Only live pieces are ever displayed with an age, so only they pay the git-log subprocess.
+      ageDays: live ? ageDays(relative(ROOT, join(dir, f))) : null,
       files_touched: uniqStrings(j.files_touched),
       files_claimed: uniqStrings(j.files_claimed),
       redundant_with: uniqStrings(j.redundant_with),
@@ -126,14 +204,49 @@ function loadRecords(dir) {
   return out;
 }
 
+function fmtAge(d) {
+  if (d === null || d === undefined) return 'age?';
+  if (d < 1) return `${Math.round(d * 24)}h old`;
+  return `${d.toFixed(1)}d old`;
+}
+
 function declared(rec) {
   return new Set([...rec.files_touched, ...rec.files_claimed]);
 }
 
+// ---------------------------------------------------------------------------------------------
+// UNION-MERGE PATHS — added 2026-08-14, same sweep as FRESHNESS above
+// ---------------------------------------------------------------------------------------------
+// A path git itself already knows is safe for two agents to write concurrently
+// (`.gitattributes`, `merge=union`) must not be reported as a `CONFLICT`. Measured directly: of
+// 500 conflicts in the full report before this fix, 228 (45.6%) were pairs that share NOTHING
+// but `reports/blog-feed.jsonl` — which every piece touches by RULES.md rule 27 and which git
+// merges by keeping BOTH sides' lines, never a real collision. This is the same "cries wolf"
+// complaint the sweep was dispatched over, from a second, independent mechanism: not a stale
+// claim, but a file where an "overlap" was never meaningful in the first place. Kept OUT of the
+// exclusion, deliberately: this only removes the specific paths git's own attributes name as
+// union-safe -- a directory claim like `docs/shots/` still conflicts, because two agents writing
+// DIFFERENT filenames under it never collide on disk either, but two agents who both claim the
+// exact same screenshot filename should still be told so.
+function loadUnionMergePaths() {
+  const paths = new Set();
+  try {
+    const txt = readFileSync(join(ROOT, '.gitattributes'), 'utf8');
+    for (const line of txt.split('\n')) {
+      const m = line.match(/^\s*(\S+)\s+.*\bmerge=union\b/);
+      if (m) paths.add(m[1]);
+    }
+  } catch { /* no .gitattributes -- nothing to exclude */ }
+  return paths;
+}
+const UNION_MERGE_PATHS = loadUnionMergePaths();
+
 // A directory claim ("game/src/sim/quest/") collides with anything under it; otherwise exact
-// path equality. Cheap: still just string comparison, no glob engine.
+// path equality. Cheap: still just string comparison, no glob engine. Scoped to exact-path
+// equality only (not the directory-prefix arms) because a union-merge declaration in
+// .gitattributes names one specific file, never a directory.
 function pathsOverlap(a, b) {
-  if (a === b) return true;
+  if (a === b) return UNION_MERGE_PATHS.has(a) ? false : true;
   if (a.endsWith('/') && b.startsWith(a)) return true;
   if (b.endsWith('/') && a.startsWith(b)) return true;
   return false;
@@ -171,11 +284,14 @@ function analyse(records) {
 function printFullReport(live, conflicts, redundant, blind) {
   console.log(`ownership: ${live.length} live piece(s).\n`);
 
-  console.log('Declared files, by live piece:');
+  console.log('Declared files, by live piece (age = time since the status file last changed;');
+  console.log('a live piece several days old with no active-sounding next_step is worth a look):');
   for (const r of live) {
     const files = declared(r);
-    if (!files.size) { console.log(`  ${r.task_id}  [${r.state}]  -- declares nothing`); continue; }
-    console.log(`  ${r.task_id}  [${r.state}]`);
+    const age = fmtAge(r.ageDays);
+    const staleHint = (r.ageDays !== null && r.ageDays >= 2) ? '  [STALE? verify before trusting]' : '';
+    if (!files.size) { console.log(`  ${r.task_id}  [${r.state}]  (${age})${staleHint}  -- declares nothing`); continue; }
+    console.log(`  ${r.task_id}  [${r.state}]  (${age})${staleHint}`);
     for (const p of r.files_touched) console.log(`    touched  ${p}`);
     for (const p of r.files_claimed) if (!r.files_touched.includes(p)) console.log(`    claimed  ${p}`);
   }
@@ -212,7 +328,9 @@ function reportFor(live, target) {
     const touched = r.files_touched.some((p) => pathsOverlap(p, norm));
     const claimed = r.files_claimed.some((p) => pathsOverlap(p, norm));
     const kind = touched && claimed ? 'touched+claimed' : touched ? 'touched' : 'claimed';
-    console.log(`  ${r.task_id}  [${r.state}]  ${kind}`);
+    const age = fmtAge(r.ageDays);
+    const staleHint = (r.ageDays !== null && r.ageDays >= 2) ? '  [STALE? verify before trusting]' : '';
+    console.log(`  ${r.task_id}  [${r.state}]  (${age})  ${kind}${staleHint}`);
   }
   if (hits.length > 1) {
     let allDeclared = true;
@@ -308,7 +426,40 @@ function selfTest() {
     res = analyse(loadRecords(dir));
     if (res.conflicts.length !== 0) fail('a completed piece was treated as live and produced a conflict');
 
-    console.log(`ownership --self-test: ${failures === 0 ? 'PASS (5/5)' : `${failures} FAILURE(S)`}`);
+    // 6. FRESHNESS, 2026-08-14. A status file that uses "status" instead of "state" (78 of 452
+    // real files do) must be read as terminal when its status text says so -- this is the actual
+    // bug the sweep found, not a hypothetical.
+    write('a.json', { task_id: 'a', status: 'done', files_touched: ['game/src/engine.js'] });
+    res = analyse(loadRecords(dir));
+    if (res.live.some((r) => r.task_id === 'a')) fail('a "status": "done" piece (no "state" field) was still read as live');
+
+    // 7. A compound, underscore-joined terminal word must match at the real word boundary --
+    // AND a piece whose compound word is the NEGATION ("incomplete") must not be caught by a
+    // naive substring test on "complete". Both directions, same case shape, on purpose.
+    write('a.json', { task_id: 'a', status: 'builder_delivery_complete', files_touched: ['x'] });
+    write('b.json', { task_id: 'b', status: 'builder_delivery_incomplete', files_touched: ['y'] });
+    res = analyse(loadRecords(dir));
+    if (res.live.some((r) => r.task_id === 'a')) fail('"builder_delivery_complete" (status) was not read as terminal');
+    if (!res.live.some((r) => r.task_id === 'b')) fail('"builder_delivery_incomplete" (status) was wrongly read as terminal -- substring-matched "complete" inside "incomplete"');
+
+    // 8. An explicit released claim is terminal regardless of what state/status still say --
+    // this is what a sweep writes when it retires a claim without touching the piece's own
+    // record of what happened (append-only, RULES.md rule 1's spirit applied to this registry).
+    write('a.json', { task_id: 'a', state: 'building', files_touched: ['game/src/engine.js'], ownership_claim_released: { date: '2026-08-14', reason: 'test' } });
+    res = analyse(loadRecords(dir));
+    if (res.live.some((r) => r.task_id === 'a')) fail('ownership_claim_released did not override a non-terminal state');
+
+    // 9. "built_awaiting_critic" (the sweep's own named calibration case, W1-03-builder) reads
+    // terminal even though it contains no complete/done/closed word -- the builder hands off, it
+    // does not keep editing. And the negative twin: a state that merely mentions "critic" while
+    // still describing itself as running must NOT be caught by an overly broad match.
+    write('a.json', { task_id: 'a', state: 'built_awaiting_critic', files_touched: ['x'] });
+    write('b.json', { task_id: 'b', state: 'awaiting a critical fix before continuing', files_touched: ['y'] });
+    res = analyse(loadRecords(dir));
+    if (res.live.some((r) => r.task_id === 'a')) fail('"built_awaiting_critic" was not read as terminal (the sweep\'s named calibration case)');
+    if (!res.live.some((r) => r.task_id === 'b')) fail('"awaiting a critical fix" was wrongly read as terminal -- "critic" substring-matched inside "critical"');
+
+    console.log(`ownership --self-test: ${failures === 0 ? 'PASS (9/9)' : `${failures} FAILURE(S)`}`);
     return failures ? 1 : 0;
   } finally {
     rmSync(dir, { recursive: true, force: true });

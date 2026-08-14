@@ -1,12 +1,85 @@
 {
   "task_id": "OWNERSHIP-SWEEP-20260814",
-  "state": "researching",
+  "state": "done",
   "started": "2026-08-14",
-  "summary": "Sweeping orchestration/status/ for stale ownership claims per dispatch. Classifying each live claim as live/finished/indeterminate, clearing confident-finished ones in place, and adding freshness reporting to tools/ownership.mjs.",
-  "files_touched": [],
-  "files_claimed": [
-    "tools/ownership.mjs",
-    "orchestration/status/OWNERSHIP-SWEEP-20260814.json"
+  "finished": "2026-08-14",
+  "could_not_do": [
+    "Did NOT individually deep-verify all 56 remaining live claims to the same standard as the 3 calibration cases and the 4 explicit clears -- 56 pieces is too many to each get the full read-the-file-and-cross-check treatment inside one sweep. Applied that full treatment to: the 3 named calibration targets (province.js's 6 claimants, all 11 dialogue/topics claimants, exterior.js), the 4 explicit clears, and 4 additional 'running/verdict-should-exist' checks (2 confirmed dead-and-clearable, 2 confirmed genuinely unfinished). The remaining ~34 non-fresh live pieces were read for next_step content (own text checked for concrete-vs-handoff language) but NOT independently cross-referenced against a second source the way the cleared ones were. They are listed individually below with state/age/next_step, not summarised away, per the dispatch's instruction -- this is deliberately left as the orchestrator's or a future sweep's job, not guessed at here.",
+    "Did NOT clear the ~8 zero-file 'declares nothing' pieces (W1-00-fix2, W1-CAPTURE-R2, W1-FACTIONS-r3, W1-JOURNAL-PROSE, critic-w1-08-r2, tool-build-viability-r6, W1-18, W1-30F) even though they show every sign of the same 2026-08-08 mass-kill event as the 2 confirmed-dead critics that WERE cleared. Reason: they declare zero files, so they cause zero collision risk regardless of live/dead status -- clearing them would improve the live-count optics but not the conflict count, and the verification budget went to pieces that actually collide with something.",
+    "Could not find 'Ruling O1' in corpus/00-doctrine/ARBITRATION.md as instructed -- it is not there under that ID (grep for O1 and \\bO1\\b across the file returns nothing; the file's ruling table runs S1 through the high S5x range, design arbitration only). HAZARDS.md cites 'Ruling O1' twice (the section on holding one file, and the worktree section) but the ruling it names does not exist in ARBITRATION.md. Followed HAZARDS.md's own statement of the rule instead (--for and --conflicts before dispatching into any file) since that is the actual operative text; flagged the missing ruling rather than silently treating either document as wrong. Not fixed -- it is a doctrine-file gap, out of this dispatch's scope.",
+    "Did not touch the 500+ pieces of the fleet's `redundant_with` declarations for correctness -- only read the ones directly relevant to the W1-19 chain investigation (see not_cleared below).",
+    "No browser, no GPU used (offline per dispatch) -- not applicable to this task's actual work (pure status-file/registry analysis), stated for completeness per rule 21."
   ],
-  "next_step": "Build classifier script over all orchestration/status/*.json, cross-check against corpus/90-verdicts, verify against the three known cases (province.js, dialogue topics, exterior.js), then clear confident claims and patch ownership.mjs to report freshness."
+  "summary": "tools/ownership.mjs was over-reporting live claims for two structural reasons, not agent forgetfulness alone: (1) 78 of 452 status files record completion in a field named \"status\", not \"state\", which the tool never read, so all 78 displayed as state \"?\" and counted live regardless of what they said (20 literally say status:\"done\", 31 say \"complete\"); (2) the terminal-word regex had no word boundaries on compound machine-generated strings like \"builder_delivery_complete\". Fixed both, added a narrow tested pattern for \"awaiting...critic\" (the dispatch's own built_awaiting_critic calibration case), excluded .gitattributes merge=union paths (reports/blog-feed.jsonl) from conflict computation (45.6% of the original 7422 conflicts were pure noise about that one shared append-only file), and added git-log-based freshness (age + [STALE?] hint) to every report -- mtime was tried first and found to be bulk-stamped identically across hundreds of files by checkout/bank passes, not a real edit-recency signal. Self-test: 9 arms, all passing, both directions of every fix. Result: 208 -> 60 live claims from the structural fix alone, -> 56 after 4 individually-verified manual clears. Conflicts: 7422 -> 330 -> 270. All 3 named calibration cases (province.js, dialogue/topics, exterior.js) matched the dispatch's known answers; the one numeric difference (exterior.js now shows 1 live, not 0) is new legitimate work dispatched today, documented as such, not a classifier disagreement.",
+  "cleared_this_sweep": [
+    {"task_id": "judge-prose-r4-m5", "evidence": "next_step literally \"None. Judgement written, revealed, scored, banked.\"; state_final already \"done\""},
+    {"task_id": "PLT01-STEPRATE-critic", "evidence": "6.2d stuck at state=reading, 0 files touched, no verdict ever filed, builder counterpart already done with a matching predecessor-killed note; was the single largest source of remaining conflict noise via an over-broad corpus/90-verdicts/ directory claim (13 conflict lines)"},
+    {"task_id": "critic-w1-20", "evidence": "own next_step named the exact verdict files to write; both exist, committed 13 minutes after this status file's last commit"},
+    {"task_id": "critic-w1-attr-scale", "evidence": "own text said only .json/ledger/publish/bank/push remained; both verdict files exist, committed at the SAME commit (1c4c487d) that landed critic-w1-20's verdict, 17 minutes after this file's last commit"}
+  ],
+  "not_cleared_individually_listed": [
+    {"task_id": "AUDIT-R1-LIST", "state": "running", "age_days": 6.4, "next_step": "write the four verdicts into NEXT-DISPATCH R1 list; then build tools/dispatch-staleness.mjs", "reason_kept_live": "names concrete unstarted deliverables; not independently cross-checked"},
+    {"task_id": "COST-G3", "state": "running", "age_days": 6.2, "next_step": "verify the 2-of-95 diagnosis; count verdicts myself", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "PLAN-COST-EXPERIMENTS-critic", "state": "in_progress", "age_days": 6.2, "next_step": "Write BLOCKING/CARRIED critique into orchestration/plans/COST-EXPERIMENTS.md, state verdict, bank.", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "PLAYABILITY", "state": "measuring (successor 3)", "age_days": 6.2, "next_step": "opens with the word SUPERSEDED but continues with 5 numbered concrete remaining items", "reason_kept_live": "read in full deliberately BECAUSE the opening word looked like a clear signal; the rest of the sentence contradicts it -- documented in the report as the case that shows why next_step is read in full, never prefix-matched, before any clear"},
+    {"task_id": "W1-01-r4", "state": "partial", "age_days": 6.6, "next_step": "the ROADS-vs-SETTLEMENTS JOIN gate is red; concrete unclosed work named", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-01-r5-builder", "state": "partial", "age_days": 3.9, "next_step": "close live settlement-solid crossing, full 900-frame span pushes, earth shoulders", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-06-r2", "state": "partial", "age_days": 6.8, "next_step": "two named unrun bloom-sight arms plus further items", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-15-r3", "state": "building", "age_days": 6.7, "next_step": "a fresh-context critic should drive several specific unrun checks", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-17", "state": "partial", "age_days": 4.9, "next_step": "Dispatch build work from the satisfied canonical plan.", "reason_kept_live": "reads as an active handoff to a builder, not a completion; not independently cross-checked"},
+    {"task_id": "W1-18", "state": "building", "age_days": 5.0, "next_step": "write game/src/sim/quest/* modules", "reason_kept_live": "declares nothing (0 files) so poses zero collision risk; concrete unstarted work named; not cleared, low priority given no collision risk"},
+    {"task_id": "W1-19-builder-codex-20260810", "state": "builder_delivery_incomplete", "age_days": 3.9, "next_step": "Continue Gate A from reveal-route-audit.json", "reason_kept_live": "part of the 5-round W1-19 chain investigated in the report; no redundant_with or verdict evidence ties it to the current front, kept live rather than assumed superseded"},
+    {"task_id": "W1-19-builder-codex-continuation-20260810", "state": "builder_delivery_incomplete", "age_days": 3.8, "next_step": "Replace or repair the legacy chain population", "reason_kept_live": "same W1-19 chain reasoning as above"},
+    {"task_id": "W1-19-builder-codex-final-20260811", "state": "EXTERNALLY_INTERRUPTED", "age_days": 3.4, "next_step": "one shell command, looks interrupted mid-run", "reason_kept_live": "same W1-19 chain reasoning as above; EXTERNALLY_INTERRUPTED is suggestive but not proof of dead-and-superseded without a successor declaration"},
+    {"task_id": "W1-19-builder-codex-persistent-20260811", "state": "IN_PROGRESS", "age_days": 3.0, "next_step": "Continue the production-resumable intended chain at Q-MAIN-08", "reason_kept_live": "same W1-19 chain reasoning as above"},
+    {"task_id": "W1-21-builder", "state": "?", "age_days": 2.0, "next_step": "After W1-30 lands, dispatch one production builder...", "reason_kept_live": "names concrete unstarted work gated on a dependency; not independently cross-checked"},
+    {"task_id": "W1-22-r2", "state": "handed-off-incomplete", "age_days": 6.8, "next_step": "numbered HANDOFF list of specific unfinished root-causes", "reason_kept_live": "the word 'handed-off' alone looks like a release signal; the full next_step is a substantive unfinished-work list, so kept live -- same discipline as PLAYABILITY"},
+    {"task_id": "W1-22-r3", "state": "building", "age_days": 6.4, "next_step": "P2/P3/P4 named unbuilt items", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-23-builder-codex-20260810", "state": "ready_for_independent_criticism", "age_days": 4.1, "next_step": "Independent critic: exhaustive walk and coupling checks", "reason_kept_live": "explicitly awaiting a critic action that has not yet produced a W1-23-r5/r6-shaped verdict on disk under this exact round; kept live rather than assumed built_awaiting_critic-equivalent without checking whether a critic already ran (not done this pass)"},
+    {"task_id": "W1-25-continuation-builder", "state": "builder_incomplete", "age_days": 3.8, "next_step": "Continue production work on the remaining native red cells", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-26", "state": "builder_delivery_partial_remaining_modality_gap", "age_days": 3.9, "next_step": "Fresh builder must add and run mouse+keyboard, gamepad-only and touch-only journeys", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-28", "state": "partial", "age_days": 4.9, "next_step": "Fresh independent reviewer-editor re-criticises the materially edited plan", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-CROSSING-r2", "state": "in-progress", "age_days": 6.4, "next_step": "Sweep 2 running; several named remaining steps", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "W1-TOUCH", "state": "measured -- two runs still in flight", "age_days": 6.3, "next_step": "describes runs that were in-flight at write time", "reason_kept_live": "not independently cross-checked whether the in-flight runs ever completed"},
+    {"task_id": "W1-TOUCH-r2", "state": "in_progress", "age_days": 6.2, "next_step": "several named unrun legs", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"},
+    {"task_id": "critic-w1-04-r6", "state": "running", "age_days": 6.4, "next_step": "read RULES/INDEX/ARBITRATION s3, verdict, builder status", "reason_kept_live": "CHECKED: no W1-04-r6 verdict exists in corpus/90-verdicts/ (only up to r5); genuinely unfinished, likely killed at the reading stage by the same 2026-08-08 event as the confirmed-dead pieces"},
+    {"task_id": "critic-w1-23-r5", "state": "measuring", "age_days": 6.2, "next_step": "browser CONSUMPTION run, then write the verdict", "reason_kept_live": "CHECKED: no W1-23-r5 verdict exists in corpus/90-verdicts/ (only up to r4); genuinely unfinished"},
+    {"task_id": "critic-w1-26-r4", "state": "running", "age_days": 6.4, "next_step": "read RULES/INDEX/NEXT-DISPATCH, spec, status", "reason_kept_live": "CHECKED: no W1-26-r4 verdict exists in corpus/90-verdicts/ (only up to r3); genuinely unfinished, likely killed at the reading stage"},
+    {"task_id": "judge-prose-r5", "state": "running", "age_days": 6.2, "next_step": "read RI-MTH03, then answer 15 trials before unblinding", "reason_kept_live": "CHECKED: reports/packs/prose-tics-r5.answers/ contains only a scaffold and PRE-UNBLIND-HYPOTHESES.md, no trial answers, no PICK: lines -- genuinely unfinished"},
+    {"task_id": "measure-own-e-w1-hud-toast-b", "state": "running", "age_days": 6.2, "next_step": "four named unfinished derivation/classification steps", "reason_kept_live": "names concrete unstarted work; not independently cross-checked"}
+  ],
+  "not_cleared_zero_collision_risk_deprioritised": [
+    "W1-00-fix2", "W1-CAPTURE-R2", "W1-FACTIONS-r3", "W1-JOURNAL-PROSE",
+    "critic-w1-08-r2", "tool-build-viability-r6", "W1-30F"
+  ],
+  "not_reviewed_fresh_under_1_day": [
+    "RECONCILE-MAP-PROBE-S13", "RULING-D1-BUILDING-OVERLAP", "SPLIT-TRIAL-DISPATCH", "W1-06",
+    "W1-18-CRITIC-r1", "W1-19-builder-production-20260811", "W1-19-builder-production-continuation-20260813",
+    "W1-20-r3-remediation", "W1-24", "W1-30-builder-20260812", "W1-30", "W1-30V", "W1-DLG-TOPIC-WEB",
+    "W1-DOOR-YAW-SWEEP", "W1-MAP-DEFECTS-r2", "W1-ORPHANED-SURFACE-SHADERS", "W1-OVERLAP-RESOLVER",
+    "W1-UIX08-dialogue-window", "W1-WATER-LANES"
+  ],
+  "measured_numbers": {
+    "live_claims_original_tool": 208,
+    "live_claims_after_structural_fix": 60,
+    "live_claims_after_manual_clears": 56,
+    "conflicts_original_tool": 7422,
+    "conflicts_after_structural_fix_before_union_merge_exclusion": 500,
+    "conflicts_after_union_merge_exclusion": 330,
+    "conflicts_after_manual_clears": 270,
+    "self_test_arms": 9,
+    "self_test_result": "PASS (9/9)"
+  },
+  "files_touched": [
+    "tools/ownership.mjs",
+    "orchestration/status/judge-prose-r4-m5.json",
+    "orchestration/status/PLT01-STEPRATE-critic.json",
+    "orchestration/status/critic-w1-20.json",
+    "orchestration/status/critic-w1-attr-scale.json",
+    "orchestration/status/OWNERSHIP-SWEEP-20260814.json",
+    "reports/ownership-sweep/2026-08-14-sweep.md"
+  ],
+  "files_claimed": [],
+  "redundant_with": [],
+  "next_step": "none -- swept, tool patched and self-tested, 4 claims cleared with verified evidence, remainder individually accounted for above. A future pass could: (a) run the same 'does the named verdict file already exist' cross-check across the full 56, not just the 4 checked here; (b) resolve the W1-19 5-round chain's actual succession relationship by asking the fleet/orchestrator directly rather than inferring it from files alone; (c) decide whether to formally clear the 7 zero-file 'declares nothing' pieces for bookkeeping accuracy even though they carry no collision risk; (d) find or write the actual 'Ruling O1' this dispatch and HAZARDS.md both assume exists in ARBITRATION.md."
 }
