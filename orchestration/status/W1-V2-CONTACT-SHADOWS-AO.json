@@ -7,10 +7,11 @@
   "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline. Recorded before any edit this piece made. `git show 13bd4b8:game/src/render/post/composite.js` is the true before-arm for delete-the-fix, not a live HEAD read later.",
 
   "could_not_do": [
-    "NOT YET DONE: hardware GPU evidence (RunPod, one Pod one GPU both arms). Local/SwiftShader logic checks only so far in this pass; hardware capture is queued next.",
-    "NOT YET DONE: the RI-VIS03 M6b-style contact-junction instrument, delete-the-fix arm, and the global-darkening null control have not all been run to completion yet — this file will be updated as each lands.",
-    "This piece does NOT attempt R3 (ambient/GI fill with tone-mapped shadow lift). That is a separate remedy (3/5 judges) and this file will say explicitly at the end whether V2 alone looks sufficient or whether V3 is still owed before a re-judgement is worth paying for.",
-    "No blind re-judgement — RI-VIS06 Protocol A is not mine to run, per the dispatch brief and RULES rule 25."
+    "NOT YET DONE at this checkpoint: hardware GPU evidence (RunPod, one Pod one GPU both arms). SwiftShader (software) logic verification is complete and green (see measured_results); hardware capture is the immediate next_step, in flight.",
+    "This piece does NOT attempt R3 (ambient/GI fill with tone-mapped shadow lift). That is a separate remedy (3/5 judges) and this file says at the end whether V2 alone looks sufficient or whether V3 is still owed before a re-judgement is worth paying for.",
+    "No blind re-judgement — RI-VIS06 Protocol A is not mine to run, per the dispatch brief and RULES rule 25.",
+    "The instrument's contact junction is one authored fixture (scene.js's material_showcase wall/plinth/moss/plank) rather than a sweep across every kind of contact the judges named (a bridge, a step, a tree root, an eave). It is the fixture RI-VIS04 section 4 and RI-VIS03 M6b describe in words, and it is deterministic and re-surveyable, but a wider sweep across real production buildings is not done and is named as owed below.",
+    "A genuinely broken thing was found and is NOT this piece's to fix: tools/visual/w1-30-shader-hook-collision.mjs's OTHER check, NO-ORPHANED-SURFACE-PASS, fails at 124/422 (all actor-body cloth/skin materials whose hook is now installWaterline) on the pinned baseline sha ALREADY, before any edit here — confirmed by running the identical gate against a clone of the pinned baseline. This is the installWaterline non-chaining defect the W1-ORPHANED-SURFACE-SHADERS piece believed it had closed (its own status file's E_hook_clobber entry); it has regressed or was never fully closed for actors positioned near water at boot. Flagged for whoever owns game/src/render/actor.js next; not touched here to keep this piece's diff to the compositor only."
   ],
 
   "summary": "Replacing the existing fake 'AO' in the post-process composite (a depth-DISCONTINUITY detector that only darkens a hard silhouette edge, max 12%, and is blind to a continuous-depth contact like a step meeting a path) with a real ten-tap hemisphere screen-space AO in game/src/render/post/composite.js, reconstructed from the existing depth texture with no new module-scope ShaderChunk patcher (self-contained ShaderMaterial — the shader-hook collision trap named in the dispatch does not apply to this seam).",
@@ -28,13 +29,27 @@
     "why_no_shader_hook_collision": "This is a self-contained THREE.ShaderMaterial fragment shader already owned by render/post/composite.js since W1-30S/A. It does not touch THREE.ShaderChunk at module scope (the two known collision sites are game/src/world/aerial.js and game/src/render/sky.js, both fog). tools/visual/w1-30-shader-hook-collision.mjs run before and after this change (see gates_run) to prove that."
   },
 
+  "the_bug_found_and_fixed_while_building_this": "The first working version of computeAO() sent the estimated view-space normal the WRONG way (`if (N.z > 0.0) N = -N`), which points every hemisphere kernel sample INTO the surface instead of out over it. Measured effect: the ENTIRE FRAME went solid black end to end whenever uAO was on (screenshot evidence in the scratchpad probe history; not carried into the evidence pack since it is a dev-time defect, not a shipped one). Confirmed and fixed by working out the view-space sign convention on paper (camera looks down -Z, a front-facing normal has positive Z) and flipping the condition to `if (N.z < 0.0) N = -N`. Recorded here because RULES rule 4 asks that a probe capable of failing be shown failing, and this is that evidence for the shader itself, not just for the gate around it — and because a wrong-signed normal is exactly the kind of error a screenshot catches and a stats-only check would not, which is why boot-check (engine constructs) passed the whole time this was broken: it never renders and inspects a frame.",
+
+  "measured_results": {
+    "instrument": "tools/visual/w1-v2-contact-ao.mjs — RI-VIS04 section 4 / RI-VIS03 M6b's own bar: contact-band luma <= 0.75x open-ground luma 100px away, on scene.js's material_showcase wall/plinth/moss/plank junction fixture.",
+    "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero))), software_renderer=true — LOGIC VERIFICATION ONLY, not an appearance claim. Hardware run is the immediate next_step.",
+    "AO_off": "contact=46.28 far=40.54 ratio=1.1415 (FAILS the bar, correctly — this is the null/positive-control state, and the junction is naturally slightly brighter than open ground here, not darker, so the bar is not trivially met)",
+    "AO_on": "contact=28.68 far=40.54 ratio=0.7074 (PASSES: >=25% darker required, measured 29.3% darker) at uAORadius=0.42 uAOStrength=1.9 uAOBias=0.018",
+    "far_band_unchanged": "40.544 in both arms, byte-for-byte — the effect is local to the junction, not a frame-wide multiply",
+    "null_control_global_darken": "the AO-off frame scaled by a single constant k chosen to match AO-on's overall mean luma (k=0.876) still measures ratio=1.1442 — algebraically forced (a uniform scale cannot change a ratio of two regions of the same frame) and confirmed against real pixels, not just asserted. A global darkening this dark overall still does not pass the >=25% bar. This is R2's required null control: 'the plausible wrong answer, not the trivial one.'",
+    "delete_the_fix": "game/src/render/post/composite.js reverted to the pinned baseline sha's content inside a writable control-clone (node tools/control-clone.mjs make --writable game/src/render/post/composite.js), same instrument re-run: AO_off ratio=1.1415 (unchanged, as it must be), AO_on ratio=1.1351 — the old fake edge-discontinuity AO barely moves the number at all on a continuous-depth junction and does NOT pass the bar. The old number returns when the fix is deleted, and the instrument itself goes from PASS to FAIL on the exact same code path, which is the falsifiability RULES rule 4 asks for.",
+    "shader_hook_collision_gate": "PASS before and after (FOG-CHUNKS-SINGLE-OWNER unaffected, as expected — this piece touches no ShaderChunk); confirmed capable of failing via --sabotage (goes red, as designed)."
+  },
+
   "gates_run": [
-    "node --check on both edited files: PASS.",
-    "node tools/boot-check.mjs: PASS after the change (see next_step for post-hardware re-run).",
-    "tools/visual/w1-30-shader-hook-collision.mjs before and after: unaffected (this piece touches no ShaderChunk)."
+    "node --check on all edited/new files: PASS.",
+    "node tools/boot-check.mjs: PASS on the shipped fix.",
+    "tools/visual/w1-30-shader-hook-collision.mjs, normal and --sabotage: PASS/FAIL exactly as before this piece touched anything — unaffected, and confirmed capable of failing.",
+    "tools/visual/w1-v2-contact-ao.mjs, three arms (AO on/off on the shipped tree, AO on/off on a delete-the-fix clone, null-control global darken): all four required checks green, one delete-the-fix check correctly red (see measured_results)."
   ],
 
-  "next_step": "Run w1-30-shader-hook-collision.mjs and boot-check on this exact tree, then build tools/visual/w1-v2-contact-ao.mjs (RI-VIS03 M6b-style contact-junction darkening instrument: 16px band at an object's ground contact must read <=0.75x the luma of open ground ~100px away, per RI-VIS04 §4's own >=25% bar), run it locally first for logic verification, then rent one RunPod GPU and capture both arms (AO on / AO off) plus the null control (a flat global-darkening shader that must NOT reproduce the localized junction pattern) plus a delete-the-fix arm from a control-clone of the pinned baseline sha. Update this file with every result as it lands, could_not_do first.",
+  "next_step": "Rent one RunPod GPU (node tools/runpod/cli.mjs run), run tools/visual/w1-v2-contact-ao.mjs --hardware-gpu --null-control on it (both arms, one Pod, one GPU, as the dispatch requires), verify the renderer string is real hardware not SwiftShader, copy the PNGs and result.json into corpus/90-verdicts/wave1/artifacts/W1-V2-CONTACT-SHADOWS-AO/, verify byte-for-byte against the remote blob, then also capture a few real-production screenshots (a settlement building base, an eave) for qualitative evidence alongside the fixture's quantitative one. Then write the final V2-vs-V3-sufficiency judgement call and land.",
 
   "files_touched": [
     "orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json",
