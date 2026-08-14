@@ -30,11 +30,24 @@
  * where the tile ground ends, and nothing beyond it is shadowed by anything. It looks like a fix
  * in a thumbnail and is a tree floating above a shadow that stops.
  *
- * COST. Frame time is wall-clock over N `stepFrames(1)` calls from Node with the sim at rest and
- * the camera pinned, so every arm renders the same world and the only difference is what is in
- * the shadow atlas. On SwiftShader this OVERSTATES the GPU share and understates nothing, so a
- * subset that is cheap here is cheap on hardware; a subset that is expensive here needs hardware
- * before it is called expensive. That asymmetry is stated in the output.
+ * COST, AND WHY THE PRIMARY COST NUMBER IS NOT MILLISECONDS. The first version of this tool timed
+ * `stepFrames(1)` from Node. On this box that measurement is worthless and it was abandoned rather
+ * than quoted: a dozen sibling agents put the load average at 13 on 4 cores, SwiftShader is
+ * CPU-bound, and one 1920x1080 frame took ~40 s — the arms differ by less than the noise between
+ * two consecutive frames of the SAME arm. A cost claim built on that is a guess with a decimal
+ * point.
+ *
+ * So the primary cost number is the one thing that is exact and load-independent: WHAT THE SHADOW
+ * PASS IS ASKED TO DRAW. Three.js's shadow pass walks the same scene graph and renders every
+ * object whose `castShadow` is true, so the submitted work is countable from the graph —
+ * `casterMeshes` and `casterTriangles`, where an InstancedMesh counts its index count times its
+ * `count`. That is the number that decides whether a subset is affordable, it is the same number
+ * on hardware and on SwiftShader, and it is the number `province.js`'s own 2368 comment is really
+ * making a claim about ("18 ms on the T4" for the tile scatter). A short wall-clock sample is
+ * still taken with `--perfFrames`, and it is reported as indicative only.
+ *
+ * NO 1080p HARDWARE BUDGET IS TAKEN HERE. That is stated in `could_not_do` rather than papered
+ * over with a SwiftShader millisecond.
  *
  * Usage:
  *   node tools/visual/w1-30-shadow-casters.mjs --sites vista-blackwood,vista-deep-marshes,spawn
@@ -60,7 +73,8 @@ const [CW, CH] = String(args.canvas || '1920x1080').split('x').map(Number);
 const SEED = Number(args.seed || DECK.capture.seed);
 const HW = args.hardware === true || process.env.VT_HARDWARE_GPU === '1';
 const TIME = Number(args.time || 13);
-const PERF_FRAMES = Number(args.perfFrames || 40);
+const PERF_FRAMES = Number(args.perfFrames || 0);
+const PIXEL_RATIO = Number(args.pixelRatio || 1);
 const SITES = String(args.sites || 'vista-blackwood,vista-deep-marshes,spawn').split(',');
 
 // Which mesh names each named subset owns. Kept as source-of-truth strings so a rename in
@@ -85,10 +99,15 @@ const { PNG } = await import(path.join(REPO, 'tools/node_modules/pngjs/lib/png.j
 
 const g = await launchGame({ entry: 'game/index.html', width: CW, height: CH, hardwareGpu: HW });
 await g.h('ready');
-await g.page.evaluate(({ w, h }) => {
+await g.page.evaluate(({ w, h, pr }) => {
   const c = document.getElementById('view'); c.width = w; c.height = h;
+  // The harness canvas honours devicePixelRatio, so a 960x540 request was rendering 1920x1080 and
+  // costing 40 s a frame on a loaded SwiftShader box. Pin it: the arms only have to be comparable.
+  if (window.__ENGINE.renderer.renderer && window.__ENGINE.renderer.renderer.setPixelRatio) {
+    window.__ENGINE.renderer.renderer.setPixelRatio(pr);
+  }
   window.__ENGINE.renderer.setSize(w, h);
-}, { w: CW, h: CH });
+}, { w: CW, h: CH, pr: PIXEL_RATIO });
 await g.h('setSeed', SEED);
 
 const renderer_string = await g.page.evaluate(() => {
@@ -191,8 +210,30 @@ async function goTo(site) {
   return null;
 }
 
-/** Wall-clock ms per frame over PERF_FRAMES single steps, median of the middle band. */
+/**
+ * What the shadow pass is asked to draw, counted off the scene graph. Exact, instant, and the same
+ * number on any hardware — see the header for why this and not milliseconds.
+ */
+const shadowLoad = () => g.page.evaluate(() => {
+  const R = window.__ENGINE.renderer;
+  let meshes = 0, tris = 0, instances = 0; const by = {};
+  R.scene.traverse((o) => {
+    if (!(o.isMesh || o.isInstancedMesh) || !o.castShadow || !o.visible) return;
+    const geo = o.geometry; if (!geo) return;
+    const idx = geo.index ? geo.index.count : (geo.attributes.position ? geo.attributes.position.count : 0);
+    const n = o.isInstancedMesh ? o.count : 1;
+    meshes++; instances += n; tris += (idx / 3) * n;
+    const key = (o.name || o.type).replace(/:.*$/, '') || 'unnamed';
+    by[key] = (by[key] || 0) + (idx / 3) * n;
+  });
+  const top = Object.entries(by).sort((a, b) => b[1] - a[1]).slice(0, 8)
+    .map(([k, v]) => [k, Math.round(v)]);
+  return { casterMeshes: meshes, casterInstances: instances, casterTriangles: Math.round(tris), topByTriangles: top };
+});
+
+/** Wall-clock ms per frame over PERF_FRAMES single steps. Indicative only — see the header. */
 async function frameMs() {
+  if (!PERF_FRAMES) return null;
   await step(4);
   const ms = [];
   for (let i = 0; i < PERF_FRAMES; i++) {
@@ -224,6 +265,7 @@ for (const site of SITES) {
     const hit = await applyArm(ARM_SETS[arm]);
     await step(4);
     const lit = await shot(`${site}-${arm}.png`);
+    const load = await shadowLoad();
     const perf = await frameMs();
     const stats = await g.page.evaluate(() => ({ ...window.__ENGINE.renderer.lastStats }));
     const fit = await g.page.evaluate(() => window.__ENGINE.renderer.sky.shadowReport());
@@ -232,9 +274,9 @@ for (const site of SITES) {
     const dark = await shot(null);
     await setFeature('shadows', true); await step(3);
     const row = { site, arm, flagged: hit, shadow_pct: diff(lit, dark).pct, stripe_pct: stripeEnergy(lit),
-      frame_ms: perf, drawCalls: stats.drawCalls, triangles: stats.triangles, fit };
+      shadow_load: load, frame_ms: perf, drawCalls: stats.drawCalls, triangles: stats.triangles, fit };
     out.rows.push(row);
-    console.log(`  ${site.padEnd(22)} ${arm.padEnd(22)} shadow ${String(row.shadow_pct).padStart(6)}%  stripe ${String(row.stripe_pct).padStart(6)}%  ${String(perf.median).padStart(6)} ms  ${stats.drawCalls} calls  cast+${hit.cast} recv+${hit.receive}`);
+    console.log(`  ${site.padEnd(22)} ${arm.padEnd(22)} shadow ${String(row.shadow_pct).padStart(6)}%  stripe ${String(row.stripe_pct).padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris  cast+${hit.cast} recv+${hit.receive}`);
     await restoreArm();
     await step(2);
   }
@@ -247,13 +289,14 @@ for (const site of SITES) {
     const hit = await applyArm(['near', 'scatter'], true);
     await step(4);
     const lit = await shot(`${site}-wrongset.png`);
+    const load = await shadowLoad();
     await setFeature('shadows', false); await step(3);
     const dark = await shot(null);
     await setFeature('shadows', true); await step(3);
-    const perf = await frameMs();
-    out.rows.push({ site, arm: 'wrongset-null-control', flagged: hit, shadow_pct: diff(lit, dark).pct,
-      stripe_pct: stripeEnergy(lit), frame_ms: perf });
-    console.log(`  ${site.padEnd(22)} ${'wrongset (null ctrl)'.padEnd(22)} shadow ${String(diff(lit, dark).pct).padStart(6)}%  ${String(perf.median).padStart(6)} ms`);
+    const pct = diff(lit, dark).pct;
+    out.rows.push({ site, arm: 'wrongset-null-control', flagged: hit, shadow_pct: pct,
+      stripe_pct: stripeEnergy(lit), shadow_load: load });
+    console.log(`  ${site.padEnd(22)} ${'wrongset (null ctrl)'.padEnd(22)} shadow ${String(pct).padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris`);
     await restoreArm();
     await step(2);
   }
