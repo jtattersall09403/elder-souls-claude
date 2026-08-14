@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `607a0a6`: 900 tools, 155 reference
+so it cannot drift. Generated at `2776b38`: 902 tools, 155 reference
 items, 160 pieces in flight.
 
 Its purpose is to stop 160+ concurrent agents each paying separately to discover the
@@ -809,7 +809,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-24-audit.mjs` — THE PROTOCOL, RUN AGAINST NUMBERS THIS PROJECT HAS ALREADY PUBLISHED.
 - `tools/render/w1-24-shot.mjs` — the picture.
 - `tools/render/w1-30-aggregate.mjs` — **no header comment**
-- `tools/render/w1-30-assets.mjs` — **no header comment**
+- `tools/render/w1-30-assets.mjs` — W1-30 shipped-asset gate.
 - `tools/render/w1-30-contact-sheet.mjs` — **no header comment**
 - `tools/render/w1-30-final.mjs` — **no header comment**
 - `tools/render/w1-30-fixed-eight.mjs` — Builder-side native capture of RI-VIS02's fixed eight.
@@ -831,11 +831,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30-visual-smoke.mjs` — One low-cost settled frame for the builder repair loop.
 - `tools/render/w1-30-water-proof.mjs` — Hardware, frame-exact water/shore review.
 
-### `tools/runpod/` — 7
+### `tools/runpod/` — 9
 
 - `tools/runpod/cli.mjs` — **no header comment**
 - `tools/runpod/lib/api.mjs` — **no header comment**
+- `tools/runpod/lib/cleanup-plan.mjs` — Pure planning for `cli.mjs cleanup`.
 - `tools/runpod/lib/local.mjs` — **no header comment**
+- `tools/runpod/lib/owner.mjs` — Ownership identity for RunPod resources.
 - `tools/runpod/lib/provision.mjs` — **no header comment**
 - `tools/runpod/test/runpod.test.mjs` — **no header comment**
 - `tools/runpod/worker/browser-config.mjs` — **no header comment**
@@ -1099,7 +1101,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **234 tools have no header comment**, so nobody can tell what they do without
+> **233 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

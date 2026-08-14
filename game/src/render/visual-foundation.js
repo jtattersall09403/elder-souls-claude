@@ -525,7 +525,10 @@ function installSurfaceShader(mat, { tile, tiling, wear, wetness }) {
         material.roughness = clamp( material.roughness * ( 1.0 - 0.62 * esWet ), 0.03, 1.0 );
         material.diffuseColor.rgb *= ( 1.0 - 0.34 * esWet );`);
   };
-  const priorKey=mat.customProgramCacheKey;
+  // Chain only a cache key the material actually owns.  three.js's *default*
+  // `customProgramCacheKey` reads `this.onBeforeCompile.toString()`, so calling it detached throws
+  // inside the renderer's program lookup — which is a boot failure, not a visual one.
+  const priorKey=Object.hasOwn(mat,'customProgramCacheKey')?mat.customProgramCacheKey.bind(mat):null;
   mat.customProgramCacheKey=()=>`w1-30c-surface-v1:${tile}:${detail?1:0}:${priorKey?priorKey():''}`;
   shadedMaterials.add(mat);
   mat.needsUpdate=true;
