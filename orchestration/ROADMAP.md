@@ -23,7 +23,7 @@ world design, systems depth, strangeness. **Black Marsh.** **Modern graphics qua
 
 ---
 
-## Step 1 — Surfaces respond to light *(in progress)*
+## Step 1 — Surfaces respond to light *(1a done; 1b/1c next)*
 
 **Visible outcome:** stone reads as stone, wood as wood, leather as leather. Objects sit on the ground
 instead of floating on it. Shadowed areas have detail in them instead of being black.
@@ -178,7 +178,7 @@ The whole phase is currently evidenced by one hard fact: **the first blind fidel
 
 | | item | state |
 |---|---|---|
-| **V1** | **Materials and surface response** — PBR sets bound to what is drawn, roughness, edge wear, wetness | **step 1, in flight.** 20 material sets authored; 305 of 406 materials had no shader installing them |
+| **V1** | **Materials and surface response** — PBR sets bound to what is drawn, roughness, edge wear, wetness | **DONE 2026-08-14, evidenced on hardware.** Orphans 321/422 → **0/422**. Perturbation response: player **0.33% → 5.36%** (~16×), building **1.30% → 32.84%** (~25×), ground control 73.28% → 73.97% (unchanged, as a control must be). One Pod, one GPU, both arms |
 | **V2** | **Shadows and ambient occlusion** — contact shadows, soft where soft, cascades, interiors | **not started.** The judges' most universal observation, 5 of 5 |
 | **V3** | **Ambient / bounce / GI fill** so shadows stop crushing to black | **not started.** 3 of 5 judges named it |
 | **V4** | **Lighting design** — sun and moons, time of day, interiors, torches, lanterns, emissives | partial; the sky was baked once at startup and never updated, now fixed |
