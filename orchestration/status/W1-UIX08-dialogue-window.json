@@ -3,12 +3,22 @@
   "role": "builder",
   "item": "corpus/86-ui/RI-UIX08-dialogue-window.md",
   "branch": "codex/wave1-build-experiment",
-  "state": "building",
+  "state": "built-probe-running",
   "started_at": "2026-08-14",
-  "next_step": "write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kinds to surface.js, wire ctx.dialogue in system.js/engine.js, then checks + capture",
+  "next_step": "finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog line; verdict note",
   "files_touched": [
     "orchestration/status/W1-UIX08-dialogue-window.json",
-    "reports/uix08/READING-NOTE.md"
+    "reports/uix08/READING-NOTE.md",
+    "game/src/ui/screens/dialogue.js",
+    "game/src/ui/screens/dialogue-links.js",
+    "game/src/ui/surface.js",
+    "game/src/ui/system.js",
+    "game/src/engine.js",
+    "game/src/render/ui.js",
+    "tools/analysis/ui-census.mjs",
+    "tools/ui/dialogue-link-census.mjs",
+    "tools/ui/dialogue-window-probe.mjs",
+    "reports/uix08/link-census.json"
   ],
   "files_claimed": [
     "game/src/ui/screens/dialogue.js",
@@ -24,5 +34,34 @@
     "reports/blog-feed.jsonl"
   ],
   "notes": "Owns the dialogue WINDOW. surface.js/system.js/engine.js edits are ADDITIVE ONLY (2 new element kinds; one draw branch; one ctx field; one pending action). HUD-MORROWIND has touched surface.js/system.js/hud.js — no overlap with the HUD code paths.",
-  "redundant_with": []
+  "redundant_with": [],
+  "contention_note": "node tools/contention.mjs --gate returned exit 3 (load 4.16/core against a 4.0 ceiling, 3 browser instances). Proceeded anyway per rule 21, after doing all headless work first: the browser run is one process, one browser, kept for the whole run.",
+  "rulings": [
+    {
+      "id": "UIX08-R1",
+      "text": "Inline links are activated by the closed action set, not by a pointer. Directions walk the links in the prose in reading order, left/right crosses to the topic column, interact follows, roll is Goodbye. Morrowind drives this window with a mouse; ui/system.js rule 2 says there is no pointer path in this interface and the owner tests on a GameSir X2s.",
+      "reversible": true,
+      "overturned_by": "a pointer path landing in this interface generally, at which point hit-testing the declared topic_link rects is ~20 lines and the rects are already published in getUIState()."
+    },
+    {
+      "id": "UIX08-R2",
+      "text": "The disposition meter shows N/100 per RI-UIX08 A5/D4 despite RI-UIX06 G8 forbidding progress bars with a percentage numeral. G8 governs a task completing; this is a relationship statistic, and RI-UIX08 arbitration gives this item the arrangement of this window. The kind is named disposition_meter, NOT progress_bar, which stays in FORBIDDEN_KINDS so the forbidden-name sweep still reads 0.",
+      "reversible": true,
+      "overturned_by": "RI-UIX06 owner ruling that G8 covers any numeral on any fill."
+    },
+    {
+      "id": "UIX08-R3",
+      "text": "Read/unread topic marking is OFF and there is no setting for it yet (RI-UIX08 F1). Ship unmarked.",
+      "reversible": true,
+      "overturned_by": "the human gate returning, from more than one participant, that they could not tell which topics they had already asked."
+    },
+    {
+      "id": "UIX08-R4",
+      "text": "The transcript lives in the UI (ui/screens/dialogue.js DialogueHistory), not in character/converse.js. Conversation keeps only the last thing said, which cannot express D3, and converse.js is the dialogue-text sibling territory. Zero lines of converse.js were edited by this item."
+    },
+    {
+      "id": "UIX08-R5",
+      "text": "The old render/ui.js reply panel is suppressed from PAINTING but still laid out and still reported by metrics(), so every existing probe reading getUIState() conversation fields keeps its answer. setVisible(false) would have zeroed them."
+    }
+  ]
 }
