@@ -152,19 +152,35 @@ await setShadows(true);
 await setCanopyCast(true);
 
 const A = out.arms.A_canopy_casts.mean, B = out.arms.B_canopy_does_not_cast.mean, C = out.arms.C_no_shadow_at_all.mean;
+
+// THE POWER TEST IS TWO-SIDED, AND IT WAS ONE-SIDED ON ITS FIRST RUN — WHICH IS THE BUG THIS
+// COMMENT EXISTS FOR. The first hardware run at eye-blackwood returned A/C = 0.82 and B/C = 1.005
+// and this code printed "NO POWER", because it only asked whether an arm was NOISIER than the
+// floor. An arm that departs from the floor by 18% in the QUIETER direction has departed from the
+// floor; it is evidence, not an absence of it. A guard that can only see deviation in the
+// direction you expected is the same failure as a control that cannot fail.
+const dev = (r) => Math.abs(r - 1);
 out.verdict = {
   a_over_b: +(A / B).toFixed(3),
   headroom_a_over_c: +(A / C).toFixed(3),
   headroom_b_over_c: +(B / C).toFixed(3),
-  // If A and B both sit on C, the walk's own motion swamps everything and this test has no power.
-  instrument_has_power: (A / C) > 1.02 || (B / C) > 1.02,
+  // Power belongs to an ARM, not to the run: B sitting on C means the shadow system contributes
+  // nothing to motion with the canopy off, which is a finding about B, not a broken instrument.
+  arm_a_has_power: dev(A / C) > 0.02,
+  arm_b_has_power: dev(B / C) > 0.02,
   reading: null,
+  // Stated so nobody quotes the magnitude as if it were a quality score.
+  caveat: 'This metric is MEAN ABSOLUTE LUMINANCE change. Shadowing darkens the ground, and a '
+    + 'darker image has smaller absolute luminance differences, so a REDUCTION here is confounded '
+    + 'with "the frame got darker" and its magnitude must not be read as "the frame got calmer". '
+    + 'What the direction does support is the negative claim: flicker would push this UP, and it '
+    + 'is not up. A contrast-normalised metric would be needed to quantify the improvement.',
 };
-out.verdict.reading = !out.verdict.instrument_has_power
-  ? 'NO POWER — arms A and B both sit on the no-shadow floor C, so this walk cannot see shadow flicker at all and nothing is concluded from it.'
+out.verdict.reading = (!out.verdict.arm_a_has_power && !out.verdict.arm_b_has_power)
+  ? 'NO POWER — both arms sit on the no-shadow floor C, so this walk cannot see shadow-related motion at all and nothing is concluded from it.'
   : (out.verdict.a_over_b > 1.05
     ? `SHIMMER — casting the canopy makes the same walk ${((A / B - 1) * 100).toFixed(1)}% noisier frame-to-frame than not casting it.`
-    : `STABLE — casting the canopy changes frame-to-frame noise by ${((A / B - 1) * 100).toFixed(1)}%, against a floor that is ${(((B / C) - 1) * 100).toFixed(1)}% below arm B.`);
+    : `NO SHIMMER DETECTED — casting the canopy moves frame-to-frame change by ${((A / B - 1) * 100).toFixed(1)}% against arm B, in the QUIETER direction. Flicker would push this up; it is not up. See caveat before quoting the magnitude.`);
 
 fs.writeFileSync(path.join(OUT, 'shimmer.json'), JSON.stringify(out, null, 2));
 console.log(`\nA (canopy casts)      mean ${A}  p95 ${out.arms.A_canopy_casts.p95}`);
