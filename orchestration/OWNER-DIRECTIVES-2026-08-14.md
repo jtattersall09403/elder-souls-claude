@@ -75,7 +75,15 @@ copies at ~1.2 GB each — modified two to twenty-seven minutes earlier, i.e. **
 work in progress**. Deleting those to buy space is never the trade.
 
 **The space was in `.git`, which had grown to 9.3 GB.** `git gc --prune=now` took it to 1.2 GB and
-returned **8.3 GB** in one command with nothing lost. Try it first, waiting for a quiet index
+returned **8.3 GB** in one command.
+
+> **`--prune=now` was the wrong flag and the orchestrator ran it. Use plain `git gc`.** An agent's
+> `run-http.mjs`, disk guard and CLI wiring were clobbered by a concurrent checkout, and because
+> `--prune=now` had already collected the **staged but uncommitted blobs**, nothing was recoverable —
+> the agent had to rewrite and re-verify work that had already run on live hardware. Plain `git gc`
+> keeps unreachable objects for two weeks and would have freed nearly the same space while leaving
+> that recovery possible. On a box with a dozen agents holding staged work, `--prune=now` destroys
+> the only copy of anything not yet committed. Try it first, waiting for a quiet index
 (`pgrep git`). Two follow-ons: null-control copies clone the whole tree when a control needs only
 `game/` and `tools/` — **76 MB against 12 GB** — and `tools/lib/browser.mjs` now refuses to launch on
 low free space, closing the silent-`ENOSPC` class where a run that wrote nothing looked clean.
