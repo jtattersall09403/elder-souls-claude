@@ -270,7 +270,18 @@ function validate(file) {
   }
 
   // --- blind
-  for (const b of v.blind_comparisons || []) {
+  // `blind_comparisons` is specified as an array. W1-FACTIONS-r2 shipped it as a single
+  // {required, done, reason} object recording "blind was not possible, here is why" — a
+  // reasonable thing to want to say, but `for...of` on a non-array truthy object throws
+  // "object is not iterable" and the crash was reported as an opaque validator failure
+  // instead of a legible error naming the file and the wrong shape (mirrors the same fix
+  // already applied to gap_closure below).
+  const blindRows = Array.isArray(v.blind_comparisons)
+    ? v.blind_comparisons
+    : (v.blind_comparisons && typeof v.blind_comparisons === 'object'
+      ? (E('blind_comparisons must be an array, not a single {required,done,reason} object (VERDICT-SCHEMA.md)'), [])
+      : []);
+  for (const b of blindRows) {
     if (b.status === 'done') {
       if (!b.question) E(`blind ${b.ref_item}: question required, written BEFORE looking`);
       if (!['A', 'B', 'tie', 'none'].includes(b.blind_pick)) E(`blind ${b.ref_item}: blind_pick must be A|B|tie|none`);

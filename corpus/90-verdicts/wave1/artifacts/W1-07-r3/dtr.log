@@ -1,0 +1,53 @@
+hold.hatch-name              kind=text           reg=12 clip=0 DTR model=0.6667 state=0.5 writ=0.5 area=0.3837
+   -- state-undrawn s.spoken: "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+hold.out                     kind=null           reg=5 clip=0 DTR model=1 state=1 writ=1 area=0.1681
+writ.race-observed           kind=observed       reg=7 clip=0 DTR model=1 state=1 writ=1 area=0.2356
+writ.sex                     kind=choice         reg=7 clip=0 DTR model=1 state=1 writ=1 area=0.2474
+writ.upbringing              kind=choice         reg=7 clip=0 DTR model=1 state=1 writ=1 area=0.2496
+writ.given-name              kind=text           reg=11 clip=0 DTR model=0.9 state=0.5 writ=0.5 area=0.3837
+   -- state-undrawn s.spoken: "The interior. I will write the marsh. There are people here who will read that and stand u"
+writ.class-routes            kind=choice         reg=7 clip=0 DTR model=1 state=1 writ=1 area=0.2489
+writ.class-questions         kind=questionnaire  reg=10 clip=0 DTR model=1 state=1 writ=1 area=0.3548
+writ.class-questions         kind=questionnaire  reg=7 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.2496
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=8 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.28
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.class-questions         kind=questionnaire  reg=7 clip=0 DTR model=1 state=0.8333 writ=0.8333 area=0.2496
+   -- state-undrawn s.line: "Then sit. I will ask you ten things and none of them is any of my business, and at the end"
+writ.birthsign               kind=choice         reg=12 clip=0 DTR model=0.9091 state=0.9091 writ=0.9091 area=0.3837
+   -- state-undrawn s.spoken: "Xanmeer-Delver. Not to the letter — nobody is, and the ones who are worry me — but of the "
+writ.stamp                   kind=choice         reg=13 clip=0 DTR model=0.6667 state=0.6667 writ=0.5625 area=0.3778
+   -- state-undrawn s.spoken: "The tide was in and the root had more than it needed. It gave you a swallow it did not owe"
+
+journey stamps: {"first_input_frame":null,"first_control_frame":null,"first_field_frame":0,"first_field_node":"hold.hatch-name","available_play_s_before_first_field":null,"fixed_step_hz":60,"frame":0}
+
+M8 writ opened: 10 rendered rows, 10 distinct
+   "REED-CASE WRIT, STAMPED"
+   "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON"
+   "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+   "Name recorded: Silence-Under-Salt"
+   "Also called: Silence-Under-Salt"
+   "Observed as: Saxhleel"
+   "Raised at: black water, no bottom"
+   "Trade declared: Xanmeer-Delver"
+   "1–9 of 16"
+   "— Fold it away."
+readWrit() body lines: 0
+
+== TOTALS ==
+  d_model  DTR_scene 0.9279  DTR_q 1  worst-node 0.6667  (103/111)
+  d_state  DTR_scene 0.8673  DTR_q 0.85  worst-node 0.5  (85/98)
+  d_writ   DTR_scene 0.8288  DTR_q 0.85  worst-node 0.5  (92/111)
+  opaque area 0.1681–0.3837; panel height max 0.4796; clipped strings 0

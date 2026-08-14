@@ -5,6 +5,7 @@ node_modules/
 reports/runs/
 reports/runpod-gpu/runs/
 *.log
+!corpus/90-verdicts/**/*.log
 .DS_Store
 
 # Reference video: sources are catalogued in corpus/70-visual/refs/_provenance.json and

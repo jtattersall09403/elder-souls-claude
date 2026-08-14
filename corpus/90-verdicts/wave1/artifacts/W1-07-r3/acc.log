@@ -1,0 +1,15 @@
+2D text surfaces the renderer owns : ui, title, menus
+surfaces the register instruments  : dialogue, title
+
+BEFORE — accessor reports 12 distinct strings on this frame, 0 of them outside the dialogue surface (M9's domain):
+
+instrumented renderer.menus as surface 'menus': {"ok":true}
+
+AFTER — accessor reports 12 distinct strings on the same scene.
+STRINGS VISIBLE ONLY ONCE THE THIRD SURFACE IS REGISTERED (0):
+
+entries tagged surface='menus': 0
+M9 grep over the WIDER non-dialogue set (0 strings): 0 hits []
+  uiOpen('menu') -> 0 strings on the menus surface; sample []
+  uiOpen('rest') -> 0 strings on the menus surface; sample []
+  uiOpen('dialogue') -> 0 strings on the menus surface; sample []

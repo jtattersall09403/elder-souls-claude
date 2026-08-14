@@ -1,0 +1,30 @@
+
+-- barge-hold, no census
+   HUD elements 6; strings: ["5","LIGHT","Spark-Dart"]
+   kinds: ["health_bar","stamina_bar","focus_bar","heal_charges","equip_load","quick_slots"]
+   build accessor, same domain (notSurface dialogue): []
+
+-- census open (hold.hatch-name)
+   HUD elements 6; strings: ["5","LIGHT","Spark-Dart"]
+   kinds: ["health_bar","stamina_bar","focus_bar","heal_charges","equip_load","quick_slots"]
+   build accessor, same domain (notSurface dialogue): []
+
+-- after the hatch-name is given (hold.out)
+   HUD elements 6; strings: ["5","LIGHT","Spark-Dart"]
+   kinds: ["health_bar","stamina_bar","focus_bar","heal_charges","equip_load","quick_slots"]
+   build accessor, same domain (notSurface dialogue): []
+
+-- 120 frames of walking in the hold
+   HUD elements 7; strings: ["0","LIGHT","Spark-Dart","Take A tithe-gourd, empty"]
+   kinds: ["health_bar","stamina_bar","focus_bar","heal_charges","equip_load","quick_slots","interact_prompt"]
+   build accessor, same domain (notSurface dialogue): []
+
+-- 240 more frames, walking back
+   HUD elements 6; strings: ["0","LIGHT","Spark-Dart"]
+   kinds: ["health_bar","stamina_bar","focus_bar","heal_charges","equip_load","quick_slots"]
+   build accessor, same domain (notSurface dialogue): []
+
+== M9 over the real domain: 5 strings searched, 1 hit(s) ==
+   HIT "Take A tithe-gourd, empty"
+== M9 as the build ran it: 0 strings searched ==
+== M11/AR-2 forbidden kinds present: [] ==

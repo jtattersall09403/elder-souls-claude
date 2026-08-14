@@ -1,0 +1,406 @@
+{
+  "schema": "elder-souls/cost-ledger@1",
+  "generated_at": "2026-08-14T08:36:15.590Z",
+  "generator": "tools/cost.mjs",
+  "commit": "fa146e1",
+  "source": "~/.claude/projects/-home-user-elder-souls-claude",
+  "stale_after_minutes": 45,
+  "window": {
+    "from": "2026-08-05T22:16:46.017Z",
+    "to": "2026-08-14T08:36:04.714Z",
+    "hours": 202.32,
+    "complete": true
+  },
+  "comparable_key": "sha1:2e492d83b9953130",
+  "prices": {
+    "note": "USD per million tokens",
+    "effective": "2026-08-08",
+    "sonnet_intro_expires": "2026-08-31",
+    "claude-opus-5": {
+      "input": 5,
+      "cache_write_5m": 6.25,
+      "cache_write_1h": 10,
+      "cache_read": 0.5,
+      "output": 25
+    },
+    "claude-sonnet-5": {
+      "input": 2,
+      "cache_write_5m": 2.5,
+      "cache_write_1h": 4,
+      "cache_read": 0.2,
+      "output": 10
+    },
+    "claude-haiku-4-5": {
+      "input": 1,
+      "cache_write_5m": 1.25,
+      "cache_write_1h": 2,
+      "cache_read": 0.1,
+      "output": 5
+    }
+  },
+  "coverage": {
+    "files_total": 417,
+    "files_read": 417,
+    "bytes_read": 599613903,
+    "complete": true
+  },
+  "drivers": {
+    "requests": 49394,
+    "mean_context_tokens": 209527,
+    "pie_tokens": 1272796421,
+    "requests_per_agent_hour": 70.16
+  },
+  "denominator": {
+    "definition": "active_clock_hours",
+    "active_hours": 53,
+    "agent_hours": 704,
+    "span_hours": 202.32
+  },
+  "headline": {
+    "spend_to_date_usd": 6134.35,
+    "burn_usd_per_hour": 32.95,
+    "burn_window_hours": 1,
+    "ch_usd_per_hour": 115.74,
+    "ch_pct_of_baseline": 99.9,
+    "usd_per_agent_hour": 8.71,
+    "usd_per_agent_hour_pct_of_baseline": 100
+  },
+  "baseline": {
+    "usd_per_hour": 115.88,
+    "usd_per_agent_hour": 8.71,
+    "from": "2026-08-05T22:16:00Z",
+    "to": "2026-08-08T12:46:00Z",
+    "commit": "d98ca28",
+    "source": "orchestration/COST.md §2, corrected by orchestration/plans/COST-INSTRUMENT.md §11.1 BLOCKING 3 (not re-derived by tools/cost.mjs)"
+  },
+  "target": {
+    "fraction_of_baseline": 0.25,
+    "usd_per_hour": 28.97,
+    "usd_per_agent_hour": 2.18
+  },
+  "series": [
+    {
+      "t": "2026-08-05T22:00:00.000Z",
+      "usd_per_hour": 36.56,
+      "usd_per_agent_hour": 1.83,
+      "mean_agents": 20,
+      "commit": "70498c0",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T06:00:00.000Z",
+      "usd_per_hour": 8.72,
+      "usd_per_agent_hour": 1.09,
+      "mean_agents": 8,
+      "commit": "43ad5db",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T08:00:00.000Z",
+      "usd_per_hour": 89.45,
+      "usd_per_agent_hour": 3.31,
+      "mean_agents": 27,
+      "commit": "a75ba7e",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T10:00:00.000Z",
+      "usd_per_hour": 46.11,
+      "usd_per_agent_hour": 4.19,
+      "mean_agents": 11,
+      "commit": "76e88d5",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T12:00:00.000Z",
+      "usd_per_hour": 89.73,
+      "usd_per_agent_hour": 11.22,
+      "mean_agents": 8,
+      "commit": "eeeaad2",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T14:00:00.000Z",
+      "usd_per_hour": 23.85,
+      "usd_per_agent_hour": 4.77,
+      "mean_agents": 5,
+      "commit": "f298f82",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T16:00:00.000Z",
+      "usd_per_hour": 80.12,
+      "usd_per_agent_hour": 7.28,
+      "mean_agents": 11,
+      "commit": "f57c302",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T18:00:00.000Z",
+      "usd_per_hour": 96.32,
+      "usd_per_agent_hour": 8.76,
+      "mean_agents": 11,
+      "commit": "65275dc",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T20:00:00.000Z",
+      "usd_per_hour": 148.24,
+      "usd_per_agent_hour": 7.41,
+      "mean_agents": 20,
+      "commit": "87a5b0e",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-06T22:00:00.000Z",
+      "usd_per_hour": 175.71,
+      "usd_per_agent_hour": 8.79,
+      "mean_agents": 20,
+      "commit": "3c38f18",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T00:00:00.000Z",
+      "usd_per_hour": 1.8,
+      "usd_per_agent_hour": 0.3,
+      "mean_agents": 6,
+      "commit": "3c38f18",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T06:00:00.000Z",
+      "usd_per_hour": 180.26,
+      "usd_per_agent_hour": 9.49,
+      "mean_agents": 19,
+      "commit": "4009815",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T08:00:00.000Z",
+      "usd_per_hour": 150.68,
+      "usd_per_agent_hour": 8.37,
+      "mean_agents": 18,
+      "commit": "cd5ae7e",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T10:00:00.000Z",
+      "usd_per_hour": 104.55,
+      "usd_per_agent_hour": 5.5,
+      "mean_agents": 19,
+      "commit": "be17753",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T12:00:00.000Z",
+      "usd_per_hour": 170.87,
+      "usd_per_agent_hour": 6.1,
+      "mean_agents": 28,
+      "commit": "b7d249a",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T14:00:00.000Z",
+      "usd_per_hour": 125.71,
+      "usd_per_agent_hour": 4.83,
+      "mean_agents": 26,
+      "commit": "aa68530",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T16:00:00.000Z",
+      "usd_per_hour": 156.94,
+      "usd_per_agent_hour": 4.76,
+      "mean_agents": 33,
+      "commit": "0b2d6ef",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T18:00:00.000Z",
+      "usd_per_hour": 122.77,
+      "usd_per_agent_hour": 5.12,
+      "mean_agents": 24,
+      "commit": "de4756c",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T20:00:00.000Z",
+      "usd_per_hour": 126.67,
+      "usd_per_agent_hour": 4.52,
+      "mean_agents": 28,
+      "commit": "3ba93e0",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-07T22:00:00.000Z",
+      "usd_per_hour": 201.13,
+      "usd_per_agent_hour": 5.75,
+      "mean_agents": 35,
+      "commit": "b900460",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T00:00:00.000Z",
+      "usd_per_hour": 149.56,
+      "usd_per_agent_hour": 5.34,
+      "mean_agents": 28,
+      "commit": "0f5f456",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T02:00:00.000Z",
+      "usd_per_hour": 216.89,
+      "usd_per_agent_hour": 5.86,
+      "mean_agents": 37,
+      "commit": "8b1295b",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T04:00:00.000Z",
+      "usd_per_hour": 134.45,
+      "usd_per_agent_hour": 6.4,
+      "mean_agents": 21,
+      "commit": "7bdc979",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T06:00:00.000Z",
+      "usd_per_hour": 98.58,
+      "usd_per_agent_hour": 7.58,
+      "mean_agents": 13,
+      "commit": "b4fbd5b",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T08:00:00.000Z",
+      "usd_per_hour": 74.52,
+      "usd_per_agent_hour": 4.97,
+      "mean_agents": 15,
+      "commit": "fa96455",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T10:00:00.000Z",
+      "usd_per_hour": 131,
+      "usd_per_agent_hour": 4.52,
+      "mean_agents": 29,
+      "commit": "7db8368",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-08T12:00:00.000Z",
+      "usd_per_hour": 109.49,
+      "usd_per_agent_hour": 4.06,
+      "mean_agents": 27,
+      "commit": "d2dbae7",
+      "window_hours": 2
+    },
+    {
+      "t": "2026-08-14T08:00:00.000Z",
+      "usd_per_hour": 16.48,
+      "usd_per_agent_hour": 2.35,
+      "mean_agents": 7,
+      "commit": "fa146e1",
+      "window_hours": 2
+    }
+  ],
+  "by_model": [
+    {
+      "model": "claude-opus-5",
+      "usd": 5981.27,
+      "requests": 45901,
+      "tokens": {
+        "input": 936288,
+        "cache_write_5m": 148076720,
+        "cache_write_1h": 7783251,
+        "cache_read": 9543800860,
+        "output": 8054924
+      }
+    },
+    {
+      "model": "claude-sonnet-5",
+      "usd": 153.09,
+      "requests": 3493,
+      "tokens": {
+        "input": 284373,
+        "cache_write_5m": 7562349,
+        "cache_write_1h": 0,
+        "cache_read": 640935158,
+        "output": 542440
+      }
+    }
+  ],
+  "by_token_class": [
+    {
+      "class": "input",
+      "usd": 5.25,
+      "tokens": 1220661
+    },
+    {
+      "class": "cache_write_5m",
+      "usd": 944.39,
+      "tokens": 155639069
+    },
+    {
+      "class": "cache_write_1h",
+      "usd": 77.83,
+      "tokens": 7783251
+    },
+    {
+      "class": "cache_read",
+      "usd": 4900.09,
+      "tokens": 10184736018
+    },
+    {
+      "class": "output",
+      "usd": 206.8,
+      "tokens": 8597364
+    }
+  ],
+  "guards": {
+    "g1_parallelism": {
+      "mean_agents": 13.28,
+      "mean_agents_present": 13.4,
+      "floor": 12,
+      "divergence_flag": false,
+      "status": "ok",
+      "window_hours": 1
+    },
+    "g2_quality": {
+      "mean_verdict_score": 3.61,
+      "baseline_mean_verdict_score": null,
+      "n": 69,
+      "power": "low",
+      "critic_find_rate": null,
+      "baseline_critic_find_rate": null,
+      "regrade": null,
+      "status": "ok"
+    },
+    "g3_rigour": {
+      "counts": {
+        "separate_critic": null,
+        "delete_the_fix": null,
+        "consumption": null,
+        "self_test": null,
+        "arms_disagree": null
+      },
+      "unmeasured": [
+        "separate_critic",
+        "delete_the_fix",
+        "consumption",
+        "self_test",
+        "arms_disagree"
+      ],
+      "unmeasured_reason": "not yet computed by this instrument — verdict prose only, and a grep counts the word, not the act (orchestration/COST.md §1)",
+      "baseline_counts": {},
+      "status": "unmeasured"
+    }
+  },
+  "changes": [],
+  "notes": [
+    "First run of a newly-built instrument (2026-08-14). Not yet through a fresh build critic; treat as a first working measurement, not a finished COST-INSTRUMENT verdict.",
+    "57 deduplicated request(s) used an unpriced/unrecognised model and were excluded from cost: {\"<synthetic>\":57}.",
+    "baseline/target are the frozen figures already published in orchestration/COST.md §2 (BLOCKING 3), not re-derived here — see baseline.source.",
+    "g2_quality.baseline_mean_verdict_score and critic_find_rate, and all of g3_rigour, are not computed by this instrument yet; they ship null/unmeasured rather than a confident wrong number."
+  ]
+}

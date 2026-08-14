@@ -1,0 +1,22 @@
+== A: 2D surfaces the renderer owns vs instrumented ==
+  {"dialogue":true,"menus":false,"title":true}
+  harness advertises surfaces_instrumented = ["dialogue","title"]
+
+== B: menus surface instrumented at runtime through the register's own instrument() ==
+  register entries on the menus surface after instrumenting + a forced repaint: 0
+
+== C: falsification — the same context, two draw paths ==
+  {
+  "drawn_via_glyphs_drawText": "CRITIC-SENTINEL-GLYPHS",
+  "register_saw_glyphs": false,
+  "register_rows_after_glyphs": 0,
+  "drawn_via_fillText": "CRITIC-SENTINEL-FILLTEXT",
+  "register_saw_filltext": true,
+  "register_rows_after_filltext": 1
+}
+
+== D: strings the menus surface actually draws in the opening (UISurface.elements[].text) ==
+  6 elements, 3 distinct strings:
+    "5"
+    "LIGHT"
+    "Spark-Dart"

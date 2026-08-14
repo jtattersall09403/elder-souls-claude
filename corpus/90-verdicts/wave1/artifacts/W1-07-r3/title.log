@@ -1,0 +1,8 @@
+== M20 / HF9 — the title surface ==
+  harness-mode boot: title present=true shown=false
+  after titleShow(): shown=true  rows=
+  drawn strings on the title surface: ["ELDER SOULS","ARGONIA","— Continue","  New","  Load","  Settings","  Quit to menu","Nameless"]
+  titleActivate('continue') -> {"id":"continue","slot":"slot-a","loaded":true,"ok":true,"gen":1,"degraded":false}
+  PLAY MODE, no flags: title shown=true; drawn strings: ["ELDER SOULS","ARGONIA","— Continue","  New","  Load","  Settings","  Quit to menu","Nameless"]
+
+== M9 — instruction grep over 8 distinct non-dialogue strings: 0 hits []

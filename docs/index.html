@@ -129,8 +129,9 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-14 08:26Z</div>
-  <div class="cost-strip"><a href="#cost">Cost</a> <span class="cost-strip-dim">&mdash; instrument not landed yet, so no figure is published</span></div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-14 08:36Z</div>
+  <div class="cost-strip"><span class="ok">&#10003;</span> <a href="#cost">Spend to date</a>
+      <b>$6,134.35</b> <span class="cost-strip-dim">&middot; burn $32.95/h &middot; C/H $115.74/h (99.9% of baseline, bar 25%) &middot; agents 13.3 &middot; read 2026-08-14 08:36Z, seconds ago</span></div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -1400,18 +1401,391 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="wrap">
 
 <section class="cost"><h2 id="cost">What this is costing <span class="dimtext">(the efficiency programme &mdash; <code>orchestration/COST.md</code>)</span></h2>
-<div class="cost-banner cost-banner-wait"><b>The cost instrument has not landed yet.</b> This page renders <code>docs/data/cost-ledger.json</code> and computes no cost of its own (rule 10 &mdash; one implementation of one system).
-      Until <code>tools/cost.mjs</code> writes that file there is nothing here to show, and inventing a figure would be worse than an empty panel.
-      Contract: <code>orchestration/COST.md</code> §6.1 &middot; shape: <code>tools/cost-fixture.json</code>.</div></section>
+<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 08:36Z</b> (seconds ago) at commit <code>fa146e1</code>, and it refreshes on every bank.</div><div class="cost-hero">
+  <div class="cost-hero-main">
+    <div class="cost-hero-l">Spend to date</div>
+    <div class="cost-hero-n">$6,134.35</div>
+    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 08:36Z &middot; 202.3 h of fleet runtime</div>
+    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 53 active h of 202.3 elapsed &middot; 704 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
+    
+    <div class="cost-caveat cost-caveat-ok">Read <b>417</b> of 417 transcript files (0.60 GB) &mdash; complete.</div>
+  </div>
+  <div class="cost-hero-side">
+    <div class="cost-tile"><div class="cost-tile-v">$32.95<span class="cost-per">/h</span></div>
+      <div class="cost-tile-l">Burn rate now</div>
+      <div class="cost-tile-s">over the last 1 h</div></div>
+    <div class="cost-tile"><div class="cost-tile-v">$115.74<span class="cost-per">/h</span></div>
+      <div class="cost-tile-l">C/H &mdash; the headline metric</div>
+      <div class="cost-tile-s">99.9% of baseline &middot; bar is 25%</div></div>
+    <div class="cost-tile"><div class="cost-tile-v">$8.71<span class="cost-per">/agent-h</span></div>
+      <div class="cost-tile-l">Cost per agent-hour</div>
+      <div class="cost-tile-s">100% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
+  </div>
+</div><div class="cost-guards">
+  <div class="cost-guards-h">The guards. <span class="dimtext">A cost figure published without these is not a result &mdash; C/H alone is gamed by running fewer agents.</span></div>
+  <div class="cost-tiles">
+    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">13.3</div>
+    <div class="cost-tile-l">G1 &mdash; mean concurrent agents</div><div class="cost-tile-s"><span class="ok">&#10003;</span> floor 12 &middot; over 1 h<br>13.4 alive on the second reading</div></div>
+    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">3.6</div>
+    <div class="cost-tile-l">G2a &mdash; verdict score <span class="cost-weak">tripwire, low power</span></div><div class="cost-tile-s"><span class="ok">&#10003;</span> baseline &mdash; / 10 &middot; n=69 &middot; power low<br>One-sided and under-powered: it cannot prove quality held, only shout if it falls.</div></div>
+    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">&mdash;</div>
+    <div class="cost-tile-l">G2 &mdash; critic find-rate</div><div class="cost-tile-s"><span class="ok">&#10003;</span> baseline &mdash; findings per critic<br>G2b controlled re-grade: not run yet</div></div>
+    <div class="cost-tile cost-guard"><div class="cost-tile-v dimtext">0/5 <span class="cost-weak">measured</span></div>
+    <div class="cost-tile-l">G3 &mdash; the five non-negotiables</div><div class="cost-tile-s"><span class="dimtext">&middot;</span> separate critic <span class="warn">unmeasured</span> &middot; delete the fix <span class="warn">unmeasured</span> &middot; consumption <span class="warn">unmeasured</span> &middot; self test <span class="warn">unmeasured</span> &middot; arms disagree <span class="warn">unmeasured</span><br><b>5 of 5 are not honestly measurable yet</b> &mdash; not yet computed by this instrument — verdict prose only, and a grep counts the word, not the act (orchestration/COST.md §1).</div></div>
+  </div>
+</div>
+<div class="cost-panel"><h3>C/H — model spend per hour of fleet runtime <span class="cost-unit">$/h</span> <span class="cost-n">28 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$60.73</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$121.46</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$182.19</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$242.92</text><line x1="62" x2="792" y1="98.16906529313741" y2="98.16906529313741" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="102.16906529313741" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="147.54226632328437" y2="147.54226632328437" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="151.54226632328437" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,143.2 90.9,159.0 98.1,113.2 105.4,137.8 112.6,113.0 119.8,150.5 127.0,118.5 134.3,109.3 141.5,79.8 148.7,64.2 156.0,163.0 177.6,61.6 184.9,78.4 192.1,104.6 199.3,66.9 206.6,92.6 213.8,74.8 221.0,94.3 228.2,92.0 235.5,49.7 242.7,79.0 249.9,40.8 257.1,87.6 264.4,108.0 271.6,121.7 278.8,89.6 286.1,101.8 792.0,154.6" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+$36.56 per hour
+commit 70498c0
+measured over 2 h</title><circle cx="62.0" cy="143.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
+$8.72 per hour
+commit 43ad5db
+measured over 2 h</title><circle cx="90.9" cy="159.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+$89.45 per hour
+commit a75ba7e
+measured over 2 h</title><circle cx="98.1" cy="113.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+$46.11 per hour
+commit 76e88d5
+measured over 2 h</title><circle cx="105.4" cy="137.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+$89.73 per hour
+commit eeeaad2
+measured over 2 h</title><circle cx="112.6" cy="113.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+$23.85 per hour
+commit f298f82
+measured over 2 h</title><circle cx="119.8" cy="150.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+$80.12 per hour
+commit f57c302
+measured over 2 h</title><circle cx="127.0" cy="118.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+$96.32 per hour
+commit 65275dc
+measured over 2 h</title><circle cx="134.3" cy="109.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+$148.24 per hour
+commit 87a5b0e
+measured over 2 h</title><circle cx="141.5" cy="79.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+$175.71 per hour
+commit 3c38f18
+measured over 2 h</title><circle cx="148.7" cy="64.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+$1.80 per hour
+commit 3c38f18
+measured over 2 h</title><circle cx="156.0" cy="163.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+$180.26 per hour
+commit 4009815
+measured over 2 h</title><circle cx="177.6" cy="61.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+$150.68 per hour
+commit cd5ae7e
+measured over 2 h</title><circle cx="184.9" cy="78.4" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+$104.55 per hour
+commit be17753
+measured over 2 h</title><circle cx="192.1" cy="104.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+$170.87 per hour
+commit b7d249a
+measured over 2 h</title><circle cx="199.3" cy="66.9" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+$125.71 per hour
+commit aa68530
+measured over 2 h</title><circle cx="206.6" cy="92.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+$156.94 per hour
+commit 0b2d6ef
+measured over 2 h</title><circle cx="213.8" cy="74.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+$122.77 per hour
+commit de4756c
+measured over 2 h</title><circle cx="221.0" cy="94.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+$126.67 per hour
+commit 3ba93e0
+measured over 2 h</title><circle cx="228.2" cy="92.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+$201.13 per hour
+commit b900460
+measured over 2 h</title><circle cx="235.5" cy="49.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+$149.56 per hour
+commit 0f5f456
+measured over 2 h</title><circle cx="242.7" cy="79.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+$216.89 per hour
+commit 8b1295b
+measured over 2 h</title><circle cx="249.9" cy="40.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+$134.45 per hour
+commit 7bdc979
+measured over 2 h</title><circle cx="257.1" cy="87.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+$98.58 per hour
+commit b4fbd5b
+measured over 2 h</title><circle cx="264.4" cy="108.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+$74.52 per hour
+commit fa96455
+measured over 2 h</title><circle cx="271.6" cy="121.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+$131.00 per hour
+commit 7db8368
+measured over 2 h</title><circle cx="278.8" cy="89.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+$109.49 per hour
+commit d2dbae7
+measured over 2 h</title><circle cx="286.1" cy="101.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+$16.48 per hour
+commit fa146e1
+measured over 2 h</title><circle cx="792.0" cy="154.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="144.63778215421905" fill="#3987e5" font-size="12" font-weight="600">$16.48/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+<div class="cost-panel"><h3>Cost per agent-hour — the diagnostic that proves efficiency, not idling <span class="cost-unit">$/agent-h</span> <span class="cost-n">28 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 90.9,152.0 98.1,127.7 105.4,118.0 112.6,40.8 119.8,111.6 127.0,84.1 134.3,67.8 141.5,82.6 148.7,67.5 156.0,160.7 177.6,59.8 184.9,72.1 192.1,103.6 199.3,97.0 206.6,111.0 213.8,111.7 221.0,107.8 228.2,114.4 235.5,100.9 242.7,105.4 249.9,99.6 257.1,93.7 264.4,80.8 271.6,109.4 278.8,114.4 286.1,119.4 792.0,138.2" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+$1.83 per agent-hour
+commit 70498c0
+measured over 2 h</title><circle cx="62.0" cy="143.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
+$1.09 per agent-hour
+commit 43ad5db
+measured over 2 h</title><circle cx="90.9" cy="152.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+$3.31 per agent-hour
+commit a75ba7e
+measured over 2 h</title><circle cx="98.1" cy="127.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+$4.19 per agent-hour
+commit 76e88d5
+measured over 2 h</title><circle cx="105.4" cy="118.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+$11.22 per agent-hour
+commit eeeaad2
+measured over 2 h</title><circle cx="112.6" cy="40.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+$4.77 per agent-hour
+commit f298f82
+measured over 2 h</title><circle cx="119.8" cy="111.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+$7.28 per agent-hour
+commit f57c302
+measured over 2 h</title><circle cx="127.0" cy="84.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+$8.76 per agent-hour
+commit 65275dc
+measured over 2 h</title><circle cx="134.3" cy="67.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+$7.41 per agent-hour
+commit 87a5b0e
+measured over 2 h</title><circle cx="141.5" cy="82.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+$8.79 per agent-hour
+commit 3c38f18
+measured over 2 h</title><circle cx="148.7" cy="67.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+$0.30 per agent-hour
+commit 3c38f18
+measured over 2 h</title><circle cx="156.0" cy="160.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+$9.49 per agent-hour
+commit 4009815
+measured over 2 h</title><circle cx="177.6" cy="59.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+$8.37 per agent-hour
+commit cd5ae7e
+measured over 2 h</title><circle cx="184.9" cy="72.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+$5.50 per agent-hour
+commit be17753
+measured over 2 h</title><circle cx="192.1" cy="103.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+$6.10 per agent-hour
+commit b7d249a
+measured over 2 h</title><circle cx="199.3" cy="97.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+$4.83 per agent-hour
+commit aa68530
+measured over 2 h</title><circle cx="206.6" cy="111.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+$4.76 per agent-hour
+commit 0b2d6ef
+measured over 2 h</title><circle cx="213.8" cy="111.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+$5.12 per agent-hour
+commit de4756c
+measured over 2 h</title><circle cx="221.0" cy="107.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+$4.52 per agent-hour
+commit 3ba93e0
+measured over 2 h</title><circle cx="228.2" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+$5.75 per agent-hour
+commit b900460
+measured over 2 h</title><circle cx="235.5" cy="100.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+$5.34 per agent-hour
+commit 0f5f456
+measured over 2 h</title><circle cx="242.7" cy="105.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+$5.86 per agent-hour
+commit 8b1295b
+measured over 2 h</title><circle cx="249.9" cy="99.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+$6.40 per agent-hour
+commit 7bdc979
+measured over 2 h</title><circle cx="257.1" cy="93.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+$7.58 per agent-hour
+commit b4fbd5b
+measured over 2 h</title><circle cx="264.4" cy="80.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+$4.97 per agent-hour
+commit fa96455
+measured over 2 h</title><circle cx="271.6" cy="109.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+$4.52 per agent-hour
+commit 7db8368
+measured over 2 h</title><circle cx="278.8" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+$4.06 per agent-hour
+commit d2dbae7
+measured over 2 h</title><circle cx="286.1" cy="119.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+$2.35 per agent-hour
+commit fa146e1
+measured over 2 h</title><circle cx="792.0" cy="138.2" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="128.19308632543928" fill="#d95926" font-size="12" font-weight="600">$2.35/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+<div class="cost-panel"><h3>G1 — mean concurrent agents, on the same clock as the cost <span class="cost-unit">agents</span> <span class="cost-n">28 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 90.9,137.4 98.1,74.1 105.4,127.4 112.6,137.4 119.8,147.3 127.0,127.4 134.3,127.4 141.5,97.4 148.7,97.4 156.0,144.0 177.6,100.7 184.9,104.1 192.1,100.7 199.3,70.8 206.6,77.4 213.8,54.1 221.0,84.1 228.2,70.8 235.5,47.4 242.7,70.8 249.9,40.8 257.1,94.1 264.4,120.7 271.6,114.0 278.8,67.4 286.1,74.1 792.0,140.7" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+20 agents
+commit 70498c0
+measured over 2 h</title><circle cx="62.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
+8 agents
+commit 43ad5db
+measured over 2 h</title><circle cx="90.9" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+27 agents
+commit a75ba7e
+measured over 2 h</title><circle cx="98.1" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+11 agents
+commit 76e88d5
+measured over 2 h</title><circle cx="105.4" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+8 agents
+commit eeeaad2
+measured over 2 h</title><circle cx="112.6" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+5 agents
+commit f298f82
+measured over 2 h</title><circle cx="119.8" cy="147.3" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+11 agents
+commit f57c302
+measured over 2 h</title><circle cx="127.0" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+11 agents
+commit 65275dc
+measured over 2 h</title><circle cx="134.3" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+20 agents
+commit 87a5b0e
+measured over 2 h</title><circle cx="141.5" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+20 agents
+commit 3c38f18
+measured over 2 h</title><circle cx="148.7" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+6 agents
+commit 3c38f18
+measured over 2 h</title><circle cx="156.0" cy="144.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+19 agents
+commit 4009815
+measured over 2 h</title><circle cx="177.6" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+18 agents
+commit cd5ae7e
+measured over 2 h</title><circle cx="184.9" cy="104.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+19 agents
+commit be17753
+measured over 2 h</title><circle cx="192.1" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+28 agents
+commit b7d249a
+measured over 2 h</title><circle cx="199.3" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+26 agents
+commit aa68530
+measured over 2 h</title><circle cx="206.6" cy="77.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+33 agents
+commit 0b2d6ef
+measured over 2 h</title><circle cx="213.8" cy="54.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+24 agents
+commit de4756c
+measured over 2 h</title><circle cx="221.0" cy="84.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+28 agents
+commit 3ba93e0
+measured over 2 h</title><circle cx="228.2" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+35 agents
+commit b900460
+measured over 2 h</title><circle cx="235.5" cy="47.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+28 agents
+commit 0f5f456
+measured over 2 h</title><circle cx="242.7" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+37 agents
+commit 8b1295b
+measured over 2 h</title><circle cx="249.9" cy="40.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+21 agents
+commit 7bdc979
+measured over 2 h</title><circle cx="257.1" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+13 agents
+commit b4fbd5b
+measured over 2 h</title><circle cx="264.4" cy="120.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+15 agents
+commit fa96455
+measured over 2 h</title><circle cx="271.6" cy="114.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+29 agents
+commit 7db8368
+measured over 2 h</title><circle cx="278.8" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+27 agents
+commit d2dbae7
+measured over 2 h</title><circle cx="286.1" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+7 agents
+commit fa146e1
+measured over 2 h</title><circle cx="792.0" cy="140.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="130.6891891891892" fill="#199e70" font-size="12" font-weight="600">7 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+<details class="cost-details"><summary>Every measurement, as a table</summary>
+<div class="cost-scroll"><table><tr><th>Taken</th><th>C/H</th><th>$/agent-h</th><th>Agents</th><th>Commit</th><th>Note</th></tr>
+<tr><td>2026-08-14 08:00Z</td><td>$16.48</td><td>$2.35</td><td>7</td><td><code>fa146e1</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 12:00Z</td><td>$109.49</td><td>$4.06</td><td>27</td><td><code>d2dbae7</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 10:00Z</td><td>$131.00</td><td>$4.52</td><td>29</td><td><code>7db8368</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 08:00Z</td><td>$74.52</td><td>$4.97</td><td>15</td><td><code>fa96455</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 06:00Z</td><td>$98.58</td><td>$7.58</td><td>13</td><td><code>b4fbd5b</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 04:00Z</td><td>$134.45</td><td>$6.40</td><td>21</td><td><code>7bdc979</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 02:00Z</td><td>$216.89</td><td>$5.86</td><td>37</td><td><code>8b1295b</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-08 00:00Z</td><td>$149.56</td><td>$5.34</td><td>28</td><td><code>0f5f456</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 22:00Z</td><td>$201.13</td><td>$5.75</td><td>35</td><td><code>b900460</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 20:00Z</td><td>$126.67</td><td>$4.52</td><td>28</td><td><code>3ba93e0</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 18:00Z</td><td>$122.77</td><td>$5.12</td><td>24</td><td><code>de4756c</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 16:00Z</td><td>$156.94</td><td>$4.76</td><td>33</td><td><code>0b2d6ef</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 14:00Z</td><td>$125.71</td><td>$4.83</td><td>26</td><td><code>aa68530</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 12:00Z</td><td>$170.87</td><td>$6.10</td><td>28</td><td><code>b7d249a</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 10:00Z</td><td>$104.55</td><td>$5.50</td><td>19</td><td><code>be17753</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 08:00Z</td><td>$150.68</td><td>$8.37</td><td>18</td><td><code>cd5ae7e</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 06:00Z</td><td>$180.26</td><td>$9.49</td><td>19</td><td><code>4009815</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-07 00:00Z</td><td>$1.80</td><td>$0.30</td><td>6</td><td><code>3c38f18</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 22:00Z</td><td>$175.71</td><td>$8.79</td><td>20</td><td><code>3c38f18</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 20:00Z</td><td>$148.24</td><td>$7.41</td><td>20</td><td><code>87a5b0e</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 18:00Z</td><td>$96.32</td><td>$8.76</td><td>11</td><td><code>65275dc</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 16:00Z</td><td>$80.12</td><td>$7.28</td><td>11</td><td><code>f57c302</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 14:00Z</td><td>$23.85</td><td>$4.77</td><td>5</td><td><code>f298f82</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 12:00Z</td><td>$89.73</td><td>$11.22</td><td>8</td><td><code>eeeaad2</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 10:00Z</td><td>$46.11</td><td>$4.19</td><td>11</td><td><code>76e88d5</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 08:00Z</td><td>$89.45</td><td>$3.31</td><td>27</td><td><code>a75ba7e</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-06 06:00Z</td><td>$8.72</td><td>$1.09</td><td>8</td><td><code>43ad5db</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-05 22:00Z</td><td>$36.56</td><td>$1.83</td><td>20</td><td><code>70498c0</code></td><td class="rem"></td></tr>
+</table></div></details><div class="cost-two"><div class="cost-panel"><h3>Cost by model</h3><div class="cost-note">Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.</div><div class="cost-bars"><div class="cost-bar-row">
+      <div class="cost-bar-label">claude-opus-5</div>
+      <div class="cost-bar-track"><i style="width:100.0%;background:#3987e5"></i></div>
+      <div class="cost-bar-val">$5,981.27</div>
+      <div class="cost-bar-sub">45,901 distinct requests · input 936k / cache write 5m 148.1M / cache write 1h 7.8M / cache read 9.54B / output 8.1M</div>
+    </div>
+<div class="cost-bar-row">
+      <div class="cost-bar-label">claude-sonnet-5</div>
+      <div class="cost-bar-track"><i style="width:2.6%;background:#d95926"></i></div>
+      <div class="cost-bar-val">$153.09</div>
+      <div class="cost-bar-sub">3,493 distinct requests · input 284k / cache write 5m 7.6M / cache write 1h 0 / cache read 640.9M / output 542k</div>
+    </div></div></div><div class="cost-panel"><h3>Cost by token class</h3><div class="cost-note">Input, two kinds of cache write (5-minute and 1-hour, billed differently), cache read and output are five different prices. A single total hides cache economics entirely.</div><div class="cost-bars"><div class="cost-bar-row">
+      <div class="cost-bar-label">input</div>
+      <div class="cost-bar-track"><i style="width:1.5%;background:#3987e5"></i></div>
+      <div class="cost-bar-val">$5.25</div>
+      <div class="cost-bar-sub">1.2M tokens</div>
+    </div>
+<div class="cost-bar-row">
+      <div class="cost-bar-label">cache write 5m</div>
+      <div class="cost-bar-track"><i style="width:19.3%;background:#d95926"></i></div>
+      <div class="cost-bar-val">$944.39</div>
+      <div class="cost-bar-sub">155.6M tokens</div>
+    </div>
+<div class="cost-bar-row">
+      <div class="cost-bar-label">cache write 1h</div>
+      <div class="cost-bar-track"><i style="width:1.6%;background:#199e70"></i></div>
+      <div class="cost-bar-val">$77.83</div>
+      <div class="cost-bar-sub">7.8M tokens</div>
+    </div>
+<div class="cost-bar-row">
+      <div class="cost-bar-label">cache read</div>
+      <div class="cost-bar-track"><i style="width:100.0%;background:#c98500"></i></div>
+      <div class="cost-bar-val">$4,900.09</div>
+      <div class="cost-bar-sub">10.18B tokens</div>
+    </div>
+<div class="cost-bar-row">
+      <div class="cost-bar-label">output</div>
+      <div class="cost-bar-track"><i style="width:4.2%;background:#d55181"></i></div>
+      <div class="cost-bar-val">$206.80</div>
+      <div class="cost-bar-sub">8.6M tokens</div>
+    </div></div></div></div><div class="cost-panel"><h3>What drives it</h3>
+<div class="cost-note">Cost is context volume multiplied by request count, not how much anything writes. These four numbers are where the levers act.</div>
+<div class="cost-tiles">
+  <div class="cost-tile"><div class="cost-tile-v">49,394</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">210k</div><div class="cost-tile-l">Mean context per request</div><div class="cost-tile-s">what every request pays to re-read</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">1.27B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">70.2</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
+</div></div><div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">0</span></h3>
+<div class="cost-note">A ledger showing only what worked hides negative evidence and cannot support a causal cost claim. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
+<div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
+<tr><td colspan=7 class="empty">no changes recorded yet &mdash; the programme has not landed one</td></tr>
+</table></div></div><div class="cost-foot">Rendered from <code>docs/data/cost-ledger.json</code> written by <code>tools/cost.mjs</code> from <code>~/.claude/projects/-home-user-elder-souls-claude</code>.
+    This page computes no cost: every figure above is a field in that file (contract: <code>orchestration/COST.md</code> §6.1).
+    Comparability key <code>sha1:2e492d83b9953130</code> &mdash; two readings are comparable only if this matches; the page reports it and never infers it.
+    Priced from the table published in the ledger, effective 2026-08-08: claude-opus-5 input $5 / cache write 5m $6.25 / cache write 1h $10 / cache read $0.5 / output $25 per Mtok · claude-sonnet-5 input $2 / cache write 5m $2.5 / cache write 1h $4 / cache read $0.2 / output $10 per Mtok · claude-haiku-4-5 input $1 / cache write 5m $1.25 / cache write 1h $2 / cache read $0.1 / output $5 per Mtok</div></section>
 
 <div class="grid">
-  <div class="card"><div class="n">145</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">473</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">146</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">474</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">69</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n bad">1/69</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">4/76</div><div class="l">Verdicts fresh at HEAD</div></div>
   <div class="card"><div class="n warn">70</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">150,325</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">150,789</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">59</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">37,752</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -1445,10 +1819,10 @@ table.sc-tbl td.d{color:var(--ink)}
 </style>
 <div class="sc" id="sc">
   <div class="sc-kpi">
-    <div class="card"><div class="n">3.7</div><div class="l">Mean latest score</div></div>
+    <div class="card"><div class="n">3.6</div><div class="l">Mean latest score</div></div>
     <div class="card"><div class="n">0/16</div><div class="l">Domains at the wave-1 gate</div></div>
-    <div class="card"><div class="n">68</div><div class="l">Verdicts filed</div></div>
-    <div class="card"><div class="n">6.3</div><div class="l">Mean distance to 10</div></div>
+    <div class="card"><div class="n">69</div><div class="l">Verdicts filed</div></div>
+    <div class="card"><div class="n">6.4</div><div class="l">Mean distance to 10</div></div>
   </div>
   <div class="sc-bar">
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
@@ -1527,6 +1901,7 @@ table.sc-tbl td.d{color:var(--ink)}
     <tr><td class="d">Quests</td><td><code>W1-20</code></td><td>1</td><td>08-08 13:05Z</td><td>2</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Engine &amp; harness</td><td><code>W1-DEPLOY</code></td><td>2</td><td>08-08 13:05Z</td><td>3.5</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Stealth &amp; crime</td><td><code>W1-15</code></td><td>1</td><td>08-08 13:20Z</td><td>2</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Death &amp; progression</td><td><code>W1-ATTR-SCALE</code></td><td>1</td><td>08-08 13:40Z</td><td>0</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Enemy behaviour</td><td><code>W1-12</code></td><td>2</td><td>08-08 14:05Z</td><td>2</td><td class="bad">FAIL</td></tr>
     </tbody></table>
   </div>
@@ -1534,7 +1909,7 @@ table.sc-tbl td.d{color:var(--ink)}
 </div>
 <script>
 (function(){
-  var D=[{"name":"Audio","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3076923076923077,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"04:20Z","day":"08-07"},{"x":0.8704957264957265,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"07:46Z","day":"08-08"}]},{"name":"Character & opening","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.15555555555555556,"y":1.5,"round":1,"raw":1.5,"pieces":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.21196581196581196,"y":3.8,"round":2,"raw":3.8,"pieces":1,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.40683760683760684,"y":0.9,"round":3,"raw":0.9,"pieces":1,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.11794871794871795,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.16923076923076924,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.19658119658119658,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"},{"x":0.676923076923077,"y":4,"round":1,"raw":4,"pieces":2,"piece":"W1-11","status":"fail","when":"22:20Z","day":"08-07"}]},{"name":"Controls & interface","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49914529914529915,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-08","status":"fail","when":"13:40Z","day":"08-07"},{"x":0.5794871794871795,"y":6,"round":2,"raw":6,"pieces":1,"piece":"W1-08","status":"fail","when":"17:35Z","day":"08-07"},{"x":0.6737663817663818,"y":4,"round":1,"raw":2,"pieces":2,"piece":"W1-21","status":"fail","when":"22:10Z","day":"08-07"},{"x":0.7884729344729344,"y":5,"round":1,"raw":4,"pieces":2,"piece":"W1-21","status":"fail","when":"03:46Z","day":"08-08"},{"x":0.7948717948717948,"y":4.67,"round":2,"raw":4,"pieces":3,"piece":"W1-MAP","status":"fail","when":"04:05Z","day":"08-08"}]},{"name":"Death & progression","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.4821766381766382,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-13","status":"fail","when":"12:50Z","day":"08-07"},{"x":0.6717948717948717,"y":5,"round":2,"raw":6,"pieces":2,"piece":"W1-SOULS","status":"pass","when":"22:05Z","day":"08-07"},{"x":0.6854700854700855,"y":6,"round":3,"raw":6,"pieces":2,"piece":"W1-13","status":"fail","when":"22:45Z","day":"08-07"},{"x":0.7350427350427351,"y":6,"round":4,"raw":6,"pieces":2,"piece":"W1-13","status":"fail","when":"01:10Z","day":"08-08"},{"x":0.7452991452991453,"y":6,"round":3,"raw":6,"pieces":2,"piece":"W1-SOULS","status":"fail","when":"01:40Z","day":"08-08"},{"x":0.7675213675213676,"y":5,"round":2,"raw":3,"pieces":3,"piece":"W1-16","status":"fail","when":"02:45Z","day":"08-08"},{"x":0.7948717948717948,"y":4.67,"round":3,"raw":2,"pieces":3,"piece":"W1-16","status":"fail","when":"04:05Z","day":"08-08"}]},{"name":"Dialogue","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.5794871794871795,"y":6,"round":1,"raw":6,"pieces":1,"piece":"W1-PROSE","status":"fail","when":"17:35Z","day":"08-07"},{"x":0.67008547008547,"y":4.5,"round":1,"raw":3,"pieces":2,"piece":"W1-17","status":"fail","when":"22:00Z","day":"08-07"},{"x":0.705937321937322,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-PROSE","status":"fail","when":"23:44Z","day":"08-07"},{"x":0.7589743589743589,"y":4.5,"round":1,"raw":5,"pieces":2,"piece":"W1-17","status":"fail","when":"02:20Z","day":"08-08"}]},{"name":"Enemy behaviour","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.6547008547008547,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-POPULATION","status":"fail","when":"21:15Z","day":"08-07"},{"x":0.7452991452991453,"y":3.5,"round":1,"raw":3,"pieces":2,"piece":"W1-12","status":"fail","when":"01:40Z","day":"08-08"},{"x":1,"y":3,"round":2,"raw":2,"pieces":2,"piece":"W1-12","status":"fail","when":"14:05Z","day":"08-08"}]},{"name":"Engine & harness","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.035897435897435895,"y":4.1,"round":2,"raw":4.1,"pieces":1,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"},{"x":0.4461538461538462,"y":3.05,"round":1,"raw":2,"pieces":2,"piece":"W1-SAVE","status":"fail","when":"11:05Z","day":"08-07"},{"x":0.9794871794871794,"y":3.2,"round":2,"raw":3.5,"pieces":3,"piece":"W1-DEPLOY","status":"fail","when":"13:05Z","day":"08-08"}]},{"name":"Lore & the library","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49914529914529915,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-LIBRARY","status":"fail","when":"13:40Z","day":"08-07"},{"x":0.6358974358974359,"y":4,"round":1,"raw":5,"pieces":2,"piece":"W1-23","status":"fail","when":"20:20Z","day":"08-07"},{"x":0.8003475783475783,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-23","status":"fail","when":"04:21Z","day":"08-08"},{"x":0.9555555555555556,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-23","status":"fail","when":"11:55Z","day":"08-08"},{"x":0.958974358974359,"y":4.7,"round":4,"raw":5.4,"pieces":2,"piece":"W1-LIBRARY","status":"fail","when":"12:05Z","day":"08-08"}]},{"name":"Magic","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":2.7,"round":1,"raw":2.7,"pieces":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.2205128205128205,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.8051282051282052,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-14","status":"fail","when":"04:35Z","day":"08-08"}]},{"name":"Quests","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.4717948717948718,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-19","status":"fail","when":"12:20Z","day":"08-07"},{"x":0.5401709401709401,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-19","status":"fail","when":"15:40Z","day":"08-07"},{"x":0.5665698005698006,"y":5.2,"round":1,"raw":5.4,"pieces":2,"piece":"W1-FACTIONS","status":"fail","when":"16:57Z","day":"08-07"},{"x":0.7692364672364672,"y":5.63,"round":2,"raw":6.5,"pieces":3,"piece":"W1-READABLES","status":"fail","when":"02:50Z","day":"08-08"},{"x":0.9794871794871794,"y":4.72,"round":1,"raw":2,"pieces":4,"piece":"W1-20","status":"fail","when":"13:05Z","day":"08-08"}]},{"name":"Settlements & people","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.6837606837606838,"y":3.2,"round":1,"raw":3.2,"pieces":1,"piece":"W1-04","status":"fail","when":"22:40Z","day":"08-07"},{"x":0.717948717948718,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-04","status":"fail","when":"00:20Z","day":"08-08"},{"x":0.7792307692307693,"y":4.6,"round":1,"raw":4.6,"pieces":1,"piece":"W1-04","status":"fail","when":"03:19Z","day":"08-08"},{"x":0.8666666666666667,"y":4.7,"round":1,"raw":4.7,"pieces":1,"piece":"W1-04","status":"fail","when":"07:35Z","day":"08-08"},{"x":0.8683760683760684,"y":4.8,"round":1,"raw":4.8,"pieces":1,"piece":"W1-04","status":"fail","when":"07:40Z","day":"08-08"}]},{"name":"Stealth & crime","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.24273504273504273,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"},{"x":0.7675213675213676,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-15","status":"fail","when":"02:45Z","day":"08-08"},{"x":0.9846153846153847,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"13:20Z","day":"08-08"}]},{"name":"The first hour","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49230769230769234,"y":1.3,"round":1,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"13:20Z","day":"08-07"},{"x":0.7702621082621083,"y":1.3,"round":2,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"02:53Z","day":"08-08"},{"x":0.8109401709401709,"y":1.65,"round":1,"raw":2,"pieces":2,"piece":"W1-25","status":"fail","when":"04:52Z","day":"08-08"},{"x":0.8564102564102564,"y":2,"round":3,"raw":2,"pieces":2,"piece":"W1-26","status":"fail","when":"07:05Z","day":"08-08"}]},{"name":"The world","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.10256410256410256,"y":3.1,"round":1,"raw":3.1,"pieces":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.16923076923076924,"y":3.5,"round":2,"raw":3.5,"pieces":1,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.49743589743589745,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"},{"x":0.6581196581196581,"y":5,"round":1,"raw":5,"pieces":2,"piece":"W1-02","status":"fail","when":"21:25Z","day":"08-07"},{"x":0.7076923076923077,"y":4,"round":1,"raw":2,"pieces":3,"piece":"W1-03","status":"fail","when":"23:50Z","day":"08-07"},{"x":0.8034188034188035,"y":4.25,"round":1,"raw":5,"pieces":4,"piece":"W1-ROAD","status":"fail","when":"04:30Z","day":"08-08"},{"x":0.8564102564102564,"y":4.6,"round":1,"raw":6,"pieces":5,"piece":"W1-CROSSING","status":"fail","when":"07:05Z","day":"08-08"}]},{"name":"Weapons","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.2205128205128205,"y":2,"round":2,"raw":2,"pieces":1,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.39658119658119656,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
+  var D=[{"name":"Audio","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3076923076923077,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"04:20Z","day":"08-07"},{"x":0.8704957264957265,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"07:46Z","day":"08-08"}]},{"name":"Character & opening","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.15555555555555556,"y":1.5,"round":1,"raw":1.5,"pieces":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.21196581196581196,"y":3.8,"round":2,"raw":3.8,"pieces":1,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.40683760683760684,"y":0.9,"round":3,"raw":0.9,"pieces":1,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.11794871794871795,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.16923076923076924,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.19658119658119658,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"},{"x":0.676923076923077,"y":4,"round":1,"raw":4,"pieces":2,"piece":"W1-11","status":"fail","when":"22:20Z","day":"08-07"}]},{"name":"Controls & interface","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49914529914529915,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-08","status":"fail","when":"13:40Z","day":"08-07"},{"x":0.5794871794871795,"y":6,"round":2,"raw":6,"pieces":1,"piece":"W1-08","status":"fail","when":"17:35Z","day":"08-07"},{"x":0.6737663817663818,"y":4,"round":1,"raw":2,"pieces":2,"piece":"W1-21","status":"fail","when":"22:10Z","day":"08-07"},{"x":0.7884729344729344,"y":5,"round":1,"raw":4,"pieces":2,"piece":"W1-21","status":"fail","when":"03:46Z","day":"08-08"},{"x":0.7948717948717948,"y":4.67,"round":2,"raw":4,"pieces":3,"piece":"W1-MAP","status":"fail","when":"04:05Z","day":"08-08"}]},{"name":"Death & progression","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.4821766381766382,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-13","status":"fail","when":"12:50Z","day":"08-07"},{"x":0.6717948717948717,"y":5,"round":2,"raw":6,"pieces":2,"piece":"W1-SOULS","status":"pass","when":"22:05Z","day":"08-07"},{"x":0.6854700854700855,"y":6,"round":3,"raw":6,"pieces":2,"piece":"W1-13","status":"fail","when":"22:45Z","day":"08-07"},{"x":0.7350427350427351,"y":6,"round":4,"raw":6,"pieces":2,"piece":"W1-13","status":"fail","when":"01:10Z","day":"08-08"},{"x":0.7452991452991453,"y":6,"round":3,"raw":6,"pieces":2,"piece":"W1-SOULS","status":"fail","when":"01:40Z","day":"08-08"},{"x":0.7675213675213676,"y":5,"round":2,"raw":3,"pieces":3,"piece":"W1-16","status":"fail","when":"02:45Z","day":"08-08"},{"x":0.7948717948717948,"y":4.67,"round":3,"raw":2,"pieces":3,"piece":"W1-16","status":"fail","when":"04:05Z","day":"08-08"},{"x":0.9914529914529915,"y":3.5,"round":1,"raw":0,"pieces":4,"piece":"W1-ATTR-SCALE","status":"fail","when":"13:40Z","day":"08-08"}]},{"name":"Dialogue","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.5794871794871795,"y":6,"round":1,"raw":6,"pieces":1,"piece":"W1-PROSE","status":"fail","when":"17:35Z","day":"08-07"},{"x":0.67008547008547,"y":4.5,"round":1,"raw":3,"pieces":2,"piece":"W1-17","status":"fail","when":"22:00Z","day":"08-07"},{"x":0.705937321937322,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-PROSE","status":"fail","when":"23:44Z","day":"08-07"},{"x":0.7589743589743589,"y":4.5,"round":1,"raw":5,"pieces":2,"piece":"W1-17","status":"fail","when":"02:20Z","day":"08-08"}]},{"name":"Enemy behaviour","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.6547008547008547,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-POPULATION","status":"fail","when":"21:15Z","day":"08-07"},{"x":0.7452991452991453,"y":3.5,"round":1,"raw":3,"pieces":2,"piece":"W1-12","status":"fail","when":"01:40Z","day":"08-08"},{"x":1,"y":3,"round":2,"raw":2,"pieces":2,"piece":"W1-12","status":"fail","when":"14:05Z","day":"08-08"}]},{"name":"Engine & harness","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.035897435897435895,"y":4.1,"round":2,"raw":4.1,"pieces":1,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"},{"x":0.4461538461538462,"y":3.05,"round":1,"raw":2,"pieces":2,"piece":"W1-SAVE","status":"fail","when":"11:05Z","day":"08-07"},{"x":0.9794871794871794,"y":3.2,"round":2,"raw":3.5,"pieces":3,"piece":"W1-DEPLOY","status":"fail","when":"13:05Z","day":"08-08"}]},{"name":"Lore & the library","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49914529914529915,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-LIBRARY","status":"fail","when":"13:40Z","day":"08-07"},{"x":0.6358974358974359,"y":4,"round":1,"raw":5,"pieces":2,"piece":"W1-23","status":"fail","when":"20:20Z","day":"08-07"},{"x":0.8003475783475783,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-23","status":"fail","when":"04:21Z","day":"08-08"},{"x":0.9555555555555556,"y":3.5,"round":1,"raw":4,"pieces":2,"piece":"W1-23","status":"fail","when":"11:55Z","day":"08-08"},{"x":0.958974358974359,"y":4.7,"round":4,"raw":5.4,"pieces":2,"piece":"W1-LIBRARY","status":"fail","when":"12:05Z","day":"08-08"}]},{"name":"Magic","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":2.7,"round":1,"raw":2.7,"pieces":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.2205128205128205,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.8051282051282052,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-14","status":"fail","when":"04:35Z","day":"08-08"}]},{"name":"Quests","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.4717948717948718,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-19","status":"fail","when":"12:20Z","day":"08-07"},{"x":0.5401709401709401,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-19","status":"fail","when":"15:40Z","day":"08-07"},{"x":0.5665698005698006,"y":5.2,"round":1,"raw":5.4,"pieces":2,"piece":"W1-FACTIONS","status":"fail","when":"16:57Z","day":"08-07"},{"x":0.7692364672364672,"y":5.63,"round":2,"raw":6.5,"pieces":3,"piece":"W1-READABLES","status":"fail","when":"02:50Z","day":"08-08"},{"x":0.9794871794871794,"y":4.72,"round":1,"raw":2,"pieces":4,"piece":"W1-20","status":"fail","when":"13:05Z","day":"08-08"}]},{"name":"Settlements & people","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.6837606837606838,"y":3.2,"round":1,"raw":3.2,"pieces":1,"piece":"W1-04","status":"fail","when":"22:40Z","day":"08-07"},{"x":0.717948717948718,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-04","status":"fail","when":"00:20Z","day":"08-08"},{"x":0.7792307692307693,"y":4.6,"round":1,"raw":4.6,"pieces":1,"piece":"W1-04","status":"fail","when":"03:19Z","day":"08-08"},{"x":0.8666666666666667,"y":4.7,"round":1,"raw":4.7,"pieces":1,"piece":"W1-04","status":"fail","when":"07:35Z","day":"08-08"},{"x":0.8683760683760684,"y":4.8,"round":1,"raw":4.8,"pieces":1,"piece":"W1-04","status":"fail","when":"07:40Z","day":"08-08"}]},{"name":"Stealth & crime","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.24273504273504273,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"},{"x":0.7675213675213676,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-15","status":"fail","when":"02:45Z","day":"08-08"},{"x":0.9846153846153847,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"13:20Z","day":"08-08"}]},{"name":"The first hour","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.49230769230769234,"y":1.3,"round":1,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"13:20Z","day":"08-07"},{"x":0.7702621082621083,"y":1.3,"round":2,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"02:53Z","day":"08-08"},{"x":0.8109401709401709,"y":1.65,"round":1,"raw":2,"pieces":2,"piece":"W1-25","status":"fail","when":"04:52Z","day":"08-08"},{"x":0.8564102564102564,"y":2,"round":3,"raw":2,"pieces":2,"piece":"W1-26","status":"fail","when":"07:05Z","day":"08-08"}]},{"name":"The world","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.10256410256410256,"y":3.1,"round":1,"raw":3.1,"pieces":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.16923076923076924,"y":3.5,"round":2,"raw":3.5,"pieces":1,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.49743589743589745,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"},{"x":0.6581196581196581,"y":5,"round":1,"raw":5,"pieces":2,"piece":"W1-02","status":"fail","when":"21:25Z","day":"08-07"},{"x":0.7076923076923077,"y":4,"round":1,"raw":2,"pieces":3,"piece":"W1-03","status":"fail","when":"23:50Z","day":"08-07"},{"x":0.8034188034188035,"y":4.25,"round":1,"raw":5,"pieces":4,"piece":"W1-ROAD","status":"fail","when":"04:30Z","day":"08-08"},{"x":0.8564102564102564,"y":4.6,"round":1,"raw":6,"pieces":5,"piece":"W1-CROSSING","status":"fail","when":"07:05Z","day":"08-08"}]},{"name":"Weapons","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.1641025641025641,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.2205128205128205,"y":2,"round":2,"raw":2,"pieces":1,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.39658119658119656,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
   var tip=document.getElementById('sc-tip');
   var NS='http://www.w3.org/2000/svg';
   function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
@@ -1699,7 +2074,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>TRV</code></td><td></td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
 <tr><td><code>UIX</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>VIS</code></td><td>Visual</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
-<tr><td><code>WLD</code></td><td>World design</td><td>14</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
+<tr><td><code>WLD</code></td><td>World design</td><td>15</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>WPN</code></td><td></td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 </table>
 
@@ -1843,6 +2218,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>RI-WLD12</code></td><td>Region borders — the transition zone, the staggered crossover, and the announced tier jump</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.region.transition</code></td></tr>
 <tr><td><code>RI-WLD13</code></td><td>Interior/exterior continuity — footprint, bearing, windows, light, and the door round-trip</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>world.interior.continuity</code></td></tr>
 <tr><td><code>RI-WLD14</code></td><td>The built alienness — nine architectural grammars, the right-angle census, and the failing Empire</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.strangeness.architecture</code></td></tr>
+<tr><td><code>RI-WLD15</code></td><td>Within-region variety — the six-minute walk, and the patch-size ceiling</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>world.terrain.form world.region.identity world.density.handplacement world.verticality.layout</code></td></tr>
 <tr><td><code>RI-WPN01</code></td><td>The moveset slot contract — every attack a weapon must own, and the schema it serialises to</td><td>structure</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.moveset.slots weapon.moveset.schema weapon.charge.heavy weapon.moveset.answers combat.attack.charge combat.attack.moveset</code></td></tr>
 <tr><td><code>RI-WPN02</code></td><td>Weapon-class differentiation — fifteen classes and the behavioural fingerprint distance between them</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.class.taxonomy weapon.class.differentiation weapon.class.reach weapon.moveset.slots combat.weapon.identity combat.frames.timing</code></td></tr>
 <tr><td><code>RI-WPN03</code></td><td>Within-class subtlety — how much two weapons of the same class are allowed to be the same</td><td>number</td><td><span class="tag souls">souls</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>weapon.identity.withinclass weapon.animation.reuse weapon.class.differentiation combat.weapon.identity</code></td></tr>
@@ -1928,7 +2304,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  76 verdict(s) at HEAD cf2755a &mdash;
+  76 verdict(s) at HEAD fa146e1 &mdash;
   <span class="ok">4 fresh</span>,
   <span class="bad">40 stale</span>,
   <span class="dimtext">32 unknown</span>
@@ -2097,11 +2473,11 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td>books</td><td>17</td></tr>
 <tr><td>dialogueWords</td><td>37,752</td></tr>
 <tr><td>settlements</td><td>235</td></tr>
-<tr><td>source files</td><td>144</td></tr>
+<tr><td>source files</td><td>145</td></tr>
 </table>
 
 <h2>Latest captures</h2>
-<div class="shots"><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-075.png"><figcaption>start-noon-orbit-075.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-060.png"><figcaption>start-noon-orbit-060.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-045.png"><figcaption>start-noon-orbit-045.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-030.png"><figcaption>start-noon-orbit-030.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-015.png"><figcaption>start-noon-orbit-015.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/start-noon-orbit-000.png"><figcaption>start-noon-orbit-000.png</figcaption></figure><figure><img src="shots/2026-08-13-runpod-gpu-browser-smoke.png"><figcaption>2026-08-13-runpod-gpu-browser-smoke.png</figcaption></figure><figure><img src="shots/2026-08-08-critic-touch-05-tablet-portrait-820x1180.png"><figcaption>2026-08-08-critic-touch-05-tablet-portrait-820x1180.png</figcaption></figure><figure><img src="shots/2026-08-08-critic-w1-20-the-check-that-says-fits-true-while-every-line-runs-off-the-parchment.png"><figcaption>2026-08-08-critic-w1-20-the-check-that-says-fits-true-while-every-line-runs-off-the-parchment.png</figcaption></figure><figure><img src="shots/2026-08-08-critic-touch-05-phone-portrait-390x844.png"><figcaption>2026-08-08-critic-touch-05-phone-portrait-390x844.png</figcaption></figure><figure><img src="shots/2026-08-08-critic-touch-03-the-arc-while-someone-is-talking.png"><figcaption>2026-08-08-critic-touch-03-the-arc-while-someone-is-talking.png</figcaption></figure><figure><img src="shots/2026-08-08-critic-touch-04-a-44px-cutout-on-both-sides.png"><figcaption>2026-08-08-critic-touch-04-a-44px-cutout-on-both-sides.png</figcaption></figure></div>
+<div class="shots"><figure><img src="shots/2026-08-14-visual-truth/play/003-walk-f0180.png"><figcaption>003-walk-f0180.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/002-walk-f0120.png"><figcaption>002-walk-f0120.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/001-walk-f0060.png"><figcaption>001-walk-f0060.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-345-holes.png"><figcaption>player-noon-345-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-345-shipping.png"><figcaption>player-noon-345-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-330-holes.png"><figcaption>player-noon-330-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-330-shipping.png"><figcaption>player-noon-330-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-315-holes.png"><figcaption>player-noon-315-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-315-shipping.png"><figcaption>player-noon-315-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-300-holes.png"><figcaption>player-noon-300-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-300-shipping.png"><figcaption>player-noon-300-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-285-holes.png"><figcaption>player-noon-285-holes.png</figcaption></figure></div>
 
 </div>
 <footer>

@@ -1,0 +1,18 @@
+saxhleel  interior      Sap-Reader         named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+saxhleel  lukiul        Root-Speaker       named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+dunmer    interior      Sap-Reader         named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+dunmer    lukiul        Wet-Foot           named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+nord      interior      Deelith            named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+nord      lukiul        Xanmeer-Delver     named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+khajiit   interior      Marsh-Knight       named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+khajiit   lukiul        Net-Cutter         named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+bosmer    interior      Xanmeer-Delver     named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+bosmer    lukiul        Marsh-Knight       named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+imperial  interior      Net-Cutter         named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+imperial  lukiul        Ledger-Hand        named=y LINE_drawn_at_node=false LINE_anywhere=false NAME_string_anywhere=true sacrificed=1
+
+== M3 NAMED_line ==
+  named runs                                              : 12
+  naming LINE on the frame at the node it is spoken       : 0  (0%)  <- the item's definition, requires 100%
+  naming LINE on the frame anywhere in the scene          : 0
+  class NAME substring anywhere in the scene              : 12  (100%)  <- what jrn09-exchange.mjs measures

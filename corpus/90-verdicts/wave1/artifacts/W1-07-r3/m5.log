@@ -1,0 +1,23 @@
+
+== M5 — opaque UI area, from a readback of the frame (never the build's layout report) ==
+  node                       selfrep  pixel    panel_h  ink   world_cols
+  hold.hatch-name            0.3837   0.4778   0.4778   0.0174  366
+  hold.out                   0.1681   0.2954   0.2954   0.0301  527
+  writ.race-observed         0.2356   0.498    0.5537   0.0233  433
+  writ.sex                   0.2474   0.498    0.5537   0.0194  433
+  writ.upbringing            0.2496   0.498    0.5537   0.0159  433
+  writ.given-name            0.3837   0.498    0.5537   0.0093  436
+  writ.class-routes          0.2489   0.498    0.5537   0.0231  433
+  writ.class-questions       0.3548   0.498    0.5537   0.0269  435
+  writ.class-questions       0.2496   0.498    0.5537   0.0246  433
+  writ.class-questions       0.28     0.498    0.5537   0.0292  433
+  writ.class-questions       0.28     0.498    0.5537   0.0237  433
+  writ.class-questions       0.28     0.498    0.5537   0.024  433
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: Target page, context or browser has been closed
+    at /home/user/elder-souls-claude/tools/harness/critic-w1-07-r3d.mjs:126:37
+
+Node.js v22.22.2

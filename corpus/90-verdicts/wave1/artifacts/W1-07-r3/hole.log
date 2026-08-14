@@ -1,0 +1,29 @@
+barge-hold, no census      uiVisible=true menus_elements=6 menus_strings=3  accessor_non_dialogue=0
+      menus: "5"
+      menus: "LIGHT"
+      menus: "Spark-Dart"
+census open (hold.wake)    uiVisible=true menus_elements=6 menus_strings=3  accessor_non_dialogue=0
+      menus: "5"
+      menus: "LIGHT"
+      menus: "Spark-Dart"
+after 60 frames            uiVisible=true menus_elements=7 menus_strings=4  accessor_non_dialogue=0
+      menus: "0"
+      menus: "LIGHT"
+      menus: "Spark-Dart"
+      menus: "Take A tithe-gourd, empty"
+writ-house                 uiVisible=true menus_elements=6 menus_strings=3  accessor_non_dialogue=0
+      menus: "0"
+      menus: "LIGHT"
+      menus: "Spark-Dart"
+
+== SUMMARY ==
+  distinct strings on the menus surface over the opening : 5
+  of those, reported by getRenderedText()                : 0
+  INVISIBLE to the accessor M9/M15 are gated on          : 5
+      "5"
+      "LIGHT"
+      "Spark-Dart"
+      "0"
+      "Take A tithe-gourd, empty"
+  M9  grep over the invisible set: 0 hits []
+  M15 grep over the invisible set: 0 hits []

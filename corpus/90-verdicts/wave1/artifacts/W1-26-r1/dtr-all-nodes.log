@@ -1,0 +1,103 @@
+
+== WALK A-questionnaire ({"race":"saxhleel","upbringing":"foreign-born","route":"questionnaire","birthsign":"kaal-kaal"}) ==
+  hold.hatch-name                kind=text           opts= 0 rows arr= 12 scr=180 | D_state arr=0.5 scr=0.5 | D_model=0.9333 | clip=0
+      -- UNDRAWN even scrolled [spoken] "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+  hold.out                       kind=null           opts= 0 rows arr=  5 scr=  5 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.race-observed             kind=observed       opts= 1 rows arr=  7 scr=  7 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.sex                       kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.upbringing                kind=choice         opts= 4 rows arr=  7 scr= 35 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.given-name                kind=text           opts= 0 rows arr= 11 scr= 99 | D_state arr=0.3333 scr=0.3333 | D_model=0.8182 | clip=0
+      -- UNDRAWN even scrolled [spoken] "Foreign-born. Then everything here will be explained to you badly by people who think they are being kind"
+      -- UNDRAWN even scrolled [spoken] "A Saxhleel who has never stood in the marsh. — Then you will find out this month what the rest of us foun"
+  writ.class-routes              kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr= 10 scr= 50 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  7 scr= 42 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  7 scr= 42 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  8 scr= 48 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.class-questions           kind=questionnaire  opts= 4 rows arr=  7 scr= 42 | D_state arr=0.8333 scr=0.8333 | D_model=1 | clip=0
+      -- UNDRAWN even scrolled [line] "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will h"
+  writ.birthsign                 kind=choice         opts= 9 rows arr= 12 scr=132 | D_state arr=0.9091 scr=0.9091 | D_model=0.9091 | clip=0
+      -- UNDRAWN even scrolled [spoken] "Salt-Blade. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed "
+  writ.birthsign-second          kind=choice         opts= 8 rows arr= 12 scr=108 | D_state arr=0.9 scr=0.9 | D_model=0.9 | clip=0
+      -- UNDRAWN even scrolled [spoken] "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attenti"
+  writ.stamp                     kind=choice         opts= 1 rows arr= 13 scr= 13 | D_state arr=0.5625 scr=0.5625 | D_model=0.75 | clip=0
+      -- UNDRAWN even scrolled [spoken] "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+      -- UNDRAWN even scrolled [writ] "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+      -- UNDRAWN even scrolled [writ] "Second tide: The Full Root (Raj-Xul)"
+      -- UNDRAWN even scrolled [writ] "Recorded: Male."
+      -- UNDRAWN even scrolled [writ] "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+      -- UNDRAWN even scrolled [writ] "Bounty ledger reference: TW-SAX-FIG"
+      -- UNDRAWN even scrolled [writ] "This case is stamped. It is the only thing in this province that says the bearer is a person rather than "
+  writ reader: 7/13 body lines drawn, DTR 0.5385
+
+== WALK B-named ({"race":"dunmer","upbringing":"interior","route":"named","birthsign":null}) ==
+  hold.hatch-name                kind=text           opts= 0 rows arr= 12 scr=168 | D_state arr=0.5 scr=0.5 | D_model=0.9333 | clip=0
+      -- UNDRAWN even scrolled [spoken] "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+  hold.out                       kind=null           opts= 0 rows arr=  5 scr=  5 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.race-observed             kind=observed       opts= 1 rows arr=  6 scr=  6 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.sex                       kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.upbringing                kind=choice         opts= 4 rows arr=  7 scr= 35 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.given-name                kind=text           opts= 0 rows arr= 11 scr= 99 | D_state arr=0.3333 scr=0.3333 | D_model=0.8182 | clip=0
+      -- UNDRAWN even scrolled [spoken] "The interior. I will write the marsh. There are people here who will read that and stand up straighter, a"
+      -- UNDRAWN even scrolled [spoken] "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in "
+  writ.class-routes              kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.class-named               kind=choice         opts=14 rows arr= 12 scr=180 | D_state arr=0.6667 scr=1 | D_model=1 | clip=0
+  writ.birthsign                 kind=choice         opts= 9 rows arr= 12 scr=120 | D_state arr=0.9091 scr=0.9091 | D_model=0.9091 | clip=0
+      -- UNDRAWN even scrolled [spoken] "Salt-Blade. Somebody paid you to stand at the front of something."
+  writ.stamp                     kind=choice         opts= 1 rows arr= 13 scr= 13 | D_state arr=0.5625 scr=0.5625 | D_model=0.75 | clip=0
+      -- UNDRAWN even scrolled [spoken] "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+      -- UNDRAWN even scrolled [writ] "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+      -- UNDRAWN even scrolled [writ] "Second tide: None recorded."
+      -- UNDRAWN even scrolled [writ] "Recorded: Male."
+      -- UNDRAWN even scrolled [writ] "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+      -- UNDRAWN even scrolled [writ] "Bounty ledger reference: TW-DUN-FIG"
+      -- UNDRAWN even scrolled [writ] "This case is stamped. It is the only thing in this province that says the bearer is a person rather than "
+  writ reader: 7/13 body lines drawn, DTR 0.5385
+
+== WALK C-custom ({"race":"khajiit","upbringing":"blackrose","route":"custom","birthsign":null}) ==
+  hold.hatch-name                kind=text           opts= 0 rows arr= 12 scr=168 | D_state arr=0.5 scr=0.5 | D_model=0.9333 | clip=0
+      -- UNDRAWN even scrolled [spoken] "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+  hold.out                       kind=null           opts= 0 rows arr=  5 scr=  5 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.race-observed             kind=observed       opts= 1 rows arr=  7 scr=  7 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.sex                       kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.upbringing                kind=choice         opts= 4 rows arr=  7 scr= 35 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.given-name                kind=text           opts= 0 rows arr= 11 scr= 99 | D_state arr=0.3333 scr=0.3333 | D_model=0.8182 | clip=0
+      -- UNDRAWN even scrolled [spoken] "Blackrose. Guard's family or inmate's, and I am not going to ask which, and neither will most people, and"
+      -- UNDRAWN even scrolled [spoken] "A Khajiit born at Blackrose. — Then either your mother wore the Ninth Cohort's coat or she wore its irons"
+  writ.class-routes              kind=choice         opts= 3 rows arr=  7 scr= 28 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.class-custom-name         kind=text           opts= 0 rows arr= 12 scr=168 | D_state arr=1 scr=1 | D_model=0.9286 | clip=14
+  writ.class-custom-favoured     kind=pick           opts=10 rows arr= 12 scr=132 | D_state arr=0.9091 scr=1 | D_model=1 | clip=0
+  writ.class-custom-neglected    kind=pick           opts= 8 rows arr= 11 scr= 99 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.class-custom-primary      kind=pick           opts=19 rows arr= 12 scr=240 | D_state arr=0.5 scr=1 | D_model=1 | clip=0
+  writ.class-custom-secondary    kind=pick           opts=16 rows arr= 12 scr=204 | D_state arr=0.5882 scr=1 | D_model=1 | clip=0
+  writ.birthsign                 kind=choice         opts= 9 rows arr= 12 scr=120 | D_state arr=1 scr=1 | D_model=1 | clip=0
+  writ.stamp                     kind=choice         opts= 1 rows arr= 13 scr= 13 | D_state arr=0.5625 scr=0.5625 | D_model=0.75 | clip=0
+      -- UNDRAWN even scrolled [spoken] "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+      -- UNDRAWN even scrolled [writ] "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+      -- UNDRAWN even scrolled [writ] "Second tide: None recorded."
+      -- UNDRAWN even scrolled [writ] "Recorded: Male."
+      -- UNDRAWN even scrolled [writ] "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+      -- UNDRAWN even scrolled [writ] "Bounty ledger reference: TW-KHA-FIG"
+      -- UNDRAWN even scrolled [writ] "This case is stamped. It is the only thing in this province that says the bearer is a person rather than "
+  writ reader: 7/13 body lines drawn, DTR 0.5385
+
+===== TOTALS over 17 distinct node ids, 26 node visits =====
+  d_state_arrival    DTR_scene 0.7744  DTR_q 0.85  worst 0.3333 @ writ.given-name  (151/195)  below-0.50 nodes: 1
+        HF1 candidate: writ.given-name = 0.3333
+  d_state_scrolled   DTR_scene 0.8923  DTR_q 0.85  worst 0.3333 @ writ.given-name  (174/195)  below-0.50 nodes: 1
+        HF1 candidate: writ.given-name = 0.3333
+  d_model_scrolled   DTR_scene 0.9585  DTR_q 1  worst 0.75 @ writ.stamp  (208/217)  below-0.50 nodes: 0
+  node ids seen (17): hold.hatch-name, hold.out, writ.birthsign, writ.birthsign-second, writ.class-custom-favoured, writ.class-custom-name, writ.class-custom-neglected, writ.class-custom-primary, writ.class-custom-secondary, writ.class-named, writ.class-questions, writ.class-routes, writ.given-name, writ.race-observed, writ.sex, writ.stamp, writ.upbringing

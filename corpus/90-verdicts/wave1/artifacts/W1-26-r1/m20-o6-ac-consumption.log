@@ -1,0 +1,55 @@
+== T — M20/HF9: a title surface, from a fresh profile with a save present ==
+  option_ids: ["continue","new","load","settings","quit-to-menu"]
+  enabled:    [{"id":"continue","enabled":true},{"id":"new","enabled":true},{"id":"load","enabled":true},{"id":"settings","enabled":true},{"id":"quit-to-menu","enabled":false}]
+  focused:    continue
+  title strings drawn: ["ELDER SOULS","ARGONIA","— Continue","  New","  Load","  Settings","  Quit to menu","Nameless"]
+  Continue -> {"id":"continue","slot":"slot-a","loaded":true,"ok":true,"gen":1,"degraded":false}   title still up after: false
+
+== O — M4 clause 1 / O6: available play before the first character-defining question ==
+  {"stamps":{"first_input_frame":60,"first_control_frame":null,"first_field_frame":0,"first_field_node":"hold.hatch-name","available_play_s_before_first_field":null,"fixed_step_hz":60,"frame":60},"node_at_start":"hold.hatch-name","node_sets_field":"hatch_name","census_takes_input":true,"moved_m":0,"forward_input_frames":60,"threshold_s":60}
+
+== A — RI-JRN09 M2 (AC): are the answers consumed inside the scene, in DRAWN text? ==
+  CONSUMED hatch_name           "Silence-Under-Salt"  <- "— Silence-Under-Salt"
+  CONSUMED race                 "Saxhleel"  <- "Observed as: Saxhleel"
+  CONSUMED upbringing           "The harbour at Lilmoth."  <- "  The harbour at Lilmoth."
+  CONSUMED given_name           "Keeps-The-Tally"  <- "Keeps-The-Tally. Two hundred and fifty gold at any Provincial Office if you decide you were wrong, once, and the old one stays legible under"
+  CONSUMED class                "Ledger-Hand"  <- "Trade declared: Ledger-Hand"
+  CONSUMED birthsign            "The Full Root"  <- "— The Full Root   The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+  NOT      favoured_attributes  "null"  <- (no drawn row carries it)
+  AC = 6 of 7
+
+== K — CONSUMPTION: does the naming line reach the frame? (RI-MTH07 §B) ==
+  {
+  "model": "on_match_named_class (RI-CHR01 §4, \"the moment the route is for\")",
+  "consumer_claimed": "render/ui.js — the scribe's reply, drawn above the next thing she asks",
+  "value_a": {
+    "class_id": null,
+    "class_name": null,
+    "naming_line": "Wet-Foot. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. Wet-Foo",
+    "naming_line_drawn": false,
+    "class_name_drawn": false,
+    "drawn_rows_at_birthsign": 207
+  },
+  "value_b": {
+    "class_id": null,
+    "class_name": null,
+    "naming_line": "Sap-Reader. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. Sap-R",
+    "naming_line_drawn": false,
+    "class_name_drawn": false,
+    "drawn_rows_at_birthsign": 207
+  },
+  "predicted_change": "the two runs produce different named classes, therefore different naming lines, therefore a different drawn string set",
+  "coupling": 0,
+  "null_control": {
+    "a": {
+      "name": "Silence-Under-Salt",
+      "drawn": true,
+      "rows": 17
+    },
+    "b": {
+      "name": "Counts-The-Drowned",
+      "drawn": true,
+      "rows": 17
+    }
+  }
+}

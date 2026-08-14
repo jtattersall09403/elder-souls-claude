@@ -2,16 +2,39 @@
   "task_id": "ci-triage-20260814",
   "task": "Triage failing CI gate actions on GitHub; decide and record what should happen to them",
   "started_at": "2026-08-14T00:00:00Z",
-  "status": "in_progress",
-  "next_step": "list workflows via mcp__github__actions_list, then per-workflow runs via actions_get, sample failing job logs",
+  "status": "complete",
+  "next_step": "none for this task; follow-ons named in reports/ci-triage/TRIAGE-20260814.md §5 Rulings B/C/D and orchestration/NEXT-DISPATCH.md are separate, not-yet-dispatched pieces",
   "files_touched": [
-    "orchestration/status/ci-triage-20260814.json"
-  ],
-  "files_claimed": [
-    "reports/ci-triage/",
+    "orchestration/status/ci-triage-20260814.json",
+    "reports/ci-triage/TRIAGE-20260814.md",
     "orchestration/NEXT-DISPATCH.md",
-    "orchestration/INDEX.md"
+    "orchestration/INDEX.md",
+    ".gitignore",
+    "tools/verdict-validate.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/dunmer/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/khajiit/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r2/ar3/saxhleel/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/acc.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/hole.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/dunmer/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/khajiit/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/ar3/saxhleel/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-07/control-duel/console.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r2/selftest.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-14/head-boot-failure.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/dtr-all-nodes.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/m20-o6-ac-consumption.log",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep.log"
   ],
+  "files_claimed": [],
   "redundant_with": [],
-  "notes": "Reads CLAUDE.md + orchestration/OWNER-DIRECTIVES-2026-08-14.md §7 done. Branch confirmed codex/wave1-build-experiment. Proceeding to GitHub Actions inspection."
+  "notes": "Verified via GitHub Actions API + local reproduction: only 'corpus gate' workflow is red (pages-build-deployment is healthy); within it only the 'verdict schema validation' step fails, because 56/76 (74%) of corpus/90-verdicts/wave1/*.json fail a genuine fresh-checkout validation. Dominant cause: reports/.gitignore excludes evidence JSON that verdicts cite, so CI can never satisfy the artifact-existence check for 42 verdicts (211/215 missing files still exist on disk untracked, only 4 truly gone). Fixed a narrower, real sub-bug of this: corpus/90-verdicts/**/artifacts/**/*.log was being silently eaten by the root .gitignore's blanket *.log rule (that directory is meant to hold committed evidence, unlike reports/); added an exception + committed the 22 recovered files, verified count moved 42->40. Also fixed a validator crash (non-array blind_comparisons on W1-FACTIONS-r2.json threw 'object is not iterable'; now reports 49 legible errors). Verified specifically per the task's ask: the 'biggest_gap missing even on PASS' rule the owner worried about is NOT present in current tools/verdict-validate.mjs (line 50, conditioned on status!=='PASS') or corpus/00-doctrine/verdict.schema.json (conditional allOf, status===FAIL only) -- already correctly amended, no fix needed. Remaining classes named as rulings with cost estimates in reports/ci-triage/TRIAGE-20260814.md, not fixed here: ~184 more uncommitted evidence files (~119MB, needs piece-owner review before bulk-commit), 8 legacy verdicts non-conformant to current schema (need re-judgement, not fabrication), 10 obsolete-but-still-failing draft rounds (superseded, safe to leave; 'only latest round gates CI' designed but not implemented -- naming edge cases need test coverage). No blocking gate added; corpus-gate.yml untouched; nothing new on the commit path. Disk hit 100% full mid-task from a shared multi-agent scratch dir; freed ~10GB of only my own suffixed scratch files."
 }

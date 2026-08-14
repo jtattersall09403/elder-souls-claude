@@ -1,5 +1,55 @@
 # Next dispatches, in priority order
 
+## CI-TRIAGE. Owner ruling: the corpus-gate red is real (74% of Wave-1 verdicts VOID for uncommitted
+## evidence), not a broken gate — two cheap fixes shipped, two bounded follow-ons named, nothing new blocks the commit path
+
+Full triage, evidence and reversible rulings: `reports/ci-triage/TRIAGE-20260814.md`. One workflow
+(`corpus gate`) has been red almost continuously since 2026-08-06T22:41Z (1222 runs); the *other*
+workflow, `pages-build-deployment`, is healthy. Within `corpus gate`, 5 of 6 steps pass every run —
+only `verdict schema validation` (`node tools/verdict-validate.mjs --all`) is red, and it is red
+because **74% of `corpus/90-verdicts/wave1/*.json` (56 of 76) fail a genuine fresh-checkout
+validation**, not because of twenty unrelated defects. Verified specifically: the `biggest_gap`
+rule the owner flagged (a critic forced to invent a gap even on PASS) is **already correctly
+amended** in both `tools/verdict-validate.mjs:50` and `corpus/00-doctrine/verdict.schema.json`'s
+conditional `allOf` — no fix needed there.
+
+**Shipped this pass:** (1) `.gitignore`'s blanket `*.log` was silently eating
+`corpus/90-verdicts/**/artifacts/**/*.log`, the one directory meant to hold durable, committed
+verdict evidence — fixed with one exception line + 22 recovered files, verified to move the
+fresh-checkout FAIL count (42→40 on the artifact-evidence axis). (2) `verdict-validate.mjs` crashed
+opaquely (`object is not iterable`) on `W1-FACTIONS-r2.json`'s non-array `blind_comparisons` —
+fixed with the same defensive pattern already used for `gap_closure` two lines above it; now reports
+49 legible errors instead of one opaque crash line.
+
+**Named, not built — two bounded follow-on dispatches for whoever picks this up next:**
+
+- **Recover the remaining Class-A evidence.** 40 verdicts still cite `reports/*.json` evidence that
+  exists on disk right now (98% of missing citations do) but was never committed, per the deliberate
+  `reports/.gitignore` policy. ~184 files, ~119 MB. Needs a piece-aware reviewer, not a blind
+  `git add -f` — is each file really the load-bearing evidence, or scratch that happens to still be
+  lying around? Est. 1–2 hours across ~8 batches by piece.
+- **Backfill or re-judge the 8 current-and-broken legacy verdicts**: `W1-14-r4`, `W1-19-r2`,
+  `W1-FACTIONS-r2`, `W1-LIBRARY-MARTIAL-r4`, `W1-LIBRARY-r1`, `W1-PROSE-BLIND-r1`, `W1-PROSE-TICS-r4`,
+  `W1-TOUCH-r1`. Each predates a schema tightening and was never migrated; fabricating the missing
+  fields (`native_scale`, `arbitration.ar1/ar2`, `self_audit` booleans) without the original critic's
+  context would be exactly the "nothing counts because someone says so" failure this project keeps
+  finding. `W1-TOUCH-r1` in particular reads as an unfinished draft (missing nearly every required
+  field) and is probably cheaper to re-judge from scratch than to patch.
+
+10 more failing verdicts are **obsolete draft rounds already superseded by a later, currently-passing
+round for the same piece** (`W1-01.json`, `W1-04-r4.json`, `W1-07.json`, `W1-07-r2.json`,
+`W1-10.json`, `W1-13-r2.json`, `W1-21-r1.json`, `W1-22-r1.json`, `W1-DEPLOY-r1.json`,
+`W1-MAP-r1.json`) — history, not a live defect, safe to leave red in the corpus while not gating on
+them; teaching the gate to only enforce the latest round per piece is designed but not implemented
+(naming edge cases need test coverage — see the report §5 Ruling D).
+
+**Monitoring going forward:** no new tool, no new agent role, nothing added to the commit path.
+`verdict-validate.mjs --all` is already the instrument; the gap was that nobody read its roll-up.
+This report is that roll-up, and `orchestration/INDEX.md` now points at it so the next orchestrator
+pass doesn't re-derive it from zero. **Reversible**: if a future audit finds the Class-A evidence is
+genuinely disposable scratch rather than load-bearing, the correct fix is re-authoring those
+verdicts to cite the tracked `.md` write-up instead of a `.json` — not weakening the checker.
+
 ## W1-VISUAL-WIDE. Owner ruling: plan W1-30 now; build it after W1-06 + W1-24 and before W1-28
 
 `docs/DECOMPOSITION-W1-AMENDMENT-02.md` adds **W1-30 — whole-game visual foundation and fidelity**
