@@ -159,6 +159,81 @@ console.log(`roster: ${npcs.length} people from game/data/npcs/**`);
   });
 }
 
+// ---- 6b. `name` — the words the player sees on the topic, as against the slug -------------------
+//
+// W1-DLG-TOPIC-WEB, plan §4A/§4E. `name` is a TOPIC-RECORD field, not an INFO field, so the
+// field-coverage census below (which walks info keys) is structurally blind to it — which is
+// exactly how 23 `name` fields sat in this corpus being read by nothing. The shipped labeller is
+// `topicLabel()`, called from `topicsFor()`, and it is what puts words in the topic column.
+//
+// THIS ARM WAS RED BEFORE THE READER EXISTED, ON PURPOSE (RULES rule 4). Run it at a tree where
+// `topicLabel(id)` is `String(id).split('-').join(' ')` and the label does not move when `name` is
+// rewritten, because nothing reads it. That red run is the evidence the arm can fail.
+{
+  const idxBase = buildTopicIndex(base);
+  // Any speaker who actually offers a non-root subject of their own, so the label being measured
+  // is one a player would really see in the column rather than one this tool constructed.
+  let npc = null, pick = null;
+  for (const n of npcs) {
+    const rows = topicsFor(idxBase, n, P());
+    const r = rows.find((x) => !x.root && base.some((d) => (d.topics || []).some((t) => t.id === x.id)));
+    if (r) { npc = n; pick = r.id; break; }
+  }
+  const labelOf = (docs) => {
+    const rows = topicsFor(buildTopicIndex(docs), npc, P());
+    const row = rows.find((x) => x.id === pick);
+    return row ? row.text : null;
+  };
+  const d = clone(base);
+  for (const doc of d) for (const t of doc.topics || []) if (t.id === pick) t.name = 'PERTURBED Name Of A Thing';
+  arm('`name` — the words in the topic column, as against the slug', {
+    field: `\`name\` on the topic record #${pick}`,
+    reader: 'topicLabel(record, index) <- topicsFor() (converse.js) -> engine.js:3573 topic column',
+    before: { label: `${npc && npc.name} (${npc && npc.id}) sees the subject listed as:`, value: labelOf(base) },
+    after: { label: 'after authoring a different `name` on that topic record:', value: labelOf(d) },
+  });
+}
+
+// ---- 6c. `implied` — the unlock the author declared invisible on purpose ------------------------
+//
+// W1-DLG-TOPIC-WEB, plan §2b/§4C. A1b's whole point is that an invisible unlock must be a CHOICE a
+// writer made and a number a census can count, rather than the silent default. That is only true if
+// the flag survives into the shipped reader's return value: a flag that lives in JSON and stops
+// there is the eighteenth model nobody reads.
+//
+// The reader is `infoFor()` — the exact function `Engine.conversationSay()` calls — which carries
+// `implied` out beside `to`, in the same way and for the same reason it already carries `res`,
+// `cf`, `pos` and `cell` out. WHAT THIS ARM DOES NOT CLAIM, said plainly: the behavioural half of
+// §2b (grant on the click for a visible unlock, grant on read only for an `implied` one) is
+// `Engine.conversationSay()`'s, which is `W1-UIX08`'s file under the §2a seam and is NOT built
+// here. This arm demonstrates the flag reaches the shipping reader; it does not demonstrate the
+// click. Same standard as the `res` arm below, and it is stated rather than glossed.
+{
+  let npc = null, pick = null, dst = null;
+  const idxBase = buildTopicIndex(base);
+  for (const n of npcs) {
+    for (const id of (n.topics || [])) {
+      const r = infoFor(idxBase, id, n, P());
+      if (r && r.to && r.to.length) { npc = n; pick = id; dst = r.to[0]; break; }
+    }
+    if (npc) break;
+  }
+  const impliedOf = (docs) => {
+    const r = infoFor(buildTopicIndex(docs), pick, npc, P());
+    return r ? (r.implied === undefined ? '(the reader does not carry `implied` at all)' : r.implied) : null;
+  };
+  const d = clone(base);
+  for (const doc of d) for (const t of doc.topics || []) if (t.id === pick) {
+    for (const i of t.infos || []) if (Array.isArray(i.to) && i.to.includes(dst)) i.implied = [dst];
+  }
+  arm('`implied` — the unlock a writer declared invisible on purpose (A1b)', {
+    field: `\`implied\` on an INFO of #${pick}, naming its \`to\` destination #${dst}`,
+    reader: 'infoFor() -> `implied`, alongside `to`, for Engine.conversationSay() (converse.js)',
+    before: { label: `asking ${npc && npc.name} about "${pick}" with nothing flagged:`, value: impliedOf(base) },
+    after: { label: `with that one unlock flagged \`implied: ["${dst}"]\`:`, value: impliedOf(d) },
+  });
+}
+
 // ---- 7. DELETE-THE-FIX (RULES §6) — take this round's whole file away ---------------------------
 {
   const npc = find((n) => n.actor === 'legionary' && n.settlement === 'stormhold');
@@ -231,7 +306,7 @@ console.log(`roster: ${npcs.length} people from game/data/npcs/**`);
   const docs = loadTopicDocs();
   const authored = new Set();
   for (const doc of docs) for (const t of doc.topics || []) for (const i of t.infos || []) for (const k of Object.keys(i)) authored.add(k);
-  const DEMONSTRATED = new Set(['x','a','cell','d','requires','forbids','to','cf','pos','from','f','res']);
+  const DEMONSTRATED = new Set(['x','a','cell','d','requires','forbids','to','cf','pos','from','f','res','implied']);
   const undeclared=[...authored].filter(k=>!DEMONSTRATED.has(k));
   console.log('\n---- field-coverage census: is every authored field accounted for? ----');
   console.log(`      authored field names: ${[...authored].sort().join(', ')}`);
