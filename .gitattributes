@@ -1,0 +1,16 @@
+# Merge behaviour, declared once so no agent has to remember it.
+#
+# `reports/blog-feed.jsonl` is the one file the whole fleet writes to: every agent appends its own
+# line, nobody edits anybody else's. It was clobbered three times in forty minutes on 2026-08-14 —
+# ten lines from nine agents lost, restored, and lost again — because a whole-file stage of an
+# append-only log reverts every line the stager never saw.
+#
+# `merge=union` makes git keep BOTH sides' lines instead of calling it a conflict. Verified against
+# `git merge-tree --write-tree` (which tools/land.mjs uses), not just against `git merge`.
+reports/blog-feed.jsonl merge=union
+
+# Screenshots and captures are binary; never try to text-merge one.
+*.png binary
+*.jpg binary
+*.webm binary
+*.mp4 binary
