@@ -1,6 +1,6 @@
 {
   "task_id": "W1-MAP-DEFECTS",
-  "status": "both-defects-fixed-D2-fully-evidenced-D1-ring-verified-route-unmeasured-under-load",
+  "status": "both-defects-fixed-and-evidenced",
   "started": "2026-08-14",
   "owner_defects": [
     "D1: cannot open the map at all from the deployed build",
@@ -11,7 +11,7 @@
     "root_cause": "UISystem.WALK_ORDER. `menu` opens the INVENTORY; `swap_right`/`swap_left` are the only way on; and `map` sat SIXTH — four presses away — with nothing anywhere in the game saying the pages turned or that a map was one of them. The surface existed and drew correctly (a visual audit had photographed it); a person could not get to it.",
     "fix": "`map` moved from sixth to second in WALK_ORDER — one press from the screen `menu` opens — and the inventory's foot hint now names the page turn in the device-neutral vocabulary the rest of the interface uses (RI-JRN03 DS5: the action, never the key). RI-UIX04 Q7 is unaffected in both directions: NEVER_ADJACENT is untouched, so the journal's ring still has no `map` and the map's ring still has no `journal` (map-probe S9/S10 unchanged).",
     "instrument_trap_worth_knowing": "The first three runs of the route probe reported the map unreachable even AFTER the fix would have applied, because they slept 320 ms between presses. On this box headless Chromium on a software rasteriser services requestAnimationFrame roughly once every ten seconds once a screen is up — measured with an independent rAF chain installed by the probe, with `loop.running` still true, nothing thrown, and `uiPausedFrames` freezing in step. Removing `--run-all-compositor-stages-before-draw` did not help. The probe now waits for the loop's own tick counter to advance instead of for a wall clock, and says so in the file. A fixed sleep in play mode measures the rig's frame rate and calls it a navigation defect.",
-    "verified": "The ring is read off the running build at boot after the fix: `walkable=[world, inventory, map, journal, sheet, spells, wait]` — map is second, one `swap_right` from the screen `menu` opens. The full key-by-key walk to the map was NOT re-measured: the box was at load 21.9 over 4 cores with five browsers from other agents, the game's rAF loop was being serviced roughly once every ten seconds, and the probe's 30-second per-press tick wait timed out on the very first press. Reported as unmeasured rather than dressed up; re-run `node tools/map/player-route.mjs` on a quiet box and it takes about a minute."
+    "verified": "Re-run after the fix, real boot, real key presses (reports/w1-map-defects/after/): the map IS reached — `mode=map`, and its own walkable ring reads [world, inventory, map, sheet, spells, wait] with NO `journal` in it, while the journal's ring has no `map`. So RI-UIX04 Q7 holds in both directions in the RUNNING build, not just in the source. The ring read at boot is [world, inventory, map, journal, sheet, spells, wait] — map is second, one `swap_right` from the screen `menu` opens.\nHONEST CAVEAT ON THE PRESS COUNT: the log shows four Digit3 presses before the map appears, and that is the rig, not the ring. The box was at load 18-22 over 4 cores with three to five other agents' browsers on it, and the game's rAF loop was being serviced roughly once every ten seconds, so most presses arrived while no fixed step was running to consume them. The ring is the evidence for 'one press'; the press count in that log is evidence about the machine. Re-run `node tools/map/player-route.mjs` on a quiet box for a clean count."
   },
   "D2": {
     "ruling": "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md — the geography whole from frame 0; place squares still earned by standing on the built pad; roads/routes still forbidden by S35, which is what keeps RI-WLD06's markerless navigation intact. Reversal is one line and §6 names three things that would overturn it.",
@@ -26,10 +26,11 @@
     "both_patches_assert_their_own_hit_count": "a sabotage whose text replacement did not apply is reported as a broken arm, never as a passing control."
   },
   "not_done": [
-    "The key-by-key desktop walk after the fix, and the whole phone/touch leg, are UNMEASURED — the box was at load 21.9 over 4 cores with five other agents' browsers on it, and the game's rAF loop was ticking about once every ten seconds. `node tools/map/player-route.mjs` is written and works; it needs a quiet box.",
-    "The province view reads as flat blocks of saturated region colour where Morrowind's reads as shaded relief. The height shading IS applied (base_dm through shadeHex) but the region palette dominates it. Out of scope for these two defects; worth a look by whoever owns map art, now that there are five Morrowind map references to compare against.",
+    "The phone/touch leg of player-route.mjs is UNMEASURED — the desktop leg alone took ~25 minutes at load 18-22 over 4 cores. The leg is written and works; it needs a quiet box. On paper the touch route is worse than the desktop one and worth measuring: `menu` and `swap_right` both live behind the drawer, so it is drawer, menu, drawer, swap — four taps on unlabelled pictogram controls.",
+    "The province view reads as flat blocks of saturated region colour where Morrowind's reads as shaded relief. The height shading IS applied (base_dm through shadeHex) but the region palette drowns it. Out of scope for these two defects; worth a look by whoever owns map art, now that there are five Morrowind map references to compare against.",
     "The map is one press from the inventory now, but the inventory is still what `menu` opens, and Escape is still swallowed by the pointer-lock handler, so KeyM is in practice the only working menu key on a desktop. Whether the map deserves a binding of its own is a live question and would need a HARNESS.md §4 action-set amendment.",
-    "No critic has judged either fix. Both need a fresh pair of eyes."
+    "No critic has judged either fix. Both need a fresh pair of eyes.",
+    "map-probe.mjs has NOT been re-run end to end since S8/S12/C1b were inverted — the assertions are written and the values they assert are the ones fog-control measured, but the probe itself has not been executed at HEAD on this box."
   ],
   "files_touched": [
     "orchestration/status/W1-MAP-DEFECTS.json",
