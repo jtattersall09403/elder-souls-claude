@@ -27,9 +27,9 @@
     "tools/visual/w1-30-canopy-shimmer.mjs — three-arm shimmer instrument with a positive control; absolute setCasters(), not additive.",
     "tools/visual/w1-30-deep-marshes-bands.mjs — surface-artefact ownership by hiding, with a restore control that sets the nondeterminism floor.",
     "reports/runpod-gpu/runs/critic-canopy-motion/ — RTX A5000, shimmer + boundary-walk, Pod deleted and deletion confirmed.",
-    "reports/visual-truth/fog-owner/, /shader-hooks/, /deep-marshes-bands/",
     "reports/blog-feed.jsonl — one line, timestamp pinned so the content key is idempotent; check-append-only passes.",
-    "corpus/90-verdicts/GAP-LEDGER.{json,md} regenerated; node tools/publish.mjs run."
+    "corpus/90-verdicts/GAP-LEDGER.{json,md} regenerated; node tools/publish.mjs run.",
+    "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/ — every cited artefact, verified byte-for-byte against the remote blob: both fog-owner arms, the shader-hook census, the bands ownership arms, the hardware shimmer JSON, four frames (the two Deep Marshes atmospheres, the water lanes at eye-blackwood, the canopy boundary-walk sheet) and the two scripts that recompute the correlation table and the duplicate-arm noise floor."
   ],
   "could_not_do": [
     "NO ORBIT POPULATION AND NO HUMAN READ. The plan says every child needs a motion gate and an orbit gate; the motion gate is now met on hardware, the orbit gate is not, and no Deck orbit stop answers a question about a caster flag or a fog law. Craft >= 7.0 and Ruling W2's 'show the artefact as a player meets it' are unmet for this piece and this verdict cannot lift them.",
@@ -47,7 +47,8 @@
     "ANYONE RENTING A GPU FOR A FRAME-TIME BUDGET: sample `nvidia-smi --query-gpu=utilization.gpu --format=csv -l 1 &` alongside the capture. The shadow-budget run's nvidia-smi.csv holds only the GPU identity line, so nobody can say whether the box was GPU-bound, and stepFrames(1) wall clock is a Node-to-CDP round trip rather than a frame time.",
     "W1-30V: vista-blackwood is confirmed a non-instrument by an independent third measurement — a nineteen-fold change in the fog wall moves its three frame-stats numbers by 0.1 points. It joins vista-valus-ridge.",
     "ANYONE USING tools/control-clone.mjs with a browser: it cannot clone tools/ (npm's symlinks in tools/node_modules/.bin, correctly refused). Use --paths game and pass --entry <clone>/game/index.html, as tools/map/fog-control.mjs does. Page-relative import specifiers ('./vendor/...') then work in both configurations; absolute '/game/...' ones 404.",
-    "docs/art-direction/board.json has 92 set targets including FID-AERIAL-exterior_daylight and FID-SHADOWLIT-exterior_daylight — the two rows this round lands on — and nothing in tools/ reads that file. The board is measured only over reference plates. An authored target with no consumer is RI-MTH07's own failure shape."
+    "docs/art-direction/board.json has 92 set targets including FID-AERIAL-exterior_daylight and FID-SHADOWLIT-exterior_daylight — the two rows this round lands on — and nothing in tools/ reads that file. The board is measured only over reference plates. An authored target with no consumer is RI-MTH07's own failure shape.",
+    "EVIDENCE UNDER reports/ DOES NOT REACH THE REMOTE, and `node tools/verdict-evidence.mjs --recover` is not sufficient on its own. reports/.gitignore excludes `*`, and the recover tool's `git add -f` writes into the REAL index — while tools/land.mjs#buildOurs builds a TEMPORARY index seeded from HEAD and runs `git add -A`, which honours .gitignore. So the force-add is discarded and the verdict cites paths a fresh clone does not have: exactly the failure reports/.gitignore section 5 was written about. Three separate bank/land attempts here landed nothing but the .pin.json (which is tracked by rule). The reliable route, and the one other verdicts already use, is to copy cited evidence into corpus/90-verdicts/wave1/artifacts/<piece>/ and land that. Worth either fixing in land.mjs (honour the real index's force-added entries) or writing into HAZARDS."
   ],
   "files_claimed": [
     "orchestration/status/W1-30-SHADOW-CASTERS-critic.json",
@@ -62,7 +63,8 @@
     "reports/visual-truth/canopy-shimmer/",
     "reports/visual-truth/deep-marshes-bands/",
     "reports/runpod-gpu/runs/critic-canopy-motion/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/"
   ],
   "files_touched": [
     "orchestration/status/W1-30-SHADOW-CASTERS-critic.json",
@@ -76,7 +78,8 @@
     "tools/visual/w1-30-deep-marshes-bands.mjs",
     "reports/blog-feed.jsonl",
     "docs/index.html",
-    "docs/progress.html"
+    "docs/progress.html",
+    "corpus/90-verdicts/wave1/artifacts/W1-30-SHADOW-CASTERS-r1/"
   ],
   "gpu_spend": "One RunPod RTX A5000 at $0.270/hr for 4.3 minutes (run 20260814-152343Z-31783). Pod deleted, deletion confirmed by API lookup, and `cleanup --dry-run` afterwards shows nothing of mine outstanding — the one PROTECTED pod belongs to a sibling agent's live run.",
   "redundant_with": [],
