@@ -80,14 +80,20 @@ await g.page.evaluate(({ w, h }) => {
 await g.h('setSeed', SEED);
 
 // ---- what actually drew these pixels ----------------------------------------------------
+// The first version of this read window.__ENGINE.renderer.renderer.getContext(), which threw,
+// and the catch returned a string that did NOT match /swiftshader/ — so the manifest recorded
+// `software_renderer: false` on a SwiftShader run. A probe that fails open is worse than no
+// probe: it launders software pixels into an appearance claim. It now fails CLOSED.
 const renderer_string = await g.page.evaluate(() => {
   try {
-    const gl = window.__ENGINE.renderer.renderer.getContext();
+    const gl = document.createElement('canvas').getContext('webgl2');
+    if (!gl) return 'unavailable: no webgl2 context';
     const ext = gl.getExtension('WEBGL_debug_renderer_info');
-    return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+    return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
   } catch (e) { return `unavailable: ${e.message}`; }
 });
-const swiftshader = /swiftshader|llvmpipe|software/i.test(String(renderer_string));
+const rendererUnknown = /^unavailable|^unknown/i.test(String(renderer_string));
+const swiftshader = rendererUnknown || /swiftshader|llvmpipe|software|mesa/i.test(String(renderer_string));
 const build = await g.h('getBuildInfo');
 console.log(`deck: profile=${PROFILE_NAME} tag=${TAG} seed=${SEED} canvas=${CW}x${CH}`);
 console.log(`renderer: ${renderer_string}${swiftshader ? '   *** SOFTWARE — not valid for an appearance claim (W1-30-EVIDENCE §4) ***' : ''}`);
@@ -158,9 +164,14 @@ async function goTo(setup) {
     const r = await call('enterInterior', p.id);
     if (!r.ok) return `enterInterior(${p.id}) refused: ${r.e}`;
   } else {
+    // Leave any interior FIRST. The smoke run shot `char-player` immediately after the
+    // thorn-hall interior setup and the player was still reported at interior height —
+    // an exterior setup captured from inside a room is a silently wrong frame, which is
+    // the one kind of failure this tool must never produce.
+    await call('enterInterior', null);
+    await call('setCameraCell', null);
     const r = await call('teleport', p.x, p.z);
     if (!r.ok) return `teleport(${p.x},${p.z}) refused: ${r.e}`;
-    // Leaving an interior behind: a teleport out of a cell must actually restore exteriors.
     await call('stepFrames', 4);
   }
   await g.h('stepFrames', SETTLE);

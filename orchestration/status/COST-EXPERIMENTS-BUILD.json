@@ -1,0 +1,25 @@
+{
+  "task_id": "COST-EXPERIMENTS-BUILD",
+  "role": "builder",
+  "piece": "First real cost experiments over recorded history (Q1 routing, Q2 quadratic-in-tool-calls, Q3 C1 revert, Q4 spend breakdown)",
+  "state": "started",
+  "started_at": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "next_step": "Read COST-EXPERIMENTS.md, COST-INSTRUMENT.md, tools/cost.mjs; then add analysis flags to tools/cost.mjs (never a second cost implementation, rule 10).",
+  "files_touched": [
+    "orchestration/status/COST-EXPERIMENTS-BUILD.json"
+  ],
+  "files_claimed": [
+    "tools/cost.mjs",
+    "reports/cost/",
+    "docs/data/cost-ledger.json",
+    "reports/blog-feed.jsonl",
+    "orchestration/COST.md"
+  ],
+  "redundant_with": [],
+  "notes": [
+    "Retrospective measurement only: no orchestration behaviour change, no game code.",
+    "Attribution rule (COST.md 2): no conclusion may rest on comparing dollar totals between windows. Mechanism only.",
+    "Every finding needs a null control that is the plausible wrong answer, not the trivial one."
+  ]
+}

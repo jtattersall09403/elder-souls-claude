@@ -58,3 +58,15 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
 - 09:50 vt-play.mjs run 1 aborted at the fight step: I passed archetype 'pop-0027-infantry'
   (that is an eid, not an archetype) and the harness correctly refused. Menus and dialogue were
   behind it and did not run. Split into tools/harness/vt-play2.mjs with a real archetype.
+- 10:15 Play-mode check done. `navigator.webdriver` spoofed false -> engine mode "play",
+  preserveDrawingBuffer false: the real build. Body opaque in every captured frame. The numeric
+  see-through in play mode (7.2% mean) is CONTAMINATED — the rAF loop keeps running between the
+  three captures so the rain moves and the diff counts it; the overlay shows red rain streaks
+  across empty sky and none inside the body. Reported as unmeasured, not as 7.2%.
+  Also found: the play build opens on a title screen ("ELDER SOULS / ARGONIA") that harness mode
+  skips entirely.
+- 10:20 Menus (all six), dialogue and a duel captured. Dialogue is good; 32 of 56 NPCs sit at
+  world-origin coordinates so you talk to an empty street. Enemy AI closes, feints and combos for
+  105 damage. The player's own attacks did not fire in the duel — very likely an open conversation
+  surface holding input, i.e. my error; recorded as not-measured.
+- 10:30 Shots downscaled and thinned: 232 MB -> 34 MB. Report written. Banking.

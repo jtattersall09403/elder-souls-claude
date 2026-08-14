@@ -22,10 +22,11 @@ not measured here and is not claimed.
 
 ## 1. The transparency claim, judged
 
-**Verdict: not reproduced.** At normal and close camera distances the player's body is solid.
-The previous agent's "fixed" call happens to be right about the body — though, as §1.3 notes, it
-was almost certainly right by luck rather than by measurement, and there is a real and different
-defect sitting next to it.
+**Verdict: not reproduced.** At every camera distance from 0.6 m to 2.6 m, at every angle of a
+full orbit, in both the harness build and the build a person actually runs, the player's body is
+solid. The previous agent's "fixed" call is right about the body. It is worth adding that being
+right is not the same as having shown it — the measurement below did not exist until now — and
+that a real, different defect does sit next door to the reported one (§1.4).
 
 ### 1.1 What was measured, and why it cannot be fudged
 
@@ -80,7 +81,32 @@ executes, which puts the engine in `mode: "play"` with the rAF loop driving the 
 `{"automated":false,"preserveDrawingBuffer":false,"engineMode":"play"}`. Tool:
 `tools/harness/vt-playmode.mjs`.
 
-<!--PLAYMODE-RESULT-->
+**Result: the body is opaque in the play build too — shown by the picture, not by the number.**
+
+Two things came out of it, and only one of them is a number worth keeping.
+
+*The number is contaminated and is not being claimed.* The play-mode orbit reports 4.3 %–9.2 %
+see-through (mean 7.2 %), which is five times the harness figure. It is an artefact of the method,
+not a finding. In play mode the rAF loop keeps advancing the simulation between the three captures,
+so the **rain moves** between `ship`, `solid` and `gone` — and the difference mask counts every
+displaced streak. `key/2026-08-14-playmode-title-screen-holes-overlay.png` shows this plainly: the
+red is vertical rain streaks scattered across the *whole frame*, including large areas of empty sky
+well outside the character, plus a one-pixel antialiasing fringe on the silhouette. **The interior
+of the body carries no red at all.** A trustworthy number here needs a frame-locked play mode,
+which does not currently exist; the honest report is that the play-mode figure is unmeasured
+rather than 7.2 %.
+
+*The picture is unambiguous and is the answer.* In the real play build, at every angle captured,
+the character renders as a solid opaque figure. `key/2026-08-14-playmode-title-screen.png`. So the
+§1.2 verdict holds for the build a person actually runs.
+
+**And a genuine discovery: the play build opens on a title screen the harness has never seen.**
+`ELDER SOULS / ARGONIA`, with *Continue*, *New*, *Load*, *Settings* and *Quit to menu*, the current
+selection marked with an em-dash in amber, and the footer *"No site recorded in this province."*
+It is well composed and it is the first thing a player meets. Every harness-mode measurement in
+this project — including all of §2 — skips straight past it. Nothing is wrong with it; the point
+is that a whole screen exists which no automated check has ever looked at, which is §4's thesis in
+one artefact.
 
 ### 1.4 A separate defect found on the way there
 
@@ -137,7 +163,18 @@ Under a roofed structure the precipitation streaks continue at full density, in 
 ceiling geometry. Ten-plus streaks per frame, uninterrupted. Precipitation has no occlusion test
 against overhead geometry.
 
-### D3 — Geometry hanging in the sky with nothing under it. *Systemic, several instances per view.*
+### D3 — You can hold a conversation with someone who is not there. *Systemic — 32 of 56 NPCs.*
+
+Evidence: `key/2026-08-14-dialogue-corvus-aldeyn.png`, and the census in
+`docs/shots/2026-08-14-visual-truth/play2/play2-log.json`.
+
+The dialogue itself is excellent (§3.7, §4). The problem is that the frame behind the panel is an
+empty street: 32 of 56 NPCs report positions within 50 m of the world origin, thousands of metres
+from where the player and the conversation are. Full detail and the likely cause in §4 — it is
+listed here because "talking to nobody" is something a player meets in their first few minutes and
+it undoes the good work in the panel.
+
+### D4 — Geometry hanging in the sky with nothing under it. *Systemic, several instances per view.*
 
 Evidence: `key/2026-08-14-gameplay-camera-spawn-view.png` (two, top-left and top-right, plus a
 platform mid-frame at horizon height), `key/2026-08-14-player-orbit-270-right.png` (two more, one
@@ -150,7 +187,7 @@ colonnade and the top-right block in the walk frame have clear sky under a flat 
 five minutes with the haze switched off to separate the two cases; `tools/harness/vt-world.mjs`
 has a `nohaze` capture mode for exactly this and did not get to run.
 
-### D4 — The settlement reads as flat planks lying on a lawn. *Local to settlements, but that is where the player starts.*
+### D5 — The settlement reads as flat planks lying on a lawn. *Local to settlements, but that is where the player starts.*
 
 Evidence: `key/2026-08-14-walk-f0180-lilmoth-town.png`.
 
@@ -160,7 +197,7 @@ Above them: a stall that is one beam on two posts with three spheres on a shelf,
 buildings that are pale grey blocks in the haze. There is no vertical construction between the
 player and the horizon.
 
-### D5 — One ground surface, tiling visibly to the horizon. *Systemic.*
+### D6 — One ground surface, tiling visibly to the horizon. *Systemic.*
 
 Evidence: `key/2026-08-14-gameplay-camera-spawn-view.png`, `key/2026-08-14-player-orbit-270-right.png`.
 
@@ -170,25 +207,25 @@ the ground is exactly flat. No undergrowth, no rock, no colour break, no path we
 precisely the *"walking over samey landscape for ages"* the owner named in the handover, and it is
 the first thing visible on boot.
 
-### D6 — The road is a checkerboard of untinted tiles. *Systemic.*
+### D7 — The road is a checkerboard of untinted tiles. *Systemic.*
 
 Evidence: `key/2026-08-14-gameplay-camera-spawn-view.png` — alternating grey and tan rectangles
 with hard edges, no blend into the grass, no verge, and the repeat clearly legible.
 
-### D7 — Haze is heavy enough to remove the middle distance. *Systemic; time-of-day coverage incomplete.*
+### D8 — Haze is heavy enough to remove the middle distance. *Systemic; time-of-day coverage incomplete.*
 
 Everything past ~30 m is a pale wash. Trees resolve as flat white silhouettes
 (`key/2026-08-14-player-orbit-270-right.png`); buildings as grey slabs. This interacts badly with
-D3 — the haze is what makes it ambiguous whether a structure is floating or on stilts. Captured at
+D4 — the haze is what makes it ambiguous whether a structure is floating or on stilts. Captured at
 noon only; the multi-hour sweep did not complete.
 
-### D8 — Precipitation reads as scratches. *Systemic.*
+### D9 — Precipitation reads as scratches. *Systemic.*
 
 Ten to fifteen hard white lines, 300+ px long, uniform width, no splash, no surface response,
 drawn over the haze so they are the highest-contrast thing on screen. Visible in every exterior
 frame in this set.
 
-### D9 — Character construction is legible as primitives. *Systemic — the same actor builds the NPCs.*
+### D10 — Character construction is legible as primitives. *Systemic — the same actor builds the NPCs.*
 
 Evidence: `key/2026-08-14-player-isolated-210deg.png` (the player isolated against sky, from a
 full orbit), plus the four orbit quadrants in `key/`.
@@ -205,7 +242,7 @@ Equipment sets are properly gated (of the three sets built per actor, only the e
 visible — chitin and xanmeer sit at 0 visible meshes while reed is worn); the saxhleel head, brow
 horns, spine scales and tail are all present and animate; and the body is sealed, per §1.
 
-### D10 — Intermittent hard boot failure. *Systemic, low frequency, total when it hits.*
+### D11 — Intermittent hard boot failure. *Systemic, low frequency, total when it hits.*
 
 Seen once in roughly twenty boots:
 
@@ -277,6 +314,14 @@ This is not a courtesy section; these are things that measured well and that a d
    no name — the default state has not been through character creation. Also, at a fresh start the
    inventory lists only `Eshi's knife`, while the player is visibly wearing reed armour and
    carrying a sword and shield, so equipped gear is not appearing in the item list.
+8. **The enemy AI fights properly.** Spawned and aggroed, `inf_trash` closed from 5 m through
+   `REPOSITION` and `FEINT_STEP` — it feints — reached 2.2 m and landed `e_combo_b` for 105 damage
+   (620 → 514 HP). Approach, spacing, a feint and a committed combo, all from the live sim. That is
+   Souls-shaped enemy behaviour and it is working today.
+9. **There is a title screen, and it is good.** `key/2026-08-14-playmode-title-screen.png`.
+   `ELDER SOULS / ARGONIA` over the character, five entries with the selection marked in amber, and
+   *"No site recorded in this province."* underneath. It only appears in the play build, which is
+   why no measurement in this project has ever seen it.
 
 ---
 
@@ -289,7 +334,7 @@ Partly answered. What was reached:
   would have caught, and it is ten seconds from spawn. The camera's *own* arm logic is well
   instrumented (arm length, penetration guard, floor emergency, clip-through flag are all in the
   snapshot); what is missing is anything that notices the resulting frame is unusable.
-- **Rendering vs. simulation coupling — one confirmed instance.** The `charOpacity` fade in §1.3 is
+- **Rendering vs. simulation coupling — one confirmed instance.** The `charOpacity` fade in §1.4 is
   a simulation output with no renderer consumer, and it is *saved to disk*. Everything that looks at
   the sim state — trace, snapshot, save manifest, verdicts — will report the fade as working. Only a
   picture shows that it does nothing. That is the static-inspection failure mode exactly, outside
@@ -347,6 +392,8 @@ All committed, all re-runnable, none of them one-shot.
 | `tools/harness/vt-play.mjs` | a driven play session — walk, sprint, turn, roll, attack, fight, all six menus, talk — photographed as sequences |
 | `tools/harness/vt-world.mjs` | the same place at several hours with the haze on and off, for D3/D7 |
 | `tools/harness/visual-truth.mjs` | placed orbit + a correct shipping-path camera turn |
+| `tools/harness/vt-play2.mjs` | menus, a live conversation and a duel, as sequences |
+| `tools/harness/vt-playmode.mjs` | the same measurement in the **play** build, with `navigator.webdriver` spoofed so the GL context is the one a person gets |
 
 All four take `--canvas WxH`. That matters: in harness mode the canvas backing store stays at
 1920×1080 whatever the viewport, so every `screenshot()` pays a 2 Mpx read-back. At 960×540 a
@@ -376,10 +423,14 @@ and taking stills instead of sequences is the habit this report was commissioned
   the rest exists (`vt-world.mjs`, five spots × four hours, haze on and off) and did not get a run.
   So D7 in particular is under-evidenced and the interior/exterior contrast is unmeasured.
 
-- **Combat, dialogue, journal and menu screens.** Scripted and committed, not yet photographed. See §4.
+- **A trustworthy see-through number in play mode.** The picture answers the question (§1.3) but
+  the number does not, because the simulation keeps running between the three captures and the rain
+  moves. A frame-stepping seam that works outside harness mode would fix it.
 
-- **The close-radius transparency orbit** at 1.0 m and 0.6 m — inside the fade band — which is what
-  would confirm or kill the §1.3 lead. It was still running at the end of the session.
+- **The duel.** Enemy behaviour was measured and is good — the enemy closed from 5 m through
+  `REPOSITION` and `FEINT_STEP` to 2.2 m, attacked with `e_combo_b`, and took the player from
+  620 to 514 HP. The player's own attacks did not fire in that run, almost certainly because a
+  conversation surface was still open and holding input. Not a game defect until re-run cleanly.
 
 - **Disk.** The box was at 100 % (31 MB free) when this started and captures were failing silently
   with `ENOSPC`. About 9 GB of six-day-stale scratch clones were cleared to proceed. Worth knowing
