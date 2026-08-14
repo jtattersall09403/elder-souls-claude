@@ -1,0 +1,261 @@
+{
+  "schema": "elder-souls/dialogue-topics@2",
+  "id": "one-voice-arm",
+  "owner": "W1-DLG-WORDS. The NULL CONTROL for tools/dialogue/words-check.mjs.",
+  "what_this_is": [
+    "This is the plausible wrong answer, not the trivial one. An empty dialogue file fails every",
+    "check by accident and proves nothing about the check. THIS file is fluent, grammatical,",
+    "correctly punctuated, on-topic, internally consistent with the setting, courteous, and",
+    "genuinely informative — and every line of it is the same helpful narrator wearing four",
+    "different archetype labels. It is what this project is most likely to actually ship, and",
+    "what the owner has already objected to in kind: prose that reads fine and does not feel",
+    "like a person said it.",
+    "",
+    "It uses the SAME four speaker ids and the SAME topic ids as the shipped corpus, so the only",
+    "variable between the arms is the words. If words-check.mjs ever passes this file, it has",
+    "stopped measuring voice and started measuring grammar, and --self-test says so out loud.",
+    "",
+    "S51 COMPLIANCE. This arm is not generated from the tables the game's dialogue is authored",
+    "against — not from dialogue/speakers.json's archetype bands, not from its grammar-tic",
+    "regexes, not from the topic graph. It was hand-written to a different and deliberately",
+    "reasonable specification: 'answer the question, be accurate, be helpful, be pleasant'. The",
+    "two arms therefore do not converge as the game's dialogue improves. They separate."
+  ],
+  "written_to_pass": [
+    "A3 warmth (it is courteous), A7 contractions, A8 second person, A9 sentence control.",
+    "It should read as competent. A null control that reads as broken tests nothing."
+  ],
+  "written_to_fail": [
+    "A1 rhythm spread (one mouth), A2 friction (nobody is ever short with you),",
+    "A4 disagreement (all four give the same account), A5 stake (nobody wants anything),",
+    "A6 partisanship (nobody thinks less of anybody)."
+  ],
+  "do_not_ship": "This file is test fixture. It is not loaded by the game and must never be registered in game/data/index.json.",
+  "topics": [
+    {
+      "id": "lilmoth",
+      "infos": [
+        { "a": "rootkeeper", "x": "Lilmoth is the largest port in the southern marsh, and it's a good place to begin. The city is built in two levels, and the older one now sits below the waterline. You'll find the Provincial Office near the harbour, and most travellers start there." },
+        { "a": "sapcutter", "x": "Welcome to Lilmoth. It's a busy port, and it has been trading with the mainland for two centuries. The lower city flooded a long time ago, though people still live there. If you're new, the harbour district is the easiest place to find your feet." },
+        { "a": "legionary", "x": "Lilmoth is the provincial capital in the south, and the Ninth Cohort keeps order in the upper city. There are about six thousand people here, and the harbour is the busiest part. You're welcome to walk anywhere the gates are open." },
+        { "a": "archivist", "x": "Lilmoth was founded on reclaimed ground and has been settling ever since, at roughly a hand every decade. The colonial city stands above the older one. It's a fascinating place, and I'd be glad to tell you more if you're interested." }
+      ]
+    },
+    {
+      "id": "the-low-city",
+      "infos": [
+        { "a": "rootkeeper", "x": "The low city is the older part of Lilmoth, and it lies below the current waterline. People still live there, and they get about by boat and by plank walkway. It's worth seeing, though you should take care after dark." },
+        { "a": "sapcutter", "x": "That's the flooded quarter, below the harbour stair. It's home to a few hundred people, and there's a small market on the boards most mornings. You'll want a guide the first time you go down, since the walkways can be confusing." },
+        { "a": "legionary", "x": "The low city is below the harbour chain, and it's outside our regular patrol route. That doesn't mean it's dangerous, only that we're not often there. Most people who live there are perfectly ordinary, and you'll be fine if you're sensible." },
+        { "a": "archivist", "x": "The low city is the original settlement, and the records for it go back further than anything above. It's an unusual place to live, and the people there have adapted well. I'd recommend a visit if you have the time." }
+      ]
+    },
+    {
+      "id": "background",
+      "infos": [
+        { "a": "rootkeeper", "x": "I was born in the interior and came to the coast to serve at the well. It's been a rewarding life, and I've learned a great deal about the covenant here. If you'd like to know more about the wells, I'm happy to explain." },
+        { "a": "sapcutter", "x": "I grew up on the sap roads, and I've been trading in Lilmoth for about nine years now. It's steady work, and it takes me all along the coast. You're welcome to ask me about the routes if that's useful to you." },
+        { "a": "legionary", "x": "I enlisted on the mainland and I was posted here four years ago. It's been a good posting, and I've come to like the province. If you want to know anything about the Cohort or the law here, just ask." },
+        { "a": "archivist", "x": "I trained at Gideon and I've been keeping the survey records here since. It's careful work, and it suits me well. There's a great deal of history in this city, and I'm always pleased to share what I know." }
+      ]
+    },
+    {
+      "id": "duties",
+      "infos": [
+        { "a": "rootkeeper", "x": "I tend the well and keep the covenant, which means seeing that the offerings are made and the water is clean. It's steady work and it matters to the people here. You're welcome to watch, if you're curious about it." },
+        { "a": "sapcutter", "x": "I move sap and dry goods between the coast towns, and I keep the accounts for it. It's straightforward work, and it keeps me travelling. If you're looking for something to do, there's usually cargo needing hands." },
+        { "a": "legionary", "x": "I keep the harbour gate and walk the upper city, and I take reports from anyone who has one. It's quiet work most days. If you have anything to report, I'd be glad to hear it." },
+        { "a": "archivist", "x": "I maintain the survey and the property records, and I answer questions for anyone who comes with one. It's detailed work and I enjoy it. Do let me know if there's something you'd like looked up." }
+      ]
+    },
+    {
+      "id": "latest-rumors",
+      "infos": [
+        { "a": "rootkeeper", "x": "People are saying the Drowned Tally is late again this year, and the clerks are behind on it. It's not unusual, though it does cause some worry. You might ask at the writ house if you'd like the details." },
+        { "a": "sapcutter", "x": "The talk on the boards is that the Tally hasn't been read on time, and that's held up a few payments. It happens most years. The writ house would be the place to ask if you want to know more." },
+        { "a": "legionary", "x": "There's been some talk about the Tally running late, and a few people have come to us about it. It's an administrative matter rather than a legal one. The writ house handles it, and they're generally helpful." },
+        { "a": "archivist", "x": "The current talk concerns the Drowned Tally, which is behind schedule this season. The records show it's often late. If you'd like the history of it, I can find the relevant entries for you." }
+      ]
+    },
+    {
+      "id": "the-writ-house",
+      "infos": [
+        { "a": "rootkeeper", "x": "The writ house records work, debts and permissions for the whole district, and most people deal with it sooner or later. The clerks there are efficient and they'll explain anything you don't follow. It's just above the harbour stair." },
+        { "a": "sapcutter", "x": "That's where the paperwork happens. Every cargo, every posting and every debt goes through it, and the clerks keep good records. They're helpful if you go in with a clear question." },
+        { "a": "legionary", "x": "The writ house handles the civil side of things, and we handle the criminal side. They're reliable and they keep good order. If your business is a matter of writ rather than of law, they're the ones to see." },
+        { "a": "archivist", "x": "The writ house maintains the register of obligations for the district, and it works closely with the survey. Its records are well kept. I'd suggest going in the morning, when the desks are less busy." }
+      ]
+    },
+    {
+      "id": "the-sunken-well",
+      "infos": [
+        { "a": "rootkeeper", "x": "The well beneath the low city is still tended, and people swim down to it once a season. It's an old practice and it's kept faithfully. If you'd like to see it done, the season turns in a few weeks." },
+        { "a": "sapcutter", "x": "There's a well under the water in the low city, and it's still looked after. People go down to it each season. It's a remarkable thing to watch, and nobody minds if you come and see." },
+        { "a": "legionary", "x": "The sunken well is a local observance below the low city, and it's entirely lawful. We've no reason to interfere with it. If you're interested, the keepers there will explain it better than I can." },
+        { "a": "archivist", "x": "The sunken well predates the colonial city and appears in the earliest surveys. It's still tended seasonally. It's one of the more interesting continuities here, and I'd be glad to show you the records." }
+      ]
+    },
+    {
+      "id": "the-covenant",
+      "infos": [
+        { "a": "rootkeeper", "x": "The covenant is the agreement between the people and the Hist, and it governs a great deal of ordinary life here. It's an old arrangement and it's widely respected. I'd be happy to explain any part of it you'd like." },
+        { "a": "sapcutter", "x": "The covenant is the understanding between the marsh people and the trees, and it shapes how a lot of things are done. It's taken seriously by most people. The keepers can tell you more about it than I can." },
+        { "a": "legionary", "x": "The covenant is a local custom with legal weight in the interior, and we're instructed to respect it. It causes us no difficulty. The keepers will explain it if you ask them politely." },
+        { "a": "archivist", "x": "The covenant is documented as far back as the survey goes, and it remains in force throughout the province. It's a genuinely durable arrangement. There's a good summary in the archive if you'd like to read it." }
+      ]
+    },
+    {
+      "id": "the-drowned-quarter",
+      "infos": [
+        { "a": "rootkeeper", "x": "The drowned quarter is the deepest part of the old city, and very little of it is above water now. A few people still go down there. It's best visited with someone who knows the way." },
+        { "a": "sapcutter", "x": "That's the flooded end of the low city, and most of it is under water. Some people still salvage there. If you want to go, hire a boatman who works those channels regularly." },
+        { "a": "legionary", "x": "The drowned quarter is beyond our patrol, and we advise people to take care there. It isn't forbidden. If you do go, let someone know, and take a light with you." },
+        { "a": "archivist", "x": "The drowned quarter is the earliest layer of settlement and it's almost entirely submerged. The survey still records it. It's an interesting site, and I can lend you a copy of the old plan." }
+      ]
+    },
+    {
+      "id": "specific-place",
+      "infos": [
+        { "a": "rootkeeper", "x": "Tell me which place you mean and I'll do my best to direct you. I know the coast road and the well paths well. If it's inland, one of the carters would give you better directions than I could." },
+        { "a": "sapcutter", "x": "Name the place and I'll tell you how to get there. I travel most of the coast routes each season. If it's somewhere I haven't been recently, I'll point you to someone who has." },
+        { "a": "legionary", "x": "Tell me where you're going and I'll give you the safest route. We keep good maps of the district. If it's outside the district, the writ house can help you further." },
+        { "a": "archivist", "x": "If you name the place, I can find it in the survey and describe the approach. The records are detailed for the district. For anywhere further out, I'd recommend asking a carter as well." }
+      ]
+    },
+    {
+      "id": "services",
+      "infos": [
+        { "a": "rootkeeper", "x": "I can tend a wound and I can speak for you at the well if that's needed. There's no charge for either. Just tell me what you need and I'll see what can be done." },
+        { "a": "sapcutter", "x": "I buy and sell dry goods, sap and rope, and I can arrange carriage along the coast. My prices are the usual ones. Tell me what you're after and I'll see if I have it." },
+        { "a": "legionary", "x": "I can take a report, direct you to the right office, or escort you to the gate. That's the extent of what I can offer. Tell me what you need and I'll help if I can." },
+        { "a": "archivist", "x": "I can look up a record, copy a document, or explain a survey entry for you. There's a small fee for copies. Let me know what you're looking for and I'll find it." }
+      ]
+    },
+    {
+      "id": "my-trade",
+      "infos": [
+        { "a": "rootkeeper", "x": "Tending a well is mostly patience and repetition, and it takes years to learn properly. It's satisfying work all the same. If you're curious about how it's done, I'd be glad to show you." },
+        { "a": "sapcutter", "x": "Trading here depends on knowing the routes and the seasons, and it takes a few years to learn. It's good work when the roads are open. I'd be happy to explain how the season runs." },
+        { "a": "legionary", "x": "Service here is mostly patrols and paperwork, and the training takes about a year. It's dependable work. If you're thinking of enlisting, I can tell you how it's done." },
+        { "a": "archivist", "x": "Keeping records is careful, slow work, and it takes a long apprenticeship to do it well. It's rewarding in its way. I'd be pleased to explain the system if it interests you." }
+      ]
+    },
+    {
+      "id": "little-advice",
+      "infos": [
+        { "a": "rootkeeper", "x": "Take your time in the city and speak to a few people before you decide anything. Most here are willing to help a newcomer. And do keep your boots dry if you can manage it." },
+        { "a": "sapcutter", "x": "Ask around before you buy, and don't take the first price in the harbour market. People here are generally fair. And carry a little coin loose, so you're not opening a purse on the boards." },
+        { "a": "legionary", "x": "Stay out of the low city after dark until you know it, and keep your writ where you can reach it. Most trouble here is avoidable. Ask us if you're unsure about anything." },
+        { "a": "archivist", "x": "Read your writ carefully before you sign anything, and keep a copy of it. A great many disputes come from that alone. Do come to me if a document confuses you." }
+      ]
+    },
+    {
+      "id": "the-hist",
+      "infos": [
+        { "a": "rootkeeper", "x": "The Hist are the great trees of the interior, and the covenant is made with them. They're central to how life here is understood. I'd be glad to explain more if you have the time." },
+        { "a": "sapcutter", "x": "The Hist are the old trees inland, and a good deal of what we carry comes from them. They're important to most people here. The keepers would tell you more about their meaning." },
+        { "a": "legionary", "x": "The Hist are the trees the local covenant concerns, and we're instructed to leave them alone. It's a sensible policy. The keepers can explain their significance properly." },
+        { "a": "archivist", "x": "The Hist appear throughout the earliest records and are central to the province's history. Their role is well documented. There's an excellent summary in the archive if you'd like it." }
+      ]
+    },
+    {
+      "id": "soulrest",
+      "infos": [
+        { "a": "rootkeeper", "x": "Soulrest is on the southern coast, about four days on foot from here. It's a smaller place than Lilmoth and quieter. The well there is well kept, and you'd be made welcome." },
+        { "a": "sapcutter", "x": "Soulrest is four days south along the coast road. It's a smaller port and the market is good for rope and salt. I go there twice a season and it's an easy enough road." },
+        { "a": "legionary", "x": "Soulrest is four days south, and the road is patrolled for most of the way. It's a quiet posting by all accounts. You shouldn't have any difficulty on that route." },
+        { "a": "archivist", "x": "Soulrest lies four days south and appears in the survey as a secondary port. Its records are kept separately. If you're going, I can tell you what's held there." }
+      ]
+    },
+    {
+      "id": "gideon",
+      "infos": [
+        { "a": "rootkeeper", "x": "Gideon is north of here, on the drier ground near the border. It's a larger and more formal place than Lilmoth. The wells there are older, and worth seeing if you travel that way." },
+        { "a": "sapcutter", "x": "Gideon is up north on the salt road, and it's where most of the province's paperwork ends up. It's a good market for finished goods. The road takes about a week from here." },
+        { "a": "legionary", "x": "Gideon is the northern administrative centre, about a week away by the salt road. The road is well kept. It's a straightforward journey if you set out early." },
+        { "a": "archivist", "x": "Gideon holds the provincial archive and the central survey office, and it's about a week north. Its collection is far larger than ours. I trained there, and I'd recommend a visit." }
+      ]
+    },
+    {
+      "id": "stormhold",
+      "infos": [
+        { "a": "rootkeeper", "x": "Stormhold is inland, on the high ground above the marsh. It's drier there and the wells run differently. It's a long walk but a rewarding one if you have the time." },
+        { "a": "sapcutter", "x": "Stormhold is inland on the high ground, and it's a hard road but a good market. They pay well for coastal goods. I'd allow ten days for the journey in this season." },
+        { "a": "legionary", "x": "Stormhold sits on the high ground inland and has its own garrison. The road is longer and less travelled. I'd suggest going with a party rather than alone." },
+        { "a": "archivist", "x": "Stormhold is the inland settlement on the escarpment, and its records are kept locally. It's a distinct place from the coast towns. I can show you the survey for it if you like." }
+      ]
+    },
+    {
+      "id": "the-marsh-fever",
+      "infos": [
+        { "a": "rootkeeper", "x": "The fever comes with the wet season and it takes a few days to pass. The bone-setters treat it well. If you feel it starting, go to one early rather than waiting." },
+        { "a": "sapcutter", "x": "Marsh fever goes round every wet season and most people get it once. It passes in a few days with treatment. See a bone-setter early and you'll be fine." },
+        { "a": "legionary", "x": "The fever is common in the wet season and the garrison surgeon treats it routinely. It's rarely serious if caught early. Go and see someone as soon as you feel it." },
+        { "a": "archivist", "x": "Marsh fever appears in the records every wet season and its course is well understood. Early treatment is effective. The physicians here are reliable, and I'd go promptly." }
+      ]
+    },
+    {
+      "id": "the-tides",
+      "infos": [
+        { "a": "rootkeeper", "x": "The tides here run twice a day and they're much larger at the turn of the season. A great deal of local life is arranged around them. The tide board at the harbour gives the times." },
+        { "a": "sapcutter", "x": "The tides run twice daily and the seasonal ones are much bigger. All the boat work is planned around them. Check the tide board before you arrange anything on the water." },
+        { "a": "legionary", "x": "The tides are twice daily and the seasonal high can flood the lower streets. We clear them beforehand. The tide board at the harbour is accurate, and I'd check it." },
+        { "a": "archivist", "x": "The tidal cycle here is twice daily with a pronounced seasonal maximum, and it's recorded in the survey. It governs much of the city's routine. The harbour board carries the current tables." }
+      ]
+    },
+    {
+      "id": "the-provincial-office",
+      "infos": [
+        { "a": "rootkeeper", "x": "The Provincial Office registers arrivals and issues writs, and everyone coming into the city passes through it. The clerks are thorough and polite. It's the first place most newcomers go." },
+        { "a": "sapcutter", "x": "The Office handles registration and writs, and you'll need to visit if you're staying. The clerks are efficient. Bring whatever papers you have and it'll go quickly." },
+        { "a": "legionary", "x": "The Provincial Office is the civil authority here and it issues every writ in the district. They work closely with us. You'll want to register there if you haven't already." },
+        { "a": "archivist", "x": "The Provincial Office administers the district and maintains the register of arrivals. Its records feed into the survey. It's a well run office, and I'd go early in the day." }
+      ]
+    },
+    {
+      "id": "the-cohort",
+      "infos": [
+        { "a": "rootkeeper", "x": "The Ninth Cohort keeps the peace in the upper city and along the coast road. They're generally fair in their dealings. If you have a difficulty, they're worth approaching." },
+        { "a": "sapcutter", "x": "The Ninth keeps order in the city and escorts the road caravans. They've been reliable in my experience. If you're travelling, it's worth asking about their patrol times." },
+        { "a": "legionary", "x": "The Ninth Cohort is the garrison here, about four hundred strong, and we keep the upper city and the gate. It's a steady posting. Ask any of us if you need something." },
+        { "a": "archivist", "x": "The Ninth Cohort has been garrisoned here for sixty years and its dispositions are a matter of record. It's a stable arrangement. I can show you the relevant entries if you're curious." }
+      ]
+    },
+    {
+      "id": "the-sap-roads",
+      "infos": [
+        { "a": "rootkeeper", "x": "The sap roads run inland from the coast and carry most of the interior trade. They're old routes and well established. Anyone travelling inland will use one of them." },
+        { "a": "sapcutter", "x": "The sap roads go inland from the coast towns and they're how most goods move. They're in decent repair this season. I travel two of them regularly and they're straightforward." },
+        { "a": "legionary", "x": "The sap roads are the inland trade routes and we patrol the first stretch of each. They're safe enough near the coast. Further in, I'd travel in company." },
+        { "a": "archivist", "x": "The sap roads are the established inland routes and they appear in the earliest surveys. They've changed little in two centuries. I can show you the mapped alignments if that's useful." }
+      ]
+    },
+    {
+      "id": "the-arbiters",
+      "infos": [
+        { "a": "rootkeeper", "x": "The arbiters settle disputes under the covenant, and their decisions are respected throughout the interior. They're careful and unhurried. If you have a matter for them, they'll hear it fairly." },
+        { "a": "sapcutter", "x": "The arbiters handle disputes in the interior, and traders use them for contract matters. They're thorough. If you've a disagreement inland, that's who you'd go to." },
+        { "a": "legionary", "x": "The arbiters deal with matters under the covenant, and we recognise their decisions in the interior. The arrangement works well. If your case is theirs, they'll take it." },
+        { "a": "archivist", "x": "The arbiters are the covenant's judicial body and their rulings are recorded in the interior registers. The system is long established. I can find precedents for you if you need them." }
+      ]
+    },
+    {
+      "id": "the-blood-price",
+      "infos": [
+        { "a": "rootkeeper", "x": "The blood price is the compensation owed when a death has been caused, and it's settled through the arbiters. It's an old and well understood custom. If it applies to you, they'll set the amount." },
+        { "a": "sapcutter", "x": "The blood price is what's owed for a death, and it's paid to the family through the arbiters. It's a long standing custom here. The keepers can explain how it's calculated." },
+        { "a": "legionary", "x": "The blood price is the local compensation custom, and we recognise it alongside imperial law. The two work together reasonably well. The arbiters administer it." },
+        { "a": "archivist", "x": "The blood price is a compensation custom recorded throughout the province's legal history. It operates in parallel with imperial law. There's a clear account of it in the archive." }
+      ]
+    },
+    {
+      "id": "slavery",
+      "infos": [
+        { "a": "rootkeeper", "x": "Slavery is lawful on the mainland and its effects reach this coast through the trade. It's a difficult subject for many here. I'd be glad to explain the local position if you want to understand it." },
+        { "a": "sapcutter", "x": "The trade touches this coast through the mainland houses, and it affects a lot of business here. It's a serious matter. The keepers would give you a fuller account than I can." },
+        { "a": "legionary", "x": "Slavery is lawful under mainland statute and we're not empowered to act against it here. That's the legal position as it stands. The writ house can explain the details." },
+        { "a": "archivist", "x": "The institution is documented extensively in the provincial record and its local effects are well attested. It remains lawful under mainland statute. I can find the relevant entries for you." }
+      ]
+    }
+  ]
+}

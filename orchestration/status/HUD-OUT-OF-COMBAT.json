@@ -1,0 +1,27 @@
+{
+  "task_id": "HUD-OUT-OF-COMBAT",
+  "role": "corpus",
+  "piece": "HUD-OUT-OF-COMBAT",
+  "title": "The seam gap the owner found by reading the corpus: RI-UIX01 specifies the HUD only for combat, and the HUD persists for the rest of the game",
+  "started_at": "2026-08-14T13:45:00Z",
+  "state": "running",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "Owner, verbatim: 'a doc says combat HUD is being based on souls, which is broadly right but remember the HUD persists outside of combat too, so it will need its Morrowind style HUD elements too.' RI-UIX01 declares side: souls and scopes itself to elements 'persistent, always present in combat'. Nothing covered the HUD outside a fight, which is most of the game and which the governing rule assigns to Morrowind. Deliverables: ARBITRATION S54 (what shows out of combat, what shows in a fight, and how it transitions), corpus/86-ui/RI-UIX07 (the Morrowind out-of-combat element set), and a reconciliation of both against the compass/minimal-mode HUD that HUD-MORROWIND has already landed.",
+  "files_claimed": [
+    "corpus/86-ui/RI-UIX07-out-of-combat-hud.md",
+    "corpus/00-doctrine/ARBITRATION.md",
+    "orchestration/status/HUD-OUT-OF-COMBAT.json",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [],
+  "redundant_with": [
+    "HUD-MORROWIND",
+    "W1-MW-UI-REFS",
+    "W1-MAP-DEFECTS"
+  ],
+  "overlap_declared": "I write CORPUS ONLY and touch no game source. game/src/ui/compass.js, hud.js, system.js are HUD-MORROWIND's and W1-MAP-DEFECTS'; I read them and name gaps against them as remediations rather than editing. corpus/70-visual/refs/morrowind-ui/ and refs/MANIFEST.json are W1-MW-UI-REFS's; I cite the owner's screenshot by sha256 and do not move it. ARBITRATION.md is appended to, never rewritten (S54 is a new row).",
+  "notes": [],
+  "blocked_by": [],
+  "could_not_do": []
+}

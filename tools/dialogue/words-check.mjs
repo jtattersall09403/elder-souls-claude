@@ -249,10 +249,15 @@ const AXES = [
   { id: 'A4', name: 'disagreement — multi-speaker topics with a materially different pair',
     get: (m) => m.disagreeRate, cmp: '>=', bar: 0.60, optional: true,
     src: 'RI-DLG07 category 4 ("≥3 must be different answers to the same topic")' },
+  // A5 and A6 were first written at 0.18 and 0.045 — guesses. The reference arm scored 0.1289
+  // and 0.0295 and FAILED THEM BOTH, which under RI-DLG08 §E means the bar was wrong, not
+  // Morrowind. Re-anchored on the measured figure with the usual margin below it. Recorded
+  // here rather than quietly corrected, because "the instrument failed its own control and
+  // was fixed" is the only reason to trust the numbers underneath it.
   { id: 'A5', name: 'stake — lines where the speaker wants/keeps/refuses something',
-    get: (m) => m.stakeRate, cmp: '>=', bar: 0.18, src: 'measured on the reference arm' },
+    get: (m) => m.stakeRate, cmp: '>=', bar: 0.10, src: 'measured on the reference: Morrowind 0.1289' },
   { id: 'A6', name: 'partisanship — lines carrying a judgement of somebody else',
-    get: (m) => m.partisanRate, cmp: '>=', bar: 0.045, src: 'measured on the reference arm' },
+    get: (m) => m.partisanRate, cmp: '>=', bar: 0.020, src: 'measured on the reference: Morrowind 0.0295' },
   { id: 'A7', name: 'speech — contractions per 1k words', get: (m) => m.contr,
     cmp: '>=', bar: 20.0, src: 'RI-DLG08 T13 band 20-50; Morrowind 35.05' },
   { id: 'A8', name: 'speech — second-person tokens per 1k words', get: (m) => m.second,

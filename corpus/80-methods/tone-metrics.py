@@ -144,12 +144,28 @@ def load_reference(path=REF):
 
 TEXT_KEYS = ("text", "body", "line", "response", "entry", "prose", "greeting", "rumour", "rumor")
 
+# `x` is the payload key of the dialogue schema (elder-souls/dialogue-topics@2 and the
+# greetings / rumours / road-directions / slavery-lines pools): the words an NPC actually
+# says live under `x`, and nowhere else. It was absent from TEXT_KEYS, so every previous
+# `--ours game/data` run measured our books, journals and quest prose and NOT one line of
+# our dialogue -- 1,739 authored strings invisible to an instrument whose whole subject is
+# dialogue. Added by W1-DLG-WORDS 2026-08-14; before/after in the same status file.
+# Guarded: `x` is also a coordinate name, so only multi-word STRINGS are taken. Numeric x,
+# short codes and ids cannot enter. The reference (--reference) path does not use harvest()
+# at all, so no threshold calibration is affected.
+PROSE_ONLY_KEYS = ("x",)
+MIN_PROSE_WORDS = 4
+
 
 def harvest(node, out):
     """Pull every authored prose string out of an arbitrary game/data JSON tree."""
     if isinstance(node, dict):
         for k, v in node.items():
-            if k.lower() in TEXT_KEYS and isinstance(v, str) and v.strip():
+            kl = k.lower()
+            if kl in TEXT_KEYS and isinstance(v, str) and v.strip():
+                out.append(v)
+            elif (kl in PROSE_ONLY_KEYS and isinstance(v, str)
+                  and len(v.split()) >= MIN_PROSE_WORDS):
                 out.append(v)
             else:
                 harvest(v, out)

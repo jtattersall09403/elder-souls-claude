@@ -1,15 +1,18 @@
 {
   "task_id": "W1-DLG-WORDS",
-  "title": "The actual words characters say — measured against Morrowind, worst material rewritten, a check that can fail",
+  "title": "The actual words characters say \u2014 measured against Morrowind, worst material rewritten, a check that can fail",
   "role": "builder",
   "state": "running",
   "started_at": "2026-08-14",
   "branch": "codex/wave1-build-experiment",
   "base_commit": "17e30923",
   "owns": "THE WORDS. Not the dialogue window's appearance (sibling), not topic-unlocking-topics graph depth (sibling).",
-  "next_step": "read RI-DLG06/07/08, corpus Morrowind dialogue extract, then census our lines",
+  "next_step": "speaker-disagreement census + voice-metrics; then rewrite the opening conversations",
   "files_touched": [
-    "orchestration/status/W1-DLG-WORDS.json"
+    "orchestration/status/W1-DLG-WORDS.json",
+    "corpus/80-methods/tone-metrics.py",
+    "reports/tone-ours-dialogue-W1-DLG-WORDS.json",
+    "reports/tone-ours-W1-DLG-WORDS.json"
   ],
   "files_claimed": [
     "game/data/dialogue/greetings.json",
@@ -18,5 +21,13 @@
     "corpus/40-dialogue/VOICE-COMPARISON-20260814.md",
     "reports/blog-feed.jsonl"
   ],
-  "could_not_do": []
+  "could_not_do": [],
+  "finding_1_instrument_was_blind": {
+    "what": "corpus/80-methods/tone-metrics.py TEXT_KEYS did not include `x`, the payload key of the whole dialogue schema. Every previous `--ours` run measured books/journals/quest prose and NOT ONE LINE of dialogue.",
+    "before": "--ours game/data/dialogue = 121 distinct texts / 2,118 words (the stray `text`/`line` keys in writ-house.json and creation-questions.json)",
+    "after": "--ours game/data/dialogue = 1,860 distinct texts / 56,467 words",
+    "guard": "only multi-word strings (>=4 words) are taken under `x`, so numeric/short coordinate `x` cannot enter",
+    "calibration_unaffected": "--reference --lint still prints clean (reference path does not call harvest())",
+    "commit": "pending"
+  }
 }
