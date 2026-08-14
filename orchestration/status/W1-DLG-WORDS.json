@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-DLG-WORDS",
+  "title": "The actual words characters say — measured against Morrowind, worst material rewritten, a check that can fail",
+  "role": "builder",
+  "state": "running",
+  "started_at": "2026-08-14",
+  "branch": "codex/wave1-build-experiment",
+  "base_commit": "17e30923",
+  "owns": "THE WORDS. Not the dialogue window's appearance (sibling), not topic-unlocking-topics graph depth (sibling).",
+  "next_step": "read RI-DLG06/07/08, corpus Morrowind dialogue extract, then census our lines",
+  "files_touched": [
+    "orchestration/status/W1-DLG-WORDS.json"
+  ],
+  "files_claimed": [
+    "game/data/dialogue/greetings.json",
+    "game/data/dialogue/topics/",
+    "tools/dialogue/voice-check.mjs",
+    "corpus/40-dialogue/VOICE-COMPARISON-20260814.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "could_not_do": []
+}

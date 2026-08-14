@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-MW-UI-REFS",
+  "title": "Morrowind interface references + dialogue window spec + topics-unlock-topics plan",
+  "started_at": "2026-08-14T00:00:00Z",
+  "state": "running",
+  "branch": "codex/wave1-build-experiment",
+  "next_step": "read RI-VIS09, refs/MANIFEST.json structure, then acquire",
+  "deliverables": {
+    "d1_references": "not_started",
+    "d2_dialogue_window_spec": "not_started",
+    "d3_topics_unlock_plan": "not_started"
+  },
+  "files_touched": [
+    "orchestration/status/W1-MW-UI-REFS.json"
+  ],
+  "files_claimed": [
+    "corpus/70-visual/refs/morrowind-ui/",
+    "corpus/70-visual/refs/MANIFEST.json",
+    "orchestration/plans/",
+    "orchestration/INDEX.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": [
+    "Sibling agents own dialogue TEXT and the MAP. This piece owns references + the dialogue WINDOW spec only."
+  ],
+  "blocked_by": [],
+  "could_not_do": []
+}

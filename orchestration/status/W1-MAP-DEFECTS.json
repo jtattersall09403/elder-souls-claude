@@ -1,0 +1,25 @@
+{
+  "task_id": "W1-MAP-DEFECTS",
+  "status": "reading",
+  "started": "2026-08-14",
+  "owner_defects": [
+    "D1: cannot open the map at all from the deployed build (input->surface route broken)",
+    "D2: remove fog of war — geography visible from the start, markers hidden until discovered (Morrowind parity)"
+  ],
+  "next_step": "read game/src/ui map surface + input routing; reproduce D1 through character creation on desktop and phone",
+  "files_touched": [
+    "orchestration/status/W1-MAP-DEFECTS.json"
+  ],
+  "files_claimed": [
+    "game/src/ui/screens/",
+    "game/src/ui/system.js",
+    "game/src/ui/touch-overlay.js",
+    "tools/map/",
+    "reports/w1-map-defects/",
+    "docs/shots/2026-08-14-w1-map-defects/",
+    "orchestration/NEXT-DISPATCH.md",
+    "reports/blog-feed.jsonl",
+    "docs/progress.html"
+  ],
+  "notes": []
+}
