@@ -42,6 +42,25 @@ which **207 are animated sequences** and **304 are valid for behaviour compariso
 manifest counts, not interchangeable coverage counts; use the relevant `counts.by_metrics_purpose`
 population rather than quoting 808 as a denominator.
 
+> **CORRECTED 2026-08-14 by `I5`. THE TABLE BELOW IS STALE IN THREE PLACES, AND ITS STALENESS IS THE
+> SAME DEFECT AS §3.5's** — a register telling builders a reference does not exist while the bytes
+> are on disk. Derived this turn from `MANIFEST.json` and `ls`, not remembered:
+>
+> 1. **`modern/character_closeup/` holds 13 images, not 1** (`ls … | wc -l` → 13). Nine Elden Ring
+>    (Melina 1920×1080, **Malenia 3840×2160**, six Godrick), two Witcher 3 (one **3840×2160**), two
+>    RDR2. §3.1 below says the same wrong thing and is corrected there.
+> 2. **`modern/hud/` does not exist.** `ls corpus/70-visual/refs/modern/` returns seven directories
+>    and `hud` is not one of them. The row for it below, the standing prohibition in §2 and
+>    `anti-generic/`'s "copies of `modern/hud/`" all describe a folder that is gone. **The
+>    prohibition is kept** — it costs nothing and the folder may return — but the inventory row is
+>    not a count of anything.
+> 3. **A new folder: `modern/character_fullbody/`, 25 files**, Skyrim full-body armour renders,
+>    900×1844 to 2470×3568, `pixel_metrics_valid: false` on all 25. Acquired by `I5` for the
+>    character reference set; routed and bounded in
+>    `corpus/70-visual/refs/characters/INDEX.md`. **Manifest total is now 834 records.**
+>
+> **This box does not restate the folder table below; regenerate it with the command that follows.**
+
 **This table is a snapshot. Regenerate it rather than trusting it:**
 
 ```
@@ -85,6 +104,9 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS06 Protocol B** (art-direction blind) | `refs/morrowind/REF-A*` as the `--ref` side | `refs/modern/` |
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
 | **RI-VIS08** (character animation) | behaviour-valid records in `refs/souls-behaviour/anim/`, related `souls-behaviour/` paths and `refs/video/`, but only when action-matched and preregistered under §5a | still images for motion timing; any file routed to fidelity/art-direction; any behaviour record whose action/camera/rate mismatch is undisclosed |
+| **RI-VIS08** (character *statics*, added 2026-08-14 by `I5`) | `refs/modern/character_closeup/` (13), `refs/modern/combat/` (12) and `refs/modern/character_fullbody/` (25) for §B1 silhouette, §B3 material separation, §B7 weighting and §B8 eyes — the whole set routed by slot in `refs/characters/INDEX.md` §3 | **`character_fullbody/` for any RI-VIS03 band, any `reference-metrics.json` population, or any framing/sky/composition statistic** — they are posed menu renders on a plain backdrop, `pixel_metrics_valid: false` on all 25, and every composition count over that folder is **n=0** by construction |
+| **RI-VIS08** ← `refs/context/ESO-argonian_character__*` (4) — **an amendment to the "context may be cited by neither" rule, made deliberately 2026-08-14 by `I5`** | **FIDELITY side only**, as construction-quality reference for a scaled reptilian humanoid: the race we actually ship, and the four plates have been on disk unrouted since 2026-08-06 | **as an ART_DIRECTION target, ever.** RI-VIS05's instruction not to converge on ESO is unchanged and applies to bodies as much as to marshes. On the design side these are a **divergence anchor** only — see `RI-VIS10` §A2, which carries the ruling and the condition that would reverse it |
+| **RI-VIS10** (humanoid character design, ART) | its own written bar, `RI-VIS05`'s transposition logic, and `refs/morrowind/` | **every file under `refs/modern/` and `refs/context/` as a design target** — RI-VIS01 **CC-2**. The modern character plates reach a character only through RI-VIS08's fidelity pass |
 
 **No render is ever scored against `refs/modern/hud/`.** §5a of
 `REFERENCE-IMAGE-REQUEST.md` is the rule and this item does not soften it: those frames are
@@ -110,12 +132,21 @@ writes there.
    and M12 need implementing before a photograph can calibrate them at all. Full derivation in
    ACQUISITION-REPORT §13.2. **Extending the metrics tool is a prerequisite for more images being
    worth anything numerically, and it is cheaper than another acquisition session.**
-1. **Five of six `modern/` profile folders are empty and the sixth holds one image.** RI-VIS03's
-   `exterior_lowlight`, `interior_darkemissive`, `combat` and `material_closeup` bands have **no**
-   reference population and cannot be calibrated at all. RI-VIS02's slots REF-M1, M2, M3, M5, M7,
-   M10, M11, M12, M13, M14, M15, M16, M17, M18, M19 and M20 are unfilled.
-2. **The one modern population that exists is n=24, one game, one session, one operator, HUD on
-   every frame.** Any p10/p90 derived from it is indicative, not authoritative.
+1. **~~Five of six `modern/` profile folders are empty and the sixth holds one image.~~
+   FALSE AS OF SOME EARLIER ACQUISITION, CORRECTED 2026-08-14 by `I5`. NOT ONE OF THEM IS EMPTY.**
+   Counted this turn from `MANIFEST.json`: `character_closeup` **13**, `combat` **12**,
+   `exterior_daylight` **43**, `exterior_lowlight` **24**, `interior_darkemissive` **22**,
+   `material_closeup` **9**, `ui` **8**, and the new `character_fullbody` **25**. Elden Ring, Skyrim
+   SE, Witcher 3 and RDR2 are all present. **The struck sentence is kept so nobody re-derives it**,
+   and it is the fourth time this register has told builders a population was absent while it sat on
+   disk (see §3.5, and `tools/check-citations.mjs` CHECK D). *What remains true:* RI-VIS02's REF-M
+   slot list is still only partly mapped onto these files — most carry `slot: REF-M-supplemental` —
+   so "which slot is filled" and "which folder has images" are different questions and only the
+   second one is now answered.
+2. **~~The one modern population that exists is n=24…~~ superseded by the line above.** The caveat
+   that survives is narrower and still binding: any p10/p90 quoted from `reference-metrics.json`
+   must name the population **and its `n`**, because the `n`s have moved and a band derived from
+   n=24 is not the same claim as one derived from n=43.
 3. **The Morrowind set is thumbnails.** ≤ 569×320, mostly 320×320 square crops, 0.41–2.77
    bytes/pixel. `pixel_metrics_valid: false` on all 89. Usable for palette, silhouette, built
    form, flora and creature design language — **never** for texture resolution, texel density,
