@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `78cb2d1`: 889 tools, 155 reference
-items, 160 pieces in flight.
+so it cannot drift. Generated at `b6c2b4c`: 889 tools, 155 reference
+items, 159 pieces in flight.
 
-Its purpose is to stop 160+ concurrent agents each paying separately to discover the
+Its purpose is to stop 159+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1243,7 +1243,6 @@ work is the difference between resuming and starting over.
 | `ci-triage-20260814` | ? | none for this task; follow-ons named in reports/ci-triage/TRIAGE-20260814.md §5 Rulings B/ | `orchestration/status/ci-triage-20260814.json` `reports/ci-triage/TRIAGE-20260814.md` `orchestration/NEXT-DISPATCH.md` `orchestration/INDEX.md` `.gitignore` `tools/verdict-validate.mjs` |
 | `HUD-MORROWIND` | code-landed-math-green-browser-pending | Run tools/ui/hud-compass-probe.mjs (one browser): the 360-degree sweep, in-combat withdraw | `game/src/ui/compass.js` `game/src/ui/hud.js` `game/src/ui/surface.js` `game/src/ui/system.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `OWNER-REPORTING-20260814` | in_progress | read recent merged PR descriptions via github MCP tools, then rewrite blog brief + RULES.m | — |
-| `BAR-AUDIT-WORLD-20260814` | running | Read OWNER-DIRECTIVES-2026-08-14.md S6, then inventory corpus/50-world and corpus/60-lore. | `orchestration/status/BAR-AUDIT-WORLD-20260814.json` |
 | `codex-review-editor-w1-28-13-21-10-20260809` | ? | A different fresh reviewer-editor reviews all four awaiting-recriticism plans from canonic | `orchestration/plans/W1-28.md` `orchestration/plans/W1-13.md` `orchestration/plans/W1-21.md` `orchestration/plans/W1-10.md` `orchestration/status/W1-28.json` `orchestration/status/W1-13.json` |
 | `codex-w1-06-fresh-review-20260811` | ? | Dispatch the final builder directly from the satisfied W1-06 plan, starting with the narro | `orchestration/plans/W1-06.md` `orchestration/status/W1-06.json` `orchestration/status/codex-w1-06-fresh-review-20260811.json` |
 | `codex-w1-continuation-plans-27-00-14-11-20260809` | ? | Owner publishes this PR, then runs: Critique the current Wave 1 plans | `orchestration/status/codex-w1-continuation-plans-27-00-14-11-20260809.json` `orchestration/plans/W1-27.md` `orchestration/status/W1-27.json` `orchestration/plans/W1-00.md` `orchestration/status/W1-00.json` `orchestration/plans/W1-14.md` |

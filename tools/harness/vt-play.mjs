@@ -26,6 +26,9 @@ const g = await launchGame({ entry: 'game/index.html', width: 1280, height: 720,
 g.page.on('pageerror', e => note({ pageerror: String(e.message).split('\n')[0] }));
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });
 await g.h('ready');
+const [CW, CH] = String(args.canvas || '960x540').split('x').map(Number);
+await setCanvas(g, CW, CH);
+
 
 let shotN = 0;
 async function shot(label) {
@@ -141,3 +144,17 @@ try {
 fs.writeFileSync(path.join(OUT, 'play-log.json'), JSON.stringify(log, null, 2));
 console.log('shots:', shotN);
 await g.close();
+
+// Shrink the capture backing store. In harness mode main.js never resizes the canvas, so it
+// stays at the 1920x1080 in the HTML and every screenshot() pays a 2 Mpx readPixels. For a
+// defect sweep 960x540 is plenty and it is ~4x cheaper, which is the difference between a
+// sequence and a still.
+async function setCanvas(g, w, h) {
+  await g.page.evaluate(({ w, h }) => {
+    const c = document.getElementById('view');
+    c.width = w; c.height = h;
+    const R = window.__ENGINE.renderer;
+    if (R.setSize) R.setSize(w, h);
+    else if (R.three && R.three.setSize) { R.three.setSize(w, h, false); if (R.camera) { R.camera.aspect = w / h; R.camera.updateProjectionMatrix(); } }
+  }, { w, h });
+}

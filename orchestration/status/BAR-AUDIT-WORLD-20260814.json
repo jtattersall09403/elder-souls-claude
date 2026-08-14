@@ -1,22 +1,64 @@
 {
   "task_id": "BAR-AUDIT-WORLD-20260814",
   "role": "auditor",
-  "title": "Audit the bar: does the corpus cover world design, region differentiation, topology/geology, road networks, and Black Marsh canon?",
-  "state": "running",
+  "title": "Audit the bar: does the corpus cover world design, region character, landform/geology, road networks, and Black Marsh canon?",
+  "state": "complete",
   "started": "2026-08-14",
+  "finished": "2026-08-14",
   "branch": "codex/wave1-build-experiment",
-  "charge": "Owner: 'our bar and reference materials might be sufficient and they might not be.' Specifically world design / region character / canonical Argonia.",
-  "next_step": "Read OWNER-DIRECTIVES-2026-08-14.md S6, then inventory corpus/50-world and corpus/60-lore.",
+  "commit_stamp": "cf2755a",
+  "charge": "OWNER-DIRECTIVES-2026-08-14 §6 — the reference corpus itself may be insufficient.",
+  "headline": "Between-region differentiation is well covered and the built world clears it on merit. Within-region variety and landform/geology were absent from the corpus entirely; both now have an item and a working instrument. Measured baseline: 11 of 13 regions over target for unchanging-ground stretches; valus-ridge has a 312.5 s p90 run and a 79% modal ground state.",
+  "findings": [
+    "RI-WLD04 M18: three of nine axes are 'any difference' set membership; the slope axis is a chi-square with no effect-size floor, which passes automatically at n>3000.",
+    "RI-WLD04 M19: ONLY-HERE elements need >=8 instances but no spatial spread — eight in one clump passes.",
+    "RI-WLD07 §4: verticality targets are world-aggregate. Shipped world's area-weighted mean slope is 10.07 deg (in band) while 7 of 13 regions are under 5.5 deg.",
+    "RI-WLD02 is region-blind: no requirement that regions differ in the KINDS of POI they hold. Morrowind's own place-type Jaccard runs 0.267-0.727 with 8 place types unique to a single region.",
+    "RI-WLD09 mandates >=240 s POI-free walks and nothing required the landscape to change during them. RI-WLD15 W15-7 closes this.",
+    "The canonical coast->interior gradient of Black Marsh is untested anywhere; a predicate is proposed for RI-LOR02 in the report §5.5, marked reversible.",
+    "Corpus-wide grep: 'geology', 'topography', 'geomorphology' appeared zero times before this task."
+  ],
+  "deliverables": [
+    "corpus/50-world/RI-WLD15-within-region-variety.md",
+    "corpus/50-world/RI-WLD16-landform-and-geology.md",
+    "corpus/50-world/landforms.json",
+    "corpus/50-world/data/morrowind-region-census.json",
+    "corpus/80-methods/m-wld15-monotony.mjs",
+    "corpus/80-methods/m-wld16-landform-census.mjs",
+    "tools/uesp/mine-regions.mjs",
+    "reports/BAR-AUDIT-WORLD-20260814.md"
+  ],
+  "instrument_controls": {
+    "m-wld15-monotony.mjs --selfcheck": "exit 0 — uniform synthetic world fails, aperiodic varied world passes",
+    "m-wld16-landform-census.mjs --selfcheck": "exit 0 — 3 negative controls red (collapsed macro-forms, flat declared as ridge, generic-noun world), 3 positive green",
+    "mine-regions.mjs --selfcheck": "exit 0 — 4 probes, 3 of them negative controls",
+    "note": "m-wld16 L3 was briefly inert in the dangerous direction (word-level matcher reported 71% against a world containing none of the landforms); caught by adding a generic-noun negative control, honest figure is 5%."
+  },
+  "measured": {
+    "m-wld15 arm A": "exit 1, 15 threshold breaches across 13 regions",
+    "m-wld16": "exit 1 — L1 PASS, L2 PASS, L3 FAIL at 3/65 landform elements present in world data"
+  },
+  "not_done": [
+    "Arm B of RI-WLD15 (rendered walks) not run — needs a browser and visual-fidelity agents are live (rule 21). RI-WLD15 and RI-WLD16 should be scored not_run until a critic runs it.",
+    "RI-WLD04 M17 not run for the same reason.",
+    "en.uesp.net is egress-blocked from this container (curl 403, WebFetch EGRESS_BLOCKED). All canon sourced from the local 2019-11-07 UESP dump; no ESO Blackwood (2021) material available.",
+    "Did not edit RI-WLD02/04/07/09 or RI-LOR02 — weak predicates are named with proposed replacements in the report §5, for an orchestrator to rule on.",
+    "No rendered topographic/contour map artefact produced from terrain.json."
+  ],
   "files_touched": [
-    "orchestration/status/BAR-AUDIT-WORLD-20260814.json"
+    "orchestration/status/BAR-AUDIT-WORLD-20260814.json",
+    "corpus/50-world/RI-WLD15-within-region-variety.md",
+    "corpus/50-world/RI-WLD16-landform-and-geology.md",
+    "corpus/50-world/landforms.json",
+    "corpus/50-world/data/morrowind-region-census.json",
+    "corpus/80-methods/m-wld15-monotony.mjs",
+    "corpus/80-methods/m-wld16-landform-census.mjs",
+    "tools/uesp/mine-regions.mjs",
+    "reports/BAR-AUDIT-WORLD-20260814.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-14-within-region-monotony-baseline.svg",
+    "corpus/00-doctrine/INDEX.md"
   ],
-  "files_claimed": [
-    "corpus/50-world/",
-    "corpus/60-lore/",
-    "reports/",
-    "orchestration/INDEX.md"
-  ],
-  "notes": [
-    "Not touching game/src/ or orchestration/plans/ per dispatch."
-  ]
+  "files_claimed": [],
+  "next_step": "A world critic with fresh context runs RI-WLD15 arm B and RI-WLD16 M-W16-2/M-W16-3, and the orchestrator rules on the five weak predicates in reports/BAR-AUDIT-WORLD-20260814.md §5."
 }

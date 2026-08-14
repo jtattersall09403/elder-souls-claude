@@ -27,3 +27,9 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
 - 08:50 Intermittent BOOT FAILURE observed once: ui/compass.js:109 cardinalOf() ->
   POINTS[NaN].label. Requires camera yaw to be non-finite. A viewport sweep of 10 sizes
   did NOT reproduce it, so it is flaky rather than size-dependent.
+- 08:55 Capture cost: in harness mode the canvas backing store stays at 1920x1080 regardless of
+  viewport, so every screenshot() pays a 2 Mpx readPixels under SwiftShader. Added a --canvas
+  option to the vt-* tools; 960x540 is ~4x cheaper and is what the sweeps now use.
+- 08:58 Self-inflicted: `pkill -f vt-seethrough` also matched the RunPod CLI (the tool name was
+  inside its --command string) and killed the GPU job. Pod terminated cleanly via
+  `node tools/runpod/cli.mjs cleanup`; ~2 minutes at $0.27/hr. Relaunched detached.
