@@ -9,7 +9,7 @@
   13.31,
   859
  ],
-  "radius_m": 52,
+ "radius_m": 52,
  "identity": "A kingdom that shrank. Thorn’s king is an old Argonian holding court in a rotted hall with eleven subjects and a genuine, legally valid Imperial charter. Industry: thornwood cut for Dunmer bows and Imperial spears. Tension: Morrowind is one day’s walk north and remembers what it used to take from here.",
  "power_reading": "The hall is central and everything else leans against it. Built for a court that no longer exists.",
  "layout": {
@@ -27,13 +27,20 @@
    "tho_needle_stack",
    "tho_charter_post",
    "tho_bow_rack",
-   "tho_sapwell_kerb"
+   "tho_sapwell_kerb",
+   "tho_pile_cluster",
+   "tho_stilt_platform",
+   "tho_tide_mark",
+   "tho_boom_chain",
+   "tho_silt_quay",
+   "tho_moored_barge"
   ]
  },
  "quarters": [
   "rotted-hall",
   "the-boards",
-  "sapwell"
+  "sapwell",
+  "tidewrack-quay"
  ],
  "targets": {
   "buildings": 10,
@@ -54,10 +61,10 @@
   "souls_loop_dungeon_attached": 0
  },
  "counts": {
-  "buildings": 15,
+  "buildings": 24,
   "interior": 7,
   "sealed_with_reason": 3,
-  "structure": 5,
+  "structure": 11,
   "named_interiors": 7,
   "enterable_pct": 70,
   "property_zones": 29,
@@ -756,20 +763,20 @@
    "enterable": true,
    "quarter": "tidewrack-quay",
    "offset_m": [
-    -20,
+    -29,
     0,
     49
    ],
    "yaw_deg": 90,
    "door": [
-    3800,
+    3791,
     0,
     904.5
    ],
    "service": null,
    "faction": null,
    "door_declared": [
-    3800,
+    3791,
     0,
     908
    ],
@@ -778,7 +785,7 @@
    "apertures": [
     {
      "world_pos": [
-      3800,
+      3791,
       0,
       908
      ],
@@ -866,6 +873,102 @@
    ],
    "local_repair": false,
    "good_order": null
+  },
+  {
+   "id": "thorn-struct-the-tide-courses",
+   "name": "The Tide Courses",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -24.0,
+    0,
+    76.0
+   ],
+   "yaw_deg": 18,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
+  },
+  {
+   "id": "thorn-struct-the-tidewrack-piles",
+   "name": "The Tidewrack Piles",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -20.0,
+    0,
+    77.5
+   ],
+   "yaw_deg": 6,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
+  },
+  {
+   "id": "thorn-struct-the-landing-stage",
+   "name": "The Landing Stage",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -16.5,
+    0,
+    80.0
+   ],
+   "yaw_deg": 0,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
+  },
+  {
+   "id": "thorn-struct-the-moored-barge",
+   "name": "The Moored Barge",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -11.5,
+    0,
+    82.0
+   ],
+   "yaw_deg": 352,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
+  },
+  {
+   "id": "thorn-struct-the-boom-chain",
+   "name": "The Boom Chain",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    -6.0,
+    0,
+    80.5
+   ],
+   "yaw_deg": 4,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
+  },
+  {
+   "id": "thorn-struct-the-writ-quay",
+   "name": "The Writ Quay",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "tidewrack-quay",
+   "offset_m": [
+    0.0,
+    0,
+    78.0
+   ],
+   "yaw_deg": 356,
+   "residential_props": false,
+   "placed_from": "tools/render/w1-thorn-shoreline.mjs — the measured waterline, z=938-939"
   }
  ],
  "interiors": [
