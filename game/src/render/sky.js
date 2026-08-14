@@ -1,16 +1,55 @@
-// Deterministic sky and sun — the whole of `setTimeOfDay` / `setWeather`'s visible effect.
+// Deterministic sky, sun, shadow and atmosphere — the whole of `setTimeOfDay` / `setWeather`'s
+// visible effect.
 //
 // HARNESS.md §6: screenshots are only comparable if the clock and the weather are pinned,
 // so both are pure functions of (hours, weatherId) with no wall clock and no randomness
 // anywhere. Two runs that ask for 21:00 in a storm get the identical sky, which is what
 // makes the twelve canonical viewpoints comparable across waves.
+//
+// ---------------------------------------------------------------------------------------------
+// W1-30B, 2026-08-14. What changed and why, in one place, because three of the ten defects in
+// `orchestration/plans/W1-30.md` were all in this file.
+//
+//  A. THE AIR. `FogExp2` transmits `exp(-(density*d)^2)` — a Gaussian, not Beer-Lambert — and the
+//     code fed it `regions.json`'s `extinction_per_m`, which declares itself to be a Beer-Lambert
+//     coefficient, PLUS `1.978 / sightline_m`. Measured on the shipped build at the Lilmoth
+//     approach, removing fog entirely changes **67% of the pixels in the frame**: the settlement
+//     is a grey ghost at 40 m and the hill behind it is white paper. Every other improvement in
+//     the visual tree was invisible past 40 m until this changed. The air is now genuinely
+//     Beer-Lambert, genuinely height-dependent, and its coefficient is passed through a monotone
+//     compression that preserves the thirteen regions' ORDER while keeping clear air honest.
+//
+//  B. THE SHADOWS. Measured, not read: the shadow sabotage moves 13.0% of pixels at the spawn and
+//     0.60% on the Lilmoth approach. So shadows were drawing — near the player — and stopping dead
+//     at the edge of a 120 m box centred on the player's feet. Every vista and every approach, the
+//     shots a player judges a world by, had no shadow structure at all. The shadow volume is now
+//     fitted to the CAMERA's frustum out to a declared shadow distance, stabilised by a bounding
+//     sphere so it does not change size as the camera turns, and texel-snapped in light space.
+//
+//  C. THE IMAGE-BASED LIGHTING. `new Uint8Array(16 * 8 * 4)` is 128 texels, and three.js caches the
+//     PMREM convolution of a non-render-target texture FOREVER (`WebGLCubeUVMaps.get`: it only
+//     re-converts when `texture.isRenderTargetTexture`). So the old environment was not merely
+//     low-resolution, it was **generated once at boot and never updated again** — rewriting its
+//     bytes every frame changed nothing a material could see. It is now a half-float equirectangular
+//     radiance map, regenerated on a time/weather/region bucket change and REPLACED (old texture
+//     disposed) so the convolution is rebuilt, giving every `MeshStandardMaterial` a real
+//     roughness-convolved mip chain for the first time.
+//
+// Preserved deliberately: one authoritative sun/moon direction shared by dome, fog, light and
+// shadow; texel snapping; deterministic bounded precipitation driven by simulation frame; the moon
+// as the exact inverse of the celestial direction; the closed `WEATHER` vocabulary.
+// ---------------------------------------------------------------------------------------------
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
 // W1-30S seam: renderer.js pushes this frame's lighting summary through
-// `renderer.setLightingFrame(obj)`. Building the object here reads values apply() already
-// computed for its own uniforms/lights; it does not change what those values are.
+// `renderer.setLightingFrame(obj)`.
 import { buildLightingFrame } from './lighting.js';
+// W1-30B: the named light rigs. `sky.js` is the first of the registry's two consumers — it selects
+// a recipe every frame and scales the live rig by it. The second is `environmentProbeSpec()`
+// below, which bakes the IBL probe from the same recipe in a different context.
+import { lightingRecipe, recipeForConditions } from './lib/lighting-recipes.js';
+
 const hash1=(n)=>{let h=Math.imul(n|0,0x45d9f3b);h=Math.imul(h^(h>>>16),0x45d9f3b);return((h^(h>>>16))>>>0)/4294967295;};
 
 /** The named weather states. Closed set — `setWeather` throws on anything else. */
@@ -73,6 +112,258 @@ export const WEATHER = {
   night_freeze:    { fogDensity: 0.0086, sunIntensity: 0.30, ambient: 0.56, tint: [0.72, 0.80, 0.96], overcast: 0.90, rain: 0.0 },
 };
 
+// =============================================================================================
+// THE ATMOSPHERE MODEL
+// =============================================================================================
+//
+// WHY THIS IS A SHADER-CHUNK OVERRIDE AND NOT A POST PASS. `render/post/**` and `renderer.js`
+// belong to W1-30A (ruling O1). A depth-reconstructing full-screen atmosphere pass is A's to write
+// and B publishes its parameters on the lighting frame for it. What B owns is `scene.fog`, and
+// `scene.fog` is applied inside every material's fragment shader through four `THREE.ShaderChunk`
+// entries. Replacing those four strings changes the fog MODEL for the whole build without touching
+// one line of anyone else's file, and it is per-pixel, correctly occluded and free of a second
+// depth pass. The cost is that it is a global mutation of the three.js chunk registry, so it is
+// done once, from one named function, with the stock strings kept for `restoreStockAtmosphere()`.
+//
+// WHAT THE MODEL IS. Transmittance along the view ray, with the air thinning exponentially with
+// height:
+//
+//     sigma(y) = sigma0 * exp(-y / H)
+//     tau      = integral of sigma(y) ds from the eye to the fragment
+//     colour   = mix(colour, fogColour, 1 - exp(-tau))
+//
+// For a straight ray from eye height `yc` to fragment height `yf` over path length `d` the
+// integral has a closed form and needs no marching:
+//
+//     tau = sigma0 * d * exp(-yc/H) * (exp(-(yf-yc)/H) - 1) / (-(yf-yc)/H)
+//
+// which degenerates correctly to `sigma0 * d * exp(-yc/H)` as (yf - yc) -> 0. `H <= 0` means "no
+// height dependence" and falls back to plain Beer-Lambert, which is the null control the plan's
+// "atmosphere has height" row asks for.
+//
+// HOW THE PARAMETERS REACH THE SHADER WITHOUT NEW UNIFORMS. three.js refreshes exactly four fog
+// uniforms per material per frame (`WebGLMaterials.refreshFogUniforms`), and which ones depends on
+// the fog object's type: `isFog` gets `fogColor`, `fogNear` and `fogFar`; `isFogExp2` gets
+// `fogColor` and `fogDensity`. Adding a fifth uniform to `UniformsLib.fog` does not work, because
+// `WebGLPrograms.getUniforms` CLONES the uniform objects per material, so nothing written to the
+// library ever reaches a shader. So `HeightFog` extends `Fog` — `isFog` is true, both floats are
+// refreshed — and the two floats are repurposed:
+//
+//     fogNear  ->  sigma0, the ground-level extinction coefficient, per metre
+//     fogFar   ->  H, the height falloff in metres (<= 0 disables the height term)
+//
+// The eye height comes from `cameraPosition`, which three declares in every fragment prefix, and
+// the fragment's world height is computed in `fog_vertex` from `mvPosition` and the view matrix's
+// second row — no matrix inverse, and it is correct for skinned, instanced and batched geometry
+// because `mvPosition` is post-`project_vertex` in all ten stock shaders that include the chunk.
+// The one shader that does not include `project_vertex` — the sprite shader — defines `mvPosition`
+// itself, so the variable is in scope in all of them.
+
+const STOCK_FOG_CHUNKS = {
+  fog_vertex: THREE.ShaderChunk.fog_vertex,
+  fog_pars_vertex: THREE.ShaderChunk.fog_pars_vertex,
+  fog_fragment: THREE.ShaderChunk.fog_fragment,
+  fog_pars_fragment: THREE.ShaderChunk.fog_pars_fragment,
+};
+
+const ES_FOG_PARS_VERTEX = `#ifdef USE_FOG
+  varying float vFogDepth;
+  varying float vFogWorldY;
+#endif`;
+
+const ES_FOG_VERTEX = `#ifdef USE_FOG
+  vFogDepth = - mvPosition.z;
+  // world Y without inverting the view matrix: for a rigid view transform V = [R|t],
+  // world = R^T * view + cameraPosition, and (R^T v).y = dot(vec3(V[0].y, V[1].y, V[2].y), v).
+  vFogWorldY = dot( vec3( viewMatrix[ 0 ].y, viewMatrix[ 1 ].y, viewMatrix[ 2 ].y ), mvPosition.xyz ) + cameraPosition.y;
+#endif`;
+
+const ES_FOG_PARS_FRAGMENT = `#ifdef USE_FOG
+  uniform vec3 fogColor;
+  uniform float fogNear;  // W1-30B: sigma0, ground-level extinction per metre
+  uniform float fogFar;   // W1-30B: H, height falloff in metres; <= 0 means height-independent
+  varying float vFogDepth;
+  varying float vFogWorldY;
+#endif`;
+
+const ES_FOG_FRAGMENT = `#ifdef USE_FOG
+  float esSigma0 = fogNear;
+  float esH = fogFar;
+  float esDist = max( vFogDepth, 0.0 );
+  float esTau;
+  if ( esH <= 0.0 ) {
+    esTau = esSigma0 * esDist;
+  } else {
+    float esYc = cameraPosition.y;
+    float esDy = vFogWorldY - esYc;
+    float esA = exp( - esYc / esH );
+    float esT = - esDy / esH;
+    // (exp(t) - 1) / t, expanded near t = 0 so a level ray does not divide by zero
+    float esRatio = ( abs( esT ) < 1e-3 ) ? ( 1.0 + 0.5 * esT ) : ( ( exp( esT ) - 1.0 ) / esT );
+    esTau = esSigma0 * esDist * esA * esRatio;
+  }
+  float fogFactor = 1.0 - exp( - max( esTau, 0.0 ) );
+  gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, clamp( fogFactor, 0.0, 1.0 ) );
+#endif`;
+
+let ATMOSPHERE_INSTALLED = false;
+
+/** Install the height-fog / Beer-Lambert model into three's shader chunk registry. Idempotent. */
+export function installAtmosphereModel() {
+  if (ATMOSPHERE_INSTALLED) return false;
+  THREE.ShaderChunk.fog_pars_vertex = ES_FOG_PARS_VERTEX;
+  THREE.ShaderChunk.fog_vertex = ES_FOG_VERTEX;
+  THREE.ShaderChunk.fog_pars_fragment = ES_FOG_PARS_FRAGMENT;
+  THREE.ShaderChunk.fog_fragment = ES_FOG_FRAGMENT;
+  ATMOSPHERE_INSTALLED = true;
+  return true;
+}
+
+/**
+ * Put three's stock `FogExp2` chunks back. This is the source-level null control for the whole
+ * atmosphere change and it exists so the control can be executed without editing this file: call
+ * it before the first material compiles and the build behaves exactly as it did before W1-30B.
+ */
+export function restoreStockAtmosphere() {
+  if (!ATMOSPHERE_INSTALLED) return false;
+  Object.assign(THREE.ShaderChunk, STOCK_FOG_CHUNKS);
+  ATMOSPHERE_INSTALLED = false;
+  return true;
+}
+
+export function atmosphereModelInstalled() { return ATMOSPHERE_INSTALLED; }
+
+installAtmosphereModel();
+
+/**
+ * The scene's air. `isFog` is true so three refreshes `fogNear`/`fogFar` every frame; those two
+ * carry `sigma0` and `heightFalloff` into the shader (see the block above).
+ *
+ * `density` is kept as an alias of `sigma0` — and it is an alias in BOTH directions — because it is
+ * the accessor `render/visual-foundation.js` declares as the atmosphere sabotage surface, and
+ * because three harness tools (`vt-world.mjs`, `vt-playmode.mjs`, `vt-seethrough.mjs`) pin
+ * `scene.fog.density` to 0 with `Object.defineProperty` to take fog out of a measurement. An own
+ * property defined on the instance shadows this prototype accessor, and `near` reads through
+ * `this.density`, so those tools keep working unchanged and keep meaning what they meant.
+ */
+export class HeightFog extends THREE.Fog {
+  constructor(colour, sigma0 = 0.003, heightFalloff = 0) {
+    super(colour, sigma0, heightFalloff);
+    this.sigma0 = sigma0;
+    this.heightFalloff = heightFalloff;
+  }
+  get density() { return this.sigma0; }
+  set density(v) { this.sigma0 = v; }
+  get near() { return this.density; }
+  set near(v) { this.density = v; }
+  get far() { return this.heightFalloff; }
+  set far(v) { this.heightFalloff = v; }
+}
+
+// ---- the air's numbers ------------------------------------------------------------------------
+
+/**
+ * The extinction that leaves 35% of an object's contrast against the sky at 150 m under
+ * Beer-Lambert: `exp(-sigma * 150) = 0.35` gives `sigma = 0.00700`. Rounded down to 0.0068 for
+ * margin. This is the plan's "the world is visible" row expressed as the one number that decides
+ * it, so a critic can check the row by checking this constant and the compression below.
+ */
+export const CLEAR_AIR_CEILING = 0.0068;
+
+/**
+ * The weather's own extinction, converted from the authored `fogDensity`.
+ *
+ * `WEATHER[].fogDensity` was authored against three's Gaussian `FogExp2`. Converting it by matching
+ * the 2%-visibility point makes near-field air far too thick (rain would halve a silhouette at
+ * 60 m), so the conversion matches the HALF-transmittance distance instead, which is where a
+ * viewer actually reads the change: `FogExp2` is at 50% at `sqrt(ln 2)/d`, Beer-Lambert at
+ * `ln 2 / sigma`, so `sigma = d * ln2 / sqrt(ln2) = 0.8326 * d`.
+ */
+const WEATHER_SIGMA = (w) => 0.8326 * w.fogDensity;
+
+/**
+ * How thick the air is ALLOWED to get, as a multiple of the weather's own extinction. Clear weather
+ * is held at `CLEAR_AIR_CEILING` so every region's clear-air vista passes the 150 m row; a state
+ * that is supposed to close the world in — `thick_fog`, `ash_storm`, `sea_fog`, `storm` — raises
+ * its own ceiling and does close it in. This is the single knob that trades "the marsh is readable
+ * in rain" against "rain in a marsh means something": raise it and rain reads thinner.
+ */
+const WEATHER_CEILING_K = 2.2;
+
+/**
+ * Region + weather -> the air's ground-level extinction, per metre.
+ *
+ * The two coefficients ADD, because that is what extinction coefficients do, and the earlier
+ * `Math.max()` version let the region term win in four of thirteen regions so weather changed the
+ * frame by nothing there (W1-02's consumption probe caught it). The SUM is then passed through a
+ * monotone saturating compression toward the ceiling:
+ *
+ *     sigma = C * (1 - exp(-(sigmaRegion + sigmaWeather) / C))
+ *
+ * which is strictly increasing, so Blackwood is still the thickest air in the province and the Salt
+ * Hills still the clearest — the ORDER `regions.json` authored is preserved exactly — while no
+ * clear-weather region can erase a settlement at 40 m. That erasure is what the shipped build did:
+ * Blackwood's declared 0.018/m fed to a Gaussian, plus `1.978 / sightline_m` on top, put the
+ * transmittance at 150 m at about 3e-9.
+ */
+export function airExtinction(regionExtinction, weather) {
+  const sw = WEATHER_SIGMA(weather);
+  const raw = Math.max(0, regionExtinction || 0) + sw;
+  const ceiling = Math.max(CLEAR_AIR_CEILING, sw * WEATHER_CEILING_K);
+  return ceiling * (1 - Math.exp(-raw / ceiling));
+}
+
+/**
+ * THE REGION'S HEIGHT FALLOFF, AND WHY IT IS KEYED ON A COLOUR.
+ *
+ * `game/data/world/regions.json` already declares `fog.height_falloff_m` for all thirteen regions —
+ * 26 m in the Deep Marshes, 340 m in the Salt Hills — and NOTHING has ever read it. It is exactly
+ * the parameter this model needs. But `renderer.js` builds the object it hands to `apply()` as
+ * `{ colour, extinction, glow }` and `renderer.js` is W1-30A's file this round, so B cannot add the
+ * field to the call. Two other routes were available and both are worse: `sim.env.region` carries a
+ * region id but inventory row **V15** records that it does not track a teleport, so it names the
+ * wrong region after a fast traversal; and deriving the falloff from the extinction is simply
+ * wrong — Thornmarsh and the Eastern Rootlands share an extinction of 0.0075 and declare 110 m and
+ * 50 m.
+ *
+ * So the table is keyed on the region's own fog colour, which is unique across the thirteen and
+ * comes from the same authored record in the same lookup, and which — unlike `sim.env.region` — is
+ * read live from `field.regionAt()` every frame. A colour this does not know falls back to a
+ * declared default rather than to a guess.
+ *
+ * **Delete this table** the moment `regionFog.heightFalloffM` is present on the object A passes;
+ * the code below already prefers that field when it exists. That is a one-line change in
+ * `renderer.js` and it has been sent to W1-30A.
+ */
+const REGION_HEIGHT_FALLOFF_M = {
+  '#1b3a3e': 55,   // blackwood
+  '#c9a87c': 150,  // clay-moor
+  '#6c7a80': 120,  // crimson-coast
+  '#3e4a6b': 26,   // deep-marshes
+  '#b7c4c0': 50,   // eastern-rootlands
+  '#e6e2d0': 45,   // hive
+  '#9aa6ac': 55,   // marauders-coast
+  '#b9c6ce': 340,  // salt-hills
+  '#9fa9a2': 200,  // stone-forest
+  '#edede6': 190,  // stone-wastes
+  '#bfa286': 110,  // thornmarsh
+  '#8fa6b4': 260,  // valus-ridge
+  '#a8b7a6': 70,   // western-rootlands
+};
+const DEFAULT_HEIGHT_FALLOFF_M = 120;
+
+export function regionHeightFalloff(regionFog) {
+  if (!regionFog) return DEFAULT_HEIGHT_FALLOFF_M;
+  if (Number.isFinite(regionFog.heightFalloffM)) return regionFog.heightFalloffM;
+  if (Number.isFinite(regionFog.height_falloff_m)) return regionFog.height_falloff_m;
+  const key = String(regionFog.colour || '').toLowerCase();
+  return REGION_HEIGHT_FALLOFF_M[key] ?? DEFAULT_HEIGHT_FALLOFF_M;
+}
+
+// =============================================================================================
+// THE SKY DOME
+// =============================================================================================
+
 const SKY_VERT = `
 varying vec3 vDir;
 void main() {
@@ -117,9 +408,119 @@ void main() {
   gl_FragColor = vec4(col, 1.0);
 }`;
 
+// =============================================================================================
+// THE IMAGE-BASED LIGHTING PROBE
+// =============================================================================================
+//
+// A half-float equirectangular radiance map. three.js converts any equirect `scene.environment`
+// into a roughness-convolved cubeUV through `PMREMGenerator` automatically
+// (`WebGLCubeUVMaps.get`), so B does not need — and cannot get — a `WebGLRenderer` handle from
+// inside `sky.js`. What it DOES need is to know that the conversion is cached on the texture object
+// and only re-run for render-target textures: mutating a `DataTexture` in place, which is what the
+// old code did every single frame, never invalidates it. The probe is therefore REPLACED on
+// regeneration and the old texture disposed, which is what fires three's `onTextureDispose` and
+// drops the stale convolution.
+//
+// Half float, not byte: the sun's disc is 30x brighter than the sky around it, and an 8-bit
+// environment clips it to white, which is exactly why every material read the same however rough
+// it claimed to be. `HalfFloatType` is texture-filterable in core WebGL2; `FloatType` needs
+// `OES_texture_float_linear` and would fail to filter on some devices.
+const PROBE_W = 128, PROBE_H = 64;
+
+/**
+ * Bake one radiance map. Pure function of its arguments — same arguments, same bytes — so the probe
+ * is part of what a determinism check compares.
+ *
+ * `groundBounce` is the recipe's `envGroundBounce`: how much of the lower hemisphere is ground
+ * rather than sky. It is an analytic stand-in for a cube capture of the actual world, and the plan's
+ * falsification audit is right that it is one — there is no terrain, no settlement and no canopy in
+ * this probe. What it does give, which 128 texels of clamped byte could not, is a correct sun
+ * intensity ratio, a correct horizon gradient and a correct ground/sky split, which is what
+ * separates a rough surface from a smooth one.
+ */
+export function bakeEnvironmentProbe({ zenith, horizon, ground, sunColour, sunDir, overcast, sunGain = 1, groundBounce = 0.35 }) {
+  const data = new Uint16Array(PROBE_W * PROBE_H * 4);
+  const half = THREE.DataUtils.toHalfFloat;
+  const dir = new THREE.Vector3();
+  const c = new THREE.Color();
+  for (let y = 0; y < PROBE_H; y++) {
+    // equirect: row 0 is +Y (zenith), row H-1 is -Y (nadir)
+    const theta = (y + 0.5) / PROBE_H * Math.PI;      // 0 at zenith
+    const sy = Math.cos(theta);
+    const st = Math.sin(theta);
+    const up = Math.max(0, sy);
+    const down = Math.max(0, -sy);
+    for (let x = 0; x < PROBE_W; x++) {
+      const phi = (x + 0.5) / PROBE_W * Math.PI * 2;
+      dir.set(Math.cos(phi) * st, sy, Math.sin(phi) * st);
+      // sky above the horizon, ground bounce below it
+      c.copy(horizon).lerp(zenith, Math.pow(up, 0.62));
+      if (down > 0) c.lerp(ground, down * groundBounce + (1 - groundBounce) * down * 0.25);
+      // the sun's disc and its glow, unclipped because this is a half-float target
+      const sd = Math.max(0, dir.dot(sunDir));
+      const disc = sd > 0.9995 ? 60 : 0;
+      const hot = (Math.pow(sd, 64) * 6.0 + Math.pow(sd, 8) * 0.45 + disc) * (1 - overcast) * sunGain;
+      const i = (y * PROBE_W + x) * 4;
+      data[i] = half(c.r + sunColour.r * hot);
+      data[i + 1] = half(c.g + sunColour.g * hot);
+      data[i + 2] = half(c.b + sunColour.b * hot);
+      data[i + 3] = half(1);
+    }
+  }
+  const tex = new THREE.DataTexture(data, PROBE_W, PROBE_H, THREE.RGBAFormat, THREE.HalfFloatType);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  // Half-float data is already linear radiance; tagging it sRGB would decode it a second time.
+  tex.colorSpace = THREE.LinearSRGBColorSpace;
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+  tex.name = 'w1-30b-environment-probe';
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/**
+ * The probe spec for a named recipe. **This is the entry point W1-30G consumes for per-room
+ * interior probes** — G calls it with the room's own hearth/emissive colours and gets back a
+ * texture it can assign to a room's `Mesh.material.envMap` or to `scene.environment` while the
+ * player is inside, without reimplementing any of the baking above.
+ *
+ * @param {string} recipeId one of `knownLightingRecipes()`
+ * @param {{zenith:THREE.Color, horizon:THREE.Color, ground:THREE.Color, sunColour:THREE.Color,
+ *          sunDir:THREE.Vector3, overcast?:number, intensity?:number}} place the colours of the
+ *        actual room or region; a recipe never invents a colour.
+ * @returns {{texture:THREE.DataTexture, intensity:number, recipeId:string}}
+ */
+export function environmentProbeSpec(recipeId, place) {
+  const r = lightingRecipe(recipeId);
+  const texture = bakeEnvironmentProbe({
+    zenith: place.zenith, horizon: place.horizon, ground: place.ground,
+    sunColour: place.sunColour, sunDir: place.sunDir,
+    overcast: Number.isFinite(place.overcast) ? place.overcast : 0,
+    sunGain: r.key, groundBounce: r.envGroundBounce,
+  });
+  return { texture, intensity: r.env * (Number.isFinite(place.intensity) ? place.intensity : 1), recipeId };
+}
+
+// =============================================================================================
+
+/** Shadow geometry. `distance` is how far from the camera shadows are drawn, in metres. */
+const SHADOW_TIERS = {
+  high: { mapSize: 4096, distance: 150 },
+  low: { mapSize: 2048, distance: 90 },
+};
+
 export class Sky {
-  constructor(scene) {
-    this.features = { shadows:true, ibl:true, atmosphere:true, sky:true, lighting:true };
+  constructor(scene, opts = {}) {
+    this.features = {
+      shadows: true, ibl: true, atmosphere: true, sky: true, lighting: true,
+      // W1-30B's own off-switches. Each is one of this piece's changes and each must be provably
+      // switchable, because a feature whose off-switch does not change pixels is a hard fail.
+      heightFog: true,      // false -> flat Beer-Lambert, the "atmosphere has height" null control
+      shadowFit: true,      // false -> the old player-centred 120 m box, the shadow-range control
+      probe: true,          // false -> no environment texture at all
+      rainDepth: true,      // false -> uniform-opacity streaks, the "rain has depth" null control
+    };
     this.uniforms = {
       uZenith: { value: new THREE.Color(0x2f5f95) },
       uHorizon: { value: new THREE.Color(0xbfc6b4) },
@@ -138,21 +539,29 @@ export class Sky {
     this.mesh.renderOrder = -1000;
     scene.add(this.mesh);
 
+    // ---- the sun and its shadow ------------------------------------------------------------
+    this.shadowTier = SHADOW_TIERS[opts.shadowTier] ? opts.shadowTier : 'high';
+    const tier = SHADOW_TIERS[this.shadowTier];
+    this.shadowDistance = tier.distance;
     this.sun = new THREE.DirectionalLight(0xfff0d8, 3.0);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(2048, 2048);
-    this.sun.shadow.camera.near = 40;
-    this.sun.shadow.camera.far = 210;
+    this.sun.shadow.mapSize.set(tier.mapSize, tier.mapSize);
+    // The frustum is refitted every frame by `_fitShadow()`; these are only the values that hold
+    // until the first fit, and `near` is deliberately small. The old value was 40 — a near plane
+    // 40 m in front of a light placed 120 m from its target, which clips anything within 40 m of
+    // the light and is the reason a tall ridge could stop casting.
+    this.sun.shadow.camera.near = 0.5;
+    this.sun.shadow.camera.far = 600;
     this.sun.shadow.camera.left = -60;
     this.sun.shadow.camera.right = 60;
     this.sun.shadow.camera.top = 60;
     this.sun.shadow.camera.bottom = -60;
-    // 120 m of frustum across 2048 texels is 0.059 m per texel, so the normal bias has to
-    // be of that order or every lit surface shadow-acnes itself and the whole scene comes
-    // back black. It is set in world units deliberately: a depth bias alone cannot fix
-    // acne at this ratio, and a black scene is a fail-closed 0 for every fidelity metric.
-    this.sun.shadow.bias = -0.0012;
-    this.sun.shadow.normalBias = 0.25;
+    // Bias in world units of the fitted box's own texel, not a constant. The old pair
+    // (-0.0012, 0.25) was tuned for a 120 m / 2048 box — 0.25 m of normal bias is four texels
+    // there, and it is what erased every contact shadow: a post's shadow within a quarter of a
+    // metre of its own base was pushed off the geometry entirely.
+    this.sun.shadow.bias = -0.0002;
+    this.sun.shadow.normalBias = 0.08;
     // Three.js does NOT recompute an orthographic shadow frustum from its properties, so
     // this call is load-bearing: without it the shadow camera keeps its default 10x10 m
     // box and the entire scene renders fully shadowed.
@@ -169,12 +578,40 @@ export class Sky {
     this.fill = new THREE.AmbientLight(0x8b9488, 0.24);
     scene.add(this.fill);
 
+    // ---- precipitation ----------------------------------------------------------------------
     // Bounded deterministic precipitation. Geometry is allocated once; apply() rewrites the
     // streak endpoints from simulation frame and weather intensity, never from wall time.
-    this.rainPos=new Float32Array(320*2*3);this.rainSeed=new Float32Array(320*3);
-    for(let i=0;i<320;i++){this.rainSeed[i*3]=hash1(i*17+3);this.rainSeed[i*3+1]=hash1(i*29+7);this.rainSeed[i*3+2]=hash1(i*43+11);}
-    const rainGeo=new THREE.BufferGeometry();rainGeo.setAttribute('position',new THREE.BufferAttribute(this.rainPos,3));
-    this.rain=new THREE.LineSegments(rainGeo,new THREE.LineBasicMaterial({color:0xb8c8cf,transparent:true,opacity:.34,depthWrite:false,toneMapped:false}));this.rain.name='weather-precipitation-bounded-320';this.rain.frustumCulled=false;this.rain.visible=false;scene.add(this.rain);
+    //
+    // W1-30B: the column is 96 m across rather than 28 m, and every streak carries its own RGBA
+    // vertex colour. Inventory row **V07** is that precipitation reads as scratches on the lens —
+    // hard white lines of uniform width and opacity at every depth. It was uniform because the
+    // whole field was within 14 m of the camera and one material opacity covered all of it. Now
+    // the alpha of each streak is the same Beer-Lambert transmittance the fog uses, evaluated at
+    // that streak's distance, so a drop at 60 m is a fraction of the weight of a drop at 5 m and
+    // the rain has depth for the same reason the world does.
+    this.rainCount = 900;
+    this.rainSpan = 96;
+    this.rainPos = new Float32Array(this.rainCount * 2 * 3);
+    this.rainCol = new Float32Array(this.rainCount * 2 * 4);
+    this.rainSeed = new Float32Array(this.rainCount * 3);
+    for (let i = 0; i < this.rainCount; i++) {
+      this.rainSeed[i * 3] = hash1(i * 17 + 3);
+      this.rainSeed[i * 3 + 1] = hash1(i * 29 + 7);
+      this.rainSeed[i * 3 + 2] = hash1(i * 43 + 11);
+    }
+    const rainGeo = new THREE.BufferGeometry();
+    rainGeo.setAttribute('position', new THREE.BufferAttribute(this.rainPos, 3));
+    // itemSize 4 is what makes three define USE_COLOR_ALPHA, which is what gives a line a
+    // per-vertex alpha. With itemSize 3 the alpha channel silently does nothing.
+    rainGeo.setAttribute('color', new THREE.BufferAttribute(this.rainCol, 4));
+    this.rain = new THREE.LineSegments(rainGeo, new THREE.LineBasicMaterial({
+      color: 0xffffff, vertexColors: true, transparent: true, opacity: 1,
+      depthWrite: false, toneMapped: false,
+    }));
+    this.rain.name = 'weather-precipitation-bounded-900';
+    this.rain.frustumCulled = false;
+    this.rain.visible = false;
+    scene.add(this.rain);
 
     // The moon is not a second, unrelated art light. It is the exact inverse of the one
     // celestial direction used by the dome and sun, and only contributes after sunset.
@@ -182,71 +619,134 @@ export class Sky {
     this.moon.castShadow = false; // one fitted directional shadow atlas is the bounded policy
     scene.add(this.moon); scene.add(this.moon.target);
 
-    // A small, deterministic equirectangular radiance map gives Standard/Physical materials
-    // genuine specular environment sampling. It is recoloured in-place with sky/weather rather
-    // than allocating a texture every frame. This deliberately is not a background substitute:
-    // the procedural dome remains the visible sky and the texture is lighting-only.
-    this.environmentBytes = new Uint8Array(16 * 8 * 4);
-    this.environment = new THREE.DataTexture(this.environmentBytes,16,8,THREE.RGBAFormat);
-    this.environment.mapping = THREE.EquirectangularReflectionMapping;
-    this.environment.colorSpace = THREE.SRGBColorSpace;
-    this.environment.name = 'w1-30-dynamic-environment-ibl';
-    this.environment.needsUpdate = true;
-    scene.environment = this.environment;
+    // ---- the environment probe ---------------------------------------------------------------
+    this.environment = null;
+    this._probeKey = null;
+    this._probeBakes = 0;
+    this._probeMs = 0;
 
     this.scene = scene;
-    this.scene.fog = new THREE.FogExp2(0x9aa79a, 0.0022);
+    this.scene.fog = new HeightFog(0x9aa79a, 0.0030, DEFAULT_HEIGHT_FALLOFF_M);
+    this.scene.environmentIntensity = 1;
+
+    // Set by `followCamera()`, which `renderer.render()` calls every frame after `apply()`. The
+    // shadow volume is fitted to the camera, and `apply()` does not receive one — its signature is
+    // `renderer.js`'s, which is W1-30A's file. Using the camera as it stood at the end of the
+    // previous frame is deterministic (the camera pose is a pure function of simulation state) and
+    // is one 60 Hz frame of lag on the shadow box, which is below the threshold at which a shadow
+    // edge can be seen to move. Before the first `followCamera()` the fit falls back to the old
+    // player-centred box, so a single-frame capture that never renders still gets shadows.
+    this._camera = null;
+    this._lastFit = null;
+  }
+
+  // -------------------------------------------------------------------------------------------
+
+  /**
+   * Fit the directional shadow volume to what the camera can actually see.
+   *
+   * The old fit was a 120 m box centred on the player's feet, which is why the shadow sabotage
+   * moves 13% of the pixels at the spawn (where the player is) and 0.6% on the Lilmoth approach
+   * (where the subject is 120 m away). A vista is the shot a player judges a world by and it had no
+   * shadow structure in it at all.
+   *
+   * WHY A BOUNDING SPHERE AND NOT A TIGHT BOX. A light-space AABB of the view frustum is tighter,
+   * and it changes size and shape as the camera yaws, so the shadow map's texel grid changes with
+   * it and every shadow edge crawls. A sphere is rotation-invariant: the box is the same size at
+   * every heading, which is the precondition for texel snapping to actually hold the edges still.
+   * The cost is texel density — about 0.086 m per texel at 4096 over 150 m, against 0.059 m over
+   * 60 m before. That is the trade this piece is making and the human read on the vistas is what
+   * judges it.
+   *
+   * NOT A CASCADE. Three cascades were the plan's item 2. three.js has no cascaded shadow map, so
+   * cascades mean either three co-directional lights sharing the sun's intensity — which puts a
+   * step in the shadow STRENGTH at each split, and "a cascade set with a visible ring" is a hard
+   * fail in this same plan — or overriding the shadow-mask shader chunk, which is a seam into
+   * every material and would collide with W1-30A's compositor work mid-round. One ring-free fitted
+   * map is the substitution, it is recorded as one, and what would overturn it is the near-field
+   * reading as mush on hardware: if it does, real CSM in a shared chunk is the next step and it
+   * needs a written seam agreement with A first.
+   */
+  _fitShadow(dir, focus) {
+    const shadow = this.sun.shadow;
+    const mapSize = shadow.mapSize.x;
+    const cam = this._camera;
+    let cx, cy, cz, radius;
+
+    if (cam && cam.isPerspectiveCamera && this.features.shadowFit) {
+      const near = Math.max(0.05, cam.near);
+      const far = Math.max(near + 1, Math.min(this.shadowDistance, cam.far));
+      const tanH = Math.tan(THREE.MathUtils.degToRad(cam.fov * 0.5));
+      const tanW = tanH * cam.aspect;
+      const a2 = tanW * tanW + tanH * tanH;
+      // The sphere through both corner rings: equate |corner - (0,0,z0)| for near and far.
+      let z0 = (a2 + 1) * (near + far) * 0.5;
+      z0 = Math.min(far, Math.max(near, z0));
+      radius = Math.max(
+        Math.hypot(far * tanW, far * tanH, far - z0),
+        Math.hypot(near * tanW, near * tanH, near - z0),
+      );
+      const fwd = new THREE.Vector3();
+      cam.getWorldDirection(fwd);
+      cx = cam.position.x + fwd.x * z0;
+      cy = cam.position.y + fwd.y * z0;
+      cz = cam.position.z + fwd.z * z0;
+    } else {
+      // Fallback and null control: the pre-W1-30B player-centred box.
+      radius = 60;
+      cx = focus ? focus.x : 0; cy = focus ? focus.y : 0; cz = focus ? focus.z : 0;
+    }
+
+    // Light space: an orthonormal basis with `fwd` pointing from the light toward the scene.
+    const lf = dir.clone().negate().normalize();
+    const upSeed = Math.abs(lf.y) > 0.995 ? new THREE.Vector3(0, 0, 1) : new THREE.Vector3(0, 1, 0);
+    const right = new THREE.Vector3().crossVectors(upSeed, lf).normalize();
+    const up = new THREE.Vector3().crossVectors(lf, right).normalize();
+
+    // Snap the centre to the shadow map's own texel grid, in light space, so a slowly moving
+    // camera cannot swim the projection across stationary geometry.
+    const texel = (2 * radius) / mapSize;
+    const u = Math.round((cx * right.x + cy * right.y + cz * right.z) / texel) * texel;
+    const v = Math.round((cx * up.x + cy * up.y + cz * up.z) / texel) * texel;
+    const w = cx * lf.x + cy * lf.y + cz * lf.z;
+    const centre = new THREE.Vector3(
+      right.x * u + up.x * v + lf.x * w,
+      right.y * u + up.y * v + lf.y * w,
+      right.z * u + up.z * v + lf.z * w,
+    );
+
+    // Stand the light off far enough that a 400 m ridge between it and the sphere still casts.
+    const backoff = radius + 420;
+    this.sun.position.copy(dir).multiplyScalar(backoff).add(centre);
+    this.sun.target.position.copy(centre);
+    this.sun.target.updateMatrixWorld();
+
+    const c = shadow.camera;
+    if (c.left !== -radius || c.far !== backoff + radius + 20) {
+      c.left = -radius; c.right = radius; c.top = radius; c.bottom = -radius;
+      c.near = 0.5; c.far = backoff + radius + 20;
+      c.updateProjectionMatrix();
+    }
+    // Bias in units of this fit's texel. A constant bias is wrong the moment the box resizes.
+    shadow.normalBias = texel * 1.4;
+    shadow.bias = -0.9 * (texel / (c.far - c.near));
+    this._lastFit = { radius, texel, centre: centre.toArray(), backoff, mapSize };
+    return this._lastFit;
   }
 
   /**
    * @param {number} hours 0..24
    * @param {string} weatherId a key of WEATHER
-   * @param {THREE.Vector3} focus where the shadow frustum should sit
+   * @param {THREE.Vector3} focus where the player is
+   * @param {object|null} regionFog `{ colour, extinction, glow }` from the live region lookup
+   * @param {object|null} env `sim.env`
+   * @param {number} frame the simulation frame
    * @param {object|null} overhead the roof field from `Renderer._updateOverheadField()`, or null
    *        for "open sky everywhere". See the D2 note below.
    */
-  apply(hours, weatherId, focus, regionFog, env, frame=0, overhead=null) {
+  apply(hours, weatherId, focus, regionFog, env, frame = 0, overhead = null) {
     const w = WEATHER[weatherId];
     if (!w) throw new Error(`unknown weather '${weatherId}'. Named states: ${Object.keys(WEATHER).join(', ')}`);
-    this.rain.visible=this.features.atmosphere&&w.rain>0.02;
-    // ---- D2: RAIN DOES NOT FALL THROUGH ROOFS ------------------------------------------------
-    // The streak field is generated in a 28 m x 28 m column around `focus`, from 5 m below it to
-    // 17 m above. Nothing ever asked whether a given streak was under a roof, so walking under
-    // the raised decks at Lilmoth put streaks INSIDE the covered volume, in front of the ceiling
-    // — the audit's D2, visible in every frame of play/016..032.
-    //
-    // Note what the defect is NOT: the material is depth-TESTED (only `depthWrite` is off), so
-    // this was never a sorting bug. The drops are genuinely spawned in the air beneath the deck,
-    // between the player and the underside, and no amount of depth state can help with that. The
-    // emitter has to know about the ceiling, which is what `overhead` is.
-    //
-    // `overhead` is a coarse height field the renderer refreshes a few times a second: for each
-    // sample point, the underside of the lowest solid thing above it, or +Infinity for open sky.
-    // A streak below the roof over its own column is not drawn. Streaks are COMPACTED to the
-    // front of the buffer and `drawRange` shortened, so a covered player also pays less overdraw
-    // rather than more — the cull is not a per-vertex branch in a shader.
-    if(this.rain.visible&&focus){
-      const fall=(frame*.31)%22,n=Math.max(1,Math.round(320*w.rain));
-      let out=0;
-      for(let i=0;i<n;i++){
-        const x=(this.rainSeed[i*3]-.5)*28,z=(this.rainSeed[i*3+1]-.5)*28,y=((this.rainSeed[i*3+2]*22-fall+22)%22)-5;
-        if(overhead){
-          // World coordinates: the streak field is a child transform on `focus`.
-          const wy=focus.y+y;
-          if(wy<ceilingAt(overhead,focus.x+x,focus.z+z))continue;
-        }
-        const k=out*6;out++;
-        this.rainPos[k]=x;this.rainPos[k+1]=y;this.rainPos[k+2]=z;
-        this.rainPos[k+3]=x+.12;this.rainPos[k+4]=y-(.9+w.rain*.8);this.rainPos[k+5]=z+.05;
-      }
-      this.rain.geometry.setDrawRange(0,out*2);
-      this.rain.geometry.attributes.position.needsUpdate=true;
-      this.rain.position.copy(focus);
-      this.rain.material.opacity=.18+w.rain*.28;
-      // A fully covered player gets no streaks at all, and drawing an empty LineSegments is a
-      // draw call for nothing.
-      if(out===0)this.rain.visible=false;
-    }
 
     // Sun elevation: noon is up, midnight is down. Pure arithmetic, deterministic.
     const ang = ((hours - 6) / 24) * Math.PI * 2;
@@ -256,6 +756,15 @@ export class Sky {
 
     const day = Math.max(0, Math.min(1, elev * 1.6 + 0.28));   // 0 at night, 1 at noon
     const dusk = Math.max(0, 1 - Math.abs(elev) * 4.2);        // warm band near the horizon
+    const night = 1 - Math.max(0, Math.min(1, day * 2.2));
+    const overcast = w.overcast;
+
+    // ---- the recipe --------------------------------------------------------------------------
+    // The named rig this condition is. Pure function of terms already derived above, so two runs
+    // at the same hour in the same weather always name the same recipe, and the id is published on
+    // the lighting frame — which makes it part of what a determinism check compares.
+    const recipeId = recipeForConditions({ day, night, overcast, rain: w.rain, dusk });
+    const R = lightingRecipe(recipeId);
 
     const zen = new THREE.Color(
       lerp(0.024, 0.115, day) * w.tint[0] + dusk * 0.05,
@@ -265,7 +774,6 @@ export class Sky {
       lerp(0.045, 0.760, day) * w.tint[0] + dusk * 0.36,
       lerp(0.058, 0.790, day) * w.tint[1] + dusk * 0.17,
       lerp(0.090, 0.700, day) * w.tint[2] + dusk * 0.06);
-    const overcast = w.overcast;
     zen.lerp(new THREE.Color(0.30 * day + 0.02, 0.31 * day + 0.02, 0.33 * day + 0.03), overcast);
     hor.lerp(new THREE.Color(0.40 * day + 0.03, 0.41 * day + 0.03, 0.42 * day + 0.04), overcast);
 
@@ -273,23 +781,20 @@ export class Sky {
     this.uniforms.uHorizon.value.copy(hor);
     this.uniforms.uSunDir.value.copy(dir);
     this.uniforms.uOvercast.value = overcast;
-    this.uniforms.uSunColour.value.setRGB(
+    const sunCol = this.uniforms.uSunColour.value;
+    sunCol.setRGB(
       lerp(0.55, 1.00, day) + dusk * 0.35, lerp(0.42, 0.94, day) + dusk * 0.10, lerp(0.62, 0.82, day));
+    // The recipe's `keyWarmth` pushes the key toward the horizon (warm) or the zenith (cool). This
+    // is what makes 08:00, 13:00 and 19:30 differ in COLOUR TEMPERATURE and not only in elevation.
+    if (R.keyWarmth > 0) sunCol.lerp(hor, R.keyWarmth * 0.30);
+    else if (R.keyWarmth < 0) sunCol.lerp(zen, -R.keyWarmth * 0.30);
 
-    this.sun.intensity = this.features.lighting ? w.sunIntensity * Math.max(0.02, day) : 0;
-    this.sun.color.copy(this.uniforms.uSunColour.value);
-    this.sun.position.copy(dir).multiplyScalar(120);
-    if (focus) {
-      // Snap the fitted 120 m shadow volume to its 2048-map texel. Slow camera motion can no
-      // longer swim the shadow projection across stationary geometry.
-      const texel=120/this.sun.shadow.mapSize.x;
-      const sx=Math.round(focus.x/texel)*texel, sz=Math.round(focus.z/texel)*texel;
-      this.sun.position.x+=sx; this.sun.position.y+=focus.y; this.sun.position.z+=sz;
-      this.sun.target.position.set(sx,focus.y,sz);
-    }
-    else this.sun.target.position.set(0, 0, 0);
-    this.sun.target.updateMatrixWorld();
-    this.sun.castShadow = this.features.shadows;
+    // ---- the key -----------------------------------------------------------------------------
+    this.sun.intensity = this.features.lighting ? w.sunIntensity * Math.max(0.02, day) * R.key : 0;
+    this.sun.color.copy(sunCol);
+    this.sun.castShadow = this.features.shadows && R.shadow > 0;
+    this.shadowDistance = SHADOW_TIERS[this.shadowTier].distance * (R.shadow || 1);
+    this._fitShadow(dir, focus);
     this.moon.position.copy(dir).multiplyScalar(-120).add(this.sun.target.position);
     this.moon.target.position.copy(this.sun.target.position); this.moon.target.updateMatrixWorld();
 
@@ -304,91 +809,188 @@ export class Sky {
     //   * the night ambient takes the REGION's hue instead of the sky horizon's, so what little
     //     light there is carries region identity — a marsh under two moons is green-black, a salt
     //     pan is blue-white, a kiln moor is ember-red;
-    //   * the floors rise (ambient 0.10 -> 0.30, fog 0.34 -> 0.62). Morrowind's nights are dark and
-    //     READABLE; a frame a judge cannot classify is not a dark frame, it is a missing frame.
-    const night = 1 - Math.max(0, Math.min(1, day * 2.2));
-    this.moon.intensity = this.features.lighting ? night * (0.54 + (1-w.overcast)*0.28) : 0;
-    // W1-01 round 3. `ours_night` leave-one-out was 33.3% against M17 step 6's explicit >= 70%.
-    // Two thirds of the DAY separability was tint, and at night there was not even that: every
-    // region rendered as the same near-black. A region's night hue is now taken from the thing it
-    // OWNS — the welkynd blue of Blackwood's pillars, the ember of the Clay Moor's kilns, the amber
-    // of the Hive's comb, the jelly green of the Eastern Rootlands — mixed with its fog. That is a
-    // per-region light SOURCE rather than a per-region exposure, which is the distinction the item
-    // is making when it says a region must be identifiable at night.
+    //   * the floors rise. Morrowind's nights are dark and READABLE; a frame a judge cannot
+    //     classify is not a dark frame, it is a missing frame.
+    this.moon.intensity = this.features.lighting ? night * (0.54 + (1 - w.overcast) * 0.28) : 0;
     const regionNight = regionFog ? new THREE.Color(regionFog.colour) : hor.clone();
     if (regionFog && regionFog.glow) regionNight.lerp(new THREE.Color(regionFog.glow), 0.55);
-    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.82, 1.18 + day * 0.72) : 0;
+    this.hemi.intensity = this.features.ibl ? w.ambient * Math.max(0.82, 1.18 + day * 0.72) * R.sky : 0;
     this.hemi.color.copy(hor).lerp(regionNight, night * 0.85);
-    this.hemi.groundColor.setRGB(0.34, 0.31, 0.24).lerp(regionNight, night * 0.55);
-    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.68, 1.34, day) : 0;
+    const groundColour = new THREE.Color(0.34, 0.31, 0.24).lerp(regionNight, night * 0.55);
+    this.hemi.groundColor.copy(groundColour);
+    this.fill.intensity = this.features.lighting ? w.ambient * lerp(0.68, 1.34, day) * R.fill : 0;
     this.fill.color.copy(hor).lerp(regionNight, night * 0.70);
 
+    // ---- the air -------------------------------------------------------------------------------
+    const heightFalloff = regionHeightFalloff(regionFog) * (R.fog.height || 1);
+    let sigma0;
     if (regionFog) {
-      // The region owns the hue and the extinction; the weather multiplies the extinction and
-      // tints toward the sky, so "Blackwood in rain" is Blackwood, wetter — not generic rain.
+      // The region owns the hue and the floor; the weather can only ever make the air thicker,
+      // never clearer than the region's own.
       const rc = new THREE.Color(regionFog.colour);
       this.scene.fog.color.copy(rc).lerp(hor, 0.34 * (1 - night * 0.7)).multiplyScalar(lerp(0.62, 1.0, day));
-      const base = regionFog.extinction * (1 + w.fogDensity / 0.0026 * 0.22);
-      // ---- W1-02: the weather's SIGHTLINE, made raycastable ------------------------------------
-      //
-      // `RI-WLD08` §5 is explicit that "weather is never purely cosmetic" and M43 says the worst
-      // state's effect must be MEASURED — "measure sightline by raycast". So the declared
-      // `sightline_m` has to be the distance the frame actually stops at, not a number in a file.
-      // Three's `FogExp2` transmits `exp(-(density * d)^2)`, so the density at which 2% of a
-      // silhouette survives at distance S is `sqrt(-ln 0.02) / S = 1.978 / S`.
-      //
-      // The two extinctions ADD, because that is what extinction coefficients do, and the
-      // arithmetic is load-bearing rather than pedantic. The first version of this took `max()`
-      // of the region's haze and the weather's, and W1-02's own consumption probe caught what
-      // that costs: in the four regions whose own extinction is already high — Blackwood at
-      // 0.018/m, the Hive, Marauder's Coast, the Stone Forest — the region term won against
-      // EVERY state its machine can roll, so weather changed the frame by exactly nothing in four
-      // of thirteen regions. That is `RI-WLD08` §5's "weather as a colour grade" arriving through
-      // a `Math.max`.
-      //
-      // Adding them keeps S24 intact: the region still owns the hue and still sets the floor, and
-      // weather can only ever make the air thicker, never clearer than the region's own.
-      const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
-      this.scene.fog.density = this.features.atmosphere ? (sightline > 0 ? base + 1.978 / sightline : base) : 0;
+      sigma0 = airExtinction(regionFog.extinction, w) * (R.fog.extinction || 1);
     } else {
-      this.scene.fog.density = this.features.atmosphere ? w.fogDensity : 0;
+      sigma0 = airExtinction(0, w) * (R.fog.extinction || 1);
       this.scene.fog.color.copy(hor).multiplyScalar(0.92);
     }
+    // WHAT HAPPENED TO `sightline_m`. It used to be added as `1.978 / sightline_m` — a FogExp2
+    // density that, on top of a region extinction already being read as one, is what actually
+    // erased the world: at Lilmoth in clear weather the two together put 150 m at a transmittance
+    // of about 3e-9. `RI-WLD08` §5's requirement is that the declared sightline be the distance the
+    // frame really stops at, and Beer-Lambert says 2% of a silhouette survives at `3.912 / sigma`.
+    // So the sightline is now honoured as a CEILING on visibility rather than a second fog: the air
+    // is never thinner than the weather front says it is, and never thicker than the region and the
+    // state between them earn.
+    const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
+    if (sightline > 0) sigma0 = Math.max(sigma0, 3.912 / Math.max(40, sightline * 6));
+    this.scene.fog.sigma0 = this.features.atmosphere ? sigma0 : 0;
+    this.scene.fog.heightFalloff = this.features.heightFog ? heightFalloff : 0;
 
-    // Encode the same zenith/horizon and celestial direction into the IBL. The bright sample
-    // follows uSunDir, so moving time changes both diffuse atmosphere and physical reflections.
-    for(let y=0;y<8;y++) for(let x=0;x<16;x++) {
-      const i=(y*16+x)*4, t=1-y/7, c=hor.clone().lerp(zen,t);
-      const a=x/16*Math.PI*2, sy=(.5-y/7)*Math.PI;
-      const sample=new THREE.Vector3(Math.cos(a)*Math.cos(sy),Math.sin(sy),Math.sin(a)*Math.cos(sy));
-      const hot=Math.pow(Math.max(0,sample.dot(dir)),48)*(1-w.overcast)*2.2;
-      const sc=this.uniforms.uSunColour.value; c.r+=sc.r*hot; c.g+=sc.g*hot; c.b+=sc.b*hot;
-      this.environmentBytes[i]=Math.min(255,Math.round(c.r*255));
-      this.environmentBytes[i+1]=Math.min(255,Math.round(c.g*255));
-      this.environmentBytes[i+2]=Math.min(255,Math.round(c.b*255)); this.environmentBytes[i+3]=255;
+    // ---- precipitation -------------------------------------------------------------------------
+    this.rain.visible = this.features.atmosphere && w.rain > 0.02;
+    // ---- D2: RAIN DOES NOT FALL THROUGH ROOFS ------------------------------------------------
+    // The streak field is generated in a column around `focus`. Nothing ever asked whether a given
+    // streak was under a roof, so walking under the raised decks at Lilmoth put streaks INSIDE the
+    // covered volume, in front of the ceiling — the audit's D2, visible in every frame of
+    // play/016..032.
+    //
+    // Note what the defect is NOT: the material is depth-TESTED (only `depthWrite` is off), so
+    // this was never a sorting bug. The drops are genuinely spawned in the air beneath the deck,
+    // between the player and the underside, and no amount of depth state can help with that. The
+    // emitter has to know about the ceiling, which is what `overhead` is. Streaks are COMPACTED to
+    // the front of the buffer and `drawRange` shortened, so a covered player also pays less
+    // overdraw rather than more.
+    if (this.rain.visible && focus) {
+      const span = this.rainSpan, half = span * 0.5;
+      const fall = (frame * 0.31) % 22;
+      const n = Math.max(1, Math.round(this.rainCount * w.rain));
+      const base = 0.16 + w.rain * 0.30;
+      let out = 0;
+      for (let i = 0; i < n; i++) {
+        const x = (this.rainSeed[i * 3] - 0.5) * span;
+        const z = (this.rainSeed[i * 3 + 1] - 0.5) * span;
+        const y = ((this.rainSeed[i * 3 + 2] * 30 - fall + 30) % 30) - 6;
+        if (overhead) {
+          // World coordinates: the streak field is a child transform on `focus`.
+          const wy = focus.y + y;
+          if (wy < ceilingAt(overhead, focus.x + x, focus.z + z)) continue;
+        }
+        // V07: the same air the world is seen through. A streak at 60 m carries the transmittance
+        // of 60 m of it, so the far half of the field is a veil and the near half is rain.
+        const d = Math.hypot(x, y, z);
+        const t = this.features.rainDepth ? Math.exp(-Math.max(sigma0, 0.004) * d) * (1 - Math.min(0.85, d / (half * 1.35))) : 1;
+        const a = base * Math.max(0, t);
+        const k = out * 6, ck = out * 8; out++;
+        this.rainPos[k] = x; this.rainPos[k + 1] = y; this.rainPos[k + 2] = z;
+        this.rainPos[k + 3] = x + 0.12; this.rainPos[k + 4] = y - (0.9 + w.rain * 0.8); this.rainPos[k + 5] = z + 0.05;
+        // Streaks take the fog's colour, so rain in Blackwood is Blackwood's rain.
+        const fc = this.scene.fog.color;
+        const cr = 0.72 + fc.r * 0.36, cg = 0.78 + fc.g * 0.32, cb = 0.82 + fc.b * 0.30;
+        this.rainCol[ck] = cr; this.rainCol[ck + 1] = cg; this.rainCol[ck + 2] = cb; this.rainCol[ck + 3] = a;
+        this.rainCol[ck + 4] = cr; this.rainCol[ck + 5] = cg; this.rainCol[ck + 6] = cb; this.rainCol[ck + 7] = a * 0.55;
+      }
+      this.rain.geometry.setDrawRange(0, out * 2);
+      this.rain.geometry.attributes.position.needsUpdate = true;
+      this.rain.geometry.attributes.color.needsUpdate = true;
+      this.rain.position.copy(focus);
+      // A fully covered player gets no streaks at all, and drawing an empty LineSegments is a
+      // draw call for nothing.
+      if (out === 0) this.rain.visible = false;
     }
-    this.environment.needsUpdate=true;
-    this.scene.environment=this.features.ibl?this.environment:null;
-    this.mesh.visible=this.features.sky;
-    // W1-30S seam: publish this frame's lighting summary. Purely additive — every value below
-    // is a local this function already computed for its own uniforms/lights above; nothing
-    // here changes what apply() does to the scene.
+
+    // ---- the environment probe -----------------------------------------------------------------
+    // Regenerated on a bucket change, never per frame. The bucket is 1/12 of a game hour plus the
+    // weather and the region, which is at most twelve bakes per game hour against the plan's
+    // budget of four per game MINUTE, and it is a pure function of simulation state so a replay
+    // bakes at the same frames.
+    const probeKey = this.features.probe && this.features.ibl
+      ? `${Math.round(hours * 12)}|${weatherId}|${regionFog ? regionFog.colour : '-'}|${recipeId}`
+      : null;
+    if (probeKey !== this._probeKey) {
+      this._probeKey = probeKey;
+      const old = this.environment;
+      if (probeKey === null) {
+        this.environment = null;
+      } else {
+        const t0 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : 0;
+        this.environment = bakeEnvironmentProbe({
+          zenith: zen, horizon: hor, ground: groundColour, sunColour: sunCol, sunDir: dir,
+          overcast, sunGain: R.key * Math.max(0.05, day), groundBounce: R.envGroundBounce,
+        });
+        this._probeBakes++;
+        this._probeMs = ((typeof performance !== 'undefined' && performance.now) ? performance.now() : 0) - t0;
+      }
+      // Disposing the OLD texture is what drops three's cached PMREM convolution of it
+      // (`WebGLCubeUVMaps.onTextureDispose`). Without this the first probe ever baked would be the
+      // only one the materials ever saw — which is precisely what the shipped build did.
+      if (old) old.dispose();
+    }
+    this.scene.environment = this.features.ibl ? this.environment : null;
+    this.scene.environmentIntensity = R.env;
+    this.mesh.visible = this.features.sky;
+
+    // W1-30S seam, W1-30B contract: publish this frame's lighting summary. Every value below is a
+    // local this function already computed for its own uniforms, lights and fog.
     this.lastFrame = buildLightingFrame({
-      sunDir: dir.clone(), sunColour: this.uniforms.uSunColour.value.clone(),
-      skyLuminance: this.hemi.intensity, day, night, dusk, overcast,
-      fogColour: this.scene.fog.color.clone(), fogDensity: this.scene.fog.density,
+      sunDir: dir, sunColour: sunCol, sunIntensity: this.sun.intensity,
+      moonDir: dir.clone().negate(), moonColour: this.moon.color, moonIntensity: this.moon.intensity,
+      skyLuminance: this.hemi.intensity, ambientColour: this.fill.color,
+      fogColour: this.scene.fog.color, fogDensity: this.scene.fog.sigma0,
+      fogHeightFalloff: this.scene.fog.heightFalloff,
+      // The extinction half of aerial perspective is applied per pixel above. This is the
+      // INSCATTER half — the sun-facing brightening a full-screen pass adds — published for
+      // W1-30A's compositor, which owns `render/post/**`.
+      aerialInscatter: this.scene.fog.color.clone().lerp(sunCol, 0.5).multiplyScalar(R.fog.inscatter || 0),
+      exposureTarget: R.exposure,
+      regionId: env && env.region ? env.region : null, weatherId, timeOfDay: hours,
+      day, night, dusk, overcast, recipeId,
+      aerialParams: { sigma0: this.scene.fog.sigma0, heightFalloff: this.scene.fog.heightFalloff, inscatter: R.fog.inscatter || 0 },
     });
     return weatherId;
   }
 
-  setFeature(name,enabled) {
-    if(!(name in this.features)) throw new Error(`unknown sky sabotage '${name}'`);
-    this.features[name]=!!enabled; return this.features[name];
+  /** Which shadow tier is in force. `low` keeps the old single 2048 map over 90 m. */
+  setShadowTier(tier) {
+    if (!SHADOW_TIERS[tier]) throw new Error(`unknown shadow tier '${tier}' (have: ${Object.keys(SHADOW_TIERS).join(', ')})`);
+    this.shadowTier = tier;
+    this.sun.shadow.mapSize.set(SHADOW_TIERS[tier].mapSize, SHADOW_TIERS[tier].mapSize);
+    if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; }
+    this.shadowDistance = SHADOW_TIERS[tier].distance;
+    return tier;
+  }
+
+  setFeature(name, enabled) {
+    if (!(name in this.features)) throw new Error(`unknown sky sabotage '${name}' (have: ${Object.keys(this.features).join(', ')})`);
+    this.features[name] = !!enabled;
+    // The probe is a texture, so its off-switch has to invalidate the bake rather than wait for a
+    // bucket change that might be a game hour away.
+    if (name === 'probe' || name === 'ibl') this._probeKey = null;
+    return this.features[name];
+  }
+
+  /** What the shadow fit did this frame — the instrument for the shadow rows. */
+  shadowReport() {
+    return {
+      tier: this.shadowTier, mapSize: this.sun.shadow.mapSize.x, distance: this.shadowDistance,
+      castShadow: this.sun.castShadow, fit: this._lastFit,
+      bias: this.sun.shadow.bias, normalBias: this.sun.shadow.normalBias,
+    };
+  }
+
+  /** What the probe did — the instrument for the IBL and budget rows. */
+  environmentReport() {
+    return {
+      present: !!this.environment, width: PROBE_W, height: PROBE_H,
+      type: 'HalfFloatType', bakes: this._probeBakes, lastBakeMs: +this._probeMs.toFixed(3),
+      key: this._probeKey, intensity: this.scene.environmentIntensity,
+    };
   }
 
   /** The dome is drawn at the far plane, so it must be centred on the camera every frame. */
   followCamera(camera) {
     this.mesh.position.copy(camera.position);
+    if (camera.isPerspectiveCamera) this._camera = camera;
   }
 }
 

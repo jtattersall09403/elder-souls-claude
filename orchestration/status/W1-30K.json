@@ -1,0 +1,34 @@
+{
+  "task_id": "W1-30K",
+  "role": "plan",
+  "piece": "W1-30K — the look target: art direction written as numbers",
+  "parent": "W1-30",
+  "status": "not-started",
+  "state": "plan-awaiting-criticism",
+  "plan_state": "awaiting-criticism",
+  "plan_path": "orchestration/plans/W1-30K.md",
+  "branch": "codex/wave1-build-experiment",
+  "created_by": "W1-30-VIS-RECRITICISM, amendment R2",
+  "why": "The W1-30 parent's previous reviewer flagged that W1-30E (architecture) and W1-30F (terrain) may not cohere without a concept pass, declined to add one because it could not establish we can draw or license key art, and wrote that a reviewer adding it would be right. This child resolves that by drawing nothing and licensing nothing: it derives a NUMERIC look target from reference plates the corpus already holds and is already permitted to cite. Art direction nobody has written down becomes whatever each builder individually imagined, and eleven parallel children is exactly the population that turns that into eleven different games.",
+  "paths": [
+    "docs/art-direction/**"
+  ],
+  "owns_exclusive_write": [
+    "docs/art-direction/**"
+  ],
+  "read_only": [
+    "corpus/70-visual/refs/**",
+    "corpus/70-visual/RI-VIS01-bifurcation-protocol.md",
+    "corpus/70-visual/RI-VIS05-art-direction-morrowind-transposition.md",
+    "corpus/70-visual/RI-VIS07-could-this-be-skyrim-test.md",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md",
+    "corpus/50-world/landforms.json",
+    "game/src/render/world-art.js"
+  ],
+  "game_code_touched": [],
+  "blocks": [],
+  "blocked_by": [],
+  "dispatch": "now — touches no game code, blocks nothing, is blocked by nothing",
+  "next_step": "A first fresh reviewer-editor criticises orchestration/plans/W1-30K.md under PLAN-LOOP.md rule 1. Only after the plan is satisfied does a builder run. The plan's own stop condition is the thing to test hardest: if the plates cannot honestly ground the numbers, the correct output is a short document saying so plus what acquisition would fix it, and the parent's R2 ruling is overturned by its own falsifier. Do not let this child fill a board by inventing plausible numbers - a target every other child is then measured against is the most expensive possible place to guess.",
+  "consumers": ["W1-30A", "W1-30B", "W1-30C", "W1-30E", "W1-30F", "W1-30G"]
+}
