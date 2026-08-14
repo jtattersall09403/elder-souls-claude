@@ -72,8 +72,18 @@ place as the first thing a critic runs, and keeps its teeth, but it now reads:
 That second sentence is the null control, and it is the plausible wrong answer rather than the
 trivial one: "reveal the geography *and* every marker with it" looks like a working map in a
 screenshot and quietly removes finding places from the game. `tools/harness/map-probe.mjs` S12 is
-that assertion (`drawn_cells === total_cells_in_view && places_drawn === 0`), and
-`tools/map/fog-control.mjs` is the sabotage that must redden it.
+that assertion, and `tools/map/fog-control.mjs --arms markers` is the sabotage that must redden it.
+
+**The first half of that assertion was written wrong and was repaired by the W1-MAP-DEFECTS r1
+critique.** It read `drawn_cells === cells_in_view`, and in `game/src/ui/screens/map.js` those two
+counters are incremented on adjacent lines — the comment between them says "equal by construction".
+The only edit in the world that could break it was a gate spliced *between* the two increments,
+which is the exact shape `--arms deletefix` uses; a gate one line earlier, above `inView++`, hides
+any fraction of the province you like and both counters fall together. **The assertion with teeth is
+against the province total: `drawn_cells === total_cells` (42,846), a number the draw loop cannot
+move.** S8 and S12 both now read that way, and `--arms head,hiddenhalf` is the arm that proves the
+new form can fail where the old one could not — it requires the old form to stay green on a
+striped, half-drawn province while the new one goes red.
 
 ### 3c. `game/data/ui/map.json`
 

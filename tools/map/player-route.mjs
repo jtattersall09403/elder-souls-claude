@@ -198,14 +198,29 @@ async function phone() {
     // A first tap anywhere wakes the overlay on a device that has not been touched yet.
     await h.page.touchscreen.tap(200, 200); await h.page.waitForTimeout(300);
     await push('first-touch', null);
-    await push('drawer', '__drawer');
-    await push('menu', 'menu');
-    for (let i = 1; i <= 4; i++) {
-      await push(`drawer-${i}`, '__drawer');
-      const st = await push(`swap_right-${i}`, 'swap_right');
+    // W1-MAP-DEFECTS r1 REMEDIATION — THE DRAWER IS ONLY OPENED WHEN IT IS SHUT, and that one
+    // line is what makes this leg a measurement of the route rather than a re-enactment of it.
+    // r1's version tapped the drawer unconditionally before every page turn, which was right when
+    // the drawer shut after every petal tap and is WRONG now: `TouchInput._keepDrawerOpenAfter()`
+    // leaves it standing while a menu is up, so an unconditional drawer tap would SHUT it and the
+    // next `swap_right` would find no control on the glass. Asking the shipped `drawerOpen` is
+    // also what a person does — they look at the screen. `taps` counts what a thumb actually did.
+    let taps = 0;
+    const openDrawerIfShut = async (label) => {
+      const l = await layout();
+      if (l && l.drawerOpen) { say(`  ${label.padEnd(22)} (drawer already standing — no tap)`); return; }
+      await push(label, '__drawer'); taps++;
+    };
+    await openDrawerIfShut('drawer');
+    await push('menu', 'menu'); taps++;
+    for (let i = 1; i <= 5; i++) {
+      await openDrawerIfShut(`drawer-${i}`);
+      const st = await push(`swap_right-${i}`, 'swap_right'); taps++;
       if (st.mode === 'map') break;
     }
     leg.reached_map = leg.steps.some((s) => s.mode === 'map');
+    leg.taps_to_map = leg.reached_map ? taps : null;
+    say(`  TAPS TO THE MAP: ${leg.taps_to_map === null ? 'never reached' : leg.taps_to_map}`);
   } finally {
     leg.console_errors = h.errors.slice(0, 6);
     await h.close();
