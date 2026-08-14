@@ -1,0 +1,25 @@
+# reports/.gitignore excludes `*` because run artifacts are large and reproducible by re-running
+# the tool that made them. That test is the right one, and it answers NO for everything below.
+#
+# A BLIND PACK IS NOT A RUN ARTIFACT. RULES.md rule 25: "a pack must contain the artifact under
+# test" — an audio pack was once voided for shipping feature vectors instead of sound. For an
+# image pack the artifact IS the pixels, so a pack whose images are untracked is a pack that
+# cannot be re-judged, re-audited, or checked by anyone who did not happen to be on the container
+# that built it. And this container has restarted twice in one day, taking nine agents with it
+# each time.
+#
+# Neither half is reproducible:
+#   * the frames under protocol-a-w1-SEALED-KEY/frames/ are a LIVE-HARDWARE capture. Re-making
+#     them means renting a GPU Pod again. They also cannot be re-included from where they were
+#     captured — the root .gitignore excludes the whole `reports/runpod-gpu/runs/` DIRECTORY, and
+#     git cannot re-include a file inside an excluded directory — so the copy here is the only
+#     trackable one.
+#   * the crops under PACK/ are deterministic GIVEN those frames, and worthless without them.
+#
+# Scoped to this one item by name rather than opened up for `reports/blind/*`, so a future pack
+# makes its own case rather than inheriting this one.
+!protocol-a-w1/**/*.png
+!protocol-a-w1/**/*.txt
+!protocol-a-w1/**/*.log
+!protocol-a-w1-SEALED-KEY/**/*.png
+!protocol-a-w1-SEALED-KEY/**/*.json

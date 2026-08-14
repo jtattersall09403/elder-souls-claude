@@ -1,0 +1,24 @@
+{
+  "pair": "pair04",
+  "ours": {
+    "source": "reports/runpod-gpu/runs/protocol-a-chars-r3/artifacts/deck/frames/char-npc__t0800__clear.png",
+    "crop": "150,480,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "ref": {
+    "source": "corpus/70-visual/refs/modern/character_closeup/REF-ER__steam-dyules-2764067220.jpg",
+    "crop": "1350,540,512,512",
+    "source_size": [
+      1920,
+      1080
+    ],
+    "note": "native 1:1 crop, then a shared JPEG q=95 round trip (4:4:4), then PNG"
+  },
+  "density_parity": true,
+  "lighting_match": "low-angle light raking across ground vegetation; both are near-field ground cover with no built form and no character",
+  "mismatch_recorded": "ours is 08:00 morning sun, the plate is dusk. Both are low-angle, but the colour temperature and the direction of the key differ, and the plate is the darker of the two."
+}
