@@ -1,0 +1,54 @@
+{
+  "task_id": "W1-30V",
+  "role": "builder",
+  "piece": "W1-30V",
+  "status": "running",
+  "plan_state": "building",
+  "summary": "Visual truth and the shot deck. The Deck is built and has run: 48 setups generated from game/data/world/** x 2 times = 96 frames, 0 red, 29 amber, 67 ok, on SwiftShader. Determinism PASSES (6/6 byte-identical across independent browser launches); the time-axis red control PASSES (48/48 pairs moved). The standing defect inventory has 19 rows, 10 of them blocks-demo. Five reusable tools published for every other visual child. GPU independently re-verified as unreachable: two Pods, two GPU types, two clouds, SSH dies at the container's network.",
+  "headline_findings": [
+    "V16 a gaol, an inn, an apothecary and a hall render as ONE shared room; only ~25% of pixels differ and that difference is dressing and tint",
+    "V17 three regions (crimson-coast, marauders-coast, stone-wastes) are effectively EMPTY rather than samey - 1 of 12 frames usable; seven of thirteen regions score 4 of 4",
+    "V18 landform does not reach the picture: every one of 13 region vistas is a dead-flat horizon, including Valus Ridge whose data says amp_m 286",
+    "V19 Lilmoth, the starting town, is the weakest of the eight settlements; Helstrom and Soulrest have genuine silhouettes",
+    "V11 the third-person character fade (charOpacity) is computed, quantised, traced, saved and restored, and read by NOTHING in game/src/render/ - confirmed by measurement at a 0.6 m orbit inside the fade band",
+    "V00 WITHDRAWN: the player transparency defect is NOT reproduced as body translucency (0.04-1.4% see-through over four radii, 36 angles), and the world-hidden capture behind the parent plan's 'disjoint primitives' reading was void",
+    "interiors are the only block with a clean sheet - 8 of 8 usable frames, the widest tonal range in the game"
+  ],
+  "reversible_rulings": [
+    "The parent plan's day-one item 4 (player's geometric holes) is withdrawn; V11 replaces it. Overturned by reproducing body-wide translucency at a normal camera distance with a number.",
+    "'Floating tree canopies with no trunks' does not reproduce at eye level; V08 is buildings, not vegetation. Overturned by a frame showing a trunkless canopy at eye level.",
+    "This child's own bar row 1 is corrected: the seed red control cannot fire (seeds 20260814 and 987654 give 6 of 6 identical frames, because the province is data-generated and a posed still has no RNG). Replaced with an in-run time-of-day axis control. Overturned by naming a shot whose pixels should depend on the seed."
+  ],
+  "files_touched": [
+    "tools/visual/build-deck.mjs",
+    "tools/visual/deck.json",
+    "tools/visual/deck.mjs",
+    "tools/visual/frame-stats.mjs",
+    "tools/visual/contact-sheet.mjs",
+    "tools/visual/deck-compare.mjs",
+    "reports/visual-truth/INVENTORY.md",
+    "reports/visual-truth/W1-30V-STATUS.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-14-deck/",
+    "tools/progress.mjs",
+    "orchestration/status/W1-30V.json"
+  ],
+  "files_claimed": [
+    "tools/visual/",
+    "reports/visual-truth/",
+    "docs/shots/2026-08-14-deck/"
+  ],
+  "next_step": "Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion-satisfied until then), then the night and weather deck profiles across all regions. Orchestrator: V05 (camera buries itself ten seconds from spawn) is inside no child's owned paths and needs an owner. A fresh critic should re-run deck.mjs at this commit on a fresh checkout and verify hash identity, and independently re-fire every red control rather than reading this report.",
+  "could_not_do": [
+    "No hardware GPU frame exists. Two Pods (RTX A5000/SECURE, RTX 3090/SECURE), both API-confirmed RUNNING with a public IP and SSH port; every SSH attempt died at 'Connection closed by UNKNOWN port 65535' then 'Connection timed out'. gpu:doctor is all-green, so the failure is the container's network, not the tooling. Pods terminated, deletion API-confirmed. Every frame here is SwiftShader and every manifest says so in its own evidence_class field.",
+    "The 12 motion sequences are declared in deck.json and not captured.",
+    "Night and rain across all regions - the profiles exist and are one command each.",
+    "No naive human judgement; there is no Craft or Place number yet.",
+    "library-census.mjs, judge-pack.mjs and tripwire.mjs (plan items 4, 5, 6) are not built - deprioritised on this child's standing authority in favour of the widening sweep and the before/after instrument nine siblings need today."
+  ],
+  "notes_for_others": [
+    "GPU tooling: the CLI subcommand is 'run', not 'test' (npm run gpu:test maps to cli.mjs run); needs apt-get install openssh-client and NODE_USE_ENV_PROXY=1 because Node's global fetch ignores HTTPS_PROXY here.",
+    "Git contention deleted three uncommitted files of this child's mid-session. Mirror artefacts outside the repo before any long-running step.",
+    "enterInterior(null) throws page-side and the harness treats that as fatal - use exitInterior()."
+  ]
+}

@@ -382,6 +382,31 @@ export class Renderer {
     return this._grade;
   }
 
+  /**
+   * W1-30A. The observable fallback the plan's item 7 asks for.
+   *
+   * A multisampled HalfFloat colour buffer is not universally available: WebGL2 makes RGBA16F
+   * renderable through `EXT_color_buffer_float`, and a driver that grants the extension can still
+   * refuse the multisampled renderbuffer or run out of memory allocating one at 1920x1080. The
+   * failure mode if we do not look is the worst one available — an incomplete framebuffer draws
+   * nothing, so the player gets a black screen and the harness gets a valid PNG of it. This asks
+   * the context once, on the first frame after each rebuild, and drops to `samples: 0` if the
+   * answer is anything but complete. `msaaFallback` is then non-null, which is what a status file
+   * or a critic should read rather than the tier that was requested.
+   */
+  _probeMSAA() {
+    if (this._msaaProbed || !this.compositeSamples) return null;
+    this._msaaProbed = true;
+    const gl = this.three.getContext();
+    const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+    if (status === gl.FRAMEBUFFER_COMPLETE) return null;
+    this.msaaFallback = { requested: this.compositeSamples, status, at: 'first-frame-probe' };
+    this.quality.msaa = false;
+    this._buildCompositorForTier();
+    this.three.setRenderTarget(this.worldTarget);
+    return this.msaaFallback;
+  }
+
   /** What the frame pipeline is actually doing, for a status line, a manifest or a critic. */
   qualityReport() {
     return {
@@ -1196,7 +1221,10 @@ export class Renderer {
     }
 
     this.three.info.reset();
-    if(this.quality.postprocess||this.quality.ao||this.quality.antialias) this.three.setRenderTarget(this.worldTarget);
+    if(this.quality.postprocess||this.quality.ao||this.quality.antialias) {
+      this.three.setRenderTarget(this.worldTarget);
+      this._probeMSAA();
+    }
     this.three.render(this.scene, this.camera);
     // three.js resets `info` at the top of every top-level `render()`, so the world pass is
     // read here and the UI pass is ADDED to it. RI-PLT01 "How we lose" #11 asks for the
@@ -1211,6 +1239,10 @@ export class Renderer {
       this.compositeMaterial.uniforms.uAO.value=this.quality.ao?1:0;
       this.compositeMaterial.uniforms.uAA.value=this.quality.antialias?1:0;
       this.compositeMaterial.uniforms.uPost.value=this.quality.postprocess?1:0;
+      // W1-30A. `grade` is pushed as a uniform block by `_updateGrade`; these two are the passes'
+      // own switches, and both must move pixels or the sabotage matrix fails.
+      this.compositeMaterial.uniforms.uGradeOn.value=this.quality.grade?1:0;
+      this.compositeMaterial.uniforms.uDither.value=this.quality.dither?1:0;
       this.three.render(this.compositeScene,this.compositeCamera);
     }
     this.ui.setVisible(this.uiVisible);

@@ -1,0 +1,53 @@
+{
+  "schema": "elder-souls/runpod-gpu-smoke@1",
+  "at": "2026-08-14T09:44:23.247Z",
+  "runId": "20260814-094151Z-11508",
+  "sourceRevision": "630a46ee3c97868f4913592f2cd8c257cfa8bca1",
+  "node": "v22.23.2",
+  "display": ":99",
+  "nvidiaSmi": "NVIDIA RTX A5000, GPU-d9f38333-5c57-7ff8-8a05-0594966acb40, 580.159.04, 24564, 0",
+  "attempts": [
+    {
+      "name": "angle-vulkan-x11",
+      "args": [
+        "--use-gl=angle",
+        "--use-angle=vulkan",
+        "--enable-features=Vulkan,DefaultANGLEVulkan,VulkanFromANGLE",
+        "--ozone-platform=x11"
+      ],
+      "gl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (NVIDIA)",
+        "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+        "maxTextureSize": 32768,
+        "maxRenderbufferSize": 32768
+      },
+      "hardware": true
+    }
+  ],
+  "selected": "angle-vulkan-x11",
+  "webgl": {
+    "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "vendor": "Google Inc. (NVIDIA)",
+    "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+    "maxTextureSize": 32768,
+    "maxRenderbufferSize": 32768
+  },
+  "game": {
+    "url": "http://127.0.0.1:46787/game/index.html",
+    "readyMs": 12375,
+    "harnessVersion": 2,
+    "renderer": {
+      "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "vendor": "Google Inc. (NVIDIA)",
+      "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)"
+    },
+    "pageErrors": []
+  },
+  "artifacts": [
+    "game-smoke.png",
+    "browser-console.json",
+    "video/12e9ddd8dd86027c06a67852d4e056ea.webm"
+  ],
+  "passed": true
+}

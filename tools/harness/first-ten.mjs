@@ -234,7 +234,10 @@ if (want('d3')) {
 // D1 + D2: hold forward from the spawn point and photograph the whole walk.
 // ---------------------------------------------------------------------------------------
 if (want('d1') || want('d2')) {
-  await g.h('restoreState');                 // back to the spawn point, whatever D3 did
+  // NOTE: no restoreState() here. `restoreState()` wants a named state or a save blob and throws
+  // on a bare call, which cost two runs. When D3 has already walked, run D1/D2 in their own
+  // process (`--only d1,d2`) rather than trying to rewind inside one: a boot is cheaper than a
+  // rewind that does not exist.
   await g.h('setWeather', 'rain');           // D2 needs precipitation to exist to be wrong
   await g.h('stepFrames', 12);
   await holdForward();                       // and hold it, the way a player's thumb does

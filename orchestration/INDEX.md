@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a3f31b14`: 912 tools, 155 reference
-items, 162 pieces in flight.
+so it cannot drift. Generated at `88affb55`: 912 tools, 155 reference
+items, 163 pieces in flight.
 
-Its purpose is to stop 162+ concurrent agents each paying separately to discover the
+Its purpose is to stop 163+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1300,6 +1300,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |
 | `W1-25-divergence-20260814` | done | Re-run tools/composition/matrix-probe.mjs to its DOCUMENTED DEFAULT path reports/compositi | `orchestration/status/W1-25-DIVERGENCE-20260814.json` `reports/experience/w1-25-r2-divergence/DIVERGENCE-20260814.md` `reports/experience/w1-25-r2-divergence/npc-presence-consumption.json` `reports/experience/w1-25-r2-divergence/session-2x2.json` `tools/experience/npc-presence-consumption.mjs` `orchestration/INDEX.md` |
 | `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic. The single test I most want run is the diffuse-floor rem | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `W1-30` | builder-native-gpu-remediation-in-progress |  | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` `orchestration/status/W1-30.json` |
