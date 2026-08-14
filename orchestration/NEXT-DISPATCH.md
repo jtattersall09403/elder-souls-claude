@@ -1,5 +1,47 @@
 # Next dispatches, in priority order
 
+## ~~BLIND-COUNTERPART. Referred: `RI-AI01`/`RI-AI05` build blind counterparts from their own design tables, which `RI-CMB07`'s wave-1 amendment rules `VOID`~~ — RULED. **ARBITRATION S51, S52, S53.**
+
+Referred by the `W1-12` Ruling-W2 reviewer-editor, which found the incoherence, refused to patch
+around it, and was right to. Two further findings of the same class came with it and are ruled in
+the same pass. Full text: `corpus/00-doctrine/ARBITRATION.md` §2 rows **S51**, **S52**, **S53**.
+All three are **reversible** and each carries its own named falsifier.
+
+**S51 — a blind counterpart may not be derived from the acceptance table the build was built to
+satisfy.** `RI-CMB07` governs, and it is not `RI-CMB07`-local: `RI-WPN02`'s wave-1 amendment and
+`RULES.md` rule 25 reached the same principle independently, so the thirteen wave-0 items that
+still do this are **unamended, not dissenting**. The applicable test is the **disconnected-script
+test** — *could a short script that has read the item's tables, and never run the game, reproduce
+the judge's answer?* If yes the pack scores `0` with `blind: void`. Four counterpart classes stay
+admissible so no piece is left with no human read: an authentic external artefact; a runtime-generated
+reference implementation; an authored exemplar artefact of the same kind (`RI-DLG05` §B is legitimate);
+and a within-build ablation contrast (`RI-CMB09` M7 is the clean specimen and is **not** touched).
+
+**Pieces that must now change:**
+
+| piece / file | change | state |
+|---|---|---|
+| `W1-12` step 8 (`RI-AI01` blind) | **VOID as written.** Reference arm is `not_possible` with the S51 reason; replace with the class-D contrast against the deleted-repair copy §4 already builds — same fixture, ranges and seed, both runtime-generated, labels stripped, fresh judge. No new cost. | already `awaiting-recriticism`; its "Corpus note, not patched here" is now answered — S51 note appended in-plan |
+| `W1-12` step 9 (`RI-AI05` blind) | **Not void — reclassified.** The ten §B-generated members are an `instrument_positive_control`, not a counterpart, and the check is a mechanism check that may never be reported as a quality read. | as above |
+| `W1-15` played gate | **Upheld and promoted** from plan-local repair to corpus obligation (S52), with its own author's flagged weakness made binding: the ablation must be **flat uniform interior light at a playable level**, not absent light. | already `awaiting-recriticism`; S52 note appended in-plan |
+| `W1-08` closure clause | **Superseded** by S53's narrower gate (M-N1, M-N2, M-N3's controllable half). Replace the plan-local copy with a citation. This resolves the weakest joint `W1-08`'s own author flagged and asked a reviewer to decide. | already `awaiting-recriticism`; S53 note appended in-plan |
+| **`W1-29`** | **`satisfied` → `awaiting-recriticism`.** The one plan whose state this pass changes. Its non-enumerating *"independent naive pass"* clause cannot reach `RI-JRN04`'s **M-N2 and M-N4, which carry zero weight** — a build can fail both outright and the plan will not notice. | **CHANGED HERE** |
+| thirteen corpus items | S51 box owed, replacing the counterpart clause: `RI-AI01` `RI-AI03` `RI-AI04` `RI-AI05` `RI-AI06` `RI-AI07` `RI-CMB01` `RI-WPN05` `RI-CAM01` `RI-CAM02` `RI-CAM03` `RI-CAM04` `RI-CAM06`. Five more owe a provenance sentence for an undeclared second arm: `RI-CMB02` `RI-CMB03` `RI-CMB05` `RI-CMB06` `RI-CMB08`. **A full census of all 109 `blind_pair: yes` items is owed and was not performed** — one cheap dispatch. | named, not built |
+| four stealth/crime items | `## Played gate` section owed (S52), and a corpus-wide `human_read: played \| instrument \| none` front-matter field so "no person is in this bar" is visible to `tools/corpus-index.mjs` instead of being an inference nobody draws. **`blind_pair: no` stays `no` on all four** — flipping it would manufacture the S51 defect. | named, not built |
+| `RI-JRN03`, `RI-JRN04` | gate sentence owed under the band table (S53). `RI-JRN04` is the **worse** of the two: naive block is 4/100 and two of its five naive checks carry no weight at all. | named, not built |
+
+**Verdicts invalidated: none.** `RI-AI01`'s and `RI-AI05`'s packs were never built; `RI-CMB01`/`RI-CMB02`'s
+came back degenerate; `RI-CMB03`'s two runs were picked **against** us; `W1-09-r3`'s was already void.
+S51 voids a pack as evidence of *quality* only — **where a void pack produced a result against us the
+finding stands and the score is not raised**, or the ruling becomes a way to launder failures into
+"unmeasured".
+
+**Not a blanket demand for play-throughs.** S52 names which side of Ruling W2's falsifier each row is
+on: light legibility, witness legibility, warning-before-capture and trespass are on the *shown* side;
+`RI-CRM01` §9's persistence across death, `RI-STL02` §3's no-probability-roll property, the bounty
+arithmetic and the fence/ownership censuses are **instrument reads and stay instrument reads**. One
+played gate per feel system, not one per citing piece.
+
 ## CI-DOCTYPE. Ruling: `corpus/90-verdicts/` holds TWO document types, and it now says so.
 ## Fresh-checkout verdict FAIL 9 → 8. The remaining 8 are named and owned; three are one line each.
 
