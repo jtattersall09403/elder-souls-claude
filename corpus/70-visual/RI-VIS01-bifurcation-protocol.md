@@ -52,6 +52,7 @@ MUST file a corpus extension (CORPUS-CONTRACT §5) before judging it.
 | P07 | Flora *design* (what shape is a plant here) | ART | Vvardenfell fungal logic → marsh hybrid | VIS05 |
 | P08 | Colour *grading intent* (warm/cool, tint direction) | ART | Morrowind region tints | VIS05 |
 | P09 | UI/HUD visual language, fonts, iconography | ART | Morrowind UI → Argonian glyph transposition | VIS05 §H |
+| **P10** | **Playable-race and NPC humanoid character design** — race identity (is this a person of this world or a human in a costume), proportion and stance, silhouette across the roster, dress by faction/rank/region, and population variety | ART | this world's own written bar + Morrowind's transposition logic; **no modern game, ever — see CC-2** | **RI-VIS10** |
 | F01 | Texture resolution, texel density, mip quality | FIDELITY | modern refs | VIS02, VIS03 M5 |
 | F02 | Material response (PBR: roughness, metalness, normal, spec) | FIDELITY | modern refs | VIS03 M2/M8, VIS04 §1 |
 | F03 | Lighting model (direct + indirect, IBL, bounce) | FIDELITY | modern refs | VIS03 M6, VIS04 §2 |
@@ -71,6 +72,18 @@ MUST file a corpus extension (CORPUS-CONTRACT §5) before judging it.
 | **F17** | **UI text raster fidelity** — glyph edge sharpness, subpixel/greyscale AA quality, vector-or-SDF vs upscaled bitmap, effective text height in device pixels | FIDELITY | modern refs | **RI-UIX06 §D** |
 | **F18** | **UI scaling and layout integrity across resolutions and DPI** — 1280×720 → 3840×2160, `deviceScaleFactor` 1 and 2; clipping, overlap, overflow, 9-slice corner distortion, icon mip quality | FIDELITY | modern refs | **RI-UIX06 §E** |
 | **F19** | **UI compositing correctness** — alpha fringing, premultiplication, sRGB/linear correctness on blends, gradient banding on panels | FIDELITY | modern refs | **RI-UIX06 §F** |
+
+> **P10 appended 2026-08-14 (`I5`), at `RI-VIS10`'s request and for the same reason F17–F19 were.**
+> This table calls itself *"exhaustive and closed"*, and it was not: **P04 is creature design, P02 is
+> the silhouette language of buildings, props and creatures, and nothing covered a *person*.**
+> Checked at the time of writing against `RI-VIS05` §D4 (titled "Fauna silhouette rules"; its one
+> humanoid sentence routes the naga back to VIS08 §D as a creature), `RI-VIS08` §D (fidelity, and it
+> refuses Morrowind references for characters outright), `corpus/22-character/` (three items —
+> creation, standing, birthsigns) and `corpus/00-doctrine/subsystems.json` (nine `render.art.*`
+> subsystems, none for a person; `render.art.character` was added in the same pass).
+> **Until P10 existed, a critic judging what the player and 408 NPCs look like was out of process
+> and its verdict was void** — exactly the condition F17–F19 were added to end for the interface.
+> The owner's standing verdict that made it urgent is in `CLAUDE.md`, "The character directive".
 
 > **F17–F19 appended wave 0 (corpus-audit)** at `RI-UIX06`'s request, in its own table format.
 > Until they existed, **a critic judging UI rendering quality was out of process and its verdict
