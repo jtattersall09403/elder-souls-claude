@@ -3,8 +3,21 @@
   "started_at": "2026-08-14",
   "objective": "Settle factual disagreement: where does the game actually start (Thorn vs Lilmoth). Play deployed build, find spawn code, report.",
   "status": "in_progress",
-  "next_step": "read first-ten-minutes verdict, grep spawn/charcreate code, boot deployed build and screenshot",
-  "files_touched": [],
+  "next_step": "finish spawn-truth-thorn.mjs capture run, write reports/spawn-truth/2026-08-14-spawn-truth.md, blog line",
+  "files_touched": [
+    "tools/harness/spawn-truth-thorn.mjs"
+  ],
   "files_claimed": ["reports/spawn-truth/", "reports/blog-feed.jsonl"],
+  "findings_so_far": {
+    "verdict": "Owner is right: the true opening (title -> New -> character creation) physically starts and ends in Thorn, not Lilmoth.",
+    "evidence": [
+      "game/data/world/interiors/writ-house.json line 5: \"settlement\": \"thorn\" — the creation desk itself is data-tagged Thorn.",
+      "game/data/world/settlements/thorn.json lines 750-835: both 'barge-hold' (where 'New' begins, RI-JRN01 O6) and 'writ-house' (where the questionnaire is answered) are listed as Thorn buildings in its 'tidewrack-quay' quarter, with door coordinates ~[3800-3806, 902-908] — Thorn's own province coordinates.",
+      "game/src/engine.js:3909-3917 — titleActivate('new') calls censusBegin({}), which is the entire creation flow; it never touches Lilmoth.",
+      "'default' state (game/data/states/default.json), which spawns at Lilmoth [2766.5,0,5011] yaw 180, is the HARNESS/debug default used when no ?state= param is given to a raw boot — but a player who clicks New at the title screen never reaches it. Every visual-truth/first-ten-minutes report measured from 'default' (Lilmoth) rather than by clicking New, which is why they all assumed Lilmoth.",
+      "The facing-a-wall mechanism: game/src/sim/settlement.js useDoor()/leaveInterior() call placeBody(sim, spawn/exterior_spawn) which sets POSITION ONLY -- no yaw. tools/harness/w1-26-r2-arrival.mjs (written by a prior agent) already documents this: 'leaveInterior() does not walk you out, it calls placeBody() ... a teleport' to continuity.exterior_spawn=[3808.599,0,909.355] in Thorn. Whatever direction the player was last facing (usually toward the door, i.e. back into the building) is preserved across the teleport, independent of what's actually in front of the new position. This is a plausible, code-level explanation for 'facing a building's wall' on arrival, and it is a systemic mechanism (used by all 115 interior exits), not Thorn-specific."
+    ],
+    "network_finding": "Browser-level HTTPS to the public deployed URL (jtattersall09403.github.io and other external hosts) resets the connection through this container's agent proxy even though curl through the same proxy succeeds -- Node fetch/curl reach the proxy fine, Chromium navigation does not. Falling back to serving game/ locally, which the repo's own README states is byte-identical to what GitHub Pages serves (no build step, no copy)."
+  },
   "notes": "Do NOT change spawn location or facing. Establish fact only."
 }

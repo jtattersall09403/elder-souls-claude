@@ -58,12 +58,21 @@ const READ = () => {
   };
 };
 
+// The picture the PLAYER sees. `page.screenshot()` rather than `__HARNESS.screenshot()`: the
+// harness one round-trips a full framebuffer copy through a data URL on every call and took the
+// renderer down on the second call of the first run of this tool (`Target page … has been
+// closed`, 1280x720, swiftshader). The whole game is drawn into one canvas that fills the page,
+// so the page shot and the canvas shot are the same picture — and this one is what a person
+// photographing their screen would get.
 async function shot(h, name) {
   if (args.shots === false) return null;
-  const url = String(await h.page.evaluate(() => window.__HARNESS.screenshot()));
   const file = path.join(SHOTS, name + '.png');
-  fs.writeFileSync(file, Buffer.from(url.split(',')[1], 'base64'));
-  return path.relative(OUT, file);
+  try {
+    await h.page.screenshot({ path: file });
+    return path.relative(OUT, file);
+  } catch (e) {
+    return 'FAILED: ' + String(e && e.message || e).slice(0, 120);
+  }
 }
 
 async function bootPlay(h, query = '') {

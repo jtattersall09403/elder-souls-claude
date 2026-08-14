@@ -12,11 +12,33 @@
 // and both had to go looking to find out. That is a real cost and it is entirely avoidable: the
 // ownership registry already knows who claims what, so the bank can say so.
 //
-//   node tools/bank.mjs "headline"            # stage everything, attribute it, commit
+//   node tools/bank.mjs "headline"            # stage everything, attribute it, LAND it, verify it
 //   node tools/bank.mjs "headline" --dry-run  # print the message and stop
 //
 // Anything after the headline that is not a flag is appended as the message body, before the
 // generated attribution block.
+//
+// ---------------------------------------------------------------------------------------------
+// 2026-08-14: THIS TOOL WAS THE LARGEST SINGLE SOURCE OF LOST WORK, AND HERE IS WHAT CHANGED
+// ---------------------------------------------------------------------------------------------
+//
+// Commit `06dafd04` — a bank — deleted 18 files and 22,209 lines of finished agent work in one go.
+// The forensic is in `tools/land.mjs`'s header and in HAZARDS §2f. In one line: the bank staged the
+// **working tree** and committed it with **origin as a parent**, and a second parent is a claim that
+// your tree already accounts for that branch. It did not. Every file that had arrived since this
+// disk was last updated was therefore recorded as a deliberate deletion, and git believed it.
+//
+// So the two dangerous halves are gone:
+//   * `git add -A` is no longer staged against origin. The changed set is now the working tree
+//     measured **against HEAD** — the commit this disk was actually checked out from — which is the
+//     only baseline under which "absent" honestly means "removed".
+//   * `git commit` is no longer how it reaches the branch. `tools/land.mjs` does a real three-way
+//     merge with `git merge-tree`, takes no `.git/index.lock`, retries when a sibling lands first,
+//     and verifies the bytes against the remote blob before claiming success.
+//
+// Everything else here is unchanged and deliberately so: the parse guard, the push gate, the
+// attribution block, and the fact that this stages other agents' in-flight work on purpose (rule 28)
+// because an hour of unbanked work dies with the next container restart.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync, existsSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
@@ -69,37 +91,37 @@ const matchLen = (decl, path) => {
   return -1;
 };
 
-// If another process is mid-commit, do not race it. `git add -A` while an agent sits between its
-// own `git add` and its `git commit --only` is how that agent's staged work ends up in this
-// commit instead of its own — a critic named the gap precisely: the rule tells a *finishing*
-// agent how to behave and says nothing to a *waiting* one. This is the orchestrator's half of
-// that. It is not airtight (the lock exists only for the moments git holds it), but it converts
-// the most common collision into a retry.
-// Wait for the lock rather than giving up on it. The first version exited immediately, which was
-// right in principle and useless in practice: with a dozen agents committing, `.git/index.lock`
-// exists most of the time, and eight consecutive refusals meant the tree went unbanked for a
-// quarter of an hour — the exact outcome banking exists to prevent. Poll instead, briefly.
-{
-  const lock = join(ROOT, '.git', 'index.lock');
-  const deadline = Date.now() + 300_000;
-  let waited = 0;
-  while (existsSync(lock) && Date.now() < deadline) {
-    execFileSync('sleep', ['1.5']);
-    waited += 1.5;
-  }
-  if (existsSync(lock)) {
-    // Ninety seconds of continuous lock is not contention, it is a crashed commit or a very slow
-    // hook. Say which is more likely rather than silently proceeding over it.
-    console.log('bank: `.git/index.lock` held for 300s — either a hook is still running or a commit');
-    console.log('      crashed and left the lock behind. Not staging over it. Check with `ls -l .git/index.lock`.');
-    process.exit(1);
-  }
-  if (waited) console.log(`bank: waited ${waited.toFixed(0)}s for another commit to finish.`);
+// `git commit-tree` does not run hooks, and `.githooks/pre-commit` was quietly doing real work on
+// every bank: regenerating `orchestration/INDEX.md` (the orientation index a dozen agents read
+// instead of rediscovering 441 tools), and republishing `docs/` (GitHub Pages serves it from this
+// branch, so a stale page is a silent lie about where the project is). Losing that silently would be
+// exactly the kind of invisible regression this whole exercise exists to stop, so it runs here
+// instead, explicitly, in the same order and with the same non-blocking temperament the hook had.
+for (const [label, cmd] of [['gen-index', ['tools/gen-index.mjs']], ['publish', ['tools/publish.mjs']]]) {
+  try { execFileSync('node', cmd, { cwd: ROOT, stdio: 'pipe', timeout: 180_000 }); }
+  catch { console.log(`bank: ${label} failed — its generated files may be stale in this commit.`); }
 }
 
-git('add', '-A');
-const staged = git('diff', '--cached', '--name-only').split('\n').map(s => s.trim()).filter(Boolean);
+// The five-minute wait for `.git/index.lock` is gone, and with it the eight consecutive refusals
+// that once left the tree unbanked for a quarter of an hour. Nothing below this line takes the
+// index lock: the changed set is read with `git diff`/`git ls-files`, and `land.mjs` stages into a
+// private index (`GIT_INDEX_FILE`). A dozen agents can commit throughout, and this cannot lose to
+// them or make them lose to it.
+//
+// What is staged is the working tree measured AGAINST HEAD, never against origin. That is the whole
+// repair. A file a sibling pushed an hour ago is absent from this disk and also absent from HEAD, so
+// it is not a change and is not carried. Measured against origin — the old recipe — the identical
+// situation reads as "this file was deleted", which is how twenty files went at a stroke.
+const staged = [
+  ...git('diff', '--name-only', 'HEAD').split('\n'),
+  ...git('ls-files', '--others', '--exclude-standard').split('\n'),
+].map(s => s.trim()).filter(Boolean).filter((v, i, a) => a.indexOf(v) === i);
 if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
+
+// Paths the gates below decide must not ship. `land.mjs` takes them as `--exclude`, which is the
+// same behaviour the old `git restore --staged` had — drop the offender, bank the other forty files
+// — without needing an index to restore them out of.
+const exclude = [];
 
 // Parse-check every staged JavaScript file before committing it. The bank stages the tree
 // mid-write on purpose, and that is usually harmless — a half-written status file or an
@@ -135,9 +157,9 @@ if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
     catch { if (parsesInHead(p)) broken.push(p); }
   }
   if (broken.length) {
-    console.log(`bank: ${broken.length} staged file(s) do not parse — un-staging them rather than committing a broken tree:`);
+    console.log(`bank: ${broken.length} staged file(s) do not parse — excluding them rather than committing a broken tree:`);
     for (const p of broken) console.log(`    ${p}`);
-    try { execFileSync('git', ['restore', '--staged', ...broken], { cwd: ROOT, stdio: 'pipe' }); } catch { }
+    exclude.push(...broken);
     for (const p of broken) staged.splice(staged.indexOf(p), 1);
     if (!staged.length) { console.log('bank: nothing left to bank.'); process.exit(0); }
   }
@@ -169,7 +191,7 @@ if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
   if (problems.length) {
     const seen = new Set();
     const uniq = problems.filter((p) => { const k = p.kind + p.rel + p.importer; if (seen.has(k)) return false; seen.add(k); return true; });
-    const stillStaged = new Set(execFileSync('git', ['diff', '--cached', '--name-only'], { cwd: ROOT, encoding: 'utf8' }).split('\n').filter(Boolean));
+    const stillStaged = new Set(staged);
     const toUnstage = [...new Set(uniq.filter((p) => stillStaged.has(p.importer)).map((p) => p.importer))];
     console.log(`bank: PUSH GATE — ${uniq.length} unresolved import problem(s) the deployed site would 404 on:`);
     for (const p of uniq) {
@@ -179,7 +201,7 @@ if (!staged.length) { console.log('bank: nothing to bank.'); process.exit(0); }
       console.log(`  ${''.padEnd(15)}   ${fixable ? 'part of this bank — excluding it from the commit' : 'ALREADY AT HEAD — this is live on the deployed site right now'}`);
     }
     if (toUnstage.length) {
-      try { execFileSync('git', ['restore', '--staged', ...toUnstage], { cwd: ROOT, stdio: 'pipe' }); } catch { }
+      exclude.push(...toUnstage);
       for (const p of toUnstage) { const i = staged.indexOf(p); if (i !== -1) staged.splice(i, 1); }
       console.log(`bank: excluded ${toUnstage.length} path(s) from this commit; the rest of the tree still banks.`);
     }
@@ -225,6 +247,8 @@ if (byPiece.size) {
   }
   lines.push('', 'If your work is listed above, it is at HEAD under this message rather than yours.');
   lines.push('That is the cost of banking a shared tree continuously; the alternative was losing it.');
+  lines.push('Nothing that was already on the branch was reverted to put it there — this is a real');
+  lines.push('three-way merge (tools/land.mjs), not a snapshot wearing a merge parent.');
 }
 if (broadOnly) {
   lines.push('', `${broadOnly} staged path(s) matched only a shared directory claim held by three or`,
@@ -247,10 +271,31 @@ lines.push('Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>');
 const msg = lines.join('\n');
 if (dryRun) { console.log(msg); process.exit(0); }
 
+// The commit AND the push, in one operation, because a bank that commits without pushing is an hour
+// of work sitting on a disk that has been reclaimed twice in a day. `land()` merges rather than
+// snapshots, retries when a sibling lands first, and returns only when it has pushed.
+const { land, verify } = await import('./land.mjs');
+let result;
 try {
-  execFileSync('git', ['commit', '-q', '-F', '-'], { cwd: ROOT, input: msg, stdio: ['pipe', 'inherit', 'inherit'] });
-  console.log(`\nbank: committed ${staged.length} path(s) across ${byPiece.size} named piece(s).`);
+  result = land(ROOT, msg, { exclude });
 } catch (e) {
-  console.error('bank: commit failed (another agent may hold the index lock — retry).');
+  console.error(`bank: LAND FAILED — nothing was pushed. ${e.message}`);
   process.exit(1);
 }
+if (!result.landed) { console.log(`bank: ${result.reason}.`); process.exit(0); }
+
+console.log(`\nbank: landed ${result.commit.slice(0, 10)} — ${result.changed.length} path(s) across ${byPiece.size} named piece(s), attempt ${result.attempt}.`);
+for (const d of result.decisions) {
+  console.log(`  conflict ${d.path}: resolved ${d.why}${d.rescue ? ` — the other side is preserved at ${d.rescue}` : ''}`);
+}
+
+// Verify against the remote blob, never against local state (hazard 2). This tool once printed
+// failure and exited 0, so every retry loop in the fleet believed a lie; the exit code here tracks
+// whether the bytes are actually on the branch and nothing else.
+const bad = verify(ROOT, result.changed.filter(p => !p.startsWith('reports/land-rescue/')));
+if (bad.length) {
+  console.error(`bank: VERIFICATION FAILED for ${bad.length} path(s) — THIS WORK IS NOT BANKED:`);
+  for (const b of bad.slice(0, 20)) console.error(`  ${b.path}: ${b.why}`);
+  process.exit(1);
+}
+console.log(`bank: verified ${result.changed.length} path(s) against the remote blob.`);

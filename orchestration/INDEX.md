@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `390c7952`: 951 tools, 155 reference
-items, 184 pieces in flight.
+so it cannot drift. Generated at `318ecdf2`: 951 tools, 155 reference
+items, 185 pieces in flight.
 
-Its purpose is to stop 184+ concurrent agents each paying separately to discover the
+Its purpose is to stop 185+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -1342,6 +1342,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `HUD-OUT-OF-COMBAT` | running |  | — |
 | `spawn-truth-thorn-lilmoth` | ? | finish spawn-truth-thorn.mjs capture run, write reports/spawn-truth/2026-08-14-spawn-truth | `tools/harness/spawn-truth-thorn.mjs` |
 | `W1-MAP-DEFECTS` | ? | confirm which peer refuses to open during creation; fix the ring walk; then D2 | `orchestration/status/W1-MAP-DEFECTS.json` `tools/map/explore-W1-MAP-DEFECTS.mjs` |
 | `W1-30DE-critic` | running | Photograph Lilmoth's skyline (E's headline red); orbit the player (D's); test the 3% silho | `orchestration/status/W1-30DE-critic.json` |

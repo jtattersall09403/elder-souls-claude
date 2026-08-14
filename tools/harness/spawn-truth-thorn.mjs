@@ -19,19 +19,29 @@
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { loadPlaywright, DETERMINISTIC_CHROMIUM_ARGS } from '../lib/browser.mjs';
+import { loadPlaywright, DETERMINISTIC_CHROMIUM_ARGS, launchGame } from '../lib/browser.mjs';
 
-// The deployed game is on the public internet; this container's outbound HTTPS only reaches it
-// through the pre-configured agent proxy (see /root/.ccr/README.md). `launchGame()` in
+// The deployed game is on the public internet; this container's outbound HTTPS is meant to reach
+// it through the pre-configured agent proxy (see /root/.ccr/README.md). `launchGame()` in
 // `../lib/browser.mjs` never sets a browser-level proxy because every other caller in this repo
 // serves `game/` locally, so this tool launches Chromium itself with the proxy wired in rather
 // than editing that shared file.
-async function launchDeployed({ url, width, height, timeout = 90000 }) {
+//
+// MEASURED 2026-08-14: every external host tried through this proxy from Chromium —
+// jtattersall09403.github.io, example.com, raw.githubusercontent.com, github.com — resets the
+// connection (`net::ERR_CONNECTION_RESET`) at `page.goto()`, even though `curl` through the same
+// proxy reaches the same URLs with 200. Node's `fetch` and `curl` go through the proxy fine here;
+// a real browser navigation does not. So this tool tries the deployed URL first and, if the
+// browser-level fetch is blocked, falls back to serving `game/` locally — which is not a
+// approximation: the README states plainly that GitHub Pages "publishes this repository from its
+// root, so `game/` on the web is the same directory the instruments test — there is no copy to go
+// stale." The fallback and the reason for it are recorded in the output so nobody mistakes one for
+// the other.
+async function tryDeployed({ url, width, height, timeout = 45000 }) {
   const { chromium } = await loadPlaywright();
   const proxyServer = process.env.HTTPS_PROXY || process.env.https_proxy || null;
   const browser = await chromium.launch({
-    headless: true,
-    args: DETERMINISTIC_CHROMIUM_ARGS,
+    headless: true, args: DETERMINISTIC_CHROMIUM_ARGS,
     proxy: proxyServer ? { server: proxyServer } : undefined,
   });
   const context = await browser.newContext({
@@ -39,14 +49,25 @@ async function launchDeployed({ url, width, height, timeout = 90000 }) {
     reducedMotion: 'reduce', locale: 'en-GB', timezoneId: 'UTC', ignoreHTTPSErrors: true,
   });
   const page = await context.newPage();
+  try {
+    await page.goto(url, { waitUntil: 'load', timeout });
+    await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout });
+  } catch (e) {
+    await context.close().catch(() => {});
+    await browser.close().catch(() => {});
+    return { ok: false, reason: String(e && e.message || e).split('\n')[0] };
+  }
   const errors = [];
   page.on('pageerror', (e) => errors.push({ kind: 'pageerror', message: String(e && e.message || e) }));
   page.on('requestfailed', (r) => errors.push({ kind: 'requestfailed', url: r.url(), failure: r.failure()?.errorText }));
-  await page.goto(url, { waitUntil: 'load', timeout });
-  await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout });
+  const handle = wrapHandle(page, errors, async () => { await context.close().catch(() => {}); await browser.close().catch(() => {}); });
+  await handle.h('ready');
+  return { ok: true, handle, source: 'deployed' };
+}
+
+function wrapHandle(page, errors, closeFn) {
   const handle = {
-    page, browser, errors,
-    async close() { try { await context.close(); } catch {} try { await browser.close(); } catch {} },
+    page, errors, close: closeFn,
     async h(method, ...callArgs) {
       const res = await page.evaluate(async ({ m, a }) => {
         const H = window.__HARNESS;
@@ -61,8 +82,20 @@ async function launchDeployed({ url, width, height, timeout = 90000 }) {
       return handle.h(method, ...callArgs);
     },
   };
-  await handle.h('ready');
   return handle;
+}
+
+/** Try the deployed URL; on any browser-level navigation failure, serve `game/` locally instead. */
+async function launchBuild({ url, width, height }) {
+  const attempt = await tryDeployed({ url, width, height });
+  if (attempt.ok) return { ...attempt.handle, source: 'deployed', fallbackReason: null };
+  const g = await launchGame({ width, height });
+  return wrapHandleFromLaunchGame(g, attempt.reason);
+}
+function wrapHandleFromLaunchGame(g, fallbackReason) {
+  g.source = 'local-fallback';
+  g.fallbackReason = fallbackReason;
+  return g;
 }
 
 const args = {};
@@ -79,7 +112,8 @@ const log = [];
 const note = (o) => { log.push(o); console.log(JSON.stringify(o)); };
 
 async function runViewport(tag, width, height) {
-  const g = await launchDeployed({ url: URL, width, height, timeout: 90000 });
+  const g = await launchBuild({ url: URL, width, height });
+  note({ tag, source: g.source, fallback_reason: g.fallbackReason || null });
   let shotN = 0;
   const shot = async (label) => {
     const d = await g.h('screenshot');
@@ -179,7 +213,7 @@ async function runViewport(tag, width, height) {
     }
     await telemetry('walk-30s-end');
 
-    return { tag, buildInfo, spawnTel, doorInfo };
+    return { tag, source: g.source, fallback_reason: g.fallbackReason || null, buildInfo, spawnTel, doorInfo };
   } finally {
     await g.close();
   }
