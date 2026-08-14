@@ -1,0 +1,137 @@
+{
+  "schema": "elder-souls/roadmap@1",
+  "source": "orchestration/ROADMAP.md",
+  "purpose": "Machine-readable form of ROADMAP.md's ordered steps, read by tools/roadmap.mjs. The `state` on every record is a CLAIM copied from the prose; the tool verifies it against `evidence` at run time and downgrades an unverifiable claim to UNVERIFIED rather than trusting this file. Do not hand-edit `state` without also updating the evidence that justifies it — that is the exact drift this file exists to catch.",
+  "note_on_evidence": "Each evidence entry proves the state CURRENTLY claimed, not the step's eventual closes_when. A `path` entry must exist on disk. A `command` entry must exit with the stated code (default 0) and, if `contains` is given, its combined stdout+stderr must contain that substring. A `json_field` entry reads a JSON file and checks a top-level key against `one_of`. All commands here are offline, no browser, no GPU pod, and each was timed under 2s when this file was written.",
+  "steps": [
+    {
+      "id": "step-1",
+      "title": "Surfaces respond to light",
+      "visible_outcome": "Stone reads as stone, wood as wood, leather as leather. Objects sit on the ground instead of floating on it. Shadowed areas have detail in them instead of being black.",
+      "state": "in_progress",
+      "closes_when": "Protocol A is re-run blind against the same plates and we stop losing 5 of 5. Not when the orphan count reaches zero — statistics can fail a build and can never pass one.",
+      "evidence": [
+        { "type": "path", "path": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json", "note": "the blind round that lost 5 of 5 and set FIDELITY's cap at 5 against a gate of 7.0 — the baseline this step must move" },
+        { "type": "json_field", "path": "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json", "field": "state", "one_of": ["in_progress", "done"], "note": "sub-step (a), the diagnosed defect, is at least started" },
+        { "type": "path", "path": "game/src/render/actor.js", "note": "one of the fix's landing sites" }
+      ],
+      "unevidenced_note": "closes_when needs a REPEAT of Protocol A (a fresh blind-judgement verdict at corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json or later) that clears the pass threshold. That file does not exist yet, so this step cannot read as done no matter what evidence sub-steps (a)-(c) accumulate — recorded here rather than invented as a proxy metric.",
+      "substeps": [
+        {
+          "id": "step-1a",
+          "title": "Bind the material set — the orphan fix",
+          "visible_outcome": "The player's body and every affected surface (305 of 406 materials) actually run the surface shader whose uniforms they already carry, instead of the uniforms sitting unread in userData.",
+          "state": "in_progress",
+          "closes_when": "The CONSUMPTION arms (before/after) are filed and a hardware before/after sweep, both arms on the same Pod and the same GPU, confirms the orphan count went 305 to 0 and the rendered pixels differ.",
+          "evidence": [
+            { "type": "json_field", "path": "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json", "field": "state", "one_of": ["in_progress"], "note": "diagnosed, fixed and landed at the code seam; hardware CONSUMPTION evidence explicitly still open per this file's own could_not_do list" },
+            { "type": "path", "path": "tools/visual/w1-30-surface-orphan-census.mjs", "note": "the census instrument the 305/406 figure was measured with" },
+            { "type": "path", "path": "tools/visual/w1-30-copy-seam-patch.mjs", "note": "the fix, at the copy seam" }
+          ]
+        },
+        {
+          "id": "step-1b",
+          "title": "Contact shadows and ambient occlusion",
+          "visible_outcome": "Objects sit on the ground instead of floating on it — the defect judges named 5 of 5, the most universal finding in the blind round.",
+          "state": "not_started",
+          "closes_when": "A contact-shadow or AO term is present in the render path (not just declared in FEATURE_CONSUMERS) and a before/after capture shows darkening at contact points that was not there before.",
+          "evidence": []
+        },
+        {
+          "id": "step-1c",
+          "title": "Ambient/GI fill with tone-mapped shadow lift",
+          "visible_outcome": "Shadowed areas have detail in them instead of being crushed to black.",
+          "state": "not_started",
+          "closes_when": "An ambient/GI fill term is present in the render path and a before/after capture shows detail recoverable in a previously-black shadow region.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "The first five minutes look and behave right",
+      "visible_outcome": "You come out of character creation in Thorn, facing somewhere sensible, in a town that looks like a Black Marsh tidewater settlement, and you can walk out of the door without being inside another building.",
+      "state": "in_progress",
+      "closes_when": "A hardware capture of the real opening path, many angles plus motion, looks right to a person.",
+      "evidence": [
+        { "type": "json_field", "path": "orchestration/status/W1-DOOR-YAW-SWEEP.json", "field": "status", "one_of": ["in_progress"], "note": "door exits set facing across all 115 interiors; the facing rule that fixes the doorstep is offline-measured but not yet browser-swept" },
+        { "type": "json_field", "path": "orchestration/status/W1-THORN-PLATES.json", "field": "state", "one_of": ["complete", "done"], "note": "Thorn gained roof.needle and a Tidewrack landing built from reused parts" },
+        { "type": "path", "path": "tools/world/door-yaw-offline.mjs", "note": "the offline cross-validated instrument the facing numbers came from" }
+      ],
+      "unevidenced_note": "closes_when is a human-judgement condition ('looks right to a person') with no filed verdict yet — ROADMAP.md itself says the capture daemon returned zero frames under load, so 'nobody has looked at any of the Thorn work'. Evidence for DONE should be a blind-judgement or capture-review verdict naming this step; none exists on disk, so this cannot be marked done by any mechanical proxy."
+    },
+    {
+      "id": "step-2b",
+      "title": "Buildings are not inside each other",
+      "visible_outcome": "Doors open into streets rather than into other buildings.",
+      "state": "in_progress",
+      "closes_when": "The 83 interpenetrating pairs across 8 of 8 settlements are resolved by fixing the axis-aligned-vs-rotated comparison defect in the shrink pass and _deepOverlaps(), with 72 of 83 separating without moving a building.",
+      "evidence": [
+        { "type": "json_field", "path": "orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json", "field": "state", "one_of": ["done-except-hardware-frames", "done", "complete"], "note": "the census that found 83 pairs, 63 invisible to the shipped axis-aligned check" },
+        { "type": "json_field", "path": "orchestration/status/W1-OVERLAP-RESOLVER.json", "field": "state", "one_of": ["built-awaiting-fresh-critic", "done", "complete"], "note": "the resolver is built and is itself waiting on an independent critic — not self-graded (rule 22)" },
+        { "type": "path", "path": "tools/check-building-overlap.mjs", "note": "the standing gate: NO SETTLEMENT MAY GROW A NEW BUILDING-INSIDE-A-BUILDING" }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Conversation has depth, and looks like Morrowind",
+      "visible_outcome": "Asking about one topic opens others, so a conversation branches outward instead of being a flat list; speakers disagree with each other; and the window looks like Morrowind's.",
+      "state": "in_progress",
+      "closes_when": "Topic visibility and reachability rise substantially past their current measured floors (22% -> 50% and climbing across landed batches; ten topics reachable from no greeting; 100 of 865 npc.topics entries name nothing; 52-61% of NPCs advertise no subject of their own) and the dialogue window matches the vendored Morrowind screenshot REF-A12c.",
+      "evidence": [
+        { "type": "json_field", "path": "orchestration/status/W1-DLG-TOPIC-WEB.json", "field": "state", "one_of": ["building", "in_progress"], "note": "topic-web builder is running, mid-batch" },
+        { "type": "json_field", "path": "orchestration/status/W1-UIX08-dialogue-window.json", "field": "state", "one_of": ["built-probe-running", "in_progress"], "note": "the Morrowind-styled window is built and its probe is running, not yet critic-judged" },
+        { "type": "path", "path": "tools/dialogue/build-graph.mjs", "note": "the topology instrument the 22%/50% reachability figures are measured with" }
+      ]
+    },
+    {
+      "id": "step-4",
+      "title": "The quests that exist are reachable",
+      "visible_outcome": "The faction ladders go past rank 5, opening 21 already-authored quests that no player can currently reach.",
+      "state": "in_progress",
+      "closes_when": "Twelve world_flags entries open the ladders past rank 5, and W1-18's quest delivery (563 records, all three audit numbers hitting their claimed values) stands independently critiqued as both restored and good.",
+      "evidence": [
+        { "type": "json_field", "path": "orchestration/status/W1-FACTIONS.json", "field": "state", "one_of": ["complete", "done"], "note": "faction ladders/rank-gating piece reports complete, still owed a fresh critic re-run per its own next_step" },
+        { "type": "json_field", "path": "orchestration/status/W1-18.json", "field": "state", "one_of": ["building", "in_progress"], "note": "quest delivery restoration is mid-build, not yet done" },
+        { "type": "path", "path": "tools/analysis/gen-faction-gates.mjs", "note": "generates the rank ladders in RI-QST03's fixed column format" }
+      ]
+    },
+    {
+      "id": "step-5",
+      "title": "Combat feel",
+      "visible_outcome": "Fights that feel like Souls — readable animation, weight, a difficulty curve worth climbing, and a moment-to-moment feel worth repeating.",
+      "state": "in_progress",
+      "closes_when": "Human judges actually fight the game (not view charts of enemy behaviour) and rate the animation, difficulty and feel — named explicitly by the owner as its own step, not a background property.",
+      "evidence": [
+        { "type": "json_field", "path": "orchestration/status/W1-12-r3.json", "field": "state", "one_of": ["done", "in_progress"], "note": "round 3 AI work (closing on a fleeing player, spacing loop) is built; round 2's own critic verdict FAILed at 2/10 on the spacing-loop gate, so round 3 exists specifically to answer that failure and has no filed critic verdict of its own yet" },
+        { "type": "path", "path": "corpus/90-verdicts/wave1/W1-12-r2.json", "note": "the round-2 critic verdict: FAIL, overall 2/10, min-aggregated on E_spacing_loop_M3 — recorded so this step cannot quietly read as further along than a fresh critic has actually confirmed" },
+        { "type": "path", "path": "tools/combat/check-ai-units.mjs", "note": "the standing content-integrity gate for game/data/combat/ai.json" }
+      ],
+      "unevidenced_note": "closes_when's human half — 'how good the combat is ... how fun it feels' — has no filed verdict and, per ROADMAP.md, no judge has yet been asked to fight anything rather than view a chart. No mechanical proxy is substituted here; a blind play-judgement verdict naming this step is the only evidence that should ever mark it done."
+    }
+  ],
+  "standing_work": [
+    {
+      "id": "standing-repo-integrity",
+      "title": "Repo integrity — the documents that direct work must not hold false beliefs about what the repo contains",
+      "visible_outcome": "No agent is misdirected by a citation, count or absence claim that the repo itself contradicts.",
+      "state": "in_progress",
+      "closes_when": "This is standing work with no closing condition by design (ROADMAP.md: 'this continues, slowly, forever, as one agent at a time between steps'). Tracked here as ongoing, not as a step that completes.",
+      "evidence": [
+        { "type": "path", "path": "tools/check-citations.mjs", "note": "the tripwire, 10 self-test arms, 6 required red and 4 required green" },
+        { "type": "command", "cmd": "node tools/check-citations.mjs --self-test", "expect_exit": 0, "contains": "All arms behaved as required", "note": "the tripwire proving itself against its own known-bad and known-good fixtures — offline, ~1s" }
+      ]
+    },
+    {
+      "id": "standing-unjudged-backlog",
+      "title": "The unjudged backlog — 126 pieces built and never independently checked",
+      "visible_outcome": "Every built piece on the player's path has been judged by someone who did not build it.",
+      "state": "in_progress",
+      "closes_when": "Standing work, worked a few at a time between steps, prioritising the player's path. No single closing condition.",
+      "evidence": [
+        { "type": "path", "path": "orchestration/audits/UNJUDGED-TRIAGE-2026-08-14.md", "note": "the triage that took the apparent 96-item backlog down to a real queue of 16, ranked" },
+        { "type": "path", "path": "orchestration/status/BACKLOG-TRIAGE-20260814.json", "note": "the machine-readable triage record" }
+      ]
+    }
+  ]
+}
