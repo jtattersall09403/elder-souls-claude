@@ -74,34 +74,25 @@ await g.page.evaluate(async () => {
   root.traverse(o => { if (/contact-shadow|action-silhouette/.test(o.name || '')) { window.__decals.push([o, o.visible]); o.visible = false; } });
 });
 
-async function setPlayerVisible(on) {
-  await g.page.evaluate((vis) => {
-    const root = window.__playerRoot;
-    if (!vis) {
-      window.__pHidden = [];
-      root.traverse(o => { if ((o.isMesh||o.isSkinnedMesh) && o.visible) { window.__pHidden.push(o); o.visible = false; } });
-    } else if (window.__pHidden) { for (const o of window.__pHidden) o.visible = true; window.__pHidden = null; }
-  }, on);
-}
-
-async function setSolid(on) {
-  await g.page.evaluate((solid) => {
+// `actor.js:988` reasserts `mesh.visible` on the body every frame, so hiding the player does
+// not survive to the next render. Material swaps DO survive — nothing per-frame reassigns
+// `mesh.material` — so all three states here are material swaps.
+//   'ship'  original materials
+//   'solid' opaque flat colour, DoubleSide  -> the body's true outline
+//   'gone'  colorWrite off, depth off        -> the player-absent reference
+async function setMode(mode) {
+  await g.page.evaluate((m) => {
     const THREE = window.__T, root = window.__playerRoot;
-    if (solid) {
+    if (!window.__origMats) {
       window.__origMats = [];
-      root.traverse(o => {
-        if (!(o.isMesh || o.isSkinnedMesh)) return;
-        if (!o.visible) return;
-        window.__origMats.push([o, o.material]);
-        const M = o.isSkinnedMesh ? new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide, skinning: true })
-                                  : new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
-        o.material = M;
-      });
-    } else if (window.__origMats) {
-      for (const [o, m] of window.__origMats) o.material = m;
-      window.__origMats = null;
+      root.traverse(o => { if (o.isMesh || o.isSkinnedMesh) window.__origMats.push([o, o.material]); });
+      window.__solidMat = new THREE.MeshBasicMaterial({ color: 0x000000, side: THREE.DoubleSide });
+      window.__goneMat = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false, depthTest: false });
     }
-  }, on);
+    for (const [o, orig] of window.__origMats) {
+      o.material = m === 'ship' ? orig : (m === 'solid' ? window.__solidMat : window.__goneMat);
+    }
+  }, mode);
 }
 
 function decode(dataUrl) {
@@ -127,14 +118,13 @@ for (let i = 0; i < STEPS; i++) {
   const R = Number(args.radius || 2.6);
   await g.h('camera', { pos: [px + Math.sin(a) * R, py + 1.15, pz + Math.cos(a) * R], look: [px, py + 0.95, pz], fov: 45 });
 
-  await setSolid(false);
+  await setMode('ship');
   const shipPng = decode(await g.h('screenshot'));
-  await setSolid(true);
+  await setMode('solid');
   const solidPng = decode(await g.h('screenshot'));
-  await setSolid(false);
-  await setPlayerVisible(false);
+  await setMode('gone');
   const refPng = decode(await g.h('screenshot'));
-  await setPlayerVisible(true);
+  await setMode('ship');
 
   const A = diffMask(shipPng, refPng), B = diffMask(solidPng, refPng);
   const { width: w, height: h } = shipPng;

@@ -74,16 +74,24 @@ async function orbit(g, tag, opts = {}) {
 // ---------------------------------------------------------------- shipping-path look sweep
 // The player's own way of rotating the camera: the `look` axis through the input pipeline.
 async function lookSweep(g, tag, opts = {}) {
-  const shots = Number(opts.shots || 16);
-  const framesPer = Number(opts.framesPer || 12);
+  // `look` is DEGREES PER FRAME and `sim/camera.js` zeroes it after it consumes it, so a
+  // scripted turn has to emit an event on EVERY frame. Emitting one event and stepping 12
+  // frames turns the camera by one degree, not twelve — which is how a "the camera barely
+  // turns" defect can be invented out of a harness mistake. rig.json caps yaw at
+  // max_yaw_deg_per_frame = 3, so 120 frames at 3 deg/frame is exactly one full revolution.
+  const dps = Number(opts.degPerFrame || 3);
+  const frames = Math.round(360 / dps);
+  const every = Number(opts.every || 10);
   const manifest = [];
-  for (let i = 0; i < shots; i++) {
-    await g.h('queueInputs', [{ f: 0, look: [1.0, 0] }, { f: framesPer, look: [0, 0] }]);
-    await g.h('stepFrames', framesPer + 2);
+  const script = [];
+  for (let f = 0; f <= frames; f++) script.push({ f, look: [dps, 0] });
+  await g.h('queueInputs', script);
+  for (let done = 0; done < frames; done += every) {
+    await g.h('stepFrames', Math.min(every, frames - done));
     const cam = await g.h('camera', {});
-    const f = `${tag}-look-${String(i).padStart(2, '0')}.png`;
+    const f = `${tag}-look-${String(done + every).padStart(3, '0')}f.png`;
     await shoot(g, f);
-    manifest.push({ i, file: f, cam_yaw_deg: cam.yaw_deg, cam_pitch_deg: cam.pitch_deg });
+    manifest.push({ frame: done + every, file: f, cam_yaw_deg: cam.yaw_deg, cam_pitch_deg: cam.pitch_deg });
   }
   return manifest;
 }

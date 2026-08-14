@@ -42,3 +42,12 @@ Started 2026-08-14. This file is updated as work proceeds so a restart can resum
   So the GPU is reachable for API calls and not reachable for work. Both pods created were
   terminated via `node tools/runpod/cli.mjs cleanup` (deletion API-confirmed); total spend is a
   few minutes at $0.27/hr. All rendering below is SwiftShader and is labelled as such.
+- 09:20 A near-miss worth recording. A scripted `look` sweep showed the camera turning 1 degree
+  per 12 frames, which reads as "the camera is unturnable". It is not: `look` is DEGREES PER
+  FRAME and `sim/camera.js` zeroes it after consuming it, so an event emitted once turns the
+  camera once. Emitting a `look` event on every frame gives the documented 3 deg/frame cap
+  (rig.json max_yaw_deg_per_frame). Harness mistake, not a game defect — corrected in
+  tools/harness/visual-truth.mjs and NOT reported as a finding.
+- 09:22 First see-through measurement was also void: it used a player-hidden reference frame,
+  and `actor.js:988` reasserts `mesh.visible` on the body every frame, so the "player absent"
+  reference still contained the player. Rebuilt on material swaps, which do survive.
