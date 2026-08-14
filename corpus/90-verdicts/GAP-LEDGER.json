@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T16:01:26Z",
+  "generated": "2026-08-14T16:33:56Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 84,
+  "verdicts_read": 85,
   "counts": {
-    "total": 79,
-    "open": 78,
+    "total": 80,
+    "open": 79,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -66,7 +66,8 @@
       "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later"
     ],
     "render.fidelity.materials": [
-      "GAP-W1-30c-wetness-mask-blind-to-instancematrix"
+      "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
+      "GAP-W1-pbr-material-set-unbound"
     ],
     "dialogue.topics.filtering": [
       "GAP-W1-act5-argument-entry-shadowed"
@@ -371,7 +372,7 @@
     "STALE-RISK GAP-W1-two-placement-mechanisms-collide: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-rendered-text-accessor-blind-to-the-hud-surface: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-26-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-26-creation-cannot-be-completed-from-the-title: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
-    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19, crit-w1-visual-blind-protocol-a-chunk2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
     "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
@@ -1202,6 +1203,14 @@
           "status": "FAIL",
           "score": null,
           "opened_gap": "GAP-W1-w1-30e-street-gate-never-ran"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+          "run_id": "crit-w1-visual-blind-protocol-a-chunk2",
+          "at": "2026-08-14T17:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-pbr-material-set-unbound"
         }
       ]
     },
@@ -2626,6 +2635,48 @@
       "evidence": [
         "reports/runs/CRITIC-W1-READABLES/slots-and-marks.json",
         "orchestration/status/W1-READABLES-r2.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0,
+      "filed_since": []
+    },
+    {
+      "gap_id": "GAP-W1-pbr-material-set-unbound",
+      "subsystem_path": "render.fidelity.materials",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-visual-blind-protocol-a-chunk2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.json",
+      "piece_id": "w1-visual-blind-protocol-a-r1",
+      "severity": "blocking",
+      "what": "Across five blind pairs, four of five judges described our surfaces as flat untextured fills with no albedo/normal/roughness response — three of them named it as the single biggest gap, all three at CONFIDENCE: high. In the judges' own words: 'every surface reads as flat diffuse albedo with no specular, roughness variation, or normal-mapped relief, so thatch, plaster, stone and grass all respond to light identically'. The mechanical corroboration is independent of the judges: image-leakcheck's local_contrast_med statistic names the reference on 5 of 5 pairs.",
+      "why_it_matters": "A player looking at any surface in the world — masonry, thatch, ground, foliage — sees the same material, because every material is the same material under light; nothing in the build reads as made of anything.",
+      "remedy": {
+        "action": "Author and bind a real PBR material set — albedo + normal + roughness/metalness — to the terrain, architecture and foliage materials, so different surfaces produce different specular and micro-shading response under the same light. This is R1 of the ranked, buildable remedy list in corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md §3; R2 (contact shadows + AO), R3 (ambient/GI fill with tone-mapped shadow lift) and R4 (ground-plane dressing) follow it there with their own acceptance criteria, and R5 (depth of field) is listed there explicitly TO BE STRUCK because the only evidence for it was manufactured by the pair02/pair03 bokeh confound.",
+        "targets": [
+          "game/src/render/materials",
+          "game/data/materials",
+          "corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md#3-the-deliverable-a-ranked-buildable-remedy-list"
+        ],
+        "acceptance": "Two named materials in a single capture from the fixed eight slots produce measurably different specular response under the same light; and a wave-2 Protocol A re-run (counterbalanced sides, clean judge context, pair02/pair03 rebuilt against an in-focus plate) returns 'everything responds to light identically' as no pair's SINGLE BIGGEST GAP.",
+        "ref_item": "RI-VIS06",
+        "estimated_size": "L"
+      },
+      "remedy_action": "Author and bind a real PBR material set — albedo + normal + roughness/metalness — to the terrain, architecture and foliage materials, so different surfaces produce different specular and micro-shading response under the same light. This is R1 of the ranked, buildable remedy list in corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.md §3; R2 (contact shadows + AO), R3 (ambient/GI fill with tone-mapped shadow lift) and R4 (ground-plane dressing) follow it there with their own acceptance criteria, and R5 (depth of field) is listed there explicitly TO BE STRUCK because the only evidence for it was manufactured by the pair02/pair03 bokeh confound.",
+      "remedy_acceptance": "Two named materials in a single capture from the fixed eight slots produce measurably different specular response under the same light; and a wave-2 Protocol A re-run (counterbalanced sides, clean judge context, pair02/pair03 rebuilt against an in-focus plate) returns 'everything responds to light identically' as no pair's SINGLE BIGGEST GAP.",
+      "evidence": [
+        "corpus/90-verdicts/w01-visual-blind.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r1/judgements/JUDGEMENTS-r1.md",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r1/pack/pair03/A.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-VISUAL-BLIND-PROTOCOL-A-r1/leakcheck-rerun-chunk2.txt"
       ],
       "status": "open",
       "assigned_to_wave": 2,
