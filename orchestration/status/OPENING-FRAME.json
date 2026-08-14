@@ -1,0 +1,47 @@
+{
+  "task": "OPENING-FRAME",
+  "state": "done-and-banked",
+  "started": "2026-08-14",
+  "goal": "The first frame of the game. The two items SPAWN-YAW left in not_done: the census hand-back framing (the wall of reed-cases at the instant control returns, before any door) and the collapsed camera arm at the writ-house doorstep (the player not in the first controlled frame).",
+  "report": "reports/opening-frame/2026-08-14-opening-frame.md",
+  "done": [
+    "MEASURED IN BARE NODE, not a browser: tools/harness/opening-frame.mjs imports the shipped modules (WorldField, planSettlement/settlementSolids, CollisionCell, exitFacing, CENSUS_PLACES) and runs sim/camera.js stepCamera() ITSELF, 60 fixed steps on a real SimState. No frame budget to miss, so contention cannot fabricate a defect. Metric for 'the player is not in the frame' is the game's own: camera.charOpacity, which fadeOpacity() drives to 0 at arm <= 0.90 m.",
+    "DEFECT 2 DIAGNOSED, AND IT IS NOT A TREE AND NOT A FACING. The arm's cast lands in writ-house:+z+ 0.20 m behind the pivot. The writ-house footprint (x 3801.0-3811.0, z 895.5-908.5) and the barge-hold footprint (x 3792.0-3808.0, z 904.5-911.5) OVERLAP BY 7.02 x 4.00 m; the writ house's front door opens inside the barge hold and the doorstep is the 0.6 m corner pocket left over — 0.67 m from one wall, 0.41 m from the other.",
+    "THE FULL NUMBER LINE (HAZARDS 0b): all 72 five-degree bearings scored through the real stepCamera. Perfectly bimodal, no middle. 25/72 keep the player drawn; best drawn bearing sees 0.75 m; best-seeing bearing (12 m) draws no player. NO FACING RULE CAN FIX THIS STANDING POINT.",
+    "DEFECT 1 FIXED, and the diagnosis in the dispatch was half right: the camera yaw was 6.6 deg off the doorway in a 79.3 deg FOV — the way out was already on screen. What was wrong was DRAWN GEOMETRY. render/places.js#buildWritHouse() drew the +z wall as one unbroken 11 m slab: the room had NO DOOR IN IT AT ALL, while interiorShellPlan() cut a 1.40 x 2.10 doorway there and the world door stands on that face. The reed-cases (8.2 m, four rows) then stood 0.6 m in front of it.",
+    "FIX. Engine._censusHandBack() turns body AND combat mirror AND sim.camera.yaw (all three, or it is inert) to the way out on the frame the census graph runs out of nodes, re-solves the spring arm and re-quantises cold state; character/scene.js#doorwayLocal()/handBackFraming() resolve the doorway from bounds_m + entry_side, restating interiorShellPlan()'s arithmetic so character/ does not depend on render/; fails open with engine.censusHandBack.applied saying so. places.js cuts the doorway, adds frame + named leaf, splits the reed-cases into two runs around it, narrows the window to fit the gap.",
+    "MEASURED, ray-classified against the DRAWN meshes with the BEFORE arm imported straight out of git (--baseline 8361fcb9), not retyped: doorway visible 0% -> 57% at the shipped camera yaw and 0% -> 69% at the fixed yaw. Before is zero on every arm because there was no door to see; every ray stopped on the 11.00x4.00x0.35 wall slab or the shelving. Walking straight forward: as-shipped body yaw 320 MISSES the doorway by 2.64 m, fixed reaches it.",
+    "NULL CONTROL is the plausible wrong answer (body + combat mirror written, sim.camera.yaw not) and it earns its keep at the doorstep: arm 3.993 m, char_opacity 100%, clearance 0.25 m — a perfectly framed player looking at a wall. At the hand-back it separates by only 12 points (57 vs 69) and that is reported as such rather than dressed up.",
+    "TWO MEASUREMENT ARTEFACTS FOUND IN MY OWN TOOL AND WRITTEN INTO IT: a sample plane at z=6.30 scored the FIXED room 0% (rays terminating inside the door the fix added); moving it to 6.15 moved an unchanged arm by 43 points (the raycaster's far epsilon eating shelf hits 0.03 m in front). Replaced by 'what does the ray hit FIRST', with the door meshes named in the scene graph.",
+    "EVIDENCE. Two hardware runs, NVIDIA L4 and RTX A5000, ANGLE/Vulkan, software_renderer:false. 62 frames each: desktop 1280x720 and phone 390x844, title/barge-hold/hand-back, an 8-angle orbit AROUND THE HAND-BACK FRAME (new — opening-capture.mjs only orbited the doorstep before), the doorstep orbit, and 10 s of walking. Viewports verified to differ by PNG dimensions and md5, not by a check going green. Per-frame arm_m / char_opacity / arm_guard now in the manifest.",
+    "TWO PODS RENTED, $0.023 and $0.024, BOTH terminated with API-confirmed deletion (subsequent API lookup returned not found). Nothing left billing."
+  ],
+  "not_done": [
+    "THE DOORSTEP DEFECT IS NOT FIXED. It cannot be fixed by a facing and the dispatch forbids moving where the player stands ('Fix what the player is looking at, not where they are'). It needs a ruling: either separate thorn.json's writ-house and barge-hold (they are 7x4 m inside each other — the root cause) or push continuity.exterior_spawn ~3.5 m along the door's outward normal, which needs 4.4 m of free space behind the body and has 0.41 m. OVERTURNED BY: opening-frame.mjs reporting sweep_summary.best_drawn_and_clear with clearance_m above about 6 m.",
+    "The building overlap was found at Thorn and NOT audited across the other seven towns. planSettlement() returns no deep_overlaps/shrunk field on this record at all, so 'how many buildings in this world are inside each other' is open and is a one-tool answer.",
+    "buildWritHouse() has one lamp and it is at z=-4, the far end from the door. A second lamp was deliberately NOT added: the file records a shared policy that this room takes litLights()'s fail-open hearth rather than private lamps. If the doorway end reads too dark, that policy is what to revisit.",
+    "writ-house.json's continuity.interior_spawn is [0,0,-4.6], against the -z wall, 11 m from the +z doorway — the same entry_side/interior_spawn contradiction settlement.js documents on 109 of 115 records. Named in the tool's output; not touched, it is the door placement's field.",
+    "The deployed Pages URL was not tested; Chromium here still cannot reach any external host. Everything measured on the local tree.",
+    "The reed-case gap, the door frame and the window width are a first pass judged from hardware frames at two viewports, not against a Thorn art-direction target — Thorn still has zero composition-valid reference plates (docs/art-direction/ART.md, n=0)."
+  ],
+  "files_touched": [
+    "orchestration/status/OPENING-FRAME.json",
+    "game/src/character/scene.js",
+    "game/src/engine.js",
+    "game/src/render/places.js",
+    "tools/harness/opening-frame.mjs",
+    "tools/harness/opening-capture.mjs",
+    "reports/opening-frame/2026-08-14-opening-frame.md",
+    "reports/opening-frame/opening-frame.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-14-opening-frame/"
+  ],
+  "files_claimed": [],
+  "redundant_with": ["SPAWN-YAW", "FIRST-TEN-MINUTES"],
+  "notes": [
+    "engine.js touch is narrow: one new method (_censusHandBack), one call site in censusAnswer, one field declared in loadState, one import name added.",
+    "sim/settlement.js was read and deliberately NOT edited — exitFacing() is doing the right thing and the doorstep problem is upstream of it in the town layout.",
+    "Contention was WAIT for the whole window in which a local capture would have run, which is why the hardware evidence went to rented Pods (remote load, not local) and every failing measurement was taken in bare Node.",
+    "A sibling agent's bank swept these edits onto the branch mid-pass under its own headline (commit 9e0c5ea3); that is how the shared tree works and nothing was lost."
+  ]
+}

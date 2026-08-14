@@ -331,7 +331,7 @@ nothing, **208 advertise at least one non-root topic**, and the 221 dead adverti
 
 | cause | count | distinct | what it actually is |
 |---|---|---|---|
-| the advertised string is **not a topic id at all** | **17** | 17 | prose form where the corpus uses slugs — `the drowned tally`, `the vats or the people`, `the lease`, `a phial for the blind man`. **Only 1 of the 17 would be fixed by slugifying**; the rest name subjects that do not exist. A dangling reference, and nothing in the corpus lints for it. |
+| the advertised string is **not a topic id at all** | **17** | 17 | prose form where the corpus uses slugs — `the drowned tally`, `the vats or the people`, `the lease`, `a phial for the blind man`. **Only 1 of the 17 would be fixed by slugifying**; the rest name subjects that do not exist. A dangling reference, and nothing in the corpus lints for it. **Measured across the whole roster rather than only these records the figure is far larger: 100 of 865 `npc.topics` entries (11.6%), 66 distinct strings, 52 records.** The other 83 sit on people who still offer something else, so they never show up in A7 — which is exactly why A7 alone is not a sufficient gate for this class and §4B lints it separately. |
 | the id **exists** but **no INFO passes the filter stack** for that player | **204** | **23** | the answers are authored and gated — by race, class, faction or disposition — with no fallback INFO. Twenty-three topics carry the whole of it. |
 
 > **Sub-ruling, reversible: this is a filter-stack and dangling-reference repair, not a rehoming
@@ -423,8 +423,10 @@ State the matcher's fold rules (case, apostrophes, hyphens) in the tool's header
 **The same run carries two cheap lints that nothing in the tree performs today**, both of which are
 one pass over data the tool already parses, and both of which must exit non-zero when they fire:
 
-- **Dangling `npc.topics` reference** — an advertised string that matches no topic id. **17 at
-  `7b05e65e`** (§2c). Publish the list.
+- **Dangling `npc.topics` reference** — an advertised string that matches no topic id and no root.
+  **Globally at `7b05e65e`: 100 of 865 `npc.topics` entries (11.6%), 66 distinct strings, 52 records
+  affected** — `the drowned tally`, `the lease`, `a phial for the blind man`, `nine days at anchor`,
+  … . `topicsFor()` drops each one silently. Publish the list, not the count.
 - **`unreachable_from_greeting`** — already computed by `build-graph.mjs` and scored by nothing.
   **10 at `7b05e65e`** (§1). Publish the list; row A5c gates it.
 
@@ -453,6 +455,11 @@ gates the result.
 | 200 (**the cap**) | 2.96 | 15.0% |
 | 500 | 2.57 | 20.8% |
 | 770 (max without orphaning) | 2.02 | 32.0% |
+
+**The 770 figure is an upper bound on the *orphan* test, not on the reachability test, and it is
+therefore an over-estimate of the real headroom.** It is left in the table because it is the number
+that justifies the 200 cap and the cap is unaffected by the correction — a smaller true headroom
+only strengthens the cap. A builder must not read 770 as permission for anything.
 
 *(These are topic→topic edges only. `build-graph.mjs`'s headline 3.98 includes greeting, rumour and
 journal edges; the two numbers are in different populations and a builder must not compare them.)*
@@ -498,21 +505,31 @@ content and consumes the verdict.
 ## 5. Acceptance — every row is a **gate**, and the pass lives in `RI-UIX08` §G
 
 Predicate, units and population, so a build critic is never arguing about what was meant. **All
-figures below are claims about `e2a7a1a8`**; a build re-measures and re-stamps.
+figures below are claims about `7b05e65e`**, independently re-measured this round; a build
+re-measures and re-stamps. `game/data/dialogue/` is unchanged since `e2a7a1a8`.
 
-| # | Predicate | Units | Population / denominator | Baseline at `e2a7a1a8` | Gate |
+| # | Predicate | Units | Population / denominator | Baseline at `7b05e65e` | Gate |
 |---|---|---|---|---|---|
-| **A1** | destination topic's player-visible label occurs literally in the source answer's rendered text, strict matcher | % of **`addTopic` occurrences** (each `to` entry of each INFO; **not** distinct pairs) | **1,605** occurrences over `game/data/dialogue/topics/**` | **10.5%** (168/1,605); 12.7% on the 1,277 distinct pairs | **≥ 90%**; below 90% is a hard fail |
-| **A1b** | the residue is *authored* as implication, not left silent | count | every occurrence failing A1 | **0** flagged | **every** A1 failure carries `implied: true`; an unflagged invisible unlock is a hard fail |
-| **A2** | the player-visible label is correct — authored `name` where the de-slugged id is wrong, and read by `topicLabel` | boolean + % of topics | all **470** topics | `name` has **no reader**; 23 authored, 21 redundant | **`topicLabel` reads `name`** (hard fail if not), **and** 0 topics whose rendered label is wrong under a named review of all 470 |
+| **A1** | destination topic's player-visible label occurs literally in the source answer's rendered text, strict matcher | % of **`addTopic` occurrences** | **every `to` entry of every INFO of every record carrying an `id`** in `game/data/dialogue/topics/**` — **1,601** at `7b05e65e`. The four `links`-schema records in `thorn.json` are **excluded** and named in §9 as an owed corpus edit; a build that repairs that schema re-states the denominator rather than silently changing it | **10.4%** (167/1,601); 12.6% on the 1,273 distinct pairs | **≥ 90%**; below 90% is a hard fail |
+| **A1b** | the residue is *authored* as implication, not left silent | count | every occurrence failing A1 | **0** flagged | **every** A1 failure carries `implied: true`; an unflagged invisible unlock is a hard fail. **This is A1's worst-constituent clause under Ruling W1** and carries no budget |
+| **A2** | the player-visible label is correct — authored `name` where the de-slugged id is wrong, and read by `topicLabel` | boolean + % of topics | all **470** distinct topic ids (584 records collapse to 470 ids; 92 ids appear in more than one file) | `name` has **no reader**; 23 authored, 21 redundant | **`topicLabel` reads `name`** (hard fail if not), **and** 0 topics whose rendered label is wrong under a named review of all 470 |
 | **A5** | RI-DLG01 §D topology after steps C and D | as §D defines, **all 13 rows** | the whole graph | out-degree 3.98, max depth 7, **median depth 2**, leaf 0.223, convergence 0.619, orphans 0, unreachable INFOs 0 | **no regression on any row**; specifically out-degree ≥ 3.0, max depth ≥ 6, **median depth ≥ 2**, leaf fraction ≤ 0.50, convergence ≥ 0.20, orphans 0, unreachable INFOs 0 |
-| **A5b** | deletions taken in step C | count of distinct edges | the 1,115 invisible edges | 0 | **≤ 200**; above 200 is a hard fail even if A5 is green |
+| **A5b** | deletions taken in step C | count of distinct edges | the ~1,112 invisible distinct edges | 0 | **≤ 200**; above 200 is a hard fail even if A5 is green |
+| **A5c** | **topics reachable from no greeting node** — `build-graph.mjs`'s `unreachable_from_greeting`, which `RI-DLG01`'s comparison-method step 2 prints and no §D row scores | count of topic ids | all **470** topics | **10** — and none of the ten is an orphan (all have in-degree ≥ 1) or advertised by any `npc.topics`, so no player can reach any of them | **≤ 10 and strictly not increased by any step here**; **> 10 is a hard fail even if every §D row is green.** The list must be published before and after step C, not just the count |
 | **A6** | CONSUMPTION: perturbing `to`, `name` and `implied` each changes what the shipping reader returns | boolean per field | `tools/dialogue/consume.mjs` | `to` demonstrated; `name` **has no reader** | **all three must change**; a field that changes nothing is the model nobody reads |
-| **A7** | NPC records offering at least one topic of their own (beyond the nine roots), via `topicsFor()` | % of records | **408** records in `game/data/npcs/**`, neutral player, roots known | **46.8%** (191/408); 3 offer nothing at all | **≥ 85%**, **and** 0 records offering nothing at all |
+| **A7** | NPC records offering at least one topic of their own (beyond the nine roots), via `topicsFor()` | % of records, **at the worst player in the stated space** | **408** records in `game/data/npcs/**` × the player space `critic-reach.mjs` already reads out of the corpus: **10 races × 4 upbringings × disposition {0, 40, 100}**, nine roots known, `knows` a `Set`, no faction, rank 0 | **38.7% at the worst player** (`orc`/upbringing 3/disp 0: 250 of 408 offer nothing of their own), **47.3% at the best** (`dunmer`/0/disp 40: 215). Median own-topics **0** at every shape. Records offering **nothing at all**: **0** with the roots known | **≥ 85% at the worst player in the space** — not at a chosen one (**Ruling W1**) — **and** 0 records offering nothing at all, at every shape. The best/worst spread must be published, not only the headline |
 
 **Rows that left this plan under §2a:** the draft's A3 and A4 (`RI-UIX08` §C1 link precision ≥ 0.98
 and recall ≥ 0.95) are the window's, measured against this piece's `visibility.tsv`. They are named
 here so a reviewer can see the bar is not lost, only re-homed.
+
+**A7's gate binds on the worst player, and that is not a raised bar — it is the same bar made
+measurable.** Round 1 wrote "neutral player" and quoted 217/408. There is no neutral player:
+disposition alone moves the figure by six points and the full space spans **215–250 of 408**. A
+builder and a critic each picking their own "neutral" would differ by more than the margin they are
+arguing about, which is exactly the definition dispute `PLAN-LOOP.md` rule 2 exists to prevent. The
+enumerator is not new work — `tools/dialogue/critic-reach.mjs` already walks this space and reads
+its domains from the corpus rather than assuming them.
 
 **A1's 90% is a floor, not a target, and here is the reasoning so a reviewer can attack it:**
 100% is wrong because some edges legitimately model a topic learned by *implication* — Morrowind
@@ -523,7 +540,34 @@ against a real artefact rather than taste:** REF-A12c shows one Morrowind answer
 sixty inline links, and a builder who finds our answers cannot carry that density without reading
 like a keyword list has found evidence, and should write it into this file rather than quietly miss
 the floor. **If a reviewer thinks the right number is 80% or 95%, that argument is worth having
-now** — it costs a paragraph here and a build round later.
+now** — it costs a paragraph here and a build round later. *(Round 2 attacked this floor, has no
+measurement that beats it, and leaves it exactly as round 1 set it rather than inventing one.)*
+
+### 5a. What actually stops a green number from passing this build — stated as a verdict requirement
+
+§1's framing paragraph is right that the enforcement must not be a plan-local assertion. But the
+clause it names — `RI-UIX08`'s *"once a build exists that can be played, an unrun §G caps this item
+at 2"* — **caps `RI-UIX08`, and §2a hands every `RI-UIX08` row to the sibling.** What is left
+anchoring this piece's numbers is `RI-DLG01`, whose published aggregation is *"count of passing §D
+rows, gated"* by orphans, unreachable INFOs, the combat lockout and `menu_quest_fraction` — **and no
+human read appears anywhere in it.** So without this section a critic could find A1–A7 green, file
+against `RI-DLG01`, score well, and break no written rule. That is the exact failure the framing
+paragraph forbids, arriving through the seam ruling that was supposed to be a saving.
+
+**Binding on this piece's verdict, so the cap has something to bite:**
+
+1. The verdict is filed against **both** `RI-DLG01` and `RI-UIX08`, because both carry the
+   `dialogue.topics.discovery` subsystem in their `judges:` list and this piece is that subsystem's
+   content half.
+2. **`RI-UIX08` §G's result is quoted or its absence is recorded.** A build exists that can be
+   played today, so §G's absence is no longer `corpus_debt`: **if §G has not run at verdict time,
+   `RI-UIX08` scores 2 and the verdict says so in those words**, however green A1–A7 are.
+3. **A green A1–A7 with §G unrun is reported as `not_yet_judged`, never as a pass.** The rows are a
+   leak check; `RI-UIX08`'s own "How we lose" list ends with *"Scoring this item green off the
+   mechanical rows without running §G"*, and this piece supplies most of those mechanical rows.
+4. If the sibling has not run §G by the time this piece is criticised, that is **a schedule fact to
+   report, not a reason to substitute a statistic** — and §6's text pack is the cheap stop condition
+   available in the meantime, which is a stop condition and never a pass.
 
 ---
 
@@ -623,14 +667,23 @@ never a pass**; the pass is `RI-UIX08` §G's.
 Per `orchestration/plans/BUILDER-EXECUTION-CONTRACT.md`.
 
 **The builder owns:** steps A–E; the `--visibility` extension including its red-arm demonstration
-against `e2a7a1a8`; the `consume.mjs` red arm on `name` **before** step A; the reading note in §3;
-all content edits; A1, A1b, A2, A5, A5b, A6 and A7 run to green; the seam message to the live
-`W1-UIX08` agent; the ablated arm's content; and text-only reproduction evidence. The builder keeps
-repairing until those rows pass in the run.
+against the unmodified tree and the two new lints (dangling `npc.topics`, `unreachable_from_greeting`);
+the `consume.mjs` red arm on `name` **before** step A; the reading note in §3; all content edits;
+A1, A1b, A2, A5, A5b, **A5c** and A6 run to green, and A7 run to green **at the worst player in the
+space**; the seam message to the live `W1-UIX08` agent (sent and recorded, not waited on); the
+ablated arm's content; and text-only reproduction evidence. The builder keeps repairing until those
+rows pass in the run.
 
-**The fresh critic owns:** independent replay of every row over its full population; the §6 text
-pack's construction *or* its judging but never both (rule 25); hard-fail assessment; score and
-verdict; and reading `RI-UIX08` §G's result across the seam rather than re-running it.
+**A7's full 120-shape sweep is the critic's, not the builder's.** It is a headless run of seconds,
+so the split is not about cost: the builder measures the **worst player and the best**, which is the
+smallest population that proves the mechanism and the one A7's gate binds on; the critic replays the
+whole space independently and publishes the distribution. `PLAN-LOOP.md` rule 3a's default — exact
+full populations belong to the critic — applies unchanged.
+
+**The fresh critic owns:** independent replay of every row over its full population; A7's complete
+player-space sweep; the §6 text pack's construction *or* its judging but never both (rule 25);
+hard-fail assessment; score and verdict; **§5a's cap** — quoting `RI-UIX08` §G's result across the
+seam or recording `RI-UIX08` at 2 with the reason — rather than re-running the gate.
 
 **The critic does not repair game code** (`PLAN-LOOP.md` rule 23). On FAIL it leaves an executable
 remediation specification covering every material gap, not only the one the verdict schema ranks
@@ -661,13 +714,35 @@ the same time.
   implemented half the idea. `RI-UIX04` owns the journal screen; a named handoff, not scope creep.
 - **It does not settle read/unread marking.** `RI-UIX08` §F1 rules it off by default and reversibly;
   this plan inherits that ruling.
-- **It does not repair `median_depth`.** It is at §D's fail value today, this plan names it and
-  guards it, and no step here shortens the distance from a greeting to a quest resolution. That is
-  the topic-graph piece's, and it is owed.
-- **Two corpus edits are owed and are not performed here**, so this plan stays one-step reversible:
-  `RI-UIX08`'s comparison method step 2 describes `topic_graph.tsv`'s `via` column as "the edge's
-  source span" and it is not one; and `RI-DLG01` §D's median-depth row has never been enforced by a
-  gate. Both are named for their item owners.
+- **It does not repair `median_depth`.** It misses §D's target of 3 and clears the floor of 2, this
+  plan names it and guards it, and no step here shortens the distance from a greeting to a quest
+  resolution. That is the topic-graph piece's, and it is owed.
+- **It does not repair the ten unreachable topics — it stops them multiplying.** A5c is a
+  no-regression gate, not a repair. Getting `warden-eshi` and the other nine back onto a thread is
+  authoring work on whatever should point at them, and it is named here for the topic-graph piece
+  rather than folded into a step this plan has not budgeted.
+- **Three corpus edits are owed and are not performed here**, so this plan stays one-step reversible.
+  Each is named for its item owner:
+  1. `RI-UIX08`'s comparison method step 2 describes `topic_graph.tsv`'s `via` column as "the edge's
+     source span" and it is not one — it holds the literal strings `AddTopic` / `greeting_text`.
+  2. `RI-DLG01` §D's median-depth row has never been enforced by a gate — and neither has
+     `unreachable_from_greeting`, which §D omits entirely although the item's own comparison-method
+     step 2 prints it. **A5c is this plan's local stand-in and it is not a substitute for the §D row.**
+  3. `game/data/dialogue/topics/thorn.json` (`declared_incomplete: true`) carries four records in an
+     undeclared second schema (`topic` / `text` / `links` instead of `id` / `infos` / `to`). They are
+     invisible to every instrument in `tools/dialogue/`, and they are the whole of the discrepancy
+     between round 1's 1,605 and round 2's 1,601. **Leaving them owed is the right call and A1 is
+     buildable without them** — 4 occurrences cannot move a 90% floor — but a builder must know they
+     exist or it will spend an hour reconciling two honest censuses.
+
+**On the two edits round 1 left owed, since the question was put directly: leaving them owed is
+right, and the plan is buildable without either.** The `via` error is a defect in an instruction the
+*sibling* follows (`RI-UIX08`'s comparison method), and §7 already contradicts it in terms and tells
+the builder where the text really is (`infos.tsv`'s `text` column) — so the builder here cannot be
+misled by it, and editing another piece's governing item mid-flight is the Ruling O1 shape in the
+corpus rather than in code. `RI-DLG01` §D's ungated median-depth row is likewise not load-bearing
+here: A5 gates median depth at ≥ 2 locally and no step in this plan can move it. Neither omission
+makes anything in §4 unexecutable.
 - **It does not claim the graph is bad.** The graph is good and its author should be told so. What
   is missing is the half a player can see.
 
@@ -679,11 +754,12 @@ the same time.
 section; here is one.
 
 1. **A1's 90% may be unreachable without prose that reads like a keyword list.** This is the
-   likeliest way this piece fails while every row goes green — 1,437 invisible unlocks is a very
+   likeliest way this piece fails while every row goes green — ~1,434 invisible unlocks is a very
    large writing job, and the incentive under a ratio predicate is to stuff nouns. §6's text pack
    exists as the cheap stop condition for exactly this, and it is the thing a next reviewer should
    press hardest. If it fires, the honest repair is a lower floor with a *higher* `implied` bar, not
-   worse prose.
+   worse prose. **Round 2 attacked this floor and left it alone**: it is argued, it is checkable
+   against REF-A12c, and no measurement available offline beats it.
 2. **§2b's click-only ruling is the biggest single change and it is one call.** It is reversible in
    one line and its falsifier is written, but it changes a shipped behaviour on the strength of a
    reference reading rather than a measurement, and the measurement that would settle it is the
@@ -692,10 +768,29 @@ section; here is one.
    population.** The relationship between the two out-degree figures (3.50 and 3.98) is a fixed
    offset only as long as greeting and rumour edges are untouched. A builder who deletes an edge
    that is *also* a rumour's `adds_topics` breaks that assumption, and this plan does not detect it.
-4. **A7's 85% floor is chosen, not derived.** RI-DLG01 §D has no row for "topics a given person
-   offers"; Morrowind's own figure is unmeasured here. 85% is the level at which a player stops
-   meeting people who only echo the nine roots, and it should be re-derived from the Balmora
-   reference by whoever can measure it.
-5. **The seam in §2a is ruled, not agreed.** A live sibling has not yet answered. If it has already
-   built against the draft's step D, this plan concedes the overlap to the sibling and keeps only
-   the contract file — say so plainly rather than fight for the row.
+4. **A7's 85% floor is chosen, not derived, and round 2 made it harder to reach without deriving
+   it.** RI-DLG01 §D has no row for "topics a given person offers"; Morrowind's own figure is
+   unmeasured here. Binding on the worst player is right under Ruling W1, but it moves the baseline
+   the gate is measured from by 4.6 points (47.3% best → 38.7% worst) and the floor itself is still
+   taste. It should be re-derived from the Balmora reference by whoever can measure it. **If the
+   worst-player form turns out to be unreachable for a reason a player would never notice — one
+   pathological race/upbringing pair nobody plays — Ruling W1's own falsifier says the instrument is
+   a stated quantile, not a return to the mean.**
+5. **The seam in §2a is ruled, not agreed, and it is now written so that not being agreed cannot
+   stop anything.** Round 1 blocked step C on an acknowledgement; round 2 replaced that with three
+   one-sided checks under rule 0. What survives as a genuine risk is narrower: the sibling could
+   land its own visibility census under `tools/dialogue/` between this plan being satisfied and the
+   build starting, and §2a rule 3 concedes it — but only if the builder actually re-reads the status
+   file, which is why it is a numbered rule in §2a rather than a note here.
+6. **§5a's cap is a plan-local instruction to a critic, and that is weaker than a corpus clause.**
+   `RI-UIX08`'s aggregation clause is real and quoted correctly, but it binds `RI-UIX08`, and this
+   piece reaches it only because §5a rule 1 says the verdict is filed against that item too. **The
+   next reviewer should press this**: if there is a mechanism in `SCORING.md` or the verdict schema
+   that makes the subsystem score the minimum over its judging items, say so and cite it, because
+   that would make §5a redundant and stronger at the same time. Round 2 did not find one stated in
+   those terms and wrote the instruction rather than assume it.
+7. **A5c gates a defect it does not repair, and ten unreachable topics is not zero.** A
+   no-regression gate at 10 is honest about what this plan pays for and is also an admission that
+   the province ships ten topics no player can reach. If the next reviewer thinks the right gate is
+   0 and the repair belongs here, that is a fair argument and it costs authoring work step C has not
+   budgeted — say which, rather than leaving the number to drift.
