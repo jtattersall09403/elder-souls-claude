@@ -39,6 +39,86 @@
 // enough tolerance for the body radius and the collision solver's lateral slide.
 export const DOOR_REACH_M = 3.0;
 
+/* ---- WHICH WAY A DOOR LEAVES YOU FACING ---------------------------------------------------------
+ *
+ * `placeBody()` below used to write POSITION AND NOTHING ELSE. Every one of the 115 interiors in
+ * `game/data/world/interiors/**` therefore left you facing whatever you happened to be facing the
+ * instant before the teleport, regardless of what was actually in front of the new coordinate —
+ * measured and written up in `reports/spawn-truth/2026-08-14-spawn-truth.md` §3, and it is the
+ * FIRST FRAME OF THE GAME: character creation ends in Thorn's Writ House, and the player walks
+ * out of it still facing the Warden-Scribe's shelves.
+ *
+ * YAW CONVENTION. `sim/camera.js#viewBasis()` builds forward as `[sin(yaw), ., cos(yaw)]`, so yaw
+ * 0 looks down +z, 90 down +x. `door_world_bearing_deg` is in the same convention — RI-WLD13 §4
+ * requires it on both sides of the join and N2 ("the door that turns you") is the zero-tolerance
+ * check that the two authors agree about it. All 115 shipped interiors carry it, and all 115
+ * settlement building rows carry a matching one.
+ *
+ * TWO DIFFERENT FRAMES, and conflating them would have been the easy mistake:
+ *
+ *   * **Outside**, the coordinate is a world coordinate and the yaw is a world yaw. Facing =
+ *     the door's OUTWARD normal — away from the building you have just stepped out of.
+ *   * **Inside**, an interior is its own cell at its own origin, so `continuity.interior_spawn`
+ *     is a LOCAL coordinate and the yaw is a local yaw. Facing = into the room, away from the
+ *     door at your back — which is derived from the room's own `bounds_m` rather than from
+ *     `continuity.entry_side`, because `entry_side` and `interior_spawn` disagree on 109 of the
+ *     115 records (109 say "south" and then put the spawn against the +z wall) and the spawn is
+ *     the one the placement actually uses.
+ *
+ * Every rule is a FALLBACK CHAIN ending in `null`, and `null` means "write no yaw" — the old
+ * behaviour. A record that ships without the data must not become a room you cannot leave, which
+ * is the same fail-open `stepSettlement`'s `!inFace` arm takes.
+ */
+const norm360 = (a) => ((a % 360) + 360) % 360;
+const DEG = 180 / Math.PI;
+
+/** The yaw a body should have after being put down OUTSIDE this interior's door, or null. */
+export function exitFacing(rec) {
+  if (!rec) return null;
+  const cont = rec.continuity || {};
+  // 1. The declared outward normal. Two independently authored copies exist (this one and the
+  //    settlement building row's); RI-WLD13 N2 is the check that they agree.
+  const b = Number(rec.door_world_bearing_deg);
+  if (Number.isFinite(b)) return { yaw_deg: norm360(b), source: 'door_world_bearing_deg' };
+  // 2. The way you walked: from the door to the doorstep the derivation put you on. Only when the
+  //    two are far enough apart for the direction to mean anything.
+  const door = rec.door_world_pos || rec.exterior_door;
+  const out = cont.exterior_spawn;
+  if (Array.isArray(door) && Array.isArray(out)) {
+    const dx = out[0] - door[0], dz = out[2] - door[2];
+    if (Math.hypot(dx, dz) >= 0.25) return { yaw_deg: norm360(Math.atan2(dx, dz) * DEG), source: 'door_to_doorstep' };
+  }
+  // 3. The compass word, rotated by the building's own yaw — the arithmetic
+  //    `render/exterior.js#entryOutwardWorld()` uses, restated because `sim/` must not import
+  //    `render/`. `south` is +z in this build (`entrySideLocal()`: `entry_side === 'south'` sets
+  //    `wz = 1`), which is the opposite of the intuition and is why it is written down here.
+  const side = cont.entry_side;
+  const base = side === 'north' ? 180 : side === 'south' ? 0 : side === 'east' ? 90 : side === 'west' ? 270 : null;
+  if (base !== null) return { yaw_deg: norm360(base + (Number(cont.building_yaw_deg) || 0)), source: 'entry_side' };
+  return null;
+}
+
+/** The yaw a body should have after being put down INSIDE this interior, or null. Local frame. */
+export function entryFacing(rec) {
+  if (!rec) return null;
+  const cont = rec.continuity || {};
+  const s = cont.interior_spawn;
+  const bm = rec.bounds_m;
+  // 1. Look into the room: from the spawn towards the middle of the room's own bounds. This is
+  //    the placement's own two numbers, so it cannot disagree with where the body is put.
+  if (Array.isArray(s) && bm && Array.isArray(bm.x) && Array.isArray(bm.z)) {
+    const cx = (bm.x[0] + bm.x[1]) / 2, cz = (bm.z[0] + bm.z[1]) / 2;
+    const dx = cx - s[0], dz = cz - s[2];
+    if (Math.hypot(dx, dz) >= 0.5) return { yaw_deg: norm360(Math.atan2(dx, dz) * DEG), source: 'towards_room_centre' };
+  }
+  // 2. A room whose spawn is at its own centre has no "into the room" — turn your back on the
+  //    declared entry wall instead.
+  const side = cont.entry_side;
+  const base = side === 'north' ? 180 : side === 'south' ? 0 : side === 'east' ? 90 : side === 'west' ? 270 : null;
+  if (base !== null) return { yaw_deg: norm360(base + 180), source: 'entry_side_reversed' };
+  return null;
+}
+
 export class SettlementSystem {
   /**
    * @param {object[]} settlements  the docs from game/data/world/settlements/
@@ -229,10 +309,14 @@ export function stepSettlement(sim, input, bus) {
  * owns `combat`) and moves the real body; the mirror write below is the fallback for the bare
  * sim harnesses that have no combat rig at all, and it is honest only there.
  */
-function placeBody(sim, at) {
-  if (typeof sim.placeBody === 'function') { sim.placeBody(at[0], at[1], at[2]); return; }
+function placeBody(sim, at, yaw) {
+  const y = Number.isFinite(yaw) ? norm360(yaw) : undefined;
+  if (typeof sim.placeBody === 'function') { sim.placeBody(at[0], at[1], at[2], y); return; }
   sim.player.pos[0] = at[0]; sim.player.pos[1] = at[1]; sim.player.pos[2] = at[2];
   if (sim.player.vel) { sim.player.vel[0] = 0; sim.player.vel[1] = 0; sim.player.vel[2] = 0; }
+  // The bare-sim fallback writes the mirror, and the yaw with it, for the same reason and with
+  // the same honesty caveat as the position above: it is only true where there is no combat rig.
+  if (y !== undefined) sim.player.yaw = y;
 }
 
 /**
@@ -275,16 +359,19 @@ export function useDoor(sim, interiorId, bus) {
     return { entered: false, reason: 'closed', open_h: d.open_h, close_h: d.close_h };
   }
   const spawn = (d.continuity && d.continuity.interior_spawn) || [0, 0, 0];
+  const face = entryFacing(d);
   sim.env.interior = interiorId;
   sim.env.settlement = d.settlement;
-  placeBody(sim, spawn);
+  placeBody(sim, spawn, face ? face.yaw_deg : undefined);
   applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_enter');
     ev.interior = interiorId; ev.settlement = d.settlement; ev.name = d.name;
     ev.zones = (d.property_zones || []).length; ev.pos = [spawn[0], spawn[1], spawn[2]];
+    ev.yaw_deg = face ? face.yaw_deg : null; ev.yaw_source = face ? face.source : null;
   }
-  return { entered: true, interior: interiorId, pos: [spawn[0], spawn[1], spawn[2]] };
+  return { entered: true, interior: interiorId, pos: [spawn[0], spawn[1], spawn[2]],
+    yaw_deg: face ? face.yaw_deg : null, yaw_source: face ? face.source : null };
 }
 
 /** Back out onto the doorstep you came in by. */
@@ -294,12 +381,15 @@ export function leaveInterior(sim, bus) {
   const d = S.interior(id);
   if (!d) { sim.env.interior = null; applyCell(sim); return { left: true, interior: id, pos: null }; }
   const out = (d.continuity && d.continuity.exterior_spawn) || d.exterior_door || [0, 0, 0];
+  const face = exitFacing(d);
   sim.env.interior = null;
-  placeBody(sim, out);
+  placeBody(sim, out, face ? face.yaw_deg : undefined);
   applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_exit');
     ev.interior = id; ev.settlement = d.settlement; ev.pos = [out[0], out[1], out[2]];
+    ev.yaw_deg = face ? face.yaw_deg : null; ev.yaw_source = face ? face.source : null;
   }
-  return { left: true, interior: id, pos: [out[0], out[1], out[2]] };
+  return { left: true, interior: id, pos: [out[0], out[1], out[2]],
+    yaw_deg: face ? face.yaw_deg : null, yaw_source: face ? face.source : null };
 }

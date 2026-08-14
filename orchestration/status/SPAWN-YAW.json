@@ -1,8 +1,25 @@
 {
   "task": "SPAWN-YAW",
-  "state": "starting",
+  "state": "measuring",
   "started": "2026-08-14",
-  "goal": "Fix door-exit yaw defect (115 interiors), retarget first-ten-minutes tooling at the Thorn title-screen path, re-capture opening evidence at Thorn.",
-  "next_step": "read game/src/sim/settlement.js and door data schema",
-  "notes": []
+  "goal": "Fix the door-exit yaw defect (all 115 interiors), retarget the first-ten-minutes tooling at the real Thorn title-screen path, re-take the opening's evidence at Thorn.",
+  "next_step": "run tools/harness/door-exit-yaw.mjs over all 115 interiors, pick the rule, implement, delete-the-fix + inward-normal null control",
+  "files_touched": [
+    "orchestration/status/SPAWN-YAW.json",
+    "tools/harness/door-exit-yaw.mjs"
+  ],
+  "files_claimed": [
+    "game/src/sim/settlement.js",
+    "game/src/engine.js",
+    "tools/harness/first-ten.mjs",
+    "tools/harness/spawn-truth-thorn.mjs",
+    "reports/blog-feed.jsonl",
+    "reports/spawn-yaw/",
+    "docs/shots/2026-08-14-spawn-yaw/"
+  ],
+  "redundant_with": ["FIRST-TEN-MINUTES", "FIRST-TEN-MINUTES-critic"],
+  "notes": [
+    "engine.js claim is narrow: _placeBody() and the sim.placeBody hook only. FIRST-TEN-MINUTES claims engine.js populateSettlement() only, so we do not overlap.",
+    "contention was WAIT (5 browsers) at the start of this pass and GO (3 browsers) when the probe launched."
+  ]
 }

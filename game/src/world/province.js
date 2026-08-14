@@ -849,7 +849,14 @@ export class Province {
       if(!b.xf.length)continue;
       const geo=this._geologyGeo(b.art.terrain),im=new THREE.InstancedMesh(geo,this.regionMats[b.ri].rock,b.xf.length);
       for(let i=0;i<b.xf.length;i++)im.setMatrixAt(i,b.xf[i]);
-      im.instanceMatrix.needsUpdate=true;im.castShadow=false;im.receiveShadow=true;im.frustumCulled=true;
+      // The geology casts. Measured, not assumed: over the whole 5x5 resident set this bucket puts
+      // 3,600 triangles into the shadow atlas in Blackwood and 6,120 in the Salt Hills — one to two
+      // percent of what the terrain adds and under two percent of what the atlas already carries —
+      // and it is the population a missing contact shadow is most obvious under, because a boulder
+      // with no shadow does not sit on the ground, it hovers over a photograph of it.
+      // (`reports/visual-truth/shadow-casters/cost/shadow-casters.json`, arms
+      // `terrain+canopy` vs `terrain+canopy+geology`.)
+      im.instanceMatrix.needsUpdate=true;im.castShadow=true;im.receiveShadow=true;im.frustumCulled=true;
       im.name=`geology:${f.regions[b.ri].id}:${b.art.terrain}`;
       im.userData.worldArt={region:f.regions[b.ri].id,terrain:b.art.terrain,instances:b.xf.length};
       root.add(im);this.geologyCount+=b.xf.length;this.geologyRegions.push(f.regions[b.ri].id);
@@ -1287,11 +1294,21 @@ export class Province {
       const im = new THREE.InstancedMesh(b.geo, b.mat, b.xf.length);
       for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
       im.instanceMatrix.needsUpdate = true;
-      // Vegetation receives the fitted sun shadow but does not submit its branch/leaf population
-      // into that atlas. Actors, architecture, landmarks, rocks and structural props remain
-      // casters, preserving contact and terrain grounding without a second 800k-triangle plant
-      // render. This only changes the shadow pass; visible near plants retain full geometry.
-      im.castShadow = false;
+      // THE CANOPY CASTS; THE UNDERSTOREY DOES NOT. The old comment here declined the whole
+      // vegetation population on a cost argument that has now been measured and does not hold:
+      // at 1920x1080 on an NVIDIA L4, taking the shadow atlas from 485,458 triangles to 1,829,748
+      // moved the median frame from 13.73 ms to 13.98 ms at the Salt Hills and 14.37 to 14.30 at
+      // the spawn — inside the run-to-run noise band, which is +/-1.5 ms
+      // (`reports/runpod-gpu/runs/shadow-budget/`, 60 frames per arm, hardware-attested).
+      // What it BUYS is not marginal: the Blackwood region vista goes from 0.009% of pixels moving
+      // when the shadow is switched off to 17.7%, and the canopy is the whole of that — the
+      // understorey, the ground shells and the scatter's rock bucket add 0.2 points between them
+      // for another 476,000 triangles.
+      // `under` stays off deliberately: a grass blade is sub-texel in a 4096 map fitted to 150 m,
+      // so it cannot resolve a shadow, and a sub-texel caster is the classic source of shimmer as
+      // the camera moves — which is the one thing this piece could not test, having no motion
+      // capture budget. Reversal is this line.
+      im.castShadow = b.kind === 'canopy';
       im.receiveShadow = true;
       im.name = `near-${b.kind}:${f.regions[b.ri].id}`;
       if(b.kind==='canopy')this._registerOccludable(im,b.xf,this._occluderRadiusM(b,f.regions[b.ri]));
@@ -2413,12 +2430,16 @@ export class Province {
       const im = new THREE.InstancedMesh(b.geo, b.mat, b.xf.length);
       for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
       im.instanceMatrix.needsUpdate = true;
-      // Tile scatter begins outside the rebuilt 70 m near disc and extends over the full 5x5
-      // resident set. Submitting its tens of thousands of distant instances to a fitted 120 m
-      // sun atlas cost 18 ms on the T4 while resolving no stable silhouette at that distance.
-      // The near disc below carries the same regional canopy forms as real casters; architecture,
-      // actors and landmarks remain casters through their own production builders.
-      im.castShadow = false;
+      // THE CANOPY CASTS; THE UNDERSTOREY AND THE SCATTER'S ROCKS DO NOT. The 18 ms on a T4 that
+      // the old comment here reported was the whole scatter into a 120 m atlas; the same question
+      // re-measured at 1920x1080 on an NVIDIA L4 against the current 150 m / 4096 fit finds no
+      // cost that clears the noise — every arm from 485,458 to 1,829,748 shadow-pass triangles
+      // sits between 13.28 and 15.53 ms median over 60 frames, and the ORDER of the arms is not
+      // even monotone in triangle count, which is what "below the noise" looks like.
+      // (`reports/runpod-gpu/runs/shadow-budget/artifacts/shadow-casters/hw-budget/`.)
+      // `canopy` is 605,072 of those triangles and buys the entire 17.7% of the Blackwood vista;
+      // `under` and `rock` are 392,702 more and buy 0.17 points between them. That is the split.
+      im.castShadow = b.kind === 'canopy';
       im.receiveShadow = true;
       im.name = `${b.kind}:${this.field.regions[b.ri].id}`;
       if(b.kind==='canopy')this._registerOccludable(im,b.xf,this._occluderRadiusM(b,this.field.regions[b.ri]));

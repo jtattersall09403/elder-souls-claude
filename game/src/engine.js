@@ -7725,11 +7725,33 @@ export class Engine {
    * `y` is taken as given rather than snapped to the province: an interior floor is a plane and
    * `groundAt()` would drag the body to the heightfield under the building.
    */
-  _placeBody(x, y, z) {
+  _placeBody(x, y, z, yaw) {
     const p = this.sim.player;
     p.pos[0] = Number(x); p.pos[1] = Number(y); p.pos[2] = Number(z);
     if (p.vel) { p.vel[0] = 0; p.vel[1] = 0; p.vel[2] = 0; }
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
+    // ---- AND WHICH WAY IT FACES ---------------------------------------------------------------
+    //
+    // `yaw` is optional and everything that does not pass one is unchanged. `sim/settlement.js`
+    // passes one on every door in the game, because a placement that writes position and not
+    // orientation leaves you facing whatever you faced before the teleport — a wall, on the first
+    // frame of the game (`reports/spawn-truth/2026-08-14-spawn-truth.md` §3).
+    //
+    // THE CAMERA IS SET TOO, and that is the load-bearing half. `stepCamera`'s auto-recentre
+    // walks the camera towards the body at `recentre_yaw_clamp_deg_per_frame` = 1.5°/frame, so a
+    // 180° correction takes two seconds of the camera grinding round — during which the player is
+    // still looking at the wall, which is the entire complaint. A cell transition is exactly where
+    // a snap is correct: there is no continuity of view across a door to preserve, and
+    // `_censusPlace()` already snaps both for the same reason.
+    //
+    // Safe inside the armed determinism guard, unlike `teleport()`'s `_settleCamera()`: these are
+    // field writes on the sim, with no wall clock and no load boundary. `stepCamera` runs later in
+    // the same step and resolves the arm from them.
+    if (Number.isFinite(yaw)) {
+      const y360 = ((Number(yaw) % 360) + 360) % 360;
+      p.yaw = y360;
+      if (this.sim.camera) { this.sim.camera.yaw = y360; this.sim.camera.yawRate = 0; }
+    }
     // The mire counter, the fall in progress and the breath clock belong to where the body WAS.
     if (this.traversal) this.traversal.reset();
     if (this.hazards) this.hazards.reset();

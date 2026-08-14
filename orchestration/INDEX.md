@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `69295a6a`: 955 tools, 157 reference
+so it cannot drift. Generated at `faa44d58`: 956 tools, 157 reference
 items, 186 pieces in flight.
 
 Its purpose is to stop 186+ concurrent agents each paying separately to discover the
@@ -964,7 +964,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 22
+### `tools/visual/` — 23
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -985,6 +985,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shadow-casters.mjs` — **no header comment**
+- `tools/visual/w1-30-terrain-acne-ab.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
 - `tools/visual/w1-30b-probe.mjs` — **no header comment**
 - `tools/visual/w1-30b-roughness.mjs` — **no header comment**
@@ -1190,7 +1191,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **258 tools have no header comment**, so nobody can tell what they do without
+> **259 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1368,9 +1369,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
 | `SPAWN-YAW` | measuring | run tools/harness/door-exit-yaw.mjs over all 115 interiors, pick the rule, implement, dele | `orchestration/status/SPAWN-YAW.json` `tools/harness/door-exit-yaw.mjs` |
 | `W1-30DE-REMEDIATION` | ? | hardware render of profile=street on a RunPod pod, then report | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` |
-| `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
 | `W1-30-SHADOW-CASTERS` | landed-pending-fresh-critic | A fresh critic on R1 above all — it is the change with the largest blast radius and it was | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-14-r6` | ? | Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independen | `game/data/npcs/spellwrights.json` `game/src/engine.js` `game/src/save/state.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/magic/system.js` `orchestration/status/W1-14-r6.json` |
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
