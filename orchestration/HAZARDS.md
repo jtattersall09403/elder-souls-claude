@@ -66,6 +66,18 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 8. Two measurement traps that cost ~40 minutes each today
+
+**Arm-to-arm image diffs are meaningless at a foliage site.** Two frames that look identical to a
+person differed on **77% of pixels** — wind, alpha-tested leaf edges and sub-pixel sampling move
+almost everything every frame. A diff between *arms* therefore measures noise, not the change. Only
+a **within-arm sabotage diff** — same arm, one thing deliberately broken — carries signal. A visual
+agent that reports "X% of pixels moved" between two arms has measured its own foliage.
+
+**`| tail -N` buffers the whole pipeline until the command exits.** Two healthy capture runs looked
+hung and were killed; roughly forty minutes lost, twice. If you need to watch progress, write to a
+file and read the file — do not pipe a long-running capture through `tail`.
+
 ## 7. A git worktree cannot render the game — and it fails as `GAME_BROKEN`
 
 **The orchestrator moved most agents into isolated worktrees to stop the clobbering, and thereby

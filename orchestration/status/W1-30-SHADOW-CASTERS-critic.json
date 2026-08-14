@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-30-SHADOW-CASTERS-critic",
+  "role": "critic",
+  "piece": "W1-30-SHADOW-CASTERS",
+  "status": "running",
+  "state": "reading",
+  "branch": "codex/wave1-build-experiment",
+  "summary": "Fresh critic on the shadow/fog/shader-chunk round. Did not build it. Order: (1) R1 blast radius — is sky.js actually better, re-verify W1-30F's 13/13 height-fog credit, sweep for other module-scope ShaderChunk patches, confirm the commented path is dead; (2) motion evidence for the canopy on hardware; (3) re-take the canopy frame-time budget independently; (4) own the Deep Marshes bands.",
+  "next_step": "Read aerial.js, sky.js, province.js, renderer.js, W1-30B/F status, plan W1-30, board.json, rulings W1/W2.",
+  "files_claimed": [
+    "orchestration/status/W1-30-SHADOW-CASTERS-critic.json",
+    "corpus/90-verdicts/wave1/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-30-SHADOW-CASTERS-critic.json"
+  ],
+  "redundant_with": []
+}

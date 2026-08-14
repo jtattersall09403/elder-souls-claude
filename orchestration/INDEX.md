@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ce00ede9`: 957 tools, 157 reference
-items, 186 pieces in flight.
+so it cannot drift. Generated at `4815a2cc`: 958 tools, 157 reference
+items, 187 pieces in flight.
 
-Its purpose is to stop 186+ concurrent agents each paying separately to discover the
+Its purpose is to stop 187+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -390,7 +390,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 250
+### `tools/harness/` — 251
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -541,6 +541,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/mag-vfx.mjs` — RI-MAG05's evidence, captured.
 - `tools/harness/map-probe.mjs` — the evidence for W1-MAP: the discovery map (ARBITRATION seam S35).
 - `tools/harness/map-shots.mjs` — photograph the discovery map, early and well-travelled.
+- `tools/harness/opening-capture.mjs` — **no header comment**
 - `tools/harness/prg-encumbrance.mjs` — W1-16 round 2.
 - `tools/harness/run-headless.mjs` — boot the game in headless Chromium, run a named scenario, write artifacts to a run directory.
 - `tools/harness/save-ai-consumption.mjs` — RI-MTH07 for the restored enemy AI, plus RULES 6 in full.
@@ -1192,7 +1193,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **259 tools have no header comment**, so nobody can tell what they do without
+> **260 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1370,10 +1371,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30DE-REMEDIATION` | ? | none — report filed at reports/w1-30de-remediation/README.md. Soulrest street row stays bl | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` `orchestration/status/W1-30D.md` |
+| `W1-30-SHADOW-CASTERS-critic` | reading | Read aerial.js, sky.js, province.js, renderer.js, W1-30B/F status, plan W1-30, board.json, | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` |
 | `W1-30-SHADOW-CASTERS` | landed-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, and it changes the at | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |
 | `W1-MAP-DEFECTS` | ? |  | `orchestration/status/W1-MAP-DEFECTS.json` `corpus/00-doctrine/AMENDMENT-W1-MAP-02.md` `game/src/ui/screens/map.js` `game/src/ui/screens/inventory.js` `game/src/ui/system.js` `tools/harness/map-probe.mjs` |
 | `SPAWN-YAW` | measuring | run tools/harness/door-exit-yaw.mjs over all 115 interiors, pick the rule, implement, dele | `orchestration/status/SPAWN-YAW.json` `tools/harness/door-exit-yaw.mjs` |
-| `W1-30DE-REMEDIATION` | ? | hardware render of profile=street on a RunPod pod, then report | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` |
 | `W1-14-r6` | ? | Fresh critic reruns the satisfied W1-14 seven-item native decision manifest and independen | `game/data/npcs/spellwrights.json` `game/src/engine.js` `game/src/save/state.js` `game/src/sim/magic/enchant-counter.js` `game/src/sim/magic/system.js` `orchestration/status/W1-14-r6.json` |
 | `HUD-OUT-OF-COMBAT` | corpus-landed-verified-on-remote | Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), b | `corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)` `corpus/00-doctrine/ARBITRATION.md (S54 appended)` `corpus/00-doctrine/subsystems.json (ui.hud.world registered)` `corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)` `corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)` `orchestration/INDEX.md (regenerated)` |
 | `spawn-truth-thorn-lilmoth` | ? | none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should chan | `tools/harness/spawn-truth-thorn.mjs` `reports/spawn-truth/2026-08-14-spawn-truth.md` `reports/spawn-truth/shots/desktop-00-title.png` `reports/spawn-truth/shots/desktop-01-barge-hold.png` `reports/spawn-truth/shots/desktop-02-writ-house-done.png` `reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png` |
