@@ -1808,19 +1808,25 @@ function experimentSplitTrial(agents, scoresRows) {
         && t3.after_planned_split.separate_critics_per_piece < t3.before_unsplit.separate_critics_per_piece));
 
   // ================= THE FALSIFIER — does a deliberate note make a handoff DEARER? ==================
+  // The gradient's strata are not chosen after looking: "none" is nothing written down at all, and
+  // thin/rich split the rest at their own median. Which CONTRAST carries the reading depends on what
+  // the data actually contains — on this fleet nobody inherited literally nothing, so rich-vs-thin is
+  // the contrast that exists and rich-vs-none is reported as empty rather than quietly dropped.
   const cache = new Map();
-  const gradientFor = (arm, controls) => {
+  const gradientFor = (arm, controls, label) => {
     const d = orientationDelta(arm, controls);
     const byKey = new Map(d.rows.map((r) => [r.key, r]));
     const pts = [];
+    let noPiece = 0;
     for (const a of arm) {
       const row = byKey.get(a.key);
-      if (!row || !a.pieceKey) continue;
+      if (!row) continue;
+      if (!a.pieceKey) { noPiece++; continue; }
       const lb = statusBytesAt(a.pieceKey, a.first, cache);
       pts.push({ key: a.key, piece: a.pieceKey, bytes: lb.bytes, files: lb.files,
                  delta_usd: row.delta_usd, orient_requests: row.orient_requests });
     }
-    if (!pts.length) return { n: 0 };
+    if (pts.length < 2 * LEAVE_BEHIND_MIN_PER_STRATUM) return { arm: label, n: pts.length, excluded_no_piece_in_description: noPiece, usable: false };
     const withNote = pts.filter((p) => p.bytes > 0);
     const cut = withNote.length ? median(withNote.map((p) => p.bytes)) : 0;
     const strat = {
@@ -1832,36 +1838,66 @@ function experimentSplitTrial(agents, scoresRows) {
       median_leave_behind_bytes: rows.length ? Math.round(median(rows.map((p) => p.bytes))) : null,
       median_delta_usd: rows.length ? +median(rows.map((p) => p.delta_usd)).toFixed(4) : null,
       median_orient_requests: rows.length ? median(rows.map((p) => p.orient_requests)) : null });
+    // The contrast, plus a LABEL-SHUFFLE null on the identical arithmetic — the same discipline N1
+    // uses on the primary statistic. The strata are small, so a difference of medians without a
+    // permutation null is a number nobody should act on.
+    const contrastOf = (A, B) => {
+      if (A.length < LEAVE_BEHIND_MIN_PER_STRATUM || B.length < LEAVE_BEHIND_MIN_PER_STRATUM) return null;
+      const obs = +(median(A.map((p) => p.delta_usd)) - median(B.map((p) => p.delta_usd))).toFixed(4);
+      const pool = [...A, ...B].map((p) => p.delta_usd);
+      const rnd = mulberry32(20260814);
+      let ge = 0;
+      const draws = 2000;
+      for (let it = 0; it < draws; it++) {
+        const sh = pool.slice();
+        for (let i = sh.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [sh[i], sh[j]] = [sh[j], sh[i]]; }
+        const v = median(sh.slice(0, A.length)) - median(sh.slice(A.length));
+        if (Math.abs(v) >= Math.abs(obs)) ge++;
+      }
+      return { usd: obs, n_richer: A.length, n_poorer: B.length, shuffle_p: +((ge + 1) / (draws + 1)).toFixed(4) };
+    };
     const reg = regress(pts.map((p) => Math.log10(1 + p.bytes)), pts.map((p) => p.delta_usd));
-    return { n: pts.length, split_at_bytes: Math.round(cut),
-             none: sm(strat.none), thin: sm(strat.thin), rich: sm(strat.rich),
-             rich_minus_none_usd: (strat.rich.length && strat.none.length)
-               ? +(median(strat.rich.map((p) => p.delta_usd)) - median(strat.none.map((p) => p.delta_usd))).toFixed(4) : null,
-             slope_usd_per_decade_of_bytes: reg.slope != null ? +reg.slope.toFixed(4) : null, r2: reg.r2 != null ? +reg.r2.toFixed(3) : null };
+    const rvn = contrastOf(strat.rich, strat.none);
+    const rvt = contrastOf(strat.rich, strat.thin);
+    return { arm: label, n: pts.length, excluded_no_piece_in_description: noPiece,
+             split_at_bytes: Math.round(cut), none: sm(strat.none), thin: sm(strat.thin), rich: sm(strat.rich),
+             rich_minus_none: rvn, rich_minus_thin: rvt,
+             primary_contrast: rvn ? 'rich_minus_none' : (rvt ? 'rich_minus_thin' : null),
+             primary_usd: rvn ? rvn.usd : (rvt ? rvt.usd : null),
+             primary_p: rvn ? rvn.shuffle_p : (rvt ? rvt.shuffle_p : null),
+             slope_usd_per_decade_of_bytes: reg.slope != null ? +reg.slope.toFixed(4) : null,
+             r2: reg.r2 != null ? +reg.r2.toFixed(3) : null,
+             usable: !!(rvn || rvt) };
   };
-  const gAcc = gradientFor(accidental, fresh);
-  const gFreshControl = gradientFor(fresh.filter((a, i) => i % 3 === 0), fresh);  // the maturity control
+  const gAcc = gradientFor(accidental, fresh, 'accidental handoffs');
+  const gCtl = gradientFor(fresh, fresh, 'fresh agents (maturity control)');
 
-  const usable = !!gAcc.n && gAcc.rich.n >= LEAVE_BEHIND_MIN_PER_STRATUM && gAcc.none.n >= LEAVE_BEHIND_MIN_PER_STRATUM;
-  const controlAlso = gFreshControl.rich_minus_none_usd;
+  const controlSameContrast = gCtl.usable && gAcc.primary_contrast
+    ? (gCtl[gAcc.primary_contrast] ? gCtl[gAcc.primary_contrast].usd : null) : null;
+  // The control FIRES when it reproduces the arm's effect in the SAME direction at half the size or
+  // more — i.e. when "a richer written record" is really "an older piece" and has nothing to do with
+  // a handoff. A control that moves the OTHER way does not merely fail to explain the effect; it
+  // means the confound is working AGAINST the reading, which is the strongest position available.
+  const controlFires = controlSameContrast != null && gAcc.primary_usd != null
+    && Math.sign(controlSameContrast) === Math.sign(gAcc.primary_usd)
+    && Math.abs(controlSameContrast) >= 0.5 * Math.abs(gAcc.primary_usd);
   const falsifier = {
-    question: 'CH-05 named exactly one falsifier: a PLANNED handoff costing MORE than an accidental one, because a deliberate status file is larger than what a killed agent left behind. This tests its sign on the gradient that already exists.',
-    design: 'Among the accidental handoffs, what the predecessor left behind varies from nothing to several KB. Leave-behind is measured as the bytes of the piece\'s orchestration/status/ file(s) IN GIT AS OF THE SUCCESSOR\'S FIRST REQUEST — not as of now, because the file has been rewritten since. Successors are stratified none / thin / rich and their time-matched orientation deltas compared.',
+    question: 'CH-05 named exactly one falsifier: a PLANNED handoff costing MORE than an accidental one, because a deliberate status file is larger than what a killed agent left behind. This tests its sign on a gradient that already exists.',
+    design: 'Among the accidental handoffs, what the predecessor left behind varies from nothing to tens of KB. Leave-behind is measured as the bytes of the piece\'s orchestration/status/ files IN GIT AS OF THE SUCCESSOR\'S FIRST REQUEST — not as of now, because those files have been rewritten many times since. Successors are stratified none/thin/rich and their TIME-MATCHED orientation deltas compared, with a label-shuffle null on the contrast.',
     accidental_arm: gAcc,
-    maturity_control: { ...gFreshControl,
-      what_it_rules_out: 'A rich status file belongs to a MATURE piece, and a successor on a mature piece may orient faster because the piece is mature. Fresh agents — which resumed nothing — are stratified by the identical status-file size at their identical dispatch time. If they show the same gradient, the gradient is maturity and says nothing about notes.' },
-    control_fires: controlAlso != null && gAcc.rich_minus_none_usd != null
-      && Math.sign(controlAlso) === Math.sign(gAcc.rich_minus_none_usd)
-      && Math.abs(controlAlso) > 0.5 * Math.abs(gAcc.rich_minus_none_usd),
-    usable,
+    maturity_control: { ...gCtl,
+      what_it_rules_out: 'A big written record belongs to a MATURE piece, and an agent on a mature piece may orient differently because the piece is mature. Fresh agents — which resumed nothing — are stratified by the identical measurement at their identical dispatch times. If they show the same gradient in the same direction, the gradient is maturity and says nothing about handoff notes.' },
+    control_same_contrast_usd: controlSameContrast,
+    control_fires: controlFires,
+    usable: gAcc.usable,
   };
-  falsifier.reading = !usable
-    ? 'NOT USABLE — a stratum is too small to read a sign from.'
-    : falsifier.control_fires
-      ? `NOT USABLE — the maturity control moves the same way and at least half as far (${controlAlso} against ${gAcc.rich_minus_none_usd}), so the gradient is piece maturity, not the note. The falsifier is neither confirmed nor refuted and the trial must be dispatched to settle it.`
-      : gAcc.rich_minus_none_usd > 0
-        ? `FALSIFIER FIRES: successors who inherited a RICH note oriented ${gAcc.rich_minus_none_usd} MORE dearly than successors who inherited nothing, and the maturity control does not reproduce it. A planned split always writes the richest note there is, so the planned handoff is predicted ABOVE the accidental ${before1}. Dispatch the trial only with tripwire 1 armed at the first split piece.`
-        : `FALSIFIER DOES NOT FIRE: successors who inherited a RICH note oriented ${gAcc.rich_minus_none_usd} LESS dearly than successors who inherited nothing, and the maturity control does not reproduce it. A planned split writes the richest note there is, so the planned handoff is predicted at or BELOW the accidental ${before1}. This is the one direction that makes the trial cheaper than CH-05 assumed — it is NOT permission to skip tripwire 1.`;
+  falsifier.reading = !gAcc.usable
+    ? `NOT USABLE — ${gAcc.n} successors could be placed on the gradient (a description must name its piece for its status file to be findable) and no two strata reach ${LEAVE_BEHIND_MIN_PER_STRATUM}.`
+    : controlFires
+      ? `NOT USABLE — the maturity control moves the same way and at least half as far (${controlSameContrast} against ${gAcc.primary_usd}), so the gradient is piece maturity rather than the note. The falsifier is neither confirmed nor refuted, and only the dispatched trial can settle it.`
+      : gAcc.primary_usd > 0
+        ? `FALSIFIER FIRES: successors inheriting the RICHER written record oriented ${gAcc.primary_usd} MORE dearly (${gAcc.primary_contrast}, shuffle p = ${gAcc.primary_p}), and the maturity control does not reproduce it (${controlSameContrast}). A planned split always writes the richest note there is, so the planned handoff is predicted ABOVE the accidental ${before1}. Do not dispatch the trial without tripwire 1 armed at the first split piece.`
+        : `FALSIFIER DOES NOT FIRE, and the confound pushes the other way. Successors inheriting the RICHER written record oriented ${Math.abs(gAcc.primary_usd)} LESS dearly (${gAcc.primary_contrast}, shuffle p = ${gAcc.primary_p}), while the maturity control moves ${controlSameContrast >= 0 ? 'UPWARD' : 'downward'} by ${controlSameContrast} on the identical contrast — fresh agents on well-documented pieces orient MORE dearly, not less. So the confound cannot be manufacturing the handoff arm's gradient; it is working against it. A planned split writes the richest note there is, so the planned handoff is predicted at or BELOW the accidental ${before1}. This is NOT permission to skip tripwire 1: the strata are small (n = ${gAcc.rich.n} and ${gAcc.thin.n}) and this measures the SIZE of a note, never its quality.`;
 
   // ================= VERDICT ========================================================================
   const fired = [t1, t2, t3].filter((t) => t.fires === true).map((t) => t.tripwire.split(' —')[0]);
