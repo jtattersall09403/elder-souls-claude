@@ -71,6 +71,7 @@
 //   node tools/land.mjs "headline" [body...]        # land the shared tree (what bank.mjs now calls)
 //   node tools/land.mjs "headline" --paths a,b,c    # land only these paths — for a single agent
 //   node tools/land.mjs "headline" --dry-run        # say what would land, touch nothing
+//   node tools/land.mjs "headline" --allow-deletions  # yes, I really did delete those files
 //   node tools/land.mjs --sync                      # pull others' work into the shared tree, safely
 //   node tools/land.mjs --self-test                 # prove it, including that the old way loses work
 //
@@ -162,7 +163,7 @@ function claimedPaths(root) {
  * which is the orchestrator's bank (rule 28) and is deliberate: an hour of unbanked work dies with
  * the next container restart, and this box has restarted twice in a day.
  */
-function buildOurs(root, { paths = null, exclude = [] } = {}) {
+function buildOurs(root, { paths = null, exclude = [], allowDeletions = false } = {}) {
   const idx = join(tmpdir(), `land-idx-${process.pid}-${Date.now()}`);
   const env = { GIT_INDEX_FILE: idx };
   try {
@@ -178,9 +179,36 @@ function buildOurs(root, { paths = null, exclude = [] } = {}) {
       const drop = tracked.filter((p) => exclude.some((x) => p === x || p.startsWith(x.replace(/\/*$/, '/'))));
       if (drop.length) git(root, ['reset', '-q', head, '--', ...drop], { env });
     }
+
+    // ------------------------------------------------------------------------------------------
+    // THE THIRD MECHANISM — found by this tool deleting a file on its own first real run.
+    //
+    // Fixing the origin-vs-HEAD defect leaves one hole, and it is not small. `HEAD` is only a
+    // faithful description of this disk if this disk was CHECKED OUT from it. In a shared tree it is
+    // not: HEAD advances through merges and `reset --mixed` all day, while the files those commits
+    // introduced were written in some other agent's worktree and never touched this disk at all. So
+    // HEAD's tree is a superset of the disk, and `add -A` reads the difference as deletions —
+    // faithfully, and catastrophically. On the first live bank this deleted a screenshot an agent
+    // had pushed twenty minutes earlier. One file, but the mechanism has no upper bound.
+    //
+    // There is no way to tell "an agent deliberately deleted this" from "this was never written
+    // here" by looking at the tree, because both are exactly "in HEAD, not on disk". So stop trying
+    // to tell them apart and make the asymmetry the answer instead: a wrongly-kept file is a dead
+    // byte somebody deletes later; a wrongly-deleted file is an agent's afternoon. **Deletions are
+    // not carried unless they were asked for** — by naming the path in `--paths`, which is an
+    // explicit claim, or by `--allow-deletions`. Everything suppressed is printed, never silent.
+    //
+    // The standing cure for the underlying drift is `land.mjs --sync`, which writes the branch's
+    // files onto this disk without touching anything anybody is editing.
+    const deletions = git(root, ['diff', '--cached', '--name-only', '--diff-filter=D', head], { env })
+      .split('\n').filter(Boolean);
+    const namedExplicitly = (p) => (paths || []).some((x) => p === x || p.startsWith(x.replace(/\/*$/, '/')));
+    const suppressed = allowDeletions ? [] : deletions.filter((p) => !namedExplicitly(p));
+    if (suppressed.length) git(root, ['reset', '-q', head, '--', ...suppressed], { env });
+
     const changed = git(root, ['diff', '--cached', '--name-only', head], { env }).split('\n').filter(Boolean);
     const tree = git(root, ['write-tree'], { env });
-    return { head, tree, changed, idx };
+    return { head, tree, changed, suppressed, idx };
   } finally {
     try { rmSync(idx, { force: true }); } catch { }
   }
@@ -307,7 +335,7 @@ export function land(root, message, opts = {}) {
         appendFileSync(join(root, '.git', 'es-land-journal.jsonl'),
           JSON.stringify({ at: new Date().toISOString(), commit, ours: oursCommit, branch, files: ours.changed.length, conflicts: conflicts.length }) + '\n');
       } catch { }
-      return { landed: true, commit, ours: oursCommit, changed: ours.changed, conflicts, decisions, attempt };
+      return { landed: true, commit, ours: oursCommit, changed: ours.changed, suppressed: ours.suppressed || [], conflicts, decisions, attempt };
     }
     last = push.out;
     if (!/non-fast-forward|fetch first|rejected|stale info/i.test(push.out)) {
@@ -322,17 +350,42 @@ export function land(root, message, opts = {}) {
  * Verify against the remote blob (hazard 2). Local state is not evidence; this re-fetches and
  * compares object ids, so a "success" that did not actually change the remote is caught.
  */
-export function verify(root, paths, { branch, remote = 'origin' } = {}) {
+export function verify(root, paths, { branch, remote = 'origin', commit, ours, decisions = [] } = {}) {
   const b = branch || currentBranch(root);
   gitTry(root, ['fetch', '-q', remote, b]);
   const bad = [];
+
+  // Part one, and the part that actually matters: is the commit we pushed ON the branch? Everything
+  // else is detail. A commit that pushed successfully and is not an ancestor of the tip has been
+  // overwritten by somebody, which is the disease itself and must be shouted about.
+  if (commit) {
+    if (!gitTry(root, ['merge-base', '--is-ancestor', commit, `${remote}/${b}`], { quiet: true }).ok) {
+      bad.push({ path: `(commit ${commit.slice(0, 10)})`, why: `pushed, but it is NOT an ancestor of ${remote}/${b} — something overwrote it` });
+    }
+  }
+
+  // Part two: did each path we carried arrive with the content we committed? Compare against the
+  // commit we made, NOT against the file on disk. The first version of this compared to disk and
+  // cried failure five times on its first live run: four were generated files the conflict policy
+  // had deliberately resolved to the other side, and the fifth was a live agent rewriting its own
+  // file in the seconds between our snapshot and our check. Neither is a loss, and a verifier that
+  // reports losses that are not losses gets ignored — which is how a real one gets missed.
+  const overridden = new Set(decisions.filter((d) => /generated|not claimed/.test(d.why)).map((d) => d.path));
+  const src = commit || ours;
   for (const p of paths) {
-    const onDisk = existsSync(join(root, p));
-    const r = gitTry(root, ['rev-parse', `${remote}/${b}:${p}`], { quiet: true });
-    if (!onDisk) { if (r.ok) bad.push({ path: p, why: 'deleted locally but still on the remote' }); continue; }
-    if (!r.ok) { bad.push({ path: p, why: 'NOT ON THE REMOTE' }); continue; }
-    const local = git(root, ['hash-object', '--', join(root, p)]);
-    if (local !== r.out) bad.push({ path: p, why: `remote blob differs (local ${local.slice(0, 8)} vs remote ${r.out.slice(0, 8)})` });
+    if (overridden.has(p)) continue;                       // policy chose the other side, on purpose
+    const want = src ? gitTry(root, ['rev-parse', `${src}:${p}`], { quiet: true })
+      : (existsSync(join(root, p)) ? { ok: true, out: git(root, ['hash-object', '--', join(root, p)]) } : { ok: false });
+    const got = gitTry(root, ['rev-parse', `${remote}/${b}:${p}`], { quiet: true });
+    if (!want.ok) { if (got.ok && src) bad.push({ path: p, why: 'we recorded a deletion but it is still on the remote' }); continue; }
+    if (!got.ok) { bad.push({ path: p, why: 'NOT ON THE REMOTE' }); continue; }
+    if (want.out !== got.out) {
+      // The branch may simply have moved on since we landed — a later commit legitimately changing
+      // the file is not our landing failing. Ours is fine as long as it was there when we put it there.
+      const atOurs = commit ? gitTry(root, ['rev-parse', `${commit}:${p}`], { quiet: true }) : { ok: false };
+      if (atOurs.ok && atOurs.out === want.out) continue;
+      bad.push({ path: p, why: `remote blob differs (committed ${want.out.slice(0, 8)} vs remote ${got.out.slice(0, 8)})` });
+    }
   }
   return bad;
 }
@@ -429,14 +482,6 @@ function landTheOldWay(work, msg) {
   `);
 }
 
-/** LAND with its base discovery sabotaged back to origin — one behaviour changed, nothing else. */
-function landSabotaged(work, msg) {
-  // `land()` computes OURS from HEAD. Point HEAD's ref at origin's tip without touching the working
-  // tree and the discovery is now the old, wrong one, while every other line of land() is unchanged.
-  sh(work, `git fetch -q origin main && git update-ref refs/heads/main $(git rev-parse origin/main)`);
-  return land(work, msg, { branch: 'main', mine: [] });
-}
-
 const remoteHas = (work, path) => {
   sh(work, `git fetch -q origin main`);
   try { return execFileSync('git', ['cat-file', 'blob', `origin/main:${path}`], { cwd: work, encoding: 'utf8', maxBuffer: 1 << 26 }); }
@@ -454,7 +499,15 @@ function selfTest() {
   // --- Scenario 1: two agents, two different new files, one shared working tree ---------------
   // Agent A writes and lands. Agent B — who never fetched, whose working tree therefore has never
   // contained A's file — writes and lands. Does A's file survive?
-  for (const arm of ['current', 'land', 'sabotaged']) {
+  //
+  // RULES rule 6 names a fourth failure shape: **two guards for one defect**, where deleting either
+  // alone changes nothing and only deleting both moves the number. That is exactly what is here, and
+  // the first version of this suite got it wrong — sabotaging base discovery alone kept passing, and
+  // a lazier author would have called that a green light. It is not. `land()` has TWO independent
+  // guards against this loss: the base is HEAD not origin, and deletions are not carried unless
+  // asked for. Either one alone is sufficient in this scenario. So it runs as a 2x2, and only the
+  // corner with both guards removed is allowed to be red.
+  for (const arm of ['current', 'land', 'sab-base', 'sab-deletions', 'sab-both']) {
     const { work } = makeWorld(`s1-${arm}`);
     writeFileSync(join(work, 'agent-a.txt'), 'A did an hour of work\n');
     if (arm === 'current') landTheOldWay(work, 'A lands'); else land(work, 'A lands', { branch: 'main', mine: [] });
@@ -469,14 +522,23 @@ function selfTest() {
     sh(work, `git reset -q --mixed HEAD~1 2>/dev/null || true`);
     writeFileSync(join(work, 'agent-b.txt'), 'B did an hour of work\n');
     let err = null;
+    const brokenBase = arm === 'sab-base' || arm === 'sab-both';
+    const brokenDeletions = arm === 'sab-deletions' || arm === 'sab-both';
     try {
       if (arm === 'current') landTheOldWay(work, 'B lands');
-      else if (arm === 'sabotaged') landSabotaged(work, 'B lands');
-      else land(work, 'B lands', { branch: 'main', mine: [] });
+      else {
+        // Sabotage guard 1 by pointing HEAD at origin's tip without touching the disk — which is
+        // precisely the wrong base discovery, one behaviour changed and nothing else.
+        if (brokenBase) sh(work, `git fetch -q origin main && git update-ref refs/heads/main $(git rev-parse origin/main)`);
+        land(work, 'B lands', { branch: 'main', mine: [], allowDeletions: brokenDeletions });
+      }
     } catch (e) { err = String(e.message).slice(0, 160); }
     const a = remoteHas(work, 'agent-a.txt'), b = remoteHas(work, 'agent-b.txt');
     const got = err ? 'error' : (a && b) ? 'both' : a ? 'only-A' : b ? 'only-B' : 'neither';
-    record('two agents, two files', arm, arm === 'land' ? 'both' : 'only-B', got, err || `A=${!!a} B=${!!b}`);
+    // Only the both-guards-removed corner may lose work. The single-sabotage corners MUST still
+    // pass — if one of them went red, the guards would not be independent and this comment is wrong.
+    const expected = (arm === 'current' || arm === 'sab-both') ? 'only-B' : 'both';
+    record('two agents, two files', arm, expected, got, err || `A=${!!a} B=${!!b}`);
   }
 
   // --- Scenario 2: the append-only shared log, which was clobbered three times in forty minutes ---
@@ -533,7 +595,7 @@ function selfTest() {
     const { work } = makeWorld('s5');
     land(work, 'seed', { branch: 'main', mine: [] });
     rmSync(join(work, 'shared.txt'), { force: true });
-    land(work, 'delete shared.txt on purpose', { branch: 'main', mine: [] });
+    land(work, 'delete shared.txt on purpose', { branch: 'main', mine: [], paths: ['shared.txt'] });
     const got = remoteHas(work, 'shared.txt') === null ? 'deleted' : 'still-there';
     record('a real deletion lands', 'land', 'deleted', got, 'a merge-only scheme that cannot delete is its own bug');
   }
@@ -569,8 +631,11 @@ function selfTest() {
     return 1;
   }
   if (fails.length) { console.log(`\n  ${fails.length} check(s) failed.`); return 1; }
-  console.log('\n  All arms behaved as the diagnosis predicts: the old recipe loses work, land() does not,');
-  console.log('  and land() with its base discovery sabotaged loses work again — so the base IS the mechanism.');
+  console.log('\n  All arms behaved as the diagnosis predicts. Read the 2x2 in scenario 1 carefully:');
+  console.log('  land() carries TWO independent guards (base=HEAD, and deletions are opt-in). Removing');
+  console.log('  either one alone still keeps both agents\' work; removing BOTH loses an agent, exactly');
+  console.log('  like the old recipe does. That is RULES rule 6\'s fourth shape, reported as such rather');
+  console.log('  than dressed up as one clean fix — a single-sabotage arm passing is not a green light.');
   return 0;
 }
 
@@ -606,6 +671,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     branch: val('branch') || undefined,
     remote: val('remote') || undefined,
     dryRun: flag('dry-run'),
+    allowDeletions: flag('allow-deletions'),
   };
   const message = words.length > 1
     ? `${words[0]}\n\n${words.slice(1).join('\n\n')}\n\nCo-Authored-By: Claude Opus 5 <noreply@anthropic.com>`
@@ -618,8 +684,16 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (!r.landed) { console.log(`land: ${r.reason}${r.changed?.length ? ` (${r.changed.length} path(s) would land)` : ''}`); process.exit(opts.dryRun ? 0 : 0); }
   console.log(`land: ${r.commit.slice(0, 10)} — ${r.changed.length} path(s), attempt ${r.attempt}.`);
   for (const d of r.decisions) console.log(`   conflict ${d.path}: ${d.why}${d.rescue ? ` — other side kept at ${d.rescue}` : ''}`);
+  if (r.suppressed?.length) {
+    console.log(`land: ${r.suppressed.length} path(s) are in HEAD but not on this disk. NOT carried as deletions —`);
+    console.log('      in a shared tree that almost always means "written in another agent\'s worktree", not "removed".');
+    for (const p of r.suppressed.slice(0, 12)) console.log(`   kept ${p}`);
+    if (r.suppressed.length > 12) console.log(`   … and ${r.suppressed.length - 12} more`);
+    console.log('      Run `node tools/land.mjs --sync` to bring them onto this disk, or pass --allow-deletions if you meant it.');
+  }
 
-  const bad = verify(HERE, r.changed.filter((p) => !p.startsWith('reports/land-rescue/')), { branch: opts.branch });
+  const bad = verify(HERE, r.changed.filter((p) => !p.startsWith('reports/land-rescue/')),
+    { branch: opts.branch, commit: r.commit, ours: r.ours, decisions: r.decisions });
   if (bad.length) {
     console.error(`land: VERIFICATION FAILED against the remote blob for ${bad.length} path(s) — this is NOT banked:`);
     for (const b of bad.slice(0, 20)) console.error(`   ${b.path}: ${b.why}`);

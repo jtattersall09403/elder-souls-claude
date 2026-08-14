@@ -1,12 +1,14 @@
 {
   "task_id": "W1-MW-UI-REFS",
-  "title": "Morrowind interface references + dialogue window spec + topics-unlock-topics plan",
-  "started_at": "2026-08-14T00:00:00Z",
+  "role": "corpus",
+  "title": "Morrowind interface references + the dialogue window's specification + the topics-unlock-topics plan",
+  "started_at": "2026-08-14T13:45:00Z",
   "state": "running",
   "branch": "codex/wave1-build-experiment",
-  "next_step": "read RI-VIS09, refs/MANIFEST.json structure, then acquire",
+  "next_step": "eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UIX08 dialogue-window spec; write the topics plan",
+  "headline_finding": "The dispatch premise is wrong in the project's favour and wrong in a way that explains the defect. The project DOES hold Morrowind interface references: corpus/70-visual/refs/morrowind/REF-A12b/ has 33 Steam captures acquired 2026-08-06 - dialogue x5, journal x3, inventory x4, map x5, character_sheet x4, barter x3, book_reader x4, tooltip x2, level_up x2, char_creation x1 - all manifested, eye-verified, vanilla_confidence: high, with reference_for listing RI-UIX03 and RI-UIX06. What is missing is not the pixels. It is that RI-VIS09 (the register of what pixels we hold) never mentions REF-A12b, its SS2 routing table still gives RI-UIX* only the OpenMW XML and explicitly forbids citing it for appearance, and REF-A12/README.md still ends 'one 1024x768 vanilla screenshot each ... is the only thing that would' close the appearance gap. A UI builder who obeyed the register was TOLD the reference did not exist. That is the gap to close.",
   "deliverables": {
-    "d1_references": "not_started",
+    "d1_references": "in_progress - owner screenshot to vendor as REF-A12c; REF-A12b to be surfaced in RI-VIS09 SS1/SS2/SS3 and REF-A12/README.md",
     "d2_dialogue_window_spec": "not_started",
     "d3_topics_unlock_plan": "not_started"
   },
@@ -14,15 +16,33 @@
     "orchestration/status/W1-MW-UI-REFS.json"
   ],
   "files_claimed": [
-    "corpus/70-visual/refs/morrowind-ui/",
+    "corpus/70-visual/refs/morrowind/REF-A12c/",
+    "corpus/70-visual/refs/_provenance.json",
+    "corpus/70-visual/refs/_computed.json",
     "corpus/70-visual/refs/MANIFEST.json",
-    "orchestration/plans/",
+    "corpus/70-visual/refs/LICENCE-NOTE.md",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md",
+    "corpus/70-visual/refs/morrowind/REF-A12/README.md",
+    "corpus/86-ui/RI-UIX08-dialogue-window.md",
+    "orchestration/plans/W1-DLG-TOPIC-WEB.md",
     "orchestration/INDEX.md",
     "reports/blog-feed.jsonl"
   ],
+  "redundant_with": [
+    "HUD-OUT-OF-COMBAT",
+    "W1-DLG-WORDS",
+    "W1-MAP-DEFECTS"
+  ],
+  "overlap_declared": "HUD-OUT-OF-COMBAT owns the HUD corners of the owner's screenshot and corpus/86-ui/RI-UIX07 + ARBITRATION S54; it declared the same split from its side. I own the dialogue PANEL and the reference vendoring/registration. W1-DLG-WORDS owns the dialogue TEXT (game/data/dialogue/); I specify the window that renders it and touch no dialogue content. W1-MAP-DEFECTS owns the map; I cite REF-A12b map captures without editing them.",
   "notes": [
-    "Sibling agents own dialogue TEXT and the MAP. This piece owns references + the dialogue WINDOW spec only."
+    "Owner's screenshot arrived at corpus/86-ui/com.google.android.keep_20260814145039.jpg, remote blob 733964c0b1a1f96d35f21ae022c83542c8429860, sha256 e9a0531c5a09e41214ce96136af2c60e11c2ca45b65b6e46c2473b32f66cba6a. It is a PNG despite the .jpg extension, 2376x1069.",
+    "MANIFEST.json has NO licence field on any record - the brief's 'licence: null' description is not literally what is on disk. Licensing is carried once, for the whole tree, in refs/LICENCE-NOTE.md. I state the position per-record explicitly rather than inheriting silently."
   ],
   "blocked_by": [],
-  "could_not_do": []
+  "could_not_do": [
+    "en.uesp.net and images.uesp.net: HTTP 403 behind a Cloudflare JS challenge (cf-mitigated: challenge). Not a proxy block - the CONNECT succeeded. No UESP interface page could be read.",
+    "web.archive.org: connection failure (curl exit, HTTP 000) on every attempt.",
+    "elderscrolls.fandom.com: HTTP 403.",
+    "Steam filedetails pages are now server-side-rendered JS and carry no image URL; the app-hub listing pages still do, and that is the route used."
+  ]
 }

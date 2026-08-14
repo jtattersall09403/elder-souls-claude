@@ -92,7 +92,7 @@ async function desktop() {
     await bootPlay(h);
     const push = async (label, key) => {
       if (key) { await h.page.keyboard.press(key); await h.page.waitForTimeout(320); }
-      const st = await h.page.evaluate(READ);
+      const st = await h.page.evaluate(READ).catch((e) => ({ read_failed: String(e && e.message || e).slice(0, 160) }));
       const file = await shot(h, `desktop-${String(leg.steps.length).padStart(2, '0')}-${label}`);
       leg.steps.push({ label, key: key || null, ...st, shot: file });
       say(`  ${label.padEnd(22)} key=${String(key || '-').padEnd(8)} mode=${String(st.mode).padEnd(10)} walkable=[${(st.walkable || []).join(',')}] refused=${JSON.stringify(st.refused)}`);

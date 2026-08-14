@@ -136,9 +136,14 @@ build depends on the change; the discovery model, the save format and the place 
    would be fogging the world map at a different scale. An arbiter or the owner ruling that the
    local view should behave as Morrowind's cell map would overturn §5's "in both views" and nothing
    else.
-3. **A Morrowind map reference.** This build was written **without one**. The project holds 24
-   Morrowind world images and Dark Souls interface references and **no image of Morrowind's own
-   map**; a sibling piece is acquiring interface references. If that reference lands and shows
-   something this amendment gets wrong — most likely about how much of the coast and river network
-   is drawn, or about whether unfound settlements are marked but unnamed rather than absent — the
-   reference wins.
+3. **A Morrowind map reference that contradicts it.** The dispatch said the project had none. It
+   now has five: `corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-map__mw-*.jpg`, landed by the
+   interface-reference acquisition. They were read before this amendment was applied and they
+   support every clause of it — **the landmass is drawn whole, out to the coast, with the sea a
+   flat field behind it; the only symbols on it are small square markers, one per known place;
+   there is not one road, track or line anywhere on the world map; and the region name sits in the
+   header**, which is what our `screen(S, 'map', …, m.regionName)` already draws. What they do
+   **not** settle is the state of a *fresh* character's world map: all five are late saves with the
+   province explored. If a first-hour capture turns up showing the 2002 world map genuinely dark
+   until walked, clause 1 of §1 is wrong and this amendment should be reversed by the one line in
+   the paragraph above.

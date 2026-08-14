@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `318ecdf2`: 951 tools, 155 reference
+so it cannot drift. Generated at `b240cff6`: 953 tools, 155 reference
 items, 185 pieces in flight.
 
 Its purpose is to stop 185+ concurrent agents each paying separately to discover the
@@ -699,10 +699,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lore/w1-23-r4-chart.mjs` — THE PICTURE FOR W1-23 ROUND 4.
 - `tools/lore/w1-23-r4-consume.mjs` — CONSUMPTION for the library half (RI-MTH07 §B, mandatory under `corpus/00-doctrine/ARBITRATION.md` §3).
 
-### `tools/map/` — 3
+### `tools/map/` — 4
 
 - `tools/map/arbiter-map-s38.mjs` — THE S38 GATE — does the map comply with S35's "no square for a place the player has not stood in"?
-- `tools/map/explore-W1-MAP-DEFECTS.mjs` — Throwaway exploration for W1-MAP-DEFECTS: why does the screen walk stop at the journal?
+- `tools/map/explore-W1-MAP-DEFECTS.mjs` — Throwaway diagnosis for W1-MAP-DEFECTS: WHY does the screen walk stop at the journal?
+- `tools/map/fog-control.mjs` — the fog-of-war removal, with a delete-the-fix arm and a NULL CONTROL that is the plausible wrong answer rather than the trivial one.
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
 
 ### `tools/metrics/` — 6
@@ -941,7 +942,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 21
+### `tools/visual/` — 22
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -960,6 +961,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/rig-variant-proof.mjs` — W1-30D — does the reuse claim survive contact with a measurement?
 - `tools/visual/test/mutate-renderer-class.mjs` — **no header comment**
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
+- `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shadow-casters.mjs` — **no header comment**
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
 - `tools/visual/w1-30b-probe.mjs` — **no header comment**
@@ -1166,7 +1168,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **256 tools have no header comment**, so nobody can tell what they do without
+> **257 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1342,6 +1344,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-MW-UI-REFS` | running | eye-verify REF-A12b contact sheets; vendor the owner's screenshot as REF-A12c; write RI-UI | `orchestration/status/W1-MW-UI-REFS.json` |
 | `HUD-OUT-OF-COMBAT` | running |  | — |
 | `spawn-truth-thorn-lilmoth` | ? | finish spawn-truth-thorn.mjs capture run, write reports/spawn-truth/2026-08-14-spawn-truth | `tools/harness/spawn-truth-thorn.mjs` |
 | `W1-MAP-DEFECTS` | ? | confirm which peer refuses to open during creation; fix the ring walk; then D2 | `orchestration/status/W1-MAP-DEFECTS.json` `tools/map/explore-W1-MAP-DEFECTS.mjs` |
@@ -1349,7 +1352,6 @@ work is the difference between resuming and starting over.
 | `W1-30-SHADOW-CASTERS` | measuring |  | — |
 | `W1-DLG-WORDS` | running | speaker-disagreement census + voice-metrics; then rewrite the opening conversations | `orchestration/status/W1-DLG-WORDS.json` `corpus/80-methods/tone-metrics.py` `reports/tone-ours-dialogue-W1-DLG-WORDS.json` `reports/tone-ours-W1-DLG-WORDS.json` |
 | `GIT-INTEGRATION-SCHEME` | running | Research external practice; build tools/land.mjs with a falsifying --self-test; update HAZ | — |
-| `W1-MW-UI-REFS` | running | read RI-VIS09, refs/MANIFEST.json structure, then acquire | `orchestration/status/W1-MW-UI-REFS.json` |
 | `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
 | `W1-30C-critic` | ? | orchestrator: dispatch a fresh judge for the naive grouping pack at corpus/90-verdicts/wav | `orchestration/status/W1-30C-critic.json` `corpus/90-verdicts/wave1/W1-30C-r1.md` `corpus/90-verdicts/wave1/W1-30C-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-30c/` `corpus/90-verdicts/GAP-LEDGER.md` `corpus/90-verdicts/GAP-LEDGER.json` |

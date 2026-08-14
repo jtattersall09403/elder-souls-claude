@@ -170,36 +170,52 @@ async function runViewport(tag, width, height) {
     await telemetry('writ-house-done');
 
     // 4. Walk out through the real door: to the interior's own `interior_spawn` anchor (the
-    // reach gate `sim/settlement.js` checks), then press interact.
-    const doorInfo = await g.page.evaluate(async () => {
-      const E = window.__ENGINE, H = window.__HARNESS;
+    // reach gate `sim/settlement.js` checks), then press interact. Broken into small round
+    // trips (rather than one giant page.evaluate) so progress is visible and a stuck iteration
+    // shows up in the log instead of looking like a hang.
+    const doorMeta = await g.page.evaluate(() => {
+      const E = window.__ENGINE;
       const interior = E.sim.env.interior;
       const rec = interior ? E.sim.settlements.interior(interior) : null;
-      const face = rec && rec.continuity ? rec.continuity.interior_spawn : null;
-      for (let a = 0; a < 40 && face; a++) {
-        const p = E.sim.player.pos;
-        const d = Math.hypot(face[0] - p[0], face[2] - p[2]);
-        if (d <= 1.2) break;
+      return {
+        interior, face: rec && rec.continuity ? rec.continuity.interior_spawn : null,
+        exteriorSpawn: rec && rec.continuity ? rec.continuity.exterior_spawn : null,
+      };
+    });
+    note({ label: 'door-meta', ...doorMeta });
+    const face = doorMeta.face;
+    let reached = false;
+    for (let a = 0; a < 20 && face; a++) {
+      const p = await g.page.evaluate(() => window.__ENGINE.sim.player.pos.slice());
+      const d = Math.hypot(face[0] - p[0], face[2] - p[2]);
+      if (a % 5 === 0) note({ label: 'walk-to-door', iter: a, pos: p.map((n) => +n.toFixed(2)), dist_m: +d.toFixed(2) });
+      if (d <= 1.3) { reached = true; break; }
+      await g.page.evaluate(({ face }) => {
+        const H = window.__HARNESS;
+        const p = window.__ENGINE.sim.player.pos;
         const yaw = (H.getPlayerStats().yaw || 0) * Math.PI / 180;
         const dx = face[0] - p[0], dz = face[2] - p[2];
         const fx = Math.sin(yaw), fz = Math.cos(yaw);
         const fwd = dx * fx + dz * fz, str = dx * fz - dz * fx;
         const n = Math.max(1e-6, Math.hypot(fwd, str));
         const step = [];
-        for (let i = 0; i < 20; i++) step.push({ f: i, move: [str / n, fwd / n] });
-        H.queueInputs(step); H.stepFrames(20);
-      }
-      const atDoor = E.sim.player.pos.slice();
-      const yawAtDoor = E.sim.player.yaw;
-      H.queueInputs([{ f: 0, press: ['interact'] }, { f: 1, release: ['interact'] }]);
-      H.stepFrames(3);
-      return {
-        interior, exteriorSpawn: rec && rec.continuity ? rec.continuity.exterior_spawn : null,
-        atDoor: atDoor.map((n) => +n.toFixed(2)), yawAtDoor: +yawAtDoor.toFixed(1),
-        nowInterior: E.sim.env.interior, posAfter: E.sim.player.pos.map((n) => +n.toFixed(2)), yawAfter: +E.sim.player.yaw.toFixed(1),
-      };
-    });
-    note({ label: 'door-transit', ...doorInfo });
+        for (let i = 0; i < 15; i++) step.push({ f: i, move: [str / n, fwd / n] });
+        H.queueInputs(step); H.stepFrames(15);
+      }, { face });
+    }
+    const atDoor = await g.page.evaluate(() => ({
+      pos: window.__ENGINE.sim.player.pos.slice(), yaw: window.__ENGINE.sim.player.yaw,
+      door: window.__ENGINE.sim.door ? { way: window.__ENGINE.sim.door.way, dist_m: window.__ENGINE.sim.door.dist_m } : null,
+    }));
+    note({ label: 'at-door', reached, ...atDoor });
+    await g.h('queueInputs', [{ f: 0, press: ['interact'] }, { f: 1, release: ['interact'] }]);
+    await g.h('stepFrames', 3);
+    const doorInfo = await g.page.evaluate(() => ({
+      nowInterior: window.__ENGINE.sim.env.interior,
+      posAfter: window.__ENGINE.sim.player.pos.map((n) => +n.toFixed(2)),
+      yawAfter: +window.__ENGINE.sim.player.yaw.toFixed(1),
+    }));
+    note({ label: 'door-transit', reached, ...doorMeta, ...doorInfo });
 
     await shot('spawn-moment');
     const spawnTel = await telemetry('spawn-moment');
