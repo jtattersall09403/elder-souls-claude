@@ -1,0 +1,81 @@
+{
+  "task_id": "plan-review-editor-w1-01-27-16-22-24-06-03",
+  "title": "Reviewer-editor: the five remaining Wave-1 plans the audit flagged",
+  "started": "2026-08-14",
+  "state": "done",
+  "branch": "codex/wave1-build-experiment",
+  "authority": [
+    "orchestration/OWNER-DIRECTIVES-2026-08-14.md Ruling W1 and Ruling W2, and directive section 2",
+    "orchestration/audits/PLAN-AUDIT-2026-08-14.md ranked items 4, 5, 6, 7 and 8",
+    "orchestration/PLAN-LOOP.md rules 1, 2, 3, 3a",
+    "orchestration/HAZARDS.md section 2 and 2d",
+    "the first round: commit e5274eb3, W1-15/W1-12/W1-09/W1-08"
+  ],
+  "next_step": "A DIFFERENT fresh reviewer-editor must judge each of the seven edited versions. PLAN-LOOP.md rule 1: an agent may approve the version it received or materially edit it, never both. All seven now read awaiting-recriticism and NONE is dispatchable to a builder. With the first round's four, that is eleven Wave-1 plans awaiting re-criticism; the audit's remaining named items are W1-10 (medians as binding predicates, differentiation-only blind gates), W1-00 (single-duration continuation) and W1-20 (conditional blind gate).",
+  "files": [
+    "orchestration/plans/W1-01.md",
+    "orchestration/plans/W1-27.md",
+    "orchestration/plans/W1-16.md",
+    "orchestration/plans/W1-22.md",
+    "orchestration/plans/W1-24.md",
+    "orchestration/plans/W1-06.md",
+    "orchestration/plans/W1-03.md",
+    "orchestration/status/W1-01.json",
+    "orchestration/status/W1-27.json",
+    "orchestration/status/W1-16.json",
+    "orchestration/status/W1-22.json",
+    "orchestration/status/W1-24.json",
+    "orchestration/status/W1-06.json",
+    "orchestration/status/W1-03.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "outcome_per_plan": {
+    "W1-01": "MATERIAL EDIT. The audit's highest-value outstanding item, and it was right: the plan quoted RI-WLD04 M18/M19 in the exact pre-ruling form and its classification table asserted them as established and preserve at M18 9/13 and M19 13/13 - a passing state the amended item does not agree with, which is worse than an omission. The same shipped world measures M18 77/78 and M19 12/13 under the current text. Rewrote step 5 to 6-of-10 axes with landform compulsory and every magnitude floor named, plus M19's spread and reach clauses. LARGER FINDING THE AUDIT DID NOT REACH, because it explicitly did not read the reference items: RI-WLD15 and RI-WLD16 were written on 2026-08-14 and both judge world.terrain.form and world.verticality.layout, two of this piece's six owned paths. Neither is in the plan and both are red on the shipped tree. Added both. RI-WLD15's arm B rendered walk and its M-W15-5 preference blind pair are simultaneously the Ruling W2 quality gate this piece lacked, so the human-gate hole and the missing-item hole close with the same native text and no invented machinery.",
+    "W1-27": "MATERIAL EDIT, and the repair is not the one the audit implied. Its charge is correct about the plan text - A+B >= 276 is a province-wide count and M6/M8/M9 sat behind it - but Ruling W1 had already written the missing obligation into three items this piece owns, and the plan's real defect is a superseded row set. Added RI-WLD02 D14/D15 (weight 2 each; the received D1-D13+V5/V6 would have aggregated over the wrong rows), RI-WLD09 V10/V11, and RI-WLD15 as the fifteenth governing item. Un-gated the four cheap static rows from the density floor so a build learns what its walks cross in step 1; the expensive browser traversal keeps its gate.",
+    "W1-16": "MATERIAL EDIT. Sixteen acceptance rows, zero human gates, in the piece owning the whole Morrowind-side reward loop. Added a played closure gate: two arms, one <=15-minute driven session each, two hearth level-ups, a pack across 0.60/0.85/1.00, one fight at Light and one at Heavy using RI-PRG07's own Fence and Shell-Warden builds. Two of its questions are the items' own player-facing predicates rather than mine. Null arm forces the burden world multipliers to 1 on a hard-linked clone, with a stated effect size and an inert verdict if the arms read the same. Also added Ruling W1 effect sizes to the perturbation rows.",
+    "W1-22": "MATERIAL EDIT. The audit is exactly right and I agree with every word of its section 7 after reading the item. Kept B1, B2, B3, M20 and every S41 freeze verbatim and classified them in a table (identity / leak check / genericness / mechanism), then added a listening quality gate on captures step 6 already renders, with an L3/L4-muted loudness-matched null the judge must prefer against on >=5 of 6. Separately fixed a stale RI-WLD04 M18 transcription the audit did not catch, which lands on this piece's own deliverable: the audio axis threshold was raised by Ruling W1 from 'any difference' to >=50% of each bed's assets absent from the other.",
+    "W1-24": "MATERIAL EDIT. Went past the audit's three sentences: counted the 131 files independently, then resolved refs/MANIFEST.json's slot field to establish that six of the eight RI-VIS02 capture slots are pairable and two genuinely are not. Rewrote step 8 so the SKIP applies to those two only. RI-VIS06's zero-pairs cap-7 row is untouched and simply unreachable.",
+    "W1-06": "MATERIAL EDIT, one row. character_closeup/REF-M6 exists, is routed to Protocol A by name in RI-VIS09 section 2, and is therefore unblocked today with no arbitration needed. Narrowed the native skip to its proper case.",
+    "W1-03": "MATERIAL EDIT, and I disagree with the audit's premise. W9 is NOT conditional - it already requires the REF-M4 pack outright with min-over-shots aggregation, and the audit's own 'what I cleared' section praises it for that. Recorded the disagreement in the plan. The conclusion survives for a better reason: nobody had written down where REF-M4 lives. Two files in modern/exterior_lowlight/ carry slot: REF-M4, and unlike W1-06's row this one genuinely depends on the unruled RI-VIS09 section 2 routing question."
+  },
+  "verified_first_hand_not_taken_on_report": [
+    "corpus/70-visual/refs/modern/ holds exactly 131 files across 7 folders: exterior_daylight 43, exterior_lowlight 24, interior_darkemissive 22, character_closeup 13, combat 12, material_closeup 9, ui 8. Third independent count; agrees with both earlier ones to the file.",
+    "refs/MANIFEST.json slot field: REF-M6 x2 (character_closeup), REF-M4 x2 (exterior_lowlight), REF-M3 x1 (exterior_daylight), and zero records for REF-M1, REF-M2, REF-M5 and REF-M7. The whole refs/ tree is 808 files; 131 is the modern/ subtree only.",
+    "RI-VIS09 section 2's routing table names refs/modern/character_closeup/ for RI-VIS02 and RI-VIS06 Protocol A and has no row for exterior_lowlight/ or exterior_daylight/.",
+    "corpus/00-doctrine/ARBITRATION.md carries NO ruling on whether section 2's routing extends to the 2026-08-06 folders. The newest visual seam is S47, on Protocol B thumbnail calibration.",
+    "RI-WLD04's two Ruling W1 amendment blocks are present at HEAD and republish the remeasure: M18 77/78, M19 12/13.",
+    "RI-WLD01 M3 and M4 are native and unamended: the <=8% and <=9.0 min figures the audit attributed to Ruling W1 are not Ruling W1's.",
+    "RI-WLD02 carries D14 and D15 with weight 2 each; RI-WLD09 carries V10 and V11; both dated 2026-08-14.",
+    "RI-PRG01, RI-PRG02, RI-PRG03, RI-PRG05, RI-PRG06 and RI-PRG07 all declare blind_pair: no.",
+    "corpus/87-audio/ holds five markdown items and no recordings; no .wav, .ogg, .mp3 or .flac exists anywhere under corpus/."
+  ],
+  "corpus_findings_not_patched": [
+    "RI-VIS06's worked example still uses REF-M4 as its illustration of 'no image available - run SKIPPED', and its note still says 'Until refs/modern/ is populated'. Both were true when written and are contradicted by the manifest at HEAD. Item edit, corpus owner's.",
+    "RI-VIS09 section 3.1 still reads 'five of six modern/ profile folders are empty and the sixth holds one image' and lists REF-M3 among the unfilled slots. Contradicted by the manifest at HEAD.",
+    "Whether RI-VIS09 section 2's routing table extends to the six modern/ folders acquired on 2026-08-06 is genuinely unruled and needs an ARBITRATION seam. It governs how many W1-24 Protocol A pairs run and whether W1-03's REF-M4 judgement is scored evidence; it does NOT block W1-06, whose folder is routed by name.",
+    "RI-WLD02 M7's '>5 of 60' tolerance is native and unamended. The audit asked whether it is a corpus defect rather than a plan one and it is: an 8.3% sample tolerance is a statement about a sample, and a player who walks up to one of those instances experiences it at 100%. Applying Ruling W1's shape means a per-region cap, which is an item amendment and changes a hard fail. Not patched.",
+    "RI-WLD01 M3's '>8% of road samples below 1.6 m/s' is a province-wide share of samples where a player walks one leg - Ruling W1's shape, in an item Ruling W1 did not name. Corpus owner's call.",
+    "RI-AUD03 section The bar states of itself that it 'mirrors RI-VIS07 exactly' - the predicate the W1-30 review convicted as a genericness rather than a quality test. The gap the audit found in W1-22 is inherited from the item and cannot be closed by a plan edit; the plan can only add a closure gate beside it.",
+    "There is no reference audio in the corpus, so W1-24 Protocol A's preference-against-a-shipped-reference shape - the cheapest known quality gate in this project - cannot be run for sound at all. Acquisition gap, recorded rather than worked around."
+  ],
+  "what_i_could_not_do": [
+    "I ran no browser, no GPU pod, no game, and neither the monotony probe nor the landform census. This was a text round per PLAN-LOOP.md's cheap-first discipline. Every number above is read from item text, from refs/MANIFEST.json, from a file count in this worktree, or from reports/BAR-AUDIT-WORLD-20260814.md, and is attributed where it is used.",
+    "I did not verify that RI-WLD15 arm B is executable end to end today - whether the capture path can walk 24 transects per region at 4 s intervals through the shipping build. The item names the protocol and tools/contention.mjs and tools/capture/client.mjs exist, but that is a build-time question and a builder is REQUIRED to report it as a plan defect the moment it is not (PLAN-LOOP.md: a plan must never become a commitment device).",
+    "I did not confirm that any tool CONSUMES refs/MANIFEST.json's slot field. The six-of-eight pairable claim in W1-24 rests on that field being a routing statement rather than acquisition metadata, and this project's own rule is that a declaration nothing reads scores zero. Named as the weakest joint in that plan.",
+    "I did not check whether acquisition_state 'vendored-verifying' is admissible on the scored side of a blind pair. If it is a staging state, W1-06's REF-M6 row runs on one file rather than two. Named as the weakest joint in that plan.",
+    "I did not regenerate orchestration/INDEX.md. Its header says GENERATED; I added no tool and no reference item, and HAZARDS.md section 2d is explicit that staging from a tree stale for another agent's pushed work is the largest known source of lost work. This task reaches INDEX through its own status file, which is how that table is built.",
+    "I did not touch the audit's remaining named plans - W1-10 (medians as binding predicates over 87 weapons, and both blind gates asking are-they-different), W1-00 (continuation measured at one duration) and W1-20 (a conditional and therefore droppable blind gate). W1-10 is the strongest of the three and is the natural next round.",
+    "I did not run node tools/dispatchable.mjs or verify how these seven pieces' plan_state now reads to the dispatcher. The status files carry awaiting-recriticism; whether any in-flight builder is already dispatched against one of them is the orchestrator's check, not mine."
+  ],
+  "weakest_joints_in_my_own_edits": [
+    "W1-01: arm B is the only new cost this round adds and it is real - 13 regions x 6 walks x ~90 frames is roughly 7,000 frames on a contended browser, against a piece already owing a 117-frame identity pack. I kept the item's own population rather than trimming it, and named the honest narrowing (worst three regions, all six transects, the rest not_run) in the plan for the next reviewer to rule on.",
+    "W1-01: I inferred that RI-WLD15 and RI-WLD16 judge this piece from their judges: metadata against docs/PLAN.md's owned path list. If the canonical alias map routes world.terrain.form elsewhere, that inference is the first thing to check.",
+    "W1-27: I drew the un-gating line by instrument cost rather than information value. There is a real argument that D14/D15 should stay gated too, since a world at 157 of 276 locations fails a place-type row for the trivial reason that half its POIs do not exist yet. Named in the plan.",
+    "W1-27: arm B is routed to W1-01 rather than duplicated - right on cost, and it creates a dependency this piece cannot discharge alone.",
+    "W1-16: the null arm forces all four burden multipliers to 1, which also removes the immobilisation state above 1.00 - so the ablated build may read as obviously broken rather than merely worse, which is HAZARDS.md section 0's exact failure shape. The narrower ablation (flatten 0.60/0.85 only, keep 1.00) is named in the plan. Also n=1 per arm, with the separability check doing most of the statistical work.",
+    "W1-22: the L3/L4 mute may be the WRONG ablation rather than a weak one - RI-AUD03 says absence is a layer, and for regions whose creature layer is authored sparse or null, muting it changes nothing for a good reason. The alternative (one shared L1 base drone across all six clips) is the item's own named failure shape but needs a render path that does not exist. Named in the plan.",
+    "W1-24: the per-slot table rests on MANIFEST.json's slot field being authoritative routing rather than acquisition convenience. If it is advisory, the claim weakens to 'REF-M6 is filled and named in section 2' - still enough to kill the cap, not enough to plan five pairs from.",
+    "W1-03: I introduced run-pending-routing, a state this project's status vocabulary does not have, and a label nothing consumes is the shape of defect this project convicts elsewhere. The safe reading is not_run with the reason recorded verbatim; the fail-closed behaviour is load-bearing, the label is not."
+  ],
+  "s51_absorbed_mid_round": "corpus/00-doctrine/ARBITRATION.md S51 was written by another agent while this round was in progress, referred by the first round's W1-12 reviewer. It binds above every item's stated comparison method: a blind pack whose counterpart is generated from the design table the build was built to satisfy is VOID, tested by the disconnected-script test. It reaches three of the seven plans in this round and all three now carry its disposition. W1-01: RI-CAM02 void as written (named in S51's thirteen), replaced by a class-D ablation contrast; RI-AI05 reclassified to instrument_positive_control with its result barred from being read as quality; RI-WLD10's curve arm fails the test on its face but is NOT among the named thirteen, so it is REFERRED for an S-ruling rather than voided from a plan - S51 states the full census across the 109 blind_pair: yes items was not performed. W1-06 is the worst-affected plan in the tree (four of seven blind rows), and each now carries a not_possible plus a named class-D replacement. W1-27: RI-AI07 section G. Two things worth carrying forward: the quality gate this round added to W1-01 (M-W15-5, ours against a Morrowind walk) is class A and survives S51 untouched, which is a consequence of preferring native item text over invented machinery; and W1-06's RI-VIS08 D1 Protocol A row, unblocked by the reference-count correction, is also class A - the strongest class S51 recognises."
+}

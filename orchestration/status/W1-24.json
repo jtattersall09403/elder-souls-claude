@@ -20,7 +20,7 @@
   "plan": [
     "1. corpus/80-methods/cc-scan.mjs - the RI-VIS01 tool the item names as owed and which does not exist (rule 24). Structural declaration validation + CC-1..CC-7 lint.",
     "2. tools/render/visual-reading.mjs - render.process.measurement. A reading carries surface class, unit, band-unit conformance, a mechanism null (via tools/experience/lib/sabotage.mjs), a CLOCK control, and a DEGENERATE-SUBJECT control.",
-    "3. RI-CAM07: the back-capture path (player_back_closeup / player_front_closeup viewpoints, HARNESS \u00a76 append-only).",
+    "3. RI-CAM07: the back-capture path (player_back_closeup / player_front_closeup viewpoints, HARNESS §6 append-only).",
     "4. Apply the protocol to >= 3 published visual claims and report which survive."
   ],
   "next_step": "finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then blog line + shot + commit",
@@ -40,19 +40,20 @@
   ],
   "notes": [],
   "done": [
-    "corpus/80-methods/cc-scan.mjs \u2014 RI-VIS01 bifurcation protocol. 8 structural checks + CC-1..CC-7 tripwire. Self-test: 14 cases, 9 self-defects, 0 inert.",
+    "corpus/80-methods/cc-scan.mjs — RI-VIS01 bifurcation protocol. 8 structural checks + CC-1..CC-7 tripwire. Self-test: 14 cases, 9 self-defects, 0 inert.",
     "The falsifier caught my own S8 being redundant with S3; rewritten to test what S3 cannot see.",
-    "Run over the corpus: 0 of 70 wave-1 verdicts carry a VIS DECLARATION block; 15 make visual claims without one and are void under RI-VIS01 \u00a7B.",
-    "First corpus run returned 55 CLEAN over files never examined \u2014 a pass over an empty sample set. Fixed to NOT_APPLICABLE (graded.mjs law).",
-    "tools/render/visual-reading.mjs \u2014 render.process.measurement. Five mandatory questions; reuses sabotage.mjs for the mechanism null. Self-test: 11 readings, 7 self-defects, 0 inert.",
+    "Run over the corpus: 0 of 70 wave-1 verdicts carry a VIS DECLARATION block; 15 make visual claims without one and are void under RI-VIS01 §B.",
+    "First corpus run returned 55 CLEAN over files never examined — a pass over an empty sample set. Fixed to NOT_APPLICABLE (graded.mjs law).",
+    "tools/render/visual-reading.mjs — render.process.measurement. Five mandatory questions; reuses sabotage.mjs for the mechanism null. Self-test: 11 readings, 7 self-defects, 0 inert.",
     "DEGENERATE_NOT_GRADEABLE added from a real result: FD6 returns {worst:0} over zero edge pixels, and EMPTY is not a demonstrated red.",
-    "tools/render/w1-24-audit.mjs \u2014 the protocol run against four published claims (A/B/C live, D offline).",
-    "tools/render/cam07-back.mjs \u2014 RI-CAM07 M1 back/front capture path, the build instruction nobody had carried out.",
-    "reports/w1-24-survey.md \u2014 the written survey."
+    "tools/render/w1-24-audit.mjs — the protocol run against four published claims (A/B/C live, D offline).",
+    "tools/render/cam07-back.mjs — RI-CAM07 M1 back/front capture path, the build instruction nobody had carried out.",
+    "reports/w1-24-survey.md — the written survey."
   ],
-  "plan_state": "satisfied",
+  "plan_state": "awaiting-recriticism",
   "plan_review_20260809_fresh": "ARBITRATED_AND_MATERIALLY_EDITED_AWAITING_RECRITICISM",
   "plan_review_20260809_s45_s47": "MATERIALLY_EDITED_AWAITING_RECRITICISM",
   "plan_review_20260809_fresh_independent_final": "SATISFIED_NO_MATERIAL_EDIT",
-  "planning_next_step": "Owner dispatches the W1-24 builder on the satisfied canonical plan; no further plan review is needed unless authority or the plan changes materially."
+  "planning_next_step": "A DIFFERENT fresh reviewer-editor judges the 2026-08-14 edited version. Do not dispatch a builder while this reads awaiting-recriticism.",
+  "plan_review_20260814_rulings_w1_w2": "MATERIAL EDIT / awaiting-recriticism. Stale reference premise. Step 8 read 'zero runnable pairs caps fidelity at 7' against this piece's own >=7 bar - the trap W1-30 R1 found, live in a second document - and it rested on RI-VIS06's 'Until refs/modern/ is populated' conditional, satisfied since 2026-08-06. Counted independently in this worktree: corpus/70-visual/refs/modern/ holds exactly 131 files across seven folders (exterior_daylight 43, exterior_lowlight 24, interior_darkemissive 22, character_closeup 13, combat 12, material_closeup 9, ui 8), third independent count, agreeing to the file. Went further than the audit by resolving refs/MANIFEST.json's slot field: REF-M6 x2, REF-M4 x2, REF-M3 x1, and nothing for REF-M1/M2/M5/M7 - so six of the eight RI-VIS02 capture slots are pairable and two (interior_rootway/REF-M5, xanmeer_vista/REF-M7) genuinely are not. Added that per-slot table and rewrote step 8 so the SKIP applies to those two slots only. RI-VIS06's 'zero pairs ran -> cap 7' row is untouched and simply unreachable; a zero-pairs Protocol A is now a run defect to investigate, not a corpus property. ROUTING QUESTION RESOLVED FOR PRACTICAL PURPOSES WITHOUT AN ARBITER: RI-VIS09 section 2 routes refs/modern/character_closeup/ to Protocol A by name, so at least one pair runs under the strictest reading and the cap cannot fire either way; whether section 2 extends to the six folders acquired on 2026-08-06 is genuinely unruled in corpus/00-doctrine/ARBITRATION.md and is recorded for arbitration, governing how many of the five pairs run rather than whether Protocol A can run. CORPUS FINDINGS, not patched: RI-VIS06's worked example still uses REF-M4 as its 'no image available' illustration, and RI-VIS09 section 3.1 still says five of six modern folders are empty and REF-M3 is unfilled. Both contradicted by the manifest at HEAD. No native threshold changed."
 }
