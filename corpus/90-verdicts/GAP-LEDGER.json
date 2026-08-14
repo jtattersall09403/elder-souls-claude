@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T15:48:38Z",
+  "generated": "2026-08-14T16:01:26Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
@@ -333,7 +333,51 @@
     "corpus/90-verdicts/wave1/W1-POPULATION-r1.json: gap_closure references unknown gap_id GAP-W1-population-machine-never-called.",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-library-has-no-reader-on-the-world-side.",
     "corpus/90-verdicts/wave1/W1-READABLES-r2.json: gap_closure references unknown gap_id GAP-W1-environment-channel-has-no-object.",
-    "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "STALE-RISK GAP-W1-platform-prng-never-drawn: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-00-r2-k4m9, crit-w1-09-r2-3c19, crit-w1-09-r3-3c19, crit-w1-deploy-r2-3c19, crit-w1-30s-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-platform-save-drops-entity-prev-state: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-save-r1-live-audit, crit-w1-map-r2-a91f). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-world-trunk-road-below-the-waterline: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-01-r2-world-b4e2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-world-region-identity-is-a-tint: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-02-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-the-building-is-smaller-than-the-room: still open, and 3 later verdict(s) have been filed on the same piece or path since (critic-road-join, crit-w1-04-r4-3c19, crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-the-door-puts-you-inside-the-building: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-interior-door-draws-nothing: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-04-r2-3c19, crit-w1-04-r3-3c19, crit-w1-04-r4-3c19, crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-settlement-has-no-outside: still open, and 4 later verdict(s) have been filed on the same piece or path since (crit-w1-04-r3-3c19, critic-road-join, crit-w1-04-r4-3c19, crit-w1-04-r5-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-creation-is-an-api-not-a-scene: still open, and 5 later verdict(s) have been filed on the same piece or path since (crit-w1-07-r2-3e7c, crit-w1-07-r3-3c19, crit-w1-26-r1-3c19, crit-w1-26-r2-3c19, critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-questionnaire-route-is-unreadable-and-unnamed: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-07-r3-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-the-naming-moment-is-still-orphan-text: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-26-r1-3c19, crit-w1-26-r2-3c19, critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-input-discoverability-unmeasured: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-08-29-r2, crit-w1-map-defects-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-combat-exemplar-has-no-danger: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-09-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-enemy-attacks-cannot-reach-contact-range: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-09-r3-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-weapon-movesets-not-wired-to-the-runtime: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-10-r2-weapons-kritik, crit-w1-10-r3-weapons-kritik3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-weapon-impact-and-material-model-has-no-consumer: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-10-r3-weapons-kritik3, critic-w1-11-r1). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-12-approach-cannot-close-on-a-walking-player: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-12-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-13-r2-death-hearth, crit-w1-13-r3-death-hearth, crit-w1-13-r4-clock-and-ar1). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-13-clock-consequences-never-fire: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-13-r4-clock-and-ar1). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-magic-effects-no-behaviour: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-14-r2-7c31, crit-w1-14-r3c-4d18, crit-w1-14-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-magic-skill-frozen: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-14-r3c-4d18, crit-w1-14-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-magic-spellmaking-has-no-world-side-surface: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-14-r4). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-crime-enforcement-is-a-free-win: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-15-r3-3c19, crit-w1-15-r4-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-the-fence-buys-your-victims-own-furniture: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-15-r4-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-stealth-crime-model-not-coupled-to-the-world: still open, and 3 later verdict(s) have been filed on the same piece or path since (crit-w1-15-r2-3c19, crit-w1-15-r3-3c19, crit-w1-15-r4-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-16-r3-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-17-an-archetype-with-no-mouth: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-first-ten-minutes-r1-a8e4c93). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-act5-argument-entry-shadowed: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-17-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-mainquest-topic-bootstrap: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-19-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-faction-ladders-are-doors-onto-empty-corridors: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-20-r2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-map-outside-the-ar2-detectors: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-21-r2, crit-w1-map-defects-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-ui-detectors-that-cannot-see: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-map-defects-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-audio-emitter-consumption: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-22-r2-s2). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-23-both-registered-voices-on-slavery-are-colonists: still open, and 2 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r4, crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-two-placement-mechanisms-collide: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-23-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-rendered-text-accessor-blind-to-the-hud-surface: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-26-r2-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-26-creation-cannot-be-completed-from-the-title: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-26-r3). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-30c-wetness-mask-blind-to-instancematrix: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-w1-30d-guard-misses-part-deletion: still open, and 1 later verdict(s) have been filed on the same piece or path since (crit-w1-30de-r1-3c19). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-population-save-reload-repays-every-corpse: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls-r2, critic-w1-souls). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-PACK-01: still open, and 2 later verdict(s) have been filed on the same piece or path since (judge-prose-packs-r1, crit-w1-30c-r1-2634eb0e). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-road-join-has-no-gate: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-crossing). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-souls-alive-keyed-on-eid: still open, and 2 later verdict(s) have been filed on the same piece or path since (critic-w1-souls, critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today.",
+    "STALE-RISK GAP-W1-souls-world-copy-of-the-values-is-53pc-stale: still open, and 1 later verdict(s) have been filed on the same piece or path since (critic-w1-attr-scale). Read those before acting on this row's `what` — it is a snapshot of the tree on the day it was written, not of the tree today."
   ],
   "load_errors": [],
   "gaps": [
@@ -360,7 +404,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-FCT-03",
@@ -389,7 +434,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-PACK-01",
@@ -421,7 +467,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.json",
+          "run_id": "judge-prose-packs-r1",
+          "at": "2026-08-07T17:35:00Z",
+          "status": "BELOW BAR",
+          "score": null,
+          "opened_gap": "GAP-PROSE-01"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-30C-r1.json",
+          "run_id": "crit-w1-30c-r1-2634eb0e",
+          "at": "2026-08-14T11:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-30c-wetness-mask-blind-to-instancematrix"
+        }
+      ]
     },
     {
       "gap_id": "GAP-PROSE-01",
@@ -457,7 +521,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-02-m68-unanswerable",
@@ -497,7 +562,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-03-water-surface-undrawn-and-frozen",
@@ -544,7 +610,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-12-approach-cannot-close-on-a-walking-player",
@@ -580,7 +647,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-12-r2.json",
+          "run_id": "crit-w1-12-r2-3c19",
+          "at": "2026-08-08T14:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-12-m3-chase-bot-dwell-on-the-items-own-fixture",
@@ -620,7 +697,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-13-clock-consequences-never-fire",
@@ -661,7 +739,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-13-r4.json",
+          "run_id": "crit-w1-13-r4-clock-and-ar1",
+          "at": "2026-08-08T01:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-13-roster-clause-has-no-control"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-13-roster-clause-has-no-control",
@@ -699,7 +787,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-16-a-save-and-a-reload-change-your-roll-class",
@@ -737,7 +826,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-16-equip-load-cannot-see-the-thing-in-your-hands",
@@ -775,7 +865,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-16-r3.json",
+          "run_id": "crit-w1-16-r3-3c19",
+          "at": "2026-08-08T04:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-16-a-save-and-a-reload-change-your-roll-class"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-17-an-archetype-with-no-mouth",
@@ -816,7 +916,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.json",
+          "run_id": "crit-w1-first-ten-minutes-r1-a8e4c93",
+          "at": "2026-08-14T10:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-22-event-level-graded-on-a-median",
@@ -856,7 +966,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-23-both-registered-voices-on-slavery-are-colonists",
@@ -897,7 +1008,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-23-r4.json",
+          "run_id": "crit-w1-23-r4",
+          "at": "2026-08-08T04:21:01Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-two-placement-mechanisms-collide"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-23-r3.json",
+          "run_id": "crit-w1-23-r3",
+          "at": "2026-08-08T11:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-library-unreachable-contradiction-pairs"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-25-the-control-facility-has-an-optional-control",
@@ -937,7 +1066,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-26-creation-cannot-be-completed-from-the-title",
@@ -976,7 +1106,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r3.json",
+          "run_id": "critic-w1-26-r3",
+          "at": "2026-08-08T07:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later",
@@ -1014,7 +1154,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
@@ -1052,7 +1193,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-30E-r1.json",
+          "run_id": "crit-w1-30de-r1-3c19",
+          "at": "2026-08-14T14:15:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-w1-30e-street-gate-never-ran"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-act5-argument-entry-shadowed",
@@ -1092,7 +1243,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-17-r1.json",
+          "run_id": "crit-w1-17-r1-3c19",
+          "at": "2026-08-08T02:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-17-an-archetype-with-no-mouth"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy",
@@ -1136,7 +1297,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-audio-emitter-consumption",
@@ -1179,7 +1341,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-22-r2.json",
+          "run_id": "crit-w1-22-r2-s2",
+          "at": "2026-08-08T07:46:12Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-22-event-level-graded-on-a-median"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-combat-exemplar-has-no-danger",
@@ -1220,7 +1392,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-09-r2.json",
+          "run_id": "crit-w1-09-r2-3c19",
+          "at": "2026-08-06T21:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-enemy-attacks-cannot-reach-contact-range"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
@@ -1255,7 +1437,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
@@ -1299,7 +1482,49 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-07-r2.json",
+          "run_id": "crit-w1-07-r2-3e7c",
+          "at": "2026-08-06T23:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-07-r3.json",
+          "run_id": "crit-w1-07-r3-3c19",
+          "at": "2026-08-07T09:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-naming-moment-is-still-orphan-text"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r1.json",
+          "run_id": "crit-w1-26-r1-3c19",
+          "at": "2026-08-07T13:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r2.json",
+          "run_id": "crit-w1-26-r2-3c19",
+          "at": "2026-08-08T02:53:01Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-creation-cannot-be-completed-from-the-title"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r3.json",
+          "run_id": "critic-w1-26-r3",
+          "at": "2026-08-08T07:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-crime-enforcement-is-a-free-win",
@@ -1342,7 +1567,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r3.json",
+          "run_id": "crit-w1-15-r3-3c19",
+          "at": "2026-08-08T02:45:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-fence-buys-your-victims-own-furniture"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r4.json",
+          "run_id": "crit-w1-15-r4-3c19",
+          "at": "2026-08-08T13:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player",
@@ -1388,7 +1631,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-enemy-attacks-cannot-reach-contact-range",
@@ -1430,7 +1674,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-09-r3.json",
+          "run_id": "crit-w1-09-r3-3c19",
+          "at": "2026-08-06T22:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage",
@@ -1473,7 +1727,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5",
@@ -1511,7 +1766,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-faction-ladders-are-doors-onto-empty-corridors",
@@ -1550,7 +1806,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-20-r2.json",
+          "run_id": "critic-w1-20-r2",
+          "at": "2026-08-14T21:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-faction-ladders-are-bricked-up-at-rank-5"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
@@ -1592,7 +1858,33 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-13-r2.json",
+          "run_id": "crit-w1-13-r2-death-hearth",
+          "at": "2026-08-07T16:55:00Z",
+          "status": "FAIL",
+          "score": 5,
+          "opened_gap": null
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-13-r3.json",
+          "run_id": "crit-w1-13-r3-death-hearth",
+          "at": "2026-08-07T22:45:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-13-clock-consequences-never-fire"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-13-r4.json",
+          "run_id": "crit-w1-13-r4-clock-and-ar1",
+          "at": "2026-08-08T01:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-13-roster-clause-has-no-control"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-height-fog-credit-unanchored",
@@ -1634,7 +1926,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-input-calibration-outlives-its-pad-on-disconnect",
@@ -1670,7 +1963,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-input-discoverability-unmeasured",
@@ -1714,7 +2008,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-08-W1-29-r2.json",
+          "run_id": "crit-w1-08-29-r2",
+          "at": "2026-08-07T17:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-input-calibration-outlives-its-pad-on-disconnect"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json",
+          "run_id": "crit-w1-map-defects-r1-3c19",
+          "at": "2026-08-14T15:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-interior-door-draws-nothing",
@@ -1757,7 +2069,41 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r2.json",
+          "run_id": "crit-w1-04-r2-3c19",
+          "at": "2026-08-08T00:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-settlement-has-no-outside"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r3.json",
+          "run_id": "crit-w1-04-r3-3c19",
+          "at": "2026-08-08T03:19:15Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-building-is-smaller-than-the-room"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r4.json",
+          "run_id": "crit-w1-04-r4-3c19",
+          "at": "2026-08-08T07:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-door-puts-you-inside-the-building"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r5.json",
+          "run_id": "crit-w1-04-r5-3c19",
+          "at": "2026-08-08T07:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-doorstep-cannot-get-you-back-in"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-library-martial-single-hand-fingerprint",
@@ -1804,7 +2150,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
@@ -1849,7 +2196,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-library-unreachable-contradiction-pairs",
@@ -1886,7 +2234,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch",
@@ -1925,7 +2274,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-magic-effects-no-behaviour",
@@ -1973,7 +2323,33 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r2.json",
+          "run_id": "crit-w1-14-r2-7c31",
+          "at": "2026-08-07T00:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-magic-skill-frozen"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r3.json",
+          "run_id": "crit-w1-14-r3c-4d18",
+          "at": "2026-08-08T04:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-magic-spellmaking-has-no-world-side-surface"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r4.json",
+          "run_id": "crit-w1-14-r4",
+          "at": "2026-08-08T06:35:00Z",
+          "status": null,
+          "score": null,
+          "opened_gap": null
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-magic-skill-frozen",
@@ -2014,7 +2390,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r3.json",
+          "run_id": "crit-w1-14-r3c-4d18",
+          "at": "2026-08-08T04:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-magic-spellmaking-has-no-world-side-surface"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r4.json",
+          "run_id": "crit-w1-14-r4",
+          "at": "2026-08-08T06:35:00Z",
+          "status": null,
+          "score": null,
+          "opened_gap": null
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-magic-spellmaking-has-no-world-side-surface",
@@ -2053,7 +2447,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-14-r4.json",
+          "run_id": "crit-w1-14-r4",
+          "at": "2026-08-08T06:35:00Z",
+          "status": null,
+          "score": null,
+          "opened_gap": null
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-mainquest-topic-bootstrap",
@@ -2098,7 +2502,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-19-r2.json",
+          "run_id": "crit-w1-19-r2-3c19",
+          "at": "2026-08-07T15:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-quest-givers-not-in-the-world"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
@@ -2137,7 +2551,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-map-the-audit-is-computed-and-never-published",
@@ -2180,7 +2595,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-mark-teaches-nothing-to-the-journal",
@@ -2221,7 +2637,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-platform-prng-never-drawn",
@@ -2263,7 +2680,49 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-00-r2.json",
+          "run_id": "crit-w1-00-r2-k4m9",
+          "at": "2026-08-06T15:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-platform-save-drops-entity-prev-state"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-09-r2.json",
+          "run_id": "crit-w1-09-r2-3c19",
+          "at": "2026-08-06T21:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-enemy-attacks-cannot-reach-contact-range"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-09-r3.json",
+          "run_id": "crit-w1-09-r3-3c19",
+          "at": "2026-08-06T22:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-DEPLOY-r2.json",
+          "run_id": "crit-w1-deploy-r2-3c19",
+          "at": "2026-08-08T13:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-deploy-instruments-point-at-the-tester-not-the-player"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-30S-r1.json",
+          "run_id": "crit-w1-30s-r1-3c19",
+          "at": "2026-08-14T11:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-w1-30s-seam-incomplete"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-platform-save-drops-entity-prev-state",
@@ -2303,7 +2762,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-SAVE-r1.json",
+          "run_id": "crit-w1-save-r1-live-audit",
+          "at": "2026-08-07T11:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-save-purse-has-no-writer"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-MAP-r2.json",
+          "run_id": "crit-w1-map-r2-a91f",
+          "at": "2026-08-08T04:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-map-the-audit-is-computed-and-never-published"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-population-save-reload-repays-every-corpse",
@@ -2342,7 +2819,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-SOULS-r2.json",
+          "run_id": "critic-w1-souls-r2",
+          "at": "2026-08-07T22:05:00Z",
+          "status": "PASS",
+          "score": null,
+          "opened_gap": "GAP-W1-souls-alive-keyed-on-eid"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-SOULS-r3.json",
+          "run_id": "critic-w1-souls",
+          "at": "2026-08-08T01:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-souls-world-copy-of-the-values-is-53pc-stale"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-provstream-arrival-burst",
@@ -2383,7 +2878,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-quest-givers-not-in-the-world",
@@ -2415,7 +2911,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
@@ -2458,7 +2955,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-07-r3.json",
+          "run_id": "crit-w1-07-r3-3c19",
+          "at": "2026-08-07T09:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-naming-moment-is-still-orphan-text"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
@@ -2503,7 +3010,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r2.json",
+          "run_id": "crit-w1-26-r2-3c19",
+          "at": "2026-08-08T02:53:01Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-creation-cannot-be-completed-from-the-title"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-road-join-has-no-gate",
@@ -2545,7 +3062,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-CROSSING-r1.json",
+          "run_id": "critic-w1-crossing",
+          "at": "2026-08-08T07:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-walkpath-absorbs-teleports"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-save-purse-has-no-writer",
@@ -2588,7 +3115,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-settlement-has-no-outside",
@@ -2630,7 +3158,41 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r3.json",
+          "run_id": "crit-w1-04-r3-3c19",
+          "at": "2026-08-08T03:19:15Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-building-is-smaller-than-the-room"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
+          "run_id": "critic-road-join",
+          "at": "2026-08-08T04:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-road-join-has-no-gate"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r4.json",
+          "run_id": "crit-w1-04-r4-3c19",
+          "at": "2026-08-08T07:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-door-puts-you-inside-the-building"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r5.json",
+          "run_id": "crit-w1-04-r5-3c19",
+          "at": "2026-08-08T07:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-doorstep-cannot-get-you-back-in"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale",
@@ -2669,7 +3231,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-souls-alive-keyed-on-eid",
@@ -2707,7 +3270,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-SOULS-r3.json",
+          "run_id": "critic-w1-souls",
+          "at": "2026-08-08T01:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-souls-world-copy-of-the-values-is-53pc-stale"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+          "run_id": "critic-w1-attr-scale",
+          "at": "2026-08-08T13:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-souls-world-copy-of-the-values-is-53pc-stale",
@@ -2744,7 +3325,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json",
+          "run_id": "critic-w1-attr-scale",
+          "at": "2026-08-08T13:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-attr-scale-ceilings-rest-on-an-unmeasured-souls-economy"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
@@ -2785,7 +3376,33 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r2.json",
+          "run_id": "crit-w1-15-r2-3c19",
+          "at": "2026-08-07T01:10:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-crime-enforcement-is-a-free-win"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r3.json",
+          "run_id": "crit-w1-15-r3-3c19",
+          "at": "2026-08-08T02:45:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-fence-buys-your-victims-own-furniture"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r4.json",
+          "run_id": "crit-w1-15-r4-3c19",
+          "at": "2026-08-08T13:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-the-building-is-smaller-than-the-room",
@@ -2827,7 +3444,33 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-ROAD-JOIN-r1.json",
+          "run_id": "critic-road-join",
+          "at": "2026-08-08T04:30:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-road-join-has-no-gate"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r4.json",
+          "run_id": "crit-w1-04-r4-3c19",
+          "at": "2026-08-08T07:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-door-puts-you-inside-the-building"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r5.json",
+          "run_id": "crit-w1-04-r5-3c19",
+          "at": "2026-08-08T07:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-doorstep-cannot-get-you-back-in"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-the-door-puts-you-inside-the-building",
@@ -2860,7 +3503,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-04-r5.json",
+          "run_id": "crit-w1-04-r5-3c19",
+          "at": "2026-08-08T07:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-the-doorstep-cannot-get-you-back-in"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-the-doorstep-cannot-get-you-back-in",
@@ -2905,7 +3558,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-the-fence-buys-your-victims-own-furniture",
@@ -2944,7 +3598,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-15-r4.json",
+          "run_id": "crit-w1-15-r4-3c19",
+          "at": "2026-08-08T13:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-seven-tenths-of-the-indoor-floor-is-at-the-top-of-the-light-scale"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-the-naming-moment-is-still-orphan-text",
@@ -2985,7 +3649,33 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r1.json",
+          "run_id": "crit-w1-26-r1-3c19",
+          "at": "2026-08-07T13:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r2.json",
+          "run_id": "crit-w1-26-r2-3c19",
+          "at": "2026-08-08T02:53:01Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-creation-cannot-be-completed-from-the-title"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-26-r3.json",
+          "run_id": "critic-w1-26-r3",
+          "at": "2026-08-08T07:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-two-placement-mechanisms-collide",
@@ -3024,7 +3714,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-23-r3.json",
+          "run_id": "crit-w1-23-r3",
+          "at": "2026-08-08T11:55:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-library-unreachable-contradiction-pairs"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-ui-detectors-that-cannot-see",
@@ -3068,7 +3768,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json",
+          "run_id": "crit-w1-map-defects-r1-3c19",
+          "at": "2026-08-14T15:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-ui-map-outside-the-ar2-detectors",
@@ -3112,7 +3822,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-21-r2.json",
+          "run_id": "critic-w1-21-r2",
+          "at": "2026-08-08T03:46:17Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-ui-detectors-that-cannot-see"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json",
+          "run_id": "crit-w1-map-defects-r1-3c19",
+          "at": "2026-08-14T15:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-w1-30d-guard-misses-part-deletion",
@@ -3148,7 +3876,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-30E-r1.json",
+          "run_id": "crit-w1-30de-r1-3c19",
+          "at": "2026-08-14T14:15:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-w1-30e-street-gate-never-ran"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-w1-30e-street-gate-never-ran",
@@ -3183,7 +3921,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-w1-30s-seam-incomplete",
@@ -3212,7 +3951,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-walkpath-absorbs-teleports",
@@ -3251,7 +3991,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-weapon-animation-model-has-no-rendered-consumer",
@@ -3293,7 +4034,8 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": []
     },
     {
       "gap_id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
@@ -3333,7 +4075,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-10-r3.json",
+          "run_id": "crit-w1-10-r3-weapons-kritik3",
+          "at": "2026-08-07T08:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-weapon-animation-model-has-no-rendered-consumer"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-11-r1.json",
+          "run_id": "critic-w1-11-r1",
+          "at": "2026-08-07T22:20:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-weapon-movesets-not-wired-to-the-runtime",
@@ -3377,7 +4137,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-10-r2.json",
+          "run_id": "crit-w1-10-r2-weapons-kritik",
+          "at": "2026-08-07T00:05:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-weapon-impact-and-material-model-has-no-consumer"
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-10-r3.json",
+          "run_id": "crit-w1-10-r3-weapons-kritik3",
+          "at": "2026-08-07T08:40:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-weapon-animation-model-has-no-rendered-consumer"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-world-region-identity-is-a-tint",
@@ -3426,7 +4204,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-02-r1.json",
+          "run_id": "crit-w1-02-r1-3c19",
+          "at": "2026-08-07T21:25:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-02-m68-unanswerable"
+        }
+      ]
     },
     {
       "gap_id": "GAP-W1-world-trunk-road-below-the-waterline",
@@ -3471,7 +4259,17 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 0
+      "age_waves": 0,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-01-r2.json",
+          "run_id": "crit-w1-01-r2-world-b4e2",
+          "at": "2026-08-06T21:35:00Z",
+          "status": "FAIL",
+          "score": null,
+          "opened_gap": "GAP-W1-world-region-identity-is-a-tint"
+        }
+      ]
     },
     {
       "opened_in": "corpus/90-verdicts/wave1/W1-MAP-r1.json",
@@ -3495,7 +4293,25 @@
         "note": null
       },
       "superseded_by": null,
-      "age_waves": 1
+      "age_waves": 1,
+      "filed_since": [
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-DEPLOY-r1.json",
+          "run_id": null,
+          "at": "2026-08-08T10:27:32Z",
+          "status": null,
+          "score": 3.5,
+          "opened_gap": null
+        },
+        {
+          "verdict": "corpus/90-verdicts/wave1/W1-TOUCH-r1.json",
+          "run_id": null,
+          "at": "2026-08-08T11:12:00Z",
+          "status": null,
+          "score": 6,
+          "opened_gap": null
+        }
+      ]
     }
   ]
 }

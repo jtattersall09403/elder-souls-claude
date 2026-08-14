@@ -65,8 +65,15 @@ if (!args.table || !args.out) {
 
 const table = JSON.parse(fs.readFileSync(path.resolve(String(args.table)), 'utf8'));
 const outRoot = path.resolve(String(args.out));
+// The sealed key defaults to a sibling of the pack root, NOT a child of it. A judge handed the
+// pack directory must not be able to walk into the key by opening the parent — RI-VIS06 §D's
+// "key read before judging" row, made structural instead of procedural.
 const packsDir = path.join(outRoot, 'packs');
-const revealRoot = path.join(outRoot, 'reveal');
+const revealRoot = args['reveal-root'] ? path.resolve(String(args['reveal-root'])) : path.join(outRoot, 'reveal');
+if (revealRoot === packsDir || revealRoot.startsWith(packsDir + path.sep)) {
+  console.error('the sealed key must not live inside the pack tree');
+  process.exit(1);
+}
 const workDir = path.join(revealRoot, 'crops');
 if (fs.existsSync(packsDir) && fs.readdirSync(packsDir).length && !args.force) {
   console.error(`${packsDir} already exists and is not empty (use --force)`);

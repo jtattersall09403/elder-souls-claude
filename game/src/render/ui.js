@@ -135,6 +135,8 @@ export class UILayer {
     this.model = null;
     this.dirty = true;
     this.visible = true;
+    /** W1-UIX08 — lay out and measure, do not paint. See `setSuppressed()`. */
+    this.suppressed = false;
     this.last = emptyMetrics();
   }
 
@@ -362,7 +364,14 @@ export class UILayer {
     const panelH = Math.min(contentH, maxH);
     const x0 = marginX, y0 = H - panelH - Math.round(H * 0.045);
 
+    // W1-UIX08. `who` is computed OUTSIDE the paint block because `metrics()` below reports it,
+    // and the metrics must be identical whether or not the paint ran — that is the entire
+    // contract of `setSuppressed()`.
+    const who = [m.speaker_title, m.speaker_name].filter(Boolean).join(' ');
+    const scrollNote = (opts.length > shownOpts.length) ? `${sel + 1} of ${opts.length}` : '';
+
     // --- vellum
+    if (!this.suppressed) {
     c.save();
     roundRect(c, x0, y0, panelW, panelH, Math.round(6 * s));
     const vellum=c.createLinearGradient(x0,y0,x0,y0+panelH);
@@ -386,7 +395,6 @@ export class UILayer {
     c.font = smallFont(nameSize);
     c.fillStyle = INK_DIM;
     c.textAlign = 'left';
-    const who = [m.speaker_title, m.speaker_name].filter(Boolean).join(' ');
     c.fillText(who.toUpperCase(), x0 + pad, y);
     // The scroll position rides in the HEADER, not under the last answer.
     //
@@ -397,7 +405,6 @@ export class UILayer {
     // laid out, drawn, unreadable. That is `RI-JRN09`'s "orphan text" one layer below the
     // round-2 defect, and the fix is to put the only element that tells a player the list
     // continues in the one place on the panel that can never be clipped.
-    const scrollNote = (opts.length > shownOpts.length) ? `${sel + 1} of ${opts.length}` : '';
     if (m.place_name || scrollNote) {
       c.textAlign = 'right';
       c.fillText([m.place_name ? m.place_name.toUpperCase() : '', scrollNote].filter(Boolean).join('   ·   '), x0 + panelW - pad, y);
@@ -480,6 +487,7 @@ export class UILayer {
       // (the scroll position is drawn in the header — see the note there)
     }
     c.restore();
+    }   // end of the paint block — see setSuppressed()
 
     // --- metrics, from the layout that was just performed
     const frameArea = W * H;

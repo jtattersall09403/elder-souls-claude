@@ -82,10 +82,12 @@ export function placeOfNode(node) {
  * WHAT IT SHOULD BE, and why. Morrowind's opening is its strongest convention and it is the same
  * beat three times running — the ship's hold, the census office, the excise office: each one hands
  * you back your body inside a confined space with the way out in the frame, and the world is the
- * reward for walking through it. The reference plates
- * (`corpus/70-visual/refs/morrowind/REF-A12b/`) are interface captures rather than that beat, so
- * they do not settle it; what settles it is that a first frame with no exit in it has to be
- * recovered from by flailing the stick, and this game has no tutorial prompt and wants none.
+ * reward for walking through it. The reference plates say the same thing from the other side:
+ * `corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-char_creation__mw-132183942.jpg` is
+ * Morrowind's own character-creation panel, and behind it is Seyda Neen — the dock planks, the
+ * water, the census house wall, a tree, the sky. The interface is a strip over a PLACE. Not one
+ * of the 33 plates in that folder shows a surface over a blank wall. What this file was doing was
+ * the opposite: the surface came down and left a wall of storage behind it.
  * So: **the way out, from where you are standing, with the room around it.**
  *
  * WHERE THE WAY OUT IS. Not `continuity.interior_spawn` — that is where `useDoor()` PUTS you and
