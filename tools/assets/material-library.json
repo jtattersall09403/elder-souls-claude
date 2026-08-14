@@ -1,0 +1,63 @@
+{
+  "schema": "elder-souls/w1-30c-material-library@1",
+  "note": "The source of truth for which texture set each of the twenty semantic families uses, and how it was produced. tools/assets/fetch-cc0-materials.mjs and tools/assets/synth-materials.mjs read this file; game/assets/w1-30/materials/manifest.json is generated from it with hashes. A family with no entry here cannot reach a frame: worldMaterial falls back to the visible magenta material.",
+  "cc0": {
+    "licence": "CC0-1.0",
+    "source": "https://polyhaven.com/license",
+    "note": "Poly Haven releases all library assets under CC0 and permits commercial use and redistribution.",
+    "api": "https://api.polyhaven.com/files/<slug>",
+    "maps": ["Diffuse", "nor_gl", "Rough"],
+    "resolution": "1k",
+    "format": "jpg"
+  },
+  "conversion": {
+    "albedo": "ffmpeg -i <diffuse> -vf scale=1024:1024,eq=saturation=0.55 -q:v 4 <slug>_albedo_1k.jpg",
+    "normal": "ffmpeg -i <nor_gl> -vf scale=1024:1024 -q:v 3 <slug>_normal_1k.jpg",
+    "rough": "ffmpeg -i <rough> -vf format=gray,scale=512:512 -q:v 5 <slug>_rough_512.jpg",
+    "why_desaturated": "The source sets carry their own strong colour identity (rusty orange, red leather). Black Marsh's regional palette must lead, so albedo is desaturated to 0.55 at conversion: pigment variation survives, the source's colour opinion does not. The former pipeline went further and neutralised colour entirely, which is one reason the province reads as grey.",
+    "why_rough_at_512": "Roughness is a low-frequency signal; halving it costs nothing visible and takes the whole library under the 320 MB high-tier texture budget without a KTX2 toolchain."
+  },
+  "families": {
+    "mud":        {"kind": "cc0", "slug": "brown_mud",              "author": "Rob Tuytel"},
+    "wet_mud":    {"kind": "cc0", "slug": "mud_forest"},
+    "bark":       {"kind": "cc0", "slug": "bark_brown_01",          "author": "Rob Tuytel"},
+    "leaf":       {"kind": "cc0", "slug": "forest_leaves_02"},
+    "reed":       {"kind": "cc0", "slug": "reed_roof_04"},
+    "root":       {"kind": "cc0", "slug": "roots"},
+    "timber":     {"kind": "cc0", "slug": "dark_wooden_planks"},
+    "clay":       {"kind": "cc0", "slug": "clay_plaster"},
+    "stone":      {"kind": "cc0", "slug": "plastered_stone_wall",   "author": "Rob Tuytel"},
+    "salt":       {"kind": "cc0", "slug": "white_plaster_rough_01"},
+    "bone":       {"kind": "cc0", "slug": "marble_01"},
+    "cloth":      {"kind": "cc0", "slug": "rough_linen"},
+    "skin":       {"kind": "cc0", "slug": "brown_leather"},
+    "metal":      {"kind": "cc0", "slug": "rusty_metal_04"},
+    "shell":      {"kind": "cc0", "slug": "shell_floor_01"},
+    "thorn":      {"kind": "cc0", "slug": "bark_willow"},
+    "chitin":     {"kind": "synth", "slug": "chitin_plates",
+                   "why": "No CC0 set in the corpus reads as insect carapace. Voronoi plate cells with a bevelled rim and per-cell gloss, synthesised by tools/assets/synth-materials.mjs. Recorded as a substitution under W1-30C's stop condition."},
+    "resin":      {"kind": "synth", "slug": "resin_flow",
+                   "why": "No CC0 set reads as sap resin. Flow-banded surface with bubble cavities, same script, same reason."},
+    "water":      {"kind": "synth", "slug": "water_ripple",
+                   "why": "Water's appearance is owned by the surface shader (W1-30H after the W1-30S seam). C supplies only a ripple normal so the shader has a high-frequency term to break its specular lobe."},
+    "wet_chitin": {"kind": "variant", "of": "chitin", "wetness": 0.7,
+                   "why": "wet_chitin is the wetness variant of chitin, not a second texture set. A second set for the same surface is a census duplicate; this is what the variant axis is for."}
+  },
+  "detail_normals": {
+    "note": "Four shared 512 px detail-normal tiles, blended at 8x the base tiling. This is how a 1k base texture survives a 0.5 m close-up, and it costs four textures for the whole game.",
+    "tiles": {
+      "organic": "fibrous directional grain with pores - wood, foliage",
+      "mineral": "cellular pitting with sub-grain - soil, stone, salt, metal",
+      "fabric":  "woven warp/weft crossing - cloth, skin, water",
+      "hard":    "fine cracked plating - carapace, shell, bone, resin"
+    }
+  },
+  "trim_atlas": {
+    "file": "trim/trim_atlas_albedo_2k.jpg",
+    "normal": "trim/trim_atlas_normal_2k.jpg",
+    "size": [2048, 1536],
+    "bands": 12,
+    "band_height": 128,
+    "note": "One band per slot declared in TRIM_SLOTS. Consumed by W1-30E's kit parts and W1-30D's equipment."
+  }
+}
