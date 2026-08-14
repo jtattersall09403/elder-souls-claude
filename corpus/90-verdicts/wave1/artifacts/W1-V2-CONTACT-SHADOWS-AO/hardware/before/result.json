@@ -1,0 +1,61 @@
+{
+  "entry": "game/index.html",
+  "renderer": "ANGLE (NVIDIA, Vulkan 1.4.303 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+  "software_renderer": false,
+  "camera": {
+    "pos": [
+      0,
+      1.7,
+      2.6
+    ],
+    "look": [
+      0,
+      0.15,
+      -0.4
+    ],
+    "fov": 50
+  },
+  "contact_band": {
+    "y0": 552,
+    "y1": 568,
+    "x0": 400,
+    "x1": 1200
+  },
+  "far_band": {
+    "y0": 660,
+    "y1": 676,
+    "x0": 400,
+    "x1": 1200
+  },
+  "pass_ratio": 0.75,
+  "ao_off": {
+    "contact_luma": 46.079,
+    "far_luma": 40.382,
+    "ratio": 1.1411,
+    "pass": false
+  },
+  "ao_on": {
+    "contact_luma": 45.823,
+    "far_luma": 40.382,
+    "ratio": 1.1347,
+    "pass": false
+  },
+  "darkening_is_localized": true,
+  "checks": [
+    {
+      "id": "AO-OFF-DOES-NOT-PASS",
+      "ok": true,
+      "detail": "ratio 1.1411 (must NOT already be <= 0.75 — else the fixture itself has a contact-dark bias and the arm proves nothing)"
+    },
+    {
+      "id": "AO-ON-PASSES-RI-VIS04-4",
+      "ok": false,
+      "detail": "ratio 1.1347 <= 0.75 required"
+    },
+    {
+      "id": "FAR-BAND-UNCHANGED",
+      "ok": true,
+      "detail": "far_luma off=40.382 on=40.382 — open ground away from any junction must not move; a change here would mean this is a global darken, not contact AO"
+    }
+  ]
+}
