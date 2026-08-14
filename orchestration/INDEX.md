@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `d96a48b6`: **1002 tools**, **157 reference items**,
-**56 pieces in flight**.
+drift. At `f010f3e0`: **1000 tools**, **157 reference items**,
+**54 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1002, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1000, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 157, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -41,7 +41,7 @@ Run these; do not invent your own equivalents.
 Both work. Note that `node … 2>&1 | tail -1 ; echo exit=$?` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
-## The 47 tools you will actually reach for
+## The 45 tools you will actually reach for
 
 Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
@@ -81,8 +81,6 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 - `tools/publish.mjs` — Regenerates the published site: build status + blog -> docs/index.html Wired into .githooks/pre-commit so the page never goes stale.
 - `tools/readpath.mjs` — measure the mandatory cold-start read path, and prove no hazard fell off it.
 - `tools/rigour.mjs` — **no header comment**
-- `tools/roadmap-report.mjs` — Draws the roadmap tracker on docs/progress.html, in the cost-report.mjs pattern: this file COMPUTES NOTHING.
-- `tools/roadmap.mjs` — THE ROADMAP TRACKER — "how far through the roadmap are we, and is that number true?" Owner, verbatim: "I MUST always always have a way to instantly check how fa
 - `tools/run-all.mjs` — run every measurement that is currently possible and write a machine-readable report to reports/.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
@@ -99,7 +97,7 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `harness` 255 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 32 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `platform` 11 · `touch` 11 · `blind` 10 · `camera` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **279 of 1002 tools have no header comment**, so nobody can tell what they
+> **279 of 1000 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 157, by family
@@ -150,7 +148,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 56 live pieces
+## In flight right now — 54 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -162,9 +160,7 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 | piece | state | files claimed |
 |---|---|---|
 | `ROADMAP-COVERAGE-AUDIT` | starting | `orchestration/status/ROADMAP-COVERAGE-AUDIT.json` `reports/roadmap-audit/` |
-| `ROADMAP-TRACKER` | in_progress | `orchestration/roadmap.json` `tools/roadmap.mjs` `orchestration/status/ROADMAP-TRACKER.json` `docs/data/roadmap.json` +3 |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
-| `DOC-SLIM-HOTPATH` | running | `orchestration/status/DOC-SLIM-HOTPATH.json` `tools/gen-index.mjs` `orchestration/INDEX.md` `corpus/00-doctrine/ARBITRATION.md` +4 |
 | `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
 | `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
 | `W1-DOOR-YAW-SWEEP` | in_progress | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/harness/door-yaw-consume.mjs` +7 |
