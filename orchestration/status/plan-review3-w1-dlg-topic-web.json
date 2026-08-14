@@ -1,0 +1,33 @@
+{
+  "task_id": "plan-review3-w1-dlg-topic-web",
+  "role": "plan-reviewer-editor",
+  "round": 3,
+  "plan": "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+  "state": "done",
+  "plan_state": "satisfied",
+  "verdict": "APPROVED — no material defect found; no material edit made beyond the state marker and the round-3 record",
+  "started_at": "2026-08-14",
+  "reviewed_version": "d041b584 (round 2's edit at 7b05e65e)",
+  "next_step": "none — the plan is build-ready. Dispatch the builder per §8; steps A-E, rows A1/A1b/A2/A5/A5b/A5c/A6/A7/A7b.",
+  "what_i_could_not_do": [
+    "No browser was launched and none was needed; this piece opens no browser (§4).",
+    "A1's 90% and A7's 85% cannot be derived offline — no measurement available here beats either, and both are left exactly as the plan sets them.",
+    "The ten unreachable topics were not repaired and are not repaired by this plan; A5c gates them at no-regression and §9 names the owner."
+  ],
+  "independently_reproduced_at_HEAD": {
+    "build_graph": "470 nodes, 1630 edges, mean_out_degree_nonleaf 3.9836, leaf 0.2234, reachable_only 0.9809, max_depth 7, median_depth 2, convergence 0.6191, orphans [], unreachable_infos [], menu_quest_fraction 0.20",
+    "unreachable_from_greeting": "exactly the 10 named in §1; in-degrees 1-2 (so none is an orphan); none advertised by any npc.topics",
+    "topic_census": "470 ids, 1601 `to` occurrences, 1273 distinct pairs (independent census, records carrying `id` only)",
+    "npc_census": "408 records, 865 topics entries, 100 dangling (11.6%), 66 distinct strings, 52 records affected, exactly 1 empty topics array",
+    "thorn_json": "4 records with no `id`, keys topic/settlement/text/links, 4 link entries — exactly the 1605 vs 1601 gap",
+    "sibling": "W1-UIX08-dialogue-window still state:building; files_touched = its status file + reports/uix08/READING-NOTE.md; files_claimed excludes converse.js, game/data/dialogue/**, tools/dialogue/**",
+    "ownership": "ownership.mjs --for game/src/character/converse.js -> 1 piece, W1-DLG-S37, done, no live claimant"
+  },
+  "the_5a_question": "Resolved in the plan's favour and stronger than round 2 knew. RI-DLG01 and RI-UIX08 both carry `dialogue.topics.discovery` in `judges:` (verified), and PLAN-LOOP.md derives the governing bar from `judges:` metadata — so §5a rule 1 is compelled, not chosen. RI-UIX08's own `## Scoring` caps it at 2 with §G unrun (and its ladder-anchor row says so independently); SCORING.md §3 combines items by mean (default) or min (gates) and §1.2 makes the item band a ceiling. Green A1-A7 with §G unrun therefore lands the piece at 4.5 (mean) or 2 (min) against a wave-1 gate of 7.0. The statistic cannot pass the build.",
+  "files_touched": [
+    "orchestration/plans/W1-DLG-TOPIC-WEB.md",
+    "orchestration/status/plan-review3-w1-dlg-topic-web.json"
+  ],
+  "files_claimed": [],
+  "redundant_with": ["plan-review-w1-dlg-topic-web", "plan-review2-w1-dlg-topic-web"]
+}
