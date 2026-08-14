@@ -1,0 +1,8 @@
+captured 8 orbit frame(s) at HEAD into /home/user/elder-souls-claude/reports/visual-truth/f1-critic-shader-collision-after/frames
+PASS  INSTRUMENT-FOUND-THE-BODY  — 124 actor-body material(s) inspected across 3256 player meshes
+PASS  CONTROL-IS-CLEAN  — 65 equipment/frill material(s) inspected, 0 with duplicate declarations — these never pass through installWaterline, so a duplicate here would mean the probe is measuring the wrong seam
+PASS  NO-DUPLICATE-UNIFORM-DECLARATION  — no uniform is declared twice in any composed body fragment shader
+PASS  BODY-PROGRAM-IS-RUNNABLE  — all 124 actor-body program(s) linked
+PASS  CONTROL-PROGRAM-IS-RUNNABLE  — 0 of 65 equipment/frill program(s) failed to link — these must stay green, or the failure is not specific to the waterline seam
+PASS  NO-SHADER-ERROR-ON-THE-CONSOLE  — no shader error seen AFTER the listener attached (weak: boot-time errors are missed)
+written /home/user/elder-souls-claude/reports/visual-truth/f1-critic-shader-collision-after/shader-collision.json

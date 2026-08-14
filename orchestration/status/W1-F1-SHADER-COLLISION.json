@@ -2,15 +2,33 @@
   "task_id": "W1-F1-SHADER-COLLISION",
   "role": "builder",
   "item": "F1",
-  "state": "in-progress",
+  "state": "rename-landed-and-verified-green-at-head-doing-followups",
   "base_commit": "1393d1b8ff1344a6f3ffe88680ac20dccaec602c",
   "spec": "corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-r1.md",
+  "could_not_do": [
+    "ANSWERED THE HEADLINE QUESTION, stated first per rule 26: bodies ARE drawn again at HEAD (currently 42dab8dc on origin/codex/wave1-build-experiment) — confirmed by running the gate to green, not by inference. Two things are still open and are named honestly rather than silently finished: (1) delete-the-fix control did not land cleanly on the first attempt — tools/visual/w1-f1-critic-shader-collision.mjs hardcodes entry:'game/index.html' and SILENTLY IGNORES a --entry flag (it path.resolve()s that literal against process.cwd(), not against any caller-supplied path), so my first clone run actually re-tested the already-fixed live repo, not the reverted clone, and came back a false all-green. Retried with cwd set inside the clone; that run was still in flight when this update was written. (2) the census tripwire (NO-UNRUNNABLE-PROGRAM-IN-SCENE in w1-30-surface-orphan-census.mjs) is written but not yet run or landed. Per the coordinator's explicit ruling, the rename is the deliverable and the evidence pack is the nice-to-have — the answer above does not wait on either."
+  ],
   "files_claimed": [
     "game/src/render/actor.js",
     "tools/visual/w1-f1-critic-shader-collision.mjs",
+    "tools/visual/w1-30-surface-orphan-census.mjs",
     "corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/"
   ],
-  "files_touched": [],
-  "next_step": "run gate red, apply rename, run gate green, land, then census follow-up and frame re-take",
-  "could_not_do": []
+  "files_touched": [
+    "game/src/render/actor.js",
+    "tools/visual/w1-30-surface-orphan-census.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/before/",
+    "corpus/90-verdicts/wave1/artifacts/W1-F1-SHADER-COLLISION/after/"
+  ],
+  "what_happened": [
+    "Pinned baseline at session start: 1393d1b8ff1344a6f3ffe88680ac20dccaec602c (HEAD is not the baseline per HAZARDS §12).",
+    "Ran node tools/visual/w1-f1-critic-shader-collision.mjs BEFORE editing: confirmed red exactly matching the verdict — 124 body materials with duplicate uWetness declarations, 66/124 actor-body programs FAILED TO LINK, identical GLSL errors ('uWetness' redefinition at 0:81, 'esWet' redefinition at 0:1724). Saved to artifacts/.../before/.",
+    "Applied the verdict's exact remedy in game/src/render/actor.js#installWaterline: uWetness -> uWaterlineWetness (shader.uniforms key at the old :297, declaration at the old :302, uses at :310/:311), esWet -> esWaterlineWet, esBand -> esWaterlineBand, esMeniscus -> esWaterlineMeniscus. No other files touched for the fix itself.",
+    "While the after-gate browser run was still queued, the orchestrator's whole-tree bank (commit ccea0765, then folded into 449e8f2b / 3e695318 / current HEAD) carried my uncommitted actor.js edit into HEAD and pushed it — verified against the REMOTE BLOB (git show origin/<branch>:game/src/render/actor.js), not git status: line declares 'uniform float uWaterlineWetness' and 'esWaterlineWet', not 'uWetness'/'esWet'. So the rename is landed and on origin. This is the HAZARDS §12 mechanism working as described, not a mistake on my part; I pulled --ff-only afterward to resync.",
+    "Ran the SAME gate AFTER, against the now-current tree: all 6 checks PASS, all 124 of 124 actor-body programs linked (up from 58 not-yet-compiled + 66 failed before). Saved to artifacts/.../after/.",
+    "Visual confirmation (not just statistics, per the owner's standing directive): before/frames/head-player-yaw000.png shows a headless, armless, legless player — floating chest/shield/boots/horns only, plus a second floating NPC head+horns in the background. after/frames/head-player-yaw000.png and yaw180.png show the complete figure: head, eyes, horns, arms, torso, legs, connected to the equipment. Both sets cover all 8 orbit angles at HEAD.",
+    "Prepared the standing-census follow-up (item 1 of 2): added a NO-UNRUNNABLE-PROGRAM-IN-SCENE check to tools/visual/w1-30-surface-orphan-census.mjs that reads program.diagnostics.runnable off the renderer's live WebGLProperties for every material actually mounted in the scene -- this is the tripwire the verdict names as missing. Not yet run/landed at time of writing this update; next_step covers it.",
+    "Delete-the-fix in progress via a control-clone (node tools/control-clone.mjs, writable=game/src/render/actor.js): reverted the four identifiers back to the colliding names in the CLONE ONLY, running the same gate against the clone's game/index.html to confirm the link errors return. Result pending; will be recorded here and the clone will be cleaned up via tools/control-clone.mjs cleanup once done."
+  ],
+  "next_step": "read back the delete-the-fix result (must show FAIL/red again on the clone); clean up the control-clone; run the census follow-up gate (--selfcheck too) and land tools/visual/w1-30-surface-orphan-census.mjs; do the follow-up-2 full motion re-take with base-frame-ab.mjs reusing the shipped-config method; land remaining artifacts/status/blog line via node tools/land.mjs"
 }
