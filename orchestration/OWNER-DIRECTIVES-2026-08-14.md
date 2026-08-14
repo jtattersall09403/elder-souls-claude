@@ -242,6 +242,45 @@ never have been applied there and not here.
 agents that provably never shared a file, the cause is elsewhere — most likely `bank.mjs` staging or
 a merge — and this ruling should not be allowed to mask it.
 
+
+### Ruling W2 — a chart is not the thing, and telling apart is not liking *(reversible)*
+
+A sweep of all 30 Wave-1 plans found nine needing a fresh round, and the causes collapse to **two
+patterns worth one ruling rather than thirty edits**:
+
+1. **Many "human reads" show a judge a chart, not the thing.** W1-01, W1-06, W1-09 and W1-12 all put a
+   person in front of a plot, a series or a fingerprint. W1-12's blind packs are *"two anonymised 60 s
+   distance/state series"* and *"ten unlabelled 90-second behaviour fingerprints"* — **nobody ever
+   fights an enemy.** A judge shown a graph is grading the instrument, not the game.
+2. **The project mostly measures genericness, not quality.** W1-22, W1-10, W1-11, W1-12 and W1-23 all
+   ask some form of *"can you tell these apart?"* That is the exact substitution the visual review
+   convicted, where the human gate asked *"could this be Skyrim?"* — a blockout of grey boxes in a
+   swamp passes it with distinction. **Distinguishable is not good.**
+
+**The ruling: a human gate must show the artefact as a player meets it, and ask whether it is good.**
+Same/different has its place as a *leak check* on a blind pack; it may never be the quality verdict.
+Where a piece's subject is a feel system — stealth, combat, movement — the gate is somebody playing
+it, not reading its trace.
+
+**Reversal**: the affected rows are named per plan in `orchestration/audits/PLAN-AUDIT-2026-08-14.md`.
+**Falsifier**: a subject where the artefact genuinely cannot be presented to a judge (a determinism
+property, a save-shape invariant) — there, an instrument read is the honest gate and this ruling does
+not apply. Say which case you are in rather than assuming.
+
+### And the propagation failure underneath it, which is the orchestrator's
+
+**No plan outside the `W1-30` tree cites this file or Ruling W1.** All 29 were marked `satisfied`
+between 08-09 and 08-12; the bar moved on 08-14. So 29 dispatchable plans are build-ready against
+**superseded predicates**, and no builder reading only its own plan would ever learn otherwise. That
+is one unpropagated directive rather than thirty independent defects — and writing a ruling without a
+route into the documents it binds is the same shape as a model nothing in the running world reads.
+
+**Every dispatch brief must name the directives and rulings in force**, until the plans themselves
+carry them. Two further arithmetic defects found by the same sweep and fixed the same way: `W1-08`'s
+weights sum to 100 against a ≥ 90 bar, so its **naive human row can score zero and still pass** —
+`W1-29` has identical arithmetic and is safe only because of one clause, *"independent naive pass …
+is not closure"*, which `W1-08` should copy verbatim.
+
 ## 7. Housekeeping the previous run let slip
 
 Workers have not been updating these, and must: `docs/index.html`, `docs/progress.html`,
