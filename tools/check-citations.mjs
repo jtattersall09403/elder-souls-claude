@@ -288,6 +288,12 @@ const ABSENCE = new RegExp([
 // A claim of absence that is explicitly about the past is history, not a false belief.
 const PAST = /\bwas empty\b|\bwere (?:empty|absent)\b|\bat authoring time\b|\bhas since\b|\bno longer true\b|\bused to (?:say|read)\b|\bhad been\b/i;
 
+// A sentence that quotes an absence claim in order to REFUTE it is the opposite of the defect —
+// it is the repair. `ARBITRATION.md` S55 does exactly this: it quotes the excuse "references were
+// unobtainable" and answers "modern plates are on disk at …". Firing on that would train readers
+// to ignore the check.
+const REFUTED = /\b(?:is|are|was|were) on disk\b|\bis void\b|\bhas been on disk\b|\bexists? (?:on disk|at|now)\b|\bthat (?:sentence|claim) is false\b|\bno longer (?:true|holds)\b/i;
+
 const PATHISH = /\b((?:corpus|orchestration|tools|game|docs|reports|refs)\/[A-Za-z0-9_@./*-]*[A-Za-z0-9_-])/g;
 const REFID = /\bREF-([A-Z]{1,2}\d+[a-z]?)\b/g;
 
@@ -351,11 +357,21 @@ function checkC(root, files) {
     const lines = readLines(root, p);
     if (!lines) continue;
     scanned++;
+    // Block suppression. A marker line suppresses itself and everything down to the next blank
+    // line, because a quoted stale claim is usually a paragraph, not a sentence. Two markers are
+    // honoured: this tool's own, and `<!-- dispatch-staleness: quoted -->`, which the project
+    // already uses to mean "the text below quotes a claim; do not re-decide it".
+    const suppressed = new Set();
+    for (let i = 0; i < lines.length; i++) {
+      if (!SUPPRESS.test(lines[i]) && !/<!--\s*dispatch-staleness:\s*quoted\s*-->/.test(lines[i])) continue;
+      for (let j = i; j < lines.length && lines[j].trim() !== ''; j++) suppressed.add(j);
+      suppressed.add(i);
+    }
     for (let i = 0; i < lines.length; i++) {
       const l = lines[i];
       if (!ABSENCE.test(l)) continue;
       absenceLines++;
-      if (SUPPRESS.test(l)) continue;
+      if (suppressed.has(i)) continue;
       if (/^\s*>/.test(l)) continue;                          // a quotation of somebody else
 
       const hits = [];
@@ -363,6 +379,7 @@ function checkC(root, files) {
       for (const seg of segments(l)) {
         if (!ABSENCE.test(seg)) continue;
         if (PAST.test(seg)) continue;                         // "was empty", "at authoring time"
+        if (REFUTED.test(seg)) continue;                      // the sentence is the correction
         for (const m of seg.matchAll(PATHISH)) {
           const r = resolvePath(root, m[1]);
           if (r && nonEmptyDir(root, r)) { hits.push({ kind: 'path', named: m[1], onDisk: r }); claim ??= seg.trim(); }
