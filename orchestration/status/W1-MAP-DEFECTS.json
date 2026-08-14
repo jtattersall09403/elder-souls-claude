@@ -1,25 +1,34 @@
 {
   "task_id": "W1-MAP-DEFECTS",
-  "status": "reading",
+  "status": "reproduced-D1-diagnosing",
   "started": "2026-08-14",
   "owner_defects": [
     "D1: cannot open the map at all from the deployed build (input->surface route broken)",
     "D2: remove fog of war — geography visible from the start, markers hidden until discovered (Morrowind parity)"
   ],
-  "next_step": "read game/src/ui map surface + input routing; reproduce D1 through character creation on desktop and phone",
+  "reproduction_D1": {
+    "how": "tools/map/explore-W1-MAP-DEFECTS.mjs — real Chromium, ?mode=play (rAF drives the sim), real page.keyboard presses, no harness openMenu anywhere",
+    "result": "M (the `menu` binding) opens the INVENTORY. Digit3 (`swap_right`) walks inventory -> journal. Then it STOPS: six further Digit3 presses leave mode === 'journal'. The map is never reached.",
+    "why_it_matters": "tools/ui/critic-w1-21-r2-doors-at-head.mjs reaches all six screens — but it does so from loadState('ui-journal'), a canned mid-game state. A real player boots into the barge hold in character creation, and that is where the walk dead-ends."
+  },
+  "ruling_D2_draft": "RI-WLD06 §5 already bans 'no fog-of-war reveal-on-approach'; the current map's discovery-gated terrain is that ban being violated, not upheld. Geography (coast, rivers, land shape, region colour) is drawn from frame 0; places/markers stay gated on having stood there; roads/routes stay forbidden by S35 and AMENDMENT-W1-MAP-01, which is what keeps RI-WLD06's markerless navigation intact.",
+  "next_step": "confirm which peer refuses to open during creation; fix the ring walk; then D2",
   "files_touched": [
-    "orchestration/status/W1-MAP-DEFECTS.json"
+    "orchestration/status/W1-MAP-DEFECTS.json",
+    "tools/map/explore-W1-MAP-DEFECTS.mjs"
   ],
   "files_claimed": [
-    "game/src/ui/screens/",
+    "game/src/ui/screens/map.js",
     "game/src/ui/system.js",
-    "game/src/ui/touch-overlay.js",
+    "game/data/ui/map.json",
     "tools/map/",
     "reports/w1-map-defects/",
     "docs/shots/2026-08-14-w1-map-defects/",
-    "orchestration/NEXT-DISPATCH.md",
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
     "reports/blog-feed.jsonl",
     "docs/progress.html"
   ],
-  "notes": []
+  "notes": [
+    "ui/system.js is also claimed by HUD-MORROWIND and W1-19-builder-production-20260811 — I will keep my edits to _walkPeer/_mapModel/state().map and commit only my own paths."
+  ]
 }

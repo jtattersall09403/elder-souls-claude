@@ -97,36 +97,36 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-14 13:59:56Z &middot; auto-refresh 20s</div>
+  <div class="sub">Morrowind everywhere else &middot; Dark Souls inside the fight &middot; live build status &middot; regenerated 2026-08-14 14:01:28Z &middot; auto-refresh 20s</div>
 </header>
 <div class="wrap">
 
 <section class="cost"><h2 id="cost">What this is costing <span class="dimtext">(the efficiency programme &mdash; <code>orchestration/COST.md</code>)</span></h2>
-<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 13:59Z</b> (seconds ago) at commit <code>a2ae151</code>, and it refreshes on every bank.</div><div class="cost-hero">
+<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 14:00Z</b> (seconds ago) at commit <code>390c795</code>, and it refreshes on every bank.</div><div class="cost-hero">
   <div class="cost-hero-main">
     <div class="cost-hero-l">Spend to date</div>
-    <div class="cost-hero-n">$7,113.13</div>
-    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 13:59Z &middot; 207.7 h of fleet runtime</div>
-    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 58 active h of 207.7 elapsed &middot; 805 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
+    <div class="cost-hero-n">$7,115.62</div>
+    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 14:00Z &middot; 207.7 h of fleet runtime</div>
+    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 59 active h of 207.7 elapsed &middot; 811 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
     
     <div class="cost-caveat cost-caveat-ok">Read <b>473</b> of 473 transcript files (0.70 GB) &mdash; complete.</div>
   </div>
   <div class="cost-hero-side">
-    <div class="cost-tile"><div class="cost-tile-v">$83.72<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$1.12<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">Burn rate now</div>
       <div class="cost-tile-s">over the last 1 h</div></div>
-    <div class="cost-tile"><div class="cost-tile-v">$122.64<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$120.60<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">C/H &mdash; the headline metric</div>
-      <div class="cost-tile-s">105.8% of baseline &middot; bar is 25%</div></div>
-    <div class="cost-tile"><div class="cost-tile-v">$8.84<span class="cost-per">/agent-h</span></div>
+      <div class="cost-tile-s">104.1% of baseline &middot; bar is 25%</div></div>
+    <div class="cost-tile"><div class="cost-tile-v">$8.77<span class="cost-per">/agent-h</span></div>
       <div class="cost-tile-l">Cost per agent-hour</div>
-      <div class="cost-tile-s">101.4% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
+      <div class="cost-tile-s">100.7% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
   </div>
 </div><div class="cost-guards">
   <div class="cost-guards-h">The guards. <span class="dimtext">A cost figure published without these is not a result &mdash; C/H alone is gamed by running fewer agents.</span></div>
   <div class="cost-tiles">
-    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">13.9</div>
-    <div class="cost-tile-l">G1 &mdash; mean concurrent agents</div><div class="cost-tile-s"><span class="ok">&#10003;</span> floor 12 &middot; over 1 h<br>14 alive on the second reading</div></div>
+    <div class="cost-tile cost-guard"><div class="cost-tile-v ok">13.8</div>
+    <div class="cost-tile-l">G1 &mdash; mean concurrent agents</div><div class="cost-tile-s"><span class="ok">&#10003;</span> floor 12 &middot; over 1 h<br>13.9 alive on the second reading</div></div>
     <div class="cost-tile cost-guard"><div class="cost-tile-v ok">3.6</div>
     <div class="cost-tile-l">G2a &mdash; verdict score <span class="cost-weak">tripwire, low power</span></div><div class="cost-tile-s"><span class="ok">&#10003;</span> baseline &mdash; / 10 &middot; n=72 &middot; power low<br>One-sided and under-powered: it cannot prove quality held, only shout if it falls.</div></div>
     <div class="cost-tile cost-guard"><div class="cost-tile-v ok">&mdash;</div>
@@ -135,285 +135,295 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
     <div class="cost-tile-l">G3 &mdash; the five non-negotiables</div><div class="cost-tile-s"><span class="dimtext">&middot;</span> separate critic <span class="warn">unmeasured</span> &middot; delete the fix <span class="warn">unmeasured</span> &middot; consumption <span class="warn">unmeasured</span> &middot; self test <span class="warn">unmeasured</span> &middot; arms disagree <span class="warn">unmeasured</span><br><b>5 of 5 are not honestly measurable yet</b> &mdash; not yet computed by this instrument — verdict prose only, and a grep counts the word, not the act (orchestration/COST.md §1).</div></div>
   </div>
 </div>
-<div class="cost-panel"><h3>C/H — model spend per hour of fleet runtime <span class="cost-unit">$/h</span> <span class="cost-n">30 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$80.34</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$160.68</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$241.02</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$321.36</text><line x1="62" x2="792" y1="114.23848524528134" y2="114.23848524528134" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="118.23848524528134" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="151.5596213113203" y2="151.5596213113203" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="155.5596213113203" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,148.3 90.3,160.3 97.4,125.6 104.5,144.2 111.6,125.5 118.7,153.8 125.8,129.6 132.9,122.6 140.0,100.3 147.0,88.5 154.1,163.2 175.4,86.6 182.5,99.3 189.6,119.1 196.7,90.6 203.7,110.0 210.8,96.6 217.9,111.3 225.0,109.6 232.1,77.6 239.2,99.8 246.3,70.9 253.4,106.3 260.4,121.7 267.5,132.0 274.6,107.7 281.7,117.0 777.8,104.3 784.9,40.8 792.0,129.7" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-panel"><h3>C/H — model spend per hour of fleet runtime <span class="cost-unit">$/h</span> <span class="cost-n">31 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$80.34</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$160.68</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$241.02</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$321.36</text><line x1="62" x2="792" y1="114.23848524528134" y2="114.23848524528134" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="118.23848524528134" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="151.5596213113203" y2="151.5596213113203" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="155.5596213113203" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,148.3 90.1,160.3 97.1,125.6 104.1,144.2 111.1,125.5 118.2,153.8 125.2,129.6 132.2,122.6 139.2,100.3 146.2,88.5 153.3,163.2 174.3,86.6 181.3,99.3 188.3,119.1 195.4,90.6 202.4,110.0 209.4,96.6 216.4,111.3 223.4,109.6 230.5,77.6 237.5,99.8 244.5,70.9 251.5,106.3 258.5,121.7 265.6,132.0 272.6,107.7 279.6,117.0 770.9,104.3 778.0,40.8 785.0,129.4 792.0,163.8" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $36.56 per hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="148.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
 $8.72 per hour
 commit 43ad5db
-measured over 2 h</title><circle cx="90.3" cy="160.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+measured over 2 h</title><circle cx="90.1" cy="160.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
 $89.45 per hour
 commit a75ba7e
-measured over 2 h</title><circle cx="97.4" cy="125.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+measured over 2 h</title><circle cx="97.1" cy="125.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
 $46.11 per hour
 commit 76e88d5
-measured over 2 h</title><circle cx="104.5" cy="144.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+measured over 2 h</title><circle cx="104.1" cy="144.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
 $89.73 per hour
 commit eeeaad2
-measured over 2 h</title><circle cx="111.6" cy="125.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+measured over 2 h</title><circle cx="111.1" cy="125.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
 $23.85 per hour
 commit f298f82
-measured over 2 h</title><circle cx="118.7" cy="153.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+measured over 2 h</title><circle cx="118.2" cy="153.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
 $80.12 per hour
 commit f57c302
-measured over 2 h</title><circle cx="125.8" cy="129.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+measured over 2 h</title><circle cx="125.2" cy="129.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
 $96.32 per hour
 commit 65275dc
-measured over 2 h</title><circle cx="132.9" cy="122.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+measured over 2 h</title><circle cx="132.2" cy="122.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
 $148.24 per hour
 commit 87a5b0e
-measured over 2 h</title><circle cx="140.0" cy="100.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+measured over 2 h</title><circle cx="139.2" cy="100.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
 $175.71 per hour
 commit 3c38f18
-measured over 2 h</title><circle cx="147.0" cy="88.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+measured over 2 h</title><circle cx="146.2" cy="88.5" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
 $1.80 per hour
 commit 3c38f18
-measured over 2 h</title><circle cx="154.1" cy="163.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+measured over 2 h</title><circle cx="153.3" cy="163.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
 $180.26 per hour
 commit 4009815
-measured over 2 h</title><circle cx="175.4" cy="86.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+measured over 2 h</title><circle cx="174.3" cy="86.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
 $150.68 per hour
 commit cd5ae7e
-measured over 2 h</title><circle cx="182.5" cy="99.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+measured over 2 h</title><circle cx="181.3" cy="99.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
 $104.55 per hour
 commit be17753
-measured over 2 h</title><circle cx="189.6" cy="119.1" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+measured over 2 h</title><circle cx="188.3" cy="119.1" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
 $170.87 per hour
 commit b7d249a
-measured over 2 h</title><circle cx="196.7" cy="90.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+measured over 2 h</title><circle cx="195.4" cy="90.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
 $125.71 per hour
 commit aa68530
-measured over 2 h</title><circle cx="203.7" cy="110.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+measured over 2 h</title><circle cx="202.4" cy="110.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
 $156.94 per hour
 commit 0b2d6ef
-measured over 2 h</title><circle cx="210.8" cy="96.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+measured over 2 h</title><circle cx="209.4" cy="96.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
 $122.77 per hour
 commit de4756c
-measured over 2 h</title><circle cx="217.9" cy="111.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+measured over 2 h</title><circle cx="216.4" cy="111.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
 $126.67 per hour
 commit 3ba93e0
-measured over 2 h</title><circle cx="225.0" cy="109.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+measured over 2 h</title><circle cx="223.4" cy="109.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
 $201.13 per hour
 commit b900460
-measured over 2 h</title><circle cx="232.1" cy="77.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+measured over 2 h</title><circle cx="230.5" cy="77.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
 $149.56 per hour
 commit 0f5f456
-measured over 2 h</title><circle cx="239.2" cy="99.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+measured over 2 h</title><circle cx="237.5" cy="99.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
 $216.89 per hour
 commit 8b1295b
-measured over 2 h</title><circle cx="246.3" cy="70.9" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+measured over 2 h</title><circle cx="244.5" cy="70.9" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
 $134.45 per hour
 commit 7bdc979
-measured over 2 h</title><circle cx="253.4" cy="106.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+measured over 2 h</title><circle cx="251.5" cy="106.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
 $98.58 per hour
 commit b4fbd5b
-measured over 2 h</title><circle cx="260.4" cy="121.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+measured over 2 h</title><circle cx="258.5" cy="121.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
 $74.52 per hour
 commit fa96455
-measured over 2 h</title><circle cx="267.5" cy="132.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+measured over 2 h</title><circle cx="265.6" cy="132.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
 $131.00 per hour
 commit 7db8368
-measured over 2 h</title><circle cx="274.6" cy="107.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+measured over 2 h</title><circle cx="272.6" cy="107.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
 $109.49 per hour
 commit d2dbae7
-measured over 2 h</title><circle cx="281.7" cy="117.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+measured over 2 h</title><circle cx="279.6" cy="117.0" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
 $139.02 per hour
 commit 9903ea7
-measured over 2 h</title><circle cx="777.8" cy="104.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
+measured over 2 h</title><circle cx="770.9" cy="104.3" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
 $286.93 per hour
 commit a148758
-measured over 2 h</title><circle cx="784.9" cy="40.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
-$79.91 per hour
-commit a2ae151
-measured over 2 h</title><circle cx="792.0" cy="129.7" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="119.68482357568547" fill="#3987e5" font-size="12" font-weight="600">$79.91/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 12:00Z</text></svg></div></div>
-<div class="cost-panel"><h3>Cost per agent-hour — the diagnostic that proves efficiency, not idling <span class="cost-unit">$/agent-h</span> <span class="cost-n">30 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 90.3,152.0 97.4,127.7 104.5,118.0 111.6,40.8 118.7,111.6 125.8,84.1 132.9,67.8 140.0,82.6 147.0,67.5 154.1,160.7 175.4,59.8 182.5,72.1 189.6,103.6 196.7,97.0 203.7,111.0 210.8,111.7 217.9,107.8 225.0,114.4 232.1,100.9 239.2,105.4 246.3,99.6 253.4,93.7 260.4,80.8 267.5,109.4 274.6,114.4 281.7,119.4 777.8,91.3 784.9,76.5 792.0,133.7" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+measured over 2 h</title><circle cx="778.0" cy="40.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
+$80.60 per hour
+commit 390c795
+measured over 2 h</title><circle cx="785.0" cy="129.4" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
+$0.56 per hour
+commit 390c795
+measured over 2 h</title><circle cx="792.0" cy="163.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="153.75952322866203" fill="#3987e5" font-size="12" font-weight="600">$0.56/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 14:00Z</text></svg></div></div>
+<div class="cost-panel"><h3>Cost per agent-hour — the diagnostic that proves efficiency, not idling <span class="cost-unit">$/agent-h</span> <span class="cost-n">31 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 90.1,152.0 97.1,127.7 104.1,118.0 111.1,40.8 118.2,111.6 125.2,84.1 132.2,67.8 139.2,82.6 146.2,67.5 153.3,160.7 174.3,59.8 181.3,72.1 188.3,103.6 195.4,97.0 202.4,111.0 209.4,111.7 216.4,107.8 223.4,114.4 230.5,100.9 237.5,105.4 244.5,99.6 251.5,93.7 258.5,80.8 265.6,109.4 272.6,114.4 279.6,119.4 770.9,91.3 778.0,76.5 785.0,133.5 792.0,163.0" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $1.83 per agent-hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="143.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
 $1.09 per agent-hour
 commit 43ad5db
-measured over 2 h</title><circle cx="90.3" cy="152.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+measured over 2 h</title><circle cx="90.1" cy="152.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
 $3.31 per agent-hour
 commit a75ba7e
-measured over 2 h</title><circle cx="97.4" cy="127.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+measured over 2 h</title><circle cx="97.1" cy="127.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
 $4.19 per agent-hour
 commit 76e88d5
-measured over 2 h</title><circle cx="104.5" cy="118.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+measured over 2 h</title><circle cx="104.1" cy="118.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
 $11.22 per agent-hour
 commit eeeaad2
-measured over 2 h</title><circle cx="111.6" cy="40.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+measured over 2 h</title><circle cx="111.1" cy="40.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
 $4.77 per agent-hour
 commit f298f82
-measured over 2 h</title><circle cx="118.7" cy="111.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+measured over 2 h</title><circle cx="118.2" cy="111.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
 $7.28 per agent-hour
 commit f57c302
-measured over 2 h</title><circle cx="125.8" cy="84.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+measured over 2 h</title><circle cx="125.2" cy="84.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
 $8.76 per agent-hour
 commit 65275dc
-measured over 2 h</title><circle cx="132.9" cy="67.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+measured over 2 h</title><circle cx="132.2" cy="67.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
 $7.41 per agent-hour
 commit 87a5b0e
-measured over 2 h</title><circle cx="140.0" cy="82.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+measured over 2 h</title><circle cx="139.2" cy="82.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
 $8.79 per agent-hour
 commit 3c38f18
-measured over 2 h</title><circle cx="147.0" cy="67.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+measured over 2 h</title><circle cx="146.2" cy="67.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
 $0.30 per agent-hour
 commit 3c38f18
-measured over 2 h</title><circle cx="154.1" cy="160.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+measured over 2 h</title><circle cx="153.3" cy="160.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
 $9.49 per agent-hour
 commit 4009815
-measured over 2 h</title><circle cx="175.4" cy="59.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+measured over 2 h</title><circle cx="174.3" cy="59.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
 $8.37 per agent-hour
 commit cd5ae7e
-measured over 2 h</title><circle cx="182.5" cy="72.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+measured over 2 h</title><circle cx="181.3" cy="72.1" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
 $5.50 per agent-hour
 commit be17753
-measured over 2 h</title><circle cx="189.6" cy="103.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+measured over 2 h</title><circle cx="188.3" cy="103.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
 $6.10 per agent-hour
 commit b7d249a
-measured over 2 h</title><circle cx="196.7" cy="97.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+measured over 2 h</title><circle cx="195.4" cy="97.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
 $4.83 per agent-hour
 commit aa68530
-measured over 2 h</title><circle cx="203.7" cy="111.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+measured over 2 h</title><circle cx="202.4" cy="111.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
 $4.76 per agent-hour
 commit 0b2d6ef
-measured over 2 h</title><circle cx="210.8" cy="111.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+measured over 2 h</title><circle cx="209.4" cy="111.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
 $5.12 per agent-hour
 commit de4756c
-measured over 2 h</title><circle cx="217.9" cy="107.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+measured over 2 h</title><circle cx="216.4" cy="107.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
 $4.52 per agent-hour
 commit 3ba93e0
-measured over 2 h</title><circle cx="225.0" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+measured over 2 h</title><circle cx="223.4" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
 $5.75 per agent-hour
 commit b900460
-measured over 2 h</title><circle cx="232.1" cy="100.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+measured over 2 h</title><circle cx="230.5" cy="100.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
 $5.34 per agent-hour
 commit 0f5f456
-measured over 2 h</title><circle cx="239.2" cy="105.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+measured over 2 h</title><circle cx="237.5" cy="105.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
 $5.86 per agent-hour
 commit 8b1295b
-measured over 2 h</title><circle cx="246.3" cy="99.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+measured over 2 h</title><circle cx="244.5" cy="99.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
 $6.40 per agent-hour
 commit 7bdc979
-measured over 2 h</title><circle cx="253.4" cy="93.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+measured over 2 h</title><circle cx="251.5" cy="93.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
 $7.58 per agent-hour
 commit b4fbd5b
-measured over 2 h</title><circle cx="260.4" cy="80.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+measured over 2 h</title><circle cx="258.5" cy="80.8" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
 $4.97 per agent-hour
 commit fa96455
-measured over 2 h</title><circle cx="267.5" cy="109.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+measured over 2 h</title><circle cx="265.6" cy="109.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
 $4.52 per agent-hour
 commit 7db8368
-measured over 2 h</title><circle cx="274.6" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+measured over 2 h</title><circle cx="272.6" cy="114.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
 $4.06 per agent-hour
 commit d2dbae7
-measured over 2 h</title><circle cx="281.7" cy="119.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+measured over 2 h</title><circle cx="279.6" cy="119.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
 $6.62 per agent-hour
 commit 9903ea7
-measured over 2 h</title><circle cx="777.8" cy="91.3" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
+measured over 2 h</title><circle cx="770.9" cy="91.3" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
 $7.97 per agent-hour
 commit a148758
-measured over 2 h</title><circle cx="784.9" cy="76.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
-$2.76 per agent-hour
-commit a2ae151
-measured over 2 h</title><circle cx="792.0" cy="133.7" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="123.69060351413293" fill="#d95926" font-size="12" font-weight="600">$2.76/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 12:00Z</text></svg></div></div>
-<div class="cost-panel"><h3>G1 — mean concurrent agents, on the same clock as the cost <span class="cost-unit">agents</span> <span class="cost-n">30 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 90.3,137.4 97.4,74.1 104.5,127.4 111.6,137.4 118.7,147.3 125.8,127.4 132.9,127.4 140.0,97.4 147.0,97.4 154.1,144.0 175.4,100.7 182.5,104.1 189.6,100.7 196.7,70.8 203.7,77.4 210.8,54.1 217.9,84.1 225.0,70.8 232.1,47.4 239.2,70.8 246.3,40.8 253.4,94.1 260.4,120.7 267.5,114.0 274.6,67.4 281.7,74.1 777.8,94.1 784.9,44.1 792.0,67.4" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+measured over 2 h</title><circle cx="778.0" cy="76.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
+$2.78 per agent-hour
+commit 390c795
+measured over 2 h</title><circle cx="785.0" cy="133.5" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
+$0.09 per agent-hour
+commit 390c795
+measured over 2 h</title><circle cx="792.0" cy="163.0" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="153.01165011459128" fill="#d95926" font-size="12" font-weight="600">$0.09/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 14:00Z</text></svg></div></div>
+<div class="cost-panel"><h3>G1 — mean concurrent agents, on the same clock as the cost <span class="cost-unit">agents</span> <span class="cost-n">31 measurements</span></h3>
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 90.1,137.4 97.1,74.1 104.1,127.4 111.1,137.4 118.2,147.3 125.2,127.4 132.2,127.4 139.2,97.4 146.2,97.4 153.3,144.0 174.3,100.7 181.3,104.1 188.3,100.7 195.4,70.8 202.4,77.4 209.4,54.1 216.4,84.1 223.4,70.8 230.5,47.4 237.5,70.8 244.5,40.8 251.5,94.1 258.5,120.7 265.6,114.0 272.6,67.4 279.6,74.1 770.9,94.1 778.0,44.1 785.0,67.4 792.0,144.0" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 20 agents
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
 8 agents
 commit 43ad5db
-measured over 2 h</title><circle cx="90.3" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
+measured over 2 h</title><circle cx="90.1" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 08:00Z
 27 agents
 commit a75ba7e
-measured over 2 h</title><circle cx="97.4" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
+measured over 2 h</title><circle cx="97.1" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 10:00Z
 11 agents
 commit 76e88d5
-measured over 2 h</title><circle cx="104.5" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
+measured over 2 h</title><circle cx="104.1" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 12:00Z
 8 agents
 commit eeeaad2
-measured over 2 h</title><circle cx="111.6" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
+measured over 2 h</title><circle cx="111.1" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 14:00Z
 5 agents
 commit f298f82
-measured over 2 h</title><circle cx="118.7" cy="147.3" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
+measured over 2 h</title><circle cx="118.2" cy="147.3" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 16:00Z
 11 agents
 commit f57c302
-measured over 2 h</title><circle cx="125.8" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
+measured over 2 h</title><circle cx="125.2" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 18:00Z
 11 agents
 commit 65275dc
-measured over 2 h</title><circle cx="132.9" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
+measured over 2 h</title><circle cx="132.2" cy="127.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 20:00Z
 20 agents
 commit 87a5b0e
-measured over 2 h</title><circle cx="140.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
+measured over 2 h</title><circle cx="139.2" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 22:00Z
 20 agents
 commit 3c38f18
-measured over 2 h</title><circle cx="147.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
+measured over 2 h</title><circle cx="146.2" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 00:00Z
 6 agents
 commit 3c38f18
-measured over 2 h</title><circle cx="154.1" cy="144.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
+measured over 2 h</title><circle cx="153.3" cy="144.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 06:00Z
 19 agents
 commit 4009815
-measured over 2 h</title><circle cx="175.4" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
+measured over 2 h</title><circle cx="174.3" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 08:00Z
 18 agents
 commit cd5ae7e
-measured over 2 h</title><circle cx="182.5" cy="104.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
+measured over 2 h</title><circle cx="181.3" cy="104.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 10:00Z
 19 agents
 commit be17753
-measured over 2 h</title><circle cx="189.6" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
+measured over 2 h</title><circle cx="188.3" cy="100.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 12:00Z
 28 agents
 commit b7d249a
-measured over 2 h</title><circle cx="196.7" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
+measured over 2 h</title><circle cx="195.4" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 14:00Z
 26 agents
 commit aa68530
-measured over 2 h</title><circle cx="203.7" cy="77.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
+measured over 2 h</title><circle cx="202.4" cy="77.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 16:00Z
 33 agents
 commit 0b2d6ef
-measured over 2 h</title><circle cx="210.8" cy="54.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
+measured over 2 h</title><circle cx="209.4" cy="54.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 18:00Z
 24 agents
 commit de4756c
-measured over 2 h</title><circle cx="217.9" cy="84.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
+measured over 2 h</title><circle cx="216.4" cy="84.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 20:00Z
 28 agents
 commit 3ba93e0
-measured over 2 h</title><circle cx="225.0" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
+measured over 2 h</title><circle cx="223.4" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-07 22:00Z
 35 agents
 commit b900460
-measured over 2 h</title><circle cx="232.1" cy="47.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
+measured over 2 h</title><circle cx="230.5" cy="47.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 00:00Z
 28 agents
 commit 0f5f456
-measured over 2 h</title><circle cx="239.2" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
+measured over 2 h</title><circle cx="237.5" cy="70.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 02:00Z
 37 agents
 commit 8b1295b
-measured over 2 h</title><circle cx="246.3" cy="40.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
+measured over 2 h</title><circle cx="244.5" cy="40.8" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 04:00Z
 21 agents
 commit 7bdc979
-measured over 2 h</title><circle cx="253.4" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
+measured over 2 h</title><circle cx="251.5" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 06:00Z
 13 agents
 commit b4fbd5b
-measured over 2 h</title><circle cx="260.4" cy="120.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
+measured over 2 h</title><circle cx="258.5" cy="120.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 08:00Z
 15 agents
 commit fa96455
-measured over 2 h</title><circle cx="267.5" cy="114.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
+measured over 2 h</title><circle cx="265.6" cy="114.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 10:00Z
 29 agents
 commit 7db8368
-measured over 2 h</title><circle cx="274.6" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
+measured over 2 h</title><circle cx="272.6" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-08 12:00Z
 27 agents
 commit d2dbae7
-measured over 2 h</title><circle cx="281.7" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
+measured over 2 h</title><circle cx="279.6" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
 21 agents
 commit 9903ea7
-measured over 2 h</title><circle cx="777.8" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
+measured over 2 h</title><circle cx="770.9" cy="94.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 10:00Z
 36 agents
 commit a148758
-measured over 2 h</title><circle cx="784.9" cy="44.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
+measured over 2 h</title><circle cx="778.0" cy="44.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 12:00Z
 29 agents
-commit a2ae151
-measured over 2 h</title><circle cx="792.0" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="57.42664092664094" fill="#199e70" font-size="12" font-weight="600">29 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 12:00Z</text></svg></div></div>
+commit 390c795
+measured over 2 h</title><circle cx="785.0" cy="67.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 14:00Z
+6 agents
+commit 390c795
+measured over 2 h</title><circle cx="792.0" cy="144.0" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="134.01930501930502" fill="#199e70" font-size="12" font-weight="600">6 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 14:00Z</text></svg></div></div>
 <details class="cost-details"><summary>Every measurement, as a table</summary>
 <div class="cost-scroll"><table><tr><th>Taken</th><th>C/H</th><th>$/agent-h</th><th>Agents</th><th>Commit</th><th>Note</th></tr>
-<tr><td>2026-08-14 12:00Z</td><td>$79.91</td><td>$2.76</td><td>29</td><td><code>a2ae151</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 14:00Z</td><td>$0.56</td><td>$0.09</td><td>6</td><td><code>390c795</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 12:00Z</td><td>$80.60</td><td>$2.78</td><td>29</td><td><code>390c795</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-14 10:00Z</td><td>$286.93</td><td>$7.97</td><td>36</td><td><code>a148758</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-14 08:00Z</td><td>$139.02</td><td>$6.62</td><td>21</td><td><code>9903ea7</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-08 12:00Z</td><td>$109.49</td><td>$4.06</td><td>27</td><td><code>d2dbae7</code></td><td class="rem"></td></tr>
@@ -446,14 +456,14 @@ measured over 2 h</title><circle cx="792.0" cy="67.4" r="4.5" fill="#199e70" str
 </table></div></details><div class="cost-two"><div class="cost-panel"><h3>Cost by model</h3><div class="cost-note">Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">claude-opus-5</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#3987e5"></i></div>
-      <div class="cost-bar-val">$6,913.93</div>
-      <div class="cost-bar-sub">52,831 distinct requests · input 1.2M / cache write 5m 172.9M / cache write 1h 9.3M / cache read 11.00B / output 9.4M</div>
+      <div class="cost-bar-val">$6,916.04</div>
+      <div class="cost-bar-sub">52,854 distinct requests · input 1.2M / cache write 5m 172.9M / cache write 1h 9.3M / cache read 11.00B / output 9.4M</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">claude-sonnet-5</div>
       <div class="cost-bar-track"><i style="width:2.9%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$199.20</div>
-      <div class="cost-bar-sub">4,368 distinct requests · input 304k / cache write 5m 9.6M / cache write 1h 0 / cache read 840.1M / output 651k</div>
+      <div class="cost-bar-val">$199.58</div>
+      <div class="cost-bar-sub">4,377 distinct requests · input 304k / cache write 5m 9.6M / cache write 1h 0 / cache read 841.9M / output 652k</div>
     </div></div></div><div class="cost-panel"><h3>Cost by token class</h3><div class="cost-note">Input, two kinds of cache write (5-minute and 1-hour, billed differently), cache read and output are five different prices. A single total hides cache economics entirely.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">input</div>
       <div class="cost-bar-track"><i style="width:1.5%;background:#3987e5"></i></div>
@@ -463,8 +473,8 @@ measured over 2 h</title><circle cx="792.0" cy="67.4" r="4.5" fill="#199e70" str
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 5m</div>
       <div class="cost-bar-track"><i style="width:19.5%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$1,104.68</div>
-      <div class="cost-bar-sub">182.5M tokens</div>
+      <div class="cost-bar-val">$1,104.87</div>
+      <div class="cost-bar-sub">182.6M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 1h</div>
@@ -475,21 +485,21 @@ measured over 2 h</title><circle cx="792.0" cy="67.4" r="4.5" fill="#199e70" str
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache read</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#c98500"></i></div>
-      <div class="cost-bar-val">$5,667.33</div>
+      <div class="cost-bar-val">$5,669.38</div>
       <div class="cost-bar-sub">11.84B tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">output</div>
       <div class="cost-bar-track"><i style="width:4.3%;background:#d55181"></i></div>
-      <div class="cost-bar-val">$241.09</div>
+      <div class="cost-bar-val">$241.33</div>
       <div class="cost-bar-sub">10.0M tokens</div>
     </div></div></div></div><div class="cost-panel"><h3>What drives it</h3>
 <div class="cost-note">Cost is context volume multiplied by request count, not how much anything writes. These four numbers are where the levers act.</div>
 <div class="cost-tiles">
-  <div class="cost-tile"><div class="cost-tile-v">57,199</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">57,231</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
   <div class="cost-tile"><div class="cost-tile-v">210k</div><div class="cost-tile-l">Mean context per request</div><div class="cost-tile-s">what every request pays to re-read</div></div>
   <div class="cost-tile"><div class="cost-tile-v">1.48B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
-  <div class="cost-tile"><div class="cost-tile-v">71.1</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">70.6</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
 </div></div><div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">5</span></h3>
 <div class="cost-note">A ledger showing only what worked hides negative evidence and cannot support a causal cost claim. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
 <div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
@@ -1074,7 +1084,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  79 verdict(s) at HEAD a2ae151 &mdash;
+  79 verdict(s) at HEAD 390c795 &mdash;
   <span class="ok">4 fresh</span>,
   <span class="bad">40 stale</span>,
   <span class="dimtext">35 unknown</span>

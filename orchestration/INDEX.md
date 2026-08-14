@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a2ae1518`: 951 tools, 155 reference
+so it cannot drift. Generated at `390c7952`: 951 tools, 155 reference
 items, 184 pieces in flight.
 
 Its purpose is to stop 184+ concurrent agents each paying separately to discover the
@@ -1342,12 +1342,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `spawn-truth-thorn-lilmoth` | ? | finish spawn-truth-thorn.mjs capture run, write reports/spawn-truth/2026-08-14-spawn-truth | `tools/harness/spawn-truth-thorn.mjs` |
 | `W1-MAP-DEFECTS` | ? | confirm which peer refuses to open during creation; fix the ring walk; then D2 | `orchestration/status/W1-MAP-DEFECTS.json` `tools/map/explore-W1-MAP-DEFECTS.mjs` |
 | `W1-30DE-critic` | running | Photograph Lilmoth's skyline (E's headline red); orbit the player (D's); test the 3% silho | `orchestration/status/W1-30DE-critic.json` |
 | `W1-30-SHADOW-CASTERS` | measuring |  | — |
 | `W1-DLG-WORDS` | running | speaker-disagreement census + voice-metrics; then rewrite the opening conversations | `orchestration/status/W1-DLG-WORDS.json` `corpus/80-methods/tone-metrics.py` `reports/tone-ours-dialogue-W1-DLG-WORDS.json` `reports/tone-ours-W1-DLG-WORDS.json` |
 | `GIT-INTEGRATION-SCHEME` | running | Research external practice; build tools/land.mjs with a falsifying --self-test; update HAZ | — |
-| `spawn-truth-thorn-lilmoth` | ? | read first-ten-minutes verdict, grep spawn/charcreate code, boot deployed build and screen | — |
 | `W1-MW-UI-REFS` | running | read RI-VIS09, refs/MANIFEST.json structure, then acquire | `orchestration/status/W1-MW-UI-REFS.json` |
 | `RI-VIS06-PROTOCOL-A` | running |  | — |
 | `W1-24` | building | finish the live audit (running), then RI-CAM07 back captures + viewpoints amendment, then  | `orchestration/status/W1-24.json` `corpus/80-methods/cc-scan.mjs` `tools/render/visual-reading.mjs` `tools/render/w1-24-audit.mjs` `tools/render/cam07-back.mjs` `reports/w1-24-survey.md` |
