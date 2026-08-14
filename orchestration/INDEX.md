@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `7a7b87b2`: 917 tools, 155 reference
+so it cannot drift. Generated at `63626eb5`: 919 tools, 155 reference
 items, 167 pieces in flight.
 
 Its purpose is to stop 167+ concurrent agents each paying separately to discover the
@@ -356,7 +356,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 247
+### `tools/harness/` — 248
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -377,6 +377,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/cmb-probe.mjs` — the W1-09 instrument.
 - `tools/harness/cmb-reach.mjs` — MINIMUM REACHING DISTANCE, measured directly, at contact range.
 - `tools/harness/cmb-tipspeed.mjs` — RI-CMB04 §B's `peak_tip_speed_mps` column, measured on EVERY clip the game can play, on EVERY frame of it.
+- `tools/harness/critic-first-ten-play.mjs` — **no header comment**
 - `tools/harness/critic-map-r2-composite.mjs` — the unrendered test taken on THE PIXELS THE PLAYER SEES.
 - `tools/harness/critic-map-r2-shots.mjs` — the W1-MAP round-2 critic's visual evidence.
 - `tools/harness/critic-map-r2.mjs` — the W1-MAP ROUND-2 critic's instrument.
@@ -853,10 +854,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30a-grade-census.mjs` — **no header comment**
 - `tools/render/w1-30a-verdict.mjs` — **no header comment**
 
-### `tools/runpod/` — 15
+### `tools/runpod/` — 16
 
 - `tools/runpod/cli.mjs` — Elder Souls GPU runner — real hardware rendering, on a rented Pod, from this container.
 - `tools/runpod/lib/api.mjs` — **no header comment**
+- `tools/runpod/lib/claims.mjs` — Per-process Pod claims — the guard that works *between sibling agents in one container*.
 - `tools/runpod/lib/cleanup-plan.mjs` — Pure planning for `cli.mjs cleanup`.
 - `tools/runpod/lib/disk.mjs` — Loud disk failures.
 - `tools/runpod/lib/http-transport.mjs` — HTTPS control channel to a RunPod Pod, for containers where SSH cannot work.
@@ -1129,7 +1131,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **239 tools have no header comment**, so nobody can tell what they do without
+> **240 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1305,12 +1307,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
 | `W1-30A` | ? | FRESH CRITIC. The three attacks most worth making, in order. (1) Look at the contact sheet | `game/src/render/renderer.js` `game/src/render/post/composite.js` `game/src/render/post/grade.js` `game/src/render/post/baseline-composite.js` `tools/render/w1-30a-frame-probe.mjs` `tools/render/w1-30a-verdict.mjs` |
 | `FIRST-TEN-MINUTES-critic` | starting | read audit + directives + schema | `orchestration/status/FIRST-TEN-MINUTES-critic.json` |
 | `W1-30V` | ? | Capture the 12 declared motion sequences (the largest gap - no gate in this tree is motion | `tools/visual/build-deck.mjs` `tools/visual/deck.json` `tools/visual/deck.mjs` `tools/visual/frame-stats.mjs` `tools/visual/contact-sheet.mjs` `tools/visual/deck-compare.mjs` |
 | `FIRST-TEN-MINUTES` | built-and-banked-d3-and-charopacity-only-d1-and-d2-diagnosed-not-fixed | A fresh-context critic. The four things most worth attacking: (1) re-run tools/harness/fir | — |
 | `W1-25-divergence-20260814` | done | Re-run tools/composition/matrix-probe.mjs to its DOCUMENTED DEFAULT path reports/compositi | `orchestration/status/W1-25-DIVERGENCE-20260814.json` `reports/experience/w1-25-r2-divergence/DIVERGENCE-20260814.md` `reports/experience/w1-25-r2-divergence/npc-presence-consumption.json` `reports/experience/w1-25-r2-divergence/session-2x2.json` `tools/experience/npc-presence-consumption.mjs` `orchestration/INDEX.md` |
-| `W1-30-VIS-RECRITICISM` | material_edit_awaiting_recriticism | A THIRD fresh reviewer-editor judges this version of W1-30.md; this round materially edite | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30K.md` `orchestration/status/W1-30-VIS-RECRITICISM.json` `orchestration/status/W1-30.json` `orchestration/INDEX.md` |
 | `W1-30` | builder-native-gpu-remediation-in-progress |  | `corpus/70-visual/RI-VIS09-reference-image-set.md` `orchestration/plans/W1-30.md` `orchestration/status/W1-30-animation-amendment-codex-20260811.json` `orchestration/status/W1-30-reviewer-editor-20260812.json` `orchestration/status/W1-30.json` |
 | `W1-30C-builder` | ? | Dispatch the fresh W1-30C critic. The single test I most want run is the diffuse-floor rem | `game/src/render/MATERIAL_API.md` `game/src/render/visual-foundation.js` `game/assets/w1-30/materials/` `tools/assets/` `tools/render/w1-30-assets.mjs` `reports/w1-30/C-DELIVERY.md` |
 | `RULING-W1-IMPL` | done | ARM B OF RI-WLD15 IS STILL OWED and NEEDS A SCOPING RULING. RI-WLD15/RI-WLD16 stay `not_ru | `corpus/50-world/RI-WLD02-density-per-minute.md` `corpus/50-world/RI-WLD04-region-identity.md` `corpus/50-world/RI-WLD07-verticality-and-interiors.md` `corpus/50-world/RI-WLD09-the-opacity-budget.md` `corpus/50-world/RI-WLD15-within-region-variety.md` `corpus/80-methods/m-instance-bars.mjs` |

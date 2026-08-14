@@ -193,7 +193,12 @@ acceptable only for determinism, library-census and boot checks — never for an
 IBL, foliage or any appearance claim, because the thing being judged is partly the thing SwiftShader
 approximates.
 
-### If the GPU does not arrive (R3c) — reversible
+### If the GPU does not arrive (R3c) — reversible, and already reversed
+
+> **Spent before it was used.** `orchestration/status/GPU-TRANSPORT-20260814.md` now reads *"done —
+> all three jobs landed and verified on real hardware."* Appearance gates run **natively**, as the
+> paragraph above requires, and nothing below is in force. It is kept because the transport is one
+> pod and one proxy away from failing again, and this argument should not have to be had twice.
 
 As written, that paragraph makes this standard **currently unexecutable**: every frame available today
 is SwiftShader, and the transport is unproven (`orchestration/status/GPU-TRANSPORT-20260814.md` — SSH
