@@ -164,6 +164,59 @@ facing chain.
 the hook and **1.50 m / 1.00 (FAIL)** with the hook removed, matching the offline prediction of that
 row to the centimetre.
 
+## 6. The camera arm: the owner's complaint, surviving the fix
+
+The predecessor's report named this and did not own it: at the writ house doorstep the third-person
+arm is collapsed against the wall the player has just walked out of, so **the camera sits at the
+body and the player character is not in the frame at all.** Turning the body cannot fix that,
+because it is a property of what is *behind* the facing.
+
+It is now measured over the population, as a deliberately **optimistic proxy** for
+`Engine.castCameraArm()` — a straight ray backwards at the camera pivot height (1.55 m), where the
+real cast sweeps a 0.28 m sphere with a shoulder offset. The proxy can only *under*-report a
+collapse, which is the safe direction for a guard of this kind. `arm_free_m` = 4.10 m is the length
+the arm wants; below `fade_start_m` = 1.30 m the character fades out of its own picture. Both from
+`sim/camera.js#CAMERA_CONST`.
+
+| | of 115 exits |
+|---|---|
+| arm shortened (rear < 4.10 m) | **33** |
+| **player fades out of frame (rear < 1.30 m)** | **27** |
+| median rear clearance | 11.5 m |
+| doorsteps where **no** facing would give the arm its full room | **1** |
+
+So on 26 of the 27 the problem is *which way the player is turned*, not where the door is — and the
+obvious move is to prefer a facing with room behind it.
+
+### Ruling: the facing does not pay for the camera *(reversible)*
+
+**It was measured both ways before it was decided.** Preferring a rear-clear facing whenever the
+proposal had none takes the fade count from 27 to 13 — and to buy that it turns the player at **26
+doors instead of 10**, and *indoors* at **113 of 115**, because an interior spawn is against its own
+door wall by construction so the rear is always short. Being spun sideways on entering every room in
+the game is a worse experience than a camera that pushes in for a moment.
+
+**The ruling: the forward test is never traded away, and the camera never overrides a facing that
+already clears.** The rear clearance is used only as a **tie-break among bearings that already pass
+the forward test**, on doors where the player is being turned anyway. That costs nothing — no facing
+changes that would not have changed — and it keeps the count at 10.
+
+**Reversal:** restore the `&& proposalRear >= FADE` clause in `Engine._refineFacing()` and the
+matching clause in the offline predictor's `predictRefine()`. Both are named in the source.
+**What would overturn it:** somebody playing it and finding the invisible character worse than the
+unexpected turn; or the camera arm proving unfixable on its own terms.
+
+**And the trade this leaves, reported rather than rounded off.** Two of the ten turned doors lose a
+good camera to gain a good facing: `helstrom-house-11` and `stormhold-customs` each go from 12 m of
+rear clearance to 0.5 m, because every bearing that clears ahead of them has a wall behind it. So
+the fade count goes **27 → 29**. That is the right trade — both were facing a wall 0.25 m away and
+now have 8.25 m and 9.25 m of street — but it is a regression on one axis and it is not hidden.
+
+**The collapsed camera arm is therefore a named, quantified, UNCLAIMED defect at the end of this
+pass**, with a population count and a per-door table in `reports/door-yaw/offline-115.json`
+(`exit.camera_arm_proxy`). It is a cousin of the Lilmoth camera-in-a-tree defect (D1) and it is not
+the same defect as this one; nothing here should be read as having fixed it.
+
 ## 6. What the instrument found that nobody was looking for
 
 * **`lilmoth-house-4`'s doorstep sees no geometry at all.** All 36 bearings run to the 12 m cap, so
