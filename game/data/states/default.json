@@ -1,8 +1,8 @@
 {
   "schema": "elder-souls/state@1",
   "id": "default",
-  "title": "A fresh character on the harbour steps at Lilmoth, in the Western Rootlands.",
-  "note": "W1-01. The province is real: 4,825 x 5,540 m, 14.24 km2 of walkable land placed from RI-WLD01 \u00a73 verbatim. Lilmoth is the tier-1 start (RI-WLD04 \u00a7difficulty tiers). The old 420 m origin neighbourhood survives as the state `showcase_patch` and as the anchor for the twelve canonical viewpoints.",
+  "title": "HARNESS DEFAULT — a fresh character on the harbour steps at Lilmoth, in the Western Rootlands. NOT where the game starts.",
+  "note": "W1-01. The province is real: 4,825 x 5,540 m, 14.24 km2 of walkable land placed from RI-WLD01 §3 verbatim. Lilmoth is the tier-1 start (RI-WLD04 §difficulty tiers). The old 420 m origin neighbourhood survives as the state `showcase_patch` and as the anchor for the twelve canonical viewpoints.",
   "env": {
     "timeOfDay": 9.0,
     "weather": "dawn_mist",
@@ -34,5 +34,7 @@
       "quickSlot": null
     }
   ],
-  "spawn": []
+  "spawn": [],
+  "harness_default": true,
+  "not_the_player_start": "A player who clicks New at the title screen NEVER passes through this state. Engine._titleApply('new') calls censusBegin({}), which stages 'barge-hold' and then 'writ-house' — both tagged \"settlement\": \"thorn\". This file is what main.js loads when no ?state= is given, which is every harness tool in tools/, and that is the correct thing for a tool measuring THE WORLD to do. It is not a measurement of the opening. Evidence: reports/spawn-truth/2026-08-14-spawn-truth.md. Measuring the opening: tools/lib/opening.mjs startOpening(), or node tools/harness/first-ten.mjs (which now defaults to --start shipping)."
 }
