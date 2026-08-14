@@ -83,6 +83,12 @@
       "name": "The Morag Tong",
       "kind": "foreign-covert",
       "reaction_group": "RG-DRES"
+    },
+    {
+      "id": "dockhands",
+      "name": "The Dockhands",
+      "kind": "labour",
+      "reaction_group": "RG-TOWN"
     }
   ],
   "matrix": {
@@ -98,7 +104,8 @@
       "blackwood-company": 1,
       "house-dres": -1,
       "shadowscale-order": -3,
-      "morag-tong": -2
+      "morag-tong": -2,
+      "dockhands": -1
     },
     "provincial-office": {
       "ninth-cohort": 2,
@@ -112,7 +119,8 @@
       "blackwood-company": 0,
       "house-dres": 1,
       "shadowscale-order": -2,
-      "morag-tong": -1
+      "morag-tong": -1,
+      "dockhands": -2
     },
     "wet-ledger": {
       "ninth-cohort": -2,
@@ -126,7 +134,8 @@
       "blackwood-company": -1,
       "house-dres": 1,
       "shadowscale-order": -1,
-      "morag-tong": 0
+      "morag-tong": 0,
+      "dockhands": -1
     },
     "drowned-court": {
       "ninth-cohort": -3,
@@ -140,7 +149,8 @@
       "blackwood-company": -2,
       "house-dres": -4,
       "shadowscale-order": 1,
-      "morag-tong": -1
+      "morag-tong": -1,
+      "dockhands": 1
     },
     "rootkeepers": {
       "ninth-cohort": -1,
@@ -154,7 +164,8 @@
       "blackwood-company": -3,
       "house-dres": -4,
       "shadowscale-order": 2,
-      "morag-tong": -2
+      "morag-tong": -2,
+      "dockhands": 1
     },
     "marsh-wardens": {
       "ninth-cohort": -1,
@@ -168,7 +179,8 @@
       "blackwood-company": -2,
       "house-dres": -4,
       "shadowscale-order": 1,
-      "morag-tong": -2
+      "morag-tong": -2,
+      "dockhands": 0
     },
     "xul-aneekh": {
       "ninth-cohort": -3,
@@ -182,7 +194,8 @@
       "blackwood-company": -4,
       "house-dres": -4,
       "shadowscale-order": 2,
-      "morag-tong": -3
+      "morag-tong": -3,
+      "dockhands": -1
     },
     "sap-cutters": {
       "ninth-cohort": 1,
@@ -196,7 +209,8 @@
       "blackwood-company": 1,
       "house-dres": 2,
       "shadowscale-order": -2,
-      "morag-tong": 0
+      "morag-tong": 0,
+      "dockhands": 1
     },
     "blackwood-company": {
       "ninth-cohort": 1,
@@ -210,7 +224,8 @@
       "blackwood-company": 1,
       "house-dres": 2,
       "shadowscale-order": -2,
-      "morag-tong": 1
+      "morag-tong": 1,
+      "dockhands": -1
     },
     "house-dres": {
       "ninth-cohort": -1,
@@ -224,7 +239,8 @@
       "blackwood-company": 2,
       "house-dres": 3,
       "shadowscale-order": -4,
-      "morag-tong": 2
+      "morag-tong": 2,
+      "dockhands": -3
     },
     "shadowscale-order": {
       "ninth-cohort": -2,
@@ -238,7 +254,8 @@
       "blackwood-company": -2,
       "house-dres": -4,
       "shadowscale-order": 3,
-      "morag-tong": -3
+      "morag-tong": -3,
+      "dockhands": 0
     },
     "morag-tong": {
       "ninth-cohort": -1,
@@ -252,7 +269,23 @@
       "blackwood-company": 1,
       "house-dres": 2,
       "shadowscale-order": -3,
-      "morag-tong": 3
+      "morag-tong": 3,
+      "dockhands": 0
+    },
+    "dockhands": {
+      "ninth-cohort": -1,
+      "provincial-office": -2,
+      "wet-ledger": -3,
+      "drowned-court": 1,
+      "rootkeepers": 1,
+      "marsh-wardens": 0,
+      "xul-aneekh": -1,
+      "sap-cutters": 1,
+      "blackwood-company": -2,
+      "house-dres": -3,
+      "shadowscale-order": 0,
+      "morag-tong": -1,
+      "dockhands": 3
     }
   },
   "load_bearing_cells": [
@@ -374,6 +407,18 @@
       "ninth-cohort",
       -1,
       -2
+    ],
+    [
+      "dockhands",
+      "wet-ledger",
+      -3,
+      -1
+    ],
+    [
+      "dockhands",
+      "blackwood-company",
+      -2,
+      -1
     ]
   ],
   "aliases": {
@@ -392,8 +437,8 @@
     "the_blackwood_company": "blackwood-company",
     "the_shadowscale_order": "shadowscale-order",
     "the_morag_tong": "morag-tong",
-    "the_dockhands": null,
+    "the_dockhands": "dockhands",
     "town": null
   },
-  "alias_note": "W1-07 round 4. `roster_owner` above claimed this file covers every faction id that appears anywhere under game/data/**, and it did not: the quest files, faction-gates.json and the NPC records all name factions in an UNDERSCORE vocabulary (`the_xul_aneekh`, `house_dres`, `deep_kin`) while this matrix is indexed in a HYPHEN vocabulary with a partly different roster. Nothing reconciled them, so RI-DLG04 \u00a7B's faction term resolved every live id to `undefined` \u2014 a silent 0 \u2014 and `race-reactions.json` \u00a7repair_paths' one disposition repair (\"Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40\") could not fire. `sim/dialogue/disposition.js normaliseFactionId()` reads this table first and falls back to dropping `the_` and turning `_` into `-`. `deep_kin` and `the_xul_aneekh` are the same body under two names in the quest data; the Ixtu-Vakh ARE the Sap-Cutters (race-reactions.json RG-VAKH says so); the Imperial Assize is read as the Provincial Office, the Imperial civil administration this matrix does carry. A null is an EXPLICIT declaration that the id has no row and is meant to score 0 \u2014 the Dockhands are a labour body with no cross-faction politics \u2014 so that an unresolved id is never mistaken for an unnoticed one."
+  "alias_note": "W1-07 round 4. `roster_owner` above claimed this file covers every faction id that appears anywhere under game/data/**, and it did not: the quest files, faction-gates.json and the NPC records all name factions in an UNDERSCORE vocabulary (`the_xul_aneekh`, `house_dres`, `deep_kin`) while this matrix is indexed in a HYPHEN vocabulary with a partly different roster. Nothing reconciled them, so RI-DLG04 \u00a7B's faction term resolved every live id to `undefined` \u2014 a silent 0 \u2014 and `race-reactions.json` \u00a7repair_paths' one disposition repair (\"Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40\") could not fire. `sim/dialogue/disposition.js normaliseFactionId()` reads this table first and falls back to dropping `the_` and turning `_` into `-`. `deep_kin` and `the_xul_aneekh` are the same body under two names in the quest data; the Ixtu-Vakh ARE the Sap-Cutters (race-reactions.json RG-VAKH says so); the Imperial Assize is read as the Provincial Office, the Imperial civil administration this matrix does carry. A null is an EXPLICIT declaration that the id has no row and is meant to score 0 \u2014 the Dockhands are a labour body with no cross-faction politics \u2014 so that an unresolved id is never mistaken for an unnoticed one. W1-20 ROUND 3: the `the_dockhands: null` above said the Dockhands are \"a labour body with no cross-faction politics\", and the consequence was measured in W1-20-r2 \u2014 their own representative `npc-porter-eeja` sat at disposition 47 at ranks 0, 2, 4 AND 7 while the other seven lines moved 21-24 points across the same span. The diagonal is what BEING ONE OF US is worth (see self_reaction_note), so a null diagonal is not neutrality about outsiders, it is your own foreman not noticing you have become a gang boss. The row is now authored; the cross-faction cells are mostly small, which is the original judgement kept."
 }

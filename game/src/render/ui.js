@@ -167,6 +167,31 @@ export class UILayer {
   setVisible(v) { this.visible = !!v; this.dirty = true; return this.visible; }
 
   /**
+   * W1-UIX08. LAY OUT AND MEASURE, BUT DO NOT PAINT.
+   *
+   * `RI-UIX08` replaces this surface's conversation panel — a bottom-anchored list of selectable
+   * replies, which is that item's hard fail — with `ui/screens/dialogue.js`, drawn on the `menus`
+   * surface where every element is declared. Two windows for one conversation would be worse than
+   * either, so the new one paints and this one does not.
+   *
+   * IT IS NOT `setVisible(false)`, AND THE DIFFERENCE IS THE WHOLE POINT. `visible` short-circuits
+   * `_redraw()` and empties `this.last`, and `Engine.getUIState()` spreads `renderer.ui.metrics()`
+   * wholesale — so hiding the panel that way would have silently zeroed `option_count`,
+   * `panel_height_frac`, `world_visible_behind` and the drawn-text array for every probe in this
+   * tree that measures a conversation. This flag skips the PAINT BLOCK ONLY: the layout still
+   * runs, `metrics()` still reports what the old panel would have been, and nothing is handed to
+   * `fillText`, so `render/text-register.js` does not record strings that never reached a frame.
+   *
+   * Set from `Engine._conversationSync()` and cleared when the conversation closes. One boolean,
+   * one caller, and `DIALOGUE_WINDOW = false` in `engine.js` turns the whole thing off.
+   */
+  setSuppressed(v) {
+    const s = !!v;
+    if (s !== this.suppressed) { this.suppressed = s; this.dirty = true; }
+    return this.suppressed;
+  }
+
+  /**
    * RI-JRN04 T8, second clause: "touch controls ... never overlap the dialogue or journal
    * surfaces". `x` is the left edge of the touch arc in the same pixel space this canvas uses,
    * or null when there is no arc on the glass — which is every desktop frame, so the panel a

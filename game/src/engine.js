@@ -113,7 +113,22 @@ const WRIT_WINDOW = 9;
 // same order as the 2.2 m an NPC is talked to at, so one press of `interact` never has to
 // choose between a person and a board it could equally have meant.
 const SIGN_REACH_M = 2.6;
-import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
+/**
+ * W1-UIX08 / RI-UIX08. The dialogue window's delete-the-fix switch, and it is deliberately ONE
+ * boolean in ONE place.
+ *
+ * `true`  — the new window (`ui/screens/dialogue.js`) draws: prose with inline coloured topic
+ *           links, a fixed right-anchored topic column with an actions section above a rule, a
+ *           disposition number, a Goodbye button, floating over a running world.
+ * `false` — `render/ui.js`'s bottom-anchored reply menu paints exactly as it did before this
+ *           item, which is the arm the control clone runs. RULES rule 6: a fix is not a fix until
+ *           it has been deleted on a copy and the old number has come back.
+ *
+ * Either way the old model is still built and still laid out, so every probe that reads
+ * `getUIState()`'s conversation fields keeps its answer.
+ */
+const DIALOGUE_WINDOW = true;
+import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds, infoFor, topicLabel } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics, RUMOUR_TOPIC } from './sim/quest/topic-supply.js';
 import { buildRevealRoutes, DOCUMENT_CHANNELS } from './sim/quest/reveal-routes.js';
@@ -560,6 +575,9 @@ export class Engine {
     // rather than failing a critic run later.
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
+    // W1-20: one authoritative identity/representative/relationship/service registry. Rank
+    // remains derived by FactionGates; this registry describes what that rank unlocks in-world.
+    this.factionRegistry = this.data.factionRegistry || { factions: [] };
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
     // W1-20. The recruiters' words. `FactionGates.evaluate()` has always computed the whole
     // four-part statement with the player's own numbers in it and `QuestEngine.open()` has always
@@ -571,7 +589,7 @@ export class Engine {
       this.data.factionRefusals,
       ((this.data.progression && this.data.progression.skills) || {}).skills || [],
     );
-    this.questEngine.refusalVoice = (factionId, evaluation) => this._speakFactionRefusal(factionId, evaluation);
+    this.questEngine.refusalVoice = (factionId, evaluation, opts) => this._speakFactionRefusal(factionId, evaluation, opts);
     // W1-07 round 4: the race/upbringing/faction term on the offer gate. Installed before the
     // first seed so no window exists in which a gate is evaluated on the raw register.
     this.questEngine.dispositionModel = this._questDispositionModel();
@@ -3463,18 +3481,124 @@ export class Engine {
     if (!this.renderer) return null;
     if (!this.conversation.open) {
       if (!this.censusSurface || !this.censusSurface.open) this.renderer.ui.setModel(null);
+      this.renderer.ui.setSuppressed(false);
+      if (this.ui) this.ui.dialogueClosed();
       return null;
     }
     const n = this.conversation.npc;
     const place = (n && n.interior && CENSUS_PLACES[n.interior]) ? CENSUS_PLACES[n.interior].name : (n ? (n.settlement || null) : null);
     const model = buildConversationModel(this.conversation, place);
     this.renderer.ui.setModel(model);
+    // ---- W1-UIX08 / RI-UIX08 -----------------------------------------------------------------
+    //
+    // TWO WINDOWS FOR ONE CONVERSATION WOULD BE WORSE THAN EITHER. `render/ui.js`'s bottom
+    // vellum panel is the reply menu the item's hard fail is written about, and the new window
+    // (`ui/screens/dialogue.js`) replaces it. But `getUIState()` merges `renderer.ui.metrics()`
+    // wholesale, and a dozen probes in this tree read `option_count`, `panel_height_frac` and
+    // `text` off it — so the model is still SET and still laid out, and only the PAINT is
+    // suppressed. Every existing measurement keeps its answer; nothing draws twice.
+    //
+    // `DIALOGUE_WINDOW` is the delete-the-fix switch and it is one boolean: set it false and the
+    // old panel paints exactly as it did before this item, which is the arm the control clone
+    // runs. `ui.dialogueArm.links` is the second, narrower arm — the same new window with the
+    // inline links rendered as plain prose (§G's ablated arm).
+    this.renderer.ui.setSuppressed(DIALOGUE_WINDOW);
     return model;
+  }
+
+  /**
+   * The dialogue window's read of the live conversation (`RI-UIX08` §A–§D).
+   *
+   * WHAT `linkable` IS, AND WHY IT IS COMPUTED HERE RATHER THAN GUESSED IN THE UI. §C1: "the
+   * colour is a truthful statement about what is clickable, made at word granularity, inside
+   * running prose. A build that colours whole sentences, colours every proper noun, or renders
+   * links in the body colour has removed the mechanism while keeping the layout." So a word is
+   * only lit if asking it WOULD ACTUALLY ANSWER, which is `infoFor()` returning something for
+   * this speaker — the same function `Conversation.say()` calls. A link is a promise, and this is
+   * where the promise is checked.
+   *
+   * The set is the union of three things:
+   *   * the topics this person already advertises (the column);
+   *   * the `to` edges — Morrowind's `AddTopic` — of every answer heard in this conversation,
+   *     filtered to those this person can actually answer;
+   *   * nothing else. There is no dictionary and no proper-noun list.
+   *
+   * A NOTE ON THE CONTENT, WHICH IS NOT THIS ITEM'S TO FIX. A sibling measurement found that of
+   * 1,216 topic unlocks in our data, the newly available topic is named in the text that unlocked
+   * it just 81 times — 6.7%. 1,135 unlocks are invisible. That is the topic web's problem and a
+   * sibling owns it; the mechanism is built here so that a visible unlock is visible the day the
+   * prose starts naming them, and `tools/ui/dialogue-link-census.mjs` reports the figure over the
+   * whole shipped answer corpus so the gap is a number rather than an impression.
+   */
+  _dialogueCtx() {
+    const c = this.conversation;
+    if (!c || !c.open || !c.npc) return null;
+    const st = c.state();
+    const said = c.said || null;
+    // Every `to` edge heard so far this conversation. Accumulated here rather than re-derived,
+    // because `Conversation` does not refresh its own list after `say()` — a topic learned
+    // mid-conversation would otherwise never reach the column, and §D1 requires that following a
+    // link puts the word IN the column.
+    if (this._dlgSpeaker !== c.npc.eid) { this._dlgSpeaker = c.npc.eid; this._dlgAdds = new Set(); }
+    if (said && Array.isArray(said.to)) for (const t of said.to) this._dlgAdds.add(t);
+
+    const rows = new Map();
+    for (const t of st.topics) rows.set(t.id, { id: t.id, label: t.text || topicLabel(t.id) });
+    for (const e of c.extra || []) if (!rows.has(e.id)) rows.set(e.id, { id: e.id, label: topicLabel(e.id) });
+    // The learned edges, kept only where this person has something to say.
+    for (const id of this._dlgAdds) {
+      if (rows.has(id)) continue;
+      let info = null;
+      try { info = infoFor(this.topicIndex, id, c.npc, c.player, this.canon || null); } catch { info = null; }
+      if (info) rows.set(id, { id, label: topicLabel(id) });
+    }
+
+    // §D2. What you can DO with this person, above the rule. `persuasion` is a real call into
+    // `sim/dialogue/disposition.js persuade()` — the same one `conversationPersuade()` makes —
+    // so the row moves the number on the bar above it rather than being furniture.
+    const SERVICES = new Set(['barter', 'trade', 'enchanting', 'spellmaking', 'training', 'repair', 'travel', 'services']);
+    const actions = [{ id: 'persuasion', label: 'Persuasion', kind: 'persuade', verb: PERSUADE_VERBS[0] }];
+    const topics = [];
+    for (const r of rows.values()) (SERVICES.has(r.id) ? actions : topics).push(r);
+
+    const d = this.npcDisposition(c.npc.eid);
+    return {
+      open: true,
+      npc: c.npc.eid,
+      speaker: st.name,
+      disposition: Math.round(d && d.disposition != null ? d.disposition : (c.npc.base_disposition || 0)),
+      greeting: st.greeting || null,
+      said: st.said || null,
+      said_topic: st.said_topic || null,
+      said_heading: st.said_topic ? topicLabel(st.said_topic) : null,
+      topics,
+      actions,
+      // Everything clickable: the column AND the learned edges. The window decides which of these
+      // words actually appear in the prose; the engine decides which of them would answer.
+      linkable: [...rows.values()],
+    };
   }
 
   /** One fixed step of an open conversation. Same closed action set the census uses. */
   _conversationStep(input) {
     if (!this.conversation.open) return;
+    // ---- W1-UIX08: the window drives itself -----------------------------------------------
+    //
+    // The old body below walked ONE index down ONE list of replies, because that is all the old
+    // surface had. The new window has two panes — the links inside the prose and the topic
+    // column — so navigation belongs to the thing that knows where the words are, and
+    // `UISystem.dialogueStep()` returns the action rather than reaching into the engine.
+    //
+    // The action set does not widen: directions, `interact` and `roll`, exactly as before.
+    if (DIALOGUE_WINDOW && this.ui) {
+      const act = this.ui.dialogueStep(input, this._uiCtx());
+      if (act && act.kind === 'goodbye') { this.conversationClose(); input.consumeUI(CENSUS_ACTIONS); return; }
+      if (act && act.kind === 'say') this._convPending = act.topic;
+      if (act && act.kind === 'persuade') this._convPersuadePending = act.verb || PERSUADE_VERBS[0];
+      if (input.pressedName('block')) { this.conversationClose(); input.consumeUI(CENSUS_ACTIONS); return; }
+      input.consumeUI(CENSUS_ACTIONS);
+      return;
+    }
     const y = input.moveY || 0;
     const dir = y > 0.45 ? -1 : y < -0.45 ? 1 : 0;
     if (dir !== this._convAxis) { this._convAxis = dir; if (dir) { this.conversation.move(dir); this._conversationSync(); } }
@@ -4330,6 +4454,10 @@ export class Engine {
     return {
       frame: this.sim.frame,
       inCombat,
+      // W1-UIX08. `null` unless somebody is talking to you. The window is driven by this field
+      // rather than by a UI mode, because RI-UIX08 §D6 keeps the world running behind the panel
+      // and `pausesSimulation()` must not learn about conversations.
+      dialogue: DIALOGUE_WINDOW ? this._dialogueCtx() : null,
       // W1-26 r4. The title surface is up: `ui/system.js build()` draws no HUD at all while this
       // is true. Read live off the surface rather than off a mode flag, because `getTitleState()`
       // is what every probe and the acceptance ("0 HUD strings drawn while getTitleState().shown
@@ -5424,9 +5552,62 @@ export class Engine {
     return this._speakFactionRefusal(factionId, ev);
   }
 
+  /**
+   * W1-20, restored from `9ed28905` by W1-20 round 3. What this faction opens to this character:
+   * its name, its seat, the person who speaks for it, its rivals, and the services the rank they
+   * hold has actually earned.
+   *
+   * It is NOT the CONSUMPTION proof on its own and this comment exists so nobody mistakes it for
+   * one. `RI-MTH07` §B1: a reader that is only a probe is not a consumer, and on the day it was
+   * first written this method's only caller was `harness/api.js`. The world-side reader of the
+   * registry is `factionSeat()` below, on the trespass path.
+   */
+  factionAccess(factionId) {
+    const row = (this.factionRegistry.factions || []).find((f) => f.id === factionId);
+    if (!row) return { ok: false, faction: factionId, reason: 'unknown faction' };
+    const standing = this._questFactionsView()[factionId] || {};
+    const rank = Number(standing.rank) || 0;
+    const services = Object.entries(row.services || {})
+      .filter(() => !!standing.member)
+      .filter(([key]) => rank >= Number(key.replace('rank_', '')))
+      .flatMap(([, values]) => values);
+    return { ok: true, faction: factionId, name: row.name, member: !!standing.member,
+      rank, representative: row.representative, seat: row.seat, rivals: row.rivals || [],
+      services, quest_hook: row.quest_hook, lore: row.lore || [] };
+  }
+
+  /**
+   * THE WORLD-SIDE READER OF `factions/registry.json`, and the answer to `W1-20-r2`'s zero.
+   *
+   * The registry is the only file in this build that says which room is which institution's own
+   * hall — `seat` — and under which key that institution's standing is written — `standing_id`.
+   * `trespassCheck()` below asks it, and the question is not decorative: `trespass()` admits a
+   * member of the zone's faction to a `faction_interior`, and it reads the CRIME-side standing
+   * map, whose one writer (`syncFactionStandings()`) walks `crime/sanction.json` and deliberately
+   * carries no `deep-kin` row — `standing_ids_unreachable` says so in its own note, because
+   * joining the Deep Kin joins `the_xul_aneekh`. The Deep Kin hollow at Stormhold is nevertheless
+   * a zone with `faction: "deep-kin"`, so before this method a rank-7 member of the hollow was a
+   * trespasser in the hollow, with `alarm_on_sight` on the way in.
+   *
+   * The registry is what closes that, because it is the only place that says `deep_kin` writes
+   * its standing as `deep-kin` AND that `stormhold.faction-deep-kin.r0` is the room it means.
+   * Perturb either field and the person standing in that doorway changes what they are.
+   *
+   * @returns {{faction:string, standing_id:string, rank:number, member:boolean}|null}
+   */
+  factionSeat(zoneId) {
+    const row = (this.factionRegistry.factions || []).find((f) => f.seat === zoneId);
+    if (!row || !row.standing_id) return null;
+    const standing = (this.sim.quest && this.sim.quest.factions && this.sim.quest.factions[row.id]) || null;
+    const member = !!(standing && standing.member);
+    const ctx = this.questEngine ? this.questEngine.context() : null;
+    const rank = member ? Math.max(1, Number((ctx && ctx.ranks && ctx.ranks[row.id]) || 0)) : 0;
+    return { faction: row.id, standing_id: row.standing_id, rank, member };
+  }
+
   /** The half that actually reaches a person. Separated so `open()` can call it on its own gate. */
-  _speakFactionRefusal(factionId, evaluation) {
-    const out = this.factionRefusals.speak(factionId, evaluation);
+  _speakFactionRefusal(factionId, evaluation, opts) {
+    const out = this.factionRefusals.speak(factionId, evaluation, opts);
     if (this._factionRefusalMute) return { ...out, said: null, toast: null, muted: true };
     const toast = out.said ? this.uiToast(out.said, 240) : null;
     return { ...out, toast };
@@ -6568,6 +6749,14 @@ export class Engine {
     if (this._propPending) this._takePropPending();
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
+    // W1-UIX08 §D2. The actions section is not furniture: `Persuasion` calls the same
+    // `sim/dialogue/disposition.js persuade()` the harness door calls, and the number on the bar
+    // directly above the column moves. Applied here, outside the fixed step, exactly as the
+    // topic pending is.
+    if (this._convPersuadePending) {
+      const v = this._convPersuadePending; this._convPersuadePending = null;
+      try { this.conversationPersuade(v); } catch { /* not persuadable */ }
+    }
     if (this._writPending) { this._writPending = false; this.openWrit(); }
     // W1-05. Opening the sign panel touches the renderer, so it is deferred out of the fixed
     // step for exactly the reason a prop take and a census commit are.
@@ -10384,7 +10573,18 @@ export class Engine {
     // 233 zones — was read by nothing. It is now derived from the world clock and the hours of
     // the interior the zone is a room of, unless the caller states the case explicitly.
     const derived = { shopOpen: this.isOpenNow(z.id), residents_present: this.settlements.residentsPresent(this.sim, z.id).present };
-    return { zone: z.id, hour: Math.round(this.sim.env.timeOfDay * 100) / 100, derived_shop_open: derived.shopOpen, residents_present: derived.residents_present, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks: this.sim.stealth.p.standings, shopOpen: derived.shopOpen, ...opts }) };
+    // W1-20 round 3 — `factions/registry.json`, read here and nowhere else in `game/src`.
+    // See `factionSeat()` for why: this room may be an institution's own hall, and the crime-side
+    // standing map does not carry every institution that owns one. A member of the house is not
+    // trespassing in the house. Non-members are untouched, and so is every zone the registry does
+    // not name — the seat is an ADDITION to the standings the guard already prices, never a
+    // replacement, so nothing this line does can lower an existing rank.
+    const seat = this.factionSeat(z.id);
+    let factionRanks = this.sim.stealth.p.standings;
+    if (seat && seat.rank > 0 && (factionRanks[seat.standing_id] || 0) < seat.rank) {
+      factionRanks = { ...factionRanks, [seat.standing_id]: seat.rank };
+    }
+    return { zone: z.id, hour: Math.round(this.sim.env.timeOfDay * 100) / 100, derived_shop_open: derived.shopOpen, residents_present: derived.residents_present, faction_seat: seat, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks, shopOpen: derived.shopOpen, ...opts }) };
   }
 
   /**
@@ -11237,6 +11437,13 @@ async function loadData(onBytes) {
     // Consumed by `Engine.factionRefusal()` via `sim/quest/refusal.js`, and reached from play
     // through `QuestEngine.open()`'s rank-gate refusal path.
     else if (entry.path === 'dialogue/faction-refusals.json') out.factionRefusals = doc;
+    // W1-20 round 3, restoring 9ed28905. This branch existed for sixteen minutes on 2026-08-10
+    // and was reverted by `091a6cec` along with `Engine.factionAccess()`; the recovery sweep on
+    // 08-14 could not see it because it works file-by-file and `engine.js` is a file that still
+    // exists. Without it `factions/registry.json` is fetched at boot, counted in the byte total,
+    // matches no branch in this chain and falls off the end — the exact failure the two comments
+    // above this one record for two OTHER files. `W1-20-r2` scored CONSUMPTION 0 for it.
+    else if (entry.path === 'factions/registry.json') out.factionRegistry = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;
