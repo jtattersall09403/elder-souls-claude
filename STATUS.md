@@ -24,7 +24,11 @@ Alongside that: shrinking the documentation every agent reads before it can star
 **Still wrong, and you will see it:**
 - **Nothing casts a contact shadow.** Buildings, trees and steps look like they are hovering. Being fixed right now — it is the single thing five blind judges all named.
 - Shadowed areas crush to black with no detail.
-- Characters have been made *less broken*, but nobody has yet judged whether they look good.
+- **The player and every NPC look wrong.** You said so on 14 Aug — *"frankly ridiculous"* — and that is
+  now the standing verdict, not an open question. The earlier work fixed *holes in the models*; it never
+  touched design or quality. Fixing it properly is blocked on one thing that does not exist yet: a
+  character reference set (images **and motion**, at Skyrim/ESO quality) for builders to aim at and
+  critics to compare against. Building that set is the next thing dispatched.
 - Dialogue is shallow — asking about one topic mostly does not open others. Being fixed.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
