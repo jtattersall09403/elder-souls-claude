@@ -800,10 +800,65 @@ function selfTest() {
   return bad ? 1 : 0;
 }
 
+
+// =============================================================================================
+// --index — the reverse index: ruling -> every document that depends on it
+// =============================================================================================
+//
+// Nobody had this, and its absence is why "twenty-nine plans against a superseded bar" was
+// discovered by accident rather than by looking. `ARBITRATION.md` §2 reads forwards — each row
+// says what it rules — and nothing read backwards. When a ruling changes, the question you need
+// answered in ten seconds is "who was relying on the old one?", and until now that took a grep
+// per ruling and a judgement call per hit.
+//
+// It is emitted rather than stored so it cannot go stale: a stored index of what depends on what
+// is precisely the kind of document this whole tool exists to distrust.
+function emitIndex(files, asJson) {
+  const { graph, rows } = supersessionGraph(ROOT);
+  const superseded = new Map(graph.map((g) => [g.old, g]));
+  const gov = files.filter(isGoverning);
+  const cache = new Map();
+  const body = (p) => {
+    if (!cache.has(p)) { try { cache.set(p, readFileSync(join(ROOT, p), 'utf8')); } catch { cache.set(p, ''); } }
+    return cache.get(p);
+  };
+  const index = {};
+  for (const id of rows.keys()) {
+    const re = new RegExp(`\\b${id}\\b`);
+    const deps = gov.filter((p) => p !== ARB && re.test(body(p)));
+    const g = superseded.get(id);
+    index[id] = {
+      dependents: deps.length,
+      superseded_by: g ? g.next : null,
+      supersession_kind: g ? g.kind : null,
+      // Dependents that never name the successor — the ones a change to this ruling would strand.
+      stranded_if_changed: g ? deps.filter((p) => !g.next.some((n) => new RegExp(`\\b${n}\\b`).test(body(p)))) : [],
+      documents: deps,
+    };
+  }
+  if (asJson) { console.log(JSON.stringify({ generated: new Date().toISOString(),
+    commit: (() => { try { return execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: ROOT, encoding: 'utf8' }).trim(); } catch { return null; } })(),
+    governing_documents: gov.length, index }, null, 2)); return; }
+
+  const ordered = Object.entries(index).sort((a, b) => b[1].dependents - a[1].dependents);
+  console.log('| Ruling | Governing documents that depend on it | Superseded by | Stranded if it changes |');
+  console.log('|---|---:|---|---:|');
+  for (const [id, v] of ordered) {
+    console.log(`| ${id} | ${v.dependents} | ${v.superseded_by ? v.superseded_by.join('/') + ' (' + v.supersession_kind + ')' : '—'} | ${v.stranded_if_changed.length || '—'} |`);
+  }
+  const orphans = ordered.filter(([, v]) => v.dependents === 0).map(([id]) => id);
+  console.log(`\n${gov.length} governing documents scanned. ${orphans.length} ruling(s) no governing document cites: ${orphans.join(' ') || '(none)'}`);
+  console.log('A ruling with zero dependents is not necessarily dead — it may be enforced by a critic prompt or a tool rather than named in prose. It IS a ruling nobody can find by reading.');
+}
+
 // =============================================================================================
 function main() {
   const argv = process.argv.slice(2);
   if (argv.includes('--self-test')) process.exit(selfTest());
+  if (argv.includes('--index')) {
+    let f; try { f = tracked(); } catch (e) { console.error('check-citations:', e.message); process.exit(2); }
+    emitIndex(f, argv.includes('--json')); process.exit(0);
+  }
   const only = (argv.find((a) => a.startsWith('--only='))?.slice(7)
     || (argv.includes('--only') ? argv[argv.indexOf('--only') + 1] : '') || 'A,B,C,D,E')
     .toUpperCase().split(',').map((s) => s.trim()).filter(Boolean);
