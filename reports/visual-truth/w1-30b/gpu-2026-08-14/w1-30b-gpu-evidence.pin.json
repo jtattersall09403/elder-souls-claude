@@ -1,0 +1,745 @@
+{
+  "schema": "elder-souls/evidence-pin@1",
+  "piece": "W1-30B",
+  "what_this_is": "The decisive numbers from W1-30B's hardware evidence, pinned because reports/.gitignore excludes run artifacts by rule and these are 180 KB of JSON that a fresh clone would not have. Every figure below is copied verbatim from the raw file named beside it; the SHA-256 of each raw file is recorded so a regenerated copy that drifts is caught.",
+  "hardware": "RunPod. Renderer strings are read from the live WebGL context in the page and are recorded in every raw manifest. None of these runs is SwiftShader.",
+  "reproduce": [
+    "node tools/runpod/cli.mjs run --max-runtime 45 --artifact-dir reports/runpod-gpu/runs/<tag> --command 'node tools/visual/w1-30b-probe.mjs --tag gpu --hardware --canvas 1280x720 --motion street-lilmoth --out \"$RUNPOD_ARTIFACT_DIR/probe\"'",
+    "node tools/runpod/cli.mjs run --max-runtime 25 --artifact-dir reports/runpod-gpu/runs/<tag> --command 'node tools/visual/w1-30b-roughness.mjs --tag gpu --hardware --out \"$RUNPOD_ARTIFACT_DIR/roughness\"'",
+    "node tools/visual/w1-30b-air.mjs            # offline, no GPU, prints all thirteen regions",
+    "node tools/visual/w1-30b-air.mjs --weather rain --distance 150"
+  ],
+  "raw_files": {
+    "sweep_a5000": {
+      "path": "reports/runpod-gpu/runs/w1-30b-r2/artifacts/probe/probe.json",
+      "sha256": "fb28345c67f7ae3ee86cafd7265d4c05727de6d64be70981db3f860839fd79e6",
+      "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)",
+      "rows": 54
+    },
+    "plates_l4": {
+      "path": "reports/runpod-gpu/runs/w1-30b-r3/artifacts/plates/probe.json",
+      "sha256": "d0a8973d7ab6898ba6a69888c3f025b5825291f89329f6ad52bd6a61512fb8d2",
+      "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA L4 (0x000027B8)), NVIDIA)",
+      "rows": 18
+    },
+    "roughness_a4500": {
+      "path": "reports/runpod-gpu/runs/w1-30b-r5/artifacts/roughness/roughness.json",
+      "sha256": "751c7c8620d3f81bab8247e502328bc5cf360ef4236196a1410aba9f1c228e54",
+      "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A4500 (0x00002232)), NVIDIA)"
+    },
+    "pre_w1_30b_baseline_swiftshader": {
+      "path": "reports/visual-truth/w1-30b/gpu-2026-08-14/pre-w1-30b-baseline-swiftshader.json",
+      "note": "the only SwiftShader arm here, and it is the BEFORE side of the shadow measurement; it is tracked because reports/.gitignore un-ignores *baseline*.json for exactly this reason."
+    }
+  },
+  "before_pre_w1_30b_shadow_sabotage_pct": {
+    "spawn": 13.028,
+    "street-lilmoth": 2.164,
+    "approach-lilmoth": 0.603,
+    "vista-blackwood": 0,
+    "eye-blackwood": 0.97,
+    "vista-salt-hills": 0,
+    "vista-deep-marshes": 0,
+    "street-gideon": 0.615
+  },
+  "before_pre_w1_30b_atmosphere_sabotage_pct": {
+    "spawn": 79.008,
+    "street-lilmoth": 0.489,
+    "approach-lilmoth": 66.749,
+    "vista-blackwood": 20.734,
+    "eye-blackwood": 31.85,
+    "vista-salt-hills": 66.027,
+    "vista-deep-marshes": 70.013,
+    "street-gideon": 18.604
+  },
+  "after_sweep_a5000_at_1300": {
+    "spawn/clear": {
+      "shadow_pct": 12.852,
+      "shadow_reach_vs_old_box_pct": 4.462,
+      "world_casters_on_pct": 3.484,
+      "atmosphere_pct": 92.004,
+      "height_fog_pct": 13.074,
+      "probe_pct": 2.149,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.004223,
+      "height_falloff_m": 70,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        51.75,
+        66.43,
+        100.56
+      ]
+    },
+    "spawn/rain": {
+      "shadow_pct": 1.875,
+      "shadow_reach_vs_old_box_pct": 2.876,
+      "world_casters_on_pct": 2.679,
+      "atmosphere_pct": 94.342,
+      "height_fog_pct": 45.146,
+      "probe_pct": 2.47,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01391,
+      "height_falloff_m": 59.5,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        44.52,
+        82.17,
+        115.53
+      ]
+    },
+    "street-lilmoth/clear": {
+      "shadow_pct": 20.978,
+      "shadow_reach_vs_old_box_pct": 21.796,
+      "world_casters_on_pct": 21.424,
+      "atmosphere_pct": 21.607,
+      "height_fog_pct": 21.788,
+      "probe_pct": 21.917,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.004223,
+      "height_falloff_m": 70,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        47.95,
+        57.61,
+        76.38
+      ]
+    },
+    "street-lilmoth/rain": {
+      "shadow_pct": 20.767,
+      "shadow_reach_vs_old_box_pct": 22.163,
+      "world_casters_on_pct": 20.754,
+      "atmosphere_pct": 22.48,
+      "height_fog_pct": 23.012,
+      "probe_pct": 23.012,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01391,
+      "height_falloff_m": 59.5,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        44.74,
+        51.17,
+        61.84
+      ]
+    },
+    "approach-lilmoth/clear": {
+      "shadow_pct": 1.482,
+      "shadow_reach_vs_old_box_pct": 0.86,
+      "world_casters_on_pct": 3.46,
+      "atmosphere_pct": 66.862,
+      "height_fog_pct": 37.693,
+      "probe_pct": 0.018,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.004223,
+      "height_falloff_m": 70,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        52.78,
+        100.4,
+        162.52
+      ]
+    },
+    "approach-lilmoth/rain": {
+      "shadow_pct": 0.353,
+      "shadow_reach_vs_old_box_pct": 0.485,
+      "world_casters_on_pct": 0.459,
+      "atmosphere_pct": 67.026,
+      "height_fog_pct": 64.916,
+      "probe_pct": 0.417,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01391,
+      "height_falloff_m": 59.5,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        71.04,
+        128.42,
+        162.87
+      ]
+    },
+    "vista-blackwood/clear": {
+      "shadow_pct": 0,
+      "shadow_reach_vs_old_box_pct": 0.011,
+      "world_casters_on_pct": 20.195,
+      "atmosphere_pct": 41.591,
+      "height_fog_pct": 16.472,
+      "probe_pct": 0.002,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        57.86,
+        66.02,
+        53.14
+      ]
+    },
+    "vista-blackwood/rain": {
+      "shadow_pct": 0,
+      "shadow_reach_vs_old_box_pct": 0.004,
+      "world_casters_on_pct": 0.333,
+      "atmosphere_pct": 82.863,
+      "height_fog_pct": 86.6,
+      "probe_pct": 0,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01963,
+      "height_falloff_m": 46.8,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        40.86,
+        45.62,
+        46.01
+      ]
+    },
+    "eye-blackwood/clear": {
+      "shadow_pct": 3.125,
+      "shadow_reach_vs_old_box_pct": 49.863,
+      "world_casters_on_pct": 65.76,
+      "atmosphere_pct": 52.282,
+      "height_fog_pct": 44.344,
+      "probe_pct": 47.078,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        89.34,
+        125.51,
+        144.51
+      ]
+    },
+    "eye-blackwood/rain": {
+      "shadow_pct": 0.177,
+      "shadow_reach_vs_old_box_pct": 50.964,
+      "world_casters_on_pct": 52.923,
+      "atmosphere_pct": 56.543,
+      "height_fog_pct": 44.051,
+      "probe_pct": 45.136,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01963,
+      "height_falloff_m": 46.8,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        72.31,
+        97.49,
+        109.16
+      ]
+    },
+    "vista-salt-hills/clear": {
+      "shadow_pct": 0.264,
+      "shadow_reach_vs_old_box_pct": 0.209,
+      "world_casters_on_pct": 0.222,
+      "atmosphere_pct": 65.909,
+      "height_fog_pct": 63.692,
+      "probe_pct": 0,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.002851,
+      "height_falloff_m": 340,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        64.44,
+        118.78,
+        171.25
+      ]
+    },
+    "vista-salt-hills/rain": {
+      "shadow_pct": 0.634,
+      "shadow_reach_vs_old_box_pct": 0.772,
+      "world_casters_on_pct": 0.69,
+      "atmosphere_pct": 65.914,
+      "height_fog_pct": 61.57,
+      "probe_pct": 0.717,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.011389,
+      "height_falloff_m": 289,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        105.43,
+        156.41,
+        163.26
+      ]
+    },
+    "vista-deep-marshes/clear": {
+      "shadow_pct": 0.517,
+      "shadow_reach_vs_old_box_pct": 11.628,
+      "world_casters_on_pct": 18.003,
+      "atmosphere_pct": 65.466,
+      "height_fog_pct": 64.712,
+      "probe_pct": 8.707,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.006023,
+      "height_falloff_m": 26,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        87.78,
+        111.82,
+        167.9
+      ]
+    },
+    "vista-deep-marshes/rain": {
+      "shadow_pct": 0.746,
+      "shadow_reach_vs_old_box_pct": 8.309,
+      "world_casters_on_pct": 10.729,
+      "atmosphere_pct": 67.355,
+      "height_fog_pct": 57.626,
+      "probe_pct": 4.731,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.021903,
+      "height_falloff_m": 22.1,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        82.38,
+        100.76,
+        158.95
+      ]
+    },
+    "street-gideon/clear": {
+      "shadow_pct": 16.322,
+      "shadow_reach_vs_old_box_pct": 21.147,
+      "world_casters_on_pct": 40.479,
+      "atmosphere_pct": 56.107,
+      "height_fog_pct": 19.811,
+      "probe_pct": 20.627,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        59.89,
+        101.02,
+        119.11
+      ]
+    },
+    "street-gideon/rain": {
+      "shadow_pct": 17.527,
+      "shadow_reach_vs_old_box_pct": 19.949,
+      "world_casters_on_pct": 19.787,
+      "atmosphere_pct": 55.584,
+      "height_fog_pct": 19.115,
+      "probe_pct": 19.464,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.01963,
+      "height_falloff_m": 46.8,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        55.03,
+        88.01,
+        93.12
+      ]
+    },
+    "approach-stormhold/clear": {
+      "shadow_pct": 0.412,
+      "shadow_reach_vs_old_box_pct": 0.334,
+      "world_casters_on_pct": 0.245,
+      "atmosphere_pct": 61.617,
+      "height_fog_pct": 61.019,
+      "probe_pct": 0.027,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.002851,
+      "height_falloff_m": 340,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        44.27,
+        92.55,
+        167
+      ]
+    },
+    "approach-stormhold/rain": {
+      "shadow_pct": 0.585,
+      "shadow_reach_vs_old_box_pct": 0.587,
+      "world_casters_on_pct": 0.633,
+      "atmosphere_pct": 61.829,
+      "height_fog_pct": 61.663,
+      "probe_pct": 0.61,
+      "stock_atmosphere_pct": null,
+      "sigma0": 0.011389,
+      "height_falloff_m": 289,
+      "recipe": "overcast-flat",
+      "thirds_lower_middle_upper": [
+        56.79,
+        120.35,
+        165.53
+      ]
+    }
+  },
+  "after_plates_l4_at_1300_with_the_atmosphere_null_control": {
+    "approach-lilmoth/clear": {
+      "shadow_pct": 1.499,
+      "shadow_reach_vs_old_box_pct": 0.884,
+      "world_casters_on_pct": 3.277,
+      "atmosphere_pct": 66.862,
+      "height_fog_pct": 39.076,
+      "probe_pct": 0.01,
+      "stock_atmosphere_pct": 65.3,
+      "sigma0": 0.004223,
+      "height_falloff_m": 70,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        52.75,
+        100.13,
+        162.1
+      ]
+    },
+    "vista-blackwood/clear": {
+      "shadow_pct": 0,
+      "shadow_reach_vs_old_box_pct": 0.012,
+      "world_casters_on_pct": 18.337,
+      "atmosphere_pct": 31.376,
+      "height_fog_pct": 18.366,
+      "probe_pct": 0.002,
+      "stock_atmosphere_pct": 17.097,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        57.29,
+        65.43,
+        52.56
+      ]
+    },
+    "eye-blackwood/clear": {
+      "shadow_pct": 16.65,
+      "shadow_reach_vs_old_box_pct": 51.211,
+      "world_casters_on_pct": 64.131,
+      "atmosphere_pct": 61.927,
+      "height_fog_pct": 48.648,
+      "probe_pct": 48.712,
+      "stock_atmosphere_pct": 59.373,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        84.47,
+        115.19,
+        136.36
+      ]
+    },
+    "street-gideon/clear": {
+      "shadow_pct": 17.909,
+      "shadow_reach_vs_old_box_pct": 21.8,
+      "world_casters_on_pct": 41.011,
+      "atmosphere_pct": 55.252,
+      "height_fog_pct": 20.076,
+      "probe_pct": 20.851,
+      "stock_atmosphere_pct": 41.056,
+      "sigma0": 0.005805,
+      "height_falloff_m": 55,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        64.68,
+        104.58,
+        120.26
+      ]
+    },
+    "vista-deep-marshes/clear": {
+      "shadow_pct": 0.514,
+      "shadow_reach_vs_old_box_pct": 20.053,
+      "world_casters_on_pct": 22.918,
+      "atmosphere_pct": 64.418,
+      "height_fog_pct": 67.117,
+      "probe_pct": 13.471,
+      "stock_atmosphere_pct": 69.49,
+      "sigma0": 0.006023,
+      "height_falloff_m": 26,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        87.07,
+        111.28,
+        167.78
+      ]
+    },
+    "spawn/clear": {
+      "shadow_pct": 0.493,
+      "shadow_reach_vs_old_box_pct": 19.509,
+      "world_casters_on_pct": 21.828,
+      "atmosphere_pct": 65.389,
+      "height_fog_pct": 61.829,
+      "probe_pct": 17.097,
+      "stock_atmosphere_pct": 69.535,
+      "sigma0": 0.006023,
+      "height_falloff_m": 26,
+      "recipe": "noon-marsh",
+      "thirds_lower_middle_upper": [
+        88.34,
+        112.17,
+        167.84
+      ]
+    }
+  },
+  "rain_depth": {
+    "spawn/8": {
+      "streaks": 540,
+      "near_alpha": 0.2734,
+      "far_alpha": 0.0433,
+      "ratio": 0.158
+    },
+    "spawn/13": {
+      "streaks": 540,
+      "near_alpha": 0.2826,
+      "far_alpha": 0.0434,
+      "ratio": 0.154
+    },
+    "spawn/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.283,
+      "far_alpha": 0.0481,
+      "ratio": 0.17
+    },
+    "street-lilmoth/8": {
+      "streaks": 540,
+      "near_alpha": 0.2964,
+      "far_alpha": 0.0437,
+      "ratio": 0.147
+    },
+    "street-lilmoth/13": {
+      "streaks": 540,
+      "near_alpha": 0.2807,
+      "far_alpha": 0.0434,
+      "ratio": 0.155
+    },
+    "street-lilmoth/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2817,
+      "far_alpha": 0.048,
+      "ratio": 0.171
+    },
+    "approach-lilmoth/8": {
+      "streaks": 540,
+      "near_alpha": 0.2823,
+      "far_alpha": 0.0434,
+      "ratio": 0.154
+    },
+    "approach-lilmoth/13": {
+      "streaks": 540,
+      "near_alpha": 0.2694,
+      "far_alpha": 0.0427,
+      "ratio": 0.159
+    },
+    "approach-lilmoth/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2943,
+      "far_alpha": 0.0483,
+      "ratio": 0.164
+    },
+    "vista-blackwood/8": {
+      "streaks": 540,
+      "near_alpha": 0.2647,
+      "far_alpha": 0.033,
+      "ratio": 0.125
+    },
+    "vista-blackwood/13": {
+      "streaks": 540,
+      "near_alpha": 0.2831,
+      "far_alpha": 0.0334,
+      "ratio": 0.118
+    },
+    "vista-blackwood/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2741,
+      "far_alpha": 0.0383,
+      "ratio": 0.14
+    },
+    "eye-blackwood/8": {
+      "streaks": 540,
+      "near_alpha": 0.2698,
+      "far_alpha": 0.0333,
+      "ratio": 0.123
+    },
+    "eye-blackwood/13": {
+      "streaks": 540,
+      "near_alpha": 0.2718,
+      "far_alpha": 0.0333,
+      "ratio": 0.123
+    },
+    "eye-blackwood/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2658,
+      "far_alpha": 0.0376,
+      "ratio": 0.141
+    },
+    "vista-salt-hills/8": {
+      "streaks": 540,
+      "near_alpha": 0.2752,
+      "far_alpha": 0.0486,
+      "ratio": 0.177
+    },
+    "vista-salt-hills/13": {
+      "streaks": 540,
+      "near_alpha": 0.2857,
+      "far_alpha": 0.0489,
+      "ratio": 0.171
+    },
+    "vista-salt-hills/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2876,
+      "far_alpha": 0.0534,
+      "ratio": 0.186
+    },
+    "vista-deep-marshes/8": {
+      "streaks": 540,
+      "near_alpha": 0.2877,
+      "far_alpha": 0.0301,
+      "ratio": 0.105
+    },
+    "vista-deep-marshes/13": {
+      "streaks": 540,
+      "near_alpha": 0.2663,
+      "far_alpha": 0.0297,
+      "ratio": 0.112
+    },
+    "vista-deep-marshes/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2656,
+      "far_alpha": 0.0348,
+      "ratio": 0.131
+    },
+    "street-gideon/8": {
+      "streaks": 540,
+      "near_alpha": 0.2749,
+      "far_alpha": 0.0333,
+      "ratio": 0.121
+    },
+    "street-gideon/13": {
+      "streaks": 540,
+      "near_alpha": 0.2595,
+      "far_alpha": 0.0324,
+      "ratio": 0.125
+    },
+    "street-gideon/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2905,
+      "far_alpha": 0.0387,
+      "ratio": 0.133
+    },
+    "approach-stormhold/8": {
+      "streaks": 540,
+      "near_alpha": 0.2857,
+      "far_alpha": 0.049,
+      "ratio": 0.171
+    },
+    "approach-stormhold/13": {
+      "streaks": 540,
+      "near_alpha": 0.286,
+      "far_alpha": 0.0488,
+      "ratio": 0.171
+    },
+    "approach-stormhold/19.5": {
+      "streaks": 540,
+      "near_alpha": 0.2869,
+      "far_alpha": 0.0531,
+      "ratio": 0.185
+    }
+  },
+  "probe_budget": {
+    "present": true,
+    "width": 128,
+    "height": 64,
+    "type": "HalfFloatType",
+    "bakes": 114,
+    "lastBakeMs": 1.24,
+    "key": "234|rain|#B9C6CE|night-moon",
+    "intensity": 0.55
+  },
+  "shadow_fit": {
+    "tier": "high",
+    "mapSize": 4096,
+    "distance": 127.5,
+    "castShadow": true,
+    "fit": {
+      "radius": 121.41795521559949,
+      "texel": 0.05928611094511694,
+      "centre": [
+        2171.5111081301034,
+        136.4392740003234,
+        755.944017049794
+      ],
+      "backoff": 541.4179552155995,
+      "mapSize": 4096
+    },
+    "bias": -7.819828772735445e-05,
+    "normalBias": 0.08300055532316371
+  },
+  "roughness": {
+    "real": [
+      {
+        "roughness": 0.05,
+        "mean": 53.45,
+        "min": 14.2,
+        "max": 136.4,
+        "spread": 122.2,
+        "vertical_bands": 45
+      },
+      {
+        "roughness": 0.3,
+        "mean": 98.49,
+        "min": 16.9,
+        "max": 203.8,
+        "spread": 186.9,
+        "vertical_bands": 32
+      },
+      {
+        "roughness": 0.6,
+        "mean": 94.29,
+        "min": 16.9,
+        "max": 197.6,
+        "spread": 180.7,
+        "vertical_bands": 36
+      },
+      {
+        "roughness": 0.9,
+        "mean": 51.46,
+        "min": 16.9,
+        "max": 144.6,
+        "spread": 127.7,
+        "vertical_bands": 34
+      }
+    ],
+    "null_control_shipped_16x8": [
+      {
+        "roughness": 0.05,
+        "mean": 25.97,
+        "min": 3.9,
+        "max": 66,
+        "spread": 62.1,
+        "vertical_bands": 11
+      },
+      {
+        "roughness": 0.3,
+        "mean": 34.71,
+        "min": 3,
+        "max": 197.6,
+        "spread": 194.6,
+        "vertical_bands": 19
+      },
+      {
+        "roughness": 0.6,
+        "mean": 34.33,
+        "min": 3,
+        "max": 197.6,
+        "spread": 194.6,
+        "vertical_bands": 29
+      },
+      {
+        "roughness": 0.9,
+        "mean": 26.78,
+        "min": 3,
+        "max": 118,
+        "spread": 115,
+        "vertical_bands": 22
+      }
+    ],
+    "real_spread_pct": 91.39,
+    "null_spread_pct": 33.65,
+    "rows": {
+      "four_distinct": true,
+      "smooth_resolves_structure": true,
+      "null_collapses": false
+    },
+    "caveat": "The plan predicted the null arm would collapse all four spheres to within 8% mean luminance; it does not (33.7%). three.js convolves whatever it is given, so 128 texels still yield some roughness variation. The discriminating measure is structure: the roughness-0.05 sphere resolves 45 distinguishable vertical bands under the new probe and 11 under the shipped one, and the whole scene under the shipped one is nearly black. Also: the camera pitches slightly between the two draws, so the exact percentages carry that caveat and the direction does not."
+  },
+  "motion": {
+    "day_night_frames": 48,
+    "walk_frames": 60,
+    "site": "street-lilmoth",
+    "reviewed_as": "contact sheet via tools/visual/contact-sheet.mjs (W1-30V's tool)",
+    "finding": "the environment probe rebuilds on a time/weather/region bucket change and no frame of the 48-frame lapse steps at a rebake."
+  }
+}
