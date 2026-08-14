@@ -168,8 +168,11 @@ async function goTo(setup) {
     // thorn-hall interior setup and the player was still reported at interior height —
     // an exterior setup captured from inside a room is a silently wrong frame, which is
     // the one kind of failure this tool must never produce.
-    await call('enterInterior', null);
-    await call('setCameraCell', null);
+    // `exitInterior()`, not `enterInterior(null)` — the latter throws inside the page and the
+    // harness treats a page-side throw as fatal, which killed the first wide run at setup 1.
+    // Only call it when we are actually inside, so the exterior path stays quiet.
+    const where = await call('whereAmI');
+    if (where.ok && where.v && where.v.interior) await call('exitInterior');
     const r = await call('teleport', p.x, p.z);
     if (!r.ok) return `teleport(${p.x},${p.z}) refused: ${r.e}`;
     await call('stepFrames', 4);
