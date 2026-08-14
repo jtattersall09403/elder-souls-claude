@@ -1,0 +1,35 @@
+{
+  "plan": {
+    "profile": "full",
+    "setups": 48,
+    "stills": 288,
+    "sequences": 12,
+    "motionFrames": 2400
+  },
+  "estimate": {
+    "profile": "full",
+    "setups": 48,
+    "stills": 288,
+    "sequences": 12,
+    "motionFrames": 2400,
+    "capture_sec": 512,
+    "overhead_sec": 210,
+    "total_sec": 722,
+    "total_min": 12,
+    "usd": 0.054,
+    "usd_per_hour": 0.27,
+    "suggested_max_runtime_min": 19,
+    "basis": "reports/runpod-gpu/runs/deck-hw-smoke/ (RTX A4500) and deck-hw-full/ (RTX A5000), both live on 2026-08-14; every constant is fitted to those two runs, not estimated"
+  },
+  "actual": {
+    "pod": "8ruhblwiblpqtl",
+    "gpu": "L4",
+    "usd_per_hour": 0.49,
+    "wall_min": 10.82,
+    "usd": 0.088,
+    "status": "passed",
+    "artifact_files": 712,
+    "terminated": true
+  },
+  "command": "set -euo pipefail\nART=\"$RUNPOD_ARTIFACT_DIR\"\nTAG=\"w1-30-shadow-casters\"\nmkdir -p \"$ART\"\nnode tools/visual/deck.mjs --profile full --tag \"$TAG\" --gpu hardware --require-hardware --out \"$ART/deck/$TAG\" 2>&1 | tee -a \"$ART/deck.log\"\nnode tools/visual/deck-motion.mjs --profile full --tag \"$TAG\" --gpu hardware --require-hardware --every 1 --sheet-every 6 --out \"$ART/motion/$TAG\" 2>&1 | tee -a \"$ART/motion.log\"\nfind \"$ART/motion/$TAG/frames\" -name '*.png' | sort | awk 'NR % 6 != 1' | xargs -r rm -f\ndu -sh \"$ART\" | tee \"$ART/return-size.txt\""
+}
