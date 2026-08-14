@@ -80,14 +80,31 @@ a person.
 
 ---
 
-## Step 2b — Buildings are not inside each other *(in progress)*
+## Step 2b — Buildings are not inside each other *(resolver done; layout is now step 2c)*
 
 **Visible outcome:** doors open into streets rather than into other buildings.
 
 **83 interpenetrating pairs across 8 of 8 settlements; 25 have a door inside another building.** The
-cause is one defect wearing two hats: the shrink pass and `_deepOverlaps()` compare **axis-aligned**
-footprints while the renderer rotates by `yaw_deg`, so **63 of the 83 are invisible to the shipped
-check**. 72 of 83 separate with no building moved — a code fix, not a layout migration.
+shrink pass and `_deepOverlaps()` compared **axis-aligned** footprints while the renderer rotates by
+`yaw_deg`, so most were invisible to the shipped check.
+
+**Done:** `game/src/world/footprint.js` is now the single implementation of this geometry — there were
+**three** private copies, two of which measured a rectangle the world does not have *and agreed with
+each other*, which is exactly how the defect stayed invisible. The check now reports 76 where it used
+to report 22. Archon 15→12, Lilmoth 19→16.
+
+**The 72 was wrong, and this is the real state.** ~~72 of 83 separate with no building moved — a code
+fix, not a layout migration.~~ That figure assumed buildings could shrink to `MIN_ENTERABLE_SPAN_M`.
+They cannot: all 115 interiors are native records, so nothing applies `interior_bounds_m` and the room
+cannot shrink to follow its building. **227 of 230 axes have one centimetre of slack**, already spent.
+Shrinking clears **6, not 72**. The tolerance knob is not the answer either — the count is 76 for
+*every* value between 0.50 m and 1.50 m.
+
+**So the remaining 76 need positions moved, and that is a separate step (2c) done at the GENERATOR.**
+Five Blackrose pairs are authored exactly 1.0 m apart and `thorn-gate`/`thorn-house-0` share an
+**identical `offset_m`** — buildings do not land on identical offsets by coincidence. Hand-placing ten
+would paper over a generator that re-authors the same collisions on the next regeneration. **Not yet
+dispatched:** it sits below step 1, and step 1 is where the screen changes most.
 
 ---
 
