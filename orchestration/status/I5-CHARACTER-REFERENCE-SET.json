@@ -2,15 +2,75 @@
   "task_id": "I5-CHARACTER-REFERENCE-SET",
   "state": "in_progress",
   "started": "2026-08-14",
-  "could_not_do": [
-    "NOT YET STARTED - status file written first per RULES.md rule 1. Nothing verified yet."
+  "baseline_commit": "b87bb10e",
+
+  "what_i_could_not_do": [
+    "SLOT C5 IS n=0 AND STAYS n=0. There is no full-body TURNAROUND or camera-orbit of a modern humanoid anywhere in the set, and I did not acquire one. That is the exact artefact the owner named ('motion captures (e.g. rotating the camera around the player to view from multiple angles)') on the REFERENCE side. What I searched, this turn: elderscrolls.fandom.com and eldenring.fandom.com MediaWiki APIs (list=search ns=6, list=allimages with aimime=image/gif and aiprefix over Roll/Sprint/Running/Walk/Backstep/Dodge/Turn/Jump/Idle/Locomotion) — no humanoid turnaround GIF surfaced on either. The two ESO character-creation entries that would have been perfect ('File:Elder Scrolls Online -- Argonian Male / Female - Character Creation') are mime video/youtube, i.e. embeds, not files, so there is nothing to fetch. web.archive.org returns 000 from this container, so the archive route is shut. What would fill it: any hash-pinnable clip of one character rotating on the spot; the nearest legal substitute already on disk is the 25 full-body plates in slot C4 read as a multi-subject stand-in, which is NOT the same thing and the index says so.",
+    "I did NOT complete a full `make-manifest.py --check` re-walk before writing this. The pure-Python walk over 834 files takes >20 minutes and was killed once mid-run. What I did instead: computed the 25 new records with the script's OWN `analyse()` function (imported, not reimplemented), merged them into `_computed.json`, and ran the script's `--join-only` path, which reported `834 on disk`. A full `--check` is running in the background; if it reports drift, that is a real failure and this line is where to start.",
+    "The 25 new full-body plates are NOT composition-valid in the RI-VIS09 §3.3 sense and I did not pretend otherwise. They are subject crops on a plain backdrop, not full native-aspect frames. Worse, `docs/art-direction/measure-plates.mjs` line 318 would compute `composition_valid: true` for them anyway, because for a non-ART record it defaults to true unless `framing` is the exact literal 'square crop, not the native aspect'. I recorded `framing: 'cropped to subject, not the native aspect'` plus a `framing_note` on every one of the 25, and every composition/framing/sky statistic over `modern/character_fullbody/` is n=0. I did not edit `measure-plates.mjs` — it belongs to the art-direction board and a one-line predicate change there is somebody else's delete-the-fix.",
+    "No Skyrim or ESO MOTION exists in the set, before or after this piece. Every motion row is Dark Souls / Elden Ring / Ghost of Tsushima / RDR2 / Morrowind. The owner named Skyrim and ESO; on stills that is now satisfied, on motion it is not.",
+    "I have not run the game or captured anything from it. This piece builds the target side only. The pairing table names our counterpart capture per slot; nobody has produced those captures yet, so no pairing has actually been exercised.",
+    "`RI-VIS10` is `provenance: constructed`. Every threshold in it is mine. It has never been run by a critic and its inter-rater agreement is asserted by construction (countable checks over enumerated populations), not demonstrated."
   ],
-  "next_step": "Read RI-VIS08 in full (§D twice), HAZARDS.md, then sweep corpus/70-visual/refs/ for existing character plates.",
+
+  "what_was_already_on_disk_and_nobody_was_using": [
+    "modern/character_closeup/ holds 13 images, not 1. RI-VIS09 §1's table and §3.1 both still say one. Verified: `ls corpus/70-visual/refs/modern/character_closeup/ | wc -l` -> 13, and MANIFEST.json -> 13 records. Nine are Elden Ring (Melina at 1920x1080, Malenia at 3840x2160, six Godrick), two Witcher 3 (one 3840x2160), two RDR2.",
+    "RI-VIS09 §3.1 says 'Five of six modern/ profile folders are empty and the sixth holds one image.' Measured this turn from MANIFEST.json: character_closeup 13, combat 12, exterior_daylight 43, exterior_lowlight 24, interior_darkemissive 22, material_closeup 9, ui 8. NONE of them is empty. The sentence has been wrong for some time and it is the same eight-day defect as REF-A12b.",
+    "modern/hud/ DOES NOT EXIST on disk. `ls corpus/70-visual/refs/modern/` returns seven directories and hud is not one of them. RI-VIS09 §1 tables it at 24 files, §2 carries a standing prohibition against citing it, and `anti-generic/` is described as 'copies of modern/hud/'. A prohibition on a folder that is not there is harmless; a 24-file inventory row for it is not.",
+    "context/ESO-argonian_character__*.jpg — FOUR 1600x900-to-1920x1080 close-range Argonian character plates, on disk since 2026-08-06 (`ls -la`), routed `side: subject-reference` and therefore citable by nobody under RI-VIS09 §2. These are the single closest reference the project holds to the race it actually ships, and the owner named ESO by name. This is the anchor-routing defect again: the plates were never missing, the route was.",
+    "207 animated sequences and 10 videos were already registered. Humanoid motion specifically: 12 Elden Ring attack-chain GIFs at up to 700x395, 3 quickstep GIFs at 720x405, 4 parry GIFs at 600x338, 6 Leyndell knight/Lansseax telegraph GIFs, 46 DS1 humanoid-boss move GIFs, and video/V3-locomotion__dsr-longplay-t11990.mp4 (30 s of continuous third-person run/stop/turn, no cuts). The motion half of this piece was 90% already paid for.",
+    "3 Skyrim SE plates with characters in them were already in modern/combat/ (spriggan mid-attack, three armoured figures in melee, a large creature at combat range)."
+  ],
+
+  "what_i_added": {
+    "plates": "25 Skyrim full-body humanoid renders in corpus/70-visual/refs/modern/character_fullbody/ (male+female across leather, blades, stormcloak-officer, wolf, orcish, ebony, dwarven, glass, dragonscale, steel-plate, elven, steel, iron), 900x1844 to 2470x3568, from The Elder Scrolls Wiki (Fandom). 8 MB total. Whole figure head-to-foot on a plain backdrop: proportion, silhouette, armour construction, and metal/leather/cloth/fur/scale separation on one body.",
+    "routing": "corpus/70-visual/refs/characters/character-reference-set.json + INDEX.md — 13 slots, 252 distinct files, 210 of them motion, each slot naming the RI-VIS08/RI-VIS10 property it targets and the counterpart capture on our side.",
+    "tool": "tools/visual/character-refs.mjs — derives the routing from MANIFEST.json at run time and exits non-zero on a missing file, an underrun floor, or an n=0 slot with no stated reason. Watched to fail: it exited 1 with 'C4: floor 12, got 0' before the manifest was rebuilt, and 0 after.",
+    "item": "corpus/70-visual/RI-VIS10-character-design.md — the humanoid character design bar, provenance constructed.",
+    "wiring": "RI-VIS01 §A gains property P10; corpus/00-doctrine/subsystems.json gains render.art.character; RI-VIS09 §1/§2/§3 corrected and amended."
+  },
+
+  "verified_holes_i_am_filling": {
+    "RI-VIS01 §A": "28 property rows, exhaustive and closed by its own words. P04 is 'Creature design'; P02 is 'Silhouette language (buildings, props, creatures)'. No row covers a PERSON's design. Read this turn.",
+    "RI-VIS05 §D4": "titled 'Fauna silhouette rules'; its one humanoid sentence is the naga, and it routes them to VIS08 §D's readability bar. Fauna-only, as the audit said. Read this turn.",
+    "subsystems.json": "9 render.art.* subsystems (palette, silhouette, architecture, creature, composition, weirdness, mood, flora, materials). No character/person subsystem. Derived this turn by walking the file.",
+    "RI-CHR01/02/03": "corpus/22-character/ holds exactly three RI items — creation, race-and-standing, birthsigns. Mechanics and social standing, not design language. `ls corpus/22-character/`."
+  },
+
+  "populations_the_new_item_scores_over": {
+    "npcs": "408 NPC records across 18 files in game/data/npcs/, every one carrying race, class, actor, faction, settlement.",
+    "distinct_actor_values": 32,
+    "note": "32 visual actors serve 408 NPCs; the top one, 'townsman', serves 97. That is the measured baseline for RI-VIS10's population-variety checks, derived this turn.",
+    "races": "10 in game/data/progression/races.json: saxhleel, naga, dunmer, imperial, nord, breton, redguard, khajiit, orsimer, bosmer.",
+    "incidental_finding_not_mine_to_fix": "the NPC files use race:'argonian' 181 times and race:'saxhleel' 77 times, plus one 'none' and one 'mixed'; races.json knows 'saxhleel' and not 'argonian'. Flagged, not touched."
+  },
+
+  "what_would_make_this_piece_wrong": [
+    "The set is technically valid and useless in practice because nothing in it matches what our harness can capture. Guard: every slot carries an `our_counterpart` naming a capture we can actually take, and slot C5 is left at n=0 rather than filled with something that only looks like a turnaround.",
+    "RI-VIS10 is so subjective that two critics land five points apart. Guard: every check is a count over an enumerated population (408 NPCs, 32 actors, 10 races) with the census table published so a second critic recomputes rather than re-feels. If a critic cannot produce the census, the check scores 0, not 'unknown'.",
+    "The new plates are used for something they cannot support. Guard: pixel_metrics_valid:false on all 25, and the standing prohibitions block at the top of character-reference-set.json.",
+    "Admitting ESO as a design target quietly turns our world into Murkmire — the exact thing RI-VIS05 warns against. Guard: RI-VIS10 §A2 admits ESO for CONSTRUCTION QUALITY on the FIDELITY side only and keeps it a divergence anchor on the design side, with the reversal condition written down.",
+    "Licence. Every new plate is a Bethesda asset under Bethesda's copyright; the blanket note in refs/LICENCE-NOTE.md names only Bethesda-Morrowind, CD PROJEKT RED and Rockstar, so each of the 25 records carries its own explicit `licence` and `licence_position`, per that note's own rule that a differing provenance must not silently inherit the blanket."
+  ],
+
   "files_touched": [
-    "orchestration/status/I5-CHARACTER-REFERENCE-SET.json"
+    "orchestration/status/I5-CHARACTER-REFERENCE-SET.json",
+    "corpus/70-visual/refs/modern/character_fullbody/",
+    "corpus/70-visual/refs/_provenance.json",
+    "corpus/70-visual/refs/_computed.json",
+    "corpus/70-visual/refs/MANIFEST.json",
+    "corpus/70-visual/refs/characters/character-reference-set.json",
+    "tools/visual/character-refs.mjs"
   ],
   "files_claimed": [
     "corpus/70-visual/refs/characters/",
-    "corpus/70-visual/RI-VIS10-character-design.md"
-  ]
+    "corpus/70-visual/RI-VIS10-character-design.md",
+    "corpus/70-visual/RI-VIS01-bifurcation-protocol.md",
+    "corpus/70-visual/RI-VIS09-reference-image-set.md",
+    "corpus/00-doctrine/subsystems.json",
+    "corpus/70-visual/refs/LICENCE-NOTE.md",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": [],
+  "next_step": "Write corpus/70-visual/refs/characters/INDEX.md, then RI-VIS10, then the RI-VIS01 P10 row, the subsystems.json row, and the RI-VIS09 corrections. Land incrementally."
 }
