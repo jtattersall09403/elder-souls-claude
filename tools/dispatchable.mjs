@@ -107,6 +107,51 @@ function judgedPieces() {
   return seen;
 }
 
+/**
+ * The verdict-lookup key for a status row's task id.
+ *
+ * ORCHESTRATION/AUDITS/UNJUDGED-TRIAGE-2026-08-14.md found the defect this replaces:
+ * `/^(w\d+-[a-z0-9]+)/` stops at the FIRST hyphen after the `w<N>` segment, so a multi-word piece
+ * id was looked up under its first word only — `W1-LIBRARY-MARTIAL` as `w1-library`,
+ * `W1-ATTR-SCALE` as `w1-attr`, `W1-PROSE-TICS` as `w1-prose` — none of which exists, so all three
+ * (and others) reported unjudged while their own verdict sat on disk under their full name.
+ *
+ * The fix strips ONLY a genuine trailing round marker (`-r<N>` at the very end of the string —
+ * nothing after it) and otherwise keeps every hyphen, so the key is the piece's FULL name, matched
+ * for exact equality against `judgedPieces()`'s set (which is built the same way, from each
+ * verdict's own `piece_id`, minus its own trailing round).
+ *
+ * WHAT THIS DELIBERATELY DOES NOT DO, per the triage's own naming of the dangerous direction: it
+ * does NOT fall back to prefix or "sole descendant" matching when no exact key exists. `W1-23` and
+ * `province-stream-pump` are two real examples this leaves reporting unjudged, because their
+ * verdicts are filed under a materially different piece_id (`w1-23-lore-registry-and-the-
+ * provinces-canon`, `w1-01-province-stream-pump`) that the task id is not a full, exact match for
+ * even once round-stripped. Widening this to "task id is a hyphen-bounded prefix of the verdict's
+ * piece_id" would look tempting and IS the trap: `W1-08` — a real, separate, currently-
+ * `awaiting-recriticism` task — is a hyphen-bounded prefix of `w1-08-w1-29`, the piece_id of the
+ * JOINT W1-08/W1-29 verdict `W1-08-W1-29-r2.json`. Prefix-matching would report standalone W1-08
+ * as already judged by a verdict that in fact judges W1-08 and W1-29 TOGETHER — exactly the
+ * "w1-08 matching w1-08-w1-29" shape the triage warned against, and it is not hypothetical: W1-08
+ * is a live task_id in `orchestration/status/` today. Exact-match-only is the one design that
+ * cannot manufacture that collision, at the cost of leaving W1-23 and province-stream-pump
+ * genuinely unresolved by this tool (they were already resolved once, by hand, in the triage's
+ * §1d — that is a fine division of labour: this tool answers the common case cheaply and exactly,
+ * a human/agent reads the odd one out).
+ *
+ * A trailing `-r<N>` is a round ONLY when nothing follows it. `W1-01-province-stream-r1` looks
+ * like a round of `W1-01` but its own verdict's piece_id is `w1-01-province-stream-pump` — a
+ * SUB-PIECE, not a round — and this function does not fold multi-hyphen names down toward any
+ * shorter existing anchor the way `canonicalPieceId()` above does for plan-state reconciliation;
+ * it only ever removes the exact trailing `-r<N>` suffix, so a sub-piece's extra words survive
+ * into its key intact and it is never mistaken for a round of something shorter.
+ */
+function verdictLookupKey(id) {
+  const lower = String(id).toLowerCase();
+  const withoutTrailingRound = lower.replace(/-r\d+$/, '');
+  const wholeIdIsAPieceName = withoutTrailingRound.match(/^(w\d+(?:-[a-z0-9]+)*)$/);
+  return wholeIdIsAPieceName ? wholeIdIsAPieceName[1] : lower;
+}
+
 const judged = judgedPieces();
 const rows = [];
 if (existsSync(STATUS)) {
@@ -114,12 +159,7 @@ if (existsSync(STATUS)) {
     let j; try { j = JSON.parse(readFileSync(join(STATUS, f), 'utf8')); } catch { continue; }
     const id = j.task_id || basename(f, '.json');
     const state = String(j.state || 'unknown');
-    // Match a status file to a verdict the way verdict ids are actually written: on the
-    // `w1-NN` (or `w1-<name>`) prefix, ignoring round numbers and the descriptive tail agents
-    // append to their task ids. Keying on the whole id reported 91 pieces as unjudged, most of
-    // which had verdicts under a shorter name — a number I published before checking it, which
-    // is exactly the failure this project keeps charging builders for.
-    const key = (id.toLowerCase().match(/^(w\d+-[a-z0-9]+)/) || [, id.toLowerCase()])[1];
+    const key = verdictLookupKey(id);
     // A critic, a judge or a fix task is not a *piece*; nothing dispatches a critic against one.
     const isCritic = /(^|-)(critic|judge)(-|$)/.test(id.toLowerCase()) || /-fix$/.test(id.toLowerCase());
     rows.push({
@@ -170,6 +210,52 @@ if (process.argv.includes('--self-test')) {
   }
   if (!units.some(u => u.id === 'W1-PROSE-R2')) throw new Error('unanchored R2 piece was blindly stripped');
   console.log('dispatchable self-test: canonical multi-round state and distinct-piece preservation PASS; no round counter exists.');
+
+  // ---- verdictLookupKey() arms, per orchestration/audits/UNJUDGED-TRIAGE-2026-08-14.md --------
+  // HAZARDS.md §0: a self-test whose arms all fabricate the same disputed input proves nothing
+  // about that input. The disputed input here is the shape of the REAL status/verdict corpus, so
+  // every arm below reads it — `judged` (built above from the real corpus/90-verdicts tree) and
+  // real `orchestration/status/*.json` task ids — rather than a hand-rolled fixture that could
+  // share the implementation's own false premise. Each arm names the file it depends on so a
+  // future corpus change that breaks the fixture fails LOUDLY here instead of going quiet.
+  const need = (bool, msg) => { if (!bool) throw new Error(`verdictLookupKey self-test: FAILED — ${msg}`); };
+
+  // Arm 1 — a multi-hyphen piece WITH a verdict must read judged. Break it on purpose: the OLD
+  // regex (`/^(w\d+-[a-z0-9]+)/`) truncates 'w1-library-martial' to 'w1-library' and this fails,
+  // which is the exact defect the triage found (score 5.4 on disk, reported unjudged).
+  need(existsSync(join(VERDICTS, 'wave1', 'W1-LIBRARY-MARTIAL-r4.json')),
+    "fixture corpus/90-verdicts/wave1/W1-LIBRARY-MARTIAL-r4.json is gone — update this arm's fixture");
+  need(verdictLookupKey('W1-LIBRARY-MARTIAL') === 'w1-library-martial', "key for W1-LIBRARY-MARTIAL should be the full name, not truncated at the first hyphen");
+  need(judged.has(verdictLookupKey('W1-LIBRARY-MARTIAL')), 'W1-LIBRARY-MARTIAL has a verdict on disk (score 5.4) and must read judged');
+
+  // Arm 2 — a multi-hyphen piece WITHOUT a verdict must read unjudged. W1-GIVER-PRESENCE is one of
+  // the triage's sixteen genuinely-unjudged pieces (§2 row 3); no verdict exists under any name.
+  need(existsSync(join(STATUS, 'W1-GIVER-PRESENCE.json')), "fixture orchestration/status/W1-GIVER-PRESENCE.json is gone — update this arm's fixture");
+  need(!judged.has(verdictLookupKey('W1-GIVER-PRESENCE')), 'W1-GIVER-PRESENCE has no verdict anywhere and must read unjudged, not borrow a neighbour\'s');
+
+  // Arm 3 — a piece must NOT match a neighbour's verdict. `W1-08` is a real, separate, live
+  // task_id (orchestration/status/W1-08.json, plan_state awaiting-recriticism) with no verdict of
+  // its OWN; the only verdict anywhere near it is W1-08-W1-29-r2.json, piece_id 'w1-08-w1-29' —
+  // judging W1-08 and W1-29 TOGETHER. Prefix-matching (the tempting wider fix) would report W1-08
+  // as judged by that joint verdict; this is the dangerous direction the triage named and this arm
+  // is the falsifier for it.
+  need(existsSync(join(STATUS, 'W1-08.json')), "fixture orchestration/status/W1-08.json is gone — update this arm's fixture");
+  need(judged.has('w1-08-w1-29'), "fixture corpus/90-verdicts/wave1/W1-08-W1-29-r2.json is gone or renamed — update this arm's fixture");
+  need(verdictLookupKey('W1-08') === 'w1-08', "key for W1-08 must be exactly 'w1-08', not swept into a longer neighbour's name");
+  need(!judged.has(verdictLookupKey('W1-08')), "W1-08 must NOT read judged off the joint W1-08/W1-29 verdict — that is the w1-08-vs-w1-08-w1-29 trap");
+
+  // Arm 4 — a sub-piece must not be mistaken for a round. `W1-17-act5-r2` LOOKS like round 2 of
+  // `W1-17`, and W1-17 itself does have a verdict (W1-17-r1.json, piece_id 'w1-17', score 5) — an
+  // unrelated piece that a naive "strip to the W1-NN prefix" reading would wrongly credit round 2
+  // with. The real predecessor is W1-17-act5-r1.json, piece_id 'w1-17-act5-argument' (FAIL 3/10),
+  // a different key entirely, and round 2 (responding to that fail) has no verdict of its own yet.
+  need(existsSync(join(STATUS, 'W1-17-act5-r2.json')), "fixture orchestration/status/W1-17-act5-r2.json is gone — update this arm's fixture");
+  need(judged.has('w1-17'), "fixture corpus/90-verdicts/wave1/W1-17-r1.json is gone or renamed — update this arm's fixture");
+  const act5r2Key = verdictLookupKey('W1-17-act5-r2');
+  need(act5r2Key !== verdictLookupKey('W1-17'), "W1-17-act5-r2 must not collapse to plain W1-17's key");
+  need(!judged.has(act5r2Key), "W1-17-act5-r2 must not be credited with plain W1-17's verdict (score 5) -- it is a different piece, and its own round 2 is not yet judged");
+
+  console.log('dispatchable self-test: verdictLookupKey PASS (4/4) — multi-hyphen resolves to its own verdict, absent stays unjudged, no neighbour collision, no sub-piece-as-round.');
   process.exit(0);
 }
 if (process.argv.includes('--wave1-plans')) {
