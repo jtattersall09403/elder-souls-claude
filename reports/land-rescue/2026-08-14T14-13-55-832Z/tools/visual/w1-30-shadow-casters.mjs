@@ -252,11 +252,7 @@ async function frameMs() {
 const out = { tag: TAG, renderer_string, software, seed: SEED, canvas: [CW, CH], time: TIME,
   perf_frames: PERF_FRAMES, build: g.buildInfo || null, rows: [], pageErrors: [] };
 
-// `--costOnly` takes the caster census for every arm and renders nothing. It is the mode that
-// survives a loaded box: the census is read off the scene graph, so it costs one page load for the
-// whole matrix instead of one screenshot pair per arm at 40 s a frame.
-const COST_ONLY = args.costOnly === true;
-const ARMS = args.arms === 'shipped' ? ['base'] : (args.arms ? String(args.arms).split(',') : Object.keys(ARM_SETS));
+const ARMS = args.arms === 'shipped' ? ['base'] : Object.keys(ARM_SETS);
 
 for (const site of SITES) {
   const err = await goTo(site);
@@ -267,27 +263,20 @@ for (const site of SITES) {
 
   for (const arm of ARMS) {
     const hit = await applyArm(ARM_SETS[arm]);
-    const row = { site, arm, flagged: hit };
-    if (COST_ONLY) {
-      row.shadow_load = await shadowLoad();
-    } else {
-      await step(4);
-      const lit = await shot(`${site}-${arm}.png`);
-      row.shadow_load = await shadowLoad();
-      row.frame_ms = await frameMs();
-      const stats = await g.page.evaluate(() => ({ ...window.__ENGINE.renderer.lastStats }));
-      row.fit = await g.page.evaluate(() => window.__ENGINE.renderer.sky.shadowReport());
-      // the trivial control, kept because it is the number every other W1-30 report quotes
-      await setFeature('shadows', false); await step(3);
-      const dark = await shot(null);
-      await setFeature('shadows', true); await step(3);
-      row.shadow_pct = diff(lit, dark).pct;
-      row.stripe_pct = stripeEnergy(lit);
-      row.drawCalls = stats.drawCalls; row.triangles = stats.triangles;
-    }
-    const load = row.shadow_load;
+    await step(4);
+    const lit = await shot(`${site}-${arm}.png`);
+    const load = await shadowLoad();
+    const perf = await frameMs();
+    const stats = await g.page.evaluate(() => ({ ...window.__ENGINE.renderer.lastStats }));
+    const fit = await g.page.evaluate(() => window.__ENGINE.renderer.sky.shadowReport());
+    // the trivial control, kept because it is the number every other W1-30 report quotes
+    await setFeature('shadows', false); await step(3);
+    const dark = await shot(null);
+    await setFeature('shadows', true); await step(3);
+    const row = { site, arm, flagged: hit, shadow_pct: diff(lit, dark).pct, stripe_pct: stripeEnergy(lit),
+      shadow_load: load, frame_ms: perf, drawCalls: stats.drawCalls, triangles: stats.triangles, fit };
     out.rows.push(row);
-    console.log(`  ${site.padEnd(22)} ${arm.padEnd(22)} shadow ${String(row.shadow_pct ?? '-').padStart(6)}%  stripe ${String(row.stripe_pct ?? '-').padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris  cast+${hit.cast} recv+${hit.receive}`);
+    console.log(`  ${site.padEnd(22)} ${arm.padEnd(22)} shadow ${String(row.shadow_pct).padStart(6)}%  stripe ${String(row.stripe_pct).padStart(6)}%  casters ${String(load.casterMeshes).padStart(4)} / ${String(load.casterTriangles).padStart(9)} tris  cast+${hit.cast} recv+${hit.receive}`);
     await restoreArm();
     await step(2);
   }

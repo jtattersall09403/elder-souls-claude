@@ -69,10 +69,30 @@ Sonnet — while the model-choice policy that would fix it has been written down
 
 `orchestration/TICK.md` is the loop: measure contention, bank, top up. `node tools/dispatchable.mjs`
 before every spawn; `node tools/contention.mjs` before every browser; `node tools/bank.mjs
-"<headline>"` to commit the tree, which names whose work it carries.
+"<headline>"` to land the tree, which names whose work it carries.
 
-Push after every bank. The container has restarted twice in one day and taken nine agents with it
-each time; unbanked work dies with it.
+**`bank.mjs` now commits AND pushes, in one operation, and there is no separate push step.** It
+lands through `tools/land.mjs`, which builds the commit with a real three-way merge (`git
+merge-tree`) instead of snapshotting the working tree, takes no `.git/index.lock`, retries when a
+sibling lands first, and **exits non-zero unless the bytes are on the remote**. An agent that wants
+to carry only its own files uses `node tools/land.mjs "<headline>" --paths <yours>`.
+
+Bank often and in small increments. The container has restarted twice in one day and taken nine
+agents with it each time; unbanked work dies with it.
+
+**Do not hand-roll a push, and do not copy the `read-tree origin/<branch> && git add -A` recipe out
+of an old status file — that recipe is what has been destroying the fleet's work.** It stages every
+file a sibling pushed as a *deletion*, because it measures the working tree against `origin` instead
+of against `HEAD`. One bank built that way deleted 18 files and 22,209 lines of finished work in a
+single commit; re-run through `merge-tree` the same merge keeps 18 of 18. `HAZARDS.md`'s opening
+section is the whole instruction, and `node tools/land.mjs --self-test` is the proof — 13 checks
+whose arms are required to disagree, with the old recipe losing an agent's work in four of them.
+
+There is **no push race**: git rejects a non-fast-forward push, so two agents pushing at the same
+instant cannot overwrite each other. A day was spent on that theory, and the worktrees bought to fix
+it broke rendering for nine agents and stopped none of the losses. Worktrees are still worth having
+for what they actually do — two agents cannot overwrite each other's edits on disk — and nothing
+more.
 
 **The hard floor of 12 is removed.** Owner, 2026-08-14: *"Instead continuously qualitatively review
 and use your judgment as the implementation lead to set as much working in parallel as is sensible in

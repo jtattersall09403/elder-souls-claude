@@ -79,6 +79,13 @@ async function bootPlay(h, query = '') {
   await h.page.goto(h.url.replace(/\?.*$/, '') + '?mode=play' + query, { waitUntil: 'load' });
   await h.page.waitForFunction(() => window.__HARNESS && window.__HARNESS.ready, null, { timeout: 120000 });
   await h.page.evaluate(() => window.__HARNESS.ready());
+  // THE ONE INSTRUMENT SETTING, declared rather than hidden. `mode: 'play'` renders every rAF,
+  // and `core/loop.js` says in its own comment that a continuously-rendering rAF "starves the
+  // compositor on a software rasteriser and page.screenshot() times out". It does worse than
+  // that: three runs of this tool lost the whole browser mid-walk. Lowering the RENDER rate does
+  // not touch the simulation — the fixed-step accumulator is untouched, `rafDrivesSim` is still
+  // true, and every key press still lands on a 60 Hz fixed step exactly as it does for a person.
+  await h.page.evaluate(() => window.__HARNESS.setRenderRate(12));
   await h.page.waitForTimeout(1200);
 }
 

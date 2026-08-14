@@ -19,5 +19,5 @@
     ],
     "network_finding": "Browser-level HTTPS to the public deployed URL (jtattersall09403.github.io and other external hosts) resets the connection through this container's agent proxy even though curl through the same proxy succeeds -- Node fetch/curl reach the proxy fine, Chromium navigation does not. Falling back to serving game/ locally, which the repo's own README states is byte-identical to what GitHub Pages serves (no build step, no copy)."
   },
-  "notes": "Do NOT change spawn location or facing. Establish fact only."
+  "notes": "Do NOT change spawn location or facing. Establish fact only. Contention hit WAIT (5 instances, 5.55/core) at 14:11 while two captures already in flight (spawn-truth-thorn.mjs desktop+phone, and shot.mjs establishing shot); did not launch further browsers past that point, let the two in-flight runs finish rather than adding a third."
 }
