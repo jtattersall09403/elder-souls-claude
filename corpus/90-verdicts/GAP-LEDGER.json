@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T15:14:59Z",
+  "generated": "2026-08-14T15:24:26Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 81,
+  "verdicts_read": 82,
   "counts": {
-    "total": 76,
-    "open": 75,
+    "total": 77,
+    "open": 76,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -135,6 +135,9 @@
     "quests.mainline.acts": [
       "GAP-W1-mainquest-topic-bootstrap",
       "GAP-W1-quest-givers-not-in-the-world"
+    ],
+    "input.modality.parity": [
+      "GAP-W1-map-fix-drops-the-journal-from-the-page-walk"
     ],
     "platform.save.persistence": [
       "GAP-W1-map-the-audit-is-computed-and-never-published",
@@ -1998,6 +2001,45 @@
         "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json",
         "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json",
         "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
+      "subsystem_path": "input.modality.parity",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-map-defects-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json",
+      "piece_id": "w1-map-defects-r1",
+      "severity": "major",
+      "what": "Moving `map` to second in `UISystem.WALK_ORDER` put it immediately before `journal`, and `map`'s own navigable ring excludes `journal` (NEVER_ADJACENT, enforcing RI-UIX04 Q7). The forward page-walk from the inventory therefore steps over the journal and never returns: inventory -> map -> sheet -> spells -> wait -> (closes). Before the fix the same walk visited all five peer screens and reached the journal on the first press. The journal now costs three page-turns WITH a direction reversal on desktop and eight taps with a reversal on a phone, and swap_left from the inventory closes the menu rather than paging backwards, so the reversal is not something a player discovers by accident. The map went from four presses to one; the journal went from one press to off the forward walk entirely.",
+      "why_it_matters": "The quest log is the screen a Morrowind player opens most, and a player who has found the page-turn control can now press it forever without ever seeing their journal.",
+      "remedy": {
+        "action": "Separate `map` and `journal` by at least one screen in `UISystem.WALK_ORDER`, keeping `map` second. `['world', 'inventory', 'map', 'sheet', 'journal', 'spells', 'wait', 'levelup']` is measured and works: the forward walk becomes inventory -> map -> sheet -> journal -> spells -> wait, the map stays one page-turn from the screen `menu` opens, and nothing is skipped. The constraint is structural rather than cosmetic and belongs in a comment beside the constant: any two screens in NEVER_ADJACENT must not be neighbours in WALK_ORDER, because the ring is filtered per-mode and an excluded neighbour is stepped over rather than stopped at. Add the assertion to tools/harness/map-probe.mjs so a future reorder fails a check instead of a player.",
+        "targets": [
+          "game/src/ui/system.js",
+          "tools/harness/map-probe.mjs",
+          "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs"
+        ],
+        "acceptance": "`node corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` exits 0 with `SKIPPED by the forward walk: nothing` for the shipped WALK_ORDER, and the fewest-turns line still reads map=1.",
+        "ref_item": "RI-UIX04",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Separate `map` and `journal` by at least one screen in `UISystem.WALK_ORDER`, keeping `map` second. `['world', 'inventory', 'map', 'sheet', 'journal', 'spells', 'wait', 'levelup']` is measured and works: the forward walk becomes inventory -> map -> sheet -> journal -> spells -> wait, the map stays one page-turn from the screen `menu` opens, and nothing is skipped. The constraint is structural rather than cosmetic and belongs in a comment beside the constant: any two screens in NEVER_ADJACENT must not be neighbours in WALK_ORDER, because the ring is filtered per-mode and an excluded neighbour is stepped over rather than stopped at. Add the assertion to tools/harness/map-probe.mjs so a future reorder fails a check instead of a player.",
+      "remedy_acceptance": "`node corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` exits 0 with `SKIPPED by the forward walk: nothing` for the shipped WALK_ORDER, and the fewest-turns line still reads map=1.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt",
+        "corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs"
       ],
       "status": "open",
       "assigned_to_wave": 2,
