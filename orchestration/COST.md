@@ -176,7 +176,39 @@ merely believed to be. That is the delete-the-fix rule (rule 6) applied to cost.
 Written down so successors start from the evidence rather than re-deriving it. **Each is a
 hypothesis to be measured; none is a decision.**
 
-### 0. Cost is roughly QUADRATIC in tool calls — the largest structural lever, and it was missing
+### 0. Cost is SUPERLINEAR in tool calls — the largest structural lever, and it was missing
+
+> **CORRECTED AND STRENGTHENED 2026-08-14 by `COST-EXPERIMENTS-BUILD`, measured with `tools/cost.mjs
+> --growth` at commit `5cee352` over 419 agents / 50,286 deduplicated requests.** Two changes, and
+> the second is the one that matters.
+>
+> **The heading said "quadratic". It is not.** Regressing `log(usd)` on `log(requests)` gives
+> **exponent 1.268, R² 0.876**; quadratic would be 2.0. The bin table below survives ($4.79 → $48.43
+> per agent, measured) but the multiplier stated with it does not: the bin *means* are 55.3 → 329.1
+> requests, so a **6.0× rise in request count buys 10.1×** the cost, not "3.5× buys 11×". The lever
+> is real and stays ranked first; it is about **half the size this section recorded**. The plan critic
+> reached 1.286 independently on a different file-set, which is the same answer.
+>
+> **The confound this section never tested is now tested, and it falls the section's way — harder
+> than it claimed.** "Are long agents expensive because each call re-sends a grown context, or because
+> they did more work?" At **matched request index** the bins agree at k=0 (25.7k–26.1k) and long
+> agents are thereafter *lighter*, not heavier: at k=80 the 0–99 bin carries **240,931** context
+> tokens against the 300+ bin's **192,972**. The work proxy agrees — context growth per request at
+> matched index is flat across bins, and output tokens show no trend. Predicting each bin's mean
+> context from the **pooled** context-vs-index curve and that bin's own index distribution reproduces
+> the actual within **0.96–1.06**. Accumulation explains all of it; nothing is left for workload.
+>
+> **And now it is sized.** **87.1% of every context token re-read is accumulation** above the agent's
+> own first-request context — **$4,032.52, or 71.1% of subagent spend.** The harness recovers none of
+> it: **0 compaction events across 419 agents**, and only 2 agents show any context decline at all.
+> Splitting every agent into 100-request pieces would not have re-read **$1,728.02**, i.e. **27.7% of
+> the bill** — an **upper bound** that models no re-orientation and no handoff, which is the missing
+> term and was not measured.
+>
+> **What would overturn this:** agents run long enough that the ~26k fixed prefix stops dominating —
+> the exponent then rises toward 2. Or a harness that starts compacting, which would mean part of the
+> accumulation is already being recovered and the split ceiling is overstated.
+> Full output: `reports/cost/experiments.json`, `reports/cost/EXPERIMENTS-20260814.md`.
 
 Found by the `COST-EXPERIMENTS` plan, absent from this document's original ranking **and** from the
 external research: **$4.55 → $51.83 per agent across request-count bins**, because every tool call

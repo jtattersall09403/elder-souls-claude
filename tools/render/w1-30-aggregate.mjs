@@ -3,11 +3,14 @@
 import fs from 'node:fs'; import {execFileSync} from 'node:child_process'; import {fileURLToPath} from 'node:url';
 const root=new URL('../../',import.meta.url), read=p=>fs.readFileSync(new URL(p,root),'utf8');
 const renderer=read('game/src/render/renderer.js'), sky=read('game/src/render/sky.js'), foundation=read('game/src/render/visual-foundation.js'),province=read('game/src/world/province.js'),actor=read('game/src/render/actor.js'),vfx=read('game/src/render/spell-vfx.js'),browser=read('tools/lib/browser.mjs');
+// W1-30S moved the compositor's construction into render/post/composite.js; see w1-30-gate.mjs's
+// matching comment for why the predicates below now read renderer+composite together.
+const composite=read('game/src/render/post/composite.js');
 const run=p=>{try{return JSON.parse(execFileSync(process.execPath,[fileURLToPath(new URL(p,root))],{encoding:'utf8'}));}catch{return{result:'RED'};}};
 const assetGate=run('tools/render/w1-30-assets.mjs'),populationGate=run('tools/render/w1-30-visual-populations.mjs'),traversalGate=run('tools/render/w1-30-traversal-controls.mjs'),settlementGate=run('tools/render/w1-30-settlement-construction.mjs'),settlementBatchGate=run('tools/render/w1-30-settlement-batching.mjs'),settlementRealmGate=run('tools/render/w1-30-settlement-public-realm.mjs'),settlementFacadeGate=run('tools/render/w1-30-settlement-facades.mjs'),settlementOccupationGate=run('tools/render/w1-30-settlement-occupation.mjs');
 const geologyGate=run('tools/render/w1-30-regional-geology.mjs');
 const predicates={
-  boundedCompositor:['WebGLRenderTarget','DepthTexture','worldBeforeUI:true'].every(x=>renderer.includes(x)),
+  boundedCompositor:['WebGLRenderTarget(w,h','DepthTexture','worldBeforeUI:true'].every(x=>(renderer+composite).includes(x)),
   workingSabotage:['setVisualFeature','uAO.value=this.quality.ao','shadowMap.enabled=!!enabled'].every(x=>renderer.includes(x)),
   coupledCelestials:['uSunDir','this.moon.position.copy(dir).multiplyScalar(-120)'].every(x=>sky.includes(x)),
   stableShadows:['Math.round(focus.x/texel)','shadow.camera.updateProjectionMatrix'].every(x=>sky.includes(x)),
@@ -30,7 +33,7 @@ const predicates={
   regionalGeologyHierarchy:geologyGate.result==='GREEN'&&geologyGate.population?.regions===13&&geologyGate.population?.terrainGrammars===13&&geologyGate.population?.constructedForms===13&&geologyGate.deleteControl?.instances===0,
   linuxHardwareLaunch:['--use-angle=vulkan','VulkanFromANGLE','--disable-software-rasterizer','headless: hardwareGpuRequested ? false : true'].every(x=>browser.includes(x)),
 };
-const redControls={}; for(const token of ['WebGLRenderTarget','DepthTexture','setVisualFeature','EquirectangularReflectionMapping','Math.round(focus.x/texel)','normalMap:authored?.normal','STYLE_MATERIAL_CACHE','actor-family-form:','spell-vfx:practical:','--use-angle=vulkan']) {const s=[renderer,sky,foundation,province,actor,vfx,browser].find(x=>x.includes(token));redControls[token]=!!s&&!s.replaceAll(token,'__SABOTAGED__').includes(token);}
+const redControls={}; for(const token of ['WebGLRenderTarget(w,h','DepthTexture','setVisualFeature','EquirectangularReflectionMapping','Math.round(focus.x/texel)','normalMap:authored?.normal','STYLE_MATERIAL_CACHE','actor-family-form:','spell-vfx:practical:','--use-angle=vulkan']) {const s=[renderer,sky,foundation,province,actor,vfx,browser,composite].find(x=>x.includes(token));redControls[token]=!!s&&!s.replaceAll(token,'__SABOTAGED__').includes(token);}
 let testedCommit='unknown';try{testedCommit=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();}catch{}
 const green=Object.values(predicates).every(Boolean)&&Object.values(redControls).every(Boolean);
 console.log(JSON.stringify({schema:'elder-souls/w1-30-builder-aggregate@2',testedCommit,predicates,uniqueRedControls:redControls,assets:{result:assetGate.result,files:assetGate.files,bytes:assetGate.bytes},population:{references:populationGate.references?.manifestRecords,regions:populationGate.world?.regions?.length,settlements:populationGate.world?.settlements?.length,interiors:populationGate.world?.interiors?.count},traversal:traversalGate,settlements:settlementGate,settlementBatching:settlementBatchGate,settlementPublicRealm:settlementRealmGate,settlementFacades:settlementFacadeGate,settlementOccupation:settlementOccupationGate,regionalGeology:geologyGate,result:green?'GREEN':'RED'},null,2));if(!green)process.exit(1);

@@ -97,6 +97,20 @@ export function hexToLab(hex) {
 }
 export const deltaE = (a, b) => { const A = hexToLab(a), B = hexToLab(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); };
 
+/**
+ * "At least 50% of the bed's assets differ", read strictly: it must hold for BOTH beds.
+ * Jaccard distance is the wrong instrument here — swapping one asset of three gives
+ * |A u B| = 4, |A n B| = 2 and a Jaccard distance of exactly 0.50, so the audit's own named
+ * near-miss ("one extra bird sample") would clear a 50% floor on a technicality. Measuring the
+ * shared fraction against EACH bed's own size gives 1 - 2/3 = 0.33, which is what a listener hears.
+ */
+export function audioFracDiffer(a, b) {
+  const A = new Set(a), B = new Set(b);
+  if (!A.size || !B.size) return A.size === B.size ? 0 : 1;
+  const inter = [...A].filter((x) => B.has(x)).length;
+  return Math.min(1 - inter / A.size, 1 - inter / B.size);
+}
+
 export const jaccard = (a, b) => {
   const A = new Set(a), B = new Set(b);
   const inter = [...A].filter((x) => B.has(x)).length;
@@ -294,8 +308,7 @@ export function checkA({ regionsJson, weatherJson, hazardsJson, landforms, terra
       axes.fauna = { old: jfa < TH.fauna_jaccard, new: jfa < TH.fauna_jaccard, value: +jfa.toFixed(3) };
       axes.architecture = { old: jar < TH.arch_jaccard, new: jar < TH.arch_jaccard, value: +jar.toFixed(3) };
       // 6 audio — "any difference"  ->  >=50% of the bed's assets differ
-      const ja = jaccard(A.audio, B.audio);
-      const fracDiffer = 1 - ja;
+      const fracDiffer = audioFracDiffer(A.audio, B.audio);
       axes.audio = {
         old: JSON.stringify([...A.audio].sort()) !== JSON.stringify([...B.audio].sort()),
         new: fracDiffer >= TH.audio_frac_differ, value: +fracDiffer.toFixed(3),
@@ -435,38 +448,63 @@ const FORM_ENVELOPES = {
   'crater-field': { relief_range_m: [5, 60], mean_slope_deg: [2, 14] },
 };
 
+/**
+ * C binds on terrain.json's OWN per-region `mean_slope_deg`, not on a slope recomputed here.
+ *
+ * That is deliberate and it matters. RI-WLD16 §3's envelopes, landforms.json's `measured_*` fields
+ * and m-wld16's L2 check are all authored against the stored field; recomputing slope from the
+ * 25 m base_dm raster gives systematically gentler numbers (world mean 8.28 deg against the stored
+ * 10.07 deg) because the raster cannot express the sub-cell micro-relief the generator included.
+ * Both numbers are defensible, but judging a stored-slope envelope with a raster-derived slope is
+ * an apples-to-oranges comparison that would fail regions for the units they were measured in.
+ * The raster figure is reported alongside as a cross-check, never as the binding one.
+ */
 export function checkC({ terrainStats, landforms, T }) {
   const rows = [], fails = [];
-  let wsum = 0, wn = 0;
+  const stored = new Map((T.regions || []).map((r) => [r.id, r]));
+  let wsum = 0, wa = 0;
   for (const [id, r] of Object.entries(terrainStats)) {
     if (!r.cells) continue;
-    wsum += r.slopeSum; wn += r.cells;
+    const st = stored.get(id);
+    if (!st || st.mean_slope_deg == null) { fails.push(`WLD07-4 ${id}: terrain.json stores no mean_slope_deg`); continue; }
+    const slope = st.mean_slope_deg;
+    wsum += slope * (st.built_area_km2 || 0); wa += st.built_area_km2 || 0;
     const lf = landforms.regions[id];
     const env = lf ? FORM_ENVELOPES[lf.macro_form] : null;
-    const inEnv = env ? (r.mean_slope_deg >= env.mean_slope_deg[0] && r.mean_slope_deg <= env.mean_slope_deg[1]) : null;
-    const inBand = r.mean_slope_deg >= TH.slope_target[0] && r.mean_slope_deg <= TH.slope_target[1];
+    const inEnv = env ? (slope >= env.mean_slope_deg[0] && slope <= env.mean_slope_deg[1]) : null;
+    const inBand = slope >= TH.slope_target[0] && slope <= TH.slope_target[1];
     rows.push({
       region: id, macro_form: lf?.macro_form ?? null,
-      mean_slope_deg: r.mean_slope_deg, envelope: env?.mean_slope_deg ?? null, in_envelope: inEnv,
+      mean_slope_deg: slope, envelope: env?.mean_slope_deg ?? null, in_envelope: inEnv,
+      raster_mean_slope_deg: r.mean_slope_deg,
       relief_range_m: r.relief_range_m, envelope_relief: env?.relief_range_m ?? null,
       in_relief_envelope: env ? (r.relief_range_m >= env.relief_range_m[0] && r.relief_range_m <= env.relief_range_m[1]) : null,
-      frac_below_5m: r.frac_below_5m, frac_above_100m: r.frac_above_100m,
-      in_generic_band: inBand, hard_fail: r.mean_slope_deg < TH.slope_fail_below,
+      frac_below_5m: st.frac_below_5m ?? r.frac_below_5m, frac_above_100m: r.frac_above_100m,
+      in_generic_band: inBand, hard_fail: slope < TH.slope_fail_below,
     });
   }
-  const worldMean = +(wsum / wn).toFixed(2);
+  const worldMean = wa ? +(wsum / wa).toFixed(2) : null;
+  const slopes = rows.map((r) => r.mean_slope_deg).sort((a, b) => a - b);
+  const medianRegion = slopes.length ? slopes[Math.floor(slopes.length / 2)] : null;
   for (const r of rows) {
+    if (r.hard_fail) fails.push(`WLD07-4 ${r.region}: mean slope ${r.mean_slope_deg}deg is under the ${TH.slope_fail_below}deg hard floor`);
     if (r.in_envelope === false) fails.push(`WLD07-4 ${r.region}: declares "${r.macro_form}" (envelope ${r.envelope[0]}-${r.envelope[1]}deg), built terrain is ${r.mean_slope_deg}deg`);
     if (r.in_relief_envelope === false) fails.push(`WLD07-4 ${r.region}: relief range ${r.relief_range_m} m outside "${r.macro_form}" envelope ${r.envelope_relief[0]}-${r.envelope_relief[1]} m`);
+  }
+  if (medianRegion != null && medianRegion < TH.slope_target[0]) {
+    fails.push(`WLD07-4 median region mean slope ${medianRegion}deg is below the ${TH.slope_target[0]}deg target (the world mean is ${worldMean}deg and sits in band — this is the row the ruling added)`);
   }
   return {
     check: 'C', item: 'RI-WLD07 §4',
     world_mean_slope_deg: worldMean,
     world_mean_in_band: worldMean >= TH.slope_target[0] && worldMean <= TH.slope_target[1],
+    median_region_mean_slope_deg: medianRegion,
+    median_region_in_band: medianRegion >= TH.slope_target[0],
     world_frac_below_5m: T.frac_land_below_5m, world_frac_above_100m: T.frac_land_above_100m,
     regions_in_envelope: rows.filter((r) => r.in_envelope).length,
     regions_in_relief_envelope: rows.filter((r) => r.in_relief_envelope).length,
     regions_in_generic_band: rows.filter((r) => r.in_generic_band).length,
+    regions_under_5_5_deg: rows.filter((r) => r.mean_slope_deg < 5.5).length,
     of: rows.length, rows, fails, pass: fails.length === 0,
   };
 }
@@ -521,17 +559,38 @@ const pointInPoly = (x, z, poly) => {
   return inside;
 };
 
-export function checkE({ T, voidsJson }) {
+export function checkE({ T, voidsJson, regionsJson }) {
   const W = loadWorld(T);
   const cellSeconds = W.cell / W15TH.walk_speed_ms;
   const steps = Math.round(W15TH.window_m / W.cell);
   const rows = [], fails = [];
+  const regionByName = new Map((regionsJson?.regions || []).map((r) => [r.name, r]));
   for (const V of voidsJson.voids) {
     const cells = [];
     for (let z = 1; z < W.rows - 1; z++) for (let x = 1; x < W.cols - 1; x++) {
       const i = z * W.cols + x;
       if (W.ocean[i]) continue;
       if (pointInPoly(x * W.cell, z * W.cell, V.polygon)) cells.push([x, z]);
+    }
+    // Frame check, BEFORE any variety number is produced. A tract whose polygon does not land in
+    // the region it names is not a monotonous tract — it is a tract nobody can find, and reporting
+    // a run-length for the ground it happens to overlap would be a number about the wrong place.
+    const decl = regionByName.get(V.region);
+    if (decl) {
+      const inDeclared = cells.filter(([x, z]) => {
+        const wx = x * W.cell, wz = z * W.cell;
+        return wx >= decl.bounds_m.x[0] && wx <= decl.bounds_m.x[1] && wz >= decl.bounds_m.z[0] && wz <= decl.bounds_m.z[1];
+      }).length;
+      const share = cells.length ? inDeclared / cells.length : 0;
+      if (share < 0.5) {
+        rows.push({
+          tract: V.id, name: V.name, region: V.region, cells_in_world: cells.length,
+          share_inside_declared_region: +share.toFixed(3),
+          status: `frame mismatch: the polygon does not lie in "${V.region}" — cannot be measured`,
+        });
+        fails.push(`WLD09 ${V.id} "${V.name}": declared in ${V.region} but only ${(share * 100).toFixed(0)}% of its polygon falls in that region's bounds; voids.json is in a different coordinate frame from terrain.json, so the tract cannot be located, measured, or excluded from RI-WLD02's settled-region walks`);
+        continue;
+      }
     }
     if (cells.length < steps) { rows.push({ tract: V.id, name: V.name, cells: cells.length, status: 'tract too small to walk 720 m inside' }); continue; }
     let rnd = 7;
@@ -615,7 +674,7 @@ export function runAll() {
   const B = checkB({ regionsJson, signaturesJson, T, terrainRegionCells });
   const C = checkC({ terrainStats, landforms, T });
   const D = checkD({ poisJson, regionsJson });
-  const E = checkE({ T, voidsJson });
+  const E = checkE({ T, voidsJson, regionsJson });
 
   const checks = [A, B, C, D, E];
   return { thresholds: TH, checks, fails: checks.flatMap((c) => c.fails), pass: checks.every((c) => c.pass) };
@@ -668,14 +727,15 @@ function selfcheck() {
     const audA = ['amb_marsh', 'amb_frogs', 'sfx_drum'];
     const audB = ['amb_marsh', 'amb_frogs', 'sfx_bell']; // one asset of three swapped
     ok(JSON.stringify(audA) !== JSON.stringify(audB), 'A1 control should pass the OLD any-difference audio axis');
-    ok(1 - jaccard(audA, audB) < TH.audio_frac_differ, `A1 audio: ${((1 - jaccard(audA, audB)) * 100).toFixed(0)}% of assets differ, should be under ${TH.audio_frac_differ * 100}%`);
+    ok(audioFracDiffer(audA, audB) < TH.audio_frac_differ, `A1 audio: ${(audioFracDiffer(audA, audB) * 100).toFixed(0)}% of assets differ, should be under ${TH.audio_frac_differ * 100}%`);
+    ok(audioFracDiffer(audA, ['amb_hive_chord', 'sfx_wax', 'amb_drone']) >= TH.audio_frac_differ, 'A1 audio: a wholly different bed must clear the floor, else the axis can never be earned');
   }
 
   // --- A2: slope. Two large regions drawn from the SAME distribution with a small real shift.
   // chi-square at n>3000 must call it significant (the old axis passes); Cramer's V must not.
   {
     const base = [200, 400, 700, 900, 600, 400, 200, 90, 40, 10];
-    const shifted = base.map((v, i) => Math.round(v * (1 + (i % 2 ? 0.06 : -0.06))));
+    const shifted = base.map((v, i) => Math.round(v * (1 + (i % 2 ? 0.15 : -0.15))));
     ok(chi2Significant(base, shifted), 'A2 slope: chi-square should call the near-miss pair significant (that is the old axis passing)');
     ok(cramersV(base, shifted) < TH.slope_cramers_v, `A2 slope: Cramer's V ${cramersV(base, shifted).toFixed(3)} should be under ${TH.slope_cramers_v}`);
     // and it must still SEE a real difference — an instrument that never fires is not a bar
@@ -706,16 +766,35 @@ function selfcheck() {
   // --- C: the current world's exact shape. A world-mean slope of 10.07 deg sitting mid-band while
   // most regions are flat. Not a plane — a plane fails by accident.
   {
-    const mk = (id, slope, form) => [id, { cells: 1000, slopeSum: slope * 1000, mean_slope_deg: slope, relief_range_m: form === 'ridge-and-ravine' ? 400 : 12, frac_below_5m: 0.4, frac_above_100m: 0.13, hist: [] }];
-    const flat = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((i) => mk(i, 4.2, 'levee-and-backswamp'));
-    const steep = ['h', 'i'].map((i) => mk(i, 30.3, 'ridge-and-ravine'));
-    const mid = ['j', 'k', 'l', 'm'].map((i) => mk(i, 9.0, 'raised-bog'));
-    const terrainStats = Object.fromEntries([...flat, ...steep, ...mid]);
-    const landforms = { regions: Object.fromEntries(Object.keys(terrainStats).map((id) => [id, { macro_form: terrainStats[id].mean_slope_deg > 20 ? 'ridge-and-ravine' : terrainStats[id].mean_slope_deg < 6 ? 'raised-bog' : 'raised-bog' }])) };
-    const res = checkC({ terrainStats, landforms, T: { frac_land_below_5m: 0.4, frac_land_above_100m: 0.13 } });
+    // Seven flat regions that DECLARE relief-bearing landforms (karst towers, escarpments,
+    // terrace staircases) and build at 4.2 deg, plus two genuinely steep ones carrying the average.
+    // The plausible wrong answer is a world whose design says "hills" and whose ground says "plain"
+    // — not a plane, which would fail every check by accident and prove nothing.
+    const spec = [
+      ['a', 4.2, 'karst-tower', 12], ['b', 4.2, 'karst-tower', 12], ['c', 4.2, 'escarpment', 12],
+      ['d', 4.2, 'escarpment', 12], ['e', 4.2, 'terrace-staircase', 12], ['f', 4.2, 'terrace-staircase', 12],
+      ['g', 4.2, 'karst-tower', 12],
+      ['h', 30.3, 'ridge-and-ravine', 400], ['i', 30.3, 'ridge-and-ravine', 400],
+      ['j', 9.0, 'raised-bog', 40], ['k', 9.0, 'raised-bog', 40],
+      ['l', 9.0, 'hummock-field', 30], ['m', 9.0, 'hummock-field', 30],
+    ];
+    const terrainStats = Object.fromEntries(spec.map(([id, sl, , rel]) => [id, { cells: 1000, slopeSum: sl * 1000, mean_slope_deg: sl, relief_range_m: rel, frac_below_5m: 0.4, frac_above_100m: 0.13, hist: [] }]));
+    const landforms = { regions: Object.fromEntries(spec.map(([id, , form]) => [id, { macro_form: form }])) };
+    const T = {
+      frac_land_below_5m: 0.4, frac_land_above_100m: 0.13,
+      regions: spec.map(([id, sl]) => ({ id, mean_slope_deg: sl, built_area_km2: sl > 20 ? 1.71 : 1.0, frac_below_5m: 0.4 })),
+    };
+    const res = checkC({ terrainStats, landforms, T });
     ok(res.world_mean_in_band === true, `C control: the world MEAN should sit in band (got ${res.world_mean_slope_deg} deg) — that is the old bar passing`);
-    ok(res.pass === false, 'C control: per-region envelopes should FAIL a world carried by two steep regions');
-    ok(res.regions_in_generic_band < res.of, `C control: expected most regions out of band, got ${res.regions_in_generic_band}/${res.of}`);
+    ok(res.pass === false, 'C control: per-region envelopes should FAIL a world whose flat regions declare relief-bearing landforms');
+    ok(res.regions_in_envelope <= 6, `C control: expected the seven flat-but-declared-hilly regions out of envelope, got ${res.regions_in_envelope}/${res.of} in`);
+    // positive direction: make the declarations honest and it must go green
+    const honest = { regions: Object.fromEntries(spec.map(([id, sl]) => [id, { macro_form: sl > 20 ? 'ridge-and-ravine' : sl < 6 ? 'levee-and-backswamp' : 'raised-bog' }])) };
+    const statsHonest = Object.fromEntries(spec.map(([id, sl]) => [id, { cells: 1000, slopeSum: sl * 1000, mean_slope_deg: sl, relief_range_m: sl > 20 ? 400 : sl < 6 ? 12 : 40, frac_below_5m: 0.4, frac_above_100m: 0.13, hist: [] }]));
+    const Thonest = { ...T, regions: spec.map(([id, sl]) => ({ id, mean_slope_deg: sl < 6 ? 6.5 : sl, built_area_km2: 1.0, frac_below_5m: 0.4 })) };
+    const statsH2 = Object.fromEntries(spec.map(([id, sl]) => { const v = sl < 6 ? 6.5 : sl; return [id, { cells: 1000, slopeSum: v * 1000, mean_slope_deg: v, relief_range_m: v > 20 ? 400 : 40, frac_below_5m: 0.4, frac_above_100m: 0.13, hist: [] }]; }));
+    const honest2 = { regions: Object.fromEntries(spec.map(([id, sl]) => [id, { macro_form: sl > 20 ? 'ridge-and-ravine' : 'raised-bog' }])) };
+    ok(checkC({ terrainStats: statsH2, landforms: honest2, T: Thonest }).pass === true, 'C control: honest declarations with an honest median must PASS, else the check can never go green');
   }
 
   // --- D: a DENSE world with a uniform menu. Every region well stocked — the old D-metrics all pass
@@ -767,7 +846,10 @@ function selfcheck() {
 
 // ============================================================== cli
 
-if (process.argv[2] === '--selfcheck') selfcheck();
+const IS_MAIN = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(new URL(import.meta.url).pathname);
+
+if (!IS_MAIN) { /* imported as a library — export only, run nothing */ }
+else if (process.argv[2] === '--selfcheck') selfcheck();
 else {
   const res = runAll();
   const c = Object.fromEntries(res.checks.map((x) => [x.check, x]));

@@ -11,6 +11,8 @@ import {
   isManagedRuntimeTemplate,
 } from './lib/api.mjs';
 import { provisionPod } from './lib/provision.mjs';
+import { currentOwner, ownerNameSegment, ownerOfName } from './lib/owner.mjs';
+import { planPodCleanup, planTemplateCleanup } from './lib/cleanup-plan.mjs';
 import {
   commandExists,
   createSnapshot,
@@ -34,7 +36,21 @@ USAGE
   npm run gpu:list
   npm run gpu:doctor
   npm run gpu:test -- [options]
-  npm run gpu:cleanup -- [--dry-run] [--pod <id>]
+  npm run gpu:cleanup -- [--dry-run] [--pod <id>] [--older-than <min>] [--all --yes]
+  node tools/runpod/cli.mjs selftest
+
+CLEANUP SCOPE — several agents share this account, so cleanup is owner-scoped
+  (no arguments)         Terminate only Pods this agent created. Anything else is listed and left
+                         alone. This is the safe default and needs no flags.
+  --pod <id>             That one Pod. Refuses a Pod owned by another agent unless --force.
+  --older-than <min>     Also sweep Pods older than <min>, whoever owns them. The floor is the
+                         absolute runtime cap, because no compliant run can hold a Pod that long.
+  --all --yes            Everything managed, including other agents' live work. --all alone refuses.
+  --force                Override an ownership refusal. Say why in your report if you use it.
+  --dry-run              Print the plan and change nothing.
+
+Ownership travels in the Pod name (RUNPOD_OWNER, else CLAUDE_CODE_SESSION_ID), so it survives a
+container restart and is visible to every agent on the box.
 
 RUN OPTIONS
   --command <shell>       Command in the worker (default: GPU/game smoke test)
@@ -62,7 +78,7 @@ function parseArgs(argv) {
     const equal = token.indexOf('=');
     const key = token.slice(2, equal < 0 ? undefined : equal);
     const normalized = key.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-    if (['help', 'dry-run'].includes(key)) { parsed[normalized] = true; continue; }
+    if (['help', 'dry-run', 'all', 'yes', 'force', 'json'].includes(key)) { parsed[normalized] = true; continue; }
     const value = equal >= 0 ? token.slice(equal + 1) : argv[++index];
     if (value === undefined || value.startsWith('--')) throw new Error(`--${key} requires a value`);
     if (multi.has(key)) parsed[normalized].push(value);
@@ -198,9 +214,23 @@ async function doctorCommand(args, config) {
   if (checks.some((check) => !check.ok)) process.exitCode = 2;
 }
 
-async function cleanupCommand(args, config) {
-  const { apiKey, templateId } = requireEnvironment();
-  const client = new RunPodClient({ apiKey });
+export async function cleanupCommand(args, config, dependencies = {}) {
+  const environment = dependencies.environment || requireEnvironment();
+  const { apiKey, templateId } = environment;
+  const client = dependencies.client || new RunPodClient({ apiKey });
+  const log = dependencies.log || console.log;
+  const logError = dependencies.logError || console.error;
+  const owner = dependencies.owner || currentOwner(dependencies.env || process.env);
+  const now = dependencies.now || Date.now();
+
+  let olderThanMinutes = null;
+  if (args.olderThan !== undefined) {
+    olderThanMinutes = numberOption(args.olderThan, null, '--older-than');
+    if (olderThanMinutes < config.absoluteMaxRuntimeMinutes && !args.force) {
+      throw new Error(`--older-than ${olderThanMinutes} is below the ${config.absoluteMaxRuntimeMinutes} minute absolute runtime cap, so it could sweep a Pod that a live run still holds; raise it or pass --force`);
+    }
+  }
+
   const sourceTemplate = await client.getTemplate(templateId);
   const templates = await client.listTemplates();
   const runtimeTemplates = (templates || []).filter((template) => isManagedRuntimeTemplate(template, {
@@ -209,30 +239,51 @@ async function cleanupCommand(args, config) {
   }));
   const runtimeTemplateIds = runtimeTemplates.map((template) => template.id);
   const pods = await client.listPods();
-  const matches = (pods || []).filter((pod) => isManagedPod(pod, {
+
+  const plan = planPodCleanup(pods, {
+    ownerSlug: owner.slug,
     podNamePrefix: config.podNamePrefix,
     templateId,
     runtimeTemplateIds,
     imageName: sourceTemplate?.imageName,
-    podId: args.pod,
-  }));
+    podId: args.pod || null,
+    all: Boolean(args.all),
+    yes: Boolean(args.yes),
+    force: Boolean(args.force),
+    olderThanMinutes,
+    now,
+  });
+
+  log(`Cleanup scope: ${plan.scope}; this agent is o${owner.slug} (identity from ${owner.source})`);
+  if (owner.weak) {
+    logError('WARNING: owner identity fell back to hostname, which every agent on this box shares. Set RUNPOD_OWNER to a per-agent value before relying on owner scoping.');
+  }
+
+  for (const entry of plan.protected) {
+    log(`PROTECTED ${entry.pod.id} ${entry.pod.name || ''} — ${entry.reason}`);
+    if (entry.hint) log(`          ${entry.hint}`);
+  }
+  for (const message of plan.refusals) logError(`REFUSED: ${message}`);
+
   const removedPodIds = new Set();
   const failures = [];
-  for (const pod of matches) {
-    console.log(`${args.dryRun ? 'would terminate' : 'terminating'} ${pod.id} ${pod.name} ${pod.gpu?.displayName || ''} $${pod.costPerHr || '?'}/hr`);
+  for (const entry of plan.terminate) {
+    const pod = entry.pod;
+    log(`${args.dryRun ? 'would terminate' : 'terminating'} ${pod.id} ${pod.name} ${pod.gpu?.displayName || ''} $${pod.costPerHr || '?'}/hr — ${entry.reason}`);
     if (args.dryRun) {
       removedPodIds.add(pod.id);
       continue;
     }
     try {
       await client.deletePod(pod.id);
-      if (!await confirmPodDeleted(client, pod.id, console.log)) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
+      if (!await confirmPodDeleted(client, pod.id, log)) throw new Error(`Pod ${pod.id} remained visible after deletion checks`);
       removedPodIds.add(pod.id);
     } catch (error) {
       failures.push(error.message);
-      console.error(`Pod ${pod.id} cleanup failed: ${error.message}`);
+      logError(`Pod ${pod.id} cleanup failed: ${error.message}`);
     }
   }
+
   const remainingPods = (pods || []).filter((pod) => (
     pod.desiredStatus !== 'TERMINATED' && !removedPodIds.has(pod.id)
   ));
@@ -243,23 +294,50 @@ async function cleanupCommand(args, config) {
     && (pod.imageName || pod.image) === sourceTemplate?.imageName
     && !pod.templateId
   ));
-  const orphanTemplates = hasUnattributedManagedPod ? [] : runtimeTemplates.filter((template) => !remainingPods.some((pod) => (
-    pod.templateId === template.id
-  )));
-  for (const template of orphanTemplates) {
-    console.log(`${args.dryRun ? 'would delete' : 'deleting'} ephemeral template ${template.id} ${template.name}`);
+  const templatePlan = hasUnattributedManagedPod
+    ? { remove: [], protected: runtimeTemplates.map((template) => ({ template, reason: 'a live tool-named Pod omitted template identity' })) }
+    : planTemplateCleanup(runtimeTemplates, {
+      ownerSlug: owner.slug,
+      templateNamePrefix: RUNTIME_TEMPLATE_NAME_PREFIX,
+      imageName: sourceTemplate?.imageName,
+      remainingPods,
+      all: Boolean(args.all),
+      yes: Boolean(args.yes),
+      force: Boolean(args.force),
+      olderThanMinutes,
+      now,
+      podScoped: Boolean(args.pod),
+    });
+  for (const entry of templatePlan.protected) {
+    log(`PROTECTED template ${entry.template.id} ${entry.template.name || ''} — ${entry.reason}`);
+  }
+  for (const entry of templatePlan.remove) {
+    const template = entry.template;
+    log(`${args.dryRun ? 'would delete' : 'deleting'} ephemeral template ${template.id} ${template.name} — ${entry.reason}`);
     if (args.dryRun) continue;
     try {
       await client.deleteTemplate(template.id);
-      if (!await confirmTemplateDeleted(client, template.id, console.log)) throw new Error(`template ${template.id} remained visible after deletion checks`);
+      if (!await confirmTemplateDeleted(client, template.id, log)) throw new Error(`template ${template.id} remained visible after deletion checks`);
     } catch (error) {
       failures.push(error.message);
-      console.error(`Template ${template.id} cleanup failed: ${error.message}`);
+      logError(`Template ${template.id} cleanup failed: ${error.message}`);
     }
   }
-  if (!matches.length && !orphanTemplates.length) console.log('No tool-managed orphaned Pods or templates found.');
-  if (hasUnattributedManagedPod) console.log('Retained ephemeral templates because a live tool-named Pod omitted template identity.');
+
+  if (!plan.terminate.length && !templatePlan.remove.length) {
+    log(plan.protected.length || templatePlan.protected.length
+      ? 'Nothing terminated: every managed resource found belongs to another agent or is still in use.'
+      : 'No tool-managed orphaned Pods or templates found.');
+  }
+  if (hasUnattributedManagedPod) log('Retained ephemeral templates because a live tool-named Pod omitted template identity.');
   if (failures.length) throw new Error(`cleanup incomplete: ${failures.join('; ')}`);
+  return {
+    scope: plan.scope,
+    terminated: [...removedPodIds],
+    protectedPods: plan.protected.map((entry) => entry.pod.id),
+    refusals: plan.refusals,
+    templatesDeleted: templatePlan.remove.map((entry) => entry.template.id),
+  };
 }
 
 async function waitForReady(client, podId, deadline, log, signal) {
@@ -379,6 +457,10 @@ export async function runCommand(args, config, dependencies = {}) {
   for (const command of ['git', 'tar', 'ssh', 'scp', 'ssh-keygen']) if (!await commandExistsImpl(command)) throw new Error(`required local command not found: ${command}`);
 
   const id = runId();
+  // Ownership is stamped into every RunPod resource name this run creates, so another agent's
+  // `cleanup` can see whose work it is about to destroy and decline. See lib/owner.mjs.
+  const owner = dependencies.owner || currentOwner(dependencies.env || process.env);
+  const ownerSegment = ownerNameSegment(owner.slug);
   const outputDir = path.resolve(REPO_ROOT, args.artifactDir || path.join(config.artifactRoot, id));
   safeMkdir(outputDir);
   const log = makeLogger(path.join(outputDir, 'lifecycle.log'));
@@ -405,6 +487,7 @@ export async function runCommand(args, config, dependencies = {}) {
   const state = {
     schema: 'elder-souls/runpod-run@1',
     runId: id,
+    owner: { slug: owner.slug, source: owner.source },
     status: 'initializing',
     startedAt: startedAt.toISOString(),
     finishedAt: null,
@@ -461,6 +544,7 @@ export async function runCommand(args, config, dependencies = {}) {
 
   save();
   log(`Run ${id}: hard limits $${maxPrice.toFixed(3)}/hr, ${maxRuntime} minutes, 1 GPU, no persistent volume`);
+  log(`Owner tag o${owner.slug} (from ${owner.source}); another agent's bare cleanup will not touch these resources`);
   log(`SSH identity: ${keyMaterial.ephemeral ? 'per-run ephemeral key (injected as SSH_PUBLIC_KEY/PUBLIC_KEY)' : sshKey}`);
   try {
     const template = await client.getTemplate(templateId);
@@ -496,7 +580,7 @@ export async function runCommand(args, config, dependencies = {}) {
     // repo-owned SSH bootstrap and per-run public key in a private, uniquely named template so
     // the command cannot be silently replaced by the source image's default CMD. The template is
     // deleted after its Pod, and ambiguous create responses are recovered by unique name.
-    runtimeTemplateName = `${RUNTIME_TEMPLATE_NAME_PREFIX}${id}`;
+    runtimeTemplateName = `${RUNTIME_TEMPLATE_NAME_PREFIX}${ownerSegment}${id}`;
     const runtimeTemplateInput = {
       name: runtimeTemplateName,
       category: 'NVIDIA',
@@ -545,7 +629,7 @@ export async function runCommand(args, config, dependencies = {}) {
 
     let provisioningSequence = 0;
     let remainingCandidates = [...candidates];
-    podName = `${config.podNamePrefix}${id}`;
+    podName = `${config.podNamePrefix}${ownerSegment}${id}`;
     log('SSH bootstrap: private per-run template with repo-owned bounded bash -c sshd command');
     const createInput = (batch) => ({
       name: podName,
@@ -562,7 +646,7 @@ export async function runCommand(args, config, dependencies = {}) {
     });
     while (remainingCandidates.length) {
       provisioningSequence++;
-      podName = `${config.podNamePrefix}${id}${provisioningSequence === 1 ? '' : `-${provisioningSequence}`}`;
+      podName = `${config.podNamePrefix}${ownerSegment}${id}${provisioningSequence === 1 ? '' : `-${provisioningSequence}`}`;
       let provisioned;
       try {
         provisioned = await provisionPod({
@@ -795,8 +879,20 @@ async function main() {
   const config = loadConfig();
   if (command === 'list') return listCommand(args, config);
   if (command === 'doctor') return doctorCommand(args, config);
-  if (command === 'cleanup') return cleanupCommand(args, config);
+  if (command === 'cleanup') {
+    const result = await cleanupCommand(args, config);
+    // A refused --all is not an error in the tool; it is the tool declining to do what was asked.
+    // Exit non-zero so a script cannot mistake "I protected other people's work" for "done".
+    if (result.refusals.length) process.exitCode = 3;
+    return result;
+  }
   if (command === 'run') return runCommand(args, config);
+  if (command === 'selftest' || command === 'self-test') {
+    const { selfTest } = await import('./lib/selftest.mjs');
+    const ok = await selfTest({ json: Boolean(args.json) });
+    if (!ok) process.exitCode = 1;
+    return ok;
+  }
   throw new Error(`unknown command: ${command}\n${HELP}`);
 }
 
