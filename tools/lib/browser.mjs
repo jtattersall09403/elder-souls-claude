@@ -66,9 +66,18 @@ export async function loadPlaywright() {
  *  --url http://...        → use as-is, no static server
  *  --entry <path to html>  → serve its directory root
  *  default                 → game/index.html served from game/
+ *
+ * `args.state` appends `?state=<name>`, and it exists because until 2026-08-14 there was no way to
+ * ask for one: this function built a bare route, `main.js` read `params.get('state') || 'default'`,
+ * and so every one of the fleet's harness tools booted `game/data/states/default.json` — the
+ * harbour steps at LILMOTH — including the ones whose reports called it "the opening".
+ * `reports/spawn-truth/2026-08-14-spawn-truth.md` has the full account. The default is unchanged
+ * and is right for a probe measuring the world; `main.js` now warns when an automated boot takes
+ * it, and `tools/lib/opening.mjs` is what a tool measuring THE OPENING should use instead.
  */
 export function resolveEntry(args) {
   if (args.url) return { kind: 'url', url: String(args.url) };
+  const query = args.state ? `?state=${encodeURIComponent(String(args.state))}` : '';
   const entry = args.entry ? path.resolve(String(args.entry)) : path.join(GAME_DIR, 'index.html');
   if (!fs.existsSync(entry)) {
     die(EXIT.MISSING_GAME,
@@ -80,7 +89,7 @@ export function resolveEntry(args) {
   }
   // Serve from the repo root when the entry lives inside it, so /game/data/** is reachable.
   const root = entry.startsWith(REPO_ROOT + path.sep) ? REPO_ROOT : path.dirname(entry);
-  return { kind: 'file', entry, root, route: '/' + path.relative(root, entry).split(path.sep).join('/') };
+  return { kind: 'file', entry, root, route: '/' + path.relative(root, entry).split(path.sep).join('/') + query };
 }
 
 /**

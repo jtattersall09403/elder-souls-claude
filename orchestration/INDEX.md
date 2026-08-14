@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dd5ec5d4`: 959 tools, 157 reference
-items, 187 pieces in flight.
+so it cannot drift. Generated at `6c300a96`: 962 tools, 157 reference
+items, 188 pieces in flight.
 
-Its purpose is to stop 187+ concurrent agents each paying separately to discover the
+Its purpose is to stop 188+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -787,7 +787,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 63
+### `tools/quests/` — 64
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -809,6 +809,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/critic-w1-20-ledgers.mjs` — the W1-20 round-1 critic's SECOND instrument.
 - `tools/quests/critic-w1-20-play.mjs` — THE W1-20 ROUND-1 CRITIC'S OWN INSTRUMENT.
 - `tools/quests/critic-w1-20-r2-census.mjs` — the round-2 critic's STATIC arm.
+- `tools/quests/critic-w1-20-r2-live.mjs` — the round-2 critic's LIVE arm.
 - `tools/quests/critic-w1-20-reach.mjs` — the W1-20 critic's THIRD instrument.
 - `tools/quests/critic-w1-20-wraptest.mjs` — the W1-20 critic's FOURTH instrument: is the toast wrap repair real?
 - `tools/quests/critic-w1-readables-chart.mjs` — the picture for the W1-READABLES round-2 verdict (rule 27).
@@ -967,7 +968,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 23
+### `tools/visual/` — 25
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -986,6 +987,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/rig-variant-proof.mjs` — W1-30D — does the reuse claim survive contact with a measurement?
 - `tools/visual/test/mutate-renderer-class.mjs` — **no header comment**
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
+- `tools/visual/w1-30-canopy-shimmer.mjs` — **no header comment**
+- `tools/visual/w1-30-fog-owner-ab.mjs` — **no header comment**
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
 - `tools/visual/w1-30-shadow-casters.mjs` — **no header comment**
 - `tools/visual/w1-30-terrain-acne-ab.mjs` — **no header comment**
@@ -1194,7 +1197,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **260 tools have no header comment**, so nobody can tell what they do without
+> **262 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1372,6 +1375,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30E-KIT-DEFECTS` | running |  | — |
 | `W1-30DE-REMEDIATION` | ? | none — report filed at reports/w1-30de-remediation/README.md. Soulrest street row stays bl | `orchestration/status/W1-30DE-REMEDIATION.json` `tools/visual/actor-orbit-holes.mjs` `tools/visual/actor-hole-control.mjs` `tools/visual/build-deck.mjs` `tools/visual/deck.json` `orchestration/status/W1-30D.md` |
 | `W1-30-SHADOW-CASTERS-critic` | reading | Read aerial.js, sky.js, province.js, renderer.js, W1-30B/F status, plan W1-30, board.json, | `orchestration/status/W1-30-SHADOW-CASTERS-critic.json` |
 | `W1-30-SHADOW-CASTERS` | landed-pending-fresh-critic | A fresh critic on R1 first — largest blast radius, not in the brief, and it changes the at | `game/src/world/province.js` `game/src/render/renderer.js` `tools/visual/w1-30-shadow-casters.mjs` `tools/visual/w1-30-heightfalloff-arm.mjs` `tools/visual/w1-30-terrain-acne-ab.mjs` `orchestration/status/W1-30-SHADOW-CASTERS.json` |

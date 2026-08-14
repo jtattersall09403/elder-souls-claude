@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-30E-KIT-DEFECTS",
+  "plan": "orchestration/plans/W1-30E.md",
+  "parent": "orchestration/plans/W1-30.md",
+  "branch": "codex/wave1-build-experiment",
+  "started": "2026-08-14",
+  "state": "running",
+  "role": "builder",
+  "summary": "Three defects the working street gate found by rendering frames rather than by geometry: roof.shell drawing 1.97x the building's footprint, Gideon's ground rendering black at all six lights, and the deck manifest reporting the wrong region for a blackwood setup.",
+  "redundant_with": ["W1-30E-builder", "W1-30S"],
+  "files_claimed": [
+    "game/src/render/lib/kits.js",
+    "tools/render/w1-30e-roof-extent.mjs",
+    "reports/w1-30e-kit-defects/"
+  ],
+  "files_touched": [],
+  "reproduce": [
+    "node tools/render/w1-30e-roof-extent.mjs"
+  ]
+}
