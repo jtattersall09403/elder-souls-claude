@@ -106,16 +106,15 @@ computes, read off the wrong end — a player turned to face the wall they came 
 from the same standing point on the same frame, so two arms that came back equal would convict the
 instrument rather than the fix.
 
-**Nine interiors across four towns**, 12 m cap (`reports/door-yaw/smoke-after.json` and
-`sample-17-after.json`): `writ-house`, `barge-hold`, `archon-inn`, `archon-apothecary`,
-`archon-kiln-house`, `blackrose-clerk`, `blackrose-pawn`, `gideon-apothecary`, `gideon-inn`.
+**Eleven interiors across five towns** — archon, blackrose, gideon, helstrom, thorn — 12 m cap
+(`reports/door-yaw/smoke-after.json` and `sample-17-after.json`).
 
 | arm | median | mean | under 2 m | at the 12 m cap |
 |---|---|---|---|---|
-| **as shipped** (no yaw written; adversarial prior survives) | 5.5 m | 6.56 | **3/9** | 3/9 |
-| **fixed** (`door_to_doorstep`) | **12 m** | **10.83** | **1/9** | **8/9** |
-| **null control** (the same yaw, inward) | 7.25 m | 6.92 | 2/9 | 2/9 |
-| the best of 36 bearings from that point (the ceiling) | 12 m | 12.00 | 0/9 | 9/9 |
+| **as shipped** (no yaw written; adversarial prior survives) | 5.5 m | 6.48 | **4/11** | 4/11 |
+| **fixed** (`door_to_doorstep`) | **12 m** | **10.39** | **1/11** | **9/11** |
+| **null control** (the same yaw, inward) | 7.25 m | 6.84 | 3/11 | 3/11 |
+| the best of 36 bearings from that point (the ceiling) | 12 m | 11.39 | 0/11 | 10/11 |
 
 Per interior, and the last column is the honest one:
 
@@ -125,10 +124,12 @@ Per interior, and the last column is the honest one:
 | `archon-inn` | 0.25 | **12** | 0.25 | 12 |
 | `archon-kiln-house` | 4.50 | **12** | 6.75 | 12 |
 | `blackrose-clerk` | 5.50 | **12** | 5.25 | 12 |
+| **`helstrom-house-6`** | **0.25** | **4.75** | 1.00 | 5.25 |
 | `gideon-apothecary` | 11.25 | **12** | 10.50 | 12 |
 | `barge-hold` | 12 | 12 | 7.25 | 12 |
 | `blackrose-pawn` | 12 | 12 | 12 | 12 |
 | `gideon-inn` | 12 | 12 | 12 | 12 |
+| `helstrom-apothecary` | 12 | 12 | 12 | 12 |
 | **`archon-apothecary`** | 1.00 | **1.50** | **8.00** | 12 |
 
 **The control goes red where it matters.** On the writ house — the door every player opens first —
@@ -138,9 +139,17 @@ Per interior, and the last column is the honest one:
 gives 1.50 m, its own reverse gives 8 m, and the best available facing from that standing point is
 12 m at 220° — which is neither. So the doorstep has a good facing and *no rule derived from the
 door geometry alone finds it*: `exterior_spawn` sits at bearing 315.9° from `door_world_pos`,
-pointing at something 1.5 m away. That is one of nine, it is a smaller failure than the one being
+pointing at something 1.5 m away. That is one of eleven, it is a smaller failure than the one being
 fixed (1.50 m is not 0.25 m), and it is a named open gap with a number rather than a rounding of
-the result. The instrument's `best` column exists precisely so a bad *rule* can be told apart from
+the result.
+
+**`helstrom-house-6` is the opposite case and is why the `best` column earns its cost.** There the
+fix reads 4.75 m, which looks poor beside nine rows at the 12 m cap — until you read the ceiling
+beside it: **5.25 m is the best any facing can do from that doorstep.** It is a cramped spot
+between buildings, the fix recovers all but half a metre of what is available, and as shipped it
+was 0.25 m. Without the ceiling column that row would read as a second failure; with it, it reads
+as a near-optimal recovery at a genuinely tight door. That is the distinction the column exists
+for, and it cuts both ways. The instrument's `best` column exists precisely so a bad *rule* can be told apart from
 a bad *point*, and here it says: bad rule, good point.
 
 **And the fix demonstrably executed**, which is the third failure mode and the nastiest — a number
@@ -266,7 +275,7 @@ a probe measuring terrain, weather or any town that is not Thorn. It is now loud
   --no-enter` on an idle box is the whole job.
 * **Renderer.** Every number in §4 is SwiftShader. §4a is hardware and says so, with the renderer
   string in the manifest and `software_renderer` failing closed on an unknown string.
-* **`archon-apothecary`'s facing is not fixed** (§4). One of nine measured, improved from 1.00 m to
-  1.50 m where 12 m was available.
+* **`archon-apothecary`'s facing is not fixed** (§4). One of eleven measured, improved from 1.00 m
+  to 1.50 m where 12 m was available.
 * **The camera arm at the writ house doorstep is collapsed** (§4a) and the player is not in the
   first controlled frame. Not touched.

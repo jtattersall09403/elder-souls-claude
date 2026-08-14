@@ -1064,6 +1064,37 @@ function firstMutationIndex(a) {
   return -1;
 }
 
+// ---- ONE implementation of the orientation statistic, hoisted to module scope ---------------------
+// Q5 (--reorientation) and Q7 (--split-trial) must not be able to disagree about what a handoff
+// costs, and the only way to guarantee that is for there to be one function. It was local to
+// experimentReorientation until Q7 needed it; hoisting it is the whole of that change. The
+// regression guard is that --reorientation's published figures are unchanged to the last decimal
+// ($0.4302 / $-0.0113 / $-0.0011) and its null_controls block is byte-identical before and after — checked by running both copies against the same transcripts and diffing the JSON, recorded in orchestration/status/SPLIT-TRIAL.json.
+const orientCacheReadRate = (m) => { const p = PRICES[m]; return p ? p.cache_read / 1e6 : 0; };
+function orientationDelta(arm, controls) {
+  const WIN = REORIENT_WINDOW_H * 3600e3;
+  const ctl = controls.filter((c) => c.orientTok != null).sort((x, y) => x.first - y.first);
+  const times = ctl.map((c) => c.first), toks = ctl.map((c) => c.orientTok);
+  const lowerBound = (arr, v) => { let lo = 0, hi = arr.length; while (lo < hi) { const m = (lo + hi) >> 1; if (arr[m] < v) lo = m + 1; else hi = m; } return lo; };
+  const rows = [];
+  let unmatched = 0, censored = 0;
+  for (const a of arm) {
+    if (a.orientTok == null) { censored++; continue; }
+    const lo = lowerBound(times, a.first - WIN), hi = lowerBound(times, a.first + WIN + 1);
+    const window = [];
+    for (let i = lo; i < hi; i++) if (ctl[i] !== a) window.push(toks[i]);
+    if (window.length < REORIENT_MIN_CONTROLS) { unmatched++; continue; }
+    // MEDIAN control, not mean: orientation-token distributions are long-tailed (one agent that
+    // reads forty files before writing would otherwise set the bar for its whole time window).
+    const base = median(window);
+    rows.push({ key: a.key, n: a.n, controls: window.length,
+                orient_requests: a.orientIdx + 1, orient_tokens: a.orientTok,
+                delta_tokens: Math.round(a.orientTok - base),
+                delta_usd: +((a.orientTok - base) * orientCacheReadRate(a.model)).toFixed(4) });
+  }
+  return { rows, unmatched, censored };
+}
+
 function experimentReorientation(agents, scoresRows) {
   const subs = agents.filter((a) => !a.isOrchestrator && a.n >= 2);
   for (const a of subs) {
@@ -1091,28 +1122,7 @@ function experimentReorientation(agents, scoresRows) {
   // Orientation cost = context re-read before first useful output, differenced against time-matched
   // controls and priced at the marginal cache_read rate. ONE implementation, used for the observed
   // figure AND every null draw, so a null can never differ from the measurement by a second code path.
-  function orientationDelta(arm, controls) {
-    const ctl = controls.filter((c) => c.orientTok != null).sort((x, y) => x.first - y.first);
-    const times = ctl.map((c) => c.first), toks = ctl.map((c) => c.orientTok);
-    const lowerBound = (arr, v) => { let lo = 0, hi = arr.length; while (lo < hi) { const m = (lo + hi) >> 1; if (arr[m] < v) lo = m + 1; else hi = m; } return lo; };
-    const rows = [];
-    let unmatched = 0, censored = 0;
-    for (const a of arm) {
-      if (a.orientTok == null) { censored++; continue; }
-      const lo = lowerBound(times, a.first - WIN), hi = lowerBound(times, a.first + WIN + 1);
-      const window = [];
-      for (let i = lo; i < hi; i++) if (ctl[i] !== a) window.push(toks[i]);
-      if (window.length < REORIENT_MIN_CONTROLS) { unmatched++; continue; }
-      // MEDIAN control, not mean: orientation-token distributions are long-tailed (one agent that
-      // reads forty files before writing would otherwise set the bar for its whole time window).
-      const base = median(window);
-      rows.push({ key: a.key, n: a.n, controls: window.length,
-                  orient_requests: a.orientIdx + 1, orient_tokens: a.orientTok,
-                  delta_tokens: Math.round(a.orientTok - base),
-                  delta_usd: +((a.orientTok - base) * cacheReadRate(a.model)).toFixed(4) });
-    }
-    return { rows, unmatched, censored };
-  }
+  // orientationDelta is hoisted to module scope — see the note at its definition.
   const summariseD = (d, label, armSize) => ({
     arm: label, agents_in_arm: armSize, matched: d.rows.length,
     censored_no_mutating_call: d.censored, unmatched_no_controls: d.unmatched,
@@ -1590,6 +1600,344 @@ function experimentAttribution(agents, priced, byTokenClass) {
 }
 
 // ---- the experiments driver -----------------------------------------------------------------------
+// ==================================================================================================
+// Q7 --split-trial — the trial CH-05 sized, plus the falsifier CH-05 named and nobody ran.
+// Piece SPLIT-TRIAL, 2026-08-14.
+//
+// CH-05 measured what a handoff costs using 50 handoffs this fleet ran BY ACCIDENT — a usage limit
+// or a container restart. Its own "what this does not measure" is the whole reason a trial exists:
+//
+//   > Every handoff here was ACCIDENTAL, so no predecessor wrote a note by design, and nothing
+//   > measures whether a planned split decomposes work sensibly.
+//
+// and it named exactly one falsifier:
+//
+//   > a planned handoff that costs MORE than an accidental one — plausible if a deliberate status
+//   > file is larger than what a killed agent left behind — would move the $0.43 upward.
+//
+// THIS FILE DOES TWO THINGS, AND THE SECOND IS THE ONE THAT MATTERS.
+//
+// (1) It is the trial's INSTRUMENT: all three of Ruling C3's tripwires, computed, with the
+//     pre-split BEFORE frozen so a later run has something to compare against. Two of the three
+//     tripwires had no instrument at all — a trial whose tripwires cannot be evaluated is a trial
+//     that cannot be stopped, and that is worse than not running it.
+//
+// (2) It RUNS THE FALSIFIER, on data that already exists, before any agent is split. The 53
+//     accidental handoffs are not homogeneous: they differ enormously in how much the predecessor
+//     had written down before it died. Some successors inherited a 6 KB status file with findings
+//     and a next_step; some inherited nothing at all because the predecessor was killed before it
+//     wrote one. That is a natural gradient on exactly the variable a PLANNED split changes — a
+//     planned split always leaves the richest note there is — so the sign of that gradient predicts
+//     the planned case. If a richer leave-behind makes orientation DEARER, the falsifier fires and
+//     the trial should not be dispatched. If it makes it CHEAPER, the planned handoff is bounded
+//     BELOW the accidental $0.4302 and the dispatch is safe. Either way it is decided for the price
+//     of one analysis instead of a wave of agents.
+//
+// THE PLAUSIBLE WRONG ANSWER, made concrete rather than waved at. A rich status file is not random:
+// it belongs to a piece that is FURTHER ALONG, and a successor on a mature piece may orient faster
+// because the piece is mature, not because the note was good. So the gradient is also computed on
+// the FRESH arm — agents that resumed nothing, stratified by the identical status-file size at
+// their identical dispatch time. If fresh agents show the same gradient, the gradient is piece
+// maturity and carries nothing about handoffs. That control is the verdict's gate, not a decoration.
+//
+// WHAT THIS CANNOT DO, said here rather than in a footnote: no planned split has ever been
+// dispatched (n = 0 at the time of writing, and the instrument reports the count rather than
+// assuming it). Every tripwire's "after" column is therefore empty by construction, and the
+// instrument REFUSES a verdict below MIN_PLANNED_SPLITS instead of returning a green light from an
+// empty arm. That refusal is tested in --experiments-self-test.
+// ==================================================================================================
+
+// A planned split says so. Explicit markers only, exactly as RESUMED_RE does it — a regex that
+// guessed would fold ordinary round-2 dispatches into the planned arm and manufacture the very
+// population this experiment exists to report as absent.
+const PLANNED_SPLIT_RE = /\bchunk\s*\d+\b|\bpart\s*\d+\s*(?:of|\/)\s*\d+\b|\bsplit\s*\d+\s*(?:of|\/)\s*\d+\b|\[split[: ][^\]]*\]/i;
+const MIN_PLANNED_SPLITS = 6;         // below this the trial has no arm and must say so
+const TRIPWIRE_COST_USD = 2.00;       // Ruling C3 tripwire 1
+const LEAVE_BEHIND_MIN_PER_STRATUM = 5;
+
+// Piece key, deliberately the SAME extraction the Q5 quality arm uses, so "the split arm" means the
+// same set of pieces in the cost tripwire and the quality tripwire. A second regex here would let
+// the two tripwires disagree about which pieces were split, which is the failure mode that makes a
+// multi-tripwire gate useless.
+function trialPieceKey(d) {
+  const m = String(d || '').match(/\b(w1-[a-z0-9]+)\b/i);
+  return m ? m[1].toLowerCase() : null;
+}
+
+// Bytes of the piece's status file AS OF a moment in time, from git. Not "as of now": a successor
+// dispatched on Tuesday inherited Tuesday's note, and the file has been rewritten since. `git log
+// --before` is the only thing on this box that knows the difference.
+function statusBytesAt(pieceKey, atMs, cache) {
+  const ck = `${pieceKey}@${Math.floor(atMs / 60000)}`;
+  if (cache.has(ck)) return cache.get(ck);
+  let total = 0, files = 0;
+  try {
+    const iso = new Date(atMs).toISOString();
+    const listed = execFileSync('git', ['log', '-1', `--before=${iso}`, '--format=%H'],
+      { cwd: ROOT, encoding: 'utf8' }).trim();
+    if (listed) {
+      const tree = execFileSync('git', ['ls-tree', '-r', '-l', listed, 'orchestration/status/'],
+        { cwd: ROOT, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 });
+      for (const line of tree.split('\n')) {
+        // <mode> blob <sha> <size>\t<path>
+        const m = line.match(/^\S+\s+blob\s+\S+\s+(\d+)\t(.+)$/);
+        if (!m) continue;
+        const base = m[2].split('/').pop().toLowerCase();
+        if (base.startsWith(pieceKey)) { total += Number(m[1]); files++; }
+      }
+    }
+  } catch { /* no git history reachable — recorded as 0 bytes, and the count of those is published */ }
+  const v = { bytes: total, files };
+  cache.set(ck, v);
+  return v;
+}
+
+function experimentSplitTrial(agents, scoresRows) {
+  const subs = agents.filter((a) => !a.isOrchestrator && a.n >= 2);
+  // Q5 has already stamped arm/orientIdx/orientTok onto these objects when both run; stamp them
+  // here too so --split-trial is runnable on its own and gives the identical answer either way.
+  for (const a of subs) {
+    if (a.arm == null) a.arm = reorientArm(a);
+    if (a.orientIdx == null) { a.orientIdx = firstMutationIndex(a); a.orientTok = a.orientIdx < 0 ? null : sum(a.ctx.slice(0, a.orientIdx + 1)); }
+    a.plannedSplit = PLANNED_SPLIT_RE.test(a.description || '');
+    a.pieceKey = trialPieceKey(a.description);
+  }
+  const planned = subs.filter((a) => a.plannedSplit);
+  const accidental = subs.filter((a) => !a.plannedSplit && a.arm === 'resumed');
+  const fresh = subs.filter((a) => !a.plannedSplit && a.arm === 'fresh');
+
+  // ================= TRIPWIRE 1 — COST ==============================================================
+  const dAcc = orientationDelta(accidental, fresh);
+  const dPlan = orientationDelta(planned, fresh);
+  const med = (rows) => (rows.length ? +median(rows.map((r) => r.delta_usd)).toFixed(4) : null);
+  const before1 = med(dAcc.rows);
+  const after1 = med(dPlan.rows);
+  const t1 = {
+    tripwire: 'COST — the handoff figure re-measured on deliberately split agents rises above $2.00',
+    statistic: 'orientation cost: context re-read before first mutating tool call, minus the median of time-matched fresh controls, priced at cache_read. IDENTICAL implementation to --reorientation (one hoisted function), so the two cannot disagree.',
+    threshold_usd: TRIPWIRE_COST_USD,
+    before_accidental_usd: before1, before_n: dAcc.rows.length,
+    after_planned_usd: after1, after_n: dPlan.rows.length,
+    fires: after1 != null && dPlan.rows.length >= MIN_PLANNED_SPLITS && after1 > TRIPWIRE_COST_USD,
+    evaluable: dPlan.rows.length >= MIN_PLANNED_SPLITS,
+  };
+
+  // ================= TRIPWIRE 2 — SCOPE =============================================================
+  // Total requests summed across a piece's agents. Ruling C3: splitting must shorten an agent's
+  // WASTE, never its WORK, so a split piece whose TOTAL falls below the pre-split median for
+  // comparable pieces has cut the work and the trial reverts.
+  const byPiece = new Map();
+  for (const a of subs) {
+    if (!a.pieceKey) continue;
+    let p = byPiece.get(a.pieceKey);
+    if (!p) { p = { piece: a.pieceKey, agents: 0, requests: 0, accidental: false, planned: false, critics: 0 }; byPiece.set(a.pieceKey, p); }
+    p.agents++; p.requests += a.n;
+    if (a.plannedSplit) p.planned = true;
+    if (!a.plannedSplit && a.arm === 'resumed') p.accidental = true;
+    if (a.role === 'critic') p.critics++;
+  }
+  const pieces = [...byPiece.values()];
+  const single = pieces.filter((p) => !p.planned && !p.accidental);
+  const accPieces = pieces.filter((p) => p.accidental && !p.planned);
+  const planPieces = pieces.filter((p) => p.planned);
+  const t2 = {
+    tripwire: 'SCOPE (the §5 guard) — total requests summed across a split piece\'s agents falls below the pre-split median for comparable pieces',
+    statistic: 'sum of requests over every agent whose dispatch description names the piece, per piece',
+    before_unsplit_median_requests: single.length ? median(single.map((p) => p.requests)) : null,
+    before_unsplit_pieces: single.length,
+    before_accidental_split_median_requests: accPieces.length ? median(accPieces.map((p) => p.requests)) : null,
+    before_accidental_split_pieces: accPieces.length,
+    after_planned_split_median_requests: planPieces.length ? median(planPieces.map((p) => p.requests)) : null,
+    after_planned_split_pieces: planPieces.length,
+    fires: planPieces.length >= MIN_PLANNED_SPLITS && single.length > 0
+      && median(planPieces.map((p) => p.requests)) < median(single.map((p) => p.requests)),
+    evaluable: planPieces.length >= MIN_PLANNED_SPLITS,
+    selection_note: 'The comparison is biased AGAINST firing and that is the right direction: a piece is split BECAUSE it is long, so a split piece\'s total starts above the median for reasons that have nothing to do with the change. A tripwire that fires despite that bias has found a real loss of work; one that stays quiet has proved less than it looks. Read a quiet tripwire 2 as "no alarm", never as "scope preserved".',
+  };
+
+  // ================= TRIPWIRE 3 — QUALITY ===========================================================
+  // Critic find-rate and the separate-critic count. No existing instrument computes find-rate —
+  // scores.mjs collects SCORES — so the verdict corpus is read directly here for the gap counts,
+  // and the score half is taken from scores.mjs rather than recomputed.
+  const verdicts = [];
+  const walkV = (d) => {
+    if (!existsSync(d)) return;
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const p = join(d, e.name);
+      if (e.isDirectory()) walkV(p);
+      else if (e.name.endsWith('.json')) {
+        try {
+          const v = JSON.parse(readFileSync(p, 'utf8'));
+          const key = trialPieceKey(String(v.piece_id || v.piece || ''));
+          if (!key) continue;
+          verdicts.push({ piece: key,
+                          findings: 1 + (Array.isArray(v.other_gaps) ? v.other_gaps.length : 0),
+                          critic: (v.critic && v.critic.run_id) || null });
+        } catch { /* not a verdict */ }
+      }
+    }
+  };
+  walkV(join(ROOT, 'corpus', '90-verdicts'));
+  const splitPieceSet = new Set([...accPieces, ...planPieces].map((p) => p.piece));
+  const plannedPieceSet = new Set(planPieces.map((p) => p.piece));
+  const vSplitAcc = verdicts.filter((v) => splitPieceSet.has(v.piece) && !plannedPieceSet.has(v.piece));
+  const vPlanned = verdicts.filter((v) => plannedPieceSet.has(v.piece));
+  const vOther = verdicts.filter((v) => !splitPieceSet.has(v.piece));
+  const critCount = (set) => {
+    const m = new Map();
+    for (const v of verdicts) { if (!set.has(v.piece)) continue; if (!m.has(v.piece)) m.set(v.piece, new Set()); if (v.critic) m.get(v.piece).add(v.critic); }
+    return m.size ? +mean([...m.values()].map((s) => s.size)).toFixed(2) : null;
+  };
+  const t3 = {
+    tripwire: 'QUALITY — critic find-rate or the separate-critic count falls on the split arm',
+    statistic: 'find-rate = gaps named per critic verdict (biggest_gap + other_gaps), read from corpus/90-verdicts; separate-critic count = distinct critic run_ids per piece',
+    verdicts_read: verdicts.length,
+    before_unsplit: { verdicts: vOther.length, find_rate: vOther.length ? +mean(vOther.map((v) => v.findings)).toFixed(2) : null,
+                      separate_critics_per_piece: critCount(new Set(single.map((p) => p.piece))) },
+    before_accidental_split: { verdicts: vSplitAcc.length, find_rate: vSplitAcc.length ? +mean(vSplitAcc.map((v) => v.findings)).toFixed(2) : null,
+                               separate_critics_per_piece: critCount(new Set(accPieces.map((p) => p.piece))) },
+    after_planned_split: { verdicts: vPlanned.length, find_rate: vPlanned.length ? +mean(vPlanned.map((v) => v.findings)).toFixed(2) : null,
+                           separate_critics_per_piece: critCount(plannedPieceSet) },
+    fires: null,   // set below, once evaluability is known
+    evaluable: vPlanned.length >= MIN_PLANNED_SPLITS,
+    direction: 'REFUSE-ONLY, inherited from CH-05 and for the same reason. A quality number that looks GOOD on the split arm is not evidence — the arm is selected. A quality number that looks BAD is.',
+  };
+  t3.fires = t3.evaluable
+    && ((t3.after_planned_split.find_rate != null && t3.before_unsplit.find_rate != null && t3.after_planned_split.find_rate < t3.before_unsplit.find_rate)
+      || (t3.after_planned_split.separate_critics_per_piece != null && t3.before_unsplit.separate_critics_per_piece != null
+        && t3.after_planned_split.separate_critics_per_piece < t3.before_unsplit.separate_critics_per_piece));
+
+  // ================= THE FALSIFIER — does a deliberate note make a handoff DEARER? ==================
+  // The gradient's strata are not chosen after looking: "none" is nothing written down at all, and
+  // thin/rich split the rest at their own median. Which CONTRAST carries the reading depends on what
+  // the data actually contains — on this fleet nobody inherited literally nothing, so rich-vs-thin is
+  // the contrast that exists and rich-vs-none is reported as empty rather than quietly dropped.
+  const cache = new Map();
+  const gradientFor = (arm, controls, label) => {
+    const d = orientationDelta(arm, controls);
+    const byKey = new Map(d.rows.map((r) => [r.key, r]));
+    const pts = [];
+    let noPiece = 0;
+    for (const a of arm) {
+      const row = byKey.get(a.key);
+      if (!row) continue;
+      if (!a.pieceKey) { noPiece++; continue; }
+      const lb = statusBytesAt(a.pieceKey, a.first, cache);
+      pts.push({ key: a.key, piece: a.pieceKey, bytes: lb.bytes, files: lb.files,
+                 delta_usd: row.delta_usd, orient_requests: row.orient_requests });
+    }
+    if (pts.length < 2 * LEAVE_BEHIND_MIN_PER_STRATUM) return { arm: label, n: pts.length, excluded_no_piece_in_description: noPiece, usable: false };
+    const withNote = pts.filter((p) => p.bytes > 0);
+    const cut = withNote.length ? median(withNote.map((p) => p.bytes)) : 0;
+    const strat = {
+      none: pts.filter((p) => p.bytes === 0),
+      thin: pts.filter((p) => p.bytes > 0 && p.bytes < cut),
+      rich: pts.filter((p) => p.bytes >= cut && p.bytes > 0),
+    };
+    const sm = (rows) => ({ n: rows.length,
+      median_leave_behind_bytes: rows.length ? Math.round(median(rows.map((p) => p.bytes))) : null,
+      median_delta_usd: rows.length ? +median(rows.map((p) => p.delta_usd)).toFixed(4) : null,
+      median_orient_requests: rows.length ? median(rows.map((p) => p.orient_requests)) : null });
+    // The contrast, plus a LABEL-SHUFFLE null on the identical arithmetic — the same discipline N1
+    // uses on the primary statistic. The strata are small, so a difference of medians without a
+    // permutation null is a number nobody should act on.
+    const contrastOf = (A, B) => {
+      if (A.length < LEAVE_BEHIND_MIN_PER_STRATUM || B.length < LEAVE_BEHIND_MIN_PER_STRATUM) return null;
+      const obs = +(median(A.map((p) => p.delta_usd)) - median(B.map((p) => p.delta_usd))).toFixed(4);
+      const pool = [...A, ...B].map((p) => p.delta_usd);
+      const rnd = mulberry32(20260814);
+      let ge = 0;
+      const draws = 2000;
+      for (let it = 0; it < draws; it++) {
+        const sh = pool.slice();
+        for (let i = sh.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [sh[i], sh[j]] = [sh[j], sh[i]]; }
+        const v = median(sh.slice(0, A.length)) - median(sh.slice(A.length));
+        if (Math.abs(v) >= Math.abs(obs)) ge++;
+      }
+      return { usd: obs, n_richer: A.length, n_poorer: B.length, shuffle_p: +((ge + 1) / (draws + 1)).toFixed(4) };
+    };
+    const reg = regress(pts.map((p) => Math.log10(1 + p.bytes)), pts.map((p) => p.delta_usd));
+    const rvn = contrastOf(strat.rich, strat.none);
+    const rvt = contrastOf(strat.rich, strat.thin);
+    return { arm: label, n: pts.length, excluded_no_piece_in_description: noPiece,
+             split_at_bytes: Math.round(cut), none: sm(strat.none), thin: sm(strat.thin), rich: sm(strat.rich),
+             rich_minus_none: rvn, rich_minus_thin: rvt,
+             primary_contrast: rvn ? 'rich_minus_none' : (rvt ? 'rich_minus_thin' : null),
+             primary_usd: rvn ? rvn.usd : (rvt ? rvt.usd : null),
+             primary_p: rvn ? rvn.shuffle_p : (rvt ? rvt.shuffle_p : null),
+             slope_usd_per_decade_of_bytes: reg.slope != null ? +reg.slope.toFixed(4) : null,
+             r2: reg.r2 != null ? +reg.r2.toFixed(3) : null,
+             usable: !!(rvn || rvt) };
+  };
+  const gAcc = gradientFor(accidental, fresh, 'accidental handoffs');
+  const gCtl = gradientFor(fresh, fresh, 'fresh agents (maturity control)');
+
+  const controlSameContrast = gCtl.usable && gAcc.primary_contrast
+    ? (gCtl[gAcc.primary_contrast] ? gCtl[gAcc.primary_contrast].usd : null) : null;
+  // The control FIRES when it reproduces the arm's effect in the SAME direction at half the size or
+  // more — i.e. when "a richer written record" is really "an older piece" and has nothing to do with
+  // a handoff. A control that moves the OTHER way does not merely fail to explain the effect; it
+  // means the confound is working AGAINST the reading, which is the strongest position available.
+  const controlFires = controlSameContrast != null && gAcc.primary_usd != null
+    && Math.sign(controlSameContrast) === Math.sign(gAcc.primary_usd)
+    && Math.abs(controlSameContrast) >= 0.5 * Math.abs(gAcc.primary_usd);
+  const falsifier = {
+    question: 'CH-05 named exactly one falsifier: a PLANNED handoff costing MORE than an accidental one, because a deliberate status file is larger than what a killed agent left behind. This tests its sign on a gradient that already exists.',
+    design: 'Among the accidental handoffs, what the predecessor left behind varies from nothing to tens of KB. Leave-behind is measured as the bytes of the piece\'s orchestration/status/ files IN GIT AS OF THE SUCCESSOR\'S FIRST REQUEST — not as of now, because those files have been rewritten many times since. Successors are stratified none/thin/rich and their TIME-MATCHED orientation deltas compared, with a label-shuffle null on the contrast.',
+    accidental_arm: gAcc,
+    maturity_control: { ...gCtl,
+      what_it_rules_out: 'A big written record belongs to a MATURE piece, and an agent on a mature piece may orient differently because the piece is mature. Fresh agents — which resumed nothing — are stratified by the identical measurement at their identical dispatch times. If they show the same gradient in the same direction, the gradient is maturity and says nothing about handoff notes.' },
+    control_same_contrast_usd: controlSameContrast,
+    control_fires: controlFires,
+    usable: gAcc.usable,
+  };
+  falsifier.reading = !gAcc.usable
+    ? `NOT USABLE — ${gAcc.n} successors could be placed on the gradient (a description must name its piece for its status file to be findable) and no two strata reach ${LEAVE_BEHIND_MIN_PER_STRATUM}.`
+    : controlFires
+      ? `NOT USABLE — the maturity control moves the same way and at least half as far (${controlSameContrast} against ${gAcc.primary_usd}), so the gradient is piece maturity rather than the note. The falsifier is neither confirmed nor refuted, and only the dispatched trial can settle it.`
+      : gAcc.primary_usd > 0
+        ? `FALSIFIER FIRES: successors inheriting the RICHER written record oriented ${gAcc.primary_usd} MORE dearly (${gAcc.primary_contrast}, shuffle p = ${gAcc.primary_p}), and the maturity control does not reproduce it (${controlSameContrast}). A planned split always writes the richest note there is, so the planned handoff is predicted ABOVE the accidental ${before1}. Do not dispatch the trial without tripwire 1 armed at the first split piece.`
+        : `FALSIFIER DOES NOT FIRE, and the confound pushes the other way. Successors inheriting the RICHER written record oriented ${Math.abs(gAcc.primary_usd)} LESS dearly (${gAcc.primary_contrast}, shuffle p = ${gAcc.primary_p}), while the maturity control moves ${controlSameContrast >= 0 ? 'UPWARD' : 'downward'} by ${controlSameContrast} on the identical contrast — fresh agents on well-documented pieces orient MORE dearly, not less. So the confound cannot be manufacturing the handoff arm's gradient; it is working against it. A planned split writes the richest note there is, so the planned handoff is predicted at or BELOW the accidental ${before1}. This is NOT permission to skip tripwire 1: the strata are small (n = ${gAcc.rich.n} and ${gAcc.thin.n}) and this measures the SIZE of a note, never its quality.`;
+
+  // ================= VERDICT ========================================================================
+  const fired = [t1, t2, t3].filter((t) => t.fires === true).map((t) => t.tripwire.split(' —')[0]);
+  let verdict, verdict_reason;
+  if (planned.length === 0) {
+    verdict = 'NOT YET DISPATCHED';
+    verdict_reason = `zero agents carry a planned-split marker (${PLANNED_SPLIT_RE}). Every "after" column here is empty BY CONSTRUCTION, not by measurement, and this run is the BEFORE. The falsifier below is what can be decided without dispatching anything.`;
+  } else if (planned.length < MIN_PLANNED_SPLITS) {
+    verdict = 'UNDERPOWERED';
+    verdict_reason = `${planned.length} planned-split agents against a minimum of ${MIN_PLANNED_SPLITS}. The tripwires are computed and published but NOT evaluated; a green light from ${planned.length} agents would be noise wearing a verdict's clothes.`;
+  } else if (fired.length) {
+    verdict = 'REVERT';
+    verdict_reason = `tripwire(s) fired: ${fired.join('; ')}. Ruling C3: any one fires the revert.`;
+  } else {
+    verdict = 'CONTINUE';
+    verdict_reason = `${planned.length} planned-split agents across ${planPieces.length} pieces, no tripwire fired. Handoff re-measured at ${after1} against a ${TRIPWIRE_COST_USD} threshold and an accidental baseline of ${before1}.`;
+  }
+
+  return {
+    question: 'Does a PLANNED split — a predecessor stopping on purpose and writing a deliberate handoff note — cost what an accidental one costs, and does it shorten waste rather than work?',
+    method: 'the trial\'s instrument plus its falsifier. Tripwires 1-3 of COST.md Ruling C3, each with the pre-split BEFORE frozen. The falsifier is a natural gradient inside the accidental population: how much the predecessor had actually written down, from git, at the moment the successor was dispatched.',
+    parameters: { min_planned_splits: MIN_PLANNED_SPLITS, tripwire_cost_usd: TRIPWIRE_COST_USD,
+                  planned_marker: String(PLANNED_SPLIT_RE), leave_behind_min_per_stratum: LEAVE_BEHIND_MIN_PER_STRATUM },
+    population: { subagents: subs.length, planned_split: planned.length, accidental_split: accidental.length,
+                  fresh: fresh.length, pieces_seen: pieces.length,
+                  pieces_planned_split: planPieces.length, pieces_accidental_split: accPieces.length, pieces_unsplit: single.length },
+    tripwire_1_cost: t1,
+    tripwire_2_scope: t2,
+    tripwire_3_quality: t3,
+    falsifier_planned_vs_accidental: falsifier,
+    decision: { verdict, verdict_reason, tripwires_fired: fired },
+    what_this_does_not_measure: [
+      'It does not dispatch anything. The arms of a dispatch trial can only be filled by dispatching, and this run reports the planned arm as EMPTY rather than inferring it.',
+      'The falsifier reads the SIZE of what a predecessor left behind, not its quality. A 6 KB status file of prose that orients nobody is scored the same as 6 KB of findings and a next_step. Size is the only proxy git can supply without a judgement call, and a note that is long and useless would bias the gradient towards "rich notes do not help" — i.e. AGAINST the reading that makes the trial safe, which is the conservative direction.',
+      'Tripwire 2 compares split pieces against unsplit ones and split pieces are selected for length, so it can under-fire. Stated on the tripwire itself.',
+      'Requests-per-piece attributes an agent to a piece by its dispatch description; agents whose description names no piece are excluded and counted, never spread across pieces.',
+    ],
+  };
+}
+
 async function runExperiments(which) {
   const collected = await collectPricedRequests();
   const { priced, projectDir } = collected;
@@ -1618,6 +1966,12 @@ async function runExperiments(which) {
     try { scoresRows = (await import('./scores.mjs')).collect().rows; }
     catch (e) { log(`cost: Q5 quality arm unavailable — ${e.message}`); }
     out.q5_reorientation = experimentReorientation(agents, scoresRows);
+  }
+  if (which.has('split_trial')) {
+    let scoresRows = null;
+    try { scoresRows = (await import('./scores.mjs')).collect().rows; }
+    catch (e) { log(`cost: Q7 score rows unavailable — ${e.message}`); }
+    out.q7_split_trial = experimentSplitTrial(agents, scoresRows);
   }
   if (which.has('attribution')) out.q4_attribution = experimentAttribution(agents, priced, byTokenClass);
   if (which.has('batching')) out.q6_batching = experimentBatching(agents, priced);
@@ -1823,6 +2177,71 @@ function runExperimentsSelfTest() {
   say(bU.all_tool_request_context_reread_usd > bB.all_tool_request_context_reread_usd,
       'the two arms genuinely disagree on cost (an analysis returning the same number for both would be inert)');
 
+
+  // ---- Q7 split-trial arms. FOUR synthetic fleets, and TWO of them are refusal traps rather than
+  // wrong answers. The traps are the point: this instrument's live input has an EMPTY planned arm,
+  // and an instrument that returns a cheerful verdict from an empty arm is the exact failure the
+  // programme keeps catching in other people's work.
+  //   Arm P  planned splits that orient as fast as a fresh agent. Must reach CONTINUE.
+  //   Arm Q  planned splits that read for sixty requests before writing — a $2.64 handoff on
+  //          hand-computable arithmetic. Tripwire 1 must FIRE and the verdict must be REVERT.
+  //   Arm R  planned splits that orient fine but whose pieces carry a QUARTER of the requests of a
+  //          comparable unsplit piece — the §5 failure, splitting that shortened the WORK.
+  //          Tripwire 2 must FIRE while tripwire 1 stays quiet, so the two are not redundant.
+  //   Arm N  the same expensive handoff as arm Q on only TWO agents. Must return UNDERPOWERED —
+  //          NOT revert, NOT continue. An instrument that reads a verdict off two agents would
+  //          have licensed or killed this change on noise.
+  console.log('\nQ7 split trial — four synthetic fleets, two of which are refusal traps:');
+  const mkTrial = (specs) => { const reqs = []; for (const s of specs) reqs.push(...synthAgent(s.id, s.n, 30_000, 2_000, 'claude-opus-5', s.t)); return reqs; };
+  const labelTrial = (list, isPlanned, writeAt, pieceOf) => {
+    for (const a of list) {
+      const p = isPlanned(a.agentId);
+      a.description = `${pieceOf(a.agentId)} thing${p ? ' chunk 2 of 3' : ''}`;
+      a.role = 'builder';
+      const w = writeAt(p);
+      a.tools = a.reqs.map((_, k) => (k === Math.min(w, a.n - 1) ? ['Write'] : ['Read']));
+      a.arm = null; a.orientIdx = null; a.orientTok = null;   // force a clean classification
+    }
+    return list;
+  };
+  const trialSpec = (nPlanned, nReq, planWriteAt) => {
+    const sp = [];
+    for (let i = 0; i < 30; i++) sp.push({ id: `q7f${i}`, n: 80, t: i * 6 * 60e3 });
+    for (let i = 0; i < nPlanned; i++) sp.push({ id: `q7p${i}`, n: nReq, t: i * 12 * 60e3 });
+    return sp;
+  };
+  const runTrial = (nPlanned, nReq, planWriteAt) => {
+    const specs = trialSpec(nPlanned, nReq, planWriteAt);
+    const isP = (id) => id.startsWith('q7p');
+    // every agent gets its OWN piece, so tripwire 2's per-piece rollup has something to compare
+    const pieceOf = (id) => `W1-${(isP(id) ? 40 : 10) + Number(id.replace(/\D+/g, ''))}`;
+    const fleet = labelTrial(buildAgents(mkTrial(specs), null), isP, (p) => (p ? planWriteAt : 5), pieceOf);
+    return experimentSplitTrial(fleet, null);
+  };
+  const q7P = runTrial(10, 80, 6);
+  const q7Q = runTrial(10, 80, 60);
+  const q7R = runTrial(10, 20, 5);
+  const q7N = runTrial(2, 80, 60);
+  const q7E = runTrial(0, 80, 5);
+
+  say(q7P.decision.verdict === 'CONTINUE',
+      `arm P (cheap planned handoff, 10 agents): verdict '${q7P.decision.verdict}' — expected CONTINUE, tripwire 1 at ${q7P.tripwire_1_cost.after_planned_usd}`);
+  say(q7Q.tripwire_1_cost.fires === true && q7Q.tripwire_1_cost.after_planned_usd > 2.4 && q7Q.tripwire_1_cost.after_planned_usd < 2.9,
+      `arm Q (60-request runway): tripwire 1 fires at ${q7Q.tripwire_1_cost.after_planned_usd} — hand-computable at 5.28 Mtok x $0.50/Mtok = $2.64`);
+  say(q7Q.decision.verdict === 'REVERT', `arm Q: verdict '${q7Q.decision.verdict}' — expected REVERT`);
+  say(q7P.decision.verdict !== q7Q.decision.verdict,
+      `the cheap and dear arms reach DIFFERENT verdicts ('${q7P.decision.verdict}' vs '${q7Q.decision.verdict}') — the instrument is not inert`);
+  say(q7R.tripwire_2_scope.fires === true && q7R.tripwire_1_cost.fires === false,
+      `arm R (work cut to a quarter): tripwire 2 FIRES (${q7R.tripwire_2_scope.after_planned_split_median_requests} requests/piece against an unsplit median of ${q7R.tripwire_2_scope.before_unsplit_median_requests}) while tripwire 1 stays quiet — the two tripwires catch different failures`);
+  say(q7R.decision.verdict === 'REVERT', `arm R: verdict '${q7R.decision.verdict}' — a split that shortens the WORK is reverted even though it is cheap`);
+  // THE TWO REFUSALS, which are what make the live output trustworthy
+  say(q7N.decision.verdict === 'UNDERPOWERED' && q7N.tripwire_1_cost.evaluable === false,
+      `arm N (the SAME $2.6 handoff on 2 agents): verdict '${q7N.decision.verdict}' — the instrument refuses to read a verdict off an underpowered arm rather than reporting the effect it can plainly see`);
+  say(q7E.decision.verdict === 'NOT YET DISPATCHED' && q7E.tripwire_1_cost.after_planned_usd === null,
+      `arm E (no planned splits at all — the LIVE case): verdict '${q7E.decision.verdict}' with an empty after column, not a green light`);
+  say(q7E.tripwire_1_cost.before_accidental_usd === null || typeof q7E.tripwire_1_cost.before_accidental_usd === 'number',
+      'arm E still publishes the BEFORE column — a run with nothing to compare is still the baseline freeze');
+
   console.log(`\ncost --experiments-self-test: ${pass ? 'all arms pass and the arms genuinely disagree.' : 'FAILED — see FAIL lines.'}`);
   process.exit(pass ? 0 : 1);
 }
@@ -1888,7 +2307,7 @@ function runSelfTest() {
 }
 
 // ------------------------------------------------------------------ main
-const EXP_FLAGS = { '--routing': 'routing', '--growth': 'growth', '--bursts': 'bursts', '--attribution': 'attribution', '--reorientation': 'reorientation', '--batching': 'batching' };
+const EXP_FLAGS = { '--routing': 'routing', '--growth': 'growth', '--bursts': 'bursts', '--attribution': 'attribution', '--reorientation': 'reorientation', '--batching': 'batching', '--split-trial': 'split_trial' };
 const wantedExperiments = new Set(process.argv.filter((a) => EXP_FLAGS[a]).map((a) => EXP_FLAGS[a]));
 if (process.argv.includes('--experiments')) for (const k of Object.values(EXP_FLAGS)) wantedExperiments.add(k);
 
