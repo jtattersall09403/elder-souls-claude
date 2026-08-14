@@ -312,6 +312,14 @@ Blind results do not produce a score directly; they **modify** the scores from R
 | Ours wins ≥ half post-escalation, metrics also pass | no cap |
 | Zero pairs ran (no reference images available) | cap 7 |
 
+> **How a mixed confidence spread reads, recorded wave 1 by `W1-VISUAL-BLIND-PROTOCOL-A-r1` — NO
+> THRESHOLD IS CHANGED.** The first real run came back four `high` and one `medium`, which sits
+> between rows 1 and 2. Row 2 states its own threshold as **≥ 2** at medium/low; one is not two, so
+> row 2 does not apply and row 1 (**cap 5**) is the only remaining row describing a clean sweep of
+> losses. The "≥ 2" is doing exactly that work: a single softer answer does not lift the cap.
+> **Reversible** — overturned by an amendment that interpolates the cap across the spread rather
+> than stepping at 2, or by a re-run in which the `medium` pair returns `high` in either direction.
+
 | Protocol B outcome | Effect on ART score |
 |---|---|
 | B1: ours loses to a 2002 screenshot | **cap 3** (five-alarm) |
@@ -378,13 +386,31 @@ image-specific machinery — the two-protocol split, the subject-neutral crop, t
 degradation recipe, the B2 spec-first-then-image inversion, the §C escalation ladder, the §D
 leak table and the §E record format — is ours and has no upstream source.
 
-**Untested.** No blind run has been executed at authoring time; there is no game to capture
-and `refs/modern/` is empty. The prompts in §A and §B have not been validated against a real
-judge, and the most likely correction is that they are too long and the judge's answer drifts
-out of the required format. **The first wave to run this should record any format
-non-compliance and amend the prompt text here**, keeping the amended text verbatim-quotable —
-the value of the prompts being in the corpus is that they are identical across waves, so a
-change must be recorded rather than improvised at run time.
+**~~Untested.~~ FIRST EXECUTED 2026-08-14 — Protocol A only.** This paragraph previously read
+*"No blind run has been executed at authoring time; there is no game to capture and `refs/modern/`
+is empty. The prompts in §A and §B have not been validated against a real judge, and the most likely
+correction is that they are too long and the judge's answer drifts out of the required format."*
+That is now false for Protocol A and is corrected here rather than left to mislead.
+
+**Protocol A ran on five pairs**, judged by five fresh agent contexts, and is recorded at
+`corpus/90-verdicts/w01-visual-blind.md` with the verdict at
+`corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r1.{json,md}`.
+
+**The §A prompt is validated: the predicted failure did not occur.** All five judges returned the
+exact answer block on the **first attempt** — no drift out of format, no re-ask, no discard, and no
+`SINGLE BIGGEST GAP` that was a mood rather than something buildable. **No amendment to the prompt
+text is therefore made**, which is the outcome this note asks for: the prompts stay identical across
+waves unless a run gives a reason to change them. Recorded deviations from the *method* (not the
+prompt) are in that verdict's `method_deviations[]`; the largest is that a judge agent in this
+repository inherits the project `CLAUDE.md` and so cannot be made fully naive here.
+
+**Protocol B remains untested.** Nothing below has been validated against a real judge, and its
+§B1 degradation recipe is still the guess described in the next paragraph.
+
+**The standing instruction, unchanged:** a wave that finds format non-compliance should record it and
+amend the prompt text here, keeping the amended text verbatim-quotable — the value of the prompts
+being in the corpus is that they are identical across waves, so a change must be recorded rather than
+improvised at run time.
 
 The §B1 degradation recipe (640×360 → 1280×720 box, histogram-matched, 5 bits/channel) is a
 guess at "enough degradation to neutralise a 24-year quality gap without destroying
