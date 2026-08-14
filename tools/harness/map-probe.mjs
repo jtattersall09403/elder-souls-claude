@@ -168,10 +168,16 @@ async function run(h, brk) {
     const monotone = sweep[0].revealed > sweep[1].revealed && sweep[1].revealed > sweep[2].revealed;
     A('C1', 'reveal radius is CONSUMED: 450 m > 150 m > 25 m revealed cells',
       sweep.map((s) => `${s.max_m}m:${s.revealed}`).join(' '), monotone, 'strictly decreasing');
-    A('C1b', 'the SCREEN draws what the model revealed (drawn_cells tracks revealed_cells)',
+    // AMENDMENT-W1-MAP-02. This used to assert the opposite — "the SCREEN draws what the model
+    // revealed (drawn_cells tracks revealed_cells)" — and it was the fog of war, measured. The
+    // terrain layer no longer follows the footprint, so the check is now that it DOESN'T: the
+    // reveal radius still swings the model (C1 above, unchanged, so the number still has a
+    // consumer) while the drawn geography stays put. Put the one-line gate back in
+    // `screens/map.js` and this goes red, which is what `tools/map/fog-control.mjs` demonstrates.
+    A('C1b', 'the TERRAIN no longer follows the footprint: drawn is constant while revealed falls',
       sweep.map((s) => `${s.drawn}/${s.revealed}`).join(' '),
-      sweep.every((s) => s.revealed === 0 ? s.drawn === 0 : s.drawn > 0) && sweep[0].drawn > sweep[2].drawn,
-      'drawn > 0 wherever revealed > 0, and falls with it');
+      sweep.every((s) => s.drawn > 0) && sweep[0].drawn === sweep[1].drawn && sweep[1].drawn === sweep[2].drawn,
+      'drawn > 0 and identical across all three radii, while C1 shows revealed falling');
 
     // PUT THE ENGINE'S OWN MODEL BACK. Everything below this line measures the object
     // `engine.js` constructed and the fixed step drives — not a replacement built here. The
@@ -293,10 +299,16 @@ async function run(h, brk) {
     A('S7', 'every drawn square is a place the body has stood in',
       `drawn ${m.places_drawn} / discovered ${m.places_discovered}`,
       m.places_drawn <= m.places_discovered, 'drawn <= discovered');
-    A('S8', 'undiscovered is UNRENDERED — most of the province is not drawn',
-      `${m.drawn_cells} of ${m.total_cells} cells`,
-      m.total_cells > 0 && m.drawn_cells > 0 && m.drawn_cells < m.total_cells * 0.5,
-      '0 < drawn < half the province');
+    // AMENDMENT-W1-MAP-02 inverted this one. It used to read "undiscovered is UNRENDERED — most
+    // of the province is not drawn" and required `drawn_cells < total_cells * 0.5`. The owner
+    // struck the map's fog of war on 2026-08-14, and `RI-WLD06` §5 had banned "fog-of-war
+    // reveal-on-approach" all along, so the assertion is now the opposite one — and it is still
+    // an assertion with teeth, because it is paired with S7 above: the geography is whole AND
+    // every square is earned. Either half alone passes a broken map.
+    A('S8', 'the GEOGRAPHY is drawn whole — every cell in view is painted (W1-MAP-02)',
+      `${m.drawn_cells} of ${m.cells_in_view} cells in view (province total ${m.total_cells}); geography_always_drawn=${m.geography_always_drawn}`,
+      m.cells_in_view > 0 && m.drawn_cells === m.cells_in_view && m.geography_always_drawn === true,
+      'drawn === in view, and > 0');
     const navFromMap = ui.navigable;
     H.closeMenu();
     H.openMenu('journal', {});
@@ -365,11 +377,20 @@ async function run(h, brk) {
     eng.ui.focus.map.view = 'world';
     H.closeMenu();
 
-    // ---- S12. THE AMENDMENT'S OWN APPENDIX TEST --------------------------------------------
+    // ---- S12. THE AMENDMENT'S OWN APPENDIX TEST, AS AMENDED BY W1-MAP-02 --------------------
     //
-    // "Open the game, walk nowhere, open the map. If it shows you the province, this amendment
-    // has been implemented as a repeal rather than as a narrowing." A character who has
-    // discovered nothing must get an empty screen — not a loading state, not a dimmed province.
+    // W1-MAP-01's appendix read: "Open the game, walk nowhere, open the map. If it shows you the
+    // province, this amendment has been implemented as a repeal." W1-MAP-02 §3b keeps the test in
+    // exactly this place and inverts it, because the owner's ruling inverted the rule:
+    //
+    //   Open the game, walk nowhere, open the map. You must see the WHOLE PROVINCE, and you must
+    //   see ZERO PLACE SQUARES.
+    //
+    // The second half is the one that matters now, and it is the null control this round was
+    // dispatched with: "geography revealed AND every marker revealed with it" would look like a
+    // working map in a screenshot and would quietly delete discovery from the game.
+    // `tools/map/fog-control.mjs --arms markers` is that mistake made on purpose, and this
+    // assertion is what goes red on it.
     const empty = new Disc({ field: eng.field, sim, doc: eng.data.mapUI, pois: eng.data.pois });
     const keep = sim.discovery;
     sim.discovery = empty;
@@ -377,9 +398,10 @@ async function run(h, brk) {
     const blank = H.getUIState().map;
     H.closeMenu();
     sim.discovery = keep;
-    A('S12', "APPENDIX: a character who has been nowhere sees nothing (not a dimmed province)",
-      `drawn ${blank.drawn_cells} cells, ${blank.places_drawn} squares`,
-      blank.drawn_cells === 0 && blank.places_drawn === 0, '0 cells, 0 squares');
+    A('S12', 'APPENDIX: a character who has been nowhere sees the WHOLE province and NOT ONE square',
+      `drawn ${blank.drawn_cells} of ${blank.cells_in_view} cells in view, ${blank.places_drawn} squares, ${blank.revealed_cells} cells in the footprint`,
+      blank.cells_in_view > 0 && blank.drawn_cells === blank.cells_in_view && blank.places_drawn === 0,
+      'the geography whole, zero squares');
 
     // =========================================================================================
     // D — THE HOSTILE ATTEMPT. Every one of these must fail, structurally.

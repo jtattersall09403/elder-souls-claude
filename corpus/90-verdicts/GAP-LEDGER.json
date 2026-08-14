@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T11:51:33Z",
+  "generated": "2026-08-14T14:14:33Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 79,
+  "verdicts_read": 81,
   "counts": {
-    "total": 74,
-    "open": 73,
+    "total": 76,
+    "open": 75,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -187,6 +187,10 @@
     "ui.hud.minimalism": [
       "GAP-W1-ui-detectors-that-cannot-see",
       "GAP-W1-ui-map-outside-the-ar2-detectors"
+    ],
+    "render.process.measurement": [
+      "GAP-W1-w1-30d-guard-misses-part-deletion",
+      "GAP-W1-w1-30e-street-gate-never-ran"
     ],
     "render.fidelity.vfx": [
       "GAP-W1-w1-30s-seam-incomplete"
@@ -2969,6 +2973,77 @@
         "reports/runs/CRITIC-W1-21-R1B/critic-w1-21-r1b.json",
         "reports/runs/CRITIC-W1-21-R1B/map-forged-save.png",
         "reports/runs/CRITIC-W1-21-R1/critic-w1-21-r1.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-w1-30d-guard-misses-part-deletion",
+      "subsystem_path": "render.process.measurement",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-30de-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-30D-r1.json",
+      "piece_id": "W1-30D-r1",
+      "severity": "major",
+      "what": "The anti-gaming guard on the character defect metric is a scalar silhouette-area check, and a scalar cannot notice that a named part stopped existing. Deleting both of the character's hands — palms, three fingers and an opposed thumb each — improves the headline crack metric by 31% and moves the guarded quantity by 0.31% against a 3.0% threshold. It is not caught.",
+      "why_it_matters": "Every claim this piece makes about the character rests on the crack metric, and the crack metric's only defence against being gamed has now been shown, on a copy of the source tree, to miss the cheapest realistic mutilation. The builder's two declared cheats — delete a whole arm, swallow the arms into the torso — are the conspicuous versions and they are caught. The version a builder under schedule pressure would actually reach for is deleting the small expensive parts, and that walks straight through. The plan's own item 5 calls hands one of the two features a person looks at first.",
+      "remedy": {
+        "action": "Replace the scalar silhouette-area guard with a PER-PART PRESENCE CENSUS in tools/visual/actor-hole-control.mjs, and keep the area guard as its second half. rasterise() in actor-orbit-holes.mjs already carries owner[] and the part label, so classifyPockets's caller can record the set of part names contributing at least one pixel anywhere in the run and return it on the summary. The comparison tool then fails any build whose part set is a strict subset of the baseline's. Roughly a dozen lines and no new threshold to argue about. Keep the 3 percent area guard for the opposite direction, because it is what catches weld-arm-to-rib, which adds rather than removes.",
+        "acceptance": "All 7 controls behave: the 4 red-required arms go red, hide-arm and weld-arm-to-rib stay caught, and hide-both-hands is CAUGHT where it is currently missed at -0.31 percent drift against a 3.0 percent threshold. Additionally the part census must report zero missing parts on the shipped build and at least 2 missing parts on the hide-both-hands arm.",
+        "targets": [
+          "tools/visual/actor-hole-control.mjs",
+          "tools/visual/actor-orbit-holes.mjs"
+        ]
+      },
+      "remedy_action": "Replace the scalar silhouette-area guard with a PER-PART PRESENCE CENSUS in tools/visual/actor-hole-control.mjs, and keep the area guard as its second half. rasterise() in actor-orbit-holes.mjs already carries owner[] and the part label, so classifyPockets's caller can record the set of part names contributing at least one pixel anywhere in the run and return it on the summary. The comparison tool then fails any build whose part set is a strict subset of the baseline's. Roughly a dozen lines and no new threshold to argue about. Keep the 3 percent area guard for the opposite direction, because it is what catches weld-arm-to-rib, which adds rather than removes.",
+      "remedy_acceptance": "All 7 controls behave: the 4 red-required arms go red, hide-arm and weld-arm-to-rib stay caught, and hide-both-hands is CAUGHT where it is currently missed at -0.31 percent drift against a 3.0 percent threshold. Additionally the part census must report zero missing parts on the shipped build and at least 2 missing parts on the hide-both-hands arm.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30de/d-control-runs.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-w1-30e-street-gate-never-ran",
+      "subsystem_path": "render.process.measurement",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-30de-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-30E-r1.json",
+      "piece_id": "W1-30E-r1",
+      "severity": "blocking",
+      "what": "The eight settlement street shots, which the plan names as this child's deciding gate, place the camera inside building geometry. Lilmoth is filled by the courses of a single reed wall with no street visible; Helstrom is jammed against a stone wall with the player half-clipped into it; Gideon is a timber post filling the frame with the player entirely inside the wall. The one measurement that could confirm or refute this child has never executed.",
+      "why_it_matters": "The kit's entire justification is how it reads at 4-8 m — the plan says so in its first paragraph, and the builder correctly refused to claim it from offline geometry. The offline proxies deliberately cannot answer it, the naive attribution packs are built from these frames, and the board's settlement rows are defined on them. So the gate, the human read and the board row all depend on eight camera positions that nobody had looked at because nobody had rendered a frame. This is the same shape as the defect the owner complained about: a claim standing on an instrument that was never pointed at the thing.",
+      "remedy": {
+        "action": "Move the 8 street-* setups in tools/visual/deck.json off the raw gameplay camera at yaw 270 and onto the settlement's own street centreline with a collision push-out. settlementApproach() in game/src/render/exterior.js already carries the settlement's approach vector and the plan carries every building footprint, so the push-out has the data it needs. Then re-run the child-scoped profile and score the row. This is a W1-30V edit, not a W1-30E one, and it should be dispatched there.",
+        "acceptance": "All 8 street frames show at least 2 buildings whose facades are visible and unoccluded, with the near facade between 4 and 8 m from the camera, and zero frames in which the player capsule intersects building geometry. Re-measured by re-running the 8 street setups and checking the depth buffer's nearest non-player surface is >= 1.5 m in every frame.",
+        "targets": [
+          "tools/visual/deck.json",
+          "tools/visual/deck.mjs"
+        ]
+      },
+      "remedy_action": "Move the 8 street-* setups in tools/visual/deck.json off the raw gameplay camera at yaw 270 and onto the settlement's own street centreline with a collision push-out. settlementApproach() in game/src/render/exterior.js already carries the settlement's approach vector and the plan carries every building footprint, so the push-out has the data it needs. Then re-run the child-scoped profile and score the row. This is a W1-30V edit, not a W1-30E one, and it should be dispatched there.",
+      "remedy_acceptance": "All 8 street frames show at least 2 buildings whose facades are visible and unoccluded, with the near facade between 4 and 8 m from the camera, and zero frames in which the player capsule intersects building geometry. Re-measured by re-running the 8 street setups and checking the depth buffer's nearest non-player surface is >= 1.5 m in every frame.",
+      "evidence": [
+        "docs/shots/2026-08-14-w1-30de-critic/"
       ],
       "status": "open",
       "assigned_to_wave": 2,

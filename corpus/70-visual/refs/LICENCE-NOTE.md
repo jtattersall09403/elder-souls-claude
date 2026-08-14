@@ -33,3 +33,31 @@ the corpus depends on.
 # Copyright and use note
 
 The files in this directory are screenshots of commercial games. They remain under their respective publishers' and other rightsholders' copyright and are retained solely for internal comparison and critique. No open-source licence is asserted for any screenshot or clip, and inclusion here does not grant redistribution or reuse rights.
+
+---
+
+# Appended 2026-08-14 — `morrowind/REF-A12c/`, the owner-supplied interface capture
+
+`REF-A12c-dialogue__mw-owner-20260814.png` did not come from a host. **The project's owner took
+it themselves, on their own phone, running OpenMW for Android**, and supplied it directly on
+2026-08-14. It is the only file in this tree with that provenance, so it is the only one whose
+licence position is not the one stated at the top of this note, and it is stated in full on the
+record itself in `_provenance.json` rather than inherited.
+
+**The position:** the frame shows Bethesda Softworks / ZeniMax Media's interface art, fonts,
+layout and texture work. OpenMW is GPL-3.0 and that licence covers **the engine**, not the
+Bethesda assets the engine draws — so nothing about the capture route makes these pixels free.
+The owner holds whatever rights subsist in the act of capture; Bethesda holds the underlying
+work. It is retained on exactly the same footing as everything else here: internal reference for
+comparison and critique of our own interface, never redistributed, never a source for an asset,
+no derivative made.
+
+**A note on how this tree records licences, because it should not be discovered by surprise.**
+**No record in `MANIFEST.json` carries a `licence` field at all** — not `null`, absent. The
+position is carried once, for the whole tree, by this file, and for a tree of uniformly-sourced
+game screenshots that is defensible. It stops being defensible the moment a file arrives whose
+provenance differs from the rest, because a reader checking that one file would silently inherit
+a statement that was never written about it. `REF-A12c` therefore carries explicit `licence` and
+`licence_position` fields of its own. **Any future record whose provenance differs from the
+blanket statement above must do the same** — the blanket is for the common case, not a default
+to fall through.

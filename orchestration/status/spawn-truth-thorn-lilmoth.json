@@ -2,10 +2,20 @@
   "task_id": "spawn-truth-thorn-lilmoth",
   "started_at": "2026-08-14",
   "objective": "Settle factual disagreement: where does the game actually start (Thorn vs Lilmoth). Play deployed build, find spawn code, report.",
-  "status": "in_progress",
-  "next_step": "finish spawn-truth-thorn.mjs capture run, write reports/spawn-truth/2026-08-14-spawn-truth.md, blog line",
+  "status": "done",
+  "next_step": "none -- ruling filed. See orchestration/NEXT-DISPATCH.md #SPAWN-TRUTH for what should change next; not this agent's task to action it.",
   "files_touched": [
-    "tools/harness/spawn-truth-thorn.mjs"
+    "tools/harness/spawn-truth-thorn.mjs",
+    "reports/spawn-truth/2026-08-14-spawn-truth.md",
+    "reports/spawn-truth/shots/desktop-00-title.png",
+    "reports/spawn-truth/shots/desktop-01-barge-hold.png",
+    "reports/spawn-truth/shots/desktop-02-writ-house-done.png",
+    "reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.png",
+    "reports/spawn-truth/shots/desktop-03-thorn-tidewrack-quay-establishing.capture.json",
+    "docs/shots/2026-08-14-spawn-truth-writ-house-wall-thorn.png",
+    "docs/shots/2026-08-14-spawn-truth-thorn-tidewrack-quay.png",
+    "reports/blog-feed.jsonl",
+    "orchestration/NEXT-DISPATCH.md"
   ],
   "files_claimed": ["reports/spawn-truth/", "reports/blog-feed.jsonl"],
   "findings_so_far": {

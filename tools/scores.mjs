@@ -38,6 +38,16 @@ const DOMAIN = {
   // fixes is what a player meets before they have met a system. Added by its critic when
   // `tools/publish.mjs` said the verdict plotted on no chart.
   'first-ten-minutes': 'The first hour',
+  // The W1-30 visual tree's children are named `w1-30<letter>`, which the segment-prefix walk reads
+  // as `w1-30` and reports unmapped. Each child owns a different part of what a player looks at, so
+  // they do not share one domain: D is bodies, E is towns, C is surfaces, S is the seam that lets
+  // the other nine run in parallel. Added by the W1-30D/E critic when `tools/publish.mjs` said the
+  // verdicts plotted on no chart. `w1-30c` and `w1-30s` were already unmapped before this round.
+  'w1-30': 'The world',
+  'w1-30c': 'The world',
+  'w1-30d': 'Character & opening',
+  'w1-30e': 'Settlements & people',
+  'w1-30s': 'Engine & harness',
   'w1-00': 'Engine & harness',
   'w1-01': 'The world',
   'w1-02': 'The world',

@@ -1,5 +1,54 @@
 # Next dispatches, in priority order
 
+## SPAWN-TRUTH. Ruling: the game starts in Thorn, not Lilmoth. Every "first ten minutes" measurement so far measured the wrong town.
+
+**Reversible.** Full evidence, played and cited from the shipped data: `reports/spawn-truth/2026-08-14-spawn-truth.md`.
+Screenshots in `reports/spawn-truth/shots/` and `docs/shots/2026-08-14-spawn-truth-*.png`. **Falsifier:**
+if a future build routes the title screen's `New` through `game/data/states/default.json` instead of
+`censusBegin({})` → `barge-hold` → `writ-house`, or if either interior's `settlement` tag stops reading
+`"thorn"`, re-check before trusting this ruling.
+
+**The finding.** `default.json` (Lilmoth harbour steps) is what every harness tool boots into with no
+`?state=` param, and it is what the visual-truth audit, the first-ten-minutes builder and critic, and
+every dispatch brief that called Lilmoth "the weakest of the eight settlements" and prioritised it
+accordingly, all actually measured. **A player who clicks New at the title screen never passes through
+it.** `engine.js:3909` (`_titleApply('new')`) goes straight to `censusBegin({})`: barge hold, then the
+Writ House at Tidewrack. Both interiors are tagged `"settlement": "thorn"` in their own data
+(`game/data/world/interiors/writ-house.json`) and both are listed as Thorn buildings in
+`game/data/world/settlements/thorn.json`'s `tidewrack-quay` quarter. Played and screenshotted end to end
+via the real title → New → census input pipeline, not inferred.
+
+**Also settled: a likely mechanism for "facing a building's wall" on arrival.** `sim/settlement.js`
+`useDoor()`/`leaveInterior()` place the player at a door's declared coordinate via `placeBody()`, which
+writes **position only — never yaw**. Whatever direction the player faced the instant before a door
+teleport is the direction they face after it, regardless of what's actually at the new coordinate, on
+**every one of the 115 interiors in the game**, not just this one. A prior agent's own tool comment
+(`tools/harness/w1-26-r2-arrival.mjs`) already names the same mechanism independently. Not fixed here —
+the dispatch that requested this ruling was explicit that establishing the fact, not patching it, was the
+job.
+
+**What should change, named plainly (§4 of the report has the full reasoning):**
+1. Retarget "first ten minutes" measurement tooling at the title-screen path, not `?state=default`.
+2. Thorn has **zero composition-valid art-direction reference plates** (`docs/art-direction/ART.md` §3,
+   `n=0`, worse than any of the other three settlements with no target set) and is now known to be what
+   every player's first minutes actually happen in. That gap is more urgent than it looked when everyone
+   thought the opening town was Lilmoth.
+3. The door-exit-yaw defect deserves its own fix, separate from Lilmoth's already-diagnosed D1
+   camera-in-a-tree defect — related symptom (camera ends up looking at the wrong nearby geometry right
+   after a transition), independent causes. Don't close one by fixing the other.
+4. Lilmoth's "weakest settlement" framing may still be right on other grounds, but "it's what the player
+   sees first" is no longer one of them and should be dropped from that argument everywhere it appears.
+
+**What I could not do**, in full in the report §5: the deployed GitHub Pages URL could not be reached
+from a real browser in this container (proxied `curl` reaches it fine; Chromium resets the connection on
+every external host tried, not just this one — worth a tooling fix); local `game/` was used instead, which
+per this repo's own README is not an approximation of the deployed build; a clean driven walk out through
+the writ house's own door was not achieved by this pass's tool or by the pre-existing
+`w1-26-r2-arrival.mjs` (both get stuck on the same room geometry); the planned teleport-fallback screenshot
+of the exact exterior spawn frame, the 30-second walk sequence and the phone-viewport captures were not
+completed (a slow `H.teleport()` call while `sim.env.interior` was still set, combined with box contention
+that hit `tools/contention.mjs --gate` WAIT mid-run, and this pass's own time budget).
+
 ## UNJUDGED-Q. Triage ruling: the 96-piece unjudged backlog is 16 pieces. The other 80 are cleared, and here is the queue.
 
 **Reversible.** Full working, the per-piece verdict for all 96, and what I could not do:

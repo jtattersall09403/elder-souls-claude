@@ -1,34 +1,48 @@
 {
   "task_id": "W1-MAP-DEFECTS",
-  "status": "reproduced-D1-diagnosing",
+  "status": "D1-root-cause-found-D2-code-landed",
   "started": "2026-08-14",
   "owner_defects": [
-    "D1: cannot open the map at all from the deployed build (input->surface route broken)",
-    "D2: remove fog of war — geography visible from the start, markers hidden until discovered (Morrowind parity)"
+    "D1: cannot open the map at all from the deployed build",
+    "D2: remove fog of war — geography visible from the start, markers hidden until discovered"
   ],
-  "reproduction_D1": {
-    "how": "tools/map/explore-W1-MAP-DEFECTS.mjs — real Chromium, ?mode=play (rAF drives the sim), real page.keyboard presses, no harness openMenu anywhere",
-    "result": "M (the `menu` binding) opens the INVENTORY. Digit3 (`swap_right`) walks inventory -> journal. Then it STOPS: six further Digit3 presses leave mode === 'journal'. The map is never reached.",
-    "why_it_matters": "tools/ui/critic-w1-21-r2-doors-at-head.mjs reaches all six screens — but it does so from loadState('ui-journal'), a canned mid-game state. A real player boots into the barge hold in character creation, and that is where the walk dead-ends."
+  "D1_root_cause": {
+    "symptom": "M opens the inventory; swap_right walks one or two screens; then NOTHING the player presses reaches the game ever again. The map is four screens along the ring, so it is unreachable — and the menu is also unclosable.",
+    "mechanism": "It is not a navigation bug at all. In `mode: 'play'` the FIXED LOOP STOPS. Instrumented at HEAD: `uiPausedFrames` climbs 19 -> 44 -> 59 and then freezes at 59 for the rest of the run, while `window` still receives every keydown. `Engine._step()`'s paused branch is what latches input while a screen is open, so once the loop stops ticking, `sim.uiDriver` is never called again and no key can reach `UISystem.step`.",
+    "evidence": "tools/map/explore-W1-MAP-DEFECTS.mjs (diagnosis, throwaway) — DOM keydown logged for every press after the freeze, with no matching `driver`/`step` entry. tools/map/player-route.mjs is the keeper: real boot, real key presses, no harness driving.",
+    "why_the_existing_probe_says_otherwise": "tools/ui/critic-w1-21-r2-doors-at-head.mjs reaches all six screens — from `loadState('ui-journal')` in `play-instrumented` mode, where the harness advances the clock by hand. It never runs the rAF loop, so it cannot see this.",
+    "next": "identify what stops the rAF loop (diag2 instruments loop.running / rafTicks / an independent rAF chain / throws inside the tick)"
   },
-  "ruling_D2_draft": "RI-WLD06 §5 already bans 'no fog-of-war reveal-on-approach'; the current map's discovery-gated terrain is that ban being violated, not upheld. Geography (coast, rivers, land shape, region colour) is drawn from frame 0; places/markers stay gated on having stood there; roads/routes stay forbidden by S35 and AMENDMENT-W1-MAP-01, which is what keeps RI-WLD06's markerless navigation intact.",
-  "next_step": "confirm which peer refuses to open during creation; fix the ring walk; then D2",
+  "D2_landed": {
+    "ruling": "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md — geography whole from frame 0, place squares still earned by standing there, roads still forbidden. Reversal is one line; §6 names what would overturn it.",
+    "code": "game/src/ui/screens/map.js (fog gate removed, cells_in_view added), game/src/ui/system.js (`seen` closure removed; `cells_in_view` and a DERIVED `geography_always_drawn` added to state().map)",
+    "checks": "tools/harness/map-probe.mjs S8/S12/C1b inverted to the new rule; tools/map/fog-control.mjs is the delete-the-fix arm plus the plausible null control (reveal every marker with the geography)",
+    "reference": "A Morrowind map reference DOES now exist and was read before building: corpus/70-visual/refs/morrowind/REF-A12b/REF-A12b-map__mw-*.jpg (5 shots, landed by W1-MW-UI-REFS). Whole landmass, small square markers only, no roads, region name in the header. All five are late saves, so they do not settle what a FRESH character's world map looks like — recorded as such in the amendment."
+  },
   "files_touched": [
     "orchestration/status/W1-MAP-DEFECTS.json",
-    "tools/map/explore-W1-MAP-DEFECTS.mjs"
+    "tools/map/player-route.mjs",
+    "tools/map/fog-control.mjs",
+    "tools/map/explore-W1-MAP-DEFECTS.mjs",
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
+    "game/src/ui/screens/map.js",
+    "game/src/ui/system.js",
+    "tools/harness/map-probe.mjs"
   ],
   "files_claimed": [
     "game/src/ui/screens/map.js",
     "game/src/ui/system.js",
+    "game/src/core/loop.js",
+    "game/src/engine.js (the rAF/paused-step path only)",
     "game/data/ui/map.json",
     "tools/map/",
+    "tools/harness/map-probe.mjs",
     "reports/w1-map-defects/",
     "docs/shots/2026-08-14-w1-map-defects/",
-    "corpus/00-doctrine/AMENDMENT-W1-MAP-02.md",
-    "reports/blog-feed.jsonl",
-    "docs/progress.html"
+    "reports/blog-feed.jsonl"
   ],
   "notes": [
-    "ui/system.js is also claimed by HUD-MORROWIND and W1-19-builder-production-20260811 — I will keep my edits to _walkPeer/_mapModel/state().map and commit only my own paths."
+    "ui/system.js and engine.js are also claimed by HUD-MORROWIND and others; my edits are confined to _mapModel, state().map and (pending) the loop path, and I commit only my own paths with --only.",
+    "Play mode in headless swiftshader renders every rAF and starves the compositor — three runs lost the browser. player-route.mjs lowers the RENDER rate to 12 Hz (declared in the file); the simulation and the input path are untouched."
   ]
 }
