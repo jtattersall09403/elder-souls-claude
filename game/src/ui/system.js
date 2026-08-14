@@ -404,7 +404,27 @@ export class UISystem {
    * `state().nav.walkable` reports the ring, so the difference between what is advertised and
    * what is walkable is a number a probe reads rather than a claim in a comment.
    */
-  static WALK_ORDER = ['world', 'inventory', 'journal', 'sheet', 'spells', 'map', 'wait', 'levelup'];
+  //
+  // W1-MAP-DEFECTS — `map` MOVED FROM SIXTH TO SECOND, and this is the owner's defect fixed.
+  //
+  // The owner played the deployed build and reported that they could not open the map at all.
+  // They were right, and the reason was this array. `menu` opens the INVENTORY; the only way on
+  // is `swap_right`; and under the old order — inventory, journal, sheet, spells, map — the map
+  // was FOUR presses away, with nothing anywhere in the game saying so and nothing on any screen
+  // showing that a map exists. A surface a person cannot find is a surface that does not exist,
+  // which is `RI-JRN04` T1's own argument applied to a screen instead of to a button.
+  //
+  // It is one press now. `NEVER_ADJACENT` is untouched and `RI-UIX04` Q7 still holds in BOTH
+  // directions, which is worth checking rather than asserting: from `journal` the ring is
+  // [world, inventory, journal, sheet, spells, wait] — no `map`, because `navigable()` filters it
+  // — and from `map` the ring is [world, inventory, map, sheet, spells, wait] — no `journal`.
+  // Neither can reach the other, and the two probes that measure it (`map-probe` S9/S10) are
+  // unchanged and still pass.
+  //
+  // The other half of "a person cannot find it" is the foot hint on the inventory, which now
+  // names the page turn. That is `RI-JRN03` DS5's shape — it names the ACTION, never the key —
+  // and it is the same device-neutral vocabulary every other hint in this interface uses.
+  static WALK_ORDER = ['world', 'inventory', 'map', 'journal', 'sheet', 'spells', 'wait', 'levelup'];
 
   /** The ring this mode sits in: WALK_ORDER filtered to here plus everywhere advertised. */
   _walkRing(ctx) {

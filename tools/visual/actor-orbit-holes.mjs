@@ -347,10 +347,18 @@ function classifyPockets(comps, cov, owner, zbuf, parts, res, limit = 3, jointed
     }
     const spread = zmax - zmin;
     const ring = [...names.entries()].sort((a, b) => b[1] - a[1]);
-    const held = ring.some(([k]) => /^actor-held:/.test(k));
     // Only the surfaces that actually ring the pocket in quantity decide: a single stray pixel of
     // some distant part must not veto or create a crack finding.
-    const major = ring.filter(([, v]) => v >= Math.max(2, ring[0] ? ring[0][1] * 0.15 : 2)).map(([k]) => boneOf(k));
+    //
+    // THIS FILTER USED TO BE APPLIED TO THE WRONG BRANCH, and a critic found it (W1-30D-r1, D-2).
+    // `held` — the surviving *gate* — was computed on the unfiltered ring, so one pixel of a
+    // greatsword grazing the border of a pocket reclassified that whole pocket from `crack` to
+    // `bordered-by-held-object` and removed it from the count. The comment above described the
+    // danger and the fix sat on `major`, which feeds `allJointed`, which is only ever REPORTED.
+    // The load-bearing branch did not have it. Both branches now read the same filtered ring.
+    const majorEntries = ring.filter(([, v]) => v >= Math.max(2, ring[0] ? ring[0][1] * 0.15 : 2));
+    const held = majorEntries.some(([k]) => /^actor-held:/.test(k));
+    const major = majorEntries.map(([k]) => boneOf(k));
     let allJointed = major.length > 0;
     for (let i = 0; i < major.length && allJointed; i++) {
       for (let j = i + 1; j < major.length; j++) if (!jointed(major[i], major[j])) { allJointed = false; break; }
@@ -425,6 +433,15 @@ export async function run(opts) {
   let totalHole = 0, totalEnclosed = 0, totalBody = 0, worstFrame = null, framesWithHoles = 0;
   const half = opts.res / 2;
 
+  // THE PER-PART PRESENCE CENSUS — the second half of the anti-gaming guard, added because the
+  // first half was shown not to work (W1-30D-r1, D-1). `meanBodyPx` is a SCALAR, and a scalar
+  // cannot notice that a specific part stopped existing: deleting both of the character's hands
+  // improves the crack metric by 31% and moves the silhouette area by 0.31% against a 3% guard.
+  // So: record, for every named part, how many pixels it owns anywhere in the whole run. A build
+  // whose part set is a strict subset of the baseline's has deleted something, at any size, and
+  // the comparison tool fails it. No new threshold to argue about.
+  const partPx = new Map();
+
   for (const pose of poses) {
     rig.rx.fill(0); rig.ry.fill(0); rig.rz.fill(0);
     addPose(rig, clips.archetypes[pose.id], pose.phase, 1);
@@ -446,12 +463,26 @@ export async function run(opts) {
       if (tris[i + 2] < minz) minz = tris[i + 2]; if (tris[i + 2] > maxz) maxz = tris[i + 2];
     }
     const target = new THREE.Vector3((minx + maxx) / 2, (miny + maxy) / 2, (minz + maxz) / 2);
+    // Census bookkeeping for this pose: map each triangle to a dense part index once, so the
+    // per-pixel loop below is one array read rather than a string hash.
+    const partIndex = new Int32Array(parts.length);
+    const poseLabels = [];
+    {
+      const seen = new Map();
+      for (let i = 0; i < parts.length; i++) {
+        let ix = seen.get(parts[i]);
+        if (ix === undefined) { ix = poseLabels.length; seen.set(parts[i], ix); poseLabels.push(parts[i]); }
+        partIndex[i] = ix;
+      }
+    }
+    const poseCounts = new Float64Array(poseLabels.length);
     for (let a = 0; a < opts.angles; a++) {
       const th = (a / opts.angles) * Math.PI * 2;
       for (const d of opts.distances) {
         const eye = new THREE.Vector3(target.x + Math.sin(th) * d * 0.985, target.y + d * 0.17, target.z + Math.cos(th) * d * 0.985);
         const m = viewProj(THREE, eye, target, 45, 1, Math.max(0.05, d * 0.05), d * 6).elements;
         const { cov, owner, zbuf } = rasterise(tris, parts, { m, half }, opts.res);
+        for (let o = 0; o < owner.length; o++) { const t = owner[o]; if (t >= 0) poseCounts[partIndex[t]]++; }
         const h = findHoles(cov, opts.res);
         const cls = classifyPockets(h.comps, cov, owner, zbuf, parts, opts.res, 2, jointed);
         const rec = { pose: `${pose.id}@${pose.phase}`, angle: Math.round((a / opts.angles) * 360), dist: d,
@@ -469,6 +500,9 @@ export async function run(opts) {
         frames.push(rec);
       }
     }
+    for (let i = 0; i < poseLabels.length; i++) {
+      if (poseCounts[i] > 0) partPx.set(poseLabels[i], (partPx.get(poseLabels[i]) || 0) + poseCounts[i]);
+    }
   }
   // `meanBodyPx` is the anti-"hide it" guard. The plausible wrong answer to this gate is to make
   // the offending part invisible or to shrink it: crack pixels fall to zero and the character gets
@@ -480,6 +514,10 @@ export async function run(opts) {
     frames: frames.length, framesWithCracks: framesWithHoles,
     crackPx: totalHole, enclosedPx: totalEnclosed,
     meanBodyPx: Math.round(totalBody / Math.max(1, frames.length)),
+    // Sorted so two runs' censuses diff cleanly, and pixel counts kept so a reader can see whether
+    // a part is a hand or a rivet. The GUARD is on the SET, not on the counts.
+    partCensus: Object.fromEntries([...partPx.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([k, v]) => [k, v])),
+    partCount: partPx.size,
     worst: worstFrame,
     verdict: totalHole === 0 ? 'PASS' : 'FAIL',
   };

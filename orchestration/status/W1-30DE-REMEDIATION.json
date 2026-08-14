@@ -1,0 +1,27 @@
+{
+  "task_id": "W1-30DE-REMEDIATION",
+  "role": "builder",
+  "piece": "W1-30D + W1-30E remediation",
+  "status": "running",
+  "plan_state": "building",
+  "summary": "Applying the four remediations named by the W1-30D-r1 and W1-30E-r1 critic. (1) unblock E's street gate by moving the eight street camera setups off the blind 0.35r offset onto a clearance-checked point, then re-render on hardware. (2) add a per-part presence census beside the 3% silhouette area guard and prove it with a hide-both-hands control. (3) fix the held-object stray-pixel bug at actor-orbit-holes.mjs:350. (4) fix D's reproduction command, whose --baseline-ref=HEAD patches nothing.",
+  "next_step": "fix 3 (one-word held/major), then fix 2 (census + hide-both-hands control), then fix 4, then fix 1 + hardware render",
+  "reversible_rulings": [],
+  "headline_findings": [],
+  "files_claimed": [
+    "orchestration/status/W1-30DE-REMEDIATION.json",
+    "tools/visual/actor-orbit-holes.mjs",
+    "tools/visual/actor-hole-control.mjs",
+    "tools/visual/build-deck.mjs",
+    "tools/visual/deck.json",
+    "orchestration/status/W1-30D.md",
+    "reports/w1-30de-remediation/",
+    "docs/shots/2026-08-14-w1-30de-remediation/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-30DE-REMEDIATION.json"
+  ],
+  "redundant_with": ["W1-30V", "W1-30DE-critic"],
+  "redundancy_note": "tools/visual/ and deck.json are W1-30V's. The deck edit is the critic's named remedy for GAP-W1-w1-30e-street-gate-never-ran and is deliberately in W1-30V's territory; it is a generated file so the edit is to build-deck.mjs and deck.json is regenerated."
+}

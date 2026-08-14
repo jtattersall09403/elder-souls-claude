@@ -1,6 +1,14 @@
 #!/usr/bin/env node
 // W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 //
+// THE ONE-LINE REPRODUCTION, and it works at HEAD:
+//
+//   node tools/visual/actor-hole-control.mjs --poses=default --angles=8 --distances=1.5
+//
+// The baseline ref defaults to `a1d24f58` — the commit before the fix — and does NOT default to
+// HEAD, which is not a baseline for a change that has been committed. `--baseline-ref=none` skips
+// the baseline arm; naming a ref whose `actor.js` equals the working tree is refused by name.
+//
 // WHY A SEPARATE TREE AND NOT A FLAG. A control that lives inside the instrument tests the
 // instrument's own branch, not the build. `actor-orbit-holes --sabotage=...` is refused for that
 // reason. This tool makes a real copy of the source, edits `render/actor.js` in it, and runs the
@@ -82,6 +90,24 @@ const CONTROLS = {
   'weld-arm-to-rib': (s) => s.replace(
     '[.228*M.build*M.shoulders,.20*M.build,.142*M.build]',
     '[.400*M.build*M.shoulders,.34*M.build,.300*M.build]   /* NULL CONTROL: swallow the arms */'),
+  // THE CHEAT THE 3% AREA GUARD DOES NOT CATCH, and the reason the census below exists.
+  //
+  // `hide-arm` is the CONSPICUOUS version of "delete the thing being measured" and the area guard
+  // does catch it (-3.3% against a 3.0% bar — by 0.3 points). A critic asked the obvious next
+  // question: what is the cheapest mutilation, rather than the biggest? It is the small expensive
+  // parts. Deleting both HANDS — palms, three fingers and an opposed thumb each — improves the
+  // crack metric by ~31% and moves the silhouette area by ~0.31%, a tenth of the guard's
+  // threshold. Hands are one of the two features `W1-30D.md` item 5 says a person looks at first.
+  //
+  // Three edits, because the fingers are built in a SEPARATE loop from the palm segment and a
+  // control that only removes the segment table entry moves the silhouette 0.00% and proves
+  // nothing (the critic hit that first version too, and so did `hide-arm`'s).
+  'hide-both-hands': (s) => s
+    .replace("  hand_l: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },", '  // NULL CONTROL: left palm deleted')
+    .replace("  hand_r: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },", '  // NULL CONTROL: right palm deleted')
+    .replace("  hand_l: 'skin', hand_r: 'skin',", '  // NULL CONTROL: hands carry no material')
+    .replace("  for (const [id, sideSign] of [['hand_l',-1],['hand_r',1]]) {",
+      "  for (const [id, sideSign] of []) {   // NULL CONTROL: both hands' digits deleted"),
   'baseline-head': (s) => s,   // handled specially: actor.js replaced from a git blob
 };
 
@@ -109,18 +135,61 @@ function makeTree(label, patch) {
 }
 
 /**
- * THE SILHOUETTE GUARD, and why 3% and not 8%.
+ * THE SILHOUETTE AREA GUARD — half of the anti-gaming check, and the half that is nearly spent.
  *
- * Welding a seam moves the outline of a character by, at most, the width of the seam. It cannot
- * plausibly change the area of the silhouette by a percent. Removing a limb, or fattening the
- * torso until it swallows the arms, changes it by several. 3% sits well above the noise of a
- * genuine seam fix (measured: -1.0% for the whole of this build's change) and well below the
- * cheapest way of gaming the crack count. It is the number that makes "improve the metric by
- * deleting the thing being measured" fail instead of pass.
+ * Welding a seam moves the outline of a character by, at most, the width of the seam. Removing a
+ * limb, or fattening the torso until it swallows the arms, changes it by several percent. 3% was
+ * chosen to sit above the one and below the other.
+ *
+ * THE JUSTIFICATION THAT USED TO BE WRITTEN HERE WAS WRONG, and wrong in the direction that made
+ * the guard look safe. It said *"3% sits well above the noise of a genuine seam fix (measured:
+ * -1.0% for the whole of this build's change)"*. The measured figure is **-2.9%**. So the real
+ * numbers are:
+ *
+ *   the shipped, legitimate fix   -2.9%      <- 0.1 points from tripping the guard on itself
+ *   `hide-arm`, the cheat         -3.3%      <- caught, by 0.3 points
+ *   the guard                      3.0%
+ *
+ * The guard separates a correct fix from a deleted limb by **0.4 percentage points**, not by two.
+ * That headroom is not a threshold anybody should be tuning; it is a signal that a scalar is the
+ * wrong instrument. Deleting both HANDS moves it -0.31% and walks straight through.
+ *
+ * THE AREA GUARD IS KEPT ANYWAY, because it is the arm that catches `weld-arm-to-rib` (+9.0%),
+ * which ADDS geometry — a presence census cannot see that. The two halves catch opposite cheats.
  */
 const AREA_GUARD_PCT = 3;
 
-const opts = { res: 384, family: 'saxhleel', poses: 'smoke', angles: 12, distances: [1.5, 4], only: null, baselineRef: null };
+/**
+ * THE PER-PART PRESENCE CENSUS — the other half, and the one that catches deletion at any size.
+ *
+ * A scalar cannot notice that a specific part stopped existing. `actor-orbit-holes.mjs` already
+ * carries `owner[]` and a part label per triangle, so it now reports, for every named part, the
+ * pixels that part owns anywhere in the run. The guard is on the SET, not on the counts: a build
+ * whose part set is a strict subset of the baseline's has deleted something, and there is no
+ * threshold to argue about. It fires on a deleted fingertip exactly as it fires on a deleted arm.
+ *
+ * WHAT IT CANNOT DO, stated because a guard nobody knows the edge of is a guard nobody can trust:
+ *   - it cannot see a part SHRUNK to one pixel, only a part gone from every frame;
+ *   - it cannot see a part ADDED (that is the area guard's job, and `weld-arm-to-rib`'s arm);
+ *   - a part legitimately RENAMED reads as a deletion plus an addition, so the reporter prints
+ *     both sides and a human decides. It is deliberately noisy in that one direction.
+ */
+function censusDelta(baseline, arm) {
+  const a = new Set(Object.keys(baseline || {})), b = new Set(Object.keys(arm || {}));
+  const missing = [...a].filter((k) => !b.has(k)).sort();
+  const added = [...b].filter((k) => !a.has(k)).sort();
+  return { missing, added, baselineParts: a.size, armParts: b.size };
+}
+
+// D-3: `--baseline-ref=HEAD` crashes with *"control 'baseline' patched nothing"*, because once the
+// work is committed `HEAD:game/src/render/actor.js` is byte-identical to the working tree — so the
+// before/after that carries the whole claim could not be re-derived from the documented command.
+// The real baseline is the commit BEFORE `4607cabe` ("W1-30D: the player's holes were geometric in
+// five places"). It is pinned here so the default reproduces, and a ref that is not a baseline is
+// now refused with a message that says so.
+const DEFAULT_BASELINE_REF = 'a1d24f58';
+
+const opts = { res: 384, family: 'saxhleel', poses: 'smoke', angles: 12, distances: [1.5, 4], only: null, baselineRef: DEFAULT_BASELINE_REF };
 for (const a of process.argv.slice(2)) {
   const [k, v] = a.replace(/^--/, '').split('=');
   if (k === 'res') opts.res = Number(v);
@@ -129,7 +198,7 @@ for (const a of process.argv.slice(2)) {
   else if (k === 'angles') opts.angles = Number(v);
   else if (k === 'distances') opts.distances = v.split(',').map(Number);
   else if (k === 'only') opts.only = v.split(',');
-  else if (k === 'baseline-ref') opts.baselineRef = v;
+  else if (k === 'baseline-ref') opts.baselineRef = (v === 'none' || v === 'off') ? null : v;
 }
 
 const trees = [];
@@ -139,19 +208,37 @@ try {
   console.log(`current build       : ${String(now.crackPx).padStart(6)} crack px, `
     + `${String(now.framesWithCracks).padStart(4)}/${now.frames} frames, mean silhouette ${now.meanBodyPx} px`);
 
+  console.log(`current build       : ${String(now.partCount).padStart(6)} named parts reach at least one pixel`);
+
   if (opts.baselineRef) {
     const { execFileSync } = await import('node:child_process');
     const blob = execFileSync('git', ['show', `${opts.baselineRef}:game/src/render/actor.js`], { cwd: ROOT, encoding: 'utf8' });
+    // D-3 again: refuse a ref that is not a baseline, and SAY SO. The old failure mode was the
+    // generic "its anchor text has moved", which sends the reader hunting for a moved string when
+    // the actual problem is that they named the commit they are trying to measure.
+    if (blob === readFileSync(join(ROOT, 'game/src/render/actor.js'), 'utf8')) {
+      throw new Error(`--baseline-ref=${opts.baselineRef} IS NOT A BASELINE: ${opts.baselineRef}:game/src/render/actor.js `
+        + 'is byte-identical to the working tree, so there is nothing to compare against. Name the commit BEFORE the '
+        + `change you are measuring. The pinned default for this build is ${DEFAULT_BASELINE_REF}.`);
+    }
     const dir = makeTree('baseline', () => blob);
     trees.push(dir);
     const b = await measure(dir, opts);
     console.log(`baseline ${opts.baselineRef.padEnd(11)}: ${String(b.crackPx).padStart(6)} crack px, `
-      + `${String(b.framesWithCracks).padStart(4)}/${b.frames} frames, mean silhouette ${b.meanBodyPx} px`);
+      + `${String(b.framesWithCracks).padStart(4)}/${b.frames} frames, mean silhouette ${b.meanBodyPx} px, ${b.partCount} parts`);
     const areaDrift = 100 * (now.meanBodyPx - b.meanBodyPx) / b.meanBodyPx;
     console.log(`  -> crack px ${b.crackPx} -> ${now.crackPx}; silhouette area drift ${areaDrift.toFixed(1)}%`);
     if (Math.abs(areaDrift) > AREA_GUARD_PCT) {
       console.log(`  !! SILHOUETTE DRIFT > ${AREA_GUARD_PCT}%: the character changed size, not just its seams. Not a clean fix.`);
       failed++;
+    }
+    const d = censusDelta(b.partCensus, now.partCensus);
+    if (d.missing.length) {
+      console.log(`  !! PART CENSUS: ${d.missing.length} part(s) present in the baseline reach zero pixels now: ${d.missing.join(', ')}`);
+      failed++;
+    } else {
+      console.log(`  -> part census: ${d.baselineParts} -> ${d.armParts} parts, none lost`
+        + (d.added.length ? ` (${d.added.length} new: ${d.added.join(', ')})` : ''));
     }
   }
 
@@ -163,13 +250,18 @@ try {
     const s = await measure(dir, opts);
     const areaDrift = 100 * (s.meanBodyPx - now.meanBodyPx) / now.meanBodyPx;
     const shouldGoRed = ['break-joints', 'unbed-belt', 'refloat-crest', 'unweld-tail'].includes(label);
+    // The census is compared against the CURRENT build, not the baseline: the question a deletion
+    // control asks is "did this arm remove something the shipping character has".
+    const d = censusDelta(now.partCensus, s.partCensus);
     let verdict;
     if (shouldGoRed) verdict = s.crackPx > now.crackPx ? 'RED as required' : 'CONTROL DID NOT GO RED — the check is not measuring what it claims';
-    else verdict = Math.abs(areaDrift) > AREA_GUARD_PCT ? 'CAUGHT by silhouette guard' : 'NOT CAUGHT — the guard is too loose';
+    else if (Math.abs(areaDrift) > AREA_GUARD_PCT) verdict = 'CAUGHT by silhouette guard';
+    else if (d.missing.length) verdict = `CAUGHT by part census (${d.missing.length} part(s) gone: ${d.missing.join(', ')})`;
+    else verdict = 'NOT CAUGHT — the guard is too loose';
     if (/DID NOT|NOT CAUGHT/.test(verdict)) failed++;
     console.log(`${label.padEnd(20)}: ${String(s.crackPx).padStart(6)} crack px, `
       + `${String(s.framesWithCracks).padStart(4)}/${s.frames} frames, silhouette ${s.meanBodyPx} px `
-      + `(${areaDrift >= 0 ? '+' : ''}${areaDrift.toFixed(1)}%) — ${verdict}`);
+      + `(${areaDrift >= 0 ? '+' : ''}${areaDrift.toFixed(1)}%), ${s.partCount} parts — ${verdict}`);
   }
 } finally {
   for (const d of trees) rmSync(d, { recursive: true, force: true });
