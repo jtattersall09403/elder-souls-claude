@@ -370,6 +370,12 @@ export class Engine {
     // `game/data/npcs/pop-*.json` are exactly what `topics_taught` was: a field on disk that
     // no entity in the running world is built from.
     this.sim.populate = (sid) => this.populateSettlement(sid);
+    // THE FACING THE DATA PROPOSES, CHECKED AGAINST THE GEOMETRY THAT IS ACTUALLY THERE.
+    // Another Engine-installed hook of the `sim.placeBody` / `sim.applyCell` / `sim.doorVeto`
+    // family, and for the same reason: `sim/settlement.js` computes a facing from the door record
+    // and must not know that a renderer, a province or a collision cell exists. See
+    // `_refineFacing()` for what it does and for the twelve doorsteps that need it.
+    this.sim.faceRefine = (x, y, z, yaw) => this._refineFacing(x, y, z, yaw);
     // THE AUTHORITATIVE BODY MOVE, and the reason it has to exist.
     //
     // `useDoor()` originally wrote the spawn straight into `sim.player.pos`, which is the

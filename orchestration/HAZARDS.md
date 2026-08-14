@@ -66,6 +66,22 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 10. `pkill -f headless_shell` is a fleet-wide kill, not a cleanup — kill by PID
+
+An agent cleaning up **its own** stalled browser ran `pkill -9 -f headless_shell`. The pattern matches
+every agent's browser on the box. Three siblings' capture runs — `deck.mjs`, `gpu-deck.mjs` and
+`deck-motion.mjs` — were resident immediately before and gone immediately after, and **nobody can now
+tell whether they finished or were killed**, which is the expensive part: a killed capture that looks
+like a completed one gets cited.
+
+It also killed the perpetrator's own probe arm, so it did not even work as cleanup.
+
+**Kill by PID, and only your own.** Record the PID when you start a browser. The same warning applies
+to every `pkill -f`, `killall`, and `pgrep`-driven loop on this box: the fleet shares one machine, so
+any pattern that matches a *program* rather than a *process you started* is a fleet-wide action. This
+is the same shape as `runpod cleanup` with no arguments (§4) and `git gc --prune=now` (§1) — a command
+whose blast radius is the whole box, run by an agent reasoning about its own work.
+
 ## 9. Evidence under `reports/` can silently never reach the remote — and nothing goes red
 
 **Symptom, from the agent who found it: three landing attempts that "succeeded" and put nothing on the
@@ -121,6 +137,72 @@ Any new worktree needs the same link before it can capture anything.
 **Second trap in the same place:** an agent in a worktree that calls `tools/harness/shot.mjs` starts
 a **second capture daemon rooted at its own worktree**, which cannot work and competes for the
 browser ceiling with the real one. Use the shared daemon.
+
+## 6. `tools/bank.mjs` could print failure and still exit 0 — rule 28's trap, live
+
+An agent lost finished work to this: `bank.mjs` reported a problem in its own output and then exited
+0 anyway. Every retry loop on this box checks the *pipeline's* exit code, not the words —
+`if node tools/bank.mjs "…"; then echo OK; break; fi` — so a truthful-sounding failure message that
+exits 0 is read as success and the agent moves on believing its work is saved. Seven agents lost
+finished work on 2026-08-14; this is the mechanism behind several of those losses.
+
+**Before, two concrete lies, both real code paths, not a hypothetical:**
+
+1. Two call sites un-staged a path (a file that failed `node --check`, or a file `check-shipped-
+   files.mjs` said would 404 on the deployed site) via `git restore --staged`, inside
+   `try { … } catch {}`. If the restore itself failed — index contention, a stray lock — the
+   exception was swallowed, the code kept trusting its own hand-spliced JS array of "what got
+   excluded," and the final commit carried the excluded file anyway while the printed message said
+   `excluded N path(s) from this commit`. The exit code at the end was still 0.
+2. Nothing checked, after `git commit` returned success, that HEAD's own tree actually contained
+   every staged path. `execFileSync` not throwing only means git's exit code was 0 — it says nothing
+   about content. A hook that rewrites the index, or a race that lands a different commit in
+   between, could drop a path with `git commit` itself still reporting success, and the tool printed
+   `bank: committed N path(s)…` regardless.
+
+**After (this branch, `codex/wave1-build-experiment`):**
+
+- `git restore --staged` failures are no longer swallowed: a failed un-stage is now a hard stop
+  (non-zero exit, nothing committed), and every call site re-reads `git diff --cached --name-only`
+  from git itself afterward instead of trusting a spliced array — the ground truth, not the tool's
+  memory of what it intended.
+- After every real commit, `bank.mjs` diffs `HEAD`'s own tree (`git diff-tree --no-commit-id
+  --name-only -r --root HEAD`) against the staged-path list and refuses to report success if
+  anything staged is missing from what actually landed. The commit is left in place (no auto-amend
+  on a tree a dozen agents are touching) but the exit code is non-zero and the message says exactly
+  which paths did not land.
+- `bank.mjs` still does not push (that remains `TICK.md` step 2's job, run right after), but it now
+  says so unconditionally on every successful run — `NOT PUSHED. … run git push … before treating
+  this work as landed on origin` — so a retry loop that only checks this tool's exit code cannot
+  mistake "committed locally" for "published." **Decision, reversible:** folding an actual `git push`
+  into `bank.mjs` was considered and rejected, on the grounds that it would add network latency to a
+  tool that "runs constantly" (the explicit constraint on this fix) and that a push failure is a
+  different failure mode than a commit failure worth distinguishing rather than conflating. Evidence
+  that would overturn this: if stranded-local-commit incidents continue after this fix despite the
+  explicit message, that means the message is being ignored rather than missed, and folding the push
+  in becomes the better trade.
+- `node tools/bank.mjs --self-test` now exists (previously did not) and drives the real functions
+  above against disposable scratch git repos — not a reimplementation of the logic, not a tautology.
+  Four arms, each watched to fail before the fix and pass after: a lock that never clears must be
+  reported held; a lock that is already clear must not be; a clean commit that carries everything
+  staged must verify clean; a commit that drops a staged path (built with `git commit --only`, the
+  exact shape a stripping hook produces — `git commit` itself still returns 0) must be caught, not
+  waved through. Watched arm 1 and arm 3 actually go red on deliberately reintroduced copies of the
+  old behavior (`held: false` unconditionally; `missingFromCommit` returning `[]` unconditionally)
+  before confirming the shipped file passes all four.
+
+Nothing on the commit path itself changed (rule 13): the restore fix makes an existing un-stage step
+honest about its own result, and the post-commit verify runs strictly after `git commit` has already
+returned, so neither can block or delay a commit that was going to happen anyway.
+
+> **Restored 2026-08-14 by `PARTIAL-REVERTS-20260814`, and read it as history.** This entry and the
+> `bank.mjs` hardening it describes were written by `fd5d7a24` and dropped hours later by
+> `556c08e2` — a bank commit about visual children, plan audit, look target and HUD — leaving the
+> visible §5 → §7 hole above. The *specific* code paths are superseded: `bank.mjs` no longer calls
+> `git restore --staged` at all (it passes `--exclude` to `land.mjs`), and the four-arm self-test now
+> lives in `node tools/land.mjs --self-test`. **The doctrine is not superseded, which is why it is
+> back:** on this box every retry loop reads the pipeline's exit code and not the words, so any tool
+> that prints its own failure and exits 0 is read as success. Ask it of any tool you ship here.
 
 ## 0. A fifth failure shape: a self-test whose arms agree about a false premise
 

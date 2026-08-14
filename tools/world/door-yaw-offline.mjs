@@ -123,6 +123,12 @@ function occluded(cell, x, z, yaw, eye) {
   return +(blocked / n).toFixed(4);
 }
 const passes = (c, o) => c >= MIN_CLEAR && o <= MAX_OCCL;
+/** Does the side pass AFTER the engine's refinement? Unrefined rows fall back to the proposal. */
+const passesRefined = (side) => {
+  const rp = side.refined_predicted;
+  if (!rp) return side.fixed ? side.fixed.pass : false;
+  return !!rp.pass;
+};
 
 /** Every ten-degree bearing scored once — the ceiling, the floor, and the whole prior-yaw sweep. */
 function scan(cell, x, z, eye) {
@@ -144,6 +150,38 @@ function scan(cell, x, z, eye) {
     // bearings runs to the cap, this point saw no geometry and its PASS is not a measurement.
     no_geometry_visible: Math.min(...cs) >= REACH,
   };
+}
+
+/**
+ * What `Engine._refineFacing()` will do to this proposal — PREDICTED, not observed.
+ *
+ * The engine keeps a proposal that passes, otherwise takes the nearest of the 36 ten-degree
+ * bearings that passes, otherwise keeps the proposal. Its predicate is identical to this file's
+ * despite marching only to 3 m: `pass` asks `clearance >= 3` and `occluded` counts rays under
+ * 3 m, and neither question can be answered differently by a march that continues past 3 m.
+ *
+ * It is still a PREDICTION of another module's behaviour, so it is labelled as one and it is
+ * checked against the running engine by `tools/harness/door-yaw-sweep.mjs`. An offline forecast
+ * that has never been confronted with the engine is a hypothesis, not a result.
+ */
+function predictRefine(sc, proposedYaw, scoreExact) {
+  if (!Number.isFinite(proposedYaw)) return null;
+  // THE PROPOSAL IS SCORED AT ITS OWN ANGLE, not at the nearest ten-degree bearing. The first
+  // version of this function snapped it, and `helstrom-house-2` — proposal 341.0 deg, failing on
+  // occlusion at 0.381, with 340 deg passing one degree away — came back "proposal_clear" and was
+  // reported as an unfixable row. A predictor that rounds its own input is measuring a different
+  // door from the one the engine places the body at.
+  const p = scoreExact(proposedYaw);
+  if (p.pass) return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'proposal_clear',
+    clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, pass: true };
+  const cands = sc.rows.filter((r) => r.pass)
+    .map((r) => ({ r, dev: Math.abs(((r.yaw_deg - proposedYaw + 540) % 360) - 180) }))
+    .sort((a, b) => a.dev - b.dev);
+  if (!cands.length) return { yaw_deg: +proposedYaw.toFixed(1), refined: false, reason: 'no_bearing_passes',
+    clearance_m: p.clearance_m, occluded_frac: p.occluded_frac, pass: false };
+  const c = cands[0];
+  return { yaw_deg: c.r.yaw_deg, refined: true, reason: 'nearest_clear_bearing', turned_deg: +c.dev.toFixed(1),
+    clearance_m: c.r.clearance_m, occluded_frac: c.r.occluded_frac, pass: true };
 }
 
 const main = () => {
@@ -194,6 +232,7 @@ const main = () => {
       const cell = new CollisionCell(`settlement:${plan.id}`, solids, { class: 'exterior' });
       const face = exitFacing(rec);
       const sc = scan(cell, out3[0], out3[2], eye);
+      const exact = (yaw) => { const c = clearance(cell, out3[0], out3[2], yaw, eye), o = occluded(cell, out3[0], out3[2], yaw, eye); return { clearance_m: c, occluded_frac: o, pass: passes(c, o) }; };
       const fixC = face ? clearance(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
       const fixO = face ? occluded(cell, out3[0], out3[2], face.yaw_deg, eye) : null;
       const seedC = clearance(cell, out3[0], out3[2], SEED_YAW, eye);
@@ -207,6 +246,7 @@ const main = () => {
         worst_clearance_m: sc.worst_clearance_m,
         point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
         inside_a_building: !!insideBuilding(plan, out3[0], out3[2]),
+        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact) : null,
         bearings: sc.rows,
       };
     }
@@ -220,6 +260,7 @@ const main = () => {
       const eye = isp[1] + 1.6;
       const face = entryFacing(rec);
       const sc = scan(cell, isp[0], isp[2], eye);
+      const exact = (yaw) => { const c = clearance(cell, isp[0], isp[2], yaw, eye), o = occluded(cell, isp[0], isp[2], yaw, eye); return { clearance_m: c, occluded_frac: o, pass: passes(c, o) }; };
       const fixC = face ? clearance(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
       const fixO = face ? occluded(cell, isp[0], isp[2], face.yaw_deg, eye) : null;
       const seedC = clearance(cell, isp[0], isp[2], SEED_YAW, eye);
@@ -232,6 +273,7 @@ const main = () => {
         best_clearance_m: sc.best_clearance_m, best_yaw_deg: sc.best_yaw_deg,
         worst_clearance_m: sc.worst_clearance_m,
         point_can_pass: sc.point_can_pass, no_geometry_visible: sc.no_geometry_visible,
+        refined_predicted: face ? predictRefine(sc, face.yaw_deg, exact) : null,
         bearings: sc.rows,
       };
     }
@@ -256,6 +298,10 @@ const main = () => {
       any_prior_total_pairs: rs.length * 36,
       any_prior_failing_share: +(priorPairs / (rs.length * 36)).toFixed(4),
       interiors_failing_for_some_prior: rs.filter((r) => r[key].any_prior.failing_of_36 > 0).length,
+      refined_failing: rs.filter((r) => r[key].refined_predicted && !passesRefined(r[key])).length,
+      refined_failing_ids: rs.filter((r) => r[key].refined_predicted && !passesRefined(r[key])).map((r) => r.id),
+      refined_changed: rs.filter((r) => r[key].refined_predicted && r[key].refined_predicted.refined).length,
+      refined_changed_ids: rs.filter((r) => r[key].refined_predicted && r[key].refined_predicted.refined).map((r) => r.id),
       point_cannot_pass: rs.filter((r) => !r[key].point_can_pass).map((r) => r.id),
       no_geometry_visible: rs.filter((r) => r[key].no_geometry_visible).map((r) => r.id),
       no_rule: rs.filter((r) => !r[key].fixed).map((r) => r.id),
@@ -307,7 +353,8 @@ const main = () => {
   for (const k of ['exit', 'enter']) {
     const s = out.summary[k];
     say(`  ${k.toUpperCase()}  n=${s.n}`);
-    say(`    SHIPPED RULE   failing ${s.fixed_failing}/${s.n}   median clear ${s.fixed_median_clearance_m} m   median occl ${s.fixed_median_occluded}`);
+    say(`    DATA RULE ALONE      failing ${s.fixed_failing}/${s.n}   median clear ${s.fixed_median_clearance_m} m   median occl ${s.fixed_median_occluded}`);
+    say(`    + GEOMETRY REFINE    failing ${s.refined_failing}/${s.n}   (predicted; ${s.refined_changed} facing(s) changed${s.refined_changed ? ': ' + s.refined_changed_ids.join(', ') : ''})`);
     say(`    BEFORE, seeded prior ${SEED_YAW} deg   failing ${s.seeded_prior_failing}/${s.n}   median clear ${s.seeded_prior_median_clearance_m} m`);
     say(`    BEFORE, ANY prior (36 per interior)   failing pairs ${s.any_prior_failing_pairs}/${s.any_prior_total_pairs} = ${(s.any_prior_failing_share * 100).toFixed(1)}%   interiors failing for at least one prior: ${s.interiors_failing_for_some_prior}/${s.n}`);
     say(`    points where NO bearing passes: ${s.point_cannot_pass.length}${s.point_cannot_pass.length ? ' — ' + s.point_cannot_pass.join(', ') : ''}`);

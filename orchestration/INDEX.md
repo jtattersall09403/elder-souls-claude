@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b7a75d51`: 979 tools, 157 reference
+so it cannot drift. Generated at `43ca8121`: 982 tools, 157 reference
 items, 200 pieces in flight.
 
 Its purpose is to stop 200+ concurrent agents each paying separately to discover the
@@ -795,7 +795,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 64
+### `tools/quests/` — 65
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -859,6 +859,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-15-prerequisite-ledger.mjs` — S43's W1-15-owned QST05 seam: enumerate canonical prerequisite references without rerunning W1-18's quest population.
 - `tools/quests/w1-20-builder.mjs` — **no header comment**
+- `tools/quests/w1-20-r3-verify.mjs` — the remediation of `W1-20-r2`, measured.
 - `tools/quests/w1-20-shot.mjs` — The picture for W1-20: the door being shut, in the doorkeeper's own words.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
@@ -965,7 +966,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 12
+### `tools/ui/` — 13
 
 - `tools/ui/compass-math.mjs` — the compass's arithmetic, checked against an INDEPENDENT derivation, plus the responsive dial geometry at every viewport the game is meant to be played at.
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
@@ -973,6 +974,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
 - `tools/ui/dialogue-link-census.mjs` — The inline-link census — RI-UIX08 comparison method §2, headless, no browser.
+- `tools/ui/dialogue-window-probe.mjs` — RI-UIX08's dialogue window, in the running game.
 - `tools/ui/hud-compass-probe.mjs` — the compass and minimal mode, in the running game.
 - `tools/ui/w1-21-model-consumption.mjs` — Exhaustive RI-MTH07 coupling gate for every player-facing UISystem model/drawer in W1-21.
 - `tools/ui/w1-21-r3-browser.mjs` — W1-21 round 3's ONE browser: the derived `markers` field, CONSUMPTION, and the six screens.
@@ -980,7 +982,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 29
+### `tools/visual/` — 30
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -1000,6 +1002,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/test/mutate-renderer-class.mjs` — **no header comment**
 - `tools/visual/test/probe-local-renderer.mjs` — **no header comment**
 - `tools/visual/w1-30-canopy-shimmer.mjs` — **no header comment**
+- `tools/visual/w1-30-copy-seam-patch.mjs` — **no header comment**
 - `tools/visual/w1-30-deep-marshes-bands.mjs` — **no header comment**
 - `tools/visual/w1-30-fog-owner-ab.mjs` — **no header comment**
 - `tools/visual/w1-30-heightfalloff-arm.mjs` — **no header comment**
@@ -1214,7 +1217,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **271 tools have no header comment**, so nobody can tell what they do without
+> **272 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 

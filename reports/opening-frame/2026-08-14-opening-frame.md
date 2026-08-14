@@ -154,16 +154,25 @@ The "before" arm is **not a reconstruction**: `--baseline <git-ref>` checks the 
 `render/places.js` straight out of git into the same directory so its relative imports resolve,
 imports it, and builds the room from it.
 
-| | doorway visible | what blocked it | walk straight forward |
-|---|---|---|---|
-| as shipped | **14 %** | 15 of 35 samples: the reed-case cylinders at `z = 5.90` | **misses the doorway by 2.64 m** |
-| fixed | **57 %** | the desk and its rail only — which is correct, there is a desk between you and the door | **reaches the doorway** |
+It asks **what the ray hits first**, not whether it reaches a plane, and getting to that took two
+wrong drafts that are worth recording because both were measuring their own instrument. Draft one
+stopped each ray just short of a sample plane at `z = 6.30` and scored the *fixed* room at 0 %
+visible — the rays were terminating inside the door the fix had just added. Draft two moved the
+plane to 6.15 and the numbers moved by 43 points on an arm that had not changed at all, because
+6.15 is 0.03 m behind the shelf boards' rear face and the raycaster's `far` epsilon was swallowing
+the shelf hits. So the ray now runs *past* the wall and the sample is scored by what stopped it:
+the door meshes are named `writ-house-door` in the scene graph, and a sample counts only if that is
+what got in the way first.
 
-The residual 43 % is the desk at `z = 2.6`, cutting the lower rows of the aperture. That is a desk
-doing what a desk does, not an occlusion defect.
+| camera | doorway visible, before | after | what still blocks it | walk straight forward |
+|---|---|---|---|---|
+| as shipped (yaw 350) | **0 %** | **57 %** | the desk and its rail | **misses the doorway by 2.64 m** |
+| fixed (yaw 343.4) | **0 %** | **69 %** | the desk and its rail | **reaches the doorway** |
 
-The "before" 14 % is also generous to the old build: those five clear sight-lines led to a **blank
-wall**, because there was no door drawn there to see.
+**Before is zero on every arm and that is the finding, not an artefact:** every ray to the aperture
+stopped on the 11.00 × 4.00 × 0.35 m wall slab at `z = 6.50`, or on the reed-case shelving before
+it. There was no door in the room to see. The residual after the fix is the desk at `z = 2.6`
+cutting the lower rows of the aperture, which is a desk doing what a desk does.
 
 ### The second half: where "forward" goes
 
@@ -197,13 +206,17 @@ Where the geometry lives: `character/scene.js#doorwayLocal()` / `#handBackFramin
 
 ### The null control at this site is uninformative, and that is worth saying
 
-`body_only` at the hand-back scores **identically** to the fix on the occlusion measure — 14 % → 57 %
-— because the two camera yaws are 6.6° apart and the occlusion is 5 m away. It differs only in that
-the camera takes 5 frames at 1.5°/frame to close the gap, and only if the player walks (auto-recentre
-needs the stick held forward for `recentre_gate_frames` = 20 first, so a player who stands still
-never arrives at all). **At this site the null control does not separate the arms, and the honest
-reading is that the yaw half of this change is small and the drawn-geometry half is the whole fix.**
-The same control is decisive at the doorstep (§1), which is why it stays in the tool.
+`body_only` at the hand-back — body and combat mirror turned to the door, `sim.camera.yaw` left on
+the census pose — scores **57 %** where the fix scores **69 %**. It separates, but only by 12 points,
+because the two camera yaws are 6.6° apart and the occlusion is 5 m away; it also leaves the camera
+5 frames of 1.5°/frame short of where the body is pointing, and only closes that if the player walks
+(auto-recentre needs the stick held forward for `recentre_gate_frames` = 20 first, so a player who
+stands still never arrives at all).
+
+**The honest reading is that at this site the yaw half of the change is worth 12 points and the
+drawn-geometry half is worth 57.** The same null control is decisive at the doorstep (§1) — there it
+is the difference between a healthy camera looking at a wall and a collapsed one looking at the
+marsh — which is why it stays in the tool.
 
 ### A related contradiction found and NOT fixed
 

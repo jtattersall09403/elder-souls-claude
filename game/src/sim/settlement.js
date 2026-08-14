@@ -328,6 +328,44 @@ export function stepSettlement(sim, input, bus) {
  * owns `combat`) and moves the real body; the mirror write below is the fallback for the bare
  * sim harnesses that have no combat rig at all, and it is honest only there.
  */
+/**
+ * THE DATA PROPOSES, THE GEOMETRY DISPOSES — and this module never learns what geometry is.
+ *
+ * `exitFacing()` above is right on 103 of the 115 shipped interiors and wrong on twelve, for a
+ * reason no amount of work on the rule can fix: the thing in your way is usually a DIFFERENT
+ * BUILDING, and an interior's own record does not know that building exists. Measured over the
+ * whole population (`tools/world/door-yaw-offline.mjs`, and see `reports/door-yaw/`), the twelve
+ * are `archon-apothecary`, `archon-vat-house`, `gideon-court`, `helstrom-hollow-bole`,
+ * `helstrom-house-11`, `helstrom-house-2`, `helstrom-rootpost`, `soulrest-boneyard`,
+ * `stormhold-customs`, `stormhold-inn-pass`, `stormhold-smithy` and `thorn-hall`. Ten of them have
+ * a clear bearing available from the same standing point; two are wedged and do not.
+ *
+ * The temptation is to author a `continuity.exit_facing_deg` for those twelve. That is exactly the
+ * mistake `exitFacing()`'s own comment convicts `door_world_bearing_deg` of — a frozen derived
+ * number that disagrees with the drawn world and cannot notice when the world moves. So instead
+ * the Engine is asked, through `sim.faceRefine`, whether the proposal actually clears; it keeps
+ * the proposal when it does (103 of 115 doors, unchanged) and returns the nearest bearing that
+ * does when it does not.
+ *
+ * FAIL-OPEN, like every other step of this chain: no hook, no answer, or a bare sim harness with
+ * no collision set, and the data's answer stands.
+ */
+function refineFacing(sim, at, face) {
+  const proposed = face && Number.isFinite(face.yaw_deg) ? face.yaw_deg : null;
+  const base = { yaw_deg: proposed, source: face ? face.source : null, refined: false };
+  if (typeof sim.faceRefine !== 'function') return base;
+  let r = null;
+  try { r = sim.faceRefine(at[0], at[1], at[2], proposed); } catch (e) { return base; }
+  if (!r || !Number.isFinite(r.yaw_deg)) return base;
+  return {
+    yaw_deg: norm360(r.yaw_deg),
+    // The source string carries the refinement so an event log says which half decided, rather
+    // than reporting `door_to_doorstep` for a yaw the door never proposed.
+    source: r.refined ? `${base.source || 'geometry'}+${r.reason}` : base.source,
+    refined: !!r.refined, geometry: r,
+  };
+}
+
 function placeBody(sim, at, yaw) {
   const y = Number.isFinite(yaw) ? norm360(yaw) : undefined;
   if (typeof sim.placeBody === 'function') { sim.placeBody(at[0], at[1], at[2], y); return; }
@@ -378,19 +416,23 @@ export function useDoor(sim, interiorId, bus) {
     return { entered: false, reason: 'closed', open_h: d.open_h, close_h: d.close_h };
   }
   const spawn = (d.continuity && d.continuity.interior_spawn) || [0, 0, 0];
-  const face = entryFacing(d);
   sim.env.interior = interiorId;
   sim.env.settlement = d.settlement;
-  placeBody(sim, spawn, face ? face.yaw_deg : undefined);
+  // `sim.env.interior` is set BEFORE the refinement so `_facingCell()` asks the room's shell and
+  // not the street outside it. The two frames are different and conflating them would aim the
+  // body at a wall in a coordinate system it is not standing in.
+  const face = refineFacing(sim, spawn, entryFacing(d));
+  placeBody(sim, spawn, Number.isFinite(face.yaw_deg) ? face.yaw_deg : undefined);
   applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_enter');
     ev.interior = interiorId; ev.settlement = d.settlement; ev.name = d.name;
     ev.zones = (d.property_zones || []).length; ev.pos = [spawn[0], spawn[1], spawn[2]];
-    ev.yaw_deg = face ? face.yaw_deg : null; ev.yaw_source = face ? face.source : null;
+    ev.yaw_deg = face.yaw_deg; ev.yaw_source = face.source;
   }
   return { entered: true, interior: interiorId, pos: [spawn[0], spawn[1], spawn[2]],
-    yaw_deg: face ? face.yaw_deg : null, yaw_source: face ? face.source : null };
+    yaw_deg: face.yaw_deg, yaw_source: face.source, yaw_refined: face.refined,
+    yaw_geometry: face.geometry || null };
 }
 
 /** Back out onto the doorstep you came in by. */
@@ -400,15 +442,19 @@ export function leaveInterior(sim, bus) {
   const d = S.interior(id);
   if (!d) { sim.env.interior = null; applyCell(sim); return { left: true, interior: id, pos: null }; }
   const out = (d.continuity && d.continuity.exterior_spawn) || d.exterior_door || [0, 0, 0];
-  const face = exitFacing(d);
+  // Cleared BEFORE the refinement, for the same reason `useDoor()` sets it before its own: the
+  // body is about to be standing in the street, so the street's walls are what it must be asked
+  // about, not the room's.
   sim.env.interior = null;
-  placeBody(sim, out, face ? face.yaw_deg : undefined);
+  const face = refineFacing(sim, out, exitFacing(d));
+  placeBody(sim, out, Number.isFinite(face.yaw_deg) ? face.yaw_deg : undefined);
   applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_exit');
     ev.interior = id; ev.settlement = d.settlement; ev.pos = [out[0], out[1], out[2]];
-    ev.yaw_deg = face ? face.yaw_deg : null; ev.yaw_source = face ? face.source : null;
+    ev.yaw_deg = face.yaw_deg; ev.yaw_source = face.source;
   }
   return { left: true, interior: id, pos: [out[0], out[1], out[2]],
-    yaw_deg: face ? face.yaw_deg : null, yaw_source: face ? face.source : null };
+    yaw_deg: face.yaw_deg, yaw_source: face.source, yaw_refined: face.refined,
+    yaw_geometry: face.geometry || null };
 }
