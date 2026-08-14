@@ -190,13 +190,44 @@ const hide = (prefixes) => g.page.evaluate(({ prefixes }) => {
 }, { prefixes });
 const unhide = () => g.page.evaluate(() => { for (const o of (window.__LANE_HIDDEN || [])) o.visible = true; window.__LANE_HIDDEN = []; });
 const setFeature = (n, o) => g.page.evaluate(({ n, o }) => window.__ENGINE.renderer.sky.setFeature(n, o), { n, o });
+const shadowReport = () => g.page.evaluate(() => {
+  const sky = window.__ENGINE.renderer.sky;
+  return { castShadow: sky.sun.castShadow, feature: sky.features.shadows, intensity: +sky.sun.intensity.toFixed(3) };
+});
+/** What the water actually is, asked of the page rather than inferred from the source. */
+const waterState = () => g.page.evaluate(() => {
+  const R = window.__ENGINE.renderer;
+  const out = { meshes: 0, geometries: [], materials: [] };
+  const seenMat = new Set();
+  R.scene.traverse((o) => {
+    if (!(o.isMesh || o.isInstancedMesh)) return;
+    if (!/^water/.test(o.name || '')) return;
+    out.meshes++;
+    if (out.geometries.length < 3) {
+      out.geometries.push({ name: o.name, attributes: Object.keys(o.geometry.attributes), visible: o.visible, renderOrder: o.renderOrder });
+    }
+    const m = o.material;
+    if (m && !seenMat.has(m.uuid) && out.materials.length < 4) {
+      seenMat.add(m.uuid);
+      out.materials.push({
+        type: m.type, transparent: m.transparent, opacity: m.opacity, depthWrite: m.depthWrite,
+        vertexColors: m.vertexColors, hasMap: !!m.map, hasNormalMap: !!m.normalMap,
+        transmission: m.transmission, clearcoat: m.clearcoat,
+        reflectionStrength: m.userData?.waterUniforms?.uWaterReflectionStrength?.value,
+        reflectionBound: !!m.userData?.waterUniforms?.uWaterReflection?.value,
+      });
+    }
+  });
+  out.shadow = { castShadow: R.sky.sun.castShadow, feature: R.sky.features.shadows, report: R.sky.shadowReport ? R.sky.shadowReport() : null };
+  return out;
+});
 
 /* --- the arms -------------------------------------------------------------------------------
  * Each entry names ONE mechanism in water.js. The needles are literal source from that file.
  */
 const E = (needle, rep, where) => [needle, rep, where || 'fragment'];
 
-const ARMS = [
+const ALL_ARMS = [
   // ---- positive control: the arm the r1 critic already showed goes red -----------------------
   { id: 'water-hidden', kind: 'positive-control',
     what: 'hide every water mesh — the arm the r1 critic ran; must go red or this run is void',
@@ -238,11 +269,47 @@ const ARMS = [
   // ---- the shadow arm, re-run, with a whole-frame witness -------------------------------------
   { id: 'shadows-off', kind: 'cross-check',
     what: 're-run of the r1 critic shadow arm, this time with a whole-frame change fraction so an inert arm is visible',
-    run: async () => { await setFeature('shadows', false); return { feature: 'shadows=false' }; },
+    run: async () => { await setFeature('shadows', false); return { feature: 'shadows=false', shadow_report: await shadowReport() }; },
     undo: async () => setFeature('shadows', true) },
+  // The same question asked of the object rather than of the feature flag. `setFeature('shadows')`
+  // only takes effect where `sky.update()` re-runs line 821; this arm writes `sun.castShadow`
+  // directly and reads it back, so an inert flag and a real negative are distinguishable.
+  { id: 'sun-castshadow-false', kind: 'cross-check',
+    what: 'renderer.sky.sun.castShadow = false written directly and read back, because a feature flag that never reaches the light looks exactly like a light that does not matter',
+    run: () => g.page.evaluate(() => {
+      const sky = window.__ENGINE.renderer.sky;
+      sky.__laneShadowWas = sky.sun.castShadow;
+      sky.sun.castShadow = false;
+      Object.defineProperty(sky.sun, 'castShadow', { value: false, writable: false, configurable: true });
+      return { was: sky.__laneShadowWas, now: sky.sun.castShadow };
+    }),
+    undo: () => g.page.evaluate(() => {
+      const sky = window.__ENGINE.renderer.sky;
+      delete sky.sun.castShadow;
+      sky.sun.castShadow = sky.__laneShadowWas !== undefined ? sky.__laneShadowWas : true;
+    }) },
+
+  // ---- round two: is the water even the surface the lanes are painted on? ----------------------
+  // Round one ablated every term water.js contributes and none of them moved the lanes, while
+  // hiding the water still collapses them. Those two facts cannot both be about water.js's shader,
+  // so these arms test the two remaining routes into a water pixel: the standard three.js lighting
+  // that survives the final mix (which is where a cast shadow would arrive), and `diffuseColor`
+  // (which is where the 12.5 m water lattice's vertex colour arrives).
+  { id: 'flat-water', kind: 'mechanism',
+    what: 'the ENTIRE water output replaced by one constant colour. If the lanes survive this they are not painted on the water at all, whatever hiding the water does',
+    edits: [E('outgoingLight=mix(outgoingLight,esSurface,.68);', 'outgoingLight=vec3(.28,.36,.35);')] },
+  { id: 'no-standard-lighting', kind: 'mechanism',
+    what: 'the final mix weight taken to 1.0, discarding the 32% of three.js standard lighting that carries the sun shadow into the water pixel',
+    edits: [E('outgoingLight=mix(outgoingLight,esSurface,.68);', 'outgoingLight=esSurface;')] },
+  { id: 'diffuse-const', kind: 'mechanism',
+    what: 'diffuseColor forced constant, which removes the water geometry vertex colour (the 12.5 m per-cell depth ramp) and the base map together',
+    edits: [E('diffuseColor.rgb*=1.015+vEsWaterWave*.008;', 'diffuseColor.rgb=vec3(.14,.30,.32);')] },
 
   { id: 'nothing-restore-control', kind: 'floor', what: 'nothing — the site nondeterminism floor', run: async () => ({}), undo: async () => {} },
 ];
+const ONLY = args.only ? String(args.only).split(',') : null;
+// The floor and the positive control are never dropped: without them no other row can be read.
+const ARMS = ONLY ? ALL_ARMS.filter((a) => ONLY.includes(a.id) || a.kind === 'floor' || a.kind === 'positive-control') : ALL_ARMS;
 
 const base = await shot('00-baseline');
 const baseH = hp(lum(base), CROP);
@@ -251,6 +318,8 @@ const out = {
   commit: null, baseline_band_energy: energy(baseH), arms: [], pageErrors: [],
 };
 try { out.commit = (await import('node:child_process')).execSync('git rev-parse --short HEAD', { cwd: REPO }).toString().trim(); } catch {}
+out.water_state = await waterState();
+console.log(`water state: ${JSON.stringify(out.water_state, null, 1)}`);
 console.log(`site ${SITE} t${TIME}  baseline band energy ${out.baseline_band_energy}  crop ${CROP.join(',')}`);
 
 for (const arm of ARMS) {

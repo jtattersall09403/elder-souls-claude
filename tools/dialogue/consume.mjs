@@ -34,7 +34,7 @@
 'use strict';
 import path from 'node:path';
 import url from 'node:url';
-import { buildTopicIndex, infoFor } from '../../game/src/character/converse.js';
+import { buildTopicIndex, infoFor, topicsFor } from '../../game/src/character/converse.js';
 import { learnTopics } from '../../game/src/sim/quest/topic-supply.js';
 import { loadTopicDocs, loadNpcs } from './answer-census.mjs';
 

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `250aad60`: 987 tools, 157 reference
-items, 201 pieces in flight.
+so it cannot drift. Generated at `b92323d5`: 991 tools, 157 reference
+items, 204 pieces in flight.
 
-Its purpose is to stop 201+ concurrent agents each paying separately to discover the
+Its purpose is to stop 204+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -744,6 +744,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/map/player-route.mjs` — CAN A PERSON OPEN THE MAP?
 - `tools/map/touch-route.mjs` — HOW MANY TAPS DOES A PHONE PAY FOR A PAGE TURN, AND CAN IT FIND THE MAP?
 
+### `tools/merge/` — 1
+
+- `tools/merge/json-3way.mjs` — **no header comment**
+
 ### `tools/metrics/` — 7
 
 - `tools/metrics/consumption-census.mjs` — RI-MTH07 CONSUMPTION census — re-runnable standing check.
@@ -882,7 +886,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
 
-### `tools/render/` — 35
+### `tools/render/` — 36
 
 - `tools/render/cam07-back.mjs` — THE ONE FIDELITY PATH THE CAMERA DEPENDS ON: the player's back.
 - `tools/render/consumption-sweep.mjs` — **no header comment**
@@ -919,6 +923,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/render/w1-30e-kit-gate.mjs` — W1-30E — the offline gates for the settlement kit, each with a null control.
 - `tools/render/w1-30e-roof-extent.mjs` — **no header comment**
 - `tools/render/w1-30e-street-enclosure.mjs` — **no header comment**
+- `tools/render/w1-thorn-roof-census.mjs` — **no header comment**
 
 ### `tools/runpod/` — 16
 
@@ -990,7 +995,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/ui/w1-21-r3-mutator-test.mjs` — THE TEST THAT WOULD HAVE CAUGHT THE `restore()` GETTER.
 - `tools/ui/w1-21-r3-sample-table.mjs` — PUBLISH THE PER-SCREEN, PER-CHECK SAMPLE TABLE.
 
-### `tools/visual/` — 30
+### `tools/visual/` — 31
 
 - `tools/visual/actor-hole-control.mjs` — W1-30D — the null controls for `actor-orbit-holes.mjs`, run against patched SOURCE TREES.
 - `tools/visual/actor-orbit-holes.mjs` — W1-30D — the offline orbit hole detector.
@@ -1021,6 +1026,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/visual/w1-30b-air.mjs` — **no header comment**
 - `tools/visual/w1-30b-probe.mjs` — **no header comment**
 - `tools/visual/w1-30b-roughness.mjs` — **no header comment**
+- `tools/visual/w1-heightfog-retake.mjs` — **no header comment**
 - `tools/visual/w1-water-lane-terms.mjs` — **no header comment**
 
 ### `tools/w1-26-continuation/` — 1
@@ -1060,7 +1066,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 161
+### `tools/world/` — 162
 
 - `tools/world/architecture.mjs` — RI-WLD14 M78-M84 builder instrument.
 - `tools/world/arrangement-audit.mjs` — **no header comment**
@@ -1084,6 +1090,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/build-unique-property.mjs` — put the 83 interior unique items into the ownership system.
 - `tools/world/build-water-hazards.mjs` — **no header comment**
 - `tools/world/build-weather.mjs` — Build game/data/world/weather.json — the thirteen per-region weather state machines.
+- `tools/world/building-overlap-census.mjs` — HOW MANY BUILDINGS IN THIS WORLD ARE INSIDE EACH OTHER?
 - `tools/world/calibrate-micro.mjs` — **no header comment**
 - `tools/world/clamp-before-r2.js` — THE PARAPET AS IT STOOD AT THE END OF W1-CROSSING ROUND 1, verbatim from game/src/world/field.js at the commit this round started from, turned into a function e
 - `tools/world/consumption.mjs` — **no header comment**
@@ -1225,7 +1232,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **272 tools have no header comment**, so nobody can tell what they do without
+> **275 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1403,6 +1410,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `AUDIT-CITATION-STALENESS` | ? |  | `tools/check-citations.mjs` `.githooks/pre-commit` `reports/staleness-audit/2026-08-14-citation-audit.md` `reports/staleness-audit/2026-08-14-citation-audit.json` `reports/staleness-audit/reverse-index.md` `reports/staleness-audit/reverse-index.json` |
+| `W1-DLG-TOPIC-WEB` | building | Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED | `orchestration/status/W1-DLG-TOPIC-WEB.json` |
+| `W1-18-REINTEGRATION` | in_progress | Restore group A, verify JSON parses + quest-audit moves, land. | `orchestration/status/W1-18-REINTEGRATION.json` |
+| `W1-UIX08-dialogue-window` | built-probe-running | finish tools/ui/dialogue-window-probe.mjs run; delete-the-fix arm on a control clone; blog | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` `game/src/ui/screens/dialogue.js` `game/src/ui/screens/dialogue-links.js` `game/src/ui/surface.js` `game/src/ui/system.js` |
+| `plan-review3-w1-dlg-topic-web` | done | none — the plan is build-ready. Dispatch the builder per §8; steps A-E, rows A1/A1b/A2/A5/ | `orchestration/plans/W1-DLG-TOPIC-WEB.md` `orchestration/status/plan-review3-w1-dlg-topic-web.json` |
+| `AUDIT-CONSUMPTION-CENSUS` | ? | none for this task — census complete. Follow-up work (not done here, per 'do not fix the o | `reports/consumption-census/2026-08-14-census.md` `tools/metrics/consumption-census.mjs` `orchestration/status/AUDIT-CONSUMPTION-CENSUS.json` |
 | `W1-BUILDING-OVERLAP-CENSUS` | starting | Read HAZARDS.md, RULING-D1-BUILDING-OVERLAP.json, reports/opening-frame/2026-08-14-opening | `orchestration/status/W1-BUILDING-OVERLAP-CENSUS.json` |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched |  | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `W1-THORN-PLATES-C2` | in-progress | WIP | `orchestration/status/W1-THORN-PLATES-C2.json` |
@@ -1410,13 +1423,10 @@ work is the difference between resuming and starting over.
 | `W1-MAP-DEFECTS-r2` | in_progress | CHUNK 2 PICKS UP EXACTLY HERE. (1) READ `reports/w1-map-defects-r2/phone-leg.log.txt` AND  | `orchestration/status/W1-MAP-DEFECTS-r2.json` `tools/lib/pinned-tree.mjs` `tools/map/fog-control.mjs` `reports/blog-feed.jsonl` `reports/w1-map-defects-r2/` |
 | `W1-DOOR-YAW-SWEEP` | ? | in-game validation run on the 12 failing exits + a stratified spread; then delete-the-fix  | `orchestration/status/W1-DOOR-YAW-SWEEP.json` `tools/harness/door-yaw-sweep.mjs` `tools/harness/door-yaw-teardown.mjs` `tools/world/door-yaw-offline.mjs` `game/src/sim/settlement.js` `game/src/engine.js` |
 | `W1-WATER-LANES` | measuring | Run tools/visual/w1-water-lane-terms.mjs at vista-deep-marshes to name the owning shader t | `orchestration/status/W1-WATER-LANES.json` `tools/visual/w1-water-lane-terms.mjs` |
-| `AUDIT-CONSUMPTION-CENSUS` | ? | enumerate game/data field families, grep game/src for readers, classify | — |
 | `W1-MAP-DEFECTS-r1-remediation` | landed; four of five defects closed with evidence, one measurement still owed |  | `game/src/ui/system.js` `game/src/input/touch.js` `game/src/engine.js` `tools/harness/map-probe.mjs` `tools/map/fog-control.mjs` `tools/map/player-route.mjs` |
-| `AUDIT-CITATION-STALENESS` | ? | Read ARBITRATION.md S-rulings, HAZARDS.md, OWNER-DIRECTIVES; build ruling->document revers | `orchestration/status/AUDIT-CITATION-STALENESS.json` |
 | `W1-ORPHANED-SURFACE-SHADERS` | in_progress | Write the census tool (population + grouping by route), then develop the fix on a control  | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json` |
 | `W1-30E-KIT-DEFECTS` | built-awaiting-fresh-critic |  | `game/src/render/lib/kits.js` `tools/render/w1-30e-roof-extent.mjs` `tools/render/w1-30e-ground-albedo.mjs` `tools/visual/deck.mjs` `reports/w1-30e-kit-defects/README.md` `reports/blog-feed.jsonl` |
 | `SPLIT-TRIAL-DISPATCH` | dispatched | On each chunk 1's completion: read its orchestration/status/<PIECE>.json, and dispatch chu | `orchestration/status/SPLIT-TRIAL-DISPATCH.json` |
-| `W1-UIX08-dialogue-window` | building | write game/src/ui/screens/dialogue.js (window + inline-link matcher + history), add 2 kind | `orchestration/status/W1-UIX08-dialogue-window.json` `reports/uix08/READING-NOTE.md` |
 | `W1-20-r3-remediation` | in_progress | Read faction-gates.json world_state columns and the four faction quest books; identify the | `orchestration/status/W1-20-r3-remediation.json` |
 | `critic-w1-map-defects-r1` | done |  | `corpus/90-verdicts/wave1/W1-MAP-DEFECTS-r1.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/walk-reachability.txt` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.mjs` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/anchor-audit.json` `corpus/90-verdicts/wave1/artifacts/w1-map-defects/fog-three-arms.png` |
 | `SPAWN-YAW` | done-and-banked |  | `orchestration/status/SPAWN-YAW.json` `game/src/sim/settlement.js` `game/src/engine.js` `game/src/main.js` `game/data/states/default.json` `tools/lib/opening.mjs` |

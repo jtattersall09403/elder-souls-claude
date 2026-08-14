@@ -76,9 +76,45 @@ await g.h('stepFrames', STEPS);
 const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
   const VF = await import('./src/render/visual-foundation.js');
   const R = window.__ENGINE.renderer;
-  const HOOK_SURFACE = /uDetailNormal|vEsSurfaceWorldY/;
-  const HOOK_WATER = /uWaterPhase|uWaterReflection/;
-  const HOOK_WATERLINE = /uWaterY|vEsWaterY/;
+
+  // ---- HOW WE ASK WHETHER A HOOK INSTALLS THE SURFACE PASS ----------------------------------
+  // The first version of this census — and the gate that found the defect — tested
+  // `/uDetailNormal/.test(String(mat.onBeforeCompile))`. That reads the SOURCE TEXT of the outer
+  // function, and it is blind the moment a hook CHAINS a prior one: the chaining wrapper's own
+  // text mentions nothing, because the surface code lives in a closure variable. It reported 116
+  // false orphans against a build where the pass was demonstrably installed, and it would have
+  // been read as the fix having failed.
+  //
+  // So ask the hook what it DOES, not what it says. Call it against a stand-in shader carrying
+  // the chunk markers three would give it, and see what comes back. This is immune to chaining,
+  // to minification and to anybody renaming a variable, and it is the same question the renderer
+  // asks at program-compile time.
+  const probeHook = (m) => {
+    const fake = {
+      uniforms: {},
+      vertexShader: '#include <begin_vertex>\n#include <skinning_vertex>\n#include <worldpos_vertex>\n',
+      fragmentShader: '#include <normal_fragment_maps>\n#include <lights_physical_fragment>\n'
+        + '#include <clipping_planes_fragment>\n#include <color_fragment>\n#include <roughnessmap_fragment>\n',
+    };
+    let threw = null;
+    try { if (m.onBeforeCompile) m.onBeforeCompile(fake, R); } catch (e) { threw = String((e && e.message) || e); }
+    const su = m.userData && m.userData.surfaceUniforms;
+    return {
+      hook_threw: threw,
+      // The pass is installed only if BOTH the uniform arrived AND the fragment source gained the
+      // wear/wetness body. A uniform with no shader body would be bookkeeping all over again.
+      installs_surface: !!fake.uniforms.uDetailNormal && /uDetailNormal/.test(fake.fragmentShader)
+        && /vEsSurfaceCurv/.test(fake.fragmentShader) && /esWet/.test(fake.fragmentShader),
+      // THE IDENTITY LINK, and it is the whole CONSUMPTION question in one boolean: is the uniform
+      // object the shader receives THE SAME OBJECT `setWorldWetness()` writes into? A hook that
+      // installed a detached copy would render, would look installed, and would never respond to
+      // the world. That is the failure this project has shipped sixteen times.
+      shader_uniform_is_the_live_one: !!(fake.uniforms.uDetailNormal && su
+        && fake.uniforms.uWorldWetness === su.uWorldWetness),
+      installs_water: !!fake.uniforms.uWaterPhase,
+      installs_waterline: !!fake.uniforms.uWaterY,
+    };
+  };
 
   // ---- collect every material reachable from the scene, plus the ones parked in userData ----
   // `renderer.js#setCharacterFade` keeps a cloned `__fadeMat` on the MESH's userData and only
@@ -99,8 +135,8 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
     if (!m) return;
     let row = seen.get(m);
     if (!row) {
-      const hookSrc = m.onBeforeCompile ? String(m.onBeforeCompile) : '';
       const u = m.userData && m.userData.surfaceUniforms;
+      const p = probeHook(m);
       row = {
         material_name: m.name || m.type,
         family: (m.userData && m.userData.visualFamily) || null,
@@ -112,9 +148,11 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
         // the object is no longer the one any shader holds a reference to.
         uniforms_are_live: !!(u && u.uDetailNormal && u.uDetailNormal.value
           && u.uDetailNormal.value.isTexture === true),
-        hook_installs_surface: HOOK_SURFACE.test(hookSrc),
-        hook_installs_water: HOOK_WATER.test(hookSrc),
-        hook_installs_waterline: HOOK_WATERLINE.test(hookSrc),
+        hook_installs_surface: p.installs_surface,
+        shader_uniform_is_the_live_one: p.shader_uniform_is_the_live_one,
+        hook_threw: p.hook_threw,
+        hook_installs_water: p.installs_water,
+        hook_installs_waterline: p.installs_waterline,
         has_water_uniforms: !!(m.userData && m.userData.waterUniforms),
         has_w1_30: !!(m.userData && m.userData.w1_30),
         // Evidence of route, carried on the material itself rather than inferred from a name.
@@ -157,8 +195,9 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
     const cu = c.userData && c.userData.surfaceUniforms;
     mechanism = {
       source: intact.name,
-      source_hook_installs_surface: HOOK_SURFACE.test(String(intact.onBeforeCompile || '')),
-      clone_hook_installs_surface: HOOK_SURFACE.test(String(c.onBeforeCompile || '')),
+      source_hook_installs_surface: probeHook(intact).installs_surface,
+      clone_hook_installs_surface: probeHook(c).installs_surface,
+      clone_shader_uniform_is_the_live_one: probeHook(c).shader_uniform_is_the_live_one,
       clone_keeps_surface_uniforms: !!cu,
       clone_uniforms_are_live: !!(cu && cu.uDetailNormal && cu.uDetailNormal.value && cu.uDetailNormal.value.isTexture === true),
     };
@@ -176,8 +215,7 @@ const report = await g.page.evaluate(async ({ selfcheck, fallback }) => {
   let selfcheckResult = null;
   if (selfcheck && intact) {
     const victim = intact;
-    const isOrphan = (m) => !!(m.userData && m.userData.surfaceUniforms)
-      && !HOOK_SURFACE.test(String(m.onBeforeCompile || ''));
+    const isOrphan = (m) => !!(m.userData && m.userData.surfaceUniforms) && !probeHook(m).installs_surface;
     const beforeBreak = isOrphan(victim);
     const savedHook = victim.onBeforeCompile;
     victim.onBeforeCompile = (shader) => shader;    // a hook that installs nothing
@@ -299,6 +337,13 @@ const checks = [
     detail: `${ghosts.length} of ${withUniforms.length} carry a JSON-deep-copied uniform block whose uDetailNormal is not a Texture` },
   { id: 'WETNESS-REACHES-EVERY-SHADED-MATERIAL', ok: unreachableWet.length === 0,
     detail: `${unreachableWet.length} of ${withUniforms.length} did not follow setWorldWetness() to its sentinel value` },
+  // The identity link between the model and the renderer, per material. This is the check that
+  // would still fail if somebody "fixed" the orphans by installing a detached uniform block.
+  { id: 'SHADER-UNIFORM-IS-THE-LIVE-ONE',
+    ok: withUniforms.filter((r) => !r.shader_uniform_is_the_live_one).length === 0,
+    detail: `${withUniforms.filter((r) => !r.shader_uniform_is_the_live_one).length} of ${withUniforms.length} bind a uWorldWetness that is NOT the object setWorldWetness() writes into` },
+  { id: 'NO-HOOK-THREW', ok: rows.filter((r) => r.hook_threw).length === 0,
+    detail: `${rows.filter((r) => r.hook_threw).length} onBeforeCompile hooks threw when invoked against a stand-in shader` },
 ];
 if (report.fallbackProbe) {
   checks.push({ id: 'LOUD-FALLBACK-REACHES-EVERY-MATERIAL',

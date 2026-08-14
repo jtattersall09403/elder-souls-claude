@@ -227,6 +227,21 @@ const FACE_MAX_OCCL = 0.34;          // and no more than a third of the view may
 const FACE_FAN_DEG = 30;             // the forward 60 degrees, which is roughly what a player reads
 const FACE_FAN_STEP_DEG = 3;         // 21 rays across it
 const FACE_SCAN_STEP_DEG = 10;       // 36 candidate bearings when the proposal fails
+/* AND THE ROOM BEHIND YOU — the other half of the owner's complaint, and a different defect.
+ *
+ * Turning the body fixes "facing a wall". It does not fix what
+ * `reports/spawn-yaw/2026-08-14-door-exit-yaw.md` §4a named and did not own: at the writ house
+ * doorstep the third-person arm is collapsed against the wall the player just walked out of, so
+ * the camera sits AT the body and THE PLAYER CHARACTER IS NOT IN THE FRAME. Swept over the
+ * population, that is **27 of 115 doorsteps** below the fade threshold and 33 below the arm's
+ * wanted length — and on 114 of 115 of them SOME facing does leave the arm its room, so it is a
+ * choice-of-facing problem far more than a where-the-door-is problem.
+ *
+ * These two are `CAMERA_CONST.arm_free_m` and `CAMERA_CONST.fade_start_m` from `sim/camera.js`,
+ * restated here rather than imported because `engine.js` already imports `CAMERA_CONST` — see the
+ * use below, which reads them from it. The names exist so the intent is legible at the call site.
+ */
+const FACE_REAR_STEP_M = 0.25;
 
 export class Engine {
   constructor(canvas) {
@@ -3572,13 +3587,27 @@ export class Engine {
     const rows = new Map();
     for (const t of st.topics) rows.set(t.id, { id: t.id, label: t.text || topicLabel(t.id) });
     for (const e of c.extra || []) if (!rows.has(e.id)) rows.set(e.id, { id: e.id, label: topicLabel(e.id) });
-    // The learned edges, kept only where this person has something to say.
-    for (const id of this._dlgAdds) {
-      if (rows.has(id)) continue;
-      let info = null;
-      try { info = infoFor(this.topicIndex, id, c.npc, c.player, this.canon || null); } catch { info = null; }
-      if (info) rows.set(id, { id, label: topicLabel(id) });
-    }
+    // ---- THE LEARNED EDGES, AND THE FILTER THAT USED TO BE HERE WAS WRONG ---------------------
+    //
+    // This loop first read `if (infoFor(...)) rows.set(...)` — light an AddTopic target only if
+    // THIS person also has a bespoke answer to it. Measured in the running game at
+    // `helstrom-market`: **0 links in 36 lines of prose**, and offline over the whole shipped
+    // corpus the same filter takes 87–97 lightable spans per speaker down to 0–7. It made the
+    // central mechanism of the item invisible in every conversation in the build.
+    //
+    // It was wrong because `AddTopic` is UNCONDITIONAL in Morrowind: the edge puts the word in
+    // your index, and whether the person in front of you has a view on it is a separate
+    // question. RI-UIX08 §D1 says so in terms — "it adds that word to the topic column
+    // permanently, FOR EVERY SPEAKER WHO HAS AN ANSWER TO IT ... the permanence is the point:
+    // the index is the player's accumulated vocabulary for the whole world."
+    //
+    // The promise a blue word makes is therefore "following this puts the word in your index",
+    // and it is kept in BOTH branches — see the `_convPending` site in `_afterStep()`, which
+    // learns the topic even when this speaker declines. A word whose click did nothing at all
+    // would be the "link that is not a promise" the item calls worse than no link; this is not
+    // that. And §C1's discriminator survives untouched: `Fighters Guild` stays bronze, because
+    // nothing has authored an edge to it.
+    for (const id of this._dlgAdds) if (!rows.has(id)) rows.set(id, { id, label: topicLabel(id) });
 
     // §D2. What you can DO with this person, above the rule. `persuasion` is a real call into
     // `sim/dialogue/disposition.js persuade()` — the same one `conversationPersuade()` makes —
@@ -6793,7 +6822,27 @@ export class Engine {
     }
     if (this._propPending) this._takePropPending();
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
-    if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
+    if (this._convPending) {
+      const t = this._convPending; this._convPending = null;
+      let said = null;
+      try { said = this.conversationSay(t); } catch { said = null; }
+      // W1-UIX08 §D1. THE BLUE WORD'S PROMISE, KEPT WHEN THIS PERSON HAS NOTHING TO SAY.
+      //
+      // `conversationSay()` returns `{refused:'no_info'}` before it reaches `learnTopics`, so a
+      // topic somebody's answer explicitly UNLOCKED — an authored `AddTopic` edge — was dropped
+      // on the floor whenever the person who mentioned it had no separate line about it. That is
+      // most of them. Morrowind's `AddTopic` is unconditional; the RESPONSE is what is
+      // conditional. So the edge is honoured here: the word enters the index and the quest
+      // machine is told how, exactly as it would have been on the answering path.
+      //
+      // Scope is deliberately narrow: only a topic THIS conversation has already been handed by
+      // an authored edge (`_dlgAdds`) can take this route. It cannot invent a topic, it cannot
+      // fire from the column, and with `DIALOGUE_WINDOW = false` `_dlgAdds` is never populated.
+      if (said && said.refused === 'no_info' && this._dlgAdds && this._dlgAdds.has(t)) {
+        const learned = learnTopics(this.sim.quest.topicsKnown, [t]);
+        for (const k of learned) this.questEngine.noteTopicLearned(k, 'CONVERSATION', this.conversation.npc ? this.conversation.npc.eid : null);
+      }
+    }
     // W1-UIX08 §D2. The actions section is not furniture: `Persuasion` calls the same
     // `sim/dialogue/disposition.js persuade()` the harness door calls, and the number on the bar
     // directly above the column moves. Applied here, outside the fixed step, exactly as the
@@ -8120,27 +8169,71 @@ export class Engine {
       const ahead = rayClear(yaw);
       return { clear_m: ahead, occluded: blocked / n, pass: ahead >= FACE_MIN_CLEAR_M && blocked / n <= FACE_MAX_OCCL };
     };
+    // How much room the third-person arm has BEHIND this facing, at the camera pivot's height.
+    // One ray, 17 steps — a rounding error beside the forward fan. It is an OPTIMISTIC proxy for
+    // `castCameraArm()`, which sweeps a 0.28 m sphere with a shoulder offset, so it can only
+    // under-report a collapse; that is the safe direction for a guard whose job is to avoid one.
+    const ARM = CAMERA_CONST.arm_free_m, FADE = CAMERA_CONST.fade_start_m;
+    const pivotY = Number(y) + CAMERA_CONST.pivot_height_m;
+    const rear = (yaw) => {
+      const r = (yaw + 180) * d2r, sx = Math.sin(r), sz = Math.cos(r);
+      for (let d = FACE_REAR_STEP_M; d <= ARM + 1e-9; d += FACE_REAR_STEP_M) {
+        if (cell.contains(x + sx * d, pivotY, z + sz * d)) return d - FACE_REAR_STEP_M;
+      }
+      return ARM;
+    };
     const proposal = has ? score(proposedYaw) : null;
+    const proposalRear = has ? rear(proposedYaw) : null;
+    // UNCHANGED IF IT CLEARS AHEAD — even when the camera is boxed in behind it. That is a
+    // deliberate, reversible ruling and it was measured both ways before it was made.
+    //
+    // Preferring a facing with room behind it, whenever the proposal had none, "fixes" 14 of the
+    // 27 collapsed arms — and to buy that it turns the player at 26 doors instead of 10, and
+    // INDOORS it turns them at 113 of 115, because an interior spawn is against the door wall by
+    // construction and so the rear is always short. Turning the body away from the direction it
+    // walked, to give the thing that FOLLOWS the body more room, is the wrong trade: the player
+    // controls the body and merely watches the camera.
+    //
+    // So the collapsed camera arm stays a named, measured, UNCLAIMED defect (27 of 115 doorsteps
+    // below `fade_start_m`, of which 26 have some facing that would clear it) rather than
+    // something this function quietly pays for out of the facing. REVERSIBLE: restore the
+    // `&& proposalRear >= FADE` clause here and in the offline predictor.
+    // WHAT WOULD OVERTURN IT: someone playing it and finding the invisible character worse than
+    // the unexpected turn, or the camera arm proving unfixable on its own terms.
     if (proposal && proposal.pass) {
       return { yaw_deg: proposedYaw, refined: false, reason: 'proposal_clear',
-        clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4) };
+        clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4),
+        rear_m: +proposalRear.toFixed(2), camera_boxed_in: proposalRear < FADE };
     }
+    // The proposal did NOT clear ahead, so the player is being turned regardless — and a turn that
+    // is happening anyway may as well land somewhere the camera can see them from. Rank the
+    // bearings that clear AHEAD (that test is never traded away) and among them prefer: the player
+    // visible at all, then the arm at full length, then as close to "the way you walked" as
+    // possible. This costs nothing, because no facing is changed that would not have changed.
     let best = null;
-    for (let a = 0; a < 360; a += FACE_SCAN_STEP_DEG) {
+    for (let a = 0; a < FACE_SCAN_STEP_DEG * 36; a += FACE_SCAN_STEP_DEG) {
       const s = score(a);
       if (!s.pass) continue;
+      const rr = rear(a);
       const dev = has ? Math.abs(((a - proposedYaw + 540) % 360) - 180) : 0;
-      if (!best || dev < best.dev) best = { yaw_deg: a, dev, s };
+      const key = [rr < FADE ? 1 : 0, rr < ARM ? 1 : 0, dev];
+      if (!best || key[0] < best.key[0]
+        || (key[0] === best.key[0] && key[1] < best.key[1])
+        || (key[0] === best.key[0] && key[1] === best.key[1] && key[2] < best.key[2])) {
+        best = { yaw_deg: a, dev, s, rear_m: rr, key };
+      }
     }
     if (!best) {
       return has
         ? { yaw_deg: proposedYaw, refined: false, reason: 'no_bearing_passes',
-            clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4) }
+            clear_m: +proposal.clear_m.toFixed(2), occluded: +proposal.occluded.toFixed(4),
+            rear_m: proposalRear === null ? null : +proposalRear.toFixed(2) }
         : null;
     }
     return { yaw_deg: best.yaw_deg, refined: true, reason: has ? 'nearest_clear_bearing' : 'clear_bearing',
       from_yaw_deg: has ? proposedYaw : null, turned_deg: +best.dev.toFixed(1),
-      clear_m: +best.s.clear_m.toFixed(2), occluded: +best.s.occluded.toFixed(4) };
+      clear_m: +best.s.clear_m.toFixed(2), occluded: +best.s.occluded.toFixed(4),
+      rear_m: +best.rear_m.toFixed(2), rear_was_m: proposalRear === null ? null : +proposalRear.toFixed(2) };
   }
 
   /** The collision set a body placed at (x, z) will actually be standing in. */

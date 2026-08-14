@@ -252,6 +252,14 @@ if (!args['static-only'] && !args.staticOnly) {
   // `faction` field, so the mapping is done node-side off the book itself — which also keeps the
   // plan honest: it is every faction quest in `game/data/quests/**`, in rank order, not whatever
   // a harness census happened to return.
+  // Every skill and attribute id, so the CLIMB arm can put a character at the top of all of them.
+  // L1 keeps the honest half — a maxed character who has done no quests must still stop at rank 4 —
+  // and L2 asks a different question: with talent no longer the binding constraint, does the LADDER
+  // open? Without this the driver was refused `Q-ASSZ-07 res_remove_him` on `speechcraft 60` and
+  // took the authored refusal instead, and reported the Assize capped at 6 for a reason that is the
+  // probe's character sheet rather than the build.
+  const ALL_SKILLS = (readJSON('game/data/progression/skills.json').skills || []).map((x) => x.id);
+  const ALL_ATTRS = (readJSON('game/data/progression/attributes.json').attributes || []).map((x) => x.id);
   const LADDER_FLAGS = new Set();
   for (const f of gates.factions || []) for (const r of f.ranks || []) if (r.world_state) LADDER_FLAGS.add(r.world_state.flag);
   const PLAN = {};
@@ -270,7 +278,7 @@ if (!args['static-only'] && !args.staticOnly) {
   }
 
   const game = await launchGame(args, { usage: USAGE });
-  const live = await game.page.evaluate(async ({ LINES, REPS, REP_HOME, PLAN }) => {
+  const live = await game.page.evaluate(async ({ LINES, REPS, REP_HOME, PLAN, ALL_SKILLS, ALL_ATTRS }) => {
     const H = window.__HARNESS;
     const out = { checks: [], notes: [] };
     const push = (id, detail) => out.checks.push({ id, ...detail });
@@ -313,6 +321,9 @@ if (!args['static-only'] && !args.staticOnly) {
     for (const fid of LINES) {
       fresh(REP_HOME[fid] || null);
       maxOut(fid);
+      // Top out EVERYTHING for the climb arm only — see the node-side comment on ALL_SKILLS.
+      try { H.setSkills(Object.fromEntries(ALL_SKILLS.map((x) => [x, 100]))); } catch (e) { out.notes.push('setSkills(all): ' + String(e).slice(0, 100)); }
+      try { H.setAttributes(Object.fromEntries(ALL_ATTRS.map((x) => [x, 100]))); } catch (e) { out.notes.push('setAttributes(all): ' + String(e).slice(0, 100)); }
       const start = derived(fid).rank;
       const played = [];
       const taken = new Set();
@@ -436,7 +447,7 @@ if (!args['static-only'] && !args.staticOnly) {
     });
 
     return out;
-  }, { LINES, REPS, REP_HOME, PLAN });
+  }, { LINES, REPS, REP_HOME, PLAN, ALL_SKILLS, ALL_ATTRS });
   await game.close();
   for (const c of live.checks) report.checks.push(c);
   for (const n of live.notes) report.notes.push(n);
