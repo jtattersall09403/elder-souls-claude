@@ -441,7 +441,7 @@ def metrics_valid_for(rel, prov, comp):
             if prov.get('a21_member') and encode_ok_dispersion:
                 out.append('dispersion')
 
-    if prov.get('slot') in ('REF-A12b', 'REF-M22') or (rel.startswith('modern/ui/')):
+    if prov.get('slot') in ('REF-A12b', 'REF-A12c', 'REF-M22') or (rel.startswith('modern/ui/')):
         out.append('ui-fidelity')
 
     if side in ('souls-behaviour', 'video'):

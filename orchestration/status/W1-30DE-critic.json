@@ -1,30 +1,69 @@
 {
   "task_id": "W1-30DE-critic",
   "role": "critic",
-  "state": "running",
+  "state": "verdicts-filed-BOTH-FAIL-D-3.0-E-4.0-against-gate-7.0",
   "started": "2026-08-14T12:05:00Z",
   "resumed": "2026-08-14T13:45:00Z",
+  "finished": "2026-08-14T14:30:00Z",
   "branch": "codex/wave1-build-experiment",
-  "summary": "Fresh critic for W1-30D (characters/creatures/animation) and W1-30E (architecture/settlement kit). Two predecessors killed by container restarts; resumed from a status stub with no partial verdicts on disk.",
-  "progress": [
-    "Read both builder statuses, both plans, parent W1-30 R1-R6, W1-30-EVIDENCE, HAZARDS, ARBITRATION S51, Rulings W1/W2.",
-    "Independently re-ran tools/visual/rig-variant-proof.mjs: reproduces the builder's claim exactly (17/17 distinct at IoU<=0.985, worst pair sax.marsh-lean/sax.thorn-hunter 0.9809; 6% widening moves 15/17, 0/2 slitherfang).",
-    "Reclaimed an orphaned RunPod (1qggkuqvk4purw) left by an interrupted --help invocation; two further orphans (m4yp3cpo41y026, z269spu71xxhj4) belong to sibling processes that are gone and were left alone per HAZARDS 4.",
-    "Launched a hardware capture: the FULL Deck profile is $0.054 and covers both children's gate shots plus motion; cheaper than two child-scoped runs."
+  "commit_judged": "318ecdf2",
+  "summary": "Fresh critic for W1-30D (characters/creatures/animation) and W1-30E (architecture/settlement kit). Two predecessors killed by container restarts; resumed from a status stub with no partial verdicts on disk. Both verdicts filed, both validate in a fresh checkout of the remote tip.",
+  "verdicts": {
+    "W1-30D-r1": { "status": "FAIL", "score": 3, "gate": 7, "aggregation": "min-over-5-axes" },
+    "W1-30E-r1": { "status": "FAIL", "score": 4, "gate": 7, "aggregation": "min-over-6-axes" }
+  },
+  "what_was_done": [
+    "Re-ran every number both builders reported, from the shipping tree. All of them reproduce exactly — rig-variant-proof, the six D null controls, the D baseline, and every row and every control arm of the E kit gate.",
+    "Captured 288 stills and 400 motion frames on real hardware (RunPod NVIDIA L4, ANGLE Vulkan, HARDWARE, full Deck profile, seed 20260814, $0.054). This closes E's headline red — that no frame had been rendered — and D's 'nobody has looked at these characters'.",
+    "ATTACKED THE 3% SILHOUETTE GUARD AND BROKE IT. Deleting both of the character's hands improves the crack metric 178 -> 123 px (-31%) and moves the guarded quantity -0.31% against a 3.0% threshold: not caught. The guard's docstring justifies 3% by citing -1.0% for the whole of this build's change; the measured figure is -2.9%, so its real headroom against the arm-deletion cheat is 0.4 percentage points.",
+    "Found the successor of D's first discriminator mistake: `held` at actor-orbit-holes.mjs:350 is computed on the unfiltered ring, so one stray pixel of a weapon vetoes a whole pocket. The stray-pixel guard described in the comment on the next line was applied only to the branch that is reported, not to the branch that is gated.",
+    "Found that D's own documented reproduction command crashes at HEAD (--baseline-ref=HEAD patches nothing). The real baseline is a1d24f58.",
+    "FIRED RULING E1'S FALSIFIER with a purpose-built probe (roof-only silhouettes, normalised to their own bounding box, jitter merged at IoU >= 0.95, threshold fixed before running). E1's reading is UPHELD — 5 of 8 settlements carry genuinely different roofs — but the row STILL FAILS under it: the worst settlement is 3 against a bar of 5. The falsifier does fire in exactly 3 settlements (gideon 0.9995, stormhold and blackrose 1.000), all three of them roofMix [1] grammars.",
+    "JUDGED THE 3,284-MESH REFUSAL AND UPHELD IT, checked rather than taken on trust: the composition is published, the mechanism that would have laundered it was built to prevent laundering, and the bulk is declared-unstarted public realm. The row stays FAIL because the bar is zero and the work is not done.",
+    "PHOTOGRAPHED LILMOTH'S SKYLINE and got a third answer neither the builder nor the ruling offered: the skyline has real relief and the fog at the approach camera removes the contrast it needs to read. The approach row is blocked by W1-30B, not failed by E."
   ],
-  "next_step": "Photograph Lilmoth's skyline (E's headline red); orbit the player (D's); test the 3% silhouette guard threshold; fire Ruling E1's falsifier on roof-profile variety; judge the 3,284-mesh census refusal.",
-  "files_claimed": [
+  "biggest_gaps_filed": [
+    "GAP-W1-w1-30d-guard-misses-part-deletion (major) — remedy: a per-part presence census beside the area guard.",
+    "GAP-W1-w1-30e-street-gate-never-ran (blocking) — remedy: reposition the 8 street setups in deck.json onto the street centreline with a collision push-out. This is a W1-30V edit and is the cheapest high-value item in this tree."
+  ],
+  "handoffs": [
+    "W1-30V: the 8 street-* Deck setups put the camera inside building geometry in all three settlements examined. Also: no orbit profile exists in deck.json, so the evidence standard's 24-stop orbit has never been buildable from the shipped shot list. Also: the 12 motion sequences render the character at ~40 px of frame height and cannot evidence animation quality.",
+    "W1-30B: fog density at the settlement-approach distance destroys Lilmoth's skyline. Evidence: docs/shots/2026-08-14-w1-30de-critic/approach-lilmoth__t1300__clear.jpg.",
+    "A pack-builder that is not this critic: 288 hardware frames are in the tree and Protocol A, the naive character pack, the silhouette pack and both naive attribution packs all remain unrun for the S51 reason that pack-builder and judge must be different agents."
+  ],
+  "what_i_could_not_do": [
+    "No 24-stop x 3-distance hardware orbit. The Deck has one yaw per character setup and no orbit rig; every transparency statement is 'clean at the stops rendered', not 'clean at 144 stops'.",
+    "No Protocol A, no naive packs of any kind (S51: pack-builder and judge must differ; this critic is one agent). Recorded at score 0 with measured 'unmeasurable' rather than omitted.",
+    "The 12-shot unseen census sample was NOT drawn — the full profile is a superset of the fixed list but is not the anti-beauty-shot arm.",
+    "The open defect inventory was not re-run; WLD03's copy-paste matrix was not run; interior thresholds were not examined against W1-30G.",
+    "The full 5,760-frame D profile was not re-run after diagnosing the held-object bug, so no claim is made about how much of the 2,204 it hides.",
+    "One of this critic's own controls (debeak-head) was inert and is reported as inert, not as an escape. So was sink-crest — and its inertness corroborates that D's crest fix is structural."
+  ],
+  "hazards_hit": [
+    "`node tools/visual/gpu-deck.mjs --help` is not a help flag — it PROVISIONED A POD. Terminated (1qggkuqvk4purw). Two further orphans owned by dead sibling processes were left alone per HAZARDS 4.",
+    "bank.mjs still does a blanket `git add -A` with no staleness guard, which is HAZARDS 2d's exact failure with a dozen agents holding work. Landed instead via the 2 plumbing route scoped to declared paths only, verifying each push against the remote blob.",
+    "MY OWN ERROR, caught and repaired: my first blog-feed union keyed on (piece, when, headline[:60]) and 21 entries share those fields with an empty headline, so the push DROPPED 21 LINES. Restored by a true union keyed on exact line content; the remote now reads 227 = 226 + 1. HAZARDS 2e is right and its warning is not sufficient — the key matters as much as the rebuild."
+  ],
+  "files_touched": [
     "corpus/90-verdicts/wave1/W1-30D-r1.json",
     "corpus/90-verdicts/wave1/W1-30D-r1.md",
     "corpus/90-verdicts/wave1/W1-30E-r1.json",
     "corpus/90-verdicts/wave1/W1-30E-r1.md",
     "corpus/90-verdicts/wave1/artifacts/w1-30de/",
     "docs/shots/2026-08-14-w1-30de-critic/",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "reports/blog-feed.jsonl",
     "orchestration/status/W1-30DE-critic.json"
   ],
-  "files_touched": ["orchestration/status/W1-30DE-critic.json"],
-  "notes": [
-    "Working in the shared tree by dispatch instruction (disk hit 100% twice today); no worktree.",
-    "reports/blog-feed.jsonl will be rebuilt from origin and unioned by content key, never whole-file staged (HAZARDS 2e)."
-  ]
+  "files_claimed": [],
+  "reproduce": [
+    "node tools/visual/rig-variant-proof.mjs",
+    "node tools/visual/actor-hole-control.mjs --poses=default --angles=8 --distances=1.5 --baseline-ref=a1d24f58",
+    "node corpus/90-verdicts/wave1/artifacts/w1-30de/critic-guard-probe.mjs",
+    "node corpus/90-verdicts/wave1/artifacts/w1-30de/e1-roof-falsifier.mjs",
+    "node tools/render/w1-30e-kit-gate.mjs",
+    "node tools/visual/gpu-deck.mjs --profile full --tag w1-30de-critic --every 6 --max-runtime 25"
+  ],
+  "next_step": "Done. Two rounds are owed to the builders (the per-part census for D, the roof gable flag for E) and two handoffs are owed to W1-30V and W1-30B, all named above with acceptance conditions."
 }

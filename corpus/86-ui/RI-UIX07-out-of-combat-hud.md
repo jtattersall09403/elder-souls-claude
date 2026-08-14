@@ -66,10 +66,13 @@ This is the first Morrowind *interface* evidence the project has ever held, and 
 
 **Source A — the owner's own screenshot.**
 `sha256: e9a0531c5a09e41214ce96136af2c60e11c2ca45b65b6e46c2473b32f66cba6a`, 2376 × 1069, delivered
-2026-08-14 at `corpus/86-ui/com.google.android.keep_20260814145039.jpg`. **The sha is the durable
-handle and the path is not:** `W1-MW-UI-REFS` owns `corpus/70-visual/refs/morrowind-ui/` and will
-rename and manifest this file into the standard reference structure; cite the sha, and read the blob
-with `git show <rev>:<path>` if the working tree does not have it. It shows a dialogue window open
+2026-08-14 at `corpus/86-ui/com.google.android.keep_20260814145039.jpg` — which is **a PNG despite
+the extension** (`W1-MW-UI-REFS`'s finding, not this item's). **The sha is the durable handle and the
+path is not:** `W1-MW-UI-REFS` is vendoring this file into the standard reference structure as
+**`corpus/70-visual/refs/morrowind/REF-A12c/`**, alongside the `REF-A12` layout that is Source B, and
+is manifesting it in `refs/MANIFEST.json`. Cite the sha; read the blob with
+`git show <rev>:<path>` if the working tree does not have it (at the time of writing it is tracked in
+git and absent from the working tree, which is its own small trap). It shows a dialogue window open
 over the world **with the HUD still drawn in the corners**, which is precisely the evidence this
 item needed and precisely the thing a screenshot of a menu usually crops away.
 
@@ -564,12 +567,16 @@ achievable **before any build is failed on it**; (3) §E's superset ruling is se
 `ARBITRATION` S54 and marked reversible there, and this item follows S54 rather than deciding for
 itself.
 
-**Coordination note, recorded because it could not be performed.** `W1-MW-UI-REFS` owns
-`corpus/70-visual/refs/morrowind-ui/` and `refs/MANIFEST.json` and will rename and manifest Source A
-into the standard reference structure. That agent was **not reachable** from this session, so the
-message was not delivered: this item therefore cites Source A **by sha256 first and path second**,
-and the sha is the handle that must survive the rename. When the reference is manifested, its
-`REF-` id should be added to §0 and the sha kept in the manifest record.
+**Coordination note, recorded because half of it could not be performed.** `W1-MW-UI-REFS` owns the
+reference structure and is vendoring Source A as `REF-A12c`; it is separately writing `RI-UIX08` (the
+dialogue window), which is the *other* half of the owner's screenshot and does not overlap this item.
+**`SendMessage` could not reach that agent from this session and `ListAgents` is not available here**,
+so the coordination was done by reading its status file rather than by talking to it, and three
+findings that belong to it were **not** delivered: (a) the touch-overlay exclusion in §0, (b) that
+`REF-A12/mygui/openmw_hud.layout` already carries Morrowind's exact HUD geometry and corroborates the
+screenshot at scale 2.0, and (c) the `compass.js` factual error in R3. This item therefore cites
+Source A **by sha256 first and path second**, and the sha is the handle that must survive the
+vendoring. If `REF-A12c` lands under a different id, only §0's path line changes.
 
 **Harness additions requested** — extending `RI-UIX01`'s and `RI-UIX06`'s `getUIState()`:
 
