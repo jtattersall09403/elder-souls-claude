@@ -1,0 +1,2167 @@
+{
+  "schema": "elder-souls/door-yaw-sweep@1",
+  "label": "no-refine",
+  "generated_at": "2026-08-14T16:36:48.208Z",
+  "commit": "c9a061d0",
+  "loadavg": "43.92 39.38 33.57 51/982 8111",
+  "entry": "/tmp/elder-souls-control-clones/dyawB-no-refine/game/index.html",
+  "fix_fingerprint": {
+    "game_dir": "/tmp/elder-souls-control-clones/dyawB-no-refine/game",
+    "files": {
+      "src/sim/settlement.js": {
+        "sha256": "a16c0e823efc1e47",
+        "writes_sim_player_yaw": false,
+        "writes_camera_yaw": false,
+        "writes_combat_yaw": false,
+        "has_exitFacing": true,
+        "has_entryFacing": true
+      },
+      "src/engine.js": {
+        "sha256": "ae5435f8e7426466",
+        "writes_sim_player_yaw": true,
+        "writes_camera_yaw": true,
+        "writes_combat_yaw": true,
+        "has_exitFacing": false,
+        "has_entryFacing": false
+      }
+    }
+  },
+  "population": 115,
+  "definition": {
+    "clearance_m": "distance to first solid at eye height (pos.y + 1.6), 0.25 m march, 12 m cap, against Engine.solidAt() = sim.cell.contains()",
+    "occluded_frac": "fraction of 21 rays across the forward 60 deg (+/-30, 3 deg apart) whose first solid is closer than 3 m",
+    "judged_on": "sim.camera.yaw — what the player looks through. body and combat yaw recorded beside it.",
+    "pass": "clearance_m >= 3 AND occluded_frac <= 0.34",
+    "frames_after_door": [
+      1,
+      30,
+      120
+    ],
+    "seed_yaw_deg": 200,
+    "hour": 12
+  },
+  "rows": [
+    {
+      "id": "archon-apothecary",
+      "settlement": "archon",
+      "entry_side": "south",
+      "declared_bearing_deg": 45.8,
+      "doorstep_before": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 1,
+        "body_clearance_m": 1,
+        "occluded_frac": 0.4286,
+        "fan_mean_m": 3.81,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3.75,
+            "body_clearance_m": 3.75,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.92,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3.75,
+            "body_clearance_m": 3.75,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.92,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3.75,
+            "body_clearance_m": 3.75,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.92,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 315.8913758503732,
+        "marks": {
+          "f1": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 315.9,
+            "body_yaw_deg": 315.9,
+            "combat_yaw_deg": 315.9,
+            "clearance_m": 1.5,
+            "body_clearance_m": 1.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.56,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 315.9,
+            "body_yaw_deg": 315.9,
+            "combat_yaw_deg": 315.9,
+            "clearance_m": 1.5,
+            "body_clearance_m": 1.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.56,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 315.9,
+            "body_yaw_deg": 315.9,
+            "combat_yaw_deg": 315.9,
+            "clearance_m": 1.5,
+            "body_clearance_m": 1.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.56,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 73253
+    },
+    {
+      "id": "archon-vat-house",
+      "settlement": "archon",
+      "entry_side": "south",
+      "declared_bearing_deg": 57.3,
+      "doorstep_before": {
+        "pos": [
+          3814.22,
+          3.42,
+          3847.7
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 0.5,
+        "body_clearance_m": 0.5,
+        "occluded_frac": 1,
+        "fan_mean_m": 0.73,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.46,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.46,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.46,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 42.28053949531983,
+        "marks": {
+          "f1": {
+            "pos": [
+              3814.22,
+              3.42,
+              3847.7
+            ],
+            "cam_yaw_deg": 42.3,
+            "body_yaw_deg": 42.3,
+            "combat_yaw_deg": 42.3,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.4762,
+            "fan_mean_m": 6.15,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3814.22,
+              3.42,
+              3847.7
+            ],
+            "cam_yaw_deg": 42.3,
+            "body_yaw_deg": 42.3,
+            "combat_yaw_deg": 42.3,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.4762,
+            "fan_mean_m": 6.15,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3814.22,
+              3.42,
+              3847.7
+            ],
+            "cam_yaw_deg": 42.3,
+            "body_yaw_deg": 42.3,
+            "combat_yaw_deg": 42.3,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.4762,
+            "fan_mean_m": 6.15,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 521562
+    },
+    {
+      "id": "blackrose-clerk",
+      "settlement": "blackrose",
+      "entry_side": "south",
+      "declared_bearing_deg": 0,
+      "doorstep_before": {
+        "pos": [
+          1887.5,
+          2.59,
+          4458
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 5.5,
+        "body_clearance_m": 5.5,
+        "occluded_frac": 0.3333,
+        "fan_mean_m": 4.15,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              1.17
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3,
+            "body_clearance_m": 3,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.21,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              1.17
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3,
+            "body_clearance_m": 3,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.21,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              1.17
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 3,
+            "body_clearance_m": 3,
+            "occluded_frac": 0,
+            "fan_mean_m": 3.21,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 0,
+        "marks": {
+          "f1": {
+            "pos": [
+              1887.5,
+              2.59,
+              4458
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.45,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              1887.5,
+              2.59,
+              4458
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.45,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              1887.5,
+              2.59,
+              4458
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.45,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 1427522
+    },
+    {
+      "id": "gideon-court",
+      "settlement": "gideon",
+      "entry_side": "south",
+      "declared_bearing_deg": 180,
+      "doorstep_before": {
+        "pos": [
+          451.25,
+          2.71,
+          2928.73
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 1.5,
+        "body_clearance_m": 1.5,
+        "occluded_frac": 0.6667,
+        "fan_mean_m": 4.04,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.02,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.02,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              6.47
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.02,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 30.000727780827788,
+        "marks": {
+          "f1": {
+            "pos": [
+              451.25,
+              2.71,
+              2928.73
+            ],
+            "cam_yaw_deg": 30,
+            "body_yaw_deg": 30,
+            "combat_yaw_deg": 30,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.35,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              451.25,
+              2.71,
+              2928.73
+            ],
+            "cam_yaw_deg": 30,
+            "body_yaw_deg": 30,
+            "combat_yaw_deg": 30,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.35,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              451.25,
+              2.71,
+              2928.73
+            ],
+            "cam_yaw_deg": 30,
+            "body_yaw_deg": 30,
+            "combat_yaw_deg": 30,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.35,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 432682
+    },
+    {
+      "id": "helstrom-hollow-bole",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "declared_bearing_deg": 90,
+      "doorstep_before": {
+        "pos": [
+          2280.5,
+          27.2,
+          2779.6
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 11.08,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 0,
+        "marks": {
+          "f1": {
+            "pos": [
+              2280.5,
+              27.2,
+              2779.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.51,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2280.5,
+              27.2,
+              2779.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.51,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2280.5,
+              27.2,
+              2779.6
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.51,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 484696
+    },
+    {
+      "id": "helstrom-house-11",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "declared_bearing_deg": 223.1,
+      "doorstep_before": {
+        "pos": [
+          2244.52,
+          27.2,
+          2754.3
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 10.86,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 43.05301787466277,
+        "marks": {
+          "f1": {
+            "pos": [
+              2244.52,
+              27.2,
+              2754.3
+            ],
+            "cam_yaw_deg": 43.1,
+            "body_yaw_deg": 43.1,
+            "combat_yaw_deg": 43.1,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.31,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2244.52,
+              27.2,
+              2754.3
+            ],
+            "cam_yaw_deg": 43.1,
+            "body_yaw_deg": 43.1,
+            "combat_yaw_deg": 43.1,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.31,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2244.52,
+              27.2,
+              2754.3
+            ],
+            "cam_yaw_deg": 43.1,
+            "body_yaw_deg": 43.1,
+            "combat_yaw_deg": 43.1,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.31,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 254075
+    },
+    {
+      "id": "helstrom-house-2",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "declared_bearing_deg": 306,
+      "doorstep_before": {
+        "pos": [
+          2251.42,
+          27.2,
+          2789.57
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 10.25,
+        "body_clearance_m": 10.25,
+        "occluded_frac": 0,
+        "fan_mean_m": 10.8,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 340.9855940234404,
+        "marks": {
+          "f1": {
+            "pos": [
+              2251.42,
+              27.2,
+              2789.57
+            ],
+            "cam_yaw_deg": 341,
+            "body_yaw_deg": 341,
+            "combat_yaw_deg": 341,
+            "clearance_m": 8.5,
+            "body_clearance_m": 8.5,
+            "occluded_frac": 0.381,
+            "fan_mean_m": 5.54,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2251.42,
+              27.2,
+              2789.57
+            ],
+            "cam_yaw_deg": 341,
+            "body_yaw_deg": 341,
+            "combat_yaw_deg": 341,
+            "clearance_m": 8.5,
+            "body_clearance_m": 8.5,
+            "occluded_frac": 0.381,
+            "fan_mean_m": 5.54,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2251.42,
+              27.2,
+              2789.57
+            ],
+            "cam_yaw_deg": 341,
+            "body_yaw_deg": 341,
+            "combat_yaw_deg": 341,
+            "clearance_m": 8.5,
+            "body_clearance_m": 8.5,
+            "occluded_frac": 0.381,
+            "fan_mean_m": 5.54,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 213822
+    },
+    {
+      "id": "helstrom-house-6",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "declared_bearing_deg": 270,
+      "doorstep_before": {
+        "pos": [
+          2241.59,
+          27.2,
+          2780.35
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 0.25,
+        "body_clearance_m": 0.25,
+        "occluded_frac": 1,
+        "fan_mean_m": 0.37,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 284.9978461819033,
+        "marks": {
+          "f1": {
+            "pos": [
+              2241.59,
+              27.2,
+              2780.35
+            ],
+            "cam_yaw_deg": 285,
+            "body_yaw_deg": 285,
+            "combat_yaw_deg": 285,
+            "clearance_m": 4.75,
+            "body_clearance_m": 4.75,
+            "occluded_frac": 0.1905,
+            "fan_mean_m": 4.31,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2241.59,
+              27.2,
+              2780.35
+            ],
+            "cam_yaw_deg": 285,
+            "body_yaw_deg": 285,
+            "combat_yaw_deg": 285,
+            "clearance_m": 4.75,
+            "body_clearance_m": 4.75,
+            "occluded_frac": 0.1905,
+            "fan_mean_m": 4.31,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2241.59,
+              27.2,
+              2780.35
+            ],
+            "cam_yaw_deg": 285,
+            "body_yaw_deg": 285,
+            "combat_yaw_deg": 285,
+            "clearance_m": 4.75,
+            "body_clearance_m": 4.75,
+            "occluded_frac": 0.1905,
+            "fan_mean_m": 4.31,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 292376
+    },
+    {
+      "id": "helstrom-rootpost",
+      "settlement": "helstrom",
+      "entry_side": "south",
+      "declared_bearing_deg": 54,
+      "doorstep_before": {
+        "pos": [
+          2273.83,
+          27.2,
+          2788.53
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 7,
+        "body_clearance_m": 7,
+        "occluded_frac": 0.4762,
+        "fan_mean_m": 4.96,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              4.67
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 10,
+            "body_clearance_m": 10,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.19,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              4.67
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 10,
+            "body_clearance_m": 10,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.19,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              4.67
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 10,
+            "body_clearance_m": 10,
+            "occluded_frac": 0,
+            "fan_mean_m": 10.19,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 324.0231297129163,
+        "marks": {
+          "f1": {
+            "pos": [
+              2273.83,
+              27.2,
+              2788.53
+            ],
+            "cam_yaw_deg": 324,
+            "body_yaw_deg": 324,
+            "combat_yaw_deg": 324,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.19,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2273.83,
+              27.2,
+              2788.53
+            ],
+            "cam_yaw_deg": 324,
+            "body_yaw_deg": 324,
+            "combat_yaw_deg": 324,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.19,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2273.83,
+              27.2,
+              2788.53
+            ],
+            "cam_yaw_deg": 324,
+            "body_yaw_deg": 324,
+            "combat_yaw_deg": 324,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.19,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 318327
+    },
+    {
+      "id": "lilmoth-house-4",
+      "settlement": "lilmoth",
+      "entry_side": "south",
+      "declared_bearing_deg": 270,
+      "doorstep_before": {
+        "pos": [
+          2752.56,
+          2.68,
+          5032.87
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 12,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 0,
+        "marks": {
+          "f1": {
+            "pos": [
+              2752.56,
+              7.37,
+              5032.87
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2752.56,
+              3.73,
+              5032.87
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2752.56,
+              2.68,
+              5032.87
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 345729
+    },
+    {
+      "id": "soulrest-boneyard",
+      "settlement": "soulrest",
+      "entry_side": "north",
+      "declared_bearing_deg": 126,
+      "doorstep_before": {
+        "pos": [
+          593.72,
+          8.13,
+          4879.43
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 1.75,
+        "body_clearance_m": 1.75,
+        "occluded_frac": 1,
+        "fan_mean_m": 1.33,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              7.07
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              7.07
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              7.07
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 216.04423500310205,
+        "marks": {
+          "f1": {
+            "pos": [
+              593.72,
+              8.13,
+              4879.43
+            ],
+            "cam_yaw_deg": 216,
+            "body_yaw_deg": 216,
+            "combat_yaw_deg": 216,
+            "clearance_m": 0.75,
+            "body_clearance_m": 0.75,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.06,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              593.72,
+              8.13,
+              4879.43
+            ],
+            "cam_yaw_deg": 216,
+            "body_yaw_deg": 216,
+            "combat_yaw_deg": 216,
+            "clearance_m": 0.75,
+            "body_clearance_m": 0.75,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.06,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              593.72,
+              8.13,
+              4879.43
+            ],
+            "cam_yaw_deg": 216,
+            "body_yaw_deg": 216,
+            "combat_yaw_deg": 216,
+            "clearance_m": 0.75,
+            "body_clearance_m": 0.75,
+            "occluded_frac": 1,
+            "fan_mean_m": 1.06,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 209242
+    },
+    {
+      "id": "stormhold-customs",
+      "settlement": "stormhold",
+      "entry_side": "south",
+      "declared_bearing_deg": 180,
+      "doorstep_before": {
+        "pos": [
+          2152.5,
+          141.05,
+          738.7
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 11.08,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 0,
+        "marks": {
+          "f1": {
+            "pos": [
+              2152.5,
+              141.05,
+              738.7
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.5,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2152.5,
+              141.05,
+              738.7
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.5,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2152.5,
+              141.05,
+              738.7
+            ],
+            "cam_yaw_deg": 0,
+            "body_yaw_deg": 0,
+            "combat_yaw_deg": 0,
+            "clearance_m": 0.5,
+            "body_clearance_m": 0.5,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.5,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 249701
+    },
+    {
+      "id": "stormhold-inn-pass",
+      "settlement": "stormhold",
+      "entry_side": "south",
+      "declared_bearing_deg": 180,
+      "doorstep_before": {
+        "pos": [
+          2182,
+          141.05,
+          737.64
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 10.38,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.27
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 11.25,
+            "body_clearance_m": 11.25,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.42,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 275.0491664675804,
+        "marks": {
+          "f1": {
+            "pos": [
+              2182,
+              141.05,
+              737.64
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2182,
+              141.05,
+              737.64
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2182,
+              141.05,
+              737.64
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 75178
+    },
+    {
+      "id": "stormhold-smithy",
+      "settlement": "stormhold",
+      "entry_side": "south",
+      "declared_bearing_deg": 180,
+      "doorstep_before": {
+        "pos": [
+          2167,
+          141.05,
+          738.24
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 10.77,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.87
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 11.93,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 275.0491664675804,
+        "marks": {
+          "f1": {
+            "pos": [
+              2167,
+              141.05,
+              738.24
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              2167,
+              141.05,
+              738.24
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              2167,
+              141.05,
+              738.24
+            ],
+            "cam_yaw_deg": 275,
+            "body_yaw_deg": 275,
+            "combat_yaw_deg": 275,
+            "clearance_m": 0.25,
+            "body_clearance_m": 0.25,
+            "occluded_frac": 1,
+            "fan_mean_m": 0.43,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 519785
+    },
+    {
+      "id": "barge-hold",
+      "settlement": "thorn",
+      "entry_side": "north",
+      "declared_bearing_deg": 90,
+      "doorstep_before": {
+        "pos": [
+          3800,
+          13.28,
+          904
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 12,
+        "body_clearance_m": 12,
+        "occluded_frac": 0,
+        "fan_mean_m": 11.38,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              5.6
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 9.83,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3800,
+              13.28,
+              904
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0.2381,
+            "fan_mean_m": 8.26,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 236436
+    },
+    {
+      "id": "thorn-hall",
+      "settlement": "thorn",
+      "entry_side": "south",
+      "declared_bearing_deg": 0,
+      "doorstep_before": {
+        "pos": [
+          3817.48,
+          13.28,
+          868.63
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 1,
+        "body_clearance_m": 1,
+        "occluded_frac": 1,
+        "fan_mean_m": 0.95,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              6.54
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              6.54
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              6.54
+            ],
+            "cam_yaw_deg": 180,
+            "body_yaw_deg": 180,
+            "combat_yaw_deg": 180,
+            "clearance_m": 12,
+            "body_clearance_m": 12,
+            "occluded_frac": 0,
+            "fan_mean_m": 12,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep",
+        "yaw_returned_deg": 315,
+        "marks": {
+          "f1": {
+            "pos": [
+              3817.48,
+              13.28,
+              868.63
+            ],
+            "cam_yaw_deg": 315,
+            "body_yaw_deg": 315,
+            "combat_yaw_deg": 315,
+            "clearance_m": 1.25,
+            "body_clearance_m": 1.25,
+            "occluded_frac": 0.9524,
+            "fan_mean_m": 1.55,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3817.48,
+              13.28,
+              868.63
+            ],
+            "cam_yaw_deg": 315,
+            "body_yaw_deg": 315,
+            "combat_yaw_deg": 315,
+            "clearance_m": 1.25,
+            "body_clearance_m": 1.25,
+            "occluded_frac": 0.9524,
+            "fan_mean_m": 1.55,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3817.48,
+              13.28,
+              868.63
+            ],
+            "cam_yaw_deg": 315,
+            "body_yaw_deg": 315,
+            "combat_yaw_deg": 315,
+            "clearance_m": 1.25,
+            "body_clearance_m": 1.25,
+            "occluded_frac": 0.9524,
+            "fan_mean_m": 1.55,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 100525
+    }
+  ],
+  "summary": {
+    "rows": 16,
+    "population": 115,
+    "skipped": [],
+    "refused": [],
+    "errors": [],
+    "doorstep_before": {
+      "n": 16,
+      "failing": 7
+    },
+    "enter": {
+      "f1": {
+        "n": 16,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 11,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 16,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 11,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 16,
+        "median_clearance_m": 12,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 11,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 16,
+        "cam_matches_body": 16,
+        "combat_matches_body": 16,
+        "still_at_seed_yaw": 0,
+        "cam_still_at_seed_yaw": 0
+      },
+      "yaw_sources": {
+        "towards_room_centre": 16
+      },
+      "point_cannot_pass": [],
+      "no_geometry_visible": []
+    },
+    "exit": {
+      "f1": {
+        "n": 16,
+        "median_clearance_m": 1.25,
+        "median_occluded_frac": 1,
+        "failing": 12,
+        "failing_ids": [
+          "archon-apothecary",
+          "archon-vat-house",
+          "gideon-court",
+          "helstrom-hollow-bole",
+          "helstrom-house-11",
+          "helstrom-house-2",
+          "helstrom-rootpost",
+          "soulrest-boneyard",
+          "stormhold-customs",
+          "stormhold-inn-pass",
+          "stormhold-smithy",
+          "thorn-hall"
+        ],
+        "under_2m": 10,
+        "at_cap": 4,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 16,
+        "median_clearance_m": 1.25,
+        "median_occluded_frac": 1,
+        "failing": 12,
+        "failing_ids": [
+          "archon-apothecary",
+          "archon-vat-house",
+          "gideon-court",
+          "helstrom-hollow-bole",
+          "helstrom-house-11",
+          "helstrom-house-2",
+          "helstrom-rootpost",
+          "soulrest-boneyard",
+          "stormhold-customs",
+          "stormhold-inn-pass",
+          "stormhold-smithy",
+          "thorn-hall"
+        ],
+        "under_2m": 10,
+        "at_cap": 4,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 16,
+        "median_clearance_m": 1.25,
+        "median_occluded_frac": 1,
+        "failing": 12,
+        "failing_ids": [
+          "archon-apothecary",
+          "archon-vat-house",
+          "gideon-court",
+          "helstrom-hollow-bole",
+          "helstrom-house-11",
+          "helstrom-house-2",
+          "helstrom-rootpost",
+          "soulrest-boneyard",
+          "stormhold-customs",
+          "stormhold-inn-pass",
+          "stormhold-smithy",
+          "thorn-hall"
+        ],
+        "under_2m": 10,
+        "at_cap": 4,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 16,
+        "cam_matches_body": 16,
+        "combat_matches_body": 16,
+        "still_at_seed_yaw": 0,
+        "cam_still_at_seed_yaw": 0
+      },
+      "yaw_sources": {
+        "door_to_doorstep": 16
+      },
+      "point_cannot_pass": [],
+      "no_geometry_visible": []
+    }
+  }
+}

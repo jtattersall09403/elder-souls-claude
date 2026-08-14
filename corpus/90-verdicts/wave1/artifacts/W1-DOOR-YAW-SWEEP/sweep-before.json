@@ -1,0 +1,274 @@
+{
+  "schema": "elder-souls/door-yaw-sweep@1",
+  "label": "before",
+  "generated_at": "2026-08-14T16:36:57.843Z",
+  "commit": "c9a061d0",
+  "loadavg": "44.37 39.62 33.71 37/976 8563",
+  "entry": "/tmp/elder-souls-control-clones/dyawB-before/game/index.html",
+  "fix_fingerprint": {
+    "game_dir": "/tmp/elder-souls-control-clones/dyawB-before/game",
+    "files": {
+      "src/sim/settlement.js": {
+        "sha256": "1adadb355accd0b4",
+        "writes_sim_player_yaw": false,
+        "writes_camera_yaw": false,
+        "writes_combat_yaw": false,
+        "has_exitFacing": true,
+        "has_entryFacing": true
+      },
+      "src/engine.js": {
+        "sha256": "e0875e55fb90417e",
+        "writes_sim_player_yaw": true,
+        "writes_camera_yaw": true,
+        "writes_combat_yaw": true,
+        "has_exitFacing": false,
+        "has_entryFacing": false
+      }
+    }
+  },
+  "population": 115,
+  "definition": {
+    "clearance_m": "distance to first solid at eye height (pos.y + 1.6), 0.25 m march, 12 m cap, against Engine.solidAt() = sim.cell.contains()",
+    "occluded_frac": "fraction of 21 rays across the forward 60 deg (+/-30, 3 deg apart) whose first solid is closer than 3 m",
+    "judged_on": "sim.camera.yaw — what the player looks through. body and combat yaw recorded beside it.",
+    "pass": "clearance_m >= 3 AND occluded_frac <= 0.34",
+    "frames_after_door": [
+      1,
+      30,
+      120
+    ],
+    "seed_yaw_deg": 200,
+    "hour": 12
+  },
+  "rows": [
+    {
+      "id": "archon-apothecary",
+      "settlement": "archon",
+      "entry_side": "south",
+      "declared_bearing_deg": 45.8,
+      "doorstep_before": {
+        "pos": [
+          3804.66,
+          3.42,
+          3850.62
+        ],
+        "cam_yaw_deg": 200,
+        "body_yaw_deg": 200,
+        "combat_yaw_deg": 200,
+        "clearance_m": 1,
+        "body_clearance_m": 1,
+        "occluded_frac": 0.4286,
+        "fan_mean_m": 3.81,
+        "inside_a_building": false
+      },
+      "enter": {
+        "yaw_source": "towards_room_centre",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 4,
+            "body_clearance_m": 4,
+            "occluded_frac": 0,
+            "fan_mean_m": 4.26,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 4,
+            "body_clearance_m": 4,
+            "occluded_frac": 0,
+            "fan_mean_m": 4.26,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              0,
+              0,
+              1.49
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 4,
+            "body_clearance_m": 4,
+            "occluded_frac": 0,
+            "fan_mean_m": 4.26,
+            "inside_a_building": false
+          }
+        }
+      },
+      "exit": {
+        "yaw_source": "door_to_doorstep+nearest_clear_bearing",
+        "yaw_returned_deg": 180,
+        "marks": {
+          "f1": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 0.4286,
+            "fan_mean_m": 3.81,
+            "inside_a_building": false
+          },
+          "f30": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 0.4286,
+            "fan_mean_m": 3.81,
+            "inside_a_building": false
+          },
+          "f120": {
+            "pos": [
+              3804.66,
+              3.42,
+              3850.62
+            ],
+            "cam_yaw_deg": 200,
+            "body_yaw_deg": 200,
+            "combat_yaw_deg": 200,
+            "clearance_m": 1,
+            "body_clearance_m": 1,
+            "occluded_frac": 0.4286,
+            "fan_mean_m": 3.81,
+            "inside_a_building": false
+          }
+        }
+      },
+      "ms": 64623
+    }
+  ],
+  "summary": {
+    "rows": 1,
+    "population": 115,
+    "skipped": [],
+    "refused": [],
+    "errors": [],
+    "doorstep_before": {
+      "n": 1,
+      "failing": 1
+    },
+    "enter": {
+      "f1": {
+        "n": 1,
+        "median_clearance_m": 4,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 1,
+        "median_clearance_m": 4,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 1,
+        "median_clearance_m": 4,
+        "median_occluded_frac": 0,
+        "failing": 0,
+        "failing_ids": [],
+        "under_2m": 0,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 1,
+        "cam_matches_body": 1,
+        "combat_matches_body": 1,
+        "still_at_seed_yaw": 1,
+        "cam_still_at_seed_yaw": 1
+      },
+      "yaw_sources": {
+        "towards_room_centre": 1
+      },
+      "point_cannot_pass": [],
+      "no_geometry_visible": []
+    },
+    "exit": {
+      "f1": {
+        "n": 1,
+        "median_clearance_m": 1,
+        "median_occluded_frac": 0.4286,
+        "failing": 1,
+        "failing_ids": [
+          "archon-apothecary"
+        ],
+        "under_2m": 1,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "f30": {
+        "n": 1,
+        "median_clearance_m": 1,
+        "median_occluded_frac": 0.4286,
+        "failing": 1,
+        "failing_ids": [
+          "archon-apothecary"
+        ],
+        "under_2m": 1,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "f120": {
+        "n": 1,
+        "median_clearance_m": 1,
+        "median_occluded_frac": 0.4286,
+        "failing": 1,
+        "failing_ids": [
+          "archon-apothecary"
+        ],
+        "under_2m": 1,
+        "at_cap": 0,
+        "inside_a_building": 0
+      },
+      "three_fields": {
+        "n": 1,
+        "cam_matches_body": 1,
+        "combat_matches_body": 1,
+        "still_at_seed_yaw": 1,
+        "cam_still_at_seed_yaw": 1
+      },
+      "yaw_sources": {
+        "door_to_doorstep+nearest_clear_bearing": 1
+      },
+      "point_cannot_pass": [],
+      "no_geometry_visible": []
+    }
+  }
+}

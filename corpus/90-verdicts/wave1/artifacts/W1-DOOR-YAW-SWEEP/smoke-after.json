@@ -1,0 +1,351 @@
+{
+  "schema": "elder-souls/door-exit-yaw@1",
+  "generated_at": "2026-08-14T14:48:44.465Z",
+  "loadavg": "8.67 13.28 15.19 10/325 22315",
+  "reach_m": 12,
+  "seed_yaw_deg": 200,
+  "enter_measured": true,
+  "rows": [
+    {
+      "id": "archon-inn",
+      "settlement": "archon",
+      "entry_side": "south",
+      "bearing_deg": 40.1,
+      "exit": {
+        "pos": [
+          3812.3,
+          3.42,
+          3854.74
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 0.25
+          },
+          "outward": {
+            "yaw_deg": 40.1,
+            "clearance_m": 12
+          },
+          "inward": {
+            "yaw_deg": 220.1,
+            "clearance_m": 3.75
+          },
+          "from_door": {
+            "yaw_deg": 90.1,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 10
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": {
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 180,
+            "clearance_m": 3.75
+          },
+          "to_centre": {
+            "yaw_deg": 180,
+            "clearance_m": 3.75
+          },
+          "entry_side_in": {
+            "yaw_deg": 0,
+            "clearance_m": 0.75
+          },
+          "entry_side_out": {
+            "yaw_deg": 180,
+            "clearance_m": 3.75
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 20
+        },
+        "pos": [
+          0,
+          0,
+          1.5
+        ]
+      },
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 3.75
+        },
+        "exit": {
+          "yaw_deg": 90.1,
+          "cam_yaw_deg": 90.1,
+          "body_yaw_deg": 90.1,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 0.25
+        }
+      },
+      "ms": 16537
+    },
+    {
+      "id": "barge-hold",
+      "settlement": "thorn",
+      "entry_side": "north",
+      "bearing_deg": 90,
+      "exit": {
+        "pos": [
+          3800,
+          13.28,
+          904
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 12
+          },
+          "outward": {
+            "yaw_deg": 90,
+            "clearance_m": 0.75
+          },
+          "inward": {
+            "yaw_deg": 270,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 180
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": {
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          },
+          "to_centre": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          },
+          "entry_side_in": {
+            "yaw_deg": 180,
+            "clearance_m": 12
+          },
+          "entry_side_out": {
+            "yaw_deg": 0,
+            "clearance_m": 1.75
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 170
+        },
+        "pos": [
+          0,
+          0,
+          5.6
+        ]
+      },
+      "real": {
+        "enter": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 12
+        },
+        "exit": {
+          "yaw_deg": 180,
+          "cam_yaw_deg": 180,
+          "body_yaw_deg": 180,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 7.25
+        }
+      },
+      "ms": 152357
+    },
+    {
+      "id": "writ-house",
+      "settlement": "thorn",
+      "entry_side": "south",
+      "bearing_deg": 180,
+      "exit": {
+        "pos": [
+          3808.6,
+          13.28,
+          909.36
+        ],
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 200,
+            "clearance_m": 0.5
+          },
+          "outward": {
+            "yaw_deg": 180,
+            "clearance_m": 0.5
+          },
+          "inward": {
+            "yaw_deg": 0,
+            "clearance_m": 12
+          },
+          "from_door": {
+            "yaw_deg": 70,
+            "clearance_m": 12
+          }
+        },
+        "best": {
+          "clearance_m": 12,
+          "yaw_deg": 0
+        },
+        "drift_m": 0,
+        "inside_a_building": false
+      },
+      "enter": {
+        "rules": {
+          "as_shipped": {
+            "yaw_deg": 0,
+            "clearance_m": 11
+          },
+          "to_centre": {
+            "yaw_deg": 0,
+            "clearance_m": 11
+          },
+          "entry_side_in": {
+            "yaw_deg": 0,
+            "clearance_m": 11
+          },
+          "entry_side_out": {
+            "yaw_deg": 180,
+            "clearance_m": 0.75
+          }
+        },
+        "best": {
+          "clearance_m": 11.75,
+          "yaw_deg": 20
+        },
+        "pos": [
+          0,
+          0,
+          -4.6
+        ]
+      },
+      "real": {
+        "enter": {
+          "yaw_deg": 0,
+          "cam_yaw_deg": 0,
+          "body_yaw_deg": 0,
+          "yaw_source": "towards_room_centre",
+          "clearance_m": 11
+        },
+        "exit": {
+          "yaw_deg": 70,
+          "cam_yaw_deg": 70,
+          "body_yaw_deg": 70,
+          "yaw_source": "door_to_doorstep",
+          "clearance_m": 12,
+          "null_inward_clearance_m": 0.25
+        }
+      },
+      "ms": 133080
+    }
+  ],
+  "summary": {
+    "n": 3,
+    "exit": {
+      "as_shipped": {
+        "n": 3,
+        "median_m": 0.5,
+        "mean_m": 4.25,
+        "under_2m": 2,
+        "at_cap": 1
+      },
+      "outward": {
+        "n": 3,
+        "median_m": 0.75,
+        "mean_m": 4.42,
+        "under_2m": 2,
+        "at_cap": 1
+      },
+      "inward": {
+        "n": 3,
+        "median_m": 12,
+        "mean_m": 9.25,
+        "under_2m": 0,
+        "at_cap": 2
+      },
+      "from_door": {
+        "n": 3,
+        "median_m": 12,
+        "mean_m": 12,
+        "under_2m": 0,
+        "at_cap": 3
+      },
+      "best": {
+        "n": 3,
+        "median_m": 12,
+        "under_2m": 0
+      },
+      "inside_a_building": 0
+    },
+    "enter": {
+      "as_shipped": {
+        "n": 3,
+        "median_m": 11,
+        "under_2m": 0
+      },
+      "to_centre": {
+        "n": 3,
+        "median_m": 11,
+        "under_2m": 0
+      },
+      "entry_side_in": {
+        "n": 3,
+        "median_m": 11,
+        "under_2m": 1
+      },
+      "entry_side_out": {
+        "n": 3,
+        "median_m": 1.75,
+        "under_2m": 2
+      }
+    },
+    "real": {
+      "exit_fixed": {
+        "n": 3,
+        "median_m": 12,
+        "under_2m": 0,
+        "at_cap": 3
+      },
+      "exit_null_inward": {
+        "n": 3,
+        "median_m": 0.25,
+        "under_2m": 2,
+        "at_cap": 0
+      },
+      "enter_fixed": {
+        "n": 3,
+        "median_m": 11,
+        "under_2m": 0,
+        "at_cap": 1
+      },
+      "exit_yaw_written": 3,
+      "enter_yaw_written": 3,
+      "exit_body_matches_mirror": 3,
+      "exit_camera_matches": 3,
+      "exit_yaw_sources": {
+        "door_to_doorstep": 3
+      },
+      "errors": []
+    }
+  }
+}
