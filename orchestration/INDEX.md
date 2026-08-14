@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `f9b9305b`: **1002 tools**, **157 reference items**,
-**55 pieces in flight**.
+drift. At `d96a48b6`: **1002 tools**, **157 reference items**,
+**56 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -150,7 +150,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 55 live pieces
+## In flight right now — 56 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -161,6 +161,7 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
+| `ROADMAP-COVERAGE-AUDIT` | starting | `orchestration/status/ROADMAP-COVERAGE-AUDIT.json` `reports/roadmap-audit/` |
 | `ROADMAP-TRACKER` | in_progress | `orchestration/roadmap.json` `tools/roadmap.mjs` `orchestration/status/ROADMAP-TRACKER.json` `docs/data/roadmap.json` +3 |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `DOC-SLIM-HOTPATH` | running | `orchestration/status/DOC-SLIM-HOTPATH.json` `tools/gen-index.mjs` `orchestration/INDEX.md` `corpus/00-doctrine/ARBITRATION.md` +4 |

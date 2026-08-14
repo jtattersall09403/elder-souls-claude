@@ -1,109 +1,550 @@
 {
-  "schema": "elder-souls/roadmap-summary@1",
-  "generated_at": "2026-08-14T17:54:50.041Z",
-  "commit": "f9b9305b",
-  "total_units": 8,
-  "done_units": 0,
-  "in_progress_units": 5,
-  "not_started_units": 2,
-  "blocked_units": 0,
-  "unverified_units": 1,
-  "unevidenced_units": 0,
-  "pct_done": 0,
-  "current_step": {
+  "schema": "elder-souls/roadmap-summary@2",
+  "generated_at": "2026-08-14T18:00:46.636Z",
+  "commit": "d96a48b6",
+  "total_items": 40,
+  "done_items": 1,
+  "in_progress_items": 6,
+  "not_started_items": 33,
+  "blocked_items": 0,
+  "unverified_items": 0,
+  "unevidenced_items": 33,
+  "pct_done": 2.5,
+  "current_item": {
     "id": "step-1",
-    "title": "Surfaces respond to light"
+    "title": "Surfaces respond to light",
+    "phase": "A"
   },
-  "steps": [
+  "by_phase": [
+    {
+      "phase": "A",
+      "label": "Foundations you can see (in flight, planned to the step)",
+      "total": 10,
+      "done": 1,
+      "pct": 10,
+      "unevidenced": 3
+    },
+    {
+      "phase": "B",
+      "label": "The Morrowind half",
+      "total": 10,
+      "done": 0,
+      "pct": 0,
+      "unevidenced": 10
+    },
+    {
+      "phase": "C",
+      "label": "The Souls half",
+      "total": 7,
+      "done": 0,
+      "pct": 0,
+      "unevidenced": 7
+    },
+    {
+      "phase": "D",
+      "label": "The world",
+      "total": 5,
+      "done": 0,
+      "pct": 0,
+      "unevidenced": 5
+    },
+    {
+      "phase": "E",
+      "label": "The whole thing",
+      "total": 5,
+      "done": 0,
+      "pct": 0,
+      "unevidenced": 5
+    },
+    {
+      "phase": "F",
+      "label": "The bar itself",
+      "total": 3,
+      "done": 0,
+      "pct": 0,
+      "unevidenced": 3
+    }
+  ],
+  "items": [
     {
       "id": "step-1",
+      "phase": "A",
       "title": "Surfaces respond to light",
       "visible_outcome": "Stone reads as stone, wood as wood, leather as leather. Objects sit on the ground instead of floating on it. Shadowed areas have detail in them instead of being black.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "closes_when": "Protocol A is re-run blind against the same plates and we stop losing 5 of 5. Not when the orphan count reaches zero — statistics can fail a build and can never pass one.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": [
-        {
-          "id": "step-1a",
-          "title": "Bind the material set — the orphan fix",
-          "visible_outcome": "The player's body and every affected surface (305 of 406 materials) actually run the surface shader whose uniforms they already carry, instead of the uniforms sitting unread in userData.",
-          "claimed_state": "in_progress",
-          "effective_state": "UNVERIFIED",
-          "closes_when": "The CONSUMPTION arms (before/after) are filed and a hardware before/after sweep, both arms on the same Pod and the same GPU, confirms the orphan count went 305 to 0 and the rendered pixels differ.",
-          "failing_evidence": [
-            "orchestration/status/W1-ORPHANED-SURFACE-SHADERS.json#state = \"done\", expected one of [\"in_progress\"]"
-          ]
-        },
-        {
-          "id": "step-1b",
-          "title": "Contact shadows and ambient occlusion",
-          "visible_outcome": "Objects sit on the ground instead of floating on it — the defect judges named 5 of 5, the most universal finding in the blind round.",
-          "claimed_state": "not_started",
-          "effective_state": "not_started",
-          "closes_when": "A contact-shadow or AO term is present in the render path (not just declared in FEATURE_CONSUMERS) and a before/after capture shows darkening at contact points that was not there before.",
-          "failing_evidence": []
-        },
-        {
-          "id": "step-1c",
-          "title": "Ambient/GI fill with tone-mapped shadow lift",
-          "visible_outcome": "Shadowed areas have detail in them instead of being crushed to black.",
-          "claimed_state": "not_started",
-          "effective_state": "not_started",
-          "closes_when": "An ambient/GI fill term is present in the render path and a before/after capture shows detail recoverable in a previously-black shadow region.",
-          "failing_evidence": []
-        }
-      ]
+      "unevidenced_note": "closes_when needs a REPEAT of Protocol A (a fresh blind-judgement verdict at corpus/90-verdicts/wave1/W1-VISUAL-BLIND-PROTOCOL-A-r2.json or later) that clears the pass threshold. That file does not exist yet, so this item cannot read as done no matter what evidence its sub-steps accumulate."
+    },
+    {
+      "id": "step-1a",
+      "phase": "A",
+      "title": "Bind the material set — the orphan fix",
+      "visible_outcome": "The player's body and every affected surface (305 of 406 materials) actually run the surface shader whose uniforms they already carry, instead of the uniforms sitting unread in userData.",
+      "claimed_state": "done",
+      "effective_state": "done",
+      "closes_when": "The CONSUMPTION arms (before/after) are filed and a hardware before/after sweep, both arms on the same Pod and the same GPU, confirms the orphan count went 305 to 0 and the rendered pixels differ.",
+      "has_evidence": true,
+      "failing_evidence": [],
+      "unevidenced_note": "This is sub-step (a) only. Step-1's own closes_when (a fresh blind Protocol A re-run) is separate and NOT yet evidenced — see step-1's own entry."
+    },
+    {
+      "id": "step-1b",
+      "phase": "A",
+      "title": "Contact shadows and ambient occlusion",
+      "visible_outcome": "Objects sit on the ground instead of floating on it — the defect judges named 5 of 5, the most universal finding in the blind round.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "A contact-shadow or AO term is present in the render path (not just declared in FEATURE_CONSUMERS) and a before/after capture shows darkening at contact points that was not there before.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": null
+    },
+    {
+      "id": "step-1c",
+      "phase": "A",
+      "title": "Ambient/GI fill with tone-mapped shadow lift",
+      "visible_outcome": "Shadowed areas have detail in them instead of being crushed to black.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "An ambient/GI fill term is present in the render path and a before/after capture shows detail recoverable in a previously-black shadow region.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": null
     },
     {
       "id": "step-2",
+      "phase": "A",
       "title": "The first five minutes look and behave right",
       "visible_outcome": "You come out of character creation in Thorn, facing somewhere sensible, in a town that looks like a Black Marsh tidewater settlement, and you can walk out of the door without being inside another building.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "closes_when": "A hardware capture of the real opening path, many angles plus motion, looks right to a person.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": null
+      "unevidenced_note": "closes_when is a human-judgement condition ('looks right to a person') with no filed verdict yet — ROADMAP.md itself says the capture daemon returned zero frames under load, so 'nobody has looked at any of the Thorn work'. Evidence for DONE should be a blind-judgement or capture-review verdict naming this step; none exists on disk, so this cannot be marked done by any mechanical proxy."
     },
     {
       "id": "step-2b",
+      "phase": "A",
       "title": "Buildings are not inside each other",
       "visible_outcome": "Doors open into streets rather than into other buildings.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
-      "closes_when": "The 83 interpenetrating pairs across 8 of 8 settlements are resolved by fixing the axis-aligned-vs-rotated comparison defect in the shrink pass and _deepOverlaps(), with 72 of 83 separating without moving a building.",
+      "closes_when": "The 76 interpenetrating pairs (25 with a door inside another building) are resolved. Resolver work is done: game/src/world/footprint.js is now the single implementation of the collision geometry (there were three private copies, two of which agreed with each other over a rectangle the world does not have, which is why the defect stayed invisible), and the check now correctly reports 76 where the old, wrong check reported 22. Shrinking alone clears only 6 of 76 — the interiors are native records with one centimetre of slack already spent — so the remaining 70 need repositioning at the generator, which is step 2c.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": null
+      "unevidenced_note": "The visible outcome ('doors open into streets') is not yet true for all 76 remaining pairs — this item stays in_progress, not done, until step-2c closes."
+    },
+    {
+      "id": "step-2c",
+      "phase": "A",
+      "title": "Building layout: move the interpenetrating pairs at the generator",
+      "visible_outcome": "The generator does not re-author the same building collisions on every regeneration; the remaining interpenetrating pairs (five Blackrose pairs authored exactly 1.0 m apart; thorn-gate/thorn-house-0 sharing an identical offset_m — not a coincidence) are repositioned at the source rather than hand-patched.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "The generator's placement logic no longer produces colliding offsets for these pairs, and node tools/check-building-overlap.mjs's frozen baseline can be re-frozen lower without any settlement's door-in-building count going up.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Not yet dispatched — ROADMAP.md places it below step 1 in priority ('step 1 is where the screen changes most'), so there is no builder assigned and nothing to evidence yet. This is the honest not_started case, not a gap in the tracker."
     },
     {
       "id": "step-3",
+      "phase": "A",
       "title": "Conversation has depth, and looks like Morrowind",
       "visible_outcome": "Asking about one topic opens others, so a conversation branches outward instead of being a flat list; speakers disagree with each other; and the window looks like Morrowind's.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "closes_when": "Topic visibility and reachability rise substantially past their current measured floors (22% -> 50% and climbing across landed batches; ten topics reachable from no greeting; 100 of 865 npc.topics entries name nothing; 52-61% of NPCs advertise no subject of their own) and the dialogue window matches the vendored Morrowind screenshot REF-A12c.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": null
+      "unevidenced_note": null
     },
     {
       "id": "step-4",
+      "phase": "A",
       "title": "The quests that exist are reachable",
       "visible_outcome": "The faction ladders go past rank 5, opening 21 already-authored quests that no player can currently reach.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "closes_when": "Twelve world_flags entries open the ladders past rank 5, and W1-18's quest delivery (563 records, all three audit numbers hitting their claimed values) stands independently critiqued as both restored and good.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": null
+      "unevidenced_note": null
     },
     {
       "id": "step-5",
+      "phase": "A",
       "title": "Combat feel",
       "visible_outcome": "Fights that feel like Souls — readable animation, weight, a difficulty curve worth climbing, and a moment-to-moment feel worth repeating.",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "closes_when": "Human judges actually fight the game (not view charts of enemy behaviour) and rate the animation, difficulty and feel — named explicitly by the owner as its own step, not a background property.",
+      "has_evidence": true,
       "failing_evidence": [],
-      "substeps": null
+      "unevidenced_note": "closes_when's human half — 'how good the combat is ... how fun it feels' — has no filed verdict and, per ROADMAP.md, no judge has yet been asked to fight anything rather than view a chart. No mechanical proxy is substituted here; a blind play-judgement verdict naming this step is the only evidence that should ever mark it done."
+    },
+    {
+      "id": "phase-b1",
+      "phase": "B",
+      "title": "Journal and quest-telling",
+      "visible_outcome": "A journal that reads like a person wrote it, ordered, searchable, and the *only* navigation aid. Rule: no quest markers, ever.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b2",
+      "phase": "B",
+      "title": "Quests without markers",
+      "visible_outcome": "Directions given in prose — *\"follow the road east past the standing stone, ask for Ravel at the outfitters\"* — and a world legible enough to follow them. This is the hardest single thing on the list and the one most worth getting right.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b3",
+      "phase": "B",
+      "title": "Factions and guilds with real ladders",
+      "visible_outcome": "Joining, rank, duties, expulsion, rivalry. Ranks that gate content and *conflict* with each other, so belonging somewhere costs you somewhere else.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b4",
+      "phase": "B",
+      "title": "NPCs who live somewhere",
+      "visible_outcome": "Schedules, homes, work, sleep. Disposition that moves and matters.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b5",
+      "phase": "B",
+      "title": "Crime, justice and consequence",
+      "visible_outcome": "Being seen, being reported, bounty, guards, prison or fine, reputation that persists.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b6",
+      "phase": "B",
+      "title": "Economy in gold",
+      "visible_outcome": "Prices that vary by merchant, disposition and region; barter that is a conversation; wealth that gates and unlocks. **Souls are levelling only — gold is the currency**, and every economic surface must obey that.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b7",
+      "phase": "B",
+      "title": "Magic, alchemy and crafting",
+      "visible_outcome": "Spellmaking, effects that do what they say (a census found **33 effects that no system reads** — that is the shape of the work), ingredients, enchanting, repair, condition.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b8",
+      "phase": "B",
+      "title": "Skills, training and levelling",
+      "visible_outcome": "Learning by doing, trainers, the choice of what to become.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b9",
+      "phase": "B",
+      "title": "Books, lore and rumour",
+      "visible_outcome": "Things to read that reward reading. Rumours that change with where you are and who you are.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-b10",
+      "phase": "B",
+      "title": "Strangeness",
+      "visible_outcome": "The thing that makes Morrowind Morrowind and is easiest to leave out because nothing fails without it. Argonian, Hist, tidewater, insect and fungus — never a generic fantasy swamp.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase B (the Morrowind half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c1",
+      "phase": "C",
+      "title": "Animation and weight",
+      "visible_outcome": "Readable wind-ups, recovery, commitment. The single biggest contributor to whether a fight feels good.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c2",
+      "phase": "C",
+      "title": "Weapons and movesets",
+      "visible_outcome": "with real identity, and a reason to choose one.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c3",
+      "phase": "C",
+      "title": "Poise, stagger, parry, backstab",
+      "visible_outcome": "— the whole exchange vocabulary.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c4",
+      "phase": "C",
+      "title": "Bosses",
+      "visible_outcome": "Designed encounters with tells, phases and a first-death lesson.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c5",
+      "phase": "C",
+      "title": "Bonfires, runbacks and death",
+      "visible_outcome": "Losing your souls and going back for them; checkpoint spacing as level design.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c6",
+      "phase": "C",
+      "title": "Difficulty and the curve",
+      "visible_outcome": "Tuned by playing, never by inflating numbers.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-c7",
+      "phase": "C",
+      "title": "Enemy placement as authorship",
+      "visible_outcome": "— the ambush, the pair, the one you learn to skip.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase C (the Souls half) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-d1",
+      "phase": "D",
+      "title": "An hour to cross, and worth crossing",
+      "visible_outcome": "Thirteen regions that read differently on foot.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase D (the world) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-d2",
+      "phase": "D",
+      "title": "Landmarks and legibility",
+      "visible_outcome": "— enough that prose directions can work (B2 depends on this).",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase D (the world) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-d3",
+      "phase": "D",
+      "title": "Dungeons, xanmeers and ruins",
+      "visible_outcome": "worth entering, with rewards worth finding.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase D (the world) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-d4",
+      "phase": "D",
+      "title": "Variety within a region",
+      "visible_outcome": "— the \"six minutes across one kind of ground\" problem, still open.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase D (the world) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-d5",
+      "phase": "D",
+      "title": "Weather, tide and time",
+      "visible_outcome": "as things you plan around rather than watch.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase D (the world) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-e1",
+      "phase": "E",
+      "title": "The opening hour",
+      "visible_outcome": "end to end, judged as an experience.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase E (the whole thing) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-e2",
+      "phase": "E",
+      "title": "Save, load, and returning after a week",
+      "visible_outcome": "Save, load, and returning after a week",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase E (the whole thing) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-e3",
+      "phase": "E",
+      "title": "Desktop, mobile and gamepad",
+      "visible_outcome": "all genuinely playable.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase E (the whole thing) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-e4",
+      "phase": "E",
+      "title": "Performance and load",
+      "visible_outcome": "on ordinary hardware.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase E (the whole thing) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-e5",
+      "phase": "E",
+      "title": "Sound",
+      "visible_outcome": "Barely started, and it is half of atmosphere.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase E (the whole thing) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-f1",
+      "phase": "F",
+      "title": "Every corpus item judged",
+      "visible_outcome": "no unjudged backlog.",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase F (the bar itself) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-f2",
+      "phase": "F",
+      "title": "Blind comparisons every wave",
+      "visible_outcome": "both protocols, never skipped once things look decent — *\"the blind test is most valuable exactly when the team has stopped being able to see the game.\"*",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase F (the bar itself) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
+    },
+    {
+      "id": "phase-f3",
+      "phase": "F",
+      "title": "The corpus audited and extended",
+      "visible_outcome": "The owner's own question stands: do we actually have Morrowind's region and topological maps and their Black Marsh equivalents?",
+      "claimed_state": "not_started",
+      "effective_state": "not_started",
+      "closes_when": "Not planned to step granularity yet. ROADMAP.md, deliberately: \"resolution drops with distance ... later phases name the work and its visible outcome but will be re-planned when they come into view.\" No mechanical closing condition exists for this item today.",
+      "has_evidence": false,
+      "failing_evidence": [],
+      "unevidenced_note": "Phase F (the bar itself) is named and scoped only, per ROADMAP.md's own \"Beyond step 5\" section. Inventing a closes_when or evidence criterion here would be the tracker claiming to see further than the plan itself currently does. This item will get real evidence when it is planned to step level, the way Phase A steps 1-5 already are."
     }
   ],
   "standing_work": [
@@ -116,7 +557,7 @@
     },
     {
       "id": "standing-unjudged-backlog",
-      "title": "The unjudged backlog — 126 pieces built and never independently checked",
+      "title": "The unjudged backlog — pieces built and never independently checked",
       "claimed_state": "in_progress",
       "effective_state": "in_progress",
       "failing_evidence": []

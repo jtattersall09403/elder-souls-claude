@@ -92,6 +92,21 @@ export function buildCompositor(w, h, opts = {}) {
       uAO: { value: 1 }, uAA: { value: 1 }, uPost: { value: 1 },
       // New switches. Each is a null control for exactly one of this commit's changes.
       uDither: { value: 1 }, uGradeOn: { value: 1 },
+      // W1-V2 — real screen-space ambient occlusion. `uAO` above is unchanged in name and
+      // meaning (still the on/off sabotage switch every existing tool flips); what changed is
+      // what happens when it is 1. `uInvProjMat` reconstructs a view-space position from the
+      // depth buffer alone (no G-buffer normal exists, so the normal is estimated from the
+      // position's own screen-space derivative — see `computeAO` below); `uProjMat` re-projects
+      // each hemisphere-kernel sample back to screen space to read its occluder depth. Both are
+      // pushed every frame by `renderer.js` from `camera.projectionMatrix`/`.projectionMatrixInverse`;
+      // the identity default here is inert until the first frame feeds it, matching the grade
+      // block's own convention above.
+      uProjMat: { value: new THREE.Matrix4() }, uInvProjMat: { value: new THREE.Matrix4() },
+      // World-space (metres) sample radius and darkening strength/bias. Defaults tuned for a
+      // human-scale contact gap (a boot sole, a step riser); `w1-v2-contact-ao.mjs` is the
+      // instrument that proves the acceptance bar (RI-VIS04 §4 / RI-VIS03 M6b: contact junction
+      // >=25% darker than open ground) rather than this comment.
+      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.4 }, uAOBias: { value: 0.018 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.
@@ -115,6 +130,8 @@ export function buildCompositor(w, h, opts = {}) {
     uniform vec3 uLift, uGain, uInvGamma, uShadowTint, uHighlightTint;
     uniform mat3 uMix;
     uniform float uBalance, uContrast, uPivot, uSat, uVignette, uVignInner, uVignOuter;
+    uniform mat4 uProjMat, uInvProjMat;
+    uniform float uAORadius, uAOStrength, uAOBias;
 
     const vec3 LUMA = vec3(.2126, .7152, .0722);
 
@@ -177,6 +194,72 @@ export function buildCompositor(w, h, opts = {}) {
     // and determinism ("same seed -> identical frame hash") is a gate.
     float ign(vec2 p){ return fract(52.9829189 * fract(dot(p, vec2(0.06711056, 0.00583715)))); }
 
+    // ---- W1-V2: real screen-space ambient occlusion / contact shadow ------------------------
+    // Replaces the old depth-DISCONTINUITY detector, which only darkened a hard silhouette edge
+    // (an object against distant background) and could not see a CONTINUOUS-depth contact — the
+    // exact case the blind judges named 5/5: a step meeting a path, a wall meeting the ground,
+    // an eave. Both are the same surface locally (no depth cliff), so the old `(d*4-ring)*22`
+    // edge test reads them as flat and fires nothing. A hemisphere kernel around the true
+    // view-space position, tested against nearby occluder depth, darkens exactly a concave
+    // JUNCTION rather than a silhouette — which is what "contact shadow" means.
+    //
+    // No G-buffer normal exists in this pipeline (single HDR colour + depth target), so the
+    // surface normal is estimated from the screen-space derivative of the reconstructed
+    // view-space position itself, cross(dFdx(P), dFdy(P)) — the standard normal-free SSAO
+    // trick. AO is computed from vUv directly (not a moved/blurred uv), so the derivative stays
+    // well-defined at the pixel it is shading.
+    vec3 viewPosFromDepth(vec2 uv, float depth){
+      vec4 ndc = vec4(uv * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+      vec4 vp = uInvProjMat * ndc;
+      return vp.xyz / vp.w;
+    }
+
+    // Ten-tap hemisphere kernel, hand-generated once (seeded RNG, biased toward the origin so
+    // more samples fall close to the surface, where a contact gap actually is) and hardcoded —
+    // deterministic across frames and platforms, which the dither above is already a gate for.
+    vec3 aoKernel(int i){
+      if(i==0) return vec3(-0.1009,0.0393,0.1038);
+      if(i==1) return vec3(0.0979,-0.0304,0.1209);
+      if(i==2) return vec3(0.1596,0.0770,0.0495);
+      if(i==3) return vec3(-0.0051,-0.2184,0.0598);
+      if(i==4) return vec3(-0.0120,-0.1720,0.2282);
+      if(i==5) return vec3(0.0267,-0.3187,0.1706);
+      if(i==6) return vec3(-0.2714,-0.3250,0.1693);
+      if(i==7) return vec3(-0.3139,0.3833,0.2748);
+      if(i==8) return vec3(0.2986,0.2934,0.5535);
+      return vec3(-0.0836,-0.1737,0.8160);
+    }
+
+    float computeAO(vec2 uv, float depth){
+      vec3 P = viewPosFromDepth(uv, depth);
+      vec3 dx = dFdx(P), dy = dFdy(P);
+      vec3 N = normalize(cross(dx, dy));
+      if (N.z > 0.0) N = -N;                    // view-space normals face the camera (-Z)
+      vec3 up = (abs(N.z) < 0.98) ? vec3(0., 0., 1.) : vec3(1., 0., 0.);
+      vec3 T = normalize(cross(up, N));
+      vec3 B = cross(N, T);
+      // Rotate the kernel per-pixel with the same static hash the dither pass uses, so ten taps
+      // read as a soft hemisphere rather than ten fixed screen-space stripes.
+      float ang = ign(uv * uResolution) * 6.2831853;
+      float ca = cos(ang), sa = sin(ang);
+      float occlusion = 0.0;
+      for (int i = 0; i < 10; i++) {
+        vec3 k = aoKernel(i);
+        vec2 kr = vec2(k.x * ca - k.y * sa, k.x * sa + k.y * ca);
+        vec3 samplePos = P + (T * kr.x + B * kr.y + N * k.z) * uAORadius;
+        vec4 clip = uProjMat * vec4(samplePos, 1.0);
+        if (clip.w <= 0.0) continue;
+        vec2 sUV = (clip.xy / clip.w) * 0.5 + 0.5;
+        if (sUV.x < 0.0 || sUV.x > 1.0 || sUV.y < 0.0 || sUV.y > 1.0) continue;
+        float sd = texture2D(tDepth, sUV).r;
+        if (sd > 0.99999) continue;             // sky — nothing to occlude against
+        vec3 SP = viewPosFromDepth(sUV, sd);
+        float rangeCheck = smoothstep(0.0, 1.0, uAORadius / max(abs(P.z - SP.z), 1e-4));
+        occlusion += (SP.z >= samplePos.z + uAOBias) ? rangeCheck : 0.0;
+      }
+      return clamp(occlusion / 10.0 * uAOStrength, 0.0, 1.0);
+    }
+
     void main(){
       vec2 p = 1. / uResolution;
       vec3 c = (uAA > .5) ? fxaa(vUv, p) : texture2D(tWorld, vUv).rgb;
@@ -184,9 +267,7 @@ export function buildCompositor(w, h, opts = {}) {
 
       float occ = 1.;
       if (uAO > .5 && d < .9999) {
-        float ring = texture2D(tDepth, vUv + vec2(p.x * 3., 0.)).r + texture2D(tDepth, vUv + vec2(-p.x * 3., 0.)).r
-                   + texture2D(tDepth, vUv + vec2(0., p.y * 3.)).r + texture2D(tDepth, vUv + vec2(0., -p.y * 3.)).r;
-        occ = 1. - clamp((d * 4. - ring) * 22., 0., .12);
+        occ = 1. - computeAO(vUv, d);
       }
       c *= occ;
 
