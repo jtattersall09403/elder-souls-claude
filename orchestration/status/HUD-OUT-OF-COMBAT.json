@@ -4,7 +4,7 @@
   "piece": "HUD-OUT-OF-COMBAT",
   "title": "The seam gap the owner found by reading the corpus: RI-UIX01 specifies the HUD only for combat, and the HUD persists for the rest of the game",
   "started_at": "2026-08-14T13:45:00Z",
-  "state": "running",
+  "state": "corpus-landed-verified-on-remote",
   "branch": "codex/wave1-build-experiment",
   "summary": "Owner, verbatim: 'a doc says combat HUD is being based on souls, which is broadly right but remember the HUD persists outside of combat too, so it will need its Morrowind style HUD elements too.' RI-UIX01 declares side: souls and scopes itself to elements 'persistent, always present in combat'. Nothing covered the HUD outside a fight, which is most of the game and which the governing rule assigns to Morrowind. Deliverables: ARBITRATION S54 (what shows out of combat, what shows in a fight, and how it transitions), corpus/86-ui/RI-UIX07 (the Morrowind out-of-combat element set), and a reconciliation of both against the compass/minimal-mode HUD that HUD-MORROWIND has already landed.",
   "files_claimed": [
@@ -14,14 +14,74 @@
     "orchestration/INDEX.md",
     "reports/blog-feed.jsonl"
   ],
-  "files_touched": [],
+  "files_touched": [
+    "corpus/86-ui/RI-UIX07-out-of-combat-hud.md (new)",
+    "corpus/00-doctrine/ARBITRATION.md (S54 appended)",
+    "corpus/00-doctrine/subsystems.json (ui.hud.world registered)",
+    "corpus/86-ui/RI-UIX01-combat-hud.md (header pointer to RI-UIX07; no threshold changed)",
+    "corpus/86-ui/RI-UIX02-no-marker-enforcement.md (§F narrowed by one paragraph; no threshold changed)",
+    "orchestration/INDEX.md (regenerated)",
+    "reports/blog-feed.jsonl (one line)",
+    "orchestration/status/HUD-OUT-OF-COMBAT.json"
+  ],
   "redundant_with": [
     "HUD-MORROWIND",
     "W1-MW-UI-REFS",
     "W1-MAP-DEFECTS"
   ],
   "overlap_declared": "I write CORPUS ONLY and touch no game source. game/src/ui/compass.js, hud.js, system.js are HUD-MORROWIND's and W1-MAP-DEFECTS'; I read them and name gaps against them as remediations rather than editing. corpus/70-visual/refs/morrowind-ui/ and refs/MANIFEST.json are W1-MW-UI-REFS's; I cite the owner's screenshot by sha256 and do not move it. ARBITRATION.md is appended to, never rewritten (S54 is a new row).",
-  "notes": [],
+  "notes": [
+    "THE REFERENCE IS THE STORY. corpus/70-visual/refs/morrowind/REF-A12/mygui/openmw_hud.layout has been vendored in this corpus since the visual acquisition and NOT ONE of the six RI-UIX items had cited it. It carries every Morrowind HUD widget’s exact rect, anchor and skin. Measured against the owner’s screenshot it returns a single consistent UI scale of exactly 2.0 across five independent ratios — so §A of RI-UIX07 is `measured`, not `canonical-recall`, which is unusual for this corpus.",
+    "THE NUMBER THAT SETTLED THE RULING: Morrowind’s persistent HUD is 1.911% of a 1920x1080 frame in six elements at scale 2.0 (0.478% at scale 1.0), carries ZERO numerals, and leaves the centre of the screen empty. RI-UIX01 budgets the Souls set ≤6 persistent elements and ≤4.0%. The two traditions independently arrived at the same size, which is why a superset ruling is affordable.",
+    "FACTUAL ERROR FOUND IN SHIPPED CODE, NAMED NOT FIXED: game/src/ui/compass.js’s header states \"Morrowind’s own compass carries a red quest arrow\". It does not. Morrowind has no quest markers at all — that is S8’s own premise — and the red-arrow compass is Oblivion and Skyrim. Left standing, a code comment is a loaded argument that Morrowind fidelity REQUIRES a marker. HUD-MORROWIND owns that file; this is RI-UIX07 R3.",
+    "THE ONE THING THE BUILT CODE GOT EXACTLY RIGHT, recorded as a pass rather than as debt: drawCompass() returns without declaring anything while inCombat, with no fade. That is S54 clause (3) and clause (4)’s entry half, built before either was written, and its header reached S54’s reasoning independently.",
+    "THE GAP THAT MAKES THE ITEM SCORE 0 TODAY: there is no `combat_phase` in getUIState(), so nothing a critic can read tells it which phase a captured frame is in. RI-UIX07 V7 and V8 cannot be run at all. The honest verdict is 0 with corpus_debt on R4, not \"probably fine, the compass withdraws\".",
+    "RI-UIX02’s detectors are pointed only at combat frames and menu screens. The world phase is outside all of them — the same defect GAP-W1-ui-map-outside-the-ar2-detectors already records against the map screen, recurring for the same reason. RI-UIX07 commissions NO new tool for this on purpose: RI-UIX02 already owes five that do not exist."
+  ],
   "blocked_by": [],
-  "could_not_do": []
+  "could_not_do": [
+    "COULD NOT REACH THE SIBLING. SendMessage to W1-MW-UI-REFS returned \"No agent named ... is reachable\", and ListAgents is not available in this session (ToolSearch finds no such tool). Coordination was therefore done by READING its status file, not by talking to it. Three findings that belong to that agent were not delivered: (a) the owner’s screenshot is the OpenMW ANDROID port and its top-corner chrome and bottom-right ring are the touch overlay, not Morrowind HUD elements — a census that counts them reports nine elements where the true figure is six; (b) REF-A12/mygui/openmw_hud.layout already holds Morrowind’s exact HUD geometry and corroborates the screenshot at scale 2.0, which is worth a MANIFEST record linking the two; (c) the compass.js factual error above. All three are written into RI-UIX07 where that agent will find them.",
+    "THE SCREENSHOT IS TRACKED IN GIT AND MISSING FROM THE WORKING TREE. corpus/86-ui/com.google.android.keep_20260814145039.jpg is in the index and on origin but not on disk, and `git status` does not report it as deleted. I read it out of the remote blob rather than trying to restore it, since W1-MW-UI-REFS is mid-vendoring and a restore could collide.",
+    "NO MEASUREMENT OF THE RUNNING GAME. This piece is corpus only and did not open a browser: every figure about our own build is quoted from hud.js’s own header (persistent coverage ≈2.05% full, 0.82% minimal) and from compass.js’s dialGeometry() evaluated by hand at 1920x1080 (r=48, so the dial is 96x96 = 0.444%). Those are DERIVED, not observed. The first world-phase census should confirm them before any build is failed on §C.",
+    "NO PLAYED GATE RUN. RI-UIX07 §G specifies it in full — eight world stills, a motion sequence across the boundary in both directions, ten minutes of driven play, five verbatim questions and an ablated arm — but running it needs a build with the world set in it, and five of the six elements do not exist yet. The item scores itself 0 today and says so.",
+    "THE VANILLA-MORROWIND CHECK. Both references are OpenMW. §F names the falsifier (a vanilla capture disagreeing by >10% drops §A to canonical-recall, confidence: low) but no vanilla capture was obtained."
+  ],
+  "next_step": "Nothing blocking. The remediations R1-R5 in RI-UIX07 are owed by HUD-MORROWIND (R1, R3), by whoever builds the world set (R2), by the harness owner (R4, one field) and by the RI-UIX02 detector owner (R5, no new tool). None were performed here by design: the item is the authority and the code is measured against it.",
+  "decisions": [
+    {
+      "id": "D1",
+      "ruling": "SUPERSET, not swap. The Souls set is resident and never withdraws; the Morrowind delta is additive and withdraws at the fight boundary.",
+      "why": "RI-UIX01 §D1 makes the stamina bar a same-frame correctness property at 100% of frames; an element that fades in has no defined fill on its fade frames, and those frames are the opening frames of a fight. ARBITRATION §1 also gives the boundary 5s of de-aggro hysteresis, so a swapping HUD re-composes on every leash and re-aggro. And four of Morrowind’s six persistent elements already have a Souls counterpart on screen, so only a 0.52%-of-frame delta needs a transition at all.",
+      "reversible": true,
+      "would_overturn": "A played gate (RI-UIX07 §G) in which judges call the WORLD frame cluttered while the combat frame reads clean AND the delta measures inside its budget — then residency is the defect and clause (1) narrows to E1/E2."
+    },
+    {
+      "id": "D2",
+      "ruling": "Timing is asymmetric: withdrawal is instantaneous, return may fade ≤250ms.",
+      "why": "A measurement argument, not a taste one. RI-UIX01 §C’s census is taken over combat frames, so a twelve-frame fade-out is twelve combat frames of coverage the census counts — blowing U2 for a reason its author would look for in the wrong item. A fade on return is measured against nothing.",
+      "reversible": true,
+      "would_overturn": "A build whose instant withdrawal judges describe as snapping or flickering, on a census with demonstrable headroom. Then ≤120ms entry fade may be traded, with the census re-run and quoted."
+    },
+    {
+      "id": "D3",
+      "ruling": "Budgets loosen at the boundary; hard fails do not. World frame ≤10 persistent elements and ≤5.0% union coverage, against RI-UIX01’s ≤6 and ≤4.0% — but RI-UIX01’s own 8.0% and 10% hard fails adopted unchanged.",
+      "why": "A HUD only ever measured on combat frames has no budget outside one, and \"the census does not see it\" is the argument that ends with a quest tracker. 5.0% is deliberately less than the plain sum (5.5%) so that coexisting costs the two sets something.",
+      "reversible": true,
+      "would_overturn": "The first world-phase census returning >5.0% on a build where no element exceeds its own row. Then C4 rises to 5.5%."
+    },
+    {
+      "id": "D4",
+      "ruling": "No HUD minimap, and that is the one place RI-UIX07 departs from its own reference.",
+      "why": "Morrowind’s bottom-right panel is a local map with the compass rose inside it. We take the rose and refuse the map: RI-UIX01 X5, S8 and AR-2 forbid a minimap, `minimap` stays in FORBIDDEN_KINDS, and S35 already gave the owner a map — as a screen you open, which is RI-UIX02 §F’s \"an item you must stop and look at is not a HUD element\" at larger scale.",
+      "reversible": true,
+      "would_overturn": "The owner asking for one. Written so that overturning it is add map_panel to §B, add a row to §C, delete B1 — not a re-derivation."
+    },
+    {
+      "id": "D5",
+      "ruling": "RI-UIX02 §F narrowed by exactly one paragraph; S8 untouched; RI-UIX01 X5/X6 stand as written.",
+      "why": "§F’s ban rested on the compass strip being THE MOUNT POINT. The mount point is removed structurally rather than promised away — the shipped model is {bearing_deg} with no array a tick could hang on — and the dial declares nothing on a combat frame, which is where X6 governs. Narrowing §F is the smallest edit that lets the owner have what they asked for without weakening the ruling that protects the world.",
+      "reversible": true,
+      "would_overturn": "Any build landing a `ticks` or `places` field on the dial model. Then §F’s original ban was right and the dial goes."
+    }
+  ]
 }
