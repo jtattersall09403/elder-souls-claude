@@ -1,21 +1,55 @@
 {
   "task_id": "W1-THORN-PLATES",
-  "chunk": "1 of 2 — establish the target, measure the gap. NOT a build.",
+  "chunk": "1 of 2 — establish the target, measure the gap. Builds nothing.",
   "state": "in_progress",
   "date": "2026-08-14",
-  "goal": "Thorn is the town the player actually starts in (reports/spawn-truth/2026-08-14-spawn-truth.md) and it is the one settlement with n=0 composition-valid art-direction plates (docs/art-direction/ART.md §3). Chunk 1 establishes the target with plates, captures what Thorn looks like now on the real opening path, and measures the gap.",
-  "findings": [
-    "WIP — see reports/thorn-plates/ for the working report."
+  "report": "reports/thorn-plates/2026-08-14-thorn-plates.md",
+  "goal": "Thorn is the town the player actually starts in (reports/spawn-truth/2026-08-14-spawn-truth.md) and it is the settlement docs/art-direction/ART.md §3 records with n=0 composition-valid art-direction plates. Chunk 1 establishes the target with plates that qualify under RI-VIS09, captures what Thorn looks like now on the real opening path, and measures the gap. Chunk 2 builds.",
+
+  "findings_could_not_do_first": [
+    "NO HARDWARE FRAMES. Every frame captured is software (SwiftShader) through the shared capture daemon. Valid for consistency claims, NOT for appearance. Every appearance/material-response row in the report is recorded unmeasured rather than estimated.",
+    "`node tools/visual/gpu-deck.mjs --help` DOES NOT PRINT HELP — IT RENTS A POD AND STARTS RUNNING. It provisioned Pod 97gp1tfdgmyy43, and my 120s command timeout SIGTERMed it mid-provision. Its own cleanup ran and the deletion was confirmed twice by API lookup, so nothing was orphaned and no sibling Pod was touched (I never ran a bare `cleanup`). Cost ~$0.02. A --help flag that spends money is a trap and is worth someone's five minutes.",
+    "tools/visual/deck-motion.mjs could not launch: page.evaluate: Target page, context or browser has been closed, inside launchGame(). Contention was green (3 instances, ceiling 6). So MOTION SEQUENCES are only partly delivered — the played opening exists, an orbiting motion clip of the town does not. Directive §2 asks for motion; this is a real gap.",
+    "The deployed build is still unreachable from a browser in this container (net::ERR_CONNECTION_RESET on jtattersall09403.github.io), as reports/spawn-truth §5 already reported. Captures fell back to the local build and say so in their own log. The frames describe this working tree, not the page the owner plays.",
+    "The played opening path COULD NOT WALK OUT OF THE WRIT HOUSE DOOR — 'door-walk-did-not-reach-exit', position stuck at x=4.17, the same stall reports/spawn-truth/2026-08-14-spawn-truth.md §3 reported independently. The exterior frames therefore use H.teleport() to the interior's own declared exterior_spawn, labelled as such. Nobody should cite this pass as proof the door can be walked out of.",
+    "docs/art-direction/board.json's own `fill_command` for the unset settlement rows names `node docs/art-direction/measure-plates.mjs --shots <dir>`, and measure-plates.mjs implements no `--shots` flag (only `--out`). So the board's stated route to filling its own unset rows does not run. Recorded, not fixed — the file is W1-30K's.",
+    "I did not edit docs/art-direction/board.json or ART.md. They are generated and owned by W1-30K; §6.6 of the report states the one-line slot-routing change and leaves it to that owner or to chunk 2."
   ],
+
+  "findings": [
+    "THE TARGET PLATES WERE ALREADY ON DISK. Thorn's n=0 is an ANCHOR-CHOICE failure, not an acquisition failure. board.json anchors thorn on REF-A3 (Telvanni grown mushroom towers) and ALL FIVE REF-A3 plates are square crops — 0 of 5 composition-valid — so the row can never be set whatever the town looks like. REF-A19 ('Waterside settlement at Hla Oad: a moored longboat with a green-and-white striped sail beside stilted shacks') has 6 composition-valid plates; REF-A11 (Bitter Coast swamp — boardwalks, standing water, mist) has 3. Both clear the board's own >=3 threshold. No acquisition was needed and none was done.",
+    "RI-VIS09's composition-valid rule was used as written and not loosened: framing == 'full frame, native aspect, uncropped' AND sky_visible == true.",
+    "THORN'S ARCHITECTURE IS DESCRIBED THREE DIFFERENT WAYS AND ONLY ONE RENDERS. thorn.json architecture_kit says black-thorn thatch over a rotted great hall, every structure a lean-to; thorn.json architecture_grammar.primary and all 18 buildings[].grammar say `salt-block` (which architecture.json assigns to the stone-wastes, not to thornmarsh); world-art.js:30 says `spiral-palisade`, which is not one of architecture.json's nine grammars at all. The renderer uses none of them: lib/kits.js keys GRAMMARS by SETTLEMENT id and gives thorn roofs ['roof.reed','roof.hip'].",
+    "RULING E1 MEASUREMENT (silhouettes, not parts), via the renderer's own planSettlement -> assignVariantSalts -> previewSilhouette: thorn 2 distinct roof profiles over 18 buildings (reed x13, hip x5). Lilmoth 3 (the best in the game); archon/helstrom/soulrest 2; blackrose/gideon/stormhold 1. NO SETTLEMENT REACHES 5, and >=5 is UNREACHABLE BY CONSTRUCTION: GRAMMARS defines only three roof ids in total (roof.reed, roof.hip, roof.shell).",
+    "INSTRUMENT CONTROL for the above: a first run passed a constant seed and reported 1 roof profile for ALL EIGHT towns, because roofChoice returns gram.roofs[0] for a fixed seed — an artefact of my seeding, not a fact about the game. Feeding the real per-building salts moves six of the eight and leaves three at 1, so the constant-seed arm is a working negative control that collapses every town to one profile while the live arm does not. Roofline heights are seed-independent and identical in both arms.",
+    "THE FIRST EXTERIOR IN THE GAME IS A QUAY WITH NO TIDELINE. `tideline` is a real grammar property in lib/kits.js and ONLY `lilmoth` sets it (tideline: 1.45, drownedRole: 'stone'); the drowned-storey path at exterior.js:1613 already works against it. exterior.js:1608's comment says 'it is deliberately the starting town's' — written when Lilmoth was believed to be the starting town. GRAMMARS.thorn has no tideline and support:'post' rather than 'pier'.",
+    "tidewrack-quay holds exactly TWO buildings (barge-hold, writ-house) and NO props at all. Both reuse other meshes: barge-hold -> tavern-1-barge-hold, writ-house -> shop-2-writ-house. Six ready quay parts exist next door and are pure reuse: lil_pile_cluster, lil_stilt_platform, lil_tide_mark, lil_boom_chain, lil_customs_hall, sou_silt_quay.",
+    "THORN'S FOUR BESPOKE EXTERIOR KIT PARTS ARE ALL PROPS, NOT BUILDINGS: tho_needle_stack (a woodpile), tho_charter_post (a signpost), tho_bow_rack, tho_sapwell_kerb. Lilmoth has six including lil_customs_hall (a whole building) and a full quay vocabulary. EXT_KIT holds 37 parts total. NOTE: the first four ids in every town's architecture_kit.meshes are interior prop meshes reused outdoors — that is by design (exterior.js's own comment), not a defect, and it is the same in all eight towns.",
+    "VERTICALITY IS ALREADY IN THE DATA AND NOTHING MAKES IT READ. The quay doors sit at y=0 and the town centre at y=13.31 m about 50 m away — a ~15% climb on the player's first walk. Roofline heights span 3.4-9.0 m.",
+    "'A thicket you walk into and cannot see out of' is the town's own identity line; thornmarsh's terrain already declares depth:'hook-arch-thickets' (world-art.js:17) and nothing closes the sky over Thorn's streets. Not yet built.",
+    "MATERIAL RESPONSE HAS n=0 AND HONESTLY SO. pixel_metrics_valid is false on all 89 Morrowind plates (RI-VIS09 §3.3), so no plate may ever be a material-response target; and my frames are software. That axis is recorded unset rather than guessed.",
+    "stormhold is in the same n=0 position as thorn and is not this piece's job; whoever fixes thorn's anchor should look at it in the same pass."
+  ],
+
   "files_touched": [
     "orchestration/status/W1-THORN-PLATES.json",
-    "reports/thorn-plates/silhouette-census.json"
+    "reports/thorn-plates/2026-08-14-thorn-plates.md"
   ],
   "files_claimed": [
     "orchestration/status/W1-THORN-PLATES.json",
     "reports/thorn-plates/",
-    "docs/shots/",
+    "docs/shots/2026-08-14-thorn-plates/",
     "reports/blog-feed.jsonl"
   ],
-  "next_step": "WIP — capture of the real opening path is running; report being written."
+  "files_deliberately_not_touched": [
+    "docs/art-direction/board.json",
+    "docs/art-direction/ART.md",
+    "docs/art-direction/build-board.mjs",
+    "docs/art-direction/measure-plates.mjs",
+    "game/src/render/lib/kits.js",
+    "game/src/render/exterior.js",
+    "tools/visual/deck.json"
+  ],
+
+  "next_step": "CHUNK 2 BUILDS. Full brief: reports/thorn-plates/2026-08-14-thorn-plates.md §6. In short — TARGET PLATES: corpus/70-visual/refs/morrowind/REF-A19/REF-A19__mw-fullframe-{218645104,406086561,406086586,406086610,406086656,406086696}.jpg (n=6, primary) and REF-A11/REF-A11__mw-fullframe-{2853909059,440609688,451884823}.jpg (n=3, secondary); REF-A21-regions/bitter_coast__* and REF-A23-ground/bitter_coast__mw-56965694.jpg for ground and water only. Do NOT cite REF-A3, refs/modern/, or any Morrowind plate for texture/sharpness/AA. Measured bands in report §2c. LARGEST GAP: the game's first exterior is a quay with no quay on it — (a) give GRAMMARS.thorn a tideline and a drowned/wet role, reusing the lilmoth code path at exterior.js:1613 that already works; (b) switch thorn's support from 'post' to 'pier' at least for the two quay buildings; (c) place the six quay parts that already exist rather than building new ones — lil_pile_cluster, lil_stilt_platform, lil_tide_mark, lil_boom_chain, lil_customs_hall, sou_silt_quay; only REF-A19's moored longboat is worth a new part. SECOND: add roof.needle to the kit and give thorn roofs ['roof.needle','roof.reed','roof.hip'] — the town's own declared signature ('black needle-wood laid in courses, which no other settlement uses') has no roof profile in the renderer; that takes thorn 2 -> 3 profiles, and E1's >=5 is NOT reachable in chunk 2 and must not be claimed. THIRD: compose the ~15% climb from quay (y=0) to town (y=13.31) so it reads. STRETCH: the thicket that closes over the streets. EVIDENCE CHUNK 2 MUST PRODUCE: reproduce the before-sweep in reports/thorn-plates/frames/ exactly as an after (many angles, four times of day, the REAL opening path, never ?state=default); at least one motion sequence of the quay-to-town approach; a person looking at it and saying whether it is good (Ruling W2 — the statistics can fail it and can never pass it); a delete-the-fix on the tideline and on roof.needle with the control confirmed to go red; CONSUMPTION for every new kit part; and a statement of what was published for reuse (both changes are reusable by the other seven towns). ALSO, ONE LINE IN SOMEONE ELSE'S FILE: docs/art-direction/build-board.mjs should route thorn to REF-A19 instead of REF-A3, which sets both currently-unset thorn rows — reversible, overturned by a slot that matches thorn's built form better AND has >=3 composition-valid plates."
 }
