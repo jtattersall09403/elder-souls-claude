@@ -2,7 +2,7 @@
   "task_id": "measure-own-e-w1-hud-toast-b",
   "role": "measurement (text-only, no browser, no build agent, no tool executed)",
   "piece": "W1-HUD-TOAST / Piece B (W1-INSTRUMENT-COUPLING)",
-  "state": "running",
+  "state": "superseded",
   "started": "2026-08-08",
   "commit_pinned": "9063779 (same commit the predecessor measured, so the population re-derivation is directly comparable)",
   "the_question": "The stated overturn condition of ruling S-PLAN-HUD-B3: does each tool's OWN artifact publish a readable expected side? The verdict-quoted E measured by measure-quoted-e-w1-hud-toast-b is only the second source, so its 14 is a floor, not a ceiling.",
@@ -13,9 +13,22 @@
     "orchestration/status/measure-own-e-w1-hud-toast-b.json",
     "orchestration/status/measure-quoted-e-w1-hud-toast-b.json"
   ],
-  "redundant_with": ["measure-quoted-e-w1-hud-toast-b", "plan-critic-w1-hud-toast", "plan-w1-hud-toast"],
+  "redundant_with": [
+    "measure-quoted-e-w1-hud-toast-b",
+    "plan-critic-w1-hud-toast",
+    "plan-w1-hud-toast"
+  ],
   "overlap_note": "Third pass over the same plan file and the same counts, by design — the brief says disagreement is a legitimate and more useful outcome. Declared, not a collision. No game/ or tools/ source touched or claimed.",
   "no_browser_launched": true,
   "no_tool_executed": true,
-  "next_step": "1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify the 109. 4. rule on S-PLAN-HUD-B3 in the plan file."
+  "next_step": "1. re-derive 776/198/450/109. 2. state the counting rule for a tool-side E. 3. classify the 109. 4. rule on S-PLAN-HUD-B3 in the plan file.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "SUPERSEDED",
+    "evidence": "files_touched: [] -- zero work product, `no_browser_launched: true`, `no_tool_executed: true`, started 2026-08-08 (git-log date of this status file: 2026-08-08T12:47:03Z, ~151h old, part of the 08-08 mass-kill era this dispatch and PLAYABILITY both describe). Its own `redundant_with` field names three siblings on the exact same question, one of which (`measure-quoted-e-w1-hud-toast-b`) it says is 'the second source' for the same measurement. The plan file it was meant to write into (orchestration/plans/W1-HUD-TOAST.md) already contains a filed, reversible ruling at the exact anchor this piece targeted: a `### S-PLAN-HUD-B3 — ruled, reversible: re-denominate rather than delete` section exists (grep confirms it and a reference to the overturn condition at line 170). The ruling this piece was dispatched to help make already exists on the branch; this specific instance of the three-way redundant measurement never produced anything and the question it was chasing is closed elsewhere. Not independently confirmed which sibling's work the existing ruling rests on -- flagged SUPERSEDED rather than DONE because this piece's own contribution is zero, not because the underlying question is unresolved.",
+    "superseded_by": [
+      "measure-quoted-e-w1-hud-toast-b (declared redundant_with by this piece itself)"
+    ]
+  }
 }

@@ -77,9 +77,17 @@
     "reports/door-yaw/",
     "docs/shots/2026-08-14-door-yaw/"
   ],
-  "redundant_with": ["SPAWN-YAW"],
+  "redundant_with": [
+    "SPAWN-YAW"
+  ],
   "notes": [
     "game/src/engine.js edits are additive and narrow: a block of facing constants above the class, one hook-install line in the constructor, and two new methods immediately before _placeBody. Nothing pre-existing was rewritten.",
     "The census hand-back framing in character/scene.js was NOT taken. Nobody should treat it as claimed by this piece."
-  ]
+  ],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "PARTIAL",
+    "evidence": "Extensive, real, committed work: population instrument (tools/world/door-yaw-offline.mjs), the facing refinement (Engine._refineFacing/_facingCell), the camera-arm measurement and a reversible ruling, all landed across 8aac4fd8..8727a00a (last commit touching this piece's own files: 2026-08-14T16:44:46Z). This status file's own next_step ('collect the three in-game sweep arms; run door-yaw-consume for CONSUMPTION + screenshots; finish report section 7') may already be partly done: reports/door-yaw/sweep-before.json (16:38), consume-archon-apothecary.json (17:35), sweep-after.json (18:09) and sweep-no-refine.json (18:13) all exist on disk with timestamps AFTER this status file's last write -- but NONE of these newer artifacts are committed or tracked (`git log --all` for each returns nothing; reports/.gitignore's blanket `*` rule catches raw JSON artifacts by design, and they were never force-added via tools/verdict-evidence.mjs the way HAZARDS.md section 9 requires). FLAG: this is real work genuinely at risk of being lost -- it exists only on this container's local disk, gitignored, uncommitted, and reports/door-yaw/2026-08-14-door-yaw-sweep.md section 7 is explicitly left as a forward-reference to the status file rather than filled in. If this container restarts before someone commits or PINs these four files, the in-game sweep arms and the CONSUMPTION demonstration are gone and the next agent will have to re-run a browser sweep that HAZARDS.md's own contention notes call expensive (up to 610s per row under load)."
+  }
 }

@@ -3,7 +3,7 @@
   "role": "critic",
   "item": "W1-26",
   "round": 4,
-  "state": "running",
+  "state": "abandoned",
   "started_at": "2026-08-08T08:26:43Z",
   "base_commit": "bea2684",
   "next_step": "read RULES/INDEX/NEXT-DISPATCH §P, spec W1-26-r3.md, status W1-26-r4.json",
@@ -15,6 +15,14 @@
     "tools/journey/critic-",
     "docs/shots/"
   ],
-  "redundant_with": ["W1-26-r4"],
-  "notes": []
+  "redundant_with": [
+    "W1-26-r4"
+  ],
+  "notes": [],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "ABANDONED",
+    "evidence": "Re-confirms OWNERSHIP-SWEEP-20260814's finding: no W1-26-r4 verdict exists anywhere under corpus/90-verdicts/ (checked directly for this dispatch, 2026-08-14). git-log date of this status file is 2026-08-08T08:27:42Z, 155h old -- the 08-08 mass-kill era."
+  }
 }

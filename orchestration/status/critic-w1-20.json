@@ -3,7 +3,7 @@
   "role": "critic",
   "piece": "W1-20",
   "round": 1,
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-08T00:00:00Z",
   "next_step": "write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank; push",
   "files_touched": [
@@ -41,5 +41,11 @@
     "date": "2026-08-14",
     "reason": "Own next_step was \"write corpus/90-verdicts/wave1/W1-20-r1.{md,json}; verdict-validate; ledger; publish; bank; push\" -- corpus/90-verdicts/wave1/W1-20-r1.json and .md both exist and are committed at 1c4c487d (2026-08-08 13:00:34Z), 13 minutes after this status file's own last commit (12:47:03Z). The verdict landed; this status file was simply never updated to say so.",
     "by": "OWNERSHIP-SWEEP-20260814"
+  },
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "DONE",
+    "evidence": "Corroborates OWNERSHIP-SWEEP-20260814's own ownership_claim_released on this file. corpus/90-verdicts/wave1/W1-20-r1.md and .json both exist on the branch, committed at 1c4c487d (2026-08-08 13:00:34Z). Re-verified independently for this dispatch: `git show 1c4c487d --stat` carries both paths; the verdict is a real, scored document, not a stub."
   }
 }

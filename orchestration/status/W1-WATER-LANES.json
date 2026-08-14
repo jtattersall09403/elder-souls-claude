@@ -21,5 +21,11 @@
     "tools/visual/w1-heightfog-retake.mjs",
     "corpus/90-verdicts/wave1/artifacts/W1-WATER-LANES/"
   ],
-  "notes": []
+  "notes": [],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "tools/visual/w1-water-lane-terms.mjs (the term-ablation instrument this piece's own next_step calls for running) is built and committed (df9a9a06, 2026-08-14T16:01:44Z, and carried again in the bank commit 551c9722 at 17:07:39Z which explicitly lists 'W1-WATER-LANES [measuring] — 1 file(s): tools/visual/w1-water-lane-terms.mjs' in its ownership accounting). Not independently verified for this dispatch: whether the instrument has actually been RUN against vista-deep-marshes (the next_step's literal ask) and produced a result, versus merely built. No reports/w1-water-lanes*.json or equivalent output artifact was found under reports/ in the time available for this piece specifically. Leaving state alone pending that check."
+  }
 }

@@ -2,7 +2,7 @@
   "task_id": "W1-22-r3",
   "state": "building",
   "started": "2026-08-08",
-  "piece": "W1-22 round 3 \u2014 regional ambience (audio.ambience.region), RI-AUD03",
+  "piece": "W1-22 round 3 — regional ambience (audio.ambience.region), RI-AUD03",
   "role": "builder",
   "spec": [
     "corpus/90-verdicts/wave1/W1-22-r2.md",
@@ -54,5 +54,11 @@
   ],
   "done": [
     "P1 DONE. tools/audio/w1-22-r3-daynight.mjs built FIRST and watched go red at HEAD 74403ba: 9/13 regions byte-identical day vs night (exactly the verdict SS5.1 list). Night selections authored for 10 regions (the 9 + stone-forest, whose night_interval_s moved the spectrum only 0.0157, under the floor). Also fixed a real inert-parameter defect in game/src/audio/ambience.js: LayerClock drew its FIRST interval with no env, so night_interval_s could never reach the first event -- and in a 20 s clip the first event is usually the only event. After: R5a 13/13, R5b 13/13 at 09d5de1. Falsifier --sabotage filter (night = day at -8 dB): R5a PASS, R5b 0/13 RED, so the instrument tells a selection from a volume knob."
-  ]
+  ],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "Not independently re-investigated beyond confirming its true git-log date (2026-08-08T08:24:53Z, part of the 2026-08-08 mass-kill era this dispatch and OWNERSHIP-SWEEP-20260814.md both describe). OWNERSHIP-SWEEP-20260814.md already examined this exact piece today and kept it live \"without individual deep-dive,\" on the grounds that its own next_step names concrete unstarted or in-progress work but was not independently re-verified against a second source. This dispatch prioritised the 150+ hour band lower than the recent pieces per its own instructions and did not reach a deeper check here; treat as genuinely unresolved, not as cleared."
+  }
 }

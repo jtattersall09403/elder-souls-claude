@@ -6,6 +6,18 @@ import path from 'node:path';
 import { launchGame } from '../lib/browser.mjs';
 import { REPO_ROOT } from '../lib/cli.mjs';
 
+// The journal indices each quest declares, read off the shipped data rather than guessed:
+// `questDef()` does not carry `journal`, and `note()` throws on an index the quest never had.
+const IDX = {};
+{
+  const dir = path.join(REPO_ROOT, 'game/data/quests');
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith('.json')) continue;
+    let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
+    for (const q of d.quests || []) IDX[q.id] = (q.journal || []).map((j) => [j.index, j.state]);
+  }
+}
+
 const OUT = path.join(REPO_ROOT, 'corpus/90-verdicts/wave1/artifacts/T4-r1');
 const h = await launchGame({ width: 1920, height: 1080 });
 try {
@@ -14,29 +26,46 @@ try {
     await H.ready();
     if (H.setUIVisible) await H.setUIVisible(true);
     await H.closeMenu();
+    let gate = null;
+    try { gate = H.questPresenceGate('off'); } catch (e) { gate = String(e.message); }
     const ids = H.questBook();
     const opened = [], errs = [];
     for (const id of ids) {
-      try { H.questOpen(id); opened.push(id); } catch (e) { errs.push([id, String(e.message).slice(0, 60)]); }
-      if (opened.length >= 5) break;
+      let r = null;
+      try { H.questPrepareOffer(id); } catch (e) { /* not preparable */ }
+      try { r = H.questOpen(id); } catch (e) { errs.push([id, String(e.message).slice(0, 70)]); continue; }
+      if (r && r.ok) opened.push(id); else errs.push([id, JSON.stringify(r).slice(0, 70)]);
+      if (opened.length >= 4) break;
     }
-    return { opened, errs: errs.slice(0, 6), n_ids: ids.length };
+    // the journal indices each opened quest actually declares
+    return { opened, errs: errs.slice(0, 8), n_ids: ids.length, gate };
   });
-  console.log('opened:', JSON.stringify(step1.opened), 'errs:', JSON.stringify(step1.errs));
+  console.log('gate:', JSON.stringify(step1.gate), 'opened:', JSON.stringify(step1.opened));
+  console.log('errs:', JSON.stringify(step1.errs));
+  console.log('idx:', JSON.stringify(step1.opened.map((i) => [i, IDX[i]])));
 
-  const step2 = await h.page.evaluate(async (opened) => {
+  const step2 = await h.page.evaluate(async ({ opened, idx }) => {
     const H = window.__HARNESS;
     const noted = [];
-    for (const id of opened) {
-      for (let i = 1; i <= 4; i++) {
-        try { H.questNote(id, i); noted.push([id, i, 'ok']); }
-        catch (e) { noted.push([id, i, String(e.message).slice(0, 70)]); }
+    // interleave BY TIME: one entry per quest, round robin, stepping the clock between each,
+    // which is exactly the shape RI-UIX04 J1 is about — four quests lived in one week.
+    const active = {};
+    for (const id of opened) active[id] = (idx[id] || []).filter((e) => e[1] === 'active').map((e) => e[0]);
+    const rounds = Math.max(...opened.map((id) => active[id].length));
+    for (let k = 0; k < rounds; k++) {
+      for (const id of opened) {
+        const i = active[id][k];
+        if (i === undefined) continue;
+        let r = null;
+        try { r = H.questNote(id, i); } catch (e) { r = { ok: false, threw: String(e.message).slice(0, 70) }; }
+        noted.push([id, i, r && r.ok ? 'ok' : JSON.stringify(r)]);
+        await H.stepFrames(30);
+        if (H.advanceWallClock) { try { H.advanceWallClock(3600); } catch {} }
       }
-      await H.stepFrames(20);   // move the in-world clock between quests so dates differ
     }
     const qs = H.getQuestState();
     return { noted, journal_len: (qs.journal || []).length, journal_head: (qs.journal || []).slice(0, 4) };
-  }, step1.opened);
+  }, { opened: step1.opened, idx: IDX });
   console.log('journal entries:', step2.journal_len);
   console.log('noted sample:', JSON.stringify(step2.noted.slice(0, 6)));
 

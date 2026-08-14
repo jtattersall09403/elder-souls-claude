@@ -158,5 +158,11 @@
     "art-direction 7/10 verdict"
   ],
   "plan_state_note": "Materially edited twice on 2026-08-14: rewritten into a parent plus ten children by W1-30-VIS-REVIEW, then amended (R1-R6) and given an eleventh child W1-30K by W1-30-VIS-RECRITICISM. Under PLAN-LOOP.md rule 1 neither round may approve its own edit, so a third fresh reviewer-editor judges the current version. Children dispatch on their own plan states regardless.",
-  "children_plan_path": "orchestration/plans/W1-30K.md is the eleventh child, added by amendment R2, Plan-State awaiting-criticism."
+  "children_plan_path": "orchestration/plans/W1-30K.md is the eleventh child, added by amendment R2, Plan-State awaiting-criticism.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "Age correction only, no independent re-litigation of the piece's substance: a naive mtime scan read this status file as 9.2h old; its real git-log date is 2026-08-14T10:07:40Z (~9.7h at the time of this dispatch), which is close enough that the mtime error here was small, unlike W1-18's five-day error. Deliberately NOT re-investigated in depth: OWNERSHIP-SWEEP-20260814.md's own `--for game/src/world/province.js` calibration case examined this exact piece today and found it 'genuinely mid-repair' with a concrete next_step, and this dispatch has no evidence to add or subtract from that finding. Its own planning_next_step ('Do not dispatch W1-30 yet. Once both W1-06 and W1-24 builder work are landed...') and the separate builder-round next_step ('Continue native GPU repairs for the remaining red terrain, water, settlement...') should be read directly rather than summarised further here."
+  }
 }
