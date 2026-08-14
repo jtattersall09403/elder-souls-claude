@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T14:55:55.488Z",
+  "generated_at": "2026-08-14T14:57:02.746Z",
   "generator": "tools/cost.mjs",
-  "commit": "dd5ec5d",
+  "commit": "1b13ac6",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T14:55:45.335Z",
-    "hours": 208.65,
+    "to": "2026-08-14T14:56:36.888Z",
+    "hours": 208.66,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -41,26 +41,26 @@
   "coverage": {
     "files_total": 478,
     "files_read": 478,
-    "bytes_read": 725292649,
+    "bytes_read": 725412140,
     "complete": true
   },
   "drivers": {
-    "requests": 58607,
-    "mean_context_tokens": 210456,
-    "pie_tokens": 1518143837,
-    "requests_per_agent_hour": 71.56
+    "requests": 58620,
+    "mean_context_tokens": 210442,
+    "pie_tokens": 1518389314,
+    "requests_per_agent_hour": 71.58
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 59,
     "agent_hours": 819,
-    "span_hours": 208.65
+    "span_hours": 208.66
   },
   "headline": {
-    "spend_to_date_usd": 7278.13,
-    "burn_usd_per_hour": 163.64,
+    "spend_to_date_usd": 7279.35,
+    "burn_usd_per_hour": 164.86,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 123.36,
+    "ch_usd_per_hour": 123.38,
     "ch_pct_of_baseline": 106.5,
     "usd_per_agent_hour": 8.89,
     "usd_per_agent_hour_pct_of_baseline": 102
@@ -321,24 +321,24 @@
     },
     {
       "t": "2026-08-14T14:00:00.000Z",
-      "usd_per_hour": 81.82,
-      "usd_per_agent_hour": 5.84,
+      "usd_per_hour": 82.43,
+      "usd_per_agent_hour": 5.89,
       "mean_agents": 14,
-      "commit": "dd5ec5d",
+      "commit": "1b13ac6",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 7069.73,
-      "requests": 54084,
+      "usd": 7070.96,
+      "requests": 54097,
       "tokens": {
-        "input": 1218394,
-        "cache_write_5m": 175144888,
+        "input": 1218420,
+        "cache_write_5m": 175171277,
         "cache_write_1h": 9404367,
-        "cache_read": 11255365285,
-        "output": 9890362
+        "cache_read": 11257257533,
+        "output": 9895010
       }
     },
     {
@@ -358,12 +358,12 @@
     {
       "class": "input",
       "usd": 6.7,
-      "tokens": 1522401
+      "tokens": 1522427
     },
     {
       "class": "cache_write_5m",
-      "usd": 1119.07,
-      "tokens": 184911275
+      "usd": 1119.24,
+      "tokens": 184937664
     },
     {
       "class": "cache_write_1h",
@@ -372,13 +372,13 @@
     },
     {
       "class": "cache_read",
-      "usd": 5804.28,
-      "tokens": 12138356230
+      "usd": 5805.23,
+      "tokens": 12140248478
     },
     {
       "class": "output",
-      "usd": 254.03,
-      "tokens": 10567597
+      "usd": 254.15,
+      "tokens": 10572245
     }
   ],
   "guards": {
