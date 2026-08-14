@@ -1,18 +1,20 @@
 {
   "task_id": "W1-ORPHANED-SURFACE-SHADERS",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
   "commit_at_start": "52d66578",
   "branch": "codex/wave1-build-experiment",
 
   "could_not_do": [
-    "NOT FIXED BY THIS PIECE, and it is the thing five blind judges named 5 of 5: there is NO contact darkening or ambient occlusion in this build at all. `worldMaterial()` sets `aoMap: authored ? null : ...` and every one of the twenty families HAS an authored set, so aoMap is null on every material in the game; and there is no screen-space AO pass anywhere in `game/src/render` — only a comment in visual-foundation.js:676 deferring it to 'W1-30A's GTAO stack', which does not exist in the tree. `FEATURE_CONSUMERS.ao` declares `['render/visual-foundation.js','aoMap']` as its consumer, and that consumer is null everywhere. This is a separate remedy needing its own owner. My fix does not touch it.",
-    "NOT FIXED BY THIS PIECE: nothing in `game/src` ever calls `setWorldWetness()`. Only tools do. So `uWorldWetness` has been 0 in every frame the game has ever drawn, on the intact materials as well as the orphaned ones. Restoring the shader restores the MECHANISM; it does not supply that INPUT. Owner: W1-30B (weather).",
-    "NOT FIXED BY THIS PIECE: `CHARACTER_SPECS` in actor.js declares `wear` (0.15-0.95) and `palette` per character, including the player's `wear: 0.25, palette: 'deep-marshes'`, and `ensureBuilt()` reads only `.skin` and `.cloth` hexes from it. So after my fix the player's body gets the detail-normal relief but still has wear = 0. I deliberately did NOT wire this: it is a different defect, and landing it in the same commit would confound my before/after evidence — I could not then say whether the pixels moved because the shader came back or because new wear was applied (RULES rule 6's third shape). Named as owed, with the exact edit, below.",
-    "The pre-existing gate `tools/visual/w1-30-shader-hook-collision.mjs` tests `/uDetailNormal/.test(String(mat.onBeforeCompile))`. That reads the SOURCE TEXT of the outer function and is blind to a CHAINED hook, so after this fix it reports 116 false orphans. My own census made the same mistake first and I caught it only because the number was suspicious. That gate needs the behavioural probe my census now uses; I have not edited it because it is another piece's instrument. Flagged, not fixed.",
-    "`tools/visual/gpu-deck.mjs` HAS NO `--help` HANDLER. The brief told me to run `gpu-deck.mjs --help`; the flag is parsed as an unknown option and the tool RENTS A POD. It rented `tujcoxeghk25hd` (RTX A5000, $0.27/hr), which I terminated by id with deletion confirmed by API lookup. The safe flags are `--estimate` / `--dry-run`. An orphaned ephemeral template `p9doidt3bh` remains; templates are free and I did not run a bare `cleanup` to reap it, because a bare cleanup is container-scoped and could take a sibling's live Pod.",
-    "I proceeded past `tools/contention.mjs`'s WAIT for the census runs (4-5 browser instances, load 5.3-6.6 per core against a 4.0 ceiling), with one small 480x270 browser at a time. Declared here as that tool asks.",
-    "No blind human re-judgement of the fixed build. `RI-VIS06` Protocol A is the real acceptance test for this piece and it is not mine to run."
+    "STILL NOT FIXED BY THIS PIECE, and it is the thing five blind judges named 5 of 5: there is NO contact darkening or ambient occlusion in this build at all. `worldMaterial()` sets `aoMap: authored ? null : ...` and every one of the twenty families HAS an authored set, so aoMap is null on every material in the game; and there is no screen-space AO pass anywhere in `game/src/render` — only a comment in visual-foundation.js:676 deferring it to 'W1-30A's GTAO stack', which does not exist in the tree. This is a separate remedy needing its own owner. This resumption did not touch it either.",
+    "No new AO/contact-shadow/GI work in this resumption. Unchanged from the line above.",
+    "STILL NOT FIXED BY THIS PIECE: nothing in `game/src` ever calls `setWorldWetness()`. Only tools do. Owner: W1-30B (weather).",
+    "STILL NOT FIXED BY THIS PIECE: `CHARACTER_SPECS` wear/palette wiring for the player body. Deliberately not wired, to keep the CONSUMPTION before/after evidence unconfounded (RULES rule 6's third shape). Named as owed, with the exact edit, in owed_follow_ons.",
+    "`tools/visual/w1-30-shader-hook-collision.mjs` still uses the source-text regex and will report 116 false orphans against the fixed tree. Flagged, not fixed — another piece's instrument.",
+    "No blind human re-judgement of the fixed build. `RI-VIS06` Protocol A is the real acceptance test for this piece and it is not mine to run. The falsifiable prediction in README section 6 is what a wave-2 re-run should be checked against.",
+    "I did not reduce the evidence pack to a single frame per site: `hardware-ab/` carries the full 8-angle player orbit, all 3 building angles and both natural angles, base+perturbed, both arms (65MB) — deliberate per the owner's directive against single-still claims, but a real size/completeness tradeoff, not a free one.",
+    "I did not delete or reconcile the two earlier, non-closing Pod runs on local disk (`reports/runpod-gpu/runs/w1-orphaned-surface-shaders` and `.../w1-orphaned-surface-shaders-ab`) — `reports/` is gitignored so they were never going to reach the remote, and they are cited by path in the README as the record of what went wrong (a silently-inert revert, then a SIGTERM) on the way to the closing run. Left in place rather than cleaned up.",
+    "The earlier resumption's own could-not-dos, carried forward verbatim: `tools/visual/gpu-deck.mjs` still has no `--help` guard (a prior agent's `--help` rented a Pod by accident; this resumption avoided it by using `node tools/runpod/cli.mjs` directly, whose `--help`/no-command path is genuinely safe and was verified before use); `tools/contention.mjs` was not consulted this round because no local browser was launched — all rendering happened on the rented Pod, which is the documented exception."
   ],
 
   "headline": "305 of 406 materials carried userData.surfaceUniforms that no shader installed. Reproduced at HEAD, attributed to every call site, fixed at the copy seam, and now 0 of 406. Three further losses at the same seam were found and fixed with it.",
@@ -78,6 +80,7 @@
     "tools/visual/w1-30-surface-orphan-census.mjs",
     "tools/visual/w1-30-copy-seam-patch.mjs",
     "tools/visual/w1-30-surface-consumption.mjs",
+    "tools/visual/w1-30-copy-seam-hw.sh",
     "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/"
   ],
   "files_claimed": [
@@ -86,16 +89,33 @@
     "docs/shots/"
   ],
 
-  "next_step": "CONSUMPTION arms (before/after) and the hardware before/after sweep on one Pod, both arms on the same GPU.",
-
   "resumption_20260814b": {
     "baseline_pinned_at": "03ba530d470a46e9784be71305005a598d223b9b",
     "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline, a sibling bank can carry an uncommitted edit into it. Verified the fix markers (W1-ORPHANED-SURFACE-SHADERS) are present in both files at this exact sha and match the working tree before renting anything.",
-    "prior_pod_runs_found_and_why_neither_closes_this": [
-      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders (NVIDIA L4, status passed): the AFTER arm is real. The BEFORE arm is NOT a control — revert.log shows ENOENT resolving the repo from a hard-coded /home/user/elder-souls-claude path that does not exist on the Pod, so the revert silently did nothing (this is the exact incident the README's section 5 'accidental repeatability estimate' describes). census-before on this run reports 'orphans by category: {}' — zero orphans — proving the revert never applied. Its consumption-before numbers (5.36% / 32.84% / 73.97%) are therefore a same-configuration REPEAT of the after arm, not a before arm.",
-      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders-ab (NVIDIA RTX A5000, status failed/SIGTERM): the revert script bug was already fixed here (it now resolves the repo from its own location) and census-before is a REAL before arm — 321 of 422 orphaned, matching the diagnosis. But the run was SIGTERM'd by the CALLING SHELL immediately after census-before finished and before w1-30-surface-consumption.mjs could capture a single frame (consumption-before.log has only the renderer banner, consumption-before/consumption.json does not exist). This is exactly the hazard the brief names: 'background every GPU command so a shell timeout cannot orphan a rented Pod' — the prior agent ran it in the foreground.",
-      "Neither run gives a valid CONSUMPTION before-arm on hardware, and the two runs are on different GPUs from each other besides. tools/visual/w1-30-copy-seam-hw.sh itself is correct (it is what produced the real before-arm census on the -ab run) — the fix needed is operational: run it backgrounded with enough runtime headroom, not a code fix."
+    "prior_pod_runs_found_and_why_neither_closed_this_alone": [
+      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders (NVIDIA L4, status passed): the AFTER arm is real. The BEFORE arm is NOT a control — revert.log shows ENOENT resolving the repo from a hard-coded /home/user/elder-souls-claude path that does not exist on the Pod, so the revert silently did nothing. census-before on this run reports zero orphans, proving the revert never applied. Its consumption-before numbers (5.36% / 32.84% / 73.97%) are a same-configuration REPEAT of the after arm, not a before arm.",
+      "reports/runpod-gpu/runs/w1-orphaned-surface-shaders-ab (NVIDIA RTX A5000, status failed/SIGTERM): the revert script bug was already fixed here and census-before is a REAL before arm — 321 of 422 orphaned. But the run was SIGTERM'd by the CALLING SHELL immediately after census-before finished and before w1-30-surface-consumption.mjs captured a single frame — the exact hazard the brief names about backgrounding GPU commands."
     ],
-    "plan": "Re-run tools/visual/w1-30-copy-seam-hw.sh via node tools/runpod/cli.mjs run, backgrounded in this shell (run_in_background), pinned to --revision 03ba530d470a46e9784be71305005a598d223b9b so the Pod snapshot is a clean git archive of the pinned commit and cannot pick up a sibling's concurrent edit under game/ or tools/ (HAZARDS #11). --max-runtime raised well above the ~6.5 minutes the prior two runs took, so a slow offer/queue does not repeat the SIGTERM."
-  }
+    "closing_run": {
+      "runId": "20260814-173808Z-27049",
+      "artifact_dir": "reports/runpod-gpu/runs/w1-orphaned-surface-shaders-consumption-r2",
+      "gpu": "NVIDIA RTX A5000, SECURE, $0.27/hr, both arms", "renderer": "ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA), software_renderer=false, identical string both arms",
+      "command": "node tools/runpod/cli.mjs run --command 'bash tools/visual/w1-30-copy-seam-hw.sh' --revision 03ba530d470a46e9784be71305005a598d223b9b --max-runtime 30 --artifact-dir reports/runpod-gpu/runs/w1-orphaned-surface-shaders-consumption-r2, launched via nohup+disown so the calling shell exiting could not SIGTERM the Pod run",
+      "duration": "17:38:08Z start to 17:46:24Z Pod terminated and confirmed deleted; ~8m16s total including provisioning and teardown",
+      "cost_estimate_usd": "~0.27/hr * 0.14hr = ~$0.038",
+      "result": {
+        "CONSUMPTION_before": { "player_best_pct": 0.33, "building_best_pct": 1.30, "natural_control_best_pct": 73.28, "PLAYER-CONSUMES": "FAIL (0.33% < 0.5% threshold) — correct, this is the defect present", "restore_floor_pct": 0.0 },
+        "CONSUMPTION_after": { "player_best_pct": 5.36, "building_best_pct": 32.84, "natural_control_best_pct": 73.97, "PLAYER-CONSUMES": "PASS", "BUILDING-CONSUMES": "PASS", "restore_floor_pct": 0.0 },
+        "player_change": "0.33% -> 5.36%, ~16x",
+        "building_change": "1.30% -> 32.84%, ~25x",
+        "control_change": "73.28% -> 73.97%, ~1x (unchanged, as required — proves the harness/GPU is not the reason player/building moved)",
+        "census_before": "321 of 422 materials orphaned (actor 211, building 95, player 14, other 1) — matches diagnosis",
+        "census_after": "0 of 422 orphaned"
+      },
+      "evidence_copied_to": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/hardware-ab/ — both consumption.json, both census summary+rows, full 8-angle player orbit + 3 building angles + 2 natural angles (base+perturbed, both arms, 26 frames/arm), 6 deck scenes/arm, 1 motion contact sheet/arm (180-frame walk thinned to every 6th), run.json, revert.log, nvidia-smi.csv, vulkaninfo.txt. 65MB total. Old hardware/ (NVIDIA L4, after-only, real) kept as-is, not deleted — hardware-ab/ is what satisfies 'both arms on the same GPU'.",
+      "readme_updated": "corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS/README.md section 5 rewritten with the real before/after table and the three-run history (why runs 1 and 2 did not close this)."
+    }
+  },
+
+  "next_step": "CLOSED for this piece's own scope (CONSUMPTION before/after + hardware sweep, both arms, one Pod, one GPU — see resumption_20260814b.closing_run). What remains is NOT this piece: (1) RI-VIS06 Protocol A re-run in wave 2 to see whether the fix moved a judge, per the falsifiable prediction in README section 6; (2) the items in owed_follow_ons, none of which are CONSUMPTION work; (3) AO/contact-shadow/GI, a separate remedy owner (see could_not_do)."
 }

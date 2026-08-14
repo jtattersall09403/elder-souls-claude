@@ -1,6 +1,9 @@
 # W1-ORPHANED-SURFACE-SHADERS — the material copy seam
 
-**Commit measured:** `52d66578`, branch `codex/wave1-build-experiment`.
+**Commit measured (diagnosis, §1–§4):** `52d66578`, branch `codex/wave1-build-experiment`.
+**Commit measured (§5 hardware CONSUMPTION before/after sweep):** `03ba530d47`, pinned before
+provisioning per `HAZARDS.md` §12 — `git archive` of this exact sha was uploaded to the Pod, not the
+live working tree, so a sibling's concurrent edit under `game/` could not reach either arm.
 **Instruments:** `tools/visual/w1-30-surface-orphan-census.mjs`, `tools/visual/w1-30-surface-consumption.mjs`.
 **Reversal:** `node tools/visual/w1-30-copy-seam-patch.mjs --revert` — the same script that applied
 the change, so the delete-the-fix arm cannot drift from the change it reverses.
