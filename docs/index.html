@@ -129,9 +129,9 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-14 08:40Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-14 08:42Z</div>
   <div class="cost-strip"><span class="ok">&#10003;</span> <a href="#cost">Spend to date</a>
-      <b>$6,141.66</b> <span class="cost-strip-dim">&middot; burn $40.26/h &middot; C/H $115.88/h (100% of baseline, bar 25%) &middot; agents 13.3 &middot; read 2026-08-14 08:40Z, seconds ago</span></div>
+      <b>$6,145.71</b> <span class="cost-strip-dim">&middot; burn $44.31/h &middot; C/H $115.96/h (100.1% of baseline, bar 25%) &middot; agents 13.3 &middot; read 2026-08-14 08:41Z, seconds ago</span></div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -139,6 +139,22 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </header>
 
 <section id="p-blog" role="tabpanel"><div class="wrap">
+<article class="post" id="2026-08-14-camera-settlements-and-how-we-report">
+  <h2>Camera fixes, settlement streets, and a change to how we tell you about it</h2>
+  <div class="meta">2026-08-14 08:41 &middot; A mobile and controller camera bug is fixed, the eight towns are getting real streets and building depth instead of blank boxes, and — the housekeeping bit — this blog moves to two roundups a day instead of a post every time something happens, written the way our recent pull request updates already are.</div>
+  <p>This is the first post in the new format, so a word on that before anything else: from here on this blog posts roughly twice a day, covering everything worth telling you about since the last one, rather than a short post every time a single thing lands. If something isn't built yet, we'll say so plainly and move on — that's the normal state of a project partway through a wave, not something to make a drama of.</p>
+<h3>Turning and moving now point the way you'd expect</h3>
+<p>If you'd tried steering with a touchscreen or a GameSir controller recently, the camera turned the opposite way to how you'd swipe or push the stick — left felt like right, up felt like down. That's fixed: swiping and the right stick now turn the view the way your hand moves. While looking at it we also found the GameSir pad had a wiring fault of its own — moving the camera stick could accidentally trigger a parry, because the controller's own signals for &quot;look&quot; and &quot;block&quot; were crossed. Both are fixed, with a test that keeps checking it going forward, so it can't quietly come back.</p>
+<h3>The eight towns are getting walls, streets and rubble instead of blank boxes</h3>
+<p>The biggest single push this week has gone into how the towns actually look — buildings, streets, and the ground itself. The plain box-shaped buildings that filled Archon, Blackrose, Stormhold and the rest are being given real construction: foundations, wall panels, roof lines, and doorways you can actually read from a distance, rather than a flat rectangle with a door texture stuck on. Streets into each town are being routed properly around the buildings that are actually there, instead of every town reusing the same approach and occasionally driving the road through somebody's house. Roadside stalls, carts, and drying racks are being added so a street doesn't feel empty on the walk in, and the ground itself is starting to get real rock and terrain detail rather than a smooth green plane with the odd generic boulder.</p>
+<p>None of this is finished — the people working on it put the settlement work at roughly two-thirds built out, honestly, in their own updates, and some towns (Helstrom and the Salt Hills in particular) still look noticeably thinner than the others. The picture below is from this week's testing on real graphics hardware rather than the flat software renderer we usually check against, and it shows exactly that in-between state: recognisable buildings and a real street layout, but still plain and a little empty compared to where this is heading.</p>
+<figure class="cmp"><div class="cmp-row" style="grid-template-columns:repeat(1,minmax(0,1fr))"><a class="cmp-cell" href="shots/2026-08-13-runpod-gpu-browser-smoke.png" target="_blank" rel="noopener"><img src="shots/2026-08-13-runpod-gpu-browser-smoke.png" alt="One of the eight towns, seen from the road on real graphics hardware — plain buildings and a bare crossroads, honestly mid-build." loading="lazy"><span>One of the eight towns, seen from the road on real graphics hardware — plain buildings and a bare crossroads, honestly mid-build.</span></a></div><figcaption>A settlement crossroads, rendered on real GPU hardware rather than software, mid-way through this week's work on settlement streets and building depth.</figcaption></figure>
+<h3>The other change: how you hear about all this</h3>
+<p>Two things about the reporting itself, since they're both things the project's owner asked for directly. First, the cost of running all this — measured in the same terms you'd expect a cloud bill to be measured in — now actually shows up on the build status page as a line over time, rather than sitting blank. It had been built to show that number for a week; the part that actually counted the number had not been. It's counting now, including the several quiet days in the middle of last week when nothing was running at all — you can see the gap in the line.</p>
+<p>Second, several pages that are supposed to describe where the project stands (this blog's front page among them) had quietly stopped updating themselves days ago, because the thing that refreshed them only ran on one particular kind of save and nothing ran it when work landed by other routes. That's fixed at the mechanism rather than just brought up to date once — there are now two independent ways it gets refreshed, so one going quiet again shouldn't leave the page stale for days unnoticed.</p>
+<p>What's next: more of the same settlement work, with the aim of getting every town past &quot;recognisable&quot; and into &quot;worth walking through&quot;, and the next roundup should have fresher pictures to show for it.</p>
+
+</article>
 <article class="post" id="2026-08-08-a-third-of-every-edge-in-the-interface">
   <h2>A third of every edge in the interface</h2>
   <div class="meta">2026-08-08 17:50 &middot; A visual check called FD6 had been red for two rounds, comparing a 0-255 brightness overshoot against a threshold of 40 while the item it serves specifies a perceptual colour-difference unit where 3 is a pass and 8 is a hard failure. Converted properly, the worst edge measures 58.291 - about a third of every graded edge pixel in the interface is over the fail line - and it caps the item's fidelity score at 2. A sibling check found twelve of the piece's own grading rules would return PASS after being shown nothing at all.</div>
@@ -1401,25 +1417,25 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="wrap">
 
 <section class="cost"><h2 id="cost">What this is costing <span class="dimtext">(the efficiency programme &mdash; <code>orchestration/COST.md</code>)</span></h2>
-<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 08:40Z</b> (seconds ago) at commit <code>b6c2b4c</code>, and it refreshes on every bank.</div><div class="cost-hero">
+<div class="cost-banner cost-banner-ok">Reading taken <b>2026-08-14 08:41Z</b> (seconds ago) at commit <code>b6c2b4c</code>, and it refreshes on every bank.</div><div class="cost-hero">
   <div class="cost-hero-main">
     <div class="cost-hero-l">Spend to date</div>
-    <div class="cost-hero-n">$6,141.66</div>
-    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 08:39Z &middot; 202.4 h of fleet runtime</div>
-    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 53 active h of 202.4 elapsed &middot; 704 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
+    <div class="cost-hero-n">$6,145.71</div>
+    <div class="cost-hero-s">2026-08-05 22:16Z &rarr; 2026-08-14 08:41Z &middot; 202.4 h of fleet runtime</div>
+    <div class="cost-hero-s" style="margin-top:8px">Per hour of <b>active_clock_hours</b>: 53 active h of 202.4 elapsed &middot; 705 agent-hours. Idle hours are excluded, or switching the fleet off would improve the metric.</div>
     
-    <div class="cost-caveat cost-caveat-ok">Read <b>417</b> of 417 transcript files (0.60 GB) &mdash; complete.</div>
+    <div class="cost-caveat cost-caveat-ok">Read <b>418</b> of 418 transcript files (0.60 GB) &mdash; complete.</div>
   </div>
   <div class="cost-hero-side">
-    <div class="cost-tile"><div class="cost-tile-v">$40.26<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$44.31<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">Burn rate now</div>
       <div class="cost-tile-s">over the last 1 h</div></div>
-    <div class="cost-tile"><div class="cost-tile-v">$115.88<span class="cost-per">/h</span></div>
+    <div class="cost-tile"><div class="cost-tile-v">$115.96<span class="cost-per">/h</span></div>
       <div class="cost-tile-l">C/H &mdash; the headline metric</div>
-      <div class="cost-tile-s">100% of baseline &middot; bar is 25%</div></div>
+      <div class="cost-tile-s">100.1% of baseline &middot; bar is 25%</div></div>
     <div class="cost-tile"><div class="cost-tile-v">$8.72<span class="cost-per">/agent-h</span></div>
       <div class="cost-tile-l">Cost per agent-hour</div>
-      <div class="cost-tile-s">100.2% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
+      <div class="cost-tile-s">100.1% of baseline &mdash; if this did not fall, the fleet just got smaller</div></div>
   </div>
 </div><div class="cost-guards">
   <div class="cost-guards-h">The guards. <span class="dimtext">A cost figure published without these is not a result &mdash; C/H alone is gamed by running fewer agents.</span></div>
@@ -1435,7 +1451,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
   </div>
 </div>
 <div class="cost-panel"><h3>C/H — model spend per hour of fleet runtime <span class="cost-unit">$/h</span> <span class="cost-n">28 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$60.73</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$121.46</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$182.19</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$242.92</text><line x1="62" x2="792" y1="98.16906529313741" y2="98.16906529313741" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="102.16906529313741" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="147.54226632328437" y2="147.54226632328437" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="151.54226632328437" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,143.2 90.9,159.0 98.1,113.2 105.4,137.8 112.6,113.0 119.8,150.5 127.0,118.5 134.3,109.3 141.5,79.8 148.7,64.2 156.0,163.0 177.6,61.6 184.9,78.4 192.1,104.6 199.3,66.9 206.6,92.6 213.8,74.8 221.0,94.3 228.2,92.0 235.5,49.7 242.7,79.0 249.9,40.8 257.1,87.6 264.4,108.0 271.6,121.7 278.8,89.6 286.1,101.8 792.0,152.6" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="C/H — model spend per hour of fleet runtime"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$60.73</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$121.46</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$182.19</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$242.92</text><line x1="62" x2="792" y1="98.16906529313741" y2="98.16906529313741" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="102.16906529313741" fill="#9a8f79" font-size="11">baseline $115.88</text><line x1="62" x2="792" y1="147.54226632328437" y2="147.54226632328437" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="151.54226632328437" fill="#7d9a5a" font-size="11">target $28.97 · 25% bar</text><polyline points="62.0,143.2 90.9,159.0 98.1,113.2 105.4,137.8 112.6,113.0 119.8,150.5 127.0,118.5 134.3,109.3 141.5,79.8 148.7,64.2 156.0,163.0 177.6,61.6 184.9,78.4 192.1,104.6 199.3,66.9 206.6,92.6 213.8,74.8 221.0,94.3 228.2,92.0 235.5,49.7 242.7,79.0 249.9,40.8 257.1,87.6 264.4,108.0 271.6,121.7 278.8,89.6 286.1,101.8 792.0,151.4" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $36.56 per hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="143.2" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
@@ -1517,11 +1533,11 @@ measured over 2 h</title><circle cx="278.8" cy="89.6" r="4.5" fill="#3987e5" str
 $109.49 per hour
 commit d2dbae7
 measured over 2 h</title><circle cx="286.1" cy="101.8" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
-$20.13 per hour
+$22.15 per hour
 commit b6c2b4c
-measured over 2 h</title><circle cx="792.0" cy="152.6" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="142.56423269201636" fill="#3987e5" font-size="12" font-weight="600">$20.13/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+measured over 2 h</title><circle cx="792.0" cy="151.4" r="4.5" fill="#3987e5" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="141.41667929101652" fill="#3987e5" font-size="12" font-weight="600">$22.15/h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
 <div class="cost-panel"><h3>Cost per agent-hour — the diagnostic that proves efficiency, not idling <span class="cost-unit">$/agent-h</span> <span class="cost-n">28 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 90.9,152.0 98.1,127.7 105.4,118.0 112.6,40.8 119.8,111.6 127.0,84.1 134.3,67.8 141.5,82.6 148.7,67.5 156.0,160.7 177.6,59.8 184.9,72.1 192.1,103.6 199.3,97.0 206.6,111.0 213.8,111.7 221.0,107.8 228.2,114.4 235.5,100.9 242.7,105.4 249.9,99.6 257.1,93.7 264.4,80.8 271.6,109.4 278.8,114.4 286.1,119.4 792.0,132.4" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="Cost per agent-hour — the diagnostic that proves efficiency, not idling"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">$0.00</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">$3.14</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">$6.28</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">$9.42</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">$12.57</text><line x1="62" x2="792" y1="68.34969442322384" y2="68.34969442322384" stroke="#9a8f79" stroke-width="2" stroke-dasharray="2 4" opacity="0.9"/><text x="800" y="72.34969442322384" fill="#9a8f79" font-size="11">baseline $8.71</text><line x1="62" x2="792" y1="140.05996944232237" y2="140.05996944232237" stroke="#7d9a5a" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="144.05996944232237" fill="#7d9a5a" font-size="11">target $2.18</text><polyline points="62.0,143.9 90.9,152.0 98.1,127.7 105.4,118.0 112.6,40.8 119.8,111.6 127.0,84.1 134.3,67.8 141.5,82.6 148.7,67.5 156.0,160.7 177.6,59.8 184.9,72.1 192.1,103.6 199.3,97.0 206.6,111.0 213.8,111.7 221.0,107.8 228.2,114.4 235.5,100.9 242.7,105.4 249.9,99.6 257.1,93.7 264.4,80.8 271.6,109.4 278.8,114.4 286.1,119.4 792.0,133.6" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 $1.83 per agent-hour
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="143.9" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
@@ -1603,11 +1619,11 @@ measured over 2 h</title><circle cx="278.8" cy="114.4" r="4.5" fill="#d95926" st
 $4.06 per agent-hour
 commit d2dbae7
 measured over 2 h</title><circle cx="286.1" cy="119.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
-$2.88 per agent-hour
+$2.77 per agent-hour
 commit b6c2b4c
-measured over 2 h</title><circle cx="792.0" cy="132.4" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="122.37280366692133" fill="#d95926" font-size="12" font-weight="600">$2.88/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+measured over 2 h</title><circle cx="792.0" cy="133.6" r="4.5" fill="#d95926" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="123.58078686019863" fill="#d95926" font-size="12" font-weight="600">$2.77/agent-h</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
 <div class="cost-panel"><h3>G1 — mean concurrent agents, on the same clock as the cost <span class="cost-unit">agents</span> <span class="cost-n">28 measurements</span></h3>
-<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 90.9,137.4 98.1,74.1 105.4,127.4 112.6,137.4 119.8,147.3 127.0,127.4 134.3,127.4 141.5,97.4 148.7,97.4 156.0,144.0 177.6,100.7 184.9,104.1 192.1,100.7 199.3,70.8 206.6,77.4 213.8,54.1 221.0,84.1 228.2,70.8 235.5,47.4 242.7,70.8 249.9,40.8 257.1,94.1 264.4,120.7 271.6,114.0 278.8,67.4 286.1,74.1 792.0,140.7" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
+<div class="cost-scroll"><svg viewBox="0 0 960 190" role="img" aria-label="G1 — mean concurrent agents, on the same clock as the cost"><line x1="62" x2="792" y1="164" y2="164" stroke="#332d24" stroke-width="1" opacity="1"/><text x="54" y="168" fill="#9a8f79" font-size="11" text-anchor="end">0</text><line x1="62" x2="792" y1="129.5" y2="129.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="133.5" fill="#9a8f79" font-size="11" text-anchor="end">10.4</text><line x1="62" x2="792" y1="95" y2="95" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="99" fill="#9a8f79" font-size="11" text-anchor="end">20.7</text><line x1="62" x2="792" y1="60.5" y2="60.5" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="64.5" fill="#9a8f79" font-size="11" text-anchor="end">31.1</text><line x1="62" x2="792" y1="26" y2="26" stroke="#332d24" stroke-width="1" opacity="0.7"/><text x="54" y="30" fill="#9a8f79" font-size="11" text-anchor="end">41.4</text><line x1="62" x2="792" y1="124.03861003861005" y2="124.03861003861005" stroke="#c8a253" stroke-width="2" stroke-dasharray="5 4" opacity="0.9"/><text x="800" y="128.03861003861005" fill="#c8a253" font-size="11">floor 12</text><polyline points="62.0,97.4 90.9,137.4 98.1,74.1 105.4,127.4 112.6,137.4 119.8,147.3 127.0,127.4 134.3,127.4 141.5,97.4 148.7,97.4 156.0,144.0 177.6,100.7 184.9,104.1 192.1,100.7 199.3,70.8 206.6,77.4 213.8,54.1 221.0,84.1 228.2,70.8 235.5,47.4 242.7,70.8 249.9,40.8 257.1,94.1 264.4,120.7 271.6,114.0 278.8,67.4 286.1,74.1 792.0,137.4" fill="none" stroke="#199e70" stroke-width="2" stroke-linejoin="round"/><g class="cost-dot"><title>2026-08-05 22:00Z
 20 agents
 commit 70498c0
 measured over 2 h</title><circle cx="62.0" cy="97.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-06 06:00Z
@@ -1689,12 +1705,12 @@ measured over 2 h</title><circle cx="278.8" cy="67.4" r="4.5" fill="#199e70" str
 27 agents
 commit d2dbae7
 measured over 2 h</title><circle cx="286.1" cy="74.1" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><g class="cost-dot"><title>2026-08-14 08:00Z
-7 agents
+8 agents
 commit b6c2b4c
-measured over 2 h</title><circle cx="792.0" cy="140.7" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="130.6891891891892" fill="#199e70" font-size="12" font-weight="600">7 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
+measured over 2 h</title><circle cx="792.0" cy="137.4" r="4.5" fill="#199e70" stroke="#1b1813" stroke-width="2"/></g><text x="788" y="127.35907335907336" fill="#199e70" font-size="12" font-weight="600">8 agents</text><text x="62" y="184" fill="#9a8f79" font-size="10">2026-08-05 22:00Z</text><text x="792" y="184" fill="#9a8f79" font-size="10" text-anchor="end">2026-08-14 08:00Z</text></svg></div></div>
 <details class="cost-details"><summary>Every measurement, as a table</summary>
 <div class="cost-scroll"><table><tr><th>Taken</th><th>C/H</th><th>$/agent-h</th><th>Agents</th><th>Commit</th><th>Note</th></tr>
-<tr><td>2026-08-14 08:00Z</td><td>$20.13</td><td>$2.88</td><td>7</td><td><code>b6c2b4c</code></td><td class="rem"></td></tr>
+<tr><td>2026-08-14 08:00Z</td><td>$22.15</td><td>$2.77</td><td>8</td><td><code>b6c2b4c</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-08 12:00Z</td><td>$109.49</td><td>$4.06</td><td>27</td><td><code>d2dbae7</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-08 10:00Z</td><td>$131.00</td><td>$4.52</td><td>29</td><td><code>7db8368</code></td><td class="rem"></td></tr>
 <tr><td>2026-08-08 08:00Z</td><td>$74.52</td><td>$4.97</td><td>15</td><td><code>fa96455</code></td><td class="rem"></td></tr>
@@ -1725,50 +1741,50 @@ measured over 2 h</title><circle cx="792.0" cy="140.7" r="4.5" fill="#199e70" st
 </table></div></details><div class="cost-two"><div class="cost-panel"><h3>Cost by model</h3><div class="cost-note">Routing is the largest single lever: 3,230 Opus requests against 29 Sonnet when the programme opened.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">claude-opus-5</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#3987e5"></i></div>
-      <div class="cost-bar-val">$5,987.71</div>
-      <div class="cost-bar-sub">45,961 distinct requests · input 936k / cache write 5m 148.2M / cache write 1h 7.8M / cache read 9.55B / output 8.1M</div>
+      <div class="cost-bar-val">$5,991.21</div>
+      <div class="cost-bar-sub">45,991 distinct requests · input 950k / cache write 5m 148.2M / cache write 1h 7.8M / cache read 9.56B / output 8.1M</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">claude-sonnet-5</div>
       <div class="cost-bar-track"><i style="width:2.6%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$153.96</div>
-      <div class="cost-bar-sub">3,507 distinct requests · input 284k / cache write 5m 7.6M / cache write 1h 0 / cache read 644.5M / output 546k</div>
+      <div class="cost-bar-val">$154.50</div>
+      <div class="cost-bar-sub">3,516 distinct requests · input 284k / cache write 5m 7.6M / cache write 1h 0 / cache read 646.9M / output 549k</div>
     </div></div></div><div class="cost-panel"><h3>Cost by token class</h3><div class="cost-note">Input, two kinds of cache write (5-minute and 1-hour, billed differently), cache read and output are five different prices. A single total hides cache economics entirely.</div><div class="cost-bars"><div class="cost-bar-row">
       <div class="cost-bar-label">input</div>
       <div class="cost-bar-track"><i style="width:1.5%;background:#3987e5"></i></div>
-      <div class="cost-bar-val">$5.25</div>
+      <div class="cost-bar-val">$5.32</div>
       <div class="cost-bar-sub">1.2M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 5m</div>
       <div class="cost-bar-track"><i style="width:19.3%;background:#d95926"></i></div>
-      <div class="cost-bar-val">$945.04</div>
+      <div class="cost-bar-val">$945.38</div>
       <div class="cost-bar-sub">155.8M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache write 1h</div>
       <div class="cost-bar-track"><i style="width:1.6%;background:#199e70"></i></div>
-      <div class="cost-bar-val">$77.83</div>
+      <div class="cost-bar-val">$77.89</div>
       <div class="cost-bar-sub">7.8M tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">cache read</div>
       <div class="cost-bar-track"><i style="width:100.0%;background:#c98500"></i></div>
-      <div class="cost-bar-val">$4,906.35</div>
-      <div class="cost-bar-sub">10.20B tokens</div>
+      <div class="cost-bar-val">$4,909.69</div>
+      <div class="cost-bar-sub">10.21B tokens</div>
     </div>
 <div class="cost-bar-row">
       <div class="cost-bar-label">output</div>
       <div class="cost-bar-track"><i style="width:4.2%;background:#d55181"></i></div>
-      <div class="cost-bar-val">$207.18</div>
+      <div class="cost-bar-val">$207.43</div>
       <div class="cost-bar-sub">8.6M tokens</div>
     </div></div></div></div><div class="cost-panel"><h3>What drives it</h3>
 <div class="cost-note">Cost is context volume multiplied by request count, not how much anything writes. These four numbers are where the levers act.</div>
 <div class="cost-tiles">
-  <div class="cost-tile"><div class="cost-tile-v">49,468</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">49,507</div><div class="cost-tile-l">Requests</div><div class="cost-tile-s">distinct API responses, not transcript records</div></div>
   <div class="cost-tile"><div class="cost-tile-v">210k</div><div class="cost-tile-l">Mean context per request</div><div class="cost-tile-s">what every request pays to re-read</div></div>
-  <div class="cost-tile"><div class="cost-tile-v">1.27B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
-  <div class="cost-tile"><div class="cost-tile-v">70.3</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">1.28B</div><div class="cost-tile-l">Price-indexed token volume</div><div class="cost-tile-s">model-independent volume, so mix and volume never confound</div></div>
+  <div class="cost-tile"><div class="cost-tile-v">70.2</div><div class="cost-tile-l">Requests per agent-hour</div><div class="cost-tile-s">how hard each agent-hour leans on the API</div></div>
 </div></div><div class="cost-panel"><h3>Every change, kept or reversed <span class="cost-n">0</span></h3>
 <div class="cost-note">A ledger showing only what worked hides negative evidence and cannot support a causal cost claim. Reversibility is a hard requirement: a change whose reversal has never been executed on a copy is only believed to be reversible.</div>
 <div class="cost-scroll cost-wide"><table><tr><th>Change</th><th>State</th><th>C/H before</th><th>C/H after</th><th>Delta</th><th>Reversal</th><th>Tripwire &amp; outcome</th></tr>
@@ -2478,7 +2494,7 @@ table.sc-tbl td.d{color:var(--ink)}
 </table>
 
 <h2>Latest captures</h2>
-<div class="shots"><figure><img src="shots/2026-08-14-visual-truth/play/000-boot.png"><figcaption>000-boot.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-120-holes.png"><figcaption>player-noon-120-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-120-shipping.png"><figcaption>player-noon-120-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-105-holes.png"><figcaption>player-noon-105-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-105-shipping.png"><figcaption>player-noon-105-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-090-holes.png"><figcaption>player-noon-090-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-090-shipping.png"><figcaption>player-noon-090-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/008-sprint-f0180.png"><figcaption>008-sprint-f0180.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-075-holes.png"><figcaption>player-noon-075-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-075-shipping.png"><figcaption>player-noon-075-shipping.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-060-holes.png"><figcaption>player-noon-060-holes.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/seethrough/player-noon-060-shipping.png"><figcaption>player-noon-060-shipping.png</figcaption></figure></div>
+<div class="shots"><figure><img src="shots/2026-08-14-visual-truth/play/008-sprint-f0180.png"><figcaption>008-sprint-f0180.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/007-sprint-f0120.png"><figcaption>007-sprint-f0120.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/006-sprint-f0060.png"><figcaption>006-sprint-f0060.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/005-walk-f0300.png"><figcaption>005-walk-f0300.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/012-turn-f0030.png"><figcaption>012-turn-f0030.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/004-walk-f0240.png"><figcaption>004-walk-f0240.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/003-walk-f0180.png"><figcaption>003-walk-f0180.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/002-walk-f0120.png"><figcaption>002-walk-f0120.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/001-walk-f0060.png"><figcaption>001-walk-f0060.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/011-turn-f0015.png"><figcaption>011-turn-f0015.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/000-boot.png"><figcaption>000-boot.png</figcaption></figure><figure><img src="shots/2026-08-14-visual-truth/play/010-sprint-f0300.png"><figcaption>010-sprint-f0300.png</figcaption></figure></div>
 
 </div>
 <footer>
