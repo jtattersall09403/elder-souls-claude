@@ -81,6 +81,17 @@ const main = async () => {
   for (const vp of VIEWPORTS) {
     const g = await launchGame({ entry: 'game/index.html', width: vp.w, height: vp.h, gpu: HARDWARE ? 'hardware' : undefined });
     await g.h('ready');
+    // THE CANVAS BACKING STORE IS WHAT A SCREENSHOT IS, and `launchGame`'s width/height only set
+    // the browser VIEWPORT. Without this the "phone" pass returned frames byte-identical to the
+    // desktop pass — caught because the two sets of PNGs had identical file sizes, not because
+    // anything went red. A phone capture that is secretly a desktop capture is worse than no
+    // phone capture, because somebody will believe it.
+    await g.page.evaluate(({ w, h }) => {
+      const c = document.getElementById('view');
+      c.width = w; c.height = h;
+      window.__ENGINE.renderer.setSize(w, h);
+    }, { w: vp.w, h: vp.h });
+    await g.h('stepFrames', 2);
     let n = 0;
     const frames = [];
     const shot = async (label, extra = {}) => {
