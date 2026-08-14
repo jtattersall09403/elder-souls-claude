@@ -61,7 +61,12 @@ function census(town, arm) {
   const rec = readSettlement(town);
   const gram = grammarFor(town);
   const plan = planSettlement(rec, INTERIORS);
-  const built = plan.buildings;
+  // A `structure` returns early in `buildBuilding()` — it draws its kit mesh, an apron and four
+  // edge markers, and NO roof. Counting one would credit a town with a roof profile nothing draws.
+  // `all_buildings` is kept beside it because chunk 1's table counted every record, and a number
+  // that cannot be compared to the one it replaces is not much use.
+  const built = plan.buildings.filter((b) => b.kind !== 'structure');
+  const allCount = plan.buildings.length;
   // The live arm feeds the SAME per-building salts the renderer feeds — `assignVariantSalts()` is
   // the exact call `buildSettlementExterior()` makes. The constant arm feeds one seed for
   // everybody, which is the mistake this control exists to keep visible.
@@ -81,6 +86,8 @@ function census(town, arm) {
   return {
     town,
     buildings: built.length,
+    all_records: allCount,
+    structures: allCount - built.length,
     roof_profiles: roofs.size,
     mix: [...roofs.entries()].sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} x${v}`),
     roofline_min_m: heights.length ? +Math.min(...heights).toFixed(2) : null,
@@ -99,7 +106,7 @@ function runArm(arm) {
 
 function print(arm, rows) {
   console.log(`\n=== arm: ${arm} ===`);
-  console.log('settlement'.padEnd(12), 'bldgs'.padStart(6), 'profiles'.padStart(9), '  roof mix');
+  console.log('settlement'.padEnd(12), 'roofed'.padStart(6), 'profiles'.padStart(9), '  roof mix   (roofed = records that are not `structure`)');
   for (const r of rows) {
     if (r.error) { console.log(r.town.padEnd(12), '  ERROR', r.error); continue; }
     console.log(r.town.padEnd(12), String(r.buildings).padStart(6), String(r.roof_profiles).padStart(9), '  ' + r.mix.join(', '));

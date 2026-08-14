@@ -189,7 +189,75 @@ const EXT_KIT = {
   tho_charter_post: (P) => { const g = new THREE.Group(); part(g, cyl(0.18, 0.24, 3.2, 7, P.wood), 0, 1.6, 0); part(g, box(1.3, 1.0, 0.1, P.wood), 0, 2.4, 0.14); part(g, box(1.1, 0.8, 0.03, P.cloth), 0, 2.4, 0.2); part(g, box(0.24, 0.24, 0.1, P.accent), 0, 1.9, 0.22); for (const sx of [-0.5, 0.5]) part(g, cyl(0.05, 0.05, 0.5, 4, P.metal), sx, 3.0, 0.1); return g; },
   tho_bow_rack: (P) => { const g = new THREE.Group(); part(g, box(2.4, 0.14, 0.5, P.wood), 0, 1.5, 0); for (const sx of [-1.1, 1.1]) part(g, cyl(0.09, 0.11, 1.6, 5, P.wood), sx, 0.8, 0); for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.035, 4, 9, Math.PI * 0.9), P.wood); b.rotation.z = 1.35; part(g, b, -0.9 + i * 0.45, 1.0, 0.1); } part(g, box(2.5, 0.12, 0.4, P.roof), 0, 1.9, 0); return g; },
   tho_sapwell_kerb: (P) => { const g = new THREE.Group(); part(g, cyl(1.5, 1.6, 0.7, 11, P.wood), 0, 0.35, 0); part(g, cyl(1.25, 1.25, 0.06, 11, P.accent), 0, 0.72, 0); for (const sx of [-1.3, 1.3]) part(g, cyl(0.1, 0.12, 2.4, 5, P.wood), sx, 1.2, 0); const bar = cyl(0.07, 0.07, 2.8, 5, P.wood); bar.rotation.z = Math.PI / 2; part(g, bar, 0, 2.4, 0); part(g, cyl(0.24, 0.2, 0.36, 8, P.metal), 0, 1.7, 0); return g; },
+  // ---- Thorn's Tidewrack landing: the moored barge, and the ONE new part on this shore ----------
+  //
+  // REF-A19 — *"Waterside settlement at Hla Oad: a moored longboat with a green-and-white striped
+  // sail beside stilted shacks"* — is the art-direction plate Thorn is anchored to
+  // (`reports/thorn-plates/2026-08-14-thorn-plates.md` §2a, n=6 composition-valid). Five of the six
+  // things that plate shows already exist in this file as Lilmoth's and Soulrest's quay parts and
+  // are REUSED below rather than rebuilt, per the 2026-08-14 owner directive §3. The moored hull
+  // with a striped sail is the one thing none of them supplies, so it is the one part built new.
+  //
+  // It is also the thing that says a barge came in, which is how the player got here: the first
+  // room of the game is `barge-hold`, the hold of the Gideon barge.
+  tho_moored_barge: (P) => {
+    const g = new THREE.Group();
+    // The hull. Long, shallow, and low in the water — a river barge, not a sea boat.
+    const hull = ico(1.0, 1, P.wood); hull.scale.set(4.2, 0.55, 1.15); part(g, hull, 0, 0.42, 0);
+    // The wale, which is the line that makes a hull read as a hull at fifty metres.
+    part(g, box(8.0, 0.16, 0.14, P.wood), 0, 0.82, 0.98);
+    part(g, box(8.0, 0.16, 0.14, P.wood), 0, 0.82, -0.98);
+    // Thwarts and a steering oar over the stern.
+    for (let i = 0; i < 3; i++) part(g, box(0.5, 0.1, 2.0, P.wood), -1.8 + i * 1.8, 0.86, 0);
+    const oar = cyl(0.07, 0.09, 3.0, 5, P.wood); oar.rotation.z = 0.42; oar.rotation.x = 0.2;
+    part(g, oar, -4.1, 1.0, 0.5);
+    // The mast, the yard, and the sail. The stripes are the plate's own detail and they are what
+    // make this the only object of its colour anywhere in Thorn.
+    part(g, cyl(0.11, 0.14, 5.4, 6, P.wood), 0.4, 3.0, 0);
+    const yard = cyl(0.07, 0.07, 4.0, 5, P.wood); yard.rotation.z = Math.PI / 2;
+    part(g, yard, 0.4, 5.1, 0);
+    for (let i = 0; i < 5; i++) {
+      // green and white in courses — alternating the cloth and the accent swatch of this region.
+      part(g, box(0.74, 2.3, 0.05, i % 2 ? P.accent : P.cloth), 0.4 - 1.6 + i * 0.8, 3.9, 0.06);
+    }
+    // Mooring: a line to a bollard on the bank, and the bollard.
+    const line = cyl(0.035, 0.035, 3.4, 4, P.cloth); line.rotation.z = Math.PI / 2 - 0.28;
+    part(g, line, 4.4, 1.1, -1.4);
+    part(g, cyl(0.22, 0.26, 0.85, 8, P.wood), 6.0, 0.42, -2.1);
+    return g;
+  },
 };
+
+/* ================================================================================================
+ * REUSE, MADE STRUCTURAL — the 2026-08-14 owner directive §3, applied to Thorn's quay.
+ *
+ * *"A good building model should be tweaked and reused, not rebuilt. Make this structural, not a
+ * hope."* `tidewrack-quay` — the first exterior in the game — held two buildings and no props at
+ * all, while a complete quay vocabulary sat one town over in Lilmoth's and Soulrest's kits.
+ *
+ * These ids are Thorn's (the prefix is the settlement — that invariant is what stops two towns
+ * sharing a mesh id), but the GEOMETRY is the neighbour's, fetched through `kitMesh()` so there is
+ * exactly one definition of a driven pile in this build and a fix to it reaches both shores. What
+ * differs is the material: `kitMesh` is handed Thorn's palette `P`, so the same piles come out in
+ * thornmarsh's swatch rather than western-rootlands'. That is the "tweaked and reused" the
+ * directive asks for, and it costs four lines instead of five new part builders.
+ *
+ * Declared as a table rather than five copy-pasted arrow functions so the reuse is legible to the
+ * next reader and to `kitCoverage()`, which counts these as the exterior parts they are.
+ * ==============================================================================================*/
+const THORN_QUAY_REUSE = Object.freeze({
+  tho_pile_cluster: 'lil_pile_cluster',     // seven driven piles under a deck
+  tho_stilt_platform: 'lil_stilt_platform', // the landing stage itself
+  tho_tide_mark: 'lil_tide_mark',           // a stained wall with tide courses
+  tho_boom_chain: 'lil_boom_chain',         // a chain across the water between two bollards
+  tho_silt_quay: 'sou_silt_quay',           // a stone quay with piles, bollards and a moored hull
+});
+for (const [id, source] of Object.entries(THORN_QUAY_REUSE)) {
+  EXT_KIT[id] = (P) => kitMesh(source, P);
+}
+/** Which of Thorn's quay parts are reused, and from where. Exported so a check or a report can
+ * state what was published for reuse without re-deriving it from the table above. */
+export function thornQuayReuse() { return { ...THORN_QUAY_REUSE }; }
 
 /**
  * The exterior wall slab thickness, and the room's outer face sits on its inside face. Exported
@@ -297,6 +365,16 @@ const STRUCTURE_KIT = Object.freeze({
   'thorn-struct-the-bow-racks': 'tho_bow_rack',
   'thorn-struct-the-sapwell-kerb': 'tho_sapwell_kerb',
   'thorn-struct-the-thicket-wall': 'tho_rotted_hall',
+  // The Tidewrack landing. These six sit at the MEASURED waterline, 30 m north of the quay doors —
+  // see `tools/render/w1-thorn-shoreline.mjs`, which is where the coordinates in `thorn.json` come
+  // from. Five are Lilmoth's and Soulrest's parts in Thorn's palette (`THORN_QUAY_REUSE`); the
+  // moored barge is the one new part, and it is REF-A19's own subject.
+  'thorn-struct-the-tidewrack-piles': 'tho_pile_cluster',
+  'thorn-struct-the-landing-stage': 'tho_stilt_platform',
+  'thorn-struct-the-tide-courses': 'tho_tide_mark',
+  'thorn-struct-the-boom-chain': 'tho_boom_chain',
+  'thorn-struct-the-writ-quay': 'tho_silt_quay',
+  'thorn-struct-the-moored-barge': 'tho_moored_barge',
 });
 
 export function structureKitFor(id, declaredKit, semantic = true) {
