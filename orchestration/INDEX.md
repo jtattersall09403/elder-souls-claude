@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `f010f3e0`: **1000 tools**, **157 reference items**,
-**54 pieces in flight**.
+drift. At `08062dee`: **1000 tools**, **157 reference items**,
+**55 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -148,7 +148,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 54 live pieces
+## In flight right now — 55 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -159,6 +159,7 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
+| `W1-V2-CONTACT-SHADOWS-AO` | in_progress | `orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-v2-contact-ao.mjs` +3 |
 | `ROADMAP-COVERAGE-AUDIT` | starting | `orchestration/status/ROADMAP-COVERAGE-AUDIT.json` `reports/roadmap-audit/` |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
