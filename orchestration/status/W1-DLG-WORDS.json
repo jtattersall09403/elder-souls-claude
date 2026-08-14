@@ -2,26 +2,31 @@
   "task_id": "W1-DLG-WORDS",
   "title": "The actual words characters say \u2014 measured against Morrowind, worst material rewritten, a check that can fail",
   "role": "builder",
-  "state": "running",
+  "state": "complete",
   "started_at": "2026-08-14",
   "branch": "codex/wave1-build-experiment",
   "base_commit": "17e30923",
   "owns": "THE WORDS. Not the dialogue window's appearance (sibling), not topic-unlocking-topics graph depth (sibling).",
-  "next_step": "speaker-disagreement census + voice-metrics; then rewrite the opening conversations",
+  "next_step": "critic round. Then the handoff list in corpus/40-dialogue/VOICE-COMPARISON-20260814.md \u00a76 \u2014 10-global.json, rumours.json, 30-texture/21-tier-b/22-tier-c, main-quest-argument.",
   "files_touched": [
     "orchestration/status/W1-DLG-WORDS.json",
     "corpus/80-methods/tone-metrics.py",
-    "reports/tone-ours-dialogue-W1-DLG-WORDS.json",
-    "reports/tone-ours-W1-DLG-WORDS.json"
-  ],
-  "files_claimed": [
-    "game/data/dialogue/greetings.json",
-    "game/data/dialogue/topics/",
-    "tools/dialogue/voice-check.mjs",
+    "tools/dialogue/words-check.mjs",
+    "corpus/40-dialogue/data/one-voice-arm.json",
     "corpus/40-dialogue/VOICE-COMPARISON-20260814.md",
+    "game/data/dialogue/topics/00-roots.json",
+    "game/data/dialogue/topics/20-tier-a.json",
     "reports/blog-feed.jsonl"
   ],
-  "could_not_do": [],
+  "files_claimed": [],
+  "could_not_do": [
+    "The corpus still fails 6 of 9 axes. 123 of 1,739 lines were rewritten (7%); corpus-wide >30w moved 5.51% -> 4.64%. ~170 run-on responses remain, named by file in the report \u00a76.",
+    "A2 friction and A3 warmth cannot be fixed by breaking sentences -- they need new material (people pleased to see you, people who will not speak to you). RI-DLG08 I6/I7 not censused.",
+    "A4 could not be scored on Morrowind: the vendored CSV has SpeakerId but NO topic column, so a like-for-like reference disagreement rate is not computable. Reported n/a rather than guessed.",
+    "No blind human judge run (RI-DLG06 step 6 / RI-DLG08 T-BLIND). Rule 25 forbids me judging a pack I built. A judge agent is the right next instrument.",
+    "A6's regex is weak -- the null control passes partisanship at 0.08 despite being written to have none, so our 11.2% is an over-read. Directional only until tightened.",
+    "The game was not launched. Whether these lines reach a player's ear is a reachability question (06-opening-roots records 257 of 336 NPC records carry actor names no root topic is written for) and belongs to whoever owns reachability."
+  ],
   "finding_1_instrument_was_blind": {
     "what": "corpus/80-methods/tone-metrics.py TEXT_KEYS did not include `x`, the payload key of the whole dialogue schema. Every previous `--ours` run measured books/journals/quest prose and NOT ONE LINE of dialogue.",
     "before": "--ours game/data/dialogue = 121 distinct texts / 2,118 words (the stray `text`/`line` keys in writ-house.json and creation-questions.json)",
@@ -29,5 +34,42 @@
     "guard": "only multi-word strings (>=4 words) are taken under `x`, so numeric/short coordinate `x` cannot enter",
     "calibration_unaffected": "--reference --lint still prints clean (reference path does not call harvest())",
     "commit": "pending"
-  }
+  },
+  "measured_at": "a56ef1af (before-numbers at 17e30923)",
+  "report": "corpus/40-dialogue/VOICE-COMPARISON-20260814.md",
+  "deliverables": {
+    "1_measured_comparison": "corpus/40-dialogue/VOICE-COMPARISON-20260814.md. Ours 1,739 texts / 54,453 words vs Morrowind 28,051 / 691,257.",
+    "2_rewrite": "40 run-on responses in topics/00-roots.json (the nine root topics the player starts with) and topics/20-tier-a.json (Lilmoth, Stormhold, Helstrom). >30w 10.1%/10.0% -> 0.0%/0.0%; longest sentence 61 -> 30 words; contractions 6.8 -> 17.6 per 1k in 00-roots.",
+    "3_check": "tools/dialogue/words-check.mjs (9 axes) + corpus/40-dialogue/data/one-voice-arm.json (the null control)."
+  },
+  "finding_2_the_defect_is_breath": {
+    "what": "The content is strange, specific and opinionated -- Morrowind-shaped. The SHAPE is not. Ours arrives as one long subordinated period per turn: 4.64% of sentences over 30 words against Morrowind's 0.59%, second person at half the reference rate, contractions at 0.55x, and 98.2% of lines carrying no stance toward the player at all (Morrowind 82.2%).",
+    "concentration": "legionary 4.2 w/sent, sapcutter 5.2, magister 11.9 -- already in Morrowind's shape, no run-ons. rootkeeper 32.0, mudborn 28.5, archivist 20.3 in 00-roots before the pass. Three of six mouths carried the whole defect."
+  },
+  "already_good": {
+    "archetype_spread": "10.58 w/sent between longest and shortest mouth (bar 8.0; Morrowind 11.9)",
+    "grammar_tics": "6 of 6 pass their rate thresholds",
+    "partisanship": "11.2% of lines carry a judgement of a third party, vs Morrowind's 2.95%",
+    "restraint": "modern idiom 0.0/10k (Morrowind 4.96), fourth-wall 0, tutorialising 0, chosen-one 0",
+    "greetings": "greetings/00-priority-classes.json is 6.82 w/sent, 72.3 you/1k, 34.1 contr/1k -- the closest thing in the corpus to Morrowind, and it is the first thing the player hears",
+    "disagreement": "167 of 293 multi-speaker topics (57%) already have a materially different pair"
+  },
+  "self_test": {
+    "positive_control": "Morrowind passes all 8 scorable axes. Two bars (A5 0.18, A6 0.045) were GUESSES that the reference FAILED; re-anchored to 0.10 and 0.020 on the measured values, recorded in the tool source.",
+    "null_control": "corpus/40-dialogue/data/one-voice-arm.json -- 100 hand-written lines / 3,380 words / 4 speakers / 25 topics, fluent, grammatical, on-topic, courteous, one helpful narrator. FAILS A1,A2,A4,A5 (the voice axes) and PASSES A3,A6,A7,A8,A9 (the grammar/fluency/courtesy axes).",
+    "s51": "the null arm is NOT generated from speakers.json's bands, tic regexes or the topic graph -- hand-written to 'answer the question, be helpful, be pleasant'. The arms diverge as the game improves; they do not converge.",
+    "w2": "no axis is a discrimination task. Every axis is an absolute property of the writing.",
+    "command": "node tools/dialogue/words-check.mjs --self-test"
+  },
+  "delete_the_fix": {
+    "shape": "not an inert fix. Restoring the two pre-rewrite files moved FOUR numbers back.",
+    "arms": "voice-metrics missed 9 -> 10; global spread 10.58 -> 11.71; corpus >30w 4.64% -> 5.51%; contractions 19.47 -> 18.99",
+    "control_watched_red": "YES -- all four moved, then files restored and md5-verified against the shipped copies.",
+    "correction_pass": "the first rewrite pass pushed archivist to 15.33 w/sent, OUT of RI-DLG06 \u00a7B's 16-19 scholar band. voice-metrics caught it (9 -> 10 missed). 15 archivist lines merged back into long sentences that stop under 30 words; archivist now 16.47, in band, and voice-metrics at 9 missed -- one BETTER than the 10 it started at."
+  },
+  "honest_cost": "global archetype spread fell 11.71 -> 10.58 w/sent (bar 8.0). Shortening the three long mouths narrows the gap to the three short ones. Still well over bar, but it is the number to watch if this method is applied to the remaining files.",
+  "redundant_with": [
+    "W1-17",
+    "W1-17-r2"
+  ]
 }
