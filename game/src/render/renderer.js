@@ -1285,6 +1285,14 @@ export class Renderer {
       this.compositeMaterial.uniforms.uAO.value=this.quality.ao?1:0;
       this.compositeMaterial.uniforms.uAA.value=this.quality.antialias?1:0;
       this.compositeMaterial.uniforms.uPost.value=this.quality.postprocess?1:0;
+      // W1-V2. The AO pass reconstructs view-space position from depth alone, so it needs the
+      // camera's own projection (forward, to re-project each kernel sample to screen space) and
+      // its inverse (to read the pixel's own position back out) EVERY frame — the camera moves
+      // every frame and a stale matrix here would occlude against last frame's geometry.
+      if(this.compositeMaterial.uniforms.uProjMat){
+        this.compositeMaterial.uniforms.uProjMat.value.copy(this.camera.projectionMatrix);
+        this.compositeMaterial.uniforms.uInvProjMat.value.copy(this.camera.projectionMatrixInverse);
+      }
       // W1-30A. `grade` is pushed as a uniform block by `_updateGrade`; these two are the passes'
       // own switches, and both must move pixels or the sabotage matrix fails.
       this.compositeMaterial.uniforms.uGradeOn.value=this.quality.grade?1:0;

@@ -266,8 +266,15 @@ export function checkDrift(roadmap, { root = ROOT, mdPath = ROADMAP_MD_PATH } = 
     // loose textual mention rather than demanding a heading that does not exist yet, or this
     // check would fail on the exact kind of honest, in-flight authoring it should tolerate.
     if (!mdSteps.has(token)) {
-      const mentioned = new RegExp(`\\(${token}\\)|\\bstep\\s*${token}\\b`, 'i').test(md);
-      if (!mentioned) problems.push(`roadmap.json has "${entry.id}" (${entry.title}) but ROADMAP.md never mentions step ${token} (no heading, no "(${token})")`);
+      // A sub-step token like "1a" is written in ROADMAP.md's prose as a bare "(a)" — e.g.
+      // "Sub-steps, in order: (a) bind the material set ... (b) contact shadows ..." — not as
+      // "(1a)". Accept either form, plus a bare "step 1a"/"(1a)" for a token that gets its own
+      // heading later.
+      const letterOnly = (token.match(/^\d+([a-z])$/) || [, null])[1];
+      const patterns = [`\\(${token}\\)`, `\\bstep\\s*${token}\\b`];
+      if (letterOnly) patterns.push(`\\(${letterOnly}\\)`);
+      const mentioned = new RegExp(patterns.join('|'), 'i').test(md);
+      if (!mentioned) problems.push(`roadmap.json has "${entry.id}" (${entry.title}) but ROADMAP.md never mentions step ${token} (no heading, no "(${token})"${letterOnly ? `, no "(${letterOnly})"` : ''})`);
       continue;
     }
     const mdTitle = mdSteps.get(token);
@@ -287,6 +294,22 @@ export function checkDrift(roadmap, { root = ROOT, mdPath = ROADMAP_MD_PATH } = 
   }
 
   return { ok: problems.length === 0, problems };
+}
+
+/**
+ * Should a drift finding actually fail the process? Split out from checkDrift() itself so the
+ * decision is testable in isolation: a roadmap.json marked `provisional` (its source markdown is
+ * being replaced wholesale, not edited in place) drifts CONSTANTLY and honestly during that
+ * rewrite — every partial edit to either file disagrees with the other until the rewrite lands.
+ * A guard that screams through a legitimate transition gets switched off rather than fixed, which
+ * has already happened once this week (HAZARDS.md's own lesson, generalised). So: still compute
+ * and print the drift, always — silence would hide a real problem — but only let it fail the
+ * build when nobody has declared the source document unstable.
+ */
+export function driftGate(roadmap, opts = {}) {
+  const drift = checkDrift(roadmap, opts);
+  const provisional = roadmap.provisional === true;
+  return { ...drift, fatal: !drift.ok && !provisional, provisional };
 }
 
 // ---------------------------------------------------------------- printing
