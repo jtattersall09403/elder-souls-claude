@@ -1,0 +1,68 @@
+{
+  "task_id": "W1-30C-critic",
+  "role": "critic",
+  "piece": "W1-30C",
+  "status": "complete — verdict written, schema-valid, ledger regenerated",
+  "verdict": "FAIL",
+  "score": "4.0 minimum over eleven named axes, against a wave-1 gate of 7.0. Nine of the ten scored axes are >= 5.0 and seven are >= 7.0.",
+  "started": "2026-08-14",
+  "worktree": "/home/user/elder-souls-claude/.claude/worktrees/agent-aea6f6fb9f2fa4e72",
+  "branch": "codex/wave1-build-experiment",
+  "stamped_commit": "2634eb0e1a26568d91f8bd68d0280d5532d79b9f",
+  "commit_note": "every path W1-30C owns is byte-identical between this worktree HEAD and origin/codex/wave1-build-experiment tip 91a66c53 — git diff --stat over game/src/render/visual-foundation.js, MATERIAL_API.md, game/assets/w1-30/materials and tools/assets returns empty — so the stamp is valid for both.",
+  "deliverables": [
+    "corpus/90-verdicts/wave1/W1-30C-r1.md",
+    "corpus/90-verdicts/wave1/W1-30C-r1.json (validates OK against HEAD's verdict.schema.json, document_type critic-verdict, 2 acknowledged warnings)",
+    "corpus/90-verdicts/wave1/artifacts/w1-30c/ (15 files, 4.7 MB — hardware frames, contact sheets, traces)",
+    "corpus/90-verdicts/GAP-LEDGER.md/.json regenerated",
+    "docs/shots/2026-08-14-w1-30c-critic/ (3 pictures)",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "instruments_built": [
+    "tools/critic/w1-30c/mech-rig.html + mech.mjs — mechanism suite: noise retirement by texture name, declared-axis liveness, wetness under instancing with a saturating control, the wearFrom:'geometry' ceiling in the gate's own units, and the detail-normal tiling arithmetic. Goes red on today's tree with 4 failures and green controls.",
+    "tools/critic/w1-30c/consumption.mjs — RI-MTH07 in the shipped game with two controls, plus the live scene census",
+    "tools/critic/w1-30c/fallback-reach.mjs — counts materials rather than pixels to answer whether the magenta fallback reaches a settlement street",
+    "tools/critic/w1-30c/floor-analyse.mjs + deck-w1-30c.json + pod-run.sh — the diffuse-floor 2x2 and the child-scoped Deck profile with a commit-seeded 12-shot census sample",
+    "tools/critic/w1-30c/grouping-tripwire.mjs — the automatic arm of the distinguishability gate, demoted to tripwire-only"
+  ],
+  "the_three_tests_the_builder_asked_for": {
+    "pod_deck_run": "DONE on an RTX A4500, ANGLE (NVIDIA, Vulkan 1.4.312). First attempt died at HTTP 404 on the job poll 4s in (transport flake; snapshot was 20.4 MiB); the retry carried 85 files / 49 MiB. Bonus result: every SwiftShader delta the builder took reproduces on hardware to four decimal places, so amendment R3c's falsifier does not fire.",
+    "naive_grouping": "HUMAN GATE not_run. The pack the builder named (reports/w1-30/C-closeup/) was never committed in any commit on any branch; I regenerated it on hardware, which bars me from judging it under rule 25, and this role has no agent-dispatch tool. Pack handed back. Separately: the plan's own null control for that gate is INVALID — rendering all twenty from one texture set scores an adjusted Rand index of 0.44 against the six declared classes, against 0.093 for the twenty authored sets, because the classes are carried by the family scalars and the four shared detail tiles.",
+    "diffuse_floor_removal": "DONE as a 2x2 rather than as written, because there are TWO floors. C's own floor moves the minimum street luma by 0.00027 — it is not load-bearing. The load-bearing one is a per-family floor in world/province.js _settlementStyleboard(). Remove both and four of eight settlements collapse (Gideon 84.1% of the frame below luma 0.10). The plan's null control is refuted: with the textures removed the streets get BRIGHTER, because the retired noise albedo is clamped near-white."
+  },
+  "seventh_defect": "The world-height wetness mask is inert under instancing. installSurfaceShader computes vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y at begin_vertex; three.js applies instanceMatrix in project_vertex. Two separate meshes at two heights separate by 0.02393 in luma (the high quad at precisely 0.00000); two instances at the same heights by 0.00150 — 6%. Reproduced on both rasterisers. The live census counts 377 InstancedMeshes carrying 31,143 instances across bark, leaf, reed and stone. The builder's own fixture is a single non-instanced plane at the origin, where modelMatrix*transformed IS the world position, so no arm of it could see this.",
+  "other_findings": [
+    "`trim` is documented live in MATERIAL_API.md section 3 and produces a byte-identical frame; trimAtlasTextures() has zero callers. Same defect shape the builder fixed for options.normalMap in the same commit. W1-30E is dispatching now as its first consumer.",
+    "the detail normal is blended at 8/tilingScale x the base instead of the published fixed 8x — tilingScale divided in twice. Latent at the shipping default of 1.",
+    "materialTiling / TEXEL_METRES / metresPerTile have ZERO consumers anywhere in game/ or tools/, while C-DELIVERY.md tables three. authoredMaps() hardcodes repeat.set(2,2). The plan's >4x texel-density hard fail is therefore unmeasurable as designed.",
+    "the magenta fallback reaches 20 of 51 live 'stone' materials in a settlement street; province.js clones materials and clones never pass back through registerFamilyMaterial().",
+    "reed_roof_04 is not tileable — a 0.149 luma step across the wrap join against a 0.047 interior rate, bound with RepeatWrapping. That is the mechanism behind the builder's own 'reed reads washed-out'.",
+    "the report's 'leaf, reed, root and cloth miss albedo contrast' is contradicted by the assets: reed (0.1246) and leaf (0.1237) have the HIGHEST patch-local albedo contrast in the library; the flat sets are clay (0.0046) and bone (0.0232), both of which pass.",
+    "19 census bypasses in the live scene, none of them in a path W1-30C owns — recorded for W1-30V and the parent.",
+    "VERIFIED POSITIVE: wearFrom:'geometry' executes and reaches 50.4% edge-vs-face separation at its ceiling against an 8% bar, with a byte-identical control at wear 0. The builder's structural diagnosis is right and the row is properly deferred to D and E under R5.",
+    "VERIFIED POSITIVE: provenance clean — 64/64 sha256 hashes match, 16 CC0-1.0 + 3 project-generated with reasons."
+  ],
+  "could_not_do": [
+    "the naive grouping test as a human read, and RI-VIS06 Protocol A — both need a judge who did not build the pack; no agent-dispatch tool in this role. Scored not_run, packs handed back.",
+    "M1-M12 as a regression tripwire — no previous stamped M-battery exists for this subject to compare against.",
+    "the library census — tools/visual/library-census.mjs does not exist; W1-30V owns it.",
+    "the plan's >4x texel-density hard fail — unmeasurable as designed; reported as a finding.",
+    "two of my own instruments failed open and were caught mid-round (the grouping tripwire's greedy agreement metric scored a degenerate partition identically to the authored arm; fallback-reach.mjs printed 'ok' over a 20-of-51 result). Both are recorded in the verdict body and corrected in source, and RI-MTH04 is scored down for it."
+  ],
+  "contention": "node tools/contention.mjs --gate returned exit 3 (3 browser instances, load 4.71/core against a 4.0 ceiling) and I proceeded, as rule 21 permits provided I say so. The local browsers were a 320x320 fixture and three game boots; every appearance measurement went to the GPU pod and contended for nothing on this box.",
+  "not_committed_on_purpose": "reports/w1-30/C-critic/ holds 65 MB of raw GPU frames and pod logs. W1-30-EVIDENCE.md section 5 commits contact sheets and text, not raw frames, so only the 4.7 MB selection under corpus/90-verdicts/wave1/artifacts/w1-30c/ is committed.",
+  "files_touched": [
+    "orchestration/status/W1-30C-critic.json",
+    "corpus/90-verdicts/wave1/W1-30C-r1.md",
+    "corpus/90-verdicts/wave1/W1-30C-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/w1-30c/",
+    "corpus/90-verdicts/GAP-LEDGER.md",
+    "corpus/90-verdicts/GAP-LEDGER.json",
+    "tools/critic/w1-30c/",
+    "docs/shots/2026-08-14-w1-30c-critic/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "redundant_with": [],
+  "next_step": "orchestrator: dispatch a fresh judge for the naive grouping pack at corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg, and a fresh builder against biggest_gap.remedy in W1-30C-r1.json. Tell W1-30E before it starts that `trim` is currently inert."
+}

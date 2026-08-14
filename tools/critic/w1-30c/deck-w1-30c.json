@@ -1,0 +1,1349 @@
+{
+ "schema": "elder-souls/visual-deck@1",
+ "version": 1,
+ "owner": "W1-30V",
+ "generator": "tools/visual/build-deck.mjs",
+ "what_this_is": "The fixed, versioned shot list. Same shots, same angles, same lights, every run, so a before and an after are comparable. Changing a shot is an edit to this file and shows up in git.",
+ "source_counts": {
+  "regions": 13,
+  "settlements": 8,
+  "interiors": 115
+ },
+ "axes": {
+  "times": [
+   {
+    "id": "t0800",
+    "hour": 8,
+    "why": "low sun, long shadows, the shot that proves shadows exist"
+   },
+   {
+    "id": "t1300",
+    "hour": 13,
+    "why": "flat noon — the least forgiving light for flat materials"
+   },
+   {
+    "id": "t1930",
+    "hour": 19.5,
+    "why": "dusk — where a colour grade would show if there were one"
+   }
+  ],
+  "weathers": [
+   {
+    "id": "clear",
+    "weather": "clear"
+   },
+   {
+    "id": "rain",
+    "weather": "rain"
+   }
+  ]
+ },
+ "capture": {
+  "width": 960,
+  "height": 540,
+  "settle_frames": 12,
+  "seed": 20260814
+ },
+ "setups": [
+  {
+   "id": "vista-blackwood",
+   "block": "region-vista",
+   "region": "blackwood",
+   "label": "Blackwood — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 1118,
+    "z": 3487.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-blackwood",
+   "block": "region-eye",
+   "region": "blackwood",
+   "label": "Blackwood — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 1178,
+    "z": 3427.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-clay-moor",
+   "block": "region-vista",
+   "region": "clay-moor",
+   "label": "The Clay Moor — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 3743,
+    "z": 2010.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-clay-moor",
+   "block": "region-eye",
+   "region": "clay-moor",
+   "label": "The Clay Moor — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 3803,
+    "z": 1950.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-crimson-coast",
+   "block": "region-vista",
+   "region": "crimson-coast",
+   "label": "Crimson Coast — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 4212,
+    "z": 2686
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 0,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-crimson-coast",
+   "block": "region-eye",
+   "region": "crimson-coast",
+   "label": "Crimson Coast — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 4272,
+    "z": 2626
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 45
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-deep-marshes",
+   "block": "region-vista",
+   "region": "deep-marshes",
+   "label": "The Deep Marshes — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 3123.5,
+    "z": 3715
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-deep-marshes",
+   "block": "region-eye",
+   "region": "deep-marshes",
+   "label": "The Deep Marshes — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 3183.5,
+    "z": 3655
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-eastern-rootlands",
+   "block": "region-vista",
+   "region": "eastern-rootlands",
+   "label": "Eastern Rootlands — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 3232,
+    "z": 4495.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-eastern-rootlands",
+   "block": "region-eye",
+   "region": "eastern-rootlands",
+   "label": "Eastern Rootlands — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 3292,
+    "z": 4435.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-hive",
+   "block": "region-vista",
+   "region": "hive",
+   "label": "The Hive — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 1237,
+    "z": 3732.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-hive",
+   "block": "region-eye",
+   "region": "hive",
+   "label": "The Hive — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 1297,
+    "z": 3672.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-marauders-coast",
+   "block": "region-vista",
+   "region": "marauders-coast",
+   "label": "Marauder's Coast — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 400.5,
+    "z": 4485
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 0,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-marauders-coast",
+   "block": "region-eye",
+   "region": "marauders-coast",
+   "label": "Marauder's Coast — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 460.5,
+    "z": 4425
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 45
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-salt-hills",
+   "block": "region-vista",
+   "region": "salt-hills",
+   "label": "The Salt Hills — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 1982.5,
+    "z": 705
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-salt-hills",
+   "block": "region-eye",
+   "region": "salt-hills",
+   "label": "The Salt Hills — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 2042.5,
+    "z": 645
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-stone-forest",
+   "block": "region-vista",
+   "region": "stone-forest",
+   "label": "The Stone Forest — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 2749,
+    "z": 2252
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-stone-forest",
+   "block": "region-eye",
+   "region": "stone-forest",
+   "label": "The Stone Forest — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 2809,
+    "z": 2192
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-stone-wastes",
+   "block": "region-vista",
+   "region": "stone-wastes",
+   "label": "Stone Wastes — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 813.5,
+    "z": 4894.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-stone-wastes",
+   "block": "region-eye",
+   "region": "stone-wastes",
+   "label": "Stone Wastes — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 873.5,
+    "z": 4834.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-thornmarsh",
+   "block": "region-vista",
+   "region": "thornmarsh",
+   "label": "Thornmarsh — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 3522.5,
+    "z": 1090
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-thornmarsh",
+   "block": "region-eye",
+   "region": "thornmarsh",
+   "label": "Thornmarsh — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 3582.5,
+    "z": 1030
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-valus-ridge",
+   "block": "region-vista",
+   "region": "valus-ridge",
+   "label": "Valus Ridge — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 1209,
+    "z": 2178.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 0,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-valus-ridge",
+   "block": "region-eye",
+   "region": "valus-ridge",
+   "label": "Valus Ridge — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 1269,
+    "z": 2118.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 45
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "vista-western-rootlands",
+   "block": "region-vista",
+   "region": "western-rootlands",
+   "label": "Western Rootlands — vista",
+   "place": {
+    "kind": "teleport",
+    "x": 1727,
+    "z": 4716
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 90,
+    "pitch_deg": -11,
+    "height_m": 26,
+    "distance_m": 0
+   },
+   "why": "the shot a player judges a world by; also the only shot that can show whether the fog erases the middle distance"
+  },
+  {
+   "id": "eye-western-rootlands",
+   "block": "region-eye",
+   "region": "western-rootlands",
+   "label": "Western Rootlands — eye level",
+   "place": {
+    "kind": "teleport",
+    "x": 1787,
+    "z": 4656
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 135
+   },
+   "why": "vistas flatter and eye level does not — this is the shot that shows ground texture, scatter and undergrowth as a player meets them"
+  },
+  {
+   "id": "approach-archon",
+   "block": "settlement-approach",
+   "region": "crimson-coast",
+   "settlement": "archon",
+   "label": "Archon — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 3785,
+    "z": 3923.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-archon",
+   "block": "settlement-street",
+   "region": "crimson-coast",
+   "settlement": "archon",
+   "label": "Archon — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 3807,
+    "z": 3823.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-blackrose",
+   "block": "settlement-approach",
+   "region": "western-rootlands",
+   "settlement": "blackrose",
+   "label": "Blackrose — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 1905.5,
+    "z": 4550
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-blackrose",
+   "block": "settlement-street",
+   "region": "western-rootlands",
+   "settlement": "blackrose",
+   "label": "Blackrose — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 1927.5,
+    "z": 4450
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-gideon",
+   "block": "settlement-approach",
+   "region": "blackwood",
+   "settlement": "gideon",
+   "label": "Gideon — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 439,
+    "z": 3013.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-gideon",
+   "block": "settlement-street",
+   "region": "blackwood",
+   "settlement": "gideon",
+   "label": "Gideon — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 461,
+    "z": 2913.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-helstrom",
+   "block": "settlement-approach",
+   "region": "stone-forest",
+   "settlement": "helstrom",
+   "label": "Helstrom — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 2262.5,
+    "z": 2901.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-helstrom",
+   "block": "settlement-street",
+   "region": "stone-forest",
+   "settlement": "helstrom",
+   "label": "Helstrom — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2293.5,
+    "z": 2773.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-lilmoth",
+   "block": "settlement-approach",
+   "region": "western-rootlands",
+   "settlement": "lilmoth",
+   "label": "Lilmoth — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 2766.5,
+    "z": 5143.5
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-lilmoth",
+   "block": "settlement-street",
+   "region": "western-rootlands",
+   "settlement": "lilmoth",
+   "label": "Lilmoth — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2793.5,
+    "z": 5027.5
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-soulrest",
+   "block": "settlement-approach",
+   "region": "stone-wastes",
+   "settlement": "soulrest",
+   "label": "Soulrest — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 610.5,
+    "z": 4959
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-soulrest",
+   "block": "settlement-street",
+   "region": "stone-wastes",
+   "settlement": "soulrest",
+   "label": "Soulrest — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 625.5,
+    "z": 4877
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-stormhold",
+   "block": "settlement-approach",
+   "region": "salt-hills",
+   "settlement": "stormhold",
+   "label": "Stormhold — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 2171.5,
+    "z": 877
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-stormhold",
+   "block": "settlement-street",
+   "region": "salt-hills",
+   "settlement": "stormhold",
+   "label": "Stormhold — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2198.5,
+    "z": 761
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "approach-thorn",
+   "block": "settlement-approach",
+   "region": "thornmarsh",
+   "settlement": "thorn",
+   "label": "Thorn — approach",
+   "place": {
+    "kind": "teleport",
+    "x": 3820,
+    "z": 949
+   },
+   "camera": {
+    "kind": "orbit-free",
+    "yaw_deg": 180,
+    "pitch_deg": -5,
+    "height_m": 6,
+    "distance_m": 0
+   },
+   "why": "silhouette and skyline: does this settlement read as a place before you are inside it"
+  },
+  {
+   "id": "street-thorn",
+   "block": "settlement-street",
+   "region": "thornmarsh",
+   "settlement": "thorn",
+   "label": "Thorn — street",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 3838,
+    "z": 859
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 270
+   },
+   "why": "MANDATORY. Building quality at 4-8 m cannot hide here. A kit that only works as a distant block fails in this shot"
+  },
+  {
+   "id": "interior-thorn-hall",
+   "block": "interior",
+   "interior": "thorn-hall",
+   "requested_interior": "thorn-hall",
+   "label": "interior — thorn-hall",
+   "place": {
+    "kind": "interior",
+    "id": "thorn-hall"
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 0
+   },
+   "unresolved": false,
+   "why": "interior light, practical lamps and dressing; also the only place a probe-lit room can be judged"
+  },
+  {
+   "id": "interior-archon-apothecary",
+   "block": "interior",
+   "interior": "archon-apothecary",
+   "requested_interior": "archon-apothecary",
+   "label": "interior — archon-apothecary",
+   "place": {
+    "kind": "interior",
+    "id": "archon-apothecary"
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 0
+   },
+   "unresolved": false,
+   "why": "interior light, practical lamps and dressing; also the only place a probe-lit room can be judged"
+  },
+  {
+   "id": "interior-blackrose-gaol",
+   "block": "interior",
+   "interior": "blackrose-clerk",
+   "requested_interior": "blackrose-gaol",
+   "label": "interior — blackrose-gaol",
+   "place": {
+    "kind": "interior",
+    "id": "blackrose-clerk"
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 0
+   },
+   "unresolved": false,
+   "why": "interior light, practical lamps and dressing; also the only place a probe-lit room can be judged"
+  },
+  {
+   "id": "interior-lilmoth-inn",
+   "block": "interior",
+   "interior": "lilmoth-apothecary",
+   "requested_interior": "lilmoth-inn",
+   "label": "interior — lilmoth-inn",
+   "place": {
+    "kind": "interior",
+    "id": "lilmoth-apothecary"
+   },
+   "camera": {
+    "kind": "gameplay",
+    "yaw_deg": 0
+   },
+   "unresolved": false,
+   "why": "interior light, practical lamps and dressing; also the only place a probe-lit room can be judged"
+  },
+  {
+   "id": "char-player",
+   "block": "character",
+   "label": "player — close-up",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2766,
+    "z": 5011
+   },
+   "camera": {
+    "kind": "subject-orbit",
+    "subject": "player",
+    "yaw_deg": 35,
+    "pitch_deg": -6,
+    "distance_m": 2.6
+   },
+   "why": "MANDATORY. No build reaches 7.0 with capsule characters, and this is the frame that says so"
+  },
+  {
+   "id": "char-npc",
+   "block": "character",
+   "label": "nearest NPC — close-up",
+   "mandatory": true,
+   "place": {
+    "kind": "teleport",
+    "x": 2766,
+    "z": 5011
+   },
+   "camera": {
+    "kind": "subject-orbit",
+    "subject": "npc",
+    "yaw_deg": 35,
+    "pitch_deg": -6,
+    "distance_m": 2.6
+   },
+   "why": "MANDATORY. NPCs are built by the same actor code as the player; if one is good and the other is not, that is a dressing bug worth knowing"
+  }
+ ],
+ "motion": [
+  {
+   "id": "walk",
+   "frames": 180,
+   "script": "walk",
+   "why": "the most-seen animation in the game"
+  },
+  {
+   "id": "run",
+   "frames": 180,
+   "script": "run",
+   "why": "foot plant and lean at speed"
+  },
+  {
+   "id": "sprint-stop",
+   "frames": 180,
+   "script": "sprint-stop",
+   "why": "the blend nobody tunes"
+  },
+  {
+   "id": "turn-180",
+   "frames": 180,
+   "script": "turn-180",
+   "why": "pivot and camera settle"
+  },
+  {
+   "id": "roll-4dir",
+   "frames": 240,
+   "script": "roll-4dir",
+   "why": "i-frames read visually or they do not"
+  },
+  {
+   "id": "jump-land",
+   "frames": 180,
+   "script": "jump-land",
+   "why": "contact and recovery"
+  },
+  {
+   "id": "attack-light",
+   "frames": 180,
+   "script": "attack-light",
+   "why": "the swing arc and the weapon trail"
+  },
+  {
+   "id": "attack-heavy",
+   "frames": 180,
+   "script": "attack-heavy",
+   "why": "wind-up readability"
+  },
+  {
+   "id": "block-hit",
+   "frames": 180,
+   "script": "block-hit",
+   "why": "hit reaction and impact staging"
+  },
+  {
+   "id": "spell",
+   "frames": 180,
+   "script": "spell",
+   "why": "release, travel, impact, residue — four separate looks"
+  },
+  {
+   "id": "boundary-walk",
+   "frames": 300,
+   "script": "boundary-walk",
+   "why": "streamed-boundary pop, which only motion shows"
+  },
+  {
+   "id": "day-night",
+   "frames": 240,
+   "script": "day-night",
+   "why": "the grade across a full day"
+  }
+ ],
+ "profiles": {
+  "full": {
+   "stills": [
+    "vista-blackwood",
+    "eye-blackwood",
+    "vista-clay-moor",
+    "eye-clay-moor",
+    "vista-crimson-coast",
+    "eye-crimson-coast",
+    "vista-deep-marshes",
+    "eye-deep-marshes",
+    "vista-eastern-rootlands",
+    "eye-eastern-rootlands",
+    "vista-hive",
+    "eye-hive",
+    "vista-marauders-coast",
+    "eye-marauders-coast",
+    "vista-salt-hills",
+    "eye-salt-hills",
+    "vista-stone-forest",
+    "eye-stone-forest",
+    "vista-stone-wastes",
+    "eye-stone-wastes",
+    "vista-thornmarsh",
+    "eye-thornmarsh",
+    "vista-valus-ridge",
+    "eye-valus-ridge",
+    "vista-western-rootlands",
+    "eye-western-rootlands",
+    "approach-archon",
+    "street-archon",
+    "approach-blackrose",
+    "street-blackrose",
+    "approach-gideon",
+    "street-gideon",
+    "approach-helstrom",
+    "street-helstrom",
+    "approach-lilmoth",
+    "street-lilmoth",
+    "approach-soulrest",
+    "street-soulrest",
+    "approach-stormhold",
+    "street-stormhold",
+    "approach-thorn",
+    "street-thorn",
+    "interior-thorn-hall",
+    "interior-archon-apothecary",
+    "interior-blackrose-gaol",
+    "interior-lilmoth-inn",
+    "char-player",
+    "char-npc"
+   ],
+   "times": [
+    "t0800",
+    "t1300",
+    "t1930"
+   ],
+   "weathers": [
+    "clear",
+    "rain"
+   ],
+   "motion": [
+    "walk",
+    "run",
+    "sprint-stop",
+    "turn-180",
+    "roll-4dir",
+    "jump-land",
+    "attack-light",
+    "attack-heavy",
+    "block-hit",
+    "spell",
+    "boundary-walk",
+    "day-night"
+   ]
+  },
+  "wide": {
+   "stills": [
+    "vista-blackwood",
+    "eye-blackwood",
+    "vista-clay-moor",
+    "eye-clay-moor",
+    "vista-crimson-coast",
+    "eye-crimson-coast",
+    "vista-deep-marshes",
+    "eye-deep-marshes",
+    "vista-eastern-rootlands",
+    "eye-eastern-rootlands",
+    "vista-hive",
+    "eye-hive",
+    "vista-marauders-coast",
+    "eye-marauders-coast",
+    "vista-salt-hills",
+    "eye-salt-hills",
+    "vista-stone-forest",
+    "eye-stone-forest",
+    "vista-stone-wastes",
+    "eye-stone-wastes",
+    "vista-thornmarsh",
+    "eye-thornmarsh",
+    "vista-valus-ridge",
+    "eye-valus-ridge",
+    "vista-western-rootlands",
+    "eye-western-rootlands",
+    "approach-archon",
+    "street-archon",
+    "approach-blackrose",
+    "street-blackrose",
+    "approach-gideon",
+    "street-gideon",
+    "approach-helstrom",
+    "street-helstrom",
+    "approach-lilmoth",
+    "street-lilmoth",
+    "approach-soulrest",
+    "street-soulrest",
+    "approach-stormhold",
+    "street-stormhold",
+    "approach-thorn",
+    "street-thorn",
+    "interior-thorn-hall",
+    "interior-archon-apothecary",
+    "interior-blackrose-gaol",
+    "interior-lilmoth-inn",
+    "char-player",
+    "char-npc"
+   ],
+   "times": [
+    "t1300",
+    "t1930"
+   ],
+   "weathers": [
+    "clear"
+   ],
+   "motion": []
+  },
+  "smoke": {
+   "stills": [
+    "vista-deep-marshes",
+    "eye-deep-marshes",
+    "street-lilmoth",
+    "approach-lilmoth",
+    "char-player",
+    "interior-thorn-hall"
+   ],
+   "times": [
+    "t1300"
+   ],
+   "weathers": [
+    "clear"
+   ],
+   "motion": [
+    "walk"
+   ]
+  },
+  "weather": {
+   "stills": [
+    "vista-blackwood",
+    "eye-blackwood",
+    "vista-clay-moor",
+    "eye-clay-moor",
+    "vista-crimson-coast",
+    "eye-crimson-coast",
+    "vista-deep-marshes",
+    "eye-deep-marshes",
+    "vista-eastern-rootlands",
+    "eye-eastern-rootlands",
+    "vista-hive",
+    "eye-hive",
+    "vista-marauders-coast",
+    "eye-marauders-coast",
+    "vista-salt-hills",
+    "eye-salt-hills",
+    "vista-stone-forest",
+    "eye-stone-forest",
+    "vista-stone-wastes",
+    "eye-stone-wastes",
+    "vista-thornmarsh",
+    "eye-thornmarsh",
+    "vista-valus-ridge",
+    "eye-valus-ridge",
+    "vista-western-rootlands",
+    "eye-western-rootlands",
+    "approach-archon",
+    "street-archon",
+    "approach-blackrose",
+    "street-blackrose",
+    "approach-gideon",
+    "street-gideon",
+    "approach-helstrom",
+    "street-helstrom",
+    "approach-lilmoth",
+    "street-lilmoth",
+    "approach-soulrest",
+    "street-soulrest",
+    "approach-stormhold",
+    "street-stormhold",
+    "approach-thorn",
+    "street-thorn",
+    "char-player",
+    "char-npc"
+   ],
+   "times": [
+    "t1300"
+   ],
+   "weathers": [
+    "clear",
+    "rain"
+   ],
+   "motion": []
+  },
+  "night": {
+   "stills": [
+    "vista-blackwood",
+    "eye-blackwood",
+    "vista-clay-moor",
+    "eye-clay-moor",
+    "vista-crimson-coast",
+    "eye-crimson-coast",
+    "vista-deep-marshes",
+    "eye-deep-marshes",
+    "vista-eastern-rootlands",
+    "eye-eastern-rootlands",
+    "vista-hive",
+    "eye-hive",
+    "vista-marauders-coast",
+    "eye-marauders-coast",
+    "vista-salt-hills",
+    "eye-salt-hills",
+    "vista-stone-forest",
+    "eye-stone-forest",
+    "vista-stone-wastes",
+    "eye-stone-wastes",
+    "vista-thornmarsh",
+    "eye-thornmarsh",
+    "vista-valus-ridge",
+    "eye-valus-ridge",
+    "vista-western-rootlands",
+    "eye-western-rootlands",
+    "approach-archon",
+    "street-archon",
+    "approach-blackrose",
+    "street-blackrose",
+    "approach-gideon",
+    "street-gideon",
+    "approach-helstrom",
+    "street-helstrom",
+    "approach-lilmoth",
+    "street-lilmoth",
+    "approach-soulrest",
+    "street-soulrest",
+    "approach-stormhold",
+    "street-stormhold",
+    "approach-thorn",
+    "street-thorn",
+    "interior-thorn-hall",
+    "interior-archon-apothecary",
+    "interior-blackrose-gaol",
+    "interior-lilmoth-inn",
+    "char-player",
+    "char-npc"
+   ],
+   "times": [
+    "t0800"
+   ],
+   "weathers": [
+    "clear"
+   ],
+   "motion": []
+  },
+  "w1-30c-critic": {
+   "stills": [
+    "street-archon",
+    "street-blackrose",
+    "street-gideon",
+    "street-helstrom",
+    "street-lilmoth",
+    "street-soulrest",
+    "street-stormhold",
+    "street-thorn",
+    "interior-archon-apothecary",
+    "eye-western-rootlands",
+    "approach-gideon",
+    "approach-stormhold",
+    "vista-thornmarsh",
+    "approach-lilmoth",
+    "vista-western-rootlands",
+    "vista-hive",
+    "interior-blackrose-gaol",
+    "eye-hive",
+    "eye-thornmarsh",
+    "char-player"
+   ],
+   "motion": [],
+   "times": [
+    "t1300"
+   ],
+   "weathers": [
+    "clear"
+   ]
+  },
+  "w1-30c-floor": {
+   "stills": [
+    "street-archon",
+    "street-blackrose",
+    "street-gideon",
+    "street-helstrom",
+    "street-lilmoth",
+    "street-soulrest",
+    "street-stormhold",
+    "street-thorn"
+   ],
+   "motion": [],
+   "times": [
+    "t1300"
+   ],
+   "weathers": [
+    "clear"
+   ]
+  },
+  "w1-30c-rain": {
+   "stills": [
+    "street-archon",
+    "street-blackrose",
+    "street-gideon",
+    "street-helstrom"
+   ],
+   "motion": [],
+   "times": [
+    "t1300"
+   ],
+   "weathers": [
+    "clear",
+    "rain"
+   ]
+  }
+ },
+ "totals": {
+  "setups": 48,
+  "stills_full": 288,
+  "motion_sequences": 12,
+  "motion_frames": 2400
+ },
+ "manifest_hash": "4746eafe87af6559",
+ "census_sample": {
+  "commit": "2634eb0e1a26568d91f8bd68d0280d5532d79b9f",
+  "shots": [
+   "interior-archon-apothecary",
+   "eye-western-rootlands",
+   "approach-gideon",
+   "approach-stormhold",
+   "vista-thornmarsh",
+   "approach-lilmoth",
+   "vista-western-rootlands",
+   "vista-hive",
+   "interior-blackrose-gaol",
+   "eye-hive",
+   "eye-thornmarsh",
+   "char-player"
+  ]
+ }
+}

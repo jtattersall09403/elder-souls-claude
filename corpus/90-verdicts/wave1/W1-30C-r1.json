@@ -1,0 +1,446 @@
+{
+  "schema_version": 1,
+  "document_type": "critic-verdict",
+  "piece_id": "w1-30c",
+  "piece_title": "W1-30C — the material and texture library: the 96px noise field retired, the wetness mask blind to instanceMatrix, and a frozen contract that declares two axes it does not apply",
+  "subsystem_paths": [
+    "render.fidelity.materials",
+    "render.fidelity.postprocess",
+    "process.critic.discipline"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-30c-r1-2634eb0e",
+    "role": "critic.visual",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-14T11:05:00Z",
+    "finished_at": "2026-08-14T11:55:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "2634eb0e1a26568d91f8bd68d0280d5532d79b9f",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "command": "node tools/runpod/cli.mjs run --command 'bash tools/critic/w1-30c/pod-run.sh' --max-runtime 50 --only-path game --only-path tools --only-path package.json",
+        "exit_code": 0,
+        "duration_s": 441,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/gpu.csv"
+      },
+      {
+        "command": "node tools/critic/w1-30c/mech.mjs   (and --hardware on the pod)",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json"
+      },
+      {
+        "command": "node tools/critic/w1-30c/floor-analyse.mjs <artifacts>/deck",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/diffuse-floor-2x2.json"
+      },
+      {
+        "command": "node tools/critic/w1-30c/consumption.mjs",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json"
+      },
+      {
+        "command": "node tools/critic/w1-30c/fallback-reach.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/fallback-reach-live-street.json"
+      },
+      {
+        "command": "node tools/critic/w1-30c/grouping-tripwire.mjs <artifacts>/closeup /tmp/w1-30c-critic-onetex/out",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/grouping-tripwire.json"
+      },
+      {
+        "command": "one-texture-set null control: repoint every FAMILY_SET entry at coral_stone_wall on a sparse game/+tools/ copy, then run the builder's own tools/assets/family-closeup.mjs against it",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-one-texture-set-control-swiftshader.jpg"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This verdict judges mechanism, not art direction or fidelity: whether a declared variant axis reaches pixels, whether a mask survives the geometry the world is built from, whether a fallback reaches a shipped street, and whether a published seam has consumers. It cites hardware screenshots as measurements of those mechanisms and makes no blind-pair fidelity claim; no RI-VIS06 Protocol A pair was run, and none is asserted. The art-direction and fidelity sides remain open for the parent's integration critic."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-10, min-over-axes (consumer named / coupling measured by perturbation / hand-feed audit / instrumentation honesty / harness fidelity)",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "Above the 6 pass floor. The registry's headline mechanism is demonstrably read by the shipped world against two controls; one published mechanism (the loud fallback) reaches 39% of the family's live materials in a settlement street.",
+      "score_0_10": 7.5,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "consumer-named",
+          "result": "pass",
+          "value": "setWorldWetness() -> installSurfaceShader uniforms -> every material with a normal map; world-side census counts 6055 meshes and 17/20 families live in the Helstrom street",
+          "hard_fail": false
+        },
+        {
+          "id": "coupling-measured-by-perturbation",
+          "result": "pass",
+          "value": "setWorldWetness({amount:1}) moves 21.66% of street pixels, mean |dRGB| 0.016697, against a no-op control at 0.95%/0.000640 and an absent-family control at 1.43%/0.000867 — 26x the live-frame noise floor. Shipped game, Helstrom street, 13:00 clear.",
+          "hard_fail": false
+        },
+        {
+          "id": "control-is-not-inert",
+          "result": "pass",
+          "value": "two controls, both fired correctly on the first pass when the test was hash-equality on a live simulation; re-read on magnitude they separate from the perturbation arm by 26x. The absent-family control (fail 'shell', which has no surface in this street) is the plausible wrong answer rather than the trivial one.",
+          "hard_fail": false
+        },
+        {
+          "id": "published-fallback-reaches-the-world",
+          "result": "fail",
+          "value": "markFamilyAssetFailure('stone') stains 20 of 51 live 'stone' materials in the shipped Helstrom street; 31 keep their normal appearance. province.js _settlementStyleboard() clones materials (o.material.clone()) and the clone never passes back through registerFamilyMaterial(), so stainFallback cannot see it; that route accounts for at least 10 of the 31.",
+          "hard_fail": false
+        },
+        {
+          "id": "instrumentation-honesty",
+          "result": "pass",
+          "value": "the builder declared its own six defects, left the wear gate red with a structural diagnosis rather than tuning it, and refused to present SwiftShader captures as appearance evidence. This critic's own fallback-reach tool printed 'ok' over a 20-of-51 result from a field-name bug; recorded in the verdict and fixed in the source rather than quietly corrected.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/fallback-reach-live-street.json"
+      ],
+      "why_not_ten": "The registry's headline mechanism is genuinely consumed and cleanly separated from two controls, which is a 7-8 band result. It is held below 8 because a second published mechanism — the loud magenta fallback, which is the instrument that makes the plan's 'a shipped frame using the noise fallback' hard fail visible — reaches only 39% of one family's live materials in a settlement street, so the guard is 61% blind exactly where the plan's mandatory shot is. AXIS MAPPING, stated because the failing check does not map 1:1 onto this item's five axes and the aggregator would otherwise fix the min at 0. Consumer named: PASS. Coupling measured by perturbation: PASS at the 8 band, against two controls. Hand-feed audit: not exercised — nothing here is hand-fed; the probe drives the shipped game. Instrumentation honesty: PASS at the 8 band — the piece declared its own six defects and refused to present software captures as appearance evidence, and this critic declared its own two failing instruments. Harness fidelity is the binding axis and scores 7: the probe boots and drives the shipping entry point through window.__HARNESS, so it is not the 'partial harness with no VERIFY' the axis was written for, and its first pass's controls fired correctly rather than passing silently. The check named published-fallback-reaches-the-world is a finding about a SECOND published mechanism, not an undeclared field or a dead model, so it is not a zero on any of the five axes; it is recorded as a fail because 20 of 51 is the truth, and it is answered in the verdict body rather than by fixing the axis minimum at 0.",
+      "justification": "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json records the perturbation that proves it: setWorldWetness({amount:1}) moves 21.66% of the pixels of a shipped Helstrom street frame, mean |dRGB| 0.016697, against a no-op control at 0.000640 and an absent-family control at 0.000867 — 26x the live-frame noise floor, taken from the running game rather than from a fixture. fallback-reach-live-street.json is the artifact behind the one failing check."
+    },
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "structure",
+      "native_scale": "13 features present/absent; this piece owns section 1 (PBR materials) only",
+      "native_score": "section 1 present and correct; sections 2-13 out of this child's ownership",
+      "native_max": 13,
+      "native_verdict": "Section 1's MIN BAR — albedo + roughness on every material, normal on every material with visible relief at <= 3 m, non-zero envMapIntensity — is met for the first time in this project.",
+      "score_0_10": 8,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "s1-albedo-and-roughness-on-every-material",
+          "result": "pass",
+          "value": "20/20 families carry authored 1k albedo + 1k normal + 512 roughness; 0/20 bind a 96px noise texture; verified by texture name on SwiftShader and on an RTX A4500 and by walking the live scene graph (6055 meshes, zero noise-bound)",
+          "hard_fail": false
+        },
+        {
+          "id": "s1-roughness-varies-across-the-surface",
+          "result": "pass",
+          "value": "close-up rig on hardware: 15/20 families clear both structure >= 0.06 and normal-driven shading >= 0.04 at 0.5 m; mean shading 0.0799 authored against 0.0061 on the noise arm, 0/20 passing on noise",
+          "hard_fail": false
+        },
+        {
+          "id": "s1-texel-density-coherent",
+          "result": "fail",
+          "value": "the published seam has zero consumers: materialTiling / TEXEL_METRES / metresPerTile appear nowhere in game/ or tools/ outside visual-foundation.js, and authoredMaps() hardcodes repeat.set(2,2) for every family. The province lays uv = pos/3, giving 1.5 m per tile against TEXEL_METRES.mud = 3.5 — a 2.3x departure. The plan's >4x hard fail is consequently unmeasured and unmeasurable as designed.",
+          "hard_fail": false
+        },
+        {
+          "id": "s1-visible-at-street-distance",
+          "result": "marginal",
+          "value": "at 0.5 m the library is decisive; in the mandatory 4-8 m settlement street shots the facades still read as flat panels and the ground as a flat field, because the geometry is primitives with unlaid UVs. That is W1-30E and W1-30F work, not C's, and it is reported rather than scored against this child.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-noise-control-rtx-a4500.jpg",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/street-archon-A-shipping-rtx-a4500.png"
+      ],
+      "why_not_ten": "Section 1's minimum bar is met and the null arm passes nothing, which is a strong 8. It is not higher because the item's coherence requirement — comparable texels per metre across a frame — is carried by a published seam with zero consumers, so the feature is present per material and unenforced across the frame.",
+      "justification": "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg and family-closeup-noise-control-rtx-a4500.jpg are the paired artifact: twenty families at 0.5 m under one light on an RTX A4500, and the same twenty on the retired noise field. Mean normal-driven shading 0.0799 against 0.0061; 15/20 passing against 0/20. Section 1's MIN BAR — albedo + roughness on every material, normal on everything with relief at <= 3 m — is met, and the item's absence-tell is demonstrably gone."
+    },
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-30 (M1-M8 plus an unmeasured list)",
+      "native_score": 23,
+      "native_max": 30,
+      "native_verdict": "Admissible. Every headline number re-measured from the running world or from the shipped assets; two of this critic's own instruments were caught failing open and are recorded rather than repaired silently.",
+      "score_0_10": 7,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M2-null-controls-can-go-red",
+          "result": "pass",
+          "value": "the wetness positive control saturates exactly as predicted (high quad moves by precisely 0.00000); the wear-ceiling control is byte-identical at wear 0; the noise arm of the close-up rig passes 0/20. Three controls, all watched going the way they must.",
+          "hard_fail": false
+        },
+        {
+          "id": "M3-the-critic-s-own-instruments-audited",
+          "result": "fail",
+          "value": "two of this critic's tools failed open before being caught. The grouping tripwire's first agreement metric scored the degenerate noise partition 0.45, identical to the authored arm; replaced with adjusted Rand index. fallback-reach.mjs printed 'ok' over a 20-of-51 result by reading a field that lived on another object. Both recorded in the verdict and in the source.",
+          "hard_fail": false
+        },
+        {
+          "id": "M5-numbers-stamped-to-a-commit",
+          "result": "pass",
+          "value": "2634eb0e, with a diff proving every W1-30C-owned path byte-identical to the remote tip 91a66c53",
+          "hard_fail": false
+        },
+        {
+          "id": "M6-rasteriser-declared",
+          "result": "pass",
+          "value": "every appearance number on ANGLE (NVIDIA, Vulkan 1.4.312), RTX A4500; every mechanism delta reproduced on both rasterisers and reported as such",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/grouping-tripwire.json"
+      ],
+      "why_not_ten": "Held at 7 because this critic shipped two instruments that could not go red and caught them mid-round rather than by design. The correction is recorded in both the verdict and the tools, which is the behaviour the item asks for, but a round that has to correct its own instruments twice has not earned the top band.",
+      "justification": "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json and mech-hardware-rtx-a4500.json are the artifact: one suite through two rasterisers, agreeing on every delta to four decimal places, with three controls watched going the way they must — the wetness control's high quad at precisely 0.00000, the wear-ceiling control byte-identical at wear 0, and the close-up noise arm passing 0/20."
+    },
+    {
+      "id": "RI-VIS06",
+      "path": "corpus/70-visual/RI-VIS06-blind-comparison-protocol.md",
+      "side": "modern-fidelity",
+      "kind": "image",
+      "native_scale": "blind paired preference against profile-matched plates, with ladder caps",
+      "native_score": "not run",
+      "native_max": 10,
+      "native_verdict": "Zero Protocol A pairs were run in this round. Under the protocol's own rule that caps FIDELITY at 7 when no pair runs, this verdict makes no fidelity claim at all and none should be read into it.",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "checks": [
+        {
+          "id": "protocol-a-pairs-run",
+          "result": "not_run",
+          "not_run_reason": "pack-builder and judge must be different agents (RULES.md rule 25, amendment R1). This role has no agent-dispatch tool, and R1's own first action — W1-30V confirming which refs/modern/ folders the fidelity side may cite — has not landed. Building a pack and judging it myself would void the result.",
+          "hard_fail": false
+        },
+        {
+          "id": "naive-grouping-human-read",
+          "result": "not_run",
+          "not_run_reason": "the pack the builder named (reports/w1-30/C-closeup/) was never committed in any commit on any branch; I regenerated it on hardware, which bars me from judging it. Pack handed back at corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg.",
+          "hard_fail": false
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-one-texture-set-control-swiftshader.jpg"
+      ],
+      "why_not_ten": "Not run, and scored 0 for `measured: unmeasurable` exactly as the doctrine requires — which is why this item is excluded from the piece's own axis minimum and stated as such in the score note. Reporting it as anything other than unmeasured would be the failure this whole standard exists to prevent."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/street-gideon-A-shipping-both-floors-rtx-a4500.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/visual/deck.mjs --deck tools/critic/w1-30c/deck-w1-30c.json --profile w1-30c-floor --tag A-shipping, VT_HARDWARE_GPU=1, on a RunPod RTX A4500",
+      "resolution": "960x540",
+      "camera_pose": "deck setup street-gideon, 13:00, clear, seed 20260814, 12 settle frames",
+      "source": "ours",
+      "note": "the shipped build. The timber wall carries plank courses and grain; mean frame luma 0.14206, 30.4% of the frame below luma 0.10."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/street-gideon-C-both-floors-removed-rtx-a4500.png",
+      "kind": "screenshot",
+      "produced_by": "as above with both diffuse floors sed-removed on the pod's ephemeral copy — visual-foundation.js consumeStyleboard() and world/province.js _settlementStyleboard()",
+      "resolution": "960x540",
+      "camera_pose": "identical setup",
+      "source": "ours",
+      "note": "the same wall as a black slab. Mean luma 0.0822, 84.1% of the frame below 0.10. Removing C's floor alone (arm B) leaves this frame at 0.14233 — the load-bearing floor is the one in province.js."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/street-gideon-D-noise-textures-no-floors-rtx-a4500.png",
+      "kind": "screenshot",
+      "produced_by": "as above, both floors removed AND the authored textures removed (authored=null), which reinstates the retired 96px field",
+      "resolution": "960x540",
+      "camera_pose": "identical setup",
+      "source": "ours",
+      "note": "the plan's null control, refuted. It was supposed to collapse; instead mean luma rises to 0.2539 with 0.45% of the frame below 0.10, because the retired noise albedo is clamped to 226-255. The authored library is what darkened the streets."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-full-rtx-a4500.jpg",
+      "kind": "blind-pack",
+      "produced_by": "node tools/assets/family-closeup.mjs --null-control, patched on the pod's ephemeral copy to use HARDWARE_CHROMIUM_ARGS, on an RTX A4500",
+      "resolution": "1280x1024 contact sheet, 20 tiles of 256x256",
+      "source": "ours",
+      "note": "the pack for the naive grouping test, regenerated because the builder's was never committed. Twenty families in MATERIAL_FAMILIES order, row-major, 5x4. Audited for tells: no labels, no ordering hint beyond the frozen family order, identical light and camera per tile. NOT judged by this critic (rule 25)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-one-texture-set-control-swiftshader.jpg",
+      "kind": "negative-evidence",
+      "produced_by": "every FAMILY_SET entry repointed at coral_stone_wall on a sparse game/+tools/ copy, then tools/assets/family-closeup.mjs",
+      "resolution": "1280x1024 contact sheet",
+      "source": "ours",
+      "note": "the plan's own null control for `families are distinguishable`, and it goes the wrong way: adjusted Rand index against the six declared classes is 0.44 here against 0.093 on the twenty authored sets. The classes are carried by the family scalars and the four shared per-class detail tiles, not by the texture sets, so the control cannot validate the gate."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json",
+      "kind": "trace",
+      "produced_by": "node tools/critic/w1-30c/mech.mjs --hardware on an RTX A4500",
+      "source": "ours",
+      "note": "the mechanism suite: noise retirement, the inert trim axis, the instanced-wetness defect with its saturating control, the wearFrom:'geometry' ceiling at 50.41%, and the detail-tiling arithmetic. Four failures, controls green."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json",
+      "kind": "trace",
+      "produced_by": "node tools/critic/w1-30c/mech.mjs on SwiftShader",
+      "source": "ours",
+      "note": "the same suite on the other rasteriser. Every delta agrees with the hardware run to four decimal places, which is the direct answer to amendment R3c's falsifier: SwiftShader and native do NOT disagree on a delta."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/diffuse-floor-2x2.json",
+      "kind": "report",
+      "produced_by": "node tools/critic/w1-30c/floor-analyse.mjs over five Deck arms, 8 settlement street shots each, RTX A4500",
+      "source": "ours",
+      "note": "min/mean luma and charcoal fraction per street per arm; the numbers behind section 0.3 of the verdict."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/fallback-reach-live-street.json",
+      "kind": "trace",
+      "produced_by": "node tools/critic/w1-30c/fallback-reach.mjs — boots the shipped game, stands in the Helstrom street, raises markFamilyAssetFailure('stone'), counts materials",
+      "source": "ours",
+      "note": "51 live stone materials, 20 stained magenta, 31 not. Counts rather than pixels, because a count needs no threshold and cannot be mistuned."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json",
+      "kind": "trace",
+      "produced_by": "node tools/critic/w1-30c/consumption.mjs",
+      "source": "ours",
+      "note": "the live scene census — 6055 meshes, 17/20 families, 377 InstancedMeshes carrying 31143 instances, 19 bypasses, zero materials binding a 96px texture — and the four consumption arms with their two controls."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/grouping-tripwire.json",
+      "kind": "report",
+      "produced_by": "node tools/critic/w1-30c/grouping-tripwire.mjs over the hardware sheets plus the one-texture-set control",
+      "source": "ours",
+      "note": "TRIPWIRE ONLY. Carries the superseded degenerate metric alongside the adjusted Rand index so the correction is visible."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/street-helstrom-A-shipping-rtx-a4500.png",
+      "kind": "screenshot",
+      "produced_by": "deck profile w1-30c-critic, tag A-shipping, RTX A4500",
+      "resolution": "960x540",
+      "camera_pose": "deck setup street-helstrom, 13:00, clear",
+      "source": "ours",
+      "note": "the mandatory settlement-street shot on the shipped build. Included because it is the honest answer to 'did the library make the game look better' at 4-8 m: not yet visible, for reasons that belong to E and F."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/street-archon-A-shipping-rtx-a4500.png",
+      "kind": "screenshot",
+      "produced_by": "as above, setup street-archon",
+      "resolution": "960x540",
+      "camera_pose": "deck setup street-archon, 13:00, clear",
+      "source": "ours",
+      "note": "the ground reads as a flat olive field at range: the province lays uv = pos/3 against a hardcoded repeat of 2, giving 1.5 m per tile where TEXEL_METRES.mud publishes 3.5."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/w1-30c/family-closeup-noise-control-rtx-a4500.jpg",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/assets/family-closeup.mjs --null-control, hardware arm",
+      "resolution": "1280x1024 contact sheet",
+      "source": "ours",
+      "note": "the builder's null arm on hardware: mean shading 0.0061 against 0.0799 authored, 0/20 families passing."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR1 arbitrates a Souls-versus-Morrowind conflict inside the fight. This piece touches no frames, stamina, hitboxes or enemy behaviour; it is a material registry, and the project's rule places everything outside the fight on the Morrowind side without conflict.",
+      "checks": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "observed": "no headline number was taken from the builder's account. Coverage re-derived from the manifest and 64 file hashes; the close-up gate re-run on hardware; the wear diagnosis re-tested by executing the route the builder could not; the wetness claim re-tested on the geometry the builder's fixture omits; the diffuse-floor row re-run as a 2x2 rather than as written.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json"
+          ]
+        },
+        {
+          "id": "B2",
+          "result": "pass",
+          "observed": "delete-the-fix run in five arms on the pod's ephemeral copy — C's floor alone, both floors, both floors plus textures, textures alone — with each patch's application verified by grep before the arm ran (patch-B/C/D/E.txt). The plausible wrong answer (removing only the floor the plan names) is one of the arms and it is the one that passes.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/w1-30c/diffuse-floor-2x2.json"
+          ]
+        },
+        {
+          "id": "B3",
+          "result": "pass",
+          "observed": "the controls were built to saturate rather than to be convenient. The wetness control's high quad moves by precisely zero because the band was placed so it must; the first version used a wide band, could not tell the two worlds apart, and was replaced — recorded in the tool's source.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json"
+          ]
+        },
+        {
+          "id": "B4",
+          "result": "pass",
+          "observed": "measured in the running world, not in the bytes: 6055 meshes walked in the shipped game after a boot and a teleport, and the fallback question answered by counting live materials in that scene graph rather than by reading the registry's source."
+        },
+        {
+          "id": "B5",
+          "result": "pass",
+          "observed": "the census sample was drawn from the commit hash, so the builder could not know it: interior-archon-apothecary, eye-western-rootlands, approach-gideon, approach-stormhold, vista-thornmarsh, approach-lilmoth, vista-western-rootlands, vista-hive, interior-blackrose-gaol, eye-hive, eye-thornmarsh, char-player. All twelve captured, 20 ok / 0 red."
+        },
+        {
+          "id": "B6",
+          "result": "fail",
+          "observed": "two of this critic's own instruments failed open before being caught: the grouping tripwire's greedy agreement metric scored a degenerate partition identically to the authored arm, and fallback-reach.mjs printed 'ok' over a 20-of-51 result. Both are recorded in the verdict body and corrected in source rather than quietly fixed."
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "Below bar — named remedy required",
+    "confidence": "high",
+    "note": "overall_0_10 is the minimum over the ELEVEN NAMED PIECE AXES in section 7 of the verdict markdown: coverage/provenance 9.0, noise retirement 8.0, contract-matches-code 5.0, wear handling 8.5, wetness 4.0, diffuse-floor row 5.0, close-up/content 7.0, distinguishability not_run, CONSUMPTION 7.5, library rules 6.0, reporting honesty 8.5. Nine of the ten scored axes are >= 5.0 and seven are >= 7.0. The distinguishability axis is EXCLUDED from the minimum because it is not_run rather than failed — the pack the builder named was never committed, rule 25 bars this critic from judging the pack it regenerated, and the plan's own null control for that gate is invalid; scoring a zero there would punish a gap in the plan and in the dispatch chain rather than in the build. The minimum over reference_items is 0 (RI-VIS06, unmeasurable), and that number is deliberately not used as the piece score for the same reason: no Protocol A pair could be run by a single agent, and this verdict makes no fidelity claim. Both numbers are on the page."
+  },
+  "status": "FAIL",
+  "biggest_gap": {
+    "gap_id": "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
+    "subsystem_path": "render.fidelity.materials",
+    "what": "installSurfaceShader() computes the world height its wetness mask rides on as `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y`, inserted after `#include <begin_vertex>`. three.js applies `instanceMatrix` in `project_vertex`, which runs later — its own `worldpos_vertex` chunk is `worldPosition = instanceMatrix * worldPosition; worldPosition = modelMatrix * worldPosition;`. So every instance of an InstancedMesh is handed the base geometry's height and the whole mesh shares one position on the wetness ramp. Measured with a saturating band: two separate Meshes at y -1.2 and y +1.2 separate by 0.02393 in mean luminance (the high quad moving by precisely 0.00000, i.e. fully dry, as it must); two INSTANCES at the same two heights separate by 0.00150 — 6% of the control. Reproduced identically on SwiftShader (0.023926 / 0.001497) and on an RTX A4500 (0.023896 / 0.001511). The same line also omits `batchingMatrix` and is taken before `skinning_vertex`.",
+    "why_it_matters": "The shipped world's live census counts 377 InstancedMeshes carrying 31143 instances, drawn from the families bark, leaf, reed and stone — the trunks, canopies, reeds and rocks that fill a Black Marsh frame. setWorldWetness() is published as W1-30B's rain consumer and is the mechanism by which 'B's rain lands on materials rather than on fog'. It currently lands on everything except the marsh. No arm of the builder's own proof could see it: tools/assets/rig/family-closeup.html wetnessProof() renders one non-instanced plane at the origin, where modelMatrix * transformed IS the world position, so all five families and both the wet and dry arms fabricated the same untested input.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json",
+      "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json",
+      "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json"
+    ],
+    "severity": "major",
+    "remedy": {
+      "action": "One narrow commit in game/src/render/visual-foundation.js plus the matching two rows of game/src/render/MATERIAL_API.md. PRESERVE: the whole authored library, the 20-family registry, FAMILY_SET, the detail-normal blend, the wear mask and its wearFrom axis, the magenta fallback, the palette swatches, and every existing option key and its meaning — the freeze is additive-only and nothing here removes or repurposes an option. (1) PRIMARY, the gap above: in installSurfaceShader's vertex injection, replace `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;` with three.js's own worldpos_vertex form — build a `vec4 esWorldPos = vec4(transformed,1.0);` then `#ifdef USE_BATCHING esWorldPos = batchingMatrix * esWorldPos; #endif` `#ifdef USE_INSTANCING esWorldPos = instanceMatrix * esWorldPos; #endif` `esWorldPos = modelMatrix * esWorldPos; vEsSurfaceWorldY = esWorldPos.y;` — and move the injection point from `#include <begin_vertex>` to after `#include <skinning_vertex>` so a skinned character's wetness rides its posed height rather than its bind pose. Bump the customProgramCacheKey version string. (2) COMPANION, same file, three lines: bind the trim atlas when `variant.trim` is set (trimAtlasTextures() already returns the maps and trimSlot() already returns the band) or, if binding it needs geometry decisions that belong to W1-30E, change MATERIAL_API.md section 3 to say `recorded` for `trim` exactly as it already does for `lod` and delete 'and it is live now' from reports/w1-30/C-DELIVERY.md — either is acceptable, silently declaring it live is not; pass `uDetailTiling: DETAIL_NORMAL_TILING` rather than `DETAIL_NORMAL_TILING/ts`, since vNormalMapUv already carries the base repeat of 2/ts and the published contract is a fixed 8x; and correct MATERIAL_API.md section 5's adjacency arithmetic to root 0.9 m against mud 3.5 m = 3.89x. (3) Do NOT touch world/province.js's diffuse floor, the styleboard clone route, or the 19 census bypasses in this commit — they are other children's files and other verdicts' business. Do not add a second tool: tools/critic/w1-30c/mech.mjs already exercises all of the above and already goes red on today's tree.",
+      "targets": [
+        "game/src/render/visual-foundation.js",
+        "game/src/render/MATERIAL_API.md",
+        "reports/w1-30/C-DELIVERY.md"
+      ],
+      "acceptance": "Cheapest-first, all offline before any browser: (i) `node tools/boot-check.mjs` PASS and `node tools/render/w1-30-assets.mjs` GREEN — static, seconds. (ii) `node tools/critic/w1-30c/mech.mjs` goes from 4 failures to 0 with `controls ok`, which requires specifically: wetness-instancing separation >= 25% of the non-instanced control (today 6%), wetness-instancing-source finding instanceMatrix on the height line, detail-tiling-scale delivering exactly 8x at tilingScale 1, 2, 4 and 8, and either the trim axis moving pixels or the contract no longer claiming it does. (iii) The positive controls must still be green — the non-instanced arm still separating by ~0.024 with its high quad at precisely 0.00000, the palette axis still moving the frame, and the wear-ceiling control still byte-identical at wear 0; a run where the controls have gone quiet is a failed run, not a passed one. (iv) Delete-the-fix: revert only the vertex-line change on a copy and confirm the instanced separation returns to ~0.0015, so the repair is demonstrated to be what moved the number. (v) One hardware confirmation only if (ii) passes: `node tools/critic/w1-30c/mech.mjs --hardware` inside an existing pod run, since every delta in this round agreed across rasterisers and a second pod for this alone is not warranted. Publish the five figures. STOP AND ESCALATE if binding the trim atlas turns out to need a UV convention that only W1-30E can supply — in that case take the documentation arm of (2), say so, and leave the axis honestly marked `recorded`; do not invent a trim UV convention on E's behalf."
+    }
+  },
+  "corpus_extended": [],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false and blind_done_where_required is false for the same reason, stated plainly in section 9 of the verdict. The naive grouping test and RI-VIS06 Protocol A both require a judge who did not build the pack; the pack the builder named was never committed to any branch, so I had to regenerate it, and this role has no agent-dispatch tool. Both are scored not_run with the pack handed back rather than answered by the agent that produced it. Also not run: M1-M12 as a regression tripwire (no previous stamped M-battery exists for this subject to compare against), the library census (tools/visual/library-census.mjs does not exist; W1-30V owns it), and the plan's >4x texel-density hard fail (unmeasurable as designed, for the reason recorded against RI-VIS04). judged_output_not_source is true: every claim was re-measured from the running world, from hardware captures, or from the shipped asset files, and the two source-level claims (the instanceMatrix omission and the styleboard clone route) each carry a measurement beside them. Two of this critic's own instruments failed open and were caught mid-round; both are recorded in the verdict body and in the tools' source rather than corrected silently, and RI-MTH04 is scored down for it."
+  }
+}

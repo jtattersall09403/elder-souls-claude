@@ -1,0 +1,283 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>W1-30C critic — material mechanism rig</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="module">
+// W1-30C CRITIC INSTRUMENT — not the builder's rig, and deliberately not measuring appearance.
+//
+// Every test below is a MECHANISM test with its own control: does the declared variant axis
+// actually reach pixels, and does it reach them on the geometry the shipped world is made of?
+// Appearance is judged from hardware Deck frames elsewhere; this rig runs anywhere because a
+// pixel delta between two arms through one rasteriser is rasteriser-independent evidence.
+//
+// It is written to be able to FAIL. Every arm carries a positive control that MUST move, so an
+// arm reporting "no difference" cannot be the instrument being dead. That is RULES.md rule 6.
+import * as THREE from '/game/vendor/three/three.module.js';
+import { worldMaterial, setWorldWetness, MATERIAL_FAMILIES, materialClass, DETAIL_NORMAL_TILING }
+  from '/game/src/render/visual-foundation.js';
+
+const SIZE = 256;
+const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE, false);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(renderer.domElement);
+
+const rt = new THREE.WebGLRenderTarget(SIZE, SIZE, { type: THREE.UnsignedByteType });
+
+function makeScene() {
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x101214);
+  const key = new THREE.DirectionalLight(0xfff3e2, 3.1);
+  key.position.set(-0.7, 0.9, 0.6);
+  scene.add(key);
+  scene.add(new THREE.AmbientLight(0x2a3138, 0.35));
+  return scene;
+}
+
+const camera = new THREE.PerspectiveCamera(42, 1, 0.01, 100);
+
+function readPixels() {
+  const buf = new Uint8Array(SIZE * SIZE * 4);
+  renderer.readRenderTargetPixels(rt, 0, 0, SIZE, SIZE, buf);
+  return buf;
+}
+function meanLuma(buf, x0, y0, w, h) {
+  let s = 0, n = 0;
+  for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) {
+    const i = ((y * SIZE) + x) * 4;
+    if (buf[i + 3] === 0) continue;
+    s += (0.2126 * buf[i] + 0.7152 * buf[i + 1] + 0.0722 * buf[i + 2]) / 255; n++;
+  }
+  return n ? s / n : 0;
+}
+function hash(buf) {
+  // FNV-1a over the byte buffer. Two byte-identical frames are the strongest possible evidence
+  // that an option changed nothing at all.
+  let h = 0x811c9dc5;
+  for (let i = 0; i < buf.length; i++) { h ^= buf[i]; h = Math.imul(h, 0x01000193); }
+  return (h >>> 0).toString(16);
+}
+function renderTo(scene) {
+  renderer.setRenderTarget(rt);
+  renderer.clear();
+  renderer.render(scene, camera);
+  renderer.setRenderTarget(null);
+  return readPixels();
+}
+
+// Textures load asynchronously; every arm must be shot after the same warm-up so the comparison
+// is not "one arm got its textures and the other did not".
+const settle = (ms = 900) => new Promise(r => setTimeout(r, ms));
+
+// --------------------------------------------------------------------------------------------
+// T1 — is a declared variant axis live, or only recorded?
+// A flat plane per arm, identical geometry and light. Positive control: `palette`, which the
+// builder measured as live. If the control does not move, the whole test is void.
+// --------------------------------------------------------------------------------------------
+async function planeArm(family, options) {
+  const scene = makeScene();
+  camera.position.set(0, 0, 0.5); camera.lookAt(0, 0, 0);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.6, 1, 1), worldMaterial(family, options));
+  m.rotation.x = -0.42; scene.add(m);
+  await settle();
+  const buf = renderTo(scene);
+  return { hash: hash(buf), luma: +meanLuma(buf, 40, 40, SIZE - 80, SIZE - 80).toFixed(6) };
+}
+
+// --------------------------------------------------------------------------------------------
+// T2 — does the world-height wetness mask survive instancing?
+//
+// The shipped world's rocks, trunks, canopies and reeds are THREE.InstancedMesh. The mask is
+// computed in the vertex shader from `modelMatrix * transformed`, and three.js applies
+// `instanceMatrix` in `project_vertex`, AFTER `begin_vertex`. So the prediction is: two separate
+// Meshes at different heights get different wetness, and two INSTANCES of one InstancedMesh at
+// the same two heights get identical wetness.
+//
+// Controls, both required:
+//  - amount 0 must make BOTH arms flat (so the difference is wetness and not the lighting rig);
+//  - the separate-Mesh arm MUST move (so a null result in the instanced arm is the shader, not
+//    a dead instrument).
+// --------------------------------------------------------------------------------------------
+// The wetness band is set to SATURATE, deliberately: topY 0.5 / bottomY 0.0 puts the low quad
+// entirely below the ramp (mask = 1 everywhere on it) and the high quad entirely above it
+// (mask = 0 everywhere on it) — but only if the shader sees each quad's real world height. If it
+// sees only the base geometry (local y in [-1.1, 1.1]) both quads get the SAME partial gradient
+// and become indistinguishable. The first version of this test used a wide band and could not
+// tell those two worlds apart: both arms reported a split, because the frame's top row and bottom
+// row sample opposite ends of a per-quad gradient either way. That is an inert control, and it is
+// the exact shape HAZARDS.md section 0 warns about — the arms agreeing about a false premise.
+const WET_TOP = 0.4, WET_BOTTOM = -0.4, LOW_Y = -1.2, HIGH_Y = 1.2, QUAD_M = 0.8;
+function wetScene(kind, family) {
+  const scene = makeScene();
+  camera.position.set(0, 0, 6); camera.lookAt(0, 0, 0);
+  const mat = worldMaterial(family, {});
+  const geo = new THREE.PlaneGeometry(QUAD_M, QUAD_M, 1, 1);
+  if (kind === 'mesh') {
+    for (const y of [LOW_Y, HIGH_Y]) {
+      const m = new THREE.Mesh(geo, mat); m.position.set(0, y, 0); scene.add(m);
+    }
+  } else {
+    const im = new THREE.InstancedMesh(geo, mat, 2);
+    const o = new THREE.Object3D();
+    [LOW_Y, HIGH_Y].forEach((y, i) => { o.position.set(0, y, 0); o.updateMatrix(); im.setMatrixAt(i, o.matrix); });
+    im.instanceMatrix.needsUpdate = true; scene.add(im);
+  }
+  return scene;
+}
+/** Where each quad lands on screen, computed rather than guessed. */
+function quadBox(y) {
+  // Project the quad's centre and its top/bottom edge, so the sample box is derived from the
+  // camera rather than assumed. A box that has drifted off-screen returns null and the caller
+  // fails loudly — the first version silently averaged zero pixels into NaN and every downstream
+  // comparison then passed, which is a fail-open instrument.
+  const c = new THREE.Vector3(0, y, 0).project(camera);
+  const e = new THREE.Vector3(0, y + QUAD_M / 2, 0).project(camera);
+  const row = Math.round((c.y * 0.5 + 0.5) * SIZE);               // readPixels is bottom-up
+  const half = Math.max(3, Math.round(Math.abs(e.y - c.y) * 0.5 * SIZE * 0.6));
+  const x0 = Math.round(SIZE * 0.36), w = Math.round(SIZE * 0.28);
+  const y0 = row - half, h = half * 2;
+  if (y0 < 0 || y0 + h > SIZE) return null;
+  return [x0, y0, w, h];
+}
+async function wetArm(kind, family, amount) {
+  const scene = wetScene(kind, family);
+  camera.updateMatrixWorld(); camera.updateProjectionMatrix();
+  setWorldWetness({ amount, topY: WET_TOP, bottomY: WET_BOTTOM });
+  await settle();
+  const buf = renderTo(scene);
+  const lb = quadBox(LOW_Y), hb = quadBox(HIGH_Y);
+  if (!lb || !hb) return { error: 'a quad projected outside the frame', boxes: { lb, hb } };
+  const low = meanLuma(buf, ...lb), high = meanLuma(buf, ...hb);
+  if (!Number.isFinite(low) || !Number.isFinite(high) || low === 0 || high === 0) {
+    return { error: `empty sample box (low ${low}, high ${high})`, boxes: { lb, hb } };
+  }
+  return { low: +low.toFixed(6), high: +high.toFixed(6), split: +(low - high).toFixed(6), hash: hash(buf), boxes: { lb, hb } };
+}
+
+/** The compiled vertex shader, as GLSL, so the mechanism can be read as well as measured. */
+function shaderSource(family) {
+  const mat = worldMaterial(family, {});
+  const scene = makeScene();
+  camera.position.set(0, 0, 3);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+  scene.add(m);
+  renderer.compile(scene, camera);
+  const p = renderer.info.programs?.find(pr => pr.cacheKey && /w1-30c-surface/.test(String(pr.cacheKey)));
+  let vs = null;
+  try { vs = p ? renderer.getContext().getShaderSource(p.vertexShader) : null; } catch { vs = null; }
+  if (!vs) {
+    // Fall back to the string the material would hand three.js: run onBeforeCompile by hand.
+    const shader = { vertexShader: 'void main(){\n#include <begin_vertex>\n}', fragmentShader: '#include <normal_fragment_maps>\n#include <lights_physical_fragment>\n', uniforms: {} };
+    mat.onBeforeCompile(shader, renderer);
+    vs = shader.vertexShader;
+  }
+  const line = String(vs).split('\n').find(l => /vEsSurfaceWorldY\s*=/.test(l)) || '(not found)';
+  return { line: line.trim(), mentions_instanceMatrix: /instanceMatrix/.test(line), mentions_modelMatrix: /modelMatrix/.test(line) };
+}
+
+// --------------------------------------------------------------------------------------------
+// T3 — does `wearFrom: 'geometry'` — the route C published INSTEAD of meeting its own gate —
+// actually work when a mesh supplies the attribute it asks for?
+//
+// C's own report says the texture route cannot reach the 8% edge/face separation and that E and D
+// should bake a per-vertex `esCurvature`. Nothing in the tree supplies that attribute yet, so the
+// published route has never been executed. This bakes it by hand on a bevelled box: 1 on the
+// bevel ring, 0 on the flat faces — exactly the input MATERIAL_API.md section 6a requests.
+//
+// Control: the same geometry and the same attribute with wear 0 must show no separation.
+// --------------------------------------------------------------------------------------------
+function bevelBox(withAttr) {
+  // A cylinder with few radial segments is a prism: its side faces are flat and the vertical
+  // arrises between them are the "edges" the wear gate is about. Curvature is derived from the
+  // angle between the vertex normal and the face normal, which is what a baker would do.
+  const geo = new THREE.CylinderGeometry(1.0, 1.0, 2.0, 12, 1, true);
+  const pos = geo.attributes.position, nrm = geo.attributes.normal;
+  if (withAttr) {
+    const curv = new Float32Array(pos.count);
+    for (let i = 0; i < pos.count; i++) {
+      // Vertices sitting on a facet boundary alternate; mark every other radial column as arris.
+      const x = pos.getX(i), z = pos.getZ(i);
+      const a = Math.atan2(z, x);
+      const seg = Math.round((a + Math.PI) / (2 * Math.PI) * 12);
+      curv[i] = (seg % 2 === 0) ? 1.0 : 0.0;
+    }
+    geo.setAttribute('esCurvature', new THREE.BufferAttribute(curv, 1));
+  }
+  void nrm;
+  return geo;
+}
+async function wearArm(family, wearFrom, wear) {
+  const scene = makeScene();
+  camera.position.set(0, 0, 3.4); camera.lookAt(0, 0, 0);
+  const geo = bevelBox(wearFrom === 'geometry');
+  const mat = worldMaterial(family, { wear, wearFrom });
+  const m = new THREE.Mesh(geo, mat); m.rotation.y = 0.13; scene.add(m);
+  await settle();
+  const buf = renderTo(scene);
+  // Column profile across the prism: a per-column mean, so an alternating edge/face pattern is
+  // visible as a periodic signal rather than averaged away.
+  const cols = [];
+  for (let x = 40; x < SIZE - 40; x++) cols.push(meanLuma(buf, x, 70, 1, SIZE - 140));
+  const mean = cols.reduce((a, b) => a + b, 0) / cols.length;
+  const sd = Math.sqrt(cols.reduce((a, b) => a + (b - mean) ** 2, 0) / cols.length);
+  return { mean: +mean.toFixed(6), columnSd: +sd.toFixed(6), hash: hash(buf), cols: cols.map(c => +c.toFixed(4)) };
+}
+
+// --------------------------------------------------------------------------------------------
+// T3b — the CEILING of the route C published in place of the gate it did not meet.
+//
+// C's gate is "mean luminance on the edge differs from the face by >= 8%". C says a texture-space
+// proxy structurally cannot reach it and that a per-vertex `esCurvature` can. That claim has never
+// been executed, because nothing in the tree bakes the attribute. This executes it in the gate's
+// own units: two identical planes, same material, same light, one with esCurvature = 1 everywhere
+// (a pure arris) and one with esCurvature = 0 everywhere (a pure face). The percentage between
+// them is the best the geometry route can ever do at that wear value — an upper bound, since a
+// real mesh's arris is a few texels wide.
+//
+// Control: at wear 0 the two planes must be identical, or the difference is not wear.
+async function wearCeiling(family, wear, curv) {
+  const scene = makeScene();
+  camera.position.set(0, 0, 0.5); camera.lookAt(0, 0, 0);
+  const geo = new THREE.PlaneGeometry(0.6, 0.6, 1, 1);
+  const a = new Float32Array(geo.attributes.position.count).fill(curv);
+  geo.setAttribute('esCurvature', new THREE.BufferAttribute(a, 1));
+  const m = new THREE.Mesh(geo, worldMaterial(family, { wear, wearFrom: 'geometry' }));
+  m.rotation.x = -0.42; scene.add(m);
+  await settle();
+  const buf = renderTo(scene);
+  return { luma: +meanLuma(buf, 40, 40, SIZE - 80, SIZE - 80).toFixed(6), hash: hash(buf) };
+}
+
+// --------------------------------------------------------------------------------------------
+// T4 — what is actually bound. Not a picture: the live texture names on a shipped material.
+// The retirement claim is "the 96px hash-noise field is retired from every family". A name is
+// the only thing that distinguishes the retired field from an authored map at this level.
+// --------------------------------------------------------------------------------------------
+function bindings(family, options) {
+  const m = worldMaterial(family, options);
+  const t = k => (m[k] && m[k].name) || null;
+  const out = {
+    family, map: t('map'), normalMap: t('normalMap'), roughnessMap: t('roughnessMap'),
+    bumpMap: t('bumpMap'), aoMap: t('aoMap'),
+    detail: m.userData?.w1_30?.detail || null,
+    hasSurfaceShader: !!m.userData?.surfaceUniforms,
+    detailTilingUniform: m.userData?.surfaceUniforms?.uDetailTiling?.value ?? null,
+    normalRepeat: m.normalMap ? [m.normalMap.repeat.x, m.normalMap.repeat.y] : null,
+  };
+  m.dispose();
+  return out;
+}
+
+window.__MECH = {
+  planeArm, wetArm, wearArm, wearCeiling, bindings, settle, shaderSource,
+  families: MATERIAL_FAMILIES, classOf: materialClass, detailTiling: DETAIL_NORMAL_TILING,
+  renderer: (() => { try {
+    const gl = renderer.getContext();
+    const ext = gl.getExtension('WEBGL_debug_renderer_info');
+    return String(ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER));
+  } catch (e) { return `unavailable: ${e.message}`; } })(),
+  info: () => ({ ...renderer.info.memory, programs: renderer.info.programs?.length ?? null }),
+};
+</script>

@@ -1,0 +1,436 @@
+{
+  "schema": "elder-souls/w1-30c-grouping-tripwire@2",
+  "role": "TRIPWIRE ONLY — it can fail the build and can never pass one. The plan's gate is a naive human judge; that gate is reported not_run.",
+  "bar_for_the_human_gate": 0.8,
+  "authored": {
+    "nn_purity": 0.4,
+    "nn_chance": 0.137,
+    "nn": {
+      "mud": {
+        "nearest": "clay",
+        "d": 0.452,
+        "sameClass": true
+      },
+      "wet_mud": {
+        "nearest": "metal",
+        "d": 0.4719,
+        "sameClass": false
+      },
+      "bark": {
+        "nearest": "clay",
+        "d": 0.4562,
+        "sameClass": false
+      },
+      "leaf": {
+        "nearest": "reed",
+        "d": 0.1109,
+        "sameClass": true
+      },
+      "reed": {
+        "nearest": "leaf",
+        "d": 0.1109,
+        "sameClass": true
+      },
+      "root": {
+        "nearest": "thorn",
+        "d": 0.3842,
+        "sameClass": true
+      },
+      "timber": {
+        "nearest": "shell",
+        "d": 0.5945,
+        "sameClass": false
+      },
+      "clay": {
+        "nearest": "skin",
+        "d": 0.4402,
+        "sameClass": false
+      },
+      "stone": {
+        "nearest": "salt",
+        "d": 0.5592,
+        "sameClass": true
+      },
+      "salt": {
+        "nearest": "stone",
+        "d": 0.5592,
+        "sameClass": true
+      },
+      "bone": {
+        "nearest": "bark",
+        "d": 0.5589,
+        "sameClass": false
+      },
+      "chitin": {
+        "nearest": "skin",
+        "d": 0.3592,
+        "sameClass": false
+      },
+      "resin": {
+        "nearest": "root",
+        "d": 0.9626,
+        "sameClass": false
+      },
+      "cloth": {
+        "nearest": "reed",
+        "d": 0.3667,
+        "sameClass": false
+      },
+      "skin": {
+        "nearest": "chitin",
+        "d": 0.3592,
+        "sameClass": false
+      },
+      "metal": {
+        "nearest": "wet_mud",
+        "d": 0.4719,
+        "sameClass": false
+      },
+      "water": {
+        "nearest": "cloth",
+        "d": 0.6889,
+        "sameClass": true
+      },
+      "shell": {
+        "nearest": "bark",
+        "d": 0.5129,
+        "sameClass": false
+      },
+      "thorn": {
+        "nearest": "root",
+        "d": 0.3842,
+        "sameClass": true
+      },
+      "wet_chitin": {
+        "nearest": "thorn",
+        "d": 0.5435,
+        "sameClass": false
+      }
+    },
+    "cluster_agreement_DEGENERATE": 0.45,
+    "adjusted_rand_index": 0.093,
+    "largest_cluster": 7,
+    "clusters": [
+      [
+        "chitin",
+        "clay",
+        "mud",
+        "root",
+        "skin",
+        "thorn",
+        "wet_chitin"
+      ],
+      [
+        "metal",
+        "timber",
+        "wet_mud"
+      ],
+      [
+        "bark",
+        "bone",
+        "shell"
+      ],
+      [
+        "cloth",
+        "leaf",
+        "reed",
+        "water"
+      ],
+      [
+        "salt",
+        "stone"
+      ],
+      [
+        "resin"
+      ]
+    ]
+  },
+  "noise_control": {
+    "nn_purity": 0.4,
+    "nn_chance": 0.137,
+    "nn": {
+      "mud": {
+        "nearest": "clay",
+        "d": 0.0317,
+        "sameClass": true
+      },
+      "wet_mud": {
+        "nearest": "resin",
+        "d": 0.0266,
+        "sameClass": false
+      },
+      "bark": {
+        "nearest": "thorn",
+        "d": 0.0145,
+        "sameClass": true
+      },
+      "leaf": {
+        "nearest": "reed",
+        "d": 0.0089,
+        "sameClass": true
+      },
+      "reed": {
+        "nearest": "leaf",
+        "d": 0.0089,
+        "sameClass": true
+      },
+      "root": {
+        "nearest": "thorn",
+        "d": 0.0198,
+        "sameClass": true
+      },
+      "timber": {
+        "nearest": "bone",
+        "d": 0.0121,
+        "sameClass": false
+      },
+      "clay": {
+        "nearest": "timber",
+        "d": 0.0184,
+        "sameClass": false
+      },
+      "stone": {
+        "nearest": "timber",
+        "d": 0.0157,
+        "sameClass": false
+      },
+      "salt": {
+        "nearest": "skin",
+        "d": 0.0119,
+        "sameClass": false
+      },
+      "bone": {
+        "nearest": "timber",
+        "d": 0.0121,
+        "sameClass": false
+      },
+      "chitin": {
+        "nearest": "resin",
+        "d": 0.0698,
+        "sameClass": true
+      },
+      "resin": {
+        "nearest": "wet_mud",
+        "d": 0.0266,
+        "sameClass": false
+      },
+      "cloth": {
+        "nearest": "bone",
+        "d": 0.0175,
+        "sameClass": false
+      },
+      "skin": {
+        "nearest": "salt",
+        "d": 0.0119,
+        "sameClass": false
+      },
+      "metal": {
+        "nearest": "chitin",
+        "d": 0.8324,
+        "sameClass": false
+      },
+      "water": {
+        "nearest": "wet_chitin",
+        "d": 0.2903,
+        "sameClass": false
+      },
+      "shell": {
+        "nearest": "skin",
+        "d": 0.017,
+        "sameClass": false
+      },
+      "thorn": {
+        "nearest": "bark",
+        "d": 0.0145,
+        "sameClass": true
+      },
+      "wet_chitin": {
+        "nearest": "resin",
+        "d": 0.0548,
+        "sameClass": true
+      }
+    },
+    "cluster_agreement_DEGENERATE": 0.45,
+    "adjusted_rand_index": 0.052,
+    "largest_cluster": 14,
+    "clusters": [
+      [
+        "bark",
+        "bone",
+        "clay",
+        "cloth",
+        "mud",
+        "resin",
+        "root",
+        "salt",
+        "shell",
+        "skin",
+        "stone",
+        "thorn",
+        "timber",
+        "wet_mud"
+      ],
+      [
+        "leaf",
+        "reed"
+      ],
+      [
+        "chitin"
+      ],
+      [
+        "metal"
+      ],
+      [
+        "water"
+      ],
+      [
+        "wet_chitin"
+      ]
+    ]
+  },
+  "one_texture_set_control": {
+    "nn_purity": 0.6,
+    "nn_chance": 0.137,
+    "nn": {
+      "mud": {
+        "nearest": "resin",
+        "d": 0.3025,
+        "sameClass": false
+      },
+      "wet_mud": {
+        "nearest": "salt",
+        "d": 0.0725,
+        "sameClass": false
+      },
+      "bark": {
+        "nearest": "thorn",
+        "d": 0.0336,
+        "sameClass": true
+      },
+      "leaf": {
+        "nearest": "reed",
+        "d": 0.1299,
+        "sameClass": true
+      },
+      "reed": {
+        "nearest": "leaf",
+        "d": 0.1299,
+        "sameClass": true
+      },
+      "root": {
+        "nearest": "thorn",
+        "d": 0.1304,
+        "sameClass": true
+      },
+      "timber": {
+        "nearest": "shell",
+        "d": 0.2564,
+        "sameClass": false
+      },
+      "clay": {
+        "nearest": "stone",
+        "d": 0.1509,
+        "sameClass": false
+      },
+      "stone": {
+        "nearest": "clay",
+        "d": 0.1509,
+        "sameClass": false
+      },
+      "salt": {
+        "nearest": "wet_mud",
+        "d": 0.0725,
+        "sameClass": false
+      },
+      "bone": {
+        "nearest": "resin",
+        "d": 0.1266,
+        "sameClass": true
+      },
+      "chitin": {
+        "nearest": "shell",
+        "d": 0.247,
+        "sameClass": true
+      },
+      "resin": {
+        "nearest": "wet_chitin",
+        "d": 0.1223,
+        "sameClass": true
+      },
+      "cloth": {
+        "nearest": "root",
+        "d": 0.1716,
+        "sameClass": false
+      },
+      "skin": {
+        "nearest": "cloth",
+        "d": 0.2356,
+        "sameClass": true
+      },
+      "metal": {
+        "nearest": "salt",
+        "d": 1.3486,
+        "sameClass": true
+      },
+      "water": {
+        "nearest": "leaf",
+        "d": 0.4079,
+        "sameClass": false
+      },
+      "shell": {
+        "nearest": "resin",
+        "d": 0.1528,
+        "sameClass": true
+      },
+      "thorn": {
+        "nearest": "bark",
+        "d": 0.0336,
+        "sameClass": true
+      },
+      "wet_chitin": {
+        "nearest": "resin",
+        "d": 0.1223,
+        "sameClass": true
+      }
+    },
+    "cluster_agreement_DEGENERATE": 0.7,
+    "adjusted_rand_index": 0.44,
+    "largest_cluster": 7,
+    "clusters": [
+      [
+        "bone",
+        "chitin",
+        "mud",
+        "resin",
+        "shell",
+        "timber",
+        "wet_chitin"
+      ],
+      [
+        "clay",
+        "salt",
+        "stone",
+        "wet_mud"
+      ],
+      [
+        "bark",
+        "cloth",
+        "root",
+        "skin",
+        "thorn"
+      ],
+      [
+        "leaf",
+        "reed"
+      ],
+      [
+        "metal"
+      ],
+      [
+        "water"
+      ]
+    ]
+  },
+  "noise_control_falls": true,
+  "one_texture_control_falls": false
+}

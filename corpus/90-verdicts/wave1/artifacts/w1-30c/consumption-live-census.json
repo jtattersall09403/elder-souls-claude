@@ -1,0 +1,114 @@
+{
+  "schema": "elder-souls/w1-30c-consumption@1",
+  "hardware": false,
+  "arms": [
+    {
+      "id": "0-baseline",
+      "expect": "reference",
+      "luma": 0.16756772173181478,
+      "magentaFrac": 0,
+      "hash": "e0db1c7469f300c8",
+      "bytes": 2958381
+    },
+    {
+      "id": "A-family-failed",
+      "expect": "MUST move and go magenta",
+      "luma": 0.167542341472041,
+      "magentaFrac": 0,
+      "hash": "fcbeafea70bf5980",
+      "bytes": 2958701
+    },
+    {
+      "id": "B-world-wetness",
+      "expect": "MUST move",
+      "luma": 0.18464388735120388,
+      "magentaFrac": 0,
+      "hash": "ca2c08e39b1cd5a6",
+      "bytes": 3104068
+    },
+    {
+      "id": "C-control-noop",
+      "expect": "MUST NOT move",
+      "luma": 0.18462933673429846,
+      "magentaFrac": 0,
+      "hash": "9140f0e625e2b256",
+      "bytes": 3104297
+    },
+    {
+      "id": "D-control-absent",
+      "expect": "MUST NOT move",
+      "luma": 0.18463974302854833,
+      "magentaFrac": 0,
+      "hash": "8fd7fa2f8f0ca415",
+      "bytes": 3103735
+    }
+  ],
+  "failures": [
+    "consumption-fallback: the frame moved but no magenta appeared (0.000% -> 0.000%) — the fallback is not visibly loud in the world",
+    "consumption-control: the no-op control CHANGED the frame — every arm above is measuring re-render, not consumption",
+    "consumption-control-absent: failing 'shell', which has no surface in this street, changed the street frame"
+  ],
+  "census": {
+    "meshes": 6055,
+    "instancedMeshes": 377,
+    "instances": 31143,
+    "families": {
+      "stone": 1504,
+      "reed": 1174,
+      "chitin": 1094,
+      "bark": 427,
+      "skin": 339,
+      "cloth": 323,
+      "leaf": 211,
+      "timber": 150,
+      "bone": 104,
+      "resin": 82,
+      "metal": 78,
+      "clay": 70,
+      "wet_mud": 69,
+      "root": 63,
+      "water": 51,
+      "mud": 28,
+      "salt": 8
+    },
+    "familiesPresent": 17,
+    "instancedFamilies": [
+      "bark",
+      "leaf",
+      "reed",
+      "stone"
+    ],
+    "noiseFallback": [],
+    "bypass": [
+      "world-art-place:market",
+      "world-art-place:well",
+      "Mesh",
+      "waylamp:sign-junction-helstrom",
+      "settlement-batch:111:n:normal:3:false,position:3:false,uv:2:false",
+      "signature:petrified_bole",
+      "threshold:imperial_border_cairn",
+      "threshold:corpse_in_a_cage",
+      "waylamp:sign-way-way-helstrom-blackrose-3",
+      "signature:voriplasm",
+      "signature-glow:voriplasm",
+      "remains:barge",
+      "road-deck",
+      "road-piers",
+      "signature:welkynd_pillar",
+      "signature-glow:welkynd_pillar",
+      "waylamp:sign-way-way-helstrom-archon-2",
+      "signature:rock_flute_spire",
+      "spell-vfx:phase-filament"
+    ],
+    "bypassCount": 19,
+    "fallbackReport": {
+      "fallbackColour": 16711892,
+      "families": []
+    }
+  },
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software": true,
+  "place": "street-helstrom",
+  "perturbed_family": "stone",
+  "absent_family": "shell"
+}

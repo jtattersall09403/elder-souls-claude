@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T10:53:10Z",
+  "generated": "2026-08-14T11:47:45Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 77,
+  "verdicts_read": 78,
   "counts": {
-    "total": 72,
-    "open": 71,
+    "total": 73,
+    "open": 72,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -64,6 +64,9 @@
     "journey.firstlaunch.flow": [
       "GAP-W1-26-creation-cannot-be-completed-from-the-title",
       "GAP-W1-26-r3-body-race-fails-silently-and-is-refused-eleven-nodes-later"
+    ],
+    "render.fidelity.materials": [
+      "GAP-W1-30c-wetness-mask-blind-to-instancematrix"
     ],
     "dialogue.topics.filtering": [
       "GAP-W1-act5-argument-entry-shadowed"
@@ -983,6 +986,44 @@
       "remedy_acceptance": "(1) A body carrying a race not in races.json is refused at scene START, with the offending id in the message, and the check is watched going RED by planting a bad id. (2) With the assertion armed, all ten races in races.json still complete the scene end to end. (3) census-newgame.mjs still exits 0 and its no-body control still stops.",
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-26-r3/consume.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-30c-wetness-mask-blind-to-instancematrix",
+      "subsystem_path": "render.fidelity.materials",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-30c-r1-2634eb0e",
+      "opened_in": "corpus/90-verdicts/wave1/W1-30C-r1.json",
+      "piece_id": "w1-30c",
+      "severity": "major",
+      "what": "installSurfaceShader() computes the world height its wetness mask rides on as `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y`, inserted after `#include <begin_vertex>`. three.js applies `instanceMatrix` in `project_vertex`, which runs later — its own `worldpos_vertex` chunk is `worldPosition = instanceMatrix * worldPosition; worldPosition = modelMatrix * worldPosition;`. So every instance of an InstancedMesh is handed the base geometry's height and the whole mesh shares one position on the wetness ramp. Measured with a saturating band: two separate Meshes at y -1.2 and y +1.2 separate by 0.02393 in mean luminance (the high quad moving by precisely 0.00000, i.e. fully dry, as it must); two INSTANCES at the same two heights separate by 0.00150 — 6% of the control. Reproduced identically on SwiftShader (0.023926 / 0.001497) and on an RTX A4500 (0.023896 / 0.001511). The same line also omits `batchingMatrix` and is taken before `skinning_vertex`.",
+      "why_it_matters": "The shipped world's live census counts 377 InstancedMeshes carrying 31143 instances, drawn from the families bark, leaf, reed and stone — the trunks, canopies, reeds and rocks that fill a Black Marsh frame. setWorldWetness() is published as W1-30B's rain consumer and is the mechanism by which 'B's rain lands on materials rather than on fog'. It currently lands on everything except the marsh. No arm of the builder's own proof could see it: tools/assets/rig/family-closeup.html wetnessProof() renders one non-instanced plane at the origin, where modelMatrix * transformed IS the world position, so all five families and both the wet and dry arms fabricated the same untested input.",
+      "remedy": {
+        "action": "One narrow commit in game/src/render/visual-foundation.js plus the matching two rows of game/src/render/MATERIAL_API.md. PRESERVE: the whole authored library, the 20-family registry, FAMILY_SET, the detail-normal blend, the wear mask and its wearFrom axis, the magenta fallback, the palette swatches, and every existing option key and its meaning — the freeze is additive-only and nothing here removes or repurposes an option. (1) PRIMARY, the gap above: in installSurfaceShader's vertex injection, replace `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;` with three.js's own worldpos_vertex form — build a `vec4 esWorldPos = vec4(transformed,1.0);` then `#ifdef USE_BATCHING esWorldPos = batchingMatrix * esWorldPos; #endif` `#ifdef USE_INSTANCING esWorldPos = instanceMatrix * esWorldPos; #endif` `esWorldPos = modelMatrix * esWorldPos; vEsSurfaceWorldY = esWorldPos.y;` — and move the injection point from `#include <begin_vertex>` to after `#include <skinning_vertex>` so a skinned character's wetness rides its posed height rather than its bind pose. Bump the customProgramCacheKey version string. (2) COMPANION, same file, three lines: bind the trim atlas when `variant.trim` is set (trimAtlasTextures() already returns the maps and trimSlot() already returns the band) or, if binding it needs geometry decisions that belong to W1-30E, change MATERIAL_API.md section 3 to say `recorded` for `trim` exactly as it already does for `lod` and delete 'and it is live now' from reports/w1-30/C-DELIVERY.md — either is acceptable, silently declaring it live is not; pass `uDetailTiling: DETAIL_NORMAL_TILING` rather than `DETAIL_NORMAL_TILING/ts`, since vNormalMapUv already carries the base repeat of 2/ts and the published contract is a fixed 8x; and correct MATERIAL_API.md section 5's adjacency arithmetic to root 0.9 m against mud 3.5 m = 3.89x. (3) Do NOT touch world/province.js's diffuse floor, the styleboard clone route, or the 19 census bypasses in this commit — they are other children's files and other verdicts' business. Do not add a second tool: tools/critic/w1-30c/mech.mjs already exercises all of the above and already goes red on today's tree.",
+        "targets": [
+          "game/src/render/visual-foundation.js",
+          "game/src/render/MATERIAL_API.md",
+          "reports/w1-30/C-DELIVERY.md"
+        ],
+        "acceptance": "Cheapest-first, all offline before any browser: (i) `node tools/boot-check.mjs` PASS and `node tools/render/w1-30-assets.mjs` GREEN — static, seconds. (ii) `node tools/critic/w1-30c/mech.mjs` goes from 4 failures to 0 with `controls ok`, which requires specifically: wetness-instancing separation >= 25% of the non-instanced control (today 6%), wetness-instancing-source finding instanceMatrix on the height line, detail-tiling-scale delivering exactly 8x at tilingScale 1, 2, 4 and 8, and either the trim axis moving pixels or the contract no longer claiming it does. (iii) The positive controls must still be green — the non-instanced arm still separating by ~0.024 with its high quad at precisely 0.00000, the palette axis still moving the frame, and the wear-ceiling control still byte-identical at wear 0; a run where the controls have gone quiet is a failed run, not a passed one. (iv) Delete-the-fix: revert only the vertex-line change on a copy and confirm the instanced separation returns to ~0.0015, so the repair is demonstrated to be what moved the number. (v) One hardware confirmation only if (ii) passes: `node tools/critic/w1-30c/mech.mjs --hardware` inside an existing pod run, since every delta in this round agreed across rasterisers and a second pod for this alone is not warranted. Publish the five figures. STOP AND ESCALATE if binding the trim atlas turns out to need a UV convention that only W1-30E can supply — in that case take the documentation arm of (2), say so, and leave the axis honestly marked `recorded`; do not invent a trim UV convention on E's behalf."
+      },
+      "remedy_action": "One narrow commit in game/src/render/visual-foundation.js plus the matching two rows of game/src/render/MATERIAL_API.md. PRESERVE: the whole authored library, the 20-family registry, FAMILY_SET, the detail-normal blend, the wear mask and its wearFrom axis, the magenta fallback, the palette swatches, and every existing option key and its meaning — the freeze is additive-only and nothing here removes or repurposes an option. (1) PRIMARY, the gap above: in installSurfaceShader's vertex injection, replace `vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;` with three.js's own worldpos_vertex form — build a `vec4 esWorldPos = vec4(transformed,1.0);` then `#ifdef USE_BATCHING esWorldPos = batchingMatrix * esWorldPos; #endif` `#ifdef USE_INSTANCING esWorldPos = instanceMatrix * esWorldPos; #endif` `esWorldPos = modelMatrix * esWorldPos; vEsSurfaceWorldY = esWorldPos.y;` — and move the injection point from `#include <begin_vertex>` to after `#include <skinning_vertex>` so a skinned character's wetness rides its posed height rather than its bind pose. Bump the customProgramCacheKey version string. (2) COMPANION, same file, three lines: bind the trim atlas when `variant.trim` is set (trimAtlasTextures() already returns the maps and trimSlot() already returns the band) or, if binding it needs geometry decisions that belong to W1-30E, change MATERIAL_API.md section 3 to say `recorded` for `trim` exactly as it already does for `lod` and delete 'and it is live now' from reports/w1-30/C-DELIVERY.md — either is acceptable, silently declaring it live is not; pass `uDetailTiling: DETAIL_NORMAL_TILING` rather than `DETAIL_NORMAL_TILING/ts`, since vNormalMapUv already carries the base repeat of 2/ts and the published contract is a fixed 8x; and correct MATERIAL_API.md section 5's adjacency arithmetic to root 0.9 m against mud 3.5 m = 3.89x. (3) Do NOT touch world/province.js's diffuse floor, the styleboard clone route, or the 19 census bypasses in this commit — they are other children's files and other verdicts' business. Do not add a second tool: tools/critic/w1-30c/mech.mjs already exercises all of the above and already goes red on today's tree.",
+      "remedy_acceptance": "Cheapest-first, all offline before any browser: (i) `node tools/boot-check.mjs` PASS and `node tools/render/w1-30-assets.mjs` GREEN — static, seconds. (ii) `node tools/critic/w1-30c/mech.mjs` goes from 4 failures to 0 with `controls ok`, which requires specifically: wetness-instancing separation >= 25% of the non-instanced control (today 6%), wetness-instancing-source finding instanceMatrix on the height line, detail-tiling-scale delivering exactly 8x at tilingScale 1, 2, 4 and 8, and either the trim axis moving pixels or the contract no longer claiming it does. (iii) The positive controls must still be green — the non-instanced arm still separating by ~0.024 with its high quad at precisely 0.00000, the palette axis still moving the frame, and the wear-ceiling control still byte-identical at wear 0; a run where the controls have gone quiet is a failed run, not a passed one. (iv) Delete-the-fix: revert only the vertex-line change on a copy and confirm the instanced separation returns to ~0.0015, so the repair is demonstrated to be what moved the number. (v) One hardware confirmation only if (ii) passes: `node tools/critic/w1-30c/mech.mjs --hardware` inside an existing pod run, since every delta in this round agreed across rasterisers and a second pod for this alone is not warranted. Publish the five figures. STOP AND ESCALATE if binding the trim atlas turns out to need a UV convention that only W1-30E can supply — in that case take the documentation arm of (2), say so, and leave the axis honestly marked `recorded`; do not invent a trim UV convention on E's behalf.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-hardware-rtx-a4500.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/mech-software-swiftshader.json",
+        "corpus/90-verdicts/wave1/artifacts/w1-30c/consumption-live-census.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

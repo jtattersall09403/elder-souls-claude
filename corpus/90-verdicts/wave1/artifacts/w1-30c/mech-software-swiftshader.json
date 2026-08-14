@@ -1,0 +1,541 @@
+{
+  "schema": "elder-souls/w1-30c-mech@1",
+  "hardware": false,
+  "tests": {
+    "bindings": [
+      {
+        "family": "mud",
+        "map": "w1-30-authored:cc0:brown_mud:albedo",
+        "normalMap": "w1-30-authored:cc0:brown_mud:normal",
+        "roughnessMap": "w1-30-authored:cc0:brown_mud:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:brown_mud",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "wet_mud",
+        "map": "w1-30-authored:cc0:mud_forest:albedo",
+        "normalMap": "w1-30-authored:cc0:mud_forest:normal",
+        "roughnessMap": "w1-30-authored:cc0:mud_forest:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:mud_forest",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "bark",
+        "map": "w1-30-authored:cc0:bark_brown_01:albedo",
+        "normalMap": "w1-30-authored:cc0:bark_brown_01:normal",
+        "roughnessMap": "w1-30-authored:cc0:bark_brown_01:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:bark_brown_01",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "leaf",
+        "map": "w1-30-authored:cc0:forest_leaves_02:albedo",
+        "normalMap": "w1-30-authored:cc0:forest_leaves_02:normal",
+        "roughnessMap": "w1-30-authored:cc0:forest_leaves_02:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:forest_leaves_02",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "reed",
+        "map": "w1-30-authored:cc0:reed_roof_04:albedo",
+        "normalMap": "w1-30-authored:cc0:reed_roof_04:normal",
+        "roughnessMap": "w1-30-authored:cc0:reed_roof_04:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:reed_roof_04",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "root",
+        "map": "w1-30-authored:cc0:roots:albedo",
+        "normalMap": "w1-30-authored:cc0:roots:normal",
+        "roughnessMap": "w1-30-authored:cc0:roots:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:roots",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "timber",
+        "map": "w1-30-authored:cc0:dark_wooden_planks:albedo",
+        "normalMap": "w1-30-authored:cc0:dark_wooden_planks:normal",
+        "roughnessMap": "w1-30-authored:cc0:dark_wooden_planks:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:dark_wooden_planks",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "clay",
+        "map": "w1-30-authored:cc0:clay_plaster:albedo",
+        "normalMap": "w1-30-authored:cc0:clay_plaster:normal",
+        "roughnessMap": "w1-30-authored:cc0:clay_plaster:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:clay_plaster",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "stone",
+        "map": "w1-30-authored:cc0:coral_stone_wall:albedo",
+        "normalMap": "w1-30-authored:cc0:coral_stone_wall:normal",
+        "roughnessMap": "w1-30-authored:cc0:coral_stone_wall:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:coral_stone_wall",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "salt",
+        "map": "w1-30-authored:cc0:marble_cliff_02:albedo",
+        "normalMap": "w1-30-authored:cc0:marble_cliff_02:normal",
+        "roughnessMap": "w1-30-authored:cc0:marble_cliff_02:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:marble_cliff_02",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "bone",
+        "map": "w1-30-authored:cc0:marble_01:albedo",
+        "normalMap": "w1-30-authored:cc0:marble_01:normal",
+        "roughnessMap": "w1-30-authored:cc0:marble_01:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:marble_01",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "chitin",
+        "map": "w1-30-authored:synth:chitin_plates:albedo",
+        "normalMap": "w1-30-authored:synth:chitin_plates:normal",
+        "roughnessMap": "w1-30-authored:synth:chitin_plates:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "synth:chitin_plates",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "resin",
+        "map": "w1-30-authored:synth:resin_flow:albedo",
+        "normalMap": "w1-30-authored:synth:resin_flow:normal",
+        "roughnessMap": "w1-30-authored:synth:resin_flow:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "synth:resin_flow",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "cloth",
+        "map": "w1-30-authored:cc0:rough_linen:albedo",
+        "normalMap": "w1-30-authored:cc0:rough_linen:normal",
+        "roughnessMap": "w1-30-authored:cc0:rough_linen:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:rough_linen",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "skin",
+        "map": "w1-30-authored:cc0:brown_leather:albedo",
+        "normalMap": "w1-30-authored:cc0:brown_leather:normal",
+        "roughnessMap": "w1-30-authored:cc0:brown_leather:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:brown_leather",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "metal",
+        "map": "w1-30-authored:cc0:rusty_metal_04:albedo",
+        "normalMap": "w1-30-authored:cc0:rusty_metal_04:normal",
+        "roughnessMap": "w1-30-authored:cc0:rusty_metal_04:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:rusty_metal_04",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "water",
+        "map": "w1-30-authored:synth:water_ripple:albedo",
+        "normalMap": "w1-30-authored:synth:water_ripple:normal",
+        "roughnessMap": "w1-30-authored:synth:water_ripple:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "synth:water_ripple",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "shell",
+        "map": "w1-30-authored:cc0:shell_floor_01:albedo",
+        "normalMap": "w1-30-authored:cc0:shell_floor_01:normal",
+        "roughnessMap": "w1-30-authored:cc0:shell_floor_01:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:shell_floor_01",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "thorn",
+        "map": "w1-30-authored:cc0:bark_willow:albedo",
+        "normalMap": "w1-30-authored:cc0:bark_willow:normal",
+        "roughnessMap": "w1-30-authored:cc0:bark_willow:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "cc0:bark_willow",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      },
+      {
+        "family": "wet_chitin",
+        "map": "w1-30-authored:synth:chitin_plates:albedo",
+        "normalMap": "w1-30-authored:synth:chitin_plates:normal",
+        "roughnessMap": "w1-30-authored:synth:chitin_plates:rough",
+        "bumpMap": null,
+        "aoMap": null,
+        "detail": "synth:chitin_plates",
+        "hasSurfaceShader": true,
+        "detailTilingUniform": 8,
+        "normalRepeat": [
+          2,
+          2
+        ]
+      }
+    ],
+    "noise_bound_families": [],
+    "families_without_surface_shader": [],
+    "authored_false": {
+      "family": "stone",
+      "map": "w1-30-albedo:stone:96px-multiscale",
+      "normalMap": null,
+      "roughnessMap": "w1-30-roughness:stone:96px-multiscale",
+      "bumpMap": "w1-30-height:stone:96px-multiscale",
+      "aoMap": "w1-30-height:stone:96px-multiscale",
+      "detail": "96px-albedo-height-roughness",
+      "hasSurfaceShader": false,
+      "detailTilingUniform": null,
+      "normalRepeat": null
+    },
+    "variant_axes": {
+      "base": {
+        "hash": "709da03f",
+        "luma": 0.075757
+      },
+      "axes": {
+        "palette": {
+          "hash": "ab15f042",
+          "luma": 0.057915,
+          "identical_to_base": false,
+          "dLuma": -0.017842
+        },
+        "wear": {
+          "hash": "29b84422",
+          "luma": 0.074405,
+          "identical_to_base": false,
+          "dLuma": -0.001352
+        },
+        "wetness": {
+          "hash": "77a4ce3e",
+          "luma": 0.033199,
+          "identical_to_base": false,
+          "dLuma": -0.042558
+        },
+        "tilingScale": {
+          "hash": "44c52446",
+          "luma": 0.083303,
+          "identical_to_base": false,
+          "dLuma": 0.007546
+        },
+        "trim": {
+          "hash": "709da03f",
+          "luma": 0.075757,
+          "identical_to_base": true,
+          "dLuma": 0
+        },
+        "lod": {
+          "hash": "709da03f",
+          "luma": 0.075757,
+          "identical_to_base": true,
+          "dLuma": 0
+        }
+      }
+    },
+    "inert_axes": [
+      "trim"
+    ],
+    "wetness_instancing": {
+      "mesh": {
+        "0": {
+          "low": 0.067593,
+          "high": 0.071189,
+          "split": -0.003596,
+          "hash": "fdf8c9",
+          "boxes": {
+            "lb": [
+              92,
+              48,
+              72,
+              26
+            ],
+            "hb": [
+              92,
+              182,
+              72,
+              26
+            ]
+          }
+        },
+        "1": {
+          "low": 0.043667,
+          "high": 0.071189,
+          "split": -0.027522,
+          "hash": "c6df3579",
+          "boxes": {
+            "lb": [
+              92,
+              48,
+              72,
+              26
+            ],
+            "hb": [
+              92,
+              182,
+              72,
+              26
+            ]
+          }
+        }
+      },
+      "instanced": {
+        "0": {
+          "low": 0.067593,
+          "high": 0.071189,
+          "split": -0.003596,
+          "hash": "fdf8c9",
+          "boxes": {
+            "lb": [
+              92,
+              48,
+              72,
+              26
+            ],
+            "hb": [
+              92,
+              182,
+              72,
+              26
+            ]
+          }
+        },
+        "1": {
+          "low": 0.054932,
+          "high": 0.057031,
+          "split": -0.0021,
+          "hash": "704bb55d",
+          "boxes": {
+            "lb": [
+              92,
+              48,
+              72,
+              26
+            ],
+            "hb": [
+              92,
+              182,
+              72,
+              26
+            ]
+          }
+        }
+      },
+      "mesh_effect": {
+        "low": -0.023926,
+        "high": 0
+      },
+      "instanced_effect": {
+        "low": -0.012661,
+        "high": -0.014158
+      },
+      "mesh_separation": 0.023926,
+      "instanced_separation": 0.001497
+    },
+    "shader_worldY": {
+      "line": "vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;",
+      "mentions_instanceMatrix": false,
+      "mentions_modelMatrix": true
+    },
+    "wear": {
+      "texture_columnSd_delta": 0.001659,
+      "geometry_columnSd_delta": 0.007973,
+      "geometry_changed_frame": true,
+      "texture_mean_shift": 0.00323,
+      "geometry_mean_shift": 0.011566,
+      "arms": {
+        "tex0": {
+          "mean": 0.026367,
+          "columnSd": 0.01367,
+          "hash": "c0e6e4de"
+        },
+        "tex9": {
+          "mean": 0.029597,
+          "columnSd": 0.015329,
+          "hash": "fbbd1078"
+        },
+        "geo0": {
+          "mean": 0.026367,
+          "columnSd": 0.01367,
+          "hash": "c0e6e4de"
+        },
+        "geo9": {
+          "mean": 0.037933,
+          "columnSd": 0.021643,
+          "hash": "2b1b155"
+        }
+      }
+    },
+    "wear_geometry_ceiling": {
+      "0": {
+        "face": 0.05956,
+        "arris": 0.05956,
+        "identical": true,
+        "pct": 0
+      },
+      "1": {
+        "face": 0.064894,
+        "arris": 0.097585,
+        "identical": false,
+        "pct": 50.38
+      },
+      "0.6": {
+        "face": 0.063619,
+        "arris": 0.087519,
+        "identical": false,
+        "pct": 37.57
+      },
+      "0.9": {
+        "face": 0.064894,
+        "arris": 0.094889,
+        "identical": false,
+        "pct": 46.22
+      }
+    },
+    "wear_geometry_best_pct": 50.38,
+    "page_errors": []
+  },
+  "failures": [
+    "noise-reinstatable: worldMaterial('stone',{authored:false}) rebinds 4 noise maps and does NOT go magenta (detail=\"96px-albedo-height-roughness\")",
+    "axes-live: declared variant axes that change NOTHING in the frame: trim",
+    "wetness-instancing: two INSTANCES at the same two heights separate by only 0.001497 against 0.023926 for two separate meshes — the world-height wetness mask does not see instanceMatrix, so every instanced surface in the world shares one height",
+    "wetness-instancing-source: the vertex line computing the height mask is \"vEsSurfaceWorldY=(modelMatrix*vec4(transformed,1.0)).y;\" — it applies modelMatrix and never instanceMatrix, which three.js's own worldpos_vertex chunk does apply"
+  ],
+  "controls_ok": true,
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "software": true,
+  "memory": {
+    "geometries": 23,
+    "textures": 9,
+    "programs": 5
+  }
+}
