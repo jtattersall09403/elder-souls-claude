@@ -107,13 +107,18 @@ await g.page.evaluate(async ({ rough }) => {
     if (envOverride !== undefined) R.scene.environment = envOverride;
     R.three.setRenderTarget(null);
     R.three.render(R.scene, cam);
+    // Read the canvas HERE, in the same tick. `__HARNESS.screenshot()` calls
+    // `engine.loop.renderNow()` first — the whole pipeline, starting with `sky.apply()` — so
+    // asking the harness for the picture draws the shipping frame over this one and hands that
+    // back. That is what the first two runs of this rig actually measured, and it is why they
+    // reported the real probe and the shipped 16x8 one agreeing to within 1%.
+    return document.getElementById('view').toDataURL('image/png');
   };
 }, { rough: ROUGH });
 
 async function shootAndMeasure(file, useNull = false) {
   await g.h('stepFrames', 2);
-  await g.page.evaluate((n) => window.__W1B.shoot(n ? window.__W1B.nullTex : undefined), useNull);
-  const d = await g.h('screenshot');
+  const d = await g.page.evaluate((n) => window.__W1B.shoot(n ? window.__W1B.nullTex : undefined), useNull);
   const buf = Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64');
   fs.writeFileSync(path.join(OUT, file), buf);
   const img = PNG.sync.read(buf);

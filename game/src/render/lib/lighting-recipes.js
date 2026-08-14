@@ -165,7 +165,17 @@ registerLightingRecipe('night-moon', variantOf('exterior', {
   // back at a mean luminance of 3.8/255, which is `RI-WLD04` M17 step 6's failure exactly: a frame
   // a judge cannot classify is not a dark frame, it is a missing frame.
   key: 0.30, keyWarmth: -0.80, sky: 1.05, fill: 1.00, env: 0.75, envGroundBounce: 0.18,
-  shadow: 0.85, fog: { extinction: 1.10, height: 1.15, inscatter: 0.0 }, exposure: 1.22,
+  // AND WHY `exposure` IS THE BIG NUMBER HERE RATHER THAN `sky`/`fill`. Measured on an L4 at
+  // 19:30, a Gideon street frame comes back at a mean luminance of about 6/255 and a Blackwood
+  // vista at about 3/255 — `RI-WLD04` M17 step 6's "a frame a judge cannot classify is not a dark
+  // frame, it is a missing frame". The tempting fix is more ambient, and it is the wrong one:
+  // ambient raises the floor and destroys the contrast that makes a night READABLE, and getting a
+  // 6/255 frame to 30/255 that way needs roughly five times the hemisphere, which is a milky night
+  // with no moon in it. Exposure raises the whole frame and keeps the ratios. `exposureTarget` is
+  // published on the lighting frame for exactly this; `toneMappingExposure` lives in renderer.js,
+  // which is W1-30A's file, and nothing consumes the field yet. So the night-readability row is
+  // NOT met, the cause is named, and this number is the ask.
+  shadow: 0.85, fog: { extinction: 1.10, height: 1.15, inscatter: 0.0 }, exposure: 2.60,
 }));
 
 // A room with a fire in it. One warm flickering key low to the floor, a cold bounce for whatever
