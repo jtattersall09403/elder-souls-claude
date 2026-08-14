@@ -42,20 +42,35 @@ const RENDER_DIR = path.join(REPO, 'game/src/render');
  * Fields whose declared job is to change what the player SEES. Everything not named here is
  * treated as INTERNAL, which is the conservative direction: it can only make this tool report
  * FEWER defects than exist, never more. Each entry says what the picture should do.
+ *
+ * `indirect` names a field that reaches the frame through ANOTHER field rather than by being
+ * read in `game/src/render/` under its own name. A plain name-grep calls those red, and that
+ * would be a false accusation — the whole point of this tool is to be trusted, so the ones that
+ * were checked by hand are recorded here with the route they take.
  */
 const VISUAL = {
-  charOpacity: 'dissolve the character when the camera arm is compressed into them (RI-CAM01 §C)',
-  fov: 'the projection the frame is drawn with',
-  pos: 'where the camera stands',
-  pivot: 'what the camera looks at',
-  mode: 'which camera state is being drawn',
-  clipThrough: 'the near plane is inside geometry — the frame is compromised',
-  shakeYaw: 'rotational shake, applied after the rig (RI-CAM06 §G)',
-  shakePitch: 'rotational shake, applied after the rig (RI-CAM06 §G)',
-  timeOfDay: 'the sun, the sky and the shadows',
-  weather: 'the sky, the fog and the precipitation',
-  region: 'the region fog colour and the signature flora',
-  interior: 'which cell is drawn',
+  charOpacity: { why: 'dissolve the character when the camera arm is compressed into them (RI-CAM01 §C)' },
+  fov: { why: 'the projection the frame is drawn with' },
+  pos: { why: 'where the camera stands' },
+  pivot: { why: 'what the camera looks at' },
+  mode: { why: 'which camera state is being drawn' },
+  timeOfDay: { why: 'the sun, the sky and the shadows' },
+  weather: { why: 'the sky, the fog and the precipitation' },
+  region: { why: 'the region fog colour and the signature flora' },
+  interior: { why: 'which cell is drawn' },
+  // Checked by hand, 2026-08-14. `sim/camera.js:1039 viewBasis()` adds the shake to yaw/pitch,
+  // and `writePose()` builds `c.pos` through it — so the shake reaches the frame as a small
+  // POSITIONAL wobble. What does NOT reach the frame is the rotation, which RI-CAM06 §G says is
+  // the entire intent ("rotational only"): `render/renderer.js` builds the view with
+  // `camera.lookAt(pivot)` and `camera.up.set(0,1,0)`, which discards camera roll and yaw/pitch
+  // shake outright. Amber, not red, and it belongs to whoever owns the camera and the renderer.
+  shakeYaw: { why: 'rotational shake, applied after the rig (RI-CAM06 §G)', indirect: 'sim/camera.js viewBasis() -> writePose() -> camera.pos; the ROTATION is discarded by renderer.js camera.lookAt()' },
+  shakePitch: { why: 'rotational shake, applied after the rig (RI-CAM06 §G)', indirect: 'as shakeYaw' },
+  // Checked by hand: this is a DIAGNOSTIC, not a drawing instruction. `evaluateClip()` computes
+  // it so a probe can say the frame was compromised; nothing is supposed to be drawn from it.
+  // Left in the VISUAL list because the audit lists it among the camera instrumentation, and
+  // marked indirect so it does not inflate the defect count it has no business being in.
+  clipThrough: { why: 'the near plane is inside geometry — the frame is compromised', indirect: 'diagnostic only: read by probes and the trace, never intended as a drawing input' },
 };
 
 const src = fs.readFileSync(STATE, 'utf8');
