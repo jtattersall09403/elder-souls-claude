@@ -128,6 +128,28 @@ const report = {
 const h = await launchGame({ width: 1920, height: 1080, timeout: 300000 });
 const shots = [];
 
+/**
+ * Resize, and DO NOT ASSUME THE DRAWING BUFFER FOLLOWED.
+ *
+ * `page.setViewportSize()` moves the CSS viewport; the canvas follows only when the page's own
+ * resize path runs. A recent agent's "phone" pass was byte-for-byte its desktop canvas for
+ * exactly this reason and it was caught by looking at the artefact rather than by a check going
+ * red. This waits for the buffer to actually change and returns what it became, so a caller can
+ * assert on it instead of hoping.
+ */
+async function setViewport(w, hh, dpr) {
+  await h.page.setViewportSize({ width: w, height: hh });
+  await h.h('setDevicePixelRatio', dpr || 1);
+  await h.page.evaluate(() => window.dispatchEvent(new Event('resize')));
+  await h.page.waitForTimeout(120);
+  await h.h('stepFrames', 3);
+  await h.page.evaluate(() => { if (window.__ENGINE.renderer.uiBuild) window.__ENGINE.renderer.uiBuild(true); });
+  return h.page.evaluate(() => {
+    const c = window.__ENGINE.renderer.menus;
+    return [c.canvas.width, c.canvas.height];
+  });
+}
+
 /** Read the window's own published layout plus the declared element list. */
 async function readWindow() {
   return h.page.evaluate(() => {
@@ -248,11 +270,13 @@ try {
   // number rather than on an assertion about the source.
   const anchor = [];
   for (const w of [1920, 2560]) {
-    await h.page.setViewportSize({ width: w, height: 1080 });
-    await h.h('stepFrames', 3);
+    const canvas = await setViewport(w, 1080, 1);
     const r = await readWindow();
-    anchor.push({ viewport: [w, 1080], column_px: r.window.column_px, prose_px: r.window.prose_px, panel_px: r.window.panel_px[0], column_frac: r.window.column_frac_of_panel });
+    anchor.push({ viewport: [w, 1080], canvas, column_px: r.window.column_px, prose_px: r.window.prose_px, panel_px: r.window.panel_px[0], column_frac: r.window.column_frac_of_panel });
   }
+  push('B0 the drawing buffer followed the viewport',
+    anchor[0].canvas[0] !== anchor[1].canvas[0],
+    `canvas ${anchor[0].canvas.join('x')} -> ${anchor[1].canvas.join('x')}`);
   const dPanel = anchor[1].panel_px - anchor[0].panel_px;
   const dProse = anchor[1].prose_px - anchor[0].prose_px;
   const dCol = Math.abs(anchor[1].column_px - anchor[0].column_px);
@@ -267,10 +291,30 @@ try {
   const pctArm = 1 - anchor[0].column_frac;
   push('B3 the check separates fixed from percentage', pctArm < 0.90,
     `a percentage column of the same nominal width would absorb only ${(pctArm * 100).toFixed(1)}%`);
-  await h.page.setViewportSize({ width: 1920, height: 1080 });
-  await h.h('stepFrames', 3);
+  await setViewport(1920, 1080, 1);
 
   // ---- D. §D1 THE MECHANISM, IN THE RUNNING WORLD --------------------------------------------
+  //
+  // A GREETING IS NOT A PAGE OF PROSE. The first run of this probe reported "0 links drawn in 1
+  // line" and was right: the transcript at that moment held one short greeting, and a matcher
+  // cannot light a word that nobody has said yet. So ask something first — through the COLUMN,
+  // which is the route a player has before any word is lit — and then look for links in what
+  // comes back. Asking through the column is also the honest order: the column is how a
+  // conversation starts, and the inline links are how it continues.
+  await h.page.evaluate(() => {
+    const A = window.__HARNESS, eng = window.__ENGINE;
+    const m = A.getUIState().dialogue_window;
+    if (!m) return null;
+    // Ask up to six column topics, stopping as soon as an answer lights a link.
+    for (const t of m.topics.slice(0, 6)) {
+      eng._convPending = t;
+      A.stepFrames(2);
+      const now = A.getUIState().dialogue_window;
+      if (now && now.links_drawn > 0) break;
+    }
+    return null;
+  });
+  await h.h('stepFrames', 2);
   //
   // Follow an inline link and require three things at once: the answer is APPENDED (the pane is
   // not cleared), the word is IN THE COLUMN afterwards, and the simulation actually learned the
@@ -343,10 +387,13 @@ try {
   // by exactly the panel colour everywhere inside it and the region's variance collapses to zero;
   // if it is a blend, the world's own structure survives through it and the two frames CORRELATE
   // inside the panel. Correlation is the discriminating statistic and a mean is not.
-  const shotOpen = await h.page.screenshot();
+  // `__HARNESS.screenshot()` is `canvas.toDataURL()` — the composited frame, world and interface
+  // in one image, and the SAME instrument every visual verdict in this project uses.
+  // `page.screenshot()` waits on font loading and times out against this page.
+  const shotOpen = Buffer.from(String(await h.h('screenshot')).split(',')[1], 'base64');
   await h.page.evaluate(() => window.__HARNESS.conversationClose());
   await h.h('stepFrames', 3);
-  const shotShut = await h.page.screenshot();
+  const shotShut = Buffer.from(String(await h.h('screenshot')).split(',')[1], 'base64');
   await h.page.evaluate((eid) => window.__HARNESS.talkTo(eid), who.eid);
   await h.h('stepFrames', 3);
   {
@@ -426,9 +473,7 @@ try {
     const seen = new Map();
     const geo = [];
     for (const v of VIEWPORTS) {
-      await h.page.setViewportSize({ width: v.w, height: v.h });
-      await h.h('setDevicePixelRatio', v.dpr);
-      await h.h('stepFrames', 4);
+      await setViewport(v.w, v.h, v.dpr);
       for (const arm of ['links', 'plain']) {
         await h.page.evaluate((on) => { window.__ENGINE.ui.dialogueArm.links = on; window.__ENGINE.ui.builtFrame = -1; }, arm === 'links');
         await h.h('stepFrames', 2);

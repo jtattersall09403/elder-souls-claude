@@ -190,6 +190,73 @@ function checkA(root, files) {
   return { findings, graph };
 }
 
+// ---------------------------------------------------------------------------------------------
+// A4 — an amendment that the item it amends does not point at.
+//
+// This is the S-ruling problem one level down, and it is where the volume is. `ARBITRATION.md` §2
+// is scrupulous about strikethrough; the reference items are not. `AM-W1-13-01` is titled
+// "prg04 spacing table SUPERSEDED" and `RI-PRG04` has never mentioned it, so a builder who opens
+// the item — the correct thing to do — reads the superseded table and nothing tells them.
+//
+// One backward pointer in the item fixes it for every future reader at once, which is why this
+// check demands the pointer in the ITEM rather than demanding that thirty plans each find the
+// amendment. That is the difference between one edit and twenty-nine.
+//
+// PRIMARY TARGET, precisely. An amendment mentions several items; it amends one or two. The
+// filename is the reliable signal — `AM-W1-13-01-prg04-…` amends PRG04 — and where the filename
+// carries no item code we fall back to the item id that the amendment's own title line names.
+// Ids merely mentioned in passing are reported as `also_mentions` and never demanded.
+export function amendmentTargets(root = ROOT, files = null) {
+  const all = files || (() => { try { return tracked(); } catch { return []; } })();
+  const items = new Map();                                   // RI-XXXnn -> path
+  for (const f of all) {
+    const m = f.match(/\/(RI-[A-Z]+\d+)[^/]*\.md$/);
+    if (m && f.startsWith('corpus/')) items.set(m[1], f);
+  }
+  const amendments = all.filter((f) =>
+    f.endsWith('.md') && /(^|\/)(AMENDMENT-|AM-W\d)/.test(basename(f)) &&
+    !HISTORY.some((r) => r.test(f)) && !f.startsWith('docs/'));
+
+  const out = [];
+  for (const f of amendments) {
+    const text = readFileSync(join(ROOT === root ? ROOT : root, f), 'utf8');
+    const title = text.split('\n').find((l) => l.startsWith('#')) || '';
+    const mentioned = [...new Set([...text.slice(0, 4000).matchAll(/\bRI-[A-Z]+\d+\b/g)].map((m) => m[0]))]
+      .filter((id) => items.has(id));
+    // filename code, e.g. "prg04" / "mth02" / "wld04"
+    const codes = [...basename(f).toLowerCase().matchAll(/\b([a-z]{3})(\d{2})\b/g)]
+      .map((m) => 'RI-' + m[1].toUpperCase() + m[2]).filter((id) => items.has(id));
+    const titled = [...new Set([...title.matchAll(/\bRI-[A-Z]+\d+\b/g)].map((m) => m[0]))]
+      .filter((id) => items.has(id));
+    const primary = codes.length ? codes : (titled.length ? titled : []);
+    out.push({ amendment: f, primary, alsoMentions: mentioned.filter((i) => !primary.includes(i)), items });
+  }
+  return { amendments: out, items };
+}
+
+function checkA4(root, files) {
+  const findings = [];
+  const { amendments } = amendmentTargets(root, files);
+  for (const a of amendments) {
+    const key = basename(a.amendment).replace(/\.md$/, '');
+    for (const id of a.primary) {
+      const ip = a.items.get(id);
+      let body; try { body = readFileSync(join(root, ip), 'utf8'); } catch { continue; }
+      if (body.includes(key)) continue;                      // the pointer exists — nothing to do
+      findings.push({ check: 'A4', severity: 'error', file: ip, amendment: a.amendment, item: id,
+        message: `${id} is amended by \`${key}\` and never names it — a builder who opens the item ` +
+                 'reads the superseded text with nothing to warn them' });
+    }
+    if (!a.primary.length) {
+      findings.push({ check: 'A5', severity: 'warn', file: a.amendment,
+        message: 'no primary target could be determined from the filename or title line; ' +
+                 'the amendment cannot be routed back to the item it amends',
+        alsoMentions: a.alsoMentions });
+    }
+  }
+  return { findings };
+}
+
 // =============================================================================================
 // CHECK B — an asset directory on disk that no work-directing document cites
 // =============================================================================================
@@ -538,7 +605,7 @@ function main() {
 
   const findings = [];
   let a = { findings: [], graph: [] }, b = { findings: [], dirCount: 0 }, c = { findings: [], scanned: 0, absenceLines: 0 };
-  if (only.includes('A')) { a = checkA(ROOT, files); findings.push(...a.findings); }
+  if (only.includes('A')) { a = checkA(ROOT, files); findings.push(...a.findings, ...checkA4(ROOT, files).findings); }
   if (only.includes('B')) { b = checkB(ROOT, files); findings.push(...b.findings); }
   if (only.includes('C')) { c = checkC(ROOT, files); findings.push(...c.findings); }
 
@@ -556,8 +623,9 @@ function main() {
   }
 
   const label = { A0: 'tool blind', A1: 'superseded ruling not propagated', A2: 'append-only rule broken', A3: 'in-place amendment not reachable from here',
+    A4: 'amended item does not point at its amendment', A5: 'amendment cannot be routed to an item',
     B1: 'asset nobody names', B2: 'asset only the inventory names', C1: 'FALSE ASSERTION OF ABSENCE' };
-  for (const grp of ['C1', 'A1', 'A2', 'A0', 'B1', 'B2', 'A3']) {
+  for (const grp of ['C1', 'A1', 'A4', 'A2', 'A0', 'B1', 'B2', 'A3', 'A5']) {
     const g = findings.filter((f) => f.check === grp);
     if (!g.length) continue;
     console.log(`\n== ${grp} — ${label[grp]} — ${g.length}`);
