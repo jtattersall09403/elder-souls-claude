@@ -1,0 +1,33 @@
+{
+  "task_id": "plan-audit-w1-verdict-shape",
+  "title": "Audit every Wave-1 plan for the W1-30 defect shape: verdicts resting on instrument-validity checks with no human-experience gate",
+  "state": "complete",
+  "started": "2026-08-14",
+  "completed": "2026-08-14",
+  "plan_state": "n/a (audit, not a plan)",
+  "deliverable": "orchestration/audits/PLAN-AUDIT-2026-08-14.md",
+  "population_searched": "all 46 files in orchestration/plans/: 30 piece plans audited in detail (W1-00..W1-29 + W1-HUD-TOAST), 13 W1-30-tree files excluded by the brief, 2 COST plans classified out of scope, 1 BUILDER-EXECUTION-CONTRACT read as governing text",
+  "headline": "No plan outside the W1-30 tree cites OWNER-DIRECTIVES-2026-08-14 or Ruling W1. 29 of 30 are Plan-State: satisfied against a bar that moved after they were approved. This is one unpropagated directive, not thirty separate problems.",
+  "verdicts": {
+    "needs_a_round": ["W1-15", "W1-12", "W1-09", "W1-01", "W1-27", "W1-16", "W1-22", "W1-08", "W1-10"],
+    "sound_with_named_caveat": ["W1-00", "W1-02", "W1-04", "W1-06", "W1-07", "W1-20", "W1-24"],
+    "clear": ["W1-03", "W1-05", "W1-11", "W1-13", "W1-14", "W1-17", "W1-18", "W1-19", "W1-21", "W1-23", "W1-25", "W1-26", "W1-28", "W1-29", "W1-HUD-TOAST"]
+  },
+  "verified_facts": [
+    "corpus/70-visual/refs/modern/ holds exactly 131 files across 7 folders (43/24/22/13/12/9/8) - W1-30 R1's count is correct, and W1-24:124, W1-06:71 and W1-03 W9 still carry the pre-2026-08-06 premise",
+    "W1-08 weights 28+26+10+12+14+10=100 against a >=90 bar, so the 10-point naive row can score zero and the plan still passes; W1-29 has the same arithmetic but is protected by an explicit 'independent naive pass ... is not closure' clause"
+  ],
+  "no_plan_was_edited": true,
+  "browser_used": false,
+  "gpu_used": false,
+  "files_touched": [
+    "orchestration/status/plan-audit-w1-verdict-shape.json",
+    "orchestration/audits/PLAN-AUDIT-2026-08-14.md"
+  ],
+  "files_claimed": [],
+  "could_not_do": [
+    "Did not read the reference items; every claim is checked against what the plans themselves say. Defects that may live in the corpus rather than the plan (W1-02 M68 one-still-per-border, W1-09's 55-weight denominator, W1-27's 5/60 tolerance) are flagged as corpus-level and are the natural successor piece.",
+    "Instrument-gate counts in the ratio column are approximate (counted as lettered/numbered acceptance rows); human-gate counts are exact.",
+    "Did not audit the W1-30 children individually - excluded by the brief and live with builders in flight."
+  ]
+}
