@@ -106,7 +106,7 @@ export function buildCompositor(w, h, opts = {}) {
       // human-scale contact gap (a boot sole, a step riser); `w1-v2-contact-ao.mjs` is the
       // instrument that proves the acceptance bar (RI-VIS04 §4 / RI-VIS03 M6b: contact junction
       // >=25% darker than open ground) rather than this comment.
-      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.4 }, uAOBias: { value: 0.018 },
+      uAORadius: { value: 0.42 }, uAOStrength: { value: 1.9 }, uAOBias: { value: 0.018 },
       uBloom: { value: 0.16 }, uBloomThreshold: { value: 0.9 }, uBloomKnee: { value: 0.45 },
       // The grade block. Pushed every frame by `renderer.js` from `post/grade.js`; the identity
       // values here mean a compositor built and never fed is a no-op rather than a colour cast.
@@ -235,7 +235,11 @@ export function buildCompositor(w, h, opts = {}) {
       vec3 P = viewPosFromDepth(uv, depth);
       vec3 dx = dFdx(P), dy = dFdy(P);
       vec3 N = normalize(cross(dx, dy));
-      if (N.z > 0.0) N = -N;                    // view-space normals face the camera (-Z)
+      // View space looks down -Z, so a surface facing the camera has a normal pointing back
+      // toward the eye, i.e. +Z. Getting this sign wrong points every kernel sample INTO the
+      // surface instead of out over it, so nearly every sample reads as occluded — measured,
+      // full-frame black, before this line was flipped from testing N.z > 0.0.
+      if (N.z < 0.0) N = -N;
       vec3 up = (abs(N.z) < 0.98) ? vec3(0., 0., 1.) : vec3(1., 0., 0.);
       vec3 T = normalize(cross(up, N));
       vec3 B = cross(N, T);

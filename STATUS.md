@@ -1,6 +1,6 @@
 # Where we are right now
 
-**Last updated: 2026-08-14, evening.** One screen. If this is more than a day old, distrust it and say so.
+**Last updated: 2026-08-14, late evening.** One screen. If this is more than a day old, distrust it and say so.
 
 ---
 
@@ -36,9 +36,14 @@ When a step here says *done*, it means done to the bar and independently checked
 
 ## Roadmap
 
-**Being rebuilt.** The previous one was written from an orchestrator's memory rather than from the repo and missed most of the game — it is condemned in place and a coverage audit is enumerating the real body of work (49 plans, 211 reference items, 78 open gaps) so the replacement is derived rather than remembered.
+**Rebuilt 2026-08-14 from the repo** — `orchestration/ROADMAP.md`. 8 rings, 69 items, covering all
+**149 reference items, 49 plans and 79 open gaps**, with the coverage proven by a generator that exits
+non-zero if anything has no home. The previous one was written from memory and left the camera, the
+main quest, travel, inventory and endings out entirely.
 
-Until it lands, this file is the honest summary and the roadmap file is not.
+**We are in ring 1 — the frame.** Materials landed today; shadows and ambient occlusion are being
+built now. Rings 2–7 (the fight, the world, the character, quests, platform, the whole thing) are
+enumerated and not started.
 
 ## Cost
 
