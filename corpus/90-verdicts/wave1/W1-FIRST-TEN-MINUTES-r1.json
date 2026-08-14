@@ -128,6 +128,7 @@
         "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/clean-walk-talk-interior-manifest.json"
       ],
       "hard_fails": [
+        "M2b",
         "section-C.1-player-occluded-run-over-6-frames"
       ],
       "why_not_ten": "The item carries a triggered automatic fail in the shipped build: the player is occluded for a run of between 60 and 120 frames on the first walk out of the spawn point, against a ceiling of 6. The piece did not claim to close it and filed it as open, and this critic agrees it is open — the cap records the state of the world, not a broken promise. The piece's positive contribution to this item is real and is recorded as the passing section-C-fade-consumer check: the Section C character fade has a renderer-side consumer for the first time."
@@ -405,7 +406,16 @@
       "acceptance": "Re-run the three delete-the-fix arms in corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log on a sparse copy. Required: arm A exit 1, arm B exit 1, arm C exit 1, and the unmodified shipped tree exit 0. Three red arms and one green; today it is one red and three green. Publish the four exit codes."
     }
   },
-  "corpus_extended": [],
+  "corpus_extended": [
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md#appendix-a-measuring-one-actors-pixels-hide-the-root-never-the-materials",
+      "area": "80-methods",
+      "reason": "method_gap",
+      "note": "Appendix A, appended. The repository's standard way of counting one actor's on-screen pixels — render twice and swap that actor's materials to colorWrite:false — leaks between actors on this build, because render/actor.js:473 hands the same armour material instances to every actor. It reported 6485 px for a body that is 262 px. The appendix records the failure, the corrected method (toggle root.visible), the two caveats that come with it (it removes the cast shadow, and it is not a substitute for the see-through measurement), and the general rule: a probe that mutates shared state to isolate one object is only valid if the state is private. Nobody live had declared the file (node tools/ownership.mjs --for). No threshold or weight was changed; the addition is purely additive.",
+      "index_regenerated": false
+    }
+  ],
   "self_audit": {
     "judged_output_not_source": true,
     "ran_every_assigned_method": false,
@@ -414,6 +424,6 @@
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "ran_every_assigned_method is false and the shortfalls are named in section 9 of the verdict markdown. Not done: no settlement other than Lilmoth was entered, so the piece's own open question about the door derivation in a town whose buildings ring the centre is still open; the character fade was demonstrated by perturbation but was never photographed in motion against a wall, so the picture the builder said it owed is still owed; and the fight arm was captured but not judged, being outside the piece's claims. Two further honesty notes. My first probe hid actors by setting material colorWrite:false, which render/actor.js:473's shared armour materials made contaminate the player as well; it is filed as negative evidence and the corrected probe toggles root.visible instead, which also removes the cast shadow and makes my percentages body-plus-shadow where the builder's are body only. And I initially reported that D1 did not reproduce on GPU; that was wrong, caused by a look-around phase in my own harness leaving about 24 degrees of residual yaw so the player walked past the occluder, and it is retracted in section 6d. As a critic I read the production sources under judgement and wrote none of them; the only code I authored is tools/harness/critic-first-ten-play.mjs and the delete-the-fix arms, which ran on a sparse copy outside the repository."
+    "self_audit_note": "ran_every_assigned_method is false and the shortfalls are named in section 9 of the verdict markdown. Not done: no settlement other than Lilmoth was entered, so the piece's own open question about the door derivation in a town whose buildings ring the centre is still open; the character fade was demonstrated by perturbation but was never photographed in motion against a wall, so the picture the builder said it owed is still owed; and the fight arm was captured but not judged, being outside the piece's claims. Two further honesty notes. My first probe hid actors by setting material colorWrite:false, which render/actor.js:473's shared armour materials made contaminate the player as well; it is filed as negative evidence and the corrected probe toggles root.visible instead, which also removes the cast shadow and makes my percentages body-plus-shadow where the builder's are body only. And I initially reported that D1 did not reproduce on GPU; that was wrong, caused by a look-around phase in my own harness leaving about 24 degrees of residual yaw so the player walked past the occluder, and it is retracted in section 6d. As a critic I read the production sources under judgement and wrote none of them; the only code I authored is tools/harness/critic-first-ten-play.mjs and the delete-the-fix arms, which ran on a sparse copy outside the repository. Corpus: RI-MTH04 gained Appendix A, because this review hit a real edge of the corpus — the standard actor-pixel method is unsound on this build and nothing written down said so."
   }
 }

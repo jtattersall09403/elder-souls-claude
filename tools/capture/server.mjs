@@ -835,10 +835,79 @@ function readCache(paths, key) {
   return { hit: true, man, bytes: bytes.length, sha256: actual };
 }
 
+// ---- ENOSPC MUST BE LOUD -------------------------------------------------------------------------
+//
+// The box hit 92% full on 2026-08-14 and captures started failing in the shape a tool must never
+// fail in: a PNG that is present, zero-length or truncated, banked with a manifest that says
+// bytes: 0 and a sha256 of nothing — indistinguishable, downstream, from a clean run. Nothing in
+// this file checked the size of what it had just written.
+//
+// Three guards, all additive, none of which can pass a bad picture:
+//   1. a PREFLIGHT floor, so a full disk is refused before nine seconds of rendering are spent;
+//   2. a POST-WRITE assertion that the file on disk is a real PNG of non-trivial length;
+//   3. the cache-hit manifest rewrite, which was a bare `catch {}`, now distinguishes a read-only
+//      bucket (tolerable) from a full one (not).
+// The floor is deliberately small: this is a "the disk is gone" tripwire, not a quota.
+const DISK_FLOOR_BYTES = Number(process.env.ES_CAPTURE_DISK_FLOOR || 256 * 1024 * 1024);
+
+function diskFree(forPath) {
+  // A missing directory is not a disk answer — walk up until statfs has something to stand on.
+  let p = path.resolve(forPath);
+  for (let i = 0; i < 24; i++) {
+    try { const s = fs.statfsSync(p); return s.bsize * s.bavail; }
+    catch { const up = path.dirname(p); if (up === p) break; p = up; }
+  }
+  return null;   // cannot tell — never block a capture on an unanswerable question
+}
+
+function isNoSpace(e) {
+  return !!e && (e.code === 'ENOSPC' || /no space left on device/i.test(String(e.message || '')));
+}
+
+// Throws unless `file` is a plausible PNG. Truncation and zero-length are the ENOSPC signature.
+const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+function assertRealPng(file) {
+  let st;
+  try { st = fs.statSync(file); }
+  catch (e) { const x = new Error(`capture wrote no file at ${file}: ${e.message}`); x.diskFull = true; throw x; }
+  if (st.size < 64) {
+    const free = diskFree(file);
+    const x = new Error(
+      `capture produced a ${st.size}-byte file at ${file} — this is what ENOSPC looks like` +
+      (free === null ? '' : ` (free: ${(free / 1e9).toFixed(2)} GB)`));
+    x.diskFull = true;
+    throw x;
+  }
+  const fd = fs.openSync(file, 'r');
+  try {
+    const head = Buffer.alloc(8);
+    fs.readSync(fd, head, 0, 8, 0);
+    if (!head.equals(PNG_MAGIC)) {
+      const x = new Error(`capture wrote ${st.size} bytes at ${file} that are not a PNG`);
+      x.diskFull = true;
+      throw x;
+    }
+  } finally { fs.closeSync(fd); }
+}
+
 // ---- jobs ---------------------------------------------------------------------------------------
 async function runJob(job) {
   const t0 = Date.now();
   stats.requests++;
+
+  // 0. The disk, before anything else. A capture on a full disk is nine seconds spent to produce a
+  //    lie, so it is refused here rather than discovered later.
+  {
+    const free = diskFree(CACHE_DIR);
+    if (free !== null && free < DISK_FLOOR_BYTES) {
+      stats.disk_full = (stats.disk_full || 0) + 1;
+      const msg = `capture refused: ${(free / 1e9).toFixed(2)} GB free under ${CACHE_DIR}, ` +
+        `below the ${(DISK_FLOOR_BYTES / 1e9).toFixed(2)} GB floor. A capture written now would be ` +
+        `truncated and would read as a clean run. Free space, then retry.`;
+      logLine('DISK FULL —', msg);
+      return { ok: false, code: 'DISK_FULL', error: msg, detail: { free_bytes: free, floor_bytes: DISK_FLOOR_BYTES, cache_dir: CACHE_DIR } };
+    }
+  }
 
   // 1. S34(b). Refuse before doing any work at all.
   const verdict = classify(job.raw);
@@ -884,7 +953,17 @@ async function runJob(job) {
         const onDisk = { ...c.man, provenance, served_from_cache_last: new Date().toISOString() };
         onDisk.mac = signManifest(onDisk);
         fs.writeFileSync(paths.json, JSON.stringify(onDisk, null, 2));
-      } catch { /* a read-only bucket is not a reason to refuse a good picture */ }
+      } catch (e) {
+        // A read-only bucket is not a reason to refuse a good picture. A FULL one is: the sidecar
+        // the caller is being told to read has just failed to be written, and saying nothing here
+        // is how a full disk stays invisible.
+        if (isNoSpace(e)) {
+          stats.disk_full = (stats.disk_full || 0) + 1;
+          logLine('DISK FULL — could not rewrite cache manifest', paths.json, ':', e.message);
+          return { ok: false, code: 'DISK_FULL', error: `manifest rewrite failed on a full disk: ${e.message}`, detail: { manifest: paths.json, free_bytes: diskFree(paths.json) } };
+        }
+        logLine('cache manifest rewrite failed (tolerated):', e.message);
+      }
       return { ok: true, result: served };
     }
     stats.cache_rejects = (stats.cache_rejects || 0) + 1;
@@ -915,11 +994,29 @@ async function runJob(job) {
       stats.errors++;
       return { ok: false, code: 'GAME_BROKEN', error: String(e && e.message || e), detail: { build_key: BUILD.build_key, log: LOG_PATH } };
     }
+    if (isNoSpace(e)) {
+      // CAPTURE_ERROR is the code callers retry on. A full disk is not flake and must not be
+      // retried into a loop — it gets its own name so the operator sees the real cause.
+      stats.disk_full = (stats.disk_full || 0) + 1;
+      stats.errors++;
+      logLine('DISK FULL — capture write failed:', e.message);
+      return { ok: false, code: 'DISK_FULL', error: String(e.message || e), detail: { spec: canon, free_bytes: diskFree(paths.bucket) } };
+    }
     stats.errors++;
     await dropBrowser('capture threw: ' + e.message);   // never let one bad job wedge the queue
     return { ok: false, code: 'CAPTURE_ERROR', error: String(e && e.message || e), detail: { spec: canon } };
   }
 
+  // The picture is checked BEFORE it is given the banked name. A zero-length or truncated tmp file
+  // renamed into the bucket is a poisoned cache entry that every later run reads as a cache hit.
+  try { assertRealPng(tmp); }
+  catch (e) {
+    try { fs.unlinkSync(tmp); } catch { /* */ }
+    stats.disk_full = (stats.disk_full || 0) + 1;
+    stats.errors++;
+    logLine('DISK FULL —', e.message);
+    return { ok: false, code: 'DISK_FULL', error: e.message, detail: { spec: canon, free_bytes: diskFree(paths.bucket) } };
+  }
   fs.renameSync(tmp, finalPng);
   const bytes = fs.statSync(finalPng).size;
   const manifest = {
@@ -957,7 +1054,18 @@ async function runJob(job) {
   // camera stream-drain and photographs an emptier world — could bank the result under the
   // legitimate key. That is a cache-poisoning primitive, and G1 closed it only by luck (the emptier
   // world usually fails residency). It does not write now.
-  if (banking) fs.writeFileSync(paths.json, JSON.stringify(manifest, null, 2));
+  if (banking) {
+    try { fs.writeFileSync(paths.json, JSON.stringify(manifest, null, 2)); }
+    catch (e) {
+      // A banked PNG with no manifest beside it is an unreadable cache entry AND an unverifiable
+      // picture. Remove the half-entry rather than leave the bucket in a state a later hit trusts.
+      try { fs.unlinkSync(finalPng); } catch { /* */ }
+      stats.errors++;
+      if (isNoSpace(e)) stats.disk_full = (stats.disk_full || 0) + 1;
+      logLine(isNoSpace(e) ? 'DISK FULL — manifest write failed:' : 'manifest write failed:', e.message);
+      return { ok: false, code: isNoSpace(e) ? 'DISK_FULL' : 'CAPTURE_ERROR', error: `manifest write failed: ${e.message}`, detail: { manifest: paths.json, free_bytes: diskFree(paths.bucket) } };
+    }
+  }
   stats.captures++;
   stats.capture_ms_total += Date.now() - t0;
   const served = { ...manifest, cached: false, manifest: banking ? paths.json : null, banked: banking, served_in_ms: Date.now() - t0 };

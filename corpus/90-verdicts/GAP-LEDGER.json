@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-14T09:02:29Z",
+  "generated": "2026-08-14T10:53:10Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1,
     null
   ],
-  "verdicts_read": 76,
+  "verdicts_read": 77,
   "counts": {
-    "total": 71,
-    "open": 70,
+    "total": 72,
+    "open": 71,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -73,6 +73,9 @@
     ],
     "combat.frames.timing": [
       "GAP-W1-combat-exemplar-has-no-danger"
+    ],
+    "combat.camera.behaviour": [
+      "GAP-W1-consumption-sweep-tripwire-is-a-name-grep"
     ],
     "journey.chargen.diegesis": [
       "GAP-W1-creation-is-an-api-not-a-scene",
@@ -1148,6 +1151,41 @@
         "reports/w1-09/exemplar/RI-CMB07-exemplar-frames.jsonl",
         "corpus/90-verdicts/wave1/artifacts/W1-09/critic-guardbreak3.json",
         "corpus/90-verdicts/wave1/artifacts/W1-09/blind-cmb03-pack.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
+      "subsystem_path": "combat.camera.behaviour",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-first-ten-minutes-r1-a8e4c93",
+      "opened_in": "corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.json",
+      "piece_id": "first-ten-minutes",
+      "severity": "major",
+      "what": "tools/render/consumption-sweep.mjs tests whether a field NAME is MENTIONED anywhere under game/src/render/, not whether it is consumed. Deleting the call site this._applyCharacterFade(c) leaves 3 mentions and exit 0; gutting the method body to `return;` leaves 2 mentions, both inside its own doc comment, and exit 0. Only renaming every occurrence — the one deletion nobody performs by accident — reaches exit 1. The piece's own control for the tool is that single trivial arm.",
+      "why_it_matters": "The one regression guard this piece leaves behind cannot see the regression it exists to catch, so the camera fade can silently stop running and every dashboard stays green — which is the exact failure that produced the charOpacity defect in the first place.",
+      "remedy": {
+        "action": "Make the sweep a consumption test rather than a mention test, in tools/render/consumption-sweep.mjs only. Minimum viable change: strip block comments, line comments and string literals from each render/ source before matching, so prose can never satisfy the tripwire; then require the surviving match to sit on a call path reachable from Renderer.render(). Cheapest sufficient form of the second half, if the static call-path walk proves awkward, is a live arm: boot the game through tools/lib/browser.mjs, perturb the field on the sim object, render one shipping frame and require some observable to change — the machinery already exists in tools/harness/critic-first-ten-play.mjs phase `fade`. Do not add a second tool; extend this one. Preserve the existing VISUAL/INTERNAL/AMBER classification and the three hand-checked amber routes, which are correct and were checked by hand.",
+        "targets": [
+          "tools/render/consumption-sweep.mjs"
+        ],
+        "acceptance": "Re-run the three delete-the-fix arms in corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log on a sparse copy. Required: arm A exit 1, arm B exit 1, arm C exit 1, and the unmodified shipped tree exit 0. Three red arms and one green; today it is one red and three green. Publish the four exit codes."
+      },
+      "remedy_action": "Make the sweep a consumption test rather than a mention test, in tools/render/consumption-sweep.mjs only. Minimum viable change: strip block comments, line comments and string literals from each render/ source before matching, so prose can never satisfy the tripwire; then require the surviving match to sit on a call path reachable from Renderer.render(). Cheapest sufficient form of the second half, if the static call-path walk proves awkward, is a live arm: boot the game through tools/lib/browser.mjs, perturb the field on the sim object, render one shipping frame and require some observable to change — the machinery already exists in tools/harness/critic-first-ten-play.mjs phase `fade`. Do not add a second tool; extend this one. Preserve the existing VISUAL/INTERNAL/AMBER classification and the three hand-checked amber routes, which are correct and were checked by hand.",
+      "remedy_acceptance": "Re-run the three delete-the-fix arms in corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log on a sparse copy. Required: arm A exit 1, arm B exit 1, arm C exit 1, and the unmodified shipped tree exit 0. Three red arms and one green; today it is one red and three green. Publish the four exit codes.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/first-ten-minutes/consumption-sweep-delete-the-fix.log",
+        "orchestration/status/FIRST-TEN-MINUTES.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

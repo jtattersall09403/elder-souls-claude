@@ -230,6 +230,19 @@ Min-over-axes. No axis is averaged away.
 **Overall 4.0 — min. Gate 7.0. FAIL.** Confidence: high on D1, D2, D3 and the sweep; medium on the
 conversational-range caveat in §2, which my teleport partly caused.
 
+**Two numbers, and both are on the page.** 4.0 is the minimum over the six piece axes above — the
+aggregation the dispatch asked for, and the one that describes this piece's own work. The minimum
+over the *reference items* is **2**, because RI-CAM01 carries a triggered automatic fail: the buried
+camera. The piece did not claim to close that and filed it as open, and I agree it is open. Scoring
+the piece at 2 for a defect it honestly reported as unfixed would punish exactly the behaviour this
+project is trying to buy, so the headline is 4.0 and the item cap is recorded in the JSON where a
+later aggregator can find it.
+
+**Corpus.** `RI-MTH04` gained **Appendix A**, because §6c is a real edge of the corpus rather than a
+fact about this piece: the standard way this repository counts an actor's on-screen pixels is
+unsound on this build and nothing written down said so. Additive only; no threshold or weight
+changed; nobody live had declared the file.
+
 ## 8. The one biggest gap
 
 **`GAP-W1-consumption-sweep-tripwire-is-a-name-grep`.**

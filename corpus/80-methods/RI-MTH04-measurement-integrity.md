@@ -247,3 +247,40 @@ on this machine: `manifest.json` already carries `run_id`, `git`, `data.sha256`,
 gate; `manifest.build.isStub` is emitted by the stub fixture. Every field the audit
 procedure reads exists today — the audit is executable now, before the game is written,
 which is the point.
+
+## Appendix A — measuring one actor's pixels: hide the ROOT, never the materials
+
+*Added 2026-08-14 by the FIRST-TEN-MINUTES critic (`corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.md`
+§6c) as a `method_gap`. No threshold or weight in this item was changed.*
+
+Several tools here answer "how much of this character can I see" by rendering the frame twice from
+one camera pose and counting the pixels that differ, with only that character's **materials**
+changed — `colorWrite: false`, depth off. `tools/harness/vt-seethrough.mjs` §1.1 established it and
+`tools/harness/first-ten.mjs` inherits it.
+
+**On this build that method leaks between actors, and it leaks silently.**
+`game/src/render/actor.js:473` caches the reed, chitin and xanmeer armour materials against the
+shared `mats` object and hands the **same instances** to every actor built from it. Blanking one
+NPC's materials therefore blanks the matching parts of the player, and of every other NPC wearing
+the same set. Measured: Corvus Aldeyn at 30 m came back as **6485 px** by the material method and
+**262 px** — the correct apparent size for a body at that range — by the root method. The extra
+6000 pixels were the player, standing in the foreground, being counted as somebody else.
+
+It was caught only by painting the differing pixels red and looking at the image
+(`corpus/90-verdicts/wave1/artifacts/first-ten-minutes/method-contaminated-overlay-shared-materials.png`).
+The number alone looked plausible in both directions, which is the point: this is a defect a count
+cannot show you.
+
+**Use `root.visible = false` instead.** It touches no material, cannot reach another actor, and is
+one assignment. Two things to state when you do:
+
+- it also removes the actor's **cast shadow**, so the figure is body-plus-shadow rather than body
+  alone. Say which you measured; the two differ by roughly a factor of two on this build, and agree
+  exactly at zero;
+- it is not a substitute for the see-through measurement in `vt-seethrough.mjs`, which needs the
+  body's own outline and legitimately swaps materials to get it. The contamination bites when the
+  question is *how much of this actor is on screen*, not *what shows through it*.
+
+**The general form, and it is the reason this sits in a measurement-integrity item:** a probe that
+mutates shared state to isolate one object is only valid if the state is genuinely private. Check
+that before trusting the count, and draw the mask at least once.

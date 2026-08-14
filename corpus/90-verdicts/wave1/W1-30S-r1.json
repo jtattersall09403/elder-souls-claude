@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "document_type": "critic-verdict",
+  "piece_id": "W1-30S-r1",
+  "piece_title": "W1-30S — the seam pass: make the visual tree safely parallel (round 1 critique)",
+  "subsystem_paths": [
+    "render.fidelity.postprocess",
+    "render.fidelity.water",
+    "render.fidelity.vfx",
+    "render.process.measurement",
+    "platform.determinism.harness"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-30s-r1-3c19",
+    "role": "critic.fidelity",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-14T09:45:00Z",
+    "finished_at": "2026-08-14T11:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "91fbb20e",
+    "branch": "codex/wave1-build-experiment",
+    "harness_commands": [
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-30S-r1/cmp-moved-bodies.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-30S-r1/unseam.mjs <worktree>  (mechanical seam revert; aborts on any missed anchor)",
+        "exit_code": 0
+      },
+      {
+        "command": "node corpus/90-verdicts/wave1/artifacts/W1-30S-r1/verify-revert.mjs  (proves the reverted tree is token-identical to the genuine pre-seam blobs)",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/runpod/cli.mjs run --transport http --max-runtime 55 --command '... deck --profile gpu --tag gpu-after ; unseam ; deck --profile gpu --tag gpu-before ; deck-compare --expect same'",
+        "seed": 20260814,
+        "exit_code": 0,
+        "duration_s": 216
+      },
+      {
+        "command": "node tools/visual/deck.mjs --profile smoke --tag smoke-after2   (determinism, second run at one seed)",
+        "seed": 20260814,
+        "exit_code": 0,
+        "duration_s": 266
+      },
+      {
+        "command": "sed -i 's/length(vUv-.5))*.075/length(vUv-.5))*.076/' render/post/composite.js ; node tools/visual/deck.mjs --profile smoke --tag smoke-red   (red control)",
+        "seed": 20260814,
+        "exit_code": 0,
+        "duration_s": 248
+      },
+      {
+        "command": "node tools/visual/deck.mjs --profile critic --tag critic-before   (60 stills, seam reverted, SwiftShader)",
+        "seed": 20260814,
+        "exit_code": 0,
+        "duration_s": 2002
+      },
+      {
+        "command": "node tools/ownership.mjs --conflicts ; node tools/ownership.mjs --for game/src/render/renderer.js",
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any frame was opened, and the declaration is the point. This piece makes NO appearance claim — its entire bar is that the picture does not change. So no reference plate is cited on either side, no modern-fidelity comparison is made and no Morrowind transposition is judged. Every number here is a paired self-comparison (the same shot, the same seed, the same machine, with and without the seam), which ARBITRATION §4 does not bifurcate and which the parent plan's amendment R3(c) explicitly rules survives on any rasteriser because it compares like with like. That is also why the SwiftShader half of the evidence is admissible here and would not be for W1-30A."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-10 over five axes (Consumer named, Coupling measured, Hand-feed audit, Instrumentation honesty, Harness fidelity §D); pass floor 6; failure threshold is any coupling == 0 on a model the piece's items require to act",
+      "native_score": 6,
+      "native_max": 10,
+      "native_verdict": "At the pass floor — every published seam has a named consumer, none has coupling zero, but one consumer named in the plan was never wired",
+      "score_0_10": 6,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "consumer-named-registerComposite",
+          "result": "pass",
+          "value": "1 registrant: buildCompositor(canvas.width, canvas.height) in the Renderer constructor",
+          "threshold": ">= 1"
+        },
+        {
+          "id": "consumer-named-registerPrePass",
+          "result": "marginal",
+          "value": "1 registrant (the water-reflection closure). The plan names two — 'H's vfx prepass AND water reflection register here'. The VFX prepass was never moved and is still inline in renderer.js.",
+          "threshold": "the registrants the plan names"
+        },
+        {
+          "id": "consumer-named-setLightingFrame",
+          "result": "marginal",
+          "value": "1 consumer (the province night-lamp factor) — but that consumer was CREATED by this commit's one non-move edit. Under strict move-only the point would have shipped with zero registrants.",
+          "threshold": ">= 1 pre-existing"
+        },
+        {
+          "id": "coupling-registerPrePass",
+          "result": "pass",
+          "value": "removal leaves uWaterReflectionStrength at 0, collapsing mix(esDepth, esReflection, (.25+esGrazing*.50)*uWaterReflectionStrength) to esDepth on every water surface — a visible, hashable frame change",
+          "threshold": "coupling > 0"
+        },
+        {
+          "id": "coupling-registerComposite",
+          "result": "pass",
+          "value": "removal leaves this.compositeMaterial undefined; render() dereferences this.compositeMaterial.uniforms.uAO.value and throws loudly rather than drawing nothing",
+          "threshold": "coupling > 0"
+        },
+        {
+          "id": "coupling-setLightingFrame",
+          "result": "pass",
+          "value": "removal leaves this.lightingFrame undefined; the night-lamp line throws",
+          "threshold": "coupling > 0"
+        },
+        {
+          "id": "registries-consumable-without-editing-definition",
+          "result": "pass",
+          "value": "kits.js, lib/rigs.js and lib/lighting-recipes.js each export registerKit/registerRig/registerLightingRecipe plus a knownX() enumerator, so a later child populates them from its own file",
+          "threshold": "extensible without editing the defining file"
+        },
+        {
+          "id": "registries-sabotageable",
+          "result": "fail",
+          "value": "no unregister/reset on any of the three; register* throws on a duplicate id. A registry that can only grow cannot host the off-switch this repository's sabotage discipline requires.",
+          "threshold": "a live off-switch exists"
+        },
+        {
+          "id": "instrumentation-honesty",
+          "result": "pass",
+          "value": "the builder's status names its own unrun population and names library-census.mjs as absent; both are true",
+          "threshold": "declared"
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#4-the-three-registration-points",
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#6-the-four-published-registries-consumable"
+      ]
+    },
+    {
+      "id": "RI-MTH02",
+      "path": "corpus/80-methods/RI-MTH02-determinism-reproducibility.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "0-24 over rungs R1-R9 (R1 run-to-run 4, R2 process-to-process 4, R3 batch invariance 3, R4 seed sensitivity 3, R5 warm-up 2, R6 load order 1, R7 wall-clock 3, R8 resolution 2, R9 save round-trip 2)",
+      "native_score": "8 of 24 exercised (R1 run-to-run 4/4 on two rasterisers; R4's sensitivity clause 4/4 via the time-of-day and vignette controls); R2/R3/R5-R9 not run",
+      "native_max": 24,
+      "native_verdict": "The rungs the frame-identity gate actually rests on are green; the rest were out of scope for this piece",
+      "score_0_10": 7,
+      "justification": "R1 measured twice on independent hardware: 6 of 6 identical on SwiftShader at one seed (log-det), and 24 of 24 identical across the seam pair on an RTX A5000 with 24 distinct hashes within one run, proving the capture is neither drifting nor degenerate (corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-before-manifest.json, gpu-after-manifest.json). The sensitivity clause was measured by deliberate breakage rather than assumed: a one-digit change to a single composite constant (vignette .075 -> .076) moved 100% of frame hashes while edge density, luma span and dominant-colour fraction all moved by <= 0.0004.",
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "R1-run-to-run-swiftshader",
+          "result": "pass",
+          "value": "6 of 6 identical",
+          "threshold": "0 differ"
+        },
+        {
+          "id": "R1-run-to-run-hardware",
+          "result": "pass",
+          "value": "24 of 24 identical across the seam pair, 24 distinct hashes within a run",
+          "threshold": "0 differ"
+        },
+        {
+          "id": "red-control-composite-constant",
+          "result": "pass",
+          "value": "vignette .075 -> .076 changed 6 of 6 hashes = 100%",
+          "threshold": ">= 90% per the plan's null control"
+        },
+        {
+          "id": "red-control-time-axis-hardware",
+          "result": "pass",
+          "value": "12 of 12 setups hash differently at 13:00 vs 19:30 on the A5000",
+          "threshold": ">= 95%"
+        },
+        {
+          "id": "R2-process-to-process",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": null
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-before-manifest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-after-manifest.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-compare.txt",
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#3-independent-re-capture-the-gap-the-builder-named"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-before-manifest.json",
+      "kind": "trace",
+      "produced_by": "node tools/visual/deck.mjs --profile gpu --tag gpu-before, run on a RunPod NVIDIA RTX A5000 AFTER node tools/unseam.mjs reverted the seam in the same checkout",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "12 Deck setups (7 region vista/eye incl. three water-bearing coasts, Lilmoth approach and street, one interior, player and NPC close-ups) at 13:00 and 19:30, clear; poses fixed by tools/visual/deck.json",
+      "note": "renderer_string 'ANGLE (NVIDIA, Vulkan 1.4.312 (NVIDIA NVIDIA RTX A5000 (0x00002231)), NVIDIA)', software_renderer false — real hardware, not SwiftShader."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-after-manifest.json",
+      "kind": "trace",
+      "produced_by": "node tools/visual/deck.mjs --profile gpu --tag gpu-after, same Pod, same seed, seam PRESENT, captured before the revert",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "identical 24 shots to gpu-before",
+      "note": "Both halves of the pair ran on ONE machine in ONE session, so no cross-GPU rasterisation difference can be mistaken for a seam effect."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-compare.txt",
+      "kind": "report",
+      "produced_by": "node tools/visual/deck-compare.mjs --a gpu-before --b gpu-after --expect same, run on the Pod",
+      "seed": 20260814
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/gpu-nvidia-smi.csv",
+      "kind": "log",
+      "produced_by": "nvidia-smi on the Pod during bootstrap",
+      "note": "NVIDIA RTX A5000, driver 580.159.04, 24564 MiB — the provenance of the hardware claim."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/swiftshader-before-manifest.json",
+      "kind": "trace",
+      "produced_by": "node tools/visual/deck.mjs --profile critic --tag critic-before, local, seam reverted, SwiftShader",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "30 Deck setups x 13:00 and 19:30 x clear = 60 stills",
+      "note": "60 ok, 0 red, 2002 s. SOFTWARE renderer — admissible here only because this piece's bar is a paired self-comparison (see bifurcation.note)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/cmp-moved-bodies.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic; compares each moved body against its pre-move original taken from git show, with whitespace normalised out",
+      "note": "The instrument behind the central finding. Run it to reproduce: all four bodies token-identical."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/unseam.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic; mechanically reverts the seam in a throwaway worktree by inlining the moved bodies back from the moved files themselves",
+      "note": "Every anchor is asserted and a missed anchor aborts with exit 1, so a partially-applied revert cannot silently produce a green comparison."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-30S-r1/verify-revert.mjs",
+      "kind": "negative-evidence",
+      "produced_by": "written by this critic; proves the reverted tree is token-identical to the genuine pre-seam blobs (0cdfa698 for the compositor, 3b43ec6c^ for the water shader) before any frame is captured",
+      "note": "Printed REVERT FAITHFUL on all nine assertions. Without this the before/after pair would be comparing an unknown tree against a known one."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-30S-r1.md",
+      "kind": "report",
+      "produced_by": "this critique"
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-1's probes (A1-A10) are combat-contamination probes — to-hit rolls, dice damage, pause mid-fight, level scaling, homing, talking mid-fight. This piece moves rendering code between files and changes no simulation, no combat resolution and no data. Its own acceptance is that the frame is byte-identical, which is a stronger statement than any AR-1 probe would make: if nothing in the picture changed, nothing in the fight changed either.",
+      "checks": [
+        {
+          "id": "A1-A10",
+          "result": "not_applicable",
+          "not_run_reason": "no combat surface touched; the piece's bar is frame identity and it was measured directly"
+        }
+      ]
+    },
+    "ar2": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-2's probes (B1-B11) are Morrowind-contamination probes — objective markers, bonfire warp, minimal dialogue, procedural loot, soul-currency purchase. None is reachable by a move of the compositor and the water shader between files. Recorded as not_applicable rather than pass, because claiming a pass on probes I did not run would be exactly the instrument-not-picture failure the parent plan exists to correct.",
+      "checks": [
+        {
+          "id": "B1-B11",
+          "result": "not_applicable",
+          "not_run_reason": "no world, quest, dialogue, loot or economy surface touched"
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 5,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "The property the tree depends on is proved and the move is genuinely a move; the seam it publishes does not yet isolate two of the ten children it was created to isolate, and two of its own five acceptance rows were never run",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "Row 1 of the piece's own bar (frame identity) PASSES, and it passes on real hardware with the comparison broken on purpose first: 24 of 24 frame hashes identical across the seam pair on an RTX A5000, after a one-digit composite change was shown to move 100% of hashes.",
+    "Row 3 (no behaviour in the move) is VIOLATED. The commit deletes a computation and replaces it with a cross-module read. It is bit-identical today — verified over 2,400,001 samples of timeOfDay — but the row says any changed condition or order 'is a plan violation and is reverted', and it was not.",
+    "Row 4 (seam liveness) is PARTIAL. All three points have a live registrant and all three break the frame if removed, but the VFX prepass the plan names as a registrant of registerPrePass was never moved, and setLightingFrame's only consumer is the row-3 violation.",
+    "Row 5 (library skeleton) was NEVER RUN. tools/visual/library-census.mjs does not exist in the working tree or anywhere in git history.",
+    "The critic's own named check — 'confirm no other child would need to edit a file it does not own' — fails for two children. W1-30H must edit renderer.js to touch the VFX prepass; W1-30D has no asynchronous route from models.js's async loadModel() to render/scene.js, which builds every character synchronously and is read-only to all children."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-w1-30s-seam-incomplete",
+    "subsystem_path": "render.fidelity.vfx",
+    "what": "The seam publishes the boundary for 8 of 10 children and leaves 2 stranded. registerPrePass exists and has one registrant (water reflection), but the spell-VFX prepass named in the plan as its other registrant is still inline in renderer.js — construction, setSize, update and the gated this.vfx.prepass(this.camera) — so W1-30H cannot change prepass ordering, gating or lifecycle without writing into W1-30A's exclusive file. And models.js publishes an async loadModel() while every character mesh is built synchronously in render/scene.js:365/390 via makeRiggedActor, a file the parent plan declares read-only to all children and the ownership registry says nobody has declared at all — so W1-30D has no seam through which an awaited glTF mesh can reach the scene.",
+    "why_it_matters": "The seam's whole purpose is that ten children build in parallel without colliding; two of them will collide on their first real commit, in the one file the seam was created to give a single owner.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/W1-30S-r1.md#5-would-another-child-have-to-edit-a-file-it-does-not-own",
+      "corpus/90-verdicts/wave1/W1-30S-r1.md#42-the-registrant-that-was-named-in-the-plan-and-is-not-there"
+    ],
+    "severity": "major",
+    "remedy": "Two small forward edits, both cheap now and expensive after three children have diverged. (1) Move the spell-VFX block out of renderer.js's render() into a registered prepass, exactly as the water reflection already is — the registration point and its loop already exist, so this is a relocation of ~12 lines plus one registerPrePass call, and its own null control is the one already written into the registerPrePass docstring. (2) Publish an async model-ready seam: either a renderer.registerActorSource(fn) that buildScene consults, or an awaited prewarm that resolves loadModel() promises before the first Renderer construction, so W1-30D can land glTF without touching scene.js or renderer.js. Owner of (1) is W1-30A by file, in coordination with W1-30H; owner of (2) is W1-30A, since renderer.js is A's and scene.js has no owner and must be given one."
+  },
+  "secondary_observations": [
+    {
+      "what": "The commit reached the branch in a non-booting state and stayed there for two commits. At 3b43ec6c and 380c374d the Renderer constructor calls this.registerPrePass(...) and this.registerComposite(...) while neither method is defined anywhere in game/src, and the dead _buildCompositor(w,h) is still present at line 265 — new Renderer() throws TypeError. The complete seam arrived only through the merge d88a3d29 four minutes later. The builder's boot-check was presumably green on its own tree; what was banked by the orchestrator's git add -A was a half-written snapshot. This is Ruling O1's failure mode landing on the one commit where a partial bank is most expensive, because any agent branching from 380c374d got a game that does not start.",
+      "evidence": [
+        "git grep registerPrePass 3b43ec6c -- game/src  (two call sites, no definition)",
+        "corpus/90-verdicts/wave1/W1-30S-r1.md#7-how-it-landed"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "sky.js's publication allocates five objects per frame (dir.clone(), uSunColour.value.clone(), scene.fog.color.clone(), the argument literal and the returned object) on a frame path renderer.js documents as being 'inside the no-allocation budget'. No pixel consequence; a budget consequence, and W1-30B should fold the frame into a reused object rather than a fresh one. Observed during this run: W1-30B has since landed a much larger lighting.js that freezes the object, which makes reuse harder rather than easier.",
+      "evidence": [
+        "game/src/render/sky.js (the buildLightingFrame call at the end of apply())",
+        "game/src/render/renderer.js:23"
+      ],
+      "subsystem_path": "platform.perf.allocation"
+    },
+    {
+      "what": "The parent plan's collision table says renderer.js owns 'the shadow-fit call'. It does not — the shadow camera, its ortho extents, near/far, bias and the load-bearing updateProjectionMatrix() are all in sky.js:139-159, which is W1-30B's. The seam correctly did not move it. What IS in renderer.js and B may need is this.three.shadowMap.enabled and shadowMap.type = PCFSoftShadowMap; a cascade or VSM change would touch A's file for one line.",
+      "evidence": [
+        "game/src/render/sky.js:139-159",
+        "game/src/render/renderer.js:80-81"
+      ],
+      "subsystem_path": "render.fidelity.shadows"
+    },
+    {
+      "what": "The seam's ownership claim is already not holding, for reasons outside this piece. During this run a non-W1-30A agent (FIRST-TEN-MINUTES) was writing renderer.js — adding _applyCharacterFade and _updateOverheadField — and changed sky.apply()'s arity by passing a seventh overhead argument, which is a change to W1-30B's file made from A's. tools/ownership.mjs --for game/src/render/renderer.js prints UNDECLARED OVERLAP across six live pieces. The seam gave the tree a boundary; nothing is enforcing it.",
+      "evidence": [
+        "node tools/ownership.mjs --for game/src/render/renderer.js",
+        "git diff HEAD -- game/src/render/renderer.js (during this run)"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "The coupling introduced by the row-3 violation has since been adopted deliberately rather than accidentally: W1-30B's lighting.js, landed during this critique, names 'the province night lamps' in its own header as one of the three consumers of the lighting frame. That does not retire the finding — the edit still bypassed the move-only rule and still went unreviewed at the time — but it does mean the coupling is now known to its owner, which is the outcome the finding was asking for.",
+      "evidence": [
+        "game/src/render/lighting.js (W1-30B version, header)"
+      ],
+      "subsystem_path": "render.fidelity.lighting"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [],
+  "method_deviations": [
+    {
+      "ref_item": "W1-30S plan, 'Fresh critic' allocation",
+      "deviation": "Captured 0 motion sequences against the 3 the plan asks for.",
+      "why": "tools/visual/deck.mjs cannot capture motion at all. It reads PROFILE.stills, PROFILE.times and PROFILE.weathers and never reads PROFILE.motion; deck.json declares 12 motion sequences and 2400 motion frames that no code path renders, and tools/visual/ contains no motion runner. The parent's rule that 'no gate is satisfiable by stills alone' is therefore currently unsatisfiable by the Deck. Raised for W1-30V rather than worked around.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "W1-30S plan, frame identity row",
+      "deviation": "Ran a 24-shot hardware pair and a 60-still SwiftShader pair rather than the full 288-still / 12-sequence Deck.",
+      "why": "The parent's amendment R3(a) rules that the full Deck runs once, at the parent's integration critic, and that a child's critic runs the child-scoped profile. The 30 setups were chosen before any frame was captured and span every block including the three water-bearing coast regions, since water is the surface most exposed by this particular move.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-MTH02",
+      "deviation": "Only R1 and the sensitivity clause of R4 were exercised; R2, R3, R5-R9 were not.",
+      "why": "The frame-identity gate rests on run-to-run determinism and on the comparison being falsifiable. The other rungs govern the simulation harness, which this piece does not touch.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "boot-check",
+      "deviation": "Did not run node tools/boot-check.mjs.",
+      "why": "tools/contention.mjs reported WAIT for most of this run and I was already holding browsers. Capturing 84 stills from the running game at the seam tree is a strictly stronger boot proof, so the browser went there. Recorded rather than skipped silently.",
+      "affects_scores": false
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/render/renderer.js",
+      "purpose": "quote-written-content",
+      "note": "The piece under test IS a source-level move, so the diff is the artifact. Read to compare moved bodies token-by-token and to locate the registration points and their registrants."
+    },
+    {
+      "path": "game/src/render/post/composite.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/water.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/visual-foundation.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/sky.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after the night-factor equality was measured numerically, to confirm the two expressions are the same operations in the same order on the same input."
+    },
+    {
+      "path": "game/src/render/lighting.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/models.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/lib/kits.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/lib/rigs.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/lib/lighting-recipes.js",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/render/scene.js",
+      "purpose": "locate-harness",
+      "note": "Read only to establish where character meshes are constructed and whether an async model could reach them."
+    },
+    {
+      "path": "tools/visual/deck.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/visual/deck-compare.mjs",
+      "purpose": "locate-harness",
+      "note": "Read specifically to check whether the comparison derives its expected value from the render under test. It does not — it loads two independent run manifests — and the vignette red control was run anyway rather than trusting the reading."
+    },
+    {
+      "path": "tools/render/w1-30-gate.mjs",
+      "purpose": "locate-harness"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": false,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "judged_output_not_source is FALSE and unavoidably so, and I want that recorded rather than finessed: this piece's acceptance is a property OF THE DIFF ('git diff on moved code contains only import/export rewrites and whitespace'), so the source is the output here. I mitigated it the only honest way — every claim about the diff was then confirmed against pixels from the running game, and the one claim I could not have confirmed by reading (that a 0.001 change to a composite constant is detectable at all) was measured by deliberately making that change. ran_every_assigned_method is FALSE: 0 of the 3 motion sequences the plan assigns me, because the Deck harness implements no motion capture at all (method_deviations); and I did not re-run boot-check or the W1-30 cheap gates. blind_done_where_required is TRUE vacuously — this piece makes no appearance claim, bifurcation is 'not-visual', and no blind pack was required or built. Three things I got wrong during this run and am recording because they cost evidence: (a) my first GPU attempt used the worktree's own tools/runpod, which predates the HTTPS transport, so it spent four minutes failing to reach the Pod over SSH — the transport the directives say cannot work here — and I had to copy the newer tooling in; (b) with the box at 97% disk I deleted my own in-flight capture directory while freeing space, losing the local after-run at 24 of 30 setups; (c) the replacement worktree was then garbage-collected by another agent working in the same shared scratchpad, losing it a second time along with the determinism and red-control manifests, which is why those two controls are reported with their numbers but cite the markdown rather than a committed manifest. I did not re-run the red control a third time; the hardware pair and the hardware time-axis control, both of which ARE committed, carry the same load. I repaired nothing: renderer.js belongs to W1-30A and a second agent was writing it throughout, so both findings that live there were written up for their owner instead."
+  },
+  "notes": "Measured at 91fbb20e and pinned there deliberately: HEAD moved at least four times during this critique and both W1-30A and W1-30B landed real changes on top of the seam mid-run (composite.js gained MSAA, FXAA, a grade and dither; lighting.js was replaced by a frozen 22-field contract). Everything above therefore judges the seam as the children received it, not as it looks now. That the two children could land on it at all, within an hour, without touching each other's files, is the strongest practical evidence that the seam mostly works."
+}

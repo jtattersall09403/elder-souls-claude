@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T10:50:23.665Z",
+  "generated_at": "2026-08-14T10:54:10.092Z",
   "generator": "tools/cost.mjs",
-  "commit": "06dafd0",
+  "commit": "acbe49e",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T10:50:16.864Z",
-    "hours": 204.56,
+    "to": "2026-08-14T10:54:06.704Z",
+    "hours": 204.62,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -39,31 +39,31 @@
     }
   },
   "coverage": {
-    "files_total": 438,
-    "files_read": 438,
-    "bytes_read": 637462198,
+    "files_total": 441,
+    "files_read": 441,
+    "bytes_read": 639520253,
     "complete": true
   },
   "drivers": {
-    "requests": 52836,
-    "mean_context_tokens": 210387,
-    "pie_tokens": 1373821464,
-    "requests_per_agent_hour": 70.73
+    "requests": 52999,
+    "mean_context_tokens": 210276,
+    "pie_tokens": 1378023384,
+    "requests_per_agent_hour": 70.67
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 55,
-    "agent_hours": 747,
-    "span_hours": 204.56
+    "agent_hours": 750,
+    "span_hours": 204.62
   },
   "headline": {
-    "spend_to_date_usd": 6597.21,
-    "burn_usd_per_hour": 203.88,
+    "spend_to_date_usd": 6616.12,
+    "burn_usd_per_hour": 222.79,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 119.95,
-    "ch_pct_of_baseline": 103.5,
-    "usd_per_agent_hour": 8.83,
-    "usd_per_agent_hour_pct_of_baseline": 101.4
+    "ch_usd_per_hour": 120.29,
+    "ch_pct_of_baseline": 103.8,
+    "usd_per_agent_hour": 8.82,
+    "usd_per_agent_hour_pct_of_baseline": 101.3
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -305,79 +305,79 @@
     },
     {
       "t": "2026-08-14T10:00:00.000Z",
-      "usd_per_hour": 101.94,
-      "usd_per_agent_hour": 4.85,
-      "mean_agents": 21,
-      "commit": "06dafd0",
+      "usd_per_hour": 111.39,
+      "usd_per_agent_hour": 4.64,
+      "mean_agents": 24,
+      "commit": "acbe49e",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 6415.95,
-      "requests": 48917,
+      "usd": 6433.46,
+      "requests": 49038,
       "tokens": {
-        "input": 1061087,
-        "cache_write_5m": 160953208,
-        "cache_write_1h": 8001645,
-        "cache_read": 10176468938,
-        "output": 9457519
+        "input": 1069616,
+        "cache_write_5m": 161587039,
+        "cache_write_1h": 8016459,
+        "cache_read": 10198126619,
+        "output": 9558463
       }
     },
     {
       "model": "claude-sonnet-5",
-      "usd": 181.26,
-      "requests": 3919,
+      "usd": 182.66,
+      "requests": 3961,
       "tokens": {
-        "input": 299689,
-        "cache_write_5m": 8741227,
+        "input": 301106,
+        "cache_write_5m": 8776373,
         "cache_write_1h": 0,
-        "cache_read": 760461605,
-        "output": 671741
+        "cache_read": 766542969,
+        "output": 681241
       }
     }
   ],
   "by_token_class": [
     {
       "class": "input",
-      "usd": 5.9,
-      "tokens": 1360776
+      "usd": 5.95,
+      "tokens": 1370722
     },
     {
       "class": "cache_write_5m",
-      "usd": 1027.81,
-      "tokens": 169694435
+      "usd": 1031.86,
+      "tokens": 170363412
     },
     {
       "class": "cache_write_1h",
-      "usd": 80.02,
-      "tokens": 8001645
+      "usd": 80.16,
+      "tokens": 8016459
     },
     {
       "class": "cache_read",
-      "usd": 5240.33,
-      "tokens": 10936930543
+      "usd": 5252.37,
+      "tokens": 10964669588
     },
     {
       "class": "output",
-      "usd": 243.16,
-      "tokens": 10129260
+      "usd": 245.77,
+      "tokens": 10239704
     }
   ],
   "guards": {
     "g1_parallelism": {
-      "mean_agents": 13.58,
-      "mean_agents_present": 13.69,
+      "mean_agents": 13.64,
+      "mean_agents_present": 13.75,
       "floor": 12,
       "divergence_flag": false,
       "status": "ok",
       "window_hours": 1
     },
     "g2_quality": {
-      "mean_verdict_score": 3.62,
+      "mean_verdict_score": 3.64,
       "baseline_mean_verdict_score": null,
-      "n": 70,
+      "n": 71,
       "power": "low",
       "critic_find_rate": null,
       "baseline_critic_find_rate": null,
