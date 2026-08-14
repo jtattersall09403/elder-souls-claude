@@ -136,6 +136,33 @@ for (const f of gs) {
   add(`QST03.worldstate.${f.id}`, 'RI-QST03', ws >= 1 ? 'PASS' : 'FAIL', { ranks_5_plus_with_world_state: ws });
 }
 
+// THE CEILING CHECK. RI-QST03 §B puts a world-state requirement on ranks 5-7. A world state that
+// no quest in the book ever raises is a ladder whose top three rungs cannot be climbed in any
+// save — which the live arm sees only as "a qualified character stops at rank 4".
+{
+  const raised = new Set();
+  const collect = (c) => {
+    if (!c) return;
+    const wf = c.world_flags;
+    if (Array.isArray(wf)) for (const k of wf) raised.add(typeof k === 'string' ? k : (k && k.flag));
+    else if (wf && typeof wf === 'object') for (const k of Object.keys(wf)) raised.add(k);
+  };
+  for (const q of quests) { collect(q.consequences); for (const r of q.resolutions || []) collect(r.consequences); }
+  for (const f of gs) {
+    const dead = [];
+    for (const r of f.ranks || []) {
+      if (!r.world_state) continue;
+      const ws = typeof r.world_state === 'string' ? r.world_state : (r.world_state.flag || null);
+      if (ws && !raised.has(ws)) dead.push({ rank: r.rank, world_state: ws });
+    }
+    add(`QST03.ceiling.${f.id}`, 'RI-QST03', dead.length === 0 ? 'PASS' : 'HARD_FAIL',
+      { unreachable_ranks: dead.map((d) => d.rank), world_states_no_quest_raises: dead.map((d) => d.world_state),
+        highest_reachable_rank: dead.length ? Math.min(...dead.map((d) => d.rank)) - 1 : 7,
+        quests_stranded_above_the_ceiling: dead.length
+          ? (lines[f.id] || []).filter((q) => rankOf(q) >= Math.min(...dead.map((d) => d.rank))).length : 0 });
+  }
+}
+
 // favoured-skill overlap <= 3 between any two lines
 const overlaps = [];
 for (let i = 0; i < gs.length; i++) for (let j = i + 1; j < gs.length; j++) {

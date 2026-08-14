@@ -80,6 +80,7 @@ it and diffs), `refs/LICENCE-NOTE.md`, `refs/ACQUISITION-REPORT.md` (the full ac
 | **RI-VIS04** (renderer feature checklist) | `refs/modern/` for "what a shipped renderer does here" | `refs/morrowind/` |
 | **RI-VIS05** (Morrowind transposition) | all **19** filled `refs/morrowind/REF-A*` slots, REF-A12 for layout and colour only | anything under `refs/modern/`; REF-A12 for any claim about how the UI *looked* |
 | **`RI-UIX*`** (UI transposition) | `refs/morrowind/REF-A12/` — widget geometry, border weights, spacing, the `[FontColor]` table | REF-A12 for bevel, sheen, wear, type, iconography or populated density; any metrics population |
+| **`RI-UIX*`** (UI transposition — **appearance**, added 2026-08-14) | `refs/morrowind/REF-A12b/` for bevel, sheen, wear, type, iconography and populated density — the six things the row above forbids REF-A12 for, and the reason that row's prohibition was never a statement that the reference did not exist; `refs/morrowind/REF-A12c/` likewise, and it is the higher-resolution frame for the dialogue window | **REF-A12c's green topic list and corner chrome — neither is Morrowind** (`RI-UIX08` §E4, §E); any metrics population; any pixel statistic on either folder |
 | **RI-VIS06 Protocol A** (fidelity blind) | `refs/modern/character_closeup/` as the `--ref` side | `refs/morrowind/`, `refs/modern/hud/` |
 | **RI-VIS06 Protocol B** (art-direction blind) | `refs/morrowind/REF-A*` as the `--ref` side | `refs/modern/` |
 | **RI-VIS07** ("could this be Skyrim?") | `refs/anti-generic/` as the thing to measure distance **from** | `refs/anti-generic/` as a target — ever |
@@ -123,7 +124,25 @@ writes there.
    by eye; V2 was assessed per image (7 files show distant land and are recorded
    `engine: "openmw-distant-land"`); **V3, V4 and V6 could not be assessed at 320×320 and are
    recorded `null`.**
-5. **REF-A12 (the Morrowind UI) is now filled — by structure, not by pixels.** Revision 2 called
+5. **CORRECTED 2026-08-14 — the appearance gap this paragraph describes was closed on 2026-08-06
+   and this item did not say so for eight days, which is why the dialogue window was built with
+   nothing to look at.** `REF-A12b/` (33 native-engine captures) and now `REF-A12c/` (the owner's
+   own) supply bevel, sheen, wear, type, iconography and populated density for the dialogue window,
+   journal, inventory, map, character sheet, barter, books and tooltips. They were manifested,
+   eye-verified and routed to `ui-fidelity` the whole time, and `orchestration/plans/W1-21.md`
+   cites REF-A12b by path — but this item is the *register*, `REF-A12/README.md` is what a builder
+   reads before citing REF-A12, and **both still said the pictures did not exist**, so a builder
+   who obeyed the corpus was told the reference was absent. **The failure was not acquisition. It
+   was that nothing propagated the acquisition into the two documents a consumer actually reads.**
+   The paragraph below is left standing verbatim, as the record of what was believed; read it with
+   this box, and read `refs/morrowind/REF-A12/README.md`'s own correction note. **The ask it ends
+   with — "four 1024×768 vanilla screenshots" — is satisfied and then some.**
+
+   The one thing still genuinely missing is a **vanilla, native-engine capture of the character
+   creation and class screens at high resolution**, and a second dialogue frame showing a *short*
+   topic list (every held frame shows a long one, so density at the low end is unobserved).
+
+   *Original paragraph, unedited:* **REF-A12 (the Morrowind UI) is now filled — by structure, not by pixels.** Revision 2 called
    it permanently unfillable, correctly for its source: `dehero/mwscr`'s editorial policy is "no
    interface", so no menu, journal, dialogue list or map exists anywhere in it. Revision 3 acted on
    the alternative revision 2 had already identified: **OpenMW's `files/data/mygui/` layout and
