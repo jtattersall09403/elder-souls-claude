@@ -143,17 +143,30 @@ window.__DYS = {
     }
     return { frac: +(blocked / n).toFixed(4), rays: n, mean_m: +(sum / n).toFixed(2) };
   },
-  /** The ceiling this STANDING POINT can offer: the best of 36 ten-degree bearings. */
+  /**
+   * The ceiling this STANDING POINT can offer: the best of 36 ten-degree bearings — and the
+   * WORST, which is the instrument's own can-it-fail check (RULES.md rule 4).
+   *
+   * A probe that cannot fail is worse than no probe, and this one has an obvious way to be
+   * vacuous: if the collision cell is empty — indoors before `_syncInteriorCollisionCell()` has
+   * run, or outdoors outside any town — every ray runs to the cap and EVERY row passes with
+   * distinction while measuring nothing at all. `worst_clearance_m` is the number that catches
+   * that: at a real doorstep some bearing must find a wall, so a point where even the WORST of 36
+   * bearings reaches the cap is flagged `no_geometry_visible` and must be read as "no measurement
+   * was taken here", never as "this facing is fine".
+   */
   best(x, z, eye, near, reach, minClear, maxOccl) {
-    let bv = -1, by = 0, anyPass = false, bestOccl = 1;
+    let bv = -1, by = 0, wv = Infinity, anyPass = false, bestOccl = 1;
     for (let a = 0; a < 360; a += 10) {
       const c = this.clearance(x, z, a, eye, reach);
       const o = this.occluded(x, z, a, eye, near, reach).frac;
       if (c >= minClear && o <= maxOccl) anyPass = true;
       if (o < bestOccl) bestOccl = o;
       if (c > bv) { bv = c; by = a; }
+      if (c < wv) wv = c;
     }
-    return { clearance_m: bv, yaw_deg: by, best_occluded_frac: bestOccl, point_can_pass: anyPass };
+    return { clearance_m: bv, yaw_deg: by, worst_clearance_m: wv, best_occluded_frac: bestOccl,
+      point_can_pass: anyPass, no_geometry_visible: wv >= reach };
   },
   /** One measurement point: where the three yaw fields are, and what the view along them is. */
   sample(near, reach) {
@@ -370,6 +383,9 @@ function summarise(out) {
     // charging the facing rule for it would be wrong in both directions.
     const withBest = rows.filter((r) => r[key] && r[key].best);
     acc.point_cannot_pass = withBest.filter((r) => !r[key].best.point_can_pass).map((r) => r.id);
+    // The instrument's own can-it-fail column. A point where even the WORST of 36 bearings runs to
+    // the cap saw no geometry at all, and its PASS is not a measurement.
+    acc.no_geometry_visible = withBest.filter((r) => r[key].best.no_geometry_visible).map((r) => r.id);
     return acc;
   };
   out.summary = {
@@ -410,6 +426,7 @@ function report(out) {
     say(`    three fields: cam==body ${t.cam_matches_body}/${t.n}  combat==body ${t.combat_matches_body}/${t.n}  body STILL at seed ${t.still_at_seed_yaw}/${t.n}  camera STILL at seed ${t.cam_still_at_seed_yaw}/${t.n}`);
     say(`    yaw sources: ${JSON.stringify(S[key].yaw_sources)}`);
     say(`    points where NO bearing passes: ${S[key].point_cannot_pass.length}${S[key].point_cannot_pass.length ? ' — ' + S[key].point_cannot_pass.slice(0, 8).join(', ') : ''}`);
+    say(`    points where the instrument saw NO geometry (vacuous pass): ${S[key].no_geometry_visible.length}${S[key].no_geometry_visible.length ? ' — ' + S[key].no_geometry_visible.slice(0, 8).join(', ') : ''}`);
   }
   if (S.refused.length) say(`  doors refused: ${S.refused.length} — ${S.refused.slice(0, 6).map((r) => r.id + ':' + r.why).join(', ')}`);
   if (S.errors.length) say(`  errors: ${S.errors.length} — ${S.errors.slice(0, 4).map((r) => r.id).join(', ')}`);
