@@ -1,0 +1,112 @@
+name: publish dashboards
+
+# Regenerates orchestration/INDEX.md, docs/index.html, docs/progress.html, docs/status.json and
+# docs/data/cost-ledger.json, and commits them back if they changed.
+#
+# WHY THIS EXISTS (OWNER-DIRECTIVES-2026-08-14.md #7): regeneration was wired only into
+# .githooks/pre-commit, a LOCAL git hook. That hook never fires two ways progress now normally
+# lands on this project:
+#   1. a pull request merged on GitHub (button or API) is a server-side merge — no local hook
+#      anywhere runs for it, however carefully the branch's own commits were made;
+#   2. a fresh clone or a Codex/agent sandbox that never ran
+#      `git config core.hooksPath .githooks` (npm run hooks:install) has no hook installed at all,
+#      and nothing in the repository forces that step.
+# Between them, dozens of merged PRs (see the `codex/w1-30-final-builder-*` and `codex/w1-19-*`
+# merge history) never touched docs/index.html, docs/progress.html, docs/status.json or
+# orchestration/INDEX.md, and the pages went stale silently for days. This workflow does not
+# depend on which route landed a change; it reacts to the push the merge itself produces, so it
+# closes both gaps at once. It is a second, independent leg — the pre-commit hook and the
+# builder-execution-contract publish step (BUILDER-EXECUTION-CONTRACT.md) still apply and should
+# usually make this workflow a no-op; it exists for the case where they didn't run.
+
+on:
+  push:
+    branches:
+      - codex/wave1-build-experiment
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # The commit this workflow makes carries [skip publish] precisely so it does not trigger
+    # itself. Without this guard every auto-publish commit would queue another run forever.
+    if: "!contains(github.event.head_commit.message, '[skip publish]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Both are the exact commands orchestration/RULES.md and BUILDER-EXECUTION-CONTRACT.md ask
+      # every builder to run themselves. Never blocking (rule 13): a dashboard that stops the
+      # fleet has cost more than it saves, so a failure here is reported, not thrown.
+      - name: regenerate the orientation index and the published site
+        run: |
+          node tools/gen-index.mjs || echo "publish workflow: gen-index.mjs failed — orchestration/INDEX.md may be stale, continuing anyway"
+          node tools/publish.mjs || echo "publish workflow: publish.mjs failed — docs/ may be stale, continuing anyway"
+
+      - name: commit and push the regenerated files, if anything changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -u
+          git config user.name "elder-souls-publish-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add orchestration/INDEX.md docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
+          # Scoped to docs/data/ deliberately (rule 17 forbids an unscoped add): the ledger's
+          # failure marker is DELETED on a successful refresh, and `git add <path>` alone cannot
+          # stage a deletion, so a cleared failure would otherwise stay committed forever.
+          git add -A docs/data 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "publish workflow: nothing changed — dashboards were already current."
+            exit 0
+          fi
+
+          git commit -m "$(cat <<EOF
+          Auto-publish: regenerate dashboards [skip publish]
+
+          orchestration/INDEX.md, docs/index.html, docs/progress.html, docs/status.json and
+          docs/data/cost-ledger.json regenerated from the tree after ${GITHUB_SHA}, because this
+          push did not carry a local pre-commit run that would otherwise have done it (a merged
+          PR, or a sandbox without the hook installed). See
+          orchestration/OWNER-DIRECTIVES-2026-08-14.md #7 and .github/workflows/publish.yml.
+          EOF
+          )"
+
+          # The fleet commits concurrently and this branch moves fast (rule 17's index-lock note
+          # applies here too): on a losing push, re-fetch, re-run the generators fresh against the
+          # new tip (never replay a stale diff onto a moved branch), and retry — rather than
+          # failing the whole run over a race.
+          for attempt in 1 2 3 4 5; do
+            if git push origin "HEAD:${GITHUB_REF_NAME}"; then
+              echo "publish workflow: pushed on attempt ${attempt}."
+              exit 0
+            fi
+            echo "publish workflow: push rejected (attempt ${attempt}) — someone else landed first. Re-fetching and regenerating fresh."
+            git fetch origin "${GITHUB_REF_NAME}"
+            git reset --hard "origin/${GITHUB_REF_NAME}"
+            node tools/gen-index.mjs || true
+            node tools/publish.mjs || true
+            git add orchestration/INDEX.md docs/index.html docs/progress.html docs/status.json 2>/dev/null || true
+            git add -A docs/data 2>/dev/null || true
+            if git diff --cached --quiet; then
+              echo "publish workflow: the other push already carried an equivalent regeneration — nothing left to do."
+              exit 0
+            fi
+            git commit -m "Auto-publish: regenerate dashboards [skip publish]"
+            sleep $((attempt * 5))
+          done
+          echo "publish workflow: could not push after 5 attempts — reporting, not failing the run (rule 13)."

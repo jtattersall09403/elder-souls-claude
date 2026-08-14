@@ -1,0 +1,89 @@
+{
+  "task_id": "W1-30-VIS-REVIEW",
+  "role": "plan-reviewer-editor",
+  "piece": "W1-30",
+  "status": "done",
+  "state": "material_edit_awaiting_recriticism",
+  "plan_state": "awaiting-recriticism",
+  "branch": "codex/wave1-build-experiment",
+  "verdict": "MATERIAL EDIT. The previous W1-30 plan would not have produced a game that looks good. Its acceptance contract gated almost entirely on instrument validity and reference legality; its one substantive human-quality read (RI-VIS06 Protocol A) is conditioned on legal paired modern pixels the plan itself records as largely missing, so the load-bearing quality signal reduced to RI-VIS03 M1-M12 image statistics, which procedural noise raises. The shipped build then did exactly that. Plan rewritten as a parent plus ten child plans, two shared mechanism documents, and an evidence standard in which human judgement of many frames and motion sequences is primary and the statistics are a regression tripwire only.",
+  "files_touched": [
+    "orchestration/plans/W1-30.md",
+    "orchestration/plans/W1-30-LIBRARY.md",
+    "orchestration/plans/W1-30-EVIDENCE.md",
+    "orchestration/plans/W1-30S.md",
+    "orchestration/plans/W1-30A.md",
+    "orchestration/plans/W1-30B.md",
+    "orchestration/plans/W1-30C.md",
+    "orchestration/plans/W1-30D.md",
+    "orchestration/plans/W1-30E.md",
+    "orchestration/plans/W1-30F.md",
+    "orchestration/plans/W1-30G.md",
+    "orchestration/plans/W1-30H.md",
+    "orchestration/plans/W1-30V.md",
+    "orchestration/INDEX.md",
+    "orchestration/status/W1-30-VIS-REVIEW.json"
+  ],
+  "game_code_touched": [],
+  "children": [
+    {"id": "W1-30S", "name": "Seam pass", "plan_state": "satisfied", "dispatch": "now", "depends_on": [], "owns": ["game/src/render/** (one move-only commit)"]},
+    {"id": "W1-30A", "name": "Frame pipeline and grade", "plan_state": "satisfied", "dispatch": "after S", "depends_on": ["W1-30S"], "owns": ["game/src/render/renderer.js", "game/src/render/post/**", "game/vendor/three/addons/**"]},
+    {"id": "W1-30B", "name": "Light, sky, shadow, atmosphere", "plan_state": "satisfied", "dispatch": "after S", "depends_on": ["W1-30S"], "owns": ["game/src/render/sky.js", "game/src/render/lighting.js", "game/src/render/lib/lighting-recipes.js"]},
+    {"id": "W1-30C", "name": "Material and texture library", "plan_state": "satisfied", "dispatch": "now (API phase)", "depends_on": [], "owns": ["game/src/render/visual-foundation.js", "game/assets/w1-30/materials/**", "tools/assets/**"]},
+    {"id": "W1-30D", "name": "Characters, creatures, animation", "plan_state": "satisfied", "dispatch": "after S and C-API", "depends_on": ["W1-30S", "W1-30C"], "owns": ["game/src/render/actor.js", "game/src/render/models.js", "game/src/render/lib/rigs.js", "game/src/render/rig-contract.js", "game/assets/w1-30/models/**"]},
+    {"id": "W1-30E", "name": "Architecture and settlement kit", "plan_state": "satisfied", "dispatch": "after S and C-API", "depends_on": ["W1-30S", "W1-30C"], "owns": ["game/src/render/exterior.js", "game/src/render/places.js", "game/src/render/lib/kits.js", "game/assets/w1-30/kits/**"]},
+    {"id": "W1-30F", "name": "Terrain, vegetation, region corpus", "plan_state": "satisfied", "dispatch": "after S and C-API", "depends_on": ["W1-30S", "W1-30C"], "owns": ["game/src/world/province.js", "game/src/world/groundskin.js", "game/src/world/microrelief.js", "game/src/world/field.js", "game/src/world/noise.js"]},
+    {"id": "W1-30G", "name": "Interiors and practical lighting", "plan_state": "satisfied", "dispatch": "after B lands", "depends_on": ["W1-30S", "W1-30B", "W1-30C"], "owns": ["game/src/render/interior.js", "game/src/world/interior-lighting.js"]},
+    {"id": "W1-30H", "name": "VFX and water surface", "plan_state": "satisfied", "dispatch": "after S", "depends_on": ["W1-30S"], "owns": ["game/src/render/spell-vfx.js", "game/src/render/water.js"]},
+    {"id": "W1-30V", "name": "Visual truth, the Deck, the defect inventory", "plan_state": "satisfied", "dispatch": "now", "depends_on": [], "owns": ["tools/visual/**", "reports/visual-truth/**", "docs/shots/**"]}
+  ],
+  "code_level_findings": [
+    "No MSAA on the shipping frame: renderer.js:64 sets antialias:true on the context, but the world renders into worldTarget (renderer.js:253) whose samples is never set. Context MSAA applies only to the default framebuffer.",
+    "IBL is a 16x8 = 128-texel DataTexture assigned directly as scene.environment (sky.js:185-191) with no PMREMGenerator, so there is no roughness-convolved mip chain and every material gets the same flat specular blob.",
+    "One shadow map over a 120 m box: sky.js:139-148, 2048 sq, ortho +/-60, near 40, far 210. No cascades. Nothing beyond ~60 m of focus is shadowed.",
+    "The colour grade is saturation x1.035, contrast x1.015, vignette 0.075 - effectively a no-op. No per-region or per-weather grading exists.",
+    "Bloom is 4 taps at 2 px, threshold 0.72, added at 0.075. AO is 4 depth taps at 3 px clamped to 0.12.",
+    "No dither before 8-bit output; sky and fog gradients band.",
+    "Zero authored 3D models in the repository: grep for GLTFLoader/.glb/.gltf over game/src returns nothing. Characters are 17 Sphere, 9 Capsule, 9 Cone, 6 Torus, 6 Cylinder, 3 Dodecahedron primitives skinned to a hand-built skeleton.",
+    "Three authored texture sets for the whole province (brown_mud, bark_brown_01, plastered_stone_wall) covering 9 of 20 material families; 9 more families have a single 256px albedo-only jpg with no normal and no roughness; skin and water are procedural noise only.",
+    "Foliage is not alpha-tested: visual-foundation.js:159 defaults alphaTest 0 and no consumer overrides it.",
+    "The 96x96 hash-noise detail field (visual-foundation.js:112) used as albedo, height, AO and roughness is exactly the input that raises RI-VIS03 texture statistics without raising perceived quality - the metric-gaming risk the old plan named and then shipped."
+  ],
+  "frame_level_findings": {
+    "source": "docs/shots/2026-08-14-visual-truth/ (VISUAL-TRUTH-AUDIT, GPU pod, 24 orbit angles + 16-step look sweep + world-hidden pass)",
+    "coverage": "one location (settlement approach, noon, rain) and one subject (the player). Multi-location and multi-time sweep was still running.",
+    "findings": [
+      "FogExp2(0x9aa79a, 0.0022) erases the world past ~40 m: a settlement at 40 m is a white smear with no readable silhouette. Highest-impact single change in the tree.",
+      "No directional shadow appears in any of 24 noon orbit frames despite shadowMap.enabled and sun.castShadow both true. Prime suspect: sun.shadow.camera.near = 40 clipping the scene. This is a defect, not a missing feature.",
+      "The player transparency defect is GEOMETRIC, not material. Material audit: every visible player mesh is transparent:false, opacity:1. The world-hidden capture shows sky between shoulder plate and arm, and between head and shoulders - disjoint primitives that do not weld. Every previous fix targeted the material and could not have worked.",
+      "Tree canopies render with no trunks - discs floating in the sky.",
+      "Terrain is a flat plane with a visible ~1 m quad grid and hard tile seams; no relief, no scatter.",
+      "Roads and boardwalks are flat hard-edged quads sitting on the ground with no blend, no contact darkening, visible overlap.",
+      "The shield renders as a pure black polygon; the greatsword is a flat untapered plank clipping the shield.",
+      "Rain is uniform full-intensity white lines at every depth - no distance attenuation.",
+      "An NPC renders doll-sized and floating in mid-air at wrong scale or position.",
+      "Character proportions: legs roughly twice the torso, no neck, hands are cylinders."
+    ]
+  },
+  "cross_piece_findings": [
+    "Intermittent boot failure at game/src/ui/compass.js:109 - cardinalOf() indexes POINTS[NaN].label, requires non-finite camera yaw. Not reproducible by viewport size. Belongs to the HUD/UI piece, recorded here so it is not lost.",
+    "RunPod tooling needs openssh-client installed and NODE_USE_ENV_PROXY=1, because Node's global fetch does not honour HTTPS_PROXY and every RunPod API call returns 403 Host not in allowlist while curl to the same URL returns 200. This should go into the GPU tooling docs - it costs every future agent an hour."
+  ],
+  "rulings_made": [
+    {"ruling": "Vendoring the official same-version r180 post-processing addons (EffectComposer, RenderPass, OutputPass, SMAAPass, UnrealBloomPass, GTAOPass/SSAOPass) and the core PMREMGenerator is approved and expected, not a last resort.", "reversible": true, "overturned_by": "a measured demonstration that the addon route cannot meet a governing predicate within budget"},
+    {"ruling": "GLTFLoader, DRACOLoader and KTX2Loader are approved and required. A 7/10 look is not reachable with zero authored geometry.", "reversible": true, "overturned_by": "W1-30D's or W1-30E's sourcing spike establishing that no legally redistributable assets of sufficient quality exist, in which case each pivots in writing to high-quality generated geometry"},
+    {"ruling": "TAA is out of scope for W1-30A. MSAA + SMAA is the antialiasing route; TAA's history invalidation for cuts, teleports, resize, cell changes and animated foliage is a larger risk than the aliasing it removes.", "reversible": true, "overturned_by": "SMAA + MSAA measurably failing the motion crawl gate"},
+    {"ruling": "W1-30's children dispatch on their own plan states rather than waiting for the parent's recriticism round, because blocking the owner's top priority behind a review cycle violates rule 0 and directive 4.", "reversible": true, "overturned_by": "a reviewer finding the decomposition's seams wrong, in which case in-flight children stop at their next commit boundary rather than merging"},
+    {"ruling": "The W1-06 and W1-24 build dependencies that blocked the whole of W1-30 are dissolved. Seven of ten children have no such dependency; the two that do (D on W1-06, V on W1-24) declare it locally.", "reversible": true, "overturned_by": "a child builder finding it genuinely cannot proceed without landed dependency work"},
+    {"ruling": "RI-VIS03 M1-M12 can fail a build and can never pass one. Human judgement of many frames and motion sequences is the primary quality signal.", "reversible": true, "overturned_by": "a demonstration that naive human judgement is not reproducible enough to gate on, in which case the fallback is fewer better-anchored judgements, not more statistics"}
+  ],
+  "not_done": [
+    "Did not run the game. All frame evidence is the VISUAL-TRUTH-AUDIT's, captured by another agent.",
+    "The audit's multi-location and multi-time-of-day sweep was incomplete at finalisation, so severity ranking across regions is unmeasured. W1-30V has standing authority to reorder the priority list once it completes.",
+    "Saw no interior, no combat, no spell and no region other than the starting settlement approach. Claims about those rest on code reading alone.",
+    "Did not audit the other 25 plans for the same instruments-not-pictures defect, though directive 2 says to assume the failure mode is not confined to graphics. Proposed as a separate cheap piece.",
+    "Did not verify the CC0 licensing of the three authored texture sets in game/assets/w1-30/materials/; W1-30C's first gate re-checks provenance before adding more.",
+    "Did not add a concept-art / key-art child, though I flag in the parent's falsification audit that W1-30E and W1-30F may not cohere without one. I could not establish that usable key art can be generated or licensed, and inventing a blocked child is worse than naming the risk. A reviewer adding it would be right and I would not resist the edit."
+  ],
+  "next_step": "Dispatch W1-30S, W1-30C (API phase) and W1-30V now; dispatch a fresh parent reviewer-editor in parallel; dispatch W1-30A, W1-30B and W1-30H the moment S lands. Each child gets one builder and one separate fresh critic per orchestration/PLAN-LOOP.md. Priority within the first day, from the frames: fog (B item 0a), shadows not drawing (B item 0b), floating canopies (F item 0), the player's geometric holes (D item 2)."
+}

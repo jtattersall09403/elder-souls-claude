@@ -49,6 +49,7 @@
 
 import { UISurface } from './surface.js';
 import { drawHUD } from './hud.js';
+import { bearingFromYaw, cardinalOf } from './compass.js';
 import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './screens/inventory.js';
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
@@ -86,6 +87,13 @@ export class UISystem {
     this.data = data || {};
     this.mode = 'world';
     this.stack = [];
+    // HUD-MORROWIND. 'full' or 'minimal' — the owner's "minimal with compass directions".
+    // A UI preference, not simulation state, so it deliberately does NOT go through
+    // `save/state.js`: a save written in minimal mode must not silently change what the next
+    // player sees, and a preference that round-trips through the save file is a preference that
+    // one day disagrees with itself across two characters. It resets to 'full' on construction
+    // and the player switches it back in one press.
+    this.hudMode = 'full';
     this.focus = {
       inventory: { col: 1, tagIdx: 0, rowIdx: 0, sortIdx: 0 },
       container: { side: 0, rowIdx: 0, otherIdx: 0 },
@@ -220,6 +228,29 @@ export class UISystem {
 
   close() { this.mode = 'world'; this.stack.length = 0; this.bookId = null; return this.mode; }
 
+  /**
+   * HUD-MORROWIND. Switch the HUD between 'full' and 'minimal'.
+   *
+   * Throws on anything else rather than falling back to 'full', because a silent fallback is how
+   * `setHudMode('min')` becomes a feature that "does not work on my machine" and never gets
+   * reported. There are two modes and there is no third.
+   */
+  setHudMode(mode) {
+    const m = String(mode);
+    if (m !== 'full' && m !== 'minimal') {
+      throw new Error(`setHudMode('${m}'): the HUD has two modes, 'full' and 'minimal'.`);
+    }
+    this.hudMode = m;
+    // The surface early-returns in `build()` while the frame has not advanced and the mode,
+    // touch signature and focus signature are unchanged — and none of those three moves when
+    // the HUD mode does. Without this the player presses the switch and the screen does not
+    // change until something else happens to invalidate the frame, which is exactly the defect
+    // W1-21 round 2 measured for focus (0 px on a real press) and round 3 measured again for
+    // `pending`. Bumping `builtFrame` forces the next `build()` to actually redraw.
+    this.builtFrame = -1;
+    return this.hudMode;
+  }
+
   back() {
     if (this.stack.length) { this.mode = this.stack.pop(); if (this.mode !== 'book') this.bookId = null; }
     else this.close();
@@ -312,6 +343,27 @@ export class UISystem {
     const navX = input.uiMoveX || input.moveX;
     const navY = input.uiMoveY || input.moveY;
     if (!inCombat) {
+      // ---- HUD-MORROWIND: the full/minimal switch --------------------------------------------
+      //
+      // THE ACTION SET IS NOT WIDENED, and this is the same move W1-21 round 2 made for
+      // `swap_left`/`swap_right` above: RI-JRN03 §A closes the set at sixteen names, so what
+      // changes is what an existing name MEANS while a screen is open. `two_hand` is bound on
+      // keyboard (KeyG), on both pad profiles and on touch, and while a screen is open and no
+      // fight is running it has no other meaning — nothing else in this file or in
+      // `combat/player.js` reads it on a paused frame.
+      //
+      // ONLY OUT OF COMBAT, and that is not tidiness either. RI-UIX03 P6 requires the fight to
+      // stay playable with the screen up, and in a fight `two_hand` is two-handing your weapon.
+      // Stealing it there would be taking a combat verb to change a preference.
+      //
+      // Declared in `state().hud.mode_switch` so a probe reads the binding rather than
+      // discovering it, and shown to the player as a hint on the inventory screen — a control
+      // the player cannot find is a control that does not exist.
+      if (input.pressedName('two_hand')) {
+        taken.push('two_hand');
+        this.setHudMode(this.hudMode === 'minimal' ? 'full' : 'minimal');
+        return taken;
+      }
       const step = (input.pressedName('swap_right') ? 1 : 0) - (input.pressedName('swap_left') ? 1 : 0);
       if (step) {
         taken.push(step > 0 ? 'swap_right' : 'swap_left');
@@ -731,6 +783,21 @@ export class UISystem {
       equipLoadPct: p.equipLoadPct || 0,
       rollClass: p.rollClass || 'LIGHT',
       slots: ctx.slots,
+      // HUD-MORROWIND. Two fields, and between them they are the whole HUD-side model.
+      //
+      // `bearing_deg` is computed from `sim.camera.yaw` ON THE FRAME BEING DRAWN, with no tween
+      // and no smoothing, for the same reason RI-UIX01 §D states the stamina bar absolutely: a
+      // compass that lags the camera tells you where you were pointing, which is worse than no
+      // compass. `ctx.cameraYaw` is threaded from `Engine._uiContext()`; when it is absent (a
+      // fixture that builds a UI with no camera) the bearing is simply north-facing and the dial
+      // still draws, rather than the HUD throwing inside a probe.
+      //
+      // NOTE WHAT IS NOT HERE. No place list, no quest field, no world position. RI-UIX02 §A
+      // predicted "a compass added 'just for cardinal direction' which then acquires a single
+      // tick for the active quest", and the defence is that there is nothing on this model to
+      // acquire it from — the same structural argument `_mapModel` makes for S35.
+      bearing_deg: bearingFromYaw(ctx.cameraYaw || 0),
+      minimal: this.hudMode === 'minimal',
       buildups: ctx.buildups || [],
       lockOn: ctx.lockOn,
       boss: ctx.boss,
@@ -1174,6 +1241,18 @@ export class UISystem {
         // purpose" from "the HUD has stopped working".
         suppressed: !!this.hudSuppressed,
         suppressed_because: this.hudSuppressed ? 'the title surface is shown — there is no character yet' : null,
+        // HUD-MORROWIND. The mode, the switch that changes it, and the compass — reported so a
+        // probe reads the binding rather than discovering it, and so "no dial on screen" can be
+        // told apart from "the dial has stopped working". In a fight there is deliberately no
+        // dial (RI-UIX01 §B X6 governs the combat HUD); `bearing_withheld_because` says so.
+        mode: this.hudMode,
+        mode_switch: { action: 'two_hand', when: 'a screen is open and no fight is running' },
+        bearing_deg: this.hudSuppressed ? null : bearingFromYaw((ctx && ctx.cameraYaw) || 0),
+        bearing_cardinal: this.hudSuppressed ? null : cardinalOf(bearingFromYaw((ctx && ctx.cameraYaw) || 0)),
+        bearing_drawn: els.some((e) => e.kind === 'bearing_dial' && e.visible),
+        bearing_withheld_because: (ctx && ctx.inCombat)
+          ? 'a fight is running — RI-UIX01 §B X6 forbids a compass in the combat HUD, so it is withdrawn'
+          : null,
         persistent_count: hud.filter((e) => persistent.has(e.kind) && e.visible).length,
         total_count: hud.filter((e) => e.visible).length,
         coverage_pct: +((hudUnion / (S.W * S.H)) * 100).toFixed(4),

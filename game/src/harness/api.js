@@ -215,6 +215,27 @@ export function installHarness(engine, bootPromise) {
     // `openMenu('map', {anything})`. See game/src/ui/system.js.
     openMenu(name, opts) { return engine.openMenu(name, opts || {}); },
     /**
+     * HUD-MORROWIND. Switch the HUD between 'full' and 'minimal'.
+     *
+     * This is the HARNESS door, not the player's. The player's route is `two_hand` while a
+     * screen is open and no fight is running (`ui/system.js step()`), and a probe that only ever
+     * came through here would never find out whether that route works — which is precisely the
+     * defect W1-13 round 4 measured, when `openMenu()` reached six screens and real input
+     * reached two. `hud-compass-probe.mjs` therefore drives the SWITCH through the input
+     * pipeline and uses this verb only to set up an arm.
+     *
+     * Throws on any mode name other than the two, rather than silently doing nothing.
+     */
+    setHudMode(mode) {
+      const m = engine.ui.setHudMode(mode);
+      // Rebuild now so a caller that reads `getUIState()` on the same frame sees the new mode.
+      // `build()`'s early-return is keyed on frame/mode/touch/focus and the HUD mode moves none
+      // of them; `setHudMode` clears `builtFrame`, and this forces the redraw immediately rather
+      // than on whatever frame happens to invalidate next.
+      engine.getUIState();
+      return { ok: true, mode: m };
+    },
+    /**
      * W1-MAP / ARBITRATION S35. **THE LIVE WORLD'S map state, not the save blob's.**
      *
      * This exists because of the protocol's own finding that a round trip which re-serialises

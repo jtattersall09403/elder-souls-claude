@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `fa146e1`: 887 tools, 154 reference
-items, 159 pieces in flight.
+so it cannot drift. Generated at `78cb2d1`: 889 tools, 155 reference
+items, 160 pieces in flight.
 
-Its purpose is to stop 159+ concurrent agents each paying separately to discover the
+Its purpose is to stop 160+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -314,7 +314,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/gamepad/deadzone-deletefix.mjs` — RULES 6 for W1-GAMEPAD's one source change.
 - `tools/gamepad/pad-run.mjs` — the gamepad path, end to end, on a pad ALONE.
 
-### `tools/harness/` — 243
+### `tools/harness/` — 244
 
 - `tools/harness/ai-browser.mjs` — W1-12's BROWSER half — the claims `ai-probe.mjs` is not allowed to make.
 - `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
@@ -482,6 +482,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/visual-truth.mjs` — **no header comment**
 - `tools/harness/vt-play.mjs` — **no header comment**
 - `tools/harness/vt-seethrough.mjs` — **no header comment**
+- `tools/harness/vt-world.mjs` — **no header comment**
 - `tools/harness/w1-00-mth07-live.mjs` — Native RI-MTH07 treatment/null producer for the models owned by W1-00.
 - `tools/harness/w1-00-mth07.mjs` — Fail-closed aggregate for W1-00's RI-MTH07 census.
 - `tools/harness/w1-07-birthsign-consume.mjs` — **no header comment**
@@ -847,13 +848,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/uesp/uesp-query.mjs` — **no header comment**
 - `tools/uesp/uesp-stats.mjs` — **no header comment**
 
-### `tools/ui/` — 10
+### `tools/ui/` — 11
 
 - `tools/ui/compass-math.mjs` — the compass's arithmetic, checked against an INDEPENDENT derivation, plus the responsive dial geometry at every viewport the game is meant to be played at.
 - `tools/ui/critic-w1-21-r2-a.mjs` — the W1-21 ROUND-2 CRITIC's own instrument.
 - `tools/ui/critic-w1-21-r2-b.mjs` — the W1-21 ROUND-2 CRITIC's own instrument, passes C..G.
 - `tools/ui/critic-w1-21-r2-consume.mjs` — the W1-21 round-2 CRITIC's CONSUMPTION instrument (RI-MTH07).
 - `tools/ui/critic-w1-21-r2-doors-at-head.mjs` — RULES 12, applied to the round's headline result.
+- `tools/ui/hud-compass-probe.mjs` — the compass and minimal mode, in the running game.
 - `tools/ui/w1-21-model-consumption.mjs` — Exhaustive RI-MTH07 coupling gate for every player-facing UISystem model/drawer in W1-21.
 - `tools/ui/w1-21-r3-browser.mjs` — W1-21 round 3's ONE browser: the derived `markers` field, CONSUMPTION, and the six screens.
 - `tools/ui/w1-21-r3-empty.mjs` — RULES 6, FOR THE INSTRUMENT: run every graded check with its subject removed and confirm that none of them goes green.
@@ -1061,7 +1063,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **225 tools have no header comment**, so nobody can tell what they do without
+> **226 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -1220,6 +1222,7 @@ of its twelve items judged none of its declared paths.
 | **RI-WLD13**  | [world.interior.continuity] | `corpus/50-world/RI-WLD13-interior-exterior-continuity.md` |
 | **RI-WLD14**  | [world.strangeness.architecture] | `corpus/50-world/RI-WLD14-built-alienness.md` |
 | **RI-WLD15**  | [world.terrain.form, world.region.identity, world.density.handplacement, world.verticality.layout] | `corpus/50-world/RI-WLD15-within-region-variety.md` |
+| **RI-WLD16**  | [world.terrain.form, world.region.identity, world.verticality.layout, world.hazard.environment] | `corpus/50-world/RI-WLD16-landform-and-geology.md` |
 | **RI-WPN01**  | [weapon.moveset.slots, weapon.moveset.schema, weapon.charge.heavy, weapon.moveset.answers, combat.attack.charge, combat.attack.moveset] | `corpus/12-weapons/RI-WPN01-moveset-slot-contract.md` |
 | **RI-WPN02**  | [weapon.class.taxonomy, weapon.class.differentiation, weapon.class.reach, weapon.moveset.slots, combat.weapon.identity, combat.frames.timing] | `corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md` |
 | **RI-WPN03**  | [weapon.identity.withinclass, weapon.animation.reuse, weapon.class.differentiation, combat.weapon.identity] | `corpus/12-weapons/RI-WPN03-within-class-subtlety.md` |
@@ -1236,6 +1239,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-30-VIS-REVIEW` | material_edit_awaiting_recriticism | Dispatch W1-30S, W1-30C (API phase) and W1-30V now; dispatch a fresh parent reviewer-edito | `orchestration/plans/W1-30.md` `orchestration/plans/W1-30-LIBRARY.md` `orchestration/plans/W1-30-EVIDENCE.md` `orchestration/plans/W1-30S.md` `orchestration/plans/W1-30A.md` `orchestration/plans/W1-30B.md` |
 | `ci-triage-20260814` | ? | none for this task; follow-ons named in reports/ci-triage/TRIAGE-20260814.md §5 Rulings B/ | `orchestration/status/ci-triage-20260814.json` `reports/ci-triage/TRIAGE-20260814.md` `orchestration/NEXT-DISPATCH.md` `orchestration/INDEX.md` `.gitignore` `tools/verdict-validate.mjs` |
 | `HUD-MORROWIND` | code-landed-math-green-browser-pending | Run tools/ui/hud-compass-probe.mjs (one browser): the 360-degree sweep, in-combat withdraw | `game/src/ui/compass.js` `game/src/ui/hud.js` `game/src/ui/surface.js` `game/src/ui/system.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `OWNER-REPORTING-20260814` | in_progress | read recent merged PR descriptions via github MCP tools, then rewrite blog brief + RULES.m | — |

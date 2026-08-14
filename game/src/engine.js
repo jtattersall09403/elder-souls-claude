@@ -4235,6 +4235,17 @@ export class Engine {
       // is true") reads, and two sources of truth about whether the title is up is how a suppress
       // like this goes stale.
       titleShown: !!(this.renderer && this.renderer.title && this.renderer.title.shown),
+      // HUD-MORROWIND. The camera's yaw on THIS frame, which is the only thing the compass is a
+      // function of. Read straight off `sim.camera` inside the fixed step with no tween and no
+      // smoothing anywhere between here and the dial, for the reason RI-UIX01 §D states for the
+      // stamina bar: an eased compass shows you a heading the simulation does not have, and you
+      // are turning to line up on a landmark.
+      //
+      // It is the CAMERA's yaw and not the body's, deliberately. The dial answers "which way am
+      // I looking", the question you ask it while sweeping the horizon for a silt-strider
+      // platform; the body's yaw would make the dial stop moving whenever you look around
+      // without walking, which is most of the time you would want to consult it.
+      cameraYaw: this.sim.camera ? Number(this.sim.camera.yaw) || 0 : 0,
       // W1-13 r2: the first disjunct is the WORLD's answer (`HearthSystem.atHearth`, which now
       // exists — see sim/hearth.js). The second is a declared test override and it is reported
       // as one, so a probe that leans on `setAtHearth()` is visible in its own output rather

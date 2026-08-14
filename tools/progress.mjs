@@ -4,8 +4,9 @@
 // Run: node tools/progress.mjs   (or `node tools/progress.mjs --watch`)
 
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, mkdirSync } from 'node:fs';
-import { join, relative, extname, basename } from 'node:path';
+import { join, relative, extname, basename, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import { chartHtml } from './scores.mjs';
 import { computeReport, discoverVerdicts } from './verdict-staleness.mjs';
 // The cost programme (COST.md §6). It renders docs/data/cost-ledger.json and computes no cost of
@@ -169,8 +170,23 @@ for (const f of srcFiles) { try { loc += readFileSync(f, 'utf8').split('\n').len
 // both git-tracked and live-retrievable. Sourcing "Latest captures" from it means the section can
 // only ever show images that actually exist on the site. Sorted by mtime, newest first, because
 // the walk below does not sort directory entries and "latest" was never true of readdir order.
+//
+// TRACKED FILES ONLY. A file can sit under docs/shots/ on THIS disk without being in the repo yet
+// — a concurrent agent's in-flight capture, saved but not committed. Walking the filesystem alone
+// picked those up (found live 2026-08-14: a same-day "visual-truth" audit's 12 frames listed here
+// and 404ing, the identical bug class this comment's predecessor describes for reports/wld12-blind,
+// one directory up). `git ls-files` is the actual publication boundary — GitHub Pages serves what
+// is committed, not what is on disk — so intersect with it. A repo with no git available (rare,
+// but check-image-refs.mjs's own self-test constructs one) falls back to the filesystem walk rather
+// than throwing; that is strictly the old, weaker behaviour, not a new failure mode.
+let trackedShots = null;
+try {
+  const out = execFileSync('git', ['ls-files', 'docs/shots'], { cwd: ROOT, encoding: 'utf8' });
+  trackedShots = new Set(out.split('\n').filter(Boolean).map(f => P(...f.split('/'))));
+} catch { /* no git in this checkout — fall back to the filesystem walk below */ }
 const shots = walk(P('docs', 'shots'))
   .filter(f => ['.png', '.jpg'].includes(extname(f)))
+  .filter(f => trackedShots === null || trackedShots.has(f))
   .sort((a, b) => statSync(b).mtimeMs - statSync(a).mtimeMs);
 
 // ---------- derive ----------

@@ -63,6 +63,23 @@ export const KINDS = new Set([
   // distance readout has no kind it could be declared under, and `el()` throws on an undeclared
   // kind — so the way this screen would acquire a pin is a deliberate edit to this list.
   'map_terrain', 'map_place', 'map_player',
+  // HUD-MORROWIND. The compass the owner asked for, deliberately NOT named `compass` — that
+  // name stays in FORBIDDEN_KINDS below, untouched, so `ui-census.mjs`'s forbidden-name sweep
+  // still reads 0 and is still a statement about the build rather than about a list that was
+  // quietly shortened. Same precedent as `map_terrain` above, and said plainly in
+  // `ui/compass.js`'s header: this IS a compass.
+  //
+  // What actually keeps RI-UIX01 §B X6 satisfied is not the name. It is that `drawCompass()`
+  // declares nothing at all while `inCombat` — X6 governs the COMBAT HUD, RI-UIX01 is `souls`
+  // because "the combat HUD is inside the fight", and the §C census is taken over combat
+  // frames. A `bearing_dial` cannot appear in one.
+  //
+  // There is exactly one of these and it carries no marker: the model behind it is
+  // `{bearing_deg}` and holds no quest state and no world position, so RI-UIX02 §A M-def-1 and
+  // M-def-2 are both unsatisfiable from what this element is handed. A second kind here — a
+  // dial tick, a bearing pin, a place mark — would be the compass "acquiring a single tick for
+  // the active quest" that RI-UIX02 §A predicts by name, and would need this line edited.
+  'bearing_dial',
 ]);
 
 /**

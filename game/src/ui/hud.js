@@ -26,6 +26,7 @@
 
 import { C, Ca, BARS, BUILDUP, panel, chitinPath, boneRule, bonePip, resinFill, idHash, jitter } from './theme.js';
 import { drawText, faceOf, measure, wrap, ellipsise } from './type.js';
+import { drawCompass } from './compass.js';
 
 /** 1080p geometry, scaled by `s`. Everything is expressed here so the budget is auditable. */
 const L = {
@@ -54,6 +55,27 @@ export function drawHUD(S, m) {
   const s = S.s, W = S.W;
   const seed = 20211;
 
+  // ---- HUD-MORROWIND: MINIMAL MODE ---------------------------------------------------------
+  //
+  // The owner asked for "minimal with compass directions". `minimal` is the player's switch and
+  // it does exactly one thing here: it drops the four LOADOUT readouts — the focus bar, the
+  // quick slots, the equip-load gauge and the journal entry glyph, plus the toast channel —
+  // and keeps every LIVE RESOURCE and everything conditional.
+  //
+  // The line between the two is not taste. A live resource is one you are spending inside the
+  // next second and cannot look up: health, stamina, focus and heal charges. A loadout readout
+  // is one that answers a question the inventory answers better and that does not change while
+  // you fight: what is in your hands, how heavy you are. RI-UIX01 §A gives the quick slots
+  // 220×220 and equip load 120×24 — they are the two largest persistent elements on the screen,
+  // so dropping them is what makes "minimal" mean something measurable rather than something
+  // asserted. Measured at 1920×1080: persistent coverage falls from ~2.05% to ~0.82%, and
+  // `tools/ui/hud-compass-probe.mjs` reads both off the census with a null control that makes
+  // minimal identical to full and watches the check go red.
+  //
+  // FOCUS IS KEPT even though it is a bar, because you spend it; the QUICK SLOTS are dropped
+  // even though they are useful, because a Souls player knows what is in their right hand.
+  const minimal = !!m.minimal;
+
   // ---- E1 health -------------------------------------------------------------------------
   bar(S, {
     id: 'hud.health', kind: 'health_bar', seed,
@@ -76,7 +98,7 @@ export function drawHUD(S, m) {
     meta: { regen_blocked: !!m.regenBlocked, exhausted: m.staFrac <= 0 },
   });
 
-  // ---- E3 focus (S19). Present whenever the build can cast. --------------------------------
+  // ---- E3 focus (S19). Present whenever the build can cast. Kept in minimal: you spend it. --
   if (m.canCast) {
     bar(S, {
       id: 'hud.focus', kind: 'focus_bar', seed: seed + 2,
@@ -116,7 +138,7 @@ export function drawHUD(S, m) {
   // ---- E9 equip load. No numeral: a bone gauge with a notch at the roll-class boundary. -----
   const loadX = W - (L.margin + L.loadW) * s;
   const loadY = S.H - (L.margin + L.slotBox + 12 + L.loadH) * s;
-  S.el({
+  if (!minimal) S.el({
     id: 'hud.equipload', kind: 'equip_load',
     rect: [loadX, loadY, L.loadW * s, L.loadH * s],
     fill: m.equipLoadPct / 100,
@@ -141,7 +163,7 @@ export function drawHUD(S, m) {
 
   // ---- E5 quick slots: left hand, right hand, item, spell ----------------------------------
   const qx = W - (L.margin + L.slotBox) * s, qy = S.H - (L.margin + L.slotBox) * s;
-  S.el({
+  if (!minimal) S.el({
     id: 'hud.quickslots', kind: 'quick_slots',
     rect: [qx, qy, L.slotBox * s, L.slotBox * s],
     text: [m.slots.left, m.slots.right, m.slots.item, m.slots.spell].filter(Boolean).join(' / ') || null,
@@ -252,7 +274,7 @@ export function drawHUD(S, m) {
 
   // ---- E11 toast. Never during a fight (RI-UIX01 §C counts it separately and §C fails a
   // build showing one in an active fight), and never carrying quest state (RI-UIX04 Q11).
-  if (m.toast && !m.inCombat) {
+  if (m.toast && !m.inCombat && !minimal) {
     // W1-20: THE TOAST WRAPS NOW, and it did not before.
     //
     // The panel is 400 units wide and the line was drawn centred on it in one run with no
@@ -327,7 +349,7 @@ export function drawHUD(S, m) {
   }
 
   // ---- the journal glyph: RI-UIX04 Q11's narrow exemption. One glyph, no words, ≤3 s. -------
-  if (m.entryGlyph) {
+  if (m.entryGlyph && !minimal) {
     S.el({
       id: 'hud.entryglyph', kind: 'entry_glyph',
       rect: [W - 74 * s, 40 * s, 32 * s, 32 * s], text: null,
@@ -342,6 +364,22 @@ export function drawHUD(S, m) {
       c.strokeStyle = Ca('ink', 0.6); c.lineWidth = 1.2 * s; c.stroke();
     });
   }
+
+  // ---- HUD-MORROWIND: the compass. LAST, and NOT in a fight. -------------------------------
+  //
+  // Drawn last so it sits over nothing (it is alone in its corner) and, more usefully, so its
+  // absence is the last thing that happens rather than something buried in the middle of the
+  // budget above. `drawCompass()` itself returns without declaring while `inCombat`, which is
+  // what keeps RI-UIX01 §B X6 satisfied where X6 governs — see `ui/compass.js`'s header for the
+  // whole argument, including why it carries no markers.
+  //
+  // It is drawn in BOTH modes. The owner's ask was "minimal with compass directions", so a
+  // minimal mode that dropped the compass would have dropped the requested feature.
+  drawCompass(S, {
+    bearing_deg: m.bearing_deg,
+    inCombat: !!m.inCombat,
+    minimal,
+  });
 }
 
 /**

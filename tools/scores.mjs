@@ -65,6 +65,7 @@ const DOMAIN = {
   // Named pieces, dispatched outside the numbered plan.
   'w1-save': 'Engine & harness',
   'w1-souls': 'Death & progression',
+  'w1-attr-scale': 'Death & progression',
   'w1-population': 'Enemy behaviour',
   'w1-library': 'Lore & the library',
   'w1-prose': 'Dialogue',
@@ -153,9 +154,26 @@ export function collect() {
     // dropped a third of the combat series. The key is not always numeric: "W1-SAVE" and
     // "W1-LIBRARY" are real pieces and used not to match at all, so they vanished without even a
     // warning — which is how the page came to be five hours stale while the disk was current.
-    const m = piece.toLowerCase().match(/^(w\d+-[a-z0-9]+)/);
-    if (!m) { unmapped.push(piece); continue; }
-    const base = m[1];
+    //
+    // Named pieces are not always one segment either: "w1-attr-scale-r1" named DOMAIN's first
+    // multi-hyphen piece ("w1-attr-scale") and the old single-regex match — which only ever
+    // captured the first `[a-z0-9]+` run, i.e. up to the first hyphen — could not reach it: it
+    // read as "w1-attr" and reported unmapped even after "w1-attr-scale" was added to DOMAIN
+    // below. Try the longest segment-respecting prefix that is an actual DOMAIN key first (so a
+    // two-segment named piece is found before a one-segment guess masks it), and fall back to the
+    // original single-segment regex for anything DOMAIN does not carry a longer entry for.
+    const lower = piece.toLowerCase();
+    const segs = lower.split('-');
+    let base = null;
+    for (let n = segs.length; n >= 2; n--) {
+      const candidate = segs.slice(0, n).join('-');
+      if (Object.prototype.hasOwnProperty.call(DOMAIN, candidate)) { base = candidate; break; }
+    }
+    if (!base) {
+      const m = lower.match(/^(w\d+-[a-z0-9]+)/);
+      base = m ? m[1] : null;
+    }
+    if (!base) { unmapped.push(piece); continue; }
     const domain = DOMAIN[base];
     if (!domain) { unmapped.push(piece); continue; }
     let t = v.critic?.finished_at || v.critic?.started_at;

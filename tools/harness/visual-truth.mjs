@@ -38,7 +38,7 @@ export async function boot(extra = {}) {
     entry: 'game/index.html',
     width: Number(args.width || 1280),
     height: Number(args.height || 720),
-    hardwareGpu: args.hardwareGpu === true || process.env.VT_HARDWARE_GPU === '1',
+    hardwareGpu: args.hardwareGpu === true || args['hardware-gpu'] === true || process.env.VT_HARDWARE_GPU === '1',
     ...extra,
   });
   await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });

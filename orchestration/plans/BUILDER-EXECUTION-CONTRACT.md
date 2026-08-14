@@ -65,6 +65,23 @@ instrument needed to make that critic work executable.
    outcomes, targeted red/delete results, known dependency blocks and exact reproduction commands
    for the critic-owned suite. Builders may create screenshots, video, audio and other binaries for
    their own inspection, but do not commit those binaries.
+9. **Publish before handoff.** Owner-ratified 2026-08-14 (`orchestration/OWNER-DIRECTIVES-2026-08-14.md`
+   #7), after `orchestration/INDEX.md`, `docs/index.html`, `docs/progress.html` and
+   `docs/status.json` went stale for days because regeneration lived only in a local git hook,
+   which never runs for a PR merged on GitHub and never runs in a sandbox where nobody has run
+   `git config core.hooksPath .githooks`. Before reporting `builder-owned work complete`, run:
+
+   ```
+   node tools/gen-index.mjs && node tools/publish.mjs
+   ```
+
+   and commit the result by explicit path (rule 28), the same as any other declared file. This is
+   required **in addition to**, not instead of, the pre-commit hook and the CI workflow
+   (`.github/workflows/publish.yml`) that also do this — three independent legs, because any one of
+   them alone has already been observed to go silent. It costs one command. Also append the one
+   required line to `reports/blog-feed.jsonl` (rule 27) — the twice-daily blog roundup
+   (`orchestration/briefs/blog.md`) is built from that feed, and a builder that skips it is a
+   builder the reader never hears about.
 
 ## Cost and runtime boundary
 

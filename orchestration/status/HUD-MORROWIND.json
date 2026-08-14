@@ -1,14 +1,92 @@
 {
   "task_id": "HUD-MORROWIND",
-  "title": "Morrowind-style HUD with compass (cardinal directions + markers) and minimal mode",
-  "started": "2026-08-14T00:00:00Z",
-  "state": "reading",
-  "next_step": "Read CLAUDE.md, owner directives, handover, game/src/ui/*, W1-21 plan, corpus HUD items",
-  "files_touched": [],
+  "title": "Morrowind-style HUD: the compass (cardinal directions), minimal mode, and phone legibility",
+  "started": "2026-08-14T08:20:00Z",
+  "state": "code-landed-math-green-browser-pending",
+  "commit_base": "ebc8745",
+  "next_step": "Run tools/ui/hud-compass-probe.mjs (one browser): the 360-degree sweep, in-combat withdrawal, quest-invariance, minimal-vs-full coverage, and the screenshot pack at 5 viewports over a bright and a dark scene. Then docs/progress.html, docs/status.json, INDEX.md, blog-feed.jsonl, bank, push.",
   "files_claimed": [
-    "game/src/ui/hud.js",
     "game/src/ui/compass.js",
+    "game/src/ui/hud.js",
+    "game/src/ui/surface.js",
+    "game/src/ui/system.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "tools/ui/compass-math.mjs",
+    "tools/ui/hud-compass-probe.mjs",
+    "reports/hud-morrowind/",
+    "docs/shots/",
+    "orchestration/status/HUD-MORROWIND.json",
+    "orchestration/NEXT-DISPATCH.md",
+    "reports/blog-feed.jsonl",
+    "docs/progress.html",
+    "docs/status.json"
+  ],
+  "files_touched": [
+    "game/src/ui/compass.js",
+    "game/src/ui/hud.js",
+    "game/src/ui/surface.js",
+    "game/src/ui/system.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "tools/ui/compass-math.mjs",
+    "reports/hud-morrowind/compass-math.json",
     "orchestration/status/HUD-MORROWIND.json"
   ],
-  "notes": []
+  "redundant_with": ["W1-HUD-TOAST-A", "W1-TOUCH-r2", "W1-19-builder-production-continuation-20260813"],
+  "overlap_declared": "hud.js is W1-HUD-TOAST-A's (its toast/prompt work has already landed and it is blocked on contention). My edit there is additive and does not touch the toast or prompt blocks: a `minimal` flag at the top, four `if (!minimal)` guards, and one drawCompass() call at the end. system.js is claimed by W1-TOUCH-r2 (input/touch region) and W1-19-continuation; my edits are in the constructor, _hudModel, step()'s menu branch and state().hud, none of which those two touch. surface.js adds one name to KINDS. engine.js adds one field to the UI context. harness/api.js adds one verb next to openMenu.",
+  "decisions": [
+    {
+      "id": "D1",
+      "ruling": "The compass ships, and it is withdrawn inside a fight.",
+      "why": "RI-UIX01 §B X6 forbids a compass strip, and RI-UIX01's own header says it is `souls` BECAUSE the combat HUD is inside the fight. The project rule is Souls-inside-the-fight, Morrowind-everywhere-else. drawCompass() declares nothing while inCombat, so RI-UIX01 §C's census — which is taken over combat frames — reads exactly what it read before this piece existed.",
+      "reversible": true,
+      "would_overturn": "A ruling that RI-UIX01 §B governs the whole HUD and not the combat HUD. Nothing in the item's text says so; its header says the opposite."
+    },
+    {
+      "id": "D2",
+      "ruling": "NO quest markers and NO place ticks on the dial. Cardinal directions only.",
+      "why": "The owner's words are 'minimal with compass directions'. RI-UIX02 §A predicts this exact failure by name — 'a compass added just for cardinal direction, not for objectives, which then acquires a single tick for the active quest' — and seam S8 is settled across RI-UIX02, RI-WLD06 and RI-DLG05. Overturning S8 as a side effect of a HUD task would be the wrong way to overturn it. The dispatch brief asked for 'quest and location markers'; I ruled against the brief and this is that ruling in writing.",
+      "reversible": true,
+      "would_overturn": "The owner saying they want Morrowind's red quest marker. The change is a `ticks` array on the model and about thirty lines in compass.js."
+    },
+    {
+      "id": "D3",
+      "ruling": "The Souls resource bars stay; the compass and minimal mode are what is added.",
+      "why": "Morrowind's three orbs would replace elements carrying RI-UIX01 §D's D1-D6 correctness properties (same-frame stamina truth, contrast, exhaustion state), which are judged and measured. The HUD's ART register is already Morrowind — theme.js's chitin/bone/parchment/resin with hand-cut irregular edges — so what was actually missing was the compass and the minimal mode, which is what the owner named."
+    },
+    {
+      "id": "D4",
+      "ruling": "The kind is `bearing_dial`; `compass` stays in FORBIDDEN_KINDS.",
+      "why": "Same precedent as map_terrain/map_place/map_player after S35. ui-census.mjs's forbidden-name sweep stays a real statement about the build. Said out loud in compass.js's header: this IS a compass, and what makes the census honest is the in-combat withdrawal, not the name."
+    },
+    {
+      "id": "D5",
+      "ruling": "The full/minimal switch is `two_hand` while a screen is open and no fight is running. The closed action set is not widened.",
+      "why": "RI-JRN03 §A closes the set at sixteen names. W1-21 r2 set the precedent for changing what an existing name MEANS in a menu (swap_left/swap_right walk the pause ring). two_hand has no other meaning on a paused frame; it is gated out of combat because there it two-hands your weapon and RI-UIX03 P6 keeps the fight playable with the screen up. Zero changes to input/ files, which W1-TOUCH-r2 owns."
+    },
+    {
+      "id": "D6",
+      "ruling": "The dial's size ceiling is 3.0% of FRAME AREA, not a fraction of an axis.",
+      "why": "The check first asserted 14% of either axis and failed at three phone viewports — and the assertion was wrong, not the dial. On an 844x390 landscape phone, RI-JRN04 H10's 18 CSS px letter floor and a ring big enough to hold one cannot both fit under 14% of a 390 px axis. Frame area is the metric RI-UIX01 §C uses; the worst case measures 2.24%."
+    }
+  ],
+  "consumed": [
+    "game/src/ui/theme.js — the palette (C/Ca, world-sourced hexes), chitinPath, boneRule, idHash, jitter. No new colour was introduced; RI-UIX06 A4's dE=0-by-construction property is preserved.",
+    "game/src/ui/type.js + glyphs.js — drawText, faceOf, measure. No second text implementation (rule 10).",
+    "game/src/ui/surface.js — el() as the only drawing entry point, so the dial is in the census and cannot be a hidden marker.",
+    "game/src/ui/screens/map.js and world/interior-lighting.js — the north = -Z convention, adopted from them rather than invented."
+  ],
+  "published_for_reuse": [
+    "game/src/ui/compass.js exports bearingFromYaw(), norm360(), cardinalOf(), screenAngle(), POINTS, dialGeometry() and labelPoints() as PURE functions. The journal, the map screen and any future direction-bearing prose ('the road runs north-east from here') can consume the same bearing arithmetic rather than re-deriving the sign convention, which is the part that is easy to get wrong.",
+    "dialGeometry()/labelPoints() are the reusable answer to 'size a round UI element so its labels survive the RI-JRN04 H10 physical floor on a phone' — the letter is sized first and the element derived from it. Any other circular or label-bearing element facing the same problem should use this shape.",
+    "The minimal/full split in hud.js is a model flag (`m.minimal`), so any screen wanting a reduced variant reads UISystem.hudMode rather than inventing a second switch."
+  ],
+  "notes": [
+    "DISK: the container's root filesystem was 100% full (31 MB free of 252 GB) when this task started; nothing could run. Reclaimed ~9 GB by deleting fourteen scratchpad worktree copies all last modified 2026-08-08, six days old and from the pre-gap session. No live work was touched.",
+    "FINDING, not mine to fix: surface.js:182 decides 'landscape phone' with W > H*1.8 && H <= 900. An iPhone SE/8 landscape is 1334x750 backing, aspect 1.779, just under the threshold — so RI-JRN04 H10's physical text floor does NOT fire there and every authored small label in the game is drawn below 18 CSS px on that device. Recorded in reports/hud-morrowind/compass-math.json `findings`."
+  ],
+  "checks": {
+    "compass-math": "13/13 pass, 5 null controls all seen red — reports/hud-morrowind/compass-math.json"
+  }
 }

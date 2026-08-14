@@ -1,0 +1,156 @@
+{
+  "_note": "RI-WLD16's reference artifact in machine-readable form: the landform grammar of the thirteen regions. Each region declares a macro-form class, a drainage pattern, a bedrock/soil, and the named landform elements a walk through it must cross. `measured_*` fields are the shipped tree at commit cf2755a via corpus/80-methods/m-wld16-landform-census.mjs — they are the BASELINE, not the target. Provenance per field is in RI-WLD16 §Provenance note.",
+  "schema": "elder-souls/landforms@1",
+  "generated_by": "BAR-AUDIT-WORLD-20260814 (hand-authored; validated by m-wld16-landform-census.mjs)",
+  "macro_form_classes": [
+    "tidal-flat", "levee-and-backswamp", "raised-bog", "karst-tower", "escarpment",
+    "ridge-and-ravine", "alluvial-fan", "playa", "badland", "dune-and-pan",
+    "hummock-field", "terrace-staircase", "crater-field"
+  ],
+  "drainage_patterns": ["anastomosing", "dendritic", "radial", "trellis", "deranged", "endorheic", "none"],
+  "regions": {
+    "western-rootlands": {
+      "macro_form": "levee-and-backswamp",
+      "drainage": "anastomosing",
+      "bedrock": "peat over white limestone; the limestone surfaces only where a root has lifted it",
+      "soil": "black root-mat over grey silt",
+      "landform_elements": ["root-levee (the road itself, 1.5-3 m above the backswamp)", "backswamp basin", "paddy terrace", "crevasse splay where a levee has burst", "nest-mound (built, but reads as landform at distance)"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 2.2,
+      "measured_relief_range_m": 12.8,
+      "measured_mean_slope_deg": 4.0
+    },
+    "eastern-rootlands": {
+      "macro_form": "tidal-flat",
+      "drainage": "anastomosing",
+      "bedrock": "none exposed; unconsolidated tidal mud to depth",
+      "soil": "tannin-black silt, firm at low tide and SUCK at high",
+      "landform_elements": ["tide channel", "mud bar exposed only at low tide", "floating meadow", "oyster-shell ridge (a chenier)", "drowned levee"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 0.9,
+      "measured_relief_range_m": 8.1,
+      "measured_mean_slope_deg": 3.61
+    },
+    "blackwood": {
+      "macro_form": "karst-tower",
+      "drainage": "deranged",
+      "bedrock": "white Ayleid-quarried limestone, karstic — the ruins are made of the country rock",
+      "soil": "leaf-litter over rendzina; thin, and it shows as bare stone on every steep face",
+      "landform_elements": ["limestone tower", "sinkhole (doline) with standing black water", "collapsed cave roof", "buttress-root terrace", "blind valley where a stream vanishes into rock"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 21.9,
+      "measured_relief_range_m": 229.8,
+      "measured_mean_slope_deg": 10.58
+    },
+    "hive": {
+      "macro_form": "hummock-field",
+      "drainage": "none",
+      "bedrock": "irrelevant — the surface is comb, and the comb is the landform",
+      "soil": "wax and chitin-meal; no mineral soil at all",
+      "landform_elements": ["comb-cliff", "sealed cell dome", "collapse pit into a spent cell", "wax terrace", "the queen's shaft"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 9.7,
+      "measured_relief_range_m": 8.1,
+      "measured_mean_slope_deg": 6.19
+    },
+    "marauders-coast": {
+      "macro_form": "dune-and-pan",
+      "drainage": "endorheic",
+      "bedrock": "shell-hash conglomerate (coquina), which is what the bone-scaffolds are footed on",
+      "soil": "salt-grass over barnacle shelf; SUCK below the high-water line",
+      "landform_elements": ["barnacle shelf", "tidal pan that floods on the 12-minute clock", "beached-hull mound", "mangrove hummock", "storm berm"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 1.6,
+      "measured_relief_range_m": 11.2,
+      "measured_mean_slope_deg": 4.99
+    },
+    "stone-forest": {
+      "macro_form": "terrace-staircase",
+      "drainage": "radial",
+      "bedrock": "silicified wood in a tuff matrix — the petrified trees ARE the outcrop",
+      "soil": "thin sandy loam between the boles; bare tuff on the risers",
+      "landform_elements": ["petrified bole outcrop", "tuff riser (a 3-8 m step you must find a way up)", "xanmeer terrace", "root-hollow amphitheatre", "the Helstrom rise"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 44.4,
+      "measured_relief_range_m": 213.8,
+      "measured_mean_slope_deg": 9.93
+    },
+    "salt-hills": {
+      "macro_form": "escarpment",
+      "drainage": "trellis",
+      "bedrock": "bedded gypsum and marl; the Imperials quarried the marl and left the gypsum",
+      "soil": "hill grass over stony rendzina, salt-crusted in the hollows",
+      "landform_elements": ["scarp face", "dip slope", "salt flush in a hollow", "quarried bench with Imperial tool-marks", "pass saddle (the only crossings, and the ambush sites)"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 122.5,
+      "measured_relief_range_m": 263.9,
+      "measured_mean_slope_deg": 16.62
+    },
+    "valus-ridge": {
+      "macro_form": "ridge-and-ravine",
+      "drainage": "trellis",
+      "bedrock": "wind-holed limestone (the rock flutes) over folded slate",
+      "soil": "almost none; cliff-lichen directly on rock, hanging moss on the north faces",
+      "landform_elements": ["flute spire", "ravine head", "scree fan", "cloud shelf (the bench where cloud sits below you)", "col"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 283.7,
+      "measured_relief_range_m": 418.0,
+      "measured_mean_slope_deg": 30.28
+    },
+    "thornmarsh": {
+      "macro_form": "raised-bog",
+      "drainage": "deranged",
+      "bedrock": "buried; ash-dusted peat dome over it",
+      "soil": "acid peat, ash-dusted grey on every upward surface",
+      "landform_elements": ["bog dome (you are walking uphill without seeing it)", "lagg (the wet moat at the dome's edge)", "cut path trench", "thorn-island", "ash drift on the windward side"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 16.4,
+      "measured_relief_range_m": 77.8,
+      "measured_mean_slope_deg": 6.28
+    },
+    "clay-moor": {
+      "macro_form": "badland",
+      "drainage": "dendritic",
+      "bedrock": "fired red clay over shale; the naga kilns are cut into the outcrop",
+      "soil": "none worth the name — sparse scrub on a hardpan",
+      "landform_elements": ["gully head", "hardpan flat", "clay pinnacle (hoodoo)", "kiln cut", "dry wash"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 27.8,
+      "measured_relief_range_m": 32.6,
+      "measured_mean_slope_deg": 5.32
+    },
+    "crimson-coast": {
+      "macro_form": "alluvial-fan",
+      "drainage": "dendritic",
+      "bedrock": "red mudstone; the lichen took its colour cue from the rock and then exceeded it",
+      "soil": "silt fan, dye-stained to depth",
+      "landform_elements": ["fan lobe", "abandoned distributary channel", "dye-vat terrace", "lichen shelf at the high-water mark", "sea stack"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 11.2,
+      "measured_relief_range_m": 26.7,
+      "measured_mean_slope_deg": 5.15
+    },
+    "deep-marshes": {
+      "macro_form": "levee-and-backswamp",
+      "drainage": "anastomosing",
+      "bedrock": "drowned xanmeer masonry is the only hard surface in the region",
+      "soil": "voriplasm-bearing black mud; the ground is an animal (RI-WLD11)",
+      "landform_elements": ["xanmeer stump breaking the surface", "floating peat raft", "black lead (an open water lane)", "drowned levee", "gas-blister mound"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 3.1,
+      "measured_relief_range_m": 20.3,
+      "measured_mean_slope_deg": 5.24
+    },
+    "stone-wastes": {
+      "macro_form": "playa",
+      "drainage": "endorheic",
+      "bedrock": "glassed salt-crust over bleached evaporite",
+      "soil": "salt-crust; glass-thorn roots find whatever is under it and nothing else does",
+      "landform_elements": ["crater rim (the ONLY-HERE element, RI-WLD04)", "salt polygon field", "whale-bone drift", "deflation hollow", "storm-scour lane"],
+      "elements_required_per_walk": 3,
+      "measured_mean_elev_m": 6.6,
+      "measured_relief_range_m": 11.9,
+      "measured_mean_slope_deg": 4.17
+    }
+  }
+}
