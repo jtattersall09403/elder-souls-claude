@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-G1-CAMERA-OCCLUSION",
+  "brief": "G1/RI-CAM01 - close the buried-camera automatic fail (player_occluded run > 6 frames), per corpus/90-verdicts/wave1/W1-FIRST-TEN-MINUTES-r1.md D1.",
+  "base_commit_pinned": "725bca6f672ab74ff91fb01e3527eb966a5ee00a",
+  "state": "in_progress",
+  "next_step": "run dense (every-frame) player_occluded measurement with the fade forced to 1.0 and root.visible-based pixel counting (RI-MTH04 Appendix A), over the same walk that produced d1-f360-camera-inside-a-tree-rtx-a5000.png, both with the shipped occlusion-sightline fix (b476b55d, already on this branch) and with it disabled (delete-the-fix control via Province.occlusionSightline=false).",
+  "key_finding_so_far": "The fix this dispatch describes may already be landed: commit b476b55d ('W1-30F: ... the tree between camera and player was a sightline bug', 2026-08-14 11:20:09Z, ancestor of HEAD) rewrote game/src/world/province.js#updateOcclusion from a proximity-bubble-around-instance-origin test to a camera-to-actor SEGMENT test against each canopy instance's baked crown/trunk radius, and is wired from renderer.js:1159 every frame. It ships a synthetic unit check (tools/visual/occlusion-sightline-check.mjs) but NOT a measurement against RI-CAM01 SS C.1's own bar (longest player_occluded run, dense sampling). The verdict's evidence (reports/first-ten-minutes/after-d1d2/manifest.json, captured 2026-08-14T10:02:05Z) predates this fix by about 80 minutes. This task's job is therefore to MEASURE the shipped state against SS C.1's actual bar, not to re-diagnose or re-implement the occlusion hide.",
+  "caution": "The pre-existing D1 metric in tools/harness/first-ten.mjs (playerVisiblePx()) mutates material.colorWrite/depthWrite/depthTest on the player's own meshes, which per RI-MTH04 Appendix A is the exact shared-material contamination shape (actor.js:473 caches materials across actors) -- not safe to reuse uncritically. Building a root.visible-based measurement per Appendix A instead.",
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/W1-G1-CAMERA-OCCLUSION.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/"
+  ],
+  "what_could_not_be_done": "not yet known - update as work proceeds",
+  "evidence_dir": "corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/"
+}

@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `a055e3e2`: **1004 tools**, **157 reference items**,
-**57 pieces in flight**.
+drift. At `7b1108b5`: **1007 tools**, **157 reference items**,
+**58 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1004, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1007, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 157, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -96,9 +96,9 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `grep -i <word> orchestration/index/TOOLS.md` for the one you want.
 
-`harness` 255 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 35 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `platform` 11 · `touch` 11 · `blind` 10 · `camera` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
+`harness` 255 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 36 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `camera` 12 · `combat` 12 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **282 of 1004 tools have no header comment**, so nobody can tell what they
+> **283 of 1007 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 157, by family
@@ -149,7 +149,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 57 live pieces
+## In flight right now — 58 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -160,10 +160,11 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
-| `WIRING-AUDIT` | ? | — **declares nothing** |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
-| `W1-ORPHANED-SURFACE-SHADERS-CRITIC` | in_progress | `orchestration/status/W1-ORPHANED-SURFACE-SHADERS-CRITIC.json` `corpus/90-verdicts/wave1/W1-ORPHANED-SURFACE-SHADERS-critic.md` `corpus/90-verdicts/wave1/artifacts/W1-ORPHANED-SURFACE-SHADERS-CRITIC/` |
 | `W1-V2-CONTACT-SHADOWS-AO` | in_progress | `orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-v2-contact-ao.mjs` +3 |
+| `I5-CHARACTER-REFERENCE-SET` | in_progress | `orchestration/status/I5-CHARACTER-REFERENCE-SET.json` `corpus/70-visual/refs/characters/` `corpus/70-visual/RI-VIS10-character-design.md` |
+| `W1-G1-CAMERA-OCCLUSION` | in_progress | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
+| `WIRING-AUDIT` | ? | — **declares nothing** |
 | `RULING-D1-BUILDING-OVERLAP` | ruled-and-dispatched | `orchestration/status/RULING-D1-BUILDING-OVERLAP.json` |
 | `W1-18-CRITIC-r1` | in_progress | `orchestration/status/W1-18-CRITIC-r1.json` `corpus/90-verdicts/wave1/W1-18-r3.json` `corpus/90-verdicts/wave1/W1-18-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-18-r3/` +1 |
 | `RECONCILE-MAP-PROBE-S13` | reconciled | `orchestration/status/RECONCILE-MAP-PROBE-S13.json` |
