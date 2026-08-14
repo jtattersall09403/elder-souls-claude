@@ -408,3 +408,21 @@ Also recorded from the running game, unresolved: the harness reports the Tidewra
 as `thornmarsh`. Region drives terrain, flora and palette in `world-art.js`, so if that readout is
 the world's real answer rather than a harness artefact, **the quay is being dressed as Lilmoth's
 region**. Worth ten minutes before chunk 2 changes any material.
+
+### 7a. Second correction, after the stop: the placed sweep produced **zero** surviving frames
+
+§7 said the sweep "had produced its first frame at the stop". That was optimistic and is now wrong.
+The sweep process was killed (exit **143**, SIGTERM — collateral of my killing the hung part-A node
+process by pid) and its one in-flight capture timed out (exit **124**). **`reports/thorn-plates/`
+contains no `B-*.png` at all.**
+
+So the frame evidence for this chunk is **exactly three frames**, all from the played opening:
+`frames/opening/desktop-00-title.png`, `desktop-01-barge-hold.png`,
+`desktop-02-writ-house-done.png`. Nothing else. §4's gap table is unaffected — no row in it was ever
+derived from a frame — but **there is no before-sweep on disk**, and chunk 2 must produce its own by
+running `tools/visual/w1-thorn-sweep.sh`, which is committed and is the only thing that travels.
+
+Noted in passing, and it is **not this piece's work**: a capture is running against
+`reports/thorn-plates/frames-before/` with a 420 s timeout, which is neither this script's output
+directory nor its timeout. Someone else is capturing Thorn. I have not touched it and this report
+does not claim its frames.
