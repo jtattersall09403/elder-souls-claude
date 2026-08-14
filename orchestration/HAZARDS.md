@@ -3,32 +3,6 @@
 Written and owned by the orchestrator. Each entry cost somebody real work. Where an entry names a
 mistake, the orchestrator made it unless stated otherwise.
 
-## 0. A fifth failure shape: a self-test whose arms agree about a false premise
-
-Rule 6 lists four ways a control fails. Here is a fifth, found on 2026-08-14 when the fix for the
-Pod-killing bug **killed a sibling's live Pod through its own guard**, hours after shipping with a
-green self-test.
-
-The guard tagged ownership into the RunPod resource name, keyed on `CLAUDE_CODE_SESSION_ID`. The
-author asserted that identifies an agent. **It identifies the container** — four runs started by four
-different sibling agents all carried the same slug. In the author's own words:
-
-> *"My self-test passed the whole time because every arm **injected** distinct slugs. The arms
-> disagreed about classification logic and agreed, wrongly, about the identity source — a test that
-> cannot falsify its own premise."*
-
-**The shape: every arm supplies the disputed input by hand, so they can only argue about what happens
-downstream of an assumption none of them tests.** It looks exactly like a rigorous multi-arm suite.
-Ask of any self-test: *which input do all my arms fabricate identically, and what would happen if the
-real value were not what I assume?* If the answer is "they would all still pass", that input is
-untested no matter how many arms there are.
-
-**The repair is also worth copying: two guards, each covering the other's blind spot.** An owner tag
-in the RunPod name separates containers, accounts and worktrees and survives a container restart; a
-per-process claim in `/tmp` separates **sibling agents inside one container** but dies with the
-container. Neither is sufficient; together they cover it. Verified against the real collision — a
-sibling's Pod carrying the author's own slug, zero minutes old, came back `PROTECTED`.
-
 ## 1. `git gc --prune=now` destroys other agents' staged work — use plain `git gc`
 
 On 2026-08-14 the disk hit 96%. The space was in `.git`, which had grown to **9.3 GB**;
@@ -128,4 +102,62 @@ sabotage-shaped files already tracked is owed.
 Captures were failing with `ENOSPC` and looking exactly like clean runs. `tools/lib/browser.mjs` now
 refuses to launch on short free space, covering all 247 harness tools; override deliberately with
 `ELDER_SOULS_MIN_FREE_MB`. Null-control clones copy the whole tree when a control needs only `game/`
+and `tools/` — **76 MB against 12 GB** — so a sparse copy is ~150× cheaper and is worth building.
+
+## 6. `tools/bank.mjs` could print failure and still exit 0 — rule 28's trap, live
+
+An agent lost finished work to this: `bank.mjs` reported a problem in its own output and then exited
+0 anyway. Every retry loop on this box checks the *pipeline's* exit code, not the words —
+`if node tools/bank.mjs "…"; then echo OK; break; fi` — so a truthful-sounding failure message that
+exits 0 is read as success and the agent moves on believing its work is saved. Seven agents lost
+finished work on 2026-08-14; this is the mechanism behind several of those losses.
+
+**Before, two concrete lies, both real code paths, not a hypothetical:**
+
+1. Two call sites un-staged a path (a file that failed `node --check`, or a file `check-shipped-
+   files.mjs` said would 404 on the deployed site) via `git restore --staged`, inside
+   `try { … } catch {}`. If the restore itself failed — index contention, a stray lock — the
+   exception was swallowed, the code kept trusting its own hand-spliced JS array of "what got
+   excluded," and the final commit carried the excluded file anyway while the printed message said
+   `excluded N path(s) from this commit`. The exit code at the end was still 0.
+2. Nothing checked, after `git commit` returned success, that HEAD's own tree actually contained
+   every staged path. `execFileSync` not throwing only means git's exit code was 0 — it says nothing
+   about content. A hook that rewrites the index, or a race that lands a different commit in
+   between, could drop a path with `git commit` itself still reporting success, and the tool printed
+   `bank: committed N path(s)…` regardless.
+
+**After (this branch, `codex/wave1-build-experiment`):**
+
+- `git restore --staged` failures are no longer swallowed: a failed un-stage is now a hard stop
+  (non-zero exit, nothing committed), and every call site re-reads `git diff --cached --name-only`
+  from git itself afterward instead of trusting a spliced array — the ground truth, not the tool's
+  memory of what it intended.
+- After every real commit, `bank.mjs` diffs `HEAD`'s own tree (`git diff-tree --no-commit-id
+  --name-only -r --root HEAD`) against the staged-path list and refuses to report success if
+  anything staged is missing from what actually landed. The commit is left in place (no auto-amend
+  on a tree a dozen agents are touching) but the exit code is non-zero and the message says exactly
+  which paths did not land.
+- `bank.mjs` still does not push (that remains `TICK.md` step 2's job, run right after), but it now
+  says so unconditionally on every successful run — `NOT PUSHED. … run git push … before treating
+  this work as landed on origin` — so a retry loop that only checks this tool's exit code cannot
+  mistake "committed locally" for "published." **Decision, reversible:** folding an actual `git push`
+  into `bank.mjs` was considered and rejected, on the grounds that it would add network latency to a
+  tool that "runs constantly" (the explicit constraint on this fix) and that a push failure is a
+  different failure mode than a commit failure worth distinguishing rather than conflating. Evidence
+  that would overturn this: if stranded-local-commit incidents continue after this fix despite the
+  explicit message, that means the message is being ignored rather than missed, and folding the push
+  in becomes the better trade.
+- `node tools/bank.mjs --self-test` now exists (previously did not) and drives the real functions
+  above against disposable scratch git repos — not a reimplementation of the logic, not a tautology.
+  Four arms, each watched to fail before the fix and pass after: a lock that never clears must be
+  reported held; a lock that is already clear must not be; a clean commit that carries everything
+  staged must verify clean; a commit that drops a staged path (built with `git commit --only`, the
+  exact shape a stripping hook produces — `git commit` itself still returns 0) must be caught, not
+  waved through. Watched arm 1 and arm 3 actually go red on deliberately reintroduced copies of the
+  old behavior (`held: false` unconditionally; `missingFromCommit` returning `[]` unconditionally)
+  before confirming the shipped file passes all four.
+
+Nothing on the commit path itself changed (rule 13): the restore fix makes an existing un-stage step
+honest about its own result, and the post-commit verify runs strictly after `git commit` has already
+returned, so neither can block or delay a commit that was going to happen anyway.
 and `tools/` — **76 MB against 12 GB** — so a sparse copy is ~150× cheaper and is worth building.
