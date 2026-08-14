@@ -1,0 +1,13 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: TypeError: engine.factionAccess is not a function
+    at Object.factionAccess (http://127.0.0.1:35893/game/src/harness/api.js:2165:46)
+    at eval (eval at evaluate (:290:30), <anonymous>:1:298)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at /home/user/elder-souls-claude/tools/quests/w1-20-builder.mjs:10:63
+
+Node.js v22.22.2
+exit=1
