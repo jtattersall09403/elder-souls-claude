@@ -66,6 +66,9 @@ export function roadmapHtml(opts = {}) {
     }
 
     const s = summary;
+    const provisionalBanner = s.provisional
+      ? `<div class="rm-banner rm-provisional"><b>PROVISIONAL DATA.</b> <code>orchestration/ROADMAP.md</code> is condemned and is being rewritten from scratch (CLAUDE.md rule 0b) — the items below are a fixture transcribed from the old file, not verified truth about the project. Do not read the percentage as a real completion estimate until this flag clears.${s.provisional_reason ? `<div class="rm-provisional-why">${esc(s.provisional_reason)}</div>` : ''}</div>`
+      : '';
     const phaseA = (s.by_phase || []).find(p => p.phase === 'A');
     const otherPhases = (s.by_phase || []).filter(p => p.phase !== 'A');
 
@@ -95,6 +98,7 @@ ${rows}
     </tr>`).join('\n');
 
     return `<h2 id="roadmap">Roadmap progress <span class="dimtext">at any arbitrary point in time, and it must always be correct</span></h2>
+${provisionalBanner}
 <div class="rm-hero">
   <div class="rm-hero-main">
     <div class="rm-hero-n">${s.pct_done}%</div>
@@ -128,7 +132,8 @@ export function roadmapStripHtml(opts = {}) {
     if (state !== 'ok' || !summary) return `<div class="rm-strip"><a href="#roadmap">Roadmap</a> <span class="rm-strip-dim">&mdash; tracker not run yet</span></div>`;
     const s = summary;
     const flag = s.unverified_items ? ` <b class="bad">${s.unverified_items} UNVERIFIED</b>` : '';
-    return `<div class="rm-strip"><a href="#roadmap">Roadmap</a> <b>${s.pct_done}%</b> <span class="rm-strip-dim">(${s.done_items}/${s.total_items} items, all phases) &middot; on ${esc(s.current_item ? s.current_item.title : '?')}</span>${flag}</div>`;
+    const prov = s.provisional ? ` <b class="warn">PROVISIONAL</b>` : '';
+    return `<div class="rm-strip"><a href="#roadmap">Roadmap</a> <b>${s.pct_done}%</b> <span class="rm-strip-dim">(${s.done_items}/${s.total_items} items, all phases) &middot; on ${esc(s.current_item ? s.current_item.title : '?')}</span>${flag}${prov}</div>`;
   } catch { return ''; }
 }
 
@@ -140,6 +145,8 @@ export const ROADMAP_CSS = `
 .rm-banner{border:1px solid var(--line);border-radius:6px;padding:12px 15px;font-size:12px;line-height:1.7;margin-bottom:14px}
 .rm-wait{background:var(--panel);color:var(--dim)}
 .rm-bad{border-color:#6b2f22;background:linear-gradient(180deg,#241512,#1b1813);color:#e8b6a6}
+.rm-provisional{border-color:#6b5522;background:linear-gradient(180deg,#241f12,#1b1813);color:#e6cf9a}
+.rm-provisional-why{margin-top:8px;font-size:11px;color:var(--dim);line-height:1.6}
 .rm-hero{display:grid;grid-template-columns:minmax(240px,1.3fr) minmax(0,2fr);gap:14px;align-items:stretch;margin-bottom:10px}
 .rm-hero-main{background:linear-gradient(180deg,#221d15,#1b1813);border:1px solid var(--gold);border-radius:6px;padding:16px 20px}
 .rm-hero-n{font-size:46px;font-weight:700;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums}
