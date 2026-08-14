@@ -1,14 +1,14 @@
 {
   "schema": "elder-souls/cost-ledger@1",
-  "generated_at": "2026-08-14T15:21:29.232Z",
+  "generated_at": "2026-08-14T15:23:38.816Z",
   "generator": "tools/cost.mjs",
-  "commit": "674d492",
+  "commit": "724bd9e",
   "source": "~/.claude/projects/-home-user-elder-souls-claude",
   "stale_after_minutes": 45,
   "window": {
     "from": "2026-08-05T22:16:46.017Z",
-    "to": "2026-08-14T15:21:11.428Z",
-    "hours": 209.07,
+    "to": "2026-08-14T15:23:27.886Z",
+    "hours": 209.11,
     "complete": true
   },
   "comparable_key": "sha1:2e492d83b9953130",
@@ -41,29 +41,29 @@
   "coverage": {
     "files_total": 482,
     "files_read": 482,
-    "bytes_read": 736416632,
+    "bytes_read": 736775221,
     "complete": true
   },
   "drivers": {
-    "requests": 59339,
-    "mean_context_tokens": 210681,
-    "pie_tokens": 1538565957,
-    "requests_per_agent_hour": 71.41
+    "requests": 59404,
+    "mean_context_tokens": 210735,
+    "pie_tokens": 1540453569,
+    "requests_per_agent_hour": 71.48
   },
   "denominator": {
     "definition": "active_clock_hours",
     "active_hours": 60,
     "agent_hours": 831,
-    "span_hours": 209.07
+    "span_hours": 209.11
   },
   "headline": {
-    "spend_to_date_usd": 7380.24,
-    "burn_usd_per_hour": 90.89,
+    "spend_to_date_usd": 7389.68,
+    "burn_usd_per_hour": 100.32,
     "burn_window_hours": 1,
-    "ch_usd_per_hour": 123,
-    "ch_pct_of_baseline": 106.1,
-    "usd_per_agent_hour": 8.88,
-    "usd_per_agent_hour_pct_of_baseline": 102
+    "ch_usd_per_hour": 123.16,
+    "ch_pct_of_baseline": 106.3,
+    "usd_per_agent_hour": 8.89,
+    "usd_per_agent_hour_pct_of_baseline": 102.1
   },
   "baseline": {
     "usd_per_hour": 115.88,
@@ -321,24 +321,24 @@
     },
     {
       "t": "2026-08-14T14:00:00.000Z",
-      "usd_per_hour": 132.87,
-      "usd_per_agent_hour": 7.38,
+      "usd_per_hour": 137.59,
+      "usd_per_agent_hour": 7.64,
       "mean_agents": 18,
-      "commit": "674d492",
+      "commit": "724bd9e",
       "window_hours": 2
     }
   ],
   "by_model": [
     {
       "model": "claude-opus-5",
-      "usd": 7171.84,
-      "requests": 54816,
+      "usd": 7181.28,
+      "requests": 54881,
       "tokens": {
-        "input": 1235743,
-        "cache_write_5m": 177194626,
-        "cache_write_1h": 9440780,
-        "cache_read": 11420678658,
-        "output": 10138049
+        "input": 1235873,
+        "cache_write_5m": 177269198,
+        "cache_write_1h": 9441215,
+        "cache_read": 11437484533,
+        "output": 10160611
       }
     },
     {
@@ -358,27 +358,27 @@
     {
       "class": "input",
       "usd": 6.79,
-      "tokens": 1539750
+      "tokens": 1539880
     },
     {
       "class": "cache_write_5m",
-      "usd": 1131.88,
-      "tokens": 186961013
+      "usd": 1132.35,
+      "tokens": 187035585
     },
     {
       "class": "cache_write_1h",
       "usd": 94.41,
-      "tokens": 9440780
+      "tokens": 9441215
     },
     {
       "class": "cache_read",
-      "usd": 5886.94,
-      "tokens": 12303669603
+      "usd": 5895.34,
+      "tokens": 12320475478
     },
     {
       "class": "output",
-      "usd": 260.22,
-      "tokens": 10815284
+      "usd": 260.79,
+      "tokens": 10837846
     }
   ],
   "guards": {
@@ -393,7 +393,7 @@
     "g2_quality": {
       "mean_verdict_score": 3.64,
       "baseline_mean_verdict_score": null,
-      "n": 74,
+      "n": 75,
       "power": "low",
       "critic_find_rate": null,
       "baseline_critic_find_rate": null,
@@ -520,6 +520,30 @@
       "reversal_executed": true,
       "tripwire": "THREE, and any one fires the revert. (1) COST: the handoff figure re-measured on deliberately split agents rises above $2.00 — still under a third of break-even, so it fires long before the lever stops paying. (2) SCOPE, and this is the §5 guard: total requests summed across a split piece's agents falls below the pre-split median for comparable pieces. Splitting must shorten an agent's WASTE, never its WORK. (3) QUALITY: critic find-rate or the G3 separate-critic count falls on the split arm.",
       "outcome": "THE TERM §4.0 LEFT OUT IS NOW MEASURED, ON 50 REAL HANDOFFS THIS FLEET ALREADY RAN. Agents killed by usage limits or container restarts and dispatched again as marked successors are a split's second half with the split already performed, so nothing had to be constructed. Re-orientation is paid in EXTRA REQUESTS, not heavier ones: a successor takes 20 requests to reach its first Write or Edit against 11 for a fresh agent dispatched in the same six-hour window, carrying 860,320 extra context tokens — $0.4302 at the marginal cache_read rate (stratified-shuffle p = 0.002, null band [-0.1187, 0.2891]). Break-even at chunk 100 is $6.264 per handoff, so the measured cost carries a 14.6x margin and the ceiling survives nearly intact: $1872.81 less $128.63 across 299 handoffs leaves $1744.18. CONTROLS: the generic second-generation arm — 91 round-2+ agents that were NOT resumed — shows $-0.0113, so the effect is handoff-specific and not merely later agents carrying fuller briefs; fresh-against-fresh self-control $-0.0012; and the time confound is real and measured at 26 tokens per hour of first-request growth over 205 hours, which is why every figure is time-matched. A STATISTIC WAS DISQUALIFIED ALONG THE WAY AND IS PUBLISHED WITH THE CONTROL THAT CAUGHT IT: integrating the resumed-versus-fresh context premium over 60 request indices returns MINUS $0.40 — successors apparently re-reading three-quarters of a million tokens FEWER — and its late-index placebo shows the gap still widening at k = 200, where orientation is long over. That statistic measures scope (resumed agents were given narrower jobs, 3,367 tokens of context growth per request against 3,974) and would have been reported as a free handoff. LIMITS, plainly: every handoff here was ACCIDENTAL, so no predecessor wrote a note by design, and nothing measures whether a planned split decomposes work sensibly; some of the successor's extra requests may be work REDONE rather than re-read, which the transcript cannot distinguish; and the quality arm (resumed rounds mean 3.88 against 3.56 across 70 verdicts) is low-powered with a fatal selection confound, so it can REFUSE this change and can never licence it. This lands as a TRIAL with three tripwires, not as doctrine."
+    },
+    {
+      "id": "CH-06",
+      "title": "Batching and the poll killer — 91.3% of requests carry exactly one tool call, and the fix takes nothing away",
+      "landed": "2026-08-14T00:00:00Z",
+      "commit": "PENDING",
+      "state": "trial",
+      "before": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null,
+        "blocks_per_request": 1.0925,
+        "solo_request_pct": 91.29
+      },
+      "after": {
+        "usd_per_hour": null,
+        "usd_per_agent_hour": null,
+        "blocks_per_request": null,
+        "solo_request_pct": null
+      },
+      "delta_pct": null,
+      "reversal": "git revert of this commit: delete tools/probe.mjs, drop RULES rule 19b, unwire experimentBatching from tools/cost.mjs. EXECUTED IN FULL ON A COPY under the scratchpad — probe.mjs gone (the self-test that passed 12/12 a moment earlier will not run at all), rule 19b mentions 2 -> 0, cost.mjs batching references 4 -> 0, q6_batching absent from the experiments output, and the reverted cost.mjs still parses and still passes --experiments-self-test. The arms genuinely differ: the change is present in one and absent in the other, and the instrument reports a different document in each.",
+      "reversal_executed": true,
+      "tripwire": "THREE, any one of which fires the revert. (1) ADOPTION: blocks_per_request, published every bank by tools/cost.mjs --batching, does not RISE above the 1.0925 baseline. It has been flat at 1.076-1.099 every day of this project except day one, so drift cannot be mistaken for effect; if it stays flat the change is inert and gets removed rather than left in place looking busy. (2) SCOPE, and this is the COST.md section 5 guard, carried over verbatim from CH-05: total tool CALLS per piece must not fall. Batching must remove requests, never observations - an agent that looks at less is not a saving. (3) QUALITY: critic find-rate or the G3 separate-critic count falls.",
+      "outcome": "THE LEVER THAT NEEDS NOTHING SPLIT. CH-04 established that a request re-sends the whole accumulated context and that 87% of what is re-read is accumulation. This applies that one level down: what a tool call costs is not its output - a grep returns a few hundred tokens - it is the REQUEST, which drags 200k-370k tokens behind it at /bin/bash.086 early and /bin/bash.144 late. MEASURED over 480 agents and 58,448 tool-bearing requests with tools/cost.mjs --batching: blocks per request 1.0925, and 91.29% of requests carry EXACTLY ONE tool call, costing ,595.09 in re-read context. A separate pass over the raw transcripts found 27,313 of those (46.05%) carry one SMALL READ-ONLY PROBE - a grep, a sed, an ls, a Read - worth ,773.32, and 14,851 of them sit immediately after another one just like it, worth ,512.43. TWO INDEPENDENT IMPLEMENTATIONS AGREE: the standalone census read 1.0921 on 59,306 requests, the instrument 1.0925 on 58,448. THE CONTROL THAT DECIDES IT, because adjacency is not mergeability: a probe chosen only after reading the previous probe answer cannot be merged with it. Testing whether any identifier in probe 2 command first appeared in probe 1 RESULT marks 10.6% of adjacent pairs dependent; the SAME test on a RANDOM earlier probe from the same agent marks only 1.86%, a 5.7x separation, so the test detects sequential dependence and not shared vocabulary. That puts the mergeable ceiling at ,362.99. The STRICT floor - pairs sharing no token with the previous result at all - is 63.1% of pairs, about 54, and the honest bracket is 54-,363, 13-19% of the ,310 bill, with NO re-orientation term and NO handoff risk because nothing is split. AND THE PART THAT IS NOT A MODEL AT ALL: 1,500 requests costing 52.52, across 368 poll runs in 172 agents, were the same read-only command re-run to see whether a background job had finished - tail -20 of one log ninety-nine times in a single agent, pgrep, sleep 1, echo waiting-more-3. That is money already spent on waiting, priced at each request own recorded context, not a projection. LANDED: tools/probe.mjs runs several commands in one call and returns one labelled digest, and --until waits inside a single call until a predicate holds; 12 self-test arms pass and every deliberate break goes red, including a no-wait control proving the wait is load-bearing and a timeout arm proving it fails loudly rather than printing a stale digest. Plus RULES rule 19b and tools/cost.mjs --batching as the tripwire instrument, whose own self-test feeds it two synthetic fleets doing IDENTICAL work batched and unbatched and requires the batched one to cost 33.3% as much. THE HONEST WEAKNESS, and it is about adoption rather than mechanism: this agent WROTE the rule and still finished its own session at 1.0792 blocks per request, barely above the 1.0925 fleet baseline, batching 8 of 101 requests. Intending to batch is demonstrably not enough, which is why the change is a tool and a tripwire rather than an exhortation - and why tripwire 1 is adoption, measured, rather than anything this piece can claim today. NOTHING HERE IS A SAVING YET: the ceiling is measured, the realised number is not, and it lands as a trial for exactly that reason."
     }
   ],
   "notes": [

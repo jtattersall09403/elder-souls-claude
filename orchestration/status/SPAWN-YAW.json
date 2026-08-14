@@ -1,23 +1,27 @@
 {
   "task": "SPAWN-YAW",
-  "state": "fix-landed-evidence-in-flight",
+  "state": "done-and-banked",
   "started": "2026-08-14",
   "goal": "Fix the door-exit yaw defect (all 115 interiors), retarget the first-ten-minutes tooling at the real Thorn title-screen path, re-take the opening's evidence at Thorn.",
+  "report": "reports/spawn-yaw/2026-08-14-door-exit-yaw.md",
   "done": [
-    "sim/settlement.js: exitFacing()/entryFacing(); placeBody(sim, at, yaw). 115/115 resolve on the geometric primary rule in both directions, 0 fall through.",
-    "engine.js: _placeBody(x,y,z,yaw) writes sim.player.yaw AND combat.player.yaw (the mirror would otherwise undo it on the next step) AND sim.camera.yaw (auto-recentre is 1.5 deg/frame).",
-    "MEASURED through the real door verbs (reports/door-yaw/smoke-after.json): as-shipped median 0.50 m clearance, fixed 12 m (cap) on 3/3, inward NULL CONTROL 0.25 m. Control goes red. yaw written 3/3, body==mirror 3/3, camera==body 3/3.",
-    "FINDING: door_world_bearing_deg is a frozen derived value (entry_side + building_yaw_deg, residual 0 on all 115) and disagrees with the drawn geometry in BOTH directions. It is now the LAST fallback, not the first.",
-    "tools/lib/opening.mjs: startOpening/playToWritHouse/leaveWritHouse/debugSpawnBanner.",
-    "tools/harness/first-ten.mjs defaults to --start shipping (Thorn); --start debug prints a banner; manifest records start + measures; D3 street shot named from the census's own settlement.",
-    "default.json marked harness_default + not_the_player_start; main.js console.warn on any automated boot with no ?state=; launchGame/resolveEntry now accepts --state.",
-    "reports/spawn-yaw/2026-08-14-door-exit-yaw.md; blog line appended."
+    "FIX. sim/settlement.js gains exitFacing()/entryFacing(); placeBody(sim, at, yaw). All 115 interiors resolve on the geometric primary rule in both directions; 0 fall through to a fallback.",
+    "engine.js _placeBody(x,y,z,yaw) writes sim.player.yaw AND combat.player.yaw (combat-bridge mirror() would otherwise overwrite it next step) AND sim.camera.yaw (auto-recentre is only 1.5 deg/frame).",
+    "MEASURED, 7 interiors across 3 towns, through the real door verbs: as-shipped median 4.5 m clearance with 3/7 under 2 m; FIXED median 12 m with 6/7 at the cap; inward NULL CONTROL median 6.75 m with 2/7 under 2 m. On the writ house specifically 0.50 -> 12 m, control 0.25 m.",
+    "FINDING: door_world_bearing_deg is a frozen derived value (entry_side + building_yaw_deg, residual 0 on all 115) that disagrees with the drawn geometry in BOTH directions. Demoted to last fallback.",
+    "COUNTER-EXAMPLE REPORTED: archon-apothecary gets 1.5 m from the fix, 8 m from its reverse, 12 m from the best of 36 bearings. Named as an open gap, not smoothed over.",
+    "RETARGET. tools/lib/opening.mjs (startOpening/playToWritHouse/leaveWritHouse/debugSpawnBanner); first-ten.mjs defaults to --start shipping; default.json marked harness_default + not_the_player_start; main.js console.warn on any automated boot with no ?state=; launchGame/resolveEntry accepts --state.",
+    "EVIDENCE. tools/harness/opening-capture.mjs + gpu-deck --opening: 84 hardware frames (NVIDIA L4, Vulkan, software_renderer:false), desktop 1280x720 and phone 390x844, 8 orbit angles + 30 s of walking. Exit yaw 320 -> 70 (door_to_doorstep); worst clearance over all 40 outdoor frames per viewport is 12 m (the cap). docs/shots/2026-08-14-spawn-yaw/.",
+    "THREE PODS RENTED, $0.066 total, ALL THREE terminated with API-confirmed deletion. Nothing left billing."
   ],
-  "in_flight": [
-    "tools/harness/door-exit-yaw.mjs full 115 sweep -> reports/door-yaw/all-115-after.json",
-    "tools/harness/opening-capture.mjs --tag thorn-sw (desktop + phone, 8 orbit angles, 30 s walk) -> reports/spawn-yaw/capture/thorn-sw/"
+  "not_done": [
+    "The all-115 sweep and the 17-interior stratified sample did not finish on this contended box (210-280 s per town change). Tool now writes after every row and sorts by settlement; reports/door-yaw/sample-17-after.json holds what it reached.",
+    "archon-apothecary's exit facing (1.5 m where 12 m is available).",
+    "The camera arm at the writ house doorstep is collapsed against the wall, so the player is not in the first controlled frame. Cousin of D1; not touched.",
+    "The census hand-back framing (character/scene.js) — the wall of reed-cases at the instant control returns, before any door. Still the first wrong thing a player sees.",
+    "The stuck walk from the census end-position to the writ house door (x approx 4.17), unchanged.",
+    "The deployed Pages URL was not tested; Chromium here cannot reach any external host. Everything was measured on the local tree."
   ],
-  "next_step": "collect the two runs, copy the frames to docs/shots/2026-08-14-spawn-yaw/, fold the 115 numbers into the report, then consider a hardware pod run",
   "files_touched": [
     "orchestration/status/SPAWN-YAW.json",
     "game/src/sim/settlement.js",
@@ -29,16 +33,15 @@
     "tools/harness/door-exit-yaw.mjs",
     "tools/harness/opening-capture.mjs",
     "tools/harness/first-ten.mjs",
+    "tools/visual/gpu-deck.mjs",
     "reports/spawn-yaw/2026-08-14-door-exit-yaw.md",
-    "reports/blog-feed.jsonl"
-  ],
-  "files_claimed": [
+    "reports/blog-feed.jsonl",
     "docs/shots/2026-08-14-spawn-yaw/"
   ],
+  "files_claimed": [],
   "redundant_with": ["FIRST-TEN-MINUTES", "FIRST-TEN-MINUTES-critic"],
   "notes": [
-    "engine.js touch is narrow: _placeBody() and the sim.placeBody hook. FIRST-TEN-MINUTES claims engine.js populateSettlement() only.",
-    "contention: started at WAIT (5 browsers), ran at GO (3). Two browsers of my own are in flight and that is recorded here per the contention tool's instruction.",
-    "NOT done and NOT claimed: the census hand-back camera framing (character/scene.js), the stuck walk from the census end-position to the writ house door, and moving where the game starts."
+    "engine.js touch is narrow: _placeBody() and the sim.placeBody hook only.",
+    "Contention was WAIT for much of this pass and two browsers of mine were in flight at once; recorded here as tools/contention.mjs asks."
   ]
 }
