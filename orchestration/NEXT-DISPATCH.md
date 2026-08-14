@@ -1204,3 +1204,48 @@ under load.
 Over half of reference items own no path any dispatched verdict declares. `docs/PLAN.md` §3 has the
 list. Wide before deep: start the unstarted ones as capacity allows, preferring anything on the
 path to a playable game end to end.
+
+## HUD-MORROWIND — rulings on the compass, recorded so the owner can overrule by reading
+
+The owner asked, verbatim, for the Morrowind HUD *"including minimal with compass directions"*
+(handover note 2026-08-14; `OWNER-DIRECTIVES-2026-08-14.md` §7). A compass is a **hard fail** under
+`RI-UIX01` §B X6, and `RI-UIX02` §A predicts this exact request by name. Four rulings, all
+**reversible**, with the evidence that would overturn each. Full text and the measurements are in
+`orchestration/status/HUD-MORROWIND.json`; the numbers are in `reports/hud-morrowind/`.
+
+1. **The compass ships, and it is withdrawn inside a fight.** RI-UIX01's own header says it is
+   `souls` *because* "the combat HUD is inside the fight", and the project's governing rule is
+   Souls-inside-the-fight, Morrowind-everywhere-else. `drawCompass()` declares nothing while
+   `inCombat`, so RI-UIX01 §C's census — taken over combat frames — reads exactly what it read
+   before this piece existed. *Overturned by:* a ruling that §B governs the whole HUD rather than
+   the combat HUD. Nothing in the item's text says so and its header says the opposite.
+
+2. **No quest markers and no place ticks. Cardinal directions only.** RI-UIX02 §A names the failure
+   in advance — *"a compass added 'just for cardinal direction, not for objectives' which then
+   acquires a single tick for the active quest"* — and seam S8 is settled across RI-UIX02, RI-WLD06
+   and RI-DLG05. The dispatch brief for this piece asked for quest and location markers; **that part
+   of the brief was declined**, because overturning S8 as a side effect of a HUD task would be the
+   wrong way to overturn it, and because the owner's own words were "compass directions". The model
+   behind the dial is `{bearing_deg}` and carries no quest state and no world position, so there is
+   nothing for a tick to be a function of. *Overturned by:* the owner saying they want Morrowind's
+   red quest arrow — about thirty lines and a `ticks` array in `game/src/ui/compass.js`.
+
+3. **The Souls resource bars stay; what was added is the compass and a minimal mode.** Replacing
+   them with Morrowind's three orbs would replace elements carrying RI-UIX01 §D's same-frame
+   stamina truth, contrast and exhaustion properties, which are judged and measured. The HUD's art
+   register is already Morrowind — `theme.js`'s chitin, bone, parchment and resin, with hand-cut
+   irregular edges and no rounded rectangles anywhere. What was genuinely missing was the compass
+   and the minimal mode, which is what the owner named.
+
+4. **The dial's size ceiling is 3.0% of frame area, not a fraction of an axis.** The check first
+   asserted "≤14% of either axis", failed at three phone viewports, and **the assertion was wrong,
+   not the dial**: on an 844×390 landscape phone, RI-JRN04 H10's 18 CSS px letter floor and a ring
+   big enough to hold one cannot both fit under 14% of a 390 px axis. Frame area is the metric
+   RI-UIX01 §C uses everywhere else; the worst measured case is 2.24%.
+
+**Found and not fixed, for whoever owns RI-JRN04 H10.** `game/src/ui/surface.js:182` decides a
+buffer is a landscape phone with `W > H·1.8 && H <= 900`. An iPhone SE/8 in landscape is 1334×750
+backing, aspect 1.779 — just under the threshold — so the physical text floor never fires there and
+**every authored small label in the game**, not only the compass, is drawn below 18 CSS px on that
+device. Recorded in `reports/hud-morrowind/compass-math.json` under `findings`. Fixing it moves text
+size across the whole interface, so it belongs to that item rather than to this piece.

@@ -25,8 +25,16 @@ const OUT = path.resolve(args.out || 'docs/shots/2026-08-14-visual-truth/playmod
 fs.mkdirSync(OUT, { recursive: true });
 const STEPS = Number(args.steps || 8);
 
-// `mode=play` overrides the webdriver-implied harness mode (main.js reads ?mode first).
-const g = await launchGame({ entry: 'game/index.html?mode=play', width: 960, height: 540 });
+// main.js: `automated = params.get('harness')==='1' || navigator.webdriver === true`, and
+// `__ES_AUTOMATED` decides `preserveDrawingBuffer`. Playwright always sets `navigator.webdriver`,
+// so a query string alone cannot get us the build a person runs — the flag has to be spoofed
+// before any of the game's own scripts execute. `initScripts` are installed pre-goto for exactly
+// this. With it false the engine takes mode 'play', the rAF loop drives the sim, and the GL
+// context is constructed the way it is for a person.
+const g = await launchGame({
+  entry: 'game/index.html', width: 960, height: 540,
+  initScripts: ["Object.defineProperty(navigator, 'webdriver', { get: () => false, configurable: true });"],
+});
 await g.page.waitForFunction(() => window.__HARNESS, null, { timeout: 90000 });
 await g.h('ready');
 const mode = await g.page.evaluate(() => ({

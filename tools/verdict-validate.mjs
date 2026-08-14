@@ -74,6 +74,14 @@ const PIN_REQUIRED = ['pin_version', 'path', 'bytes', 'sha256', 'produced_by', '
 
 export function resolveCitedPath(root, p) {
   if (existsSync(join(root, p))) return { ok: true, via: 'file' };
+  // `corpus/00-doctrine/ARBITRATION.md#3` is a citation of §3 OF a tracked file, not a path to a
+  // file called "ARBITRATION.md#3". W1-19-r2 wrote one and went red for it. Stripping the anchor
+  // in the verdict would have thrown the section pointer away to satisfy the checker; resolving
+  // against the base path keeps the pointer and still requires the document to exist.
+  if (p.includes('#')) {
+    const base = p.replace(/#.*$/, '');
+    if (base && existsSync(join(root, base))) return { ok: true, via: 'section-anchor' };
+  }
   const pin = join(root, p + PIN_SUFFIX);
   if (!existsSync(pin)) return { ok: false, via: null };
   let o;
@@ -226,7 +234,7 @@ function validate(file) {
     for (const r of v.reference_items) {
       const tag = r.id || '(no id)';
       if (!/^RI-[A-Z]+\d+$/.test(r.id || '')) E(`reference_items ${tag}: id must look like RI-CMB03`);
-      if (!r.path || !existsSync(join(ROOT, r.path))) E(`reference_items ${tag}: path "${r.path}" does not exist`);
+      if (!r.path || !resolveCitedPath(ROOT, r.path).ok) E(`reference_items ${tag}: path "${r.path}" does not exist`);
       if (!ENUM.side.includes(r.side)) E(`reference_items ${tag}: side "${r.side}" invalid`);
       if (!ENUM.kind.includes(r.kind)) E(`reference_items ${tag}: kind "${r.kind}" invalid`);
       if (!ENUM.measured.includes(r.measured)) E(`reference_items ${tag}: measured "${r.measured}" invalid`);

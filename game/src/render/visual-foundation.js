@@ -4,6 +4,7 @@
 'use strict';
 
 import * as THREE from '../../vendor/three/three.module.js';
+import { REGION_ART } from './world-art.js';
 
 export const VISUAL_FEATURES = Object.freeze({
   lighting: 'sun-moon-practicals', shadows: 'texel-snapped-pcf', materials: 'semantic-pbr',

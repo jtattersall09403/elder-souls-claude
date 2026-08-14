@@ -130,6 +130,43 @@ The bar is a build artefact like any other and can be wrong by omission. **Audit
 where it is thin** — this is in scope, not a distraction. A piece that meets a bar which does not
 describe the thing we want has not succeeded.
 
+### Ruling W1 — where a player experiences instances, the bar binds on instances *(reversible)*
+
+The corpus audit tested §6's worry and found the owner exactly right, with numbers. Between regions
+the world clears its bar on merit. **Within** a region it does not: the Deep Marshes holds a **275-second
+walk crossing one ground state**, Valus Ridge a **312-second** one with a **79% modal state**, and 11
+of 13 regions are over target. The shape is the interesting part — the Deep Marshes has **93 distinct
+ground states** and a walk that crosses one. Variety exists; it is arranged in patches larger than a
+walk. **All of that passed every item we had.**
+
+Every weak predicate the audit found has the same shape, and so did the graphics failure:
+
+| item | how it passes while the game fails |
+|---|---|
+| `RI-WLD04` M18 | three of nine axes ask only for *"any difference"*; the slope axis is a χ² with no effect-size floor, so it passes automatically at n > 3,000 |
+| `RI-WLD04` M19 | ONLY-HERE wants ≥ 8 instances and says nothing about spread — eight in one clump passes |
+| `RI-WLD07` §4 | aggregate slope 10.07° sits mid-band while **7 of 13 regions are under 5.5°** |
+| `RI-WLD02` | region-blind, where Morrowind's own place-type Jaccard runs 0.267–0.727 |
+| `RI-WLD09` | mandated ≥ 240 s empty walks with no obligation on the landscape crossed |
+
+**The ruling: an aggregate may never be the binding predicate for something a player meets one at a
+time.** A player does not experience the mean slope of the province; they experience the slope of the
+ground under their feet for the next six minutes. So bars over such populations bind on the
+**worst constituent** or a stated quantile — never the mean — and any axis asking for "a difference"
+must state the **effect size** that counts. The five replacements the audit specified are adopted.
+
+**Reversal**: revert the predicates; each is a named edit. **Falsifier**: if binding on the worst
+constituent makes a bar unreachable for reasons the player would never notice — one pathological
+cell in a corner of the map — then the quantile is the right instrument and the ruling should move to
+it, not back to the mean.
+
+*And note how it was found.* The audit's own new instrument was briefly **inert in the dangerous
+direction**: it matched any word from an element's description, so "root-levee (the road itself…)"
+matched on *road* and it reported **71% landform coverage against a world containing none of them.**
+Its self-check missed it because the negative control was an *empty* world rather than a *generic*
+one. The honest figure is 5%. A null control has to be the plausible wrong answer, not the trivial
+one — an empty world will fail almost any check by accident.
+
 ## 7. Housekeeping the previous run let slip
 
 Workers have not been updating these, and must: `docs/index.html`, `docs/progress.html`,
