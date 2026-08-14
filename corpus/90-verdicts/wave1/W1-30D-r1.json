@@ -293,7 +293,16 @@
   }
  ],
  "gap_closure": [],
- "corpus_extended": [],
+ "corpus_extended": [
+  {
+   "what": "The plan's orbit row is binary — 'zero background pixels appear inside the body silhouette' — and the instrument that measures it has a measured floor. The builder found that below roughly 200 crack px at the 640-frame profile the metric can tell you that something changed and not reliably what, and left a control failing to prove it. A binary row over a metric with a known noise floor is unsatisfiable in principle. Owed: amend the row to bind on crack pixels attributable to a joint or an ornament, and state the attribution floor as a declared limit of the instrument rather than as a footnote in a status file.",
+   "where": "orchestration/plans/W1-30D.md"
+  },
+  {
+   "what": "The evidence standard requires a 24-stop x 3-distance orbit per character, and no orbit rig exists in the Deck — tools/visual/deck.json's char-player and char-npc are one yaw each. So the standard's central instrument, the one written specifically because of the owner's rotate-the-camera complaint, has never been buildable from the shipped shot list. Owed: an orbit profile in deck.json, or an explicit statement in W1-30-EVIDENCE that the orbit is measured offline by actor-orbit-holes.mjs and never on hardware — which is the current de facto position and is not what the document says.",
+   "where": "orchestration/plans/W1-30-EVIDENCE.md"
+  }
+ ],
  "method_deviations": [
   "The 144-frame orbit (24 stops x 3 distances) was NOT rendered on hardware. The Deck's char-player and char-npc setups are one yaw each, and the orbit is a separate rig this critic did not build. Every transparency statement in this verdict is therefore 'clean at the stops rendered', not 'clean at 144 stops' — and that distinction is exactly the one the owner's original complaint turned on, so it is stated rather than smoothed.",
   "The full 5,760-frame profile was not re-run after diagnosing the held-object bug, so this verdict makes no claim about how much of the 2,204 that bug is hiding.",
