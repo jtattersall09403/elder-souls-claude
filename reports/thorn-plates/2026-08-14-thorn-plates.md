@@ -363,3 +363,48 @@ Thorn's anchor should look at it in the same pass.
    it is perturbed. A roof profile nothing draws is worth nothing.
 6. **State what was published for reuse** (directive §3): `roof.needle` and a Thorn tideline are both
    things the other seven towns can then use.
+
+---
+
+## 7. Correction to §0 and §5, written at the stop condition
+
+**The many-angle sweep did not finish inside this chunk's budget, and I am not going to imply that it
+did.** What exists:
+
+- **The played opening: 3 frames** — title, barge hold, writ house at the end of character creation —
+  in `reports/thorn-plates/frames/opening/`, two of them copied to
+  `docs/shots/2026-08-14-thorn-plates/`. These are from the **real** `New` → census path, not
+  `?state=default`.
+- **`tools/harness/spawn-truth-thorn.mjs` then failed** (exit 1) at its final exterior stage, after
+  reporting `door-walk-did-not-reach-exit` — the same stall
+  `reports/spawn-truth/2026-08-14-spawn-truth.md` §3 found independently. I killed it by pid (my own
+  child; no `pkill`) so the placed sweep could start.
+- **The 48-frame placed sweep is running and had produced its first frame at the stop.** It is
+  reproducible exactly: **`tools/visual/w1-thorn-sweep.sh`** is committed, and is the same script
+  that produced everything above. **Chunk 2 should run it first, as its own before, rather than
+  trusting frames left on this disk** — `reports/.gitignore` excludes captures, so those PNGs do not
+  travel.
+
+**Therefore no row in §4 rests on a frame measurement.** Every gap in §4 is derived from the game's
+own data and the renderer's own code — `planSettlement`, `assignVariantSalts`, `previewSilhouette`,
+`GRAMMARS`, `EXT_KIT`, the settlement documents — which is why they survive the sweep not finishing.
+`reports/thorn-plates/thorn-frames-baseline.json` is **not written**; the measuring script that would
+write it is `frame-stats` in the piece's scratchpad and is not needed, because §4 never depended on
+it. If chunk 2 wants frame statistics on the same axes as the plate bands, note that
+`measure-plates.mjs` exports neither `decode` nor `plateStats` and takes no `--shots` — that is the
+tool gap named in §0(6).
+
+### One observation from the frames that do exist
+
+The **barge hold — the first room in the game — already reads well**: real timber planking and
+beams, a warm lamp throwing light down a ladder, crates and a bench with weight to them. It is not
+the weak part. Two things in it are visibly not yet finished and are worth someone's eye: a flat
+untextured orange hexagon floating at head height on the right, and, in the writ house, a plain white
+rectangle floating in front of the shelf wall. Neither is a Thorn art-direction problem; both are the
+ordinary state of a room mid-build, and they are named here so the next person sees them.
+
+Also recorded from the running game, unresolved: the harness reports the Tidewrack quay spawn at
+`[3808.6, 0, 909.36]` as `"region": "western-rootlands"`, while `thorn.json` declares Thorn's region
+as `thornmarsh`. Region drives terrain, flora and palette in `world-art.js`, so if that readout is
+the world's real answer rather than a harness artefact, **the quay is being dressed as Lilmoth's
+region**. Worth ten minutes before chunk 2 changes any material.
