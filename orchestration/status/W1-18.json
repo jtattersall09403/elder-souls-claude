@@ -2,7 +2,7 @@
   "task_id": "W1-18",
   "brief": "Quest engine and journal (wave-1)",
   "started": "wave-1",
-  "state": "building",
+  "state": "superseded",
   "outputs_expected": [
     "game/src/sim/quest/calendar.js",
     "game/src/sim/quest/defs.js",
@@ -34,5 +34,16 @@
   "notes_for_successor": "Build order: calendar -> defs -> gate -> journal -> machine -> screen -> engine wiring -> harness verbs -> data -> tools. Commit after each.",
   "plan_state": "satisfied",
   "canonical_plan": "orchestration/plans/W1-18.md",
-  "plan_critique": "SATISFIED (2026-08-09 independent critique)"
+  "plan_critique": "SATISFIED (2026-08-09 independent critique)",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "SUPERSEDED",
+    "evidence": "This status file's own content (`outputs_written: []`, `next_step: \"write game/src/sim/quest/* modules\"`) is the ORIGINAL wave-1 dispatch note, before any quest module existed. Its mtime read 11.5h in a naive scan; its real last commit (`git log -1 -- orchestration/status/W1-18.json`) is 6bce792c, 2026-08-09T18:42:04+0100 -- five days old, not eleven hours. Since then: W1-18-r2 (round 2 builder, state done, corpus/90-verdicts has no W1-18 verdict but W1-18-r2's own status is terminal), W1-18-builder-codex-20260810, and -- as of TODAY -- a three-commit re-integration (6b87de75, 6ff70897, 1461f2e3) plus 11fc7a3c 'W1-18 re-integration complete: all 24 files on the branch, all three audit targets hit exactly'. game/src/sim/quest/{calendar,defs,gate,journal,machine,prohibitions,refusal,reveal-routes,topic-supply}.js all exist. This original dispatch record is stale by five orders of magnitude relative to what mtime suggested, and by construction cannot be 'in progress' -- the modules it was written to produce were built, revised, deleted-then-restored and re-integrated in the time since.",
+    "superseded_by": [
+      "W1-18-r2",
+      "W1-18-builder-codex-20260810",
+      "today's W1-18-REINTEGRATION (commits 6b87de75/6ff70897/1461f2e3/11fc7a3c)"
+    ]
+  }
 }

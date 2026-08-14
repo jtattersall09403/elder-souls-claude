@@ -69,5 +69,11 @@
     "animation trace exposed held hitstop, root-space transition and secondary-proxy aggregation errors; repaired the instrument and cross-fade, then reran to C1-C10 GREEN"
   ],
   "next_step": "Do not dispatch the critic yet. Continue native GPU repairs for the remaining red terrain, water, settlement, character/creature, VFX, temporal, LOD and performance rows, then complete the literal ledger.",
-  "superseded_reason": "The structural/mechanism gates and nine-scene 320x180 proof established execution but not visual adequacy. Ordinary shipping captures remained visibly incapable of the plan's modern-fidelity target."
+  "superseded_reason": "The structural/mechanism gates and nine-scene 320x180 proof established execution but not visual adequacy. Ordinary shipping captures remained visibly incapable of the plan's modern-fidelity target.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "Age correction only: mtime read 11.5h; real git-log date is 2026-08-13T10:23:41Z, ~33.4h old at the time of this dispatch -- a full day older than the mtime-based scan suggested, though not in the 150h+ 'almost certainly dead' band either. Deliberately not re-investigated beyond the age correction: OWNERSHIP-SWEEP-20260814.md already examined and kept this exact piece live today ('genuinely mid-repair, \"Continue native GPU repairs for the remaining red terrain, water, settlement…\"'). This piece's own `files_claimed: []` (declares nothing further) and `superseded_reason` field (describing why an earlier structural-gate result was judged insufficient on its own) are worth reading directly by whoever next touches game/src/world/province.js or the W1-30 GPU remediation line."
+  }
 }

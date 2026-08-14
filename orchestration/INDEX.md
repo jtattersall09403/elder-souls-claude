@@ -2,8 +2,8 @@
 # The index
 
 **An index points; it does not contain.** Regenerated from the tree on every commit, so it cannot
-drift. At `8dae9aaa`: **1010 tools**, **158 reference items**,
-**57 pieces in flight**.
+drift. At `a4a5b7a7`: **1012 tools**, **158 reference items**,
+**58 pieces in flight**.
 
 Its purpose is to stop every concurrent agent paying separately to discover the same things — which
 only works if it is cheap to read. **The full listings are generated beside this file and are
@@ -11,7 +11,7 @@ deliberately off the read path. Grep them; do not read them.**
 
 | what you want to know | the one line that answers it |
 |---|---|
-| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1010, one line each |
+| does a tool for this already exist? | `grep -i <word> orchestration/index/TOOLS.md` — all 1012, one line each |
 | which reference item governs this? | `grep -i <word> orchestration/index/ITEMS.md` — all 158, with their `judges:` paths |
 | is there a harness verb for it? | `grep -i <word> orchestration/index/HARNESS.md` — 445 verbs |
 | who is in this file right now? | `node tools/ownership.mjs --for <path>` |
@@ -41,7 +41,7 @@ Run these; do not invent your own equivalents.
 Both work. Note that `node … 2>&1 | tail -1 ; echo exit=$?` reports the **pipe's** exit code, so
 a check that never ran can read as one that passed.
 
-## The 47 tools you will actually reach for
+## The 48 tools you will actually reach for
 
 Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
@@ -87,6 +87,7 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 - `tools/run.mjs` — run a command, keep all of its output, show only the part a decision needs.
 - `tools/scores.mjs` — Builds the critic-score trajectory chart for the Build status tab.
 - `tools/souls-consumption-ledger.mjs` — WHICH LEDGER DOES A KILL CONSULT?
+- `tools/stranded-check.mjs` — tools/stranded-check.mjs Dispatched 2026-08-14 (reports/stranded-triage/2026-08-14-triage.md) to catch the class that report triaged by hand: a status file clai
 - `tools/tmp-bootpub.mjs` — **no header comment**
 - `tools/verdict-evidence.mjs` — **no header comment**
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
@@ -97,9 +98,9 @@ Everything else is by area below, and in full in `orchestration/index/TOOLS.md`.
 
 `grep -i <word> orchestration/index/TOOLS.md` for the one you want.
 
-`harness` 258 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 36 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
+`harness` 259 · `world` 164 · `quests` 65 · `analysis` 49 · `experience` 39 · `render` 38 · `visual` 36 · `dialogue` 28 · `lore` 27 · `journey` 23 · `weapons` 20 · `runpod` 16 · `lib` 15 · `audio` 13 · `capture` 13 · `ui` 13 · `combat` 12 · `camera` 11 · `platform` 11 · `touch` 11 · `blind` 10 · `prose` 9 · `uesp` 9 · `metrics` 7 · `progression` 7 · `composition` 6 · `playability` 6 · `stealth` 6 · `assets` 5 · `critic` 5 · `map` 5 · `readables` 4 · `coherence` 3 · `economy` 3 · `w1-26-r3` 3 · `forensics` 2 · `gamepad` 2 · `input` 2 · `merge` 2 · `corpus` 1 · `persistence` 1 · `refs` 1 · `w1-26-continuation` 1 · `w1-26-r4` 1
 
-> **282 of 1010 tools have no header comment**, so nobody can tell what they
+> **282 of 1012 tools have no header comment**, so nobody can tell what they
 > do without reading them. That is a rediscovery tax paid by every agent that meets one.
 
 ## Reference items — 158, by family
@@ -150,7 +151,7 @@ were stale — the second by a third. **Ask the tree, it costs one command:**
 `game/data/world/population-posts.json` is a **generated cache**, not a source. Never hand-edit it;
 re-run `node tools/world/build-population.mjs --write`.
 
-## In flight right now — 57 live pieces
+## In flight right now — 58 live pieces
 
 **Read the status file of anything near your files before you write**, and record your own as you
 go (`files_touched`, `files_claimed`). Three container restarts in one day killed every agent
@@ -161,6 +162,7 @@ claimant's age and a stale hint past two days. This table is the overview, not t
 
 | piece | state | files claimed |
 |---|---|---|
+| `W1-G1-CAMERA-OCCLUSION` | measuring | `orchestration/status/W1-G1-CAMERA-OCCLUSION.json` `tools/camera/cam-occlusion-walk.mjs` `corpus/90-verdicts/wave1/artifacts/W1-G1-CAMERA-OCCLUSION/` |
 | `W1-F3-AMBIENT-FILL` | in_progress | `orchestration/status/W1-F3-AMBIENT-FILL.json` `game/src/render/post/composite.js` `game/src/render/renderer.js` `tools/visual/w1-f3-ambient-fill.mjs` +2 |
 | `ROADMAP-COVERAGE-AUDIT.coverage` | ? | — **declares nothing** |
 | `T4-critic` | started | — **declares nothing** |

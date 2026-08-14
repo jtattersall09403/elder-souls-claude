@@ -1,7 +1,7 @@
 {
   "task_id": "W1-20-r3-remediation",
   "role": "builder",
-  "state": "in_progress",
+  "state": "done",
   "started": "2026-08-14",
   "branch": "codex/wave1-build-experiment",
   "brief": "Remediate W1-20-r2's biggest gap and three secondary findings: (1) twelve world_flags entries unlocking ranks 5-7 on four faction ladders (21 stranded quests), (2) locked player hears a 'welcome' voice, (3) restore the registry consumer (Engine.factionAccess + loader branch) removed by 091a6cec, (4) the_dockhands missing from faction-reactions.json. Plus: close the stale round-1 gap in the ledger and fix dispatchable.mjs's stale quest-volume advice.",
@@ -18,5 +18,11 @@
   "files_touched": [
     "orchestration/status/W1-20-r3-remediation.json"
   ],
-  "notes": []
+  "notes": [],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "DONE",
+    "evidence": "All four numbered remediation items from W1-20-r2's biggest-gap list are landed on HEAD, checked directly against the running tree, not against this status file's own claims: (1) all twelve world_flags (dockhands_gang_held/wharf_decided/harbourmaster_vacant, court_yard_held/tally_decided/crown_vacant, sapcutters_well_cut/buyer_decided/cutter_vacant, rootkeepers_sapwell_kept/chapter_decided/voice_vacant) are now set by resolution effects in game/data/quests/faction-continuation-wave1.json (grep confirms 2-4 occurrences of each as an authored world_flags entry, not just a gate requirement). (2) the 'locked player hears a welcome voice' bug is fixed in game/src/sim/quest/refusal.js: a `lockedBy` check now runs BEFORE the `evaluation.allowed` branch that used to speak `lines.welcome`, with an inline comment reading 'THE LOCK COMES FIRST. W1-20 round 3, and it is a correction of THIS FILE' citing the exact W1-20-r2 defect. (3) `Engine.factionAccess(factionId)` exists again at game/src/engine.js:5650 (it was deleted by 091a6cec on 08-10 and W1-20-r2 scored CONSUMPTION 0 partly because of it). (4) game/data/dialogue/faction-reactions.json now carries an authored `the_dockhands` row with an alias_note beginning 'W1-20 ROUND 3: the `the_dockhands: null` above said...The row is now authored.' None of this is visible from this status file, because the work landed inside `1be74605` ('HAZARDS 9: a -f flag only defeats gitignore...'), an ORCHESTRATOR BANK commit whose headline is unrelated; its own message explicitly lists 'W1-20-r3-remediation [in_progress] — 3 file(s): game/data/dialogue/faction-reactions.json, game/src/engine.js, game/src/sim/quest/refusal.js' in its ownership-registry accounting, confirming the files this status file claims are exactly the files that commit carried. NOT independently verified: the two 'Plus' items in the original brief (closing the stale round-1 ledger gap; fixing dispatchable.mjs's 'stale quest-volume advice' specifically -- a different dispatchable.mjs fix, f0946995, landed the same day for an unrelated truncated-key bug and may or may not be the same fix). Treat those two as open until someone checks them directly; everything else in the brief is landed and confirmed by re-running the same checks the W1-20-r2 critic used, not by trusting this file's own text."
+  }
 }

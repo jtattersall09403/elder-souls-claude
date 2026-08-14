@@ -48,5 +48,11 @@
     "command": "node tools/quests/mainline-chain-floor.mjs --chromium /tmp/w1-19-pw-browsers/chromium-1194/chrome-linux/chrome --signature-count 1 --chain intended --resume-state evidence/W1-19/fixtures/resume-saxhleel-interior-intended-q30.json --stop-after Q-MAIN-17 --walk-max-frames 120000 --sabotage no-purse --out reports/runs/W1-19-production-continuation/q17/from-q30-r4-journal-fix --resume-output reports/runs/W1-19-production-continuation/q17/q17-current-save-r4-journal-fix.json --timeout 1800000",
     "outcome": "PASS: Q16/Q17 completed through production actions with zero purse openings, violent resolutions, deaths or teleports. The repaired blob-load boundary preserved the serialized 77 disposition exactly and persisted five new Q16/Q17 journal entries (12 to 17); the focused save-runtime smoke passed journal 12 to 13 and disposition 77/77.",
     "evidence": "evidence/W1-19/q-main-17-production-summary.json"
+  },
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "Age correction only: mtime read 11.5h; real git-log date is 2026-08-13T21:05:23Z, ~22.7h old. Deliberately not re-litigated: OWNERSHIP-SWEEP-20260814.md examined this exact five-piece W1-19-builder-* cluster today in detail (checking each round's own `redundant_with` field against the others) and explicitly chose to keep all of them live rather than assume a merge the record does not state, calling it 'the case most likely to tempt a broader clear.' This dispatch adds nothing to that finding beyond the corrected age. corpus/90-verdicts/wave1/W1-19-r1.md and W1-19-r2.md exist and may bear on which round is current -- not cross-checked against this specific status file's next_step for this dispatch."
   }
 }

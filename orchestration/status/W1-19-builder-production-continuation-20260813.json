@@ -32,7 +32,9 @@
     "game/src/render/exterior.js",
     "game/src/ui/system.js"
   ],
-  "redundant_with": ["W1-19-builder-production-20260811"],
+  "redundant_with": [
+    "W1-19-builder-production-20260811"
+  ],
   "observations": [
     "Fresh isolated clone created at /tmp/elder-souls-w1-19-continuation.okfDPG; shared dirty worktrees and unrelated Node/browser/RunPod processes were left untouched.",
     "PR #167 is merged at 2d39ac33c400f760c8e378bf19671ddd6be31ca9 and is an ancestor of the fetched base. Every base commit after b823e03d was inspected; the continuation preserves PRs #170-#174, including PR #173's robust private runtime-template runner and PR #174's settlement renderer, on base 3ae9778a.",
@@ -48,5 +50,11 @@
     "Native GPU smoke on the exact reconciled 3ae9778a worktree passed on Secure Pod kux0h6xgo7nj67, NVIDIA RTX A5000 at $0.27/hour: Chromium 141 exposed ANGLE NVIDIA Vulkan 1.4.312, explicitly not SwiftShader, the game reached harness version 2 with zero page exceptions, artifacts transferred, command exited 0, and Pod plus runtime template iz71an3mb1 were deletion-confirmed. All six successful, failed or capacity-only attempts are recorded compactly with hashes and teardown outcomes in the native-GPU summary."
   ],
   "blockers": [],
-  "next_step": "Publish and merge the corrected Q17/native-GPU checkpoint milestone, then continue from the committed Q17 state through Q18-Q23 and retain the Act IV boundary checkpoint."
+  "next_step": "Publish and merge the corrected Q17/native-GPU checkpoint milestone, then continue from the committed Q17 state through Q18-Q23 and retain the Act IV boundary checkpoint.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "UNRESOLVED",
+    "evidence": "Age correction only: mtime read 11.5h; real git-log date is 2026-08-13T18:37:28Z, ~25.2h old. Per OWNERSHIP-SWEEP-20260814.md, this is 'the current front' of the W1-19-builder-* lineage -- the only one another round's `redundant_with` field actually names. Deliberately not re-litigated beyond the age correction; see that report's fuller discussion of the five-round cluster."
+  }
 }

@@ -63,5 +63,11 @@
       "id": "UIX08-R5",
       "text": "The old render/ui.js reply panel is suppressed from PAINTING but still laid out and still reported by metrics(), so every existing probe reading getUIState() conversation fields keeps its answer. setVisible(false) would have zeroed them."
     }
-  ]
+  ],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "PARTIAL",
+    "evidence": "Substantial landed work: reports/uix08/EVIDENCE.md is a complete, detailed self-report with five numbered rulings and a full CONSUMPTION/measurement section (409 NPC records, topic-link census). reports/uix08/window-probe.json exists and carries real anchor/column measurements timestamped 2026-08-14T16:35:51Z (after this status file's own last commit, 16:22:39Z). Two explicit gaps this status file's own next_step names are confirmed still open by EVIDENCE.md's own text: (1) the delete-the-fix arm -- EVIDENCE.md says 'if reports/uix08/window-probe-deletethefix.json is absent, the arm was not run'; checked directly, that file does NOT exist, so the arm has not run. (2) the human quality gate (RI-UIX08 section G) is explicitly and correctly scored `not_run` by the builder itself, citing rules 22/25 (a builder may not run its own gate) -- this is not a gap in the work, it is a correct handoff to a judge. So: the window is built and measured; what remains is the delete-the-fix control and a judge for section G, both named accurately by this piece's own evidence."
+  }
 }

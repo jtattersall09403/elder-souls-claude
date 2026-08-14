@@ -1,0 +1,823 @@
+{
+  "opened": [
+    "Q-ARCH-01",
+    "Q-ASSZ-00",
+    "Q-ASSZ-09",
+    "Q-CORT-00"
+  ],
+  "noted": [],
+  "journal_len": 4,
+  "journal_head": [
+    {
+      "n": 10,
+      "date": "1 Second Seed, 3E 427",
+      "quest": "Q-ARCH-01",
+      "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything."
+    },
+    {
+      "n": 10,
+      "date": "1 Second Seed, 3E 427",
+      "quest": "Q-ASSZ-00",
+      "text": "Assizer Corvo has put me on the morning carry. The fair copy goes up to the Governor's clerk, the day-book stays below, and I am not to let them travel together. He said it as a rule, not as a caution."
+    },
+    {
+      "n": 10,
+      "date": "1 Second Seed, 3E 427",
+      "quest": "Q-ASSZ-09",
+      "text": "Doren wants four oaths witnessed before the court sits. Three of the four are for men who have been in the Assize's service since before she was born."
+    },
+    {
+      "n": 14,
+      "date": "1 Second Seed, 3E 427",
+      "quest": "Q-CORT-00",
+      "text": "Vaskh says there's a man in the shallows past the salt pans who has been there four days and whom no one has claimed. He wants the body, and he wants it whole, and he was specific that the two are the same request."
+    }
+  ],
+  "uistate": {
+    "mode": "journal",
+    "dialogue_window": null,
+    "map_exists": true,
+    "map": {
+      "exists": true,
+      "reachable_from_journal": false,
+      "journal_reachable_from_map": false,
+      "markers": 0,
+      "marker_census": {
+        "scope": "map",
+        "elements": 0,
+        "derived": true,
+        "clauses": [
+          "m1 forbidden kind",
+          "m2 world anchor",
+          "m3 quest identity or destination",
+          "m4 a place square the discovery model does not support"
+        ],
+        "model_available": true,
+        "hits": []
+      },
+      "routes_drawn": 0,
+      "quest_bearing_elements": [],
+      "travel_affordances": [],
+      "numeric_text": [],
+      "measured": false,
+      "elements_considered": 0,
+      "elements_on_screen": 22,
+      "non_map_elements": [
+        "hud.health",
+        "hud.stamina",
+        "hud.focus",
+        "hud.heal",
+        "hud.equipload",
+        "hud.quickslots",
+        "hud.toast",
+        "hud.bearing",
+        "journal.panel",
+        "journal.header",
+        "journal.index.head",
+        "journal.index.Q-CORT-00",
+        "journal.index.Q-ASSZ-09",
+        "journal.index.Q-ARCH-01",
+        "journal.index.Q-ASSZ-00",
+        "journal.entry.Q-ARCH-01.10",
+        "journal.entry.Q-ASSZ-00.10",
+        "journal.entry.Q-ASSZ-09.10",
+        "journal.entry.Q-CORT-00.14",
+        "journal.gutter",
+        "journal.pages",
+        "journal.hint"
+      ],
+      "numeric_text_screen": [
+        "hud.heal",
+        "hud.toast",
+        "journal.pages"
+      ],
+      "drawn_cells": 0,
+      "cells_in_view": 0,
+      "geography_always_drawn": null,
+      "revealed_cells": 0,
+      "total_cells": 42846,
+      "places_drawn": 0,
+      "places_discovered": 0,
+      "view": "world",
+      "mutator_arities": {
+        "observe": 0,
+        "restore": 1,
+        "resume": 0,
+        "suspend": 0
+      },
+      "mutators": [
+        {
+          "name": "observe",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "restore",
+          "arity": 1,
+          "member": "method"
+        },
+        {
+          "name": "resume",
+          "arity": 0,
+          "member": "method"
+        },
+        {
+          "name": "suspend",
+          "arity": 0,
+          "member": "method"
+        }
+      ],
+      "mutators_enumerated": true,
+      "zero_arity_mutators": [
+        "observe",
+        "resume",
+        "suspend"
+      ],
+      "restore_reads": [
+        "stood"
+      ],
+      "place_naming_parameters": []
+    },
+    "navigable": [
+      "world",
+      "inventory",
+      "sheet",
+      "spells",
+      "wait"
+    ],
+    "nav": {
+      "advertised": [
+        "world",
+        "inventory",
+        "sheet",
+        "spells",
+        "wait"
+      ],
+      "walkable": [
+        "world",
+        "inventory",
+        "sheet",
+        "journal",
+        "spells",
+        "wait"
+      ],
+      "walk_actions": {
+        "prev": "swap_left",
+        "next": "swap_right"
+      },
+      "walk_live": true,
+      "refused": null
+    },
+    "at_hearth": false,
+    "at_hearth_real": false,
+    "at_hearth_overridden": false,
+    "at_hearth_id": null,
+    "screen": {
+      "w": 1920,
+      "h": 1080,
+      "dpr": 1
+    },
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "rect": [
+          42,
+          40,
+          400,
+          16
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "rect": [
+          42,
+          64,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "regen_blocked": false,
+          "exhausted": false
+        }
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "rect": [
+          42,
+          82,
+          400,
+          10
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": null,
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "5",
+        "fill": 1,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "charges": 5,
+          "max": 5
+        }
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "LIGHT",
+        "fill": 0.24,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "roll_class": "LIGHT",
+          "pct": 24
+        }
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "rect": [
+          1728,
+          888,
+          150,
+          150
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "Spark-Dart",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "left": null,
+          "right": null,
+          "item": null,
+          "spell": "Spark-Dart",
+          "leftActive": false,
+          "rightActive": false
+        }
+      },
+      {
+        "id": "hud.toast",
+        "kind": "toast",
+        "rect": [
+          760,
+          40,
+          400,
+          60
+        ],
+        "visible": true,
+        "opacity": 0.92,
+        "text": "The roll records 0 against your name and the grade requires 36. Applications are considered when the roll supports them.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "rows": [
+            "The roll records 0 against your name and the grade requires",
+            "36. Applications are considered when the roll supports them."
+          ],
+          "row_count": 2,
+          "widest_px": 359.4,
+          "wrap_budget": 376,
+          "truncated": false
+        }
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1782,
+          84,
+          96,
+          96
+        ],
+        "visible": true,
+        "opacity": 1,
+        "text": "S",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "bearing_deg": 180,
+          "cardinal": "S",
+          "radius_px": 48,
+          "letter_px": 13,
+          "labelled": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW"
+          ],
+          "minimal": false
+        }
+      },
+      {
+        "id": "journal.panel",
+        "kind": "panel",
+        "rect": [
+          200,
+          160,
+          1520,
+          780
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": "parchment",
+        "focused": false,
+        "meta": {
+          "area_frac": 0.5718
+        }
+      },
+      {
+        "id": "journal.header",
+        "kind": "panel_header",
+        "rect": [
+          200,
+          160,
+          1520,
+          54
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Journal",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.index.head",
+        "kind": "panel_header",
+        "rect": [
+          222,
+          224,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Quests",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.index.Q-CORT-00",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          254,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Fee Is the Same for All of You",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-CORT-00"
+        }
+      },
+      {
+        "id": "journal.index.Q-ASSZ-09",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          280,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Oath Nobody Reads",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ASSZ-09"
+        }
+      },
+      {
+        "id": "journal.index.Q-ARCH-01",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          306,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "The Vats or the People",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ARCH-01"
+        }
+      },
+      {
+        "id": "journal.index.Q-ASSZ-00",
+        "kind": "journal_index_row",
+        "rect": [
+          222,
+          332,
+          250,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Two Copies of the Same Morning",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ASSZ-00"
+        }
+      },
+      {
+        "id": "journal.entry.Q-ARCH-01.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          230,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Sallis wants the harvesters off the lichen beds. He says they are stealing from the vats and that the guild has a charter for the whole strand. He offered me a price before I had said anything.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ARCH-01",
+          "index": 10,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-ASSZ-00.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          350.22,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Assizer Corvo has put me on the morning carry. The fair copy goes up to the Governor's clerk, the day-book stays below, and I am not to let them travel together. He said it as a rule, not as a caution.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ASSZ-00",
+          "index": 10,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-ASSZ-09.10",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          470.44,
+          570,
+          76.48
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Doren wants four oaths witnessed before the court sits. Three of the four are for men who have been in the Assize's service since before she was born.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-ASSZ-09",
+          "index": 10,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.entry.Q-CORT-00.14",
+        "kind": "journal_entry",
+        "rect": [
+          512,
+          562.92,
+          570,
+          104.22
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Vaskh says there's a man in the shallows past the salt pans who has been there four days and whom no one has claimed. He wants the body, and he wants it whole, and he was specific that the two are the same request.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "journal_id": "Q-CORT-00",
+          "index": 14,
+          "day": 0,
+          "date_text": "1 Second Seed, 3E 427",
+          "page": 0
+        }
+      },
+      {
+        "id": "journal.gutter",
+        "kind": "divider",
+        "rect": [
+          1099,
+          224,
+          12,
+          644
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": null,
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      },
+      {
+        "id": "journal.pages",
+        "kind": "page_count",
+        "rect": [
+          512,
+          876,
+          1186,
+          24
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "1 of 1",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false,
+        "meta": {
+          "spread": 1,
+          "spreads": 1,
+          "entries": 4
+        }
+      },
+      {
+        "id": "journal.hint",
+        "kind": "hint",
+        "rect": [
+          222,
+          902,
+          1476,
+          26
+        ],
+        "visible": true,
+        "opacity": 0.94,
+        "text": "Left and right turn the page. Confirm on a name in the margin to go to it.",
+        "fill": null,
+        "worldAnchor": null,
+        "material": null,
+        "focused": false
+      }
+    ],
+    "coveragePct": 60.8235,
+    "hud": {
+      "suppressed": false,
+      "suppressed_because": null,
+      "mode": "full",
+      "mode_switch": {
+        "action": "two_hand",
+        "when": "a screen is open and no fight is running"
+      },
+      "bearing_deg": 180,
+      "bearing_cardinal": "S",
+      "bearing_drawn": true,
+      "bearing_withheld_because": null,
+      "persistent_count": 6,
+      "total_count": 8,
+      "coverage_pct": 2.0457,
+      "coverage_with_conditional_pct": 3.6476,
+      "centre_coverage_pct": 0,
+      "world_anchored": [],
+      "numeric_text": [
+        "hud.heal",
+        "hud.toast"
+      ],
+      "bar_contrasts": {
+        "health": {
+          "fill_vs_trough": 6.351
+        },
+        "stamina": {
+          "fill_vs_trough": 7.966,
+          "spent_vs_trough": 10.923,
+          "exhausted_trough_vs_trough": 10.923
+        },
+        "focus": {
+          "fill_vs_trough": 5.659
+        },
+        "boss": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_poison": {
+          "fill_vs_trough": 7.827
+        },
+        "buildup_disease": {
+          "fill_vs_trough": 6.351
+        },
+        "buildup_curse": {
+          "fill_vs_trough": 5.659
+        },
+        "buildup_frost": {
+          "fill_vs_trough": 8.826
+        }
+      }
+    },
+    "menu": {
+      "area_frac": 0.5718,
+      "opacity": 0.94,
+      "paused": true
+    },
+    "book": null,
+    "focus": {
+      "view": "chronicle",
+      "page": 0,
+      "indexIdx": 0,
+      "ringIdx": 0,
+      "query": ""
+    },
+    "journal": {
+      "chronological": true,
+      "interleave_ratio": 1,
+      "entries": 4,
+      "view": "chronicle",
+      "query": ""
+    },
+    "fonts": [
+      {
+        "family": "Argonian Reed (project)",
+        "size_px": 19,
+        "weight": 1.15,
+        "path": "game/src/ui/glyphs.js"
+      },
+      {
+        "family": "Argonian Bone-cut (project)",
+        "size_px": 15,
+        "weight": 1.5,
+        "path": "game/src/ui/glyphs.js"
+      }
+    ],
+    "textRenderPath": "canvas-vector",
+    "text_raster_scale": 1,
+    "text_glyph_source": "game/src/ui/glyphs.js",
+    "materials": [
+      "parchment"
+    ],
+    "overdraw": 0.806,
+    "touch": {
+      "controls_drawn": 0,
+      "rotate_drawn": false,
+      "area_frac": 0,
+      "rotate_area_frac": 0,
+      "labelled": []
+    },
+    "surfaces": 1,
+    "full_screen_panels": 0,
+    "hud_elements": 8,
+    "toast": {
+      "text": "The roll records 0 against your name and the grade requires 36. Applications are considered when the roll supports them.",
+      "rows": [
+        "The roll records 0 against your name and the grade requires",
+        "36. Applications are considered when the roll supports them."
+      ],
+      "row_count": 2,
+      "widest_px": 359.4,
+      "wrap_budget": 376,
+      "truncated": false,
+      "panel_w": 400,
+      "panel_h": 60,
+      "fits": true,
+      "overflow_px": 0
+    },
+    "markers": 0,
+    "marker_census": {
+      "scope": "screen",
+      "elements": 22,
+      "derived": true,
+      "clauses": [
+        "m1 forbidden kind",
+        "m2 world anchor",
+        "m3 quest identity or destination",
+        "m4 a place square the discovery model does not support"
+      ],
+      "model_available": true,
+      "hits": []
+    },
+    "world_rendered_behind": true,
+    "screen_alpha": 0.94,
+    "dialogue_surface": {
+      "open": false
+    },
+    "non_world_area_frac": 0.6082,
+    "draw_calls": 166,
+    "frame": 0
+  },
+  "search": {
+    "query": "the",
+    "count": 4,
+    "results": [
+      {
+        "journal_id": "Q-ARCH-01",
+        "index": 10,
+        "day": 0,
+        "date": "1 Second Seed, 3E 427"
+      },
+      {
+        "journal_id": "Q-ASSZ-00",
+        "index": 10,
+        "day": 0,
+        "date": "1 Second Seed, 3E 427"
+      },
+      {
+        "journal_id": "Q-ASSZ-09",
+        "index": 10,
+        "day": 0,
+        "date": "1 Second Seed, 3E 427"
+      },
+      {
+        "journal_id": "Q-CORT-00",
+        "index": 14,
+        "day": 0,
+        "date": "1 Second Seed, 3E 427"
+      }
+    ],
+    "chronological": true
+  }
+}

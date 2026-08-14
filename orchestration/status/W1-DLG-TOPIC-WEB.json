@@ -16,5 +16,11 @@
   ],
   "files_touched": [
     "orchestration/status/W1-DLG-TOPIC-WEB.json"
-  ]
+  ],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "PARTIAL",
+    "evidence": "This status file's own next_step ('Read REF-A12c reading note requirement; run baseline censuses; demonstrate consume.mjs RED on name') is STALE -- it is the state the piece was in when the status file was LAST written (2026-08-14T16:30:14Z, per git-log), before any of the actual build work landed. Since then, six further commits landed under this piece's own name: b92323d5 (reading note + seam contract), b9331df0 (step A1), cc345c06 (step B), 8f7c9455 (weave-labels.mjs, the step C writer), 70977ddb (step C batch 1, visibility 10.6% -> 15.4%), f614c869 (step C batches 3-4, 22.1% -> 36%), and 807cfd9f (step C batches 5-6, 36% -> 50%), the last at 2026-08-14T17:04:23Z -- 34 minutes after this status file's last write. The piece is well past its recorded next_step; the correct next_step as of the newest commit is continuing step C for the remaining topic batches toward whatever visibility target REF-A12c sets, not re-reading the reading note. No verdict/critic has judged this piece yet."
+  }
 }

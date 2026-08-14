@@ -3,7 +3,7 @@
   "role": "critic",
   "piece": "W1-23",
   "round": 5,
-  "state": "measuring",
+  "state": "abandoned",
   "started_at": "2026-08-08T11:25:00Z",
   "commit_under_test": "cca44e0980acbde39e395e8e654a62e8934c6cfa",
   "next_step": "browser CONSUMPTION run on the eleven texts round 4 wrote (contention WAIT, retrying); then write the verdict",
@@ -17,7 +17,10 @@
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
-  "redundant_with": ["W1-23-r4", "critic-w1-23-r4"],
+  "redundant_with": [
+    "W1-23-r4",
+    "critic-w1-23-r4"
+  ],
   "notes": "SECOND, INDEPENDENT critic on W1-23 round 4. critic-w1-23-r4 scored the same round 4/10 at 04:22Z and no round-5 build exists, so this is a declared-redundant second pass, not a fresh round. My distinct job: run the reference items' OWN instruments (which no round ran), break the round's checks, and walk to the eleven texts round 4 wrote — which its own critic named as the thing it could not do.",
   "contention": "gate returned GO at 11:24Z and WAIT from 11:50Z onward. All offline work done first. Browser work pending a GO.",
   "findings_so_far": [
@@ -33,5 +36,11 @@
     "RI-LOR06 method 5 (adjudicator hunt) and method 6 (CF-D002 open-question guard): I read all six of canon-census's ADJUDGE hits by hand and every one is a false positive of the grep. No text in the build settles a registered dispute and nobody has answered CF-D002. That is a genuine pass and I say so.",
     "RI-LOR04 method 7 (out-of-world terms): 71 grep hits for bonfire/estus under game/data, and every one I opened is a data key or a save-state field. Zero player-visible strings in game/src/ui or game/data/dialogue. Pass.",
     "THE ITEM'S OWN HARVESTER IS UNUSABLE: RI-LOR04 methods 1-2 as literally written (jel-phonotactics.py --extract over game/data) report a 63.7% violation rate over 3187 'names' because the harvester pulls book `title` fields, which are English sentences. The item's stated gate has never fired in four rounds; every number came from the round's substitute tool."
-  ]
+  ],
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "ABANDONED",
+    "evidence": "Re-confirms OWNERSHIP-SWEEP-20260814's finding: no W1-23-r5 verdict exists anywhere under corpus/90-verdicts/ (checked directly for this dispatch, 2026-08-14). git-log date of this status file is 2026-08-08T11:39:23Z, 152h old -- the 08-08 mass-kill era."
+  }
 }

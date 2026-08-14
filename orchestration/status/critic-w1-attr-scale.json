@@ -3,7 +3,7 @@
   "role": "critic",
   "brief": "CRITIC with fresh context for W1-ATTR-SCALE. Re-measure, delete-the-fix, break the checks, and attack the Morrowind/Souls seam: are attributes read by anything OUTSIDE combat?",
   "started": "2026-08-08",
-  "state": "running",
+  "state": "done",
   "redundant_with": [
     "W1-ATTR-SCALE"
   ],
@@ -40,5 +40,11 @@
     "date": "2026-08-14",
     "reason": "Status file said the .md was complete and only .json/ledger/publish/bank/push remained -- corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.json and .md both exist and are committed at 1c4c487d (2026-08-08 13:00:34Z), 17 minutes after this status file's own last commit (12:43:26Z), the SAME commit that landed critic-w1-20's verdict. The verdict landed; this status file was simply never updated to say so.",
     "by": "OWNERSHIP-SWEEP-20260814"
+  },
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "DONE",
+    "evidence": "Corroborates OWNERSHIP-SWEEP-20260814's own ownership_claim_released on this file. corpus/90-verdicts/wave1/W1-ATTR-SCALE-r1.md and .json both exist, committed at 1c4c487d (same commit as W1-20-r1, 13:00:34Z). Re-verified independently for this dispatch."
   }
 }

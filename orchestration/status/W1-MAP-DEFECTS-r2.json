@@ -5,16 +5,17 @@
   "started": "2026-08-14",
   "commit_at_start": "f8b3e4c8",
   "summary": "Dispatched against four findings that turned out to be owned and are now landed by the sibling. The orchestrator confirmed the brief was wrong and re-pointed this chunk at the genuinely-open work. THE HEADLINE CORRECTION: `map-probe.mjs` HAS run end to end — 32/33 — so S13 is no longer untested code. The other thing this chunk produced is a mid-run source pin, and running it revealed that this box cannot hold a source tree still for the length of a browser experiment.",
-
   "CORRECTION_TO_THE_ORCHESTRATOR": {
     "claim_in_the_brief": "`tools/harness/map-probe.mjs` has still never run end to end. Five attempts died. S13 is untested code and must be read that way.",
     "that_is_no_longer_true": "It ran end to end at 15:55 UTC, in this chunk, on the sixth attempt. `node tools/harness/map-probe.mjs --json --out reports/w1-map-defects-r2/probe`. **32 of 33 passed**, ~4 minutes, one browser, on a box that held 5 browser instances at 5.76 per core — i.e. it succeeded at a load HIGHER than several of the attempts that failed, so contention was not the whole story there either.",
-    "artifacts": ["reports/w1-map-defects-r2/probe/map-probe.json", "reports/w1-map-defects-r2/map-probe.log.txt"],
+    "artifacts": [
+      "reports/w1-map-defects-r2/probe/map-probe.json",
+      "reports/w1-map-defects-r2/map-probe.log.txt"
+    ],
     "S13_IS_NOW_TESTED_AND_IT_PASSES": "`S13 the forward page-walk reaches EVERY screen, and reaches the map first — got: inventory -> map -> sheet -> journal -> spells -> wait -> (closes); skipped: nothing; target: nothing skipped, and `map` one page-turn from the inventory`. That is the live confirmation the r1 critic said was still owed — it read the ring by enumerating the shipped module in bare Node and flagged that a live read was owed. This is the live read. The sibling's WALK_ORDER fix is confirmed IN THE RUNNING BUILD, not just in source.",
     "S8_and_S12_also_confirmed_live": "S8 PASS at 42,846 of 42,846; S12 PASS — whole province, 0 squares, 0 revealed cells. The replaced assertions pass at HEAD in the running game.",
     "the_one_failure_is_real_and_was_not_in_the_r1_verdict": "S11. See `new_finding_S11` below."
   },
-
   "what_I_landed_or_measured_before_the_stop_order": {
     "asked_for_by_the_orchestrator": "so nothing of mine was lost in the overlap and nothing of mine overwrote a better version of theirs",
     "1_map_probe_end_to_end": "MINE, and it is the item the brief lists as worth more than anything else left. Nobody else has done it. Nothing to reconcile — I RAN the tool, I did not EDIT it.",
@@ -24,7 +25,6 @@
     "5_things_I_did_NOT_do": "I did not edit game/src/ui/system.js, tools/harness/walk-reachability.mjs, game/src/input/touch.js, game/src/ui/screens/map.js, or tools/harness/map-probe.mjs. I did not touch reports/w1-map-defects/ — all my output went to reports/w1-map-defects-r2/.",
     "nothing_of_mine_is_better_than_what_landed_on_findings_1_3_4": "Findings 1, 3 and 4 are the sibling's and I verified all three independently rather than redoing them. Finding 3 in particular is properly closed: I confirmed statically that the replacement is not itself a tautology (`total_cells` is `discovery.cols * discovery.rows`, independent of the draw loop's counter), and the sibling's `hiddenhalf` arm at commit 8361fcb9 proves it empirically — drawn 21,423 against total 42,846, with the OLD assertion green and the NEW one red on the same arm."
   },
-
   "findings": [
     "THE PIN WORKS AND THAT IS THE PROBLEM — this is the most useful thing this chunk learned, and it is a finding against my own tool. `tools/lib/pinned-tree.mjs` pins the content of all 758 source files under `game/` and aborts if any moves mid-run. I ran it for real against `fog-control.mjs` twice. BOTH RUNS ABORTED, and neither abort was my test perturbation. Run 1 (16:00, intended as the SILENT control) died at the publish gate: `changed: game/src/character/scene.js, game/src/render/places.js`. Run 2 (16:04) died at the top of the second arm: `changed: game/data/quests/faction-continuation-wave1.json, game/src/engine.js, game/src/render/places.js, game/src/sim/settlement.js` PLUS `added: game/.pin-probe-W1-MAP-DEFECTS-r2.tmp.js` (mine). So in 45 seconds, four other agents changed four files under `game/`. CONSEQUENCE: a whole-`game/` pin will abort essentially every browser experiment on this box, which makes it a check people will switch off — the exact failure I designed it to avoid, arriving by the other door. THE FIX IS NOT TO WEAKEN THE GUARD. It is that the guard is telling the truth: a ten-minute browser experiment straddling a dozen agents' edits is not a controlled experiment, and `fog-control`'s `head` arm serves from the LIVE repo while its sabotage arms serve from frozen hard-linked clones. Serve EVERY arm from a `control-clone.mjs` snapshot and the tree cannot move at all, by construction, and the pin becomes a cheap assertion that never fires instead of a daily blocker. Recorded as an owed change rather than built, because `fog-control.mjs` is the sibling's now.",
     "CONSUMPTION IS DEMONSTRATED (RULES 5), and by accident more convincingly than by design. The world-side consumer is `tools/map/fog-control.mjs`; the perturbation was a source file appearing under `game/` 45 s into a live run; the entity that changed behaviour is the run itself — it aborted at the top of the `deletefix` arm, named `game/.pin-probe-W1-MAP-DEFECTS-r2.tmp.js` among the moved paths, and wrote NO `fog-control.json`. The perturbation file was removed by the script that created it (`perturbation removed: yes`). Evidence: `reports/w1-map-defects-r2/pin-consumption.log.txt`.",
@@ -35,7 +35,6 @@
     "PROCEEDED PAST `contention --gate` EXIT 3, and saying so as rule 21 requires. The pin's consumption run was launched at 5.99 per core. Justification: I had already completed a browser run (map-probe) at 5.76 per core twenty minutes earlier, so the run was known to be feasible, and the consumption demo was the only thing this chunk had built that otherwise scored zero under RULES 5. The phone leg was launched at 4.24 per core, also exit 3.",
     "SAFETY NOTE ACKNOWLEDGED — I did not use `pkill` at any point in this chunk, scoped or otherwise. Every background process I started was tracked by pid and left to exit on its own."
   ],
-
   "the_four_findings_status": {
     "note": "STOPPED ON ORCHESTRATOR ORDER. All four are the sibling's and are landed. Recorded here only as independent verification, not as claims of authorship.",
     "1_fog_control_positive_arm": "CLOSED (sibling). Verified: reports/w1-map-defects/fog-control.json carries all three arms including head (42,846/42,846, 0 squares), six checks, pass true, and fog-head.png (15:42:22) now precedes the run's `at` (15:47:31) instead of trailing it.",
@@ -43,7 +42,6 @@
     "3_S8_S12_tautologies": "CLOSED (sibling). Independently verified twice — statically (total_cells has independent provenance) and empirically (hiddenhalf arm, drawn 21,423 vs total 42,846, old assertion green / new assertion red, commit 8361fcb9, reports/w1-map-defects/probe-teeth/fog-control.json). Plus map-probe now confirms both pass at HEAD in a live run.",
     "4_ARBITRATION_S35": "CLOSED (sibling). Verified at corpus/00-doctrine/ARBITRATION.md:105 (S35 struck with pointer to AMENDMENT-W1-MAP-02) and :108 (S38(b) narrowed in place). Landed in commit 8361fcb9's predecessor 8b1c9952, under a W1-30-SHADOW-CASTERS message — so nobody reading commit messages would know this ruling changed."
   },
-
   "new_finding_S11": {
     "id": "S11",
     "state": "FAIL, open, unowned by me",
@@ -52,13 +50,11 @@
     "cause": "game/src/ui/screens/map.js:126-129, inclusive floor/ceil loop bounds",
     "warning": "the same bound is what makes S8's 42,846 correct; do not tighten one without re-running the other"
   },
-
   "owed_changes_for_others": [
     "tools/map/fog-control.mjs (sibling): serve the `head` arm from a control-clone snapshot like the sabotage arms already do, so all arms share one frozen tree and the pin becomes an assertion that never fires rather than a daily blocker. Measured justification in `findings`: 4 files moved under game/ in 45 seconds.",
     "game/src/ui/system.js (sibling): `geography_always_drawn` is a tautology — redefine against total_cells or delete.",
     "game/src/ui/screens/map.js (owner): rule on S11's 22x22 local window."
   ],
-
   "still_open_from_the_orchestrator_brief": {
     "map_probe_end_to_end": "DONE — see CORRECTION_TO_THE_ORCHESTRATOR.",
     "live_phone_leg": "DONE. IT COMPLETED — the first time in three attempts across two rounds. `node tools/map/player-route.mjs --legs phone --out reports/w1-map-defects-r2/phone`, commit 43ca8121, 30 minutes wall-clock on a box that climbed from 4.24 to 8.63 per core and from 3 to 9 browser instances during the run. Final line: `ok phone: the map was reached by a player's own controls`. Artifacts: reports/w1-map-defects-r2/phone/player-route.json and reports/w1-map-defects-r2/phone-leg.log.txt.",
@@ -73,7 +69,6 @@
     },
     "RI_WLD06_M29": "NOT RUN, and I recommend it be dispatched to a fresh agent as the orchestrator offered. My context is now heavily loaded with the four findings, the r1 verdict and this piece's own instrumentation, which is exactly the contamination the offer was guarding against."
   },
-
   "files_touched": [
     "orchestration/status/W1-MAP-DEFECTS-r2.json",
     "tools/lib/pinned-tree.mjs",
@@ -85,7 +80,14 @@
     "tools/lib/pinned-tree.mjs",
     "reports/w1-map-defects-r2/"
   ],
-  "redundant_with": ["W1-MAP-DEFECTS"],
-
-  "next_step": "CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole province drawn, at commit 43ca8121. Do NOT re-run it. The ONE thing still owed on it is a PHOTOGRAPH: the run wrote no screenshots and `reports/w1-map-defects-r2/phone/shots/` is empty, so the r1 check `final-tap-photographed-on-a-phone` is still literally not_run. If you want it closed, capture a still at the final step; everything else about that route is now measured live. (2) DO NOT redo the four findings — they are the sibling's and landed; this chunk verified all four independently and the verification is recorded above. (3) The pin's silent arm on the REAL consumer is still owed: it has been watched aborting twice and staying silent never. The fix is not a retry, it is to serve `fog-control`'s head arm from a control-clone so the tree cannot move — see `owed_changes_for_others`. A bare retry will just abort again; four files moved under game/ in 45 seconds. (4) Rule on S11 (22x22 local window) with the S8 caution in `new_finding_S11`. (5) M29 should go to a FRESH agent, not to chunk 2. STATE: map-probe end to end DONE (32/33, S13 passes live); all four r1 findings closed by the sibling and independently verified here; S11 is a new open failure; the pin is landed, self-tested 7/7, and consumption-demonstrated but one-sided on the real consumer."
+  "redundant_with": [
+    "W1-MAP-DEFECTS"
+  ],
+  "next_step": "CHUNK 2 PICKS UP EXACTLY HERE. (1) THE PHONE LEG IS DONE — 3 taps, map reached, whole province drawn, at commit 43ca8121. Do NOT re-run it. The ONE thing still owed on it is a PHOTOGRAPH: the run wrote no screenshots and `reports/w1-map-defects-r2/phone/shots/` is empty, so the r1 check `final-tap-photographed-on-a-phone` is still literally not_run. If you want it closed, capture a still at the final step; everything else about that route is now measured live. (2) DO NOT redo the four findings — they are the sibling's and landed; this chunk verified all four independently and the verification is recorded above. (3) The pin's silent arm on the REAL consumer is still owed: it has been watched aborting twice and staying silent never. The fix is not a retry, it is to serve `fog-control`'s head arm from a control-clone so the tree cannot move — see `owed_changes_for_others`. A bare retry will just abort again; four files moved under game/ in 45 seconds. (4) Rule on S11 (22x22 local window) with the S8 caution in `new_finding_S11`. (5) M29 should go to a FRESH agent, not to chunk 2. STATE: map-probe end to end DONE (32/33, S13 passes live); all four r1 findings closed by the sibling and independently verified here; S11 is a new open failure; the pin is landed, self-tested 7/7, and consumption-demonstrated but one-sided on the real consumer.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "PARTIAL",
+    "evidence": "Real work landed and independently verifiable: tools/lib/pinned-tree.mjs exists and is committed (b883827a), map-probe.mjs ran end-to-end (32/33) per this status file's own CORRECTION_TO_THE_ORCHESTRATOR section, and the live phone-leg route (3 taps to the map) is recorded with artifacts under reports/w1-map-defects-r2/phone/. This status file's own next_step for 'CHUNK 2' is unusually explicit and internally consistent (photograph the phone-leg final tap; do not redo the four sibling findings; close the pin's one-sided-guard gap by serving fog-control's head arm from a control-clone; rule on the new S11 finding) -- read it directly rather than trusting this summary. No reason found to doubt its own next_step is accurate as of its last commit (2026-08-14T16:38:57Z)."
+  }
 }

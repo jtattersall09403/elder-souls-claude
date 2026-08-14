@@ -3,7 +3,7 @@
   "role": "blind judge",
   "piece": "W1-PROSE-TICS",
   "pack": "reports/packs/prose-tics-r5",
-  "state": "running",
+  "state": "abandoned",
   "started": "2026-08-08",
   "next_step": "read RI-MTH03, then answer 15 trials on PROV and QUAL before unblinding",
   "files_claimed": [
@@ -11,6 +11,14 @@
     "orchestration/status/judge-prose-r5.json",
     "reports/blog-feed.jsonl"
   ],
-  "files_touched": ["orchestration/status/judge-prose-r5.json"],
-  "notes": "Blind. Must not read prose-tics-r5.reveal/ until all 15 answers written."
+  "files_touched": [
+    "orchestration/status/judge-prose-r5.json"
+  ],
+  "notes": "Blind. Must not read prose-tics-r5.reveal/ until all 15 answers written.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "ABANDONED",
+    "evidence": "Re-confirms OWNERSHIP-SWEEP-20260814's finding rather than re-deriving it: `reports/packs/prose-tics-r5.answers/` contains only README.md and a `judge-prose-r5` scaffold entry -- no trial answers, no PICK: lines. Re-checked directly for this dispatch (2026-08-14) and unchanged since the ownership sweep's earlier pass today. Most likely the 2026-08-08 mass-kill event (started 2026-08-08T12:51:39Z by git-log date of this status file, 151h old, not a live piece)."
+  }
 }

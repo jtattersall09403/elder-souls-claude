@@ -36,5 +36,11 @@
     "Also fixed: camera.pivot/pos held makeCamera() defaults between a load and the first step, so snapshot() straight after a load reported a camera at the world origin."
   ],
   "next_step": "fix determinism.mjs R9 (spawn entities + full-field diff), then alloc-probe, then seed widening",
-  "notes_for_successor": "Order: (1) prev_state + entity/player/camera audit in game/src/save/state.js + manifest + save-audit; (2) determinism.mjs R9 must spawn the scenario's entities and do a full-field diff; (3) tools/platform/alloc-probe.mjs clamp + dying-garbage self-test; (4) seed widening via world-gen seed. Prove each with a real run."
+  "notes_for_successor": "Order: (1) prev_state + entity/player/camera audit in game/src/save/state.js + manifest + save-audit; (2) determinism.mjs R9 must spawn the scenario's entities and do a full-field diff; (3) tools/platform/alloc-probe.mjs clamp + dying-garbage self-test; (4) seed widening via world-gen seed. Prove each with a real run.",
+  "triage": {
+    "date": "2026-08-14",
+    "by": "STRANDED-TRIAGE-20260814",
+    "finding": "PARTIAL",
+    "evidence": "CORRECTS OWNERSHIP-SWEEP-20260814's provisional characterization of this piece as declaring nothing / likely abandoned with 0 files touched. That reading used the `files_touched` field, which this status file does not have -- it uses `outputs_written` instead (a THIRD field-naming variant beyond the status/state bug the ownership sweep already fixed, worth the same structural treatment). `outputs_written` lists nine real source files, and the headline claim ('FIXED + PROVEN: p10-m5.mjs... now gives control == loaded') is independently verifiable on HEAD: `game/src/save/state.js` line 282 now serialises `prev_state: e.prevState` (grep-confirmed), directly answering the GAP-W1-platform-save-drops-entity-prev-state finding from corpus/90-verdicts/wave1/W1-00-r2.md's RI-JRN05 HF1 M5 clause (that verdict's own FAIL, filed 2026-08-06, is what this piece is remediating). tools/journey/state-diff.mjs also exists and is committed. No W1-00-r3 verdict exists yet to confirm the fix holds under a fresh critic's own probes -- this piece's own next_step ('fix determinism.mjs R9... alloc-probe... seed widening') was not independently re-checked for this dispatch and should not be assumed current without reading it directly."
+  }
 }
