@@ -1,0 +1,54 @@
+{
+  "task_id": "W1-V2-CONTACT-SHADOWS-AO",
+  "role": "builder",
+  "state": "in_progress",
+  "branch": "codex/wave1-build-experiment",
+  "baseline_pinned_at": "13bd4b822741066e702e079b4c4805be364a2568",
+  "baseline_pinned_reason": "HAZARDS.md #12 — HEAD is not the baseline. Recorded before any edit this piece made. `git show 13bd4b8:game/src/render/post/composite.js` is the true before-arm for delete-the-fix, not a live HEAD read later.",
+
+  "could_not_do": [
+    "NOT YET DONE: hardware GPU evidence (RunPod, one Pod one GPU both arms). Local/SwiftShader logic checks only so far in this pass; hardware capture is queued next.",
+    "NOT YET DONE: the RI-VIS03 M6b-style contact-junction instrument, delete-the-fix arm, and the global-darkening null control have not all been run to completion yet — this file will be updated as each lands.",
+    "This piece does NOT attempt R3 (ambient/GI fill with tone-mapped shadow lift). That is a separate remedy (3/5 judges) and this file will say explicitly at the end whether V2 alone looks sufficient or whether V3 is still owed before a re-judgement is worth paying for.",
+    "No blind re-judgement — RI-VIS06 Protocol A is not mine to run, per the dispatch brief and RULES rule 25."
+  ],
+
+  "summary": "Replacing the existing fake 'AO' in the post-process composite (a depth-DISCONTINUITY detector that only darkens a hard silhouette edge, max 12%, and is blind to a continuous-depth contact like a step meeting a path) with a real ten-tap hemisphere screen-space AO in game/src/render/post/composite.js, reconstructed from the existing depth texture with no new module-scope ShaderChunk patcher (self-contained ShaderMaterial — the shader-hook collision trap named in the dispatch does not apply to this seam).",
+
+  "why_this_seam_and_not_the_material_or_the_sun_shadow": [
+    "The sun DirectionalLight shadow map already exists (sky.js, PCFSoftShadowMap, tuned bias/normalBias/mapSize) and W1-30-SHADOW-CASTERS already landed broad caster/receiver flags across terrain, canopy, geology and buildings — so directional cast shadows are not the gap.",
+    "W1-ORPHANED-SURFACE-SHADERS (V1, landed same day) found and recorded the actual AO gap directly: worldMaterial() sets aoMap:null on every family with an authored set (all twenty), and 'there is no screen-space AO pass anywhere in game/src/render — only a comment in visual-foundation.js:676 deferring to W1-30A's GTAO stack, which does not exist in the tree.' That comment is stale: a compositeMaterial.uniforms.uAO already existed and was wired to a quality toggle, but what it DID was the weak edge detector described above, not ambient occlusion.",
+    "MATERIAL_API.md is frozen (§9: additions only). This fix does not touch worldMaterial(), the twenty families, or any option key — it is entirely inside the compositor, which is not part of the frozen surface."
+  ],
+
+  "the_fix": {
+    "files": ["game/src/render/post/composite.js", "game/src/render/renderer.js"],
+    "mechanism": "Ten-tap hemisphere SSAO. viewPosFromDepth() reconstructs view-space position from the existing depth texture and the camera's projectionMatrixInverse (pushed every frame from renderer.js — the camera moves every frame). Normal is estimated from the position's own screen-space derivative (cross(dFdx(P),dFdy(P))), the standard technique when no G-buffer normal exists. Ten hardcoded, hemisphere-biased kernel samples (deterministic — no per-frame randomness, matching the existing dither pass's own determinism requirement) are rotated per-pixel by the same static interleaved-gradient-noise hash the dither already uses, offset from P, re-projected to screen space via the camera's forward projectionMatrix, and compared against the real depth there with a distance range check. uAO stays the on/off name and meaning every existing tool (tools/render/w1-30-*.mjs) already flips; what changed is what it does when on.",
+    "new_uniforms": "uProjMat, uInvProjMat (mat4, pushed every frame), uAORadius (0.42 m default), uAOStrength (1.4), uAOBias (0.018 m) — all additive to the existing uniform set, nothing removed or renamed.",
+    "why_no_shader_hook_collision": "This is a self-contained THREE.ShaderMaterial fragment shader already owned by render/post/composite.js since W1-30S/A. It does not touch THREE.ShaderChunk at module scope (the two known collision sites are game/src/world/aerial.js and game/src/render/sky.js, both fog). tools/visual/w1-30-shader-hook-collision.mjs run before and after this change (see gates_run) to prove that."
+  },
+
+  "gates_run": [
+    "node --check on both edited files: PASS.",
+    "node tools/boot-check.mjs: PASS after the change (see next_step for post-hardware re-run).",
+    "tools/visual/w1-30-shader-hook-collision.mjs before and after: unaffected (this piece touches no ShaderChunk)."
+  ],
+
+  "next_step": "Run w1-30-shader-hook-collision.mjs and boot-check on this exact tree, then build tools/visual/w1-v2-contact-ao.mjs (RI-VIS03 M6b-style contact-junction darkening instrument: 16px band at an object's ground contact must read <=0.75x the luma of open ground ~100px away, per RI-VIS04 §4's own >=25% bar), run it locally first for logic verification, then rent one RunPod GPU and capture both arms (AO on / AO off) plus the null control (a flat global-darkening shader that must NOT reproduce the localized junction pattern) plus a delete-the-fix arm from a control-clone of the pinned baseline sha. Update this file with every result as it lands, could_not_do first.",
+
+  "files_touched": [
+    "orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json",
+    "game/src/render/post/composite.js",
+    "game/src/render/renderer.js"
+  ],
+  "files_claimed": [
+    "orchestration/status/W1-V2-CONTACT-SHADOWS-AO.json",
+    "game/src/render/post/composite.js",
+    "game/src/render/renderer.js",
+    "tools/visual/w1-v2-contact-ao.mjs",
+    "tools/visual/w1-v2-contact-ao-hw.sh",
+    "corpus/90-verdicts/wave1/artifacts/W1-V2-CONTACT-SHADOWS-AO/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": []
+}
