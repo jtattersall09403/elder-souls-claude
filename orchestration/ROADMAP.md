@@ -167,6 +167,42 @@ with depth · reachable quests · combat feel.
 
 ---
 
+### Phase V — graphics, art direction and fidelity *(early, and largely concurrent with A)*
+
+**This is not a late polish phase and must never be scheduled as one.** Owner directive, 2026-08-14:
+graphics and visual fidelity are **Wave 1, not Wave 4** — *"it's not worth progressing to wave 2's
+depth unless we can make the game look pretty good."* Step 1 above is only the first item on this list.
+
+The whole phase is currently evidenced by one hard fact: **the first blind fidelity comparison ran on
+2026-08-14 and we lost 5 of 5**, with FIDELITY capped at 5 against a gate of 7.0.
+
+| | item | state |
+|---|---|---|
+| **V1** | **Materials and surface response** — PBR sets bound to what is drawn, roughness, edge wear, wetness | **step 1, in flight.** 20 material sets authored; 305 of 406 materials had no shader installing them |
+| **V2** | **Shadows and ambient occlusion** — contact shadows, soft where soft, cascades, interiors | **not started.** The judges' most universal observation, 5 of 5 |
+| **V3** | **Ambient / bounce / GI fill** so shadows stop crushing to black | **not started.** 3 of 5 judges named it |
+| **V4** | **Lighting design** — sun and moons, time of day, interiors, torches, lanterns, emissives | partial; the sky was baked once at startup and never updated, now fixed |
+| **V5** | **Post, tonemapping and colour** — exposure, bloom, grade by region/time/weather | done once and worth re-judging; the old grade was a 3.5% saturation boost, i.e. nothing |
+| **V6** | **Characters** — 17 built on one skeleton and body plan | **holes fixed, never looked at.** Builder's own words: *"measurably less broken, not good-looking"* |
+| **V7** | **Animation quality** — locomotion, transitions, weight, recovery | **not started.** Couples to C1; Souls owns the fight, so C1 governs where they meet |
+| **V8** | **Architecture and settlements** — kit parts, grammars, roof profiles, silhouette variety | partial. Kit has **4 roof ids against Ruling E1's ≥5** — unreachable by construction until the kit grows |
+| **V9** | **Terrain** — texturing, blending, geology, cliffs, paths, wear | partial. Was one small noise patch used for colour, bump and shine at once |
+| **V10** | **Vegetation and canopy** — species, density, LOD, wind, shimmer | partial; canopy shadows measured not to shimmer |
+| **V11** | **Water** — surface, shore, depth, refraction | **defect open**: axis-aligned 20 m light/dark lanes, owner identified, fix in flight |
+| **V12** | **Sky and atmosphere** — cloud, celestial, fog model, aerial perspective | partial; height-fog now read, 13 regions improved, still too much fog in places |
+| **V13** | **VFX and particles** — magic, weather, dust, smoke, impact, blood | **not started**, and magic has nothing to show for 71 spells |
+| **V14** | **UI and HUD visual design** — Morrowind style, dialogue window, journal, map, compass | in flight; 33 Morrowind interface references and exact widget rects sat unused on disk for eight days |
+| **V15** | **Art direction and region identity** — the transposition spec, strangeness, why Black Marsh is not a generic swamp | partial and **the most under-served**: two agents found independently that colour is *not* what distinguishes regions — terrain and air are |
+| **V16** | **Performance and LOD** — draw distance, instancing, budgets on ordinary hardware | partial; a shadow-caster budget exists |
+| **V17** | **The visual bar itself** — Protocol A and B every wave, reference plates, hardware capture | Protocol A ran once, today. Protocol B has **never run**. Thorn and Stormhold anchor onto plates that can never satisfy their own rows |
+
+**Two standing rules for this phase**, both bought expensively:
+
+- **Static inspection is not evidence.** *"If you just load the game rotate the camera around the player it's immediately obvious that it hasn't [been fixed]."* Many screenshots, many angles, motion sequences — a single still from one angle is how the character-transparency defect was declared fixed while still broken.
+- **Statistics can fail a build and can never pass one.** The old fidelity score was made almost entirely of checks that the *instruments* were valid, and its main statistic was one that random noise **raises** — while the world was textured with random noise.
+
+---
+
 ### Phase B — the Morrowind half
 
 Morrowind wins everywhere outside the fight, and this is what that actually costs.
@@ -220,7 +256,7 @@ Souls wins inside the fight. Frames, stamina, hitboxes, animation, enemy behavio
 
 ## Honest position on how far through we are
 
-**Phase A is in flight; B through F are named and not started.** Most of what exists today is
+**Phase A and Phase V are in flight; B through F are named and not started.** Phase V is the larger of the two and is early by directive, not by preference. Most of what exists today is
 foundations, instruments and one playable slice — not a game. Anyone quoting a completion percentage
 should quote it against **this** list, not against Phase A, or it means nothing.
 
